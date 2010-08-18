@@ -49,7 +49,86 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String mobile;
 	private String email;
 	
+	// new fields added
+	private String dateOfBirth;
+	private String telephone;
+	private String houseNo;
+	private String street;
+	private String pinCode;
+	private String sameAsCA;
+	private String education;
+	private String profession;
+	private String socialStatus;
+	private String income;
+	private String memberType;
+	private String annualIncome;
+	private String designation;
 	
+		
+	public void setDateOfBirth(String dateOfBirth){
+		this.cadreInfo.setDateOfBirth(dateOfBirth); 
+	}
+	
+	public String getDateOfBirth(){
+		return cadreInfo.getDateOfBirth();
+	}
+	
+	public void setTelephone(String telephone){
+		this.cadreInfo.setLandLineNo(telephone); 
+	}	
+	
+	public String getTelephone(){
+		return cadreInfo.getLandLineNo();
+	}
+
+	public String getHouseNo(){
+		return cadreInfo.getHouseNo();
+	}
+	
+	public void setHouseNo(String houseNo){
+		this.cadreInfo.setHouseNo(houseNo); 
+	}
+	
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.cadreInfo.setStreet(street);
+	}
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.cadreInfo.setPinCode(pinCode);
+	}
+	
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.cadreInfo.setEducation(education);
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.cadreInfo.setOccupation(profession);
+	}
+
+	public String getSocialStatus() {
+		return socialStatus;
+	}
+
+	public void setSocialStatus(String socialStatus) {
+		this.cadreInfo.setCasteCategory(socialStatus);
+	}
+
 	public String getFirstName() {
 		System.out.println("***********IN getter firstname of cadre register******"+firstName);	
 		return cadreInfo.getFirstName();
@@ -61,7 +140,6 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 
 	public String getMiddleName() {
-		//System.out.println();
 		return cadreInfo.getMiddleName();
 	}
 
@@ -72,6 +150,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getLastName() {
 		return cadreInfo.getLastName();
 	}
+	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Lastname is required",shortCircuit=true)
 	public void setLastName(String lastName) {
 		this.cadreInfo.setLastName(lastName);
@@ -80,7 +159,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getGender() {
 		return cadreInfo.getGender();
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "please select Gender",shortCircuit=true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Gender",shortCircuit=true)
 	public void setGender(String gender) {
 		this.cadreInfo.setGender(gender);
 	}
@@ -88,7 +167,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getState() {
 		return cadreInfo.getState();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select State",shortCircuit=true)
+	
 	public void setState(String state) {
 		this.cadreInfo.setState(state);
 	}
@@ -96,7 +175,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getDistrict() {
 		return cadreInfo.getDistrict();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select District",shortCircuit=true)
+	
 	public void setDistrict(String district) {
 		this.cadreInfo.setDistrict(district);
 	}
@@ -104,7 +183,8 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getConstituency() {
 		return cadreInfo.getConstituencyID().toString();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select  Constituency",shortCircuit=true)
+	
+	
 	public void setConstituency(String constituency) {
 		 System.out.println("*** in seter of constituency method");
 		this.cadreInfo.setConstituencyID(new Long(constituency));
@@ -112,7 +192,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getMandal() {
 		return cadreInfo.getMandal();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select Mandal/Tehsil",shortCircuit=true)
+	
 	public void setMandal(String mandal) {
 		this.cadreInfo.setMandal(mandal);
 	}
@@ -120,7 +200,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getVillage() {
 		return cadreInfo.getVillage();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select Village",shortCircuit=true)
+	
 	public void setVillage(String village) {
 		this.cadreInfo.setVillage(village);
 	}
@@ -128,7 +208,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getCadreLevel() {
 		return cadreInfo.getCadreLevel().toString();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select CadreLevel",shortCircuit=true)
+	
 	public void setCadreLevel(String cadreLevel) {
 		this.cadreInfo.setCadreLevel(new Long(cadreLevel));
 	}
@@ -136,7 +216,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getCadreLevelValue() {
 		return cadreInfo.getCadreLevelValue().toString();
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "please select CadreLevelValue",shortCircuit=true)
+	
 	public void setCadreLevelValue(String cadreLevelValue) {
 		this.cadreInfo.setCadreLevelValue(new Long(cadreLevelValue));
 	}
@@ -157,19 +237,60 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 
 	public void setEmail(String email) {
 		this.cadreInfo.setEmail(email);
+	}	
+
+	public String getIncome() {
+		return cadreInfo.getAnnualIncome();
+	}
+
+	public void setIncome(String income) {
+		this.cadreInfo.setAnnualIncome(income);
+	}	
+
+	public String getMemberType() {
+		return cadreInfo.getMemberType();
+	}
+
+	public void setMemberType(String memberType) {
+		this.cadreInfo.setMemberType(memberType);
+	}	
+
+	public String getAnnualIncome() {
+		return cadreInfo.getAnnualIncome();
+	}
+
+	public void setAnnualIncome(String annualIncome) {
+		this.cadreInfo.setAnnualIncome(annualIncome);
+	}	
+
+	public String getSameAsCA() {
+		return cadreInfo.getSameAsCA();
+	}
+
+	public void setSameAsCA(String sameAsCA) {
+		this.cadreInfo.setSameAsCA(sameAsCA);
+	}	
+
+	public String getDesignation() {
+		return cadreInfo.getDesignation();
+	}
+
+	public void setDesignation(String designation) {
+		this.cadreInfo.setDesignation(designation);
 	}
 
 	public String execute() throws Exception{
 		log.debug("In The Excecute For Cader");
 		session=request.getSession();
-		System.out.println(" in execute of cadre registration page");
+		
 		String name1=request.getParameter("firstName");
-		System.out.println("the firstname is ....." +name1);
+		
 		String name2=request.getParameter("lastName");
 		String name3=request.getParameter("constituency");
-		System.out.println("the lastname is ....." +name2);
-		System.out.println("the constituency is***"+name3);
+		
+		
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		System.out.println("sameAsCA::::::::::::::::"+request.getParameter("sameAsCA"));
 		cadreInfo.setuserID(regVO.getRegistrationID());
 		if("MP".equals(regVO.getAccessType())){
 			Long constituencyID = cadreInfo.getConstituencyID();
