@@ -35,7 +35,12 @@ public class CadreInfo implements Serializable{
 	private String memberType;
 	private String sameAsCA;
 	private String designation; 
-	
+	//permanenet address
+	private String pstate;
+	private String pdistrict;
+	private Long pconstituencyID;
+	private String pmandal;
+	private String pvillage;
 	
 	public Long getConstituencyID() {
 		return constituencyID;
@@ -223,6 +228,38 @@ public class CadreInfo implements Serializable{
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+	public String getPstate() {
+		return pstate;
+	}
+	public void setPstate(String pstate) {
+		this.pstate = pstate;
+	}
+	public String getPdistrict() {
+		return pdistrict;
+	}
+	public void setPdistrict(String pdistrict) {
+		this.pdistrict = pdistrict;
+	}
+	public Long getPconstituencyID() {
+		return pconstituencyID;
+	}
+	public void setPconstituencyID(Long pconstituencyID) {
+		this.pconstituencyID = pconstituencyID;
+	}
+	public String getPmandal() {
+		return pmandal;
+	}
+	public void setPmandal(String pmandal) {
+		this.pmandal = pmandal;
+	}
+	public String getPvillage() {
+		return pvillage;
+	}
+	public void setPvillage(String pvillage) {
+		this.pvillage = pvillage;
+	}
+	
+	
 	
 	
 	

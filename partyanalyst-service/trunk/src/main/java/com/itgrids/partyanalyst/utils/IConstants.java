@@ -201,4 +201,6 @@ public interface IConstants {
     public static final String BYE_ELECTIONS_STATIC_PARTIES = "'INC','PRP','TDP','TRS','BJP'";
     
     public static final String ALL = "all";
+    public static final String CADRE_MEMBER_TYPE_ACTIVE = "Active";
+    public static final String CADRE_MEMBER_TYPE_NORMAL = "Normal";
 }

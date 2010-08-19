@@ -55,7 +55,7 @@ public class Cadre extends BaseModel{
 	 private String education;
 	 private String occupation;
 	 private String casteCategory;
-	 private String annualIncome;
+	 private Double annualIncome;
 	 private String memberType;
 	 private PartyWorkingCommitteeDesignation designation;
 	 private UserAddress currentAddress;
@@ -301,11 +301,11 @@ public class Cadre extends BaseModel{
 	}
 	
 	@Column(name = "annual_income", precision = 2, scale = 0)
-	public String getAnnualIncome() {
+	public Double getAnnualIncome() {
 		return annualIncome;
 	}
 	
-	public void setAnnualIncome(String annualIncome) {
+	public void setAnnualIncome(Double annualIncome) {
 		this.annualIncome = annualIncome;
 	}	
 

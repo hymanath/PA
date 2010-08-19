@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
@@ -200,7 +201,11 @@ public class CadreManagementService {
 		cadre.setOccupation(cadreInfo.getOccupation());
 		cadre.setCasteCategory(cadreInfo.getCasteCategory());
 		cadre.setMemberType(cadreInfo.getMemberType());
-		cadre.setAnnualIncome(cadreInfo.getAnnualIncome());
+		Double annunaIncome = 0d;
+		if(cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
+			annunaIncome = new Double(cadreInfo.getAnnualIncome()); 
+		
+		cadre.setAnnualIncome(annunaIncome);
 		if("on".equals(cadreInfo.getSameAsCA()))
 		{
 			
@@ -209,7 +214,9 @@ public class CadreManagementService {
 				
 				
 			}
-		cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
+		if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadreInfo.getMemberType()))
+			cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
+		
 		cadre = cadreDAO.save(cadre);
 		return cadre.getCadreId();
 	}
