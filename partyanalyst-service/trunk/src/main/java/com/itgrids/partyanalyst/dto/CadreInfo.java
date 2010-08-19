@@ -35,7 +35,12 @@ public class CadreInfo implements Serializable{
 	private String memberType;
 	private String sameAsCA;
 	private String designation; 
+	private String effectiveDate;
+	private String endingDate;
 	//permanenet address
+	private String phouseNo; 
+	private String pstreet;
+	private String ppinCode;
 	private String pstate;
 	private String pdistrict;
 	private Long pconstituencyID;
@@ -258,17 +263,35 @@ public class CadreInfo implements Serializable{
 	public void setPvillage(String pvillage) {
 		this.pvillage = pvillage;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String getPhouseNo() {
+		return phouseNo;
+	}
+	public void setPhouseNo(String phouseNo) {
+		this.phouseNo = phouseNo;
+	}
+	public String getPstreet() {
+		return pstreet;
+	}
+	public void setPstreet(String pstreet) {
+		this.pstreet = pstreet;
+	}
+	public String getPpinCode() {
+		return ppinCode;
+	}
+	public void setPpinCode(String ppinCode) {
+		this.ppinCode = ppinCode;
+	}
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+	public String getEndingDate() {
+		return endingDate;
+	}
+	public void setEndingDate(String endingDate) {
+		this.endingDate = endingDate;
+	}
 	
 }

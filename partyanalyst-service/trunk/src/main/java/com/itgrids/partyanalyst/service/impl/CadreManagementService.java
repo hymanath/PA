@@ -11,6 +11,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -45,6 +49,7 @@ import com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
 /**
  * 
@@ -73,6 +78,9 @@ public class CadreManagementService {
 	private IPartyWorkingCommitteeDAO partyWorkingCommitteeDAO;
 	private IPartyWorkingCommitteeDesignationDAO partyWorkingCommitteeDesignationDAO;
 	private static final Logger log = Logger.getLogger(CadreManagementService.class);
+	private CadreInfo cadreInfo = null;
+	private TransactionTemplate transactionTemplate = null;
+	
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -147,78 +155,140 @@ public class CadreManagementService {
 			IPartyWorkingCommitteeDesignationDAO partyWorkingCommitteeDesignationDAO) {
 		this.partyWorkingCommitteeDesignationDAO = partyWorkingCommitteeDesignationDAO;
 	}
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
 
 
-	public Long saveCader(CadreInfo cadreInfo){
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public Long saveCader(CadreInfo cadreInfoToSave){
+		this.cadreInfo = cadreInfoToSave;	
 		if(log.isDebugEnabled()){
 			log.debug("cadrerManagementService.saveCadre():::-constituencyID::"+cadreInfo.getConstituencyID());
 		}
-		Cadre cadre = new Cadre();
-		cadre.setFirstName(cadreInfo.getFirstName());
-		cadre.setMiddleName(cadreInfo.getMiddleName());
-		cadre.setLastName(cadreInfo.getLastName());
-		cadre.setGender(cadreInfo.getGender());
-		cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
-		cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
-		cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
-
-		String villageFlag = cadreInfo.getVillage().substring(0, 1);
-		Long id = new Long(cadreInfo.getVillage().substring(1));
+			Cadre cadreObj = (Cadre)transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+		
+			UserAddress currentAddress = new UserAddress();
+			UserAddress permanentAddress =  new UserAddress();
+			Cadre cadre = new Cadre();
+			CadreLevel level = new CadreLevel();
+			try{
+				cadre.setFirstName(cadreInfo.getFirstName());
+				cadre.setMiddleName(cadreInfo.getMiddleName());
+				cadre.setLastName(cadreInfo.getLastName());
+				cadre.setGender(cadreInfo.getGender());
+				cadre.setState(stateDAO.get(new Long(CadreManagementService.this.cadreInfo.getState())));
+				cadre.setDistrict(districtDAO.get(new Long(CadreManagementService.this.cadreInfo.getDistrict())));
+				cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
+				
+				//setting address
+				currentAddress.setHouseNo(cadreInfo.getHouseNo());
+				currentAddress.setStreet(cadreInfo.getStreet());
+				currentAddress.setPinCode(cadreInfo.getPinCode());
+				currentAddress.setState(stateDAO.get(new Long(cadreInfo.getState())));
+				currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
+				currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
+				String villageFlag = "";
+				Long id = 0l;
+				villageFlag = cadreInfo.getVillage().substring(0, 1);
+				id = new Long(cadreInfo.getVillage().substring(1));
+				processAddressValues(villageFlag, id, cadre, currentAddress);
+				if("off".equals(cadreInfo.getSameAsCA()))
+				{
+					villageFlag = cadreInfo.getPvillage().substring(0, 1);
+					id = new Long(cadreInfo.getPvillage().substring(1));		
+					processAddressValues(villageFlag, id, cadre, permanentAddress);
+					permanentAddress.setHouseNo(cadreInfo.getPhouseNo());
+					permanentAddress.setStreet(cadreInfo.getPstreet());
+					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
+					permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
+					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
+					permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal())));
+				} else if("on".equals(cadreInfo.getSameAsCA()))
+				{		
+					permanentAddress = currentAddress;		
+				} 
+				cadre.setCurrentAddress(currentAddress);
+				cadre.setPermanentAddress(permanentAddress);
+				
+				
+				
+				cadre.setMobile(cadreInfo.getMobile());
+				cadre.setEmail(cadreInfo.getEmail());
+				cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
+				cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
+				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+				
+				
+					cadre.setDateOfBirth(format.parse(cadreInfo.getDateOfBirth()));			
+								
+				
+				
+				cadre.setTelephone(cadreInfo.getLandLineNo());
+				
+				cadre.setEducation(cadreInfo.getEducation());
+				cadre.setOccupation(cadreInfo.getOccupation());
+				cadre.setCasteCategory(cadreInfo.getCasteCategory());
+				cadre.setMemberType(cadreInfo.getMemberType());
+				Double annunaIncome = 0d;
+				if(cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
+					annunaIncome = new Double(cadreInfo.getAnnualIncome()); 
+				
+				cadre.setAnnualIncome(annunaIncome);
+				
+				
+				if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadreInfo.getMemberType()))
+				{	
+					
+					level.setCadreLevelID(cadreInfo.getCadreLevel());
+					String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
+					level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
+					cadre.setCadreLevel(level);
+					log.debug("CadreManagementService.saveCadre();;FirstName::"+cadreInfo.getFirstName());
+					log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getStrCadreLevelValue());
+					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
+					cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
+					
+					cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
+					if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
+						cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));					
+				}
+				
+			}catch(Exception e){
+				status.setRollbackOnly();
+				if(log.isDebugEnabled()){
+					log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
+				}				
+				e.printStackTrace();
+			}
+				return cadreDAO.save(cadre);
+			}		
+				
+		});
+		
+			return cadreObj.getCadreId();
+	}
+	
+	private void processAddressValues(String villageFlag, Long id, Cadre cadre, UserAddress address)
+	{
 		if(IConstants.HAMLET_TYPE.equalsIgnoreCase(villageFlag)){
 			Hamlet hamlet = hamletDAO.get(id);
+			
 			cadre.setHamlet(hamlet);
 			cadre.setVillage(hamlet.getTownship());
+			address.setHamlet(hamlet);
+			address.setTownship(hamlet.getTownship());
+
 		}else{
 			cadre.setVillage(townshipDAO.get(id));
+			address.setTownship(townshipDAO.get(id));
 		}
-		//cadre.setVillage(townshipDAO.get(new Long(cadreInfo.getVillage())));
-		CadreLevel level = new CadreLevel();
-		level.setCadreLevelID(cadreInfo.getCadreLevel());
-		String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
-		level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
-		cadre.setCadreLevel(level);
-		log.debug("CadreManagementService.saveCadre();;FirstName::"+cadreInfo.getFirstName());
-		log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getCadreLevelValue());
-		cadre.setCadreLevelValue(cadreInfo.getCadreLevelValue());
-		cadre.setMobile(cadreInfo.getMobile());
-		cadre.setEmail(cadreInfo.getEmail());
-		cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
-		cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
-		SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-		Date date =null;
-		try{
-			date= format.parse(cadreInfo.getDateOfBirth());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		cadre.setDateOfBirth(date);
-		cadre.setTelephone(cadreInfo.getLandLineNo());
-		cadre.setHouseNo(cadreInfo.getHouseNo());
-		cadre.setStreet(cadreInfo.getStreet());
-		cadre.setPinCode(cadreInfo.getPinCode());
-		
-		cadre.setEducation(cadreInfo.getEducation());
-		cadre.setOccupation(cadreInfo.getOccupation());
-		cadre.setCasteCategory(cadreInfo.getCasteCategory());
-		cadre.setMemberType(cadreInfo.getMemberType());
-		Double annunaIncome = 0d;
-		if(cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
-			annunaIncome = new Double(cadreInfo.getAnnualIncome()); 
-		
-		cadre.setAnnualIncome(annunaIncome);
-		if("on".equals(cadreInfo.getSameAsCA()))
-		{
-			
-		}else if("off".equals(cadreInfo.getSameAsCA()))
-			{
-				
-				
-			}
-		if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadreInfo.getMemberType()))
-			cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
-		
-		cadre = cadreDAO.save(cadre);
-		return cadre.getCadreId();
 	}
 	
 	public void deleteCadre(Long cadreID){

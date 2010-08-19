@@ -48,10 +48,7 @@ public class Cadre extends BaseModel{
 	 
 	 //new fields
 	 private Date dateOfBirth;
-	 private String telephone;
-	 private String houseNo; 
-	 private String street;
-	 private String pinCode;
+	 private String telephone;	 
 	 private String education;
 	 private String occupation;
 	 private String casteCategory;
@@ -60,6 +57,8 @@ public class Cadre extends BaseModel{
 	 private PartyWorkingCommitteeDesignation designation;
 	 private UserAddress currentAddress;
 	 private UserAddress permanentAddress;
+	 private Date effectiveDate;
+	 private Date endingDate;
 	 
 	
 	 @Id
@@ -237,33 +236,6 @@ public class Cadre extends BaseModel{
 		this.telephone = telephone;
 	}
 
-	@Column(name = "house_No", length = 25)
-	public String getHouseNo() {
-		return houseNo;
-	}
-
-	public void setHouseNo(String houseNo) {
-		this.houseNo = houseNo;
-	}
-
-	@Column(name = "street", length = 75)
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	@Column(name = "pin_code", length = 25)
-	public String getPinCode() {
-		return pinCode;
-	}
-
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
-
 	@Column(name = "education", length = 75)
 	public String getEducation() {
 		return education;
@@ -344,6 +316,26 @@ public class Cadre extends BaseModel{
 	public void setPermanentAddress(UserAddress permanentAddress) {
 		this.permanentAddress = permanentAddress;
 	}
+	
+	@Column(name = "effective_date", length = 10)
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+	
+	@Column(name = "ending_date", length = 10)
+	public Date getEndingDate() {
+		return endingDate;
+	}
+
+	public void setEndingDate(Date endingDate) {
+		this.endingDate = endingDate;
+	}
+	
+	
 	
 	
 	
