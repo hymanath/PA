@@ -1,7 +1,7 @@
 //var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 var textBoxDivId;
-function showDateCal(divId, textBoxId) {
+function showDateCal(divId, textBoxId,pageDate) {
 	
 	textBoxDivId = textBoxId;
 	var id = document.getElementById(divId);
@@ -22,7 +22,7 @@ function showDateCal(divId, textBoxId) {
 
 	var dateCalendar = new YAHOO.widget.Calendar(id, {
 		navigator : navConfig,
-		pagedate: "1/1960",
+		pagedate: pageDate,
 		maxdate: maxDate,
 		title : "Choose a date:",
 		close : true

@@ -40,19 +40,19 @@
 		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
 			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village"))
 		{
-			getnextList("state",id,"true");				
+			getnextList("state",id,"true","null","null");				
 		}
 		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
 		{
-			getnextList("constituency",id,"true");				
+			getnextList("constituency",id,"true","null","null");				
 		}
 		else if(name == "cadreLevelDistrict" && (cadreLevelElmtText == "Mandal" || cadreLevelElmtText == "Village"))
 		{
-			getnextList("district",id,"true");				
+			getnextList("district",id,"true","null","null");				
 		}
 		else if(name == "cadreLevelMandal" && (cadreLevelElmtText == "Village"))
 		{
-			getnextList("mandal",id,"true");				
+			getnextList("mandal",id,"true","null","null");				
 		}
 		
 		//if(document.getElementById("cadreLevelField").value == 5)
@@ -143,15 +143,17 @@
 			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;		
 		callAjax(rparam, jsObj, url);
 	}
-	function getnextList(name,value,choice)
+	function getnextList(name,value,choice,type,selectBoxId)
 	{
-
+		
 		var jsObj=
 			{
 					type:"cadreDetails",
 					reportLevel:name,
 					selected:value,
-					changed:choice
+					changed:choice,
+					addresstype: type,
+					selectBoxId: selectBoxId
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
@@ -183,7 +185,7 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 
-	function getMandalList(name,value,choice)
+	function getMandalList(name,value,choice,type,selectBoxId)
 	{
 
 		var districtLabel = document.getElementById("districtLabel");
@@ -197,21 +199,26 @@
 					type:"cadreDetails",
 					reportLevel:"Constituencies",
 					selected:value,
-					changed:choice
+					changed:choice,
+					addresstype: type,
+					selectBoxId: selectBoxId
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);			
 			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;			
 		callAjax(rparam, jsObj, url);
 	}
-	function getConstituencyList(name,value,choice)
+	function getConstituencyList(name,value,choice,type,selectBoxId)
 	{
 		var jsObj=
 			{
 					type:"cadreDetails",
 					reportLevel:"constituency",
 					selected:value,
-					changed:choice
+					changed:choice,
+					addresstype: type,
+					selectBoxId: selectBoxId
+					
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
@@ -232,14 +239,32 @@
 			if(selectedValue=="state")
 			{
 				if(changedVal == "false")
-					selectedElmt=document.getElementById("districtField");
+				{
+					selectedElmt=document.getElementById(jsObj.selectBoxId);					
+				}	
 				else if(changedVal == "true")
 					selectedElmt=document.getElementById("cadreLevelDistrict");
-			}
-			else if(selectedValue=="district")
+			} else if(selectedValue=="pstate")
+			{
+			
+				if(changedVal == "false")
+				{
+					selectedElmt=document.getElementById(jsObj.selectBoxId);					
+				}	
+				else if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelDistrict");
+			} else if(selectedValue=="pdistrict")
 			{
 				if(changedVal == "false")
-					selectedElmt=document.getElementById("constituencyField");
+				{
+					selectedElmt=document.getElementById(jsObj.selectBoxId);					
+				}	
+				else if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelDistrict");
+			} else if(selectedValue=="district")
+			{
+				if(changedVal == "false")
+					selectedElmt=document.getElementById(jsObj.selectBoxId);
 				else if(changedVal == "true")
 					selectedElmt=document.getElementById("cadreLevelMandal");
 			}
@@ -248,17 +273,16 @@
 				if(changedVal == "true")
 					selectedElmt=document.getElementById("cadreLevelConstituency");
 				else if(changedVal == "false")
-					selectedElmt=document.getElementById("constituencyField");
-			}
-			else if(selectedValue=="mandal")
+					selectedElmt=document.getElementById(jsObj.selectBoxId);
+			}else if(selectedValue=="mandal")
 			{
 				if(changedVal == "true")
 					selectedElmt=document.getElementById("cadreLevelVillage");
 				else if(changedVal == "false")
-					selectedElmt=document.getElementById("villageField");
+					selectedElmt=document.getElementById(jsObj.selectBoxId);
 			}
 			else if(selectedValue=="Constituencies")
-				selectedElmt=document.getElementById("mandalField");
+				selectedElmt=document.getElementById(jsObj.selectBoxId);
 		}
 		else if(taskType=="cadreLevel")
 		{
@@ -277,7 +301,7 @@
 		for(i=len-1;i>=0;i--)
 		{
 			selectedElmt.remove(i);
-		}	
+		} 	
 		for(var val in results)
 		{			
 			var opElmt=document.createElement('option');
@@ -474,7 +498,7 @@
 							<input type="text" id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td colspan="2"><A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A></td>		
+						<td colspan="2"><A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A></td>		
 					</tr>					
 				</table>	
 			</FIELDSET>
@@ -496,19 +520,19 @@
 				</tr>
 				<tr>
 					<td><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /><font class="requiredFont"> * </font></td>
-					<td align="left"><s:textfield id="houseNoField" name="houseNo" maxlength="10" size="25" />  </td>
+					<td align="left"><s:textfield id="houseNoField" name="houseNo" maxlength="100" size="25" />  </td>
 					<td><s:label for="streetField" id="streetLabel"  value="%{getText('street')}" /></td>
-					<td align="left"><s:textfield id="streetField" name="street" maxlength="10" size="25" />  </td>
+					<td align="left"><s:textfield id="streetField" name="street" maxlength="100" size="25" />  </td>
 				</tr>
 				<tr>
 					<td><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="stateField" cssClass="regionSelect" name="state" list="#session.stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+						<s:select id="stateField" cssClass="regionSelect" name="state" list="#session.stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','districtField')"></s:select>
 					</td>
 				<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 					<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
+							<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 								<c:forEach var="dist" items="${districtList}" >
 								<option value="${dist.id}">${dist.name}</option>
 								</c:forEach>
@@ -526,11 +550,11 @@
 				<tr>
 					<td><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+						<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 					</td>
 					<td><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+						<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','villageField')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 					</td>
 				</tr>
 				<tr>
@@ -551,21 +575,21 @@
 				</tr>
 				</table>
 				<table id="permanantAddr" class="cadreDetailsTable" width="100%">
-					<!--<tr>
-						<td><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /><font class="requiredFont"> * </font></td>
-						<td align="left"><s:textfield id="houseNoField" name="houseNo" maxlength="10" size="25" /></td>
-						<td><s:label for="streetField" id="streetLabel"  value="%{getText('street')}" /></td>
-						<td align="left"><s:textfield id="streetField" name="street" maxlength="10" size="25" /></td>
+					<tr>
+						<td><s:label for="phouseNoField" id="phouseNoLabel"  value="%{getText('houseNo')}" /><font class="requiredFont"> * </font></td>
+						<td align="left"><s:textfield id="phouseNoField" name="phouseNo" maxlength="10" size="25" /></td>
+						<td><s:label for="pstreetField" id="pstreetLabel"  value="%{getText('street')}" /></td>
+						<td align="left"><s:textfield id="pstreetField" name="pstreet" maxlength="10" size="25" /></td>
 					</tr>
 					<tr>
-						<td><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
+						<td><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<s:select id="stateField" cssClass="regionSelect" name="state" list="#session.stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+							<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.stateList" listKey="id" listValue="name" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','permanent','pdistrictField')"></s:select>
 						</td>
 					<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
-						<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
+						<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 							<td align="left">
-								<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
+								<select id="pdistrictField" class="pregionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 									<c:forEach var="dist" items="${districtList}" >
 									<option value="${dist.id}">${dist.name}</option>
 									</c:forEach>
@@ -576,29 +600,29 @@
 					<c:if test="${sessionScope.USER.accessType == 'MP'}"> 	
 						<tr >
 							<td>
-								<input type="hidden" id="districtField" name="district">
+								<input type="hidden" id="districtField" name="pdistrict">
 							</td>
 						</tr>
 					</c:if>
 					<tr>
-						<td><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
+						<td><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+							<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituency" list="#session.constituencyList" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','permanent','pmandalField')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 						</td>
-						<td><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
+						<td><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+							<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalList" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','permananent','pvillageField')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 						</td>
 					</tr>
 					<tr>
-						<td><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
+						<td><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
+							<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 						</td>
-						<td><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /><font class="requiredFont"> * </font></td>
-						<td align="left"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
+						<td><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /><font class="requiredFont"> * </font></td>
+						<td align="left"><s:textfield id="ppinCodeField" name="ppinCode" maxlength="10" size="25" />  </td>
 					</tr>				
-				--></table>
+				</table>
 			</FIELDSET>
 		</div>
 		</div>
@@ -638,46 +662,6 @@
 			</tr>
 			</table>
 			<table class="cadreDetailsTable" width="100%" id="cadreLevelTable" style="display:none;">
-			<tr>
-				<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
-				<td align="left">
-				<select id="partyComiteSelect" name="partyComite" onchange="getPartyDesignation(this.options[this.selectedIndex].value)">
-						<option>Please Select</option>
-						<c:forEach var="partyCommittee"  items="${partyCommitteesList}" >
-						<option value='${partyCommittee.id}'>${partyCommittee.name}</option>	
-						</c:forEach>					
-					</select>
-				</td>
-				<td>
-				<select id="comiteeDesignationSelect" name="designation" disabled="true">
-					<option>Please Select</option>											
-				</select>
-				</td>				
-			</tr>
-			<tr>
-					<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /><font class="requiredFont"> * </font></td>
-					<td colspan="4" align="left">					
-					<table class="cadreDetailsTable">
-						<tr>				
-							<td align="left">
-									<input type="text" id="effDateText" readonly="readonly" name="effectiveDate" size="15"/>
-									<DIV class="yui-skin-sam"><DIV id="effDateText_div" style="position:absolute;"></DIV></DIV>
-							</td>
-							<td>		
-									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('effDateText_div','effDateText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
-							</td>
-							<td>To</td>
-							<td>
-									<input type="text" id="tillDateText" readonly="readonly" name="tillDate" size="15"/>
-									<DIV class="yui-skin-sam"><DIV id="tillDateText_div" style="position:absolute;"></DIV></DIV>
-							</td>
-							<td>		
-									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('tillDateText_div','tillDateText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
-							</td>
-						</tr>	
-					</table>	
-					</td>								
-			</tr>
 			<tr>
 				<td><s:label for="cadreLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
@@ -727,6 +711,48 @@
 					</select> 
 				</td>
 			</tr>
+			<tr>
+				<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
+				<td align="left">
+				<select id="partyComiteSelect" name="partyComite" onchange="getPartyDesignation(this.options[this.selectedIndex].value)">
+						<option>Please Select</option>
+						<c:forEach var="partyCommittee"  items="${partyCommitteesList}" >
+						<option value='${partyCommittee.id}'>${partyCommittee.name}</option>	
+						</c:forEach>					
+					</select>
+				</td>
+				<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
+				<td>
+				<select id="comiteeDesignationSelect" name="designation" disabled="true">
+					<option>Please Select</option>											
+				</select>
+				</td>				
+			</tr>
+			<tr>
+					<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /><font class="requiredFont"> * </font></td>
+					<td colspan="4" align="left">					
+					<table class="cadreDetailsTable">
+						<tr>				
+							<td align="left">
+									<input type="text" id="effDateText" readonly="readonly" name="effectiveDate" size="15"/>
+									<DIV class="yui-skin-sam"><DIV id="effDateText_div" style="position:absolute;"></DIV></DIV>
+							</td>
+							<td>		
+									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('effDateText_div','effDateText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
+							</td>
+							<td>To</td>
+							<td>
+									<input type="text" id="tillDateText" readonly="readonly" name="tillDate" size="15"/>
+									<DIV class="yui-skin-sam"><DIV id="tillDateText_div" style="position:absolute;"></DIV></DIV>
+							</td>
+							<td>		
+									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('tillDateText_div','tillDateText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
+							</td>
+						</tr>	
+					</table>	
+					</td>								
+			</tr>
+			
 			</table>
 			</fieldset>
 		</div></div>

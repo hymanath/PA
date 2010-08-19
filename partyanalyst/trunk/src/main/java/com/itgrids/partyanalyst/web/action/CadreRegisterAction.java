@@ -49,6 +49,11 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String mobile;
 	private String email;
 	
+	private String pstate;
+	private String pdistrict;
+	private String pconstituency;
+	private String pmandal;
+	private String pvillage;
 	// new fields added
 	private String dateOfBirth;
 	private String telephone;
@@ -63,6 +68,8 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String memberType;
 	private String annualIncome;
 	private String designation;
+	
+	
 	
 		
 	public void setDateOfBirth(String dateOfBirth){
@@ -202,6 +209,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 	
 	public void setVillage(String village) {
+		System.out.println("***********Village******"+village);
 		this.cadreInfo.setVillage(village);
 	}
 
@@ -278,6 +286,50 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public void setDesignation(String designation) {
 		this.cadreInfo.setDesignation(designation);
 	}
+	
+	// permanenet addr fields
+	public String getPstate() {
+		return cadreInfo.getPstate();
+	}
+
+	public void setPstate(String pstate) {
+		this.cadreInfo.setPstate(pstate);
+	}
+
+	public String getPdistrict() {
+		return cadreInfo.getPdistrict();
+	}
+
+	public void setPdistrict(String pdistrict) {
+		this.cadreInfo.setPdistrict(pdistrict);
+	}
+
+	public String getPconstituency() {
+		return cadreInfo.getPconstituencyID().toString();
+	}
+
+	public void setPconstituency(String pconstituency) {
+		this.cadreInfo.setPconstituencyID(new Long(pconstituency));
+	}
+
+	public String getPmandal() {
+		return cadreInfo.getPmandal();
+	}
+
+	public void setPmandal(String pmandal) {
+		this.cadreInfo.setPmandal(pmandal);
+	}
+
+	public String getPvillage() {
+		return cadreInfo.getPvillage();
+	}
+
+	public void setPvillage(String pvillage) {
+		this.cadreInfo.setPvillage(pvillage);
+	}
+
+	
+	
 
 	public String execute() throws Exception{
 		log.debug("In The Excecute For Cader");
@@ -311,7 +363,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 			result = "fail";
 		return Action.SUCCESS;
 	}
-
+	
 	public void setServletRequest(HttpServletRequest req) {
 		request =req;
 		session = req.getSession();
