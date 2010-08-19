@@ -252,7 +252,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		{
 			String id = jObj.getString("id");
 			designationsList = cadreManagementService.getDesignationsInCommittee(regVO.getParty(),new Long(id));
-			designationsList.add(0,new SelectOptionVO(0L,"Select Village"));
+			designationsList.add(0,new SelectOptionVO(0L,"Select Designation"));
 		}
 		return SUCCESS;
 	}
