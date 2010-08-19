@@ -21,6 +21,7 @@
 <script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script> 
 <script type="text/javascript">
 
+
 	var cadreObj = {partyCommittees:[]};	
 	function setCadreValue(value){
 		document.getElementById("cadreLevelValue").value=value;
@@ -227,7 +228,7 @@
 	}
 	function buildSelectOption(results, jsObj)
 	{		
-
+		
 		var selectedValue= jsObj.reportLevel;
 		var taskType=jsObj.type;
 		var changedVal = jsObj.changed;
@@ -463,6 +464,12 @@
 </TABLE>
 </CENTER>
 	<div id="registrationMainDiv">
+		<c:if test="${cadreId == null}">
+			<DIV id="alertMessage" style="display:none;"></DIV>
+		</c:if>
+		<c:if test="${cadreId != null}">
+			<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>
+		</c:if>
 	<table id="cadreRegistrationTable" class="registrationTable">
 	<tr>
 		<td colspan="2">
@@ -711,6 +718,7 @@
 					</select> 
 				</td>
 			</tr>
+			<c:if test="${sessionScope.USER.userType == 'Party'}">
 			<tr>
 				<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
@@ -742,7 +750,7 @@
 							</td>
 							<td>To</td>
 							<td>
-									<input type="text" id="tillDateText" readonly="readonly" name="tillDate" size="15"/>
+									<input type="text" id="tillDateText" readonly="readonly" name="endingDate" size="15"/>
 									<DIV class="yui-skin-sam"><DIV id="tillDateText_div" style="position:absolute;"></DIV></DIV>
 							</td>
 							<td>		
@@ -752,7 +760,7 @@
 					</table>	
 					</td>								
 			</tr>
-			
+			</c:if>
 			</table>
 			</fieldset>
 		</div></div>

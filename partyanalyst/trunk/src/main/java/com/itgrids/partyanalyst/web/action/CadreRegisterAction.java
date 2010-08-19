@@ -44,11 +44,11 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String constituency;
 	private String mandal;
 	private String village;
-	private String cadreLevel;
-	private String cadreLevelValue;
+	private String cadreLevel = "Others";
+	private String cadreLevelValue="0";
 	private String mobile;
 	private String email;
-	
+	private Long cadreId = null;
 	private String pstate;
 	private String pdistrict;
 	private String pconstituency;
@@ -68,10 +68,17 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String memberType;
 	private String annualIncome;
 	private String designation;
+	private String effectiveDate;
+	private String endingDate;
 	
-	
-	
-		
+	public Long getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+
 	public void setDateOfBirth(String dateOfBirth){
 		this.cadreInfo.setDateOfBirth(dateOfBirth); 
 	}
@@ -222,11 +229,11 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 
 	public String getCadreLevelValue() {
-		return cadreInfo.getCadreLevelValue().toString();
+		return cadreInfo.getStrCadreLevelValue();
 	}
 	
 	public void setCadreLevelValue(String cadreLevelValue) {
-		this.cadreInfo.setCadreLevelValue(new Long(cadreLevelValue));
+		this.cadreInfo.setStrCadreLevelValue(cadreLevelValue);
 	}
 
 	public String getMobile() {
@@ -326,10 +333,23 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 
 	public void setPvillage(String pvillage) {
 		this.cadreInfo.setPvillage(pvillage);
+	}	
+
+	public String getEffectiveDate() {
+		return this.cadreInfo.getEffectiveDate();
 	}
 
-	
-	
+	public void setEffectiveDate(String effectiveDate) {
+		this.cadreInfo.setEffectiveDate(effectiveDate);
+	}
+
+	public String getEndingDate() {
+		return cadreInfo.getEndingDate();
+	}
+
+	public void setEndingDate(String endingDate) {
+		this.cadreInfo.setEndingDate(endingDate);
+	}
 
 	public String execute() throws Exception{
 		log.debug("In The Excecute For Cader");
@@ -357,9 +377,9 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 			System.out.println(" cadre level :" + cadreInfo.getCadreLevel());
 			System.out.println(" cadre level Val :" + cadreInfo.getCadreLevelValue());
 		}
-		Long id = cadreManagementService.saveCader(cadreInfo);
+		cadreId = cadreManagementService.saveCader(cadreInfo);
 		String result = Action.SUCCESS;
-		if(id==null)
+		if(cadreId==null)
 			result = "fail";
 		return Action.SUCCESS;
 	}

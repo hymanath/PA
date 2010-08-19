@@ -327,7 +327,7 @@
         </action> 
         
         <action name="cadreRegisterAction" class="cadreRegisterAction">
-        	<result type="redirect" name="success">cadreManagementAction.action</result>
+        	<result name="success">/jsp/newCadrePage.jsp</result>
         	<result name="input">/jsp/newCadrePage.jsp</result>
            <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
         </action> 
