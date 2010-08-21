@@ -12,8 +12,8 @@ import com.itgrids.partyanalyst.model.Cadre;
 public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findByProperty(String propertyName, Object value);
 	public List<Cadre> findByUserID(Long userID);
-	public Long findTotalCadresByUserID(Long userID);
-	public List findCadresByLevels(Long userID);
+	public Long findTotalCadresByUserID(Long userID, String cadrerType);
+	public List findCadresByLevels(Long userID, String cadrerType);
 	public List findStatesByCountryID(String countryID);
 	public List findDistrictsByStateID(String stateID);
 	public List findMandalsByDistrictID(String districtID);
@@ -23,19 +23,19 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findCadreSizeMandalWise(Long userID);//findTotalMandalZeroSizeCadres
 	public List findCadreSizeVillageWise(Long userID);//findTotalVillageZeroSizeCadres
 	//Ajax call methods
-	public List findStateCadresByCountry(Long countryID, Long userID);
-	public List findDistCadresByState(Long stateID, Long userID);
+	public List findStateCadresByCountry(Long countryID, Long userID, String cardreType);
+	public List findDistCadresByState(Long stateID, Long userID, String cardreType);
 
-	public List findConstituencyCadresByDist(Long districtID, Long userID);
-	public List findMandalCadresByConstituency(Long constituencyID, Long userID);
+	public List findConstituencyCadresByDist(Long districtID, Long userID, String cadreType);
+	public List findMandalCadresByConstituency(Long constituencyID, Long userID, String cadreType);
 	
-	public List findMandalCadresByDist(Long districtID, Long userID);
-	public List findVillageCadresByMandal(Long mandalID, Long userID);
-	public List<Cadre> findCadresByVillage(Long villageID, Long userID);
-	public List findMandalCadresByMandals(String mandalIDs, Long userID);
+	public List findMandalCadresByDist(Long districtID, Long userID, String cadreType);
+	public List findVillageCadresByMandal(Long mandalID, Long userID, String cadreType);
+	public List<Cadre> findCadresByVillage(Long villageID, Long userID, String cadreType);
+	public List findMandalCadresByMandals(String mandalIDs, Long userID, String cadreType);
 	//public List findMandalsByConstituencyID(String constituencyId);
 	
-	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID);
+	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID, String cadreType);
 	
 	public List getUserAccessStates(Long userID);
 	public List getUserAccessDistricts(Long userID);
@@ -59,8 +59,8 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID);
 	public List<Cadre> findCadresByMandal(Long mandalID, Long userID);
 
-	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID);
-	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID);
+	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID, String cadreType);
+	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType);
 	
 	public List findHamletsByRVs(String townships);
 	public List findCadreSizeHamletWise(Long userID);

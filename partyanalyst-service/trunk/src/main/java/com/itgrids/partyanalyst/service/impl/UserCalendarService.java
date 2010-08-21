@@ -703,7 +703,7 @@ private UserEventVO saveUserPlannedEvents;
 		}else if("MANDAL".equals(regionType)){
 			cadres = cadreDAO.findCadresByMandal(regionID, userID);
 		}else if("VILLAGE".equals(regionType)){
-			cadres = cadreDAO.findCadresByVillage(regionID, userID);
+			cadres = cadreDAO.findCadresByVillage(regionID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		}
 		for(Cadre cadre : cadres){
 			SelectOptionVO obj = new SelectOptionVO();

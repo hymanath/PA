@@ -22,6 +22,7 @@ public class CadreInfo implements Serializable{
 	private String village;
 	private String booth;
 	private Long userID;
+	private String userType;
 	
 	// new fields
 	private String dateOfBirth;
@@ -46,6 +47,7 @@ public class CadreInfo implements Serializable{
 	private Long pconstituencyID;
 	private String pmandal;
 	private String pvillage;
+	
 	
 	public Long getConstituencyID() {
 		return constituencyID;
@@ -163,9 +165,7 @@ public class CadreInfo implements Serializable{
 	public Long getUserID() {
 		return userID;
 	}
-	public void setuserID(Long userID) {
-		this.userID = userID;
-	}
+	
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -293,5 +293,13 @@ public class CadreInfo implements Serializable{
 	public void setEndingDate(String endingDate) {
 		this.endingDate = endingDate;
 	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	
 	
 }

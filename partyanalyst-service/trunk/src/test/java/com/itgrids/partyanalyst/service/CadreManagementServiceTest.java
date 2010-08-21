@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.util.DummyCadreData;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreManagementServiceTest {
 
@@ -52,7 +53,7 @@ public class CadreManagementServiceTest {
 		userCadreInfo.setUserAccessType("COUNTRY");
 		userCadreInfo.setUserAccessValue("1");
 		userCadreInfo.setUserID(new Long(1));
-		EasyMock.expect(cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID())).andReturn(40L);		
+		EasyMock.expect(cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(40L);		
 
 		List states = DummyCadreData.getStates();
 		EasyMock.expect(cadreDAO.findStatesByCountryID(userCadreInfo.getUserAccessValue())).andReturn(states);
@@ -121,7 +122,7 @@ public class CadreManagementServiceTest {
 		dummyData.add(dummy2);
 		dummyData.add(dummy3);
 		dummyData.add(dummy4);
-		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
+		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1),IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		
@@ -448,7 +449,7 @@ public class CadreManagementServiceTest {
 		dummyData.add(dummy2);
 		dummyData.add(dummy3);
 		dummyData.add(dummy4);
-		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
+		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1),IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
@@ -480,7 +481,7 @@ public class CadreManagementServiceTest {
 		dummyData.add(dummy2);
 		dummyData.add(dummy3);
 		dummyData.add(dummy4);
-		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
+		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1), IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
@@ -506,7 +507,7 @@ public class CadreManagementServiceTest {
 		Object[] dummy4 = {"MANDAL","23"}; 
 		dummyData.add(dummy3);
 		dummyData.add(dummy4);
-		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
+		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1),IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
@@ -529,7 +530,7 @@ public class CadreManagementServiceTest {
 		List dummyData = new ArrayList();
 		Object[] dummy4 = {"MANDAL","23"};  
 		dummyData.add(dummy4);
-		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
+		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1),IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID())); 
@@ -545,7 +546,7 @@ public class CadreManagementServiceTest {
 		Object[] state3 = {3L,"MP",25L};
 		List list = new ArrayList();
 		list.add(state1); list.add(state2); list.add(state3);
-		EasyMock.expect(cadreDAO.findStateCadresByCountry(1L,1L)).andReturn(list);
+		EasyMock.expect(cadreDAO.findStateCadresByCountry(1L,1L,IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(list);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		List<CadreRegionInfoVO> result = service.getCountryAllStatesCadres(1L, 1L);
@@ -563,7 +564,7 @@ public class CadreManagementServiceTest {
 		Object[] dist2 = {3L,"Cuddapah",15L};
 		List list = new ArrayList();
 		list.add(dist1); list.add(dist2);
-		EasyMock.expect(cadreDAO.findDistCadresByState(1L,1L)).andReturn(list);
+		EasyMock.expect(cadreDAO.findDistCadresByState(1L,1L, IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(list);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		List<CadreRegionInfoVO> result = service.getStateAllDistrictsCadres(1L, 1L);
@@ -580,7 +581,7 @@ public class CadreManagementServiceTest {
 		Object[] mandal2 = {3L,"Mandal2",15L};
 		List list = new ArrayList();
 		list.add(mandal1); list.add(mandal2);
-		EasyMock.expect(cadreDAO.findMandalCadresByDist(1L,1L)).andReturn(list);
+		EasyMock.expect(cadreDAO.findMandalCadresByDist(1L,1L,IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(list);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		List<CadreRegionInfoVO> result = service.getDistrictAllMandalsCadres(1L, 1L);
@@ -596,7 +597,7 @@ public class CadreManagementServiceTest {
 		Object[] vill2 = {3L,"Village2",15L};
 		List list = new ArrayList();
 		list.add(vill1); list.add(vill2);
-		EasyMock.expect(cadreDAO.findVillageCadresByMandal(1L,1L)).andReturn(list);
+		EasyMock.expect(cadreDAO.findVillageCadresByMandal(1L,1L,IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(list);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		List<CadreRegionInfoVO> result = service.getMandalAllVillagesCadres(1L, 1L);
@@ -611,7 +612,7 @@ public class CadreManagementServiceTest {
 		CadreManagementService service = new CadreManagementService();
 		List<Cadre> cadres = DummyCadreData.getCadres();
 		Country country = new Country(1L,"India");
-		EasyMock.expect(cadreDAO.findCadresByVillage(1L,1L)).andReturn(cadres);
+		EasyMock.expect(cadreDAO.findCadresByVillage(1L,1L,IConstants.CADRE_MEMBER_TYPE_ACTIVE)).andReturn(cadres);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
 		EasyMock.expect(countryDAO.get(1L)).andReturn(country);

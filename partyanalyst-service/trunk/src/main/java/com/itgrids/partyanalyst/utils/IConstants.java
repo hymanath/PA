@@ -17,7 +17,7 @@ public interface IConstants {
 	public static final String HAMLET_TYPE = "1";
 	public static final String TOWNSHIP_TYPE = "2";
 	public static final String INDIPENDENT = "IND";
-//MPTC  data upload column names in excel sheet - start
+	//MPTC  data upload column names in excel sheet - start
 	public final static String MPTC_NAME = "MPTC_NAME";//2
 	public final static String CONSTITUENCY_TOTAL_VOTES = "CONSTITUENCY_TOTAL_VOTES";//3
 	public final static String CONSTITUENCY_TOTAL_VOTES_POLLED = "CONSTITUENCY_TOTAL_VOTES_POLLED";//4
@@ -203,4 +203,6 @@ public interface IConstants {
     public static final String ALL = "all";
     public static final String CADRE_MEMBER_TYPE_ACTIVE = "Active";
     public static final String CADRE_MEMBER_TYPE_NORMAL = "Normal";
+    public static final String USER_TYPE_PARTY = "Party";
+    public static final String USER_TYPE_POLITICIAN = "Politician";
 }

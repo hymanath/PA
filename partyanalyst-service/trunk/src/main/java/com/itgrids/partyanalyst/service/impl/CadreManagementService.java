@@ -176,7 +176,7 @@ public class CadreManagementService {
 			UserAddress currentAddress = new UserAddress();
 			UserAddress permanentAddress =  new UserAddress();
 			Cadre cadre = new Cadre();
-			CadreLevel level = new CadreLevel();
+			
 			try{
 				cadre.setFirstName(cadreInfo.getFirstName());
 				cadre.setMiddleName(cadreInfo.getMiddleName());
@@ -199,17 +199,19 @@ public class CadreManagementService {
 				villageFlag = cadreInfo.getVillage().substring(0, 1);
 				id = new Long(cadreInfo.getVillage().substring(1));
 				processAddressValues(villageFlag, id, cadre, currentAddress);
-				if("off".equals(cadreInfo.getSameAsCA()))
+				System.out.println("cadreInfo.getSameAsCA():::::::::::::::"+cadreInfo.getSameAsCA());
+				if(cadreInfo.getSameAsCA() == null)
 				{
+					System.out.println("inside permanent address block");
 					villageFlag = cadreInfo.getPvillage().substring(0, 1);
 					id = new Long(cadreInfo.getPvillage().substring(1));		
-					processAddressValues(villageFlag, id, cadre, permanentAddress);
 					permanentAddress.setHouseNo(cadreInfo.getPhouseNo());
 					permanentAddress.setStreet(cadreInfo.getPstreet());
 					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
 					permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
 					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
 					permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal())));
+					processAddressValues(villageFlag, id, cadre, permanentAddress);
 				} else if("on".equals(cadreInfo.getSameAsCA()))
 				{		
 					permanentAddress = currentAddress;		
@@ -245,7 +247,7 @@ public class CadreManagementService {
 				
 				if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadreInfo.getMemberType()))
 				{	
-					
+					CadreLevel level = new CadreLevel();
 					level.setCadreLevelID(cadreInfo.getCadreLevel());
 					String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
 					level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
@@ -253,11 +255,13 @@ public class CadreManagementService {
 					log.debug("CadreManagementService.saveCadre();;FirstName::"+cadreInfo.getFirstName());
 					log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getStrCadreLevelValue());
 					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
-					cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
-					
-					cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
-					if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
-						cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));					
+					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()))
+					{
+						cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
+						cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
+						if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
+							cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));
+					}
 				}
 				
 			}catch(Exception e){
@@ -303,7 +307,7 @@ public class CadreManagementService {
 		ResultStatus resultStatus = new ResultStatus();
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		try{
-			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID());
+			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
 			userCadreInfo = getUserAccessRegions(userCadreInfo);
 			Map<String,Long> cadresByCadreLevel = getCadreLevelCadresCount(userCadreInfo.getUserID());
@@ -579,7 +583,7 @@ public class CadreManagementService {
 
 	@SuppressWarnings("unchecked")
 	public Map<String,Long> getCadreLevelCadresCount(Long userID){
-		List cadresByRegionList = cadreDAO.findCadresByLevels(userID);
+		List cadresByRegionList = cadreDAO.findCadresByLevels(userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		Map<String,Long> result = new LinkedHashMap<String,Long>();
 		for(int i =0; i<cadresByRegionList.size(); i++){
 			Object[] objInfo = (Object[]) cadresByRegionList.get(i);
@@ -604,7 +608,7 @@ public class CadreManagementService {
 	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getCountryAllStatesCadres(Long countryID, Long userID){
-		List stateCadres = cadreDAO.findStateCadresByCountry(countryID, userID);
+		List stateCadres = cadreDAO.findStateCadresByCountry(countryID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		int size = stateCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
@@ -620,7 +624,7 @@ public class CadreManagementService {
 	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getStateAllDistrictsCadres(Long stateID, Long userID){
-		List districtCadres = cadreDAO.findDistCadresByState(stateID, userID);
+		List districtCadres = cadreDAO.findDistCadresByState(stateID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		int size = districtCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
@@ -637,7 +641,7 @@ public class CadreManagementService {
 
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getDistrictAllMandalsCadres(Long districtID, Long userID){
-		List mandalCadres = cadreDAO.findMandalCadresByDist(districtID, userID);
+		List mandalCadres = cadreDAO.findMandalCadresByDist(districtID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		int size = mandalCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
@@ -666,7 +670,7 @@ public class CadreManagementService {
 		String strMandalIDs = new String();
 		if(mandalIDs.length()>0){
 			strMandalIDs = mandalIDs.toString().substring(1);
-			List mandalCadres = cadreDAO.findMandalCadresByMandals(strMandalIDs, userID);
+			List mandalCadres = cadreDAO.findMandalCadresByMandals(strMandalIDs, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			int size = mandalCadres.size();
 			for(int i=0; i<size;i++){
 				Object[] voObject=(Object[]) mandalCadres.get(i);
@@ -682,7 +686,7 @@ public class CadreManagementService {
 	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getMandalAllVillagesCadres(Long mandalID, Long userID){
-		List villageCadres = cadreDAO.findVillageCadresByMandal(mandalID, userID);
+		List villageCadres = cadreDAO.findVillageCadresByMandal(mandalID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		int size = villageCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
@@ -698,7 +702,7 @@ public class CadreManagementService {
 	
 	public List<CadreInfo> getCadresByVillage(Long villageID, Long userID){
 		List<CadreInfo> formattedData = new ArrayList<CadreInfo>();
-		List<Cadre> cadresList = cadreDAO.findCadresByVillage(villageID, userID);
+		List<Cadre> cadresList = cadreDAO.findCadresByVillage(villageID, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(Cadre cadre:cadresList){
 			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 			formattedData.add(cadreInfo);
@@ -781,7 +785,7 @@ public class CadreManagementService {
 	
 	public List<CadreInfo> getCadresByCadreLevel(String cadreLevel, Long userID){
 		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
-		List<Cadre> cadresList = cadreDAO.findCadresByCadreLevel(cadreLevel,userID);
+		List<Cadre> cadresList = cadreDAO.findCadresByCadreLevel(cadreLevel,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(Cadre cadre:cadresList){
 			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 			cadreInfoList.add(cadreInfo);
@@ -790,6 +794,7 @@ public class CadreManagementService {
 	}
 	
 	public CadreInfo convertCadreToCadreInfo(Cadre cadre){
+		
 		CadreInfo cadreInfo = new CadreInfo();
 		cadreInfo.setCadreID(cadre.getCadreId());
 		cadreInfo.setFirstName(cadre.getFirstName());
@@ -1001,7 +1006,7 @@ public class CadreManagementService {
 		List list = new ArrayList();
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		if("MANDAL".equals(region)){
-			list = cadreDAO.findVillageCadresByMandal(id,userID);
+			list = cadreDAO.findVillageCadresByMandal(id,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			int size = list.size();
 			StringBuilder revenueVillageIDs = new StringBuilder();
 			for(int i = 0; i<size; i++){
@@ -1018,7 +1023,7 @@ public class CadreManagementService {
 			}
 			// retrieving hamlets from the revenue villages
 			if(revenueVillageIDs.length()>0){
-				List hamlets = cadreDAO.getCadreSizeByHamlet(revenueVillageIDs.toString().substring(1), userID);
+				List hamlets = cadreDAO.getCadreSizeByHamlet(revenueVillageIDs.toString().substring(1), userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 				int hamletSize = hamlets.size();
 				for(int i = 0; i<hamletSize; i++){
 					Object[] obj = (Object[]) hamlets.get(i);
@@ -1032,12 +1037,12 @@ public class CadreManagementService {
 		} else {
 			SelectOptionVO selectOptionVO = new SelectOptionVO(0L,"select District");
 			if("STATE".equals(region)){
-				list = cadreDAO.findDistCadresByState(id,userID);
+				list = cadreDAO.findDistCadresByState(id,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			}else if("DISTRICT".equals(region)){
-				list = cadreDAO.findConstituencyCadresByDist(id,userID);
+				list = cadreDAO.findConstituencyCadresByDist(id,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 				selectOptionVO.setName("select Constituency");
 			}else if("CONSTITUENCY".equals(region)){
-				list = cadreDAO.findMandalCadresByConstituency(id,userID);
+				list = cadreDAO.findMandalCadresByConstituency(id,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 				selectOptionVO.setName("select Tehsil");
 			}
 			result = dataFormatTo_SelectOptionVO(list);
@@ -1082,7 +1087,7 @@ public class CadreManagementService {
 	
 	public List<CadreInfo> getCadresByHamlet(Long hamletID, Long userID){
 		List<CadreInfo> formattedData = new ArrayList<CadreInfo>();
-		List<Cadre> cadresList = cadreDAO.findCadresByHamlet(hamletID, userID);
+		List<Cadre> cadresList = cadreDAO.findCadresByHamlet(hamletID, userID,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(Cadre cadre:cadresList){
 			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 			formattedData.add(cadreInfo);
@@ -1093,7 +1098,7 @@ public class CadreManagementService {
 
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getCadreSizeByHamlet(Long revenueVillageID, Long userID){
-		List hamletCadres = cadreDAO.getCadreSizeByHamlet(revenueVillageID.toString(), userID);
+		List hamletCadres = cadreDAO.getCadreSizeByHamlet(revenueVillageID.toString(), userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		int size = hamletCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
