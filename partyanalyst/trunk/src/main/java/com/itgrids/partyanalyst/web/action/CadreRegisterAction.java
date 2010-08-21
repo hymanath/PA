@@ -54,6 +54,8 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String pconstituency;
 	private String pmandal;
 	private String pvillage;
+	private String phouseNo;
+	private String pstreet;
 	// new fields added
 	private String dateOfBirth;
 	private String telephone;
@@ -349,6 +351,22 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 
 	public void setEndingDate(String endingDate) {
 		this.cadreInfo.setEndingDate(endingDate);
+	}	
+
+	public String getPhouseNo() {
+		return cadreInfo.getPhouseNo();
+	}
+
+	public void setPhouseNo(String phouseNo) {
+		this.cadreInfo.setPhouseNo(phouseNo);
+	}
+
+	public String getPstreet() {
+		return cadreInfo.getPstreet();
+	}
+
+	public void setPstreet(String pstreet) {
+		this.cadreInfo.setPstreet(pstreet);
 	}
 
 	public String execute() throws Exception{
@@ -363,7 +381,8 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		System.out.println("sameAsCA::::::::::::::::"+request.getParameter("sameAsCA"));
-		cadreInfo.setuserID(regVO.getRegistrationID());
+		cadreInfo.setUserID(regVO.getRegistrationID());
+		cadreInfo.setUserType(regVO.getUserType());
 		if("MP".equals(regVO.getAccessType())){
 			Long constituencyID = cadreInfo.getConstituencyID();
 			List<SelectOptionVO> list = cadreManagementService.getStateDistricConstituencytByConstituencyID(constituencyID);
