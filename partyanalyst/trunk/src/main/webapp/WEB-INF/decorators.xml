@@ -38,6 +38,7 @@
 		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
 		<pattern>/constituencyVotingTrendzAction.action*</pattern>
 		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
+		<pattern>/getCadreInfoAction.action*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

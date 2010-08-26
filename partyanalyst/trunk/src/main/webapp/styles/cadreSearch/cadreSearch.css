@@ -1,0 +1,80 @@
+
+#cadreSearchHeading
+{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+#headerImageCenterDiv
+{
+	background-image:url(../../images/icons/constituencyManagement/header_body_blue.png);
+	height:30px;
+	width:250px;
+	text-align:center;
+}
+
+#headerImageCenterSpan
+{
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	position:relative;
+	top:6px;
+}
+
+#CadreSearchMain
+{
+	padding-left:50px;
+	padding-top:20px;
+}
+
+#cadreSearchInputTable th
+{
+	color:#775069;
+	text-align:left;
+	padding:6px;
+}
+
+#errorMsgDiv
+{
+	color:#FF0000;
+	font-size:10px;
+	padding-left:10px;
+}
+
+.accessRegionSelect
+{
+	margin-bottom:5px;
+	margin-left:5px;
+	padding:2px;
+	width:150px;	
+}
+
+#searchResultsDiv_head
+{
+	color:#B76732;
+	font-size:18px;
+	font-weight:bold;
+	margin-left:20px;
+	padding:5px;
+	text-align:left;
+	text-decoration:underline;
+}
+
+#searchResultsDiv_body
+{
+	margin-left:30px;
+	padding:5px;
+	text-align:left;
+}
+
+#searchResultsDiv_body table
+{
+	width:100%;
+}
+
+#smsStatusTextSpan
+{
+	color:red;
+	font-size:10px;
+}

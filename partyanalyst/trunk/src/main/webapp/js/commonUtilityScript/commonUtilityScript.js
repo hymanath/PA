@@ -3,6 +3,49 @@
  * This script provides the  functionalities which are used in common. 
  */
 
+/**
+ * Function to create options for the HTML select element with default Select Option.
+ * @method createOptionsForSelectElmtIdWithSelectOption
+ * @param {String} elmtId .The select element id for which the options should 
+ * @param {List} optionsList. The List of items with which the options should be built.  
+ */
+
+function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+}
+
 
 /**
  * Function to create options for the HTML select element.
@@ -72,7 +115,7 @@ function removeEnterStrokeForString(str)
 }
 
 
-/**
+/** 
  * Function to display day of the week.
  * @method getDayOfWeek
  * @param {Number} num .The digit corresponding to that day,must be less than or equal to 6. 
@@ -102,7 +145,7 @@ function getDayOfWeek(num)
 }
 
 
-/**
+/** 
  * Function to display Month.
  * @method getMonth
  * @param {Number} num .The digit corresponding to that month,must be less than or equal to 11. 

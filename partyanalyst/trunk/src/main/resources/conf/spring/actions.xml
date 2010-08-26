@@ -396,4 +396,12 @@
 	<bean id="byeElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ByeElectionResultsAnalysisAction" singleton="false">
 		<property name="biElectionPageService" ref="biElectionPageService" />								
 	</bean>	
+	<bean id="cadreSearchAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAction" singleton="false">				
+	</bean>
+	<bean id="cadreSearchAjaxAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAjaxAction" singleton="false">		
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
+		<property name="cadreManagementService" ref="cadreManagementService" />		
+	</bean>
+	<bean id="cadreInfoAction" class="com.itgrids.partyanalyst.web.action.CadreInfoAction" singleton="false">				
+	</bean>
 </beans>		

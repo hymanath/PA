@@ -1200,7 +1200,53 @@
 			<result type="json" name="success">
            		<param name="root">constituencywiseResults</param>
         	</result>
-		</action>       
+		</action>   
+		<action name="cadreSearchAction" class="cadreSearchAction">
+			<result name="success">/jsp/cadreSearchPage.jsp</result>			
+		</action>
+		<action name="getStatesForACountryAjaxAction" class="cadreSearchAjaxAction" method="getStatesForACountry"> 
+              <result type="json" name="success">
+           		<param name="root">statesListForACountry</param>
+        	</result>       		
+        </action>
+        <action name="getDistrictsForAStateAjaxAction" class="cadreSearchAjaxAction" method="getDistrictsForAState"> 
+              <result type="json" name="success">
+           		<param name="root">districtsListForACountry</param>
+        	</result>       		
+        </action>
+        <action name="getConstituenciesForADistrictAjaxAction" class="cadreSearchAjaxAction" method="getConstituenciesForADistrict"> 
+              <result type="json" name="success">
+           		<param name="root">constituenciesListForADistrict</param>
+        	</result>       		
+        </action>
+        <action name="getMandalsForAConstituencyAjaxAction" class="cadreSearchAjaxAction" method="getMandalsForAConstituency"> 
+              <result type="json" name="success">
+           		<param name="root">mandalsListForAConstituency</param>
+        	</result>       		
+        </action>
+        <action name="getVillagesForAMandalAjaxAction" class="cadreSearchAjaxAction" method="getVillagesForAMandal"> 
+              <result type="json" name="success">
+           		<param name="root">villagesListForAMandal</param>
+        	</result>       		
+        </action>
+        <action name="getCadresDetailsAjaxAction" class="cadreSearchAjaxAction" method="getCadresSearch"> 
+              <result type="json" name="success">
+           		<param name="root">cadreInfo</param>
+        	</result>       		
+        </action>
+        <action name="sendSMSForCadresAction" class="cadreSearchAjaxAction" method="sendSMSToCadres"> 
+              <result type="json" name="success">
+           		<param name="root">cadreInfo</param>
+        	</result>       		
+        </action>
+        <action name="getCadreInfoAction" class="cadreInfoAction"> 
+             <result name="success">/jsp/cadreInfoResultPage.jsp</result> 		
+        </action>
+        <action name="getCadreInfoAjaxAction" class="cadreInfoAction" method="getCadreInfoByCadreId"> 
+              <result type="json" name="success">
+           		<param name="root">cadreInfo</param>
+        	</result>       		
+        </action>
 	</package>
 </struts>
 

@@ -164,6 +164,43 @@ function buildCadreTeamsAccrodian()
 	accordion.addItem( item3 );
 	 });
 }
+
+function buildSearchPagePopup()
+{	
+	var urlStr = "cadreSearchAction.action?windowTask=cadreSearchAndSMSPopup";
+	var browser2 = window.open(urlStr,"cadreSearchAndSMSPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");	
+	browser2.focus();
+	
+
+}
+
+function callAjax(jsObj,url)
+{			
+	
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.taskType == "getRegions")
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);						
+
+						}
+						catch(e)
+						{   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
 function initializeCadreManagement()
 {
 	buildCadreManagementLayout();
