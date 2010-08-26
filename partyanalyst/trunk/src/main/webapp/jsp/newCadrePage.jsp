@@ -417,7 +417,7 @@
 		border:4px solid #CFD6DF;
 		margin-bottom:10px;
 		padding:10px;
-		width:760px;
+		width:820px;
 	}
 	legend {
 		background-color:#567AAF;
@@ -495,17 +495,30 @@
 						<td align="left"><s:textfield id="lastNameField" name="lastName" size="25"/>  </td>
 					</tr>
 					<tr>
+						<td><s:label for="father_spouseName" id="father_spouseNameLabel"  value="%{getText('father_spouseName')}" /><font class="requiredFont"> * </font></td>
+						<td align="left"><s:textfield id="father_spouseName" name="father_spouseName" size="25"/>  </td>
 						<td><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
 							<input type="radio" name="gender" value="M" checked="checked"/>Male
 							<input type="radio" name="gender" value="F"/>Female
 						</td>
-						<td><s:label for="dobField" id="dobLabel"  value="%{getText('dateOfBirth')}" /><font class="requiredFont"> * </font></td>
+					</tr>
+					<tr>
+					<td colspan ="6">
+						<table>
+						<tr>
+						<td width="20"><s:label for="dobField" id="dobLabel"  value="%{getText('dateOfBirth')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
 							<input type="text" id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td colspan="2"><A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A></td>		
+						<td><A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A></td>
+						<td align="left">Or</td>	
+						<td><s:label for="ageField" id="ageLabel"  value="%{getText('age')}" /><font class="requiredFont"> * </font></td>
+						<td align="left"><s:textfield id="father_spouseName" name="lastName" size="25"/>  </td>
+						</tr>
+						</table>
+					</td>			
 					</tr>					
 				</table>	
 			</FIELDSET>
@@ -640,16 +653,16 @@
 				<tr>
 					<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduStatus"  headerKey="-1" headerValue="Select Education Details"></s:select>				
+							<s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduStatus" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Education"></s:select>				
 					</td>
 					<td><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /></td>
-						<td align="left"><s:textfield id="professionField" name="profession" size="25"/></td>
+						<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Occupation"></s:select></td>
 				</tr>				
 				<tr>
 						<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 						<td align="left"><s:textfield id="incomeField" name="income" size="25"/></td>
 						<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
-						<td style="padding-left: 10px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" required="true"></s:radio> </td>
+						<td style="padding-left: 10px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
 					</tr>
 			</table>
 			</fieldset>

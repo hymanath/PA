@@ -44,6 +44,10 @@
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+		<property name="occupationDAO" ref="occupationDAO" />
+		<property name="languageDAO" ref="languageDAO" />		
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -204,7 +208,9 @@
     	<property name="hamletDAO" ref="hamletDAO" />
     	<property name="partyWorkingCommitteeDAO" ref="partyWorkingCommitteeDAO" /> 
     	<property name="partyWorkingCommitteeDesignationDAO" ref="partyWorkingCommitteeDesignationDAO" /> 
-		<property name="transactionTemplate" ref="transactionTemplate" />    	  	
+		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="partyCadreSkillsDAO" ref="partyCadreSkillsDAO" /> 
+		<property name="partyTrainingCampsDAO" ref="partyTrainingCampsDAO" />   	  	
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		

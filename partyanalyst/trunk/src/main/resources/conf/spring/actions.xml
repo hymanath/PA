@@ -127,6 +127,7 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="regionServiceData" ref="regionServiceDataImp" />
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">

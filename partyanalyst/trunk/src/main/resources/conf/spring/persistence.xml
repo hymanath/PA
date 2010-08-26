@@ -109,7 +109,17 @@
 				<value>com.itgrids.partyanalyst.model.SmsTrack</value>
 				<value>com.itgrids.partyanalyst.model.PartyWorkingCommittee</value>
 				<value>com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation</value>
-				<value>com.itgrids.partyanalyst.model.UserAddress</value>				
+				<value>com.itgrids.partyanalyst.model.UserAddress</value>
+				<value>com.itgrids.partyanalyst.model.SocialCategory</value>
+				<value>com.itgrids.partyanalyst.model.EducationalQualifications</value>
+				<value>com.itgrids.partyanalyst.model.Occupation</value>
+				<value>com.itgrids.partyanalyst.model.Language</value>
+				<value>com.itgrids.partyanalyst.model.CadreLanguageEfficiency</value>
+				<value>com.itgrids.partyanalyst.model.PartyCadreSkills</value>
+				<value>com.itgrids.partyanalyst.model.PartyTrainingCamps</value>
+				<value>com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps</value>
+				<value>com.itgrids.partyanalyst.model.CadreSkills</value>
+								
 				</list>
 		</property>
 	</bean>

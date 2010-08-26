@@ -301,4 +301,25 @@
 	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="socialCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SocialCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="educationalQualificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EducationalQualificationsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="occupationDAO" class="com.itgrids.partyanalyst.dao.hibernate.OccupationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="languageDAO" class="com.itgrids.partyanalyst.dao.hibernate.LanguageDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreLanguageEfficiencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLanguageEfficiencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyCadreSkillsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreSkillsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrainingCampsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

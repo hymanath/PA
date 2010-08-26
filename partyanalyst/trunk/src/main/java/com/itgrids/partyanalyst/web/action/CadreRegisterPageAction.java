@@ -14,6 +14,7 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.opensymphony.xwork2.Action;
@@ -42,11 +43,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> villageList;
 	private IRegionServiceData regionServiceData;
-	private List<String> socialStatus = new ArrayList<String>();
-	private List<String> eduStatus = new ArrayList<String>();
+	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyCommitteesList;
-	
-	
+	private List<SelectOptionVO> cadreSkillsList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> partyTrainingCampsList = new ArrayList<SelectOptionVO>();
+	private IStaticDataService staticDataService; 
+	private List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> languagesList = new ArrayList<SelectOptionVO>();
+	 
 	
 	public ServletContext getContext() {
 		return context;
@@ -119,19 +124,19 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.context = context;		
 	}	
 	
-	public List<String> getSocialStatus() {
+	public List<SelectOptionVO> getSocialStatus() {
 		return socialStatus;
 	}
 
-	public void setSocialStatus(List<String> socialStatus) {
+	public void setSocialStatus(List<SelectOptionVO> socialStatus) {
 		this.socialStatus = socialStatus;
 	}	
 
-	public List<String> getEduStatus() {
+	public List<SelectOptionVO> getEduStatus() {
 		return eduStatus;
 	}
 
-	public void setEduStatus(List<String> eduStatus) {
+	public void setEduStatus(List<SelectOptionVO> eduStatus) {
 		this.eduStatus = eduStatus;
 	}
 
@@ -141,6 +146,47 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setPartyCommitteesList(List<SelectOptionVO> partyCommitteesList) {
 		this.partyCommitteesList = partyCommitteesList;
+	}	
+
+	public List<SelectOptionVO> getCadreSkillsList() {
+		return cadreSkillsList;
+	}
+
+	public void setCadreSkillsList(List<SelectOptionVO> cadreSkillsList) {
+		this.cadreSkillsList = cadreSkillsList;
+	}
+
+	public List<SelectOptionVO> getPartyTrainingCampsList() {
+		return partyTrainingCampsList;
+	}
+
+	public void setPartyTrainingCampsList(
+			List<SelectOptionVO> partyTrainingCampsList) {
+		this.partyTrainingCampsList = partyTrainingCampsList;
+	}	
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}	
+
+	public List<SelectOptionVO> getOccupationsList() {
+		return occupationsList;
+	}
+
+	public void setOccupationsList(List<SelectOptionVO> occupationsList) {
+		this.occupationsList = occupationsList;
+	}	
+
+	public List<SelectOptionVO> getLanguagesList() {
+		return languagesList;
+	}
+
+	public void setLanguagesList(List<SelectOptionVO> languagesList) {
+		this.languagesList = languagesList;
 	}
 
 	public String execute(){
@@ -222,22 +268,18 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 		}
 		
-		socialStatus.add("SC");
-		socialStatus.add("ST");
-		socialStatus.add("Others");
-		
-		eduStatus.add("UnEducated");
-		eduStatus.add("High School");
-		eduStatus.add("Intermediate");
-		eduStatus.add("Diploma");
-		eduStatus.add("Graduate");
-		eduStatus.add("Post Graduate");
-		eduStatus.add("Phd");
-		
+		socialStatus = staticDataService.getAllSocialCategories(); 
+		eduStatus = staticDataService.getAllEducationalQualifications();
+		occupationsList = staticDataService.getAllOccupations();
+		languagesList = staticDataService.getAllLanguages();
 		if("Party".equals(regVO.getUserType()))
 		{
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
+			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
+			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 	
 			session.setAttribute("partieCommittee",partyCommitteesList);
+			session.setAttribute("partyTrainingCampsList",partyTrainingCampsList);
+			session.setAttribute("cadreSkillsList",cadreSkillsList);
 		}
 		
 		session.setAttribute("stateList",stateList);
@@ -247,6 +289,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute("villageList",villageList);
 		session.setAttribute("socialStatus",socialStatus);
 		session.setAttribute("eduStatus", eduStatus);
+		session.setAttribute("occupationsList", occupationsList);
+		session.setAttribute("languagesList", languagesList);
 		return Action.SUCCESS;
 	}
 	
