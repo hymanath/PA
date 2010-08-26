@@ -3,7 +3,7 @@
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
- * Created on July 09, 2009
+ * Created on August 09, 2010
  */
 
 package com.itgrids.partyanalyst.model;

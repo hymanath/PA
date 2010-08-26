@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,8 +61,11 @@ public class Cadre extends BaseModel{
 	 private UserAddress permanentAddress;
 	 private Date effectiveDate;
 	 private Date endingDate;
+	 private String fatherOrSpouseName;
+	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
+	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
+	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
 	 
-	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -334,6 +339,55 @@ public class Cadre extends BaseModel{
 	public void setEndingDate(Date endingDate) {
 		this.endingDate = endingDate;
 	}
+
+	@Column(name = "father_spouse_name", length = 100)
+	public String getFatherOrSpouseName() {
+		return fatherOrSpouseName;
+	}
+
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.fatherOrSpouseName = fatherOrSpouseName;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreLanguageEfficiency> getCadreLanguageEfficiency() {
+		return cadreLanguageEfficiency;
+	}
+
+	public void setCadreLanguageEfficiency(
+			Set<CadreLanguageEfficiency> cadreLanguageEfficiency) {
+		this.cadreLanguageEfficiency = cadreLanguageEfficiency;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreParticipatedTrainingCamps> getCadreParticipatedTrainingCamps() {
+		return cadreParticipatedTrainingCamps;
+	}
+
+	public void setCadreParticipatedTrainingCamps(
+			Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps) {
+		this.cadreParticipatedTrainingCamps = cadreParticipatedTrainingCamps;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreSkills> getCadreSkills() {
+		return cadreSkills;
+	}
+
+	public void setCadreSkills(Set<CadreSkills> cadreSkills) {
+		this.cadreSkills = cadreSkills;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

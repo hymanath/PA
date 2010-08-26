@@ -55,6 +55,8 @@ public class Party implements java.io.Serializable {
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
 	private Set<PartyWorkingCommittee> partyWorkingCommittees = new HashSet<PartyWorkingCommittee>(0);
+	private Set<PartyCadreSkills> partyCadreSkills = new HashSet<PartyCadreSkills>(0);
+	private Set<PartyTrainingCamps> partyTrainingCamps = new HashSet<PartyTrainingCamps>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -258,6 +260,29 @@ public class Party implements java.io.Serializable {
 			Set<PartyWorkingCommittee> partyWorkingCommittees) {
 		this.partyWorkingCommittees = partyWorkingCommittees;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyCadreSkills> getPartyCadreSkills() {
+		return partyCadreSkills;
+	}
+
+	public void setPartyCadreSkills(Set<PartyCadreSkills> partyCadreSkills) {
+		this.partyCadreSkills = partyCadreSkills;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
+	public Set<PartyTrainingCamps> getPartyTrainingCamps() {
+		return partyTrainingCamps;
+	}
+
+	public void setPartyTrainingCamps(Set<PartyTrainingCamps> partyTrainingCamps) {
+		this.partyTrainingCamps = partyTrainingCamps;
+	}
+	
+	
+	
 	
 	
 

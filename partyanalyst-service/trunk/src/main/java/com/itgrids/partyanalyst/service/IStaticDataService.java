@@ -233,6 +233,11 @@ public interface IStaticDataService {
 		public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates,int reservationZone,String module);
 	
 		public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
+		
+		public List<SelectOptionVO> getAllSocialCategories();
+		public List<SelectOptionVO> getAllEducationalQualifications();
+		public List<SelectOptionVO> getAllOccupations();
+		public List<SelectOptionVO> getAllLanguages();
 	
 		
 		

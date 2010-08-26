@@ -33,17 +33,21 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IEducationalQualifications;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
+import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -87,17 +91,21 @@ import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Group;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
+import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -144,7 +152,10 @@ public class StaticDataService implements IStaticDataService {
 	private IElectionTypeDAO electionTypeDAO;
 	private ICandidateResultDAO candidateResultDAO;
 	private IConstituencyPageService constituencyPageService;
-	
+	private ISocialCategoryDAO socialCategoryDAO;
+	private IEducationalQualifications educationalQualificationsDAO; 
+	private IOccupationDAO occupationDAO;
+	private ILanguageDAO languageDAO;
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
@@ -375,6 +386,35 @@ public class StaticDataService implements IStaticDataService {
 	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
 		this.candidateResultDAO = candidateResultDAO;
 	}
+	
+	public ISocialCategoryDAO getSocialCategoryDAO() {
+		return socialCategoryDAO;
+	}
+
+
+	public void setSocialCategoryDAO(ISocialCategoryDAO socialCategoryDAO) {
+		this.socialCategoryDAO = socialCategoryDAO;
+	}
+
+	public IEducationalQualifications getEducationalQualificationsDAO() {
+		return educationalQualificationsDAO;
+	}
+
+
+	public void setEducationalQualificationsDAO(
+			IEducationalQualifications educationalQualificationsDAO) {
+		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+	
+	public IOccupationDAO getOccupationDAO() {
+		return occupationDAO;
+	}
+
+
+	public void setOccupationDAO(IOccupationDAO occupationDAO) {
+		this.occupationDAO = occupationDAO;
+	}
+
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/**
@@ -557,8 +597,18 @@ public class StaticDataService implements IStaticDataService {
 
 	public List<State> getAllStates() {
 		return stateDAO.getAll();
-	}
+	}	
 	
+	public ILanguageDAO getLanguageDAO() {
+		return languageDAO;
+	}
+
+
+	public void setLanguageDAO(ILanguageDAO languageDAO) {
+		this.languageDAO = languageDAO;
+	}
+
+
 	//Returns Null If No alliance Exists For Party
 	public AlliancePartyResultsVO getAlliancePartiesByElectionAndParty(Long electionId, Long partyId){
 		AlliancePartyResultsVO alliancePartiesVO = new AlliancePartyResultsVO();
@@ -5464,6 +5514,63 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	  return partyResult;
+	}
+
+
+	public List<SelectOptionVO> getAllSocialCategories() {
+		List<SocialCategory> socialCategoriesList = socialCategoryDAO.getAll();
+		List<SelectOptionVO> socialCategories = new ArrayList<SelectOptionVO>();
+		for(SocialCategory socialCategory:socialCategoriesList)
+		{
+			
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(socialCategory.getSocialCategoryId());
+			selectOptionVO.setName(socialCategory.getCategory());
+			socialCategories.add(selectOptionVO);
+		}
+		return socialCategories;
+	}
+
+
+	public List<SelectOptionVO> getAllEducationalQualifications() {
+		List<EducationalQualifications> qualifications = educationalQualificationsDAO.getAll();
+		List<SelectOptionVO> eduQualificationsList = new ArrayList<SelectOptionVO>();
+		for(EducationalQualifications educationalQualifications:qualifications)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(educationalQualifications.getEducational_qualification_id());
+			selectOptionVO.setName(educationalQualifications.getQualification());
+			eduQualificationsList.add(selectOptionVO);
+		}
+		return eduQualificationsList;
+	}
+
+
+	public List<SelectOptionVO> getAllOccupations() {
+		List<Occupation> occupations = occupationDAO.getAll();
+		List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
+		for(Occupation occupation: occupations)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(occupation.getOccupationId());
+			selectOptionVO.setName(occupation.getOccupation());
+			occupationsList.add(selectOptionVO);
+		}
+		return occupationsList;
+	}
+
+
+	public List<SelectOptionVO> getAllLanguages() {
+		List<Language> languages = languageDAO.getAll();
+		List<SelectOptionVO> languagesList = new ArrayList<SelectOptionVO>();
+		for(Language language:languages)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(language.getLanguageId());
+			selectOptionVO.setName(language.getLanguage());
+			languagesList.add(selectOptionVO);
+		}
+		return languagesList;
 	}
 }
 

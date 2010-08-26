@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -39,11 +41,14 @@ import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
+import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.PartyCadreSkills;
+import com.itgrids.partyanalyst.model.PartyTrainingCamps;
 import com.itgrids.partyanalyst.model.PartyWorkingCommittee;
 import com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation;
 import com.itgrids.partyanalyst.model.State;
@@ -80,7 +85,8 @@ public class CadreManagementService {
 	private static final Logger log = Logger.getLogger(CadreManagementService.class);
 	private CadreInfo cadreInfo = null;
 	private TransactionTemplate transactionTemplate = null;
-	
+	private IPartyCadreSkillsDAO partyCadreSkillsDAO;
+	private IPartyTrainingCampsDAO partyTrainingCampsDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -163,7 +169,27 @@ public class CadreManagementService {
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}	
+
+	public IPartyCadreSkillsDAO getPartyCadreSkillsDAO() {
+		return partyCadreSkillsDAO;
 	}
+
+
+	public void setPartyCadreSkillsDAO(IPartyCadreSkillsDAO partyCadreSkillsDAO) {
+		this.partyCadreSkillsDAO = partyCadreSkillsDAO;
+	}
+
+	public IPartyTrainingCampsDAO getPartyTrainingCampsDAO() {
+		return partyTrainingCampsDAO;
+	}
+
+
+	public void setPartyTrainingCampsDAO(
+			IPartyTrainingCampsDAO partyTrainingCampsDAO) {
+		this.partyTrainingCampsDAO = partyTrainingCampsDAO;
+	}
+
 
 	public Long saveCader(CadreInfo cadreInfoToSave){
 		this.cadreInfo = cadreInfoToSave;	
@@ -1222,6 +1248,36 @@ public class CadreManagementService {
 		}
 		return resultsList;
 	}
+	
+	public List<SelectOptionVO> getPartyCadreSkills(Long partyId)
+	{
+		List<PartyCadreSkills> cadreSkills = partyCadreSkillsDAO.getCadreSkillsPartywise(partyId); 
+		List<SelectOptionVO> cadreSkillsList = new ArrayList<SelectOptionVO>();
+		for(PartyCadreSkills cadreSkill : cadreSkills)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(cadreSkill.getPartyCadreSkillId());
+			selectOptionVO.setName(cadreSkill.getSkill());
+			cadreSkillsList.add(selectOptionVO);
+		}
+		return cadreSkillsList;			
+	}
+	
+	public List<SelectOptionVO> getPartyTrainingCamps(Long partyId)
+	{
+		List<PartyTrainingCamps> trainingCamps = partyTrainingCampsDAO.getTrainingCampsPartywise(partyId);
+		List<SelectOptionVO> trainingCampsList = new ArrayList<SelectOptionVO>();
+		for(PartyTrainingCamps partyTrainingCamp:trainingCamps)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(partyTrainingCamp.getPartyTrainingCampsId());
+			selectOptionVO.setName(partyTrainingCamp.getRegionLevel());
+			trainingCampsList.add(selectOptionVO);
+		}
+		return trainingCampsList;
+			
+	}
+	
 	
 	
 }
