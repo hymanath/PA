@@ -340,7 +340,7 @@ public class Cadre extends BaseModel{
 		this.endingDate = endingDate;
 	}
 
-	@Column(name = "father_spouse_name", length = 100)
+	@Column(name = "father_or_spouse_name", length = 100)
 	public String getFatherOrSpouseName() {
 		return fatherOrSpouseName;
 	}
