@@ -48,14 +48,16 @@ public class EducationalQualifications implements java.io.Serializable {
 		this.qualification = qualification;
 	}
 
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "educational_qualification_id", nullable = false, unique = true)
-	public Long getEducational_qualification_id() {
+	public Long getEduQualificationId() {
 		return eduQualificationId;
 	}
 
-	public void setEducational_qualification_id(Long eduQualificationId) {
+	public void setEduQualificationId(Long eduQualificationId) {
 		this.eduQualificationId = eduQualificationId;
 	}
 
