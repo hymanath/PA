@@ -16,6 +16,19 @@ public class CadreCategoryVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public CadreCategoryVO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public CadreCategoryVO(Long cadreCategoryId) {
+		this.cadreCategoryId = cadreCategoryId;
+	}
+	
+	public CadreCategoryVO(Long cadreCategoryId, String cadreCategoryType) {		
+		this.cadreCategoryId = cadreCategoryId;
+		this.cadreCategoryType = cadreCategoryType;
+	}
+
 	private Long cadreCategoryId;
 	private String cadreCategoryType;
 	

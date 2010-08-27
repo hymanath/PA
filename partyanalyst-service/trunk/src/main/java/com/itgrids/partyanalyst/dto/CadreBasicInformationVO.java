@@ -24,9 +24,23 @@ public class CadreBasicInformationVO implements Serializable {
 	private Long cadreLocationId;
 	private String cadreLocation;
 	private String cadreType;
-	
+	private String searchType;
+	private Boolean isSocialStatus;
 	
 	//Getters and Setters
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public Boolean getIsSocialStatus() {
+		return isSocialStatus;
+	}
+	public void setIsSocialStatus(Boolean isSocialStatus) {
+		this.isSocialStatus = isSocialStatus;
+	}
+	
 	public Long getCadreId() {
 		return cadreId;
 	}
