@@ -25,13 +25,14 @@ public class CadreInfo implements Serializable{
 	private String userType;
 	
 	// new fields
+	private String fatherOrSpouseName;
 	private String dateOfBirth;
 	private String houseNo; 
 	private String street;
 	private String pinCode;
-	private String education;
-	private String occupation;
-	private String casteCategory;
+	private Long education;
+	private Long occupation;
+	private Long casteCategory;
 	private String annualIncome;
 	private String memberType;
 	private String sameAsCA;
@@ -47,7 +48,10 @@ public class CadreInfo implements Serializable{
 	private Long pconstituencyID;
 	private String pmandal;
 	private String pvillage;
-	
+	private String[] trainingCamps;
+	private String[] cadreSkills;
+	private String dobOption;
+	private String age;
 	
 	public Long getConstituencyID() {
 		return constituencyID;
@@ -191,22 +195,22 @@ public class CadreInfo implements Serializable{
 		this.pinCode = pinCode;
 	}
 	
-	public String getEducation() {
+	public Long getEducation() {
 		return education;
 	}
-	public void setEducation(String education) {
+	public void setEducation(Long education) {
 		this.education = education;
 	}
-	public String getOccupation() {
+	public Long getOccupation() {
 		return occupation;
 	}
-	public void setOccupation(String occupation) {
+	public void setOccupation(Long occupation) {
 		this.occupation = occupation;
 	}
-	public String getCasteCategory() {
+	public Long getCasteCategory() {
 		return casteCategory;
 	}
-	public void setCasteCategory(String casteCategory) {
+	public void setCasteCategory(Long casteCategory) {
 		this.casteCategory = casteCategory;
 	}
 	public String getAnnualIncome() {
@@ -299,6 +303,43 @@ public class CadreInfo implements Serializable{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	public String getFatherOrSpouseName() {
+		return fatherOrSpouseName;
+	}
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.fatherOrSpouseName = fatherOrSpouseName;
+	}
+	public String[] getTrainingCamps() {
+		return trainingCamps;
+	}
+	public void setTrainingCamps(String[] trainingCamps) {
+		this.trainingCamps = trainingCamps;
+	}
+	public String[] getCadreSkills() {
+		return cadreSkills;
+	}
+	public void setCadreSkills(String[] cadreSkills) {
+		this.cadreSkills = cadreSkills;
+	}
+	public String getDobOption() {
+		return dobOption;
+	}
+	public void setDobOption(String dobOption) {
+		this.dobOption = dobOption;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

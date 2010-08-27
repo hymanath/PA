@@ -33,7 +33,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IEducationalQualifications;
+import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
@@ -153,7 +153,7 @@ public class StaticDataService implements IStaticDataService {
 	private ICandidateResultDAO candidateResultDAO;
 	private IConstituencyPageService constituencyPageService;
 	private ISocialCategoryDAO socialCategoryDAO;
-	private IEducationalQualifications educationalQualificationsDAO; 
+	private IEducationalQualificationsDAO educationalQualificationsDAO; 
 	private IOccupationDAO occupationDAO;
 	private ILanguageDAO languageDAO;
 	/**
@@ -396,13 +396,13 @@ public class StaticDataService implements IStaticDataService {
 		this.socialCategoryDAO = socialCategoryDAO;
 	}
 
-	public IEducationalQualifications getEducationalQualificationsDAO() {
+	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
 		return educationalQualificationsDAO;
 	}
 
 
 	public void setEducationalQualificationsDAO(
-			IEducationalQualifications educationalQualificationsDAO) {
+			IEducationalQualificationsDAO educationalQualificationsDAO) {
 		this.educationalQualificationsDAO = educationalQualificationsDAO;
 	}
 	

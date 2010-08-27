@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,17 +18,22 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
+import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -41,6 +47,7 @@ import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
+import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
@@ -87,6 +94,11 @@ public class CadreManagementService {
 	private TransactionTemplate transactionTemplate = null;
 	private IPartyCadreSkillsDAO partyCadreSkillsDAO;
 	private IPartyTrainingCampsDAO partyTrainingCampsDAO;
+	private IEducationalQualificationsDAO educationalQualificationsDAO;
+	private IOccupationDAO occupationDAO;
+	private ISocialCategoryDAO socialCategoryDAO;
+	private ICadreSkillsDAO cadreSkillsDAO;
+	private ICadreParticipatedTrainingCampsDAO cadreParticipatedTrainingCampsDAO; 
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -190,8 +202,55 @@ public class CadreManagementService {
 		this.partyTrainingCampsDAO = partyTrainingCampsDAO;
 	}
 
+	public IEducationalQualificationsDAO getEducationalQualificationsDAO() {
+		return educationalQualificationsDAO;
+	}
 
-	public Long saveCader(CadreInfo cadreInfoToSave){
+
+	public void setEducationalQualificationsDAO(
+			IEducationalQualificationsDAO educationalQualificationsDAO) {
+		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+
+	public ICadreSkillsDAO getCadreSkillsDAO() {
+		return cadreSkillsDAO;
+	}
+
+
+	public void setCadreSkillsDAO(ICadreSkillsDAO cadreSkillsDAO) {
+		this.cadreSkillsDAO = cadreSkillsDAO;
+	}
+
+	public ICadreParticipatedTrainingCampsDAO getCadreParticipatedTrainingCampsDAO() {
+		return cadreParticipatedTrainingCampsDAO;
+	}
+
+
+	public void setCadreParticipatedTrainingCampsDAO(
+			ICadreParticipatedTrainingCampsDAO cadreParticipatedTrainingCampsDAO) {
+		this.cadreParticipatedTrainingCampsDAO = cadreParticipatedTrainingCampsDAO;
+	}	
+
+	public IOccupationDAO getOccupationDAO() {
+		return occupationDAO;
+	}
+
+
+	public void setOccupationDAO(IOccupationDAO occupationDAO) {
+		this.occupationDAO = occupationDAO;
+	}
+
+	public ISocialCategoryDAO getSocialCategoryDAO() {
+		return socialCategoryDAO;
+	}
+
+
+	public void setSocialCategoryDAO(ISocialCategoryDAO socialCategoryDAO) {
+		this.socialCategoryDAO = socialCategoryDAO;
+	}
+
+
+	public Long saveCader(CadreInfo cadreInfoToSave, String[] skills,String[] trainingCamps){
 		this.cadreInfo = cadreInfoToSave;	
 		if(log.isDebugEnabled()){
 			log.debug("cadrerManagementService.saveCadre():::-constituencyID::"+cadreInfo.getConstituencyID());
@@ -211,7 +270,7 @@ public class CadreManagementService {
 				cadre.setState(stateDAO.get(new Long(CadreManagementService.this.cadreInfo.getState())));
 				cadre.setDistrict(districtDAO.get(new Long(CadreManagementService.this.cadreInfo.getDistrict())));
 				cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
-				
+				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
 				//setting address
 				currentAddress.setHouseNo(cadreInfo.getHouseNo());
 				currentAddress.setStreet(cadreInfo.getStreet());
@@ -252,17 +311,26 @@ public class CadreManagementService {
 				cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
 				cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-				
-				
-					cadre.setDateOfBirth(format.parse(cadreInfo.getDateOfBirth()));			
-								
-				
-				
+				if(cadreInfo.getDobOption() != null && "dobOption".equals(cadreInfo.getDobOption()))
+					{
+						cadre.setDateOfBirth(format.parse(cadreInfo.getDateOfBirth()));
+						cadre.setExactDateOfBirth("true");
+					}
+				else if(cadreInfo.getDobOption() != null && "age".equals(cadreInfo.getDobOption()))
+				{
+					 Calendar cal = Calendar.getInstance();
+					 Date todaysDate = new Date();
+					 cal.setTime((todaysDate));
+					 Integer age = new Integer(cadreInfo.getAge());
+					 cal.add(Calendar.YEAR, -age);
+					 String bDay = cal.getTime().toString(); 
+					 cadre.setDateOfBirth(format.parse(bDay));
+					 cadre.setExactDateOfBirth("false");
+				}				
 				cadre.setTelephone(cadreInfo.getLandLineNo());
-				
-				cadre.setEducation(cadreInfo.getEducation());
-				cadre.setOccupation(cadreInfo.getOccupation());
-				cadre.setCasteCategory(cadreInfo.getCasteCategory());
+				cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
+				cadre.setOccupation(occupationDAO.get(cadreInfo.getOccupation()));
+				cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
 				cadre.setMemberType(cadreInfo.getMemberType());
 				Double annunaIncome = 0d;
 				if(cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
@@ -278,7 +346,6 @@ public class CadreManagementService {
 					String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
 					level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
 					cadre.setCadreLevel(level);
-					log.debug("CadreManagementService.saveCadre();;FirstName::"+cadreInfo.getFirstName());
 					log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getStrCadreLevelValue());
 					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
 					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()))
@@ -287,6 +354,7 @@ public class CadreManagementService {
 						cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
 						if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
 							cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));
+						String [] cadreSkills = cadreInfo.getCadreSkills();						
 					}
 				}
 				
@@ -296,12 +364,15 @@ public class CadreManagementService {
 					log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
 				}				
 				e.printStackTrace();
-			}
+			}					
 				return cadreDAO.save(cadre);
 			}		
 				
 		});
-		
+			if(skills != null && trainingCamps != null)
+			{
+				setCadreSkillsInfo(cadreObj.getCadreId(), skills, trainingCamps);
+			}
 			return cadreObj.getCadreId();
 	}
 	
@@ -319,6 +390,28 @@ public class CadreManagementService {
 			cadre.setVillage(townshipDAO.get(id));
 			address.setTownship(townshipDAO.get(id));
 		}
+	}
+	
+	private void setCadreSkillsInfo(Long cadreId, String[] skills, String[] trainingCamps)
+	{
+		Cadre cadreObj = cadreDAO.get(cadreId);
+		for(int i = 0; i< skills.length;i++ )
+		{
+			CadreSkills cadreSkills = new CadreSkills();
+			PartyCadreSkills partyCadreSkill = partyCadreSkillsDAO.get(new Long(skills[i]));
+			cadreSkills.setPartyCadreSkills(partyCadreSkill);
+			cadreSkills.setCadre(cadreObj);
+			cadreSkillsDAO.save(cadreSkills);			
+		}
+		for(int j = 0; j< trainingCamps.length;j++ )
+		{
+			CadreParticipatedTrainingCamps cadreParticipatedTrainingCamp = new CadreParticipatedTrainingCamps();
+			PartyTrainingCamps partyTrainingCamp = partyTrainingCampsDAO.get(new Long(trainingCamps[j]));
+			cadreParticipatedTrainingCamp.setPartyTrainingCamps(partyTrainingCamp);
+			cadreParticipatedTrainingCamp.setCadre(cadreObj);
+			cadreParticipatedTrainingCampsDAO.save(cadreParticipatedTrainingCamp);
+		}
+		
 	}
 	
 	public void deleteCadre(Long cadreID){
@@ -1277,7 +1370,18 @@ public class CadreManagementService {
 		return trainingCampsList;
 			
 	}
-	
+	public static void main(String args[])
+	{
+		 Calendar cal = Calendar.getInstance();
+		 Date todaysDate = new Date();
+		 cal.setTime((todaysDate));
+		 Integer int1 = new Integer("28");
+		 System.out.println("Cal after setting todays date:"+cal.getTime());
+		 cal.add(Calendar.YEAR, -int1);
+		 System.out.println("Cal after deleting 30 years from todays date:"+cal.getTime());
+		 String bday = cal.getTime().toString();
+		 System.out.println("bday after deleting 30 years from todays date:"+bday);
+	}
 	
 	
 }
