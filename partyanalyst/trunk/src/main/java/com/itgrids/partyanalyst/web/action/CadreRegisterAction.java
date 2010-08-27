@@ -76,6 +76,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String endingDate;
 	private String fatherOrSpouseName;	
 	private String dobOption;
+	private String age;
 	
 	public Long getCadreId() {
 		return cadreId;
@@ -389,6 +390,14 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		this.cadreInfo.setDobOption(dobOption);
 	}
 
+	public String getAge() {
+		return this.cadreInfo.getAge();
+	}
+
+	public void setAge(String age) {
+		this.cadreInfo.setAge(age);
+	}
+
 	public String execute() throws Exception{
 		log.debug("In The Excecute For Cader");
 		session=request.getSession();
@@ -417,8 +426,6 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		{
 			skills = request.getParameterValues("skills");
 			trainingCamps = request.getParameterValues("trainingCamps");
-			System.out.println("Skills Length:" + skills.length);
-			System.out.println("Training Camps:" + trainingCamps.length);
 		}		
 		
 		if(cadreInfo != null){
