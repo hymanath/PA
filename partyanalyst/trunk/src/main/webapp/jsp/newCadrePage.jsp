@@ -394,6 +394,38 @@
 					optElements.style.display = '';			
 		}
 	}
+	function showHideEffOptions(id)
+	{
+		var effOptions = document.getElementsByName("languageEffOptions_"+id);
+		
+		for(i=0;i<effOptions.length;i++)
+		{
+			if(effOptions[i].disabled == true)
+				effOptions[i].disabled = false;
+			else if (effOptions[i].disabled == false)
+			{
+				effOptions[i].disabled = true;
+				if(effOptions[i].checked == true)
+					effOptions[i].checked = false;
+			}	
+		}
+	}
+	function enableDisableCalBtn()
+	{
+		var btnEl = document.getElementById("calBtnEl");
+		var ageTextEl = document.getElementById("ageTextEl");
+		if(btnEl.disabled == true)
+		{	
+			btnEl.disabled = false;
+			ageTextEl.disabled = true;
+		}	
+		else if(btnEl.disabled == false)
+		{
+			ageTextEl.disabled = false;
+			ageTextEl.focus();
+			btnEl.disabled = true;
+		}	
+	}
 	
 </script>
 <style type="text/css">
@@ -413,6 +445,12 @@
 		font-weight:bold;
 		text-align:left;
 	}
+	.cadreDetailsTable th {
+		color: #0000AA;
+		font-family:verdana;
+		font-weight:bold;
+		text-align:left;
+	}	
 	fieldset {
 		border:4px solid #CFD6DF;
 		margin-bottom:10px;
@@ -447,6 +485,12 @@
 		padding-top:1px;
 		text-align:center;
 		width:150px;
+	}
+	.calBtn
+	{
+		background-image:url("images/icons/constituencyManagement/calendar.jpeg");
+		height:24px;
+		width:24px;	
 	}
 </style>
 </head>
@@ -496,10 +540,10 @@
 					</tr>
 					<tr>
 						<td><s:label for="father_spouseName" id="father_spouseNameLabel"  value="%{getText('father_spouseName')}" /><font class="requiredFont"> * </font></td>
-						<td align="left"><s:textfield id="father_spouseName" name="father_spouseName" size="25"/>  </td>
+						<td align="left"><s:textfield id="father_spouseName" name="fatherOrSpouseName" size="25"/>  </td>
 						<td><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /><font class="requiredFont"> * </font></td>
 						<td align="left">
-							<input type="radio" name="gender" value="M" checked="checked"/>Male
+							<input type="radio" name="gender" value="M"/>Male
 							<input type="radio" name="gender" value="F"/>Female
 						</td>
 					</tr>
@@ -507,15 +551,18 @@
 					<td colspan ="6">
 						<table>
 						<tr>
-						<td width="20"><s:label for="dobField" id="dobLabel"  value="%{getText('dateOfBirth')}" /><font class="requiredFont"> * </font></td>
+							<td colspan="6" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
+						</tr>
+						<tr>
+						<td width="162"><input type="radio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn()"/>Date Of Birth<font class="requiredFont"> * </font></td>
 						<td align="left">
 							<input type="text" id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 						</td>
-						<td><A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('dobText_div','dobText','1/1970')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A></td>
+						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" disabled="true" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
 						<td align="left">Or</td>	
-						<td><s:label for="ageField" id="ageLabel"  value="%{getText('age')}" /><font class="requiredFont"> * </font></td>
-						<td align="left"><s:textfield id="father_spouseName" name="lastName" size="25"/>  </td>
+						<td><input type="radio" name="dobOption" value="age" onclick="enableDisableCalBtn()"/>Age<font class="requiredFont"> * </font></td>
+						<td align="left"><s:textfield id="ageTextEl" name="age" size="25"/> </td>
 						</tr>
 						</table>
 					</td>			
@@ -536,7 +583,7 @@
 					<td align="left" colspan="3"><s:textfield id="emailField" name="email" size="75"/>  </td>
 				</tr>
 				<tr>
-					<td><u><s:label for="currAddField" id="currAddLabel"  value="%{getText('currAdd')}" /></u></td>
+					<th><u><s:label for="currAddField" id="currAddLabel"  value="%{getText('currAdd')}" /></u></th>
 				</tr>
 				<tr>
 					<td><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /><font class="requiredFont"> * </font></td>
@@ -586,7 +633,7 @@
 					<td align="left"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
 				</tr>				
 				<tr>
-					<td><u><s:label for="prmntAddField" id="prmntAddLabel"  value="%{getText('officialAdd')}" /></u></td>
+					<th><u><s:label for="prmntAddField" id="prmntAddLabel"  value="%{getText('officialAdd')}" /></u></th>
 				</tr>
 				<tr>
 					<td align="left" colspan="2">
@@ -609,7 +656,7 @@
 					<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 						<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 							<td align="left">
-								<select id="pdistrictField" class="pregionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
+								<select id="pdistrictField" class="regionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 									<c:forEach var="dist" items="${districtList}" >
 									<option value="${dist.id}">${dist.name}</option>
 									</c:forEach>
@@ -651,12 +698,23 @@
 			<legend><strong>Social Status</strong></legend>
 			<table class="cadreDetailsTable">
 				<tr>
+					<th colspan="4"><s:label for="languageField" id="languageLabel"  value="%{getText('languageEff')}" /><font class="requiredFont"> * </font></th>
+				</tr>	
+				<c:forEach var="lang" items="${sessionScope.languagesList}" >
+					<tr>
+						<td><input type="checkbox" id="${lang.id}" value="${lang.id}" onclick="showHideEffOptions(this.id)"/>${lang.name}</td>
+						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Speak</td>
+						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Read</td>
+						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Write</td>
+					</tr>
+				</c:forEach>		
+				<tr>
 					<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
-						<td align="left">
+					<td align="left">
 							<s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduStatus" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Education"></s:select>				
 					</td>
 					<td><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /></td>
-						<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Occupation"></s:select></td>
+					<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Occupation"></s:select></td>
 				</tr>				
 				<tr>
 						<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
@@ -773,6 +831,42 @@
 					</table>	
 					</td>								
 			</tr>
+			<tr>
+				<th><u>Cadre Skills</u></th>
+			</tr>
+			<tr>	
+				<td colspan="5">
+					<table>
+					<tr>
+					<c:forEach var="skills" items="${sessionScope.cadreSkillsList}" varStatus="status" >
+								
+							<td><input type="checkbox" name="skills" id="${skills.id}" value="${skills.id}"/>${skills.name}</td>
+							<c:if test="${status.count % 3 == 0}">
+								</tr><tr>
+							</c:if>						
+					</c:forEach>
+					</tr>	
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th><u>Participated Training Camps</u></th>
+			</tr>
+			<tr>	
+				<td colspan="5">
+					<table>
+					<tr>
+					<c:forEach var="trainingCamps" items="${sessionScope.partyTrainingCampsList}" varStatus="status" >
+								
+							<td><input type="checkbox" name="trainingCamps" id="${trainingCamps.id}" value="${trainingCamps.id}"/>${trainingCamps.name}</td>
+							<c:if test="${status.count % 5 == 0}">
+								</tr><tr>
+							</c:if>						
+					</c:forEach>
+					</tr>	
+					</table>
+				</td>
+			</tr>
 			</c:if>
 			</table>
 			</fieldset>
@@ -795,5 +889,6 @@ cadreObj.partyCommittees.push(ob);
 </script>
 </body>
 
+varStatus
 
 </html>

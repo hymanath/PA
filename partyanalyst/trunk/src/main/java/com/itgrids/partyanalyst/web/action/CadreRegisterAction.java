@@ -14,9 +14,11 @@ import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
@@ -72,6 +74,8 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String designation;
 	private String effectiveDate;
 	private String endingDate;
+	private String fatherOrSpouseName;	
+	private String dobOption;
 	
 	public Long getCadreId() {
 		return cadreId;
@@ -124,35 +128,36 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	public String getEducation() {
 		return education;
 	}
-
+	
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Education Details Required",shortCircuit=true)
 	public void setEducation(String education) {
-		this.cadreInfo.setEducation(education);
+		this.cadreInfo.setEducation(new Long(education));
 	}
 
 	public String getProfession() {
 		return profession;
 	}
 
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Professon/Occupation Details Required",shortCircuit=true)
 	public void setProfession(String profession) {
-		this.cadreInfo.setOccupation(profession);
+		this.cadreInfo.setOccupation(new Long(profession));
 	}
 
 	public String getSocialStatus() {
 		return socialStatus;
 	}
 
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Social Category Required",shortCircuit=true)
 	public void setSocialStatus(String socialStatus) {
-		this.cadreInfo.setCasteCategory(socialStatus);
+		this.cadreInfo.setCasteCategory(new Long(socialStatus));
 	}
 
 	public String getFirstName() {
-		System.out.println("***********IN getter firstname of cadre register******"+firstName);	
 		return cadreInfo.getFirstName();
 	}
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Firstname is required",shortCircuit=true)
 		public void setFirstName(String firstName) {
-		System.out.println("***********IN setter firstname of cadre register******"+firstName);
-		this.cadreInfo.setFirstName(firstName);
+			this.cadreInfo.setFirstName(firstName);
 	}
 
 	public String getMiddleName() {
@@ -202,8 +207,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	
 	
 	public void setConstituency(String constituency) {
-		 System.out.println("*** in seter of constituency method");
-		this.cadreInfo.setConstituencyID(new Long(constituency));
+		 this.cadreInfo.setConstituencyID(new Long(constituency));
 	}
 	public String getMandal() {
 		return cadreInfo.getMandal();
@@ -218,7 +222,6 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 	
 	public void setVillage(String village) {
-		System.out.println("***********Village******"+village);
 		this.cadreInfo.setVillage(village);
 	}
 
@@ -369,18 +372,36 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		this.cadreInfo.setPstreet(pstreet);
 	}
 
+	public String getFatherOrSpouseName() {
+		return this.cadreInfo.getFatherOrSpouseName();
+	}
+
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
+	}
+	
+	public String getDobOption() {
+		return this.cadreInfo.getDobOption();
+	}
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age",shortCircuit=true)
+	public void setDobOption(String dobOption) {
+		this.cadreInfo.setDobOption(dobOption);
+	}
+
 	public String execute() throws Exception{
 		log.debug("In The Excecute For Cader");
 		session=request.getSession();
-		
+		String[] skills = null;
+		String[] trainingCamps = null;
 		String name1=request.getParameter("firstName");
-		
 		String name2=request.getParameter("lastName");
 		String name3=request.getParameter("constituency");
 		
 		
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
-		System.out.println("sameAsCA::::::::::::::::"+request.getParameter("sameAsCA"));
+		
+		System.out.println("dobOption::::::::::::::::"+request.getParameter("dobOption"));
 		cadreInfo.setUserID(regVO.getRegistrationID());
 		cadreInfo.setUserType(regVO.getUserType());
 		if("MP".equals(regVO.getAccessType())){
@@ -392,11 +413,19 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 			cadreInfo.setDistrict(obj.getId().toString());
 		}
 		
+		if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()))
+		{
+			skills = request.getParameterValues("skills");
+			trainingCamps = request.getParameterValues("trainingCamps");
+			System.out.println("Skills Length:" + skills.length);
+			System.out.println("Training Camps:" + trainingCamps.length);
+		}		
+		
 		if(cadreInfo != null){
 			System.out.println(" cadre level :" + cadreInfo.getCadreLevel());
 			System.out.println(" cadre level Val :" + cadreInfo.getCadreLevelValue());
 		}
-		cadreId = cadreManagementService.saveCader(cadreInfo);
+		cadreId = cadreManagementService.saveCader(cadreInfo, skills, trainingCamps);
 		String result = Action.SUCCESS;
 		if(cadreId==null)
 			result = "fail";

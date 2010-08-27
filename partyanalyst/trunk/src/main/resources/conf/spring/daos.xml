@@ -319,7 +319,14 @@
 	<bean id="partyCadreSkillsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyCadreSkillsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="cadreSkillsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSkillsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreParticipatedTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedTrainingCampsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="partyTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrainingCampsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 </beans>		

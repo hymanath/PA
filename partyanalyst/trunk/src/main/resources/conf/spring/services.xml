@@ -210,7 +210,12 @@
     	<property name="partyWorkingCommitteeDesignationDAO" ref="partyWorkingCommitteeDesignationDAO" /> 
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="partyCadreSkillsDAO" ref="partyCadreSkillsDAO" /> 
-		<property name="partyTrainingCampsDAO" ref="partyTrainingCampsDAO" />   	  	
+		<property name="partyTrainingCampsDAO" ref="partyTrainingCampsDAO" />
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+		<property name="occupationDAO" ref="occupationDAO" />
+		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
+		<property name="cadreSkillsDAO" ref="cadreSkillsDAO" />	
+		<property name="cadreParticipatedTrainingCampsDAO" ref="cadreParticipatedTrainingCampsDAO" />		   	  	
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
