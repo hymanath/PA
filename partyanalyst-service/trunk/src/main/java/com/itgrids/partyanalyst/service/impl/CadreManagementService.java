@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -323,9 +325,20 @@ public class CadreManagementService {
 					 cal.setTime((todaysDate));
 					 Integer age = new Integer(cadreInfo.getAge());
 					 cal.add(Calendar.YEAR, -age);
-					 String bDay = cal.getTime().toString(); 
-					 cadre.setDateOfBirth(format.parse(bDay));
+					 cadre.setDateOfBirth(format.parse(format.format(cal.getTime())));
 					 cadre.setExactDateOfBirth("false");
+					 
+
+					 /*cal.setTime((todaysDate));
+					 Integer int1 = new Integer("28");
+					 System.out.println("Cal after setting todays date:"+cal.getTime());
+					 cal.add(Calendar.YEAR, -int1);
+					 System.out.println("Cal after deleting 30 years from todays date:"+cal.getTime());
+					 //System.out.println("cal"+cal);
+					 String finalDate = format.format(cal.getTime());
+					 System.out.println("finalDate"+finalDate);
+					 Date fDate = format.parse(finalDate);
+					 System.out.println("fDate:"+fDate);*/
 				}				
 				cadre.setTelephone(cadreInfo.getLandLineNo());
 				cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
@@ -1369,19 +1382,5 @@ public class CadreManagementService {
 		}
 		return trainingCampsList;
 			
-	}
-	public static void main(String args[])
-	{
-		 Calendar cal = Calendar.getInstance();
-		 Date todaysDate = new Date();
-		 cal.setTime((todaysDate));
-		 Integer int1 = new Integer("28");
-		 System.out.println("Cal after setting todays date:"+cal.getTime());
-		 cal.add(Calendar.YEAR, -int1);
-		 System.out.println("Cal after deleting 30 years from todays date:"+cal.getTime());
-		 String bday = cal.getTime().toString();
-		 System.out.println("bday after deleting 30 years from todays date:"+bday);
-	}
-	
-	
+	}			
 }
