@@ -5538,7 +5538,7 @@ public class StaticDataService implements IStaticDataService {
 		for(EducationalQualifications educationalQualifications:qualifications)
 		{
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(educationalQualifications.getEducational_qualification_id());
+			selectOptionVO.setId(educationalQualifications.getEduQualificationId());
 			selectOptionVO.setName(educationalQualifications.getQualification());
 			eduQualificationsList.add(selectOptionVO);
 		}
