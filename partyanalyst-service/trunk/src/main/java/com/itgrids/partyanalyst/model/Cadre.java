@@ -51,9 +51,9 @@ public class Cadre extends BaseModel{
 	 //new fields
 	 private Date dateOfBirth;
 	 private String telephone;	 
-	 private String education;
-	 private String occupation;
-	 private String casteCategory;
+	 private EducationalQualifications education;
+	 private Occupation occupation;
+	 private SocialCategory casteCategory;
 	 private Double annualIncome;
 	 private String memberType;
 	 private PartyWorkingCommitteeDesignation designation;
@@ -65,7 +65,7 @@ public class Cadre extends BaseModel{
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
-	 
+	 private String exactDateOfBirth;
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -241,30 +241,39 @@ public class Cadre extends BaseModel{
 		this.telephone = telephone;
 	}
 
-	@Column(name = "education", length = 75)
-	public String getEducation() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "education")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public EducationalQualifications getEducation() {
 		return education;
 	}
 
-	public void setEducation(String education) {
+	public void setEducation(EducationalQualifications education) {
 		this.education = education;
 	}
 
-	@Column(name = "occupation", length = 75)
-	public String getOccupation() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "occupation")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Occupation getOccupation() {
 		return occupation;
 	}
 
-	public void setOccupation(String occupation) {
+	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
 	}
 
-	@Column(name = "caste_category", length = 25)
-	public String getCasteCategory() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "caste_category")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SocialCategory getCasteCategory() {
 		return casteCategory;
 	}
 
-	public void setCasteCategory(String casteCategory) {
+	public void setCasteCategory(SocialCategory casteCategory) {
 		this.casteCategory = casteCategory;
 	}
 
@@ -380,6 +389,17 @@ public class Cadre extends BaseModel{
 	public void setCadreSkills(Set<CadreSkills> cadreSkills) {
 		this.cadreSkills = cadreSkills;
 	}
+
+	@Column(name = "exact_date_of_birth", length = 25)
+	public String getExactDateOfBirth() {
+		return exactDateOfBirth;
+	}
+
+	public void setExactDateOfBirth(String exactDateOfBirth) {
+		this.exactDateOfBirth = exactDateOfBirth;
+	}
+	
+	
 	
 	
 	

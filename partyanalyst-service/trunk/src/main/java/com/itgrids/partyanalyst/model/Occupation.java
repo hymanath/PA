@@ -7,11 +7,17 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 /**
  * Occupation entity. 
@@ -27,6 +33,7 @@ public class Occupation implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long occupationId;
 	private String occupation;
+	private Set<Cadre> cadres = new HashSet<Cadre>(0);
 	
 	public Occupation() {
 		super();
@@ -57,5 +64,16 @@ public class Occupation implements java.io.Serializable {
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "occupation")
+	public Set<Cadre> getCadres() {
+		return cadres;
+	}
+
+	public void setCadres(Set<Cadre> cadres) {
+		this.cadres = cadres;
+	}
+	
+	
 	
 }

@@ -7,11 +7,17 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -29,6 +35,7 @@ public class SocialCategory implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long socialCategoryId;
 	private String category;
+	private Set<Cadre> cadres = new HashSet<Cadre>(0);
 	
 	public SocialCategory() {
 		super();
@@ -60,4 +67,15 @@ public class SocialCategory implements java.io.Serializable {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "casteCategory")
+	public Set<Cadre> getCadres() {
+		return cadres;
+	}
+
+	public void setCadres(Set<Cadre> cadres) {
+		this.cadres = cadres;
+	}
+	
+	
 }

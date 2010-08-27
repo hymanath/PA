@@ -7,11 +7,17 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 /**
  * EducationalQualifications entity. 
@@ -28,6 +34,7 @@ public class EducationalQualifications implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long educational_qualification_id;
 	private String qualification;
+	private Set<Cadre> cadres = new HashSet<Cadre>(0);
 	
 	public EducationalQualifications() {
 		super();
@@ -60,5 +67,16 @@ public class EducationalQualifications implements java.io.Serializable {
 	public void setQualification(String qualification) {
 		this.qualification = qualification;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "education")
+	public Set<Cadre> getCadres() {
+		return cadres;
+	}
+
+	public void setCadres(Set<Cadre> cadres) {
+		this.cadres = cadres;
+	}
+	
+	
 	
 }
