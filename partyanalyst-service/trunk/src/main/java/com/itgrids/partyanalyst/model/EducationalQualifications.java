@@ -32,7 +32,7 @@ public class EducationalQualifications implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long educational_qualification_id;
+	private Long eduQualificationId;
 	private String qualification;
 	private Set<Cadre> cadres = new HashSet<Cadre>(0);
 	
@@ -41,10 +41,10 @@ public class EducationalQualifications implements java.io.Serializable {
 		
 	}
 
-	public EducationalQualifications(Long educational_qualification_id,
+	public EducationalQualifications(Long eduQualificationId,
 			String qualification) {
 		
-		this.educational_qualification_id = educational_qualification_id;
+		this.eduQualificationId = eduQualificationId;
 		this.qualification = qualification;
 	}
 
@@ -52,11 +52,11 @@ public class EducationalQualifications implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "educational_qualification_id", nullable = false, unique = true)
 	public Long getEducational_qualification_id() {
-		return educational_qualification_id;
+		return eduQualificationId;
 	}
 
-	public void setEducational_qualification_id(Long educational_qualification_id) {
-		this.educational_qualification_id = educational_qualification_id;
+	public void setEducational_qualification_id(Long eduQualificationId) {
+		this.eduQualificationId = eduQualificationId;
 	}
 
 	@Column(name="qualification", length=75)
