@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
@@ -50,6 +52,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
 import com.itgrids.partyanalyst.model.CadreSkills;
@@ -58,6 +61,7 @@ import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.PartyCadreSkills;
 import com.itgrids.partyanalyst.model.PartyTrainingCamps;
 import com.itgrids.partyanalyst.model.PartyWorkingCommittee;
@@ -103,6 +107,8 @@ public class CadreManagementService {
 	private ISocialCategoryDAO socialCategoryDAO;
 	private ICadreSkillsDAO cadreSkillsDAO;
 	private ICadreParticipatedTrainingCampsDAO cadreParticipatedTrainingCampsDAO; 
+	private ILanguageDAO languageDAO;
+	private ICadreLanguageEfficiencyDAO cadreLanguageEfficiencyDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -253,6 +259,25 @@ public class CadreManagementService {
 		this.socialCategoryDAO = socialCategoryDAO;
 	}
 
+	public ILanguageDAO getLanguageDAO() {
+		return languageDAO;
+	}
+
+
+	public void setLanguageDAO(ILanguageDAO languageDAO) {
+		this.languageDAO = languageDAO;
+	}
+
+	public ICadreLanguageEfficiencyDAO getCadreLanguageEfficiencyDAO() {
+		return cadreLanguageEfficiencyDAO;
+	}
+
+
+	public void setCadreLanguageEfficiencyDAO(
+			ICadreLanguageEfficiencyDAO cadreLanguageEfficiencyDAO) {
+		this.cadreLanguageEfficiencyDAO = cadreLanguageEfficiencyDAO;
+	}
+
 
 	public Long saveCader(CadreInfo cadreInfoToSave, String[] skills,String[] trainingCamps){
 		this.cadreInfo = cadreInfoToSave;	
@@ -296,6 +321,7 @@ public class CadreManagementService {
 					id = new Long(cadreInfo.getPvillage().substring(1));		
 					permanentAddress.setHouseNo(cadreInfo.getPhouseNo());
 					permanentAddress.setStreet(cadreInfo.getPstreet());
+					permanentAddress.setPinCode(cadreInfo.getPpinCode());
 					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
 					permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
 					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
@@ -307,9 +333,6 @@ public class CadreManagementService {
 				} 
 				cadre.setCurrentAddress(currentAddress);
 				cadre.setPermanentAddress(permanentAddress);
-				
-				
-				
 				cadre.setMobile(cadreInfo.getMobile());
 				cadre.setEmail(cadreInfo.getEmail());
 				cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
@@ -327,33 +350,21 @@ public class CadreManagementService {
 					 cal.setTime((todaysDate));
 					 Integer age = new Integer(cadreInfo.getAge());
 					 cal.add(Calendar.YEAR, -age);
-					 cadre.setDateOfBirth(format.parse(format.format(cal.getTime())));
-					 cadre.setExactDateOfBirth("false");
-					 
-
-					 /*cal.setTime((todaysDate));
-					 Integer int1 = new Integer("28");
-					 System.out.println("Cal after setting todays date:"+cal.getTime());
-					 cal.add(Calendar.YEAR, -int1);
-					 System.out.println("Cal after deleting 30 years from todays date:"+cal.getTime());
-					 //System.out.println("cal"+cal);
-					 String finalDate = format.format(cal.getTime());
-					 System.out.println("finalDate"+finalDate);
-					 Date fDate = format.parse(finalDate);
-					 System.out.println("fDate:"+fDate);*/
+					 cadre.setDateOfBirth(cal.getTime());
+					 cadre.setExactDateOfBirth("false");					 
 				}				
 				cadre.setTelephone(cadreInfo.getLandLineNo());
 				cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
 				cadre.setOccupation(occupationDAO.get(cadreInfo.getOccupation()));
 				cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
+				
 				cadre.setMemberType(cadreInfo.getMemberType());
 				Double annunaIncome = 0d;
 				if(cadreInfo.getAnnualIncome() != null && (!StringUtils.isBlank(cadreInfo.getAnnualIncome())))
 					annunaIncome = new Double(cadreInfo.getAnnualIncome()); 
 				
 				cadre.setAnnualIncome(annunaIncome);
-				
-				
+								
 				if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadreInfo.getMemberType()))
 				{	
 					CadreLevel level = new CadreLevel();
@@ -363,13 +374,12 @@ public class CadreManagementService {
 					cadre.setCadreLevel(level);
 					log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getStrCadreLevelValue());
 					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
-					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()))
+					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName()))
 					{
 						cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
 						cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
 						if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
-							cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));
-						String [] cadreSkills = cadreInfo.getCadreSkills();						
+							cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));											
 					}
 				}
 				
@@ -384,10 +394,17 @@ public class CadreManagementService {
 			}		
 				
 		});
-			if(skills != null && trainingCamps != null)
-			{
-				setCadreSkillsInfo(cadreObj.getCadreId(), skills, trainingCamps);
-			}
+			 if(cadreInfo.getLanguageOptions_English() != null && cadreInfo.getLanguageOptions_English().length > 0)
+				setLanguageEfficiency(cadreObj.getCadreId(),cadreInfo.getLanguageOptions_English(),IConstants.LANGUAGE_ENGLISH);
+			 if(cadreInfo.getLanguageOptions_Hindi() != null && cadreInfo.getLanguageOptions_Hindi().length > 0)
+				 setLanguageEfficiency(cadreObj.getCadreId(),cadreInfo.getLanguageOptions_Hindi(), IConstants.LANGUAGE_HINDI);
+			 if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName()))	
+			 {
+				 if(skills != null)
+					setCadreSkillsInfo(cadreObj.getCadreId(), skills);
+				 if(trainingCamps != null)
+					 setParticipatedTrainingCamps(cadreObj.getCadreId(), trainingCamps);
+			 } 
 			return cadreObj.getCadreId();
 	}
 	
@@ -407,7 +424,7 @@ public class CadreManagementService {
 		}
 	}
 	
-	private void setCadreSkillsInfo(Long cadreId, String[] skills, String[] trainingCamps)
+	private void setCadreSkillsInfo(Long cadreId, String[] skills)
 	{
 		Cadre cadreObj = cadreDAO.get(cadreId);
 		for(int i = 0; i< skills.length;i++ )
@@ -417,7 +434,13 @@ public class CadreManagementService {
 			cadreSkills.setPartyCadreSkills(partyCadreSkill);
 			cadreSkills.setCadre(cadreObj);
 			cadreSkillsDAO.save(cadreSkills);			
-		}
+		}		
+		
+	}
+	
+	private void setParticipatedTrainingCamps(Long cadreId, String[] trainingCamps)
+	{
+		Cadre cadreObj = cadreDAO.get(cadreId);
 		for(int j = 0; j< trainingCamps.length;j++ )
 		{
 			CadreParticipatedTrainingCamps cadreParticipatedTrainingCamp = new CadreParticipatedTrainingCamps();
@@ -426,6 +449,26 @@ public class CadreManagementService {
 			cadreParticipatedTrainingCamp.setCadre(cadreObj);
 			cadreParticipatedTrainingCampsDAO.save(cadreParticipatedTrainingCamp);
 		}
+	}
+	
+	private void setLanguageEfficiency(Long cadreId, String[] options, String language)
+	{
+		Cadre cadreObj = cadreDAO.get(cadreId);
+		List<Language> languages =  languageDAO.findByLanguage(language);
+		Language languageObj = languages.get(0);
+		CadreLanguageEfficiency cadreLanguageEfficiency = new CadreLanguageEfficiency();
+		cadreLanguageEfficiency.setCadre(cadreObj);
+		cadreLanguageEfficiency.setLanguage(languageObj);
+		for(int i = 0; i<options.length; i++)
+		{
+			if("speak".equals(options[i]))
+				cadreLanguageEfficiency.setIsAbleToSpeak("true");
+			if("read".equals(options[i]))
+				cadreLanguageEfficiency.setIsAbleToRead("true");
+			if("write".equals(options[i]))
+				cadreLanguageEfficiency.setIsAbleToWrite("true");
+		}
+		cadreLanguageEfficiencyDAO.save(cadreLanguageEfficiency);
 		
 	}
 	

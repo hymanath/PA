@@ -29,6 +29,7 @@ public class RegistrationVO extends BaseDTO{
 	private String accessType;
 	private String accessValue;
 	private Long party;
+	private String partyShortName;
 	private String subscribePartyImpDate;
 	private String userType;
 	
@@ -204,6 +205,14 @@ public class RegistrationVO extends BaseDTO{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	public String getPartyShortName() {
+		return partyShortName;
+	}
+	public void setPartyShortName(String partyShortName) {
+		this.partyShortName = partyShortName;
+	}
+	
+	
 	
 	
 }

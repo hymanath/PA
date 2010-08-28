@@ -205,6 +205,9 @@ public interface IConstants {
     public static final String CADRE_MEMBER_TYPE_NORMAL = "Normal";
     public static final String USER_TYPE_PARTY = "Party";
     public static final String USER_TYPE_POLITICIAN = "Politician";
+    public static final String LANGUAGE_ENGLISH = "English";
+    public static final String LANGUAGE_HINDI= "Hindi";
     public static final String LOCATION_BASED = "LOCATION";
     public static final String LEVEL_BASED = "LEVEL";
+    
 }

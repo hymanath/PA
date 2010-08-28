@@ -23,6 +23,7 @@ public class CadreInfo implements Serializable{
 	private String booth;
 	private Long userID;
 	private String userType;
+	private String userPartyName;
 	
 	// new fields
 	private String fatherOrSpouseName;
@@ -48,11 +49,11 @@ public class CadreInfo implements Serializable{
 	private Long pconstituencyID;
 	private String pmandal;
 	private String pvillage;
-	private String[] trainingCamps;
-	private String[] cadreSkills;
 	private String dobOption;
 	private String age;
-	
+	private String[] language;
+	private String[] languageOptions_English;
+	private String[] languageOptions_Hindi;
 	public Long getConstituencyID() {
 		return constituencyID;
 	}
@@ -308,19 +309,7 @@ public class CadreInfo implements Serializable{
 	}
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.fatherOrSpouseName = fatherOrSpouseName;
-	}
-	public String[] getTrainingCamps() {
-		return trainingCamps;
-	}
-	public void setTrainingCamps(String[] trainingCamps) {
-		this.trainingCamps = trainingCamps;
-	}
-	public String[] getCadreSkills() {
-		return cadreSkills;
-	}
-	public void setCadreSkills(String[] cadreSkills) {
-		this.cadreSkills = cadreSkills;
-	}
+	}	
 	public String getDobOption() {
 		return dobOption;
 	}
@@ -333,6 +322,35 @@ public class CadreInfo implements Serializable{
 	public void setAge(String age) {
 		this.age = age;
 	}
+	public String[] getLanguageOptions_English() {
+		return languageOptions_English;
+	}
+	public void setLanguageOptions_English(String[] languageOptions_English) {
+		this.languageOptions_English = languageOptions_English;
+	}
+	public String[] getLanguageOptions_Hindi() {
+		return languageOptions_Hindi;
+	}
+	public void setLanguageOptions_Hindi(String[] languageOptions_Hindi) {
+		this.languageOptions_Hindi = languageOptions_Hindi;
+	}
+	public String[] getLanguage() {
+		return language;
+	}
+	public void setLanguage(String[] language) {
+		this.language = language;
+	}
+	public String getUserPartyName() {
+		return userPartyName;
+	}
+	public void setUserPartyName(String userPartyName) {
+		this.userPartyName = userPartyName;
+	}
+	
+	
+	
+	
+	
 	
 	
 	
