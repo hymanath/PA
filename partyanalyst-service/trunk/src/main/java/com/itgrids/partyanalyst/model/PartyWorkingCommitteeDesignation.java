@@ -33,7 +33,8 @@ public class PartyWorkingCommitteeDesignation implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long PartyWkgCommitteeDesignationId;
+	private Long partyWkgCommitteeDesignationId;
+	
 	private PartyWorkingCommittee partyWorkingCommittee;
 	private String  designation;
 	
@@ -48,7 +49,7 @@ public class PartyWorkingCommitteeDesignation implements java.io.Serializable {
 			Long partyWkgCommitteeDesignationId,
 			PartyWorkingCommittee partyWorkingCommittee, String designation) {
 		super();
-		PartyWkgCommitteeDesignationId = partyWkgCommitteeDesignationId;
+		this.partyWkgCommitteeDesignationId = partyWkgCommitteeDesignationId;
 		this.partyWorkingCommittee = partyWorkingCommittee;
 		this.designation = designation;
 	}
@@ -57,11 +58,12 @@ public class PartyWorkingCommitteeDesignation implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "party_wkg_committee_designation_id", unique = true, nullable = false)
 	public Long getPartyWkgCommitteeDesignationId() {
-		return PartyWkgCommitteeDesignationId;
+		return partyWkgCommitteeDesignationId;
 	}
+
 	public void setPartyWkgCommitteeDesignationId(
 			Long partyWkgCommitteeDesignationId) {
-		PartyWkgCommitteeDesignationId = partyWkgCommitteeDesignationId;
+		this.partyWkgCommitteeDesignationId = partyWkgCommitteeDesignationId;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
