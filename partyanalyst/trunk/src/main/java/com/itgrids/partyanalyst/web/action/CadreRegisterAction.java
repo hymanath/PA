@@ -90,12 +90,84 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreId = cadreId;
 	}
 
+	public String getFirstName() {
+		return cadreInfo.getFirstName();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Firstname is required", shortCircuit = true)
+	public void setFirstName(String firstName) {
+		this.cadreInfo.setFirstName(firstName);
+	}
+	
+	public String getMiddleName() {
+		return cadreInfo.getMiddleName();
+	}
+
+	public void setMiddleName(String middleName) {
+		this.cadreInfo.setMiddleName(middleName);
+	}
+	
+	public String getLastName() {
+		return cadreInfo.getLastName();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Lastname is required", shortCircuit = true)
+	public void setLastName(String lastName) {
+		this.cadreInfo.setLastName(lastName);
+	}
+	
+	public String getFatherOrSpouseName() {
+		return this.cadreInfo.getFatherOrSpouseName();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse Name Required", shortCircuit = true)
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
+	}
+	
+	public String getGender() {
+		return cadreInfo.getGender();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Gender", shortCircuit = true)
+	public void setGender(String gender) {
+		this.cadreInfo.setGender(gender);
+	}
+
+	public String getDobOption() {
+		return this.cadreInfo.getDobOption();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age", shortCircuit = true)
+	public void setDobOption(String dobOption) {
+		this.cadreInfo.setDobOption(dobOption);
+	}
+	
 	public void setDateOfBirth(String dateOfBirth) {
 		this.cadreInfo.setDateOfBirth(dateOfBirth);
 	}
 
 	public String getDateOfBirth() {
 		return cadreInfo.getDateOfBirth();
+	}
+	
+	public String getMobile() {
+		return cadreInfo.getMobile();
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", shortCircuit = true, minLength = "10", maxLength = "12")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([9]{1})([02346789]{1})([0-9]{8})$", message = "Mobile Number should be digits", shortCircuit = true)
+	public void setMobile(String mobile) {
+		this.cadreInfo.setMobile(mobile);
+	}
+
+	public String getEmail() {
+		return cadreInfo.getEmail();
+	}
+
+	public void setEmail(String email) {
+		this.cadreInfo.setEmail(email);
 	}
 
 	public void setTelephone(String telephone) {
@@ -136,8 +208,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return education;
 	}
 
-	// @RequiredFieldValidator(type = ValidatorType.FIELD, message =
-	// "Education Details Required",shortCircuit=true)
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Education Details Required",shortCircuit=true)
 	public void setEducation(String education) {
 		this.cadreInfo.setEducation(new Long(education));
 	}
@@ -146,8 +217,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return profession;
 	}
 
-	// @RequiredFieldValidator(type = ValidatorType.FIELD, message =
-	// "Professon/Occupation Details Required",shortCircuit=true)
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message ="Professon/Occupation Details Required",shortCircuit=true)
 	public void setProfession(String profession) {
 		this.cadreInfo.setOccupation(new Long(profession));
 	}
@@ -156,47 +226,11 @@ public class CadreRegisterAction extends ActionSupport implements
 		return socialStatus;
 	}
 
-	// @RequiredFieldValidator(type = ValidatorType.FIELD, message =
-	// "Social Category Required",shortCircuit=true)
+	//@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Social Category Required",shortCircuit=true)
 	public void setSocialStatus(String socialStatus) {
 		this.cadreInfo.setCasteCategory(new Long(socialStatus));
 	}
-
-	public String getFirstName() {
-		return cadreInfo.getFirstName();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Firstname is required", shortCircuit = true)
-	public void setFirstName(String firstName) {
-		this.cadreInfo.setFirstName(firstName);
-	}
-
-	public String getMiddleName() {
-		return cadreInfo.getMiddleName();
-	}
-
-	public void setMiddleName(String middleName) {
-		this.cadreInfo.setMiddleName(middleName);
-	}
-
-	public String getLastName() {
-		return cadreInfo.getLastName();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Lastname is required", shortCircuit = true)
-	public void setLastName(String lastName) {
-		this.cadreInfo.setLastName(lastName);
-	}
-
-	public String getGender() {
-		return cadreInfo.getGender();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Gender", shortCircuit = true)
-	public void setGender(String gender) {
-		this.cadreInfo.setGender(gender);
-	}
-
+	
 	public String getState() {
 		return cadreInfo.getState();
 	}
@@ -251,26 +285,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	public void setCadreLevelValue(String cadreLevelValue) {
 		this.cadreInfo.setStrCadreLevelValue(cadreLevelValue);
-	}
-
-	public String getMobile() {
-		return cadreInfo.getMobile();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", shortCircuit = true, minLength = "10", maxLength = "12")
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([9]{1})([02346789]{1})([0-9]{8})$", message = "Mobile Number should be digits", shortCircuit = true)
-	public void setMobile(String mobile) {
-		this.cadreInfo.setMobile(mobile);
-	}
-
-	public String getEmail() {
-		return cadreInfo.getEmail();
-	}
-
-	public void setEmail(String email) {
-		this.cadreInfo.setEmail(email);
-	}
+	}	
 
 	public String getIncome() {
 		return cadreInfo.getAnnualIncome();
@@ -393,24 +408,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode should be 6 digits only", shortCircuit = true, minLength = "6", maxLength = "6")
 	public void setPPinCode(String pinCode) {
 		this.cadreInfo.setPpinCode(pPinCode);
-	}
-
-	public String getFatherOrSpouseName() {
-		return this.cadreInfo.getFatherOrSpouseName();
-	}
-
-	public void setFatherOrSpouseName(String fatherOrSpouseName) {
-		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
-	}
-
-	public String getDobOption() {
-		return this.cadreInfo.getDobOption();
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age", shortCircuit = true)
-	public void setDobOption(String dobOption) {
-		this.cadreInfo.setDobOption(dobOption);
-	}
+	}	
 
 	public String getAge() {
 		return this.cadreInfo.getAge();
@@ -427,10 +425,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		String[] trainingCamps = null;
 		String[] languageOptions_English = null;
 		String[] languageOptions_Hindi = null;
-		languageOptions_English = request
-				.getParameterValues("languageOptions_English");
-		languageOptions_Hindi = request
-				.getParameterValues("languageOptions_Hindi");
+		languageOptions_English = request.getParameterValues("languageOptions_English");
+		languageOptions_Hindi = request.getParameterValues("languageOptions_Hindi");
 		String name1 = request.getParameter("firstName");
 		String name2 = request.getParameter("lastName");
 		String name3 = request.getParameter("constituency");
@@ -453,7 +449,7 @@ public class CadreRegisterAction extends ActionSupport implements
 			cadreInfo.setDistrict(obj.getId().toString());
 		}
 
-		if (IConstants.USER_TYPE_PARTY.equals(regVO.getUserType())) {
+		if (IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.BJP.equals(regVO.getPartyShortName())) {
 			skills = request.getParameterValues("skills");
 			trainingCamps = request.getParameterValues("trainingCamps");
 		}

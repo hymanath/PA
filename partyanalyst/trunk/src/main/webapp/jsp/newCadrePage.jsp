@@ -726,7 +726,7 @@
 					
 				</c:forEach>		
 				<tr>
-					<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
+					<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /></td>
 					<td align="left">
 							<s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduStatus" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Education"></s:select>				
 					</td>
@@ -736,7 +736,7 @@
 				<tr>
 						<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 						<td align="left"><s:textfield id="incomeField" name="income" size="25"/></td>
-						<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
+						<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /></td>
 						<td style="padding-left: 10px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
 					</tr>
 			</table>
