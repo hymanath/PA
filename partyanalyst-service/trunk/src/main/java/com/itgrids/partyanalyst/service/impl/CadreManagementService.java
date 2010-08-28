@@ -354,9 +354,12 @@ public class CadreManagementService {
 					 cadre.setExactDateOfBirth("false");					 
 				}				
 				cadre.setTelephone(cadreInfo.getLandLineNo());
-				cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
-				cadre.setOccupation(occupationDAO.get(cadreInfo.getOccupation()));
-				cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
+				if(!cadreInfo.getEducation().equals(new Long(-1)))
+				 cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
+				if(!cadreInfo.getOccupation().equals(new Long(-1)))
+				 cadre.setOccupation(occupationDAO.get(cadreInfo.getOccupation()));
+				if(!cadreInfo.getCasteCategory().equals(new Long(-1)))
+				 cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
 				
 				cadre.setMemberType(cadreInfo.getMemberType());
 				Double annunaIncome = 0d;
@@ -377,8 +380,9 @@ public class CadreManagementService {
 					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName()))
 					{
 						cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
-						cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
-						if(!StringUtils.isBlank(cadreInfo.getAnnualIncome()))
+						if(!StringUtils.isBlank(cadreInfo.getEffectiveDate()))
+						    cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
+						if(!StringUtils.isBlank(cadreInfo.getEndingDate()))
 							cadre.setEndingDate(format.parse(cadreInfo.getEndingDate()));											
 					}
 				}
