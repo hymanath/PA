@@ -21,6 +21,10 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name= "alliance_groups")
 public class AllianceGroup extends BaseModel implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long allianceGroupId;
 	private Party party;
 	private Group group;

@@ -29,7 +29,12 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "cadre")
 public class Cadre extends BaseModel{
 
-	 private Long cadreId;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Long cadreId;
 	 private Registration registration;
 	 private CadreLevel cadreLevel;
 	 private Long cadreLevelValue;
