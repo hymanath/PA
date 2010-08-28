@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -51,7 +52,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private IStaticDataService staticDataService; 
 	private List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> languagesList = new ArrayList<SelectOptionVO>();
-	 
+	private Boolean partyCommittees = false;
+	private Boolean cadreSkills = false;
+	private Boolean partyTrainingCamps = false;
 	
 	public ServletContext getContext() {
 		return context;
@@ -231,8 +234,11 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);
-			stateList.add(obj1);
 			stateList.add(obj2);
+			districtList = staticDataService.getDistricts(accessValue);
+			districtList.add(0,new SelectOptionVO(0l,"Select District"));
+			session.setAttribute("stateList", stateList);
+			session.setAttribute("districtList",districtList);
 			
 		}else if("DISTRICT".equals(accessType)){
 			log.debug("Access Type = District ****");			
@@ -272,11 +278,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		eduStatus = staticDataService.getAllEducationalQualifications();
 		occupationsList = staticDataService.getAllOccupations();
 		languagesList = staticDataService.getAllLanguages();
-		if("Party".equals(regVO.getUserType()))
+		if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.BJP.equals(regVO.getPartyShortName()))
 		{
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
 			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
-			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 	
+			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 
+			partyCommittees = true;
+			cadreSkills = true;
+			partyTrainingCamps = true;
 			session.setAttribute("partieCommittee",partyCommitteesList);
 			session.setAttribute("partyTrainingCampsList",partyTrainingCampsList);
 			session.setAttribute("cadreSkillsList",cadreSkillsList);
@@ -291,6 +300,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute("eduStatus", eduStatus);
 		session.setAttribute("occupationsList", occupationsList);
 		session.setAttribute("languagesList", languagesList);
+		session.setAttribute("partyCommittees", partyCommittees);
+		session.setAttribute("cadreSkills", cadreSkills);
+		session.setAttribute("partyTrainingCamps", partyTrainingCamps);
 		return Action.SUCCESS;
 	}
 	

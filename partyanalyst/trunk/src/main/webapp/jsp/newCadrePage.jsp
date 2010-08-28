@@ -410,21 +410,25 @@
 			}	
 		}
 	}
-	function enableDisableCalBtn()
-	{
+	function enableDisableCalBtn(selectedOption)
+	{		
 		var btnEl = document.getElementById("calBtnEl");
 		var ageTextEl = document.getElementById("ageTextEl");
-		if(btnEl.disabled == true)
+		if(selectedOption == 'dobOption' )
 		{	
 			btnEl.disabled = false;
 			ageTextEl.disabled = true;
 		}	
-		else if(btnEl.disabled == false)
+		else if(selectedOption == 'age')
 		{
 			ageTextEl.disabled = false;
 			ageTextEl.focus();
 			btnEl.disabled = true;
 		}	
+	}
+	function resetForm()
+	{
+		
 	}
 	
 </script>
@@ -464,17 +468,28 @@
 		padding:5px;
 	}	
 	.button {
-		background:url("images/icons/brown_but.gif") no-repeat scroll 0 0 transparent;
+		background-color:#0000AA;
 		color:#FFFFFF;
 		font-size:12px;
 		font-weight:bold;
-		height:28px;
 		margin:10px;
-		padding-top:2px;
+		padding:2px;
 		text-align:center;
 		text-decoration:none;
-		width:70px;
 	}
+	.anchor
+	{
+		background-color:#0000AA;
+		color:#FFFFFF;
+		font-size:12px;
+		font-weight:bold;
+		margin:10px;
+		padding:2px;
+		text-align:center;
+		text-decoration:none;
+		height:25px;
+	}
+	
 	.cadreReportHeader {
 		background-image:url("images/icons/cadreReport/bg_center.png");
 		background-repeat:repeat-x;
@@ -512,7 +527,7 @@
 			<DIV id="alertMessage" style="display:none;"></DIV>
 		</c:if>
 		<c:if test="${cadreId != null}">
-			<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>
+			<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>			
 		</c:if>
 	<table id="cadreRegistrationTable" class="registrationTable">
 	<tr>
@@ -554,14 +569,14 @@
 							<td colspan="6" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
 						</tr>
 						<tr>
-						<td width="162"><input type="radio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn()"/>Date Of Birth<font class="requiredFont"> * </font></td>
+						<td width="162"><input type="radio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn(this.value)"/>Date Of Birth<font class="requiredFont"> * </font></td>
 						<td align="left">
 							<input type="text" id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 						</td>
 						<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" disabled="true" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
 						<td align="left">Or</td>	
-						<td><input type="radio" name="dobOption" value="age" onclick="enableDisableCalBtn()"/>Age<font class="requiredFont"> * </font></td>
+						<td><input type="radio" name="dobOption" value="age" onclick="enableDisableCalBtn(this.value)"/>Age<font class="requiredFont"> * </font></td>
 						<td align="left"><s:textfield id="ageTextEl" name="age" size="25"/> </td>
 						</tr>
 						</table>
@@ -629,7 +644,7 @@
 					<td align="left">
 						<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 					</td>
-					<td><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /><font class="requiredFont"> * </font></td>
+					<td><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 					<td align="left"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
 				</tr>				
 				<tr>
@@ -686,7 +701,7 @@
 						<td align="left">
 							<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 						</td>
-						<td><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /><font class="requiredFont"> * </font></td>
+						<td><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
 						<td align="left"><s:textfield id="ppinCodeField" name="ppinCode" maxlength="10" size="25" />  </td>
 					</tr>				
 				</table>
@@ -698,15 +713,17 @@
 			<legend><strong>Social Status</strong></legend>
 			<table class="cadreDetailsTable">
 				<tr>
-					<th colspan="4"><s:label for="languageField" id="languageLabel"  value="%{getText('languageEff')}" /><font class="requiredFont"> * </font></th>
+					<th colspan="4"><s:label for="languageField" id="languageLabel"  value="%{getText('languageEff')}" /></th>
 				</tr>	
 				<c:forEach var="lang" items="${sessionScope.languagesList}" >
+					
 					<tr>
-						<td><input type="checkbox" id="${lang.id}" value="${lang.id}" onclick="showHideEffOptions(this.id)"/>${lang.name}</td>
-						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Speak</td>
-						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Read</td>
-						<td><input type="checkbox" name="languageEffOptions_${lang.id}" disabled="true"/>Can Write</td>
+						<td>${lang.name}</td>
+						<td><input type="checkbox" name="languageOptions_${lang.name}"  value="speak"/>Can Speak</td>
+						<td><input type="checkbox" name="languageOptions_${lang.name}"  value="read"/>Can Read</td>
+						<td><input type="checkbox" name="languageOptions_${lang.name}"  value="write"/>Can Write</td>
 					</tr>
+					
 				</c:forEach>		
 				<tr>
 					<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
@@ -789,13 +806,13 @@
 					</select> 
 				</td>
 			</tr>
-			<c:if test="${sessionScope.USER.userType == 'Party'}">
+			<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees == true}">
 			<tr>
 				<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
 				<select id="partyComiteSelect" name="partyComite" onchange="getPartyDesignation(this.options[this.selectedIndex].value)">
 						<option>Please Select</option>
-						<c:forEach var="partyCommittee"  items="${partyCommitteesList}" >
+						<c:forEach var="partyCommittee"  items="${sessionScope.partieCommittee}" >
 						<option value='${partyCommittee.id}'>${partyCommittee.name}</option>	
 						</c:forEach>					
 					</select>
@@ -831,6 +848,8 @@
 					</table>	
 					</td>								
 			</tr>
+			</c:if>
+			<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.cadreSkills == true}">
 			<tr>
 				<th><u>Cadre Skills</u></th>
 			</tr>
@@ -849,6 +868,8 @@
 					</table>
 				</td>
 			</tr>
+			</c:if>
+			<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyTrainingCamps == true}">
 			<tr>
 				<th><u>Participated Training Camps</u></th>
 			</tr>
@@ -873,22 +894,11 @@
 		</div></div>
 		<div style="text-align: center;">
 			<input type="submit" value="Register" class="button">
+			<a href="cadreManagementAction.action" class="anchor">Go To Cadre Management Home Page</a>
+			<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
+			
 		</div>
 	</div>
 	</s:form>
-	<script type="text/javascript">
-
-
-	<c:forEach var="partyCommittee"  items="${partyCommitteesList}" >
-var ob={
-			id:'${partyCommittee.id}',
-			value:'${partyCommittee.name}'
-		};
-cadreObj.partyCommittees.push(ob);	
-</c:forEach>
-</script>
 </body>
-
-varStatus
-
 </html>

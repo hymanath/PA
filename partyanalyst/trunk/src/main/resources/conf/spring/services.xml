@@ -215,7 +215,9 @@
 		<property name="occupationDAO" ref="occupationDAO" />
 		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
 		<property name="cadreSkillsDAO" ref="cadreSkillsDAO" />	
-		<property name="cadreParticipatedTrainingCampsDAO" ref="cadreParticipatedTrainingCampsDAO" />		   	  	
+		<property name="cadreParticipatedTrainingCampsDAO" ref="cadreParticipatedTrainingCampsDAO" />
+		<property name="languageDAO" ref="languageDAO" />
+		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />				   	  	
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
