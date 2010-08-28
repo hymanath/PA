@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.math.BigDecimal;
+
 public class CandidateOppositionVO {
 
 	/*
@@ -18,6 +20,7 @@ public class CandidateOppositionVO {
 	private Long candidateId;
 	private String candidateName;
 	private String votesEarned;
+	private BigDecimal votesEarnedBigD;
 	private String votesPercentage;
 	private Long rank;
 	private Boolean status;
@@ -106,6 +109,12 @@ public class CandidateOppositionVO {
 	}
 	public void setVotesPercentMargin(String votesPercentMargin) {
 		this.votesPercentMargin = votesPercentMargin;
+	}
+	public BigDecimal getVotesEarnedBigD() {
+		return votesEarnedBigD;
+	}
+	public void setVotesEarnedBigD(BigDecimal votesEarnedBigD) {
+		this.votesEarnedBigD = votesEarnedBigD;
 	}
 	
 }

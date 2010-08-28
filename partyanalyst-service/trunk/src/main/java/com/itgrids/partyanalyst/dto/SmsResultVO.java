@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SmsResultVO implements Serializable {
 
@@ -12,6 +13,7 @@ public class SmsResultVO implements Serializable {
 	private Long totalSmsSent;
 	private Long remainingSmsCount;
 	private Long status; //			Failure =  1   			Success	=	0
+	private List<CadreInfo> smsSentCadreInfo;
 	
 	
 	public Long getRemainingSmsCount() {
@@ -31,6 +33,12 @@ public class SmsResultVO implements Serializable {
 	}
 	public void setStatus(Long status) {
 		this.status = status;
+	}
+	public List<CadreInfo> getSmsSentCadreInfo() {
+		return smsSentCadreInfo;
+	}
+	public void setSmsSentCadreInfo(List<CadreInfo> smsSentCadreInfo) {
+		this.smsSentCadreInfo = smsSentCadreInfo;
 	}
 	
 	

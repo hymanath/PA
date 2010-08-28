@@ -26,6 +26,8 @@ public class CadreBasicInformationVO implements Serializable {
 	private String cadreType;
 	private String searchType;
 	private Boolean isSocialStatus;
+	private Boolean isAndSearch;	//search based on AND/OR
+	private Boolean isOrSearch;
 	
 	//Getters and Setters
 	public String getSearchType() {
@@ -88,6 +90,18 @@ public class CadreBasicInformationVO implements Serializable {
 	}
 	public void setCadreLevelTypeId(Long cadreLevelTypeId) {
 		this.cadreLevelTypeId = cadreLevelTypeId;
+	}
+	public Boolean getIsAndSearch() {
+		return isAndSearch;
+	}
+	public void setIsAndSearch(Boolean isAndSearch) {
+		this.isAndSearch = isAndSearch;
+	}
+	public Boolean getIsOrSearch() {
+		return isOrSearch;
+	}
+	public void setIsOrSearch(Boolean isOrSearch) {
+		this.isOrSearch = isOrSearch;
 	}
 
 }
