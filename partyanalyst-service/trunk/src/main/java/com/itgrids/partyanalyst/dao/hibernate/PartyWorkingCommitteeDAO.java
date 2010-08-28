@@ -17,7 +17,6 @@ public class PartyWorkingCommitteeDAO  extends GenericDaoHibernate<PartyWorkingC
 
 	@SuppressWarnings("unchecked")
 	public List<PartyWorkingCommittee> getWorkingCommitteeForParty(Long partyId) {
-		
 		return getHibernateTemplate().find("from PartyWorkingCommittee model where model.party.partyId = ?", partyId);
 	}
 

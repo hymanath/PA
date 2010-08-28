@@ -21,5 +21,10 @@ public class PartyWorkingCommitteeDesignationDAO extends GenericDaoHibernate<Par
 		return getHibernateTemplate().find("from PartyWorkingCommitteeDesignation model where model.partyWorkingCommittee.party.partyId = ? and model.partyWorkingCommittee.partyWorkingCommitteeId = ?", params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getAllDesignationsForPartyCommitee() {
+		return getHibernateTemplate().find("select distinct model.designation from PartyWorkingCommitteeDesignation model");
+	}
+
 	
 }

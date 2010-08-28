@@ -343,5 +343,94 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 		
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List findCadreDetailsByLevelAndProperty(Long userId,
+			String propertyColumnOne, String propertyColumnTwo,
+			String propertyColumnId, Long propertyColumnValue) {
+		Object[] params = {userId,propertyColumnValue};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model."+propertyColumnOne+"."+propertyColumnTwo+"."+propertyColumnId+" = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreIdsByUserAndMemberType(Long userId,String memberType) {
+		
+		Object[] params = {userId,memberType};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.memberType = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreIdsByMemberTypeAndCadreList(String memberType,
+			List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.memberType = ? and "+
+				"model.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, memberType);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueAndCadreIds(String propertyObject,
+			String propertyField, Long propertyValue, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model."+propertyObject+"."+propertyField+" = ? and "+
+		          "model.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, propertyValue);
+        queryObject.setParameterList("cadreIds", cadreIds);
+        return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueAndUser(Long userId,
+			String propertyObject, String propertyField, Long propertyValue) {
+		Object[] params = {userId,propertyValue};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model."+propertyObject+"."+propertyField+" = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeAndCadreIds(
+			Long partyCommiteeId, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.designation.partyWorkingCommittee.partyWorkingCommitteeId = ? and "+
+		        "model.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, partyCommiteeId);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeAndUser(Long userId,
+			Long partyCommiteeId) {
+		Object[] params = {userId,partyCommiteeId};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.designation.partyWorkingCommittee.partyWorkingCommitteeId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationAndCadreIds(
+			Long partyCommiteeDesigId, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.designation.partyWkgCommitteeDesignationId = ? and "+
+              "model.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, partyCommiteeDesigId);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationAndUser(Long userId,
+			Long partyCommiteeDesigId) {
+		Object[] params = {userId,partyCommiteeDesigId};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.designation.partyWkgCommitteeDesignationId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByUserAndCadreLevel(Long userId, Long levelId) {
+		Object[] params = {userId,levelId};
+		return getHibernateTemplate().find("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.cadreLevel.cadreLevelID = ?",params);
+	}
+
+		
 }
