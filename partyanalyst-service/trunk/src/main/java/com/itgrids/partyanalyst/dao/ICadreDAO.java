@@ -63,5 +63,38 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType);
 	
 	public List findHamletsByRVs(String townships);
+	@SuppressWarnings("unchecked")
 	public List findCadreSizeHamletWise(Long userID);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreDetailsByLevelAndProperty(Long userId,String propertyColumnOne,String propertyColumnTwo,String propertyColumnId,Long propertyColumnValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreIdsByMemberTypeAndCadreList(String memberType,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreIdsByUserAndMemberType(Long userId,String memberType);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueAndCadreIds(String propertyObject,String propertyField,Long propertyValue,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueAndUser(Long userId,String propertyObject,String propertyField,Long propertyValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeAndUser(Long userId,Long partyCommiteeId);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeAndCadreIds(Long partyCommiteeId,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationAndUser(Long userId,Long partyCommiteeDesigId);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationAndCadreIds(Long partyCommiteeDesigId,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByUserAndCadreLevel(Long userId,Long levelId);
+	
+	
 }

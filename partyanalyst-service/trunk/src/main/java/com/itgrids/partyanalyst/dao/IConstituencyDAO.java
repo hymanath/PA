@@ -89,4 +89,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findConstituenciesForBiElectionInADistrict(String query);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyIdByTehsil(Long tehsilId);
 }

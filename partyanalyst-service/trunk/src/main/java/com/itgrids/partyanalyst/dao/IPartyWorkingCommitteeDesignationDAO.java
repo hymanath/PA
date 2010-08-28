@@ -8,4 +8,7 @@ import com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation;
 
 public interface IPartyWorkingCommitteeDesignationDAO extends GenericDao<PartyWorkingCommitteeDesignation , Long> {
 	public List<PartyWorkingCommitteeDesignation> getDesignationsForPartyCommittee(Long partyId, Long partyWorkingCommitteeId);
+	
+	@SuppressWarnings("unchecked")
+	public List getAllDesignationsForPartyCommitee();
 }
