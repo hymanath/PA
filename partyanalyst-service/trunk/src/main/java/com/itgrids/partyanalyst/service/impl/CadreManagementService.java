@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -1382,5 +1384,464 @@ public class CadreManagementService {
 		}
 		return trainingCampsList;
 			
-	}			
+	}
+	
+	/*
+	 * Method to check wheather a party has commitee or not
+	 * Returns a Boolean value
+	 */
+	public Boolean checkForAPartyCommiteeDetails(Long partyId){
+		
+		Boolean result = false;
+		List<PartyWorkingCommittee> commiteeList = partyWorkingCommitteeDAO.getWorkingCommitteeForParty(partyId);
+		if(commiteeList != null && commiteeList.size() > 0)
+			result = true;
+	 return result;
+	}
+	
+	/*
+	 * Method to get all designations of party working commitee
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getAllDesignationsOfPartyWorkingCommitee(){
+		
+		List<SelectOptionVO> resultsList = null;
+		List designationsList = partyWorkingCommitteeDesignationDAO.getAllDesignationsForPartyCommitee();
+		if(designationsList != null && designationsList.size() > 0){
+			
+			resultsList = new ArrayList<SelectOptionVO>();
+			Iterator desigIterator = designationsList.listIterator();
+			
+			while(desigIterator.hasNext()){
+			 Object params = (Object)desigIterator.next();
+			 SelectOptionVO value = new SelectOptionVO();
+			 value.setName((String)params);
+			 
+			 resultsList.add(value);
+			}
+			
+		}
+	 return resultsList;
+	}
+	
+	/*
+	 * Method to Obtain Cadre details based on a search criteria
+	 */
+	public List<CadreInfo> getCadreDetailsBySearchCriteria(Long userId,PartyCadreDetailsVO cadreInputVO){
+		
+		if(log.isDebugEnabled())
+		log.debug("Inside getCadreDetailsBySearchCriteria Method ");
+		
+		List<CadreInfo> cadreOutputResultVO = null;
+		
+		if(userId != null && cadreInputVO != null){
+			
+			try{
+				List<Cadre> cadreObjects = getCadreSearchResultsByInputCriteria(userId,cadreInputVO);
+				if(cadreObjects != null && cadreObjects.size() > 0)
+				cadreOutputResultVO = putCadreSearchResultsInVO(cadreObjects);
+				
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		
+	 return cadreOutputResultVO;	
+	}
+	
+	/*
+	 * Method to Obtain Cadre Objects based on a search criteria
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Cadre> getCadreSearchResultsByInputCriteria(Long userId,PartyCadreDetailsVO cadreInputVO) throws Exception{
+		
+		if(log.isDebugEnabled())
+			log.debug("Inside getCadreDetailsBySearchCriteria Method ");
+		
+		List<Cadre> cadreObjects = null;
+		List<Long> cadreIds = null;
+		Map<Long,Long> cadreIdsMap = new HashMap<Long,Long>();
+		
+		if(userId != null && cadreInputVO != null){
+			
+			//Location Based Or Level Based Search
+			if(cadreInputVO.getSearchType().equals(IConstants.LOCATION_BASED)){
+				cadreIds = getLocationBasedSearch(userId,cadreInputVO.getCadreLevelId(),cadreInputVO.getCadreLocationId());
+			}else if(cadreInputVO.getSearchType().equals(IConstants.LEVEL_BASED)){
+				cadreIds = getLevelBasedSearch(userId,cadreInputVO.getCadreLevelId());
+			}
+			
+			//search by CadreType
+			if(cadreInputVO.getCadreType().equals(IConstants.CADRE_MEMBER_TYPE_ACTIVE) || cadreInputVO.getCadreType().equals(IConstants.CADRE_MEMBER_TYPE_NORMAL)){
+				
+				List cadreTypeObjList = null;
+				if(cadreIds != null && cadreIds.size() > 0)
+				cadreTypeObjList = cadreDAO.findCadreIdsByMemberTypeAndCadreList(cadreInputVO.getCadreType(),cadreIds);
+				
+				if(cadreTypeObjList != null)
+					cadreIds = getProcessedObjects(cadreTypeObjList);
+			}
+			
+			//for Or search
+			if(cadreInputVO.getIsOrSearch()){
+				if(cadreIds != null && cadreIds.size() > 0)
+				cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIds);
+			}
+			
+			//search by social skills
+			if(cadreInputVO.getIsSocialStatus()){
+				
+				String paramObject="";
+				String paramField="";
+				
+				//Education
+				if(cadreInputVO.getCadreEducationQualification() != null && !cadreInputVO.getCadreEducationQualification().getCadreCategoryId().equals(new Long(0))){
+					paramObject="education";
+					paramField="eduQualificationId";
+					List cadreTypeObjList = null;
+					if(cadreInputVO.getIsOrSearch()){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId());
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId(),cadreIds);
+						if(cadreTypeObjList != null)
+							cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
+					
+				}
+				
+				//Caste
+				if(cadreInputVO.getCadreCasteCategory() != null && !cadreInputVO.getCadreCasteCategory().getCadreCategoryId().equals(new Long(0))){
+					paramObject="casteCategory";
+					paramField="socialCategoryId";
+					List cadreTypeObjList = null;
+					if(cadreInputVO.getIsOrSearch()){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId());
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId(),cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
+				}
+				
+				//Ocupation
+				if(cadreInputVO.getCadreOccupation() != null && !cadreInputVO.getCadreOccupation().getCadreCategoryId().equals(new Long(0))){
+					paramObject="occupation";
+					paramField="occupationId";
+					List cadreTypeObjList = null;
+					if(cadreInputVO.getIsOrSearch()){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId());
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId(),cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
+				}
+			}
+			
+			//Search by committee
+			if(cadreInputVO.getCadreWorkingCommittee() != null && !cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId().equals(new Long(0))){
+				List cadreTypeObjList = null;
+				if(cadreInputVO.getIsOrSearch()){
+					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndUser(userId, cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId());
+					if(cadreTypeObjList != null){
+					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					}
+				}
+				else if(cadreIds != null && cadreIds.size() > 0){
+					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndCadreIds(cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId(), cadreIds);
+				if(cadreTypeObjList != null)
+					cadreIds = getProcessedObjects(cadreTypeObjList);
+			    }
+			}
+			
+			//search by commitee designation
+			if(cadreInputVO.getCadreCommitteeDesignation() != null && !cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId().equals(new Long(0))){
+				List cadreTypeObjList = null;
+				if(cadreInputVO.getIsOrSearch()){
+					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndUser(userId, cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId());
+					if(cadreTypeObjList != null){
+					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					}
+				}
+				else if(cadreIds != null && cadreIds.size() > 0){
+					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndCadreIds(cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId(), cadreIds);
+				if(cadreTypeObjList != null)
+					cadreIds = getProcessedObjects(cadreTypeObjList);
+				}
+			}
+			
+			//search by cadre skills
+			if(cadreInputVO.getCadreSkillSet() != null && !cadreInputVO.getCadreSkillSet().getCadreCategoryId().equals(new Long(0))){
+				List cadreTypeObjList = null;
+				if(cadreInputVO.getIsOrSearch()){
+					cadreTypeObjList = cadreSkillsDAO.getCadreIdsByCadreSkillAndUser(userId, cadreInputVO.getCadreSkillSet().getCadreCategoryId());
+					if(cadreTypeObjList != null){
+					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					}
+				}
+				else if(cadreIds != null && cadreIds.size() > 0){
+					cadreTypeObjList = cadreSkillsDAO.getCadreBySkillAndCadreIds(cadreInputVO.getCadreSkillSet().getCadreCategoryId(), cadreIds);
+				if(cadreTypeObjList != null)
+					cadreIds = getProcessedObjects(cadreTypeObjList);
+				}
+			}
+			
+			//search by cadre training camps
+			if(cadreInputVO.getCadreTrainingCamps() != null && !cadreInputVO.getCadreTrainingCamps().getCadreCategoryId().equals(new Long(0))){
+				List cadreTypeObjList = null;
+				if(cadreInputVO.getIsOrSearch()){
+					cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreIdsByCadreCampsAndUser(userId, cadreInputVO.getCadreTrainingCamps().getCadreCategoryId());
+					if(cadreTypeObjList != null){
+					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					}
+				}
+				else if(cadreIds != null && cadreIds.size() > 0){
+					cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreByCampsAndCadreIds(cadreInputVO.getCadreTrainingCamps().getCadreCategoryId(), cadreIds);
+				if(cadreTypeObjList != null)
+					cadreIds = getProcessedObjects(cadreTypeObjList);
+				}
+				
+			}
+			
+			//process cadre ids and obtain cadre objects
+			if(cadreInputVO.getIsOrSearch()){
+				if(!cadreIdsMap.isEmpty() && cadreIdsMap.size() > 0){
+					Set<Long> cadreKeys = cadreIdsMap.keySet();
+					cadreObjects = getCadreObjectsFromCadreIdsSet(cadreKeys);
+				}
+			}
+			else if(cadreIds != null && cadreIds.size() > 0){
+				cadreObjects = getCadreObjectsFromCadreIds(cadreIds);
+			}
+				
+		}
+		
+	 return cadreObjects;
+	}
+	
+	/*
+	 * Process cadreIds and set to Map
+	 */
+	public Map<Long,Long> setResultCadreIdsToMap(Map<Long,Long> cadreMap,List<Long> cadreIds){
+		
+		if(cadreMap != null && cadreIds != null && cadreIds.size() > 0){
+			for(Long cadreId:cadreIds){
+				if(cadreMap.isEmpty())
+					cadreMap.put(cadreId, cadreId);
+				else if(!cadreMap.containsKey(cadreId))
+					cadreMap.put(cadreId, cadreId);
+			}
+		}
+	 return cadreMap;
+	}
+	
+	/*
+	 * Get Cadre Objects From Cadre Ids
+	 */
+	public List<Cadre> getCadreObjectsFromCadreIds(List<Long> cadreIds){
+		
+		List<Cadre> cadreObjects = null;
+		if(cadreIds != null && cadreIds.size() > 0){
+			
+			cadreObjects = new ArrayList<Cadre>();
+			for(Long cadreId:cadreIds){
+				Cadre cadre = cadreDAO.get(cadreId);
+				cadreObjects.add(cadre);
+			}
+		}
+	 return cadreObjects;	
+	}
+	
+	/*
+	 * Get Cadre Objects From Cadre Ids
+	 */
+	public List<Cadre> getCadreObjectsFromCadreIdsSet(Set<Long> cadreIds){
+		
+		List<Cadre> cadreObjects = null;
+		if(cadreIds != null && cadreIds.size() > 0){
+			
+			cadreObjects = new ArrayList<Cadre>();
+			for(Long cadreId:cadreIds){
+				Cadre cadre = cadreDAO.get(cadreId);
+				cadreObjects.add(cadre);
+			}
+		}
+	 return cadreObjects;	
+	}
+	
+	/*
+	 * Method To get Location Based Search Results
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Long> getLocationBasedSearch(Long userId,Long levelId,Long locationId){
+		
+		List<Long> cadreIds = null;
+		if(levelId != null && locationId != null){
+			
+			String ObjectOne="",ObjectTwo="",field="";
+			ObjectOne = "currentAddress";
+			
+			if(levelId.equals(new Long(1))){
+				ObjectTwo = "country";
+				field = "countryId";
+			}else if(levelId.equals(new Long(2))){
+				ObjectTwo = "state";
+				field = "stateId";
+			}else if(levelId.equals(new Long(3))){
+				ObjectTwo = "district";
+				field = "districtId";
+			}else if(levelId.equals(new Long(4))){
+				ObjectTwo = "constituency";
+				field = "constituencyId";
+			}else if(levelId.equals(new Long(5))){
+				ObjectTwo = "tehsil";
+				field = "tehsilId";
+			}else if(levelId.equals(new Long(6))){
+				ObjectTwo = "township";
+				field = "townshipId";
+			}
+			
+			if(!"".equalsIgnoreCase(ObjectOne) && !"".equalsIgnoreCase(ObjectTwo) && !"".equalsIgnoreCase(field)){
+				List cadreObjList = cadreDAO.findCadreDetailsByLevelAndProperty(userId,ObjectOne,ObjectTwo,field,locationId);
+				if(cadreObjList != null && cadreObjList.size() > 0)
+				cadreIds = getProcessedObjects(cadreObjList);
+			}
+		}
+	 return cadreIds;
+	}
+	
+	/*
+	 * Level based Cadre Search
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Long> getLevelBasedSearch(Long userId,Long levelId){
+		List<Long> cadreIds = null;
+		if(userId != null && levelId != null){
+			List cadreObjList = cadreDAO.findCadreByUserAndCadreLevel(userId, levelId);
+			if(cadreObjList != null && cadreObjList.size() > 0)
+				cadreIds = getProcessedObjects(cadreObjList);
+		}
+	 return cadreIds;
+	}
+	
+	/*
+	 * Process The Objects
+	 */
+	public List<Long> getProcessedObjects(List objects){
+		
+		List<Long> cadreIds = null;
+		if(objects != null && objects.size() > 0){
+			
+			cadreIds = new ArrayList<Long>();
+			for(int i=0;i<objects.size();i++){
+				Object params = (Object)objects.get(i);
+				Long cadreId  =(Long)params;
+				cadreIds.add(cadreId);
+			}
+		}
+	 return cadreIds;
+	}
+	
+	/*
+	 * Method to set Cadre Objects to VO
+	 */
+	public List<CadreInfo> putCadreSearchResultsInVO(List<Cadre> cadreObjects) throws Exception{
+		if(log.isDebugEnabled())
+			log.debug("Inside getCadreDetailsBySearchCriteria Method ");
+		List<CadreInfo> cadreOutputVO = null;
+		
+		if(cadreObjects != null && cadreObjects.size() > 0){
+			cadreOutputVO = new ArrayList<CadreInfo>();
+			for(Cadre cadre:cadreObjects){
+				CadreInfo cadreInfoVO = new CadreInfo();
+				cadreInfoVO.setCadreID(cadre.getCadreId());
+				cadreInfoVO.setEmail(cadre.getEmail());
+				cadreInfoVO.setFirstName(cadre.getFirstName());
+				cadreInfoVO.setGender(cadre.getGender());
+				cadreInfoVO.setMobile(cadre.getMobile());
+				
+				cadreOutputVO.add(cadreInfoVO);
+			}
+		}
+	 return cadreOutputVO;
+	}
+	
+	
+	/*
+	 * Method to send message to cadre of selected criteria
+	 */
+	public SmsResultVO sendSMSToSelectedCadreCriteria(Long userId,PartyCadreDetailsVO cadreInputVO,String includeCadreName,String message){
+		
+		SmsResultVO smsResultVO = new SmsResultVO();
+		
+		try{
+		//get cadre matching the selection criteria
+		List<CadreInfo> cadreDetails = getCadreDetailsBySearchCriteria(userId,cadreInputVO);
+		
+		if(cadreDetails != null && cadreDetails.size() > 0){
+			Integer mobileNos = 0;
+			Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId)-cadreDetails.size();
+			if(remainingSMS<0){
+				smsResultVO.setStatus(1l);
+				smsResultVO.setTotalSmsSent(0l);
+				smsResultVO.setRemainingSmsCount(0l);
+			}else{
+				if("NO".equals(includeCadreName)){
+					String[] cadreMobileNos = new String[cadreDetails.size()];
+					int i=-1;
+					for (CadreInfo mobileInfo : cadreDetails) {
+						cadreMobileNos[++i] = mobileInfo.getMobile();
+					}
+					if(cadreMobileNos!=null && cadreMobileNos.length>0)
+						mobileNos = cadreMobileNos.length;
+					smsCountrySmsService.sendSms(message, true,userId,IConstants.Cadre_Management,cadreMobileNos);
+				}else{
+					// to do ICONSTANTS.SMS_DEAR
+					for (CadreInfo mobiles : cadreDetails) {
+						String mobile =  mobiles.getMobile();
+						StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
+						cadreMessage.append(IConstants.SPACE).append(mobiles.getFirstName()).append(IConstants.SPACE).append(message);
+
+						smsCountrySmsService.sendSms(cadreMessage.toString(), true,userId,IConstants.Cadre_Management,mobile);
+						mobileNos = mobileNos + 1;
+					}
+				}
+				smsResultVO.setStatus(0l);
+				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(cadreDetails.size()).toString()));
+				smsResultVO.setRemainingSmsCount(remainingSMS);
+				smsResultVO.setSmsSentCadreInfo(cadreDetails);
+			}
+			
+		}
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			smsResultVO.setStatus(1l);
+			smsResultVO.setTotalSmsSent(0l);
+			smsResultVO.setRemainingSmsCount(0l);
+			log.debug(ex);
+		}
+		
+		
+	 return smsResultVO;
+	}
 }
