@@ -89,7 +89,8 @@
 						<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>
 						<li><a href="javascript:{}" class="navLinksAnc">Our Blog</a></li>
 						<li>|</li>
-						<li><a href="javascript:{}" class="navLinksAnc"> Login </a></li>
+						<li><a href="javascript:{}" onclick="buildLoginPopup()" class="navLinksAnc">
+						Login </a></li>
 					</ul>
 				</div>
 				<div id="pa_logo" class="pa_logo_class">
@@ -251,7 +252,7 @@
 			<div id="homePagefooter" class="pageContentDivs">
 				<table width="100%" id="copyrightLinksTable">
 					<tr>
-						<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+						<td align="left"> Â© Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
 						<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
 					</tr>
 				</table>
