@@ -358,7 +358,7 @@ public class CadreManagementService {
 				 cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
 				if(!cadreInfo.getOccupation().equals(new Long(-1)))
 				 cadre.setOccupation(occupationDAO.get(cadreInfo.getOccupation()));
-				if(!cadreInfo.getCasteCategory().equals(new Long(-1)))
+				if(cadreInfo.getCasteCategory() != null)
 				 cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getCasteCategory()));
 				
 				cadre.setMemberType(cadreInfo.getMemberType());
@@ -379,7 +379,8 @@ public class CadreManagementService {
 					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
 					if(IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName()))
 					{
-						cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
+						if(!cadreInfo.getDesignation().equals("0"))
+							cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
 						if(!StringUtils.isBlank(cadreInfo.getEffectiveDate()))
 						    cadre.setEffectiveDate(format.parse(cadreInfo.getEffectiveDate()));
 						if(!StringUtils.isBlank(cadreInfo.getEndingDate()))
