@@ -26,10 +26,19 @@ public class CadreBasicInformationVO implements Serializable {
 	private String cadreType;
 	private String searchType;
 	private Boolean isSocialStatus;
+	private String skillsSearchType;
 	private Boolean isAndSearch;	//search based on AND/OR
 	private Boolean isOrSearch;
 	
+	
 	//Getters and Setters
+	
+	public String getSkillsSearchType() {
+		return skillsSearchType;
+	}
+	public void setSkillsSearchType(String skillsSearchType) {
+		this.skillsSearchType = skillsSearchType;
+	}
 	public String getSearchType() {
 		return searchType;
 	}
