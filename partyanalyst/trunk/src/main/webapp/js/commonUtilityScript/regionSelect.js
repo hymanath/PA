@@ -26,10 +26,9 @@ function getCriteriaValue(criteriaValue,elmtId)
 	CADRETYPE = criteriaValue;
 	var labelSpanElmt = document.getElementById(elmtId+"_label");
 	var dataSpanElmt = document.getElementById(elmtId+"_data");
-	var sTypeLabelElmt = document.getElementById("searchType_label");
-	var sTypedataElmt = document.getElementById("searchType_data");
+	var fiterOptionsElmt = document.getElementById("filterOptionsCadresSearch");
 
-	if(!labelSpanElmt || !dataSpanElmt || !sTypeLabelElmt || !sTypedataElmt)
+	if(!labelSpanElmt || !dataSpanElmt || !fiterOptionsElmt)
 		return;
 	
 	var labelStr = '',dataStr = '';
@@ -39,18 +38,8 @@ function getCriteriaValue(criteriaValue,elmtId)
 
 	if(CADRETYPE == "active")
 	{
-		
-		sLabelStr = '';
-		sLabelStr += ' <font color="#FF0000"> * </font> Search Type';
-		if(sTypeLabelElmt)
-		sTypeLabelElmt.innerHTML = sLabelStr;
-		
-		sDataStr = '';
-		sDataStr += ' <input type="radio" name="searchType" checked="checked" onclick="javascript:{SEARCHTYPE = this.value;}" value="location">Location';
-		sDataStr += ' <input type="radio" name="searchType" onclick="javascript:{SEARCHTYPE = this.value;}" value="level">Level';
-		if(sTypedataElmt)
-		sTypedataElmt.innerHTML = sDataStr;
-
+		if(fiterOptionsElmt.style.height != 0)
+			callYUIAnim(300,"filterOptionsCadresSearch");
 
 		labelStr += ' <font color="#FF0000"> * </font> Search Criteria';
 		labelSpanElmt.innerHTML = labelStr;
@@ -79,16 +68,72 @@ function getCriteriaValue(criteriaValue,elmtId)
 	}
 	else if(CADRETYPE == "normal")
 	{	
-		sTypeLabelElmt.innerHTML = ''; 
-		sTypedataElmt.innerHTML = '';
+		if(fiterOptionsElmt.style.height != 0)
+			callYUIAnim(200,"filterOptionsCadresSearch");
+
+		
 		dataSpanElmt.innerHTML = '';
 	}
 	else if(CADRETYPE == "all")
 	{	
-		sTypeLabelElmt.innerHTML = ''; 
-		sTypedataElmt.innerHTML = '';
+		if(fiterOptionsElmt.style.height != 0)
+			callYUIAnim(200,"filterOptionsCadresSearch");
+
+		
 		dataSpanElmt.innerHTML = '';
 	}
+
+}
+
+function searchBased(value)
+{
+	var rowElmt = document.getElementById("locationRangeRow");
+	if(!rowElmt)
+		return;
+
+	if(value == "location")
+	{
+		SEARCHTYPE = "location";
+		rowElmt.style.visibilty = 'visible';
+	}
+	else if(value == "level")
+	{
+		SEARCHTYPE = "level";
+		rowElmt.style.visibility = 'hidden';
+	}
+}
+
+function expandFilterOptions()
+{
+	var elmts = document.getElementsByName("cadreTypeRadio");
+	var cType = '';
+	var height = '';
+	if(!elmts || elmts.length == 0)
+		return;
+
+	for(var i=0;i<elmts.length;i++)
+	{
+		if(elmts[i].checked==true)
+			cType = elmts[i].value; 
+	}
+	
+	if(cType == "all" || cType == "normal")
+		height = 200;
+	else if(cType == "active")
+		height = 300;
+
+	callYUIAnim(height,"filterOptionsCadresSearch");
+}
+
+function callYUIAnim(height,elmtId)
+{
+	var cadreAnim = new YAHOO.util.Anim(elmtId, {
+		height: {
+			to: height 
+		} 
+	}, 1, YAHOO.util.Easing.easeOut);
+
+	cadreAnim.animate();
 
 }
 
@@ -264,8 +309,64 @@ function sendSMSWithoutSearch()
 function getRegionsForAccessLevel(accessValue,regionElmtId)
 {
 	REPORTLEVEL = accessValue;
+
 	
-	var labelSpanElmt = document.getElementById(regionElmtId+"_label");
+	var countrySelectBoxElmt = document.getElementById("countrySelectBox");
+	var stateSelectBoxElmt = document.getElementById("stateSelectBox");
+	var districtSelectBoxElmt = document.getElementById("districtSelectBox");
+	var constituencySelectBoxElmt = document.getElementById("constituencySelectBox");
+	var mandalSelectBoxElmt = document.getElementById("mandalSelectBox");
+	var villageSelectBoxElmt = document.getElementById("villageSelectBox");
+
+	countrySelectBoxElmt.style.visibility="hidden";
+	stateSelectBoxElmt.style.visibility="hidden";
+	districtSelectBoxElmt.style.visibility="hidden";
+	constituencySelectBoxElmt.style.visibility="hidden";
+	mandalSelectBoxElmt.style.visibility="hidden";
+	villageSelectBoxElmt.style.visibility="hidden";
+
+	if(REPORTLEVEL == '1')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+	}
+	else if(REPORTLEVEL == '2')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+		stateSelectBoxElmt.style.visibility = "visible";
+	}
+	else if(REPORTLEVEL == '3')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+		stateSelectBoxElmt.style.visibility = "visible";
+		districtSelectBoxElmt.style.visibility = "visible";
+	}
+	else if(REPORTLEVEL == '4')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+		stateSelectBoxElmt.style.visibility = "visible";
+		districtSelectBoxElmt.style.visibility = "visible";
+		constituencySelectBoxElmt.style.visibility = "visible";
+	}
+	else if(REPORTLEVEL == '5')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+		stateSelectBoxElmt.style.visibility = "visible";
+		districtSelectBoxElmt.style.visibility = "visible";
+		constituencySelectBoxElmt.style.visibility = "visible";
+		mandalSelectBoxElmt.style.visibility = "visible";
+	}
+	else if(REPORTLEVEL == '6')
+	{
+		countrySelectBoxElmt.style.visibility = "visible";
+		stateSelectBoxElmt.style.visibility = "visible";
+		districtSelectBoxElmt.style.visibility = "visible";
+		constituencySelectBoxElmt.style.visibility = "visible";
+		mandalSelectBoxElmt.style.visibility = "visible";
+		villageSelectBoxElmt.style.visibility = "visible";
+	}
+
+	
+	/*var labelSpanElmt = document.getElementById(regionElmtId+"_label");
 	var dataSpanElmt = document.getElementById(regionElmtId+"_data");
 	var buttonSpanElmt = document.getElementById(regionElmtId+"_button");
 	
@@ -376,33 +477,33 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 	}
 	else if(REPORTLEVEL == "6")
 	{
-		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
+		dataStr += '<select class="regionsSelectBox" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country </option>';
 		dataStr += '<option value="1"> India </option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
+		dataStr += '<select class="regionsSelectBox" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
 		dataStr += '<option value="0"> Select State</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
+		dataStr += '<select class="regionsSelectBox" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
 		dataStr += '<option value="0"> Select District</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
+		dataStr += '<select class="regionsSelectBox" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
 		dataStr += '<option value="0"> Select Constituency</option>';
 		dataStr += '</select>';
 		
-		dataStr += '<select id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,\'villageSelectBox\')">';
+		dataStr += '<select class="regionsSelectBox" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,\'villageSelectBox\')">';
 		dataStr += '<option value="0"> Select Mandal</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
+		dataStr += '<select class="regionsSelectBox" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select Village</option>';
 		dataStr += '</select>';
 		
 		dataSpanElmt.innerHTML = dataStr;
-	}
+	}*/
 }
 
 function getCadresResults(btnType)
@@ -433,6 +534,12 @@ function getCadresResults(btnType)
 			elmt.innerHTML = 'Select Country Location';
 			return;
 		}
+		else
+		{
+			elmt.innerHTML = '';
+			locationValue = countrySelectElmt.options[countrySelectElmt.selectedIndex].value;
+			
+		}
 	}	
 	else if(REPORTLEVEL == "2")
 	{
@@ -445,6 +552,7 @@ function getCadresResults(btnType)
 		{
 			elmt.innerHTML = '';
 			locationValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].value;
+			
 		}
 	}	
 	else if(REPORTLEVEL == "3")
@@ -500,6 +608,7 @@ function getCadresResults(btnType)
 		}
 	}
 	
+	REPORTLOCATIONVALUE = locationValue;
 
 	if(SOCIALSTATUS)
 	{	
@@ -799,6 +908,8 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "cadreSearch")
 								showCadreSearchResults(jsObj,myResults);
+							else if(jsObj.task == "getUserLocation")
+								buildRegionsSelectBoxes(jsObj,myResults);
 
 
 						}
@@ -816,8 +927,177 @@ function callAjax(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function displayRegionsSelect(val,regTask)
+{
+	var stateSelectElmt = document.getElementById(regTask+"_StateSelect");
+	var districtSelectElmt = document.getElementById(regTask+"_DistrictSelect");
+	var constituencySelectElmt = document.getElementById(regTask+"_ConstituencySelect");
+	var mandalSelectElmt = document.getElementById(regTask+"_MandalSelect");
+	var villageSelectElmt = document.getElementById(regTask+"_VillageSelect");
+	
+	stateSelectElmt.disabled=true;
+	districtSelectElmt.disabled=true;	
+	constituencySelectElmt.disabled=true;	
+	mandalSelectElmt.disabled=true;	
+	villageSelectElmt.disabled=true;	
+
+	if(val == "District")
+	{
+		stateSelectElmt.disabled=false;
+		districtSelectElmt.disabled=false;			
+	}
+	if(val == "Constituency")
+	{
+		stateSelectElmt.disabled=false;
+		districtSelectElmt.disabled=false;	
+		constituencySelectElmt.disabled=false;	
+	}
+	if(val == "Mandal")
+	{
+		stateSelectElmt.disabled=false;
+		districtSelectElmt.disabled=false;
+		constituencySelectElmt.disabled=false;	
+		mandalSelectElmt.disabled=false;	
+	}
+	if(val == "Village")
+	{
+		stateSelectElmt.disabled=false;
+		districtSelectElmt.disabled=false;	
+		constituencySelectElmt.disabled=false;	
+		mandalSelectElmt.disabled=false;	
+		villageSelectElmt.disabled=false;	
+	}		
+}
+
+function buildRegionsSelectBoxes(jsObj,results)
+{
+	var selectElmt = document.getElementById("rangeRegionsSelectElmtDiv");
+	var radioElmt = document.getElementById("rangeRegionsRadioElmtDiv");
+	if(!radioElmt || !selectElmt)
+		return;
+
+	regTask = "cadreSearch";
+	var str='';
+		for(var i in results.regions)
+		{
+			str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
+		}		
+	if(radioElmt)
+		radioElmt.innerHTML=str;
+	
+	//Filling up select box...
+
+	var regionStr='';
+		
+	regionStr+='<select id="'+regTask+'_StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\',\''+regTask+'\')" disabled="true">';
+	if(results.states != "")
+	{
+		for(var state in results.states)
+		{
+			regionStr+='<option value="'+results.states[state].id+'">'+results.states[state].name+'</option>';
+		}
+	}
+	else
+	{
+		regionStr+='<option value="0"> Select State</option>';
+	}
+	regionStr+='</select>';	
+
+	
+	regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="true">';
+	if(results.districts != "")
+	{
+		for(var district in results.districts)
+		{
+			regionStr+='<option value="'+results.districts[district].id+'">'+results.districts[district].name+'</option>';
+		}
+	}
+	else
+	{
+		regionStr+='<option value="0"> Select District</option>';
+	}
+	regionStr+='</select>';
+	
+	
+	regionStr+='<select id="'+regTask+'_ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\',\''+regTask+'\')" disabled="true">';
+	if(results.constituencies != "")
+	{
+		for(var consti in results.constituencies)
+		{
+			regionStr+='<option value="'+results.constituencies[consti].id+'">'+results.constituencies[consti].name+'</option>';
+		}
+	}
+	else
+	{
+		regionStr+='<option value="0"> Select Constituency</option>';
+	}
+	regionStr+='</select>';
+
+
+
+	regionStr+='<select id="'+regTask+'_MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\',\''+regTask+'\')" disabled="true">';
+	if(results.mandals != "")
+	{
+		for(var mandal in results.mandals)
+		{
+			regionStr+='<option value="'+results.mandals[mandal].id+'">'+results.mandals[mandal].name+'</option>';
+		}
+	}
+	else
+	{	
+		regionStr+='<option value="0"> Select Mandal</option>';
+	}
+	regionStr+='</select>';
+
+	
+	regionStr+='<select id="'+regTask+'_VillageSelect" class="selectBox" disabled="true">';
+	if(results.villages != "")
+	{
+		for(var village in results.villages)
+		{
+			regionStr+='<option value="'+results.villages[village].id+'">'+results.villages[village].name+'</option>';
+		}
+	}
+	else
+	{	
+		regionStr+='<option value="0"> Select Village</option>';
+	}
+	regionStr+='</select>';
+
+	if(selectElmt)
+		selectElmt.innerHTML=regionStr;
+
+}
+
+function getNextRegions(id,val,regTask)
+{
+	var selectElmt = document.getElementById(id);
+	var selectValue = selectElmt.options[selectElmt.selectedIndex].value;
+	
+	if(selectValue=="0")
+		return;
+
+	var jsObj={
+				value:selectValue,
+				type:val,
+				taskType:regTask,
+				task:"fillSelectElements"
+			  };
+	var url = "regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
+	callAjax(jsObj,url);
+
+}
+
 function buildselectBoxes()
 {	
+	var jsObj={
+				value:"locationWise",
+				taskType:"search",
+				task:"getUserLocation"
+			  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "cadreSMSLocationWiseData.action?";
+	//callAjax(jsObj,url);
 	createOptionsForSelectElmtId("socialStatus_resevation",socialStatus);
 	createOptionsForSelectElmtId("socialStatus_education",eduStatus);
 	createOptionsForSelectElmtId("socialStatus_occupation",occupations);

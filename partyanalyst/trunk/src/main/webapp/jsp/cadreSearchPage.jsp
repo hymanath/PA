@@ -74,118 +74,162 @@
         </table>    	
      </center></div>
 	<div id="CadreSearchMain">
-		<table width="100%" id="cadreSearchInputTable">
-            <tr>
-                <td colspan="2"><div id="errorMsgDiv"></div></td>
-            </tr>
-        	<tr>
-            	<th><font color="#FF0000"> * </font>Access level</th>                
-                <td>
-                	<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="1"/> Country		
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="2"/> State
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="3"/> District
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="4"/> Constituency
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="5"/> Mandal
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="6"/> Village                    
-                </td>
-            </tr>
-            <tr>
-                <th>
-					<span id="accessRegion_label"></span>
-				</th>                
-                <td>
-					<span id="accessRegion_data">
-					
-					</span>
-			</tr>
-			
-			<tr>
-				<th valign="top"><font color="#FF0000"> * </font> Social Status</span></th>
-				<td valign="top">
-					<input type="checkbox" id="socialStatusCheck" value="socialStatus" onclick="showSocialStatus(this)"/> Include Cadre Social Status
-					<div>	
-						<table>
-							<tr>
-								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="resevation"/> Reservation Category</td>
-								<td>
-									<select class="searchcriteriaSelect" onchange="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
-										
-									</select>
-								</td>
-							</tr>						
-							<tr>
-								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="education"/> Education</td>
-								<td>
-									<select class="searchcriteriaSelect" id="socialStatus_education" onchange="changeSocialStatus(this)" disabled="disabled">
-										
-									</select>
-								</td>
-							</tr>						
-							<tr>
-								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="occupation"/> Occupation</td>
-								<td>
-									<select class="searchcriteriaSelect" id="socialStatus_occupation" onchange="changeSocialStatus(this)" disabled="disabled">
-										
-									</select>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-			</tr>
-			
-			<tr>
-				<th><font color="#FF0000"> * </font> Cadre Type</span></th>
-				<td>
-					<input type="radio" name="cadreTypeRadio" value="all" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
-					<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
-					<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
-				</td>
-			</tr>			
-			
-			<tr>
-				<th><div id="searchType_label"></div></th>
-				<td>
-					<div id="searchType_data">
-						
-					</div>
-				</td>
-			</tr>
+		<div id="basicCadresSearch">
+			<table width="100%" class="cadreSearchInputTable">				
+				
+				<tr>
+					<td colspan="2"><div id="errorMsgDiv"></div></td>
+				</tr>
 
-			<tr>
-				<th valign="top"><div id="searchCriteria_label"></div></th>
-				<td valign="top">
-					<div id="searchCriteria_data">
-						
-					</div>
-				</td>
-			</tr>
-			
-			<tr>
-				<th valign="top"><div id="searchPerform_label">Perform Search By</div></th>
-				<td valign="top">
-					<div id="searchPerform_label">
-						<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">And
-						<input type="radio" name="performSearch" value="or" onclick="javascript:{PERFORMSEARCH = this.value}">Or
-					</div>
-				</td>
-			</tr>
-				 
-            <tr>
-            	<td colspan="2" align="center"><span id="accessRegion_button"></span></td>
-            </tr>
-			<tr>
-				<th><span id="smsTxtArea_label"></span></th>
-				<td><span id="smsTxtArea_data"></span></td>
-			</tr>			
-			<tr>
-				<th><span id="includeUserName_label"></span></th>
-				<td><span id="includeUserName_data"></span></td>
-			</tr>
-			<tr>				
-				<td colspan="2" align="center"><span id="smsSendSpan_button"></span></td>
-			</tr>
-        </table>
+				<tr>
+					<th><font color="#FF0000"> * </font> Search Based On</th>                
+					<td>
+						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)" checked="checked" value="location"/> Cadre Location  
+						<input type="radio" name="searchbasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
+					</td>
+				</tr>
+
+				<tr>
+					<th><font color="#FF0000"> * </font>Select Range</th>                
+					<td>
+						<div id="rangeRegionsRadioElmtDiv"></div>
+						<div id="rangeRegionsSelectElmtDiv"></div>
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="1"/> Country		
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="2"/> State
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="3"/> District
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="4"/> Constituency
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="5"/> Mandal
+						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="6"/> Village                    
+					</td>
+				</tr>
+				<tr id="locationRangeRow">
+					<th>
+						<span id="accessRegion_label"></span>
+					</th>                
+					<td>
+						<span id="accessRegion_data"> 
+							<select class="regionsSelectBox" style="visibility:hidden;" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')">
+							<option value="0"> Select Country </option>
+							<option value="1"> India </option>
+							</select>
+
+							<select class="regionsSelectBox" style="visibility:hidden;" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')">
+							<option value="0"> Select State</option>
+							</select>
+
+							<select class="regionsSelectBox" style="visibility:hidden;" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')">
+							<option value="0"> Select District</option>
+							</select>
+
+							<select class="regionsSelectBox" style="visibility:hidden;" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')">
+							<option value="0"> Select Constituency</option>
+							</select>
+							
+							<select class="regionsSelectBox" style="visibility:hidden;" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,'villageSelectBox')">
+							<option value="0"> Select Mandal</option>
+							</select>
+
+							<select class="regionsSelectBox" style="visibility:hidden;" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">
+							<option value="0"> Select Village</option>
+							</select>
+						</span>
+				</tr>
+				
+				<tr>
+					<th><font color="#FF0000"> * </font> Cadre Type</span></th>
+					<td>
+						<input type="radio" name="cadreTypeRadio" value="all" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
+						<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
+						<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
+					</td>
+				</tr>			
+				</table>
+			</div>
+
+			<div id="filterOptionsCadresSearch">
+				<table width="100%" class="cadreSearchInputTable">
+				<tr>
+					<th valign="top"><font color="#FF0000"> * </font> Social Status</span></th>
+					<td valign="top">
+						<input type="checkbox" id="socialStatusCheck" value="socialStatus" onclick="showSocialStatus(this)"/> Include Cadre Social Status
+						<div>	
+							<table>
+								<tr>
+									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="resevation"/> Reservation Category</td>
+									<td>
+										<select class="searchcriteriaSelect" onchange="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
+											
+										</select>
+									</td>
+								</tr>						
+								<tr>
+									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="education"/> Education</td>
+									<td>
+										<select class="searchcriteriaSelect" id="socialStatus_education" onchange="changeSocialStatus(this)" disabled="disabled">
+											
+										</select>
+									</td>
+								</tr>						
+								<tr>
+									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="occupation"/> Occupation</td>
+									<td>
+										<select class="searchcriteriaSelect" id="socialStatus_occupation" onchange="changeSocialStatus(this)" disabled="disabled">
+											
+										</select>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+				</tr>			
+				
+				<tr>
+					<th valign="top"><div id="searchCriteria_label"></div></th>
+					<td valign="top">
+						<div id="searchCriteria_data">
+							
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<th valign="top"><div id="searchPerform_label">Perform search with</div></th>
+					<td valign="top">
+						<div id="searchPerform_label">
+							<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">all of these words
+							<input type="radio" name="performSearch" value="or" onclick="javascript:{PERFORMSEARCH = this.value}">Any one of these words
+						</div>
+					</td>
+				</tr>
+					 
+				<tr>
+					<td colspan="2" align="center"><span id="accessRegion_button"></span></td>
+				</tr>
+				<tr>
+					<th><span id="smsTxtArea_label"></span></th>
+					<td><span id="smsTxtArea_data"></span></td>
+				</tr>			
+				<tr>
+					<th><span id="includeUserName_label"></span></th>
+					<td><span id="includeUserName_data"></span></td>
+				</tr>
+				<tr>				
+					<td colspan="2" align="center"><span id="smsSendSpan_button"></span></td>
+				</tr>
+			</table>
+		</div>
+		<div id="searchButtonDiv">
+			<table>
+				<tr>					
+					<td align="center">
+						<input type="button" onclick="getCadresResults('search')" value="search"/>
+					</td>
+					<td align="center">
+						<a href="javascript:{}" onclick="expandFilterOptions()"/>Add filter to search
+					</td>
+				</tr>
+			</table>	
+		</div>
 	</div>
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
