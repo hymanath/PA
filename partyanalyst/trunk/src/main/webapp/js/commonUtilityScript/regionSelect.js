@@ -530,7 +530,7 @@ function getCadresResults(btnType)
 			task:"cadreSearch"		
 		}
 	
-	console.log(jsObj);
+	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCadresDetailsAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
