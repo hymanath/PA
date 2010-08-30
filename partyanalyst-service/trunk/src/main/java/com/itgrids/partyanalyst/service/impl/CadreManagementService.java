@@ -1823,8 +1823,11 @@ public class CadreManagementService {
 				cadreInfoVO.setCadreID(cadre.getCadreId());
 				cadreInfoVO.setEmail(cadre.getEmail());
 				cadreInfoVO.setFirstName(cadre.getFirstName());
+				cadreInfoVO.setMiddleName(cadre.getMiddleName());
+				cadreInfoVO.setLastName(cadre.getLastName());
 				cadreInfoVO.setGender(cadre.getGender());
 				cadreInfoVO.setMobile(cadre.getMobile());
+				cadreInfoVO.setLandLineNo(cadre.getTelephone());
 				
 				cadreOutputVO.add(cadreInfoVO);
 			}
