@@ -7,6 +7,9 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class RegistrationVO extends BaseDTO{
 
@@ -32,7 +35,9 @@ public class RegistrationVO extends BaseDTO{
 	private String partyShortName;
 	private String subscribePartyImpDate;
 	private String userType;
-	
+	private List<String> entitlements = new ArrayList<String>(0);
+	private List<SelectOptionVO> accessInfo = new ArrayList<SelectOptionVO>(0);
+
 	public Long getRegistrationID() {
 		return registrationID;
 	}
@@ -205,6 +210,19 @@ public class RegistrationVO extends BaseDTO{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	public List<String> getEntitlements() {
+		return entitlements;
+	}
+	public void setEntitlements(List<String> entitlements) {
+		this.entitlements = entitlements;
+	}
+	public List<SelectOptionVO> getAccessInfo() {
+		return accessInfo;
+	}
+	public void setAccessInfo(List<SelectOptionVO> accessInfo) {
+		this.accessInfo = accessInfo;
+	}
+	
 	public String getPartyShortName() {
 		return partyShortName;
 	}
@@ -212,7 +230,6 @@ public class RegistrationVO extends BaseDTO{
 		this.partyShortName = partyShortName;
 	}
 	
-	
-	
+
 	
 }

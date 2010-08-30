@@ -210,4 +210,17 @@ public interface IConstants {
     public static final String LOCATION_BASED = "LOCATION";
     public static final String LEVEL_BASED = "LEVEL";
     
+    
+    //Entitlements
+    public static final String CONSTITUENCY_PAGE = "CONSTITUENCY_PAGE";
+    public static final String PARTY_PERFORMANCE_REPORT = "PARTY_PERFORMANCE_REPORT";
+    public static final String ELECTION_COMPARISION_REPORT = "ELECTION_COMPARISION_REPORT";
+    public static final String PARTY_RESULTS_REPORT = "PARTY_RESULTS_REPORT";
+    public static final String PARTY_INFLUENCE_REPORT = "PARTY_INFLUENCE_REPORT";
+    public static final String CROSS_VOTING_REPORT = "CROSS_VOTING_REPORT";
+    public static final String PARTY_BOOTHWISE_RESULTS_REPORT = "PARTY_BOOTHWISE_RESULTS_REPORT";
+    public static final String ELECTION_RESULTS_ANALYSIS_REPORT = "ELECTION_RESULTS_ANALYSIS_REPORT";
+    public static final String DISTRICT_LEVEL_ACCESS = "DISTRICT_LEVEL_ACCESS";
+    public static final String CONSTITUENCY_LEVEL_ACCESS = "CONSTITUENCY_LEVEL_ACCESS";
+    
 }
