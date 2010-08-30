@@ -3,23 +3,21 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts2.util.ServletContextAware;
-import org.springframework.web.context.ServletConfigAware;
+import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.DistrictWiseConstituencyElectionResultsVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IPartyInfluenceService;
 
-public class PartyInfluenceMainAction extends ActionSupport implements ServletContextAware,ServletConfigAware{
+public class PartyInfluenceMainAction extends ActionSupport implements ServletRequestAware{
 
-	private HttpServletRequest request;;
+	private HttpServletRequest request;
 	private HttpSession session;
 	
 	private List<SelectOptionVO> electionTypes;
@@ -28,18 +26,12 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 	private List<SelectOptionVO> newParty;
 	private List<SelectOptionVO> partyNames;
 	
-	public void setServletContext(ServletContext arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setServletConfig(ServletConfig arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
+	}
+	
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 
 	public void setElectionTypes(List<SelectOptionVO> electionTypes) {
@@ -81,6 +73,12 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 	
 	public String execute(){
 		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_INFLUENCE_REPORT))
+			return ERROR;
+		
 		electionTypes = new ArrayList<SelectOptionVO>();
 		states = new ArrayList<SelectOptionVO>();
 		electionYears = new ArrayList<String>();
@@ -88,89 +86,30 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 		partyNames = new ArrayList<SelectOptionVO>();
 		
 		// Setting Sample Elections
-		
-		SelectOptionVO eType1 = new SelectOptionVO();
-		eType1.setId(new Long(1));
-		eType1.setName("Parliament");
-		
-		SelectOptionVO eType2 = new SelectOptionVO();
-		eType2.setId(new Long(2));
-		eType2.setName("Assembly");
-		
-		electionTypes.add(eType1);
-		electionTypes.add(eType2);
-		
-		setElectionTypes(electionTypes);
+		electionTypes.add(new SelectOptionVO(1l, "Parliament"));
+		electionTypes.add(new SelectOptionVO(2l, "Assembly"));
 		
 		// Setting Sample states
-		
-		SelectOptionVO state1 = new SelectOptionVO();
-		state1 .setId(new Long(1));
-		state1 .setName("Andhra Pradesh");
-		
-		SelectOptionVO state2  = new SelectOptionVO();
-		state2.setId(new Long(15));
-		state2.setName("Maharashtra");
-		
-		states.add(state1);
-		states.add(state2);
-		
-		setStates(states);
+		states.add(new SelectOptionVO(1l, "Andhra Pradesh"));
+		states.add(new SelectOptionVO(15l, "Maharashtra"));
 		  
 		// Setting Election Years
-		
 		electionYears.add("2009");
 		electionYears.add("2004");			
 		
-		setElectionYears(electionYears);
-		
 		// Setting samples of New Party
-		
-		SelectOptionVO nParty1 = new SelectOptionVO();
-		nParty1.setId(new Long(43));
-		nParty1.setName("PRP");
-		
-		SelectOptionVO nParty2  = new SelectOptionVO();
-		nParty2.setId(new Long(32));
-		nParty2.setName("Lok Satta");
-		
-		newParty.add(nParty1);
-		newParty.add(nParty2);
-		
-		setNewParty(newParty);
+		newParty.add(new SelectOptionVO(43l, "PRP"));
+		newParty.add(new SelectOptionVO(32l, "Lok Satta"));
 		
 		//Setting party for party names
-		
-		SelectOptionVO party1 = new SelectOptionVO();
-		party1 .setId(new Long(24));
-		party1 .setName("INC");
-		
-		SelectOptionVO party2  = new SelectOptionVO();
-		party2.setId(new Long(15));
-		party2.setName("BJP");
-		
-		SelectOptionVO party3  = new SelectOptionVO();
-		party3.setId(new Long(17));
-		party3.setName("CPI");
-		
-		SelectOptionVO party5  = new SelectOptionVO();
-		party5.setId(new Long(62));
-		party5.setName("TDP");
-		
-		SelectOptionVO party6  = new SelectOptionVO();
-		party6.setId(new Long(61));
-		party6.setName("TRS");
-		
-		partyNames.add(party1);
-		partyNames.add(party2);
-		partyNames.add(party3);
-		partyNames.add(party5);
-		partyNames.add(party6);
-		
-		setPartyNames(partyNames);
-		
+		partyNames.add(new SelectOptionVO(24l, "INC"));
+		partyNames.add(new SelectOptionVO(15l, "BJP"));
+		partyNames.add(new SelectOptionVO(17l, "CPI"));
+		partyNames.add(new SelectOptionVO(62l, "TDP"));
+		partyNames.add(new SelectOptionVO(61l, "TRS"));
 				
 		return Action.SUCCESS;
 	}
 
+	
 }

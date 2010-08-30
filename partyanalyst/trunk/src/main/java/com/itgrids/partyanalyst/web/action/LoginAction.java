@@ -10,6 +10,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
@@ -65,22 +66,23 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		password = value;
 	}
 
-	public String execute() throws Exception {
-		
+	public String execute(){
+
 		session = request.getSession();
 		RegistrationVO regVO = loginService.checkForValidUser(userName, password);
-		name = regVO.getFirstName() + " " + regVO.getLastName();
-		int hiden = 0;		
 		if (regVO.getRegistrationID()==null) {
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid user name or password! Please try again!");
 			return ERROR;			
 		} else {
-			session.setAttribute("USER",regVO);
+			name = regVO.getFirstName() + " " + regVO.getLastName();
+			int hiden = 0;		
+			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", name);
 			session.setAttribute("loginStatus", "out");	
 			session.setAttribute("HiddenCount", hiden);
-			if(src != null)
+			
+			if(src != null && !"null".equalsIgnoreCase(src))
 				return src;
 			else
 				return SUCCESS;			

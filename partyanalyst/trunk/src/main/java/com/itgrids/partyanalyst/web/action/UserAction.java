@@ -33,6 +33,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
+	
 	public List<String> getType() {
 		return type;
 	}

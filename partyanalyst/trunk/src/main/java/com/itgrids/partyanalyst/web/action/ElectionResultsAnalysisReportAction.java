@@ -18,9 +18,11 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -170,6 +172,12 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 
 	public String execute () throws Exception 
 	{
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULTS_ANALYSIS_REPORT))
+			return ERROR;
+		
 		statesList = new ArrayList<SelectOptionVO>();
 		statesList.add(0, new SelectOptionVO(0L,"Select State"));
 		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));

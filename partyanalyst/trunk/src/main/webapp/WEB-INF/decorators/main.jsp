@@ -28,11 +28,6 @@
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
 	
-
-	
-
-	
-	
 	<script type="text/javascript">
 	 
 	YAHOO.util.Event.onContentReady("navigationHead", function () { 	 

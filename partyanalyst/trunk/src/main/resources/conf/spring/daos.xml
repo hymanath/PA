@@ -301,6 +301,30 @@
 	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="entitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+					
+	<bean id="groupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userGroupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupEntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userGroupsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userGroupRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAccessInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="socialCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SocialCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

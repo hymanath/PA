@@ -109,7 +109,13 @@
 				<value>com.itgrids.partyanalyst.model.SmsTrack</value>
 				<value>com.itgrids.partyanalyst.model.PartyWorkingCommittee</value>
 				<value>com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation</value>
-				<value>com.itgrids.partyanalyst.model.UserAddress</value>
+				<value>com.itgrids.partyanalyst.model.UserAddress</value>				
+				<value>com.itgrids.partyanalyst.model.Entitlement</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.UserGroups</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupRelation</value>
+				<value>com.itgrids.partyanalyst.model.UserAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.SocialCategory</value>
 				<value>com.itgrids.partyanalyst.model.EducationalQualifications</value>
 				<value>com.itgrids.partyanalyst.model.Occupation</value>

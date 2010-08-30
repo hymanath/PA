@@ -28,7 +28,6 @@
 			<result>/jsp/landing.jsp</result>
 		</action>   
 		
-		
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
@@ -39,6 +38,11 @@
 			<result type="redirect" name="userGroupAction">userGroupAction.action</result>
 			<result type="redirect" name="cadreRegisterPageAction">cadreRegisterPageAction.action</result>
 			<result type="redirect" name="indexAction">index.action</result>
+			<result type="redirect" name="partyPerformanceMain">partyPerformanceMain.action</result>
+			<result type="redirect" name="electionComparisonAction">electionComparisonAction.action</result>
+			<result type="redirect" name="partyResultsCriteriaAction">partyResultsCriteriaAction.action</result>
+			<result type="redirect" name="partyInfluenceMainAction">partyInfluenceMainAction.action</result>
+			<result type="redirect" name="electionResultsAnalysisAction">electionResultsAnalysisAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -58,6 +62,164 @@
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		
+		<!-- PARTY ANALISYS REPORTS ACTIONS START-->
+		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
+			<result type="json" name="success">
+				<param name="root">statesYearList</param>
+			</result> 
+		</action>
+		
+		<action name="partyPerformanceAllianceAjax" class="partyPerformanceAction" method="getAlliances" >
+			<result type="json" name="success">
+				<param name="root">hasAllianceParties</param>
+			</result> 
+		</action>
+		
+		<action name="partyPerformanceMain" class="partyPerformanceAction" method="execute" >
+			<result name="success" >/jsp/partyPerformance.jsp</result> 
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=partyPerformanceMain</result>
+		</action>
+		
+		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
+		</action>
+		
+		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
+		</action>
+		
+		<action name="partyPerformanceJasper" class="partyPerformanceAction" method="getJasper">
+			<result name="success" type="stream">
+			<param name="contentType">application/pdf</param>
+ 				<param name="contentDisposition">filename="new_report.pdf"</param>
+  				<param name="inputName">reportStream</param> 
+			</result>
+		</action>
+		
+		<action name="partyPositionAjax" class="partyPerformanceAction" method="getpartyPosition" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
+		</action>
+		
+		<action name="partyPositionDetailsAjax" class="partyPerformanceAction" method="getPartyPositionDetails" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
+		</action>
+		
+		<action name="electionComparisonAction" class="electionComparisonAction">
+			<result name="success">/jsp/electionComparisonPage.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=electionComparisonAction</result>
+		</action>	
+		<action name="getElectionScopesForECAction" class="electionComparisonAction" method="getElectionScopesForEC" >
+			<result type="json" name="success">
+				 <param name="root">electionScopes</param> 
+			</result>
+		</action>
+		<action name="getElectionYearsForECAction" class="electionComparisonAction" method="getElectionYearsAndElectionIdsForEC" >
+			<result type="json" name="success">
+				 <param name="root">yearsList</param> 
+			</result>
+		</action>										
+			
+		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
+			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
+			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
+		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
+			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
+			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
+		
+		<action name="electionComparisonAjax" class="electionComparisonReportAction" method="getComparedElectionResults" >
+			<result type="json" name="success">
+				 <param name="root">comparedResultsVO</param> 
+			</result>
+		</action>
+		
+		<action name="electionComparisonPositionAjax" class="electionComparisonReportAction" method="getPartyPositionDetails" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
+		</action>
+		
+		<action name="electionComparisonConstiResultsAjax" class="electionComparisonReportAction" method="getConstituencyElectionResults" >
+			<result type="json" name="success">
+				 <param name="root">constiElecResults</param> 
+			</result>
+		</action>
+		
+		<action name="partyResultsCriteriaAction" class="partyResultsCriteriaAction">
+			<result name="success">/jsp/partyResultsCriteriaPage.jsp</result>			
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=partyResultsCriteriaAction</result>
+		</action>
+		
+		<action name="partyResultsAction" class="partyResultsAction">
+			<result name="success">/jsp/partyResultsPage.jsp</result>							
+		</action>
+		
+		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
+			<result name="success">/jsp/partyInfluenceMainPage.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=partyInfluenceMainAction</result>
+		</action>
+		
+		<action name="partyInfluenceAction" class="partyInfluenceAction">
+			<result name="success">/jsp/partyInfluenceReportPage.jsp</result>
+			<result name="error">/jsp/PartyInfluenceReportError.jsp</result>
+		</action>
+				
+		<action name="electionResultsAnalysisAction" class="electionResultsAnalysisAction">
+            <result name="success">/jsp/electionResultsAnalysisReport.jsp</result>
+            <result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="input">/jsp/loginForm.jsp?src=electionResultsAnalysisAction</result>
+        </action>
+        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionTypes"> 
+              <result type="json" name="success">
+           		<param name="root">electionTypes</param>
+        	</result>       		
+        </action>
+        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionYears"> 
+              <result type="json" name="success">
+           		<param name="root">electionYears</param>
+        	</result>       		
+        </action>
+        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getAllParties"> 
+              <result type="json" name="success">
+           		<param name="root">partiesList</param>
+        	</result>       		
+        </action>
+        <action name="electionResultsAnalysisAjaxAction" class="electionResultsAnalysisAction" method="ajaxCallHandler"> 
+              <result type="json" name="success">
+           		<param name="root">partyAnalysisReportVO</param>
+        	</result>       		
+        </action>
+        
+        <action name="analysisCategoryResultForAPartyInAnElection" class="electionResultsAnalysisAction" method="getAnalysisCategoryResults"> 
+              <result type="json" name="success">
+           		<param name="root">partyPositionAnalysisResultVO</param>
+        	</result>       		
+        </action> 
+        <action name="votesMaringInfoForMainPartyInAnElection" class="electionResultsAnalysisAction" method="getVotesMarginInfoForMainParty"> 
+              <result type="json" name="success">
+           		<param name="root">votesMarginAnalysisVO</param>
+        	</result>       		
+        </action>
+        <action name="electionResultsAnalysisReportPopupAction" class="electionResultsAnalysisReportPopupAction">
+            <result name="success">/jsp/electionResultsAnalysisPopup.jsp</result>	
+        </action>
+        <action name="electionResultsAnalysisReportPopupAjaxAction" class="electionResultsAnalysisReportPopupAction" method="ajaxCallHandler"> 
+              <result type="json" name="success">
+           		<param name="root">partyAnalysisReportVO</param>
+        	</result>       		
+        </action>
+		
+		<!-- PARTY ANALISYS REPORTS ACTIONS END-->
+		
 		<action name="partyPerformanceDistrict" class="partyPerformanceAction" method="getDistrictsList" >
 			<result type="json" name="success">
 				<param name="root">districts</param>
@@ -76,45 +238,7 @@
          	<result name="success">/jsp/influencingPeople.jsp</result>
          	<result name="error">/jsp/influencingPeople.jsp</result>
         </action>
-        
-        
-		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
-			<result type="json" name="success">
-				<param name="root">statesYearList</param>
-			</result> 
-		</action>
-		
-		<action name="partyPerformanceAllianceAjax" class="partyPerformanceAction" method="getAlliances" >
-			<result type="json" name="success">
-				<param name="root">hasAllianceParties</param>
-			</result> 
-		</action>
-		<action name="partyPerformanceMain" class="partyPerformanceAction" method="execute" >
-			<result name="success" >/jsp/partyPerformance.jsp</result> 
-		</action>
-		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
-			<result name="success">/jsp/partyPerformanceReport.jsp</result>
-		</action>
-		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
-			<result name="success">/jsp/partyPerformanceReport.jsp</result>
-		</action>
-		<action name="partyPerformanceJasper" class="partyPerformanceAction" method="getJasper">
-			<result name="success" type="stream">
-			<param name="contentType">application/pdf</param>
- 				<param name="contentDisposition">filename="new_report.pdf"</param>
-  				<param name="inputName">reportStream</param> 
-			</result>
-		</action>
-		<action name="partyPositionAjax" class="partyPerformanceAction" method="getpartyPosition" >
-			<result type="json" name="success">
-				 <param name="root">partyPositionDisplayVO</param> 
-			</result>
-		</action>
-		<action name="partyPositionDetailsAjax" class="partyPerformanceAction" method="getPartyPositionDetails" >
-			<result type="json" name="success">
-				 <param name="root">partyPositionDisplayVO</param> 
-			</result>
-		</action>
+ 		
 		<!-- End Party Performance Actions -->
 		
         <action name="uploadCSV" class="uploadCSVAction">
@@ -139,12 +263,7 @@
 		<action name="partyResultScopeAction" class="com.itgrids.partyanalyst.web.action.PartyResultScopeAction" method="getJSON">
 			<result name="success" type="json">Names</result>						
 		</action>
-		<action name="partyResultsCriteriaAction" class="partyResultsCriteriaAction">
-			<result name="success">/jsp/partyResultsCriteriaPage.jsp</result>							
-		</action>
-		<action name="partyResultsAction" class="partyResultsAction">
-			<result name="success">/jsp/partyResultsPage.jsp</result>							
-		</action>
+		
 
 		<action name="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction">
 			<result name="input">/jsp/statePage.jsp</result>
@@ -156,18 +275,14 @@
 			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
 		</action>
 
-
         <action name="stateElectionResultsAjax" class="com.itgrids.partyanalyst.web.action.StateElectionResultsAction" method="getJSON">
 			<result type="json" name="success"/> 
 		</action>
-        
-
 
         <action name="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction">
 			<result name="input">/jsp/candidatePage.jsp</result>
 			<result name="success">/jsp/candidatePageSuccess.jsp</result>
 		</action>
-        
 
 		<action name="uploadExcel" class="uploadExcelAction">
 			<result name="input">/jsp/csvUpload.jsp</result>
@@ -248,8 +363,6 @@
            		<param name="root">namesList</param>
         	</result>
         </action>
-        
-       
         
         <action name="hamletBoothMapperAction" class="hamletBoothMapperAction">
            <result name="success">/jsp/mapBoothToHamlet.jsp</result>
@@ -343,56 +456,6 @@
 		<action name="addRebelsSubmit" class="addRebelsAction" method="addPartyRebels" >
 			<result name="input">/jsp/AddRebels.jsp</result>
 			<result name="success">/jsp/AddRebels.jsp</result>
-		</action>
-	
-        <action name="electionComparisonAction" class="electionComparisonAction">
-			<result name="success">/jsp/electionComparisonPage.jsp</result>
-		</action>	
-		<action name="getElectionScopesForECAction" class="electionComparisonAction" method="getElectionScopesForEC" >
-			<result type="json" name="success">
-				 <param name="root">electionScopes</param> 
-			</result>
-		</action>
-		<action name="getElectionYearsForECAction" class="electionComparisonAction" method="getElectionYearsAndElectionIdsForEC" >
-			<result type="json" name="success">
-				 <param name="root">yearsList</param> 
-			</result>
-		</action>										
-			
-		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
-			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
-			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
-		</action>
-		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
-			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
-			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
-		</action>
-		
-		<action name="electionComparisonAjax" class="electionComparisonReportAction" method="getComparedElectionResults" >
-			<result type="json" name="success">
-				 <param name="root">comparedResultsVO</param> 
-			</result>
-		</action>
-		
-		<action name="electionComparisonPositionAjax" class="electionComparisonReportAction" method="getPartyPositionDetails" >
-			<result type="json" name="success">
-				 <param name="root">partyPositionDisplayVO</param> 
-			</result>
-		</action>
-		
-		<action name="electionComparisonConstiResultsAjax" class="electionComparisonReportAction" method="getConstituencyElectionResults" >
-			<result type="json" name="success">
-				 <param name="root">constiElecResults</param> 
-			</result>
-		</action>
-		
-		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
-			<result name="success">/jsp/partyInfluenceMainPage.jsp</result>
-		</action>
-		
-		<action name="partyInfluenceAction" class="partyInfluenceAction">
-			<result name="success">/jsp/partyInfluenceReportPage.jsp</result>
-			<result name="error">/jsp/PartyInfluenceReportError.jsp</result>
 		</action>
 		
 		<action name="crossVotingReportInputAction" class="crossVotingReportInputAction">
@@ -509,7 +572,6 @@
 			</result> 
 		</action>	
 		
-		
 		<action name="voterInfoAction" class="voterInfoAction" method="getVotersByHamlet">
 			<result type="json" name="success">
 				<param name="root">constituencyManagementVO</param>				
@@ -527,12 +589,10 @@
 				<param name="root">designationsList</param>				
 			</result> 
 		</action>
-		
 
 		<action name="problemManagementAction" class="problemManagementAction">
 			<result type="json" name="success"><param name="root">problemManagementDataVO</param></result>		
 		</action>
-
 		
 		<action name="userSubscribePartyImpDates" class="createEventAction" method="subscribePartyImpDates">
 			<result type="json" name="success">
@@ -548,16 +608,19 @@
 				<param name="root">importantDatesVOs</param>				
 			</result>		
 		</action>
+
 		<action name="getNextMonthDatesEvents" class="createEventAction" method="getNextMonthDatesEvents">
 			<result type="json" name="success">
 				<param name="root">cadreManagementVO</param>				
 			</result>			
 		</action>
+
 		<action name="deleteEventAction" class="createEventAction" method="deleteSelectedEvent">
 			<result type="json" name="success">
 				<param name="root">deleteStatus</param>				
 			</result>			
 		</action>
+
 		<action name="getCadresForEvent" class="createEventAction" method="getCadresForEvent">
 			<result type="json" name="locationLevel">
 				<param name="root">cadresLevel</param>
@@ -566,6 +629,7 @@
 				<param name="root">cadresLocation</param>				
 			</result>				
 		</action>
+
 		<action name="mptcElectionAction" class="mptcElectionAction" method="getStates">
 			<result name="success">/jsp/mptcCSVUpload.jsp</result>		
 		</action>
@@ -580,31 +644,38 @@
 			<result name="success">/jsp/mptcElectionUploadSuccess.jsp</result>	
 			<result name="error">/jsp/mptcElectionUploadFail.jsp</result>			
 		</action>
+
 		<action name="distPapersAction" class="distPapersAction">
 			<result type="json" name="success">
 				<param name="root">newsPaperURLsVO</param>				
 			</result>			
 		</action>
+
 		<action name="revenueVillageReport" class="revenueVillageReportAction">
 			<result name="success">/jsp/revenueVillageReport.jsp</result>
 		</action>
+		
 		<action name="hamletReport" class="hamletReportAction">
 			<result name="success">/jsp/hamletReportSuccess.jsp</result>
 			<result name="error">/jsp/hamletReportFail.jsp</result>
 		</action>
+		
 		<action name="boothReport" class="boothReportAction">
 			<result name="success">/jsp/boothReportSuccess.jsp</result>
 			<result name="error">/jsp/boothReportFail.jsp</result>
 		</action>
+		
 		<action name="problemManagementReportAction" class="problemManagementReportAction">
 			<result name="success">/jsp/problemManagementReport.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=problemManagementReportAction</result>
 		</action>
+		
 		<action name="problemManagementReportAjaxAction" class="problemManagementReportAction">
 			<result type="json" name="success">
 				<param name="root">result</param>				
 			</result> 
 		</action>
+		
 		<action name="problemManagementReportResults" class="problemManagementReportAction">
 			<result type="json" name="success">
 				<param name="root">problemBean</param>				
@@ -627,9 +698,11 @@
 			<result name="success">/jsp/userGroups.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=userGroupAction</result>		
 		</action>
+		
 		<action name="townshipPageAction" class="townshipPageAction">
 			<result name="success">/jsp/revenueVillagePage.jsp</result>		
 		</action>
+		
 		<action name="userGroupAjaxAction" class="userGroupAction" method="ajaxCallHandler">
 			<result type="json" name="success">
 				<param name="root">userGroupsVO</param>				
@@ -645,17 +718,21 @@
 		<action name="partyPageAction" class="partyPageAction">
 			<result name="success">/jsp/partyPage.jsp</result>					
 		</action>
+		
 		<action name="electionVotingTrendzAction" class="electionVotingTrendzAction">
 			<result name="success">/jsp/electionVotingTrendz.jsp</result>					
 		</action>	
+		
 		<action name="constituencyElectionReportAction" class="constituencyElectionReportAction">
 			<result name="success">/jsp/constituencyReportPage.jsp</result>					
 		</action>
+		
 		<action name="userGroupBasicInfoAction" class="userGroupAction" method="getUserGroupsBasicInfo">
 			<result type="json" name="success">
 				<param name="root">userGroupBasicDetails</param>				
 			</result>		
 		</action>
+		
 		<action name="constituencyElectionReportAjaxAction" class="constituencyElectionReportAction" >
 			<result type="json" name="success">
 				<param name="root">candidateResults</param>				
@@ -681,11 +758,13 @@
 				<param name="root">districtList</param>				
 			</result>		
 		</action>
+		
 		<action name="getMandalsAjaxAction" class="electionVotingTrendzAction" method="getMandalsByDistrictId">
 			<result type="json" name="success">
 				<param name="root">mandalVO</param>				
 			</result>		
 		</action>
+		
 		<action name="candidateVotingTrendzAjaxAction" class="constituencyPageAction" method="getCandidateVotingTrendz">
 			<result type="json" name="success">
 				<param name="root">constituenciesList</param>				
@@ -790,8 +869,6 @@
         	</result>		
         </action>
         
-         
-        
         <action name="getElectionYearsAction" class="constituencyPageAction" method="getConstituencyElectionYears">
               <result type="json" name="success">
            		<param name="root">electionIdsAndYears</param>
@@ -881,29 +958,7 @@
            		<param name="root">commentsClassificationList</param>
         	</result>       		
         </action>
-        <action name="electionResultsAnalysisAction" class="electionResultsAnalysisAction">
-            <result name="success">/jsp/electionResultsAnalysisReport.jsp</result>	
-        </action>
-        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionTypes"> 
-              <result type="json" name="success">
-           		<param name="root">electionTypes</param>
-        	</result>       		
-        </action>
-        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionYears"> 
-              <result type="json" name="success">
-           		<param name="root">electionYears</param>
-        	</result>       		
-        </action>
-        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getAllParties"> 
-              <result type="json" name="success">
-           		<param name="root">partiesList</param>
-        	</result>       		
-        </action>
-        <action name="electionResultsAnalysisAjaxAction" class="electionResultsAnalysisAction" method="ajaxCallHandler"> 
-              <result type="json" name="success">
-           		<param name="root">partyAnalysisReportVO</param>
-        	</result>       		
-        </action>
+        
         <action name="partyElectionResultsAction" class="partyElectionResultsAction">
             <result name="success">/jsp/partyElectionResultsPopup.jsp</result>	
         </action>        
@@ -975,24 +1030,7 @@
            		<param name="root">electionYears</param>
         	</result>       		
         </action> 
-        <action name="analysisCategoryResultForAPartyInAnElection" class="electionResultsAnalysisAction" method="getAnalysisCategoryResults"> 
-              <result type="json" name="success">
-           		<param name="root">partyPositionAnalysisResultVO</param>
-        	</result>       		
-        </action> 
-        <action name="votesMaringInfoForMainPartyInAnElection" class="electionResultsAnalysisAction" method="getVotesMarginInfoForMainParty"> 
-              <result type="json" name="success">
-           		<param name="root">votesMarginAnalysisVO</param>
-        	</result>       		
-        </action>
-        <action name="electionResultsAnalysisReportPopupAction" class="electionResultsAnalysisReportPopupAction">
-            <result name="success">/jsp/electionResultsAnalysisPopup.jsp</result>	
-        </action>
-        <action name="electionResultsAnalysisReportPopupAjaxAction" class="electionResultsAnalysisReportPopupAction" method="ajaxCallHandler"> 
-              <result type="json" name="success">
-           		<param name="root">partyAnalysisReportVO</param>
-        	</result>       		
-        </action>
+        
         <action name="problemsCountByStatusBasedOnAccessLevelsAction" class="problemManagementReportAction" method="getProblemsCountByStatusBasedOnAccessLevel"> 
               <result type="json" name="success">
            		<param name="root">locationwiseProblemStatusInfoVO</param>
@@ -1249,5 +1287,3 @@
         </action>
 	</package>
 </struts>
-
-

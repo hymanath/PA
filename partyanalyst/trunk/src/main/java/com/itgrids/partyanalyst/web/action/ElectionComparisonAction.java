@@ -3,13 +3,17 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -25,6 +29,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	private List<SelectOptionVO> yearsList;
 	private HttpServletRequest request;
 	private IStaticDataService staticDataService;
+	private HttpSession session;
 	private String task = null;
 	JSONObject jObj = null;
 	private static final Logger log = Logger.getLogger(ElectionComparisonAction.class);
@@ -83,6 +88,13 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	}
 
 	public String execute() throws Exception {
+		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_COMPARISION_REPORT))
+			return ERROR;
+		
 		partyList = staticDataService.getStaticParties();
 		return Action.SUCCESS;
 		

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 
 import javax.servlet.ServletContext;
@@ -28,15 +27,15 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
-import com.itgrids.partyanalyst.dto.AnalysisCategoryBasicVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -273,6 +272,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	@SuppressWarnings("unchecked")
 	public String execute() throws JRException {
 		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+			return ERROR;
+		
 		log.debug("partyPerformance excute started...");
 	
 		Map<String, String> params = request.getParameterMap();
@@ -376,9 +381,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			statesYearList.put("LEVELS", getReportLevels());
 		
 		return Action.SUCCESS;
-	}
+	} 
 	@JSON (serialize= false )   
 	public String getReport() {
+		
+		session = request.getSession();
+		if(!EntitlementsHelper.checkForEntitlementToViewReport(session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+			return ERROR;
 		
 		log.debug("partyPerformanceReport action started...");
 		String district = "0";

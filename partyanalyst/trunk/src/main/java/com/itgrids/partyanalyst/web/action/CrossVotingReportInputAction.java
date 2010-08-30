@@ -49,20 +49,10 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	public String execute(){
 		
 		electionYearList = new ArrayList<SelectOptionVO>();				
-		SelectOptionVO eList1 = new SelectOptionVO();
-		eList1.setId(new Long(2004));
-		eList1.setName("2004");
 		
-		SelectOptionVO eList2 = new SelectOptionVO();
-		eList2.setId(new Long(2009));
-		eList2.setName("2009");		
+		electionYearList.add(new SelectOptionVO(2004l, "2004"));
+		electionYearList.add(new SelectOptionVO(2009l, "2009"));
 		
-		electionYearList.add(eList1);
-		electionYearList.add(new SelectOptionVO(2006l, "2006"));
-		electionYearList.add(new SelectOptionVO(2008l, "2008"));
-		electionYearList.add(eList2);
-		setElectionYearList(electionYearList);
-
 		return Action.SUCCESS;
 	}
 
