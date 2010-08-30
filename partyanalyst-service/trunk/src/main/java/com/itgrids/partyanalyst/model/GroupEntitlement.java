@@ -39,7 +39,7 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 	private Long groupEntitlementId;
 	private Entitlement entitlement;
 	private Set<UserGroupEntitlement> userGroupEntitlement = new HashSet<UserGroupEntitlement>(0);
-	
+	private String description;
 	
 	/** Default Constructor */
     public GroupEntitlement(){
@@ -95,4 +95,13 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 		this.userGroupEntitlement = userGroupEntitlement;
 	}
 
+	@Column(name = "description", length = 250)
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }

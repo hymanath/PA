@@ -129,7 +129,12 @@
 				<value>com.itgrids.partyanalyst.model.PartyTrainingCamps</value>
 				<value>com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps</value>
 				<value>com.itgrids.partyanalyst.model.CadreSkills</value>
-				
+				<value>com.itgrids.partyanalyst.model.Entitlement</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
+				<value>com.itgrids.partyanalyst.model.UserGroups</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupRelation</value>
+				<value>com.itgrids.partyanalyst.model.UserAccessInfo</value>
 		 </list>
 		</property>
 	</bean>
@@ -503,6 +508,29 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="smsTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTrackDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="entitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.EntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+					
+	<bean id="groupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userGroupEntitlementDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupEntitlementDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userGroupsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userGroupRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAccessInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 

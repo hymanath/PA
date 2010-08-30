@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -45,6 +46,7 @@ public class Registration implements java.io.Serializable {
 	 private String accessType;
 	 private String accessValue;
 	 private UserCategory userCategory;
+	 private Set<UserGroupRelation> userGroupRelations = new HashSet<UserGroupRelation>(0);
 	 private String userType;
 	 private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	 private Party party;
@@ -344,6 +346,18 @@ public class Registration implements java.io.Serializable {
 	public void setWriteWriteUserPrevilegesSet(
 			Set<UserGroupPrivileges> writeWriteUserPrevilegesSet) {
 		this.writeWriteUserPrevilegesSet = writeWriteUserPrevilegesSet;
-	}	
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserGroupRelation> getUserGroupRelations() {
+		return userGroupRelations;
+	}
+
+	public void setUserGroupRelations(Set<UserGroupRelation> userGroupRelations) {
+		this.userGroupRelations = userGroupRelations;
+	}
+
+	
 	
 }

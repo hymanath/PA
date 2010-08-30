@@ -1,13 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
-import junit.framework.Assert;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
-import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.UserGroupEntitlement;
+import com.itgrids.partyanalyst.model.UserGroupRelation;
 
 public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -32,7 +31,7 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List<Registration> users = registrationDAO.getAll();
 		System.out.println(users.size());
 		for(Registration user:users){
@@ -41,14 +40,19 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 	
-	
-	/*public void testToDeleteRegistration(){
+	public void testToDeleteRegistration(){
 		registrationDAO.remove(new Long(1));
 		setComplete();
-	}*/
+	}
 
 	public void testGetDetails(){
 		List<Registration> regUser = registrationDAO.findByUserRegistrationId(3l);
 		Assert.assertEquals(1, regUser.size());
+	}*/
+	
+	public void testGetUserEntitlements(){
+		Set<UserGroupRelation> entitlements = registrationDAO.get(1l).getUserGroupRelations();
+		System.out.println(entitlements.size());
 	}
+	
 }
