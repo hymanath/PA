@@ -2,23 +2,34 @@
 
 var REPORTLEVEL = '';
 var REPORTLOCATIONVALUE = '';
-var CADRETYPE = 'active';
-var SEARCHCRITERIA = '';
-var SEARCHCRITERIAVALUE = 'Select';
 
-var searchCriteriaArr = ["committe","category","age","occupation"];
-var committeArr = ["Mahila Morcha","SC Morcha","ST Morcha","Kisan Morcha","Minority Morcha"];
-var categoryArr = ["SC","ST","BC","Minority","General","Female"];
-var ageArr = ["19-25","26-30","31-35","36-50","51-65",">66"];
-var occupationArr = [];
+var SOCIALSTATUS = false;
+var SOCIALSTATUSARRAY = new Array();
+
+var CADRETYPE = 'all';
+var SEARCHTYPE = 'location';
+var SEARCHCRITERIA = 'all';
+var SEARCHCRITERIAVALUE = '0';
+
+var PERFORMSEARCH = 'and';
+
+var searchCriteriaArr = ["committe","skills","trainingCamps"];
+var socialStatus = new Array();
+var eduStatus = new Array();
+var partyCommitte = new Array();
+var cadreSkills = new Array();
+var partyTrainingCamps = new Array();
+var occupations = new Array();
 
 function getCriteriaValue(criteriaValue,elmtId)
 {
 	CADRETYPE = criteriaValue;
 	var labelSpanElmt = document.getElementById(elmtId+"_label");
 	var dataSpanElmt = document.getElementById(elmtId+"_data");
+	var sTypeLabelElmt = document.getElementById("searchType_label");
+	var sTypedataElmt = document.getElementById("searchType_data");
 
-	if(!labelSpanElmt || !dataSpanElmt)
+	if(!labelSpanElmt || !dataSpanElmt || !sTypeLabelElmt || !sTypedataElmt)
 		return;
 	
 	var labelStr = '',dataStr = '';
@@ -28,95 +39,156 @@ function getCriteriaValue(criteriaValue,elmtId)
 
 	if(CADRETYPE == "active")
 	{
+		
+		sLabelStr = '';
+		sLabelStr += ' <font color="#FF0000"> * </font> Search Type';
+		if(sTypeLabelElmt)
+		sTypeLabelElmt.innerHTML = sLabelStr;
+		
+		sDataStr = '';
+		sDataStr += ' <input type="radio" name="searchType" checked="checked" onclick="javascript:{SEARCHTYPE = this.value;}" value="location">Location';
+		sDataStr += ' <input type="radio" name="searchType" onclick="javascript:{SEARCHTYPE = this.value;}" value="level">Level';
+		if(sTypedataElmt)
+		sTypedataElmt.innerHTML = sDataStr;
+
+
 		labelStr += ' <font color="#FF0000"> * </font> Search Criteria';
 		labelSpanElmt.innerHTML = labelStr;
-		
-		dataStr += '<div>';
-		dataStr += '	<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="all"/>All</span>';		
-		dataStr += '</div>';
-		dataStr += '<div>';
-		dataStr += '	<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="committe"/>Committe Wise</span>';
-		dataStr += '	<span id="committe_Select"></span>';
-		dataStr += '</div>';
-		dataStr += '<div>';
-		dataStr += '	<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="category"/>Category Wise</span>';
-		dataStr += '	<span id="category_Select"></span>';
-		dataStr += '</div>';
-		dataStr += '<div>';
-		dataStr += '	<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="age"/>Age Wise</span>';
-		dataStr += '	<span id="age_Select"></span>';
-		dataStr += '</div>';
-		dataStr += '<div>';
-		dataStr += '	<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="occupation"/>Occupation Wise</span>';
-		dataStr += '	<span id="occupation_Select"></span>';
-		dataStr += '</div>';		
+
+		dataStr += '<table>';
+		dataStr += '	<tr>';
+		dataStr += '		<td><input type="radio" name="criteriaValue" checked="checked" onclick="getSearchOptions(this.value)" value="all"/>All</td>';
+		dataStr += '		<td></td>';
+		dataStr += '	</tr>';
+		dataStr += '	<tr>';
+		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="committe"/>Committe Wise</td>';
+		dataStr += '		<td><span id="committe_Select"></span></td>';
+		dataStr += '	</tr>';
+		dataStr += '	<tr>';
+		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="skills"/> Skills Wise<td>';
+		dataStr += '		<td><span id="skills_Select"></span></td>';
+		dataStr += '	</tr>';
+		dataStr += '	<tr>';
+		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="trainingCamps"/>';
+		dataStr += '		Training Camps Wise</td>';
+		dataStr += '		<td><span id="trainingCamps_Select"></span></td>';
+		dataStr += '	</tr>';
+		dataStr += '</table>';
 		
 		dataSpanElmt.innerHTML = dataStr;
 	}
 	else if(CADRETYPE == "normal")
 	{	
+		sTypeLabelElmt.innerHTML = ''; 
+		sTypedataElmt.innerHTML = '';
+		dataSpanElmt.innerHTML = '';
+	}
+	else if(CADRETYPE == "all")
+	{	
+		sTypeLabelElmt.innerHTML = ''; 
+		sTypedataElmt.innerHTML = '';
 		dataSpanElmt.innerHTML = '';
 	}
 
 }
 
+function addSocialStatusValue(elmt)
+{	
+	var value = elmt.value;	
+	var selectElmt = document.getElementById("socialStatus_"+value);
+	if(!selectElmt)
+		return;
+	
+	if(elmt.checked == false)
+	{
+		selectElmt.disabled=true;
+		for(var i=0;i<SOCIALSTATUSARRAY.length;i++)
+		{
+			if(SOCIALSTATUSARRAY[i].statusValue == value)
+				SOCIALSTATUSARRAY.splice(i,1);
+		}		
+	}
+	else
+	{
+		selectElmt.disabled=false;	
+	
+		if(!elmt)
+			return;
+		var selectElmtValue = selectElmt.options[selectElmt.selectedIndex].value;
+
+		var obj = {
+					statusValue:""+value,
+					ElmtValue:selectElmtValue
+				  };
+
+		SOCIALSTATUSARRAY.push(obj);
+	}
+	
+}	
+
+function changeSocialStatus(elmt)
+{
+	var elmtValue = elmt.id.substring(elmt.id.indexOf('_')+1,elmt.id.length);
+	var elmtChangedId = elmt.options[elmt.selectedIndex].value;
+	
+	for(var i =0;i<SOCIALSTATUSARRAY.length;i++)
+	{
+		if(SOCIALSTATUSARRAY[i].statusValue == elmtValue)
+			SOCIALSTATUSARRAY[i].ElmtValue = elmtChangedId;
+	}
+}
+
 function getSearchOptions(value)
 {
+	for(var i in searchCriteriaArr)
+	{
+		var searchCriteriaElmt = document.getElementById(searchCriteriaArr[i]+"_Select");
+		searchCriteriaElmt.innerHTML = '';
+	}	
+
 	if(value == "all")
 	{
 		SEARCHCRITERIA = "all";
+		return;
 	}
 
 	var categorySelectElmt = document.getElementById(value+"_Select");
 	SEARCHCRITERIA = value;
 
 	if(!categorySelectElmt)
-		return;
-	for(var i in searchCriteriaArr)
-	{
-		var searchCriteriaElmt = document.getElementById(searchCriteriaArr[i]+"_Select");
-		searchCriteriaElmt.innerHTML = '';
-	}
+		return;	
 	
 	var str = '';
 	var searchCriteriaArrValue = '';
 	if(value == "committe")
 	{
-		searchCriteriaArrValue = committeArr;
+		searchCriteriaArrValue = partyCommitte;
 	}
-	else if(value == "category")
+	else if(value == "skills")
 	{
-		searchCriteriaArrValue = categoryArr;
+		searchCriteriaArrValue = cadreSkills;
 	}
-	else if(value == "age")
+	else if(value == "trainingCamps")
 	{
-		searchCriteriaArrValue = ageArr;
-	}
-	else if(value == "occupation")
-	{
-		searchCriteriaArrValue = occupationArr;
+		searchCriteriaArrValue = partyTrainingCamps;
 	}
 	
 	if(searchCriteriaArrValue.length>0)
 	{
-		str += '<select onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].text;}">';
-		str += '<option value="0">Select</option>';
+		str += '<select class="searchcriteriaSelect" onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].value;}">';		
 		for(var i in searchCriteriaArrValue)
 		{
-			str += '<option>'+searchCriteriaArrValue[i]+'</option>';
+			str += '<option value="'+searchCriteriaArrValue[i].id+'">'+searchCriteriaArrValue[i].name+'</option>';
 		}		
 		str += '</select>';
 
 		categorySelectElmt.innerHTML = str;
 	}	
-	
-
-	
-
 }
 
 function showSocialStatus(elmt)
 {
+	SOCIALSTATUS = true;
 	var checkElmts = document.getElementsByName("socialStatus");
 	var status;
 
@@ -130,22 +202,64 @@ function showSocialStatus(elmt)
 	
 	for(var i in checkElmts)
 	{
-		checkElmts[i].disabled = status;
-		var elmt = document.getElementById("socialStatus_"+checkElmts[i].value);
-
-		if(!elmt)
-			continue;
-
-		elmt.disabled=status;
+		checkElmts[i].disabled = status;		
 	}
 
 	
 }
 
+
+function limitText(limitField, limitCount, limitNum)
+{		
+	var limitFieldElmt = document.getElementById(limitField);
+	var limitCountElmt = document.getElementById(limitCount);
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+}
 function sendSMSWithoutSearch()
 {
+	var smsTxtLabelElmt = document.getElementById("smsTxtArea_label");
+	var smsTxtdataElmt = document.getElementById("smsTxtArea_data");
+	var includeUserNameLabelElmt = document.getElementById("includeUserName_label");
+	var includeUserNameDataElmt = document.getElementById("includeUserName_data");
+	var smsSendSpanButtonElmt = document.getElementById("smsSendSpan_button");
 
+	if(smsTxtLabelElmt)
+		smsTxtLabelElmt.innerHTML="SMS Text";
+	
+	var smsStr='';
+	smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+	smsStr+='<div id="limitDiv">';
+	smsStr+='<table><tr>';
+	smsStr+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	smsStr+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+	smsStr+='</tr></table>';
+	smsStr+='</div>';			
+	
+	if(smsTxtdataElmt)
+		smsTxtdataElmt.innerHTML=smsStr;
+
+	if(includeUserNameLabelElmt)
+		includeUserNameLabelElmt.innerHTML="Include User Name";
+	
+	var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_user_name" value="YES" /> Yes';
+	smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_user_name" value="NO" checked="checked"/> No    ';
+	
+	if(includeUserNameDataElmt)
+		includeUserNameDataElmt.innerHTML=smsUserIncludeStr;
+	
+	if(smsSendSpanButtonElmt)
+		smsSendSpanButtonElmt.innerHTML = '<input type="button" value="Send SMS" onclick="getCadresResults(\'sms\')">';
+	 
 }
+
 
 function getRegionsForAccessLevel(accessValue,regionElmtId)
 {
@@ -166,37 +280,38 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 	
 	labelStr += ' <font color="#FF0000"> * </font> Select Location';
 	buttonStr += '<div>';
-	buttonStr += '<span><input type="button" onclick="getCadresResults()" value="Search"/></span>';
-	buttonStr += '<span><input type="button" onclick="sendSMSWithoutSearch()" value="Send SMS"/></span>';
+	buttonStr += '<span><input type="button" onclick="getCadresResults(\'search\')" value="Search"/></span>';
+	buttonStr += '<span><input type="button" onclick="sendSMSWithoutSearch()" value="Click To Send SMS"/></span>';
 	buttonStr += '</div>';
 
 	
 	labelSpanElmt.innerHTML = labelStr;
 	buttonSpanElmt.innerHTML = buttonStr;
 	
-	if(REPORTLEVEL == "Country")
+	if(REPORTLEVEL == "1")
 	{		
-		dataStr += '<select id="countrySelectBox">';
+		dataStr += '<select id="countrySelectBox" onchange="javascript:{REPORTLOCATIONVALUE = 1}">';
+		dataStr += '<option id="0"> Select </option>';
 		dataStr += '<option id="1"> India </option>';
 		dataStr += '</select>';
 		
 		dataSpanElmt.innerHTML = dataStr;		
 	}
-	else if(REPORTLEVEL == "State")
+	else if(REPORTLEVEL == "2")
 	{
 		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country</option>';
 		dataStr += '<option value="1"> India </option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="stateSelectBox">';
+		dataStr += '<select id="stateSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select State</option>';
 		dataStr += '</select>';
 		
 		dataSpanElmt.innerHTML = dataStr;
 		
 	}
-	else if(REPORTLEVEL == "District")
+	else if(REPORTLEVEL == "3")
 	{
 		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country</option>';
@@ -207,13 +322,13 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 		dataStr += '<option value="0"> Select State</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="districtSelectBox">';
+		dataStr += '<select id="districtSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select District</option>';
 		dataStr += '</select>';
 		
 		dataSpanElmt.innerHTML = dataStr;
 	}
-	else if(REPORTLEVEL == "Constituency")
+	else if(REPORTLEVEL == "4")
 	{
 		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country</option>';
@@ -228,13 +343,13 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 		dataStr += '<option value="0"> Select District</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="constituencySelectBox">';
+		dataStr += '<select id="constituencySelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select Constituency</option>';
 		dataStr += '</select>';
 		
 		dataSpanElmt.innerHTML = dataStr;
 	}
-	else if(REPORTLEVEL == "Mandal")
+	else if(REPORTLEVEL == "5")
 	{
 		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country</option>';
@@ -253,13 +368,13 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 		dataStr += '<option value="0"> Select Constituency</option>';
 		dataStr += '</select>';
 		
-		dataStr += '<select id="mandalSelectBox">';
+		dataStr += '<select id="mandalSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select Mandal</option>';
 		dataStr += '</select>';		
 		
 		dataSpanElmt.innerHTML = dataStr;
 	}
-	else if(REPORTLEVEL == "Village")
+	else if(REPORTLEVEL == "6")
 	{
 		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
 		dataStr += '<option value="0"> Select Country </option>';
@@ -282,7 +397,7 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 		dataStr += '<option value="0"> Select Mandal</option>';
 		dataStr += '</select>';
 
-		dataStr += '<select id="villageSelectBox">';
+		dataStr += '<select id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 		dataStr += '<option value="0"> Select Village</option>';
 		dataStr += '</select>';
 		
@@ -290,7 +405,7 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 	}
 }
 
-function getCadresResults()
+function getCadresResults(btnType)
 {	 
 	var elmt = document.getElementById("errorMsgDiv");
 	var locationValue = '';
@@ -305,20 +420,13 @@ function getCadresResults()
 	var villageSelectElmt = document.getElementById("villageSelectBox");
 		
 	
-	if(REPORTLEVEL == '' || SEARCHCRITERIA == '')
+	if(REPORTLEVEL == '') 
 	{
-		elmt.innerHTML = 'Fields marked with * are compulsory';
-		return;
-		
-	}
-	
-	if(SEARCHCRITERIAVALUE == 'Select')
-	{
-		elmt.innerHTML = 'Select search criteria value';
-		return;
+		elmt.innerHTML = 'Please Select Access Level';
+		return;		
 	}
 
-	if(REPORTLEVEL == "Country")
+	if(REPORTLEVEL == "1")
 	{
 		if(!countrySelectElmt || countrySelectElmt.options[countrySelectElmt.selectedIndex].value == "0")
 		{
@@ -326,7 +434,7 @@ function getCadresResults()
 			return;
 		}
 	}	
-	else if(REPORTLEVEL == "State")
+	else if(REPORTLEVEL == "2")
 	{
 		if(!stateSelectElmt || stateSelectElmt.options[stateSelectElmt.selectedIndex].value == "0")
 		{
@@ -339,7 +447,7 @@ function getCadresResults()
 			locationValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].value;
 		}
 	}	
-	else if(REPORTLEVEL == "District")
+	else if(REPORTLEVEL == "3")
 	{
 		if(!districtSelectElmt || districtSelectElmt.options[districtSelectElmt.selectedIndex].value == "0")
 		{
@@ -352,7 +460,7 @@ function getCadresResults()
 			locationValue = districtSelectElmt.options[districtSelectElmt.selectedIndex].value;
 		}
 	}	
-	else if(REPORTLEVEL == "Constituency")
+	else if(REPORTLEVEL == "4")
 	{
 		if(!constituencySelectElmt || constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value == "0")
 		{
@@ -365,7 +473,7 @@ function getCadresResults()
 			locationValue = constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value;
 		}
 	}	
-	else if(REPORTLEVEL == "Mandal")
+	else if(REPORTLEVEL == "5")
 	{
 		if(!mandalSelectElmt || mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value == "0")
 		{
@@ -378,7 +486,7 @@ function getCadresResults()
 			locationValue = mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value;
 		}
 	}	
-	else if(REPORTLEVEL == "Village")
+	else if(REPORTLEVEL == "6")
 	{
 		if(!villageSelectElmt || villageSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
 		{
@@ -392,17 +500,37 @@ function getCadresResults()
 		}
 	}
 	
+
+	if(SOCIALSTATUS)
+	{	
+		if(SOCIALSTATUSARRAY.length == 0)
+		{
+			elmt.innerHTML = 'Please Select Any one of the social status or Unselect social status.';
+			return;
+		}
+	}
 	
+	if(btnType == "sms")
+	{
+		var txtAreaElmt = document.getElementByID("smsTextArea");
+	}
+	
+
 	var jsObj=
-		{				
-				reportLevel:REPORTLEVEL,
-				locationValue:locationValue,
-				cadreType:CADRETYPE,
-				searchCriteria:SEARCHCRITERIA,
-				searchCriteriaValue:SEARCHCRITERIAVALUE,
-				task:"cadreSearch"		
+		{		
+			reportLevel:REPORTLEVEL,
+			reportLocationValue:REPORTLOCATIONVALUE,
+			socialStatus:SOCIALSTATUS,
+			socialStatusArray:SOCIALSTATUSARRAY,
+			cadreType:CADRETYPE,
+			searchType:SEARCHTYPE,
+			searchCriteria:SEARCHCRITERIA,
+			searchCriteriaValue:SEARCHCRITERIAVALUE,
+			performSearch:PERFORMSEARCH,
+			task:"cadreSearch"		
 		}
 	
+	console.log(jsObj);
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCadresDetailsAjaxAction.action?"+rparam;						
 	callAjax(jsObj,url);
@@ -493,9 +621,9 @@ function showCadreSearchResults(jsObj,results)
 		return;
 	
 	headElmt.innerHTML = 'Search Results';
-	if(results.length == 0)
+	if(!results || results.length == 0)
 	{
-		bodyElmt.innerHTML = '<div>No Search results found.</div>';
+		bodyElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
 		return;
 	}
 	
@@ -665,7 +793,10 @@ function callAjax(jsObj,url)
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							
 							if(jsObj.taskType == "getRegions")
-								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+							{
+								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,myResults);
+							}
 							else if(jsObj.task == "cadreSearch")
 								showCadreSearchResults(jsObj,myResults);
 
@@ -685,3 +816,9 @@ function callAjax(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function buildselectBoxes()
+{	
+	createOptionsForSelectElmtId("socialStatus_resevation",socialStatus);
+	createOptionsForSelectElmtId("socialStatus_education",eduStatus);
+	createOptionsForSelectElmtId("socialStatus_occupation",occupations);
+}

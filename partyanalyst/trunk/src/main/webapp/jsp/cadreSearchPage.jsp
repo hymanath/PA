@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -73,17 +76,17 @@
 	<div id="CadreSearchMain">
 		<table width="100%" id="cadreSearchInputTable">
             <tr>
-                <td><div id="errorMsgDiv"></div></td>
+                <td colspan="2"><div id="errorMsgDiv"></div></td>
             </tr>
         	<tr>
             	<th><font color="#FF0000"> * </font>Access level</th>                
                 <td>
-                	<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="Country"/> Country		
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="State"/> State
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="District"/> District
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="Constituency"/> Constituency
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="Mandal"/> Mandal
-                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="Village"/> Village                    
+                	<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="1"/> Country		
+                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="2"/> State
+                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="3"/> District
+                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="4"/> Constituency
+                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="5"/> Mandal
+                    <input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="6"/> Village                    
                 </td>
             </tr>
             <tr>
@@ -95,14 +98,6 @@
 					
 					</span>
 			</tr>
-
-			<tr>
-				<th><font color="#FF0000"> * </font> Cadre Type</span></th>
-				<td>
-					<input type="radio" name="cadreTypeRadio" checked="checked" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
-					<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
-				</td>
-			</tr>
 			
 			<tr>
 				<th valign="top"><font color="#FF0000"> * </font> Social Status</span></th>
@@ -111,37 +106,26 @@
 					<div>	
 						<table>
 							<tr>
-								<td><input type="checkbox" name="socialStatus" disabled="disabled" value="resevation"/> Reservation Category</td>
+								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="resevation"/> Reservation Category</td>
 								<td>
-									<select id="socialStatus_resevation" disabled="disabled">
-										<option>SC</option>
-										<option>ST</option>
-										<option>BC</option>
-										<option>Minority</option>
-										<option>General</option>
-										<option>Female</option>
+									<select class="searchcriteriaSelect" onchange="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
+										
 									</select>
 								</td>
 							</tr>						
 							<tr>
-								<td><input type="checkbox" name="socialStatus" disabled="disabled" value="education"/> Education</td>
+								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="education"/> Education</td>
 								<td>
-									<select id="socialStatus_education" disabled="disabled">
-										<option>Tenth</option>
-										<option>twelve/Diploma</option>
-										<option>Graduation</option>
-										<option>Post Graduation</option>
-										<option>Doctrate</option>
+									<select class="searchcriteriaSelect" id="socialStatus_education" onchange="changeSocialStatus(this)" disabled="disabled">
+										
 									</select>
 								</td>
 							</tr>						
 							<tr>
-								<td><input type="checkbox" name="socialStatus" disabled="disabled" value="occupation"/> Occupation</td>
+								<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="occupation"/> Occupation</td>
 								<td>
-									<select id="socialStatus_occupation" disabled="disabled">
-										<option>Agriculture</option>
-										<option>Engineer</option>
-										<option>Doctor</option>
+									<select class="searchcriteriaSelect" id="socialStatus_occupation" onchange="changeSocialStatus(this)" disabled="disabled">
+										
 									</select>
 								</td>
 							</tr>
@@ -149,37 +133,58 @@
 					</div>
 				</td>
 			</tr>
-
+			
 			<tr>
-				<th valign="top"><div id="searchCriteria_label"><font color="#FF0000"> * </font> Search Criteria</span></div></th>
-				<td valign="top">
-					<div id="searchCriteria_data">
-						<div>
-							<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="all"/>All</span>	
-						</div>
-						<div>
-							<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="committe"/>Committe Wise</span>
-							<span id="committe_Select"></span>
-						</div>
-						<div>
-							<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="category"/>Category Wise</span>
-							<span id="category_Select"></span>
-						</div>
-						<div>
-							<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="age"/>Age Wise</span>
-							<span id="age_Select"></span>
-						</div>
-						<div>
-							<span><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="occupation"/>Occupation Wise</span>
-							<span id="occupation_Select"></span>
-						</div>
+				<th><font color="#FF0000"> * </font> Cadre Type</span></th>
+				<td>
+					<input type="radio" name="cadreTypeRadio" value="all" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
+					<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
+					<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
+				</td>
+			</tr>			
+			
+			<tr>
+				<th><div id="searchType_label"></div></th>
+				<td>
+					<div id="searchType_data">
+						
 					</div>
 				</td>
-			</tr>           
+			</tr>
+
+			<tr>
+				<th valign="top"><div id="searchCriteria_label"></div></th>
+				<td valign="top">
+					<div id="searchCriteria_data">
+						
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th valign="top"><div id="searchPerform_label">Perform Search By</div></th>
+				<td valign="top">
+					<div id="searchPerform_label">
+						<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">And
+						<input type="radio" name="performSearch" value="or" onclick="javascript:{PERFORMSEARCH = this.value}">Or
+					</div>
+				</td>
+			</tr>
 				 
             <tr>
             	<td colspan="2" align="center"><span id="accessRegion_button"></span></td>
             </tr>
+			<tr>
+				<th><span id="smsTxtArea_label"></span></th>
+				<td><span id="smsTxtArea_data"></span></td>
+			</tr>			
+			<tr>
+				<th><span id="includeUserName_label"></span></th>
+				<td><span id="includeUserName_data"></span></td>
+			</tr>
+			<tr>				
+				<td colspan="2" align="center"><span id="smsSendSpan_button"></span></td>
+			</tr>
         </table>
 	</div>
 
@@ -188,5 +193,52 @@
 		<div id="searchResultsDiv_body"></div>
 		<div id="searchResultsDiv_footer"></div>
 	</div>
+
+	<script type="text/javascript">		
+		<c:forEach var="social" items="${socialStatus}">
+			var obj = {
+			           	id:'${social.id}',
+						name:'${social.name}'
+					  };
+					socialStatus.push(obj);
+		</c:forEach>
+		<c:forEach var="edu" items="${eduStatus}">
+			var obj = {
+			           	id:'${edu.id}',
+						name:'${edu.name}'
+					  };
+					eduStatus.push(obj);
+		</c:forEach>
+		<c:forEach var="committe" items="${partyCommitteesList}">
+			var obj = {
+			           	id:'${committe.id}',
+						name:'${committe.name}'
+					  };
+					partyCommitte.push(obj);
+		</c:forEach>
+		<c:forEach var="skill" items="${cadreSkillsList}">
+			var obj = {
+			           	id:'${skill.id}',
+						name:'${skill.name}'
+					  };
+					cadreSkills.push(obj);
+		</c:forEach>
+		<c:forEach var="camps" items="${partyTrainingCampsList}">
+			var obj = {
+			           	id:'${camps.id}',
+						name:'${camps.name}'
+					  };
+					partyTrainingCamps.push(obj);
+		</c:forEach>
+		<c:forEach var="occupation" items="${occupationsList}">
+			var obj = {
+			           	id:'${occupation.id}',
+						name:'${occupation.name}'
+					  };
+					occupations.push(obj);
+		</c:forEach>
+				
+		buildselectBoxes();
+	</script>
 </body>
 </html>

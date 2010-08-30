@@ -92,7 +92,7 @@ function clearOptionsListForSelectElmtId(elmtId)
 	if(!elmt)
 		return;
 	var len=elmt.length;			
-	for(i=len-1;i>0;i--)
+	for(i=len-1;i>=0;i--)
 	{
 		elmt.remove(i);
 	}	

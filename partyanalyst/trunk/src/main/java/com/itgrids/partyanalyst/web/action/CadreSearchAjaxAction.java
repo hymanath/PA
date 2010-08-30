@@ -5,20 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreSearchAjaxAction extends ActionSupport implements ServletRequestAware{
 	
 	private HttpServletRequest request;
+	private HttpSession session;
 	JSONObject jObj = null,respObj=null;
 	private String task = null;
 	private List<SelectOptionVO> statesListForACountry;
@@ -31,6 +38,15 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	private List<CadreInfo> cadreInfo;
 	private String cadreId;
 	
+	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
 	public List<CadreInfo> getCadreInfo() {
 		return cadreInfo;
 	}
@@ -226,6 +242,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	}
 	public String getCadresSearch()
 	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
 		String param = null;
 		param = getTask();
 		
@@ -236,15 +255,66 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		String reportLevel = jObj.getString("reportLevel");
-		String locationValue = jObj.getString("locationValue");
-		String cadreType = jObj.getString("cadreType");
-		String searchCriteria = jObj.getString("searchCriteria");
-		String searchCriteriaValue = jObj.getString("searchCriteriaValue");
+			
 		
 		
-		cadreInfo = getDummyCadresInfo();
+		PartyCadreDetailsVO partyCadreDetailsVO = new PartyCadreDetailsVO();
+		
+		if(jObj.getString("cadreType").equalsIgnoreCase("all"))
+			partyCadreDetailsVO.setCadreType(IConstants.ALL);
+		else if(jObj.getString("cadreType").equalsIgnoreCase("active"))
+			partyCadreDetailsVO.setCadreType(IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		else if(jObj.getString("cadreType").equalsIgnoreCase("normal"))
+			partyCadreDetailsVO.setCadreType(IConstants.CADRE_MEMBER_TYPE_NORMAL);
+		
+		partyCadreDetailsVO.setCadreLevelId(new Long(jObj.getString("reportLevel")));
+		partyCadreDetailsVO.setCadreLocationId(new Long(jObj.getString("reportLocationValue")));
+		partyCadreDetailsVO.setIsSocialStatus(jObj.getBoolean("socialStatus"));
+		
+		if(jObj.getBoolean("socialStatus"))
+		{
+			JSONArray socialStatusArray = jObj.getJSONArray("socialStatusArray");
+			
+			for(int i=0; i<socialStatusArray.length(); i++)
+			{
+				JSONObject socialObj = socialStatusArray.getJSONObject(i);
+				String categoryId = socialObj.getString("ElmtValue");
+				String categoryValue = socialObj.getString("statusValue");
+				
+				if(categoryValue.equalsIgnoreCase("resevation"))
+					partyCadreDetailsVO.setCadreCasteCategory(new CadreCategoryVO(new Long(categoryId)));
+				else if(categoryValue.equalsIgnoreCase("education"))
+					partyCadreDetailsVO.setCadreEducationQualification(new CadreCategoryVO(new Long(categoryId)));
+				else if(categoryValue.equalsIgnoreCase("occupation"))
+					partyCadreDetailsVO.setCadreOccupation(new CadreCategoryVO(new Long(categoryId)));
+			}
+		}
+		
+		if(jObj.getString("searchType").equalsIgnoreCase("location"))
+			partyCadreDetailsVO.setSearchType(IConstants.LOCATION_BASED);
+		else if(jObj.getString("searchType").equalsIgnoreCase("level"))
+			partyCadreDetailsVO.setSearchType(IConstants.LEVEL_BASED);
+		
+		partyCadreDetailsVO.setSkillsSearchType(jObj.getString("searchCriteria"));		
+		if(!jObj.getString("searchCriteria").equalsIgnoreCase("all"))
+		{
+			Long sCriteriaValue = new Long(jObj.getString("searchCriteriaValue"));
+			if(jObj.getString("searchCriteria").equalsIgnoreCase("committe"))
+				partyCadreDetailsVO.setCadreWorkingCommittee(new CadreCategoryVO(new Long(sCriteriaValue)));
+			else if(jObj.getString("searchCriteria").equalsIgnoreCase("skills"))
+				partyCadreDetailsVO.setCadreSkillSet(new CadreCategoryVO(new Long(sCriteriaValue)));
+			else if(jObj.getString("searchCriteria").equalsIgnoreCase("trainingCamps"))
+				partyCadreDetailsVO.setCadreTrainingCamps(new CadreCategoryVO(new Long(sCriteriaValue)));
+			
+		}
+		if(jObj.getString("performSearch").equalsIgnoreCase("and"))
+			partyCadreDetailsVO.setIsOrSearch(false);
+		else if(jObj.getString("performSearch").equalsIgnoreCase("or"))
+			partyCadreDetailsVO.setIsOrSearch(true);
+		
+		
+		cadreInfo = cadreManagementService.getCadreDetailsBySearchCriteria(user.getRegistrationID(), partyCadreDetailsVO);
+		
 		return Action.SUCCESS;
 	}
 	
