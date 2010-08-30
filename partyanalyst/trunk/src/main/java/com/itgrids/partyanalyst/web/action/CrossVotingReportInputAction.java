@@ -50,8 +50,9 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		
 		electionYearList = new ArrayList<SelectOptionVO>();				
 		
-		electionYearList.add(new SelectOptionVO(2004l, "2004"));
+		
 		electionYearList.add(new SelectOptionVO(2009l, "2009"));
+		electionYearList.add(new SelectOptionVO(2004l, "2004"));
 		
 		return Action.SUCCESS;
 	}
