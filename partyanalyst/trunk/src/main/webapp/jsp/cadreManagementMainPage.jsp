@@ -3723,7 +3723,8 @@
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
 			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
 			<div id="cadreSMSFooterDiv">
-				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup()">Cadre Search</a></span>					
+				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Search')">Cadre Search</a></span>
+				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Sms')">Cadre SMS</a></span>
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup()">Send SMS</a></span>
 				
 				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->

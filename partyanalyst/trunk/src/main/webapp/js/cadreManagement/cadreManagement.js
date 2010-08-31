@@ -165,12 +165,11 @@ function buildCadreTeamsAccrodian()
 	 });
 }
 
-function buildSearchPagePopup()
+function buildSearchPagePopup(type)
 {	
-	var urlStr = "cadreSearchAction.action?windowTask=cadreSearchAndSMSPopup";
+	var urlStr = "cadreSearchAction.action?windowTask="+type;
 	var browser2 = window.open(urlStr,"cadreSearchAndSMSPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");	
 	browser2.focus();
-	
 
 }
 

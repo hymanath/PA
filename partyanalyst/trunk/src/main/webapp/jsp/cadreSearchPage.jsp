@@ -54,7 +54,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
+
 <!-- YUI Dependency files (End) -->
 
 
@@ -68,7 +68,7 @@
         <table border="0" cellpadding="0" cellspacing="0">          
           <tr>
             <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
-            <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Cadre Search</span></div></td>
+            <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Cadre ${windowTask}</span></div></td>
             <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
           </tr>
         </table>    	
@@ -82,7 +82,7 @@
 				</tr>
 
 				<tr>
-					<th><font color="#FF0000"> * </font> Search Based On</th>                
+					<th><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
 					<td>
 						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)" checked="checked" value="location"/> Cadre Location  
 						<input type="radio" name="searchbasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
@@ -193,7 +193,7 @@
 				</tr>
 				
 				<tr>
-					<th valign="top"><div id="searchPerform_label">Perform search with</div></th>
+					<th valign="top"><div id="searchPerform_label">Perform ${windowTask} with</div></th>
 					<td valign="top">
 						<div id="searchPerform_label">
 							<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">all of these words
@@ -215,17 +215,48 @@
 				</tr>
 				<tr>				
 					<td colspan="2" align="center"><span id="smsSendSpan_button"></span></td>
-				</tr>
+				</tr>				
 			</table>
 		</div>
+		<c:if test="${windowTask == 'Sms'}">
+		<div>
+			<table width="100%" class="cadreSearchInputTable">	
+			<tr>
+				<th><font color="#FF0000"> * </font> SMS Text</th>
+				<td>
+					<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText('smsTextArea','maxcount',200)" ></textarea></div> 
+					<div id="limitDiv">
+					<table><tr>
+					<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>
+					<td style="width:50%;"><div>Should not exceed 200 chars</div></td>
+					</tr></table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>Include User Name</th>
+				<td>
+					<input type="radio" id="include_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value}" name="include_user_name" value="YES" /> Yes
+					<input type="radio" id="no_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value}"name="include_user_name" value="NO" checked="checked"/> No    
+				</td>
+			</tr>
+			</table>
+		</div>		
+		</c:if>
 		<div id="searchButtonDiv">
-			<table>
+			<table >
+				
 				<tr>					
 					<td align="center">
-						<input type="button" onclick="getCadresResults('search')" value="search"/>
+						<c:if test="${windowTask == 'Sms'}">
+						<input type="button" onclick="getCadresResults('sms')" value="Send SMS"/>
+						</c:if>
+						<c:if test="${windowTask == 'Search'}">
+						<input type="button" onclick="getCadresResults('search')" value="Search"/>
+						</c:if>
 					</td>
 					<td align="center">
-						<a href="javascript:{}" onclick="expandFilterOptions()"/>Add filter to search
+						<a href="javascript:{}" onclick="expandFilterOptions()"/>Add filter to ${windowTask}
 					</td>
 				</tr>
 			</table>	
@@ -234,11 +265,17 @@
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
-		<div id="searchResultsDiv_body"></div>
+		<div id="searchResultsDiv_body">
+			<div id="smsResult"></div>
+			<div id="searchResult" style="display:none"></div>
+		</div>
 		<div id="searchResultsDiv_footer"></div>
 	</div>
 
 	<script type="text/javascript">		
+
+		CLICKTYPE = '${windowTask}';
+
 		<c:forEach var="social" items="${socialStatus}">
 			var obj = {
 			           	id:'${social.id}',

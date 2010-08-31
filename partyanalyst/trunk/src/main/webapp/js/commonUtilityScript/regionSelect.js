@@ -1,5 +1,6 @@
 // JavaScript Document
 
+var CLICKTYPE = '';
 var REPORTLEVEL = '';
 var REPORTLOCATIONVALUE = '';
 
@@ -12,6 +13,9 @@ var SEARCHCRITERIA = 'all';
 var SEARCHCRITERIAVALUE = '0';
 
 var PERFORMSEARCH = 'and';
+
+var SMSTEXTAREAVALUE = '';
+var SMSINCLUDECADRENAME = 'NO';
 
 var searchCriteriaArr = ["committe","skills","trainingCamps"];
 var socialStatus = new Array();
@@ -523,7 +527,7 @@ function getCadresResults(btnType)
 	
 	if(REPORTLEVEL == '') 
 	{
-		elmt.innerHTML = 'Please Select Access Level';
+		elmt.innerHTML = 'Please Select Range';
 		return;		
 	}
 
@@ -621,7 +625,17 @@ function getCadresResults(btnType)
 	
 	if(btnType == "sms")
 	{
-		var txtAreaElmt = document.getElementByID("smsTextArea");
+		var textAreaElmt = document.getElementById("smsTextArea");
+		textAreaElmtValue = textAreaElmt.value;
+
+		if(textAreaElmtValue == '')
+		{
+			elmt.innerHTM = 'Please Type A Message!';
+			return;
+		}
+		else
+			SMSTEXTAREAVALUE = textAreaElmtValue;
+
 	}
 	
 
@@ -636,12 +650,20 @@ function getCadresResults(btnType)
 			searchCriteria:SEARCHCRITERIA,
 			searchCriteriaValue:SEARCHCRITERIAVALUE,
 			performSearch:PERFORMSEARCH,
+			txtAreaValue:SMSTEXTAREAVALUE,
+			includeCadreName:SMSINCLUDECADRENAME,
+			taskType:btnType,
 			task:"cadreSearch"		
 		}
 	
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCadresDetailsAjaxAction.action?"+rparam;						
+
+	if(btnType == "search")
+		var url = "getCadresDetailsAjaxAction.action?"+rparam;						
+	else if(btnType == "sms")
+		var url = "sendSMSForCadresAction.action?"+rparam;						
+
 	callAjax(jsObj,url);
 }
 
@@ -720,23 +742,8 @@ function getStatesComboBoxForACountry(value,elmtId)
 	callAjax(jsObj,url);
 }
 
-function showCadreSearchResults(jsObj,results)
+function buildCadresDatatable(results,divId)
 {
-	var headElmt = document.getElementById("searchResultsDiv_head");
-	var bodyElmt = document.getElementById("searchResultsDiv_body");
-	var footerElmt = document.getElementById("searchResultsDiv_footer");
-
-	if(!headElmt || !bodyElmt || !footerElmt)
-		return;
-	
-	headElmt.innerHTML = 'Search Results';
-	if(!results || results.length == 0)
-	{
-		bodyElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
-		return;
-	}
-	
-
 	var jsArray = new Array();
 
 	for(var i in results)
@@ -820,7 +827,57 @@ function showCadreSearchResults(jsObj,results)
 			    pageLinks: 20
 			    }) 
 				};	
-	var myDataTable = new YAHOO.widget.DataTable("searchResultsDiv_body",resultsColumnDefs, resultsDataSource,myConfigs);  
+	var myDataTable = new YAHOO.widget.DataTable("searchResult",resultsColumnDefs, resultsDataSource,myConfigs);  
+	
+}
+
+function showSMSResults(jsObj,results)
+{
+	var headElmt = document.getElementById("searchResultsDiv_head");
+	var bodySearchElmt = document.getElementById("searchResult");
+	var bodySMSElmt = document.getElementById("smsResult");
+	var footerElmt = document.getElementById("searchResultsDiv_footer");
+
+	if(!headElmt || !bodySearchElmt || !bodySMSElmt || !footerElmt)
+		return;
+
+	headElmt.innerHTML = 'SMS Results';
+
+	
+	bodySMSElmt.innerHTML = 'SMS successfullty sent to '+results.totalSmsSent+' cadres';
+	bodySMSElmt.innerHTML += '<a href="javascript:{}" onclick="showSentSMSCadres()"> View cadres</a>';
+
+	buildCadresDatatable(results.smsSentCadreInfo,"searchResult");
+}
+
+function showSentSMSCadres()
+{
+	var elmt = document.getElementById("searchResult");
+
+	if(elmt)
+		elmt.style.display = 'block';
+}
+
+
+function showCadreSearchResults(jsObj,results)
+{
+	var headElmt = document.getElementById("searchResultsDiv_head");
+	var bodySearchElmt = document.getElementById("searchResult");
+	var footerElmt = document.getElementById("searchResultsDiv_footer");
+
+	if(!headElmt || !bodySearchElmt || !footerElmt)
+		return;
+	
+	bodySearchElmt.style.display = 'block';
+
+	headElmt.innerHTML = 'Search Results';
+	if(!results || results.length == 0)
+	{
+		searchResult.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
+		return;
+	}
+	
+	buildCadresDatatable(results,"searchResult");
 	
 
 	var fStr = '';
@@ -892,6 +949,8 @@ function getCadreInfo(cadreId)
 	browser2.focus();
 }
 
+
+
 function callAjax(jsObj,url)
 {			
 	
@@ -906,8 +965,14 @@ function callAjax(jsObj,url)
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,myResults);
 							}
-							else if(jsObj.task == "cadreSearch")
+							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
+							{
 								showCadreSearchResults(jsObj,myResults);
+							}
+							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "sms")
+							{
+								showSMSResults(jsObj,myResults);
+							}
 							else if(jsObj.task == "getUserLocation")
 								buildRegionsSelectBoxes(jsObj,myResults);
 

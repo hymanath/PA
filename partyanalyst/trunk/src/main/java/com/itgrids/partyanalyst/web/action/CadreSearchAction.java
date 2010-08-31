@@ -27,8 +27,17 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private IStaticDataService staticDataService; 
 	private CadreManagementService cadreManagementService;
 	private HttpSession session;
+	private String windowTask;
 	
 	
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
 	public List<SelectOptionVO> getOccupationsList() {
 		return occupationsList;
 	}
@@ -113,6 +122,8 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO==null)
 			return ERROR;
+		
+		windowTask = request.getParameter("windowTask");
 		
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		socialStatus.add(0, new SelectOptionVO(0L,"All"));

@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -36,9 +37,18 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	private IRegionServiceData regionServiceDataImp=null;
 	private CadreManagementService cadreManagementService;
 	private List<CadreInfo> cadreInfo;
+	private SmsResultVO smsResultVO;
 	private String cadreId;
 	
 	
+	public SmsResultVO getSmsResultVO() {
+		return smsResultVO;
+	}
+
+	public void setSmsResultVO(SmsResultVO smsResultVO) {
+		this.smsResultVO = smsResultVO;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -237,7 +247,21 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	
 	public String sendSMSToCadres()
 	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		smsResultVO  = cadreManagementService.sendSMSToSelectedCadreCriteria(user.getRegistrationID(), setPartyCadreDetails(jObj), jObj.getString("includeCadreName"), jObj.getString("txtAreaValue"));
 		return Action.SUCCESS;
 	}
 	public String getCadresSearch()
@@ -255,9 +279,14 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
 		
+		cadreInfo = cadreManagementService.getCadreDetailsBySearchCriteria(user.getRegistrationID(), setPartyCadreDetails(jObj));
 		
+		return Action.SUCCESS;
+	}
+	
+	public PartyCadreDetailsVO setPartyCadreDetails(JSONObject jObj)
+	{		
 		PartyCadreDetailsVO partyCadreDetailsVO = new PartyCadreDetailsVO();
 		
 		if(jObj.getString("cadreType").equalsIgnoreCase("all"))
@@ -312,11 +341,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		else if(jObj.getString("performSearch").equalsIgnoreCase("or"))
 			partyCadreDetailsVO.setIsOrSearch(true);
 		
-		
-		cadreInfo = cadreManagementService.getCadreDetailsBySearchCriteria(user.getRegistrationID(), partyCadreDetailsVO);
-		
-		return Action.SUCCESS;
+		return partyCadreDetailsVO;
 	}
+	
 	
 	public List<CadreInfo> getDummyCadresInfo()
 	{
