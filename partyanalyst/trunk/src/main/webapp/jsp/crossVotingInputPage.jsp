@@ -598,6 +598,7 @@
 		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
 		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
 		var assemblyValue =  assemblySelectElmt.options[assemblySelectElmt.selectedIndex].value;
+
 		if(allianceCheckElmt.checked==true)
 			var allianceValue = "true";
 		else
@@ -629,8 +630,22 @@
 				  }
 
 		var bparam="election="+jsObj.electionValue;
-		callAjax(jsObj,bparam);		
+		callAjax(jsObj,bparam);	
+
 	}
+
+	function forGetCrossVoting()
+	{
+		var partyElmt = document.getElementById("PartySelect");
+		var partyValue =  parseInt(partyElmt.options[partyElmt.selectedIndex].value);
+
+		if(!(isNaN(partyValue)))
+		{
+			getCrossVoting();
+		}
+	}
+			
+			
 </script>
 </head>
 <body>
@@ -662,13 +677,13 @@
 							<option value="-1">Select</option>
 						</select>
 
-						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" />Include Aliance Parties
+						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/>Include Aliance Parties
 					</td>
 					<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 					
 					<td align="left" style="padding-left:10px;">Party<font color="red">*</font></td>
 					<td align="left">
-							<select id="PartySelect" onchange="getCrossVoting()">
+							<select id="PartySelect" onchange="forGetCrossVoting()">
 								<option value="-1">Select </option>			
 							</select>						
 					</td>
