@@ -13,5 +13,11 @@ public interface ICadreSkillsDAO extends GenericDao<CadreSkills, Long> {
 	public List getCadreIdsByCadreSkillAndUser(Long userId,Long skillId);
 	
 	@SuppressWarnings("unchecked")
+	public List getCadreIdsByCadreSkillListAndUser(Long userId,List<Long> skillIds);
+	
+	@SuppressWarnings("unchecked")
 	public List getCadreBySkillAndCadreIds(Long skillId,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List getCadreBySkillListAndCadreIds(List<Long> skillId,List<Long> cadreIds);
 }
