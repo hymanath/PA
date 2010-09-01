@@ -380,6 +380,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
         queryObject.setParameterList("cadreIds", cadreIds);
         return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueListAndCadreIds(String propertyObject,
+			String propertyField, List<Long> propertyValue, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model."+propertyObject+"."+propertyField+" in (:propertyValue) and "+
+                  "model.cadreId in (:cadreIds)");
+		queryObject.setParameterList("propertyValue", propertyValue);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findCadreByPropertyValueAndUser(Long userId,
@@ -390,6 +400,17 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 
 	@SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueListAndUser(Long userId,
+			String propertyObject, String propertyField,
+			List<Long> propertyValue) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model."+propertyObject+"."+propertyField+" in (:propertyValue)");
+		queryObject.setParameter(0, userId);
+        queryObject.setParameterList("propertyValue", propertyValue);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List findCadreByPartyWorkingCommitteeAndCadreIds(
 			Long partyCommiteeId, List<Long> cadreIds) {
 		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.designation.partyWorkingCommittee.partyWorkingCommitteeId = ? and "+
@@ -398,6 +419,17 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		queryObject.setParameterList("cadreIds", cadreIds);
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeListAndCadreIds(
+			List<Long> partyCommiteeId, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.designation.partyWorkingCommittee.partyWorkingCommitteeId in (:partyCommiteeId) and "+
+		        "model.cadreId in (:cadreIds)");
+		queryObject.setParameterList("partyCommiteeId", partyCommiteeId);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public List findCadreByPartyWorkingCommitteeAndUser(Long userId,
@@ -407,6 +439,16 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				" and model.designation.partyWorkingCommittee.partyWorkingCommitteeId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeListAndUser(Long userId,
+			List<Long> partyCommiteeId) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.designation.partyWorkingCommittee.partyWorkingCommitteeId in (:partyCommiteeId)");
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("partyCommiteeId", partyCommiteeId);
+		return queryObject.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List findCadreByPartyWorkingCommitteeDesignationAndCadreIds(
 			Long partyCommiteeDesigId, List<Long> cadreIds) {
@@ -432,5 +474,24 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				" and model.cadreLevel.cadreLevelID = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationListAndCadreIds(
+			List<Long> partyCommiteeDesigId, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.designation.partyWkgCommitteeDesignationId in (:partyCommiteeDesigId) and "+
+              "model.cadreId in (:cadreIds)");
+		queryObject.setParameterList("partyCommiteeDesigId", partyCommiteeDesigId);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findCadreByPartyWorkingCommitteeDesignationListAndUser(
+			Long userId, List<Long> partyCommiteeDesigId) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model.registration.registrationId = ?"+
+				" and model.designation.partyWkgCommitteeDesignationId in (:partyCommiteeDesigId)");
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("partyCommiteeDesigId", partyCommiteeDesigId);
+		return queryObject.list();
+	}
 		
 }
