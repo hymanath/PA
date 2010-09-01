@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
@@ -1480,18 +1481,28 @@ public class CadreManagementService {
 		if(log.isDebugEnabled())
 		log.debug("Inside getCadreDetailsBySearchCriteria Method ");
 		
-		List<CadreInfo> cadreOutputResultVO = null;
+		List<CadreInfo> cadreOutputResultVO = new ArrayList<CadreInfo>();
+		ResultStatus resultStatus = new ResultStatus();
 		
 		if(userId != null && cadreInputVO != null){
 			
 			try{
+				//process for results
 				List<Cadre> cadreObjects = getCadreSearchResultsByInputCriteria(userId,cadreInputVO);
 				if(cadreObjects != null && cadreObjects.size() > 0)
 				cadreOutputResultVO = putCadreSearchResultsInVO(cadreObjects);
 				
 			}catch(Exception ex){
 				ex.printStackTrace();
+				CadreInfo cadreInfo = new CadreInfo();
+				resultStatus.setExceptionEncountered(ex);
+				resultStatus.setResultPartial(true);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				
+				cadreInfo.setResultStatus(resultStatus);
+				cadreOutputResultVO.add(cadreInfo);
 			}
+			
 		}
 		
 	 return cadreOutputResultVO;	
@@ -1543,129 +1554,240 @@ public class CadreManagementService {
 				String paramField="";
 				
 				//Education
-				if(cadreInputVO.getCadreEducationQualification() != null && !cadreInputVO.getCadreEducationQualification().getCadreCategoryId().equals(new Long(0))){
+				if(cadreInputVO.getCadreEducationQualification() != null){
 					paramObject="education";
 					paramField="eduQualificationId";
 					List cadreTypeObjList = null;
-					if(cadreInputVO.getIsOrSearch()){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId());
-						if(cadreTypeObjList != null){
-						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					List<Long> eduList = new ArrayList<Long>();
+					Boolean allCategoriesFlag = false;
+					
+					for(CadreCategoryVO eduCategory:cadreInputVO.getCadreEducationQualification()){
+						if(eduCategory.getCadreCategoryId().equals(new Long(0))){
+							allCategoriesFlag = true;
+							break;
+						}else{
+							eduList.add(eduCategory.getCadreCategoryId());
 						}
 					}
-					else if(cadreIds != null && cadreIds.size() > 0){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId(),cadreIds);
-						if(cadreTypeObjList != null)
-							cadreIds = getProcessedObjects(cadreTypeObjList);
+					if(!allCategoriesFlag && eduList.size() > 0){
+						if(cadreInputVO.getIsOrSearch()){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId());
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndUser(userId, paramObject, paramField, eduList);
+							if(cadreTypeObjList != null){
+							    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+							    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+							}
+						}
+						else if(cadreIds != null && cadreIds.size() > 0){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreEducationQualification().getCadreCategoryId(),cadreIds);
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndCadreIds(paramObject, paramField, eduList, cadreIds);
+							if(cadreTypeObjList != null)
+								cadreIds = getProcessedObjects(cadreTypeObjList);
+						}
 					}
 					
 				}
 				
 				//Caste
-				if(cadreInputVO.getCadreCasteCategory() != null && !cadreInputVO.getCadreCasteCategory().getCadreCategoryId().equals(new Long(0))){
+				if(cadreInputVO.getCadreCasteCategory() != null){
 					paramObject="casteCategory";
 					paramField="socialCategoryId";
 					List cadreTypeObjList = null;
-					if(cadreInputVO.getIsOrSearch()){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId());
-						if(cadreTypeObjList != null){
-						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					List<Long> casList = new ArrayList<Long>();
+					Boolean allCategoriesFlag = false;
+					
+					for(CadreCategoryVO casCategory:cadreInputVO.getCadreCasteCategory()){
+						if(casCategory.getCadreCategoryId().equals(new Long(0))){
+							allCategoriesFlag = true;
+							break;
+						}else{
+							casList.add(casCategory.getCadreCategoryId());
 						}
 					}
-					else if(cadreIds != null && cadreIds.size() > 0){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId(),cadreIds);
-					if(cadreTypeObjList != null)
-						cadreIds = getProcessedObjects(cadreTypeObjList);
+					
+					if(!allCategoriesFlag && casList.size() > 0){
+						if(cadreInputVO.getIsOrSearch()){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId());
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndUser(userId, paramObject, paramField, casList);
+							if(cadreTypeObjList != null){
+							    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+							    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+							}
+						}
+						else if(cadreIds != null && cadreIds.size() > 0){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreCasteCategory().getCadreCategoryId(),cadreIds);
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndCadreIds(paramObject, paramField, casList, cadreIds);
+						if(cadreTypeObjList != null)
+							cadreIds = getProcessedObjects(cadreTypeObjList);
+						}
 					}
 				}
 				
 				//Ocupation
-				if(cadreInputVO.getCadreOccupation() != null && !cadreInputVO.getCadreOccupation().getCadreCategoryId().equals(new Long(0))){
+				if(cadreInputVO.getCadreOccupation() != null){
 					paramObject="occupation";
 					paramField="occupationId";
 					List cadreTypeObjList = null;
-					if(cadreInputVO.getIsOrSearch()){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId());
-						if(cadreTypeObjList != null){
-						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+					List<Long> ocupList = new ArrayList<Long>();
+					Boolean allCategoriesFlag = false;
+					
+					for(CadreCategoryVO ocupCategory:cadreInputVO.getCadreOccupation()){
+						if(ocupCategory.getCadreCategoryId().equals(new Long(0))){
+							allCategoriesFlag = true;
+							break;
+						}else{
+							ocupList.add(ocupCategory.getCadreCategoryId());
 						}
 					}
-					else if(cadreIds != null && cadreIds.size() > 0){
-						cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId(),cadreIds);
-					if(cadreTypeObjList != null)
-						cadreIds = getProcessedObjects(cadreTypeObjList);
+					
+					if(!allCategoriesFlag && ocupList.size() > 0){
+						if(cadreInputVO.getIsOrSearch()){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndUser(userId, paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId());
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndUser(userId, paramObject, paramField, ocupList);
+							if(cadreTypeObjList != null){
+							    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+							    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+							}
+						}
+						else if(cadreIds != null && cadreIds.size() > 0){
+							//cadreTypeObjList = cadreDAO.findCadreByPropertyValueAndCadreIds(paramObject,paramField,cadreInputVO.getCadreOccupation().getCadreCategoryId(),cadreIds);
+							cadreTypeObjList = cadreDAO.findCadreByPropertyValueListAndCadreIds(paramObject, paramField, ocupList, cadreIds);
+						if(cadreTypeObjList != null)
+							cadreIds = getProcessedObjects(cadreTypeObjList);
+						}
 					}
 				}
 			}
 			
 			//Search by committee
-			if(cadreInputVO.getCadreWorkingCommittee() != null && !cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId().equals(new Long(0))){
+			if(cadreInputVO.getCadreWorkingCommittee() != null){
 				List cadreTypeObjList = null;
-				if(cadreInputVO.getIsOrSearch()){
-					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndUser(userId, cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId());
-					if(cadreTypeObjList != null){
-					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+				List<Long> commList = new ArrayList<Long>();
+				Boolean allCategoriesFlag = false;
+				
+				for(CadreCategoryVO commCategory:cadreInputVO.getCadreWorkingCommittee()){
+					if(commCategory.getCadreCategoryId().equals(new Long(0))){
+						allCategoriesFlag = true;
+						break;
+					}else{
+						commList.add(commCategory.getCadreCategoryId());
 					}
 				}
-				else if(cadreIds != null && cadreIds.size() > 0){
-					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndCadreIds(cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId(), cadreIds);
-				if(cadreTypeObjList != null)
-					cadreIds = getProcessedObjects(cadreTypeObjList);
-			    }
+				
+				if(!allCategoriesFlag && commList.size() > 0){
+					if(cadreInputVO.getIsOrSearch()){
+						//cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndUser(userId, cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId());
+						cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeListAndUser(userId, commList);
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						//cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeAndCadreIds(cadreInputVO.getCadreWorkingCommittee().getCadreCategoryId(), cadreIds);
+						cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeListAndCadreIds(commList, cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+				    }
+				}
 			}
 			
 			//search by commitee designation
-			if(cadreInputVO.getCadreCommitteeDesignation() != null && !cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId().equals(new Long(0))){
+			if(cadreInputVO.getCadreCommitteeDesignation() != null){
 				List cadreTypeObjList = null;
-				if(cadreInputVO.getIsOrSearch()){
-					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndUser(userId, cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId());
-					if(cadreTypeObjList != null){
-					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+				List<Long> commDesigList = new ArrayList<Long>();
+				Boolean allCategoriesFlag = false;
+				
+				for(CadreCategoryVO commDesigCategory:cadreInputVO.getCadreWorkingCommittee()){
+					if(commDesigCategory.getCadreCategoryId().equals(new Long(0))){
+						allCategoriesFlag = true;
+						break;
+					}else{
+						commDesigList.add(commDesigCategory.getCadreCategoryId());
 					}
 				}
-				else if(cadreIds != null && cadreIds.size() > 0){
-					cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndCadreIds(cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId(), cadreIds);
-				if(cadreTypeObjList != null)
-					cadreIds = getProcessedObjects(cadreTypeObjList);
+				
+				if(!allCategoriesFlag && commDesigList.size() > 0){
+					if(cadreInputVO.getIsOrSearch()){
+						//cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndUser(userId, cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId());
+						cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationListAndUser(userId, commDesigList);
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						//cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationAndCadreIds(cadreInputVO.getCadreCommitteeDesignation().getCadreCategoryId(), cadreIds);
+						cadreTypeObjList = cadreDAO.findCadreByPartyWorkingCommitteeDesignationListAndCadreIds(commDesigList, cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
 				}
 			}
 			
 			//search by cadre skills
-			if(cadreInputVO.getCadreSkillSet() != null && !cadreInputVO.getCadreSkillSet().getCadreCategoryId().equals(new Long(0))){
+			if(cadreInputVO.getCadreSkillSet() != null){
 				List cadreTypeObjList = null;
-				if(cadreInputVO.getIsOrSearch()){
-					cadreTypeObjList = cadreSkillsDAO.getCadreIdsByCadreSkillAndUser(userId, cadreInputVO.getCadreSkillSet().getCadreCategoryId());
-					if(cadreTypeObjList != null){
-					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+				List<Long> skillList = new ArrayList<Long>();
+				Boolean allCategoriesFlag = false;
+				
+				for(CadreCategoryVO  skillCategory:cadreInputVO.getCadreWorkingCommittee()){
+					if(skillCategory.getCadreCategoryId().equals(new Long(0))){
+						allCategoriesFlag = true;
+						break;
+					}else{
+						skillList.add(skillCategory.getCadreCategoryId());
 					}
 				}
-				else if(cadreIds != null && cadreIds.size() > 0){
-					cadreTypeObjList = cadreSkillsDAO.getCadreBySkillAndCadreIds(cadreInputVO.getCadreSkillSet().getCadreCategoryId(), cadreIds);
-				if(cadreTypeObjList != null)
-					cadreIds = getProcessedObjects(cadreTypeObjList);
+				
+				if(!allCategoriesFlag && skillList.size() > 0){
+					if(cadreInputVO.getIsOrSearch()){
+						//cadreTypeObjList = cadreSkillsDAO.getCadreIdsByCadreSkillAndUser(userId, cadreInputVO.getCadreSkillSet().getCadreCategoryId());
+						cadreTypeObjList = cadreSkillsDAO.getCadreIdsByCadreSkillListAndUser(userId, skillList);
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						//cadreTypeObjList = cadreSkillsDAO.getCadreBySkillAndCadreIds(cadreInputVO.getCadreSkillSet().getCadreCategoryId(), cadreIds);
+						cadreTypeObjList = cadreSkillsDAO.getCadreBySkillListAndCadreIds(skillList, cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
 				}
 			}
 			
 			//search by cadre training camps
-			if(cadreInputVO.getCadreTrainingCamps() != null && !cadreInputVO.getCadreTrainingCamps().getCadreCategoryId().equals(new Long(0))){
+			if(cadreInputVO.getCadreTrainingCamps() != null){
 				List cadreTypeObjList = null;
-				if(cadreInputVO.getIsOrSearch()){
-					cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreIdsByCadreCampsAndUser(userId, cadreInputVO.getCadreTrainingCamps().getCadreCategoryId());
-					if(cadreTypeObjList != null){
-					    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
-					    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+				List<Long> campList = new ArrayList<Long>();
+				Boolean allCategoriesFlag = false;
+				
+				for(CadreCategoryVO  campCategory:cadreInputVO.getCadreWorkingCommittee()){
+					if(campCategory.getCadreCategoryId().equals(new Long(0))){
+						allCategoriesFlag = true;
+						break;
+					}else{
+						campList.add(campCategory.getCadreCategoryId());
 					}
 				}
-				else if(cadreIds != null && cadreIds.size() > 0){
-					cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreByCampsAndCadreIds(cadreInputVO.getCadreTrainingCamps().getCadreCategoryId(), cadreIds);
-				if(cadreTypeObjList != null)
-					cadreIds = getProcessedObjects(cadreTypeObjList);
+				
+				if(!allCategoriesFlag && campList.size() > 0){
+					if(cadreInputVO.getIsOrSearch()){
+						//cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreIdsByCadreCampsAndUser(userId, cadreInputVO.getCadreTrainingCamps().getCadreCategoryId());
+						cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreIdsByCadreCampsListAndUser(userId, campList);
+						if(cadreTypeObjList != null){
+						    List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
+						    cadreIdsMap = setResultCadreIdsToMap(cadreIdsMap,cadreIDs);
+						}
+					}
+					else if(cadreIds != null && cadreIds.size() > 0){
+						//cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreByCampsAndCadreIds(cadreInputVO.getCadreTrainingCamps().getCadreCategoryId(), cadreIds);
+						cadreTypeObjList = cadreParticipatedTrainingCampsDAO.getCadreByCampsListAndCadreIds(campList, cadreIds);
+					if(cadreTypeObjList != null)
+						cadreIds = getProcessedObjects(cadreTypeObjList);
+					}
 				}
 				
 			}
@@ -1843,14 +1965,23 @@ public class CadreManagementService {
 	public SmsResultVO sendSMSToSelectedCadreCriteria(Long userId,PartyCadreDetailsVO cadreInputVO,String includeCadreName,String message){
 		
 		SmsResultVO smsResultVO = new SmsResultVO();
+		ResultStatus resultStatus = new ResultStatus();
+		Long smsSentStatus = 0l;
+		Long smsRemainingStatus = 0l;
 		
 		try{
 		//get cadre matching the selection criteria
 		List<CadreInfo> cadreDetails = getCadreDetailsBySearchCriteria(userId,cadreInputVO);
 		
-		if(cadreDetails != null && cadreDetails.size() > 0){
+		if(cadreDetails == null || cadreDetails.size() == 0){
+			smsResultVO.setStatus(1l);
+			smsResultVO.setTotalSmsSent(0l);
+			smsResultVO.setRemainingSmsCount(0l);
+		}
+		else if(cadreDetails != null && cadreDetails.size() > 0){
 			Integer mobileNos = 0;
 			Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId)-cadreDetails.size();
+			smsRemainingStatus = remainingSMS;
 			if(remainingSMS<0){
 				smsResultVO.setStatus(1l);
 				smsResultVO.setTotalSmsSent(0l);
@@ -1864,7 +1995,7 @@ public class CadreManagementService {
 					}
 					if(cadreMobileNos!=null && cadreMobileNos.length>0)
 						mobileNos = cadreMobileNos.length;
-					smsCountrySmsService.sendSms(message, true,userId,IConstants.Cadre_Management,cadreMobileNos);
+					smsSentStatus = smsCountrySmsService.sendSms(message, true,userId,IConstants.Cadre_Management,cadreMobileNos);
 				}else{
 					// to do ICONSTANTS.SMS_DEAR
 					for (CadreInfo mobiles : cadreDetails) {
@@ -1872,7 +2003,7 @@ public class CadreManagementService {
 						StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
 						cadreMessage.append(IConstants.SPACE).append(mobiles.getFirstName()).append(IConstants.SPACE).append(message);
 
-						smsCountrySmsService.sendSms(cadreMessage.toString(), true,userId,IConstants.Cadre_Management,mobile);
+						smsSentStatus = smsCountrySmsService.sendSms(cadreMessage.toString(), true,userId,IConstants.Cadre_Management,mobile);
 						mobileNos = mobileNos + 1;
 					}
 				}
@@ -1889,9 +2020,20 @@ public class CadreManagementService {
 			smsResultVO.setStatus(1l);
 			smsResultVO.setTotalSmsSent(0l);
 			smsResultVO.setRemainingSmsCount(0l);
+			resultStatus.setExceptionEncountered(ex);
 			log.debug(ex);
 		}
-		
+		finally{
+			//set result status to main VO even if exception raised or not
+			smsResultVO.setResultStatus(resultStatus);
+			
+			//sms sent failure
+			if(smsSentStatus.equals(1l)){
+				smsResultVO.setStatus(1l);
+				smsResultVO.setTotalSmsSent(0l);
+				smsResultVO.setRemainingSmsCount(smsRemainingStatus);
+			}
+		}
 		
 	 return smsResultVO;
 	}
