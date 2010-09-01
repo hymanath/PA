@@ -80,8 +80,8 @@ var labelResources = { <%
 
 									if(jsObj.task == "getElectionScopes")
 									{			
-										clearOptionsListForSelectElmtId("electionScopeSelect");							
-										createOptionsForSelectElmtId("electionScopeSelect",resultVO);
+										clearOptionsListForSelectElmtId("electionScopeSelect");															
+										createOptionsForSelectElmtIdWithSelectOption("electionScopeSelect",resultVO);
 									}else
 									if(jsObj.task == "getElectionYears")
 									{								
