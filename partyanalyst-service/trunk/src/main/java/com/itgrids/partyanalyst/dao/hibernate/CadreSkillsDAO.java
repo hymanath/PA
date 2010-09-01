@@ -17,8 +17,9 @@ public class CadreSkillsDAO  extends GenericDaoHibernate<CadreSkills ,Long> impl
 
 	@SuppressWarnings("unchecked")
 	public List getCadreBySkillAndCadreIds(Long skillId, List<Long> cadreIds) {
-		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreSkills model where model.partyCadreSkills.partyCadreSkillId = "+skillId+" and "+
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreSkills model where model.partyCadreSkills.partyCadreSkillId = ? and "+
 				"model.cadre.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, skillId);
 		queryObject.setParameterList("cadreIds", cadreIds);
 		return queryObject.list();
 	}
@@ -28,6 +29,26 @@ public class CadreSkillsDAO  extends GenericDaoHibernate<CadreSkills ,Long> impl
 		Object[] params = {userId,skillId};
 		return getHibernateTemplate().find("select model.cadre.cadreId from CadreSkills model where model.cadre.registration.registrationId = ?"+
 				" and model.partyCadreSkills.partyCadreSkillId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCadreBySkillListAndCadreIds(List<Long> skillId,
+			List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreSkills model where model.partyCadreSkills.partyCadreSkillId in (:skillId) and "+
+		       "model.cadre.cadreId in (:cadreIds)");
+		queryObject.setParameterList("skillId", skillId);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCadreIdsByCadreSkillListAndUser(Long userId,
+			List<Long> skillIds) {
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreSkills model where model.cadre.registration.registrationId = ? and "+
+		      "model.partyCadreSkills.partyCadreSkillId in (:skillIds)");
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("skillIds", skillIds);
+		return queryObject.list();
 	}
 
 }

@@ -16,8 +16,9 @@ public class CadreParticipatedTrainingCampsDAO extends GenericDaoHibernate<Cadre
 
 	@SuppressWarnings("unchecked")
 	public List getCadreByCampsAndCadreIds(Long campId, List<Long> cadreIds) {
-		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.partyTrainingCamps.partyTrainingCampsId = "+campId+" and "+
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.partyTrainingCamps.partyTrainingCampsId = ? and "+
 		     "model.cadre.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, campId);
 		queryObject.setParameterList("cadreIds", cadreIds);
 		return queryObject.list();
 	}
@@ -27,6 +28,25 @@ public class CadreParticipatedTrainingCampsDAO extends GenericDaoHibernate<Cadre
 		Object[] params = {userId,campId};
 		return getHibernateTemplate().find("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.registration.registrationId = ?"+
 				" and model.partyTrainingCamps.partyTrainingCampsId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCadreByCampsListAndCadreIds(List<Long> campIds, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.partyTrainingCamps.partyTrainingCampsId in (:campIds) and "+
+		     "model.cadre.cadreId in (:cadreIds)");
+		queryObject.setParameterList("campIds", campIds);
+		queryObject.setParameterList("cadreIds", cadreIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCadreIdsByCadreCampsListAndUser(Long userId,
+			List<Long> campIds) {
+		Query queryObject = getSession().createQuery("select model.cadre.cadreId from CadreParticipatedTrainingCamps model where model.cadre.registration.registrationId = ?"+
+				" and model.partyTrainingCamps.partyTrainingCampsId in (:campIds)");
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("campIds", campIds);
+		return queryObject.list();
 	}
 
 }
