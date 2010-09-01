@@ -3,6 +3,11 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class CadreInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long cadreID;
 	private String firstName;
 	private String middleName;
@@ -54,6 +59,9 @@ public class CadreInfo implements Serializable{
 	private String[] language;
 	private String[] languageOptions_English;
 	private String[] languageOptions_Hindi;
+	
+	private ResultStatus resultStatus;
+	
 	public Long getConstituencyID() {
 		return constituencyID;
 	}
@@ -345,6 +353,12 @@ public class CadreInfo implements Serializable{
 	}
 	public void setUserPartyName(String userPartyName) {
 		this.userPartyName = userPartyName;
+	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 	
 	
