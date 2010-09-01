@@ -868,10 +868,39 @@ function overallResultsForYearOne()
    if('${partyPositions.partyId}' == electionObject.selectedParty)
    str+='<td align="center" style="color:red;">'+"${partyPositions.partyName}"+'</td>';
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>';
+
+
+   if("${partyPositions.totalSeatsWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.totalSeatsWon}"+'</td>'; 	   	
+   }
+   if("${partyPositions.secondPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.secondPosWon}"+'</td>';	   
+   }
+
+   
+   if("${partyPositions.thirdPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.thirdPosWon}"+'</td>';	   
+   }
+   
+   if("${partyPositions.fourthPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>'; 
+   }else{
+	   str+='<td align="center">'+"${partyPositions.fourthPosWon}"+'</td>';	   
+   }  
+   
+
+   
+   
+  
+  
+  
+  
    str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
    str+='<td align="center">'+"${partyPositions.completeVotesPercent}"+'</td>';
    str+='</tr>';
@@ -910,11 +939,27 @@ function overallResultsForYearTwo()
    str+='<td align="center">'+"${partyPositions.partyName}"+'</td>';
    if('${partyPositions.partyId}' == electionObject.selectedParty)
    str+='<td align="center" style="color:red;">'+"${partyPositions.partyName}"+'</td>';
-   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
-   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>';
+   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';  
+   if("${partyPositions.totalSeatsWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.totalSeatsWon}"+'</td>'; 	   	
+   }
+   if("${partyPositions.secondPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.secondPosWon}"+'</td>';	   
+   }
+   if("${partyPositions.thirdPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
+   }else{
+	   str+='<td align="center">'+"${partyPositions.thirdPosWon}"+'</td>';	   
+   }
+   if("${partyPositions.fourthPosWon}"!="0"){
+	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>'; 
+   }else{
+	   str+='<td align="center">'+"${partyPositions.fourthPosWon}"+'</td>';	   
+   }  
    str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
    str+='<td align="center">'+"${partyPositions.completeVotesPercent}"+'</td>';
    str+='</tr>';
