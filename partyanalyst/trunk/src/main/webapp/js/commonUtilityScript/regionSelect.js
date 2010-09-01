@@ -873,7 +873,7 @@ function showCadreSearchResults(jsObj,results)
 	headElmt.innerHTML = 'Search Results';
 	if(!results || results.length == 0)
 	{
-		searchResult.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
+		bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
 		return;
 	}
 	
