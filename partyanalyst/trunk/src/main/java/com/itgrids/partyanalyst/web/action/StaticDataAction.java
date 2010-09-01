@@ -3,14 +3,18 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class StaticDataAction  extends ActionSupport implements ServletRequestAware{
@@ -87,6 +91,11 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 	}
 
 	public String getStatesList() throws Exception{
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return ERROR;
 		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
 		states.add(0, new SelectOptionVO(0L,"Select State"));
 		partyList = staticDataService.getStaticParties();

@@ -132,7 +132,6 @@
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
 									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/userRegPageAction.action" >Register</a> | 
 									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 								</c:if>		
 							</td>

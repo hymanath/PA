@@ -43,6 +43,10 @@
 			<result type="redirect" name="partyResultsCriteriaAction">partyResultsCriteriaAction.action</result>
 			<result type="redirect" name="partyInfluenceMainAction">partyInfluenceMainAction.action</result>
 			<result type="redirect" name="electionResultsAnalysisAction">electionResultsAnalysisAction.action</result>
+			<result type="redirect" name="mandalPageSDetailAction">mandalPageSDetailAction.action</result>
+			<result type="redirect" name="crossVotingReportInputAction">crossVotingReportInputAction.action</result>
+			<result type="redirect" name="partyBoothResultAction">partyBoothResultAction.action</result>
+			<result type="redirect" name="adminUpload">adminUpload.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -52,7 +56,11 @@
 			<result name="success">/jsp/loginForm.jsp</result>
 		</action>
 		<!-- Data Upload -->
-		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
+		<action name="adminUpload" class="adminPageAction">
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=adminUpload</result>
+			<result name="success">/jsp/adminUpload.jsp</result>
+		</action>
 		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
 		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
 		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
@@ -323,7 +331,9 @@
         </action>
 		
 		<action name="partyBoothResultAction" class="partyBoothResultAction">
-           <result name="success">/jsp/boothResultsForParty.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="input">/jsp/loginForm.jsp?src=partyBoothResultAction</result>
+        	<result name="success">/jsp/boothResultsForParty.jsp</result>
         </action>
         
         <action name="partyBoothResult1Action" class="partyBoothResult1Action">
@@ -459,6 +469,8 @@
 		</action>
 		
 		<action name="crossVotingReportInputAction" class="crossVotingReportInputAction">
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="input">/jsp/loginForm.jsp?src=crossVotingReportInputAction</result>
 			<result name="success">/jsp/crossVotingInputPage.jsp</result>
 		</action>
 		<action name="crossVotingReportAjaxAction" class="crossVotingReportAjaxAction">
@@ -477,7 +489,6 @@
 			<result name="error">/jsp/districtPageFail.jsp</result>
 		</action>
 		
-		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
 		<action name="villageBoothMapperAction"><result>/jsp/villageBoothElectionMapper.jsp</result></action>
 		
 		<action name="influencePeopleUploadAction" class="influencePeopleUploadAction">
@@ -487,6 +498,8 @@
 		
 		<action name="mandalPageSDetailAction" class="staticDataAction" method="getStatesList" >
 			<result name="success">/jsp/mandalPageDetail.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="input">/jsp/loginForm.jsp?src=mandalPageSDetailAction</result>
 		</action>		
 		
 		<action name="mandalPageDetailAction" class="staticDataAction" method="getList" >

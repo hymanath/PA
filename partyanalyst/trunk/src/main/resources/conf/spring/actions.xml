@@ -406,4 +406,6 @@
 	</bean>
 	<bean id="cadreInfoAction" class="com.itgrids.partyanalyst.web.action.CadreInfoAction" singleton="false">				
 	</bean>
+	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">				
+	</bean>
 </beans>		

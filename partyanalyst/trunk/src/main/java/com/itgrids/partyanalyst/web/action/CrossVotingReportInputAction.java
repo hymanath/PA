@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -47,6 +51,12 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	}
 
 	public String execute(){
+		
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
+			return ERROR;
 		
 		electionYearList = new ArrayList<SelectOptionVO>();				
 		

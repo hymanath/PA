@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PartyBoothResultAction extends ActionSupport implements ServletRequestAware{
@@ -48,7 +52,11 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	}
 		
 	public String execute()throws Exception{
-		
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null)
+			return INPUT;
+		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return ERROR;
 		electionTypes = new ArrayList<SelectOptionVO>();		
 		SelectOptionVO electionType1 = new SelectOptionVO();
 		electionType1.setId(new Long(1));
