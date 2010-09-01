@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Serializable {
 
@@ -21,14 +22,14 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	private String cadreDOB;
 	private Long cadreAge;
 	
-	private CadreCategoryVO cadreCasteCategory;
-	private CadreCategoryVO cadreOccupation;
-	private CadreCategoryVO cadreSkillSet;
-	private CadreCategoryVO cadreTrainingCamps;
-	private CadreCategoryVO cadreWorkingCommittee;
-	private CadreCategoryVO cadreKnownLanguage;
-	private CadreCategoryVO cadreCommitteeDesignation;
-	private CadreCategoryVO cadreEducationQualification;
+	private List<CadreCategoryVO> cadreCasteCategory;
+	private List<CadreCategoryVO> cadreOccupation;
+	private List<CadreCategoryVO> cadreSkillSet;
+	private List<CadreCategoryVO> cadreTrainingCamps;
+	private List<CadreCategoryVO> cadreWorkingCommittee;
+	private List<CadreCategoryVO> cadreKnownLanguage;
+	private List<CadreCategoryVO> cadreCommitteeDesignation;
+	private List<CadreCategoryVO> cadreEducationQualification;
 	
 	//Getters and Setters
 	public Long getPartyId() {
@@ -55,56 +56,55 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	public void setCadreAge(Long cadreAge) {
 		this.cadreAge = cadreAge;
 	}
-	public CadreCategoryVO getCadreCasteCategory() {
+	public List<CadreCategoryVO> getCadreCasteCategory() {
 		return cadreCasteCategory;
 	}
-	public void setCadreCasteCategory(CadreCategoryVO cadreCasteCategory) {
+	public void setCadreCasteCategory(List<CadreCategoryVO> cadreCasteCategory) {
 		this.cadreCasteCategory = cadreCasteCategory;
 	}
-	public CadreCategoryVO getCadreOccupation() {
+	public List<CadreCategoryVO> getCadreOccupation() {
 		return cadreOccupation;
 	}
-	public void setCadreOccupation(CadreCategoryVO cadreOccupation) {
+	public void setCadreOccupation(List<CadreCategoryVO> cadreOccupation) {
 		this.cadreOccupation = cadreOccupation;
 	}
-	public CadreCategoryVO getCadreSkillSet() {
+	public List<CadreCategoryVO> getCadreSkillSet() {
 		return cadreSkillSet;
 	}
-	public void setCadreSkillSet(CadreCategoryVO cadreSkillSet) {
+	public void setCadreSkillSet(List<CadreCategoryVO> cadreSkillSet) {
 		this.cadreSkillSet = cadreSkillSet;
 	}
-	public CadreCategoryVO getCadreTrainingCamps() {
+	public List<CadreCategoryVO> getCadreTrainingCamps() {
 		return cadreTrainingCamps;
 	}
-	public void setCadreTrainingCamps(CadreCategoryVO cadreTrainingCamps) {
+	public void setCadreTrainingCamps(List<CadreCategoryVO> cadreTrainingCamps) {
 		this.cadreTrainingCamps = cadreTrainingCamps;
 	}
-	public CadreCategoryVO getCadreWorkingCommittee() {
+	public List<CadreCategoryVO> getCadreWorkingCommittee() {
 		return cadreWorkingCommittee;
 	}
-	public void setCadreWorkingCommittee(CadreCategoryVO cadreWorkingCommittee) {
+	public void setCadreWorkingCommittee(List<CadreCategoryVO> cadreWorkingCommittee) {
 		this.cadreWorkingCommittee = cadreWorkingCommittee;
 	}
-	public CadreCategoryVO getCadreKnownLanguage() {
+	public List<CadreCategoryVO> getCadreKnownLanguage() {
 		return cadreKnownLanguage;
 	}
-	public void setCadreKnownLanguage(CadreCategoryVO cadreKnownLanguage) {
+	public void setCadreKnownLanguage(List<CadreCategoryVO> cadreKnownLanguage) {
 		this.cadreKnownLanguage = cadreKnownLanguage;
 	}
-	public CadreCategoryVO getCadreCommitteeDesignation() {
+	public List<CadreCategoryVO> getCadreCommitteeDesignation() {
 		return cadreCommitteeDesignation;
 	}
 	public void setCadreCommitteeDesignation(
-			CadreCategoryVO cadreCommitteeDesignation) {
+			List<CadreCategoryVO> cadreCommitteeDesignation) {
 		this.cadreCommitteeDesignation = cadreCommitteeDesignation;
 	}
-	public CadreCategoryVO getCadreEducationQualification() {
+	public List<CadreCategoryVO> getCadreEducationQualification() {
 		return cadreEducationQualification;
 	}
 	public void setCadreEducationQualification(
-			CadreCategoryVO cadreEducationQualification) {
+			List<CadreCategoryVO> cadreEducationQualification) {
 		this.cadreEducationQualification = cadreEducationQualification;
 	}
-	
 
 }
