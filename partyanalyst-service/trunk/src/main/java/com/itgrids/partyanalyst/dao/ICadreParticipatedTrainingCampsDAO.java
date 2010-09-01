@@ -13,5 +13,11 @@ public interface ICadreParticipatedTrainingCampsDAO extends GenericDao<CadrePart
 	public List getCadreIdsByCadreCampsAndUser(Long userId,Long campId);
 	
 	@SuppressWarnings("unchecked")
+	public List getCadreIdsByCadreCampsListAndUser(Long userId,List<Long> campIds);
+	
+	@SuppressWarnings("unchecked")
 	public List getCadreByCampsAndCadreIds(Long campId,List<Long> cadreIds);
+	
+	@SuppressWarnings("unchecked")
+	public List getCadreByCampsListAndCadreIds(List<Long> campIds,List<Long> cadreIds);
 }
