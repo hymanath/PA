@@ -993,7 +993,9 @@ function getDiffPercent()
 	str+='<td style="color:green;font-size:15px;width:25%;text-align:left;"> + '+seatesDiff+' Seats </td>';
 	if(seatesDiff < 0)
     str+='<td style="color:red;font-size:15px;width:25%;text-align:left;"> '+seatesDiff+' Seats </td>';
-
+    if(seatesDiff == 0)
+    str+='<td style="color:red;font-size:15px;width:25%;text-align:left;"> 0 Seats </td>';
+    
 	str+='<th align="left" style="width: 33%;text-align:left;" > <%=diffVotesPercent%> ( '+electionObject.yearOne+'  --  '+electionObject.yearTwo+'  ) :   </th>';
 	if(diffPercent > 0)
 	str+='<td style="color:green;font-size:15px;text-align:left;">'+diffPercent+' % increase</td>';
