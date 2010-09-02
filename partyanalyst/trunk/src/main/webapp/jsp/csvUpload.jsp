@@ -24,7 +24,8 @@
 			<td><select name="electionScope">
 				<option value="0">Select option..</option>
 				<option value="Andhra Pradesh">Andhra Pradesh</option>
-				<option value="Tamilnadu">Tamilnadu</option>
+				<option value="Tamil Nadu">Tamil Nadu</option>
+				<option value="Karnataka">Karnataka</option>
 			</select></td>
 		</tr>
 		<tr>
