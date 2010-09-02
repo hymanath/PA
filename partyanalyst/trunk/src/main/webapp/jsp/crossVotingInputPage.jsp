@@ -302,7 +302,7 @@ function getAssembly()
 		{	
 			var str='';
 			str+='<span class="msgspan">';
-			str+=partyValue+" did not participate in "+parliamentValue+" in the year "+electionValue;
+			str+=partyValue+" did not participate in "+parliamentValue+" Parliament in the year "+electionValue;
 			str+='</span>';
 			resultDiv.innerHTML=str;
 			return;
