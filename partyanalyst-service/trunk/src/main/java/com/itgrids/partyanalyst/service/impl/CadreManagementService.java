@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -2040,5 +2041,69 @@ public class CadreManagementService {
 		}
 		
 	 return smsResultVO;	
+	}
+	
+	/*
+	 * Method to send SMS to selected set of cadre mobile numbers
+	 */
+	public SmsResultVO sendSMSToSelectedCadre(Long userId,Boolean includeCadreName,Boolean isText,String message,List<SmsVO> cadreList){
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside sendSMSTOSelectedCadreMobileNos Method ..");
+		SmsResultVO smsResult = new SmsResultVO();
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			Long smsRemainingStatus = 0l;
+			Long smsSentStatus = 0l;
+			if(userId != null){
+				Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId) - cadreList.size();
+				smsRemainingStatus = remainingSMS;
+				if(remainingSMS<0){
+					smsResult.setStatus(1l);
+					smsResult.setTotalSmsSent(0l);
+					smsResult.setRemainingSmsCount(0l);
+				}else{
+					if("NO".equals(includeCadreName)){
+						String[] cadreMobileNos = new String[cadreList.size()];
+						int i=-1;
+						for (SmsVO mobileInfo : cadreList) {
+							cadreMobileNos[++i] = mobileInfo.getMobileNO();
+						}
+						if(cadreMobileNos!=null && cadreMobileNos.length>0)
+							smsSentStatus = smsCountrySmsService.sendSms(message,isText,userId,IConstants.Cadre_Management,cadreMobileNos);
+					}else{
+						// to do ICONSTANTS.SMS_DEAR
+						for (SmsVO mobiles : cadreList) {
+							String mobile =  mobiles.getMobileNO();
+							StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
+							cadreMessage.append(IConstants.SPACE).append(mobiles.getCadreName()).append(IConstants.SPACE).append(message);
+
+							smsSentStatus = smsCountrySmsService.sendSms(cadreMessage.toString(),isText,userId,IConstants.Cadre_Management,mobile);
+						}
+					}
+					
+				}
+									
+				//sms sent failure
+				if(smsSentStatus.equals(1l)){
+					smsResult.setStatus(1l);
+					smsResult.setTotalSmsSent(0l);
+					smsResult.setRemainingSmsCount(smsRemainingStatus);
+				}else{
+					smsResult.setStatus(0l);
+					smsResult.setTotalSmsSent(Long.parseLong(new Integer(cadreList.size()).toString()));
+					smsResult.setRemainingSmsCount(remainingSMS);
+				}
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			smsResult.setResultStatus(resultStatus);
+		}
+	
+	 return smsResult;
 	}
 }
