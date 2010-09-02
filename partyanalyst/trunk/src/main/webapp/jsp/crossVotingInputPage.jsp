@@ -175,63 +175,66 @@
 </style>
 <script type="text/javascript">
 	
-	function getParty()
-	{
-		var img = document.getElementById("ajaxImg3");
-		img.style.display = 'block';
+function getParty()
+{
+	var img = document.getElementById("ajaxImg3");
+	img.style.display = 'block';
+	
+	var elecYearElmt = document.getElementById("electionYearField");
+	var assemblyElmt = document.getElementById("AssemblySelect");
+
+	if(!elecYearElmt || !assemblyElmt)
+		return;
+
+	var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
+	var assemblyValue =  parseInt(assemblyElmt.options[assemblyElmt.selectedIndex].value);
 		
-		var elecYearElmt = document.getElementById("electionYearField");
-		var assemblyElmt = document.getElementById("AssemblySelect");
-	
-		if(!elecYearElmt || !assemblyElmt)
-			return;
-
-		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
-		var assemblyValue =  assemblyElmt.options[assemblyElmt.selectedIndex].value;
-					
-		if(elecValue == -1 || assemblyElmt == -1)
-			return;
-		else
-		{
-			var jsObj={						
-						electionYear:elecValue,
-						assemblyVal:assemblyValue ,
-						task:"getParty"
-				  }
-			
-			var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
-			callAjax(jsObj,bparam);
-		}
-	}
-	
-	function getAssembly()
+	if(elecValue == -1 || assemblyValue == -1 || isNaN(assemblyValue))
+		return;
+	else
 	{
-		var img = document.getElementById("ajaxImg2");
-		img.style.display = 'block';
-
-		var parliamentSelectElmt =  document.getElementById("parliamentField");
-		var electionYearElmt =  document.getElementById("electionYearField");	
-
-		if(!parliamentSelectElmt || !electionYearElmt)
-			return;
-
-		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
-		var electionYearValue =  electionYearElmt.options[electionYearElmt.selectedIndex].value;
-					
-		if(parliamentValue == -1 || electionYearValue == -1)
-			return;
-		else
-		{
-			var jsObj={
-						parliamentValue : parliamentValue,
-						electionYear:electionYearValue,
-						task:"Assembly"
-				  }
-			
-			var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
-			callAjax(jsObj,bparam);
-		}
+		var jsObj={						
+					electionYear:elecValue,
+					assemblyVal:assemblyValue ,
+					task:"getParty"
+			  }
+		
+		var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
+		callAjax(jsObj,bparam);
 	}
+}
+
+
+	
+function getAssembly()
+{
+	var img = document.getElementById("ajaxImg2");
+	img.style.display = 'block';
+
+	var parliamentSelectElmt =  document.getElementById("parliamentField");
+	var electionYearElmt =  document.getElementById("electionYearField");	
+
+	if(!parliamentSelectElmt || !electionYearElmt)
+		return;
+
+	var parliamentValue =  parseInt(parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value);
+	var electionYearValue =  parseInt(electionYearElmt.options[electionYearElmt.selectedIndex].value);
+					
+	if(parliamentValue == -1 || electionYearValue == -1 || isNaN(parliamentValue) )
+		return;
+	else
+	{
+		var jsObj={
+					parliamentValue : parliamentValue,
+					electionYear:electionYearValue,
+					task:"Assembly"
+			  }
+		
+		var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
+		callAjax(jsObj,bparam);
+	}
+}
+
 
 	function getBoothPageInfo(id){
 		var urlStr = "<%=request.getContextPath()%>/boothResultsForAllElectionsPopupAction.action?boothId="+id;
@@ -636,13 +639,17 @@
 
 	function forGetCrossVoting()
 	{
+		var parliamentFieldElmt = document.getElementById("parliamentField");
+		var parliamentFieldValue =  parseInt(parliamentFieldElmt.options[parliamentFieldElmt.selectedIndex].value);
+		
+		
 		var assemblyElmt = document.getElementById("AssemblySelect");
 		var assemblyValue =  parseInt(assemblyElmt.options[assemblyElmt.selectedIndex].value);
 					
 		var partyElmt = document.getElementById("PartySelect");
 		var partyValue =  parseInt(partyElmt.options[partyElmt.selectedIndex].value);
 
-		if( !(isNaN(partyValue)) && (assemblyValue != -1))
+		if( !(isNaN(partyValue)) && (assemblyValue != -1) && !(isNaN(assemblyValue)) && (parliamentFieldValue != -1) && (!isNaN(parliamentFieldValue)) )
 		{
 			getCrossVoting();
 		}
