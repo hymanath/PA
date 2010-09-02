@@ -1501,6 +1501,7 @@ public class CadreManagementService {
 				
 				cadreInfo.setResultStatus(resultStatus);
 				cadreOutputResultVO.add(cadreInfo);
+				return cadreOutputResultVO;
 			}
 			
 		}
@@ -1962,6 +1963,7 @@ public class CadreManagementService {
 	/*
 	 * Method to send message to cadre of selected criteria
 	 */
+	@SuppressWarnings("finally")
 	public SmsResultVO sendSMSToSelectedCadreCriteria(Long userId,PartyCadreDetailsVO cadreInputVO,String includeCadreName,String message){
 		
 		SmsResultVO smsResultVO = new SmsResultVO();
@@ -2007,34 +2009,36 @@ public class CadreManagementService {
 						mobileNos = mobileNos + 1;
 					}
 				}
-				smsResultVO.setStatus(0l);
-				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(cadreDetails.size()).toString()));
-				smsResultVO.setRemainingSmsCount(remainingSMS);
-				smsResultVO.setSmsSentCadreInfo(cadreDetails);
+								
+				//sms sent failure
+				if(smsSentStatus.equals(1l)){
+					smsResultVO.setStatus(1l);
+					smsResultVO.setTotalSmsSent(0l);
+					smsResultVO.setRemainingSmsCount(smsRemainingStatus);
+				}else{
+					smsResultVO.setStatus(0l);
+					smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(cadreDetails.size()).toString()));
+					smsResultVO.setRemainingSmsCount(remainingSMS);
+					smsResultVO.setSmsSentCadreInfo(cadreDetails);
+				}
 			}
 			
 		}
 		
 		}catch(Exception ex){
+			
 			ex.printStackTrace();
 			smsResultVO.setStatus(1l);
 			smsResultVO.setTotalSmsSent(0l);
 			smsResultVO.setRemainingSmsCount(0l);
 			resultStatus.setExceptionEncountered(ex);
-			log.debug(ex);
-		}
-		finally{
-			//set result status to main VO even if exception raised or not
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
 			smsResultVO.setResultStatus(resultStatus);
-			
-			//sms sent failure
-			if(smsSentStatus.equals(1l)){
-				smsResultVO.setStatus(1l);
-				smsResultVO.setTotalSmsSent(0l);
-				smsResultVO.setRemainingSmsCount(smsRemainingStatus);
-			}
+			log.error(ex);
+		 return smsResultVO;
 		}
 		
-	 return smsResultVO;
+	 return smsResultVO;	
 	}
 }
