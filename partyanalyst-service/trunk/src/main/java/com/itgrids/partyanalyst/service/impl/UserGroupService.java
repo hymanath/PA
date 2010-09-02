@@ -805,9 +805,12 @@ public class UserGroupService implements IUserGroupService {
 					resultVo.setTotalSmsSent(0l);
 					resultVo.setRemainingSmsCount(0l);
 				}else{
+					String[] mobileNos = new String[groupMembersMobileNos.length];
 					for(int i=0;i<groupMembersMobileNos.length;i++){
-						smsCountrySmsService.sendSms(message, true,userId,moduleName,groupMembersMobileNos[i]);
+						//smsCountrySmsService.sendSms(message, true,userId,moduleName,groupMembersMobileNos[i]);
+						mobileNos[i]=groupMembersMobileNos[i];
 					}
+					smsCountrySmsService.sendSms(message, true,userId,moduleName,mobileNos);
 					resultVo.setStatus(0l);
 					resultVo.setTotalSmsSent(Long.parseLong(new Integer(groupMembersMobileNos.length).toString()));
 					resultVo.setRemainingSmsCount(remainingSMS);
