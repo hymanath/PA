@@ -2046,7 +2046,7 @@ public class CadreManagementService {
 	/*
 	 * Method to send SMS to selected set of cadre mobile numbers
 	 */
-	public SmsResultVO sendSMSToSelectedCadre(Long userId,Boolean includeCadreName,Boolean isText,String message,List<SmsVO> cadreList){
+	public SmsResultVO sendSMSToSelectedCadre(Long userId,String includeCadreName,Boolean isText,String message,List<SmsVO> cadreList){
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside sendSMSTOSelectedCadreMobileNos Method ..");
