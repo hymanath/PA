@@ -584,7 +584,30 @@ function buildElectionResultsComparePanel()
 		var secondLocal = districtPresentStatus(local.districtName,electionObject.resultsForYearTwo);
 		if(secondLocal)
 		{
-			var obj = {
+			if(i==0){
+				var obj = {
+						inputRadio:'<input type="radio" checked=checked name="'+id+'_radio" value="'+local.districtId+'"/>',
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:local.totalConsti,
+						constiParticipatedOne:local.constiParticipated,
+						seatsWonOne:local.seatsWon,
+						votesPercentOne:local.votesPercent,
+						seatsDiffOne:local.seatsDiff,
+						votesDiffOne:local.votesDiff,
+						totalPercentageOne:local.totalPercentage,
+
+						totalConstiTwo:secondLocal.totalConsti,
+						constiParticipatedTwo:secondLocal.constiParticipated,
+						seatsWonTwo:secondLocal.seatsWon,
+						votesPercentTwo:secondLocal.votesPercent,
+						seatsDiffTwo:secondLocal.votesPercent,
+						votesDiffTwo:secondLocal.votesDiff,
+						totalPercentageTwo:secondLocal.totalPercentage
+					  };
+			}else{
+				var obj = {
 						inputRadio:'<input type="radio" name="'+id+'_radio" value="'+local.districtId+'"/>',
 						districtId:local.districtId,
 						districtName:local.districtName,
@@ -605,13 +628,15 @@ function buildElectionResultsComparePanel()
 						votesDiffTwo:secondLocal.votesDiff,
 						totalPercentageTwo:secondLocal.totalPercentage
 					  };
+			}		
 			arr.push(obj);
 			
 		}
 		else
 		{
-			var obj = {
-						inputRadio:'<input type="radio" name="'+id+'_radio" value="'+local.districtId+'"/>',
+			if(i==0){
+				var obj = {
+						inputRadio:'<input type="radio" checked = checked name="'+id+'_radio" value="'+local.districtId+'"/>',
 						districtId:local.districtId,
 						districtName:local.districtName,
 
@@ -631,6 +656,29 @@ function buildElectionResultsComparePanel()
 						votesDiffTwo:"0",
 						totalPercentageTwo:"0"
 					  };
+			}else{
+				var obj = {
+						inputRadio:'<input type="radio" name="'+id+'_radio" value="'+local.districtId+'"/>',
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:local.totalConsti,
+						constiParticipatedOne:local.constiParticipated,
+						seatsWonOne:local.seatsWon,
+						votesPercentOne:local.votesPercent,
+						seatsDiffOne:'0',
+						votesDiffOne:'0',
+						totalPercentageOne:local.totalPercentage,
+
+						totalConstiTwo:"*NP",
+						constiParticipatedTwo:"*NP",
+						seatsWonTwo:"*NP",
+						votesPercentTwo:"*NP",
+						seatsDiffTwo:"0",
+						votesDiffTwo:"0",
+						totalPercentageTwo:"0"
+					  };				
+			}
 			arr.push(obj);
 		}
 	}
@@ -640,9 +688,9 @@ function buildElectionResultsComparePanel()
 		for(var i in electionObject.resultsForYearTwo)
 		{
 			var local = electionObject.resultsForYearTwo[i];
-			
-			var obj = {
-						inputRadio:'<input type="radio" name="'+id+'_radio" value="'+local.districtId+'"/>',
+			if(i==0){
+				var obj = {
+						inputRadio:'<input type="radio" checked=checked name="'+id+'_radio" value="'+local.districtId+'"/>',
 						districtId:local.districtId,
 						districtName:local.districtName,
 
@@ -661,7 +709,29 @@ function buildElectionResultsComparePanel()
 						votesDiffTwo:"0",
 						totalPercentageTwo:local.totalPercentage
 					  };
-				arr.push(obj);
+		    }else{
+		    	var obj = {
+						inputRadio:'<input type="radio" name="'+id+'_radio" value="'+local.districtId+'"/>',
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:"*NP",
+						constiParticipatedOne:"*NP",
+						seatsWonOne:"*NP",
+						votesPercentOne:"*NP",
+						seatsDiffOne:"0",
+						votesDiffOne:"0",
+
+						totalConstiTwo:local.totalConsti,
+						constiParticipatedTwo:local.constiParticipated,
+						seatsWonTwo:local.seatsWon,
+						votesPercentTwo:local.votesPercent,
+						seatsDiffTwo:"0",
+						votesDiffTwo:"0",
+						totalPercentageTwo:local.totalPercentage
+					  };					
+			}
+			arr.push(obj);
 		}
 	}
 
@@ -989,6 +1059,7 @@ function getDiffPercent()
 		
 	str+='<tr>';
 	str+='<th align="left" style="width: 27%;text-align:left;"> <%=diffWonSeats%>( '+electionObject.yearOne+'  --  '+electionObject.yearTwo+'  ) :   </th>';
+	
 	if(seatesDiff > 0)
 	str+='<td style="color:green;font-size:15px;width:25%;text-align:left;"> + '+seatesDiff+' Seats </td>';
 	if(seatesDiff < 0)
