@@ -307,35 +307,61 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			for(int i=0; i<socialStatusArray.length(); i++)
 			{
 				JSONObject socialObj = socialStatusArray.getJSONObject(i);
-				String categoryId = socialObj.getString("ElmtValue");
+				JSONArray categoryArray = socialObj.getJSONArray("ElmtValue");
 				String categoryValue = socialObj.getString("statusValue");
 				
+				List<CadreCategoryVO> categoryList = new ArrayList<CadreCategoryVO>();
+				for(int j=0;j<categoryArray.length();j++)
+				{	
+					String cValue = categoryArray.getString(j);
+					categoryList.add(new CadreCategoryVO(new Long(cValue)));
+				}
 				if(categoryValue.equalsIgnoreCase("resevation"))
-					partyCadreDetailsVO.setCadreCasteCategory(new CadreCategoryVO(new Long(categoryId)));
+					partyCadreDetailsVO.setCadreCasteCategory(categoryList);
 				else if(categoryValue.equalsIgnoreCase("education"))
-					partyCadreDetailsVO.setCadreEducationQualification(new CadreCategoryVO(new Long(categoryId)));
+					partyCadreDetailsVO.setCadreEducationQualification(categoryList);
 				else if(categoryValue.equalsIgnoreCase("occupation"))
-					partyCadreDetailsVO.setCadreOccupation(new CadreCategoryVO(new Long(categoryId)));
+					partyCadreDetailsVO.setCadreOccupation(categoryList);
 			}
 		}
+		
+		if(jObj.getJSONArray("searchCriteriaArray").length()>0)
+		{
+			JSONArray searchCriteriaArray = jObj.getJSONArray("searchCriteriaArray");
+			
+			for(int i=0;i<searchCriteriaArray.length();i++)
+			{
+				JSONObject criteriaObj = searchCriteriaArray.getJSONObject(i);
+				JSONArray categoryArray = criteriaObj.getJSONArray("ElmtValue");
+				String categoryValue = criteriaObj.getString("statusValue");
+				
+				List<CadreCategoryVO> criteriaList = new ArrayList<CadreCategoryVO>();
+				
+				for(int j=0;j<categoryArray.length();j++)
+				{	
+					String cValue = categoryArray.getString(j);
+					criteriaList.add(new CadreCategoryVO(new Long(cValue)));
+				}
+				
+				Long sCriteriaValue = new Long(jObj.getString("searchCriteriaValue"));
+				if(categoryValue.equalsIgnoreCase("committe"))
+					partyCadreDetailsVO.setCadreWorkingCommittee(criteriaList);
+				else if(categoryValue.equalsIgnoreCase("skills"))
+					partyCadreDetailsVO.setCadreSkillSet(criteriaList);
+				else if(categoryValue.equalsIgnoreCase("trainingCamps"))
+					partyCadreDetailsVO.setCadreTrainingCamps(criteriaList);
+				
+			}
+		}
+		
 		
 		if(jObj.getString("searchType").equalsIgnoreCase("location"))
 			partyCadreDetailsVO.setSearchType(IConstants.LOCATION_BASED);
 		else if(jObj.getString("searchType").equalsIgnoreCase("level"))
 			partyCadreDetailsVO.setSearchType(IConstants.LEVEL_BASED);
 		
-		partyCadreDetailsVO.setSkillsSearchType(jObj.getString("searchCriteria"));		
-		if(!jObj.getString("searchCriteria").equalsIgnoreCase("all"))
-		{
-			Long sCriteriaValue = new Long(jObj.getString("searchCriteriaValue"));
-			if(jObj.getString("searchCriteria").equalsIgnoreCase("committe"))
-				partyCadreDetailsVO.setCadreWorkingCommittee(new CadreCategoryVO(new Long(sCriteriaValue)));
-			else if(jObj.getString("searchCriteria").equalsIgnoreCase("skills"))
-				partyCadreDetailsVO.setCadreSkillSet(new CadreCategoryVO(new Long(sCriteriaValue)));
-			else if(jObj.getString("searchCriteria").equalsIgnoreCase("trainingCamps"))
-				partyCadreDetailsVO.setCadreTrainingCamps(new CadreCategoryVO(new Long(sCriteriaValue)));
-			
-		}
+		//partyCadreDetailsVO.setSkillsSearchType(jObj.getString("searchCriteria"));		
+		
 		if(jObj.getString("performSearch").equalsIgnoreCase("and"))
 			partyCadreDetailsVO.setIsOrSearch(false);
 		else if(jObj.getString("performSearch").equalsIgnoreCase("or"))

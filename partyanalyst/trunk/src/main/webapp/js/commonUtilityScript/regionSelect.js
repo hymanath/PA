@@ -11,6 +11,7 @@ var CADRETYPE = 'all';
 var SEARCHTYPE = 'location';
 var SEARCHCRITERIA = 'all';
 var SEARCHCRITERIAVALUE = '0';
+var SEARCHCRITERIAARRAY = new Array();
 
 var PERFORMSEARCH = 'and';
 
@@ -24,6 +25,100 @@ var partyCommitte = new Array();
 var cadreSkills = new Array();
 var partyTrainingCamps = new Array();
 var occupations = new Array();
+var clickIndex = '';
+
+function addSocialStatusValue(elmt)
+{	
+	var value = elmt.value;	
+	var selectElmt = document.getElementById("socialStatus_"+value);
+	if(!selectElmt)
+		return;
+	
+	if(elmt.checked == false)
+	{
+		selectElmt.disabled=true;
+		for(var i=0;i<SOCIALSTATUSARRAY.length;i++)
+		{
+			if(SOCIALSTATUSARRAY[i].statusValue == value)
+				SOCIALSTATUSARRAY.splice(i,1);
+		}		
+	}
+	else
+	{
+		selectElmt.disabled=false;	
+		
+		if(!elmt)
+			return;
+
+		var sdValues = [];
+		
+		for(var i = 0; i < selectElmt.options.length; i++)
+		{
+			if(selectElmt.options[i].selected == true)			
+				sdValues.push(selectElmt.options[i].value);
+		}
+		
+
+		var obj = {
+					statusValue:""+value,
+					ElmtValue:sdValues
+				  };
+
+		SOCIALSTATUSARRAY.push(obj);
+	}
+	
+}	
+
+function getSearchOptions(elmt)
+{
+	var categorySelectElmt = document.getElementById(elmt.value+"_Select");
+	SEARCHCRITERIA = elmt.value;
+
+	if(!categorySelectElmt)
+		return;	
+	
+	if(elmt.checked == false)
+	{
+		categorySelectElmt.disabled = true;
+		for(var i=0;i<SEARCHCRITERIAARRAY.length;i++)
+		{
+			if(SEARCHCRITERIAARRAY[i].statusValue == elmt.value)
+				SEARCHCRITERIAARRAY.splice(i,1);
+		}		
+		for(var i = 0; i < categorySelectElmt.options.length; i++)
+		{
+			if(i == 0)			
+				categorySelectElmt.options[i].selected = true;
+			else
+				categorySelectElmt.options[i].selected = false;
+		}
+	}
+	else
+	{
+		categorySelectElmt.disabled = false;
+		if(!elmt)
+			return;
+
+		var sdValues = [];
+
+		for(var i = 0; i < categorySelectElmt.options.length; i++)
+		{
+			if(categorySelectElmt.options[i].selected == true)			
+				sdValues.push(categorySelectElmt.options[i].value);
+		}
+		
+		var obj = {
+					statusValue:""+elmt.value,
+					ElmtValue:sdValues
+				  };
+
+		SEARCHCRITERIAARRAY.push(obj);
+	}
+
+	
+}
+
+
 
 function getCriteriaValue(criteriaValue,elmtId)
 {
@@ -43,28 +138,56 @@ function getCriteriaValue(criteriaValue,elmtId)
 	if(CADRETYPE == "active")
 	{
 		if(fiterOptionsElmt.style.height != 0)
-			callYUIAnim(300,"filterOptionsCadresSearch");
+			callYUIAnim(420,"filterOptionsCadresSearch");
 
 		labelStr += ' <font color="#FF0000"> * </font> Search Criteria';
 		labelSpanElmt.innerHTML = labelStr;
 
-		dataStr += '<table>';
+		dataStr += '<table>';		
 		dataStr += '	<tr>';
-		dataStr += '		<td><input type="radio" name="criteriaValue" checked="checked" onclick="getSearchOptions(this.value)" value="all"/>All</td>';
-		dataStr += '		<td></td>';
+		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="committe"/>Committe Wise</td>';
+		dataStr += '		<td>';
+		dataStr += '			<select id="committe_Select" onclick="changeSearchCriteriaValue(this)" multiple="multiple" size="3" disabled="disabled" class="searchcriteriaSelect" onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].value;}">';		
+		for(var i in partyCommitte)
+		{
+			if(i == 0)
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+partyCommitte[i].id+'" selected="selected">'+partyCommitte[i].name+'</option>';
+			else
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+partyCommitte[i].id+'">'+partyCommitte[i].name+'</option>';
+		}		
+		dataStr += '			</select>';
+		//dataStr += '			<span id="committe_Select"></span>';
+		dataStr += '		</td>';
 		dataStr += '	</tr>';
 		dataStr += '	<tr>';
-		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="committe"/>Committe Wise</td>';
-		dataStr += '		<td><span id="committe_Select"></span></td>';
+		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="skills"/> Skills Wise</td>';
+		dataStr += '		<td>';		
+		dataStr += '			<select id="skills_Select" onclick="changeSearchCriteriaValue(this)" multiple="multiple" size="3" disabled="disabled" class="searchcriteriaSelect" onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].value;}">';		
+		for(var i in cadreSkills)
+		{
+			if(i == 0)
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+partyCommitte[i].id+'" selected="selected">'+partyCommitte[i].name+'</option>';
+			else
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+cadreSkills[i].id+'">'+cadreSkills[i].name+'</option>';
+		}		
+		dataStr += '			</select>';
+		//dataStr += '	<span id="skills_Select"></span>';
+		dataStr += '	</td>';
 		dataStr += '	</tr>';
 		dataStr += '	<tr>';
-		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="skills"/> Skills Wise<td>';
-		dataStr += '		<td><span id="skills_Select"></span></td>';
-		dataStr += '	</tr>';
-		dataStr += '	<tr>';
-		dataStr += '		<td><input type="radio" name="criteriaValue" onclick="getSearchOptions(this.value)" value="trainingCamps"/>';
+		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="trainingCamps"/>';
 		dataStr += '		Training Camps Wise</td>';
-		dataStr += '		<td><span id="trainingCamps_Select"></span></td>';
+		dataStr += '		<td>';
+		dataStr += '			<select id="trainingCamps_Select" onclick="changeSearchCriteriaValue(this)" multiple="multiple" size="3" disabled="disabled" class="searchcriteriaSelect" onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].value;}">';		
+		for(var i in partyTrainingCamps)
+		{
+			if(i == 0)
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+partyCommitte[i].id+'" selected="selected">'+partyCommitte[i].name+'</option>';
+			else
+				dataStr += '			<option onclick="javascript:{clickIndex = this.index;}" value="'+partyTrainingCamps[i].id+'">'+partyTrainingCamps[i].name+'</option>';
+		}		
+		dataStr += '			</select>';
+		//dataStr += '<span id="trainingCamps_Select"></span></td>';
 		dataStr += '	</tr>';
 		dataStr += '</table>';
 		
@@ -73,7 +196,7 @@ function getCriteriaValue(criteriaValue,elmtId)
 	else if(CADRETYPE == "normal")
 	{	
 		if(fiterOptionsElmt.style.height != 0)
-			callYUIAnim(200,"filterOptionsCadresSearch");
+			callYUIAnim(300,"filterOptionsCadresSearch");
 
 		
 		dataSpanElmt.innerHTML = '';
@@ -81,10 +204,111 @@ function getCriteriaValue(criteriaValue,elmtId)
 	else if(CADRETYPE == "all")
 	{	
 		if(fiterOptionsElmt.style.height != 0)
-			callYUIAnim(200,"filterOptionsCadresSearch");
+			callYUIAnim(300,"filterOptionsCadresSearch");
 
 		
 		dataSpanElmt.innerHTML = '';
+	}
+
+}
+
+function changeSearchCriteriaValue(elmt)
+{	
+
+	var elmtValue = elmt.id.substring(0,elmt.id.indexOf('_'));
+	
+	var sdValues = [];
+
+	if(clickIndex != 0)
+	{
+		elmt.options[0].selected = false;
+	}
+	else 
+	{
+		for(var i = 1; i < elmt.options.length; i++)
+		{
+			elmt.options[i].selected = false;
+		}
+	}
+
+	for(var i = 0; i < elmt.options.length; i++)
+	{		
+		if(elmt.options[i].selected == true)			
+		{		
+			sdValues.push(elmt.options[i].value);
+		}
+			
+	}	
+
+	for(var i =0;i<SEARCHCRITERIAARRAY.length;i++)
+	{
+		if(SEARCHCRITERIAARRAY[i].statusValue == elmtValue)
+			SEARCHCRITERIAARRAY[i].ElmtValue = sdValues;
+	}
+}
+
+function changeSocialStatus(elmt)
+{	
+	var elmtValue = elmt.id.substring(elmt.id.indexOf('_')+1,elmt.id.length);
+	
+	var sdValues = [];
+
+	if(clickIndex != 0)
+	{
+		elmt.options[0].selected = false;
+	}
+	else 
+	{
+		for(var i = 1; i < elmt.options.length; i++)
+		{
+			elmt.options[i].selected = false;
+		}
+	}
+
+	for(var i = 0; i < elmt.options.length; i++)
+	{		
+		if(elmt.options[i].selected == true)			
+		{		
+			sdValues.push(elmt.options[i].value);
+		}
+			
+	}	
+
+	for(var i =0;i<SOCIALSTATUSARRAY.length;i++)
+	{
+		if(SOCIALSTATUSARRAY[i].statusValue == elmtValue)
+			SOCIALSTATUSARRAY[i].ElmtValue = sdValues;
+	}
+
+
+}
+
+function createOptionsForId(elmtId,optionsList)
+{	
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		if(i == 0)
+			option.selected = "selected";
+		option.setAttribute("onclick","javascript:{clickIndex = this.index;}");
+		
+
+		
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
 	}
 
 }
@@ -122,9 +346,9 @@ function expandFilterOptions()
 	}
 	
 	if(cType == "all" || cType == "normal")
-		height = 200;
-	else if(cType == "active")
 		height = 300;
+	else if(cType == "active")
+		height = 420;
 
 	callYUIAnim(height,"filterOptionsCadresSearch");
 }
@@ -141,116 +365,33 @@ function callYUIAnim(height,elmtId)
 
 }
 
-function addSocialStatusValue(elmt)
-{	
-	var value = elmt.value;	
-	var selectElmt = document.getElementById("socialStatus_"+value);
-	if(!selectElmt)
-		return;
-	
-	if(elmt.checked == false)
-	{
-		selectElmt.disabled=true;
-		for(var i=0;i<SOCIALSTATUSARRAY.length;i++)
-		{
-			if(SOCIALSTATUSARRAY[i].statusValue == value)
-				SOCIALSTATUSARRAY.splice(i,1);
-		}		
-	}
-	else
-	{
-		selectElmt.disabled=false;	
-	
-		if(!elmt)
-			return;
-		var selectElmtValue = selectElmt.options[selectElmt.selectedIndex].value;
 
-		var obj = {
-					statusValue:""+value,
-					ElmtValue:selectElmtValue
-				  };
 
-		SOCIALSTATUSARRAY.push(obj);
-	}
-	
-}	
 
-function changeSocialStatus(elmt)
-{
-	var elmtValue = elmt.id.substring(elmt.id.indexOf('_')+1,elmt.id.length);
-	var elmtChangedId = elmt.options[elmt.selectedIndex].value;
-	
-	for(var i =0;i<SOCIALSTATUSARRAY.length;i++)
-	{
-		if(SOCIALSTATUSARRAY[i].statusValue == elmtValue)
-			SOCIALSTATUSARRAY[i].ElmtValue = elmtChangedId;
-	}
-}
 
-function getSearchOptions(value)
-{
-	for(var i in searchCriteriaArr)
-	{
-		var searchCriteriaElmt = document.getElementById(searchCriteriaArr[i]+"_Select");
-		searchCriteriaElmt.innerHTML = '';
-	}	
-
-	if(value == "all")
-	{
-		SEARCHCRITERIA = "all";
-		return;
-	}
-
-	var categorySelectElmt = document.getElementById(value+"_Select");
-	SEARCHCRITERIA = value;
-
-	if(!categorySelectElmt)
-		return;	
-	
-	var str = '';
-	var searchCriteriaArrValue = '';
-	if(value == "committe")
-	{
-		searchCriteriaArrValue = partyCommitte;
-	}
-	else if(value == "skills")
-	{
-		searchCriteriaArrValue = cadreSkills;
-	}
-	else if(value == "trainingCamps")
-	{
-		searchCriteriaArrValue = partyTrainingCamps;
-	}
-	
-	if(searchCriteriaArrValue.length>0)
-	{
-		str += '<select class="searchcriteriaSelect" onchange="javascript:{SEARCHCRITERIAVALUE = this.options[this.selectedIndex].value;}">';		
-		for(var i in searchCriteriaArrValue)
-		{
-			str += '<option value="'+searchCriteriaArrValue[i].id+'">'+searchCriteriaArrValue[i].name+'</option>';
-		}		
-		str += '</select>';
-
-		categorySelectElmt.innerHTML = str;
-	}	
-}
 
 function showSocialStatus(elmt)
-{
-	SOCIALSTATUS = true;
+{	
 	var checkElmts = document.getElementsByName("socialStatus");
 	var status;
 
 	if(elmt.checked == true)
+	{
+		SOCIALSTATUS = true;
 		status = false;
+	}
 	else if(elmt.checked == false)
+	{
+		SOCIALSTATUS = false;
+		SOCIALSTATUSARRAY = [];
 		status = true;
+	}
 
 	if(checkElmts.length == 0)
 		return;
 	
 	for(var i in checkElmts)
-	{
+	{		
 		checkElmts[i].disabled = status;		
 	}
 
@@ -648,6 +789,7 @@ function getCadresResults(btnType)
 			cadreType:CADRETYPE,
 			searchType:SEARCHTYPE,
 			searchCriteria:SEARCHCRITERIA,
+			searchCriteriaArray:SEARCHCRITERIAARRAY,
 			searchCriteriaValue:SEARCHCRITERIAVALUE,
 			performSearch:PERFORMSEARCH,
 			txtAreaValue:SMSTEXTAREAVALUE,
@@ -1153,6 +1295,8 @@ function getNextRegions(id,val,regTask)
 
 }
 
+
+
 function buildselectBoxes()
 {	
 	var jsObj={
@@ -1163,7 +1307,7 @@ function buildselectBoxes()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "cadreSMSLocationWiseData.action?";
 	//callAjax(jsObj,url);
-	createOptionsForSelectElmtId("socialStatus_resevation",socialStatus);
-	createOptionsForSelectElmtId("socialStatus_education",eduStatus);
-	createOptionsForSelectElmtId("socialStatus_occupation",occupations);
+	createOptionsForId("socialStatus_resevation",socialStatus);
+	createOptionsForId("socialStatus_education",eduStatus);
+	createOptionsForId("socialStatus_occupation",occupations);
 }

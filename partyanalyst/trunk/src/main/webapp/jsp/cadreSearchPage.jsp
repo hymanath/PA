@@ -157,7 +157,7 @@
 								<tr>
 									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="resevation"/> Reservation Category</td>
 									<td>
-										<select class="searchcriteriaSelect" onchange="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
+										<select class="searchcriteriaSelect" multiple="multiple" size="3" onclick="changeSocialStatus(this)" id="socialStatus_resevation" disabled="disabled">
 											
 										</select>
 									</td>
@@ -165,7 +165,7 @@
 								<tr>
 									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="education"/> Education</td>
 									<td>
-										<select class="searchcriteriaSelect" id="socialStatus_education" onchange="changeSocialStatus(this)" disabled="disabled">
+										<select class="searchcriteriaSelect" multiple="multiple" size="3" id="socialStatus_education" onclick="changeSocialStatus(this)" disabled="disabled">
 											
 										</select>
 									</td>
@@ -173,7 +173,7 @@
 								<tr>
 									<td><input type="checkbox" name="socialStatus" onclick="addSocialStatusValue(this)" disabled="disabled" value="occupation"/> Occupation</td>
 									<td>
-										<select class="searchcriteriaSelect" id="socialStatus_occupation" onchange="changeSocialStatus(this)" disabled="disabled">
+										<select class="searchcriteriaSelect" multiple="multiple" size="3" id="socialStatus_occupation" onclick="changeSocialStatus(this)" disabled="disabled">
 											
 										</select>
 									</td>
