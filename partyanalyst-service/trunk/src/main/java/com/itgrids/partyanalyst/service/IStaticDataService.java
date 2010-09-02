@@ -39,7 +39,7 @@ public interface IStaticDataService {
 	
 		public List<SelectOptionVO> getElectionScopesByElectionType(Long electionTypeId);
 		
-		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId);
+		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId,Long partyId);
 			
 		public List<SelectOptionVO> getAllElectionScopes();
 		
