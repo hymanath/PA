@@ -127,7 +127,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 			}
 			
 			if(jObj.getString("task").equals("getElectionYears")){
-				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(jObj.getLong("electionScopeId"));
+				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(jObj.getLong("electionScopeId"),jObj.getLong("partyId"));
 				log.debug("getElectionScopes......"+yearsList.size());
 			}
 		}
