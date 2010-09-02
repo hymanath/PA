@@ -445,6 +445,7 @@ var labelResources = { <%
 		String electionProf = ecrRb.getString("electionProf");
 		%> }
 var electionType = '${electionComparisonReportVO.electionType}';
+var selectedElectionYear;
 var electionObject=	{
 	    selectedParty:${electionComparisonReportVO.partyId},
 		resultsForYearOne:[],
@@ -1017,10 +1018,14 @@ function getPartyPositions(partyId,id,rankPos)
     imgElmt.style.display = 'block';
 	
   var elecId;
-  if(id == "overallResultsYearOne")
-  elecId = electionObject.elecIdYearOne;
-  else if(id == "overallResultsYearTwo")
-  elecId = electionObject.elecIdYearTwo;
+  if(id == "overallResultsYearOne"){
+  	elecId = electionObject.elecIdYearOne;
+  	selectedElectionYear = electionObject.yearOne;
+  }
+  else if(id == "overallResultsYearTwo"){
+  	elecId = electionObject.elecIdYearTwo;
+  	selectedElectionYear = electionObject.yearTwo;
+  }
 	
       var elecType='${electionComparisonReportVO.electionType}';
 	  var state='${electionComparisonReportVO.stateId}';
@@ -1085,7 +1090,7 @@ function displayPartyPositionResults(jsObj,data)
 	for(var i in data)
 	{		
 		str+='<tr>';
-		str+='<td><a href="#"  onclick="getConstituencyCompleteDetails('+data[i].constituencyId+','+data[i].partyId+','+data[i].electionId+')">'+data[i].constituencyName+'</a></td>';
+		str+='<td><a href="javascript:{}" onclick="getConstituencyElecResults('+data[i].constituencyId+','+selectedElectionYear+')">'+data[i].constituencyName+'</a></td>';	
 		str+='<td>'+data[i].candidateName+'</td>';
 		str+='<td align="right">'+data[i].votePercentage+'</td>';
 		for (var d in data[i].oppPartyPositionInfoList)
@@ -1102,192 +1107,13 @@ function displayPartyPositionResults(jsObj,data)
 	buildPartyPositionDataTable(data,rank);	
 }
 
-function getConstituencyCompleteDetails(constituencyId,partyId,electionId)
+function getConstituencyElecResults(constiId,elecYear)
 {
-   var jsObj= 
-	  {
-	     constiId:constituencyId,
-		 partyId:partyId,
-		 electionId:electionId
-      }
-	  var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	 callCompleteConstituencyResultsAjax(param,jsObj);
-   
+   var elecType = "${electionComparisonReportVO.electionType}";
+   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+   browser1.focus();
 }
 
-function callCompleteConstituencyResultsAjax(param,jsObj)
-{
-   var myResults;
-	var url = "<%=request.getContextPath()%>/electionComparisonConstiResultsAjax.action?"+param;
-	var callback = {			
-				   success : function( o ) {
-						try {
-							myResults = YAHOO.lang.JSON.parse(o.responseText); 
-							
-							displayCompleteConstiResults(jsObj,myResults);							
-						}catch (e) {   
-							alert("Invalid JSON result" + e);   
-						}  
-				   },
-				   scope : this,
-				   failure : function( o ) {
-								alert( "Failed to load result" + o.status + " " + o.statusText);
-							 }
-				   };
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-
-function displayCompleteConstiResults(jsObj,data)
-{
-    
-    var candidateObj={
-								candidateName:data.candidateName,
-								partyName:data.partyName,
-								constituencyName:data.constituencyName,
-								electionType:data.electionType,
-								electionYear:data.electionYear,
-								districtName:data.districtName,
-								stateName:data.stateName,
-								votesEarned:data.votesEarned,
-								votePercentage:data.votesPercentage,
-								rank:data.rank,
-								status:'',
-								oppositionCandidates:[]
-							};
-
-						    <c:if test="${data.rank == 1}">
-				            candidateObj.status='Won';
-			                </c:if>						
-			                <c:if test="${data.rank != 1}">
-				            candidateObj.status='Lost';
-			                </c:if>
-                           for(var i in data.oppositionCandidates)
-	                       {
-                              var oppositionList={
-									candidateName:data.oppositionCandidates[i].candidateName,
-									partyName:data.oppositionCandidates[i].partyName,
-									votesEarned:data.oppositionCandidates[i].votesEarned,
-									votesPercentage:data.oppositionCandidates[i].votesPercentage,
-									rank:data.oppositionCandidates[i].rank,
-									status:''
-								};
-						        <c:if test="${data.oppositionCandidates[i].rank == 1}">
-							    oppositionList.status='Won';
-						        </c:if>
-						        <c:if test="${data.oppositionCandidates[i].rank != 1}">
-							    oppositionList.status='Lost';
-						        </c:if>
-								candidateObj.oppositionCandidates.push(oppositionList);
-					       }
-						  
-                           showElectionResultsInPopup(candidateObj);
-}
-
-function showElectionResultsInPopup(data)
-{
-		
-	var str='';
-	str+='<fieldset id="electionProfileField">';
-	str+='<legend><%=electionProf%></legend>';
-	str+='<div id="electionProfileDiv">';
-	str+='<table class="elecInfoTableClass" width="750">';
-	str+='<tr>';
-	str+='<th align="left"><%=candidate%></th>';
-	str+='<td colspan="3" align="left">'+data.candidateName+'</td>';
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th align="left"><%=party%></th>';
-	str+='<td align="left">'+data.partyName+'</td>';	
-	str+='<th align="left"><%=constituency%></th>';
-	str+='<td align="left">'+data.constituencyName+'</td>';
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th align="left"><%=dist%></th>';
-	str+='<td align="left">'+data.districtName+'</td>';	
-	str+='<th align="left"><%=state%></th>';
-	str+='<td align="left">'+data.stateName+'</td>'
-	str+='</tr>';
-	str+='</table>';
-	str+='</div>';
-	str+='</fieldset>';
-	//--------------
-	str+='<fieldset id="electionResultsField">';
-	str+='<legend><%=electionRes%></legend>';
-	str+='<div id="electionResultsDiv">';
-	str+='<table class="elecInfoTableClass" width="750">';
-	str+='<tr>';
-	str+='<th align="left"><%=electionType%></th>';
-	str+='<td colspan="3" align="left">'+data.electionType+'</td>';
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th align="left"><%=electionYear%></th>';
-	str+='<td align="left">'+data.electionYear+'</td>';	
-	str+='<th align="left"><%=rank%></th>';
-	str+='<td align="left">'+data.rank+'</td>';
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th align="left"><%=votesEarned%></th>';
-	str+='<td align="left">'+data.votesEarned+'</td>';	
-	str+='<th align="left"><%=votesPercentage%></th>';
-	str+='<td align="left">'+data.votePercentage+'</td>'
-	str+='</tr>';
-	str+='</table>';
-	str+='</div>';	
-	str+='</fieldset>';
-	//--------
-	str+='<fieldset id="oppositionResultsField">';
-	str+='<legend><%=oppPartyRes%></legend>';
-	str+='<div id="oppCandResultsDiv">';	
-	str+='</div>';
-	str+='</fieldset>';
-	
-	
-	var candidateElectionResultPanel = new YAHOO.widget.Panel("cand_elec_div_panel", 
-				{
-					width:"800px", 
-					fixedcenter : true, 
-					visible : true,  
-					constraintoviewport : false,					
-					iframe :true,
-					modal :false,
-					visible:true,						
-					draggable:true, 
-					close:true
-				} ); 
-	
-	
-	candidateElectionResultPanel.setHeader(data.electionYear+' '+data.electionType+' Elections Details For '+data.constituencyName+' Constituency' );
-	candidateElectionResultPanel.setBody(str);
-	candidateElectionResultPanel.render();	
-
-	 var myDataSource = new YAHOO.util.DataSource(data.oppositionCandidates); 
-	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	 myDataSource.responseSchema = { 
-	            fields: [
-							{	key : "candidateName"	},
-							{	key : "partyName"	},
-							{	key : "rank",parser:"number"	},
-							{	key : "votesEarned",parser:"number" },
-							{	key : "votesPercentage",parser:"number" }
-					
-						]
-	        }; 
-	
-	 var myColumnDefs = [ 
-	            {key:"candidateName",label:'<%=candidate%>', sortable:true, resizeable:true}, 
-	            {key:"partyName", label:'<%=party%>', sortable:true, resizeable:true}, 
-	            {key:"rank", label:'<%=rank%>',sortable:true, resizeable:true}, 
-	            {key:"votesEarned",label:'<%=votesEarned%>', sortable:true, resizeable:true}, 
-	            {key:"votesPercentage",label:'<%=votesPercentage%>', sortable:true, resizeable:true} 
-	        ]; 
-	 
-	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
-}
 
 
 function closePartyPosition()
