@@ -1165,7 +1165,8 @@ public class CadreManagementService {
 					String mobile =  mobileInfo[0].toString();
 					StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
 					cadreMessage.append(mobileInfo[1].toString()).append(IConstants.SPACE).append(mobileInfo[2].toString()).append(IConstants.SPACE).append(message);
-
+                    /*String[] mobileNOs = new String[1];
+                    mobileNOs[1] = mobile;*/
 					smsCountrySmsService.sendSms(cadreMessage.toString(), true,userID,IConstants.Cadre_Management,mobile);
 					mobileNos = mobileNos + 1;
 				}
@@ -1499,6 +1500,9 @@ public class CadreManagementService {
 				resultStatus.setExceptionEncountered(ex);
 				resultStatus.setResultPartial(true);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				
+				resultStatus.setExceptionClass(ex.getClass().toString());
+				resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass().toString()));
 				
 				cadreInfo.setResultStatus(resultStatus);
 				cadreOutputResultVO.add(cadreInfo);
@@ -2005,7 +2009,8 @@ public class CadreManagementService {
 						String mobile =  mobiles.getMobile();
 						StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
 						cadreMessage.append(IConstants.SPACE).append(mobiles.getFirstName()).append(IConstants.SPACE).append(message);
-
+						/*String[] mobileNOs = new String[1];
+	                    mobileNOs[1] = mobile;*/
 						smsSentStatus = smsCountrySmsService.sendSms(cadreMessage.toString(), true,userId,IConstants.Cadre_Management,mobile);
 						mobileNos = mobileNos + 1;
 					}
@@ -2035,6 +2040,8 @@ public class CadreManagementService {
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
+			resultStatus.setExceptionClass(ex.getClass().toString());
+			resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass().toString()));
 			smsResultVO.setResultStatus(resultStatus);
 			log.error(ex);
 		 return smsResultVO;
@@ -2078,7 +2085,8 @@ public class CadreManagementService {
 							String mobile =  mobiles.getMobileNO();
 							StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
 							cadreMessage.append(IConstants.SPACE).append(mobiles.getCadreName()).append(IConstants.SPACE).append(message);
-
+							/*String[] mobileNOs = new String[1];
+		                    mobileNOs[1] = mobile;*/
 							smsSentStatus = smsCountrySmsService.sendSms(cadreMessage.toString(),isText,userId,IConstants.Cadre_Management,mobile);
 						}
 					}
@@ -2101,9 +2109,24 @@ public class CadreManagementService {
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
+			
+			resultStatus.setExceptionClass(ex.getClass().toString());
+			resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass().toString()));
 			smsResult.setResultStatus(resultStatus);
 		}
 	
 	 return smsResult;
+	}
+	
+	public String getExceptionMessage(String expClass){
+		
+		if("class java.lang.NullPointerException".equalsIgnoreCase(expClass))
+			return IConstants.NULL_POINTER_EXCEPTION;
+		else if("class java.lang.ArrayIndexOutOfBoundsException".equalsIgnoreCase(expClass))
+			return IConstants.ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION;
+		else if("class java.lang.NumberFormatException".equalsIgnoreCase(expClass))
+			return IConstants.NUMBER_FORMAT_EXCEPTION;
+		else return IConstants.GENERAL_EXCEPTION;
+	 
 	}
 }
