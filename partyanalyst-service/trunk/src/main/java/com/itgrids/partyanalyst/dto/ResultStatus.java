@@ -15,6 +15,9 @@ public class ResultStatus implements Serializable{
 	private int resultCode;
     private Throwable exceptionEncountered;
     private boolean isResultPartial;	
+    private String exceptionClass;
+    private String exceptionMsg;
+    
     public int getResultCode() {
 		return resultCode;
 	}
@@ -32,6 +35,18 @@ public class ResultStatus implements Serializable{
 	}
 	public void setResultPartial(boolean isResultPartial) {
 		this.isResultPartial = isResultPartial;
+	}
+	public String getExceptionClass() {
+		return exceptionClass;
+	}
+	public void setExceptionClass(String exceptionClass) {
+		this.exceptionClass = exceptionClass;
+	}
+	public String getExceptionMsg() {
+		return exceptionMsg;
+	}
+	public void setExceptionMsg(String exceptionMsg) {
+		this.exceptionMsg = exceptionMsg;
 	}
     
     
