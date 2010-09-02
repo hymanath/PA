@@ -390,7 +390,8 @@ function showAllianceDetails(results)
 		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\''+allianceResultsArr[i].chartForPartyResults+'\',\''+header+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a>';
 		str+='</div>';
 		createDiv.innerHTML = str;
-		allianceResultsDataTableEl.appendChild(createDiv);
+		if(allianceResultsDataTableEl)
+			allianceResultsDataTableEl.appendChild(createDiv);
 	
 		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",dtArray,allianceResultsArr[i].allianceGroupName+" Alliance Results");
 			
