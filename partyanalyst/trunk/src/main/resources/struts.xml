@@ -1290,6 +1290,11 @@
            		<param name="root">smsResultVO</param>
         	</result>       		
         </action>
+         <action name="sendSMSForSelectedCadresCadresAction" class="cadreSearchAjaxAction" method="sendSMSToSelectedCadres"> 
+              <result type="json" name="success">
+           		<param name="root">smsResultVO</param>
+        	</result>       		
+        </action>        
         <action name="getCadreInfoAction" class="cadreInfoAction"> 
              <result name="success">/jsp/cadreInfoResultPage.jsp</result> 		
         </action>

@@ -108,28 +108,28 @@
 					</th>                
 					<td>
 						<span id="accessRegion_data"> 
-							<select class="regionsSelectBox" style="visibility:hidden;" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')">
+							<select class="regionsSelectBox" style="display:none;" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')">
 							<option value="0"> Select Country </option>
 							<option value="1"> India </option>
 							</select>
 
-							<select class="regionsSelectBox" style="visibility:hidden;" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')">
+							<select class="regionsSelectBox" style="display:none;" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')">
 							<option value="0"> Select State</option>
 							</select>
 
-							<select class="regionsSelectBox" style="visibility:hidden;" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')">
+							<select class="regionsSelectBox" style="display:none;" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')">
 							<option value="0"> Select District</option>
 							</select>
 
-							<select class="regionsSelectBox" style="visibility:hidden;" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')">
+							<select class="regionsSelectBox" style="display:none;" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')">
 							<option value="0"> Select Constituency</option>
 							</select>
 							
-							<select class="regionsSelectBox" style="visibility:hidden;" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,'villageSelectBox')">
+							<select class="regionsSelectBox" style="display:none;" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,'villageSelectBox')">
 							<option value="0"> Select Mandal</option>
 							</select>
 
-							<select class="regionsSelectBox" style="visibility:hidden;" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">
+							<select class="regionsSelectBox" style="display:none;" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">
 							<option value="0"> Select Village</option>
 							</select>
 						</span>
@@ -248,12 +248,13 @@
 				
 				<tr>					
 					<td align="center">
+						
+						<input type="button" onclick="getCadresResults('search')" value="Search"/>
+						
 						<c:if test="${windowTask == 'Sms'}">
 						<input type="button" onclick="getCadresResults('sms')" value="Send SMS"/>
 						</c:if>
-						<c:if test="${windowTask == 'Search'}">
-						<input type="button" onclick="getCadresResults('search')" value="Search"/>
-						</c:if>
+						
 					</td>
 					<td align="center">
 						<a href="javascript:{}" onclick="expandFilterOptions()"/>Add filter to ${windowTask}
@@ -262,7 +263,7 @@
 			</table>	
 		</div>
 	</div>
-
+	<div id="smsDialogBox" class="yui-skin-sam"></div>
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
 		<div id="searchResultsDiv_body">
@@ -273,6 +274,16 @@
 	</div>
 
 	<script type="text/javascript">		
+		
+		 <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
+		String exceptionMsg = rb.getString("exceptionMsg");
+
+		%>
+
+		errorMsglabel = '<%=exceptionMsg%>';
+						
 
 		CLICKTYPE = '${windowTask}';
 

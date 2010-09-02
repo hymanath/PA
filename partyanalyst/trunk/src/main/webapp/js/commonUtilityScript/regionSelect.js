@@ -25,7 +25,10 @@ var partyCommitte = new Array();
 var cadreSkills = new Array();
 var partyTrainingCamps = new Array();
 var occupations = new Array();
+var selectedCadresArray = new Array();
 var clickIndex = '';
+var smsDialog = '';
+var errorMsglabel = '';
 
 function addSocialStatusValue(elmt)
 {	
@@ -322,12 +325,12 @@ function searchBased(value)
 	if(value == "location")
 	{
 		SEARCHTYPE = "location";
-		rowElmt.style.visibilty = 'visible';
+		rowElmt.style.display = '';
 	}
 	else if(value == "level")
 	{
 		SEARCHTYPE = "level";
-		rowElmt.style.visibility = 'hidden';
+		rowElmt.style.display = 'none';
 	}
 }
 
@@ -463,192 +466,54 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 	var mandalSelectBoxElmt = document.getElementById("mandalSelectBox");
 	var villageSelectBoxElmt = document.getElementById("villageSelectBox");
 
-	countrySelectBoxElmt.style.visibility="hidden";
-	stateSelectBoxElmt.style.visibility="hidden";
-	districtSelectBoxElmt.style.visibility="hidden";
-	constituencySelectBoxElmt.style.visibility="hidden";
-	mandalSelectBoxElmt.style.visibility="hidden";
-	villageSelectBoxElmt.style.visibility="hidden";
+	countrySelectBoxElmt.style.display="none";
+	stateSelectBoxElmt.style.display="none";
+	districtSelectBoxElmt.style.display="none";
+	constituencySelectBoxElmt.style.display="none";
+	mandalSelectBoxElmt.style.display="none";
+	villageSelectBoxElmt.style.display="none";
 
 	if(REPORTLEVEL == '1')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '2')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
-		stateSelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
+		stateSelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '3')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
-		stateSelectBoxElmt.style.visibility = "visible";
-		districtSelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
+		stateSelectBoxElmt.style.display="";
+		districtSelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '4')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
-		stateSelectBoxElmt.style.visibility = "visible";
-		districtSelectBoxElmt.style.visibility = "visible";
-		constituencySelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
+		stateSelectBoxElmt.style.display="";
+		districtSelectBoxElmt.style.display="";
+		constituencySelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '5')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
-		stateSelectBoxElmt.style.visibility = "visible";
-		districtSelectBoxElmt.style.visibility = "visible";
-		constituencySelectBoxElmt.style.visibility = "visible";
-		mandalSelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
+		stateSelectBoxElmt.style.display="";
+		districtSelectBoxElmt.style.display="";
+		constituencySelectBoxElmt.style.display="";
+		mandalSelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '6')
 	{
-		countrySelectBoxElmt.style.visibility = "visible";
-		stateSelectBoxElmt.style.visibility = "visible";
-		districtSelectBoxElmt.style.visibility = "visible";
-		constituencySelectBoxElmt.style.visibility = "visible";
-		mandalSelectBoxElmt.style.visibility = "visible";
-		villageSelectBoxElmt.style.visibility = "visible";
+		countrySelectBoxElmt.style.display="";
+		stateSelectBoxElmt.style.display="";
+		districtSelectBoxElmt.style.display="";
+		constituencySelectBoxElmt.style.display="";
+		mandalSelectBoxElmt.style.display="";
+		villageSelectBoxElmt.style.display="";
 	}
-
 	
-	/*var labelSpanElmt = document.getElementById(regionElmtId+"_label");
-	var dataSpanElmt = document.getElementById(regionElmtId+"_data");
-	var buttonSpanElmt = document.getElementById(regionElmtId+"_button");
-	
-	if(!labelSpanElmt || !dataSpanElmt || !buttonSpanElmt)
-		return;
-	
-	var labelStr = '',dataStr = '',buttonStr = '';
 
-	labelSpanElmt.innerHTML = labelStr;
-	dataSpanElmt.innerHTML = dataStr;
-	buttonSpanElmt.innerHTML = buttonStr;
-	
-	labelStr += ' <font color="#FF0000"> * </font> Select Location';
-	buttonStr += '<div>';
-	buttonStr += '<span><input type="button" onclick="getCadresResults(\'search\')" value="Search"/></span>';
-	buttonStr += '<span><input type="button" onclick="sendSMSWithoutSearch()" value="Click To Send SMS"/></span>';
-	buttonStr += '</div>';
-
-	
-	labelSpanElmt.innerHTML = labelStr;
-	buttonSpanElmt.innerHTML = buttonStr;
-	
-	if(REPORTLEVEL == "1")
-	{		
-		dataStr += '<select id="countrySelectBox" onchange="javascript:{REPORTLOCATIONVALUE = 1}">';
-		dataStr += '<option id="0"> Select </option>';
-		dataStr += '<option id="1"> India </option>';
-		dataStr += '</select>';
-		
-		dataSpanElmt.innerHTML = dataStr;		
-	}
-	else if(REPORTLEVEL == "2")
-	{
-		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
-		dataStr += '<option value="0"> Select Country</option>';
-		dataStr += '<option value="1"> India </option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="stateSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
-		dataStr += '<option value="0"> Select State</option>';
-		dataStr += '</select>';
-		
-		dataSpanElmt.innerHTML = dataStr;
-		
-	}
-	else if(REPORTLEVEL == "3")
-	{
-		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
-		dataStr += '<option value="0"> Select Country</option>';
-		dataStr += '<option value="1"> India </option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
-		dataStr += '<option value="0"> Select State</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="districtSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
-		dataStr += '<option value="0"> Select District</option>';
-		dataStr += '</select>';
-		
-		dataSpanElmt.innerHTML = dataStr;
-	}
-	else if(REPORTLEVEL == "4")
-	{
-		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
-		dataStr += '<option value="0"> Select Country</option>';
-		dataStr += '<option value="1"> India </option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
-		dataStr += '<option value="0"> Select State</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
-		dataStr += '<option value="0"> Select District</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="constituencySelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
-		dataStr += '<option value="0"> Select Constituency</option>';
-		dataStr += '</select>';
-		
-		dataSpanElmt.innerHTML = dataStr;
-	}
-	else if(REPORTLEVEL == "5")
-	{
-		dataStr += '<select id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
-		dataStr += '<option value="0"> Select Country</option>';
-		dataStr += '<option value="1"> India </option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
-		dataStr += '<option value="0"> Select State</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
-		dataStr += '<option value="0"> Select District</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
-		dataStr += '<option value="0"> Select Constituency</option>';
-		dataStr += '</select>';
-		
-		dataStr += '<select id="mandalSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
-		dataStr += '<option value="0"> Select Mandal</option>';
-		dataStr += '</select>';		
-		
-		dataSpanElmt.innerHTML = dataStr;
-	}
-	else if(REPORTLEVEL == "6")
-	{
-		dataStr += '<select class="regionsSelectBox" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,\'stateSelectBox\')">';
-		dataStr += '<option value="0"> Select Country </option>';
-		dataStr += '<option value="1"> India </option>';
-		dataStr += '</select>';
-
-		dataStr += '<select class="regionsSelectBox" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
-		dataStr += '<option value="0"> Select State</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select class="regionsSelectBox" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
-		dataStr += '<option value="0"> Select District</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select class="regionsSelectBox" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
-		dataStr += '<option value="0"> Select Constituency</option>';
-		dataStr += '</select>';
-		
-		dataStr += '<select class="regionsSelectBox" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,\'villageSelectBox\')">';
-		dataStr += '<option value="0"> Select Mandal</option>';
-		dataStr += '</select>';
-
-		dataStr += '<select class="regionsSelectBox" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
-		dataStr += '<option value="0"> Select Village</option>';
-		dataStr += '</select>';
-		
-		dataSpanElmt.innerHTML = dataStr;
-	}*/
 }
 
 function getCadresResults(btnType)
@@ -671,89 +536,97 @@ function getCadresResults(btnType)
 		elmt.innerHTML = 'Please Select Range';
 		return;		
 	}
-
-	if(REPORTLEVEL == "1")
+	
+	if(SEARCHTYPE == "location")
 	{
-		if(!countrySelectElmt || countrySelectElmt.options[countrySelectElmt.selectedIndex].value == "0")
+		if(REPORTLEVEL == "1")
 		{
-			elmt.innerHTML = 'Select Country Location';
-			return;
-		}
-		else
+			if(!countrySelectElmt || countrySelectElmt.options[countrySelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Country Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = countrySelectElmt.options[countrySelectElmt.selectedIndex].value;
+				
+			}
+		}	
+		else if(REPORTLEVEL == "2")
 		{
-			elmt.innerHTML = '';
-			locationValue = countrySelectElmt.options[countrySelectElmt.selectedIndex].value;
-			
+			if(!stateSelectElmt || stateSelectElmt.options[stateSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select State Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].value;
+				
+			}
+		}	
+		else if(REPORTLEVEL == "3")
+		{
+			if(!districtSelectElmt || districtSelectElmt.options[districtSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select District Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = districtSelectElmt.options[districtSelectElmt.selectedIndex].value;
+			}
+		}	
+		else if(REPORTLEVEL == "4")
+		{
+			if(!constituencySelectElmt || constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Constituency Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value;
+			}
+		}	
+		else if(REPORTLEVEL == "5")
+		{
+			if(!mandalSelectElmt || mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Mandal Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value;
+			}
+		}	
+		else if(REPORTLEVEL == "6")
+		{
+			if(!villageSelectElmt || villageSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Village Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = villageSelectElmt.options[villageSelectElmt.selectedIndex].value;
+			}
 		}
-	}	
-	else if(REPORTLEVEL == "2")
+		REPORTLOCATIONVALUE = locationValue;
+	}
+	else
 	{
-		if(!stateSelectElmt || stateSelectElmt.options[stateSelectElmt.selectedIndex].value == "0")
-		{
-			elmt.innerHTML = 'Select State Location';
-			return;
-		}
-		else
-		{
-			elmt.innerHTML = '';
-			locationValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].value;
-			
-		}
-	}	
-	else if(REPORTLEVEL == "3")
-	{
-		if(!districtSelectElmt || districtSelectElmt.options[districtSelectElmt.selectedIndex].value == "0")
-		{
-			elmt.innerHTML = 'Select District Location';
-			return;
-		}
-		else
-		{
-			elmt.innerHTML = '';
-			locationValue = districtSelectElmt.options[districtSelectElmt.selectedIndex].value;
-		}
-	}	
-	else if(REPORTLEVEL == "4")
-	{
-		if(!constituencySelectElmt || constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value == "0")
-		{
-			elmt.innerHTML = 'Select Constituency Location';
-			return;
-		}
-		else
-		{
-			elmt.innerHTML = '';
-			locationValue = constituencySelectElmt.options[constituencySelectElmt.selectedIndex].value;
-		}
-	}	
-	else if(REPORTLEVEL == "5")
-	{
-		if(!mandalSelectElmt || mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value == "0")
-		{
-			elmt.innerHTML = 'Select Mandal Location';
-			return;
-		}
-		else
-		{
-			elmt.innerHTML = '';
-			locationValue = mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value;
-		}
-	}	
-	else if(REPORTLEVEL == "6")
-	{
-		if(!villageSelectElmt || villageSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
-		{
-			elmt.innerHTML = 'Select Village Location';
-			return;
-		}
-		else
-		{
-			elmt.innerHTML = '';
-			locationValue = villageSelectElmt.options[villageSelectElmt.selectedIndex].value;
-		}
+		REPORTLOCATIONVALUE = "0";
 	}
 	
-	REPORTLOCATIONVALUE = locationValue;
+	
 
 	if(SOCIALSTATUS)
 	{	
@@ -771,7 +644,7 @@ function getCadresResults(btnType)
 
 		if(textAreaElmtValue == '')
 		{
-			elmt.innerHTM = 'Please Type A Message!';
+			elmt.innerHTML = 'Please Type A Message!';
 			return;
 		}
 		else
@@ -891,7 +764,7 @@ function buildCadresDatatable(results,divId)
 	for(var i in results)
 	{
 		var obj={
-					checkBox:'<input type="checkbox" name="cadreResult_check" value="'+results[i].cadreID+'">',
+					checkBox:'<input type="checkbox" name="cadreResult_check" value="'+results[i].cadreID+'_'+results[i].mobile+'_'+results[i].firstName+'">',
 					fname:results[i].firstName+' '+results[i].middleName,
 					lname:results[i].lastName,
 					gender:results[i].gender,
@@ -982,9 +855,18 @@ function showSMSResults(jsObj,results)
 
 	if(!headElmt || !bodySearchElmt || !bodySMSElmt || !footerElmt)
 		return;
-
+	
+	
 	headElmt.innerHTML = 'SMS Results';
 
+	if(results != null && results.resultStatus != null)
+	{
+		if(results.resultStatus.exceptionMsg != null)
+		{
+			bodySMSElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">'+errorMsglabel+'</div>';
+			return;
+		}
+	}
 	
 	bodySMSElmt.innerHTML = 'SMS successfullty sent to '+results.totalSmsSent+' cadres';
 	bodySMSElmt.innerHTML += '<a href="javascript:{}" onclick="showSentSMSCadres()"> View cadres</a>';
@@ -1013,12 +895,23 @@ function showCadreSearchResults(jsObj,results)
 	bodySearchElmt.style.display = 'block';
 
 	headElmt.innerHTML = 'Search Results';
+
 	if(!results || results.length == 0)
 	{
 		bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
 		return;
 	}
 	
+	if(results[0] != null && results[0].resultStatus != null)
+	{
+		if(results[0].resultStatus.exceptionMsg != null)
+		{
+			bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">'+errorMsglabel+'</div>';
+			return;
+		}
+	}
+
+
 	buildCadresDatatable(results,"searchResult");
 	
 
@@ -1037,7 +930,7 @@ function selectCheckBox()
 	
 	for(var i in elements)
 	{
-		elements[i].checked = "true";
+		elements[i].checked = true;
 	}	
 }
 
@@ -1047,7 +940,7 @@ function deSelectCheckBox()
 	
 	for(var i in elements)
 	{
-		elements[i].checked = "false";
+		elements[i].checked = false;
 	}
 }
 
@@ -1055,34 +948,140 @@ function sendCadreSMS()
 {
 	var elements = document.getElementsByName("cadreResult_check");
 	var errorSpanElmt = document.getElementById("smsStatusTextSpan");
+	selectedCadresArray = [];
+
 
 	if(!elements || !errorSpanElmt)
 		return;
 
-	var selectedCadresArray = new Array();
+	
 
-	for(var i in elements)
+	for(var i=0; i<elements.length; i++)
 	{
+		if(elements[i].checked == false)
+			continue;
+		
+		var cId  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
+		var cMobile = elements[i].value.substring(elements[i].value.indexOf('_')+1,elements[i].value.lastIndexOf('_'));
+		var cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
+		var obj = {
+					cadreId:cId,
+					cadreMobile:cMobile,
+					cadreName:cName
+		          };
 		if(elements[i].checked == true)
-			selectedCadresArray.push(elements[i].value);
+			selectedCadresArray.push(obj);
 	}
-
+	
+	
 	if(selectedCadresArray.length == 0)
 	{
 		errorSpanElmt.innerHTML = 'Atleast One cadre need to selected to send SMS';
 		return;
 	}
+	else
+		errorSpanElmt.innerHTML = '';
+	
+	if(CLICKTYPE == "Sms")
+		handleSubmit();
+	else
+		buildSmsTextDialog();
+	
+
+}
+
+function buildSmsTextDialog()
+{
+	var dialogElmt = document.getElementById("smsDialogBox");
+
+	if(!dialogElmt)
+		return;
+
+	var str = '';
+	str += '<div id="dialog1" class="yui-pe-content">';
+	str += '	<div class="hd">Please enter SMS Text</div>';
+	str += '	<div class="bd">';
+	str += '	<table>';
+	str += '	<tr>';
+	str += '	<td colspan="2"><span id="smsPopupSpan"></span></td>';
+	str += '	</tr>';
+	str += '	<tr>';
+	str += '	<th valign="top"> SMS Text : </th>';
+	str += '	<td valign="top">';
+	str+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+	str+='<div id="limitDiv">';
+	str+='<table><tr>';
+	str+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+	str+='</tr></table>';
+	str+='</div>';	
+	str += '	</td>';
+	str += '	</tr>';
+	str += '	<tr>';
+	str += '	<th valign="top"> Include Cadre Name : </th>';
+	str += '	<td valign="top"><input type="radio" id="include_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value;}" name="include_user_name" value="YES" /> Yes';
+	str += '	<input type="radio" id="no_user_name" onclick="javascript:{SMSINCLUDECADRENAME = this.value;}" name="include_user_name" value="NO" checked="checked"/> No';	
+	str += '	</td>';
+	str += '	</tr>';
+	str += '	<table>';
+	str += '	</div>';
+	str += '</div>';
+	
+	if(dialogElmt)
+		dialogElmt.innerHTML = str;
+
+	smsDialog = new YAHOO.widget.Dialog("dialog1",  
+	            { width : "500px", 
+	              fixedcenter : true, 
+	              visible : true,  
+	              constraintoviewport : true, 
+	              buttons : [ { text:"Send SMS", handler:handleSubmit, isDefault:true }, 
+	                          { text:"Cancel", handler:handleCancel } ] 
+	             } ); 
+
+	smsDialog.render();
+}
+
+function handleSubmit()
+{	
+	var elmt;
+	
+	if(CLICKTYPE == "Sms")
+		elmt = document.getElementById("errorMsgDiv");	
+	else
+		elmt = document.getElementById("smsPopupSpan");
+		
+
+	var textAreaElmt = document.getElementById("smsTextArea");
+	if(textAreaElmt)
+		var txtElmtValue = textAreaElmt.value;
+	if(txtElmtValue == '')
+	{
+		elmt.innerHTML = '<font color="red">Enter Text Message...</font>';
+		return;
+	}
+	else
+		elmt.innerHTML = '';
 
 	var jsObj=
-		{				
+		{						
+				txtAreaValue:txtElmtValue,
+				includeName:SMSINCLUDECADRENAME,
 				cadreIds:selectedCadresArray,
 				task:"sendSMSForCadreIds"
 		}
-	
+
+		
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "sendSMSForCadresAction.action?"+rparam;						
+	var url = "sendSMSForSelectedCadresCadresAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+
+function handleCancel()
+{
+	smsDialog.hide();
+}
+
 
 function getCadreInfo(cadreId)
 {
@@ -1091,7 +1090,32 @@ function getCadreInfo(cadreId)
 	browser2.focus();
 }
 
+function showSMSStatus(jsObj,results)
+{
+	var elmt;
+	if(CLICKTYPE == "Sms")
+	{
+		elmt = document.getElementById("smsResult");
+	}
+	else if(CLICKTYPE == "Search")
+	{
+		elmt = document.getElementById("smsPopupSpan");
+	}
+	
+	if(results != null && results.resultStatus != null)
+	{
+		if(results.resultStatus.exceptionMsg != null)
+		{
+			elmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">'+errorMsglabel+'</div>';
+			return;
+		}
+	}
 
+	if(elmt)
+		elmt.innerHTML = '<font color="green"><blink>SMS sent successfull to '+results.totalSmsSent+' Cadres</blink></font>';
+
+	var t=setTimeout("smsDialog.hide();",5000);	
+}
 
 function callAjax(jsObj,url)
 {			
@@ -1117,7 +1141,11 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "getUserLocation")
 								buildRegionsSelectBoxes(jsObj,myResults);
-
+							else if(jsObj.task == "sendSMSForCadreIds")
+							{
+								selectedCadresArray = [];
+								showSMSStatus(jsObj,myResults);
+							}
 
 						}
 						catch(e)

@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -245,6 +246,43 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		return Action.SUCCESS;
 	}
 	
+	public String sendSMSToSelectedCadres()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<SmsVO> cadresList = new ArrayList<SmsVO>();
+		
+		JSONArray cadresArray = jObj.getJSONArray("cadreIds"); 
+		
+		if(cadresArray.length()>0)
+		{
+			for(int i=0; i<cadresArray.length();i++)
+			{
+				SmsVO smsvo = new SmsVO(); 
+				JSONObject cadreObj = cadresArray.getJSONObject(i);
+				smsvo.setCadreId(new Long(cadreObj.getString("cadreId")));
+				smsvo.setCadreName(cadreObj.getString("cadreName"));
+				smsvo.setMobileNO(cadreObj.getString("cadreMobile"));
+				
+				cadresList.add(smsvo);
+			}
+		}
+		
+		smsResultVO = cadreManagementService.sendSMSToSelectedCadre(user.getRegistrationID(), jObj.getString("includeName"), true, jObj.getString("txtAreaValue"), cadresList);
+		return Action.SUCCESS;
+	}
 	public String sendSMSToCadres()
 	{
 		session = request.getSession();
