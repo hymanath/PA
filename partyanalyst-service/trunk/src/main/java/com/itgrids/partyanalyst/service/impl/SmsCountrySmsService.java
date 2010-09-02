@@ -125,15 +125,17 @@ public class SmsCountrySmsService implements ISmsService {
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));*/
 			
 			post.addParameter("User", "dakavaram");
-			post.addParameter("passwd", "nellore");
+			post.addParameter("passwd", "1tGrids");
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < phoneNumbers.length; i++) {
+				sb.append("91");
 				sb.append(phoneNumbers[i]);
 				System.out.println("Phone Numbers--->"+phoneNumbers[i]);
 				if (i < (phoneNumbers.length-1))
 					sb.append(",");
 			}
 			
+		    System.out.println("Mobile Nos :" + sb.toString());
 		/*	System.out.println("Using "+propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER)+propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD)+" for "+sb);*/
@@ -145,7 +147,9 @@ public class SmsCountrySmsService implements ISmsService {
 			post.addParameter("mtype", isEnglish ? "N" : "OL");
 			/*post.addParameter("DR", propertyService
 					.getProperty(PropertyKeys.SMS_SMSCOUNTRY_DR));*/
-			post.addParameter("DR", "YES");
+			post.addParameter("DR", "Y");
+			
+			System.out.println(" Query String :" + post.getQueryString());
 
 			/* PUSH the URL */
 			try {
@@ -154,6 +158,7 @@ public class SmsCountrySmsService implements ISmsService {
 					log.info(post.getStatusLine().toString());
 					System.out.println(post.getStatusLine().toString()+"***"+statusCode+"*****"+post.getQueryString());
 				}
+				System.out.println(post.getStatusLine().toString()+"***"+statusCode+"*****"+post.getQueryString());
 				if (statusCode != HttpStatus.SC_OK) {
 					log.error("SmsCountrySmsService.sendSMS failed: "
 							+ post.getStatusLine());
