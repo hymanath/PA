@@ -223,4 +223,9 @@ public interface IConstants {
     public static final String DISTRICT_LEVEL_ACCESS = "DISTRICT_LEVEL_ACCESS";
     public static final String CONSTITUENCY_LEVEL_ACCESS = "CONSTITUENCY_LEVEL_ACCESS";
     
+    public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
+    public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
+    public static final String NUMBER_FORMAT_EXCEPTION = "NUMBER_FORMAT_EXCEPTION";
+    public static final String GENERAL_EXCEPTION = "GENERAL_EXCEPTION";
+    
 }
