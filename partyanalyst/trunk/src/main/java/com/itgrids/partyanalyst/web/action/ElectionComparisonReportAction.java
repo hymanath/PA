@@ -251,12 +251,18 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             String totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
             
             if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
+            	if(hasAlliances==false){
+            		PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
+                	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
+                	String label = partyPositionsVOYear1.getPartyName();
+                	label = label.concat("  Results").concat("  Graph");
+                	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(yearOne, yearTwo, partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
+            	}else{
+            		String label = selectedPartyName;
+                	label = label.concat("  Results").concat("  Graph");
+                	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraphConsideringAlliance(yearOne, yearTwo, electionComparisonReportVO.getPositionsForYearOne(),electionComparisonReportVO.getPositionsForYearTwo()), chartPath);
+            	}
             	
-            	PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
-            	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
-            	String label = partyPositionsVOYear1.getPartyName();
-            	label = label.concat("  Results").concat("  Graph");
-            	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(yearOne, yearTwo, partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
             	request.setAttribute("barChartName", barChartName);
     			session.setAttribute("barChartName", barChartName);
             }
@@ -338,22 +344,60 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	}
 	
 	
+	private CategoryDataset createDatasetForBarGraphConsideringAlliance(String yearOne,String yearTwo,List<PartyPositionsVO> positionsForYearOne,List<PartyPositionsVO> positionsForYearTwo){
+		  // row keys...
+		 final String category1 =  "Seats Won";
+	     final String category2 = "2nd Pos";
+	     final String category3 = "3rd Pos";
+	     final String category4 = "4th Pos";
+        		
+        // create the dataset...
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		Long pos1=0l,pos2=0l,pos3=0l,pos4=0l;
+		for(PartyPositionsVO positions : positionsForYearOne){
+			pos1+=positions.getTotalSeatsWon();
+			pos2+=positions.getSecondPosWon();
+			pos3+=positions.getThirdPosWon();
+			pos4+=positions.getFourthPosWon();
+		}
+		 dataset.addValue(pos1, category1, yearOne);
+		 dataset.addValue(pos2, category2, yearOne);
+		 dataset.addValue(pos3, category3, yearOne);
+		 dataset.addValue(pos4, category4, yearOne);
+		 
+		 Long position1=0l,position2=0l,position3=0l,position4=0l;
+		for(PartyPositionsVO positions : positionsForYearTwo){
+			position1+=positions.getTotalSeatsWon();
+			position2+=positions.getSecondPosWon();
+			position3+=positions.getThirdPosWon();
+			position4+=positions.getFourthPosWon();			
+		}
+		 dataset.addValue(position1, category1, yearTwo);
+		 dataset.addValue(position2, category2, yearTwo);
+		 dataset.addValue(position3, category3, yearTwo);
+		 dataset.addValue(position4, category4, yearTwo); 
+		 
+	return dataset;
+	}
+	
 	private CategoryDataset createDatasetForBarGraph(String yearOne,String yearTwo,PartyPositionsVO positionsForYearOne,PartyPositionsVO positionsForYearTwo){
 		  // row keys...
 		 final String category1 =  "Seats Won";
 	     final String category2 = "2nd Pos";
 	     final String category3 = "3rd Pos";
-        		
-        // create the dataset...
+	     final String category4 = "4th Pos";
+	     
+      // create the dataset...
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		 dataset.addValue(positionsForYearOne.getTotalSeatsWon(), category1, yearOne);
 		 dataset.addValue(positionsForYearOne.getSecondPosWon(), category2, yearOne);
 		 dataset.addValue(positionsForYearOne.getThirdPosWon(), category3, yearOne);
+		 dataset.addValue(positionsForYearOne.getFourthPosWon(), category4, yearOne);
 		 
 		 dataset.addValue(positionsForYearTwo.getTotalSeatsWon(), category1, yearTwo);
 		 dataset.addValue(positionsForYearTwo.getSecondPosWon(), category2, yearTwo);
 		 dataset.addValue(positionsForYearTwo.getThirdPosWon(), category3, yearTwo);
-		 
+		 dataset.addValue(positionsForYearOne.getFourthPosWon(), category4, yearTwo);
 		 
 	return dataset;
 	}
