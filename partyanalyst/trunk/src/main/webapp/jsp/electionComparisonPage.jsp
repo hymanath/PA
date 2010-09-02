@@ -45,7 +45,8 @@ var labelResources = { <%
 		String viewReport = rb.getString("viewReport");
 		String alliances = rb.getString("alliances");
 		String inclAlliances = rb.getString("inclAlliances");
-		%> }		
+		%> }
+var selectedElectionScopeId;		
 		function getElectionScopes(id){
 			var jsObj=
 				{
@@ -58,11 +59,13 @@ var labelResources = { <%
 				callAjax(rparam,jsObj,url);
 		}
 
-		function getElectionYears(id)
+		function getElectionYears(id,name)
 		{
+			document.getElementById("selectedParty").value = name; 
 			var jsObj=
 			{
-					electionScopeId:id,
+					electionScopeId:selectedElectionScopeId,
+					partyId:id,
 					task:"getElectionYears"						
 			};
 		
@@ -111,9 +114,12 @@ var labelResources = { <%
 				return;
 			
 			elmt.value=value;
-
 		}
-		
+
+		function getSelectedElectionScope(id)
+		{
+			selectedElectionScopeId = id;
+		}
 </script>
 </head>
 <body>
@@ -138,10 +144,17 @@ var labelResources = { <%
 			<tr>
 				<th align="left"><%=electionScope%></th>
 				<td>
-					<select id="electionScopeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">
+					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" class = "selectWidth">
 						<option value="0">Select </option>
 					</select>
 				</td>
+			</tr>
+			<tr>
+			   <th align="left"><%=party%></th>
+			   <td  align="left">
+					<s:select theme="simple" name="party" id="partyList"  onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+					<input type="hidden" id="selectedParty" name="selectedPartyName">
+			   </td>
 			</tr>
 			<tr>
 				<th align="left"><%=electionYear%></th>
@@ -153,13 +166,6 @@ var labelResources = { <%
 						<option value="0">Select </option>
 					</select>
 				</td>
-			</tr>
-			<tr>
-			   <th align="left"><%=party%></th>
-			   <td  align="left">
-					<s:select theme="simple" name="party" id="partyList" onchange="getPartyname(this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
-					<input type="hidden" id="selectedPartyName" name="selectedPartyName">
-			   </td>
 			</tr>
 			<tr>
 				<th align="left"><%=alliances%></th>

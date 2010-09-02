@@ -1072,6 +1072,8 @@ function getDiffPercent()
 	str+='<td style="color:green;font-size:15px;text-align:left;">'+diffPercent+' % increase</td>';
 	if(diffPercent < 0)
     str+='<td style="color:red;font-size:15px;text-align:left;">'+diffPercent+' % decrease</td>';
+    if(diffPercent == 0)
+        str+='<td style="color:red;font-size:15px;text-align:left;">'+diffPercent+' % </td>';
     str+='</tr>';
 
 
