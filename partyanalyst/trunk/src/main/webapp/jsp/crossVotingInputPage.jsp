@@ -636,10 +636,13 @@
 
 	function forGetCrossVoting()
 	{
+		var assemblyElmt = document.getElementById("AssemblySelect");
+		var assemblyValue =  parseInt(assemblyElmt.options[assemblyElmt.selectedIndex].value);
+					
 		var partyElmt = document.getElementById("PartySelect");
 		var partyValue =  parseInt(partyElmt.options[partyElmt.selectedIndex].value);
 
-		if(!(isNaN(partyValue)))
+		if( !(isNaN(partyValue)) && (assemblyValue != -1))
 		{
 			getCrossVoting();
 		}
