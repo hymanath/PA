@@ -286,7 +286,11 @@
 						
 
 		CLICKTYPE = '${windowTask}';
-
+		partyHasCommitees = '${isPartyCommitee}';
+		partyHasCamps = '${isTrainingCamps}';
+		partyHasSkills = '${isCadreSkills}';
+		
+        
 		<c:forEach var="social" items="${socialStatus}">
 			var obj = {
 			           	id:'${social.id}',
