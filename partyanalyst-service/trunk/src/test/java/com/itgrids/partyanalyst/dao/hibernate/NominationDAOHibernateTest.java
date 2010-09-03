@@ -491,13 +491,33 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			 System.out.println(" Votes Percent :" + votesPercent);
 			}
 		}
-	}*/
+	}
 	
 	public void testGetElectionsInState(){
 		List<Election> list = nominationDAO.getElectionsInState(1l);
 		for(Election ele:list)
 			System.out.println(ele.getElectionYear());
 	}
-	
+	*/
+	public void testGet(){
+		getElectionIdsAndYearsByElectionScope(1l,43l);
+	}
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId,Long partyId){
+		List<SelectOptionVO> electionYearslist;	
+		List elections;
+		try{
+			electionYearslist = new ArrayList<SelectOptionVO>();	
+			elections = nominationDAO.findByElectionScopeIdAndPartyId(electionScopeId, IConstants.ELECTION_SUBTYPE_MAIN,partyId);
+			for(int i=0;i<elections.size();i++){
+				Object[] parms = (Object[])elections.get(i);
+				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()),parms[1].toString()));		
+				System.out.println(Long.parseLong(parms[0].toString())+"---"+parms[1].toString());
+			}			
+			return electionYearslist;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}		
+	}
 }
 

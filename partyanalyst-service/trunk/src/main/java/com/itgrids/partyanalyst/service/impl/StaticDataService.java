@@ -459,14 +459,25 @@ public class StaticDataService implements IStaticDataService {
 		return list;
 	}
 	
+	/**
+	 * This method returns a list of Objects that contains electionIds and election years based on the 
+	 * Election-Scopes Ids and Party Id.
+	 */
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId,Long partyId){
-		List<SelectOptionVO> electionYearslist = new ArrayList<SelectOptionVO>();			
-		List elections = nominationDAO.findByElectionScopeIdAndPartyId(electionScopeId, IConstants.ELECTION_SUBTYPE_MAIN,partyId);
-		for(int i=0;i<elections.size();i++){
-			Object[] parms = (Object[])elections.get(i);
-			electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()),parms[1].toString()));					
-		}			
-		return electionYearslist;
+		List<SelectOptionVO> electionYearslist;	
+		List elections;
+		try{
+			electionYearslist = new ArrayList<SelectOptionVO>();	
+			elections = nominationDAO.findByElectionScopeIdAndPartyId(electionScopeId, IConstants.ELECTION_SUBTYPE_MAIN,partyId);
+			for(int i=0;i<elections.size();i++){
+				Object[] parms = (Object[])elections.get(i);
+				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()),parms[1].toString()));					
+			}			
+			return electionYearslist;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}		
 	}
 	
 	public List<SelectOptionVO> getAllElectionScopes(){
