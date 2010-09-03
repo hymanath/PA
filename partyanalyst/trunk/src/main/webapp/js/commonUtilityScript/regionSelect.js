@@ -338,7 +338,8 @@ function createOptionsForId(elmtId,optionsList)
 
 function searchBased(value)
 {
-	var rowElmt = document.getElementById("locationRangeRow");
+	var rowElmt = document.getElementById("rangeRegionsSelectElmtDiv");
+
 	if(!rowElmt)
 		return;
 
@@ -346,12 +347,51 @@ function searchBased(value)
 	{
 		SEARCHTYPE = "location";
 		rowElmt.style.display = '';
+
+		getLocationWiseRangeDetails();
 	}
 	else if(value == "level")
 	{
 		SEARCHTYPE = "level";
 		rowElmt.style.display = 'none';
+
+		getLevelWiseRangeDetails();
 	}
+}
+
+function getLocationWiseRangeDetails()
+{
+   var jsObj={
+				value:"locationWise",
+				taskType:"search",
+				task:"getUserLocation"
+			  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "cadreSMSLocationWiseData.action?";
+	callAjax(jsObj,url);
+
+}
+
+function getLevelWiseRangeDetails()
+{
+   
+   var divElmt = document.getElementById("rangeRegionsRadioElmtDiv");
+   
+
+   if(!divElmt)
+	   return;
+
+  
+   var rangeStr='';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="1"/> Country';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="2"/> State';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="3"/> District';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Constituency';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="5"/> Mandal';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="6"/> Village';
+
+   divElmt.innerHTML=rangeStr;
+
 }
 
 function expandFilterOptions()
@@ -1133,8 +1173,9 @@ function showSMSStatus(jsObj,results)
 
 	if(elmt)
 		elmt.innerHTML = '<font color="green"><blink>SMS sent successfull to '+results.totalSmsSent+' Cadres</blink></font>';
-
-	var t=setTimeout("smsDialog.hide();",5000);	
+	
+	if(CLICKTYPE == "Search")
+		var t=setTimeout("smsDialog.hide();",5000);	
 }
 
 function callAjax(jsObj,url)
@@ -1184,37 +1225,45 @@ function callAjax(jsObj,url)
 
 function displayRegionsSelect(val,regTask)
 {
-	var stateSelectElmt = document.getElementById(regTask+"_StateSelect");
-	var districtSelectElmt = document.getElementById(regTask+"_DistrictSelect");
-	var constituencySelectElmt = document.getElementById(regTask+"_ConstituencySelect");
-	var mandalSelectElmt = document.getElementById(regTask+"_MandalSelect");
-	var villageSelectElmt = document.getElementById(regTask+"_VillageSelect");
+	var id = val.substring(val.indexOf('_')+1,val.length);
+	var name = val.substring(0,val.indexOf('_'));
+	REPORTLEVEL = id;
+
+	var stateSelectElmt = document.getElementById("stateSelectBox");
+	var districtSelectElmt = document.getElementById("districtSelectBox");
+	var constituencySelectElmt = document.getElementById("constituencySelectBox");
+	var mandalSelectElmt = document.getElementById("mandalSelectBox");
+	var villageSelectElmt = document.getElementById("villageSelectBox");
 	
 	stateSelectElmt.disabled=true;
 	districtSelectElmt.disabled=true;	
 	constituencySelectElmt.disabled=true;	
 	mandalSelectElmt.disabled=true;	
 	villageSelectElmt.disabled=true;	
-
-	if(val == "District")
+	
+	if(name == "State")
+	{
+		stateSelectElmt.disabled=false;
+	}
+	if(name == "District")
 	{
 		stateSelectElmt.disabled=false;
 		districtSelectElmt.disabled=false;			
 	}
-	if(val == "Constituency")
+	if(name == "Constituency")
 	{
 		stateSelectElmt.disabled=false;
 		districtSelectElmt.disabled=false;	
 		constituencySelectElmt.disabled=false;	
 	}
-	if(val == "Mandal")
+	if(name == "Mandal")
 	{
 		stateSelectElmt.disabled=false;
 		districtSelectElmt.disabled=false;
 		constituencySelectElmt.disabled=false;	
 		mandalSelectElmt.disabled=false;	
 	}
-	if(val == "Village")
+	if(name == "Village")
 	{
 		stateSelectElmt.disabled=false;
 		districtSelectElmt.disabled=false;	
@@ -1230,12 +1279,20 @@ function buildRegionsSelectBoxes(jsObj,results)
 	var radioElmt = document.getElementById("rangeRegionsRadioElmtDiv");
 	if(!radioElmt || !selectElmt)
 		return;
-
+	
+	var firstValue = '';
 	regTask = "cadreSearch";
 	var str='';
 		for(var i in results.regions)
 		{
-			str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
+			if(i == 0)
+			{
+				str+='<input type="radio" checked="checked" name="region_type_radio" value="'+results.regions[i].name+'_'+results.regions[i].id+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
+				REPORTLEVEL = results.regions[i].id;
+				firstValue = results.regions[i].name+'_'+results.regions[i].id;				
+			}
+			else
+				str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'_'+results.regions[i].id+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
 		}		
 	if(radioElmt)
 		radioElmt.innerHTML=str;
@@ -1243,8 +1300,9 @@ function buildRegionsSelectBoxes(jsObj,results)
 	//Filling up select box...
 
 	var regionStr='';
-		
-	regionStr+='<select id="'+regTask+'_StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\',\''+regTask+'\')" disabled="true">';
+	
+
+	regionStr+='<select id="stateSelectBox" class="regionsSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'districtSelectBox\')">';
 	if(results.states != "")
 	{
 		for(var state in results.states)
@@ -1258,8 +1316,8 @@ function buildRegionsSelectBoxes(jsObj,results)
 	}
 	regionStr+='</select>';	
 
-	
-	regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="true">';
+		
+	regionStr+='<select id="districtSelectBox" class="regionsSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,\'constituencySelectBox\')">';
 	if(results.districts != "")
 	{
 		for(var district in results.districts)
@@ -1273,8 +1331,8 @@ function buildRegionsSelectBoxes(jsObj,results)
 	}
 	regionStr+='</select>';
 	
-	
-	regionStr+='<select id="'+regTask+'_ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\',\''+regTask+'\')" disabled="true">';
+		
+	regionStr+='<select id="constituencySelectBox" class="regionsSelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,\'mandalSelectBox\')">';
 	if(results.constituencies != "")
 	{
 		for(var consti in results.constituencies)
@@ -1289,8 +1347,7 @@ function buildRegionsSelectBoxes(jsObj,results)
 	regionStr+='</select>';
 
 
-
-	regionStr+='<select id="'+regTask+'_MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\',\''+regTask+'\')" disabled="true">';
+   	regionStr+='<select id="mandalSelectBox" class="regionsSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,\'villageSelectBox\')">';
 	if(results.mandals != "")
 	{
 		for(var mandal in results.mandals)
@@ -1304,8 +1361,7 @@ function buildRegionsSelectBoxes(jsObj,results)
 	}
 	regionStr+='</select>';
 
-	
-	regionStr+='<select id="'+regTask+'_VillageSelect" class="selectBox" disabled="true">';
+	regionStr+='<select id="villageSelectBox" class="regionsSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">';
 	if(results.villages != "")
 	{
 		for(var village in results.villages)
@@ -1321,6 +1377,8 @@ function buildRegionsSelectBoxes(jsObj,results)
 
 	if(selectElmt)
 		selectElmt.innerHTML=regionStr;
+
+	displayRegionsSelect(firstValue,regTask);
 
 }
 
