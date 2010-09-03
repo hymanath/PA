@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Election Comparison</title>
+<title>Election Comparison Report</title>
 <style type="text/css">
 table.CandidateElectionResultsTable{
 	font-family: verdana,arial,sans-serif;
@@ -36,6 +36,10 @@ table.CandidateElectionResultsTable td {
 	font-weight:bold;
 	padding-top:30px;
 }
+.selectWidth
+{
+	width:70px;
+}
 </style>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script>
@@ -58,8 +62,10 @@ var yearsPopulation={
 	}; 
 
 		function getElectionScopes(id){
-			removeErrorMessage();			
-			var jsObj=
+			removeErrorMessage();
+						
+			if(id!=0){				
+				var jsObj=
 				{
 						electionTypeId:id,
 						task:"getElectionScopes"						
@@ -68,6 +74,10 @@ var yearsPopulation={
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 				var url = "<%=request.getContextPath()%>/getElectionScopesForECAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
+			}else{
+				clearOptionsListForSelectElmtId("electionScopeSelect");
+				createSelectOptionsForSelectElmtId("electionScopeSelect");	
+			}						
 		}
 		function removeErrorMessage(){
 			if(document.getElementById("errorMessage")){
@@ -176,18 +186,53 @@ var yearsPopulation={
 		}
 		function validateAndForwardToAction()
 		{			
-			if(yearsPopulation.allYearsArray.length==1){
-				var message="";
+			var errorFlag=0;
+			var message="";	
+			var electionFlag=0;				
+			if(yearsPopulation.allYearsArray.length==1)
+			{		
 				message+=selectedParty;
 				message+=' has participated in only one election.';
+				message+='<br/>';		
+				errorFlag=1;						
+			}
+			if(document.getElementById("electionTypeSelect").value==0){
+				message+='Please select Election Type.';
+				message+='<br/>';
+				errorFlag=1;
+			}
+			if(document.getElementById("electionScopeSelect").value==0){
+				message+='Please select Election Scope.';
+				message+='<br/>';
+				errorFlag=1;
+			}
+			if(document.getElementById("partyList").value==0){
+				message+='Please select party.';
+				message+='<br/>';
+				errorFlag=1;
+			} 
+			if(document.getElementById("electionYearSelect1").value==0){
+				message+='Please select Election Years.';
+				message+='<br/>';
+				errorFlag=1;
+				electionFlag=1;
+			}
+			if(document.getElementById("electionYearSelect2").value==0){
+				if(electionFlag!=1){
+					message+='Please select Election Years.';
+					message+='<br/>';						
+				}
+				errorFlag=1;
+			}
+			if(errorFlag==1){
 				document.getElementById("errorMessage").innerHTML = message;
 				return false;
 			}else{
 				document.electionComparisionForm.action="electionComparisonReportAction.action";
 				document.electionComparisionForm.method="post"
 				document.electionComparisionForm.submit();
-				return true;						
-			}
+				return true;							
+			}	
 		}
 </script>
 </head>
@@ -202,7 +247,7 @@ var yearsPopulation={
 			</tr>
 			<tr>
 				<th align="left"><%=electionType%></th>
-				<td>
+				<td align="left">
 					<select id="electionTypeSelect" onchange = "getElectionScopes(this.options[this.selectedIndex].value)" class = "selectWidth">
 						<option value="0">Select </option>
 						<option value="1">Parliament</option>
@@ -212,8 +257,8 @@ var yearsPopulation={
 			</tr>
 			<tr>
 				<th align="left"><%=electionScope%></th>
-				<td>
-					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" class = "selectWidth">
+				<td align="left">
+					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" style="width:105px;">
 						<option value="0">Select </option>
 					</select>
 				</td>
@@ -221,13 +266,13 @@ var yearsPopulation={
 			<tr>
 			   <th align="left"><%=party%></th>
 			   <td  align="left">
-					<s:select theme="simple" name="party" id="partyList"  onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+					<s:select theme="simple" name="party" id="partyList" style="width:70px;" onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
 					<input type="hidden" id="selectedParty" name="selectedPartyName">
 			   </td>
 			</tr>
 			<tr>
 				<th align="left"><%=electionYear%></th>
-				<td>
+				<td align="left">
 					<select id="electionYearSelect1" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)" class = "selectWidth" name="electionId1">
 						<option value="0">Select </option>
 					</select>
@@ -238,7 +283,7 @@ var yearsPopulation={
 			</tr>
 			<tr>
 				<th align="left"><%=alliances%></th>
-				<td><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox><%=inclAlliances%></td>
+				<td align="left"><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox><%=inclAlliances%></td>
 	 		</tr>
 	 		<tr>
 				<th colspan="2" align="center">
@@ -248,7 +293,7 @@ var yearsPopulation={
 		</table>
 		<table>
 			<tr>
-	 			<td>
+	 			<td align="left">
 	 				<div id="errorMessage"></div>
 	 			</td>
 	 		</tr>

@@ -45,7 +45,31 @@ function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
 	}
 
 }
+/**
+ * This method takes element id as input and populates the select box with select item
+ * @method clearOptionsListForSelectElmtId
+ * @param elmtId The element Id that needs to be populated with select item. 
+ */
+function createSelectOptionsForSelectElmtId(elmtId)
+{	
 
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt)
+		return;
+	
+	var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+}
 
 /**
  * Function to create options for the HTML select element.
