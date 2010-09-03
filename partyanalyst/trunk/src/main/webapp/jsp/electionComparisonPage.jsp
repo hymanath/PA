@@ -30,7 +30,12 @@ table.CandidateElectionResultsTable td {
 	border-color: #666666;
 	background-color: #ffffff;
 }
-
+#errorMessage
+{
+	color:red;
+	font-weight:bold;
+	padding-top:30px;
+}
 </style>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script>
@@ -46,8 +51,14 @@ var labelResources = { <%
 		String alliances = rb.getString("alliances");
 		String inclAlliances = rb.getString("inclAlliances");
 		%> }
-var selectedElectionScopeId;		
+var selectedElectionScopeId,selectedParty;	
+var yearsPopulation={
+		allYearsArray:[],
+		remainingYearsArray:[]
+	}; 
+
 		function getElectionScopes(id){
+			removeErrorMessage();			
 			var jsObj=
 				{
 						electionTypeId:id,
@@ -58,10 +69,17 @@ var selectedElectionScopeId;
 				var url = "<%=request.getContextPath()%>/getElectionScopesForECAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
 		}
+		function removeErrorMessage(){
+			if(document.getElementById("errorMessage")){
+				document.getElementById("errorMessage").innerHTML="";
+			}
+		}
 
 		function getElectionYears(id,name)
 		{
+			removeErrorMessage();
 			document.getElementById("selectedParty").value = name; 
+			selectedParty = name;
 			var jsObj=
 			{
 					electionScopeId:selectedElectionScopeId,
@@ -72,6 +90,19 @@ var selectedElectionScopeId;
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/getElectionYearsForECAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
+		}
+		function storeYears(results){
+			yearsArray = new Array();
+
+					for(var i in results)
+					{
+						var yearsObj= {
+								 electionId:results[i].id,
+								 years:results[i].name													
+							};
+						yearsArray.push(yearsObj);
+						yearsPopulation.allYearsArray=yearsArray;	
+					}									
 		}
 		
 		function callAjax(rparam, jsObj, url){
@@ -88,11 +119,14 @@ var selectedElectionScopeId;
 									}else
 									if(jsObj.task == "getElectionYears")
 									{								
+										var emptyArr = new Array();							   
+									    yearsPopulation.allYearsArray = emptyArr;
+									    yearsPopulation.remainingYearsArray = emptyArr;
+									    	
 										clearOptionsListForSelectElmtId("electionYearSelect1");
 										createOptionsForSelectElmtId("electionYearSelect1",resultVO);		
-
-										clearOptionsListForSelectElmtId("electionYearSelect2");
-										createOptionsForSelectElmtId("electionYearSelect2",resultVO);	
+										clearOptionsListForSelectElmtId("electionYearSelect2");	
+										storeYears(resultVO);										
 									}				
 							}catch (e)  {   
 							   	alert("Invalid JSON result" + e);   
@@ -118,13 +152,48 @@ var selectedElectionScopeId;
 
 		function getSelectedElectionScope(id)
 		{
+			removeErrorMessage();
 			selectedElectionScopeId = id;
+		}
+		function populateElectionYearsForSecondElectionYearsSelectBox(value)
+		{
+			clearOptionsListForSelectElmtId("electionYearSelect2");	
+			yearsArray = new Array();
+			for(var i in yearsPopulation.allYearsArray)
+			{				
+				if(yearsPopulation.allYearsArray[i].years!=value){
+					var yearsObj= {
+							 id:yearsPopulation.allYearsArray[i].electionId,
+							 name:yearsPopulation.allYearsArray[i].years													
+						};
+					yearsArray.push(yearsObj);
+					yearsPopulation.remainingYearsArray=yearsArray;
+				}									
+			}
+			
+
+			createOptionsForSelectElmtId("electionYearSelect2",yearsPopulation.remainingYearsArray);	
+		}
+		function validateAndForwardToAction()
+		{			
+			if(yearsPopulation.allYearsArray.length==1){
+				var message="";
+				message+=selectedParty;
+				message+=' has participated in only one election.';
+				document.getElementById("errorMessage").innerHTML = message;
+				return false;
+			}else{
+				document.electionComparisionForm.action="electionComparisonReportAction.action";
+				document.electionComparisionForm.method="post"
+				document.electionComparisionForm.submit();
+				return true;						
+			}
 		}
 </script>
 </head>
 <body>
 <div style="margin-top:40px;">
-	<s:form action="electionComparisonReportAction.action">
+	<form name="electionComparisionForm">
 		<table class="CandidateElectionResultsTable" width="300px" border="1">
 			<tr>
 				<th colspan="2">
@@ -159,7 +228,7 @@ var selectedElectionScopeId;
 			<tr>
 				<th align="left"><%=electionYear%></th>
 				<td>
-					<select id="electionYearSelect1" class = "selectWidth" name="electionId1">
+					<select id="electionYearSelect1" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)" class = "selectWidth" name="electionId1">
 						<option value="0">Select </option>
 					</select>
 					<select id="electionYearSelect2" class = "selectWidth" name="electionId2">
@@ -173,11 +242,18 @@ var selectedElectionScopeId;
 	 		</tr>
 	 		<tr>
 				<th colspan="2" align="center">
-					<s:submit theme="simple" value="View Report"/>
+					<input type="button" onClick="return validateAndForwardToAction()"  value="View Report"/>
 				</th>
+	 		</tr>	 		
+		</table>
+		<table>
+			<tr>
+	 			<td>
+	 				<div id="errorMessage"></div>
+	 			</td>
 	 		</tr>
 		</table>
-	</s:form>
+	</form>
 </div>
 </body>
 </html>
