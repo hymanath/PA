@@ -3,6 +3,10 @@
 var CLICKTYPE = '';
 var REPORTLEVEL = '';
 var REPORTLOCATIONVALUE = '';
+var USERTYPE = '';
+var partyHasCommitees = '';
+var partyHasCamps = '';
+var partyHasSkills = '';
 
 var SOCIALSTATUS = false;
 var SOCIALSTATUSARRAY = new Array();
@@ -140,13 +144,20 @@ function getCriteriaValue(criteriaValue,elmtId)
 
 	if(CADRETYPE == "active")
 	{
-		if(fiterOptionsElmt.style.height != 0)
+		
+        if(partyHasCommitees == 'true' || partyHasSkills == 'true' || partyHasCamps == 'true')
+		{
+
+			if(fiterOptionsElmt.style.height != 0)
 			callYUIAnim(420,"filterOptionsCadresSearch");
 
-		labelStr += ' <font color="#FF0000"> * </font> Search Criteria';
-		labelSpanElmt.innerHTML = labelStr;
+			labelStr += ' <font color="#FF0000"> * </font> Search Criteria';
+			labelSpanElmt.innerHTML = labelStr;
+		}
 
-		dataStr += '<table>';		
+		dataStr += '<table>';	
+		if(partyHasCommitees == 'true')
+		{
 		dataStr += '	<tr>';
 		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="committe"/>Committe Wise</td>';
 		dataStr += '		<td>';
@@ -162,6 +173,10 @@ function getCriteriaValue(criteriaValue,elmtId)
 		//dataStr += '			<span id="committe_Select"></span>';
 		dataStr += '		</td>';
 		dataStr += '	</tr>';
+		}
+		
+		if(partyHasSkills == 'true')
+		{
 		dataStr += '	<tr>';
 		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="skills"/> Skills Wise</td>';
 		dataStr += '		<td>';		
@@ -177,6 +192,10 @@ function getCriteriaValue(criteriaValue,elmtId)
 		//dataStr += '	<span id="skills_Select"></span>';
 		dataStr += '	</td>';
 		dataStr += '	</tr>';
+		}
+		
+		if(partyHasCamps == 'true')
+		{
 		dataStr += '	<tr>';
 		dataStr += '		<td><input type="checkbox" name="criteriaValue" onclick="getSearchOptions(this)" value="trainingCamps"/>';
 		dataStr += '		Training Camps Wise</td>';
@@ -192,6 +211,7 @@ function getCriteriaValue(criteriaValue,elmtId)
 		dataStr += '			</select>';
 		//dataStr += '<span id="trainingCamps_Select"></span></td>';
 		dataStr += '	</tr>';
+		}
 		dataStr += '</table>';
 		
 		dataSpanElmt.innerHTML = dataStr;
