@@ -1382,15 +1382,21 @@ public class CadreManagementService {
 	
 	public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	{
-		List<SelectOptionVO> resultsList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> resultsList = null;
 		List<PartyWorkingCommittee> results =  partyWorkingCommitteeDAO.getWorkingCommitteeForParty(partyId);
-		for(PartyWorkingCommittee partyWorkingCommittee:results)
-		{
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(partyWorkingCommittee.getPartyWorkingCommitteeId());
-			selectOptionVO.setName(partyWorkingCommittee.getCommitteeName());
-			resultsList.add(selectOptionVO);
-		}
+		
+		if(results != null && results.size() > 0){
+			
+			resultsList = new ArrayList<SelectOptionVO>();
+			
+			for(PartyWorkingCommittee partyWorkingCommittee:results)
+			{
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(partyWorkingCommittee.getPartyWorkingCommitteeId());
+				selectOptionVO.setName(partyWorkingCommittee.getCommitteeName());
+				resultsList.add(selectOptionVO);
+			}
+	    }
 		return resultsList;
 	}
 	
@@ -1410,28 +1416,35 @@ public class CadreManagementService {
 	
 	public List<SelectOptionVO> getPartyCadreSkills(Long partyId)
 	{
+		List<SelectOptionVO> cadreSkillsList = null;
 		List<PartyCadreSkills> cadreSkills = partyCadreSkillsDAO.getCadreSkillsPartywise(partyId); 
-		List<SelectOptionVO> cadreSkillsList = new ArrayList<SelectOptionVO>();
-		for(PartyCadreSkills cadreSkill : cadreSkills)
-		{
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(cadreSkill.getPartyCadreSkillId());
-			selectOptionVO.setName(cadreSkill.getSkill());
-			cadreSkillsList.add(selectOptionVO);
+		if(cadreSkills != null && cadreSkills.size() > 0){
+			cadreSkillsList = new ArrayList<SelectOptionVO>();
+			for(PartyCadreSkills cadreSkill : cadreSkills)
+			{
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(cadreSkill.getPartyCadreSkillId());
+				selectOptionVO.setName(cadreSkill.getSkill());
+				cadreSkillsList.add(selectOptionVO);
+			}
 		}
 		return cadreSkillsList;			
 	}
 	
 	public List<SelectOptionVO> getPartyTrainingCamps(Long partyId)
 	{
+		
+		List<SelectOptionVO> trainingCampsList = null;
 		List<PartyTrainingCamps> trainingCamps = partyTrainingCampsDAO.getTrainingCampsPartywise(partyId);
-		List<SelectOptionVO> trainingCampsList = new ArrayList<SelectOptionVO>();
-		for(PartyTrainingCamps partyTrainingCamp:trainingCamps)
-		{
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(partyTrainingCamp.getPartyTrainingCampsId());
-			selectOptionVO.setName(partyTrainingCamp.getRegionLevel());
-			trainingCampsList.add(selectOptionVO);
+		if(trainingCamps != null && trainingCamps.size() > 0){
+		trainingCampsList = new ArrayList<SelectOptionVO>();
+			for(PartyTrainingCamps partyTrainingCamp:trainingCamps)
+			{
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(partyTrainingCamp.getPartyTrainingCampsId());
+				selectOptionVO.setName(partyTrainingCamp.getRegionLevel());
+				trainingCampsList.add(selectOptionVO);
+			}
 		}
 		return trainingCampsList;
 			
