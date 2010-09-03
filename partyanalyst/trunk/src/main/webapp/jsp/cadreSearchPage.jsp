@@ -73,6 +73,7 @@
           </tr>
         </table>    	
      </center></div>
+	<center>
 	<div id="CadreSearchMain">
 		<div id="basicCadresSearch">
 			<table width="100%" class="cadreSearchInputTable">				
@@ -84,7 +85,7 @@
 				<tr>
 					<th><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
 					<td>
-						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)" checked="checked" value="location"/> Cadre Location  
+						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)"  checked="checked" value="location"/> Cadre Location  
 						<input type="radio" name="searchbasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
 					</td>
 				</tr>
@@ -94,15 +95,10 @@
 					<td>
 						<div id="rangeRegionsRadioElmtDiv"></div>
 						<div id="rangeRegionsSelectElmtDiv"></div>
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="1"/> Country		
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="2"/> State
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="3"/> District
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="4"/> Constituency
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="5"/> Mandal
-						<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,'accessRegion')" value="6"/> Village                    
+				         
 					</td>
 				</tr>
-				<tr id="locationRangeRow">
+				<!--<tr id="locationRangeRow">
 					<th>
 						<span id="accessRegion_label"></span>
 					</th>                
@@ -133,7 +129,7 @@
 							<option value="0"> Select Village</option>
 							</select>
 						</span>
-				</tr>
+				</tr>-->
 				
 				<tr>
 					<th><font color="#FF0000"> * </font> Cadre Type</span></th>
@@ -263,6 +259,7 @@
 			</table>	
 		</div>
 	</div>
+	</center>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
@@ -335,6 +332,7 @@
 		</c:forEach>
 				
 		buildselectBoxes();
+		getLocationWiseRangeDetails();
 	</script>
 </body>
 </html>
