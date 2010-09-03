@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+<title>Election Comparision Report</title>
 <c:if test="${allianceCheck == 'true'}"><title> ${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</title></c:if>
 <c:if test="${allianceCheck == 'false'}"><title>${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</title></c:if>
 
