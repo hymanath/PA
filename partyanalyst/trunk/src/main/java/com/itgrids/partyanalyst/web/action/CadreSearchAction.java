@@ -17,11 +17,19 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreSearchAction extends ActionSupport implements ServletRequestAware 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private HttpServletRequest request;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
-	private List<SelectOptionVO> partyCommitteesList;
+	private Boolean isPartyCommitee;
+	private List<SelectOptionVO> partyCommitteesList = new ArrayList<SelectOptionVO>();
+	private Boolean isCadreSkills;
 	private List<SelectOptionVO> cadreSkillsList = new ArrayList<SelectOptionVO>();
+	private Boolean isTrainingCamps;
 	private List<SelectOptionVO> partyTrainingCampsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
 	private IStaticDataService staticDataService; 
@@ -112,6 +120,30 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		this.partyTrainingCampsList = partyTrainingCampsList;
 	}
 
+	public Boolean getIsPartyCommitee() {
+		return isPartyCommitee;
+	}
+
+	public void setIsPartyCommitee(Boolean isPartyCommitee) {
+		this.isPartyCommitee = isPartyCommitee;
+	}
+
+	public Boolean getIsCadreSkills() {
+		return isCadreSkills;
+	}
+
+	public void setIsCadreSkills(Boolean isCadreSkills) {
+		this.isCadreSkills = isCadreSkills;
+	}
+
+	public Boolean getIsTrainingCamps() {
+		return isTrainingCamps;
+	}
+
+	public void setIsTrainingCamps(Boolean isTrainingCamps) {
+		this.isTrainingCamps = isTrainingCamps;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -134,16 +166,33 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		occupationsList = staticDataService.getAllOccupations();
 		occupationsList.add(0, new SelectOptionVO(0L,"All"));
 		
+		// party specific input selection criteria
 		if("Party".equals(regVO.getUserType()))
 		{
+			//party commitee details
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
-			partyCommitteesList.add(0, new SelectOptionVO(0L,"All"));
+			if(partyCommitteesList != null && partyCommitteesList.size() > 0){
+			    partyCommitteesList.add(0, new SelectOptionVO(0L,"All"));
+			    isPartyCommitee = true;
+			}
+			else if(partyCommitteesList == null || partyCommitteesList.size() == 0)
+				isPartyCommitee = false;
 			
+			//party training camp details
 			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty());
-			partyTrainingCampsList.add(0, new SelectOptionVO(0L,"All"));
+			if(partyTrainingCampsList != null && partyTrainingCampsList.size() > 0){
+			    partyTrainingCampsList.add(0, new SelectOptionVO(0L,"All"));
+			    isTrainingCamps = true;
+			}else if(partyTrainingCampsList == null || partyTrainingCampsList.size() == 0)
+				isTrainingCamps = false;
 			
+			//cadre skill details
 			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty());
-			cadreSkillsList.add(0, new SelectOptionVO(0L,"All"));
+			if(cadreSkillsList != null && cadreSkillsList.size() > 0){
+			    cadreSkillsList.add(0, new SelectOptionVO(0L,"All"));
+			    isCadreSkills = true;
+			}else if(cadreSkillsList == null || cadreSkillsList.size() == 0)
+				isCadreSkills = false;
 		}
 		
 		return Action.SUCCESS;
