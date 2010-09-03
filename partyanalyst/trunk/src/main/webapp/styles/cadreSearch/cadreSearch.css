@@ -1,4 +1,14 @@
 
+body
+{
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	direction:ltr;
+	background-color:#FFFFFF;
+}
+
 #cadreSearchHeading
 {
 	margin-top:20px;
