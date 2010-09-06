@@ -69,6 +69,10 @@
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
 		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
+		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
+		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
+		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 	</bean>
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="registrationDAO" ref="registrationDAO" />

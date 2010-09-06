@@ -115,7 +115,10 @@
 				<value>com.itgrids.partyanalyst.model.UserGroupEntitlement</value>
 				<value>com.itgrids.partyanalyst.model.UserGroups</value>
 				<value>com.itgrids.partyanalyst.model.UserGroupRelation</value>
-				<value>com.itgrids.partyanalyst.model.UserAccessInfo</value>
+				<value>com.itgrids.partyanalyst.model.UserCountryAccessInfo</value>
+				<value>com.itgrids.partyanalyst.model.UserStateAccessInfo</value>
+				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
+				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.SocialCategory</value>
 				<value>com.itgrids.partyanalyst.model.EducationalQualifications</value>
 				<value>com.itgrids.partyanalyst.model.Occupation</value>

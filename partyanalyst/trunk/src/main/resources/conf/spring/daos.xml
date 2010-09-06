@@ -321,7 +321,19 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="userAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAccessInfoDAO" >
+	<bean id="userCountryAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCountryAccessInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userStateAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserStateAccessInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userDistrictAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserDistrictAccessInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userConstituencyAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
