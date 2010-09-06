@@ -278,4 +278,5 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Election> getElectionsInState(Long stateId);
 	
 	public List<Election> findByElectionScopeIdAndPartyId(Long electionScopeId,String electionSubtypes,Long partyId);
+	
 }

@@ -36,7 +36,11 @@ public class RegistrationVO extends BaseDTO{
 	private String subscribePartyImpDate;
 	private String userType;
 	private List<String> entitlements = new ArrayList<String>(0);
-	private List<SelectOptionVO> accessInfo = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> countries = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> states = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> parliaments = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> assemblies = new ArrayList<SelectOptionVO>(0);
 
 	public Long getRegistrationID() {
 		return registrationID;
@@ -216,20 +220,53 @@ public class RegistrationVO extends BaseDTO{
 	public void setEntitlements(List<String> entitlements) {
 		this.entitlements = entitlements;
 	}
-	public List<SelectOptionVO> getAccessInfo() {
-		return accessInfo;
+	
+	public List<SelectOptionVO> getCountries() {
+		return countries;
 	}
-	public void setAccessInfo(List<SelectOptionVO> accessInfo) {
-		this.accessInfo = accessInfo;
+	
+	public void setCountries(List<SelectOptionVO> countries) {
+		this.countries = countries;
+	}
+	
+	public List<SelectOptionVO> getStates() {
+		return states;
+	}
+	
+	public void setStates(List<SelectOptionVO> states) {
+		this.states = states;
+	}
+	
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+	
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+	
+	public List<SelectOptionVO> getParliaments() {
+		return parliaments;
+	}
+
+	public void setParliaments(List<SelectOptionVO> parliaments) {
+		this.parliaments = parliaments;
+	}
+	
+	public List<SelectOptionVO> getAssemblies() {
+		return assemblies;
+	}
+	
+	public void setAssemblies(List<SelectOptionVO> assemblies) {
+		this.assemblies = assemblies;
 	}
 	
 	public String getPartyShortName() {
 		return partyShortName;
 	}
+	
 	public void setPartyShortName(String partyShortName) {
 		this.partyShortName = partyShortName;
 	}
-	
-
 	
 }
