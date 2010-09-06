@@ -233,4 +233,27 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"group by model.election.electionId order by " +
 				"model.election.electionId");
 	}
+	public List findPartyvalidVotesInfoByElectionAndPartyGroupByDistrictId(Long electionId, String partyIds) {
+		Object[] params = {electionId,electionId};
+		return getHibernateTemplate().find("select model.constituency.district.districtId, " +
+				"sum(model.constituencyElectionResult.validVotes) " +
+				"from ConstituencyElection model where model.election.electionId = ? and " +
+				"model.constituency.constituencyId in " +
+				"(select distinct model2.constituencyElection.constituency.constituencyId from Nomination model2 where" +
+				" model2.constituencyElection.election.electionId = ? and model2.party.partyId in ("+partyIds+")) "+
+				"group by model.constituency.district.districtId " +
+				"order by model.constituency.district.districtId",params);
+	}
+	
+	public List findPartyvalidVotesInfoByElectionAndPartyGroupByStateId(Long electionId, String partyIds) {
+		Object[] params = {electionId,electionId};
+		return getHibernateTemplate().find("select model.constituency.state.stateId, " +
+				"sum(model.constituencyElectionResult.validVotes) " +
+				"from ConstituencyElection model where model.election.electionId = ? and " +
+				"model.constituency.constituencyId in " +
+				"(select distinct model2.constituencyElection.constituency.constituencyId from Nomination model2 where" +
+				" model2.constituencyElection.election.electionId = ? and model2.party.partyId in ("+partyIds+")) "+
+				"group by model.constituency.state.stateId " +
+				"order by model.constituency.state.stateId",params);
+	}
 }
