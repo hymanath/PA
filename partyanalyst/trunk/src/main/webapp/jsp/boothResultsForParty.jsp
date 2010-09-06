@@ -3,6 +3,16 @@
 <HEAD>
 <link  href="css/main.css" rel="stylesheet" type="text/css" />
 <TITLE>Party Performance Report In Each Booth</TITLE>
+
+<style type="text/css">
+#errorMessage
+{
+	color:red;
+	font-weight:bold;
+	padding-top:10px;
+}
+</style>
+
 <!-- Dependencies -->
 <script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
 
@@ -27,7 +37,7 @@
 	{
 		var img = document.getElementById("ajaxImg2");
 		img.style.display = 'block';
-		setTimeout('stopImage2()',1000);
+		setTimeout('stopImage2()',500);
 	}
 
 	function stopImage2()
@@ -36,34 +46,7 @@
 		img.style.display='none';
 	}
 
-	function hideSubmit()
-	{
-		 var ElectionTypeElmt =  document.getElementById("electionType1");
-	     var ElectionTypeValue=  parseInt(ElectionTypeElmt.options[ElectionTypeElmt.selectedIndex].value);
-
-		 var electionYearElmt =  document.getElementById("electionYear1");
-	     var electionYearValue=  parseInt(electionYearElmt.options[electionYearElmt.selectedIndex].value);
-
-	    var ConstituencyNameElmt =document.getElementById("ConstituencyName1");
-	    var ConstituencyNameValue=(ConstituencyNameElmt.options[ConstituencyNameElmt.selectedIndex].value);
-		
-		var partyNameElmt =  document.getElementById("partyName1");
-	    var partyNameValue=  parseInt(partyNameElmt.options[partyNameElmt.selectedIndex].value);
-
-		var continue_button = document.getElementById("subbutton");
 	
-		if(ElectionTypeValue==0 || electionYearValue ==0 || ConstituencyNameValue==0 || partyNameValue ==0)
-		{
-		  continue_button.style.visibility ='hidden';  
-		}
-
-		else
-		{
-		   continue_button.style.visibility ='visible'; 
-		}
-
-	}
-
 	function clearConstituencys()
 	{
 			clearOptionsListForSelectElmtId("ConstituencyName1");
@@ -77,30 +60,85 @@
 			createSelectOptionsForSelectElmtId("partyName1");
 	}
 
-		
+	function removeErrorMessage()
+		{
+			if(document.getElementById("errorMessage"))
+			{
+				document.getElementById("errorMessage").innerHTML="";
+			}
+		}
+
+	
+	function validateAndForwardToAction()
+	{
+		    var errorFlag=0;
+			var message="";	
+			
+			if(document.getElementById("electionType1").value==0)
+			{
+				
+				message+='Please select Election Type.';
+				message+='<br/>';
+				errorFlag=1;
+			}
+
+			if(document.getElementById("electionYear1").value==0)
+			{
+				message+='Please select Election Year.';
+				message+='<br/>';
+				errorFlag=1;
+			}
+
+			if(document.getElementById("ConstituencyName1").value==0){
+				message+='Please select Constituency.';
+				message+='<br/>';
+				errorFlag=1;
+			}
+			
+			if(document.getElementById("partyName1").value==0)
+			{
+				message+='Please select Party.';
+				message+='<br/>';
+				errorFlag=1;
+				electionFlag=1;
+			}
+			
+			if(errorFlag==1){
+				document.getElementById("errorMessage").innerHTML = message;
+				return false;
+			}
+			
+			else
+			{
+				showAjaxDiv();
+				document.BoothPerformanceReport.action="partyBoothResult2Action.action";
+				document.BoothPerformanceReport.method="post"
+				document.BoothPerformanceReport.submit();
+				return true;							
+			}	
+      }
+
 </script>
-
-
 </HEAD>
 <body>
 <s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
 <s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
 <h4>Party Booth Results</h4>
-<s:form action="partyBoothResult2Action" name="BoothPerformanceReport" onsubmit="showAjaxDiv()" cssClass="inputTable">
+<s:form name="BoothPerformanceReport" cssClass="inputTable" >
 	
 	<s:select label="Election Type" name="electionType" 
 		list="electionTypes" listKey="id" listValue="name" headerKey="0"
-		headerValue="Select" id="electionType1" onchange="hideSubmit()" />
+		headerValue="Select" id="electionType1" onchange="removeErrorMessage()" />
 
 	<s:select label="Election Year" name="electionYear"
 		list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"
-	onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),hideSubmit(),clearConstituencys()"/>
+onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),clearConstituencys(),removeErrorMessage()"/>
 		
-	<tr id="constituencyRow" >
+	<tr id="constituencyRow">
 	<th>Constituency</th>
 
-	<td><s:select label="Constituency" name="constituencyName" 
-list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="showImage2(),clearpartyNames(),hideSubmit(),getConstituenciesList(this.form,'%{getPartyURL}')"/></td>
+<td><s:select label="Constituency" name="constituencyName" 
+list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="getConstituenciesList(this.form,'%{getPartyURL}'),showImage2(),clearpartyNames(),removeErrorMessage()"/></td>
 
 		<td style="border:none;">
 		<img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
@@ -110,7 +148,7 @@ list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="showI
 
 	<tr id="partyRow">
 		<th>Party</th>
-		<td><s:select label="Party" name="partyName" id="partyName1" onchange="hideSubmit()"
+		<td><s:select label="Party" name="partyName" id="partyName1" onchange="removeErrorMessage()"
 			list="%{#{'0':'Select'}}" theme="simple"/>			
 		</td>
 		<td style="border:none;">
@@ -118,7 +156,22 @@ list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="showI
 		</td>
 
 	</tr>
-	<s:submit id="subbutton" value="Get Booth Results" />
+
+	<tr><th></th>
+	<td style="border:none;">
+	<div>
+	<input type=button id="subbutton" value="Get Booth Results" onclick="validateAndForwardToAction()" />
+	</div>
+	</td>
+	</tr>
 </s:form>
+
+<table>
+<tr><th></th>
+<td align="left">
+	<div id="errorMessage"></div>
+</td></tr>
+</table>
+		
 </body>
 </HTML>
