@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1271,6 +1272,7 @@ public class StaticDataService implements IStaticDataService {
 			electionInfoVO = new ElectionInfoVO();
 			electionInfoVO.setTotalConstituencies((Long)values[1]);
 			electionInfoVO.setTotalValidVotes(((Double)values[2]).longValue());
+			electionInfoVO.setConstituencyName(values[3].toString());//3rd change
 			constituenciesInDistOrState.put((Long)values[0], electionInfoVO);
 		}
 		
@@ -1282,6 +1284,7 @@ public class StaticDataService implements IStaticDataService {
 			stateOrDistrictId = (Long)values[0];
 			districtName = values[1].toString();
 			electionInfoVO = constituenciesInDistOrState.get(stateOrDistrictId);
+			constituenciesInDistOrState.remove(stateOrDistrictId);//1st modification
 			totalConstituencies = electionInfoVO.getTotalConstituencies();
 			totalValidVotes = electionInfoVO.getTotalValidVotes();
 			participatedConstituencies = (Long)values[2];
@@ -1292,6 +1295,7 @@ public class StaticDataService implements IStaticDataService {
 			votesEarned = ((Double)values[6]).longValue();
 			percenatage = new BigDecimal(votesEarned*100.0/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			overallPercent = new BigDecimal(votesEarned*100.0/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			//System.out.println("percenatage--->"+percenatage+"overallPercent-->"+overallPercent);
 			districtWisePartyResultVO.setDistrictId(stateOrDistrictId);
 			districtWisePartyResultVO.setDistrictName(districtName);
 			districtWisePartyResultVO.setTotalConstituencies(participatedConstituencies);
@@ -1302,7 +1306,20 @@ public class StaticDataService implements IStaticDataService {
 			districtWisePartyResultVO.setTotalPercentage(overallPercent);
 			districtWisePartyResultVOList.add(districtWisePartyResultVO);
 		}
-			
+		//2nd Modification....
+		for(Entry<Long, ElectionInfoVO> values : constituenciesInDistOrState.entrySet() ){
+			electionInfoVO = constituenciesInDistOrState.get(values.getKey());
+			districtWisePartyResultVO = new DistrictWisePartyResultVO();
+			districtWisePartyResultVO.setDistrictId(values.getKey());
+			districtWisePartyResultVO.setDistrictName(electionInfoVO.getConstituencyName());
+			districtWisePartyResultVO.setTotalConstituencies(0l);
+			districtWisePartyResultVO.setConstiCount(electionInfoVO.getTotalConstituencies());
+			districtWisePartyResultVO.setConstiParticipated(0l);
+			districtWisePartyResultVO.setSeatsWon(0l);
+			districtWisePartyResultVO.setVotesPercent(0d);
+			districtWisePartyResultVO.setTotalPercentage(0d);
+			districtWisePartyResultVOList.add(districtWisePartyResultVO);									
+		}	
 		return districtWisePartyResultVOList;
 	}
 	
