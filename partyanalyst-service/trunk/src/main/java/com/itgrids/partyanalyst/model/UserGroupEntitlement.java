@@ -36,8 +36,6 @@ public class UserGroupEntitlement extends BaseModel implements Serializable {
 	private Long userGroupEntilementId;
 	private UserGroups userGroup;
 	private GroupEntitlement groupEntitlement;
-	private String isAccessInfo;
-	private UserAccessInfo userAccessInfo;
 	
 	/** Default Constructor */
 	public UserGroupEntitlement(){
@@ -47,12 +45,10 @@ public class UserGroupEntitlement extends BaseModel implements Serializable {
 	/** Parameterized Constructor */
 	public UserGroupEntitlement(Long userGroupEntilementId,
 			UserGroups userGroup, GroupEntitlement groupEntitlement,
-			String isAccessInfo, UserAccessInfo userAccessInfo) {
+			String isAccessInfo) {
 		this.userGroupEntilementId = userGroupEntilementId;
 		this.userGroup = userGroup;
 		this.groupEntitlement = groupEntitlement;
-		this.isAccessInfo = isAccessInfo;
-		this.userAccessInfo = userAccessInfo;
 	}
 
 	@Id
@@ -88,27 +84,6 @@ public class UserGroupEntitlement extends BaseModel implements Serializable {
 
 	public void setGroupEntitlement(GroupEntitlement groupEntitlement) {
 		this.groupEntitlement = groupEntitlement;
-	}
-
-	@Column(name = "is_access_info", length = 25)
-	public String getIsAccessInfo() {
-		return isAccessInfo;
-	}
-
-	public void setIsAccessInfo(String isAccessInfo) {
-		this.isAccessInfo = isAccessInfo;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_access_info_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAccessInfo getUserAccessInfo() {
-		return userAccessInfo;
-	}
-
-	public void setUserAccessInfo(UserAccessInfo userAccessInfo) {
-		this.userAccessInfo = userAccessInfo;
 	}
 
 }

@@ -350,7 +350,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	/*public void testFindPartiesInfoByElectionAndPartyGroupByDistrict(){
-		List list = nominationDAO.findPartiesInfoByElectionAndPartyGroupByDistrict(10l, "24,62");
+		List list = nominationDAO.findPartiesInfoByElectionAndPartyGroupByDistrict(4l, "24,61,17,18");
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
 		assertEquals(35, list.size());
@@ -452,7 +452,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	/*@SuppressWarnings("unchecked")
 	public void testGetWonAndOppCandidateResults(){
 		String ranks = "1,2";
@@ -499,7 +499,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(ele.getElectionYear());
 	}
 	*/
-	public void testGet(){
+	/*public void testGet(){
 		getElectionIdsAndYearsByElectionScope(1l,43l);
 	}
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId,Long partyId){
@@ -518,6 +518,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			e.printStackTrace();
 			return null;
 		}		
-	}
+	}*/
+	
 }
 

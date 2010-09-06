@@ -142,15 +142,20 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetconstituencyByTehsil(){
 		List consti = constituencyDAO.findByLocalElectionBodyAndElectionScope(1l, "Ward-1");
-		/*if(consti != null){
+		if(consti != null){
 			Object params[] = (Object[])consti.get(0);
 			System.out.println(" Constituency Id   :" + (Long)params[0]);
 			System.out.println(" Constituency Name :" + (String)params[1]);
-		}*/
+		}
+	}*/
+	
+	public void testDelete(){
+		constituencyDAO.remove(20132l);
+		setComplete();
 	}
 	
 }

@@ -8,8 +8,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,9 +16,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -34,7 +35,7 @@ public class Entitlement extends BaseModel implements Serializable {
 	
 	private Long entitlementId;
 	private String entitlementType;
-	private Set<GroupEntitlement> groupEntitlement = new HashSet<GroupEntitlement>(0);
+	private GroupEntitlement groupEntitlement;
 	
 	/** Default Constructor */
 	public Entitlement(){
@@ -49,7 +50,7 @@ public class Entitlement extends BaseModel implements Serializable {
 
 	/** Parameterized Constructor */
 	public Entitlement(Long entitlementId, String entitlementType,
-			Set<GroupEntitlement> groupEntitlement) {
+			GroupEntitlement groupEntitlement) {
 		super();
 		this.entitlementId = entitlementId;
 		this.entitlementType = entitlementType;
@@ -76,16 +77,16 @@ public class Entitlement extends BaseModel implements Serializable {
 		this.entitlementType = entitlementType;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entitlement")
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "group_entitlement_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<GroupEntitlement> getGroupEntitlement() {
+	public GroupEntitlement getGroupEntitlement() {
 		return groupEntitlement;
 	}
 
-	public void setGroupEntitlement(Set<GroupEntitlement> groupEntitlement) {
+	public void setGroupEntitlement(GroupEntitlement groupEntitlement) {
 		this.groupEntitlement = groupEntitlement;
 	}
-	
-	
 
 }
