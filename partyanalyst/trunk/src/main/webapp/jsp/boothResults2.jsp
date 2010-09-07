@@ -67,14 +67,26 @@
 	<tr>
 		<th style="background-color:#C4DEFF;">Candidate Name</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /><br></td>
-		<th style="background-color:#C4DEFF;">Total Percentage</th>
-		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>		
+
+		<th style="background-color:#C4DEFF;">Total Votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalVotes"/></td>
+	</tr>
+
+	<tr>
+	<th style="background-color:#C4DEFF;">Total Valid Votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalValidVotes" /></td>	
+		
+		<th style="background-color:#C4DEFF;">Voting Percentage</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.votingPercentage"/></td>		
+	
 	</tr>
 	<tr>
-		<th style="background-color:#C4DEFF;">Total Valid votes</th>
-		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalValidVotes" /></td>
+		
 		<th style="background-color:#C4DEFF;">Total Votes Gained</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.votesGained" /></td>
+
+		<th style="background-color:#C4DEFF;">Total Votes Gained Percentage</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>
 		
 	</tr>
 </table>

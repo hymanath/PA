@@ -160,7 +160,7 @@ list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="getCo
 	<tr><th></th>
 	<td style="border:none;">
 	<div>
-	<input type=button id="subbutton" value="Get Booth Results" onclick="validateAndForwardToAction()" />
+	<input type="button" id="subbutton" value="Get Booth Results" onclick="validateAndForwardToAction()" />
 	</div>
 	</td>
 	</tr>
