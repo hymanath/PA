@@ -134,7 +134,7 @@ var yearsPopulation={
 									    yearsPopulation.remainingYearsArray = emptyArr;
 									    	
 										clearOptionsListForSelectElmtId("electionYearSelect1");
-										createOptionsForSelectElmtId("electionYearSelect1",resultVO);		
+										createOptionsForSelectElmtIdWithSelectOption("electionYearSelect1",resultVO);		
 										clearOptionsListForSelectElmtId("electionYearSelect2");	
 										storeYears(resultVO);										
 									}				
