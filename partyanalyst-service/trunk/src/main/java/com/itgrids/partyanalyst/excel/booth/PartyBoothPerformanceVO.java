@@ -13,7 +13,7 @@ public class PartyBoothPerformanceVO {
 	private int totalValidVotes;
 	private int votesGained;
 	private String percentage;
-	private Long totalVoters;
+	private long totalVotes;
 	private String votingPercentage;
 	private List<BoothResultVO> boothResults = new ArrayList<BoothResultVO>();
 	
@@ -105,13 +105,12 @@ public class PartyBoothPerformanceVO {
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
-
-	public Long getTotalVoters() {
-		return totalVoters;
+	public long getTotalVotes() {
+		return totalVotes;
 	}
 
-	public void setTotalVoters(Long totalVoters) {
-		this.totalVoters = totalVoters;
+	public void setTotalVotes(long totalVotes) {
+		this.totalVotes = totalVotes;
 	}
 
 	public String getVotingPercentage() {
@@ -121,5 +120,6 @@ public class PartyBoothPerformanceVO {
 	public void setVotingPercentage(String votingPercentage) {
 		this.votingPercentage = votingPercentage;
 	}
+
 
 }
