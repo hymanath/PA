@@ -254,9 +254,12 @@
 					var cObj={
 								name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 								mobile:cadreData[i].mobile,
-								landLine:cadreData[i].landLineNo,
+								landLine:cadreData[i].telephone,
 								cadreLevel:cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
-								email:cadreData[i].email
+								email:cadreData[i].email,
+								moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
+								update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
+								remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
 							 };
 
 					cadresArray.push(cObj);
@@ -268,14 +271,18 @@
 										{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
 										{key:"landLine",label : "Landline", sortable:true, resizeable:true},
 										{key:"cadreLevel",label : "Cadre Level", sortable:true, resizeable:true}, 
-										{key:"email",label : "Email",sortable:true, resizeable:true}
+										{key:"email",label : "Email", resizeable:true},
+										{key:"moreDetails",label : "More Details", resizeable:true},
+										{key:"update",label : "Edit", resizeable:true},
+										{key:"remove",label : "Remove", resizeable:true},
+										
 									]; 
 				var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
 				myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 				myDataSource.responseSchema = { 
 				fields : [
 							{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
-							{key :"cadreLevel"},{key : "email"}
+							{key :"cadreLevel"},{key : "email"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
 						 ]
 				};
 				
@@ -286,6 +293,67 @@
 				};
 
 				getCadrePopup(myColumnDefs,myDataSource,configs);
+			}
+
+			function getCadreInfo(cadreId)
+			{
+				var urlStr = "getCadreInfoAction.action?windowTask=cadreInfoPopup&cadreId="+cadreId;
+				var browser2 = window.open(urlStr,"cadreInfoPopup","scrollbars=yes,height=500,width=600,left=200,top=200");	
+				browser2.focus();
+			}
+			
+			function deleteCadre(cadreId)
+			{
+				var ask = confirm("Do You want to delete");
+				if (ask ==  true)
+				  {
+					var jsObj = {
+							id: cadreId,
+							task: "deleteCadre"
+						};
+						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+						var url = "<%=request.getContextPath()%>/deleteCadreInfoAjaxAction.action?"+rparam; 
+						deleteCadreAjax(rparam,jsObj,url);	  	
+				  }
+				else
+				  {
+				  		return;	
+				  }
+				
+			}
+
+			function deleteCadreAjax(param,jsObj,url){
+				var myResults;
+					
+		 		var callback = {			
+		 		               success : function( o ) 
+								  {
+									try {												
+											if(o.responseText)
+												myResults = YAHOO.lang.JSON.parse(o.responseText);
+									}
+									catch (e)
+										{   
+										   	alert("Invalid JSON result" + e);   
+										}	  
+						              },
+						               scope : this,
+						               failure : function( o ) {
+						                			alert( "Failed to load result" + o.status + " " + o.statusText);
+						                         }
+						               };
+
+						YAHOO.util.Connect.asyncRequest('GET', url, callback);
+				}
+					
+			
+
+			function openRegistrationForm(cadreId)
+			{
+				var task = "update_existing";
+				var urlStr = "cadreRegisterPageAction.action?cadreId="+cadreId+"&windowTask="+task;
+				var browser2 = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
+				browser2.focus();				
 			}
 
 			function buildTextNode(results,node)
@@ -316,7 +384,7 @@
 	</script>
 </head>
 <body>
-	<s:form name="cadrereport" action="cadreRegisterPageAction" method="post" theme="simple">	
+	<s:form name="cadrereport" action="cadreRegisterPageAction" method="get" theme="simple">	
 
 	<div id="cadreReportMain">
 		<div id="cadreReportLayout_main"></div>
@@ -349,7 +417,11 @@
 				</div>				
 				<div id="cadreRegistration_body">
 					<div>Add/Register your party cadre to your cadre list in different locations based on their availability.</div>
-					<div style="text-align:right;padding-top:10px;"><input type="submit" id="registerCadreSubmit" name="registersubmit" value="Register Cadre"/></div>					
+					<div style="text-align:right;padding-top:10px;">
+					<input type="hidden" id="hiddenVal" name="cadreId" value="0"/>
+					<input type="hidden" id="hiddenValue" name="windowTask" value="new"/>
+					<input type="submit" id="registerCadreSubmit" name="registersubmit" value="Register Cadre"/>
+				</div>					
 				</div>
 			</div>	
 			

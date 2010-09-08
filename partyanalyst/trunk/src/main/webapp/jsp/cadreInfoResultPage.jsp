@@ -107,6 +107,18 @@
 		padding:10px;
 		text-align:right;
 	}
+	fieldset {
+		border:4px solid #CFD6DF;
+		margin-bottom:10px;
+		padding:10px;		
+	}
+	legend {
+		background-color:#567AAF;
+		color:#FFFFFF;
+		font-size:12px;
+		padding:5px;
+		font-weight:bold;
+	}
 
 </style>
 
@@ -152,10 +164,11 @@ function buildCadreInfo(jsObj,results)
 	str += results.firstName+"'s Profile";
 	str += '</div>';
 	str += '<div id="cadreInfo_body">';
-	str += '	<table width="100%">';
+	str += '	<fieldset>';
+	str += '	<legend>Personal Details</legend>';	
+	str += '	<table width="100%" border="0">';
 	str += '	<tr>';
 	str += '		<td width="70%" valign="top">';
-	str += '			<div class="tableHeadingDiv">Basic Info</div>';
 	str += '			<table width="100%" class="cadreProfileInfoTable">';
 	str += '			<tr>';
 	str += '				<th style="width:125px">First Name </th>';
@@ -177,31 +190,88 @@ function buildCadreInfo(jsObj,results)
 	str += '				<th>:</th>';
 	str += '				<td>'+results.dateOfBirth+'</td>';
 	str += '			</tr>';	
-	str += '			<tr>';
-	str += '				<th style="width:125px">Email</th>';
-	str += '				<th>:</th>';
-	str += '				<td>'+results.email+'</td>';
-	str += '			</tr>';
-	str += '			<tr>';
-	str += '				<th style="width:125px">Mobile</th>';
-	str += '				<th>:</th>';
-	str += '				<td>'+results.mobile+'</td>';
-	str += '			</tr>';
-	str += '			<tr>';
-	str += '				<th style="width:125px">Land Line</th>';
-	str += '				<th>:</th>';
-	str += '				<td>'+results.landLineNo+'</td>';
-	str += '			</tr>';
 	str += '			</table>';
 	str += '		</td>';
 	str += '		<td width="50%" valign="top">';
-	str += '			<img height="160px" width="130px" src="images/icons/indexPage/human.jpg">';
+	str += '			<img height="110px" width="130px" src="images/icons/indexPage/human.jpg">';
 	str += '		</td>';
 	str += '	</tr>';
-	str += '	<tr>';
-	str += '		<td colspan="2" valign="top">';
-	str += '			<div class="tableHeadingDiv">Address For Communication </div>';
+	str += '	</table>';
+	str += '	</fieldset>';
+	str += '	<fieldset>';
+	str += '	<legend>Contact Details</legend>';
+	str += '	<table width="100%" class="cadreProfileInfoTable" border="0">';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Land Line</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.telephone+'</td>';
+	str += '			<th style="width:125px">Mobile</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.mobile+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Email</th>';
+	str += '			<th>:</th>';
+	str += '			<td colspan="4">'+results.email+'</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '	<table border="0" width="100%">';
+	str += '		<tr>';
+	str += '			<td width="50%">';
+	str += '			<table class="cadreProfileInfoTable">';
+	str += '				<tr>';
+	str += '					<th><U>Current Address</U></th>';
+	str += '				</tr>';
+	str += '					<tr>';
+	str += '					<th style="width:125px">House No </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.houseNo+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">Street </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.street+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">Hamlet </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.hamletName+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">Village </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.villageName+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">Constituency</th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.constituencyName+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">District</th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.districtName+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">State </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.stateName+'</td>';
+	str += '				</tr>';
+	str += '				<tr>';
+	str += '					<th style="width:125px">Pincode</th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.pinCode+'</td>';
+	str += '				</tr>';	
+	str += '		</table>';
+	str += '</td>';
+	str += '<td valign="top">';
+	//str += '			<div class="tableHeadingDiv">Official Address</div>';
 	str += '			<table width="100%" class="cadreProfileInfoTable">';
+	str += '				<tr>';
+	str += '					<th><U>Official Address</U></th>';
+	str += '				</tr>';
+	if(results.sameAsCA != true)
+	{	
 	str += '			<tr>';
 	str += '				<th style="width:125px">House No </th>';
 	str += '				<th> : </th>';
@@ -213,19 +283,161 @@ function buildCadreInfo(jsObj,results)
 	str += '				<td>'+results.street+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
+	str += '				<th style="width:125px">Hamlet </th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.hamletName+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
+	str += '				<th style="width:125px">Village </th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.villageName+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
+	str += '				<th style="width:125px">Constituency</th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.constituencyName+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
+	str += '				<th style="width:125px">District</th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.districtName+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
 	str += '				<th style="width:125px">State </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.state+'</td>';
+	str += '				<td>'+results.stateName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Pincode</th>';
 	str += '				<th> : </th>';
 	str += '				<td>'+results.pinCode+'</td>';
-	str += '			</tr>';
+	str += '			</tr>';	
+	}
+	else if(results.sameAsCA == true)
+	{
+	str += '			<tr>';
+	str += '				<td>Same As Current Address</td>';
+	str += '			</tr>';	
+	}
 	str += '			</table>';
 	str += '		</td>';
 	str += '	</tr>';
 	str += '	</table>';
+	str += '	</fieldset>';
+	str += '	<fieldset>';
+	str += '	<legend>Social Status</legend>';
+	str += '	<table width="100%" class="cadreProfileInfoTable" border="0">';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Education</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.educationStr+'</td>';
+	str += '			<th style="width:125px">Occupation</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.professionStr+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Annual Income</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.income+'</td>';
+	str += '			<th style="width:125px">Caste Category</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.casteCategoryStr+'</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '	<table width="100%" class="cadreProfileInfoTable" border="0">';
+	str += '		<tr>';
+	str += '			<th style="width:125px" colspan="6"><u>Language Efficiency</u></th>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">English</th>';
+	str += '			<th>:</th>';
+	for(var i in results.languageOptions_English)
+	{
+		if(results.languageOptions_English[i] != null)
+			str += '<td>'+results.languageOptions_English[i]+'</td>';
+	}
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Hindi</th>';
+	str += '			<th>:</th>';
+	for(var j in results.languageOptions_Hindi)
+	{
+		if(results.languageOptions_Hindi[j] != null)
+			str += '<td>'+results.languageOptions_Hindi[j]+'</td>';
+	}
+	str += '		</tr>';	
+	str += '	</table>';
+	str += '	</fieldset>';
+	
+	str += '	<fieldset>';
+	str += '	<legend>Cadre Level Details</legend>';
+	str += '	<table class="cadreProfileInfoTable" border="0">';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Member Type</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.memberType+'</td>';
+	str += '		</tr>';	
+	if(results.memberType == "Active")
+	{
+	str += '		<tr>';
+	str += '			<th style="width:125px">Cadre Level</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.strCadreLevel+'-'+results.strCadreLevelValue+'</td>';
+	str += '		</tr>';	
+	str += '		<tr>';
+	str += '			<th style="width:125px">Party Committee</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.partyCommitteeName+'</td>';
+	str += '			<th style="width:125px">Designation</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.designationStr+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<th style="width:125px">Effective Date</th>';
+	str += '			<th>:</th>';
+	str += '			<td>'+results.effectiveDate+'</td>';
+	str += '			<th style="width:125px">Ending Date</th>';
+	str += '			<th>:</th>';
+	if(results.endingDate != null)
+	str += '			<td>'+results.endingDate+'</td>';
+	str += '		</tr>';
+	}
+	str += '		</table>';
+	str += '	</fieldset>';
+	if(results.memberType == "Active")
+	{
+	str += '	<fieldset>';
+	str += '	<legend>Other Details</legend>';
+	str += '		<table class="cadreProfileInfoTable">';
+	str += '		<tr>';
+	str += '		<th><U>Skills</U></th>';
+	str += '		</tr>';
+	if(results.cadreSkillsNames != null)
+	{
+		str += '		<tr>';
+		for(var l in results.cadreSkillsNames)
+		{			
+			str += '		<td>'+results.cadreSkillsNames[l]+'</td>';
+			if (i != 0 && i % 3 == 0)
+				str += '		</tr>';	
+		}
+	}
+	str += '		<tr>';
+	str += '		<th><U>Participated Training Camps</U></th>';
+	str += '		</tr>';		
+	if(results.cadreParticipatedCampNames != null)
+	{
+		str += '		<tr>';
+		for(var k in results.cadreParticipatedCampNames)
+		{
+			str += '		<td>'+results.cadreParticipatedCampNames[k]+'</td>';
+			if (i != 0 && i % 3 == 0)
+				str += '		</tr>';	
+		}
+	}		
+	str += '		</table>';	
+	str += '	</fieldset>';
+	}
 	str += '</div>';
 	str += '<div id="cadreInfo_footer">';
 	str += ' <input type="button" value="Send SMS" onclick="senedSMSToCadre(\''+results.mobile+'\')">';

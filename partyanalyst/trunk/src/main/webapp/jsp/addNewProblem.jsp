@@ -271,8 +271,7 @@ function incrementHidden()
 			</div>
 			</FIELDSET>
 			</div>
-			<div style="margin-left:225px;">
-			<s:submit name="Save" value="Save" cssClass="button"></s:submit></div>
+			<div style="margin-left:225px;"><s:submit name="Save" value="Save" cssClass="button"></s:submit></div>
             </s:form>
 		    <input type="button" value="Exit" class="button" onclick="refreshParentWindow()"/>
 			</div>
