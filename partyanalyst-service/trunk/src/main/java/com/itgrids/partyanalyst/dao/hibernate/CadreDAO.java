@@ -493,5 +493,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		queryObject.setParameterList("partyCommiteeDesigId", partyCommiteeDesigId);
 		return queryObject.list();
 	}
+
+	public Integer deleteByCadreId(Long cadreId) {
+		Query queryObject = getSession().createQuery("delete from Cadre model where model.cadreId = ?");
+		queryObject.setParameter(0, cadreId);
+		return queryObject.executeUpdate();
+		
+	}
 		
 }

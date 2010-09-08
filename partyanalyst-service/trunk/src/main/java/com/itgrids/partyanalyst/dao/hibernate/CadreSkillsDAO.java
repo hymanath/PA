@@ -51,4 +51,18 @@ public class CadreSkillsDAO  extends GenericDaoHibernate<CadreSkills ,Long> impl
 		return queryObject.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<CadreSkills> findByCadreId(Long cadreId) {
+		
+		return getHibernateTemplate().find("from CadreSkills model where model.cadre.cadreId = ?", cadreId);
+		
+	}
+
+	public Integer deleteSkillsByCadreId(Long cadreId) {
+		
+		Query queryObject = getSession().createQuery("delete from CadreSkills model where model.cadre.cadreId = ?");
+		queryObject.setParameter(0, cadreId);
+		return queryObject.executeUpdate();
+	}
+
 }

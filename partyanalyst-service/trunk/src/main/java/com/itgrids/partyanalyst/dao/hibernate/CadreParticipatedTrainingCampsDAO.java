@@ -49,4 +49,18 @@ public class CadreParticipatedTrainingCampsDAO extends GenericDaoHibernate<Cadre
 		return queryObject.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<CadreParticipatedTrainingCamps> findByCadreId(Long cadreId) {
+		
+		return getHibernateTemplate().find("from CadreParticipatedTrainingCamps model where model.cadre.cadreId = ?", cadreId);
+	}
+
+	public Integer deleteCadreTrainingCamps(Long cadreId) {
+		
+		Query queryObject = getSession().createQuery("delete from CadreParticipatedTrainingCamps model where model.cadre.cadreId = ?");
+		queryObject.setParameter(0, cadreId);
+		return queryObject.executeUpdate();
+		
+	}
+
 }
