@@ -221,7 +221,8 @@
 		<property name="cadreSkillsDAO" ref="cadreSkillsDAO" />	
 		<property name="cadreParticipatedTrainingCampsDAO" ref="cadreParticipatedTrainingCampsDAO" />
 		<property name="languageDAO" ref="languageDAO" />
-		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />				   	  	
+		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />
+		<property name="cadreLevelDAO" ref="cadreLevelDAO" />					   	  	
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
@@ -378,7 +379,7 @@
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
-    	<property name="electionDAO" ref="electionDAO" />
+    	<property name="electionDAO" ref="electionDAO" />    	
 	</bean>
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
 		<property name="transactionTemplate" ref="transactionTemplate" />		

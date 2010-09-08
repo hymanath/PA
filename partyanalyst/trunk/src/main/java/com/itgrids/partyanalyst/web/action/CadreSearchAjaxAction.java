@@ -414,56 +414,5 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	}
 	
 	
-	public List<CadreInfo> getDummyCadresInfo()
-	{
-		List<CadreInfo> cadresList = new ArrayList<CadreInfo>();
-		
-		CadreInfo cadre1 = new CadreInfo();
-		cadre1.setCadreID(new Long(1));
-		cadre1.setFirstName("Sai");
-		cadre1.setMiddleName("");
-		cadre1.setLastName("Krishna");
-		cadre1.setMobile("9989876597");
-		cadre1.setLandLineNo("2556688");
-		cadre1.setEmail("sai.basetti@gmail.com");
-		cadre1.setGender("Male");
-		
-		CadreInfo cadre2 = new CadreInfo();
-		cadre2.setCadreID(new Long(2));
-		cadre2.setFirstName("Shiva");
-		cadre2.setMiddleName("");
-		cadre2.setLastName("kumar");
-		cadre2.setMobile("9948755741");
-		cadre2.setLandLineNo("65659865");
-		cadre2.setEmail("rsivakumar08@gmail.com");
-		cadre2.setGender("Male");
-		
-		CadreInfo cadre3 = new CadreInfo();
-		cadre3.setCadreID(new Long(3));
-		cadre3.setFirstName("Raghavender");
-		cadre3.setMiddleName("");
-		cadre3.setLastName("Prasad");
-		cadre3.setMobile("9989922789");
-		cadre3.setLandLineNo("6565987854");
-		cadre3.setEmail("raghavenderprasad@gmail.com");
-		cadre3.setGender("Male");
-		
-		CadreInfo cadre4 = new CadreInfo();
-		cadre4.setCadreID(new Long(4));
-		cadre4.setFirstName("Sandeep");
-		cadre4.setMiddleName("");
-		cadre4.setLastName("Reddy");
-		cadre4.setMobile("9959839263");
-		cadre4.setLandLineNo("6565987854");
-		cadre4.setEmail("sandeepreddy.at@gmail.com");
-		cadre4.setGender("Male");
-		
-		cadresList.add(cadre1);
-		cadresList.add(cadre2);
-		cadresList.add(cadre3);
-		cadresList.add(cadre4);
-		
-		
-		return cadresList;
-	}
+	
 }	

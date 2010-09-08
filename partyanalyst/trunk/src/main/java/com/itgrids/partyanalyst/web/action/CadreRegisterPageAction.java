@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -18,11 +19,14 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
-public class CadreRegisterPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
+public class CadreRegisterPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware, ModelDriven, Preparable{
 
 	
 	/**
@@ -42,7 +46,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> mandalList;
-	private List<SelectOptionVO> villageList;
+	private List<SelectOptionVO> villagesList;
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
@@ -52,9 +56,20 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private IStaticDataService staticDataService; 
 	private List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> languagesList = new ArrayList<SelectOptionVO>();
-	private Boolean partyCommittees = false;
-	private Boolean cadreSkills = false;
-	private Boolean partyTrainingCamps = false;
+	private Boolean partyCommittees_flag = false;
+	private Boolean cadreSkills_flag = false;
+	private Boolean partyTrainingCamps_flag = false;
+	private List<String> gender = new ArrayList<String>();
+	private List<String> cadreType = new ArrayList<String>();
+	private List<SelectOptionVO> districtsList_1;
+	private List<SelectOptionVO> constituenciesList_1;
+	private List<SelectOptionVO> mandalsList_1;
+	private List<SelectOptionVO> villagesList_1;
+	private String cadreId;
+	private List<SelectOptionVO> cadreLevels;
+	private String windowTask;  
+	private CadreInfo cadreInfo;
+	private List<String> language_options;
 	
 	public ServletContext getContext() {
 		return context;
@@ -94,16 +109,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setMandalList(List<SelectOptionVO> mandalList) {
 		this.mandalList = mandalList;
-	}
-
-	public List<SelectOptionVO> getVillageList() {
-		return villageList;
-	}
-
-	public void setVillageList(List<SelectOptionVO> villageList) {
-		this.villageList = villageList;
-	}
-
+	}	
 	
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
@@ -191,10 +197,107 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	public void setLanguagesList(List<SelectOptionVO> languagesList) {
 		this.languagesList = languagesList;
 	}
+	
+	public List<String> getGender() {
+		return gender;
+	}
+	public void setGender(List<String> gender) {
+		this.gender = gender;
+	}
+
+	public List<SelectOptionVO> getDistrictsList_1() {
+		return districtsList_1;
+	}
+
+	public void setDistrictsList_1(List<SelectOptionVO> districtsList_1) {
+		this.districtsList_1 = districtsList_1;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList_1() {
+		return constituenciesList_1;
+	}
+
+	public void setConstituenciesList_1(List<SelectOptionVO> constituenciesList_1) {
+		this.constituenciesList_1 = constituenciesList_1;
+	}
+
+	public List<SelectOptionVO> getMandalsList_1() {
+		return mandalsList_1;
+	}
+
+	public void setMandalsList_1(List<SelectOptionVO> mandalsList_1) {
+		this.mandalsList_1 = mandalsList_1;
+	}
+
+	public List<SelectOptionVO> getVillagesList_1() {
+		return villagesList_1;
+	}
+
+	public void setVillagesList_1(List<SelectOptionVO> villagesList_1) {
+		this.villagesList_1 = villagesList_1;
+	}	
+
+	public List<SelectOptionVO> getVillagesList() {
+		return villagesList;
+	}
+
+	public void setVillagesList(List<SelectOptionVO> villagesList) {
+		this.villagesList = villagesList;
+	}	
+
+	public String getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(String cadreId) {
+		this.cadreId = cadreId;
+	}
+
+	public CadreInfo getCadreInfo() {
+		return cadreInfo;
+	}
+
+	public void setCadreInfo(CadreInfo cadreInfo) {
+		this.cadreInfo = cadreInfo;
+	}
+	
+	public List<String> getCadreType() {
+		return cadreType;
+	}
+
+	public void setCadreType(List<String> cadreType) {
+		this.cadreType = cadreType;
+	}	
+
+	public List<SelectOptionVO> getCadreLevels() {
+		return cadreLevels;
+	}
+	
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public void setCadreLevels(List<SelectOptionVO> cadreLevels) {
+		this.cadreLevels = cadreLevels;
+	}
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
 
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("CadreRegisterPageAction.execute() start");
+		System.out.println("cadreId:"+cadreId);
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -207,24 +310,53 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
-		villageList = new ArrayList<SelectOptionVO>();
+		villagesList = new ArrayList<SelectOptionVO>();
+		districtsList_1 = new ArrayList<SelectOptionVO>();
+		constituenciesList_1 = new ArrayList<SelectOptionVO>();
+		mandalsList_1 = new ArrayList<SelectOptionVO>();
+		villagesList_1 = new ArrayList<SelectOptionVO>();
 		
-		if("MLA".equals(accessType))
+		language_options = new ArrayList<String>();
+		language_options.add("speak");
+		language_options.add("read");
+		language_options.add("write");
+		
+		
+		stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+		
+		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
+		session.setAttribute(ISessionConstants.STATES, stateList);
+		session.setAttribute(ISessionConstants.DISTRICTS, districtList);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
+		session.setAttribute(ISessionConstants.MANDALS, mandalList);
+		session.setAttribute(ISessionConstants.VILLAGES, villagesList);
+		
+		
+		session.setAttribute(ISessionConstants.DISTRICTS_1, districtsList_1);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES_1, constituenciesList_1);
+		session.setAttribute(ISessionConstants.MANDALS_1, mandalsList_1);
+		session.setAttribute(ISessionConstants.VILLAGES_1, villagesList_1);
+		
+/*		if("MLA".equals(accessType))
 		{
 			log.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
 			stateList.add(list.get(0));			
 			districtList.add(list.get(1));
-			
-			constituencyList.add(new SelectOptionVO(0L,"Select Constituency"));
 			constituencyList.add(list.get(2));
+			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);
+			session.setAttribute("statesList", stateList);
+			session.setAttribute("districtsList",districtList);
+			session.setAttribute("constituenciesList",constituencyList);
+			session.setAttribute("mandalsList",mandalList);
+			
 						
 		}else if("COUNTRY".equals(accessType))
 		{
 			log.debug("Access Type = Country ****");
 			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
-			stateList.add(0,new SelectOptionVO(0L, "Select State"));
+			session.setAttribute("statesList", stateList);
 			
 		}else if("STATE".equals(accessType)){
 			log.debug("Access Type = State ****");
@@ -237,29 +369,22 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			stateList.add(obj2);
 			districtList = staticDataService.getDistricts(accessValue);
 			districtList.add(0,new SelectOptionVO(0l,"Select District"));
-			session.setAttribute("stateList", stateList);
-			session.setAttribute("districtList",districtList);
+			session.setAttribute("statesList", stateList);
+			session.setAttribute("districtsList",districtList);
 			
 		}else if("DISTRICT".equals(accessType)){
 			log.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
 			stateList.add(list.get(0));
-			districtList.add(new SelectOptionVO(0l,"Select District"));
 			districtList.add(list.get(1));
+			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
+			session.setAttribute("statesList", stateList);
+			session.setAttribute("districtsList",districtList);
+			session.setAttribute("constituenciesList",constituencyList);
 			
 			
-		}else if("MANDAL".equals(accessType)){
-			log.debug("Access Type = Mandal ****");
-			
-			List<SelectOptionVO> list = cadreManagementService.getStateDistConstituencyMandalByMandalID( accessValue);
-			stateList.add(list.get(0));
-			districtList.add(list.get(1));
-			mandalList.add(new SelectOptionVO(0L,"Select Mandal"));
-			mandalList.add(list.get(2));
-			
-			
-		}else if("MP".equals(accessType)){
+		} else if("MP".equals(accessType)){
 			log.debug("Access Type = MP ****");
 			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
 			SelectOptionVO state = stateList.get(0);
@@ -270,9 +395,10 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			if(year!=null){
 				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
 			}	
-			log.debug("constituencyList.size():"+constituencyList.size());		
+			log.debug("constituencyList.size():"+constituencyList.size());	
+			session.setAttribute("constituenciesList",constituencyList);
 			
-		}
+		}*/
 		
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		eduStatus = staticDataService.getAllEducationalQualifications();
@@ -283,28 +409,51 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
 			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
 			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 
-			partyCommittees = true;
-			cadreSkills = true;
-			partyTrainingCamps = true;
-			session.setAttribute("partieCommittee",partyCommitteesList);
-			session.setAttribute("partyTrainingCampsList",partyTrainingCampsList);
-			session.setAttribute("cadreSkillsList",cadreSkillsList);
+			partyCommittees_flag = true;
+			cadreSkills_flag = true;
+			partyTrainingCamps_flag = true;
+			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
+			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
+			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
 		}
 		
-		session.setAttribute("stateList",stateList);
-		session.setAttribute("districtList",districtList);
-		session.setAttribute("constituencyList",constituencyList);
-		session.setAttribute("mandalList",mandalList);
-		session.setAttribute("villageList",villageList);
-		session.setAttribute("socialStatus",socialStatus);
-		session.setAttribute("eduStatus", eduStatus);
-		session.setAttribute("occupationsList", occupationsList);
-		session.setAttribute("languagesList", languagesList);
-		session.setAttribute("partyCommittees", partyCommittees);
-		session.setAttribute("cadreSkills", cadreSkills);
-		session.setAttribute("partyTrainingCamps", partyTrainingCamps);
+		if(gender.size() == 0){
+			gender.add("Male");
+			gender.add("Female");
+		}
+		if(cadreType.size() == 0)
+		{
+			cadreType.add(IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			cadreType.add(IConstants.CADRE_MEMBER_TYPE_NORMAL);
+		}
+		cadreLevels = cadreManagementService.getAllCadreLevels();
+		session.setAttribute(ISessionConstants.CADRE_LEVELS, cadreLevels );
+		session.setAttribute(ISessionConstants.CADRETYPES, cadreType);
+		session.setAttribute(ISessionConstants.GENDERS, gender);
+		session.setAttribute(ISessionConstants.SOCIALCATEGORIES,socialStatus);
+		session.setAttribute(ISessionConstants.EDU_QUALIFICATIONS, eduStatus);
+		session.setAttribute(ISessionConstants.OCCUPATIONS, occupationsList);
+		session.setAttribute(ISessionConstants.LANGUAGES, languagesList);
+		session.setAttribute(ISessionConstants.PARTY_COMMITTEES_FLAG, partyCommittees_flag);
+		session.setAttribute(ISessionConstants.CADRE_SKILLS_FLAG, cadreSkills_flag);
+		session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS_FLAG, partyTrainingCamps_flag);
 		return Action.SUCCESS;
 	}
-	
+
+	public void prepare() throws Exception {
+		cadreId = request.getParameter("cadreId");
+		System.out.println("cadreId in prepare:"+cadreId);
+        if( "0".equals(cadreId)) {
+        	cadreInfo = new CadreInfo();
+        } else {
+        	if(cadreId != null)
+        		cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
+        }
+	}
+    
+
+     public Object getModel() {
+        return cadreInfo;
+    }
 
 }

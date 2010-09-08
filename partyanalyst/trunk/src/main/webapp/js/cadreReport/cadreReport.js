@@ -96,14 +96,13 @@ function getCadrePopup(myColumnDefs,myDataSource,configs)
 	contentStr +='<div id="cadreDiv"></div>';
 	 var myPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
    
-		 width : "500px", 
 		 fixedcenter : true, 
 		 visible : true,  
 		 constraintoviewport : true, 
-		  iframe :true,
-		  modal :true,
-		  hideaftersubmit:true,
-		  close:true
+		 iframe :true,
+		 modal :true,
+		 hideaftersubmit:true,
+		 close:true
 	   });
 	   myPanel.setHeader("Cadre Details");
 	   myPanel.setBody(contentStr);

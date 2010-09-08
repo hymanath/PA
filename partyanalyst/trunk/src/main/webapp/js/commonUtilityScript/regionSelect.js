@@ -829,9 +829,11 @@ function buildCadresDatatable(results,divId)
 					lname:results[i].lastName,
 					gender:results[i].gender,
 					mobile:results[i].mobile,
-					landline:results[i].landLineNo,
+					landline:results[i].telephone,
 					email:results[i].email,
 					moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+results[i].cadreID+'\')">More Details</a>',
+					update:'<A href="javascript:{}" onclick="openRegistrationForm('+results[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
+					remove:'<A href="javascript:{}" onclick="deleteCadre('+results[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
 		        };
 		jsArray.push(obj);
 	}
@@ -855,6 +857,10 @@ function buildCadresDatatable(results,divId)
 			key : "email"
 		} , {
 			key : "moreDetails"
+		} , {
+			key : "update"
+		} , {
+			key : "remove"
 		} 
 		]
 	};
@@ -890,6 +896,14 @@ function buildCadresDatatable(results,divId)
 	}, {
 		key : "moreDetails",
 		label : "More Details",
+		sortable : false
+	},  {
+		key : "update",
+		label : "Edit",
+		sortable : false
+	}, {
+		key : "remove",
+		label : "Remove",
 		sortable : false
 	}
 	];
@@ -1416,4 +1430,32 @@ function buildselectBoxes()
 	createOptionsForId("socialStatus_resevation",socialStatus);
 	createOptionsForId("socialStatus_education",eduStatus);
 	createOptionsForId("socialStatus_occupation",occupations);
+}
+
+function openRegistrationForm(cadreId)
+{
+	var task = "update_existing";
+	var urlStr = "cadreRegisterPageAction.action?cadreId="+cadreId+"&windowTask="+task;
+	var browser2 = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
+	browser2.focus();				
+}
+
+function deleteCadre(cadreId)
+{
+	var ask = confirm("Do You want to delete");
+	if (ask ==  true)
+	  {
+		var jsObj = {
+				id: cadreId,
+				task: "deleteCadre"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+			var url = "<%=request.getContextPath()%>/deleteCadreInfoAjaxAction.action?"+rparam; 
+			deleteCadreAjax(rparam,jsObj,url);	  	
+	  }
+	else
+	  {
+	  		return;	
+	  }
+	
 }

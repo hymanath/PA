@@ -364,5 +364,8 @@
 	<bean id="partyTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrainingCampsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="cadreLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLevelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		
