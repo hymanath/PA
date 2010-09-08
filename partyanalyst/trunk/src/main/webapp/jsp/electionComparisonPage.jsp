@@ -34,7 +34,7 @@ table.CandidateElectionResultsTable td {
 {
 	color:red;
 	font-weight:bold;
-	padding-top:30px;
+	padding-top:12px;
 }
 .selectWidth
 {
@@ -55,6 +55,17 @@ var labelResources = { <%
 		String alliances = rb.getString("alliances");
 		String inclAlliances = rb.getString("inclAlliances");
 		%> }
+
+var Localization = { <%
+		
+		ResourceBundle rbs = ResourceBundle.getBundle("global_ErrorMessages");
+		String electionTypeMsg = rbs.getString("electionTypeMsg");
+		String electionYearMsg = rbs.getString("electionYearMsg");
+		String electionScopeMsg = rbs.getString("electionScopeMsg");
+		String partyNameMsg = rbs.getString("partyNameMsg");
+		String oneElectionMsg = rbs.getString("oneElectionMsg");
+			%> }
+
 var selectedElectionScopeId,selectedParty;	
 var yearsPopulation={
 		allYearsArray:[],
@@ -192,34 +203,35 @@ var yearsPopulation={
 			if(yearsPopulation.allYearsArray.length==1)
 			{		
 				message+=selectedParty;
-				message+=' has participated in only one election.';
+				message+=" ";
+				message+='<%=oneElectionMsg %>';
 				message+='<br/>';		
 				errorFlag=1;						
 			}
 			if(document.getElementById("electionTypeSelect").value==0){
-				message+='Please select Election Type.';
+				message+='<%=electionTypeMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			}
 			if(document.getElementById("electionScopeSelect").value==0){
-				message+='Please select Election Scope.';
+				message+='<%=electionScopeMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			}
 			if(document.getElementById("partyList").value==0){
-				message+='Please select party.';
+				message+='<%=partyNameMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			} 
 			if(document.getElementById("electionYearSelect1").value==0){
-				message+='Please select Election Years.';
+				message+='<%=electionYearMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 				electionFlag=1;
 			}
 			if(document.getElementById("electionYearSelect2").value==0){
 				if(electionFlag!=1){
-					message+='Please select Election Years.';
+					message+='<%=electionYearMsg %>';
 					message+='<br/>';						
 				}
 				errorFlag=1;
