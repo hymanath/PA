@@ -5,6 +5,8 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
+import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
+import com.itgrids.partyanalyst.model.CadreSkills;
 
 
 public class CadreSkillsDAOHibernateTest extends BaseDaoTestCase {
@@ -37,5 +39,25 @@ public class CadreSkillsDAOHibernateTest extends BaseDaoTestCase {
 		List result = cadreSkillsDAO.getCadreIdsByCadreSkillListAndUser(7l, skillIds);
 		
 		System.out.println(" Result Size :" + result.size());
+	}
+	
+	public void testFindByCadreId()
+	{
+		List<CadreSkills> result=cadreSkillsDAO.findByCadreId(12L);
+		for(CadreSkills obj: result){
+			
+			System.out.print("id:"+ obj.getCadreSkillId()+"\t");
+			System.out.print("skill Id"+obj.getPartyCadreSkills().getPartyCadreSkillId()+"\t");
+			System.out.print("cadre Id:"+obj.getCadre().getCadreId()+"\t");			
+			
+		}
+	}		
+				
+	public void testDeleteSkillsByCadreId()
+	{
+		int result=cadreSkillsDAO.deleteSkillsByCadreId(4l);
+		System.out.println("No of records deleted:"+result);
+		setComplete();
+		
 	}
 }

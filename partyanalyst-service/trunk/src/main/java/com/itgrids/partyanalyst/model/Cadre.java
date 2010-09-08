@@ -129,7 +129,7 @@ public class Cadre extends BaseModel{
 		this.lastName = lastName;
 	 }
 	
-	 @Column(name = "gender", length = 1)
+	 @Column(name = "gender", length = 6)
 	 public String getGender() {
 		return gender;
 	 }

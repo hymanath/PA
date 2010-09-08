@@ -250,6 +250,9 @@
 	<bean id="cadreParticipatedTrainingCampsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreParticipatedTrainingCampsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+		<bean id="cadreLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreLevelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- 
 	<bean id="cadreService" class="com.itgrids.partyanalyst.service.CadreManagementService">
 	<property name="cadreDAO" ref="cadreDAO" />

@@ -23,7 +23,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		this.cadreDAO = cadreDAO;
 	}
 
-	/*
+	
 	public void testFindCadresByLevels()
 	{
 		List result = cadreDAO.findCadresByLevels(7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -34,7 +34,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 		
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void testFindCadreSearchCriteria(){
@@ -67,5 +67,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		List result = cadreDAO.findCadreByPartyWorkingCommitteeDesignationListAndCadreIds(propertyIds, cadreIds);
 		
 		System.out.println(" Result Size :" + result.size());
+	}
+	
+	public void testDeleteCadre()
+	{
+		int result=cadreDAO.deleteByCadreId(5l);
+		System.out.println("No of records deleted:"+result);
+		setComplete();
 	}
 }
