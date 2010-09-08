@@ -1,4 +1,5 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@ page import="java.util.ResourceBundle;" %>
 <HTML>
 <HEAD>
 <link  href="css/main.css" rel="stylesheet" type="text/css" />
@@ -9,7 +10,7 @@
 {
 	color:red;
 	font-weight:bold;
-	padding-top:10px;
+	padding-top:5px;
 }
 </style>
 
@@ -22,6 +23,15 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
 <script type="text/javascript">
+
+var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
+		String electionTypeMsg = rb.getString("electionTypeMsg");
+		String electionYearMsg = rb.getString("electionYearMsg");
+		String ConstituencyNameMsg = rb.getString("ConstituencyNameMsg");
+		String partyNameMsg = rb.getString("partyNameMsg");
+			%> }
 	
 	function showAjaxDiv()
 	{
@@ -76,28 +86,27 @@
 			
 			if(document.getElementById("electionType1").value==0)
 			{
-				
-				message+='Please select Election Type.';
+				message+='<%=electionTypeMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			}
 
 			if(document.getElementById("electionYear1").value==0)
 			{
-				message+='Please select Election Year.';
+				message+='<%=electionYearMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			}
 
 			if(document.getElementById("ConstituencyName1").value==0){
-				message+='Please select Constituency.';
+				message+='<%=ConstituencyNameMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 			}
 			
 			if(document.getElementById("partyName1").value==0)
 			{
-				message+='Please select Party.';
+				message+='<%=partyNameMsg %>';
 				message+='<br/>';
 				errorFlag=1;
 				electionFlag=1;
@@ -124,6 +133,13 @@
 <s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
 <s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
 <h4>Party Booth Results</h4>
+
+<table>
+<tr><th align="left">
+	<div id="errorMessage"></div>
+</th><td></td></tr>
+</table><br>
+
 <s:form name="BoothPerformanceReport" cssClass="inputTable" >
 	
 	<s:select label="Election Type" name="electionType" 
@@ -165,13 +181,5 @@ list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="getCo
 	</td>
 	</tr>
 </s:form>
-
-<table>
-<tr><th></th>
-<td align="left">
-	<div id="errorMessage"></div>
-</td></tr>
-</table>
-		
 </body>
 </HTML>

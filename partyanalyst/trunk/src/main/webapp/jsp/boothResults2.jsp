@@ -90,7 +90,7 @@
 		
 	</tr>
 </table>
-<br /><br><br /><br><br><br>
+<br /><br><br /><br><br><br><br>
 <h4><u>Booth Wise Performance : </u></h4>
 
 <div id="boothResultsMarkup" class="yui-skin-sam">
