@@ -20,4 +20,8 @@ public interface ICadreParticipatedTrainingCampsDAO extends GenericDao<CadrePart
 	
 	@SuppressWarnings("unchecked")
 	public List getCadreByCampsListAndCadreIds(List<Long> campIds,List<Long> cadreIds);
+	
+	public List<CadreParticipatedTrainingCamps> findByCadreId(Long cadreId);
+	
+	public Integer deleteCadreTrainingCamps(Long cadreId);
 }

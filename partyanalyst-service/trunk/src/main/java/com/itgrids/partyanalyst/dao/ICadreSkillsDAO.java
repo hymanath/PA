@@ -20,4 +20,8 @@ public interface ICadreSkillsDAO extends GenericDao<CadreSkills, Long> {
 	
 	@SuppressWarnings("unchecked")
 	public List getCadreBySkillListAndCadreIds(List<Long> skillId,List<Long> cadreIds);
+	
+	public List<CadreSkills> findByCadreId(Long cadreId);
+	
+	public Integer deleteSkillsByCadreId(Long cadreId);
 }

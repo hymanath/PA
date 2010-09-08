@@ -114,5 +114,5 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	@SuppressWarnings("unchecked")
 	public List findCadreByUserAndCadreLevel(Long userId,Long levelId);
 	
-	
+	public Integer deleteByCadreId(Long cadreId);
 }
