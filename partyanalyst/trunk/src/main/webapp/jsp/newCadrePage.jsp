@@ -463,7 +463,7 @@
 		}	
 	}
 	function validateClientSide()
-	{
+	{debugger;
 		var flag = true;
 		var hiddenEl = document.getElementById("hiddenVal");
 		var sameAsCAEl = document.getElementById("sameAsCA");
@@ -494,56 +494,58 @@
 		var pconstituencyFieldSelected = pconstituencyFieldEl.options[pconstituencyFieldEl.selectedIndex].value;
 		var pmandalFieldSelected = pmandalFieldEl.options[pmandalFieldEl.selectedIndex].value;
 		var pvillageFieldSelected = pvillageFieldEl.options[pvillageFieldEl.selectedIndex].value;	 
-		
+
+		locationError_cEl.innerHTML = '';
+		locationError_pEl.innerHTML = '';
 		//current address
-		if(stateFieldSelected != '-1' || stateFieldSelected == '0');
+		if(stateFieldSelected == '-1' || stateFieldSelected == '0');
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
 			flag=false;
 		}
-		if(districtFieldElSelected != '-1' || districtFieldElSelected == '0');
+		if(districtFieldElSelected == '-1' || districtFieldElSelected == '0');
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
 			flag=false;
 		}
-		if(constituencyFieldElSelected != '-1' || constituencyFieldElSelected == '0');
+		if(constituencyFieldElSelected == '-1' || constituencyFieldElSelected == '0');
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
 			flag=false;
 		}
-		if(mandalFieldElSelected != '-1' || mandalFieldElSelected == '0');
+		if(mandalFieldElSelected == '-1' || mandalFieldElSelected == '0');
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
 			flag=false;
 		}
-		if(villageFieldElSelected != '-1' || villageFieldElSelected == '0');
+		if(villageFieldElSelected == '-1' || villageFieldElSelected == '0');
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
 			flag=false;
 		} 
 		if(sameAsCAEl.checked == false )
 		{
-			if(pstateFieldSelected != '-1' || pstateFieldSelected == '0');
+			if(pstateFieldSelected == '-1' || pstateFieldSelected == '0');
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
 				flag=false;
 			}
-			if(pdistrictFieldSelected != '-1' || pdistrictFieldSelected == '0');
+			if(pdistrictFieldSelected == '-1' || pdistrictFieldSelected == '0');
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
 				flag=false;
 			}
-			if(pconstituencyFieldSelected != '-1' || pconstituencyFieldSelected == '0');
+			if(pconstituencyFieldSelected == '-1' || pconstituencyFieldSelected == '0');
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
 				flag=false;
 			}
-			if(pmandalFieldSelected != '-1' || pmandalFieldSelected == '0');
+			if(pmandalFieldSelected == '-1' || pmandalFieldSelected == '0');
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
 				flag=false;
 			}
-			if(pvillageFieldSelected != '-1' || pvillageFieldSelected == '0');
+			if(pvillageFieldSelected == '-1' || pvillageFieldSelected == '0');
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
 				flag=false;
