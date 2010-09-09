@@ -138,6 +138,9 @@
 				<value>com.itgrids.partyanalyst.model.UserStateAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
 		 </list>
 		</property>
 	</bean>
@@ -555,6 +558,18 @@
 	</bean>
 	
 	<bean id="userConstituencyAccessInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultWithAllianceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionStateResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultWithAllianceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionDistrictResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultWithAllianceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
