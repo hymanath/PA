@@ -43,151 +43,250 @@
         </div>	
         <div></div>
         <div id="homePage_header">
-        	<img src="images/icons/homePage_new/homePage_header.jpg"/>
+        	<img height="180" width="960" src="images/icons/homePage_new/homePage_header.jpg"/>
         </div>
         <div id="homePageContent_main">
         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td width="40%" valign="top">
-                	<div>
-                    	<div class="widgetsMain">
-                            <div class="widgetsHeader">
+                <td width="30%" valign="top">
+                		
+						<!-- Product Feature Div start -->
+						<div class="productFeatureMain">							
+							 <div class="productFeatureHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                  <tr>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
+                                  <tr>                                    
+                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
                                     <td width="98%">
-                                        <div class="widgetHeaderBackground_center">
-                                            <span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
-                                            	Latest News  
+                                        <div class="productFeatureHeaderBackground_center">
+                                            <span class="headerLabelSpan">
+                                            	Election Comparison  
                                             </span>
                                         </div>
                                     </td>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
+                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
                                   </tr>
                                 </table>
                             </div>
-                            <div class="widgetsBody" style="background-color:#DEEAE6;height:auto">
-                            	<div class="newsDataMain">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                    <td rowspan="3" valign="top" width="100px">
-                                        <img src="images/icons/homePage_new/telangana.jpg"/>
-                                    </td>
-                                    <td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsContent">
-                                        Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh. What is each
-                                        parties strengths in these constituencies? What are the factors influence these elections
-                                        like non participating parties (PRP, BJP, Loksatta etc) ...? 
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsAnchorDiv">
-                                        <a href="biElectionAction.action" class="newsAnchor">Know More</a>
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    </table>
-                                </div>
-                                
-                                <div class="newsDataMain">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                    <td rowspan="3" valign="top" width="100px">
-                                        
-                                    </td>
-                                    <td valign="top">
-                                        <span class="newsHeaderLabel">Govt to talk to allies on fuel price hike:pranab </span>
-                                     </td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsContent">
-                                        Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop 
-                                        of demands for a rollback in the fuel prices and explained why reduction in the excise
-                                        duty on petroleum products was difficult.
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsAnchorDiv">
-                                        <a href="biElectionAction.action" class="newsAnchor">Know More</a>
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    </table>
-                                 </div>
-                                 
-                                 <div class="newsDataMain">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                    <td rowspan="3" valign="top" width="100px">
-                                        
-                                    </td>
-                                    <td valign="top">
-                                        <span class="newsHeaderLabel">All-India bandh call by trade unions: Bengal, Kerala worst hit </span>
-                                     </td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsContent">
-                                        Nine major trade unions have called for a 24-hour long nationwide bandh today to 
-                                        protest against price rise and other issues like disinvestment of public sector,
-                                        retrenchment and entry of foreign capital in retail market. 
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    <tr>                               
-                                    <td valign="top">
-                                        <div class="newsAnchorDiv">
-                                        <a href="biElectionAction.action" class="newsAnchor">Know More</a>
-                                        </div>
-                                    </td>
-                                    </tr>
-                                    </table>
-                                  </div>
+							<div class="productFeatureBody">
+								<table>
+									<tr>
+										<td valign="top"><img height="60" width="110" src="images/icons/indexPage/partyanalysis/report2.png"></td>
+										<td valign="top">
+											Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.</td>
+									</tr>
+								</table>
+								<div class="productFeature_button">
+									<div class="viewReportButtonSpan" onclick="javascript:{window.location = 'electionComparisonAction.action'}">
+										<span class="viewReportButtonLabel">View</span>
+									</div>
+								</div>
                             </div>
-                            <div class="widgetsFooter">
-                            	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                  <tr>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
+							
+						</div>
+
+						<div class="productFeatureMain">							
+							 <div class="productFeatureHeader">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                  <tr>                                    
+                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
                                     <td width="98%">
-                                        <div class="widgetHeaderBackground_center">
-                                            <span class="headerLabelSpan">  </span>
+                                        <div class="productFeatureHeaderBackground_center">
+                                            <span class="headerLabelSpan">
+                                            	Party Result
+                                            </span>
                                         </div>
                                     </td>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
+                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
                                   </tr>
                                 </table>
                             </div>
-                        </div>
-                        <div></div>
-                    </div>
+							<div class="productFeatureBody">
+								<table>
+									<tr>
+										<td valign="top"><img height="60" width="110" src="images/icons/indexPage/partyanalysis/report3.png"></td>
+										<td valign="top">Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.</td>
+									</tr>	
+								</table>
+								<div class="productFeature_button">
+									<div class="viewReportButtonSpan" onclick="javascript:{window.location = 'partyResultsCriteriaAction.action'}">
+										<span class="viewReportButtonLabel">View</span>
+									</div>
+								</div>
+                            </div>
+						</div>
+
+
+						<!-- Product Feature Div End -->
                 </td>
-                <td width="40%" valign="top">
-                	<div id="newsWidgetMain">
-                    	<div id="newsWidgetHeader"> Latest Election Trendz </div>
-                        <div id="newsWidgetBody">
+                <td width="45%" valign="top">
+                	<div id="electionTrendzWidgetMain">
+                    	<div id="electionTrendzWidgetHeader">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_left.jpg"</td>
+								<td width="98%">
+									<div class="electionTrendzHeaderBackground_center">
+										<span class="headerLabelSpan">
+											Latest Election Trendz
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_right.jpg"/></td>
+							  </tr>
+							</table>	
+						 </div>
+                        <div id="electionTrendzWidgetBody">
+                        	
+                        </div>
+						<div id="electionTrendzWidgetFooter">
                         	
                         </div>
                     </div>
                 </td>
-                <td width="20%" valign="top">
-                	<div id="adDataMain">
-                    	<div id="adDataMain_header"> Advertisements</div>
+                <td width="25%" valign="top">
+                	<div id="adDataDiv_main">
+                    	<div id="adDataMain_header">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"</td>
+								<td width="98%">
+									<div class="productFeatureHeaderBackground_center">
+										<span class="headerLabelSpan">
+											Advertisements
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+							  </tr>
+							</table>
+						</div>
+						<div id="adDataMain_body">
+							<div class="adData_main">
+								<div class="adData_head">
+									<a href="landing.action" class="newsHeadLink">Party Analyst</a>
+								</div>
+								<div class="adData_body">
+									<table>
+										<tr>
+											<td valign="top"><img src="images/icons/homePage_new/header_human_main.jpg"/>	</td>
+											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b> <br/><br/>We help you to</td>
+										</tr>
+										<tr>
+											<td colspan="2">do Party Analysis, Politician Analysis,Cadre Management and Constituency Management through our effective tools.Creating a wealth of knowledge and know-how for a politician or a party to improve and stay on top.</td>
+										</tr>
+									</table>
+									
+								</div>
+								<div class="adData_footer"></div>								
+							</div>
+						</div>
                     </div>                    
                 </td>
               </tr>
             </table>
         </div>
         
+		
+		<!-- News Div start -->
+		<div id="newsDivMain" class="widgetsMain">
+			<div class="widgetsHeader">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				  <tr>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"</td>
+					<td width="98%">
+						<div class="widgetHeaderBackground_center">
+							<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
+								Latest News  
+							</span>
+						</div>
+					</td>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
+				  </tr>
+				</table>
+			</div>
+			<div class="widgetsBody" style="background-color:#DEEAE6;height:auto">
+				<div class="newsDataMain">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					<td rowspan="3" valign="top" width="100px">
+						<img src="images/icons/homePage_new/telangana.jpg"/>
+					</td>
+					<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
+					</tr>
+					<tr>                               
+					<td valign="top">
+						<div class="newsContent">
+						Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh. What is each
+						parties strengths in these constituencies? What are the factors influence these elections
+						like non participating parties (PRP, BJP, Loksatta etc) ...? 
+						</div>
+					</td>
+					</tr>
+					<tr>                               
+					<td valign="top">
+						<div class="newsAnchorDiv">
+						<a href="biElectionAction.action" class="newsAnchor">Know More</a>
+						</div>
+					</td>
+					</tr>
+					</table>
+				</div>
+				
+				<div class="newsDataMain">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+					<td rowspan="3" valign="top" width="100px">
+						
+					</td>
+					<td valign="top">
+						<span class="newsHeaderLabel">Govt to talk to allies on fuel price hike:pranab </span>
+					 </td>
+					</tr>
+					<tr>                               
+					<td valign="top">
+						<div class="newsContent">
+						Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop 
+						of demands for a rollback in the fuel prices and explained why reduction in the excise
+						duty on petroleum products was difficult.
+						</div>
+					</td>
+					</tr>
+					<tr>                               
+					<td valign="top">
+						<div class="newsAnchorDiv">
+						<a href="biElectionAction.action" class="newsAnchor">Know More</a>
+						</div>
+					</td>
+					</tr>
+					</table>
+				 </div>
+			</div>
+			<div class="widgetsFooter">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				  <tr>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"</td>
+					<td width="98%">
+						<div class="widgetHeaderBackground_center">
+							<span class="headerLabelSpan">  </span>
+						</div>
+					</td>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+		<!-- News Div End -->       
+
         <div id="homePageLocationWidgets">
-        	<table width="100%" border="0" cellspacing="10" cellpadding="0">
+        	<table width="100%" border="0" cellspacing="5" cellpadding="0">
               <tr>
                 <td width="25%">
                 	<div class="widgetsMain">
@@ -297,7 +396,7 @@
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
 								</tr>
 							</table>
-							<table>
+							<table>							
 								<tr>
 									<td><a href="javascript:{}" onclick="navigateToConstituencyPage()"/> View</a></td>
 								</tr>
