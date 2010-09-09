@@ -2,9 +2,12 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.model.ElectionAlliance;
+import org.appfuse.dao.GenericDao;
 
-public interface IElectionAllianceDAO {
+import com.itgrids.partyanalyst.model.ElectionAlliance;
+import com.itgrids.partyanalyst.model.PartyElectionResult;
+
+public interface IElectionAllianceDAO extends GenericDao<ElectionAlliance, Long> {
 	
 	public List<ElectionAlliance> findByElectionYearAndType(String year, Long electionType);
 	
