@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
@@ -25,13 +28,15 @@ public class ElectionAlliance extends BaseModel implements Serializable {
 	private Long electionAllianceId;
 	private Election election;
 	private Group group;
+	private State state;
 	
 	public ElectionAlliance(){}
 	
-	public ElectionAlliance(Long allianceId, Election election, Group group) {
+	public ElectionAlliance(Long allianceId, Election election, Group group,State state) {
 		this.electionAllianceId = allianceId;
 		this.election = election;
 		this.group = group;
+		this.state = state;
 	}
 
 	@Id
@@ -68,5 +73,19 @@ public class ElectionAlliance extends BaseModel implements Serializable {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+
+	public State getState() {
+		return this.state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
 
 }
