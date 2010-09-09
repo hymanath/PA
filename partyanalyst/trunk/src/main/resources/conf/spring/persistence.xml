@@ -127,7 +127,10 @@
 				<value>com.itgrids.partyanalyst.model.PartyCadreSkills</value>
 				<value>com.itgrids.partyanalyst.model.PartyTrainingCamps</value>
 				<value>com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps</value>
-				<value>com.itgrids.partyanalyst.model.CadreSkills</value>
+				<value>com.itgrids.partyanalyst.model.CadreSkills</value>							
+				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
 								
 				</list>
 		</property>

@@ -368,4 +368,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="partyElectionResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultWithAllianceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionStateResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultWithAllianceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionDistrictResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultWithAllianceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
