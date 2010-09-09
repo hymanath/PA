@@ -463,7 +463,7 @@
 		}	
 	}
 	function validateClientSide()
-	{debugger;
+	{
 		var flag = true;
 		var hiddenEl = document.getElementById("hiddenVal");
 		var sameAsCAEl = document.getElementById("sameAsCA");
