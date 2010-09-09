@@ -1,0 +1,127 @@
+
+body 
+{
+	background-color:#EAEDEF;
+	direction:ltr;
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0;
+	padding:0;
+}
+
+#homePageContainer
+{
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0;
+	width:960px;
+}
+
+#homePageContent_main
+{
+	height:500px;
+	padding-top:10px;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+.headerBackground_center
+{
+	background-image:url(../../images/icons/cadreReport/bg_center.png);
+	height:25px;
+}
+
+.headerLabelSpan
+{
+	color:#FFFFFF;
+	font-size:13px;
+	font-weight:bold;
+	left:10px;
+	position:relative;
+	top:3px;
+}
+
+.widgetsMain
+{
+	margin-bottom:10px;
+}
+
+.widgetsBody
+{
+	background-color:#E3EDF0;
+	height:180px;
+	width:100%;
+}
+
+#newsWidgetHeader
+{
+	font-size:15px;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+
+.newsHeaderLabel
+{
+	color:#2f0c0d;
+	font-weight:bold;
+}
+
+#newsWidgetMain
+{
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.newsContent
+{
+	color:#615F5F;
+	font-size:11px;
+	line-height:15px;
+	text-align:justify;
+	word-spacing:3px;
+}
+
+.newsAnchorDiv
+{
+	padding-right:10px;
+	text-align:right;
+}
+
+.newsAnchor
+{
+	color:#6E430A;
+	text-decoration:none;
+}
+
+.newsAnchor:hover
+{
+	text-decoration:underline;
+}
+
+.widgetHeaderBackground_center
+{
+	background-image:url(../../images/icons/homePage_new/widgetHeader_center.jpg);
+	height:40px;
+}
+
+.newsDataMain
+{
+	padding-top:10px;
+	padding-right:10px;
+}
+
+#adDataMain
+{
+	background-color:#E8F3F5;
+	border-left:1px solid #808B8E;
+	height:430px;
+	width:100%;
+}
+
+#adDataMain_header
+{
+	font-size:12px;
+	font-weight:bold;
+	padding:10px;
+}
