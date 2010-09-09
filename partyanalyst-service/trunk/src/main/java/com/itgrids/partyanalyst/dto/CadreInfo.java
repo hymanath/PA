@@ -87,7 +87,7 @@ public class CadreInfo implements Serializable{
 	private Long partyCommittee;
 	private String educationStr;
 	private String casteCategoryStr;
-	private String[] skills;
+	private List<String> skills;
 	private String[] cadreSkillsNames;
 	private List<SelectOptionVO> selectedTrainingCamps = new ArrayList<SelectOptionVO>();
 	private String[] cadreParticipatedCampNames;
@@ -518,10 +518,10 @@ public class CadreInfo implements Serializable{
 	public void setCadreParticipatedCampNames(String[] cadreParticipatedCampNames) {
 		this.cadreParticipatedCampNames = cadreParticipatedCampNames;
 	}
-	public String[] getSkills() {
+	public List<String> getSkills() {
 		return skills;
 	}
-	public void setSkills(String[] skills) {
+	public void setSkills(List<String> skills) {
 		this.skills = skills;
 	}
 	public List<SelectOptionVO> getSelectedTrainingCamps() {
