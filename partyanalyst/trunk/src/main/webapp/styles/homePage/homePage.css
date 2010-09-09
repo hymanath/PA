@@ -125,3 +125,8 @@ body
 	font-weight:bold;
 	padding:10px;
 }
+.selectBoxWidth
+{
+	color:highlight;
+	width:200px;
+}

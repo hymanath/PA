@@ -8,15 +8,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party Analyst</title>
-
-
+<title>Welcome to Party Analyst</title>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 <link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
-<!--<script src="http://cdn.wibiya.com/Toolbars/dir_0564/Toolbar_564823/Loader_564823.js" type="text/javascript"></script>-->
+
 </head>
 <body>
 	
@@ -54,7 +54,7 @@
                             <div class="widgetsHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"</td>
+                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
                                     <td width="98%">
                                         <div class="widgetHeaderBackground_center">
                                             <span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
@@ -155,7 +155,7 @@
                             <div class="widgetsFooter">
                             	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
-                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"</td>
+                                    <td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
                                     <td width="98%">
                                         <div class="widgetHeaderBackground_center">
                                             <span class="headerLabelSpan">  </span>
@@ -194,13 +194,13 @@
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center">
                                     	<span class="headerLabelSpan"> View Your State  </span>
                                     </div>
                                 </td>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"/></td>
                               </tr>
                             </table>
                         </div>
@@ -210,10 +210,10 @@
 									<td>Select Your State</td>
 								</tr>
 								<tr>
-									<td><s:select theme="simple" label="Select Your State" name="state" id="stateList" list="statesList" listKey="id" listValue="name"/></td>
+									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/></td>									
 								</tr>
 								<tr>
-									<td><a href=""/> View</a></td>
+									<td><a href="javascript:{}" onclick="navigateToStatePage()" /> View</a></td>
 								</tr>
 							</table>
 						</div>
@@ -225,26 +225,32 @@
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center">
                                     	<span class="headerLabelSpan"> View Your District  </span>
                                     </div>
                                 </td>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"/></td>
                               </tr>
                             </table>
                         </div>
                         <div class="widgetsBody">
 							<table>
 								<tr>
-									<td>State</td>
+									<td>Select Your State</td>
 								</tr>
 								<tr>
-									<td><s:select theme="simple" label="Select Your State" name="state" id="stateList" list="statesList" listKey="id" listValue="name"/></td>
+									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"/></td>
 								</tr>
 								<tr>
-									<td><a href=""/> View</a></td>
+									<td>Select Your District</td>
+								</tr>
+								<tr>
+									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/></td>
+								</tr>
+								<tr>
+									<td><a href="javascript:{}" onclick="navigateToDistrictPage()"/> View</a></td>
 								</tr>
 							</table>
 						</div>
@@ -256,13 +262,13 @@
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center">
                                     	<span class="headerLabelSpan"> View Your Constituency  </span>
                                     </div>
                                 </td>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_right.png"/></td>
                               </tr>
                             </table>
                         </div>
@@ -272,12 +278,31 @@
 									<td>Select Your State</td>
 								</tr>
 								<tr>
-									<td><s:select theme="simple" label="Select Your State" name="state" id="stateList" list="statesList" listKey="id" listValue="name"/></td>
-								</tr>
-								<tr>
-									<td><a href=""/> View</a></td>
+									<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
 								</tr>
 							</table>
+							<table>	
+								<tr>
+									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/>Assembly</td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/>Parliament</td>
+								</tr>
+							</table>	
+							<table id="constTable" style="display:none;">
+								<tr>
+									<td>Select Constituency</td>
+								</tr>
+								<tr>
+									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
+								</tr>
+							</table>
+							<table>
+								<tr>
+									<td><a href="javascript:{}" onclick="navigateToConstituencyPage()"/> View</a></td>
+								</tr>
+							</table>
+						
 						</div>
                         <div class="widgetsFooter"></div>
                     </div>
@@ -287,7 +312,7 @@
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"</td>
+                                <td width="1%"><img src="images/icons/cadreReport/bg_left.png"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center">
                                     	<span class="headerLabelSpan"> View MPTC/ZPTC Elections  </span>
@@ -318,7 +343,9 @@
         </div>
 	</div>
 	
-
+<script type="text/javascript">
+	initializeHomePage();
+</script>
 	
 </body>
 </html>

@@ -772,6 +772,22 @@ function getMandalsComboBoxForAConstituency(value,elmtId)
 	callAjax(jsObj,url);
 }
 
+function getAllConstituenciesInStateByType(electionType, stateId, element)
+{
+
+	var jsObj=
+	{				
+			electionTypeId: electionType,
+			stateId: stateId,
+			task: "getConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllConstituenciesInState.action?"+rparam;						
+callAjax(jsObj,url);
+}
+
 function getConstituenciesComboBoxForADistrict(value,elmtId)
 {
 	var jsObj=
@@ -1204,7 +1220,7 @@ function callAjax(jsObj,url)
 							if(jsObj.taskType == "getRegions")
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
-								createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,myResults);
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
 							{
@@ -1221,6 +1237,12 @@ function callAjax(jsObj,url)
 								selectedCadresArray = [];
 								showSMSStatus(jsObj,myResults);
 							}
+							else if(jsObj.task == "getConstituencies")
+							{
+								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+							}
+							
 
 						}
 						catch(e)

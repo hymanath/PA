@@ -1311,6 +1311,11 @@
         	<result type="json" name="success">
         		<param name="root">rows</param>
         	</result>                   		
-        </action>        
+        </action> 
+        <action name="getAllConstituenciesInState" class="electionVotingTrendzAction" method="getConstituenciesByElectionTypeIdAndStateId">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>				
+			</result>		
+		</action>       
 	</package>
 </struts>
