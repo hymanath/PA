@@ -85,7 +85,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String age;
 	private String windowTask;
 	private ResultStatus rs; 
-	//private String[] skills;
+	private List<String> skills;
 	private List<String> trainingCamps;
 	private List<String> languageOptions_English;
 	private List<String> languageOptions_Hindi;
@@ -95,6 +95,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setTrainingCamps(List<String> trainingCamps) {
+		log.error("inside setting method of training camps"+trainingCamps.size());
 		this.cadreInfo.setTrainingCamps(trainingCamps);
 	}
 
@@ -456,11 +457,12 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.rs = rs;
 	}	
 
-	public String[] getSkills() {
+	public List<String> getSkills() {
 		return cadreInfo.getSkills();
 	}
 
-	public void setSkills(String[] skills) {
+	public void setSkills(List<String> skills) {
+		log.error("inside setting method"+skills.size());
 		this.cadreInfo.setSkills(skills);
 	}	
 
@@ -469,6 +471,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setLanguageOptions_English(List<String> languageOptions_English) {
+	log.error("inside setter english method:"+languageOptions_English.size());
 		this.cadreInfo.setLanguageOptions_English(languageOptions_English);
 	}
 
@@ -477,13 +480,14 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setLanguageOptions_Hindi(List<String> languageOptions_Hindi) {
+		log.error("inside setter hindi method:"+languageOptions_Hindi.size());
 		this.cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);
 	}
 
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
-		String[] skills = null;
+		//String[] skills = null;
 		//String[] trainingCamps = null;
 		//String[] languageOptions_English = null;
 		//String[] languageOptions_Hindi = null;
@@ -496,7 +500,10 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setUserID(regVO.getRegistrationID());
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
-
+		log.error("languages size:"+cadreInfo.getLanguageOptions_English());
+		log.error("skills in execute:"+cadreInfo.getSkills());
+		log.error("training camps execute :"+cadreInfo.getTrainingCamps());
+		
 		if ("MP".equals(regVO.getAccessType())) {
 			Long constituencyID = cadreInfo.getConstituencyID();
 			Long pConstituencyID = cadreInfo.getPconstituencyID();
@@ -517,7 +524,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		}
 
 		if (IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.BJP.equals(regVO.getPartyShortName())) {
-			skills = request.getParameterValues("skills");
+			//skills = request.getParameterValues("skills");
+			//log.error("skills length:"+skills.length);
 			//trainingCamps = request.getParameterValues("trainingCamps");
 		}
 		/*if (languageOptions_English != null && languageOptions_English.length > 0)

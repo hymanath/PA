@@ -464,16 +464,93 @@
 	}
 	function validateClientSide()
 	{
-		
+		var flag = true;
 		var hiddenEl = document.getElementById("hiddenVal");
+		var sameAsCAEl = document.getElementById("sameAsCA");
+		var locationError_cEl = document.getElementById("locationError_c");
+		var locationError_pEl = document.getElementById("locationError_p");
+		//current address fields
+		var stateFieldEl = document.getElementById("stateField");
+		var districtFieldEl = document.getElementById("districtField");
+		var constituencyFieldEl = document.getElementById("constituencyField");
+		var mandalFieldEl = document.getElementById("mandalField");
 		var villageFieldEl = document.getElementById("villageField");
-		var villageFieldSelectedEl = villageFieldEl.options[villageFieldEl.selectedIndex].value;
-		if(villageFieldSelectedEl != '-1' || villageFieldSelectedEl == '0');
-		{
-			
-		} 
+		//selected values
+		var stateFieldSelected = stateFieldEl.options[stateFieldEl.selectedIndex].value;
+		var districtFieldElSelected = districtFieldEl.options[districtFieldEl.selectedIndex].value;
+		var constituencyFieldElSelected =  constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
+		var mandalFieldElSelected = mandalFieldEl.options[mandalFieldEl.selectedIndex].value; 
+		var villageFieldElSelected = villageFieldEl.options[villageFieldEl.selectedIndex].value;
+
+		//official address
+		var pstateFieldEl = document.getElementById("pstateField");
+		var pdistrictFieldEl = document.getElementById("pdistrictField");
+		var pconstituencyFieldEl = document.getElementById("pconstituencyField");
+		var pmandalFieldEl = document.getElementById("pmandalField");
+		var pvillageFieldEl = document.getElementById("pvillageField");
+		//selected values
+		var pstateFieldSelected = pstateFieldEl.options[pstateFieldEl.selectedIndex].value;
+		var pdistrictFieldSelected = pdistrictFieldEl.options[pdistrictFieldEl.selectedIndex].value;
+		var pconstituencyFieldSelected = pconstituencyFieldEl.options[pconstituencyFieldEl.selectedIndex].value;
+		var pmandalFieldSelected = pmandalFieldEl.options[pmandalFieldEl.selectedIndex].value;
+		var pvillageFieldSelected = pvillageFieldEl.options[pvillageFieldEl.selectedIndex].value;	 
 		
-		return true;
+		//current address
+		if(stateFieldSelected != '-1' || stateFieldSelected == '0');
+		{
+			locationError_cEl.innerHTML = 'Invalid selection in current address ';
+			flag=false;
+		}
+		if(districtFieldElSelected != '-1' || districtFieldElSelected == '0');
+		{
+			locationError_cEl.innerHTML = 'Invalid selection in current address ';
+			flag=false;
+		}
+		if(constituencyFieldElSelected != '-1' || constituencyFieldElSelected == '0');
+		{
+			locationError_cEl.innerHTML = 'Invalid selection in current address ';
+			flag=false;
+		}
+		if(mandalFieldElSelected != '-1' || mandalFieldElSelected == '0');
+		{
+			locationError_cEl.innerHTML = 'Invalid selection in current address ';
+			flag=false;
+		}
+		if(villageFieldElSelected != '-1' || villageFieldElSelected == '0');
+		{
+			locationError_cEl.innerHTML = 'Invalid selection in current address ';
+			flag=false;
+		} 
+		if(sameAsCAEl.checked == false )
+		{
+			if(pstateFieldSelected != '-1' || pstateFieldSelected == '0');
+			{
+				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
+				flag=false;
+			}
+			if(pdistrictFieldSelected != '-1' || pdistrictFieldSelected == '0');
+			{
+				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
+				flag=false;
+			}
+			if(pconstituencyFieldSelected != '-1' || pconstituencyFieldSelected == '0');
+			{
+				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
+				flag=false;
+			}
+			if(pmandalFieldSelected != '-1' || pmandalFieldSelected == '0');
+			{
+				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
+				flag=false;
+			}
+			if(pvillageFieldSelected != '-1' || pvillageFieldSelected == '0');
+			{
+				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
+				flag=false;
+			}	
+		}
+		
+		return flag;
 	}
 
 	function executeOnload()
@@ -489,10 +566,8 @@
 
 		if(samsAsCaEl.checked == true)				
 		{
-			if(permanantAddrEl.style.display == 'block')
-			{
-				permanantAddrEl.style.display = 'none';
-			}	
+			permanantAddrEl.style.display = 'none';
+				
 		}
 		if(memberTypeRadioEl.checked == true)
 		{
@@ -628,6 +703,12 @@
 			<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>			
 		</c:if>
 		<table id="cadreRegistrationTable" class="registrationTable">
+		<tr>
+			<td colspan="2">
+				<div id="locationError_c" style="color: red;"></div>
+				<div id="locationError_p" style="color: red;"></div>
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
 				<div style="color: red;">
@@ -994,7 +1075,7 @@
 			<td colspan="5">
 				<table>
 				<tr>
-					<s:checkboxlist list="#session.cadreSkills"  name="trainingCamps" listKey="id" listValue="name">
+					<s:checkboxlist list="#session.cadreSkills"  name="skills" listKey="id" listValue="name">
 					</s:checkboxlist>
 				<!--<c:forEach var="skills" items="${sessionScope.cadreSkills}" varStatus="status" >
 							
