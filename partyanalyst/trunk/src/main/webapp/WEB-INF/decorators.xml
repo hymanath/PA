@@ -39,6 +39,7 @@
 		<pattern>/constituencyVotingTrendzAction.action*</pattern>
 		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
 		<pattern>/getCadreInfoAction.action*</pattern>
+		<pattern>/homePage.action*</pattern>
 		<pattern>/cadreSearchAction.action*</pattern>
 	</excludes>  
 
