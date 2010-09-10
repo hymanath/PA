@@ -297,22 +297,22 @@ public class CadreManagementService {
 			List<String> cadreLang_Hin = cadreInfoToSave.getLanguageOptions_Hindi();
 			
 			Cadre cadreObj = saveCadreInTransaction(cadreInfoToSave,task);
-			log.error("cadreObj id"+cadreObj.getCadreId());
+			log.debug("cadreObj id"+cadreObj.getCadreId());
 			if (cadreObj != null)
 			{
-				log.error("inside cadre obj block");
-				log.error(" ... " + cadreInfoToSave.getLanguageOptions_English());
+				log.debug("inside cadre obj block");
+				log.debug(" ... " + cadreInfoToSave.getLanguageOptions_English());
 				setLanguageEfficiency(cadreObj,cadreLang_Eng, IConstants.LANGUAGE_ENGLISH, task);
 				setLanguageEfficiency(cadreObj,cadreLang_Hin, IConstants.LANGUAGE_HINDI, task);
 				if (IConstants.USER_TYPE_PARTY.equals(cadreInfoToSave.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfoToSave.getUserPartyName())) {
-					log.error("inside bjp party block");
+					log.debug("inside bjp party block");
 					setCadreSkillsInfo(cadreObj, cadreInfoToSave.getSkills(), task);
 					setParticipatedTrainingCamps(cadreObj, cadreInfoToSave.getTrainingCamps(), task);
 				}
 			}
 			rs.setResultCode(ResultCodeMapper.SUCCESS);
 		}catch(Exception e){
-			log.error(e);
+			log.debug(e);
 			rs.setExceptionEncountered(e);
 			rs.setExceptionClass(e.getClass().toString());
 			rs.setExceptionMsg(getExceptionMessage(e.getClass().toString()));
@@ -363,12 +363,12 @@ public class CadreManagementService {
 				id = new Long(cadreInfo.getVillage().substring(1));
 				processAddressValues(villageFlag, id, cadre,currentAddress);
 				if (log.isDebugEnabled())
-					log.error("sameas ca::::::::::::::::::::::"+cadreInfo.getSameAsCA());
+					log.debug("sameas ca::::::::::::::::::::::"+cadreInfo.getSameAsCA());
 				if (cadreInfo.getSameAsCA() == true) {
 					permanentAddress = currentAddress;
 				} else {
 					if (log.isDebugEnabled())
-						log.error("inside permanent address block");
+						log.debug("inside permanent address block");
 					villageFlag = cadreInfo.getVillage().substring(0, 1);
 					id = new Long(cadreInfo.getVillage().substring(1));
 					permanentAddress.setHouseNo(cadreInfo.getPhouseNo());
@@ -399,9 +399,9 @@ public class CadreManagementService {
 					cadre.setExactDateOfBirth("false");
 				}
 				cadre.setTelephone(cadreInfo.getTelephone());
-				if (!cadreInfo.getEducation().equals(new Long(-1)))
+				if (!cadreInfo.getEducation().equals(new Long(0)))
 					cadre.setEducation(educationalQualificationsDAO.get(cadreInfo.getEducation()));
-				if (!cadreInfo.getProfession().equals(new Long(-1)))
+				if (!cadreInfo.getProfession().equals(new Long(0)))
 					cadre.setOccupation(occupationDAO.get(cadreInfo.getProfession()));
 				if (cadreInfo.getSocialStatus() != null)
 					cadre.setCasteCategory(socialCategoryDAO.get(cadreInfo.getSocialStatus()));
@@ -442,7 +442,7 @@ public class CadreManagementService {
 
 			} catch (Exception e) {
 				status.setRollbackOnly();
-				log.error("Exception Raised while Update And Get Problems Under Pending::",e);
+				log.debug("Exception Raised while Update And Get Problems Under Pending::",e);
 				e.printStackTrace();
 				}
 				return cadreDAO.save(cadre);
@@ -467,23 +467,23 @@ public class CadreManagementService {
 	}
 
 	private void setCadreSkillsInfo(final Cadre cadreObj, final List<String> skills, String task) {
-		log.error("inside cadre skills block");
+		log.debug("inside cadre skills block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			
 				try{
-					log.error("skills inside cadreskills info"+skills.size());
+					log.debug("skills inside cadreskills info"+skills.size());
 					List<CadreSkills> cadreSkills = cadreSkillsDAO.findByCadreId(cadreObj.getCadreId());
 					if(cadreSkills != null && cadreSkills.size()>0)
 					{
-						log.error("existing skills for this cadre:"+cadreSkills.size());
+						log.debug("existing skills for this cadre:"+cadreSkills.size());
 						Integer rows = cadreSkillsDAO.deleteSkillsByCadreId(cadreObj.getCadreId());	
-						log.error("No of rows deleted:"+rows);
+						log.debug("No of rows deleted:"+rows);
 					}
 					
-					log.error("skills " + skills);
+					log.debug("skills " + skills);
 					if(skills != null){
-						log.error(" skills Options :" + skills.size());
+						log.debug(" skills Options :" + skills.size());
 					}
 					if(skills != null && skills.size() >0)
 					{	
@@ -497,9 +497,9 @@ public class CadreManagementService {
 					}
 				} catch(Exception e){
 					status.setRollbackOnly();
-					log.error(e);
+					log.debug(e);
 					if(log.isDebugEnabled()){
-						log.error("Exception Raised while setCadreSkillsInfo() method::", e);
+						log.debug("Exception Raised while setCadreSkillsInfo() method::", e);
 					}					
 					e.printStackTrace();
 				}				
@@ -508,21 +508,21 @@ public class CadreManagementService {
 	}
 
 	private void setParticipatedTrainingCamps(final Cadre cadreObj, final List<String> trainingCamps, String task) {
-		log.error("inside setParticipatedTrainingCamps block");
+		log.debug("inside setParticipatedTrainingCamps block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			try{
 				List<CadreParticipatedTrainingCamps> trainingCampsList = cadreParticipatedTrainingCampsDAO.findByCadreId(cadreObj.getCadreId());
 				if(trainingCampsList != null && trainingCampsList.size()>0)
 				{
-					log.error("existing camps for this cadre:"+trainingCampsList.size());
+					log.debug("existing camps for this cadre:"+trainingCampsList.size());
 					Integer rows = cadreParticipatedTrainingCampsDAO.deleteCadreTrainingCamps(cadreObj.getCadreId());	
-					log.error("No of rows deleted:"+rows);
+					log.debug("No of rows deleted:"+rows);
 				}
 				
-				log.error("Options " + trainingCamps);
+				log.debug("Options " + trainingCamps);
 				if(trainingCamps != null){
-					log.error(" Language Options :" + trainingCamps.size());
+					log.debug(" Language Options :" + trainingCamps.size());
 				}
 				if(trainingCamps != null && trainingCamps.size() > 0)
 				{		
@@ -536,9 +536,9 @@ public class CadreManagementService {
 				}
 				}catch(Exception e){
 					status.setRollbackOnly();
-					log.error(e);
+					log.debug(e);
 					if(log.isDebugEnabled()){
-						log.error("Exception Raised in setParticipatedTrainingCamps method::", e);
+						log.debug("Exception Raised in setParticipatedTrainingCamps method::", e);
 					}					
 					e.printStackTrace();
 				}
@@ -557,14 +557,14 @@ public class CadreManagementService {
 				List<CadreLanguageEfficiency> cadreLanguages = cadreLanguageEfficiencyDAO.findByCadreIdandLanguage(cadreObj.getCadreId(), language);
 				if(cadreLanguages != null && cadreLanguages.size() == 1)
 				{	
-					log.error("languages size:"+cadreLanguages.size());
+					log.debug("languages size:"+cadreLanguages.size());
 					Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreObj.getCadreId(), languageObj.getLanguageId());
-					log.error("Rows Affected:"+rows);
+					log.debug("Rows Affected:"+rows);
 				} 
 				
-				log.error("Options " + options);
+				log.debug("Options " + options);
 				if(options != null){
-					log.error(" Language Options :" + options.size());
+					log.debug(" Language Options :" + options.size());
 				}
 				/*if(options!= null && options.length >0)
 				{
@@ -582,7 +582,7 @@ public class CadreManagementService {
 				}*/
 				if(options != null && options.size() >0)
 				{
-					log.error("Setting language options");
+					log.debug("Setting language options");
 					cadreLanguageEfficiency.setCadre(cadreObj);
 					cadreLanguageEfficiency.setLanguage(languageObj);
 					for (int i = 0; i < options.size(); i++) {
@@ -594,14 +594,14 @@ public class CadreManagementService {
 						cadreLanguageEfficiency.setIsAbleToWrite(IConstants.TRUE);
 					}
 					cadreLanguageEfficiencyDAO.save(cadreLanguageEfficiency);
-					log.error("after dao call");
+					log.debug("after dao call");
 				}
 				
 			}catch(Exception e){
 				//status.setRollbackOnly();
-				log.error(e);
+				log.debug(e);
 				if(log.isDebugEnabled()){
-					log.error("Exception Raised in setLanguageEfficiencies method::", e);
+					log.debug("Exception Raised in setLanguageEfficiencies method::", e);
 				}					
 				e.printStackTrace();
 				}
@@ -1234,7 +1234,7 @@ public class CadreManagementService {
 	}
 
 	public CadreInfo convertCadreToCadreInfo(Cadre cadre) {
-
+		log.debug("convertCadreToCadreInfo");
 		CadreInfo cadreInfo = new CadreInfo();
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		UserAddress currentAddress;
@@ -2659,7 +2659,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			resultStatus.setExceptionMsg(getExceptionMessage(ex.getClass()
 					.toString()));
 			smsResultVO.setResultStatus(resultStatus);
-			log.error(ex);
+			log.debug(ex);
 			return smsResultVO;
 		}
 
@@ -2766,9 +2766,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	}
 	
 	public CadreInfo getCadreCompleteInfo(Long cadreId) {
+		System.out.println("entered in to getCadreCompleteInfo method");
+		System.out.println("cadre Id"+cadreId);
+		CadreInfo cadreInfo = new CadreInfo();
+		try
+		{
+			Cadre cadre = cadreDAO.get(cadreId);
+			cadreInfo = convertCadreToCadreInfo(cadre);
+			System.out.println("cadre Id from db"+cadre.getCadreId());
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		Cadre cadre = cadreDAO.get(cadreId);
-		return convertCadreToCadreInfo(cadre);
+		return cadreInfo;
 	}
 	
 	public List<SelectOptionVO> getAllCadreLevels()
