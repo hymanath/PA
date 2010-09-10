@@ -74,6 +74,20 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 		return getHibernateTemplate().find("select model.electionScopeId, model.electionType.electionType from ElectionScope model");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ElectionScope> getElectionScopeForAElectionType(Long stateId,String electionType,Long countryId){
+		Object[] params = {stateId,electionType,countryId};
+		return getHibernateTemplate().find("from ElectionScope model where model.state.stateId = ? and "+
+				"model.electionType.electionType = ? and model.country.countryId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionScope> getElectionScopeForAElectionType(String electionType,Long countryId){
+		Object[] params = {electionType,countryId};
+		return getHibernateTemplate().find("from ElectionScope model where model.electionType.electionType = ? and " +
+				                  "model.country.countryId = ?",params);
+	}
+	
 }
  
 
