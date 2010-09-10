@@ -13,8 +13,17 @@ public class ElectionInfoVO {
 	private Long totalValidVotes;
     private Double votesPercentage;
     private Double completeVotesPercentage;
+    private Long totalSeatsWon;
     
-    
+        
+	public Long getTotalSeatsWon() {
+		return totalSeatsWon;
+	}
+
+	public void setTotalSeatsWon(Long totalSeatsWon) {
+		this.totalSeatsWon = totalSeatsWon;
+	}
+
 	public Double getVotesPercentage() {
 		return votesPercentage;
 	}
