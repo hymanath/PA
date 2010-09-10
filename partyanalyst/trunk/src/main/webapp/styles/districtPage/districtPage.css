@@ -185,6 +185,14 @@
 	height:125px;
 }
 
+#stateCensusDiv_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:auto;
+}
+
 #districtMap
 {
 	width:100%px;
