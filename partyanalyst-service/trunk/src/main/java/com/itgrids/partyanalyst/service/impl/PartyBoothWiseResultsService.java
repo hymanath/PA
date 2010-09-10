@@ -760,7 +760,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				else
 					elecYearAndType = ele.getElectionYear()+" "+ele.getElectionType();
 				ele.setElectionYearAndType(elecYearAndType);
-				result = electionDAO.findElectionIdByElectionTypeAndYear(ele.getElectionType(),ele.getElectionYear(),1l);					
+				
+				if(ele.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+  					result = electionDAO.findElectionIdByParliamentElectionTypeAndYear(ele.getElectionType(), ele.getElectionYear());
+		        else
+				    result = electionDAO.findElectionIdByElectionTypeAndYear(ele.getElectionType(),ele.getElectionYear(),1l);	
+				
 				if(result.size() > 0)
 					alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),party.getPartyId());
 				ele.setHasAlliance((alliance.size()>0 && result.size() > 0)?"true":"false");
