@@ -67,9 +67,16 @@
 	<!-- Local Files-->
 	<script type="text/javascript" src="js/statePage/statePage.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
   <style type="text/css">
-	
+	.distAnchor
+	{
+		text-decoration:none;
+		color:black;
+		font-family:verdana;
+		
+	}
 		
   </style>
 
@@ -95,6 +102,12 @@
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
+
+		function callDistrictPage(districtId)
+		{
+           alert(" District Id :" + districtId);
+
+		}
   </script>
  </HEAD>
 
@@ -115,59 +128,133 @@
 			<div id="statePage_layout_main" class="yui-skin-sam"> </div>
 			<div id="statePage_layout_right">
 				<div id="stateInformation_main">					
-					<div id="stateInformation_body">
-						<div class="stateInformation_head">${statePage.stateName} At A Glance : </div>
-						<div>
-						 <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable" width="100%" style="width:100%">
+					<div id="stateInformation_body" style="padding-top:20px;">
+						<!--<div class="stateInformation_head">${statePage.stateName} At A Glance :${statePage.stateName} </div>-->
+                        <div class="stateInformation_head">
+							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
+								<tr>
+									<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:196px;"><span>${statePage.stateName} Outline </span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						 </div>
+						<div id="stateCensusDiv_body" style="width:250px;">
+						 <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable" width="90%">
 							 <tr>
+							     <td> <img src="images/icons/districtPage/listIcon.png"/></td>
 								 <th align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </th>
-								 <td  align="left" style="color:#18325A;"> : <c:out value="${statePage.adminCapital}" /></td>
+								 <td  align="left" style="color:#18325A;">: <c:out value="${statePage.adminCapital}" /></td>
 							 </tr>
 							 <tr>
+							     <td> <img src="images/icons/districtPage/listIcon.png"/></td>
 								 <th  align="left" style="color:#1C4B7A;"><c:out value="Total Districts"/></th>
-								 <td align="left" style="color:#18325A;"> : <c:out value="${districtNumber}" /></td>	
+								 <td align="left" style="color:#18325A;">: <c:out value="${districtNumber}" /></td>	
 							 </tr>
 							 <tr>
+							    <td> <img src="images/icons/districtPage/listIcon.png"/></td>
 								<th  align="left" style="color:#1C4B7A;"><c:out value="State Language"/> </th>
-								<td  align="left" style="color:#18325A;"> : <c:out value="${statePage.stateLanguage}" /></td>
+								<td  align="left" style="color:#18325A;">: <c:out value="${statePage.stateLanguage}" /></td>
 							 </tr>
 							 <tr>
+							    <td> <img src="images/icons/districtPage/listIcon.png"/></td>
 								<th  align="left" style="color:#1C4B7A;"><c:out value="State Song"/></th>
-								<td align="left" style="color:#18325A;"> : <c:out value="${statePage.stateSong}" /></td>	
+								<td align="left" style="color:#18325A;">: <c:out value="${statePage.stateSong}" /></td>	
 							</tr>
 						</table>
 						</div>
-						<div class="stateInformation_head">${statePage.stateName} Census Info : </div>
-						<div>
+						<c:if test="${censusVO != null }">
+						<!--<div class="stateInformation_head">${statePage.stateName} Census Info : </div>-->
+                        <div class="stateInformation_head">
+							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
+									<tr>
+										<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:196px;"><span>${statePage.stateName} Census Info </span></div></td>
+										<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									</tr>
+							</table>
+						</div>
+						<div id="stateCensusDiv_body" style="width:250px;">
+						    
 							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="stateDetailsTable">
 								<tr>
+								    <th></th>
 									<th>Type</th>
 									<th align="center">Total </th>
 									<th align="center">Male </th>
 									<th align="center">Female </th>
 								</tr>
+								
 								<c:forEach var="census" items="${censusVO}">
 								<tr>
-									<td align="left" style="font-weight:bold;"><c:out value="${census.tru }" /></td>
+                 					<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+									<td align="left" style="font-weight:bold;"><c:out value="${census.tru}"/></td>
 									<td align="center"><c:out value="${census.totalPopulation }" /></td>
 									<td align="center"><c:out value="${census.malePopulation }" /></td>
 									<td align="center"><c:out value="${census.femalePopulation }" /></td>
 								</tr>
 								</c:forEach>
+								
 							</table>
+							
 						</div>
+						</c:if>
 					</div>
 				</div>			
 			</div>
 			<div id="statePage_layout_center">
 				<div id="stateMap_main">
+				<c:if test="${statePage.stateName == 'Andhra Pradesh'}">
 				<object width="550" height="430">
 					<param name="movie" value="images/icons/statePage/stateMap.swf">
 					 <param name="wmode" value="transparent"> 
 					<embed wmode="transparent" src="images/icons/statePage/stateMap.swf" width="550" height="430">
 					</embed>
 				</object>
+				</c:if>
+				<c:if test="${statePage.stateName != 'Andhra Pradesh'}">
+
+				<div width="550" height="430">
+				   <!--<div class="stateInformation_head"> Districts In <c:out value="${statePage.stateName}" /></div>-->
+				   <div class="stateInformation_head">
+				   <table width="95%" border="0" cellpadding="0" cellspacing="0" style="width:95%;margin-left:15px;">
+									<tr>
+										<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center" style="height:14px;"><span>Districts In <c:out value="${statePage.stateName}"/> </span></div></td>
+										<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									</tr>
+					</table>
+					</div>
+				<div id="stateCensusDiv_body" style="width:626px;">	
+				   <BR>
+				 <table border="0" class="stateDetailsTable" bgColor="AliceBlue">
+				    <tr>
+					
+					<c:forEach var="districts" items="${districtData}" varStatus="status">
+                             
+						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+						<td><h4> 
+						    <a href="javascript:{}" class="distAnchor" title="Click to view ${districts.name} page" onClick="callDistrictPage('${districts.id}')">
+							    <c:out value="${districts.name}" /> 
+							</a> 
+						</h4></td>
+                       
+
+						<c:if test="${status.count%5 == 0}">
+						 </tr>
+						 <tr>
+						</c:if>
+					</c:forEach>
+					
+					</tr>
+					
+				 </table><br>
+				 </div>
 				</div>
+				</c:if>
+
+				</div>
+               
 			</div>
 
 			<div id="statePage_electinoResults_nav_div">
