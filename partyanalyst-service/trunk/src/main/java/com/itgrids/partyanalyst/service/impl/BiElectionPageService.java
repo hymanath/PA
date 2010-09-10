@@ -566,7 +566,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  electionResultsForMandalVO.setElectionYear(electionYear);
 				  electionResultsForMandalVO.setElectionResultsForMandal(electionResultsForMandal);
 				  
-				  List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,new Long(1));
+				  List election = null;
+				  if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		        	  election = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+		          else
+				      election = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,new Long(1));
 				  if(election != null && election.size() > 0){
 					  Object params = (Object)election.get(0);
 					  electionResultsForMandalVO.setElectionId((Long)params);
@@ -2150,7 +2154,11 @@ public class BiElectionPageService implements IBiElectionPageService {
   			partyPecentages = new ArrayList<Float>();
   			for(ElectionResultVO ele:entry.getValue()){
   				electionsForParty.add(ele.getElectionYearAndType());
-  				result = electionDAO.findElectionIdByElectionTypeAndYear(ele.getElectionType(),ele.getElectionYear(),1l);					
+  				
+  				if(ele.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+  					result = electionDAO.findElectionIdByParliamentElectionTypeAndYear(ele.getElectionType(), ele.getElectionYear());
+		        else
+  				  result = electionDAO.findElectionIdByElectionTypeAndYear(ele.getElectionType(),ele.getElectionYear(),1l);					
 				if(result.size() > 0)
 					alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),party.getPartyId());
 				ele.setHasAlliance((alliance.size()>0 && result.size() > 0)?"true":"false");
