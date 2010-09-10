@@ -10,6 +10,8 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.itgrids.partyanalyst.model.State;
+
 public class CandidateElectionResultVO implements Serializable {
 
 	/**
@@ -34,7 +36,14 @@ public class CandidateElectionResultVO implements Serializable {
 	private String districtName;
 	private String hasAlliance;
 	private Boolean allianceResult;
+	private Long state;
 	
+	public Long getState() {
+		return state;
+	}
+	public void setState(Long state) {
+		this.state = state;
+	}
 	public String getHasAlliance() {
 		return hasAlliance;
 	}

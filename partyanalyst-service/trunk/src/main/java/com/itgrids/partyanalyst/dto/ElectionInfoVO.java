@@ -9,8 +9,17 @@ public class ElectionInfoVO {
 	private String constituencyId;
 	private List<PartyResultsInfoVO> partyResults;
 	private Long totalConstituencies;
+	private Long participatedConstituencies;
 	private Long totalValidVotes;
-	
+
+	public Long getParticipatedConstituencies() {
+		return participatedConstituencies;
+	}
+
+	public void setParticipatedConstituencies(Long participatedConstituencies) {
+		this.participatedConstituencies = participatedConstituencies;
+	}
+
 	public String getElectionTypeYear() {
 		return electionTypeYear;
 	}
