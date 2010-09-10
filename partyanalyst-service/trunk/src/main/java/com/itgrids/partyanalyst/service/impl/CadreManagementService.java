@@ -1234,7 +1234,7 @@ public class CadreManagementService {
 	}
 
 	public CadreInfo convertCadreToCadreInfo(Cadre cadre) {
-		log.debug("convertCadreToCadreInfo");
+		
 		CadreInfo cadreInfo = new CadreInfo();
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		UserAddress currentAddress;
@@ -1392,9 +1392,7 @@ public class CadreManagementService {
 			} else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));
 			} else if ("VILLAGE".equals(level)) {
-				log
-						.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="
-								+ levelValueID);
+				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
 				String type = levelValueID.substring(0, 1);
 				Long id = new Long(levelValueID.substring(1));
 				if (IConstants.HAMLET_TYPE.equals(type)) {
@@ -1402,9 +1400,7 @@ public class CadreManagementService {
 				} else if (IConstants.TOWNSHIP_TYPE.equals(type)) {
 					levelValue = getTownshipName(id);
 				}
-				log
-						.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="
-								+ levelValueID);
+				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
 			}
 			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 			cadreInfo.setStrCadreLevelValue(levelValue);
@@ -2783,14 +2779,13 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	}
 	
 	public CadreInfo getCadreCompleteInfo(Long cadreId) {
-		System.out.println("entered in to getCadreCompleteInfo method");
-		System.out.println("cadre Id"+cadreId);
+		
 		CadreInfo cadreInfo = new CadreInfo();
 		try
 		{
 			Cadre cadre = cadreDAO.get(cadreId);
 			cadreInfo = convertCadreToCadreInfo(cadre);
-			System.out.println("cadre Id from db"+cadre.getCadreId());
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
