@@ -11,6 +11,25 @@ public class ElectionInfoVO {
 	private Long totalConstituencies;
 	private Long participatedConstituencies;
 	private Long totalValidVotes;
+    private Double votesPercentage;
+    private Double completeVotesPercentage;
+    
+    
+	public Double getVotesPercentage() {
+		return votesPercentage;
+	}
+
+	public void setVotesPercentage(Double votesPercentage) {
+		this.votesPercentage = votesPercentage;
+	}
+
+	public Double getCompleteVotesPercentage() {
+		return completeVotesPercentage;
+	}
+
+	public void setCompleteVotesPercentage(Double completeVotesPercentage) {
+		this.completeVotesPercentage = completeVotesPercentage;
+	}
 
 	public Long getParticipatedConstituencies() {
 		return participatedConstituencies;
