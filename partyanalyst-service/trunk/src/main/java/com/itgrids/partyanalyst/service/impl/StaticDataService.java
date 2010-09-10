@@ -539,7 +539,13 @@ public class StaticDataService implements IStaticDataService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId){
 		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
-		List elections = electionDAO.findElectionAndYearForElectionTypeAndState(elecType,stateId);
+		List elections = null;
+		
+		ElectionType electionType = electionTypeDAO.get(elecType);
+		if(electionType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			elections = electionDAO.findElectionAndYearForParliamentElectionType(elecType);
+		else
+		    elections = electionDAO.findElectionAndYearForElectionTypeAndState(elecType,stateId);
 		if(elections != null){
 		 for(int i=0;i<elections.size();i++){
 			 Object[] params = (Object[])elections.get(i);
@@ -594,11 +600,36 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return stateList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getParticipatedStatesForAnElectionType(Long electionType){
+		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
+		List resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
+		
+		if(resultsList != null && resultsList.size() > 0){
+			Iterator listIt = resultsList.listIterator();
+			while(listIt.hasNext()){
+				Object[] values = (Object[])listIt.next();
+				SelectOptionVO option = new SelectOptionVO();
+				option.setId((Long)values[0]);
+				option.setName((String)values[1]);
+				
+				stateList.add(option);
+			}
+		}
+		
+	 return stateList;
+	}
 
 	public List<String> getElectionYears(){
 		return electionDAO.listOfYears();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IStaticDataService#getDistricts(java.lang.Long)
+	 * Method to get all districts in a state
+	 */
 	public List<SelectOptionVO> getDistricts(Long stateId) {
 		List<District> list =  districtDAO.findByStateId(stateId);
 		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
@@ -1820,6 +1851,7 @@ public class StaticDataService implements IStaticDataService {
 	/*
 	 * This method retrieves all the latest constituences for a particular election year.
 	 */
+	@SuppressWarnings("unchecked")
 	public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId){
 		Long electionID=0l;
 		CandidateDetailsVO constituencies =null;
@@ -1829,7 +1861,16 @@ public class StaticDataService implements IStaticDataService {
 			constituencies = new CandidateDetailsVO();
 			selectOptionvo.setId(0l);
 			selectOptionvo.setName("Select Constituency");
-			List result = electionDAO.findElectionIdAndYear(electionType,stateId);
+			List result = null;
+			//get ElectionType Object
+			ElectionType elecType = electionTypeDAO.get(electionType);
+			if(elecType != null){
+				if(elecType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+					result = electionDAO.findRecentElectionIdAndYearForParliament(electionType);
+				else
+					result = electionDAO.findElectionIdAndYear(electionType,stateId);
+			}
+			
 			selectOptionVO.add(0, selectOptionvo);
 			for(int i=0;i<result.size();i++){
 				Object[] parms = (Object[])result.get(i);
@@ -1954,6 +1995,7 @@ public class StaticDataService implements IStaticDataService {
 	/*
 	 * This method returns all the election years for the given electionType.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getAllElectionYearsForATeshil(Long electionType){
 		List<SelectOptionVO> SelectOptionVO = new ArrayList<SelectOptionVO>(0);
 		Long stateId = 1l;
@@ -4616,7 +4658,12 @@ public class StaticDataService implements IStaticDataService {
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
 				partyInfo.setPartyName(resultIterator.getPartyName());
 				partyInfo.setVotesPercentage(resultIterator.getPercentageOfVotesWonByParty().toString());
-				List resu = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
+				
+				List resu = null;
+				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+					resu = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+			    else
+				   resu = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
 				List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(resu.get(0).toString()),resultIterator.getPartyId());
 				partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
 				//System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
@@ -4725,7 +4772,12 @@ public class StaticDataService implements IStaticDataService {
 				partyInfo.setPartyId(partyId);
 				partyInfo.setPartyName(parms[0].toString());
 				partyInfo.setVotesPercentage(percentage.toString());
-				List result = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
+				
+				List result = null;
+				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+					result = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+			    else
+				    result = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
 				List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),Long.parseLong(parms[2].toString()));
 				partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
 			//	System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
@@ -5625,6 +5677,23 @@ public class StaticDataService implements IStaticDataService {
 			languagesList.add(selectOptionVO);
 		}
 		return languagesList;
+	}
+	
+	public Long getElectionScopeForAElection(Long stateId,String electionType,Long countryId){
+		
+		Long scopeId = null;
+		if(stateId != null && electionType != null && countryId != null){
+			List<ElectionScope> electionScope = null;
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			     electionScope = electionScopeDAO.getElectionScopeForAElectionType(electionType, countryId);
+			else
+				 electionScope = electionScopeDAO.getElectionScopeForAElectionType(stateId, electionType, countryId);
+			
+			if(electionScope != null && electionScope.size() > 0)
+				scopeId = electionScope.get(0).getElectionScopeId();
+		}
+	
+	 return scopeId;
 	}
 }
 
