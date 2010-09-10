@@ -223,17 +223,19 @@ border:1px solid #CCCCCC;
 {
 	color:#18325A;
 	padding:5px;
+	
 }
 
 .stateDetailsTable td
 {
 	color:#1C4B7A;
 	padding:5px;
+	
 }
 
 #stateMap_main
 {
-	padding-top:30px;
+	padding-top:20px;
 }
 
 .partyResultsTable th
