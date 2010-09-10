@@ -33,7 +33,7 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long groupEntitlementId;
-	private Set<Entitlement> entitlements;
+	private Set<GroupEntitlementRelation> groupEntitlementRelations = new HashSet<GroupEntitlementRelation>(0);
 	private Set<UserGroupEntitlement> userGroupEntitlement = new HashSet<UserGroupEntitlement>(0);
 	private String description;
 	
@@ -43,17 +43,16 @@ public class GroupEntitlement extends BaseModel implements Serializable {
     }
 	
 	/** Parameterized Constructor */
-	public GroupEntitlement(Long groupEntitlementId, Set<Entitlement> entitlements) {
+	public GroupEntitlement(Long groupEntitlementId) {
 		this.groupEntitlementId = groupEntitlementId;
-		this.entitlements = entitlements;
 	}
 
 	/** Parameterized Constructor */
-	public GroupEntitlement(Long groupEntitlementId, Set<Entitlement> entitlements,
+	public GroupEntitlement(Long groupEntitlementId, Set<GroupEntitlementRelation> groupEntitlementRelations,
 			Set<UserGroupEntitlement> userGroupEntitlement) {
 		super();
 		this.groupEntitlementId = groupEntitlementId;
-		this.entitlements = entitlements;
+		this.groupEntitlementRelations = groupEntitlementRelations;
 		this.userGroupEntitlement = userGroupEntitlement;
 	}
 
@@ -81,12 +80,13 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "groupEntitlement")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<Entitlement> getEntitlements() {
-		return entitlements;
+	public Set<GroupEntitlementRelation> getGroupEntitlementRelations() {
+		return groupEntitlementRelations;
 	}
 
-	public void setEntitlements(Set<Entitlement> entitlements) {
-		this.entitlements = entitlements;
+	public void setGroupEntitlementRelations(
+			Set<GroupEntitlementRelation> groupEntitlementRelations) {
+		this.groupEntitlementRelations = groupEntitlementRelations;
 	}
 
 	@Column(name = "description", length = 250)

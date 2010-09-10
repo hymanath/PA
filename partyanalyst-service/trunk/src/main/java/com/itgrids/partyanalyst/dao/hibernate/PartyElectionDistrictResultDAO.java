@@ -21,8 +21,6 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		super(PartyElectionDistrictResult.class);
 	}
 	
-	//Siva Modified Start
-	
 	/*@SuppressWarnings("unchecked")
 	public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId, Long partyId, Long stateId, Long districtId) {
 		Object[] params = {electionId,partyId,stateId,districtId};
@@ -34,9 +32,7 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		Object[] params = {electionId,partyId,districtId};
 		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.election.electionId = ? and model.party.partyId = ? and model.district.districtId = ?", params);
 	}
-	
-	//Siva Modified End
-	
+
 	@SuppressWarnings("unchecked")
 	public List getParticipatedPartysCountForAnElection(Long electionId){
 		return getHibernateTemplate().find("select count(distinct model.party.partyId) from PartyElectionDistrictResult model where model.election.electionId = ?", electionId);

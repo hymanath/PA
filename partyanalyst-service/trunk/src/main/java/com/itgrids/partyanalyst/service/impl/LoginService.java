@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
@@ -11,7 +13,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Entitlement;
+import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
@@ -25,6 +27,7 @@ public class LoginService implements ILoginService{
 	private IUserStateAccessInfoDAO userStateAccessInfoDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IGroupEntitlementDAO groupEntitlementDAO;
 	
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
@@ -66,6 +69,14 @@ public class LoginService implements ILoginService{
 		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
 
+	public IGroupEntitlementDAO getGroupEntitlementDAO() {
+		return groupEntitlementDAO;
+	}
+
+	public void setGroupEntitlementDAO(IGroupEntitlementDAO groupEntitlementDAO) {
+		this.groupEntitlementDAO = groupEntitlementDAO;
+	}
+
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -74,19 +85,18 @@ public class LoginService implements ILoginService{
 		RegistrationVO regVO = new RegistrationVO();
 		Registration reg = null;
 		Set<UserGroupEntitlement> groupEntitlements = null;
-		Set<Entitlement> entitlemetnsModel = null;
+		Set<GroupEntitlementRelation> entitlementsModel = null;
 		List<String> entitlements = new ArrayList<String>(0);
-		List<SelectOptionVO> countries = new ArrayList<SelectOptionVO>(0);
-		List<SelectOptionVO> states = new ArrayList<SelectOptionVO>(0);
-		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
-		List<SelectOptionVO> assemblies = new ArrayList<SelectOptionVO>(0);
-		List<SelectOptionVO> parliaments = new ArrayList<SelectOptionVO>(0);
+		Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
+		Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
 		try {
 			List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);
 			
 			if(registrations.size() != 1)
 				return regVO;		
-			
 
 			reg = registrations.get(0);
 			Long userId = reg.getRegistrationId();
@@ -108,26 +118,13 @@ public class LoginService implements ILoginService{
 			
 			for(UserGroupRelation groupRelation:userGroups){
 				groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
-				for(UserGroupEntitlement groupEntitlement:groupEntitlements){
-					entitlemetnsModel = groupEntitlement.getGroupEntitlement().getEntitlements();
-					for(Entitlement entitlement:entitlemetnsModel)
-						entitlements.add(entitlement.getEntitlementType());
+				getUserAccessInfo(groupRelation.getUserGroup().getUserGroupId(), countries, states, districts, assemblies, parliaments);
+				for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
+					entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
+					for(GroupEntitlementRelation entitlement:entitlementsModel)
+						entitlements.add(entitlement.getEntitlement().getEntitlementType());
 				}
 			}
-			
-			getListFromRawdata(userCountryAccessInfoDAO.findByUser(userId), countries);
-			getListFromRawdata(userStateAccessInfoDAO.findByUser(userId), states);
-			getListFromRawdata(userDistrictAccessInfoDAO.findByUser(userId), districts);
-			
-			List rawData = userConstituencyAccessInfoDAO.findByUser(userId);
-			
-			if(rawData.size() > 0)
-				for(Object[] values:(List<Object[]>)rawData){
-					if(values[2].toString().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-						assemblies.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString()));
-					else
-						parliaments.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString()));
-				}
 			
 			regVO.setEntitlements(entitlements);
 			regVO.setCountries(countries);
@@ -140,11 +137,37 @@ public class LoginService implements ILoginService{
 			e.printStackTrace();
 		}
 		
-		return regVO;			
+		return regVO;
 	
 	}
 	
-	private void getListFromRawdata(List rawData, List<SelectOptionVO> locationList){
+	private void getUserAccessInfo(Long userGroupId, Set<SelectOptionVO> countries,
+			Set<SelectOptionVO> states, Set<SelectOptionVO> districts,
+			Set<SelectOptionVO> assemblies, Set<SelectOptionVO> parliaments){
+		getListFromRawdata(userCountryAccessInfoDAO.findByUser(userGroupId), countries);
+		getListFromRawdata(userStateAccessInfoDAO.findByUser(userGroupId), states);
+		getListFromRawdata(userDistrictAccessInfoDAO.findByUser(userGroupId), districts);
+		List rawData = userConstituencyAccessInfoDAO.findByUser(userGroupId);
+		
+		if(rawData.size() > 0)
+			for(Object[] values:(List<Object[]>)rawData){
+				if(values[2].toString().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					assemblies.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString()));
+				else
+					parliaments.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString()));
+			}
+	}
+	
+	public List<String> getDefaultEntitlements(String defaultEntitlementsGroup){
+		List<String> defaultEntitlements = new ArrayList<String>();
+		List<GroupEntitlementRelation> entitlementRelations = groupEntitlementDAO.getfindGroupEntitlementsByGroupName(IConstants.DEFAULT_ENTITLEMENTS_GROUP);
+		for(GroupEntitlementRelation relation:entitlementRelations)
+			defaultEntitlements.add(relation.getEntitlement().getEntitlementType());
+		
+		return defaultEntitlements;
+	}
+	
+	private void getListFromRawdata(List rawData, Set<SelectOptionVO> locationList){
 		if(rawData.size() > 0)
 			for(Object[] values:(List<Object[]>)rawData)
 				locationList.add(new SelectOptionVO(new Long(values[0].toString()), values[1].toString()));

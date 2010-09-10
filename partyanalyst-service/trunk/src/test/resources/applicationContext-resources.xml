@@ -141,6 +141,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>
 		 </list>
 		</property>
 	</bean>

@@ -31,7 +31,7 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println((end - start));
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetAlliancParties(){
 		List list = allianceGroupDAO.findPartiesByGroup(new Long(5));
 		
@@ -41,6 +41,11 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Party :" + params[1]);
 			}
 		}
+	}*/
+	
+	public void testFindAlliancePartiesByElectionStateAndPartyExcludeParty(){
+		List list = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(2l, 24l, 1l);
+		System.out.println(list.size());
 	}
 	
 }

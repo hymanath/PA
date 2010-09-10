@@ -8,7 +8,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class RegistrationVO extends BaseDTO{
@@ -36,11 +38,11 @@ public class RegistrationVO extends BaseDTO{
 	private String subscribePartyImpDate;
 	private String userType;
 	private List<String> entitlements = new ArrayList<String>(0);
-	private List<SelectOptionVO> countries = new ArrayList<SelectOptionVO>(0);
-	private List<SelectOptionVO> states = new ArrayList<SelectOptionVO>(0);
-	private List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
-	private List<SelectOptionVO> parliaments = new ArrayList<SelectOptionVO>(0);
-	private List<SelectOptionVO> assemblies = new ArrayList<SelectOptionVO>(0);
+	private Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
+	private Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
+	private Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
+	private Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
+	private Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 
 	public Long getRegistrationID() {
 		return registrationID;
@@ -221,46 +223,36 @@ public class RegistrationVO extends BaseDTO{
 		this.entitlements = entitlements;
 	}
 	
-	public List<SelectOptionVO> getCountries() {
+	public Set<SelectOptionVO> getCountries() {
 		return countries;
 	}
-	
-	public void setCountries(List<SelectOptionVO> countries) {
+	public void setCountries(Set<SelectOptionVO> countries) {
 		this.countries = countries;
 	}
-	
-	public List<SelectOptionVO> getStates() {
+	public Set<SelectOptionVO> getStates() {
 		return states;
 	}
-	
-	public void setStates(List<SelectOptionVO> states) {
+	public void setStates(Set<SelectOptionVO> states) {
 		this.states = states;
 	}
-	
-	public List<SelectOptionVO> getDistricts() {
+	public Set<SelectOptionVO> getDistricts() {
 		return districts;
 	}
-	
-	public void setDistricts(List<SelectOptionVO> districts) {
+	public void setDistricts(Set<SelectOptionVO> districts) {
 		this.districts = districts;
 	}
-	
-	public List<SelectOptionVO> getParliaments() {
+	public Set<SelectOptionVO> getParliaments() {
 		return parliaments;
 	}
-
-	public void setParliaments(List<SelectOptionVO> parliaments) {
+	public void setParliaments(Set<SelectOptionVO> parliaments) {
 		this.parliaments = parliaments;
 	}
-	
-	public List<SelectOptionVO> getAssemblies() {
+	public Set<SelectOptionVO> getAssemblies() {
 		return assemblies;
 	}
-	
-	public void setAssemblies(List<SelectOptionVO> assemblies) {
+	public void setAssemblies(Set<SelectOptionVO> assemblies) {
 		this.assemblies = assemblies;
 	}
-	
 	public String getPartyShortName() {
 		return partyShortName;
 	}

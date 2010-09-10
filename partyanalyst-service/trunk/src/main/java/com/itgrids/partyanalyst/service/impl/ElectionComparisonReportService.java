@@ -22,11 +22,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
@@ -38,13 +42,15 @@ import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.Group;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
+import com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance;
@@ -64,8 +70,11 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
 	private TransactionTemplate transactionTemplate;
 	private IStateDAO stateDAO;
-	private IElectionAllianceDAO  electionAllianceDAO; 
-	
+	private IElectionAllianceDAO electionAllianceDAO; 
+	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
+	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
+	private IAllianceGroupDAO allianceGroupDAO;
+	private IConstituencyElectionDAO constituencyElectionDAO;
 	
 	public IPartyElectionStateResultWithAllianceDAO getPartyElectionStateResultWithAllianceDAO() {
 		return partyElectionStateResultWithAllianceDAO;
@@ -83,6 +92,14 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	public void setPartyElectionDistrictResultWithAllianceDAO(
 			IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO) {
 		this.partyElectionDistrictResultWithAllianceDAO = partyElectionDistrictResultWithAllianceDAO;
+	}
+
+	public IAllianceGroupDAO getAllianceGroupDAO() {
+		return allianceGroupDAO;
+	}
+
+	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
+		this.allianceGroupDAO = allianceGroupDAO;
 	}
 
 	public IStateDAO getStateDAO() {
@@ -103,7 +120,15 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	private final static Logger log = Logger.getLogger(ElectionComparisonReportService.class);
 	
 	
-	
+	public IConstituencyElectionDAO getConstituencyElectionDAO() {
+		return constituencyElectionDAO;
+	}
+
+	public void setConstituencyElectionDAO(
+			IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -143,6 +168,24 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+
+	public IPartyElectionDistrictResultDAO getPartyElectionDistrictResultDAO() {
+		return partyElectionDistrictResultDAO;
+	}
+
+	public void setPartyElectionDistrictResultDAO(
+			IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO) {
+		this.partyElectionDistrictResultDAO = partyElectionDistrictResultDAO;
+	}
+
+	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
+		return partyElectionStateResultDAO;
+	}
+
+	public void setPartyElectionStateResultDAO(
+			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
+		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
 	}
 
 	public ElectionComparisonReportVO getDistrictWiseElectionResultsForAParty(Long partyId,Long firstElectionId,
@@ -803,83 +846,151 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		return partyResultVO;
 	}
 	
-	public void getAllAllianceCandidatesForAPartyInAState(Long electionId,String allianceParties,String selectedParty,Long stateId){
-			List<ConstituencyElection> allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(electionId,allianceParties,selectedParty);		
+	public void electionComparision(Long partyId, Long electionId, Boolean isAssembly, Long stateOrCountryId){
+		List allianceParties = null;
+		PartyElectionStateResult partyStateResult;
+		PartyElectionDistrictResult partyDistrictResult;
+		Group group = null;
+		if(isAssembly){
+			List<SelectOptionVO> stateOrDistList = staticDataService.getDistricts(stateOrCountryId);
+			allianceParties = allianceGroupDAO.findAlliancePartiesByElectionAndPartyExcludeParty(electionId, partyId);
+			group = (Group)((Object[])allianceParties.get(0))[0];
+			for(SelectOptionVO district:stateOrDistList){
+				List<PartyElectionDistrictResult> partyResults = partyElectionDistrictResultDAO.
+					getByPartyIdElectionIdAndDistrict(electionId, partyId, district.getId());
+				if(partyResults.size() == 1){
+					partyDistrictResult = partyResults.get(0);
+					getAllAllianceCandidatesForAPartyInAState(partyDistrictResult.getElection(), null, partyDistrictResult.getDistrict(), 
+							partyDistrictResult.getParty(), group, getAlliancePartiesIdsWithComma(allianceParties), false);
+				}
+				
+			}
+		}else{
+			List<State> states = staticDataService.getAllStates();
+			for(State state:states){
+				allianceParties = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(electionId, partyId, state.getStateId());
+				group = (Group)((Object[])allianceParties.get(0))[0];
+				List<PartyElectionStateResult> partyResults = partyElectionStateResultDAO.
+					getByPartyIdElectionIdAndStateId(partyId, electionId, state.getStateId());
+				if(partyResults.size() == 1){
+					partyStateResult = partyResults.get(0);
+					getAllAllianceCandidatesForAPartyInAState(partyStateResult.getElection(), partyStateResult.getState(), null,
+							partyStateResult.getParty(), group, getAlliancePartiesIdsWithComma(allianceParties), true);
+				}			
+			}
+		}
+		
+	}
+	
+	public String getAlliancePartiesIdsWithComma(List parties){
+		StringBuilder partiesIds = new StringBuilder();
+		for(Object[] values:(List<Object[]>)parties)
+			partiesIds.append(",").append(values[1].toString());
+		return partiesIds.toString();
+	}
+	
+	public void getAllAllianceCandidatesForAPartyInAState(Election election, State state,District district, Party party, 
+			Group group, String alliancePartiesIds, Boolean isState){
 			Double totalVotesEarned=0d;
-			Double totalValidVotes=0d;
+			Double totalParticiptedValidVotes=0d;
+			Double totalValidVotes = 0d;
 			Long firstPosition=0l;
 			Long secondPosition=0l;
 			Long thirdPosition=0l;
 			Long fourthPosition=0l;
 			Long nthPosition=0l;
+			Double totalParticipatedPercentage = new Double(0);
+			Double totalConstiPercentage = new Double(0);
 			Long totalConstituenciesParticipated=0l;
+			List<ConstituencyElection> allianceConstituencies = null;
 			PartyElectionStateResult partyElectionStateResult = null;
-			List<ElectionAlliance> alliances = electionAllianceDAO.getAllianceElectionByElectionIdAndStateId(electionId,stateId);
-			partyElectionStateResult = staticDataService.getPartyElectionResultsForAPartyStateLevelInParliamentElection(electionId, new Long(selectedParty), stateId);
-			if(partyElectionStateResult==null){
-				partyElectionStateResult = staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(electionId,new Long(selectedParty),stateId);
+			PartyElectionDistrictResult partyElectionDistrictResult = null;
+			
+			if(isState){
+				partyElectionStateResult = staticDataService.getPartyElectionResultsForAPartyStateLevelInParliamentElection(election.getElectionId(), 
+						party.getPartyId(), state.getStateId());
+				if(partyElectionStateResult == null)
+					partyElectionStateResult = staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(election.getElectionId(),
+							party.getPartyId(),state.getStateId());
+				 
+				totalValidVotes = (Double)constituencyElectionDAO.findTotalValidVotesForAnElectionForAnState(election.getElectionId(), 
+						state.getStateId()).get(0);
+				allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(election.getElectionId(),
+						alliancePartiesIds,party.getPartyId().toString());
+				
+			}else{
+				partyElectionDistrictResult = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(election.getElectionId(), 
+						party.getPartyId(), district.getDistrictId());
+				if(partyElectionDistrictResult == null)
+					partyElectionDistrictResult = staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(election.getElectionId(), 
+						party.getPartyId(), district.getDistrictId());
+				 
+				totalValidVotes = (Double)constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrict(election.getElectionId(),
+						district.getDistrictId()).get(0);
+				allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInADistrict(election.getElectionId(), alliancePartiesIds, 
+						party.getPartyId().toString(), district.getDistrictId());	
 			}
 			
-			for(ConstituencyElection consti : allianceConstituencies){			
-				Set<Nomination> list = consti.getNominations();				
-				
-				Nomination highestRankParty =  getNominationForAlliancePartyThatGotHighestRank(list,allianceParties);
-				
-				totalConstituenciesParticipated++;
-				
-				totalVotesEarned+=highestRankParty.getCandidateResult().getVotesEarned();
-				totalValidVotes+=consti.getConstituencyElectionResult().getValidVotes();
-				
-				
-				switch(highestRankParty.getCandidateResult().getRank().intValue()){
-						 
-						case 1 		: 	firstPosition++;
-						  		 		break;
-						  		 	
-						case 2 		: 	secondPosition++;
-			  		 					break;
-			  		 				
-						case 3 		: 	thirdPosition++;
-										break;
-		
-						case 4 		: 	fourthPosition++;
-			  		 					break;
-			  		 					
-			  		 	default 	:	nthPosition++;
-			  		 					break;
-				}			
+			if(allianceConstituencies != null)
+				for(ConstituencyElection consti : allianceConstituencies){			
+					Set<Nomination> list = consti.getNominations();				
+					
+					Nomination highestRankParty =  getNominationForAlliancePartyThatGotHighestRank(list,alliancePartiesIds);
+					
+					totalConstituenciesParticipated++;
+					
+					totalVotesEarned+=highestRankParty.getCandidateResult().getVotesEarned();
+					totalParticiptedValidVotes+=consti.getConstituencyElectionResult().getValidVotes();
+					
+					
+					switch(highestRankParty.getCandidateResult().getRank().intValue()){
+							 
+							case 1 		: 	firstPosition++;
+							  		 		break;
+							  		 	
+							case 2 		: 	secondPosition++;
+				  		 					break;
+				  		 				
+							case 3 		: 	thirdPosition++;
+											break;
+			
+							case 4 		: 	fourthPosition++;
+				  		 					break;
+				  		 					
+				  		 	default 	:	nthPosition++;
+				  		 					break;
+					}			
+				}
+			
+			if(isState){
+				firstPosition+=new Long(partyElectionStateResult.getTotalSeatsWon());
+				secondPosition+=new Long(partyElectionStateResult.getSecondPosWon());
+				thirdPosition+=new Long(partyElectionStateResult.getThirdPosWon());
+				fourthPosition+=new Long(partyElectionStateResult.getFourthPosWon());
+				nthPosition+=new Long(partyElectionStateResult.getNthPosWon());
+				totalConstituenciesParticipated+=new Long(partyElectionStateResult.getTotalConstiParticipated());
+				totalVotesEarned+=partyElectionStateResult.getTotalVotesGained();
+				totalParticiptedValidVotes+=partyElectionStateResult.getTotalValidVotes();
+				totalParticipatedPercentage = new BigDecimal((totalVotesEarned*100)/totalParticiptedValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				totalConstiPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				savePartyElectionStateResult(election , party, state, firstPosition,secondPosition,thirdPosition,fourthPosition,nthPosition,
+						totalConstituenciesParticipated,totalParticipatedPercentage,totalConstiPercentage,totalVotesEarned,totalParticiptedValidVotes,totalValidVotes, group);
+			}else{
+				firstPosition+=new Long(partyElectionDistrictResult.getTotalSeatsWon());
+				secondPosition+=new Long(partyElectionDistrictResult.getSecondPosWon());
+				thirdPosition+=new Long(partyElectionDistrictResult.getThirdPosWon());
+				fourthPosition+=new Long(partyElectionDistrictResult.getFourthPosWon());
+				nthPosition+=new Long(partyElectionDistrictResult.getNthPosWon());
+				totalConstituenciesParticipated+=new Long(partyElectionDistrictResult.getTotalConstiParticipated());
+				totalVotesEarned+=partyElectionDistrictResult.getTotalVotesGained();
+				totalParticiptedValidVotes+=partyElectionDistrictResult.getTotalValidVotes();
+				totalParticipatedPercentage = new BigDecimal((totalVotesEarned*100)/totalParticiptedValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				totalConstiPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				savePartyElectionDistrictResult(election, party, district, firstPosition, secondPosition, thirdPosition, fourthPosition, 
+						nthPosition, totalConstituenciesParticipated,totalParticipatedPercentage,
+						totalConstiPercentage,totalVotesEarned,totalParticiptedValidVotes,totalValidVotes, group);
 			}
-			firstPosition+=new Long(partyElectionStateResult.getTotalSeatsWon());
-			secondPosition+=new Long(partyElectionStateResult.getSecondPosWon());
-			thirdPosition+=new Long(partyElectionStateResult.getThirdPosWon());
-			fourthPosition+=new Long(partyElectionStateResult.getFourthPosWon());
-			nthPosition+=new Long(partyElectionStateResult.getNthPosWon());
-			totalConstituenciesParticipated+=new Long(partyElectionStateResult.getTotalConstiParticipated());
-			totalVotesEarned+=partyElectionStateResult.getTotalVotesGained();
-			totalValidVotes+=partyElectionStateResult.getTotalValidVotes();
 			
-			savePartyElectionStateResult(electionDAO.get(electionId),partyDAO.get(new Long(selectedParty)),
-					stateDAO.get(stateId),firstPosition,secondPosition,thirdPosition,fourthPosition,nthPosition,
-					totalConstituenciesParticipated,(totalVotesEarned/totalValidVotes),null,totalVotesEarned,totalValidVotes,null,alliances.get(0).getGroup());
-			//Election election
-			//Party party
-			//State state
-			//Long totalSeatsWon
-			//Long secPos
-			//Long thirdPos
-			//Long fourthPos
-			//Long nthPos
-			//Long totConstiParticipated
-			
-			//Double totalVotesPercentage
-			
-			//Double completeVotesPercent
-			
-			//Double totalVotesGained
-			//Double totalValidVotes			
-			//Double completeConstiValidVotes
-			
-			//Group group
 	}	
 	
 
@@ -895,7 +1006,57 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		
 		return selectedList.get(0);		
 	}
-public PartyElectionStateResultWithAlliance savePartyElectionStateResult(final Election election,final Party party,final State state,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes,final Group group){
+	
+	public PartyElectionDistrictResultWithAlliance savePartyElectionDistrictResult(final Election election,final Party party,final District district,
+			final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,
+			final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,
+			final Double completeVotesPercent,final Double totalVotesEarned,final Double totalValidVotes,
+			final Double completeConstiValidVotes,final Group group){
+		
+		PartyElectionDistrictResultWithAlliance partyResultWithAlliance = (PartyElectionDistrictResultWithAlliance)transactionTemplate.execute(new TransactionCallback() {
+
+				public Object doInTransaction(TransactionStatus status) {
+					PartyElectionDistrictResultWithAlliance partyElectionStateResult = null;
+					try{
+						java.util.Date updatedDate = new java.util.Date();
+						String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+						SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+						String strDateNew = sdf.format(updatedDate) ;
+						updatedDate = sdf.parse(strDateNew);
+						
+						partyElectionStateResult = new PartyElectionDistrictResultWithAlliance();
+						partyElectionStateResult.setParty(party);
+						partyElectionStateResult.setElection(election);
+						partyElectionStateResult.setDistrict(district);					
+						partyElectionStateResult.setGroup(group);					
+						partyElectionStateResult.setTotalSeatsWon(totalSeatsWon);
+						partyElectionStateResult.setSecondPosWon(secPos);
+						partyElectionStateResult.setThirdPosWon(thirdPos);
+						partyElectionStateResult.setFourthPosWon(fourthPos);
+						partyElectionStateResult.setNthPosWon(nthPos);
+						partyElectionStateResult.setTotalVotesGained(totalVotesEarned);
+						partyElectionStateResult.setTotalValidVotes(totalValidVotes);
+						partyElectionStateResult.setCompleteConstiValidVotes(completeConstiValidVotes);
+						partyElectionStateResult.setCompleteVotesPercent(completeVotesPercent.toString());
+						partyElectionStateResult.setVotesPercentage(totalVotesPercentage.toString());
+						partyElectionStateResult.setTotalConstiParticipated(totConstiParticipated);
+						partyElectionStateResult.setLastUpdated(updatedDate);
+						
+						partyElectionStateResult = partyElectionDistrictResultWithAllianceDAO.save(partyElectionStateResult);
+						
+					}catch(Exception ex){
+						ex.printStackTrace();
+			        	log.debug("Exception Raised : " + ex);
+			        	status.setRollbackOnly();
+					}
+				 return partyElectionStateResult;
+				}
+				
+			});
+		  return partyResultWithAlliance;
+		}
+	
+	public PartyElectionStateResultWithAlliance savePartyElectionStateResult(final Election election,final Party party,final State state,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes,final Group group){
 		
 	PartyElectionStateResultWithAlliance partyResultWithAlliance = (PartyElectionStateResultWithAlliance)transactionTemplate.execute(new TransactionCallback() {
 

@@ -13,9 +13,9 @@ public class UserCountryAccessInfoDAO extends GenericDaoHibernate<UserCountryAcc
 		super(UserCountryAccessInfo.class);
 	}
 	
-	public List findByUser(Long userId){
+	public List findByUser(Long userGroupId){
 		return getHibernateTemplate().find("select model.country.countryId, model.country.countryName " +
-				"from UserCountryAccessInfo model where model.user.registrationId = ?", userId);
+				"from UserCountryAccessInfo model where model.userGroup.userGroupId = ?", userGroupId);
 	}
 
 }

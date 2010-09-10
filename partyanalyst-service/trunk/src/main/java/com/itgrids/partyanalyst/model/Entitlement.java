@@ -8,6 +8,8 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,12 +18,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -35,7 +34,7 @@ public class Entitlement extends BaseModel implements Serializable {
 	
 	private Long entitlementId;
 	private String entitlementType;
-	private GroupEntitlement groupEntitlement;
+	private Set<GroupEntitlementRelation> groupEntitlementRelations = new HashSet<GroupEntitlementRelation>(0);
 	
 	/** Default Constructor */
 	public Entitlement(){
@@ -43,18 +42,17 @@ public class Entitlement extends BaseModel implements Serializable {
 	}
 	
 	/** Parameterized Constructor */
-	public Entitlement(Long entitlementId, String entitlementType) {
+	public Entitlement(Long entitlementId) {
 		this.entitlementId = entitlementId;
-		this.entitlementType = entitlementType;
 	}
 
 	/** Parameterized Constructor */
 	public Entitlement(Long entitlementId, String entitlementType,
-			GroupEntitlement groupEntitlement) {
+			Set<GroupEntitlementRelation> groupEntitlementRelations) {
 		super();
 		this.entitlementId = entitlementId;
 		this.entitlementType = entitlementType;
-		this.groupEntitlement = groupEntitlement;
+		this.groupEntitlementRelations = groupEntitlementRelations;
 	}
 
 	@Id
@@ -77,16 +75,17 @@ public class Entitlement extends BaseModel implements Serializable {
 		this.entitlementType = entitlementType;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "group_entitlement_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entitlement")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public GroupEntitlement getGroupEntitlement() {
-		return groupEntitlement;
+	public Set<GroupEntitlementRelation> getGroupEntitlementRelations() {
+		return groupEntitlementRelations;
 	}
 
-	public void setGroupEntitlement(GroupEntitlement groupEntitlement) {
-		this.groupEntitlement = groupEntitlement;
+	public void setGroupEntitlementRelations(
+			Set<GroupEntitlementRelation> groupEntitlementRelations) {
+		this.groupEntitlementRelations = groupEntitlementRelations;
 	}
+
+	
 
 }

@@ -16,7 +16,6 @@ public class ConstituencySearchService implements IConstituencySearchService{
 	private IConstituencyDAO constituencyDAO;
 	private IElectionScopeDAO electionScopeDAO;
 	
-
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
@@ -100,5 +99,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		
 		return selectOptionList;
 	}
+	
+	
 	
 }

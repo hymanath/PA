@@ -21,7 +21,7 @@ public class UserStateAccessInfo extends BaseModel{
 
 
 	private Long userStateAccessInfoId;
-	private Registration user;
+	private UserGroups userGroup;
 	private State state ;
 	
 	public UserStateAccessInfo(){
@@ -29,10 +29,10 @@ public class UserStateAccessInfo extends BaseModel{
 	}
 	
 	public UserStateAccessInfo(Long userStateAccessInfoId,
-			Registration user, State state) {
+			UserGroups userGroup, State state) {
 		super();
 		this.userStateAccessInfoId = userStateAccessInfoId;
-		this.user = user;
+		this.userGroup = userGroup;
 		this.state = state;
 	}
 
@@ -48,15 +48,15 @@ public class UserStateAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
+	public UserGroups getUserGroup() {
+		return userGroup;
 	}
 
-	public void setUser(Registration user) {
-		this.user = user;
+	public void setUserGroup(UserGroups userGroup) {
+		this.userGroup = userGroup;
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
