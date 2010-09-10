@@ -47,7 +47,10 @@
 		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
 		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
 		<property name="occupationDAO" ref="occupationDAO" />
-		<property name="languageDAO" ref="languageDAO" />		
+		<property name="languageDAO" ref="languageDAO" />	
+		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
+		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />	
+				
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -153,6 +156,11 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="stateDAO" ref="stateDAO" />		
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
+		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />
+		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
 	</bean>
 	
 	<bean name="electionTrendzService" class="com.itgrids.partyanalyst.service.impl.ElectionTrendzService" >
@@ -379,7 +387,7 @@
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
-    	<property name="electionDAO" ref="electionDAO" />    	
+    	<property name="electionDAO" ref="electionDAO" />
 	</bean>
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
