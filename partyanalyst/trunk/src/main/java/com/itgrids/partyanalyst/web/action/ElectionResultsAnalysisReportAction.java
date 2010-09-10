@@ -178,9 +178,11 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULTS_ANALYSIS_REPORT))
 			return ERROR;
 		
-		statesList = new ArrayList<SelectOptionVO>();
+		/*statesList = new ArrayList<SelectOptionVO>();
 		statesList.add(0, new SelectOptionVO(0L,"Select State"));
-		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));
+		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));*/
+		
+		statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
 		
 		electionTypes = new ArrayList<SelectOptionVO>();
 		electionTypes.add(0, new SelectOptionVO(0L, "Select Election Type"));
