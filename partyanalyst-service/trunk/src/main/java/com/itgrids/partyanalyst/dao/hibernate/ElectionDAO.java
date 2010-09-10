@@ -137,6 +137,24 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
         });
 	}
 	
+	public String findPreviousParliamentElectionYear(final String year, final Long typeId, final Long countryId) {
+		return (String) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		return (String) session.createCriteria(Election.class)
+            							. setProjection(Projections.property("electionYear"))
+            							.createAlias("electionScope", "scope")
+            							.createAlias("scope.electionType", "type")
+            							.createAlias("scope.country", "country")
+            							.add(Expression.eq("type.electionTypeId", typeId))
+            							.add(Expression.eq("country.countryId", countryId))
+            							.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
+            							.add(Restrictions.lt("electionYear", year))
+            							.addOrder(Order.desc("electionYear"))
+            							.setMaxResults(1).uniqueResult();
+            }
+        });
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public Election getElectionByCountryStateTypeIDElectionYear(Long typeID, Long countryID, Long stateID,String electionYear){
@@ -163,6 +181,15 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Election> findByElectionTypeYearAndCountryForParliament(
+			Long typeId, String year, Long countryId) {
+		Object[] params = {typeId,year,countryId};
+		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionYear = ? and model.electionScope.state is null and model.electionScope.country.countryId = ?", params);
+
+	}
+
+	
+	@SuppressWarnings("unchecked")
 	public List findLatestElectionYear(String electionType){
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?", electionType);
 	}
@@ -172,11 +199,23 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findRecentElectionIdAndYearForParliament(Long electionType){
+		Object[] params = {electionType};
+		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state is null",params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findElectionAndYearForElectionTypeAndState(Long electionType,Long stateId){
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ? order by model.electionYear desc",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionAndYearForParliamentElectionType(Long electionType){
+		Object[] params = {electionType};
+		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state is null order by model.electionYear desc",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -197,7 +236,6 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
 	
-		
 	@SuppressWarnings("unchecked")
 	public List findParliamentElectionIdByElectionTypeAndYear(String electionType,String year){
 		Object[] params = {electionType,year};
@@ -208,6 +246,12 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	public List findElectionIdByElectionTypeAndYear(String electionType,String year,Long stateId){
 		Object[] params = {electionType,year,stateId};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ? and model.electionScope.state.stateId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionIdByParliamentElectionTypeAndYear(String electionType,String year){
+		Object[] params = {electionType,year};
+		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ? and model.electionScope.state is null",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -222,5 +266,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.elecSubtype = ?", params);
 	
 	}
+
+		
 
 }
