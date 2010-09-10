@@ -153,9 +153,15 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testDelete(){
-		constituencyDAO.remove(20132l);
-		setComplete();
+	public void testGetGetAllParliamentConstituenciesInCountry(){
+		List<Constituency> constList  = constituencyDAO.getAllParliamentConstituenciesInCountry(1l, 1l);
+		System.out.println(constList.size());
+		for(Constituency constituency:constList)
+		{
+			System.out.println("id:"+constituency.getConstituencyId());
+			System.out.println("Name:"+constituency.getName());
+		}
+		
 	}
 	
 }

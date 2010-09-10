@@ -252,5 +252,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return results;
 	}
+
+	public List<SelectOptionVO> getAllParliamentConstituencies(
+			Long electionScopeId , Long countryId) {
+		List<SelectOptionVO> constsList = new ArrayList<SelectOptionVO>();
+		List<Constituency> list =  constituencyDAO.getAllParliamentConstituenciesInCountry(electionScopeId, countryId);
+		for(Constituency constituency: list)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(constituency.getConstituencyId());
+			selectOptionVO.setName(constituency.getName());
+			
+			constsList.add(selectOptionVO);
+ 		}
+		return constsList;
+	}
 	
 }
