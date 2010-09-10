@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -26,10 +26,9 @@ import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO;
-import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ComparedElectionResultVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
@@ -54,7 +53,6 @@ import com.itgrids.partyanalyst.service.IElectionComparisonReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.NominatResultsComparator;
-import com.itgrids.partyanalyst.utils.PartyElecDistrictResultsComparator;
 
 public class ElectionComparisonReportService implements IElectionComparisonReportService {
 	
@@ -63,6 +61,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	private IPartyDAO partyDAO;
 	private INominationDAO nominationDAO;
 	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
+	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
 	private TransactionTemplate transactionTemplate;
 	private IStateDAO stateDAO;
 	private IElectionAllianceDAO  electionAllianceDAO; 
@@ -75,6 +74,15 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	public void setPartyElectionStateResultWithAllianceDAO(
 			IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO) {
 		this.partyElectionStateResultWithAllianceDAO = partyElectionStateResultWithAllianceDAO;
+	}
+
+	public IPartyElectionDistrictResultWithAllianceDAO getPartyElectionDistrictResultWithAllianceDAO() {
+		return partyElectionDistrictResultWithAllianceDAO;
+	}
+
+	public void setPartyElectionDistrictResultWithAllianceDAO(
+			IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO) {
+		this.partyElectionDistrictResultWithAllianceDAO = partyElectionDistrictResultWithAllianceDAO;
 	}
 
 	public IStateDAO getStateDAO() {
@@ -667,10 +675,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 							2,BigDecimal.ROUND_HALF_UP).doubleValue();
 					Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale(
 							2,BigDecimal.ROUND_HALF_UP).doubleValue();
-					//Modified By Siva Start
 					Double votesPercentDiff = new BigDecimal(votesPercentYearOne - votesPercentYearTwo).setScale(
 							2,BigDecimal.ROUND_HALF_UP).doubleValue();
-					//Modified By Siva End
+
 					log.debug("Votes% One" + votesPercentYearOne);
 					log.debug("Votes% Two" + votesPercentYearTwo);
 					

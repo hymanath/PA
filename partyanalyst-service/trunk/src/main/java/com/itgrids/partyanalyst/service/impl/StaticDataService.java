@@ -46,8 +46,10 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -157,6 +159,9 @@ public class StaticDataService implements IStaticDataService {
 	private IEducationalQualificationsDAO educationalQualificationsDAO; 
 	private IOccupationDAO occupationDAO;
 	private ILanguageDAO languageDAO;
+	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
+	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
+	
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
@@ -173,6 +178,28 @@ public class StaticDataService implements IStaticDataService {
 	public void setConstituencyPageService(
 			IConstituencyPageService constituencyPageService) {
 		this.constituencyPageService = constituencyPageService;
+	}
+
+
+	public IPartyElectionDistrictResultWithAllianceDAO getPartyElectionDistrictResultWithAllianceDAO() {
+		return partyElectionDistrictResultWithAllianceDAO;
+	}
+
+
+	public void setPartyElectionDistrictResultWithAllianceDAO(
+			IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO) {
+		this.partyElectionDistrictResultWithAllianceDAO = partyElectionDistrictResultWithAllianceDAO;
+	}
+
+
+	public IPartyElectionStateResultWithAllianceDAO getPartyElectionStateResultWithAllianceDAO() {
+		return partyElectionStateResultWithAllianceDAO;
+	}
+
+
+	public void setPartyElectionStateResultWithAllianceDAO(
+			IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO) {
+		this.partyElectionStateResultWithAllianceDAO = partyElectionStateResultWithAllianceDAO;
 	}
 
 
@@ -741,9 +768,9 @@ public class StaticDataService implements IStaticDataService {
 		List<Constituency> constList = constituencyDAO.findByStateId(stateId);
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
 		
-		for(Constituency constituency: constList){
+		for(Constituency constituency: constList)
 			constituencies.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName()));
-		}
+
 		return constituencies;
 	}
 	
@@ -761,8 +788,6 @@ public class StaticDataService implements IStaticDataService {
 		return constituencyElectionList;
 	}
 	
-	
-	
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear){
 		List<Party> parties = nominationDAO.findPartiesByConstituencyAndElection(constituencyId, electionYear);
 		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
@@ -773,7 +798,6 @@ public class StaticDataService implements IStaticDataService {
 		return partyVOs;
 	}
 	
-		
 	/*
 	 * This method takes District Id as input and displays all the Assembly Candidates
 	 * that are present in that District.
@@ -842,8 +866,6 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
-	
-	
 	/*
 	 * This method takes District Id as input and retrives all the constituencies that
 	 * are present in that particular district. And it sets the constituencies names and 
@@ -900,9 +922,7 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
-	
-	
-	
+
 	/*
 	 * This method takes District Id as input and retrives all the mandals that
 	 * are present in that particular district. And it sets the constituencies names and 
@@ -928,7 +948,7 @@ public class StaticDataService implements IStaticDataService {
 		}		
 		return mandal;
 	}
-	
+
 	public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId,String reportLevel){
 		List<ConstituencyElection>  constituencyElectionList = null;
 		
