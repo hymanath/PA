@@ -2026,6 +2026,23 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 
 		return cadreOutputResultVO;
+    }
+
+
+    /*
+	 * Method to get cadre details by cadre type
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List getCadreByCadreType(String type,List<Long> cadreIds){
+		
+		List cadreTypeObjList = null;
+		if(cadreIds != null && cadreIds.size() > 0)
+		cadreTypeObjList = cadreDAO.findCadreIdsByMemberTypeAndCadreList(type,cadreIds);
+		
+	 return cadreTypeObjList;
+
+		
 	}
 
 	/*
