@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -520,5 +521,17 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}		
 	}*/
 	
+	
+	public void testGetAllConstituencyElectionDetails(){
+		List<ConstituencyElection> allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(4l,"61,17,18","24");	
+		assertEquals(allianceConstituencies.size(), 98);
+	}
+	
+	public void testGetAllConstituencyElectionDetailsInADistrict(){
+		List<ConstituencyElection> allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(4l,"61,17,18","24");
+		assertEquals(allianceConstituencies.size(), 98);
+	}
+	
+
 }
 
