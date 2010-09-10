@@ -218,3 +218,15 @@ body
 	color:highlight;
 	width:200px;
 }
+
+.yui-skin-sam .yui-dt table
+{
+	width:100%;
+}
+
+.resultsHeading
+{
+	color:#213540;
+	font-weight:bold;
+	margin-top:10px;
+}

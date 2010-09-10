@@ -1,5 +1,11 @@
 
 var statesInCountryObj = new Array();
+var assemblyResultsArray = new Array();
+var parliamentResultsArray = new Array();
+var MPTCResultsArray = new Array();
+var ZPTCResultsArray = new Array();
+
+var selectedState = '';
 
 function initializeHomePage()
 {
@@ -89,11 +95,11 @@ function homePageAjaxCall(param,jsObj,url){
 		var callback = {			
 		               success : function( o ) 
 					  {
-						try {												
+						try {			
 								if(o.responseText)
 								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								if(jsObj.taskType == "getRecentElectionsInState")
-								{
+								if(jsObj.task == "getRecentElectionsInState")
+								{									
 									showResults(myResults);
 								}
 								
@@ -111,8 +117,131 @@ function homePageAjaxCall(param,jsObj,url){
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-function showResults(myResults)
+function showResults(results)
 {
+	
+	if(results.length == 0 || results == null)
+		elmt.innerHTML = 'No Results To Display';
+
+	var stateSelectEl = document.getElementById("stateList_s");
+	var stateSelectElVal = stateSelectEl.options[stateSelectEl.selectedIndex].text;
+	selectedState = stateSelectElVal;
+
+	for(var i=0;i<results.length;i++)
+	{
+		if(results[i].electionType == "Assembly")
+			assemblyResultsArray.push(results[i]);
+		else if(results[i].electionType == "Parliament")
+			parliamentResultsArray.push(results[i]);
+		else if(results[i].electionType == "MPTC")
+			MPTCResultsArray.push(results[i]);
+		else if(results[i].electionType == "ZPTC")
+			ZPTCResultsArray.push(results[i]);
+	}
+
+	buildResultsHTMLTable(assemblyResultsArray);
+	
+}
+
+function buildResultsHTMLTable(arr)
+{
+	var elmt = document.getElementById("electionTrendzDiv_main");
+	
+	if(!elmt)
+		return;
+
+	var navigationArr = new Array();
+
+	var str = '';	
+	str += '<div id="jQuerySliderDiv" class="slider yui-skin-sam">';
+	str += '<ul>';
+	for(var i=0;i<arr.length;i++)
+	{
+		navigationArr.push(''+(i+1));
+		str += ' <li>';
+		str += '<div class="resultsHeading">';
+		str += '<table>';
+		str += '<tr>';
+		str += '<td><img src="images/icons/indexPage/listIcon.png"/></td>';
+		str += '<td>'+selectedState+' '+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '<div id="electionTrendzBodyDiv_'+i+'" >';
+		str += '<table id="electionTrendzBodyTable_'+i+'">';
+		for(var j=0;j<arr[i].partyResultsVO.length;j++)
+		{
+			str += '<tr>';
+			str += '<td>'+arr[i].partyResultsVO[j].partyName+'</td>';
+			str += '<td>'+arr[i].partyResultsVO[j].totalSeatsWon+'</td>';
+			str += '<td> <img height="30" width="40" src="images/party_flags/'+arr[i].partyResultsVO[j].partyFlag+'"></td>';
+			str += '</tr>';
+		}
+		str += '</table>';
+		str += '</div>';
+		str += '</li>';
+	}
+	str += '</ul>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
+	
+	for(var i=0;i<arr.length;i++)
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("electionTrendzBodyTable_"+i));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "partyName"
+			}, {
+				key : "totalSeatsWon",parser:"number"
+			}, {
+				key : "partyFlag"
+			}]
+		};
+
+		var resultsColumnDefs = [ {
+			key : "partyName",
+			parser:"number",
+			label : "Party",
+			sortable : true
+		}, {
+			key : "totalSeatsWon",
+			label : "Seats Won",
+			sortable : true
+		}, {
+			key : "partyFlag",
+			label : "Flag",
+			sortable : false
+		}];	
+
+		var myConfigs = {
+			paginator : new YAHOO.widget.Paginator({
+				rowsPerPage: 6
+			})
+		};
+		var myDataTable = new YAHOO.widget.DataTable("electionTrendzBodyDiv_"+i,resultsColumnDefs, resultsDataSource,myConfigs);  
+	}
+	
+	buildSlider(navigationArr);
+}
+
+function buildSlider(navArray)
+{
+	
+		$("#jQuerySliderDiv").sudoSlider({ 
+			numeric: true,
+			fade: true,
+			auto:true,
+			crossFade: false,
+			updateBefore:true,
+			prevNext: false,
+			startSlide: 1,
+			updateBefore: true,			
+			numericText:navArray
+	   });
+	
 
 }
 
