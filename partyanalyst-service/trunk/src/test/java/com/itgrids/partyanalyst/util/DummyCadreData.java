@@ -138,5 +138,16 @@ public class DummyCadreData {
 		return list;
 		
 	}
+	
+	public static List<Long> getCadreIdsList(){
+		
+		List<Long> cadreIds = new ArrayList<Long>();
+		cadreIds.add(new Long(1));
+		cadreIds.add(new Long(2));
+		cadreIds.add(new Long(3));
+		cadreIds.add(new Long(4));
+		
+	 return cadreIds;
+	}
 
 }
