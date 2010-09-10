@@ -43,19 +43,20 @@ public class PartyElectionDistrictResultWithAlliance extends BaseModel implement
 	private District district;
 	private Group group;
 	
-	private String totalConstiParticipated;
-	private String totalSeatsWon;
-	private String secondPosWon;
-	private String thirdPosWon;
-	private String fourthPosWon;
-	private String nthPosWon;
+	private Long nthPosWon;	
+	private Long thirdPosWon;
+	private Long secondPosWon;
+	private Long fourthPosWon;
+	private Long totalSeatsWon;
+	private Long totalConstiParticipated;
+	
+	private Double totalValidVotes;
+    private Double totalVotesGained;
+	private Double completeConstiValidVotes;
+		
 	private String votesPercentage;
 	private String completeVotesPercent;
 	private Date lastUpdated;
-	private Double totalVotesGained;
-	private Double totalValidVotes;
-	private Double completeConstiValidVotes;
-	
 	
 	//default constructor
 	public PartyElectionDistrictResultWithAlliance(){
@@ -64,9 +65,9 @@ public class PartyElectionDistrictResultWithAlliance extends BaseModel implement
 	
 	//parameterized constructor
 	public PartyElectionDistrictResultWithAlliance(Party party, Election election,
-			District district, String totalConstiParticipated,
-			String totalSeatsWon, String secondPosWon, String thirdPosWon,
-			String fourthPosWon, String nthPosWon, String votesPercentage,
+			District district, Long totalConstiParticipated,
+			Long totalSeatsWon, Long secondPosWon, Long thirdPosWon,
+			Long fourthPosWon, Long nthPosWon, String votesPercentage,
 			String completeVotesPercent,Date lastUpdated,Group group) {
 		super();
 		this.party = party;
@@ -147,56 +148,56 @@ public class PartyElectionDistrictResultWithAlliance extends BaseModel implement
 	}
 
 	@Column(name = "total_consti_participated", length = 25)
-	public String getTotalConstiParticipated() {
+	public Long getTotalConstiParticipated() {
 		return totalConstiParticipated;
 	}
 
-	public void setTotalConstiParticipated(String totalConstiParticipated) {
+	public void setTotalConstiParticipated(Long totalConstiParticipated) {
 		this.totalConstiParticipated = totalConstiParticipated;
 	}
 
 	@Column(name = "total_seats_won", length = 25)
-	public String getTotalSeatsWon() {
+	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
 
-	public void setTotalSeatsWon(String totalSeatsWon) {
+	public void setTotalSeatsWon(Long totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
 
 	@Column(name = "second_pos_won", length = 25)
-	public String getSecondPosWon() {
+	public Long getSecondPosWon() {
 		return secondPosWon;
 	}
 
-	public void setSecondPosWon(String secondPosWon) {
+	public void setSecondPosWon(Long secondPosWon) {
 		this.secondPosWon = secondPosWon;
 	}
 
 	@Column(name = "third_pos_won", length = 25)
-	public String getThirdPosWon() {
+	public Long getThirdPosWon() {
 		return thirdPosWon;
 	}
 
-	public void setThirdPosWon(String thirdPosWon) {
+	public void setThirdPosWon(Long thirdPosWon) {
 		this.thirdPosWon = thirdPosWon;
 	}
 
 	@Column(name = "fourth_pos_won", length = 25)
-	public String getFourthPosWon() {
+	public Long getFourthPosWon() {
 		return fourthPosWon;
 	}
 
-	public void setFourthPosWon(String fourthPosWon) {
+	public void setFourthPosWon(Long fourthPosWon) {
 		this.fourthPosWon = fourthPosWon;
 	}
 
 	@Column(name = "nth_pos_won", length = 25)
-	public String getNthPosWon() {
+	public Long getNthPosWon() {
 		return nthPosWon;
 	}
 
-	public void setNthPosWon(String nthPosWon) {
+	public void setNthPosWon(Long nthPosWon) {
 		this.nthPosWon = nthPosWon;
 	}
 

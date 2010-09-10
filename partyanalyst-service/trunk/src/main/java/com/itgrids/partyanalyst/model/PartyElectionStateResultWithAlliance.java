@@ -43,18 +43,23 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 	private Election election;
 	private Group group;
 	
-	private String nthPosWon;
-	private Date lastUpdated;
-	private String thirdPosWon;
-	private String secondPosWon;
-	private String fourthPosWon;
-	private String totalSeatsWon;
-    private Double totalValidVotes;
-	private String votesPercentage;
-	private Double totalVotesGained;
-	private String completeVotesPercent;
-	private String totalConstiParticipated;
+	private Long nthPosWon;	
+	private Long thirdPosWon;
+	private Long secondPosWon;
+	private Long fourthPosWon;
+	private Long totalSeatsWon;
+	private Long totalConstiParticipated;
+	
+	private Double totalValidVotes;
+    private Double totalVotesGained;
 	private Double completeConstiValidVotes;
+	
+	
+    private Date lastUpdated;
+	
+	private String completeVotesPercent;
+	private String votesPercentage;
+	
 	
 	//default constructor
 	public PartyElectionStateResultWithAlliance() {
@@ -63,11 +68,11 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 
 	//parameterized constructor
 	public PartyElectionStateResultWithAlliance(
-			Party party, State state, Election election, String nthPosWon,
-			Date lastUpdated, String thirdPosWon, String secondPosWon,
-			String fourthPosWon, String totalSeatsWon, Double totalValidVotes,
+			Party party, State state, Election election, Long nthPosWon,
+			Date lastUpdated, Long thirdPosWon, Long secondPosWon,
+			Long fourthPosWon, Long totalSeatsWon, Double totalValidVotes,
 			String votesPercentage, Double totalVotesGained,
-			String completeVotesPercent, String totalConstiParticipated,
+			String completeVotesPercent, Long totalConstiParticipated,
 			Double completeConstiValidVotes,Group group) {
 		super();
 		this.party = party;
@@ -148,11 +153,11 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 	}
 
 	@Column(name = "nth_pos_won", length = 25)
-	public String getNthPosWon() {
+	public Long getNthPosWon() {
 		return nthPosWon;
 	}
 
-	public void setNthPosWon(String nthPosWon) {
+	public void setNthPosWon(Long nthPosWon) {
 		this.nthPosWon = nthPosWon;
 	}
 
@@ -166,39 +171,39 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 		this.lastUpdated = lastUpdated;
 	}
 
-	@Column(name = "third_pos_won", length = 25)
-	public String getThirdPosWon() {
+	@Column(name = "third_pos_won")
+	public Long getThirdPosWon() {
 		return thirdPosWon;
 	}
 
-	public void setThirdPosWon(String thirdPosWon) {
+	public void setThirdPosWon(Long thirdPosWon) {
 		this.thirdPosWon = thirdPosWon;
 	}
 
 	@Column(name = "second_pos_won", length = 25)
-	public String getSecondPosWon() {
+	public Long getSecondPosWon() {
 		return secondPosWon;
 	}
 
-	public void setSecondPosWon(String secondPosWon) {
+	public void setSecondPosWon(Long secondPosWon) {
 		this.secondPosWon = secondPosWon;
 	}
 
 	@Column(name = "fourth_pos_won", length = 25)
-	public String getFourthPosWon() {
+	public Long getFourthPosWon() {
 		return fourthPosWon;
 	}
 
-	public void setFourthPosWon(String fourthPosWon) {
+	public void setFourthPosWon(Long fourthPosWon) {
 		this.fourthPosWon = fourthPosWon;
 	}
 
 	@Column(name = "total_seats_won", length = 25)
-	public String getTotalSeatsWon() {
+	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
 
-	public void setTotalSeatsWon(String totalSeatsWon) {
+	public void setTotalSeatsWon(Long totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
 
@@ -239,11 +244,11 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 	}
 
 	@Column(name = "total_consti_participated", length = 25)
-	public String getTotalConstiParticipated() {
+	public Long getTotalConstiParticipated() {
 		return totalConstiParticipated;
 	}
 
-	public void setTotalConstiParticipated(String totalConstiParticipated) {
+	public void setTotalConstiParticipated(Long totalConstiParticipated) {
 		this.totalConstiParticipated = totalConstiParticipated;
 	}
 

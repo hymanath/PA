@@ -42,20 +42,22 @@ public class PartyElectionResultWithAlliance extends BaseModel implements Serial
 	private Election election;
 	private Group group;
 	
-	private Long totalConstiParticipated;
-	private Long totalSeatsWon;
-	private Long secondPosWon;
+	private Long nthPosWon;	
 	private Long thirdPosWon;
+	private Long secondPosWon;
 	private Long fourthPosWon;
-	private Long nthPosWon;
+	private Long totalSeatsWon;
+	private Long totalConstiParticipated;
 	
+	private Double totalValidVotes;
+    private Double totalVotesGained;
+	private Double completeConstiValidVotes;
+		
 	private String votesPercentage;
 	private String completeVotesPercent;
-	private Date lastUpdated;
-	private Double totalVotesGained;
-	private Double totalValidVotes;
-	private Double completeConstiValidVotes;
 	
+	private Date lastUpdated;
+		
 	//default constructor
 	public PartyElectionResultWithAlliance(){
 		
