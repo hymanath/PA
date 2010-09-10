@@ -102,5 +102,13 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(ele.getElectionYear());
 	}
 	
+	@Test
+	public void testFindGetElections(){
+		String prevYear = electionDAO.findPreviousParliamentElectionYear("2009", 1l, 1l);
+		
+		System.out.println(" Previous Year :" + prevYear);
+		
+	}
+	
 }
 
