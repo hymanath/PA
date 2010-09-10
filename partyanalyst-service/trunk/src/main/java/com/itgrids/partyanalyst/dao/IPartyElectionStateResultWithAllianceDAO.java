@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance;
@@ -7,4 +9,5 @@ import com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance;
 public interface IPartyElectionStateResultWithAllianceDAO extends
 		GenericDao<PartyElectionStateResultWithAlliance, Long> {
 
+	public List getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId);
 }
