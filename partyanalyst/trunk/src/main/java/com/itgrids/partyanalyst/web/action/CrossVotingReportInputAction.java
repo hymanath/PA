@@ -21,7 +21,8 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> electionYearList;
 	private List<SelectOptionVO> parliamentList;
 	private HttpServletRequest request;
-
+	private EntitlementsHelper entitlementsHelper;
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;	
 	}
@@ -50,12 +51,21 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		this.request = request;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
 		
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CROSS_VOTING_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
 			return ERROR;
 		
 		electionYearList = new ArrayList<SelectOptionVO>();				

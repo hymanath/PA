@@ -50,7 +50,6 @@
 		<property name="languageDAO" ref="languageDAO" />	
 		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
 		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />	
-				
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -72,6 +71,7 @@
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
+		<property name="groupEntitlementDAO" ref="groupEntitlementDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="userCountryAccessInfoDAO" ref="userCountryAccessInfoDAO" />
 		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />

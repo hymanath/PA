@@ -79,7 +79,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private AnalysisReportService analysisReportService;
 	private String partyNameHidden;
 	private String stateNameHidden;
-
+	private EntitlementsHelper entitlementsHelper;
+	
 	public String getStateNameHidden() {
 		return stateNameHidden;
 	}
@@ -273,13 +274,21 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.electionTypeLiteral = electionTypeLiteral;
 	}
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public String execute() throws JRException {
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
 			return ERROR;
 		
 		log.debug("partyPerformance excute started...");
@@ -302,13 +311,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
-		setLevels(getReportLevels());    
-	
+		setLevels(getReportLevels());
+
 		if(year == null && partyId == null){
 			year = getYears().iterator().next();
 			partyId = getParties().get(0).getId();
 		}
-		
+
 		boolean t = getStaticDataService().hasAlliances(year, electionTypeId, partyId);
 		setHasAllianceParties(t);
 		return Action.SUCCESS;
@@ -389,9 +398,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getReport() {
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
 			return ERROR;
 		
 		log.debug("partyPerformanceReport action started...");

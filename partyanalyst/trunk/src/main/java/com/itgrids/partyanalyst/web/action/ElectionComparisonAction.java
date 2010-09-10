@@ -33,6 +33,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	private String task = null;
 	JSONObject jObj = null;
 	private static final Logger log = Logger.getLogger(ElectionComparisonAction.class);
+	private EntitlementsHelper entitlementsHelper;
 	
 	public List<SelectOptionVO> getPartyList() {
 		return partyList;
@@ -87,12 +88,21 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		this.staticDataService = staticDataService;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute() throws Exception {
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ELECTION_COMPARISION_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_COMPARISION_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_COMPARISION_REPORT))
 			return ERROR;
 		
 		partyList = staticDataService.getStaticParties();

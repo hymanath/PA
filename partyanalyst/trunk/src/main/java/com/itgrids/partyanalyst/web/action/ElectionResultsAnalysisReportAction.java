@@ -53,6 +53,8 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	private AnalysisReportService analysisReportService;
 	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
 	
+	private EntitlementsHelper entitlementsHelper;
+	
 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
 		return votesMarginAnalysisVO;
 	}
@@ -170,12 +172,21 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		return partyPositionAnalysisResultVO;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute () throws Exception 
 	{
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ELECTION_RESULTS_ANALYSIS_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULTS_ANALYSIS_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULTS_ANALYSIS_REPORT))
 			return ERROR;
 		
 		/*statesList = new ArrayList<SelectOptionVO>();

@@ -30,6 +30,7 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> partyList;
 	private List<SelectOptionVO> commonList;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public void setServletRequest(HttpServletRequest arg0) {
 		request = arg0;
@@ -90,11 +91,20 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		this.commonList = commonList;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String getStatesList() throws Exception{
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
 		states.add(0, new SelectOptionVO(0L,"Select State"));

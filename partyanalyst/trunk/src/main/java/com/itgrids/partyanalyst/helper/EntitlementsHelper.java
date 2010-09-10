@@ -1,13 +1,28 @@
 package com.itgrids.partyanalyst.helper;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class EntitlementsHelper {
 	
-	public static Boolean checkForEntitlementToViewReport(RegistrationVO registrationVO, String reportEntitlement){
-		if(registrationVO.getEntitlements().contains(reportEntitlement))
+	private ILoginService loginService;
+	
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
+
+	public Boolean checkForEntitlementToViewReport(RegistrationVO registrationVO, String reportEntitlement){
+		if(loginService.getDefaultEntitlements(IConstants.DEFAULT_ENTITLEMENTS_GROUP).contains(reportEntitlement) || 
+				(registrationVO != null && registrationVO.getEntitlements().contains(reportEntitlement)))
 			return true;
 		return false;
 	}
 
+	
+	
 }

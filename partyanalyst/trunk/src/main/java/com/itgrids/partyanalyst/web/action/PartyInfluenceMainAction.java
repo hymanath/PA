@@ -25,6 +25,7 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletRe
 	private List<String> electionYears;
 	private List<SelectOptionVO> newParty;
 	private List<SelectOptionVO> partyNames;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
@@ -70,13 +71,21 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletRe
 		this.partyNames = partyNames;
 	}
 
-	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_INFLUENCE_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_INFLUENCE_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_INFLUENCE_REPORT))
 			return ERROR;
 		
 		electionTypes = new ArrayList<SelectOptionVO>();

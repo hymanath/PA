@@ -27,7 +27,8 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 	private HttpSession session;
 	private List<SelectOptionVO> partyList;
 	private IStaticDataService staticDataService;
-
+	private EntitlementsHelper entitlementsHelper;
+	
 	public List<SelectOptionVO> getPartyList() {
 		return partyList;
 	}
@@ -36,12 +37,21 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		this.partyList = partyList;
 	}
 		
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute() {	
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_RESULTS_REPORT))
 			return INPUT;
-		if(!EntitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_RESULTS_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_RESULTS_REPORT))
 			return ERROR;
 		partyList = staticDataService.getStaticParties();
 		
