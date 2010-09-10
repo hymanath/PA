@@ -55,6 +55,7 @@
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="electionDAO" ref="electionDAO" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
