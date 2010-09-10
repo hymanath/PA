@@ -7,27 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+@SuppressWarnings("serial")
 public class HomePageAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList;
-	private IRegionServiceData regionServiceDataImp;
+	private IStaticDataService staticDataService;
 	
 	
-	public IRegionServiceData getRegionServiceDataImp() {
-		return regionServiceDataImp;
-	}
-
-
-	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
-		this.regionServiceDataImp = regionServiceDataImp;
-	}
-
-
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
 	}
@@ -44,9 +35,19 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 	
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+
 	public String execute()
-	{
-		statesList = regionServiceDataImp.getStatesByCountry(new Long(1));
+	{	
+		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		return Action.SUCCESS;
 	}
 	
