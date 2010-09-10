@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
@@ -50,6 +52,7 @@ import com.itgrids.partyanalyst.utils.ValueComparator;
 public class PartyService implements IPartyService {
 
 	private IElectionDAO electionDAO;
+	private IElectionTypeDAO electionTypeDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IPartyDAO partyDAO;
@@ -94,6 +97,14 @@ public class PartyService implements IPartyService {
 		this.nominationDAO = nominationDAO;
 	}
 
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district,String party, String year, String elecType, String countryID,
 			int noOfPositionDistribution, BigDecimal majorBand,
 			BigDecimal minorBand, Boolean includeAllianceParties,String reportLevel) {	
@@ -103,7 +114,15 @@ public class PartyService implements IPartyService {
 		Long districtId = (district != null) ? new Long(district): 0;
 		Long partyId = new Long(party);
 		Long electionType = new Long(elecType);
-		String prevYear = electionDAO.findPreviousElectionYear(year, electionType, stateId, new Long(countryID));
+		String prevYear = null;
+		
+		ElectionType electnType = electionTypeDAO.get(electionType);
+		
+		if(electnType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		    prevYear = electionDAO.findPreviousParliamentElectionYear(year, electionType, new Long(countryID));
+		else 
+			prevYear = electionDAO.findPreviousElectionYear(year, electionType, stateId, new Long(countryID));
+			
 		Long countryId = new Long(countryID);
 				
 		PartyPerformanceReportVO presentYearPartyPerformanceReportVO = getElectionResults(stateId, districtId,countryId, year, electionType, partyId, includeAllianceParties, false,reportLevel);
@@ -252,12 +271,28 @@ public class PartyService implements IPartyService {
 			Boolean includeAllianceParties, boolean b,String reportLevel){
 		
 		log.debug("getElectionData start.....for year.." + year);
+		log.error(" Party Performance Report For " +  year );
 		PartyPerformanceReportVO partyPerformanceReportVO = new PartyPerformanceReportVO();
 		Election election = null;
+		ElectionType electionTyp = null;
 		String elecType = null;
+		List<Election> elections = null;
+		
 		Party selectedParty = partyDAO.get(partyId); 
 		State stateVO = stateDAO.get(stateId);
-		List<Election> elections = electionDAO.findByElectionTypeYearAndState(electionType,year,stateId,countryId);
+		
+		//get ElectionType Model Object From ElectionTypeId
+		if(electionType != null && !electionType.equals(0l))
+		   electionTyp = electionTypeDAO.get(electionType);
+		
+		log.error(" Election Type :" + electionTyp.getElectionType());
+		//for Parliament ElectionType stateId is null
+		if(electionTyp.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			elections = electionDAO.findByElectionTypeYearAndCountryForParliament(electionType,year,countryId);
+		else
+		    elections = electionDAO.findByElectionTypeYearAndState(electionType,year,stateId,countryId);
+		log.error(" Election Results List :" + elections.size());
+		
 		if(elections != null && elections.size() > 0){
 		election = elections.get(0);
 		elecType = election.getElectionScope().getElectionType().getElectionType();
@@ -1131,7 +1166,13 @@ public class PartyService implements IPartyService {
 	}
 	
 	public Long getElectionID(Long electionTypeID, Long countryID, Long stateID,Long year){
-		List<Election> elections = electionDAO.findByPropertyTypeId_CountryId_StateId(electionTypeID, countryID, stateID);
+		
+		List<Election> elections = null;
+		ElectionType electionType = electionTypeDAO.get(electionTypeID);
+		if(electionType != null && electionType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			elections = electionDAO.findByElectionTypeCountry(electionTypeID, countryID);
+		else
+		    elections = electionDAO.findByPropertyTypeId_CountryId_StateId(electionTypeID, countryID, stateID);
 		Long electionID = 0L;
 		for(Election election : elections){
 			if(year.toString().equals(election.getElectionYear())){
