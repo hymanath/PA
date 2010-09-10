@@ -228,8 +228,10 @@ public interface IStaticDataService {
 		public List<ConstituencyBoothInfoVO> getBoothPartNosForMandalAndElection(Long tehsilId, String electionYear);
 	//>>>>> Booth Related Methods End
 
+		@SuppressWarnings("unchecked")
 		public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag,int reservationZone,String module);
 		
+		@SuppressWarnings("unchecked")
 		public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates,int reservationZone,String module);
 	
 		public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
@@ -238,8 +240,10 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getAllEducationalQualifications();
 		public List<SelectOptionVO> getAllOccupations();
 		public List<SelectOptionVO> getAllLanguages();
-	
 		
+		public List<SelectOptionVO> getParticipatedStatesForAnElectionType(Long electionType);
+	
+		public Long getElectionScopeForAElection(Long stateId,String electionType,Long countryId);
 		
 		
 }
