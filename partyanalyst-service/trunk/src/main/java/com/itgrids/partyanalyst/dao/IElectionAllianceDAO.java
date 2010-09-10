@@ -18,5 +18,6 @@ public interface IElectionAllianceDAO extends GenericDao<ElectionAlliance, Long>
 	
 	@SuppressWarnings("unchecked")
 	public List findAllGroupsForAnElection(String electionType,String electionYear);
-	
+
+	public List<ElectionAlliance> getAllianceElectionByElectionIdAndStateId(Long electionId,Long stateId);
 }
