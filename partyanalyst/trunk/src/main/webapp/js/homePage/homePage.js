@@ -59,7 +59,7 @@ function hideUnhideSelectBox(radioElement, selectElement)
 function getRecentElectionsInState(stateId)
 {
 			var jsObj = {
-					id: stateId,
+					stateId: stateId,
 					task: "getRecentElectionsInState"
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
