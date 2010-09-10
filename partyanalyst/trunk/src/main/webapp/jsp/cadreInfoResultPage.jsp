@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cadre Info Page</title>
+<title>Cadre Complete Profile</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -161,7 +161,7 @@ function buildCadreInfo(jsObj,results)
 
 	var str = '';
 	str += '<div id="cadreInfo_head">';
-	str += results.firstName+"'s Profile";
+	str += results.firstName+"Complete Profile";
 	str += '</div>';
 	str += '<div id="cadreInfo_body">';
 	str += '	<fieldset>';
@@ -439,8 +439,8 @@ function buildCadreInfo(jsObj,results)
 	str += '	</fieldset>';
 	}
 	str += '</div>';
-	str += '<div id="cadreInfo_footer">';
-	str += ' <input type="button" value="Send SMS" onclick="senedSMSToCadre(\''+results.mobile+'\')">';
+	//str += '<div id="cadreInfo_footer">';
+	//str += ' <input type="button" value="Send SMS" onclick="senedSMSToCadre(\''+results.mobile+'\')">';
 	str += '<span id="errorMsgSpan" style="color:red;font-size:10px;"></span>';
 	str += '</div>';
 

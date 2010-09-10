@@ -123,8 +123,9 @@ public class CadreInfoAction extends ActionSupport implements ServletRequestAwar
 		}
 		Long cadreId = jObj.getLong("cadreId");
 		
-		
+		cadreInfo = new CadreInfo();
 		cadreInfo = cadreManagementService.getCadreCompleteInfo(cadreId);
+		
 		return Action.SUCCESS;
 	}
 	
