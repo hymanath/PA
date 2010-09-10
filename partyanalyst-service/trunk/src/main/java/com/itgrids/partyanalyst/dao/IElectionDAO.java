@@ -45,13 +45,15 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public String findPreviousElectionYear(String year, Long typeId, Long stateId, Long countryId);
 	
-	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype);
+	public String findPreviousParliamentElectionYear(final String year, final Long typeId, final Long countryId);
 	
-	public Election getElectionByCountryStateTypeIDElectionYear(Long typeID, Long countryID, Long stateID,String electionYear);
+	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype);
 	
 	public List<Election> findByElectionTypeCountry(Long typeId, Long countryID);
 		
 	public List<Election> findByElectionTypeYearAndState(Long typeId,String year,Long stateId,Long countryId);
+	
+	public List<Election> findByElectionTypeYearAndCountryForParliament(Long typeId,String year,Long countryId);
 	
 	public List findLatestElectionYear(String electionType);
 	
@@ -64,6 +66,12 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYear(Long electionType);
+	
+	@SuppressWarnings("unchecked")
+	public List findRecentElectionIdAndYearForParliament(Long electionType);
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionAndYearForParliamentElectionType(Long electionType);
 
 	
 	@SuppressWarnings("unchecked")
@@ -82,6 +90,8 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List findElectionYearsBySubType(Long typeID, String type);
 
 	public List<Election> findByElectionScopeId(Long electionScopeId, String electionSubtype);
+	
+	public List findElectionIdByParliamentElectionTypeAndYear(String electionType,String year);
 	
 	
 }
