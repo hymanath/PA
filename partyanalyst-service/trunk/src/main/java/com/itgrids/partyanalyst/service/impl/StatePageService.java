@@ -257,6 +257,6 @@ public class StatePageService implements IStatePageService {
 			stateElectionResults.setPartyResultsVO(partyResultsVO);
 					  
 		return stateElectionResults;
-		}
+	    }
 	
 }
