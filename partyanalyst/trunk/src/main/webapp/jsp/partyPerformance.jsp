@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript">
 	var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -30,7 +31,7 @@
 	
 	%> }
 	
- 	function callAjax(param, url){
+ 	function pprCallAjax(param, url){
  		var myResults;
  		url = url + param;
  		var callback = {			
@@ -50,7 +51,70 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
+
+   function callAjax(jsObj, url){
+		var resultVO;			
+		var callback = {			
+				   success : function( o ) {
+						try {								
+								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+
+								if(jsObj.task == "getElectionYears")
+								{								
+									clearOptionsListForSelectElmtId(jsObj.elmtId);
+									fillElectionYears(jsObj.elmtId, resultVO);
+									//createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,resultVO);		
+																		
+								}				
+						}catch (e)  {   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+	
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+	}
  	
+	function fillElectionYears(element, results)
+	{
+		var elmt = document.getElementById(element);
+		
+	
+	if( !elmt || results == null)
+		return;
+	
+	var option = document.createElement('option');
+	
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.text=results[i];
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
+	}
+
     function processResponse(param, response)
 	{		
 		if(param.substring(0, 4) == "type")
@@ -118,7 +182,7 @@
 
  	function doAjax(param){
  		var url = "<%=request.getContextPath()%>/partyPerformanceElectionTypeFilterData.action?";
- 		callAjax("type="+param, url);
+ 		pprCallAjax("type="+param, url);
  	}
 
  	function getDistricts(level){
@@ -126,7 +190,7 @@
 	 	 	var index = document.getElementById("stateList").selectedIndex;
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
 	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
-			callAjax("stateId="+stateId, url);
+			pprCallAjax("stateId="+stateId, url);
  	 	}
 		if(level == 3){
 			document.getElementById("alliances").disabled=true;
@@ -163,7 +227,7 @@
  	 	var radObj = document.getElementsByName("electionType"); 
  	 	var elecType = getSelectedValue(document.getElementsByName("electionType"));
  	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";		
- 	 	callAjax("allianceWith="+partyId+"&year="+year+"&elecType="+elecType, url);
+ 	 	pprCallAjax("allianceWith="+partyId+"&year="+year+"&elecType="+elecType, url);
  	}
  	function getSelectedValue(radiobuttonlist) {
  	 	
@@ -184,12 +248,67 @@
 		elmt.value=val;		
 	}
 
+	function getElectionYears(id,name)
+	{
+            setPartyNameHidden(name);
+            var elecTypeVal='';
+				
+		   
+			var stateElmt = document.getElementById("stateList");
+			if(stateElmt == '' || stateElmt == null)
+				alert("Please Select State ..")
+			var stateVal = stateElmt.options[stateElmt.selectedIndex].value;
+			
+			var elecTypeElmts = document.getElementsByName("electionType");
+           
+			for(var i=0;i<elecTypeElmts.length;i++)
+		    {
+				if(elecTypeElmts[i].id == 'assemblyRadio' && elecTypeElmts[i].checked == true)
+                   elecTypeVal = 'Assembly';
+				else if(elecTypeElmts[i].id == 'parliamentRadio' && elecTypeElmts[i].checked == true)
+                   elecTypeVal = 'Parliament';
+		    }
+			
+			var jsObj=
+			{       elmtId:"yearList",
+					partyId:id,
+				    elecTypeId:elecTypeVal,
+				    stateId:stateVal,
+					task:"getElectionYears"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getElectionYearsForParty.action?"+rparam;						
+			
+			callAjax(jsObj,url);
+	}
+	function validateClientSide()
+	{
+		var flag;
+		var electionYearEl = document.getElementById("yearList");
+		var electionYearElValues = electionYearEl.options;
+		var	electionYearElValuesSelected = electionYearElValues[electionYearEl.selectedIndex].value;
+		var errorMsg = document.getElementById("errorsDiv");
+		errorMsg.innerHTML = '';
+		
+		if(electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
+		{
+			errorMsg.innerHTML = 'Invalid Input Selection';
+			flag= false;
+		} else  
+		{
+			flag = true;
+		}
+		return flag;
+	}
+
 	</script>
 	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
 
 </head> 
 <body>
-<s:form name="performanceReport" action="partyPerformanceReport" onsubmit="javascript:{}" method="post">
+<div id="errorsDiv" style="font-weight:bold;color:red;font-size:12px;margin:10px;"></div>
+<s:form name="performanceReport" action="partyPerformanceReport" onsubmit="return validateClientSide()" method="post">
 <s:hidden name="country" value="1" id="country"/>
 <table class="partyPerformanceCriteriaTable">
 	<tr>
@@ -200,27 +319,30 @@
 	<tr>
 		<th align="left"><%=electionType%></th>
 		<td>
-			<input type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
-			<input type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
+			<input id="assemblyRadio" type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
+			<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
 		</td>
 	</tr>
 	<tr>
 		<th align="left"><%=state%></th>
 		<td>
-			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].text);"/>
+			<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].text);"/>
 			<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
 		</td>
 	</tr>
-	<tr>
-		<th align="left"><%=electionYear%></th>
-		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years" /></td>
-	</tr>
+	
 	<tr>
 		<th align="left"><%=party%></th>
 		<td>
-			<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />
+			<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
+			<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" cssStyle="width:120px;" />
 			<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
 		</td>
+	</tr>
+
+	<tr>
+		<th align="left"><%=electionYear%></th>
+		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></td>
 	</tr>
 	
 	<tr>
@@ -230,7 +352,7 @@
 	<tr>		
 		<th align="left"><%=dist%></th>
 		<td>
-			<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name"/>	
+			<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name" cssStyle="width:120px;"/>	
 		</td>
 	</tr>	
 	<tr id="allianceRow">
