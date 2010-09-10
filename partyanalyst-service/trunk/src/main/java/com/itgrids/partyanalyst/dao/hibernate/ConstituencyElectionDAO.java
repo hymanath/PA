@@ -214,6 +214,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"and model.election.electionYear = ?",params);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getValidVotesForMptcZptcElectionsInMandals(String mandalIds){
 		return getHibernateTemplate().find("select model.election.electionId," +
 				"model.election.electionScope.electionType.electionType, " +
@@ -224,6 +225,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"model.election.electionId");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getValidVotesForMunicipalitiesAndCorporationsInMandals(String mandalIds){
 		return getHibernateTemplate().find("select model.election.electionId," +
 				"model.election.electionScope.electionType.electionType, " +
@@ -233,6 +235,12 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"group by model.election.electionId order by " +
 				"model.election.electionId");
 	}
+	@SuppressWarnings("unchecked")
+	public List getParticipatedStateDetailsForAnElectionType(Long electionType) {
+		return getHibernateTemplate().find("select distinct model.constituency.state.stateId,model.constituency.state.stateName "+
+				"from ConstituencyElection model where model.election.electionScope.electionType.electionTypeId = ?",electionType);
+	}
+	@SuppressWarnings("unchecked")
 	public List findPartyvalidVotesInfoByElectionAndPartyGroupByDistrictId(Long electionId, String partyIds) {
 		Object[] params = {electionId,electionId};
 		return getHibernateTemplate().find("select model.constituency.district.districtId, " +
@@ -245,6 +253,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"order by model.constituency.district.districtId",params);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List findPartyvalidVotesInfoByElectionAndPartyGroupByStateId(Long electionId, String partyIds) {
 		Object[] params = {electionId,electionId};
 		return getHibernateTemplate().find("select model.constituency.state.stateId, " +
