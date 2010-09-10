@@ -297,7 +297,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(param != null) 
 			electionTypeId = new Long(param);
 		
-		setStates(getStaticDataService().getStates(electionTypeId));
+		//setStates(getStaticDataService().getStates(electionTypeId));
+		setStates(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
 		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
@@ -374,7 +375,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			electionTypeId = new Long(param);
 		}
 		
-		statesYearList.put("STATES", staticDataService.getStates(electionTypeId));
+		statesYearList.put("STATES", staticDataService.getParticipatedStatesForAnElectionType(electionTypeId));
 		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
 		if(electionTypeId.equals(new Long(1)))
@@ -639,7 +640,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	return dataset;
 	}
 	
-	@SuppressWarnings("unused")
+	
 	private CategoryDataset createDatasetForLineGraphNew(int seatsWonInYear,BigDecimal totalPercentageOfVotesWon,String year){
 		  // row keys...
         final String series1 = "Seats Won";
@@ -677,8 +678,44 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category) ;
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category);
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getElectionYearsForParty(){
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			String elecType = jObj.getString("elecTypeId");
+			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			
+			Long countryId = 1l;
+			String electionType = null;
+			List<SelectOptionVO> yearsList = null;
+			if(elecType.equalsIgnoreCase("Parliament"))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			else 
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			
+			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, electionType, countryId);
+			if(electionScope != null)
+				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
+			if(yearsList != null){
+				years = new ArrayList<String>();
+				for(SelectOptionVO yearsLst:yearsList){
+					years.add(yearsLst.getName());
+				}
+			}
+			
+		}
 		return Action.SUCCESS;
 	}
 	
