@@ -100,7 +100,8 @@
 	        id: "staticData",  
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" },
+	            { text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
 				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
 	        ]     
 	    }
