@@ -16,7 +16,21 @@
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 <link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
-
+<script type="text/javascript">
+var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		String stateSelect = rb.getString("stateSelect");
+		String distSelect = rb.getString("distSelect");
+		String constSelect = rb.getString("constSelect");
+		String assembly = rb.getString("assembly");
+		String parliament = rb.getString("parliament");
+		
+		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
+		String errorMsg = resb.getString("constTypeAlert");
+%> }
+var errotMsg = '<%=errorMsg%>';
+</script>
 </head>
 <body>
 	
@@ -131,7 +145,7 @@
                     	<div id="electionTrendzWidgetHeader">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_left.jpg"</td>
+								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
 										<span class="headerLabelSpan">
@@ -156,7 +170,7 @@
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"</td>
+								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 								<td width="98%">
 									<div class="productFeatureHeaderBackground_center">
 										<span class="headerLabelSpan">
@@ -200,7 +214,7 @@
 			<div class="widgetsHeader">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				  <tr>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"</td>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
 					<td width="98%">
 						<div class="widgetHeaderBackground_center">
 							<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
@@ -272,7 +286,7 @@
 			<div class="widgetsFooter">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				  <tr>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"</td>
+					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
 					<td width="98%">
 						<div class="widgetHeaderBackground_center">
 							<span class="headerLabelSpan">  </span>
@@ -306,7 +320,7 @@
                         <div class="widgetsBody">
 							<table>
 								<tr>
-									<td>Select Your State</td>
+									<td><%=stateSelect%></td>
 								</tr>
 								<tr>
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/></td>									
@@ -337,13 +351,13 @@
                         <div class="widgetsBody">
 							<table>
 								<tr>
-									<td>Select Your State</td>
+									<td><%=stateSelect%></td>
 								</tr>
 								<tr>
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"/></td>
 								</tr>
 								<tr>
-									<td>Select Your District</td>
+									<td><%=distSelect%></td>
 								</tr>
 								<tr>
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/></td>
@@ -374,23 +388,25 @@
                         <div class="widgetsBody">
 							<table>
 								<tr>
-									<td>Select Your State</td>
+									<td><%=stateSelect%></td>
 								</tr>
 								<tr>
 									<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
 								</tr>
 							</table>
+							<div id="alertMessage" style="margin:5px;color:red;font-weight:bold;"></div>
 							<table>	
 								<tr>
-									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/>Assembly</td>
+									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
 									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/>Parliament</td>
+									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/><%=parliament%></td>
 								</tr>
 							</table>	
+							
 							<table id="constTable" style="display:none;">
 								<tr>
-									<td>Select Constituency</td>
+									<td><%=constSelect%></td>
 								</tr>
 								<tr>
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>

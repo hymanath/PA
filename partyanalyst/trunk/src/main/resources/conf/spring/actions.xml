@@ -410,7 +410,8 @@
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">				
 	</bean>
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">			
-		<property name="staticDataService" ref="staticDataService" />	
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="statePageService" ref="statePageService" />	
 	</bean>
 	
 </beans>		

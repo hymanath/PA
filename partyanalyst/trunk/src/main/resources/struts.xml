@@ -1323,6 +1323,11 @@
 			<result type="json" name="success">
 				<param name="root">constituenciesList</param>				
 			</result>		
+		</action> 
+		<action name="getRecentElectionsInState" class="homePageAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">stateElections</param>				
+			</result>		
 		</action>       
 	</package>
 </struts>
