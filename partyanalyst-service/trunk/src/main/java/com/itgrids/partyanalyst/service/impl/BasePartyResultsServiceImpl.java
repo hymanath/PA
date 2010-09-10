@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.service.IBasePartyResultsService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
@@ -38,6 +40,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	
 
 	private IElectionScopeDAO electionScopeDAO;
+	private IElectionTypeDAO electionTypeDAO;
 	private IElectionDAO electionDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
@@ -46,6 +49,14 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	private final static Logger log = Logger.getLogger(BasePartyResultsServiceImpl.class);
 	public IElectionScopeDAO getElectionScopeDAO() {
 		return electionScopeDAO;
+	}
+
+	public IElectionTypeDAO getElectionTypeDAO() {
+		return electionTypeDAO;
+	}
+
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
 	}
 
 	public IConstituencyElectionDAO getConstituencyElectionDAO() {
@@ -82,7 +93,13 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	}
 
 	public ElectionScope getElectionScope(Long typeId, Long countryID, Long stateID){
-		List<ElectionScope> electionScopeList = electionScopeDAO.findByTypeIdCountryIdStateId(typeId, countryID,stateID);
+		
+		List<ElectionScope> electionScopeList = null;
+		ElectionType electionType = electionTypeDAO.get(typeId);
+		if(electionType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			electionScopeList = electionScopeDAO.getElectionScopeForAElectionType(electionType.getElectionType(), countryID);
+		else
+		 electionScopeList = electionScopeDAO.findByTypeIdCountryIdStateId(typeId, countryID,stateID);
 		if(electionScopeList.size()==0)
 			return new ElectionScope();
 		else
