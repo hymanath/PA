@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -35,6 +36,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String task = null;
 	JSONObject jObj = null;
 	private IStatePageService statePageService;
+	private IRegionServiceData regionServiceDataImp;
+	private List<SelectOptionVO> constituenciesList;
 	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
@@ -108,6 +111,27 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		this.statePageService = statePageService;
 	}
 
+	
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
 
 	public String execute()
 	{	
@@ -133,7 +157,11 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		{
 			Long stateId = new Long(jObj.getLong("stateId"));
 			stateElections = statePageService.getStateElections(stateId);
-		}		
+		}
+		if(jObj.getString("task").equalsIgnoreCase("getAllParliamentConstituencies"))
+		{			
+			constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
+		}
 		return Action.SUCCESS;
 	}
 

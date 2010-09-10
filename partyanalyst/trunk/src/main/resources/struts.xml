@@ -1328,6 +1328,11 @@
 			<result type="json" name="success">
 				<param name="root">stateElections</param>				
 			</result>		
+		</action>
+		<action name="getAllParliamentConstInCountry" class="homePageAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>				
+			</result>		
 		</action>       
 	</package>
 </struts>

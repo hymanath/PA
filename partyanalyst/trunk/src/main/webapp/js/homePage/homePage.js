@@ -38,23 +38,39 @@ function navigateToConstituencyPage()
 function hideUnhideSelectBox(radioElement, selectElement)
 {
 	var tableEl = document.getElementById("constTable");
+	var stateTableEl = document.getElementById("stateTable");
 	var stateSelectEl = document.getElementById("stateList_c");
 	var stateId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
 	var alertEl = document.getElementById("alertMessage");
 	alertEl.innerHTML = '';
 	if(radioElement == 'a_radio')
 	{
-		// election type 2 for mla const
+		
+		if(stateTableEl.style.display == 'none')
+		{
+			stateTableEl.style.display = 'block';
+		}
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		/*election type 2 for mla const*/
 		getAllConstituenciesInStateByType(2,stateId,selectElement);
 	} else if(radioElement == 'p_radio')
 	{
-		// election type 1 for mp const
-		getAllConstituenciesInStateByType(1,stateId,selectElement);
+		 /*election type 1 for mla const*/
+		
+		if(stateTableEl.style.display == 'block')
+		{
+			stateTableEl.style.display = 'none';
+		}
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		getAllParliamentConstInCountry(selectElement);
 	}
-	if(tableEl.style.display == 'none')
-	{
-		tableEl.style.display = 'block';
-	} 
+	 
 }
 function getRecentElectionsInState(stateId)
 {
@@ -97,6 +113,6 @@ function homePageAjaxCall(param,jsObj,url){
 	}
 function showResults(myResults)
 {
-	console.log(myResults);
+
 }
 

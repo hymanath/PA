@@ -386,7 +386,19 @@ var errotMsg = '<%=errorMsg%>';
                             </table>
                         </div>
                         <div class="widgetsBody">
+                        	<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 							<table>
+								<tr>
+									<td colspan="4">Select Constituency Type</td>
+								</tr>	
+								<tr>
+									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/><%=parliament%></td>
+								</tr>
+							</table>
+							<table id="stateTable" style="display:none;">
 								<tr>
 									<td><%=stateSelect%></td>
 								</tr>
@@ -394,15 +406,7 @@ var errotMsg = '<%=errorMsg%>';
 									<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
 								</tr>
 							</table>
-							<div id="alertMessage" style="margin:5px;color:red;font-weight:bold;"></div>
-							<table>	
-								<tr>
-									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
-									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-									<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/><%=parliament%></td>
-								</tr>
-							</table>	
+								
 							
 							<table id="constTable" style="display:none;">
 								<tr>

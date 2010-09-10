@@ -788,6 +788,19 @@ var url = "getAllConstituenciesInState.action?"+rparam;
 callAjax(jsObj,url);
 }
 
+function getAllParliamentConstInCountry(element)
+{
+	var jsObj=
+	{				
+			task: "getAllParliamentConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllParliamentConstInCountry.action?"+rparam;						
+callAjax(jsObj,url);
+}
+
 function getConstituenciesComboBoxForADistrict(value,elmtId)
 {
 	var jsObj=
@@ -1238,6 +1251,10 @@ function callAjax(jsObj,url)
 								showSMSStatus(jsObj,myResults);
 							}
 							else if(jsObj.task == "getConstituencies")
+							{
+								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+							}else if(jsObj.task == "getAllParliamentConstituencies")
 							{
 								clearOptionsListForSelectElmtId(jsObj.elmtId);
 								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
