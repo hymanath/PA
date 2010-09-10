@@ -2,12 +2,12 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -711,5 +711,30 @@ public class CadreManagementServiceTest {
 		delimitationConstituency.setConstituency(constituency);
 		DelimitationConstituencyMandal delConstMandal = new DelimitationConstituencyMandal();
 		delConstMandal.setTehsil(tehsil);
+	}
+	
+		
+	@Test
+	public void testGetCadreSearchResultsByInputCriteria(){
+		CadreManagementService service = new CadreManagementService();
+		List<Long> cadreIds = new ArrayList<Long>();
+		
+		//Dummy Cadre Ids
+		List<Long> dummyCadreIds = DummyCadreData.getCadreIdsList();
+		EasyMock.expect(cadreDAO.findCadreIdsByMemberTypeAndCadreList("Active",cadreIds)).andReturn(dummyCadreIds);
+		EasyMock.replay(cadreDAO);
+		service.setCadreDAO(cadreDAO);
+		
+		List cadreResult = service.getCadreByCadreType("Active", cadreIds);
+		
+		if(cadreResult != null)
+		{	
+		Iterator lIt = cadreResult.listIterator();
+		int i=1;
+		while(lIt.hasNext()){
+		Assert.assertEquals(new Long(i), (Long)lIt.next());
+		}
+		}
+		 
 	}
 }
