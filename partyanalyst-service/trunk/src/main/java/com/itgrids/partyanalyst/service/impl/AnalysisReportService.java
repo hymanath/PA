@@ -155,7 +155,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 			Party party = partyDAO.get(partyId);
 			State state = stateDAO.get(stateId);
 			partyAnalysisReportVO = new PartyAnalysisReportVO();
-			List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
+			List election = null;
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				election = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+			else
+				election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
 			if(election != null && election.size() > 0){
 				Object params = (Object)election.get(0);
 				electionId = (Long)params;
@@ -371,7 +375,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 	    partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
 	    
         if(electionId == null){
-	    	List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
+        	List election = null;
+        	if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+        		election = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+        	else
+	    	    election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
 			if(election != null && election.size() > 0){
 				Object params = (Object)election.get(0);
 				electionId = (Long)params;
