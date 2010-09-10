@@ -427,22 +427,7 @@
 					optElement.style.display = '';			
 		}
 	}
-	function showHideEffOptions(id)
-	{
-		var effOptions = document.getElementsByName("languageEffOptions_"+id);
 		
-		for(i=0;i<effOptions.length;i++)
-		{
-			if(effOptions[i].disabled == true)
-				effOptions[i].disabled = false;
-			else if (effOptions[i].disabled == false)
-			{
-				effOptions[i].disabled = true;
-				if(effOptions[i].checked == true)
-					effOptions[i].checked = false;
-			}	
-		}
-	}
 	function enableDisableCalBtn(selectedOption)
 	{		
 		var btnEl = document.getElementById("calBtnEl");
@@ -464,8 +449,8 @@
 	}
 	function validateClientSide()
 	{
-		var flag = true;
-		var hiddenEl = document.getElementById("hiddenVal");
+		var flag;
+		
 		var sameAsCAEl = document.getElementById("sameAsCA");
 		var locationError_cEl = document.getElementById("locationError_c");
 		var locationError_pEl = document.getElementById("locationError_p");
@@ -498,59 +483,21 @@
 		locationError_cEl.innerHTML = '';
 		locationError_pEl.innerHTML = '';
 		//current address
-		if(stateFieldSelected == '-1' || stateFieldSelected == '0');
+		if(stateFieldSelected == '0' || districtFieldElSelected == '0' || constituencyFieldElSelected == '0' || mandalFieldElSelected == '0' || villageFieldElSelected == '0')
 		{
 			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag=false;
-		}
-		if(districtFieldElSelected == '-1' || districtFieldElSelected == '0');
+			flag = false;
+		} else if (sameAsCAEl.checked == false )
 		{
-			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag=false;
-		}
-		if(constituencyFieldElSelected == '-1' || constituencyFieldElSelected == '0');
-		{
-			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag=false;
-		}
-		if(mandalFieldElSelected == '-1' || mandalFieldElSelected == '0');
-		{
-			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag=false;
-		}
-		if(villageFieldElSelected == '-1' || villageFieldElSelected == '0');
-		{
-			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag=false;
-		} 
-		if(sameAsCAEl.checked == false )
-		{
-			if(pstateFieldSelected == '-1' || pstateFieldSelected == '0');
+			if(pstateFieldSelected == '0' || pdistrictFieldSelected == '0' || pconstituencyFieldSelected == '0' || pmandalFieldSelected == '0' || pvillageFieldSelected == '0')
 			{
 				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag=false;
+				flag = false;
 			}
-			if(pdistrictFieldSelected == '-1' || pdistrictFieldSelected == '0');
-			{
-				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag=false;
+				
+		} else {
+				flag = true;
 			}
-			if(pconstituencyFieldSelected == '-1' || pconstituencyFieldSelected == '0');
-			{
-				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag=false;
-			}
-			if(pmandalFieldSelected == '-1' || pmandalFieldSelected == '0');
-			{
-				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag=false;
-			}
-			if(pvillageFieldSelected == '-1' || pvillageFieldSelected == '0');
-			{
-				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag=false;
-			}	
-		}
 		
 		return flag;
 	}
@@ -748,14 +695,14 @@
 							<td colspan="6" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
 						</tr>
 						<tr>
-							<td width="162"><input type="radio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn(this.value)"/>Date Of Birth<font class="requiredFont"> * </font></td>
+							<td width="162"><input type="radio" id="dopOptionRadio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn(this.value)"/>Date Of Birth<font class="requiredFont"> * </font></td>
 							<td align="left">
 								<s:textfield id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
 								<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 							</td>
 							<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" disabled="true" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
 							<td align="left">Or</td>	
-							<td><input type="radio" name="dobOption" value="age" onclick="enableDisableCalBtn(this.value)"/>Age<font class="requiredFont"> * </font></td>
+							<td><input id="ageOptionRadio" type="radio" name="dobOption" value="age" onclick="enableDisableCalBtn(this.value)"/>Age<font class="requiredFont"> * </font></td>
 							<td align="left"><s:textfield id="ageTextEl" name="age" size="25" maxlength="2"/> </td>
 						</tr>
 					</table>
@@ -818,11 +765,11 @@
 		<table id="cuurrentAddTable"class="cadreDetailsTable" width="100%">
 			<tr>
 				<td width="165px"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
-				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "-1" headerValue = "Select State" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','districtField')"></s:select></td>
+				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','districtField')"></s:select></td>
 				<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 					<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" headerKey="-1" headerValue="Select Constituency"></s:select>
+					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" headerKey="0" headerValue="Select Constituency"></s:select>
 						<!--<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 								<option value="${dist.id}">${dist.name}</option>
@@ -841,17 +788,17 @@
 			<tr>
 				<td width="165px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+					<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
 				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','villageField')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','villageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
 				<td width="165px"><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
+					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
 				<td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
@@ -880,12 +827,12 @@
 			<tr>
 				<td width="165px"><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "-1" headerValue = "Select State" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','permanent','pdistrictField')"></s:select>
+					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','permanent','pdistrictField')"></s:select>
 				</td>
 			<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 				<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_1" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" headerKey="-1" headerValue="Select Constituency"></s:select>
+						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_1" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" headerKey="0" headerValue="Select Constituency"></s:select>
 						<!--<select id="pdistrictField" class="regionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 							<option value="${dist.id}">${dist.name}</option>
@@ -904,17 +851,17 @@
 			<tr>
 				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituency" list="#session.constituenciesList_1" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','permanent','pmandalField')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituency" list="#session.constituenciesList_1" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','permanent','pmandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
 				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_1" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','permananent','pvillageField')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_1" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','permananent','pvillageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
 				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_1" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
+					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_1" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="ppinCode" maxlength="10" size="25" />  </td>
@@ -947,9 +894,9 @@
 		</tr>
 		<tr>
 			<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
-			<td align="left"><s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Education"></s:select></td>
+			<td align="left"><s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select></td>
 			<td align="left" width="165"><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /><font class="requiredFont"> * </font></td>
-			<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Occupation"></s:select></td>
+			<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
 		</tr>				
 		<tr>
 			<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
@@ -983,7 +930,7 @@
 					<option  value='5'>Mandal</option>		
 					<option  value='6'>Village</option>					
 				</select> 
-				--><s:select id="cadreLevelField" name="cadreLevel"list="#{'2':'State','3':'District','4':'Constituency','5':'Mandal','6':'Village'}"  headerKey="-1" headerValue="Select Cadre Level" onchange="getStateList()"></s:select>
+				--><s:select id="cadreLevelField" name="cadreLevel"list="#{'2':'State','3':'District','4':'Constituency','5':'Mandal','6':'Village'}"  headerKey="0" headerValue="Select Cadre Level" onchange="getStateList()"></s:select>
 				<input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
 		</tr>
@@ -1034,7 +981,7 @@
 					</c:forEach>					
 				</select>				
 			-->
-			<s:select id="partyComiteSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="-1" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="partyComiteSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 			<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
 			<td>
