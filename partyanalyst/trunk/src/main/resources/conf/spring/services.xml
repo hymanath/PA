@@ -96,6 +96,7 @@
 	<bean name="basePartyResultsServiceImpl" class="com.itgrids.partyanalyst.service.impl.BasePartyResultsServiceImpl" abstract="true">
 		<property name="electionDAO" ref="electionDAO" />		                                       
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
