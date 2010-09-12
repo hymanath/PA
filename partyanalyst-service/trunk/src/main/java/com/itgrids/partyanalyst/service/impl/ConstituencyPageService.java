@@ -892,6 +892,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return candidateInfoList;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId)
 	{	
 		String electionType = "";
@@ -944,6 +945,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				idString.append(IConstants.COMMA).append((Long)ids[0]);
 				
 			}	
+			
+			if(idString.length() > 0)
 			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L, IConstants.ELECTION_SUBTYPE_MAIN)));
 		}
 		
