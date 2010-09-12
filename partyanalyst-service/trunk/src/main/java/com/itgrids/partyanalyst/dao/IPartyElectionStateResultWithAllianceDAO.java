@@ -9,5 +9,5 @@ import com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance;
 public interface IPartyElectionStateResultWithAllianceDAO extends
 		GenericDao<PartyElectionStateResultWithAlliance, Long> {
 
-	public List getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId);
+	public List<PartyElectionStateResultWithAlliance> getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId,Long stateId);
 }

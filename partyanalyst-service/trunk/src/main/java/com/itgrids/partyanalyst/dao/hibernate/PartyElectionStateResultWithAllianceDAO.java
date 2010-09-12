@@ -16,11 +16,11 @@ public class PartyElectionStateResultWithAllianceDAO extends
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PartyElectionStateResultWithAlliance> getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId){
-		Object[] parms = {electionId,partyId};
+	public List<PartyElectionStateResultWithAlliance> getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId,Long stateId){
+		Object[] parms = {electionId,partyId,stateId};
 		return getHibernateTemplate().find("select model.state.stateId,model.totalConstiParticipated,model.totalValidVotes," +
 				" model.votesPercentage,model.completeVotesPercent,model.totalSeatsWon from PartyElectionStateResultWithAlliance model where model.election.electionId = ? and" +
-				" model.party.partyId = ? order by model.state.stateId",parms);
+				" model.party.partyId = ? and model.state.stateId =? order by model.state.stateId",parms);
 		
 	}
 }

@@ -25,9 +25,9 @@ public class PartyElectionDistrictResultWithAllianceDAOHibernateTest extends
 		 partyElectionDistrictResultWithAllianceDAO.getAll();		
 	}
 	
-	public void testGetPartiesByDistrict(){
+	/*public void testGetPartiesByDistrict(){
 		List list = partyElectionDistrictResultWithAllianceDAO.getPartyResultsForADistrictByPartyIdAndElectionId(3l,24l);
 		System.out.println(list.size());
-	}
+	}*/
 	
 }

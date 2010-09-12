@@ -26,7 +26,7 @@ public class PartyElectionStateResultWithAllianceDAOHibernateTest extends
 	
 	public void testGet(){
 		
-		java.util.List validVotesWhenAllianceConsidered = partyElectionStateResultWithAllianceDAO.getPartyResultsByStateIdAndElectionId(1l,24l);
+		java.util.List validVotesWhenAllianceConsidered = null;//partyElectionStateResultWithAllianceDAO.getPartyResultsByStateIdAndElectionId(1l,24l);
 		for(int i=0;i<validVotesWhenAllianceConsidered.size();i++){
 			Object[] parms = (Object[])validVotesWhenAllianceConsidered.get(i);
 			ElectionInfoVO electionInfo = new ElectionInfoVO();
