@@ -28,8 +28,15 @@ body
 
 .headerBackground_center
 {
-	background-image:url(../../images/icons/cadreReport/bg_center.png);
-	height:25px;
+	/*background-image:url(../../images/icons/cadreReport/bg_center.png);*/
+	height:40px;
+}
+
+.widgetsFooter
+{
+	padding:5px;
+	text-align:right;
+	cursor:pointer;
 }
 
 .headerLabelSpan
@@ -52,6 +59,8 @@ body
 	background-color:#E3EDF0;
 	height:180px;
 	width:100%;
+	color:#FFFFFF;
+	font-weight:bold;
 }
 
 #electionTrendzWidgetHeader
@@ -210,12 +219,12 @@ body
 {
 	background-color:#FFFFFF;
 	border:1px solid #DADADA;
-	height:458px;
+	height:438px;
 	padding:10px;
 }
 .selectBoxWidth
 {
-	color:highlight;
+	padding:2px;
 	width:200px;
 }
 
@@ -228,5 +237,27 @@ body
 {
 	color:#213540;
 	font-weight:bold;
-	margin-top:10px;
+}
+
+#electionTrendzDivision_head
+{
+	border-bottom:2px solid #33A0DB;
+}
+
+.votingTrendzHeadLabelDiv
+{
+	background-image:url("../../images/icons/homePage_new/btn_homePage.png");
+	height:30px;
+	text-align:center;
+	width:100px;
+	cursor:pointer;
+}
+
+.votingTrendzHeadLabelSpan
+{
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;	
+	position:relative;
+	top:5px;
 }

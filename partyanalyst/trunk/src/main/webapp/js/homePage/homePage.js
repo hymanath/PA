@@ -143,6 +143,15 @@ function showResults(results)
 	
 }
 
+function buildResultsTableForElectionType(elecType)
+{
+	if(elecType == 'assembly')
+		buildResultsHTMLTable(assemblyResultsArray);
+	else if(elecType == 'parliament')
+		buildResultsHTMLTable(parliamentResultsArray);
+
+}
+
 function buildResultsHTMLTable(arr)
 {
 	var elmt = document.getElementById("electionTrendzDiv_main");
@@ -218,7 +227,7 @@ function buildResultsHTMLTable(arr)
 
 		var myConfigs = {
 			paginator : new YAHOO.widget.Paginator({
-				rowsPerPage: 6
+				rowsPerPage: 5
 			})
 		};
 		var myDataTable = new YAHOO.widget.DataTable("electionTrendzBodyDiv_"+i,resultsColumnDefs, resultsDataSource,myConfigs);  
@@ -233,6 +242,7 @@ function buildSlider(navArray)
 		$("#jQuerySliderDiv").sudoSlider({ 
 			numeric: true,
 			fade: true,
+			speed:'6000',
 			auto:true,
 			crossFade: false,
 			updateBefore:true,
