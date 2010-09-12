@@ -13,14 +13,22 @@ import com.opensymphony.xwork2.ActionSupport;
 public class AdminPageAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
+	private EntitlementsHelper entitlementsHelper;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
 
 	public String execute(){
 		HttpSession session = request.getSession();
-		EntitlementsHelper entitlementsHelper = new EntitlementsHelper();
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CROSS_VOTING_REPORT))
 			return INPUT;
