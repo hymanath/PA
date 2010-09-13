@@ -5763,5 +5763,21 @@ public class StaticDataService implements IStaticDataService {
 		}
 	 return selectedParties;
 	}
+
+
+	public List<SelectOptionVO> getStaticPartiesListFromElectionScope(
+			Long scopeId) {
+		
+		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+		if(scopeId != null){
+		ElectionScope electionScope = electionScopeDAO.get(scopeId);
+		if(electionScope.getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			selectedParties = getStaticPartiesListForAState(1L);
+		else 
+			selectedParties = getStaticPartiesListForAState(electionScope.getState().getStateId());
+		}
+		
+	 return selectedParties;
+	}
 }
 
