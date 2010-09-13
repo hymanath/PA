@@ -255,7 +255,7 @@ legend
 }
 #constituencyPageRightMapDiv
 {	
-	min-height:1000px;
+	/*min-height:1000px;*/
 	min-width:250px;
 	max-width:260px;
 	width:expression(document.body.clientWidth > 260? "260px": "auto" );
