@@ -261,3 +261,10 @@ body
 	position:relative;
 	top:5px;
 }
+
+.adData_footer
+{
+	left:115px;
+	padding:5px;
+	position:relative;
+}

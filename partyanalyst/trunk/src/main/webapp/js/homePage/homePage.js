@@ -7,16 +7,37 @@ var ZPTCResultsArray = new Array();
 var emptyArray = new Array();
 
 var selectedState = '';
+var selectedStateId = '';
 
 function initializeHomePage()
 {
+	buildLogoImage();
 	var stateEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 	getDistrictsComboBoxForAState(1, 'districtList_d');
+	buildElectionTrendzTabView();
 	getRecentElectionsInState(stateSelectElVal);
 	getProblemsInState(stateSelectElVal);
-	
 }
+
+function buildLogoImage()
+{
+	var elmt = document.getElementById("pa_Logo");
+
+	if(!elmt)
+		return;
+
+	var str = '';	
+	
+	
+	if(navigator.appName=="Microsoft Internet Explorer")
+		str += '<img src="images/icons/homePage_new/logo.gif">';
+	else
+		str += '<img src="images/icons/homePage_new/logo.png">';
+
+	elmt.innerHTML = str;
+}
+
 function navigateToStatePage()
 {
 	var stateSelectEl = document.getElementById("stateList_s");
@@ -131,6 +152,68 @@ function homePageAjaxCall(param,jsObj,url){
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+
+function buildElectionTrendzTabView()
+{
+	var tabView = new YAHOO.widget.TabView(); 
+	
+	var content = '';
+	content += '<div id="stateSelectionDiv">';
+	content += '<table>';
+	content += '	<tr>';
+	content += '		<th style="color:#213540"> Recent Election Results In :</th>';
+	content += '		<td>';
+	content += '		<select id="statesInCountry" onchange="getRecentElectionsInState(this.options[this.selectedIndex].value)">';
+	for(var i in statesInCountryObj)
+		content += '		<option value='+statesInCountryObj[i].id+'>'+statesInCountryObj[i].name+'</option>';
+	content += '		</select>';
+	content += '</td>';
+	content += '	</tr>';
+	content += '</table>';
+	content += '</div>';
+	
+	var content1 = '';
+	content1 += content;
+	content1 += '<div id="assemblyElectionTrendzDiv_main">';
+	content1 += '</div>';
+
+	var content2 = '';
+	content2 += content;
+	content2 += '<div id="parliamentElectionTrendzDiv_main">';
+	content2 += '</div>';
+
+
+	tabView.addTab( new YAHOO.widget.Tab({
+        label: 'Assembly',
+        content: content1,
+        active: true
+    }));
+
+    tabView.addTab( new YAHOO.widget.Tab({
+        label: 'Parliament',
+        content:content2 
+
+    }));
+	
+	tabView.appendTo('electionTrendzDiv_main'); 
+
+	var tab0 = tabView.getTab(0);
+	var tab1 = tabView.getTab(1);
+
+	tab0.addListener('click', handleClick);
+	tab1.addListener('click', handleClick);
+
+	function handleClick(e) {  
+		if(e.originalTarget.innerHTML == "Assembly")
+		{			
+			buildResultsHTMLTable(assemblyResultsArray,"assemblyElectionTrendzDiv_main","Assembly");
+		}
+		else if(e.originalTarget.innerHTML == "Parliament")
+		{			
+			buildResultsHTMLTable(parliamentResultsArray,"parliamentElectionTrendzDiv_main","Parliament");  
+		}
+	}
+}
 function showResults(results)
 {
 	assemblyResultsArray = new Array();
@@ -140,7 +223,10 @@ function showResults(results)
 
 	var stateSelectEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateSelectEl.options[stateSelectEl.selectedIndex].text;
+	var stateSelectElId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
+
 	selectedState = stateSelectElVal;
+	selectedStateId = stateSelectElId;
 
 	for(var i=0;i<results.length;i++)
 	{
@@ -153,8 +239,9 @@ function showResults(results)
 		else if(results[i].electionType == "ZPTC")
 			ZPTCResultsArray.push(results[i]);
 	}
-	
-	buildResultsHTMLTable(assemblyResultsArray);
+
+	buildResultsHTMLTable(assemblyResultsArray,"assemblyElectionTrendzDiv_main","Assembly");
+		
 	
 }
 
@@ -167,9 +254,9 @@ function buildResultsTableForElectionType(elecType)
 
 }
 
-function buildResultsHTMLTable(arr)
+function buildResultsHTMLTable(arr,divId,elecType)
 {
-	var elmt = document.getElementById("electionTrendzDiv_main");
+	var elmt = document.getElementById(divId);
 	
 	if(!elmt)
 		return;
@@ -177,7 +264,7 @@ function buildResultsHTMLTable(arr)
 	var navigationArr = new Array();
 
 	var str = '';	
-	str += '<div id="jQuerySliderDiv" class="slider yui-skin-sam">';
+	str += '<div id="jQuerySliderDiv_'+elecType+'" class="slider yui-skin-sam">';
 	str += '<ul>';
 	for(var i=0;i<arr.length;i++)
 	{
@@ -187,21 +274,32 @@ function buildResultsHTMLTable(arr)
 		str += '<table>';
 		str += '<tr>';
 		str += '<td><img src="images/icons/indexPage/listIcon.png"/></td>';
-		str += '<td>'+selectedState+' '+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
+		if(arr[i].electionSubtype == "BYE")
+			str += '<td>'+selectedState+' '+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
+		else
+			str += '<td>'+selectedState+' '+arr[i].electionType+' Election Results In Year '+arr[i].year+'</td>';
+
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
-		str += '<div id="electionTrendzBodyDiv_'+i+'" >';
-		str += '<table id="electionTrendzBodyTable_'+i+'">';
+		str += '<div id="electionTrendzBodyDiv_'+elecType+'_'+i+'" >';
+		str += '<table id="electionTrendzBodyTable_'+elecType+'_'+i+'">';
 		for(var j=0;j<arr[i].partyResultsVO.length;j++)
 		{
+			if(j == 6)
+				break;
 			str += '<tr>';
 			str += '<td>'+arr[i].partyResultsVO[j].partyName+'</td>';
 			str += '<td>'+arr[i].partyResultsVO[j].totalSeatsWon+'</td>';
 			str += '<td> <img height="30" width="40" src="images/party_flags/'+arr[i].partyResultsVO[j].partyFlag+'"></td>';
-			str += '</tr>';
+			str += '</tr>';			
 		}
 		str += '</table>';
+		str += '</div>';
+		str += '<div id="electionTrendzBodyDiv_'+elecType+'_'+i+'_footer" style="padding:5px;">';
+		str += '	<a href="javascript:{}" onclick="showElectionResults('+i+',\''+elecType+'\')" class="viewAncs">View All Party Results</a>';
+		str += '		|';
+		str += '	<a class="viewAncs" href="electionDetailsReportAction.action?electionId='+arr[i].electionId+'&stateID='+selectedStateId+'&stateName='+selectedState+'&electionType='+arr[i].electionType+'&electionTypeId='+arr[i].electionTypeId+'&year='+arr[i].year+'">Analyze</a>';	
 		str += '</div>';
 		str += '</li>';
 	}
@@ -209,11 +307,11 @@ function buildResultsHTMLTable(arr)
 	str += '</div>';
 
 	elmt.innerHTML = str;
-	
+		
 	for(var i=0;i<arr.length;i++)
 	{
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("electionTrendzBodyTable_"+i));
+			.get("electionTrendzBodyTable_"+elecType+"_"+i));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 		resultsDataSource.responseSchema = {
 			fields : [ {
@@ -240,21 +338,21 @@ function buildResultsHTMLTable(arr)
 			sortable : false
 		}];	
 
-		var myConfigs = {
+		/*var myConfigs = {
 			paginator : new YAHOO.widget.Paginator({
 				rowsPerPage: 5
 			})
-		};
-		var myDataTable = new YAHOO.widget.DataTable("electionTrendzBodyDiv_"+i,resultsColumnDefs, resultsDataSource,myConfigs);  
+		};*/
+		var myDataTable = new YAHOO.widget.DataTable("electionTrendzBodyDiv_"+elecType+"_"+i,resultsColumnDefs, resultsDataSource);  
 	}
 	
-	buildSlider(navigationArr);
+	buildSlider(navigationArr,elecType);
 }
 
-function buildSlider(navArray)
+function buildSlider(navArray,elecType)
 {
 	
-		$("#jQuerySliderDiv").sudoSlider({ 
+		$("#jQuerySliderDiv_"+elecType).sudoSlider({ 
 			numeric: true,
 			fade: true,
 			speed:'6000',
@@ -270,3 +368,77 @@ function buildSlider(navArray)
 
 }
 
+function showElectionResults(index,elecType)
+{	
+	if(elecType == "Assembly")
+		results = assemblyResultsArray[index].partyResultsVO;
+	else if(elecType == "Parliament")
+		results = parliamentResultsArray[index].partyResultsVO;
+
+
+	var str='';
+	str+='<div id="elecResultsDiv" class="yui-skin-sam">';
+	str+='<table id="elecResultsTab">';
+	for(var item in results)
+	{			
+		str+='<tr>';
+		str+='<td>'+results[item].partyName+'</td>';
+		if(results[item].partyFlag)
+			str+='<td><img src="images/party_flags/'+results[item].partyFlag+'" height="30" width="40"/></td>';
+		else	
+			str+='<td><img src="images/party_flags/no_Image.png" height="30" width="40"/></td>';
+		str+='<td align="center">'+results[item].totalSeatsWon+'</td>';
+		str+='</tr>';
+	}
+	str+='</table>';
+	str+='</div>';
+	
+	var myPanel = new YAHOO.widget.Panel("electionResultsPopupDiv_inner", {			
+			 width:"500px",
+			 fixedcenter: true, 
+			 constraintoviewport: true, 
+			 underlay: "none", 
+			 close: true, 
+			 visible: true, 
+			 draggable: true
+   });
+   myPanel.setHeader("Election Results ..");
+   myPanel.setBody(str);
+   myPanel.render();
+	   
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("elecResultsTab"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "partyName"
+		},{
+			key : "partyFlag"
+		}, {
+			key : "totalSeatsWon",parser:"number"
+		}]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "partyName",
+		label : "PARTY NAME",
+		sortable : true
+	},{
+		key : "partyFlag",
+		label : "PARTY Flag"
+	}, {
+		key : "totalSeatsWon",
+		label : "SEATS WON",
+		sortable : true
+	}];
+
+	
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
+
+   	var myDataTable = new YAHOO.widget.DataTable("elecResultsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
+}

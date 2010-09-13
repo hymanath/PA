@@ -35,6 +35,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
 
 
 
@@ -54,7 +55,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
 
 <!-- YUI Dependency files (End) -->
 
@@ -83,17 +84,27 @@ var Localization = { <%
 		String errorMsg = resb.getString("constTypeAlert");
 %> }
 var errotMsg = '<%=errorMsg%>';
+
+<c:forEach var="state" items="${statesList}" >
+			
+	var obj={
+				id:"${state.id}",
+				name:"${state.name}",				
+			};
+	statesInCountryObj.push(obj);	
+</c:forEach>
+
 </script>
 </head>
 <body>
-	
+	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="homePageContainer">
-		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible">
+		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
                     <td style="vertical-align:top;width:580px;">
-                        <div id="pa_Logo">
-                        	<img src="images/icons/homePage/pa_logo.jpg" style="padding-left: 10px; padding-top: 5px;"></img>
+                        <div id="pa_Logo" style="padding-left: 10px; padding-top: 10px;">
+                        	
                         </div>
                     </td>
                     <td style="vertical-align:top;">
@@ -210,8 +221,17 @@ var errotMsg = '<%=errorMsg%>';
 							  </tr>
 							</table>	
 						 </div>
-                        <div id="electionTrendzWidgetBody">
-                        	<div id="electionTrendzDivision_head">
+                        <div id="electionTrendzWidgetBody" class="yui-skin-sam">
+                        	<!--<div id="stateSelectionDiv">
+								<table>
+									<tr>
+										<td> Recent Election Results In :</td>
+										<td> <s:select cssClass="selectBoxWidth" theme="simple" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
+									</tr>
+								</table>
+							</div> 
+
+							<div id="electionTrendzDivision_head">
 								<table>
 									<tr>
 										<td>
@@ -226,15 +246,8 @@ var errotMsg = '<%=errorMsg%>';
 										</td>
 									</tr>
 								</table>
-							</div>
-							<div id="stateSelectionDiv">
-								<table>
-									<tr>
-										<td>Election Results In :</td>
-										<td> <s:select cssClass="selectBoxWidth" theme="simple" name="state" id="stateList_res" list="statesList" listKey="id" listValue="name" onchange="getRecentElectionsInState(this.options[this.selectedIndex].value)"/></td>
-									</tr>
-								</table>
-							</div>
+							</div>-->
+
 							<div id="electionTrendzDiv_main">
 								
 							</div>
@@ -278,7 +291,11 @@ var errotMsg = '<%=errorMsg%>';
 									</table>
 									
 								</div>
-								<div class="adData_footer"></div>								
+								<div class="adData_footer">
+									<div onclick="buildResultsTableForElectionType('assembly')" class="votingTrendzHeadLabelDiv">
+										<span class="votingTrendzHeadLabelSpan">Know More</span>
+									</div>
+								</div>								
 							</div>
 						</div>
                     </div>                    
@@ -297,11 +314,11 @@ var errotMsg = '<%=errorMsg%>';
                               <tr>
                                 <td width="1%"><img src="images/icons/homePage_new/1.jpg"/></td>
                                 <td width="98%">
-                                	<div class="headerBackground_center" style="background-color:#3e728e;">
-                                    	<span class="headerLabelSpan"> View Your State  </span>
+                                	<div class="headerBackground_center" style="background-color:#5889a3;">
+                                    	<span class="headerLabelSpan" style="color:#000000"> View Your State  </span>
                                     </div>
                                 </td>
-                                
+                                 <td width="1%"><img src="images/icons/homePage_new/1r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -327,10 +344,11 @@ var errotMsg = '<%=errorMsg%>';
                               <tr>
                                 <td width="1%"><img src="images/icons/homePage_new/2.jpg"/></td>
                                 <td width="98%">
-                                	<div class="headerBackground_center" style="background-color:#d98d06;">
-                                    	<span class="headerLabelSpan"> View Your District  </span>
+                                	<div class="headerBackground_center" style="background-color:#dea659;">
+                                    	<span class="headerLabelSpan" style="color:#000000"> View Your District  </span>
                                     </div>
-                                </td>                                
+                                </td>   
+								 <td width="1%"><img src="images/icons/homePage_new/2r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -362,10 +380,11 @@ var errotMsg = '<%=errorMsg%>';
                               <tr>
                                 <td width="1%"><img src="images/icons/homePage_new/3.jpg"/></td>
                                 <td width="98%">
-                                	<div class="headerBackground_center"  style="background-color:#e8cda0;">
-                                    	<span class="headerLabelSpan"> View Your Constituency  </span>
+                                	<div class="headerBackground_center"  style="background-color:#efdcbc;">
+                                    	<span class="headerLabelSpan" style="color:#000000"> View Your Constituency  </span>
                                     </div>
-                                </td>                               
+                                </td>  
+								<td width="1%"><img src="images/icons/homePage_new/3r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -412,10 +431,11 @@ var errotMsg = '<%=errorMsg%>';
                               <tr>
                                 <td width="1%"><img src="images/icons/homePage_new/4.jpg"/></td>
                                 <td width="98%">
-                                	<div class="headerBackground_center" style="background-color:#909597;">
-                                    	<span class="headerLabelSpan"> View MPTC/ZPTC Elections  </span>
+                                	<div class="headerBackground_center" style="background-color:#a0a5a7;">
+                                    	<span class="headerLabelSpan" style="color:#000000"> View MPTC/ZPTC Elections  </span>
                                     </div>
                                 </td>
+								<td width="1%"><img src="images/icons/homePage_new/4r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
