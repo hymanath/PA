@@ -499,7 +499,7 @@ function buildCenterVotersCandidateInfoContent()
 function showCurrentlyElectedCandidate()
 {	
 
-	var HeadElmt = document.getElementById('constituencyPageCandidateInfo_Head');
+    var HeadElmt = document.getElementById('constituencyPageCandidateInfo_Head');
 	var BodyElmt = document.getElementById('constituencyPageCandidateInfo_Body');
 
 	var headStr = '';
@@ -508,13 +508,21 @@ function showCurrentlyElectedCandidate()
 		HeadElmt.innerHTML=headStr;
 
 	/* ---- Building Assembly candidate Info datatable ---- */
-	
-	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
-	{		
-		
+	if(constituencyPageMainObj.presentAssemblyCandidate == null && constituencyPageMainObj.presentParliamentCandidate == null)
+	{
 		BodyElmt.innerHTML = 'This constituency has been delimitated ';
 		return;
 	}
+
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 && constituencyPageMainObj.presentParliamentCandidate.length == 0)
+	{		
+		BodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+
+	 if(constituencyPageMainObj.presentAssemblyCandidate != null && constituencyPageMainObj.presentAssemblyCandidate.length != 0)
+	{
+		
 	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentAssemblyCandidate); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
@@ -540,7 +548,10 @@ function showCurrentlyElectedCandidate()
 	else
 		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
 
-	
+	}
+
+     if(constituencyPageMainObj.presentParliamentCandidate != null && constituencyPageMainObj.presentParliamentCandidate.length != 0)
+	{
 	/* ---- Building Parliament candidate Info datatable ---- */
 
 	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentParliamentCandidate); 
@@ -567,6 +578,8 @@ function showCurrentlyElectedCandidate()
 		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
 	else
 		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
+
+	}
 }
 
 function buildProblemViewingWindow()
