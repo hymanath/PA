@@ -416,6 +416,13 @@ function buildConstituencyLayout()
 
 function buildCenterVotersCandidateInfoContent()
 {
+	var divElmt = document.getElementById("constituencyCenterContentOuter1");
+	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
+	{
+		divElmt.style.display='none';
+			return;
+	}
+	
 	var elmtHead = document.getElementById("mandalsVotersInfoDiv_Head");
 	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
 		elmtHead.innerHTML = 'Mandals Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Assembly:';
@@ -1160,7 +1167,13 @@ function hideMptcDiv(){
 	 var candidateLink="";
 	 candLink.innerHTML = candidateLink;
 }
+function hideMptcZptcDiv()
+{
+	var divElmt = document.getElementById("zptcMptcCompleteData");
+	divElmt.style.display = 'none';	
+}
 function buildZptcResults(results){
+	
 	assignToPartyDataArray = new Array();
 	var candLink = document.getElementById("zptcCandidateLink");
 	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
@@ -1196,6 +1209,7 @@ function buildZptcResults(results){
 }
 
 function buildMptcResults(results){
+	
 	assignToPartyDataArray = new Array();
 
 	var candLink = document.getElementById("mptcCandidateLink");
