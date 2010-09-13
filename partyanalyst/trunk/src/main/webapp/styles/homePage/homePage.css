@@ -58,7 +58,7 @@ body
 {
 	background-color:#E3EDF0;
 	height:180px;
-	width:100%;
+	padding:10px;
 	color:#FFFFFF;
 	font-weight:bold;
 }
@@ -267,4 +267,15 @@ body
 	left:115px;
 	padding:5px;
 	position:relative;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,.yui-skin-sam .yui-navset .yui-nav .selected a:focus,.yui-skin-sam .yui-navset .yui-nav .selected a:hover
+{
+	background-color:#6380BA;
+	background-image:none;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav
+{
+	border-color:#6380BA;
 }

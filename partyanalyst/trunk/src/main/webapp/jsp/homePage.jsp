@@ -102,7 +102,7 @@ var errotMsg = '<%=errorMsg%>';
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
-                    <td style="vertical-align:top;width:580px;">
+                    <td style="vertical-align:top;width:540px;">
                         <div id="pa_Logo" style="padding-left: 10px; padding-top: 10px;">
                         	
                         </div>
@@ -120,9 +120,9 @@ var errotMsg = '<%=errorMsg%>';
             </table>		
         </div>	
         <div></div>
-        <div id="homePage_header">
+       <!-- <div id="homePage_header">
         	<img height="180" width="960" src="images/icons/homePage_new/homePage_header.jpg"/>
-        </div>
+        </div> -->
         <div id="homePageContent_main">
         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
@@ -209,10 +209,10 @@ var errotMsg = '<%=errorMsg%>';
                     	<div id="electionTrendzWidgetHeader">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_left.jpg"/></td>
+								<td width="1%"><img height="43" width="45" src="images/icons/homePage_new/newsContainerHead_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
-										<span class="headerLabelSpan">
+										<span class="headerLabelSpan" style="color:#3b3b3b">
 											Latest Election Trendz
 										</span>
 									</div>
