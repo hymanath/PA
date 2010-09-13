@@ -103,12 +103,7 @@
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
 
-		function callDistrictPage(districtId)
-		{
-           alert(" District Id :" + districtId);
-
-		}
-  </script>
+ </script>
  </HEAD>
 
 <BODY>
@@ -234,7 +229,7 @@
                              
 						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
 						<td><h4> 
-						    <a href="javascript:{}" class="distAnchor" title="Click to view ${districts.name} page" onClick="callDistrictPage('${districts.id}')">
+						    <a href="districtPageAction.action?districtId=${districts.id}&districtName=${districts.name}" class="distAnchor" title="Click to view ${districts.name} page">
 							    <c:out value="${districts.name}" /> 
 							</a> 
 						</h4></td>
