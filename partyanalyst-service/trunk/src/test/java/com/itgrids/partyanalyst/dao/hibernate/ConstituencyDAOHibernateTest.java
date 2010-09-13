@@ -152,7 +152,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(" Constituency Name :" + (String)params[1]);
 		}
 	}*/
-	
+	/*
 	public void testGetGetAllParliamentConstituenciesInCountry(){
 		List<Constituency> constList  = constituencyDAO.getAllParliamentConstituenciesInCountry(1l, 1l);
 		System.out.println(constList.size());
@@ -162,6 +162,8 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("Name:"+constituency.getName());
 		}
 		
-	}
+	}*/
+	
+	
 	
 }
