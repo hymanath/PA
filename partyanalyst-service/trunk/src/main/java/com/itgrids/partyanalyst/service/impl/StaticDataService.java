@@ -5715,5 +5715,53 @@ public class StaticDataService implements IStaticDataService {
 	
 	 return scopeId;
 	}
+
+
+	public List<SelectOptionVO> getStaticNationalParties() {
+		
+		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+		List<Party> parties = partyDAO.findStaticPartiesByRecognization(IConstants.NATIONAL_PARTY_TYPE, IConstants.NATIONAL_STATIC_PARTIES);
+		if(parties != null && parties.size() > 0){
+			for(Party party:parties){
+				SelectOptionVO partyVO = new SelectOptionVO();
+				partyVO.setId(party.getPartyId());
+				partyVO.setName(party.getShortName());
+				
+				selectedParties.add(partyVO);
+			}
+		}
+		
+	 return selectedParties;
+	}
+
+
+	public List<SelectOptionVO> getStaticPartiesListForAState(Long stateId) {
+        
+		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+		
+		//State Parties
+		selectedParties.addAll(getStaticStateParties(stateId));
+		//National Parties
+		selectedParties.addAll(getStaticNationalParties());
+		
+	 return selectedParties;
+	}
+
+
+	public List<SelectOptionVO> getStaticStateParties(Long stateId) {
+
+		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+		List<Party> parties = partyDAO.findStatePartyByStateId(stateId);
+		if(parties != null && parties.size() > 0){
+			for(Party party:parties){
+				SelectOptionVO partyVO = new SelectOptionVO();
+				partyVO.setId(party.getPartyId());
+				partyVO.setName(party.getShortName());
+				
+				selectedParties.add(partyVO);
+			}
+		}
+	 return selectedParties;
+	}
 }
 
