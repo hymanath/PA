@@ -129,14 +129,16 @@
 									if(myResults!= null &&  myResults.length>0){
 										buildZptcResults(myResults);	
 									}else{
-										hideZptcDiv();			
+										//hideZptcDiv();
+										hideMptcZptcDiv();			
 									}	
 								}else if(jsObj.task == "getMptcElectionResults")
 								{		
 									if(myResults!= null &&  myResults.length>0){
 										buildMptcResults(myResults);
 									}else{
-										hideMptcDiv();			
+										//hideMptcDiv();
+										hideMptcZptcDiv();			
 									}	
 								}		
 							}catch (e) {   
@@ -625,12 +627,13 @@ function getMptcPartyDetails(elecYear){
 function buildElectionsSelectBox(myResults){
 	var selectDiv = document.getElementById("electionIdsSelectDiv");
 	var electionYearSelect = '';
-	
+	var selectDivEl = document.getElementById("MandalwiseVotingTrendz");
 	if(myResults.length == 0){
-		electionYearSelect +='<b>Sorry, Constituency/Mandal Data Not Available For This Constituency</b>';
-		var resultDiv = document.getElementById("mandalOrConstiElecResultDiv");
-		resultDiv.style.display = "none";
-		selectDiv.innerHTML = electionYearSelect; 
+		selectDivEl.style.display = 'none';
+		//electionYearSelect +='<b>Sorry, Constituency/Mandal Data Not Available For This Constituency</b>';
+		//var resultDiv = document.getElementById("mandalOrConstiElecResultDiv");
+		//resultDiv.style.display = "none";
+		//selectDiv.innerHTML = electionYearSelect; 
 		return;
 	}
 
@@ -733,7 +736,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 					</div>
 				
 
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
+					<div id="constituencyCenterContentOuter1" class="rounded"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -796,7 +799,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 		
 		<tr>		
 		<td colspan="2">
-		<div class="rounded" style="width: 910px;">
+		<div id="MandalwiseVotingTrendz" class="rounded" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
@@ -821,7 +824,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 		
 		<tr>
 			<td colspan="2">
-			<div class="rounded" style="width: 910px;">
+			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
