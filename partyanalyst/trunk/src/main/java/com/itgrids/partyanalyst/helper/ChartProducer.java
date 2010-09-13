@@ -416,7 +416,7 @@ public class ChartProducer {
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,12));
+        domainAxis.setTickLabelFont(new Font("verdana",Font.PLAIN,10));
         
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
@@ -441,11 +441,11 @@ public class ChartProducer {
         for(int i=0;i<dataset.getRowCount();i++){
         	seatsRenderer.setSeriesStroke(
             			i, new BasicStroke(
-            			1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+            			1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
             			1.0f, null, 0.0f
             			)
             			);
-        	seatsRenderer.setBaseLegendTextFont(new Font("verdana",Font.BOLD,13));
+        	seatsRenderer.setBaseLegendTextFont(new Font("verdana",Font.PLAIN,10));
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
         }
         }
