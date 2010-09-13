@@ -67,6 +67,7 @@ public class State implements java.io.Serializable {
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<District> districts = new HashSet<District>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
+	private Set<Party> party = new HashSet<Party>(0);
 	
 	
 	// Constructors
@@ -89,7 +90,7 @@ public class State implements java.io.Serializable {
 			String stateTree, String stateSport, String stateDance,
 			String stateFlower, String isoCode, Long stateCode, Date startDate,
 			Date deformDate, Set<Constituency> constituencies,
-			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<Party> party) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -113,6 +114,7 @@ public class State implements java.io.Serializable {
 		this.constituencies = constituencies;
 		this.districts = districts;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+		this.party = party;
 	}
 
 
@@ -339,6 +341,16 @@ public class State implements java.io.Serializable {
 	public void setPartyElectionDistrictResult(
 			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Party> getParty() {
+		return party;
+	}
+
+	public void setParty(Set<Party> party) {
+		this.party = party;
 	}
 
 	/* (non-Javadoc)
