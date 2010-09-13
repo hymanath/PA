@@ -386,9 +386,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			}
 		}
 		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
+        if(constituenciesStatusVO != null && constituenciesStatusVO.getElectionYear() != null)
 		electionYear = constituenciesStatusVO.getElectionYear();
+        if(constituenciesStatusVO != null && constituenciesStatusVO.getElectionType() != null)
 		electionType = constituenciesStatusVO.getElectionType();
-		mandals = staticDataService.getMandalsForDistrict(Long.parseLong(districtId));	
+		mandals = staticDataService.getMandalsForDistrict(Long.parseLong(districtId));
+		if(constituenciesStatusVO != null && constituenciesStatusVO.getParliamentConstituencies() != null)
 		parliamentCandidateDetailsVo = staticDataService.getAllParliamentWinningCandidatesForADistrict(Long.parseLong(districtId),
 				constituenciesStatusVO.getParliamentConstituencies());
 		if(mandals == null){
@@ -612,7 +615,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
-		electionsInDistrict = staticDataService.getAllElectionScopes();
+		Long districtID = new Long(jObj.getString("distId"));
+		
+		//electionsInDistrict = staticDataService.getAllElectionScopes();
+		electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
 		electionsInDistrict.add(0, new SelectOptionVO(0l, "Select Election Type"));
 		return SUCCESS;
 	}
