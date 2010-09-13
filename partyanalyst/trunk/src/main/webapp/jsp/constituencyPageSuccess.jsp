@@ -1041,6 +1041,7 @@ function showDetailedElectionResult(id)
 	/*	Assembly Candidate Info
 		-------------------------
 	*/
+	<c:if test="${candidateDetailsForConstituency.assemblyCandidateInfo != null}">
 	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
 	var candidateObj={
 						constituencyId : '${cInfo.constituencyId}',
@@ -1057,10 +1058,13 @@ function showDetailedElectionResult(id)
 	
 	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
 	</c:forEach>
+	</c:if>
+	
 	
 	/*	Parliament Candidate Info
 		-------------------------
 	*/
+	<c:if test="${candidateDetailsForConstituency.parliamentCandidateInfo != null}">
 	var pmtObj = {
 					constituencyId : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}',
 					constituencyName :  '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',									
@@ -1074,7 +1078,7 @@ function showDetailedElectionResult(id)
 					knowMore:'<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}\')">view results</a>'
 				 };		
 	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
-
+	</c:if>
 	//constituencyName : '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}&electionType=${constituencyDetails.constituencyType}&delimitation=${constituencyDetails.deformDate}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',
 
 	/*	Constituency problems Info
