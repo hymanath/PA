@@ -516,6 +516,16 @@ public class StaticDataService implements IStaticDataService {
 		return list;
 	}
 	
+	public List<SelectOptionVO> getAllElectionScopes(Long districtId){
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		
+		District district = districtDAO.get(districtId);
+		List<ElectionScope> electionScopes = electionScopeDAO.getElectionScopes(district.getState().getStateId());
+		for(ElectionScope scope:electionScopes)
+			list.add(new SelectOptionVO(scope.getElectionScopeId(), scope.getElectionType().getElectionType()));
+		return list;
+	}
+	
 	public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId){
 		List elections = nominationDAO.getAllElectionsInDistrict(districtId);
 		List<SelectOptionVO> electionTypeYears = new ArrayList<SelectOptionVO>();
@@ -2065,7 +2075,7 @@ public class StaticDataService implements IStaticDataService {
 			if(log.isDebugEnabled())
 				log.info("Making nominationDAO.getPartysInfoForAParticularElectionYear() DAO Call");
 			List totalValidVotes = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(electionType,electionYear,districtId);
-			if(!totalValidVotes.equals(null)){
+			if(totalValidVotes != null){
 				totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());				
 				List result = nominationDAO.getPartysInfoForAParticularElectionYear(electionType,electionYear,districtId);
 				for(int i=0;i<result.size();i++){
