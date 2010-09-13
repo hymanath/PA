@@ -1344,6 +1344,12 @@
 			<result type="json" name="success">
 				<param name="root">partyList</param>				
 			</result>		
-		</action>         
+		</action>
+		<action name="getProblemsInState" class="homePageAction" method="getProblemsInState">
+			<result type="json" name="success">
+				<param name="root">problemsList</param>				
+			</result>		
+		</action>       
+		 
 	</package>
 </struts>
