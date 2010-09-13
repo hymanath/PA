@@ -49,8 +49,8 @@ var labelResources = { <%
 </head>
 <body>
 <center>
-	<H3>
-		<u align="centre"> <c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> Level <c:out value="${selectedElectionTypeName}"/> Elections</u>
+	<H3 align="center" style="font-family: verdana,arial,sans-serif;color:#003399;">
+		<u align="centre"> <c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections</u>
     </H3>
 </center>  
 

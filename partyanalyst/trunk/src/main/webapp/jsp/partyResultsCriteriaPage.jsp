@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
 <HTML>
  <HEAD>
   <TITLE> Result Criteria</TITLE>
@@ -16,7 +17,41 @@
 	 
 	<!-- Source file --> 
 	<script src="js/json/json-min.js"></script>
-	 
+
+<style type="text/css">
+table.PartyResultsReportInputSelection{
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.PartyResultsReportInputSelection th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #94A9C8;
+}
+table.PartyResultsReportInputSelection td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+#resultsPageErrorDiv
+{
+	color:red;
+	font-weight:bold;
+	padding-top:12px;
+}
+.selectWidth
+{
+	width:70px;
+}
+</style>
+
   <script type="text/javascript">
   var ELECTIONTYPE;
   var REPORTLEVEL;
@@ -28,28 +63,60 @@
   var RURL="<%=request.getContextPath()%>/partyResultScopeAction.action"
 
 		/*	Function to display the level of report  based on Election type selected	*/
+
+	var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
+		String selectStateMsg = rb.getString("selectStateMsg");
+				%> }
+
+		function showrow1()
+		{
+			var row1Elmt=document.getElementById("row1");
+			row1Elmt.style.display = "";
+				
+
+		}
+		function showrow2()
+		{
+			var row2Elmt=document.getElementById("row2");
+			row2Elmt.style.display = "";
+
+			var row3Elmt=document.getElementById("row3");
+			row3Elmt.style.display = "";
+		}
+
+		function ShowImage()
+		{
+			var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+        	ajaxImgElmt.style.display = "block";
+			return;
+		}
+
+
 		function getReportLevel(value)
 		{
 			ELECTIONTYPE=value;
 			var labelElmt=document.getElementById("reportLevelLabel");
+			
 			labelElmt.innerHTML="<b>Select Level Of Report</b>";
 
 			if(ELECTIONTYPE=="2" || ELECTIONTYPE=="3" || ELECTIONTYPE=="4" || ELECTIONTYPE=="5" || ELECTIONTYPE=="6")
 			{
 				var radioElmt=document.getElementById("reportLevelRadio");
 				var str="";
-				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectBox(this.value)"/>State';
-				str+='<input type="radio" name="reportLevel" value="District" onclick="displaySelectBox(this.value)"/>District';
-				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectBox(this.value)"/>Constituency';
+				str+='<input type="radio" name="reportLevel" value="State" onclick="showrow2();displaySelectBox(this.value)"/>State';
+				str+='<input type="radio" name="reportLevel" value="District" onclick="showrow2();displaySelectBox(this.value)"/>District';
+				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="showrow2();displaySelectBox(this.value)"/>Constituency';
 				radioElmt.innerHTML=str;
 			}
 			else if(ELECTIONTYPE=="1")
 			{
 				var radioElmt=document.getElementById("reportLevelRadio");
 				var str="";
-				str+='<input type="radio" name="reportLevel" value="Country" onclick="displaySelectBox(this.value)"/>Country';
-				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectBox(this.value)"/>State';				
-				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="displaySelectBox(this.value)"/>Constituency';
+				//str+='<input type="radio" name="reportLevel" value="Country"/>Country';
+				str+='<input type="radio" name="reportLevel" value="State" onclick="showrow2();displaySelectBox(this.value)"/>State';				
+				str+='<input type="radio" name="reportLevel" value="Constituency" onclick="showrow2();displaySelectBox(this.value)"/>Constituency';
 				radioElmt.innerHTML=str;
 			}
 		}
@@ -272,8 +339,8 @@
 
 		function validateData()
 		{
-			if(REPORTLEVEL=="Country")
-				return true;
+			/*if(REPORTLEVEL=="Country")
+				return true;*/
 			var errorDivElmt=document.getElementById("resultsPageErrorDiv");
 			var stateSelectElmt=document.getElementById("stateNameSelect");
 			var stateVal=stateSelectElmt.options[stateSelectElmt.selectedIndex].text;
@@ -282,11 +349,13 @@
 
 			if(stateVal=="Select State" || stateVal=="")
 			{
-				errorDivElmt.innerHTML="*Select State";
+				errorDivElmt.innerHTML='<%=selectStateMsg %>';
 				return false;
 			}
 			else
 			{
+				ShowImage();
+
 				if(REPORTLEVEL=="District")
 				{
 					var districtSelectElmt=document.getElementById("districtNameSelect");
@@ -343,80 +412,82 @@
   </style>
  </HEAD>
 	
- <BODY>
-	<H3><U>Party Results Report Input Selection</U></H3>
-	<div id="partyResultsMainDiv">
- <s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
- <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
- <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
- <input type="hidden" id="selectedLocationName" name="selectedLocationName">
-<table width="800px" style="font-family: sans-serif;">
+<BODY align="center" style="font-family: verdana,arial,sans-serif;"><br>
+<H3 style="color:#444444;"><U>Party Results Report Input Selection</U></H3>
+<div id="resultsPageErrorDiv"></div>
+<div id="partyResultsMainDiv">
+
+<s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
+<input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
+<input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
+<input type="hidden" id="selectedLocationName" name="selectedLocationName">
+
+<table align="center" class="PartyResultsReportInputSelection" width="630px" border="1">
+ 
  <tr>
- 	<th width="250px">
+ 	<th width="150px">
  		<div  class="tdLabelDiv">
  			<b>Party</b>
  		</div>
  	</th>
  	<td width="550px" colspan="2">
- 		<div  class="tdDataDiv">
- 				<select id="partyList" name="partySelectName" onchange='return setPartyName();'>
- 				<c:forEach var="party" items="${partyList}">
- 						<option value='<c:out value="${party.id}" />'> ${party.name}</option>
- 				</c:forEach>
- 				
- 				</select>
- 		</div>
+
+	<div  class="tdDataDiv">
+	 <select id="partyList" name="partySelectName" onchange='return setPartyName();'>				
+	    <c:forEach var="party" items="${partyList}">				
+	    <option value='<c:out value="${party.id}" />'> ${party.name}</option>						
+	  </c:forEach>				
+	 </select> 					
+	 </div>					
+ 		
  	</td>
  </tr>
-  <tr>
- <th width="250px">
+ <tr>
+ <th width="150px">
 	<div  class="tdLabelDiv">
 		<b>Select Election Type</b>
 	</div>
  </th>
  <td width="550px" colspan="2">
 	<div  class="tdDataDiv">
-		<input type="radio" name="electionType" value="2" onclick="getReportLevel(this.value);setElectionType('Assembly');"/>Assembly
-		<input type="radio" name="electionType" value="1" onclick="getReportLevel(this.value);setElectionType('Parliament');"/>Parliament	
-		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
-		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
-		<input type="radio" name="electionType" value="5" onclick="getReportLevel(this.value);setElectionType('Municipal');"/>Municipal
-		<input type="radio" name="electionType" value="6" onclick="getReportLevel(this.value);setElectionType('Corporation');"/>Corporation	
+		<input type="radio" name="electionType" value="2" onclick="showrow1();getReportLevel(this.value);setElectionType('Assembly');"/>Assembly
+		<input type="radio" name="electionType" value="1" onclick="showrow1();getReportLevel(this.value);setElectionType('Parliament');"/>Parliament	
+		<input type="radio" name="electionType" value="4" onclick="showrow1();getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
+		<input type="radio" name="electionType" value="3" onclick="showrow1();getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
+		<input type="radio" name="electionType" value="5" onclick="showrow1();getReportLevel(this.value);setElectionType('Municipal');"/>Municipal
+		<input type="radio" name="electionType" value="6" onclick="showrow1();getReportLevel(this.value);setElectionType('Corporation');"/>Corporation	
 	</div>
  </td>
  </tr>
- <tr>
-	<th width="250px">
+
+ <tr id="row1" style="display:none;">
+	<th width="150px">
 		<div class="tdLabelDiv" id="reportLevelLabel"></div>
 	</th>
 	<td width="550px" colspan="2">
 		<div class="tdDataDiv" id="reportLevelRadio"></div>
 	</td>
  </tr>
- <tr>
-	<th width="250px">
+
+ <tr id="row2" style="display:none;">
+	<th width="150px">
 		<div class="tdLabelDiv" id="selectLabel"></div>
 	</th>
-	<td width="120px">
+	<td width="150px">
 		<div class="tdStateDataDiv" id="tdStateDataDiv"></div>
 	</td>
 	<td width="300px">
-		<div class="tdDistrictDataDiv" id="tdDistNConstDataDiv"></div>
-	</td>
+	<div class="tdDistrictDataDiv" id="tdDistNConstDataDiv"></div>
+</td>
 
  </tr>
- <tr>
-	<td colspan="3">
-		<div id="resultsPageErrorDiv"></div>
-	</td>
- </tr>
-  <tr id="allianceRow">
+ <tr id="allianceRow">
 		<th>Alliance Parties</th>
 		<td>
 			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
 		</td>
 	</tr>
- <tr>
+ <tr id="row3" style="display:none;">
 	<td colspan="3" align="center">
 		<div id="resultsPageButtonDiv"></div>
 	</td>
@@ -424,6 +495,13 @@
 
  </table>
  </s:form>
-	</div>
- </BODY>
+</div>
+
+<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
+							<span><b>Processing Request ...</b> </span>
+							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
+
+
+
+</BODY>
 </HTML>
