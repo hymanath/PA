@@ -582,14 +582,19 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		dataStr += '<select onchange="getAllElections(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)">';		
 		for(var i in result)
 		{
-			dataStr += '<option value="'+result[i].id+'"> '+result[i].name+' </option>';
+			if(result[i].name == 'Assembly'){
+			dataStr += '<option value="'+result[i].id+'" selected="selected"> '+result[i].name+' </option>';
+			getAllElections(result[i].id, result[i].name);
+			}
+			else
+            dataStr += '<option value="'+result[i].id+'"> '+result[i].name+' </option>';
 		}
 		dataStr += '</select>';		
 		
 		if(selectData)
 			selectData.innerHTML = 	dataStr;	
 		
-		getAllElections(result[0].id, result[0].name);
+		//getAllElections(result[0].id, result[0].name);
 	}
 
 	function buildElectionTypesAndYearsGraph(results)
@@ -1122,8 +1127,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	function getAllElectionScopes(){
+
 		var jsObj=
-		{	
+		{	    distId:districtId,
 				task:"getAllElectionScopes"						
 		};
 	
