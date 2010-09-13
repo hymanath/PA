@@ -136,6 +136,12 @@ public interface IStaticDataService {
 		//public List<SelectOptionVO> getParties();
 		public List<SelectOptionVO> getStaticParties();
 		
+		public List<SelectOptionVO> getStaticNationalParties();
+		
+		public List<SelectOptionVO> getStaticStateParties(Long stateId);
+		
+		public List<SelectOptionVO> getStaticPartiesListForAState(Long stateId);
+		
 		public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId);
 	//>>>>>Party Related Methods End
 
