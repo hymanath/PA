@@ -51,4 +51,8 @@ public interface IPartyDAO extends GenericDao<Party, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findPartyIdByShortName(String shortName);
+	
+	public List<Party> findStaticPartiesByRecognization(String partyType,String shortNames);
+	
+	public List<Party> findStatePartyByStateId(Long stateId);
 }
