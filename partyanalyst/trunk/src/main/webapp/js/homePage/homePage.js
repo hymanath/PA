@@ -4,6 +4,7 @@ var assemblyResultsArray = new Array();
 var parliamentResultsArray = new Array();
 var MPTCResultsArray = new Array();
 var ZPTCResultsArray = new Array();
+var emptyArray = new Array();
 
 var selectedState = '';
 
@@ -132,11 +133,12 @@ function homePageAjaxCall(param,jsObj,url){
 	}
 function showResults(results)
 {
-	
+	assemblyResultsArray = new Array();
+	parliamentResultsArray = new Array();
 	if(results.length == 0 || results == null)
 		elmt.innerHTML = 'No Results To Display';
 
-	var stateSelectEl = document.getElementById("stateList_s");
+	var stateSelectEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateSelectEl.options[stateSelectEl.selectedIndex].text;
 	selectedState = stateSelectElVal;
 
@@ -151,7 +153,7 @@ function showResults(results)
 		else if(results[i].electionType == "ZPTC")
 			ZPTCResultsArray.push(results[i]);
 	}
-
+	
 	buildResultsHTMLTable(assemblyResultsArray);
 	
 }
