@@ -141,7 +141,13 @@
 			<result type="json" name="success">
 				 <param name="root">years</param> 
 			</result>
-		</action>								
+		</action>	
+		
+		<action name="getStaticPartyDetailsAjax" class="partyPerformanceAction" method="getStaticPartyDetailsAjax" >
+			<result type="json" name="success">
+				 <param name="root">parties</param> 
+			</result>
+		</action>							
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
