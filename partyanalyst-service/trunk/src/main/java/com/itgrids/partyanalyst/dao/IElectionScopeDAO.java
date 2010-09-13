@@ -46,6 +46,8 @@ public interface IElectionScopeDAO extends GenericDao<ElectionScope, Long>{
 
 	public List getElectionScopes();
 	
+	public List<ElectionScope> getElectionScopes(Long stateId);
+	
 	public List<ElectionScope> getElectionScopeForAElectionType(Long stateId,String electionType,Long countryId);
 	
 	public List<ElectionScope> getElectionScopeForAElectionType(String electionType,Long countryId);
