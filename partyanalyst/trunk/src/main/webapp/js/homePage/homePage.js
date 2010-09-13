@@ -9,8 +9,10 @@ var selectedState = '';
 
 function initializeHomePage()
 {
+	var stateEl = document.getElementById("stateList_res");
+	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value
 	getDistrictsComboBoxForAState(1, 'districtList_d');
-	getRecentElectionsInState(1);
+	getRecentElectionsInState(stateSelectElVal);
 	
 }
 function navigateToStatePage()

@@ -211,16 +211,7 @@ var errotMsg = '<%=errorMsg%>';
 							</table>	
 						 </div>
                         <div id="electionTrendzWidgetBody">
-                        	<div id="stateSelectionDiv">
-								<table>
-									<tr>
-										<td> Recent Election Results In :</td>
-										<td> <s:select cssClass="selectBoxWidth" theme="simple" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
-									</tr>
-								</table>
-							</div>
-
-							<div id="electionTrendzDivision_head">
+                        	<div id="electionTrendzDivision_head">
 								<table>
 									<tr>
 										<td>
@@ -236,7 +227,14 @@ var errotMsg = '<%=errorMsg%>';
 									</tr>
 								</table>
 							</div>
-
+							<div id="stateSelectionDiv">
+								<table>
+									<tr>
+										<td>Election Results In :</td>
+										<td> <s:select cssClass="selectBoxWidth" theme="simple" name="state" id="stateList_res" list="statesList" listKey="id" listValue="name" onchange="getRecentElectionsInState(this.options[this.selectedIndex].value)"/></td>
+									</tr>
+								</table>
+							</div>
 							<div id="electionTrendzDiv_main">
 								
 							</div>
