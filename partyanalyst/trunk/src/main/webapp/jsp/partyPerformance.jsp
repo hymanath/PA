@@ -65,7 +65,12 @@
 									fillElectionYears(jsObj.elmtId, resultVO);
 									//createOptionsForSelectElmtIdWithSelectOption(jsObj.elmtId,resultVO);		
 																		
-								}				
+								}		
+								if(jsObj.task == "getStatesListAjax")
+							    {
+                                   clearOptionsListForSelectElmtId(jsObj.elmtId);
+								   fillPartiesInState(jsObj.elmtId, resultVO);
+							    }
 						}catch (e)  {   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -77,6 +82,45 @@
 				   };
 	
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+	}
+
+
+
+	function fillPartiesInState(element, results)
+	{
+		var elmt = document.getElementById(element);
+		
+	
+	if( !elmt || results == null)
+		return;
+	
+	var option = document.createElement('option');
+	
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards complaint
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in results)
+	{
+		var option = document.createElement('option');
+		option.value=results[i].id;
+		option.text=results[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+
 	}
  	
 	function fillElectionYears(element, results)
@@ -203,7 +247,7 @@
 		
  	}
 
- 	function fetchDistricts(val)
+ 	function fetchDistricts(id,val)
 	{
 		var elmt = document.getElementById("stateNameHiddenId");
 		if(!elmt)
@@ -217,7 +261,23 @@
  	 	 		getDistricts(i+1);
  	 	 	}
  	 	}
+		fetchPartiesInState(id);
  	}
+
+    function fetchPartiesInState(id)
+	{
+		    var jsObj=
+			{       elmtId:"partyList",
+					stateId:id,
+					task:"getStatesListAjax"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getStaticPartyDetailsAjax.action?"+rparam;						
+			
+			callAjax(jsObj,url);
+
+	}
 
  	function hasAllianceParties(){
  		var index = document.getElementById("partyList").selectedIndex;
@@ -326,7 +386,7 @@
 	<tr>
 		<th align="left"><%=state%></th>
 		<td>
-			<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].text);"/>
+			<s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:120px;" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>
 			<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
 		</td>
 	</tr>
@@ -335,7 +395,7 @@
 		<th align="left"><%=party%></th>
 		<td>
 			<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
-			<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" cssStyle="width:120px;" />
+			<s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:120px;" />
 			<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
 		</td>
 	</tr>
