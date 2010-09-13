@@ -1340,9 +1340,9 @@
 				<param name="root">constituenciesList</param>				
 			</result>		
 		</action>
-		<action name="getProblemsInState" class="homePageAction" method="getProblemsInState">
+		<action name="getPartiesForState" class="electionComparisonAction" method="getPartiesInStateForEC">
 			<result type="json" name="success">
-				<param name="root">problemsList</param>				
+				<param name="root">partyList</param>				
 			</result>		
 		</action>         
 	</package>

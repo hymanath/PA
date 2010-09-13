@@ -38,7 +38,7 @@ table.CandidateElectionResultsTable td {
 }
 .selectWidth
 {
-	width:70px;
+	width:160px;
 }
 </style>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -112,6 +112,21 @@ var yearsPopulation={
 			var url = "<%=request.getContextPath()%>/getElectionYearsForECAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 		}
+
+		function getPartiesInState()
+		{
+			removeErrorMessage();
+			alert("stateId:"+selectedElectionScopeId);			
+			var jsObj=
+			{
+					stateId: selectedElectionScopeId,
+					task:"getPartiesInState"						
+			};
+			return;
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getPartiesForState.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+		}
 		function storeYears(results){
 			yearsArray = new Array();
 
@@ -175,6 +190,7 @@ var yearsPopulation={
 		{
 			removeErrorMessage();
 			selectedElectionScopeId = id;
+			getPartiesInState();
 		}
 		function populateElectionYearsForSecondElectionYearsSelectBox(value)
 		{
@@ -251,7 +267,7 @@ var yearsPopulation={
 <body>
 <div style="margin-top:40px;">
 	<form name="electionComparisionForm">
-		<table class="CandidateElectionResultsTable" width="300px" border="1">
+		<table class="CandidateElectionResultsTable" width="400px;" border="1">
 			<tr>
 				<th colspan="2">
 					<span style="margin: 0px; text-align: center;">Elections Comparison</span>
@@ -261,7 +277,7 @@ var yearsPopulation={
 				<th align="left"><%=electionType%></th>
 				<td align="left">
 					<select id="electionTypeSelect" onchange = "getElectionScopes(this.options[this.selectedIndex].value)" class = "selectWidth">
-						<option value="0">Select </option>
+						<option value="0">Select Election Type</option>
 						<option value="1">Parliament</option>
 						<option value="2">Assembly</option>
 					</select>
@@ -270,26 +286,26 @@ var yearsPopulation={
 			<tr>
 				<th align="left"><%=electionScope%></th>
 				<td align="left">
-					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" style="width:105px;">
-						<option value="0">Select </option>
+					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" class = "selectWidth" >
+						<option value="0">Select Election Scope </option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 			   <th align="left"><%=party%></th>
 			   <td  align="left">
-					<s:select theme="simple" name="party" id="partyList" style="width:70px;" onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+					<s:select theme="simple" name="party" id="partyList" cssClass = "selectWidth"  onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="{}" headerKey="0" headerValue="Select Party" listKey="id" listValue="name" />
 					<input type="hidden" id="selectedParty" name="selectedPartyName">
 			   </td>
 			</tr>
 			<tr>
 				<th align="left"><%=electionYear%></th>
 				<td align="left">
-					<select id="electionYearSelect1" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)" class = "selectWidth" name="electionId1">
-						<option value="0">Select </option>
+					<select id="electionYearSelect1" style="width:80px;" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)"  name="electionId1">
+						<option value="0">Select Year</option>
 					</select>
-					<select id="electionYearSelect2" class = "selectWidth" name="electionId2">
-						<option value="0">Select </option>
+					<select id="electionYearSelect2" style="width:80px;" name="electionId2">
+						<option value="0">Select Year </option>
 					</select>
 				</td>
 			</tr>

@@ -105,7 +105,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_COMPARISION_REPORT))
 			return ERROR;
 		
-		partyList = staticDataService.getStaticParties();
+		//partyList = staticDataService.getStaticParties();
 		return Action.SUCCESS;
 		
 	}
@@ -141,6 +141,25 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 				log.debug("getElectionScopes......"+yearsList.size());
 			}
 		}
+		return SUCCESS;
+	}
+	
+	public String getPartiesInStateForEC()
+	{
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			Long stateId = jObj.getLong("stateId");
+			if(jObj.getString("task").equals("getPartiesInState")){
+				partyList = staticDataService.getStaticPartiesListForAState(stateId);
+				
+			}
+		}
+		
 		return SUCCESS;
 	}
 
