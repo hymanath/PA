@@ -153,9 +153,11 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			Long stateId = jObj.getLong("stateId");
+			Long scopeID = jObj.getLong("stateId");
 			if(jObj.getString("task").equals("getPartiesInState")){
-				partyList = staticDataService.getStaticPartiesListForAState(stateId);
+				
+				partyList = staticDataService.getStaticPartiesListFromElectionScope(scopeID);
+				//partyList = staticDataService.getStaticPartiesListForAState(stateId);
 				
 			}
 		}
@@ -163,5 +165,4 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		return SUCCESS;
 	}
 
-	
 }
