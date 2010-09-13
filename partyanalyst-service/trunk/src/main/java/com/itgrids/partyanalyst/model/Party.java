@@ -16,6 +16,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -48,6 +50,7 @@ public class Party implements java.io.Serializable {
 	private String partyRecognization;
 	private String partyLogo;
 	private String partyFlag;	
+	private State state;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<Registration> registrations = new HashSet<Registration>(0);
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
@@ -89,7 +92,7 @@ public class Party implements java.io.Serializable {
 			String partyRecognization,
 			Set<Nomination> nominations,
 			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
-			Set<CommentCategoryParty> commentCategoryParty) {
+			Set<CommentCategoryParty> commentCategoryParty,State state) {
 		this.partyId = partyId;
 		this.longName = longName;
 		this.shortName = shortName;
@@ -103,6 +106,7 @@ public class Party implements java.io.Serializable {
 		this.partyElectionResult = partyElectionResult;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
 		this.commentCategoryParty = commentCategoryParty;
+		this.state = state;
 	}
 
 	// Property accessors
@@ -279,6 +283,16 @@ public class Party implements java.io.Serializable {
 
 	public void setPartyTrainingCamps(Set<PartyTrainingCamps> partyTrainingCamps) {
 		this.partyTrainingCamps = partyTrainingCamps;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id")
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 	
 	
