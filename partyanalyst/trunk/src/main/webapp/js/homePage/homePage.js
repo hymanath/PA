@@ -13,6 +13,7 @@ function initializeHomePage()
 	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value
 	getDistrictsComboBoxForAState(1, 'districtList_d');
 	getRecentElectionsInState(stateSelectElVal);
+	getProblemsInState(stateSelectElVal);
 	
 }
 function navigateToStatePage()
@@ -79,6 +80,16 @@ function hideUnhideSelectBox(radioElement, selectElement)
 		getAllParliamentConstInCountry(selectElement);
 	}
 	 
+}
+function getProblemsInState(stateId)
+{
+	var jsObj = {
+			stateId: stateId,
+			task: "getProblemsInState"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+		var url = "getProblemsInState.action?"+rparam; 
+		homePageAjaxCall(rparam,jsObj,url);
 }
 function getRecentElectionsInState(stateId)
 {

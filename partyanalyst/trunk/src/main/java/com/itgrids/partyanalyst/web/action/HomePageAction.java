@@ -1,23 +1,18 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
-import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
-import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
-import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -38,6 +33,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IStatePageService statePageService;
 	private IRegionServiceData regionServiceDataImp;
 	private List<SelectOptionVO> constituenciesList;
+	private IProblemManagementReportService problemManagementReportService;
+	private List<ProblemBeanVO> problemsList;
 	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
@@ -131,6 +128,26 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
 		this.constituenciesList = constituenciesList;
 	}
+	
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
+
+	public List<ProblemBeanVO> getProblemsList() {
+		return problemsList;
+	}
+
+
+	public void setProblemsList(List<ProblemBeanVO> problemsList) {
+		this.problemsList = problemsList;
+	}
 
 
 	public String execute()
@@ -139,7 +156,6 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String ajaxCallHandler()
 	{
 		session = request.getSession();
@@ -163,6 +179,24 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			constituenciesList = regionServiceDataImp.getAllParliamentConstituencies(1l, 1l);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getProblemsInState()
+	{
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+				
+			Long stateId = jObj.getLong("stateId");
+			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = problemManagementReportService.getRecentProblemsWithInTheRegion(IConstants.STATE_LEVEL, stateId , 1l, 25);
+			if(locationwiseProblemStatusInfoVO != null)
+				problemsList = locationwiseProblemStatusInfoVO.getRecentProblems();
+		return SUCCESS;
+
 	}
 
 }

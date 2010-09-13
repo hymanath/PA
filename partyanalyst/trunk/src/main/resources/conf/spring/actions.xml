@@ -425,7 +425,8 @@
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">			
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="statePageService" ref="statePageService" />
-		<property name="regionServiceDataImp" ref="regionServiceDataImp" />		
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
+		<property name="problemManagementReportService" ref="problemManagementReportService" />		
 		
 	</bean>
 	
