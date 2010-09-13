@@ -73,7 +73,7 @@
 										var elmt = document.getElementById("electionPageAjaxImgDiv");
 										if(elmt)
 											elmt.style.display = 'none';
-										showBasicAnalysisDetails(myResults,"toolsFalse");
+										showBasicAnalysisDetails(jsObj,myResults,"toolsFalse");
 									}
 									else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
 									{
