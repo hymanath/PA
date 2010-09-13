@@ -303,7 +303,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
          });
 	}
 	
-	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype)
+	@SuppressWarnings("unchecked")
+	public List getCandidateNPartyInfoForParliament(String constituencyIds,String electionType,Long rank, String electionSubtype)
 	{
 		Object[] params = {rank, electionType, electionSubtype};
 		
@@ -315,6 +316,22 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"from Nomination model where model.constituencyElection.constituency.constituencyId in ("+constituencyIds+") and model.candidateResult.rank = ? and " +
 				"model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where " +
 				"nModel.electionScope.electionType.electionType = ? and nModel.elecSubtype = ?)",params);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype,Long stateId)
+	{
+		Object[] params = {rank, electionType, electionSubtype,stateId};
+		
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
+				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName," +
+				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"from Nomination model where model.constituencyElection.constituency.constituencyId in ("+constituencyIds+") and model.candidateResult.rank = ? and " +
+				"model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where " +
+				"nModel.electionScope.electionType.electionType = ? and nModel.elecSubtype = ? and nModel.electionScope.state.stateId = ?)",params);
 		
 	}
 	
