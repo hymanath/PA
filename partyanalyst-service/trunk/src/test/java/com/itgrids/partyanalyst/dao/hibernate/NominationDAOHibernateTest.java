@@ -521,7 +521,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}		
 	}*/
 	
-	
+	/*
 	public void testGetAllConstituencyElectionDetails(){
 		List<ConstituencyElection> allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(4l,"61,17,18","24");	
 		assertEquals(allianceConstituencies.size(), 98);
@@ -530,6 +530,13 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetAllConstituencyElectionDetailsInADistrict(){
 		List<ConstituencyElection> allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(4l,"61,17,18","24");
 		assertEquals(allianceConstituencies.size(), 98);
+	}*/
+	
+	@Test
+	public void testFindNominations(){
+		List results = nominationDAO.getCandidateNPartyInfo("8521", IConstants.ASSEMBLY_ELECTION_TYPE, 1L, IConstants.ELECTION_SUBTYPE_MAIN,24L);
+		
+		System.out.println(results.size());
 	}
 	
 
