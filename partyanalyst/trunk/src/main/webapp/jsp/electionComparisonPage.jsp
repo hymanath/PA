@@ -116,13 +116,12 @@ var yearsPopulation={
 		function getPartiesInState()
 		{
 			removeErrorMessage();
-			alert("stateId:"+selectedElectionScopeId);			
 			var jsObj=
 			{
 					stateId: selectedElectionScopeId,
 					task:"getPartiesInState"						
 			};
-			return;
+			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/getPartiesForState.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
@@ -147,7 +146,11 @@ var yearsPopulation={
 		               success : function( o ) {
 							try {								
 									resultVO = YAHOO.lang.JSON.parse(o.responseText);										
-
+                                    if(jsObj.task == "getPartiesInState")
+									{			
+										clearOptionsListForSelectElmtId("partyList");															
+										createOptionsForSelectElmtIdWithSelectOption("partyList",resultVO);
+									}
 									if(jsObj.task == "getElectionScopes")
 									{			
 										clearOptionsListForSelectElmtId("electionScopeSelect");															
