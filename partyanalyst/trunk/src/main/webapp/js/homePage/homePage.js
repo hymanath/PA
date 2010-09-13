@@ -11,11 +11,12 @@ var selectedStateId = '';
 
 function initializeHomePage()
 {
-	buildLogoImage();
+	buildLogoImage();	
+	buildElectionTrendzTabView();
+
 	var stateEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 	getDistrictsComboBoxForAState(1, 'districtList_d');
-	buildElectionTrendzTabView();
 	getRecentElectionsInState(stateSelectElVal);
 	getProblemsInState(stateSelectElVal);
 }
@@ -163,7 +164,7 @@ function buildElectionTrendzTabView()
 	content += '	<tr>';
 	content += '		<th style="color:#213540"> Recent Election Results In :</th>';
 	content += '		<td>';
-	content += '		<select id="statesInCountry" onchange="getRecentElectionsInState(this.options[this.selectedIndex].value)">';
+	content += '		<select id="stateList_res" onchange="getRecentElectionsInState(this.options[this.selectedIndex].value)">';
 	for(var i in statesInCountryObj)
 		content += '		<option value='+statesInCountryObj[i].id+'>'+statesInCountryObj[i].name+'</option>';
 	content += '		</select>';
