@@ -307,7 +307,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			electionTypeId = new Long(param);
 		
 		//setStates(getStaticDataService().getStates(electionTypeId));
-		setStates(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
+		List<SelectOptionVO> statesListDetails = new ArrayList<SelectOptionVO>();
+		statesListDetails.add(new SelectOptionVO(0L,"Select"));
+		statesListDetails.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
+		setStates(statesListDetails);
 		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
@@ -384,7 +387,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			electionTypeId = new Long(param);
 		}
 		
-		statesYearList.put("STATES", staticDataService.getParticipatedStatesForAnElectionType(electionTypeId));
+		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
+		statesList.add(new SelectOptionVO(0L,"Select"));
+		statesList.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
+		
+		statesYearList.put("STATES", statesList);
 		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
 		if(electionTypeId.equals(new Long(1)))
@@ -724,6 +731,22 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 					years.add(yearsLst.getName());
 				}
 			}
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStaticPartyDetailsAjax(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+						
+			Long stateID = new Long(jObj.getString("stateId"));
+			parties = staticDataService.getStaticPartiesListForAState(stateID);
 			
 		}
 		return Action.SUCCESS;
