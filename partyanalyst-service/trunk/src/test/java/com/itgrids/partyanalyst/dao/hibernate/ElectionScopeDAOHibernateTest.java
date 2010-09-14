@@ -36,10 +36,10 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 	
 	@Test
 	public void testGetElectionScope(){
-		List<ElectionScope> electionScope = electionScopeDAO.getElectionScopeForAElectionType(24l,"Assembly", 1l);
-		
-		for(ElectionScope scope:electionScope){
-			System.out.println(" Scope Id :" + scope.getElectionScopeId());
+		List<ElectionScope> scopes = electionScopeDAO.getElectionScopes(12L);
+		System.out.println(" Size :" + scopes.size());
+		for(ElectionScope scope:scopes){
+			System.out.println(" Election Types :" + scope.getElectionType().getElectionType());
 		}
 		
 	}
