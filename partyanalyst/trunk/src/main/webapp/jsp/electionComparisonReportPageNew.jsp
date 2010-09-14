@@ -447,13 +447,13 @@ var labelResources = { <%
 var electionType = '${electionComparisonReportVO.electionType}';
 var selectedElectionYear;
 var electionObject=	{
-	    selectedParty:${electionComparisonReportVO.partyId},
+	    selectedParty:'${electionComparisonReportVO.partyId}',
 		resultsForYearOne:[],
 		resultsForYearTwo:[],
-		yearOne:${electionComparisonReportVO.yearOne},
-		yearTwo:${electionComparisonReportVO.yearTwo},
-		elecIdYearOne:${electionComparisonReportVO.elecIdYearOne},
-		elecIdYearTwo:${electionComparisonReportVO.elecIdYearTwo}
+		yearOne:'${electionComparisonReportVO.yearOne}',
+		yearTwo:'${electionComparisonReportVO.yearTwo}',
+		elecIdYearOne:'${electionComparisonReportVO.elecIdYearOne}',
+		elecIdYearTwo:'${electionComparisonReportVO.elecIdYearTwo}'
 };
 
 function buildDataForTwoElectionYears()
@@ -1323,6 +1323,7 @@ function getComparedResults(panelId)
 		  partyId:party,
           hasAlliance:hasAllianc
 	  }
+
 	  var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	  callAjax(param,jsObj);
 }
@@ -1812,9 +1813,6 @@ function buildYearDataTable(divId,data)
 </div>
 
 </div>
-
-
-  
 
 <script type="text/javascript">	
 		overallResultsForYearOne();

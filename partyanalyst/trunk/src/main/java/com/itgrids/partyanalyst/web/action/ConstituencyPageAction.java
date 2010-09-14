@@ -622,11 +622,13 @@ public class ConstituencyPageAction extends ActionSupport implements
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         int i = 0;
         	for(ConstituencyElectionResultsVO result: allElectionResults){
-        		ElectionResultVO partiesElecResultForGraph = new ElectionResultVO();       		
-        		partiesElecResultForGraph.setPercentage(result.getCandidateResultsVO().getVotesPercentage());
+        		ElectionResultVO partiesElecResultForGraph = new ElectionResultVO();    
+        		if(result.getCandidateResultsVO() != null){
+        			partiesElecResultForGraph.setPercentage(result.getCandidateResultsVO().getVotesPercentage());
+            		partiesElecResultForGraph.setPartyName(result.getCandidateResultsVO().getPartyName());     
+            		partiesElecResultForGraph.setPartyShortName(result.getCandidateResultsVO().getPartyShortName()); 
+        		}
         		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
-        		partiesElecResultForGraph.setPartyName(result.getCandidateResultsVO().getPartyName());     
-        		partiesElecResultForGraph.setPartyShortName(result.getCandidateResultsVO().getPartyShortName());     
         		partiesElectionResults.add(partiesElecResultForGraph);        		
         		for(CandidateOppositionVO oppositionResult: allElectionResults.get(i).getCandidateOppositionList()){
         			ElectionResultVO oppositionPartiesElecResultForGraph = new ElectionResultVO();         			

@@ -161,9 +161,13 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="stateDAO" ref="stateDAO" />		
 		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
+		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
 		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
 		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />
 		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	</bean>
 	
 	<bean name="electionTrendzService" class="com.itgrids.partyanalyst.service.impl.ElectionTrendzService" >
