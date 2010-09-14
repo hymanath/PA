@@ -35,6 +35,7 @@
 
 <!-- Local Files-->
 	<SCRIPT type="text/javascript" src="js/ElectionResultsAnalysisReport/electionResultsAnalysisReport.js"></SCRIPT>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/electionResultsAnalysisReport.css">
 	
 	<!-- YUI Skin Sam -->
@@ -121,15 +122,34 @@ function callAjax(param,jsObj,url){
 	}												
 function getEletionTypesInState(id)
 {	
+	var elmt = document.getElementById("errorsDiv");
+    elmt.innerHTML='';
+
+	//validating input
+	if(id == 0)
+	{
+		var str='';
+		str='Invalid Selection ..';
+		elmt.innerHTML=str;
+
+        clearOptionsListForSelectElmtId("electionTypeSelectEl");
+		clearOptionsListForSelectElmtId("electionYearSelectEl");
+		clearOptionsListForSelectElmtId("partySelectEl");
+		return;
+	}
+	
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
 	if(elmt.style.display == 'none')
 	elmt.style.display = 'block';
 
 	var electionTypesEl = document.getElementById("electionTypeSelectEl"); 
+	clearOptionsListForSelectElmtId("electionTypeSelectEl");
 	var noOfElectionTypesElOptions = electionTypesEl.options;
 	var electionYearsEl = document.getElementById("electionYearSelectEl");
+	clearOptionsListForSelectElmtId("electionYearSelectEl");
 	var noOfElectionYearsElOptions = electionYearsEl.options;
 	var partySelectEl = document.getElementById("partySelectEl");
+	clearOptionsListForSelectElmtId("partySelectEl");
 	if(noOfElectionTypesElOptions.length != 0)
 	{
 		electionTypesEl.selectedIndex= '0';
@@ -148,37 +168,90 @@ function getEletionTypesInState(id)
 	var url = "<%=request.getContextPath()%>/electionTypesAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function getEletionYears(electionType,electionTypeId)
+function getEletionYears(party,partyId)
 {
+
+	var elmt = document.getElementById("errorsDiv");
+    elmt.innerHTML='';
+    //validating input
+	if(partyId == 0)
+	{
+		var str='';
+		str='Invalid Selection ..';
+		elmt.innerHTML=str;
+
+        clearOptionsListForSelectElmtId("electionYearSelectEl");
+		return;
+	}
+
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	if(!stateSelectEl)
+		return;
+    var stateId =stateSelectEl.value;
+	
+	clearOptionsListForSelectElmtId("electionYearSelectEl");
+
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
 	if(elmt.style.display == 'none')
 	elmt.style.display = 'block';
 	var electionYearsEl = document.getElementById("electionYearSelectEl");
 	var noOfElectionYearsElOptions = electionYearsEl.options;
 	var partySelectEl = document.getElementById("partySelectEl");
+
+    var electionTypeSelectEl = document.getElementById("electionTypeSelectEl");
+    var electionType = electionTypeSelectEl.options[electionTypeSelectEl.selectedIndex].text;
+
+
 	if(noOfElectionYearsElOptions.length != 0)
 	{
 		electionYearsEl.selectedIndex= '0';
 	}
-	partySelectEl.selectedIndex= '0';
+	//partySelectEl.selectedIndex= '0';
 	var jsObj= 
 	{
-		electionType: electionType,
-		electionTypeId: electionTypeId,
-		stateID:"1",			
+		elecTypeId:electionType,
+		partyId:partyId,
+		stateId:stateId,			
 		task:"getElectionsYears"		
 	}
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/electionYearsAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function getStaticParties()
+function getStaticParties(id)
 {
+
+	var elmt = document.getElementById("errorsDiv");
+    elmt.innerHTML='';
+
+    //validating input
+	if(id == 0)
+	{
+		var str='';
+		str='Invalid Selection ..';
+		elmt.innerHTML=str;
+
+        clearOptionsListForSelectElmtId("electionYearSelectEl");
+	    clearOptionsListForSelectElmtId("partySelectEl");
+		return;
+	}
+
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
+
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	if(!stateSelectEl)
+		return;
+    var stateId =stateSelectEl.value;
+
+	clearOptionsListForSelectElmtId("electionYearSelectEl");
+	clearOptionsListForSelectElmtId("partySelectEl");
+
+	
 	if(elmt.style.display == 'none')
 	elmt.style.display = 'block';
 	var jsObj= 
-	{					
+	{		
+		stateId:stateId,
 		task:"getStaticParties"		
 	}
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -194,11 +267,15 @@ function getBasicAnalysisDetails(id)
 	var electionTypesEl = document.getElementById("electionTypeSelectEl");
 	var electionYearsEl = document.getElementById("electionYearSelectEl");
 	var stateId =stateSelectEl.value;	
+
+	var partySelectEl = document.getElementById("partySelectEl");
+	var partyId = partySelectEl.options[partySelectEl.selectedIndex].value;
+
 	var electionType = electionTypesEl.options[electionTypesEl.selectedIndex].text;
 	var electionYear = electionYearsEl.options[electionYearsEl.selectedIndex].text;	
 	var electionTypeId = electionTypesEl.options[electionTypesEl.selectedIndex].value;	
 	
-	ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id);
+	ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,partyId);
 }
 
 function ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id)
@@ -480,7 +557,8 @@ function openPartyPerformanceWindow(electionTypeId)
 	<DIV id="page_layout_main" class="yui-skin-sam"></DIV>
 	<DIV id="page_layout_right">
 		<DIV id="sideHeader"></DIV>
-		<DIV id="toolsDiv"></DIV>	
+		<DIV id="toolsDiv"></DIV>
+		
 	</DIV>
 	<DIV id="page_layout_center">
 		<DIV id="pageHeading" >
@@ -492,29 +570,32 @@ function openPartyPerformanceWindow(electionTypeId)
 				</TR>
 			</TABLE>
 		</DIV>	
+		<DIV id="errorsDiv" style="color:red;font-weight:bold;font-size:12px;"></DIV>
 		<DIV id="inputsTags" style="border:2px solid #DBDCDB;margin-left:15px;margin-right:15px;">
 				<TABLE width="100%" class="inputsTable">
 				<CAPTION>Please select the following options to view Report</CAPTION>
 					<TR>	
 						<TH >State</TH>
 						<TD >
-						<s:select id="stateSelectEl" theme="simple" name="stateSelectEl" cssClass="selectWidth" list="statesList" listKey="id" listValue="name" onchange="getEletionTypesInState(this.options[this.selectedIndex].value)" value="1"/>												
+						<s:select id="stateSelectEl" theme="simple" name="stateSelectEl" cssClass="selectWidth" list="statesList" listKey="id" listValue="name" onchange="getEletionTypesInState(this.options[this.selectedIndex].value)"/>												
 						</TD>
 						<TH>Election Type</TH>
 						<TD>
-						<s:select id="electionTypeSelectEl" theme="simple" name="electionTypeSelectEl" cssClass="selectWidth" list="electionTypes" listKey="id" listValue="name" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)" value="2"/>		
+						<s:select id="electionTypeSelectEl" theme="simple" name="electionTypeSelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getStaticParties(this.options[this.selectedIndex].value)" />		
 						</TD>
 					</TR>						
 					<TR>
-						<TH>Year</TH>
-						<TD>
-						<s:select id="electionYearSelectEl" theme="simple" name="electionYearSelectEl" cssClass="selectWidth" list="electionYears" listKey="id" listValue="name" onchange="getStaticParties()" value="1"/>	
-
 						
-						</TD>
 						<TH >Party</TH>
 						<TD>
-						<s:select id="partySelectEl" theme="simple" name="partySelectEl" cssClass="selectWidth" list="partiesList" listKey="id" listValue="name" onchange="getBasicAnalysisDetails(this.options[this.selectedIndex].value)" />								
+						<s:select id="partySelectEl" theme="simple" name="partySelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)" />								
+						</TD>
+
+						<TH>Year</TH>
+						<TD>
+						<s:select id="electionYearSelectEl" theme="simple" name="electionYearSelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getBasicAnalysisDetails(this.options[this.selectedIndex].value)" />	
+
+						
 						</TD>
 					</TR>					
 				</TABLE>			
