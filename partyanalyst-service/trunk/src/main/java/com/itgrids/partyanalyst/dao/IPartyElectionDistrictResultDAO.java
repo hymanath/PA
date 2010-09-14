@@ -30,5 +30,7 @@ public interface IPartyElectionDistrictResultDAO extends GenericDao<PartyElectio
 	public List getPartiesPositionsInDistrictInElection(Long electionId, Long districtId, String votesPercentMargin);
 	
 	public List getAllElectionResultsInDistrictForElectionType(Long electionTypeId, Long districtId);
+	
+	public List findDistrictWiseElectionResultsForStatePartyAndElection(Long partyId, Long stateId, Long electionId);
 
 }

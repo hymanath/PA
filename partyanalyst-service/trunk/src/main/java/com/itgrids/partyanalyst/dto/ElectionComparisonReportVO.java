@@ -34,7 +34,6 @@ public class ElectionComparisonReportVO {
 	private String seatsWonChart;
 	private String totalPercentChart;
 	
-	
 	public String getYearOne() {
 		return yearOne;
 	}

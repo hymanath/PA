@@ -139,6 +139,7 @@
 				<value>com.itgrids.partyanalyst.model.UserDistrictAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserConstituencyAccessInfo</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionStateResult</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>
@@ -506,7 +507,9 @@
 	<bean id="politicalChangesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="partyElectionStateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="politicalChangesInformationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

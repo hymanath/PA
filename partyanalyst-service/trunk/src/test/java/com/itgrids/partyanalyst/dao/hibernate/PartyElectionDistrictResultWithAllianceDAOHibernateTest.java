@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
 
 public class PartyElectionDistrictResultWithAllianceDAOHibernateTest extends
@@ -21,13 +20,17 @@ public class PartyElectionDistrictResultWithAllianceDAOHibernateTest extends
 		this.partyElectionDistrictResultWithAllianceDAO = partyElectionDistrictResultWithAllianceDAO;
 	}
 
-	public void testGetAllElectionResultsInDistrict(){
+	/*public void testGetAllElectionResultsInDistrict(){
 		 partyElectionDistrictResultWithAllianceDAO.getAll();		
 	}
 	
-	/*public void testGetPartiesByDistrict(){
-		List list = partyElectionDistrictResultWithAllianceDAO.getPartyResultsForADistrictByPartyIdAndElectionId(3l,24l);
+	public void testGetPartiesByDistrict(){
+		List list = partyElectionDistrictResultWithAllianceDAO.getPartyResultsForADistrictByPartyIdAndElectionId(3l,24l, 1l);
 		System.out.println(list.size());
 	}*/
 	
+	public void testFindDistrictWiseElectionResultsForStatePartyAndElection(){
+		List list = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(361l, 1l, 3l);
+		System.out.println(list.size());
+	}
 }

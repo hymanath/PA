@@ -23,4 +23,12 @@ public class PartyElectionStateResultWithAllianceDAO extends
 				" model.party.partyId = ? and model.state.stateId =? order by model.state.stateId",parms);
 		
 	}
+
+	public List findStatewiseResultsForPartyElectionAndCountry(Long partyId,
+			Long countryId, Long electionId) {
+		Object[] params = {electionId, partyId, countryId};
+		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, model.totalConstiParticipated, " +
+				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionStateResultWithAlliance model where " +
+				"model.election.electionId = ? and model.party.partyId = ? and model.state.country.countryId = ?",params);
+	}
 }

@@ -94,9 +94,9 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testElectionYears(){
 		List result = electionDAO.findElectionAndYearForElectionTypeAndState(3l,1l);
 		Assert.assertEquals(2, result.size());		
-	}
+	}*/
 	
-	public void testYears(){
+	/*public void testYears(){
 		List<Election> result = electionDAO.findByElectionScopeId(1l, IConstants.ELECTION_SUBTYPE_BYE);
 		for(Election ele:result)
 			System.out.println(ele.getElectionYear());
@@ -110,7 +110,12 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testFindStatesByElectionType(){
+	/*public void testFindLatestElectionIdAndYear(){
+		System.out.println(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, 12l));
+		
+	}*/
+	
+	/*public void testFindStatesByElectionType(){
 		List result = electionDAO.findStatesByElectionType(6l);
 		
 		for(int i=0;i<result.size();i++)
@@ -121,6 +126,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 				
 		}
 			
-	}
+	}*/
+	
 }
 

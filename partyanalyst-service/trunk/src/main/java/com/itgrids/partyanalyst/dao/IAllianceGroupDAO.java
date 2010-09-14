@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AllianceGroup;
+import com.itgrids.partyanalyst.model.Party;
 
 public interface IAllianceGroupDAO extends GenericDao<AllianceGroup, Long>  {
 	
@@ -19,7 +20,8 @@ public interface IAllianceGroupDAO extends GenericDao<AllianceGroup, Long>  {
 	public List findPartiesByGroup(Long groupId);
 	
 	public List findAlliancePartiesByElectionStateAndPartyExcludeParty(Long electionId, Long partyId, Long stateId);
-	
+
 	public List findAlliancePartiesByElectionAndPartyExcludeParty(Long electionId, Long partyId);
 	
+	public List<Party> findAlliancePartiesByElectionAndPartyForState(Long electionId, Long partyId, Long stateId);
 }

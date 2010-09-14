@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,10 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ComparedElectionResultVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
-import com.itgrids.partyanalyst.dto.CompleteResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.District;
@@ -189,238 +188,218 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	}
 
 	public ElectionComparisonReportVO getDistrictWiseElectionResultsForAParty(Long partyId,Long firstElectionId,
-			Long secondElectionId, Boolean hasAlliances) {
+			Long secondElectionId, Boolean hasAlliances){
+		ElectionComparisonReportVO electionComparisonReportVO = new ElectionComparisonReportVO();
+		Long stateOrCountryId = null;
+		boolean isAssembly;
+		electionComparisonReportVO.setPartyId(partyId);
+		electionComparisonReportVO.setElecIdYearOne(firstElectionId);
+		electionComparisonReportVO.setElecIdYearTwo(secondElectionId);
+		Election election1 = electionDAO.get(firstElectionId);
+		Election election2 = electionDAO.get(secondElectionId);
 		
-		Election electionForYearOne = electionDAO.get(firstElectionId);
-		Election electionForYearTwo = electionDAO.get(secondElectionId);
-		String firstYear = electionForYearOne.getElectionYear();
-		String secondYear = electionForYearTwo.getElectionYear();
-		Long electionTypeId = electionForYearTwo.getElectionScope().getElectionType().getElectionTypeId();
-		String electionType = electionForYearTwo.getElectionScope().getElectionType().getElectionType(); 
-		
-		if(new Long(firstYear) < new Long(secondYear)){
-			electionForYearOne = electionDAO.get(secondElectionId);
-			electionForYearTwo = electionDAO.get(firstElectionId);
-			firstYear = electionForYearOne.getElectionYear();
-			secondYear = electionForYearTwo.getElectionYear();
+		if(Integer.parseInt(election1.getElectionYear()) < Integer.parseInt(election2.getElectionYear())){
+			Election temp;
+			temp = election1;
+			election1 = election2;
+			election2 = temp;
 		}
 		
-		ElectionComparisonReportVO electionCompReportVO = new ElectionComparisonReportVO();
-		List<PartyPositionsVO> partyPosYearOne = null;
-		List<PartyPositionsVO> partyPosYearTwo = null;
-		ResultStatus resultStatus = new ResultStatus();
-		log.debug("Entered Into getDistrictWiseElectionResultsForAParty Method .......");
-		String partyIds = "";
+		firstElectionId = election1.getElectionId(); secondElectionId = election2.getElectionId();
+		electionComparisonReportVO.setYearOne(election1.getElectionYear());
+		electionComparisonReportVO.setYearTwo(election2.getElectionYear());
+		electionComparisonReportVO.setElectionType(election1.getElectionScope().getElectionType().getElectionType());
+		electionComparisonReportVO.setHasAlliances(hasAlliances);
 		
-		List<DistrictWisePartyResultVO> districtWiseElectionResultsForYearOne = null;
-		List<DistrictWisePartyResultVO> districtWiseElectionResultsForYearTwo = null;
-		PartyElectionResult partyElectionResultforSelectedParty = null;
-		PartyElectionResult partyElectionResultforAllianceParty = null;
-		CompleteResultsVO forYearOne = new CompleteResultsVO();
-		CompleteResultsVO forYearTwo = new CompleteResultsVO();
-		Double completeVotesPercentYearOne = null;
-		Double completeVotesPercentYearTwo = null;
-		Double votesPercentDiff = null;
-		Long seatsWonByPartyInYearOne = new Long(0);
-		Long seatsWonByPartyInYearTwo = new Long(0);
-		List<DistrictWisePartyResultVO> districtWisePartyResultVOListForYearOne = new ArrayList<DistrictWisePartyResultVO>();
-		List<DistrictWisePartyResultVO> districtWisePartyResultVOListForYearTwo = new ArrayList<DistrictWisePartyResultVO>();
-		
-		List<Party> alliancPartys = null;
-		try{
-			
-		electionCompReportVO.setPartyId(partyId);
-		electionCompReportVO.setYearOne(firstYear);
-		electionCompReportVO.setYearTwo(secondYear);	
-		electionCompReportVO.setHasAlliances(hasAlliances);
-		electionCompReportVO.setElectionTypeId(electionTypeId);
-		electionCompReportVO.setElectionType(electionType);
-		partyPosYearOne = new ArrayList<PartyPositionsVO>();
-		partyPosYearTwo = new ArrayList<PartyPositionsVO>();
-				
-		
-		//For Election yearOne		
-		if(electionForYearOne != null){
-			Long seatsWon = new Long(0);
-			electionCompReportVO.setElecIdYearOne(electionForYearOne.getElectionId());
-		    if(hasAlliances)
-		    	alliancPartys = staticDataService.getAllianceParties(firstYear,electionTypeId,partyId);
-		    if(alliancPartys == null || !hasAlliances){
-		    	partyIds = partyId.toString();
-		    	partyElectionResultforSelectedParty = staticDataService.getPartyElectionResultsForAParty(electionForYearOne.getElectionId(),partyId);
-		    	if(partyElectionResultforSelectedParty == null)
-		    		partyElectionResultforSelectedParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),partyId);
-		    	if(partyElectionResultforSelectedParty != null){
-		    		seatsWon = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
-		    	seatsWonByPartyInYearOne = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
-		    	PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforSelectedParty);
-		    	completeVotesPercentYearOne = new Double(partyPositions.getCompleteVotesPercent());
-		    	partyPosYearOne.add(partyPositions);
-		       	}
-		    }
-		    else if(alliancPartys != null && hasAlliances){
-		    	if(alliancPartys.size() > 1)
-		    		partyIds = getCommaSeperatedPartyIds(alliancPartys);
-		    	else
-		    		partyIds = partyId.toString();
-		    	for(Party allincParty:alliancPartys){
-			    	partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(electionForYearOne.getElectionId(),allincParty.getPartyId());
-				    if(partyElectionResultforAllianceParty == null)
-				    	partyElectionResultforAllianceParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),allincParty.getPartyId());
-				    if(partyElectionResultforAllianceParty != null){
-				    	seatsWon = seatsWon + new Long(partyElectionResultforAllianceParty.getTotalSeatsWon());
-				    PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforAllianceParty);
-				    if(allincParty.getPartyId().equals(partyId)){
-				    	seatsWonByPartyInYearOne = new Long(partyPositions.getTotalSeatsWon());
-				    completeVotesPercentYearOne = new Double(partyPositions.getCompleteVotesPercent());
-				    }
-			    	partyPosYearOne.add(partyPositions);
-				    }
-			    
-		    	}
-		    }
-		log.debug("Seats Won In " + firstYear + ":"+ seatsWon);
-		
-		forYearOne.setSeatsWon(seatsWon);
-		electionCompReportVO.setForYearOne(forYearOne);
-		districtWiseElectionResultsForYearOne = staticDataService.getDistrictWisePartyElectionResults(electionType,
-				electionForYearOne.getElectionId(), partyIds,hasAlliances);
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(election1.getElectionScope().getElectionType().getElectionType())){
+			stateOrCountryId = election1.getElectionScope().getState().getStateId();
+			isAssembly = true;
+		}
+		else{
+			stateOrCountryId = election1.getElectionScope().getCountry().getCountryId();
+			isAssembly = false;
 		}
 		
-		//For Election yearTwo
+		getStatewiseResultsForAssembly(electionComparisonReportVO, firstElectionId, secondElectionId, partyId, hasAlliances, isAssembly);
+		Map<Long, DistrictWisePartyResultVO> resultOne = getAssembliesDistrictwiseResults(partyId, stateOrCountryId, firstElectionId, 
+				isAssembly, hasAlliances);
+		Map<Long, DistrictWisePartyResultVO> resultTwo = getAssembliesDistrictwiseResults(partyId, stateOrCountryId, secondElectionId,
+				isAssembly, hasAlliances);
+		if(resultTwo.size() > resultOne.size())
+			calculateDifferencesFromLatest(electionComparisonReportVO, resultTwo, resultOne, false);
+		else
+			calculateDifferencesFromLatest(electionComparisonReportVO, resultOne, resultTwo, true);
 		
-		if(electionForYearTwo != null){
-			electionCompReportVO.setElecIdYearTwo(electionForYearTwo.getElectionId());
-			Long seatsWon = new Long(0);
-		    if(hasAlliances)
-		    	alliancPartys = staticDataService.getAllianceParties(secondYear,electionTypeId,partyId);
-		    if(alliancPartys == null || !hasAlliances){
-		    	partyIds = partyId.toString();
-		    	partyElectionResultforSelectedParty = staticDataService.getPartyElectionResultsForAParty(electionForYearTwo.getElectionId(),partyId);
-		    	if(partyElectionResultforSelectedParty == null)
-		    	partyElectionResultforSelectedParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearTwo.getElectionId(),partyId);
-		    	if(partyElectionResultforSelectedParty != null){
-		    	seatsWon = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
-		    	seatsWonByPartyInYearTwo = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
-		    	PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforSelectedParty);
-		    	completeVotesPercentYearTwo = new Double(partyPositions.getCompleteVotesPercent());
-		    	partyPosYearTwo.add(partyPositions);
-		    	}
-		    	
-		    }
-		    else if(alliancPartys != null && hasAlliances){
-		    	if(alliancPartys.size() > 1)
-		    		partyIds = getCommaSeperatedPartyIds(alliancPartys);
-		    	else
-		    		partyIds = partyId.toString();
-		    	for(Party allincParty:alliancPartys){
-			    partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(electionForYearTwo.getElectionId(),allincParty.getPartyId());
-			    if(partyElectionResultforAllianceParty == null)
-			    partyElectionResultforAllianceParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearTwo.getElectionId(),allincParty.getPartyId());
-			    if(partyElectionResultforAllianceParty != null){
-			    seatsWon = seatsWon + new Long(partyElectionResultforAllianceParty.getTotalSeatsWon());
-			    PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforAllianceParty);
-			    if(allincParty.getPartyId().equals(partyId)){
-			    seatsWonByPartyInYearTwo = new Long(partyPositions.getTotalSeatsWon());
-			    completeVotesPercentYearTwo = new Double(partyPositions.getCompleteVotesPercent());
-			    }
-			    partyPosYearTwo.add(partyPositions);
-			    }
-			   	}
-		    }
-		log.debug("Seats Won In :" + secondYear + ":"+ seatsWon);  
-		log.debug("PartyIds:" + partyIds);  
-		
-		forYearTwo.setSeatsWon(seatsWon);
-		electionCompReportVO.setForYearTwo(forYearTwo);
-		
-		districtWiseElectionResultsForYearTwo = staticDataService.getDistrictWisePartyElectionResults(electionType, 
-				electionForYearTwo.getElectionId(), partyIds,hasAlliances);
-		}
-		
-		votesPercentDiff = new BigDecimal(completeVotesPercentYearOne - completeVotesPercentYearTwo).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		Long seatsDifferenceForParty = seatsWonByPartyInYearOne - seatsWonByPartyInYearTwo;
-		
-		electionCompReportVO.setPositionsForYearOne(partyPosYearOne);
-		electionCompReportVO.setPositionsForYearTwo(partyPosYearTwo);
-		electionCompReportVO.setVotesPercentDiff(votesPercentDiff.toString());
-		electionCompReportVO.setSeatsDiff(seatsDifferenceForParty);
-		
-		
-		for(DistrictWisePartyResultVO resultForYearOne : districtWiseElectionResultsForYearOne){
-			if(resultForYearOne.getSeatsWon()==0 && resultForYearOne.getTotalConstituencies()==0){
-				for(DistrictWisePartyResultVO resultresultForYearTwo : districtWiseElectionResultsForYearTwo){
-					if(resultForYearOne.getDistrictId().equals(resultresultForYearTwo.getDistrictId())){
-						if(resultresultForYearTwo.getSeatsWon()!=0 || resultresultForYearTwo.getTotalConstituencies()!=0){
-							districtWisePartyResultVOListForYearOne.add(setDataIntoDistrictWisePartyResultVO(resultForYearOne));
-							districtWisePartyResultVOListForYearTwo.add(setDataIntoDistrictWisePartyResultVO(resultresultForYearTwo));							
-						}						
-					}
-				}
-			}else{				
-				districtWisePartyResultVOListForYearOne.add(setDataIntoDistrictWisePartyResultVO(resultForYearOne));
-				for(DistrictWisePartyResultVO resultresultForYearTwo : districtWiseElectionResultsForYearTwo){
-					if(resultForYearOne.getDistrictId().equals(resultresultForYearTwo.getDistrictId())){
-						districtWisePartyResultVOListForYearTwo.add(setDataIntoDistrictWisePartyResultVO(resultresultForYearTwo));
-					}					
-				}				
-			}
-		}
-		
-		if(districtWisePartyResultVOListForYearOne != null)
-		electionCompReportVO.setDistrictWisePartyResultsForYearOne(districtWisePartyResultVOListForYearOne);
-		if(districtWiseElectionResultsForYearTwo != null)
-		electionCompReportVO.setDistrictWisePartyResultsForYearTwo(districtWisePartyResultVOListForYearTwo);
-		
-		}catch(Exception ex){
-			ex.printStackTrace();
-			resultStatus.setExceptionEncountered(ex);
-			resultStatus.setResultPartial(true);
-			electionCompReportVO.setResultStatus(resultStatus);
-		}
-		
-		//Code for votes % Diff, Seats Diff - Mohan
-		for(DistrictWisePartyResultVO districtVO1:districtWisePartyResultVOListForYearOne){
-			for(DistrictWisePartyResultVO districtVO2:districtWisePartyResultVOListForYearTwo){
-				if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
-					
-					districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-					districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
-					
-					districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-					districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
-					break;
-				}
-			}
-		}
-		
-		return electionCompReportVO;
+		return electionComparisonReportVO;
 	}
 	
+	public void getStatewiseResultsForAssembly(ElectionComparisonReportVO resultVO, Long electionId1, 
+			Long electionId2, Long partyId, Boolean hasAlliance, Boolean isAssembly){
+		
+		List<PartyPositionsVO> partyPositionsList1 = new ArrayList<PartyPositionsVO>();
+		List<PartyPositionsVO> partyPositionsList2 = new ArrayList<PartyPositionsVO>();
+		
+		PartyPositionsVO partyPosition1 = getPartyPositions(electionId1, partyId);
+    	PartyPositionsVO partyPosition2 = getPartyPositions(electionId2, partyId);
+    	partyPositionsList1.add(partyPosition1);
+    	partyPositionsList2.add(partyPosition2);
+    	
+    	resultVO.setSeatsDiff(partyPosition1.getTotalSeatsWon() - partyPosition2.getTotalSeatsWon());
+    	Double percentDiff = new Double(partyPosition1.getVotesPercentage()) - new Double(partyPosition2.getVotesPercentage());
+    	resultVO.setVotesPercentDiff(new BigDecimal(percentDiff).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+    	
+    	if(hasAlliance){
+    		getpartyPositionsListForAllianceParties(partyPositionsList1, electionId1, partyId);
+    		getpartyPositionsListForAllianceParties(partyPositionsList2, electionId2, partyId);
+		}
+
+    	resultVO.setPositionsForYearOne(partyPositionsList1);
+    	resultVO.setPositionsForYearTwo(partyPositionsList2);
+	}
 	
-	private DistrictWisePartyResultVO setDataIntoDistrictWisePartyResultVO(DistrictWisePartyResultVO resultForYearOne){
+	private void getpartyPositionsListForAllianceParties(List<PartyPositionsVO> partyPositionsList, Long electionId, Long partyId){
+		List allianceparites = allianceGroupDAO.findAlliancePartiesByElectionAndPartyExcludeParty(electionId, partyId);
+		Set<Long> allianceParties = new HashSet<Long>();
+		for(Object[] values:(List<Object[]>) allianceparites)
+			allianceParties.add(Long.parseLong(values[1].toString()));
+		for(Long alPartyId:allianceParties)
+			partyPositionsList.add(getPartyPositions(electionId, alPartyId));
+	}
+	
+	private void calculateDifferencesFromLatest(ElectionComparisonReportVO electionComparisonReportVO, 
+			Map<Long, DistrictWisePartyResultVO> resultOne, Map<Long, DistrictWisePartyResultVO> resultTwo, Boolean isBiggerMapLatest){
+		DistrictWisePartyResultVO districtVO1 = null;
+		DistrictWisePartyResultVO districtVO2 = null;
+		List<DistrictWisePartyResultVO> districts1 = new ArrayList<DistrictWisePartyResultVO>();
+		List<DistrictWisePartyResultVO> districts2 = new ArrayList<DistrictWisePartyResultVO>();
+		for(Map.Entry<Long, DistrictWisePartyResultVO> entry1:resultOne.entrySet()){
+			districtVO1 = entry1.getValue();
+			districtVO2 = resultTwo.get(entry1.getKey());
+			
+			if(districtVO2 == null){
+				districtVO2 = new DistrictWisePartyResultVO();
+				districtVO2.setDistrictId(entry1.getKey());
+				districtVO2.setDistrictName(districtVO1.getDistrictName());
+				districtVO2.setConstiParticipated(0l);
+				districtVO2.setSeatsWon(0l);
+				districtVO2.setVotesPercent(0d);
+				districtVO2.setTotalPercentage(0d);
+				districtVO2.setConstiCount(0l);
+			}
+			
+			if(isBiggerMapLatest){
+				districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+				
+				districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+			}else{
+				districtVO1.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				districtVO1.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
+				
+				districtVO2.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				districtVO2.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());	
+			}
+			
+			districts1.add(districtVO1);
+			districts2.add(districtVO2);
+		}
+		
+		electionComparisonReportVO.setDistrictWisePartyResultsForYearOne(districts1);
+		electionComparisonReportVO.setDistrictWisePartyResultsForYearTwo(districts2);
+	}
+	
+	public Map<Long, DistrictWisePartyResultVO> getAssembliesDistrictwiseResults(Long partyId, Long stateOrCountryId, 
+			Long electionId, boolean isAssembly, boolean hasAlliance){
+		List result = null;
+		List constiCount = null;
 		DistrictWisePartyResultVO districtWisePartyResultVO = null;
-		districtWisePartyResultVO = new DistrictWisePartyResultVO();
-		districtWisePartyResultVO.setDistrictId(resultForYearOne.getDistrictId());
-		districtWisePartyResultVO.setDistrictName(resultForYearOne.getDistrictName());
-		districtWisePartyResultVO.setTotalConstituencies(resultForYearOne.getTotalConstituencies());
-		districtWisePartyResultVO.setConstiCount(resultForYearOne.getConstiCount());
-		districtWisePartyResultVO.setConstiParticipated(resultForYearOne.getConstiParticipated());
-		districtWisePartyResultVO.setSeatsWon(resultForYearOne.getSeatsWon());
-		districtWisePartyResultVO.setVotesPercent(resultForYearOne.getVotesPercent());
-		districtWisePartyResultVO.setTotalPercentage(resultForYearOne.getTotalPercentage());
-		return districtWisePartyResultVO;
-	}	
+		Map<Long, Long> constiCountInSateOrDist = new HashMap<Long, Long>();
+		Map<Long, DistrictWisePartyResultVO> districtsResultMap = new HashMap<Long, DistrictWisePartyResultVO>();
+		List constiCountList = null;
+		
+		if(isAssembly){
+			constiCountList = constituencyElectionDAO.getConstituenciesCountByDistrictForStateAndElection(stateOrCountryId, electionId);
+			fillConstiCountInSateOrDistMap(constiCountInSateOrDist, constiCountList);
+		}else{
+			constiCountList = constituencyElectionDAO.getConstituenciesCountByStateForCountryAndElection(stateOrCountryId, electionId);
+			fillConstiCountInSateOrDistMap(constiCountInSateOrDist, constiCountList);
+		}
+		
+		if(hasAlliance){
+			String parties = getAlliancePartiesIdsWithComma(allianceGroupDAO.findAlliancePartiesByElectionAndParty(electionId, partyId));
+			if(parties.length() == 0)
+				parties = partyId.toString();
+			if(isAssembly){
+				constiCount = nominationDAO.getConstituenciesCountByDistrictForElectionStateAndParties(electionId, stateOrCountryId, parties);
+				result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
+						stateOrCountryId, electionId);
+				if(result.size() < constiCount.size()){
+					electionComparision(partyId, electionId, true, stateOrCountryId);
+					result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
+							stateOrCountryId, electionId);
+				}
+				
+			}else{
+				constiCount = nominationDAO.getConstituenciesCountByStateForElectionCountryAndParties(electionId, stateOrCountryId, parties);
+				result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
+						stateOrCountryId, electionId);
+				if(result.size() < constiCount.size()){
+					electionComparision(partyId, electionId, false, stateOrCountryId);
+					result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
+							stateOrCountryId, electionId);
+				}
+			}
+		}else{
+			if(isAssembly){
+				constiCount = nominationDAO.getConstituenciesCountByDistrictForElectionStateAndParties(electionId, stateOrCountryId, partyId.toString());
+				result = partyElectionDistrictResultDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, stateOrCountryId, electionId);
+				if(result.size() < constiCount.size()){
+					List<SelectOptionVO> stateOrDistList = staticDataService.getDistricts(stateOrCountryId);
+					for(SelectOptionVO district:stateOrDistList)
+						staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(electionId, partyId, district.getId());
+					result = partyElectionDistrictResultDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, stateOrCountryId, electionId);
+				}	
+			}else{
+				constiCount = nominationDAO.getConstituenciesCountByStateForElectionCountryAndParties(electionId, stateOrCountryId, partyId.toString());
+				result = partyElectionStateResultDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, stateOrCountryId, electionId);
+				if(result.size() < constiCount.size()){
+					List<State> stateList = staticDataService.getAllStates();
+					for(State state:stateList)
+						staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(electionId, partyId, state.getStateId());
+					result = partyElectionStateResultDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, stateOrCountryId, electionId);
+				}
+			}
+		}
+
+		for (Object[] values : (List<Object[]>)result) {
+			districtWisePartyResultVO = new DistrictWisePartyResultVO();
+			districtWisePartyResultVO.setDistrictId(new Long(values[0].toString()));
+			districtWisePartyResultVO.setDistrictName(values[1].toString());
+			districtWisePartyResultVO.setConstiParticipated(new Long(values[2].toString()));
+			districtWisePartyResultVO.setSeatsWon(new Long(values[3].toString()));
+			districtWisePartyResultVO.setVotesPercent(new Double(values[4].toString()));
+			districtWisePartyResultVO.setTotalPercentage(new Double(values[5].toString()));
+			districtWisePartyResultVO.setConstiCount(constiCountInSateOrDist.get(new Long(values[0].toString())));
+			districtsResultMap.put(new Long(values[0].toString()), districtWisePartyResultVO);
+		}
+		
+		return districtsResultMap;
+	}
 	
-	private String getCommaSeperatedPartyIds(List<Party> alliancPartys) {
-		StringBuilder str = new StringBuilder();
-		for(Party party:alliancPartys)
-			str.append(IConstants.COMMA).append(party.getPartyId());
-		return str.toString().substring(1);
+	private void fillConstiCountInSateOrDistMap(
+			Map<Long, Long> constiCountInSateOrDist,
+			List constiCountList) {
+		for(Object[] values:(List<Object[]>)constiCountList)
+			constiCountInSateOrDist.put(Long.parseLong(values[0].toString()), Long.parseLong(values[1].toString()));
+			
 	}
 
-	public PartyPositionsVO getPartyPositions(PartyElectionResult partyElecResults){
-		PartyPositionsVO partyPositions = new PartyPositionsVO();
+	public PartyPositionsVO getPartyPositions(Long electionId, Long partyId){
+		PartyElectionResult partyElecResults = staticDataService.getPartyElectionResultsForAParty(electionId, partyId);
+    	if(partyElecResults == null)
+    		partyElecResults = staticDataService.savePartyElectionResultForAPartyForAElection(electionId,partyId);
+    	PartyPositionsVO partyPositions = new PartyPositionsVO();
 		partyPositions.setTotalSeatsWon(new Long(partyElecResults.getTotalSeatsWon()));
     	partyPositions.setSecondPosWon(new Long(partyElecResults.getSecondPosWon()));
     	partyPositions.setThirdPosWon(new Long(partyElecResults.getThirdPosWon()));
@@ -467,7 +446,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		List<PartyPositionsVO> posDetailsYearTwo;
 		List<ConstituencyElection> constiElectionsForYearOne = null;
 		List<ConstituencyElection> constiElectionsForYearTwo = null;
-		
+		Long stateId = stateOrDistrictId;
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
+			stateId = elecYearOne.getElectionScope().getState().getStateId();
+
 		try{
 			partyIdsYearOne = new ArrayList<Long>();
 			partyIdsYearTwo = new ArrayList<Long>();
@@ -480,8 +462,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			Party party = partyDAO.get(partyId);
 			
 			if(hasAlliances){
-				alliancPartiesForYearOne = staticDataService.getAllianceParties(yearOne,electionTypeId,partyId);
-				alliancPartiesForYearTwo = staticDataService.getAllianceParties(yearTwo,electionTypeId,partyId);
+				alliancPartiesForYearOne = allianceGroupDAO.findAlliancePartiesByElectionAndPartyForState(elecIdOne, partyId, stateId);
+				alliancPartiesForYearTwo = allianceGroupDAO.findAlliancePartiesByElectionAndPartyForState(elecIdTwo, partyId, stateId);
 				if(alliancPartiesForYearOne == null || alliancPartiesForYearOne.size() == 0){
 				alliancPartiesForYearOne = new ArrayList<Party>();
 				alliancPartiesForYearOne.add(party);
@@ -536,7 +518,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	public List<Long> getAlliancPartyIds(List<Party> alliancPartys) throws Exception{
 		List<Long> partyIds = new ArrayList<Long>();
 		for(Party party:alliancPartys){
-		partyIds.add(party.getPartyId());
+			partyIds.add(party.getPartyId());
 		}
 	  return partyIds;
 	}
@@ -853,30 +835,31 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		Group group = null;
 		if(isAssembly){
 			List<SelectOptionVO> stateOrDistList = staticDataService.getDistricts(stateOrCountryId);
-			allianceParties = allianceGroupDAO.findAlliancePartiesByElectionAndPartyExcludeParty(electionId, partyId);
-			group = (Group)((Object[])allianceParties.get(0))[0];
+			allianceParties = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(electionId, partyId, stateOrCountryId);
+			if(allianceParties.size() > 0) 
+				group = (Group)((Object[])allianceParties.get(0))[0];
 			for(SelectOptionVO district:stateOrDistList){
-				List<PartyElectionDistrictResult> partyResults = partyElectionDistrictResultDAO.
-					getByPartyIdElectionIdAndDistrict(electionId, partyId, district.getId());
-				if(partyResults.size() == 1){
-					partyDistrictResult = partyResults.get(0);
-					getAllAllianceCandidatesForAPartyInAState(partyDistrictResult.getElection(), null, partyDistrictResult.getDistrict(), 
-							partyDistrictResult.getParty(), group, getAlliancePartiesIdsWithComma(allianceParties), false);
-				}
-				
+				partyDistrictResult = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(electionId, 
+						partyId, district.getId());
+				if(partyDistrictResult == null)
+					partyDistrictResult = staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(electionId, 
+							partyId, district.getId());
+				if(partyDistrictResult != null)
+					getAllAllianceCandidatesForAPartyInAState(null, partyDistrictResult, group, getAlliancePartiesIdsWithComma(allianceParties), false);
 			}
 		}else{
-			List<State> states = staticDataService.getAllStates();
-			for(State state:states){
-				allianceParties = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(electionId, partyId, state.getStateId());
-				group = (Group)((Object[])allianceParties.get(0))[0];
-				List<PartyElectionStateResult> partyResults = partyElectionStateResultDAO.
-					getByPartyIdElectionIdAndStateId(partyId, electionId, state.getStateId());
-				if(partyResults.size() == 1){
-					partyStateResult = partyResults.get(0);
-					getAllAllianceCandidatesForAPartyInAState(partyStateResult.getElection(), partyStateResult.getState(), null,
-							partyStateResult.getParty(), group, getAlliancePartiesIdsWithComma(allianceParties), true);
-				}			
+			List states = stateDAO.findStatesByCountryId(stateOrCountryId);
+			for(Object[] state:(List<Object[]>)states){
+				allianceParties = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(electionId, partyId, Long.parseLong(state[0].toString()));
+				if(allianceParties.size() > 0) 
+					group = (Group)((Object[])allianceParties.get(0))[0];
+				partyStateResult = staticDataService.getPartyElectionResultsForAPartyStateLevelInParliamentElection(electionId, 
+						partyId, Long.parseLong(state[0].toString()));
+				if(partyStateResult == null)
+					partyStateResult = staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(electionId, 
+							partyId, Long.parseLong(state[0].toString()));
+				if(partyStateResult != null)
+					getAllAllianceCandidatesForAPartyInAState(partyStateResult, null, group, getAlliancePartiesIdsWithComma(allianceParties), true);	
 			}
 		}
 		
@@ -884,13 +867,18 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	
 	public String getAlliancePartiesIdsWithComma(List parties){
 		StringBuilder partiesIds = new StringBuilder();
-		for(Object[] values:(List<Object[]>)parties)
-			partiesIds.append(",").append(values[1].toString());
-		return partiesIds.toString();
+		if(parties != null)
+			for(Object[] values:(List<Object[]>)parties)
+				partiesIds.append(",").append(values[2].toString());
+		
+		if(partiesIds.length() > 0)
+			return partiesIds.toString().substring(1);
+		else
+			return "";
 	}
 	
-	public void getAllAllianceCandidatesForAPartyInAState(Election election, State state,District district, Party party, 
-			Group group, String alliancePartiesIds, Boolean isState){
+	public void getAllAllianceCandidatesForAPartyInAState(PartyElectionStateResult partyElectionStateResult, 
+			PartyElectionDistrictResult partyElectionDistrictResult, Group group, String alliancePartiesIds, Boolean isState){
 			Double totalVotesEarned=0d;
 			Double totalParticiptedValidVotes=0d;
 			Double totalValidVotes = 0d;
@@ -903,32 +891,38 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			Double totalConstiPercentage = new Double(0);
 			Long totalConstituenciesParticipated=0l;
 			List<ConstituencyElection> allianceConstituencies = null;
-			PartyElectionStateResult partyElectionStateResult = null;
-			PartyElectionDistrictResult partyElectionDistrictResult = null;
+			Election election = null;
+			Party party = null;
+			State state = null;
+			District district = null;
 			
 			if(isState){
-				partyElectionStateResult = staticDataService.getPartyElectionResultsForAPartyStateLevelInParliamentElection(election.getElectionId(), 
+				election = partyElectionStateResult.getElection();
+				party = partyElectionStateResult.getParty();
+				state = partyElectionStateResult.getState();
+				List checkList = partyElectionStateResultWithAllianceDAO.getPartyResultsByStateIdAndElectionId(election.getElectionId(), 
 						party.getPartyId(), state.getStateId());
-				if(partyElectionStateResult == null)
-					partyElectionStateResult = staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(election.getElectionId(),
-							party.getPartyId(),state.getStateId());
-				 
+				if(checkList.size() > 0)
+					return;
 				totalValidVotes = (Double)constituencyElectionDAO.findTotalValidVotesForAnElectionForAnState(election.getElectionId(), 
 						state.getStateId()).get(0);
-				allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAnElection(election.getElectionId(),
-						alliancePartiesIds,party.getPartyId().toString());
+				if(alliancePartiesIds.length() > 0)
+					allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInAStateForAnElection(election.getElectionId(),
+						alliancePartiesIds,party.getPartyId(), state.getStateId());
 				
 			}else{
-				partyElectionDistrictResult = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(election.getElectionId(), 
+				election = partyElectionDistrictResult.getElection();
+				party = partyElectionDistrictResult.getParty();
+				district = partyElectionDistrictResult.getDistrict();
+				List checkList = partyElectionDistrictResultWithAllianceDAO.getPartyResultsForADistrictByPartyIdAndElectionId(election.getElectionId(), 
 						party.getPartyId(), district.getDistrictId());
-				if(partyElectionDistrictResult == null)
-					partyElectionDistrictResult = staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(election.getElectionId(), 
-						party.getPartyId(), district.getDistrictId());
-				 
+				if(checkList.size() > 0)
+					return;
 				totalValidVotes = (Double)constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrict(election.getElectionId(),
 						district.getDistrictId()).get(0);
-				allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInADistrict(election.getElectionId(), alliancePartiesIds, 
-						party.getPartyId().toString(), district.getDistrictId());	
+				if(alliancePartiesIds.length() > 0)
+					allianceConstituencies = nominationDAO.getAllAllianceConstituenciesForAPartyInADistrict(election.getElectionId(), alliancePartiesIds, 
+						party.getPartyId(), district.getDistrictId());	
 			}
 			
 			if(allianceConstituencies != null)
@@ -997,13 +991,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	public Nomination getNominationForAlliancePartyThatGotHighestRank(Set<Nomination> list,String allianceParties){
 		List<Nomination> selectedList = new ArrayList<Nomination>(0);
 		Long rank=0l;
-		for(Nomination nomination : list){				
-			if(nomination.getParty().getShortName().contains(allianceParties)){
+		for(Nomination nomination : list)		
+			if(allianceParties.contains(nomination.getParty().getPartyId().toString()))
 				selectedList.add(nomination);	
-			}
-		}		
 		Collections.sort(selectedList, new NominatResultsComparator());
-		
 		return selectedList.get(0);		
 	}
 	

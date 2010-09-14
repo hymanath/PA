@@ -108,7 +108,7 @@ public class PartyElectionStateResultWithAlliance extends BaseModel implements S
 	@JoinColumn(name = "group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
-		public Group getGroup() {
+	public Group getGroup() {
 		return group;
 	}
 

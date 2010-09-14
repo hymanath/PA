@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
+import com.itgrids.partyanalyst.model.Party;
 
 public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> implements IAllianceGroupDAO {
 
@@ -30,6 +31,15 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 				" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where model2.election.electionId = "+electionId+") " +
 				"and model1.party.partyId = "+partyId+")");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Party> findAlliancePartiesByElectionAndPartyForState(Long electionId, Long partyId, Long stateId){
+		Object[] params = {electionId, stateId, partyId};
+		return getHibernateTemplate().find("select model.party from AllianceGroup model where model.group.groupId = " +
+				" (select model1.group.groupId from AllianceGroup model1 where" +
+				" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where " +
+				"model2.election.electionId = ? and model2.state.stateId = ?) and model1.party.partyId = ?)",params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findPartiesByGroup(Long groupId) {
@@ -40,7 +50,7 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 
 	public List findAlliancePartiesByElectionStateAndPartyExcludeParty(Long electionId, Long partyId, Long stateId){
 		Object[] params = {electionId, stateId, partyId, partyId};
-		return getHibernateTemplate().find("select model.group, model.party.partyId, model.party.shortName" +
+		return getHibernateTemplate().find("select model.group, model.group.groupName, model.party.partyId, model.party.shortName" +
 				" from AllianceGroup model where model.group.groupId = (select model1.group.groupId from AllianceGroup model1 where" +
 				" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where model2.election.electionId = ? "+
 						"and model2.state.stateId = ?) and model1.party.partyId = ?) and model.party.partyId != ?", params);

@@ -20,16 +20,16 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 
 	/*public void testFinBYElectionYear(){
 		List<AllianceGroup> res = allianceGroupDAO.findByGroupId(new Long(2));
-	}
+	}*/
 	
 	public void testFindAlliancePartiesByElectionAndParty(){
-		List list = allianceGroupDAO.findAlliancePartiesByElectionAndParty(4l, 0l);
+		List list = allianceGroupDAO.findAlliancePartiesByElectionAndParty(2l, 361l);
 		long start = System.currentTimeMillis();
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 		long end = System.currentTimeMillis();
 		System.out.println((end - start));
-	}*/
+	}
 	
 	/*@SuppressWarnings("unchecked")
 	public void testGetAlliancParties(){
@@ -43,9 +43,15 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFindAlliancePartiesByElectionStateAndPartyExcludeParty(){
+	/*public void testFindAlliancePartiesByElectionStateAndPartyExcludeParty(){
 		List list = allianceGroupDAO.findAlliancePartiesByElectionStateAndPartyExcludeParty(2l, 24l, 1l);
 		System.out.println(list.size());
 	}
+	*/
 	
+	public void testFindAlliancePartiesByElectionAndPartyForState(){
+		List list = allianceGroupDAO.findAlliancePartiesByElectionAndPartyForState(3l, 361l, 1l);
+		System.out.println(list.size());
+	}
+
 }

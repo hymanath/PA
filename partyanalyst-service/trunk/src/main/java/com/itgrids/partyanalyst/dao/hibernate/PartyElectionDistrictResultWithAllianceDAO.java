@@ -24,4 +24,11 @@ public class PartyElectionDistrictResultWithAllianceDAO extends
 				" model.party.partyId = ? and model.district.districtId = ? order by model.district.districtId",parms);
 		
 	}
+	
+	public List findDistrictWiseElectionResultsForStatePartyAndElection(Long partyId, Long stateId, Long electionId){
+		Object[] params = {partyId, electionId, stateId};
+		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName, model.totalConstiParticipated, " +
+				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionDistrictResultWithAlliance model " +
+				"where model.party.partyId = ? and model.election.electionId = ? and model.district.state.stateId = ?", params);
+	}
 }

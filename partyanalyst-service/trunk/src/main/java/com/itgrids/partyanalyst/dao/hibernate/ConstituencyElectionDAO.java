@@ -265,4 +265,19 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"group by model.constituency.state.stateId " +
 				"order by model.constituency.state.stateId",params);
 	}
+	
+	public List getConstituenciesCountByDistrictForStateAndElection(Long stateId, Long electionId){
+		Object[] params = {stateId, electionId};
+		return getHibernateTemplate().find("select model.constituency.district.districtId, count(model.constiElecId) " +
+				"from ConstituencyElection model where model.constituency.district.state.stateId = ? and " +
+				"model.election.electionId = ? group by model.constituency.district.districtId", params);
+	}
+	
+	public List getConstituenciesCountByStateForCountryAndElection(Long countryId, Long electionId){
+		Object[] params = {countryId, electionId};
+		return getHibernateTemplate().find("select model.constituency.state.stateId, count(model.constiElecId) " +
+				"from ConstituencyElection model  where model.constituency.state.country.countryId = ? and " +
+				"model.election.electionId = ? group by model.constituency.state.stateId", params);
+	}
+		
 }

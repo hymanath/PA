@@ -23,4 +23,6 @@ public interface IPartyElectionStateResultDAO extends GenericDao<PartyElectionSt
 	public List<PartyElectionStateResult> getStateWiseAllPartiesResults(Long electionId,String votesPercentMargin);
 	
 	public List<PartyElectionStateResult> getResultsInAllStatesForAParty(Long electionId,Long partyId);
+	
+	public List findStatewiseResultsForPartyElectionAndCountry(Long partyId, Long countryId, Long electionId);
 }

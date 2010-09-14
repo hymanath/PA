@@ -12,4 +12,6 @@ public interface IPartyElectionDistrictResultWithAllianceDAO extends
 
 	public List<PartyElectionStateResultWithAlliance> getPartyResultsForADistrictByPartyIdAndElectionId(Long electionId,Long partyId,Long districtId);
 	
+	public List findDistrictWiseElectionResultsForStatePartyAndElection(Long partyId, Long stateId, Long electionId);
+	
 }

@@ -48,4 +48,11 @@ public class PartyElectionStateResultDAO extends GenericDaoHibernate<PartyElecti
 		return getHibernateTemplate().find("from PartyElectionStateResult model where model.election.electionId = ? and model.party.partyId = ?",params);
 	}
 	
+	public List findStatewiseResultsForPartyElectionAndCountry(Long partyId, Long countryId, Long electionId){
+		Object[] params = {electionId, partyId, countryId};
+		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, model.totalConstiParticipated, " +
+				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionStateResult model where " +
+				"model.election.electionId = ? and model.party.partyId = ? and model.state.country.countryId = ?",params);
+	}
+	
 }

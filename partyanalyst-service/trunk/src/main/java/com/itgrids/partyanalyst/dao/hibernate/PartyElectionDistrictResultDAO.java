@@ -20,13 +20,7 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 	public PartyElectionDistrictResultDAO() {
 		super(PartyElectionDistrictResult.class);
 	}
-	
-	/*@SuppressWarnings("unchecked")
-	public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId, Long partyId, Long stateId, Long districtId) {
-		Object[] params = {electionId,partyId,stateId,districtId};
-		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.election.electionId = ? and model.party.partyId = ? and model.state.stateId = ? and model.district.districtId = ?", params);
-	}*/
-	
+		
 	@SuppressWarnings("unchecked")
 	public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId, Long partyId, Long districtId) {
 		Object[] params = {electionId,partyId,districtId};
@@ -74,6 +68,13 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 				" model.election.electionScope.electionType.electionType,model.totalVotesGained,model.completeVotesPercent," +
 				" model.totalSeatsWon from PartyElectionDistrictResult model where model.election.electionScope.electionScopeId = ?" +
 				" and model.district.districtId = ? order by model.party.partyId", params);
+	}
+	
+	public List findDistrictWiseElectionResultsForStatePartyAndElection(Long partyId, Long stateId, Long electionId){
+		Object[] params = {partyId, electionId, stateId};
+		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName, model.totalConstiParticipated, " +
+				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionDistrictResult model " +
+				"where model.party.partyId = ? and model.election.electionId = ? and model.district.state.stateId = ?", params);
 	}
 
 }

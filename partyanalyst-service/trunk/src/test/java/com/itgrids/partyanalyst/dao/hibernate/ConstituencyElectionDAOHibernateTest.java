@@ -116,13 +116,13 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testFindConstituenciesByElectionGroupByDistrict(){
+	/*public void testFindConstituenciesByElectionGroupByDistrict(){
 		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByDistrict(4l);
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
 		assertEquals(23, list.size());
 	}
-	
+	*/
 	/*public void testFindConstituenciesByElectionGroupByState(){
 		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByState(11l);
 		for(Object[] values:(List<Object[]>)list)
@@ -150,7 +150,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 		}
 	}*/
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetStates(){
 		List results = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(new Long(2));
 		if(results != null && results.size() > 0){
@@ -160,7 +160,17 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" State Id :" + (Long)params[0] + " State Name :"  + (String)params[1]);
 			}
 		}
-	}
+	}*/
 	
+	/*public void testGetConstituenciesCountByStateAndElection(){
+		List list = constituencyElectionDAO.getConstituenciesCountByDistrictForStateAndElection(1l, 3l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetConstituenciesCountByStateForCountryAndElection(){
+		List list = constituencyElectionDAO.getConstituenciesCountByStateForCountryAndElection(1l, 2l);
+		System.out.println(list.size());
+	}*/
+
 	
 }

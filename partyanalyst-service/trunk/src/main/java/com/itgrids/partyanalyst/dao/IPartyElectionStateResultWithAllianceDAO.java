@@ -10,4 +10,7 @@ public interface IPartyElectionStateResultWithAllianceDAO extends
 		GenericDao<PartyElectionStateResultWithAlliance, Long> {
 
 	public List<PartyElectionStateResultWithAlliance> getPartyResultsByStateIdAndElectionId(Long electionId,Long partyId,Long stateId);
+
+	public List findStatewiseResultsForPartyElectionAndCountry(Long partyId,
+			Long countryId, Long electionId);
 }
