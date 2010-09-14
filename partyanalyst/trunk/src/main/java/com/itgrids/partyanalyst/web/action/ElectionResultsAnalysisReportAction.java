@@ -194,7 +194,9 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));*/
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
+		statesList.add(0, new SelectOptionVO(0L,"Select State"));
 		
+		/*
 		electionTypes = new ArrayList<SelectOptionVO>();
 		electionTypes.add(0, new SelectOptionVO(0L, "Select Election Type"));
 		electionTypes.add(1, new SelectOptionVO(1L, "Parliament"));
@@ -207,7 +209,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		
 		partiesList = new ArrayList<SelectOptionVO>();
 		partiesList = staticDataService.getStaticParties();
-		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));*/
 		
 		return Action.SUCCESS;
 	}
@@ -543,5 +545,81 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		return Action.SUCCESS;
 	}
 	
-
+	
+	public String getElectionTypesForAState(){
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long stateID = new Long(jObj.getString("stateId"));
+		if(!stateID.equals(0L))
+		electionTypes = staticDataService.getAllElectionScopesForAState(stateID);
+		electionTypes.add(0, new SelectOptionVO(0L,"Select Type"));
+		
+	 return Action.SUCCESS;
+	}
+	
+    public String getElectionYearsForAnElectionTypeAndState(){
+		
+    	if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			String elecType = jObj.getString("elecTypeId");
+			Long partyId = new Long(jObj.getString("partyId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			
+			Long countryId = 1l;
+			String electionType = null;
+			
+			if(elecType.equalsIgnoreCase("Parliament"))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			else 
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			
+			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, electionType, countryId);
+			if(electionScope != null){
+				electionYears = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
+			}
+			electionYears.add(0,new SelectOptionVO(0L,"Select Party"));
+			  
+						
+		}
+		return Action.SUCCESS;
+	}
+    
+    public String getPartysInAState(){
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long stateID = new Long(jObj.getString("stateId"));
+		if(!stateID.equals(0L))
+		partiesList = staticDataService.getStaticPartiesListForAState(stateID);
+		partiesList.add(0, new SelectOptionVO(0L,"Select Party"));
+		
+	 return Action.SUCCESS;
+	}
+    
+    
 }
