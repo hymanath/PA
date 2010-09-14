@@ -5815,5 +5815,13 @@ public class StaticDataService implements IStaticDataService {
 		
 	 return selectedParties;
 	}
+	
+	public SelectOptionVO getStateOfADistrict(Long districtId)
+	{
+		District district = districtDAO.get(districtId);
+		SelectOptionVO selectoptn = new SelectOptionVO(district.getState().getStateId(),district.getState().getStateName());
+		
+	 return selectoptn;
+	}
 }
 
