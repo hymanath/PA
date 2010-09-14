@@ -60,6 +60,18 @@
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
+	<style type="text/css">
+	.distAnchor
+	{
+		text-decoration:none;
+		color:black;
+		font-family:verdana;
+		font-size:13px;
+		
+	}
+		
+  </style>
+
 <script type="text/javascript">
 var Localization = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -1174,7 +1186,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<div id="districtPageLayout_main"></div>	
 
 	<!--District Page Right Layout-->
-	<div id="districtPageLayout_right">		
+	<div id="districtPageLayout_right">	
+	
+	   
 		<div id="newConstDiv_main">
 			<div id="newConstDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1201,7 +1215,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</c:forEach>						
 			</div>
 		</div>
-
+        
 
 		
 		<div id="delimitMandalsDiv_main">
@@ -1237,7 +1251,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 						<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="districtPageRoundedHeaders_center"><span>Mandals</span></div></td>
+						<td><div class="districtPageRoundedHeaders_center"><span>Mandals / Tehsils</span></div></td>
 						<td><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
@@ -1268,18 +1282,46 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="districtPageRoundedHeaders_center" style="width:658px"><span> ${districtName} District Details</span></div></td>
+						<td><div class="districtPageRoundedHeaders_center" style="width:658px"><span>Constituencies In ${districtName} District </span></div></td>
 						<td><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
-			<div id="districtMap_body">				 
+			<div id="districtMap_body">	
+		      <c:if test="${stateDetails.name == 'Andhra Pradesh'}">
 				<object width="550" height="430">
 					<param name="movie" value="images/districtMaps/Andhra_Pradesh/${districtName}.swf">
 					 <param name="wmode" value="transparent"> 
 					<embed wmode="transparent" src="images/districtMaps/Andhra_Pradesh/${districtName}.swf" width="550" height="430">
 					</embed>
 				</object>
+			   </c:if>
+
+               <c:if test="${stateDetails.name != 'Andhra Pradesh'}">
+				<br><br>
+				<center>
+				 <table border="0" >
+				 <tr> 
+                <c:forEach var="existConsti" items="${constituenciesStatusVO.existConstituencies}" varStatus="status">
+				
+				 <td> <img src="images/icons/districtPage/listIcon.png"/></td>
+						<td><h4> 
+						    <a href="constituencyPageAction.action?constituencyId=${existConsti.id}" class="distAnchor" title="Click to view ${existConsti.name} page">
+							    <c:out value="${existConsti.name}"/>
+							</a> 
+						</h4></td>
+                    
+						<c:if test="${status.count%3 == 0}">
+                        </a>
+
+						 </tr>
+						 <tr>
+						</c:if>
+                 						 
+                </c:forEach>
+				 </tr>	
+			    </table><center>
+				</c:if>
 			</div>
 		</div>
 		<div id="partiesPerformanceGraphDistrict">
@@ -1397,7 +1439,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			</div>
 		</div>
 	</div>
-
+    
 	<div id="muncipality_corporation_div_main">
 		<table width="100%">
 			<tr>
