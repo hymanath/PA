@@ -1345,11 +1345,20 @@
 				<param name="root">partyList</param>				
 			</result>		
 		</action>
+		<action name="getParticipatedStatesForAnElection" class="partyResultsCriteriaAction" method="getStatesForElection">
+		<result type="json" name="success">
+				<param name="root">statesList</param>				
+			</result>		
+		</action>
 		<action name="getProblemsInState" class="homePageAction" method="getProblemsInState">
 			<result type="json" name="success">
 				<param name="root">problemsList</param>				
 			</result>		
-		</action>       
-		 
+		</action>
+		<action name="getConstituenciesByElectionScope" class="partyResultsCriteriaAction" method="getConstituenciesByElectionScope">
+			<result type="json" name="success">
+				<param name="root">constsList</param>				
+			</result>		
+		</action>           
 	</package>
 </struts>
