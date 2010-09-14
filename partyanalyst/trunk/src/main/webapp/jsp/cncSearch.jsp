@@ -54,13 +54,13 @@
 
 	<table class="yui-skin-sam" style="width:100%;" border="0" width="100%">
 	<tr>
-		<td width="80px" style="padding-top: 3px;color:#FBAD2B;">
+		<th width="80px" style="padding-top: 3px;color:#163447;">
 			Search Criteria
-		</td>
-		<td width="200px" align="left" style="color:#FFFFFF;">		
+		</th>
+		<th width="200px" align="left" style="color:#163447;">		
 			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="getParser(this.value)"/>Candidate
 			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="getParser(this.value)"/>Constituency	
-		</td>
+		</th>
 		<td width="40px">
 			<img  id="ajaxLoaderimg" height="16" width="16" src="<%=request.getContextPath()%>/images/icons/ajaxLoader.gif" style="display:none;">
 		</td>
@@ -71,9 +71,9 @@
 		</td>
 	</tr>
 	<tr>	
-		<td width="80px">
-			<div id="labelDiv" style="padding-top: 2px;color:#FBAD2B;">Search Text</div>
-		</td>
+		<th width="80px">
+			<div id="labelDiv" style="padding-top: 2px;color:#163447;">Search Text</div>
+		</th>
 		<td width="200px" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;">		
 			<div id="textFldDiv"></div>				
 		</td>

@@ -19,6 +19,32 @@ function initializeHomePage()
 	getDistrictsComboBoxForAState(1, 'districtList_d');
 	getRecentElectionsInState(stateSelectElVal);
 	getProblemsInState(stateSelectElVal);
+	buildPolls()
+}
+
+function buildPolls()
+{
+	var elmt = document.getElementById("pollsWidgetBody");
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="pollQuestionDiv">Q) Should Narendra Modi campaign in Bihar assembly polls?</div>';
+	str += '<div id="pollOptionsDiv">';
+	str += '<table>';
+	str += '<tr><td><input type="radio" name="pollradio" value="yes">Yes </td></tr>';
+	str += '<tr><td><input type="radio" name="pollradio" value="no">No </td></tr>';
+	str += '<tr><td><input type="radio" name="pollradio" value="cant Say">Cant Say </td></tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '<div id="pollSubmitDiv">';
+	str += '<div onclick="javascript:{}" class="viewReportButtonSpan" style="left:">';
+	str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';
+	str += '</div>';
+	str += '</div>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
 }
 
 function buildLogoImage()
@@ -179,7 +205,7 @@ function buildElectionTrendzTabView()
 	content1 += '</div>';
 
 	var content2 = '';
-	content2 += content;
+	//content2 += content;
 	content2 += '<div id="parliamentElectionTrendzDiv_main">';
 	content2 += '</div>';
 
@@ -275,11 +301,20 @@ function buildResultsHTMLTable(arr,divId,elecType)
 		str += '<table>';
 		str += '<tr>';
 		str += '<td><img src="images/icons/indexPage/listIcon.png"/></td>';
-		if(arr[i].electionSubtype == "BYE")
-			str += '<td>'+selectedState+' '+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
-		else
-			str += '<td>'+selectedState+' '+arr[i].electionType+' Election Results In Year '+arr[i].year+'</td>';
-
+		if(elecType == "Assembly")
+		{
+			if(arr[i].electionSubtype == "BYE")
+				str += '<td>'+selectedState+' '+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
+			else
+				str += '<td>'+selectedState+' '+arr[i].electionType+' Election Results In Year '+arr[i].year+'</td>';
+		}
+		else if(elecType == "Parliament")		
+		{
+			if(arr[i].electionSubtype == "BYE")
+				str += '<td>'+arr[i].electionType+' ['+arr[i].electionSubtype+'] Election Results In Year '+arr[i].year+'</td>';
+			else
+				str += '<td>'+arr[i].electionType+' Election Results In Year '+arr[i].year+'</td>';
+		}
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';

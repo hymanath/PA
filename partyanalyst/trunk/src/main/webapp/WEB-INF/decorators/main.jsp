@@ -54,8 +54,9 @@
 	oMenuBar.render();  
 	 
 	}); 
-
-	var aSubmenuData = [ 
+	
+	<c:if test="${sessionScope.loginStatus == 'out'}">
+		var aSubmenuData = [ 
 		{
 			 id: "home", 
 	        itemdata: [ 				
@@ -108,34 +109,73 @@
 	     
 	     
 	]; 
+	</c:if>
+	<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+		var aSubmenuData = [ 
+					{
+						 id: "home", 
+						itemdata: [ 				
+							  
+
+						] 
+					},
+					{ 
+						id: "staticData",  
+						itemdata: [ 
+							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+						]     
+					}					 
+				]; 
+	</c:if>
+
+	function buildLogoImage()
+	{
+		var elmt = document.getElementById("pa_Logo");
+
+		if(!elmt)
+			return;
+
+		var str = '';	
+		
+		
+		if(navigator.appName=="Microsoft Internet Explorer")
+			str += '<img src="images/icons/homePage_new/logo.gif">';
+		else
+			str += '<img src="images/icons/homePage_new/logo.png">';
+
+		elmt.innerHTML = str;
+	}
 	
 	</script>
 	 <decorator:head/>
 </head>
 
 <body>
-	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible">
+	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
 		<table  width="100%" id="headerTable">
 			<tr>
-				<td style="vertical-align:top;width:580px;">
-					<div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg" style="padding-left: 10px; padding-top: 5px;"></img></div>
+				<td style="vertical-align:top;width:540px;">
+					<div id="pa_Logo" style="padding-left: 10px; padding-top: 10px;"></div>
 				</td>
 				<td style="vertical-align:top;">
 					<table width="100%" style="width:100%">
 						<tr>
-							<td id="loginarea">
+							<th id="loginarea">
 								<c:if test="${sessionScope.loginStatus == 'out'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
-									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 								</c:if>		
-							</td>
+							</th>
 						</tr>
 						<tr>
 							<td id="searchBox">
@@ -151,26 +191,45 @@
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
 					<ul class="first-of-type"> 
+						<c:if test="${sessionScope.loginStatus == 'out'}">  
 						<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
 							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
 								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
 								HOME
 							</a> 
 						</li> 
+						</c:if>
+						<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
+								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+								HOME
+							</a> 
+						</li> 
+						</c:if>
+
+						<c:if test="${sessionScope.loginStatus == 'out'}">  
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 						</li> 
+						</c:if>
+						<c:if test="${sessionScope.loginStatus == 'out'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 						</li> 
+						</c:if>
+						<c:if test="${sessionScope.loginStatus == 'out'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
+						</c:if>
+						<c:if test="${sessionScope.loginStatus == 'out'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
 						</li> 
+						</c:if>
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATIC DATA</a> 
+							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li> 
 					</ul> 
 				</div> 
@@ -193,6 +252,9 @@
 		</table>
 		</div>
 	</div>
-
+	
+	<script type="text/javascript">
+		buildLogoImage();
+	</script>
 </body>
 </html>

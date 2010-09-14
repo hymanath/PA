@@ -36,8 +36,8 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
-
-
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container_core-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>		
 
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
@@ -56,9 +56,13 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
+
 
 <!-- YUI Dependency files (End) -->
 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
@@ -94,6 +98,46 @@ var errotMsg = '<%=errorMsg%>';
 	statesInCountryObj.push(obj);	
 </c:forEach>
 
+
+
+google.load("elements", "1", {packages : ["newsshow"]});
+
+YAHOO.util.Event.onContentReady("navigationHead", function () { 	 
+	    
+	    var oMenuBar = new YAHOO.widget.MenuBar("navigationHead", {  
+	                                                autosubmenudisplay: true,  
+	                                                hidedelay: 100,  
+	                                                lazyload: true }); 
+
+		 
+		oMenuBar.subscribe("beforeRender", function () { 
+	 
+	    if (this.getRoot() == this) { 	 
+		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
+		this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
+	    } 
+	 
+	}); 
+	 
+	oMenuBar.render();  
+	 
+	}); 
+
+	var aSubmenuData = [ 
+		{
+			 id: "home", 
+	        itemdata: [] 
+		},	 
+	    { 
+	        id: "staticData",  
+	        itemdata: [ 
+	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+	            { text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
+				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+	        ]     
+	    }
+	]; 
 </script>
 </head>
 <body>
@@ -119,7 +163,24 @@ var errotMsg = '<%=errorMsg%>';
                 </tr>
             </table>		
         </div>	
-        <div></div>
+        <div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
+		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
+					<div class="bd"> 
+						<ul class="first-of-type"> 
+							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
+									<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+									HOME
+								</a> 
+							</li> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
+							</li> 
+						</ul> 
+					</div> 
+			</div> 
+		</div>
+
        <!-- <div id="homePage_header">
         	<img height="180" width="960" src="images/icons/homePage_new/homePage_header.jpg"/>
         </div> -->
@@ -282,7 +343,7 @@ var errotMsg = '<%=errorMsg%>';
 								<div class="adData_body">
 									<table>
 										<tr>
-											<td valign="top"><img src="images/icons/homePage_new/header_human_main.jpg"/>	</td>
+											<td valign="top"><a href="landing.action"><img src="images/icons/homePage_new/header_human_main.jpg"/></a></td>
 											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b> <br/><br/>We help you to</td>
 										</tr>
 										<tr>
@@ -292,17 +353,122 @@ var errotMsg = '<%=errorMsg%>';
 									
 								</div>
 								<div class="adData_footer">
-									<div onclick="buildResultsTableForElectionType('assembly')" class="votingTrendzHeadLabelDiv">
+									<div onclick="javascript:{window.location = 'landing.action'}" class="votingTrendzHeadLabelDiv">
 										<span class="votingTrendzHeadLabelSpan">Know More</span>
 									</div>
 								</div>								
 							</div>
 						</div>
-                    </div>                    
+                    </div>    
+					
+				
+					<div id="giftWidgetMain" style="margin-top:5px;">
+						<div id="giftWidgetHeader">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img height="41" width="45" src="images/icons/homePage_new/gift_header_left.jpg"/></td>
+								<td width="98%">
+									<div class="electionTrendzHeaderBackground_center">
+										<span class="headerLabelSpan" style="color:#3b3b3b">
+											Gift Your MLA
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+							  </tr>
+							</table>	
+						 </div>
+						<div id="giftWidgetBody" class="yui-skin-sam">
+							
+						</div>
+						<div id="giftWidgetFooter">
+							
+						</div>
+					</div>
+					
                 </td>
               </tr>
             </table>
         </div>
+		
+		<div style="padding:5px;">
+			<table width="100%">
+				<tr>
+					<td width="33%">
+						<div class="productFeatureMain">							
+							 <div class="productFeatureHeader">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center">
+											<span class="headerLabelSpan">
+												Leaders 
+											</span>
+										</div>
+									</td>
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>							
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
+										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=Y%20S%20Jagan%2C%20Sonia%20Gandhi%2C%20Chandra%20Babu%20Naidu%2C%20K%20Chandrasekhar%20Rao%2CK%20Chiranjeevi%2CJaya%20Prakash%20Narayana%2C%20&ned=in&rsz=small&hl=en&format=300x250">
+								</iframe>
+							</div>						
+						</div>
+					</td>
+					<td width="33%">
+						<div class="productFeatureMain">							
+							 <div class="productFeatureHeader">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="1%"><img src="images/icons/homePage_new/news_head_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center" style="background-image:url('images/icons/homePage_new/news_Head_center.jpg');">
+											<span class="headerLabelSpan">
+												Top Stories 
+											</span>
+										</div>
+									</td>
+									<td width="1%"><img src="images/icons/homePage_new/1r.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
+										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?topic=n&ned=in&rsz=small&hl=en&format=300x250">
+								</iframe>
+							</div>						
+						</div>
+					</td>
+					<td width="33%">
+						<div class="productFeatureMain">							
+							 <div class="productFeatureHeader">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center">
+											<span class="headerLabelSpan">
+												Parties 
+											</span>
+										</div>
+									</td>
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
+										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
+								</iframe>
+							</div>						
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 
         <div id="homePageLocationWidgets">
         	<table width="100%" border="0" cellspacing="5" cellpadding="0">
@@ -449,97 +615,128 @@ var errotMsg = '<%=errorMsg%>';
             </table>
 
         </div>
-        
-		<!-- News Div start -->
-		<div id="newsDivMain" class="widgetsMain">
-			<div class="widgetsHeader">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				  <tr>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
-					<td width="98%">
-						<div class="widgetHeaderBackground_center">
-							<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
-								Latest News  
-							</span>
-						</div>
-					</td>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
-				  </tr>
-				</table>
-			</div>
-			<div class="widgetsBody" style="background-color:#DEEAE6;height:auto">
-				<div class="newsDataMain">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-					<td rowspan="3" valign="top" width="100px">
-						<img src="images/icons/homePage_new/telangana.jpg"/>
-					</td>
-					<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
-					</tr>
-					<tr>                               
-					<td valign="top">
-						<div class="newsContent">
-						Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh. What is each
-						parties strengths in these constituencies? What are the factors influence these elections
-						like non participating parties (PRP, BJP, Loksatta etc) ...? 
-						</div>
-					</td>
-					</tr>
-					<tr>                               
-					<td valign="top">
-						<div class="newsAnchorDiv">
-						<a href="biElectionAction.action" class="newsAnchor">Know More</a>
-						</div>
-					</td>
-					</tr>
-					</table>
-				</div>
-				
-				<div class="newsDataMain">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-					<td rowspan="3" valign="top" width="100px">
-						
-					</td>
-					<td valign="top">
-						<span class="newsHeaderLabel">Govt to talk to allies on fuel price hike:pranab </span>
-					 </td>
-					</tr>
-					<tr>                               
-					<td valign="top">
-						<div class="newsContent">
-						Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop 
-						of demands for a rollback in the fuel prices and explained why reduction in the excise
-						duty on petroleum products was difficult.
-						</div>
-					</td>
-					</tr>
-					<tr>                               
-					<td valign="top">
-						<div class="newsAnchorDiv">
-						<a href="biElectionAction.action" class="newsAnchor">Know More</a>
-						</div>
-					</td>
-					</tr>
-					</table>
-				 </div>
-			</div>
-			<div >
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				  <tr>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
-					<td width="98%">
-						<div class="widgetHeaderBackground_center">
-							<span class="headerLabelSpan">  </span>
-						</div>
-					</td>
-					<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
-				  </tr>
-				</table>
-			</div>
-		</div>
-		<!-- News Div End -->       
 
+		<table>
+			<tr>
+				<td width="70%" valign="top">
+					<!-- News Div start -->
+					<div id="newsDivMain" class="widgetsMain">
+						<div class="widgetsHeader">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
+								<td width="98%">
+									<div class="widgetHeaderBackground_center">
+										<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
+											Latest News  
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
+							  </tr>
+							</table>
+						</div>
+						<div class="widgetsBody" style="background-color:#DEEAE6;height:auto">
+							<div class="newsDataMain">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+								<td rowspan="3" valign="top" width="100px">
+									<img src="images/icons/homePage_new/telangana.jpg"/>
+								</td>
+								<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsContent">
+									Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh. What is each
+									parties strengths in these constituencies? What are the factors influence these elections
+									like non participating parties (PRP, BJP, Loksatta etc) ...? 
+									</div>
+								</td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsAnchorDiv">
+									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
+									</div>
+								</td>
+								</tr>
+								</table>
+							</div>
+							
+							<div class="newsDataMain">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+								<td rowspan="3" valign="top" width="100px">
+									
+								</td>
+								<td valign="top">
+									<span class="newsHeaderLabel">Govt to talk to allies on fuel price hike:pranab </span>
+								 </td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsContent">
+									Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop 
+									of demands for a rollback in the fuel prices and explained why reduction in the excise
+									duty on petroleum products was difficult.
+									</div>
+								</td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsAnchorDiv">
+									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
+									</div>
+								</td>
+								</tr>
+								</table>
+							 </div>
+						</div>
+						<div >
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
+								<td width="98%">
+									<div class="widgetHeaderBackground_center">
+										<span class="headerLabelSpan">  </span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
+							  </tr>
+							</table>
+						</div>
+					</div>
+					<!-- News Div End -->       
+				</td>
+				<td width="30%" valign="top">
+					<div id="pollsWidgetMain">
+						<div id="pollsWidgetHeader">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+								<td width="98%">
+									<div class="electionTrendzHeaderBackground_center">
+										<span class="headerLabelSpan" style="color:#C66E17;top:13px;">
+											Polls
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+							  </tr>
+							</table>	
+						 </div>
+						<div id="pollsWidgetBody" class="yui-skin-sam">
+							
+						</div>
+						<div id="pollsWidgetFooter">
+							
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>		
+		
         <div id="index_footer" class="indexLayoutContainer">
             <div id="index_inner_footer">
             <table width="100%" id="copyrightLinksTable">

@@ -121,8 +121,8 @@ body
 
 #adDataDiv_main
 {
-	background-color:#E8F3F5;	
-	height:500px;
+	/*background-color:#E8F3F5;	*/
+	height:330px;
 	width:100%;
 }
 
@@ -189,9 +189,11 @@ body
 
 #adDataMain_body
 {
-	padding-left:10px;
 	border-left:1px solid #808B8E;
-	height:460px;
+	border-bottom:1px solid #808B8E;
+	border-right:1px solid #808B8E;
+	height:290px;
+	padding-left:10px;
 }
 
 .adData_head
@@ -278,4 +280,32 @@ body
 .yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav
 {
 	border-color:#6380BA;
+}
+
+#pollsWidgetBody
+{
+	border:1px solid #C5CBCD;
+	font-size:12px;
+	height:230px;
+	padding:10px;
+}
+
+#pollQuestionDiv
+{
+	color:#0C67AC;
+	font-weight:bold;
+}
+
+#pollOptionsDiv
+{
+	color:#73787E;
+	font-weight:bold;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+#giftWidgetBody
+{
+	border:1px solid #C5CBCD;
+	height:125px;
 }
