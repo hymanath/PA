@@ -717,6 +717,21 @@ public class StaticDataService implements IStaticDataService {
 		alliancePartiesVO.setAllianceParties(parties);
 		return alliancePartiesVO;
 	}
+	
+	public AlliancePartyResultsVO getAlliancePartiesByElectionAndPartyForState(Long electionId, Long partyId, Long stateId){
+		AlliancePartyResultsVO alliancePartiesVO = new AlliancePartyResultsVO();
+		List allianceParites = allianceGroupDAO.findAlliancePartiesByElectionAndParty(electionId, partyId);
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		if(allianceParites.size() == 0)
+			return null;
+		Object[] values = (Object[])allianceParites.get(0);
+		alliancePartiesVO.setGroupId((Long)values[0]);
+		alliancePartiesVO.setAllianceGroupName(values[1].toString());
+		for(Object[] dbValues:(List<Object[]>)allianceParites)
+			parties.add(new SelectOptionVO((Long)dbValues[2], dbValues[3].toString()));
+		alliancePartiesVO.setAllianceParties(parties);
+		return alliancePartiesVO;
+	}
 
 	//Need refactoring the code and unit testing- Ashok	
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId) {
@@ -828,8 +843,9 @@ public class StaticDataService implements IStaticDataService {
 		Set<Long> parliamentConstituencies = new HashSet<Long>();
 		try{
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo()...started started..");
-			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
-			Long electionYear = new Long(delimitationYear.get(0).toString()) ;
+			Long electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(
+					IConstants.ASSEMBLY_ELECTION_TYPE, districtDAO.get(districtId).getState().getStateId())
+					.get(0).toString()) ;
 			Long rank = 1l;
 			getAllParliamentWinningCandidatesForADistrict(districtId, parliamentConstituencies);
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
@@ -848,7 +864,6 @@ public class StaticDataService implements IStaticDataService {
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);
 			List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(constituencyIDs.substring(1), electionYear.toString());
 			constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
-			
 			
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo() total candidates:"+candidates.size());
 			for(int i = 0; i<candidates.size(); i++){

@@ -93,5 +93,6 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List findElectionIdByParliamentElectionTypeAndYear(String electionType,String year);
 	
+	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId);
 	
 }

@@ -14,11 +14,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
@@ -265,6 +263,12 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Object[] params = {typeID, type};
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.elecSubtype = ?", params);
 	
+	}
+	
+	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId){
+		Object[] params = {electionType, stateId};
+		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?" +
+				"and model.electionScope.state.stateId = ?", params);
 	}
 
 		
