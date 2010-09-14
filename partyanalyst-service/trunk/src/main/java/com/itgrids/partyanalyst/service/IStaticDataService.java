@@ -257,5 +257,7 @@ public interface IStaticDataService {
 	
 		public Long getElectionScopeForAElection(Long stateId,String electionType,Long countryId);
 		
+		public SelectOptionVO getStateOfADistrict(Long districtId);
+		
 		
 }
