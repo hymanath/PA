@@ -48,6 +48,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	
 	private String districtId;
 	private String districtName;
+	private SelectOptionVO stateDetails;
 	private HttpServletRequest request;
 	private ServletContext context;
 	private IStaticDataService staticDataService;	
@@ -94,6 +95,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	}
 	public void setMuncipalityElectionTypeId(Long muncipalityElectionTypeId) {
 		this.muncipalityElectionTypeId = muncipalityElectionTypeId;
+	}
+	public SelectOptionVO getStateDetails() {
+		return stateDetails;
+	}
+	public void setStateDetails(SelectOptionVO stateDetails) {
+		this.stateDetails = stateDetails;
 	}
 	public TeshilPartyInfoVO getGetCorporationPartyDetails() {
 		return getCorporationPartyDetails;
@@ -385,6 +392,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				corporationElectionTypeId = eleTypes.getId();
 			}
 		}
+		
+		stateDetails = staticDataService.getStateOfADistrict(new Long(districtId));
 		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
         if(constituenciesStatusVO != null && constituenciesStatusVO.getElectionYear() != null)
 		electionYear = constituenciesStatusVO.getElectionYear();
