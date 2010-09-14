@@ -10,7 +10,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 
 	List<LocalElectionBody> findByElectionTypeDistrictTehsilAndLEBName(Long electionTypeId, String districtName, String tehsilName,
 			String localElecBodyName);
-
+	List findByElectionTypeAndState(Long electionTypeId, Long stateId);
 	
 	
 }

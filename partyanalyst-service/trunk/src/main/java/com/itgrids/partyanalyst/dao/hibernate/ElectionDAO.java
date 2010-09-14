@@ -271,6 +271,12 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				"and model.electionScope.state.stateId = ?", params);
 	}
 
+	public List findStatesByElectionType(Long electionTypeId) {
+		
+		return getHibernateTemplate().find("select distinct model.electionScope.state.stateId, model.electionScope.state.stateName from Election model where model.electionScope.electionType.electionTypeId = ?", electionTypeId);
+		
+	}
+
 		
 
 }

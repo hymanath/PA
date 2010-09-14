@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -161,6 +162,7 @@ public class StaticDataService implements IStaticDataService {
 	private ILanguageDAO languageDAO;
 	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
 	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO; 
 	
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -443,6 +445,15 @@ public class StaticDataService implements IStaticDataService {
 		this.occupationDAO = occupationDAO;
 	}
 
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	/**
@@ -652,8 +663,15 @@ public class StaticDataService implements IStaticDataService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getParticipatedStatesForAnElectionType(Long electionType){
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
-		List resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
-		
+		ElectionType electionTypeObj = electionTypeDAO.get(electionType);
+		List resultsList;
+		if(IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()))
+		{
+			resultsList = electionDAO.findStatesByElectionType(electionType);
+		} else 
+		{	
+			resultsList = constituencyElectionDAO.getParticipatedStateDetailsForAnElectionType(electionType);
+		}
 		if(resultsList != null && resultsList.size() > 0){
 			Iterator listIt = resultsList.listIterator();
 			while(listIt.hasNext()){
@@ -1988,8 +2006,15 @@ public class StaticDataService implements IStaticDataService {
 	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID)
 	{
 		List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
-		
-		List constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+		List constiList;
+		ElectionType electionTypeObj = electionTypeDAO.get(electionTypeId);
+		if(IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()))
+		{
+			constiList = localElectionBodyDAO.findByElectionTypeAndState(electionTypeId, stateID);
+		}else 
+		{	
+			constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+		}	
 		if(constiList!=null && constiList.size()>0)
 		{
 			for(int i=0;i<constiList.size();i++)

@@ -24,9 +24,21 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(list.size() >= 0 , true);
 	}
 	
-	public void testFindByElectionTypeDistrictTehsilAndLEBName(){
+	/*public void testFindByElectionTypeDistrictTehsilAndLEBName(){
 		List<LocalElectionBody> list = localElectionBodyDAO.findByElectionTypeDistrictTehsilAndLEBName(2l, "Chittoor", "Madanapalli", "Madanapalli");
 		assertEquals(1, list.size());
+	}*/
+	public void testFindByElectionTypeAndState(){
+	
+		List result = localElectionBodyDAO.findByElectionTypeAndState(6l, 1l);
+		for(int i=0;i<result.size();i++)
+		{
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(Long.parseLong(parms[0].toString()));
+			System.out.println(parms[1].toString());
+				
+		}
 	}
+	
 	
 }
