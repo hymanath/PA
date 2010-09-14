@@ -146,6 +146,8 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getAllElectionScopes(Long districtId);
 		
+		public List<SelectOptionVO> getAllElectionScopesForAState(Long stateID);
+		
 		public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId);
 	//>>>>>Party Related Methods End
 
