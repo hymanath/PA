@@ -202,17 +202,17 @@
             <result name="error">/jsp/entitlementErrorPage.jsp</result>
             <result name="input">/jsp/loginForm.jsp?src=electionResultsAnalysisAction</result>
         </action>
-        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionTypes"> 
+        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getElectionTypesForAState"> 
               <result type="json" name="success">
            		<param name="root">electionTypes</param>
         	</result>       		
         </action>
-        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionYears"> 
+        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getElectionYearsForAnElectionTypeAndState"> 
               <result type="json" name="success">
            		<param name="root">electionYears</param>
         	</result>       		
         </action>
-        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getAllParties"> 
+        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getPartysInAState"> 
               <result type="json" name="success">
            		<param name="root">partiesList</param>
         	</result>       		
