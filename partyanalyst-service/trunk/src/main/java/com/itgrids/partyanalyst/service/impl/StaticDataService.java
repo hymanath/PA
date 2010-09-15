@@ -3712,7 +3712,7 @@ public class StaticDataService implements IStaticDataService {
 			}	
 			
 			if(electionScopeId == 0)
-				partiesResults = partyElectionDistrictResultDAO.getAllParyDetailsForAllElectionYearsForADistrict(electionId.substring(1),partyId.substring(1),stateId,districtId);
+				partiesResults = partyElectionDistrictResultDAO.getAllParyDetailsForAllElectionYearsForADistrict(electionId.substring(1),partyId.substring(1), districtId);
 			else{
 				electionScope = electionScopeDAO.get(electionScopeId);
 				partiesResults = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(electionScopeId, districtId);

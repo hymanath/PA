@@ -33,14 +33,12 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getAllParyDetailsForAllElectionYearsForADistrict(String electionIds, String partyIds, Long stateId, Long districtId){
-		Object[] params = {stateId,districtId};
+	public List getAllParyDetailsForAllElectionYearsForADistrict(String electionIds, String partyIds, Long districtId){
 		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.election.electionYear," +
 				" model.election.electionScope.electionType.electionType,model.totalVotesGained,model.completeVotesPercent," +
 				" model.totalSeatsWon from PartyElectionDistrictResult model where model.election.electionId in ("+electionIds+
 				" ) and model.party.partyId in ("+partyIds+
-				" ) and model.state.stateId = ? " +
-				" and model.district.districtId = ? order by model.party.partyId", params);
+				" ) and model.district.districtId = ? order by model.party.partyId", districtId);
 	}
 
 	@SuppressWarnings("unchecked")
