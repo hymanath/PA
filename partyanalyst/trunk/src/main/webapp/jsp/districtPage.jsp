@@ -604,11 +604,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		dataStr += '<select onchange="getAllElections(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)">';		
 		for(var i in result)
 		{
-			if(result[i].name == 'Assembly'){
+			/*if(result[i].name == 'Assembly'){
 			dataStr += '<option value="'+result[i].id+'" selected="selected"> '+result[i].name+' </option>';
 			getAllElections(result[i].id, result[i].name);
 			}
-			else
+			else*/
             dataStr += '<option value="'+result[i].id+'"> '+result[i].name+' </option>';
 		}
 		dataStr += '</select>';		
@@ -616,7 +616,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		if(selectData)
 			selectData.innerHTML = 	dataStr;	
 		
-		//getAllElections(result[0].id, result[0].name);
+		getAllElections(result[0].id, result[0].name);
 	}
 
 	function buildElectionTypesAndYearsGraph(results)
