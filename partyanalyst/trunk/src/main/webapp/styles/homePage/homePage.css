@@ -207,9 +207,9 @@ body
 {
 	padding-top:5px;
 	color:#12283A;
-	line-height:15px;
+	line-height:16px;
 	text-align:justify;
-	word-spacing:3px;
+	/*word-spacing:3px;*/
 }
 
 .newsHeadLink

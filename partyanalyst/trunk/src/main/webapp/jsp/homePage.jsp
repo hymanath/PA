@@ -282,32 +282,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 							  </tr>
 							</table>	
 						 </div>
-                        <div id="electionTrendzWidgetBody" class="yui-skin-sam">
-                        	<!--<div id="stateSelectionDiv">
-								<table>
-									<tr>
-										<td> Recent Election Results In :</td>
-										<td> <s:select cssClass="selectBoxWidth" theme="simple" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
-									</tr>
-								</table>
-							</div> 
-
-							<div id="electionTrendzDivision_head">
-								<table>
-									<tr>
-										<td>
-											<div class="votingTrendzHeadLabelDiv" onclick="buildResultsTableForElectionType('assembly')">
-												<span class="votingTrendzHeadLabelSpan">Assembly</span>
-											</div>
-										</td>
-										<td>
-											<div class="votingTrendzHeadLabelDiv" onclick="buildResultsTableForElectionType('parliament')">
-												<span class="votingTrendzHeadLabelSpan">Parliament</span>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</div>-->
+                        <div id="electionTrendzWidgetBody" class="yui-skin-sam">                        	
 
 							<div id="electionTrendzDiv_main">
 								
@@ -344,10 +319,10 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 									<table>
 										<tr>
 											<td valign="top"><a href="landing.action"><img src="images/icons/homePage_new/header_human_main.jpg"/></a></td>
-											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b> <br/><br/>We help you to</td>
+											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b></td>
 										</tr>
 										<tr>
-											<td colspan="2">do Party Analysis, Politician Analysis,Cadre Management and Constituency Management through our effective tools.Creating a wealth of knowledge and know-how for a politician or a party to improve and stay on top.</td>
+											<td colspan="2">We help you to do Party Analysis, Politician Analysis,Cadre Management and Constituency Management through our effective tools.Creating a wealth of knowledge and know-how for a politician or a party to improve and stay on top.</td>
 										</tr>
 									</table>
 									
