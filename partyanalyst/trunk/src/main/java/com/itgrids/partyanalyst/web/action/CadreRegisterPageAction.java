@@ -322,7 +322,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		language_options.add("write");
 		
 		
-		stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+		stateList = cadreManagementService.findStatesByCountryID("1");
 		
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
 		session.setAttribute(ISessionConstants.STATES, stateList);
