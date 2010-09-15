@@ -93,7 +93,7 @@ var errotMsg = '<%=errorMsg%>';
 			
 	var obj={
 				id:"${state.id}",
-				name:"${state.name}",				
+				name:"${state.name}"				
 			};
 	statesInCountryObj.push(obj);	
 </c:forEach>
@@ -247,11 +247,11 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								<table>
 									<tr>
 										<td valign="top"><img height="60" width="110" src="images/icons/indexPage/partyanalysis/report3.png"></td>
-										<td valign="top">Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.
+										<td valign="top">Party Results Report gives overall picture for a party in different types of elections like 
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2">The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.</td>
+										<td colspan="2">assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.</td>
 									</tr>	
 								</table>
 								<div class="productFeature_button">
