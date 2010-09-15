@@ -3717,7 +3717,7 @@
 		<div id="regionLevelCadreDiv">
 			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
 			<div id="regionLevelCadreDivBody"></div>
-			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action">Know your Cadre Strength areas</a></div>
+			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action" class="ancLink">Know your Cadre Strength areas</a></div>
 		</div>		
 		<div id="cadreSMSMainDiv">
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
