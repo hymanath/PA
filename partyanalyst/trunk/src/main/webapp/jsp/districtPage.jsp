@@ -306,7 +306,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						if(results!= null &&  results.length>0){
 							showAllPartyDetails(results);
 						}else{
-							hideZptcDiv();
+							hideZPTCMPTCDiv();
+							//hideZptcDiv();
 						}
 					}
 					if(jsObj.task == "getMptcPartyDetails") 
@@ -314,7 +315,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						if(results!= null &&  results.length>0){
 							showAllMptcPartyDetails(results);
 						}else{
-							hideMptcDiv();
+							hideZPTCMPTCDiv();
+							//hideMptcDiv();
 						}
 					}		
 					if(jsObj.task == "getmuncipalPartyDetails") 
@@ -374,7 +376,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
-
+	function hideZPTCMPTCDiv()
+	{
+		var table2El = document.getElementById("table2");
+		table2El.style.display = 'none';
+	}
 	function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 	{
 		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
@@ -535,6 +541,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		}
 	}
 	function errorMessageMuncipalitiesDiv(){
+		var table1El = document.getElementById("table1");
+		table1El.style.display = 'none';
+		/*
 		var muncipality = document.getElementById("muncipalitiesDivHead");	
 		var muncipalityDIV='';
 		muncipalityDIV+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
@@ -547,7 +556,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var rvStr = '';
 		rvStr+='<b style="font-weight:12px">'+muncipalDataAvailability+'</b>';	
 		rvStr+='<br/><br/>';
-		muncipalityDIV.innerHTML += rvStr;	
+		muncipalityDIV.innerHTML += rvStr;
+		*/	
 	}		
 	function errorMessageCorporationDiv(){
 		var muncipality = document.getElementById("corporationDivHead");	
@@ -1188,7 +1198,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<!--District Page Right Layout-->
 	<div id="districtPageLayout_right">	
 	
-	   
+	
+	   <c:if test="${stateDetails.name == 'Andhra Pradesh'}">
 		<div id="newConstDiv_main">
 			<div id="newConstDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1245,7 +1256,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			</div>
 		</div>
 		
-
+		</c:if>
 		<div id="mandalsDiv_main">
 			<div id="mandalsDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1441,7 +1452,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	</div>
     
 	<div id="muncipality_corporation_div_main">
-		<table width="100%">
+		<table width="100%" id="table1">
 			<tr>
 				<td align="left">
 					<div id="corporationDivHead" style="text-align:left;cursor:pointer;" onclick="hideCorporationDiv()"></div>
@@ -1458,7 +1469,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	</div>
 	<!--District Page MPTC, ZPTC Div-->
 	<div id="mptc_zptc_div_main">
-		<table>
+		<table id="table2">
 			<tr>
 				<td>
 					<div id="zptc_main">
