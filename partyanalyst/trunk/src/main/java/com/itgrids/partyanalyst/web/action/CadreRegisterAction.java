@@ -402,7 +402,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getEffectiveDate();
 	}
 
-	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Please Select Effective Date")
+	
 	public void setEffectiveDate(String effectiveDate) {
 		this.cadreInfo.setEffectiveDate(effectiveDate);
 	}
