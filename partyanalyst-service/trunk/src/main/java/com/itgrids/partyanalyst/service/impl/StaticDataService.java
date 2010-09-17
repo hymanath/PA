@@ -1172,7 +1172,10 @@ public class StaticDataService implements IStaticDataService {
 	return completeValidVotes;
 	}
 	
-	public PartyElectionResult savePartyElectionResult(final Election election,final Party party,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesEarned,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
+	public PartyElectionResult savePartyElectionResult(final Election election,final Party party,final Long totalSeatsWon,
+			final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,
+			final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesEarned,
+			final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
         log.debug("Inside savePartyElectionResult()");
         PartyElectionResult partyElectionResultFinal = (PartyElectionResult) transactionTemplate.execute(new TransactionCallback() {
         public Object doInTransaction(TransactionStatus status) {

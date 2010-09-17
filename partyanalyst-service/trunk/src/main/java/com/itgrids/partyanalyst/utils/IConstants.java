@@ -213,6 +213,9 @@ public interface IConstants {
     public static final String LOCATION_BASED = "LOCATION";
     public static final String LEVEL_BASED = "LEVEL";
     
+    public static final String DEFORMED_CONSTITUENCY = "DC";
+    public static final String PARTY_NOT_PARTICIPATED = "PNP";
+    public static final String NEW_CONSTITUENCY = "NC";
     
     //Entitlements
     public static final String CONSTITUENCY_PAGE = "CONSTITUENCY_PAGE";

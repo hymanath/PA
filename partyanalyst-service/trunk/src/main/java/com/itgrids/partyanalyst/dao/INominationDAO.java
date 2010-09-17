@@ -288,4 +288,5 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getConstituenciesCountByDistrictForElectionStateAndParties(Long electionId, Long stateId, String alliancePartyIds);
 	
 	public List getConstituenciesCountByStateForElectionCountryAndParties(Long electionId, Long countryId, String alliancePartyIds);
+
 }

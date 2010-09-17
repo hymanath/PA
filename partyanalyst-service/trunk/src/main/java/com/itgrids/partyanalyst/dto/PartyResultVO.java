@@ -33,6 +33,7 @@ public class PartyResultVO {
 	private Boolean isConsiderParty = false;
 	private Set<String> elections;
 	private Long seatsWonCountToSort;
+	private String reason;
 	List<SelectOptionVO> electionList;
 	List<SelectOptionVO> partiesList;
 	String electionType;
@@ -212,6 +213,12 @@ public class PartyResultVO {
 	}
 	public void setIsConsiderParty(Boolean isConsiderParty) {
 		this.isConsiderParty = isConsiderParty;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	
 }

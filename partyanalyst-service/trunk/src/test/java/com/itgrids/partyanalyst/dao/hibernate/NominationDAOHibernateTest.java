@@ -539,8 +539,14 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(results.size());
 	}*/
 	
-	public void testGetConstituenciesCountByDistrictForElectionStateAndParties(){
+/*	public void testGetConstituenciesCountByDistrictForElectionStateAndParties(){
 		System.out.println(nominationDAO.getConstituenciesCountByDistrictForElectionStateAndParties(4l, 1l, "361").size());
+	}*/
+	
+	public void testGetAll(){
+		List<Nomination> nominations = nominationDAO.getAll();
+		assertEquals(nominations.size() >= 0, true);
 	}
+	
 }
 
