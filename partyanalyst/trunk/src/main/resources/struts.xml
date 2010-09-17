@@ -1359,6 +1359,14 @@
 			<result type="json" name="success">
 				<param name="root">constsList</param>				
 			</result>		
+		</action>
+		 <action name="ecrComparedResultsAction" class="ecrComparedResultsAction"> 
+             <result name="success">/jsp/ecrComparedResultsPopup.jsp</result> 		
+        </action>
+		<action name="electionComparisonCompareElectionsAjax" class="ecrComparedResultsAction" method="ajaxCallHandler" >
+			<result type="json" name="success">
+				 <param name="root">comparedResultsVO</param> 
+			</result>
 		</action>           
 	</package>
 </struts>

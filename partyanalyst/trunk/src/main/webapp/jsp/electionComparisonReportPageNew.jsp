@@ -1312,9 +1312,15 @@ function getComparedResults(panelId)
 	  }
 	  var elecId1=electionObject.elecIdYearOne;
       var elecId2=electionObject.elecIdYearTwo;
+      var elecYear1 = electionObject.yearOne;
+      var elecYear2 = electionObject.yearTwo;
 	  var party='${electionComparisonReportVO.partyId}';
 	  var hasAllianc='${electionComparisonReportVO.hasAlliances}';
-	 
+	  var urlStr = "<%=request.getContextPath()%>/ecrComparedResultsAction.action?elecIdOne="+elecId1+"&elecIdTwo="+elecId2+"&partyId="+party+"&hasAlliances="+hasAllianc+"&stateOrDistrictId="+stateOrdistrictId+"&electionType="+electionType+"&elecYear1="+elecYear1+"&elecYear2="+elecYear2;
+		var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
+		
+		browser1.focus();
+		 /*
 	  var jsObj= 
 	  {
 		  electionIdOne:elecId1,
@@ -1326,6 +1332,7 @@ function getComparedResults(panelId)
 
 	  var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	  callAjax(param,jsObj);
+	  */
 }
 
 

@@ -427,12 +427,13 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="statePageService" ref="statePageService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
-		<property name="problemManagementReportService" ref="problemManagementReportService" />		
-		
+		<property name="problemManagementReportService" ref="problemManagementReportService" />			
 	</bean>
 	
 	<bean id="entitlementsHelper" class="com.itgrids.partyanalyst.helper.EntitlementsHelper" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
-	
+	<bean id="ecrComparedResultsAction" class="com.itgrids.partyanalyst.web.action.ECRComparedResultsAction" singleton="false">
+		<property name="electionComparisonReportService" ref="electionComparisonReportService" />
+	</bean>
 </beans>		
