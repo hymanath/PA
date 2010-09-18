@@ -539,7 +539,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category) ;
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,0L,0L) ;
 		
 		
 		return Action.SUCCESS;
