@@ -45,6 +45,8 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 	private String windowTask;
 	private Long clickIndex;
 	private String resultStatus;
+	private String locationId;
+	private String reportLevel;
 		
 
 	public String getResultStatus() {
@@ -157,6 +159,22 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
+	}
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getReportLevel() {
+		return reportLevel;
+	}
+
+	public void setReportLevel(String reportLevel) {
+		this.reportLevel = reportLevel;
 	}
 
 	public String getElectionYear() {
