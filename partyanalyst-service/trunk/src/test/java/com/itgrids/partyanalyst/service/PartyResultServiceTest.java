@@ -104,7 +104,7 @@ public class PartyResultServiceTest {
 			service.setConstituencyElectionResultDAO(constituencyElectionResultDAO);
 		}
 		
-		returns = service.getPartyResultsInfo("TDP", new Long(2), new Long(1), new Long(1), null, null, ElectionScopeLevelEnum.STATE_LEVEL,true);
+		returns = service.getPartyResultsInfo("TDP", null, new Long(2), new Long(1), new Long(1), null, null, ElectionScopeLevelEnum.STATE_LEVEL,true);
 		PartyResultInfoVO actual = returns.get(0);
 		Assert.assertEquals("TDP", actual.getPartyInfoVO().getPartyShortName());
 		Assert.assertEquals("INC", actual.getOppositionPartyInfo().get(0).getPartyShortName());

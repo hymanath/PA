@@ -33,20 +33,20 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findByElection(Long electionID){
-		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =?", electionID);	
+		return getHibernateTemplate().find("select model.constiElecId, model.constituencyElectionResult.validVotes from ConstituencyElection model where model.election.electionId =?", electionID);	
 	}
 	
 
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElection> findByElectionAndDistrict(Long electionID, Long districtID){
+	public List findByElectionAndDistrict(Long electionID, Long districtID){
 		Long[] params = {electionID,districtID};
-		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =? and model.constituency.district.districtId=?", params);	
+		return getHibernateTemplate().find("select model.constiElecId, model.constituencyElectionResult.validVotes from ConstituencyElection model where model.election.electionId =? and model.constituency.district.districtId=?", params);	
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElection> findByElectionAndConstituency(Long electionID, Long constituencyID){
+	public List findByElectionAndConstituency(Long electionID, Long constituencyID){
 		Long[] params = {electionID,constituencyID};
-		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =? and model.constituency.constituencyId=?", params);	
+		return getHibernateTemplate().find("select model.constiElecId, model.constituencyElectionResult.validVotes from ConstituencyElection model where model.election.electionId =? and model.constituency.constituencyId=?", params);	
 	}
 	
 	
@@ -78,7 +78,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findByElectionAndState(Long electionID,Long stateId){
 		Long[] params = {electionID,stateId};
-		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =? and model.constituency.state.stateId =?", params);	
+		return getHibernateTemplate().find("select model.constiElecId, model.constituencyElectionResult.validVotes from ConstituencyElection model where model.election.electionId =? and model.constituency.state.stateId =?", params);	
 
 	}
 	

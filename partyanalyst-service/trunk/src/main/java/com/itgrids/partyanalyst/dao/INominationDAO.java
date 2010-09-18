@@ -43,7 +43,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Nomination> findByCriminalCharges(Object criminalCharges);
 
-	public List<Nomination> findByConstituencyElection(Long constituencyElectionID);
+	public List findByConstituencyElection(Long constituencyElectionID);
 	
 	public List<Nomination> findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID);
 	

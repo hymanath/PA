@@ -80,14 +80,20 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(nominations.size());
 	}*/
 	
-	/*public void testFindByConstituencyElection(){
-		List<Nomination> actualResult = nominationDAO.findByConstituencyElection(new Long(1));
-		for(Nomination nomination: actualResult)
-			System.out.println("NominationID=:"+nomination.getNominationId()+" partyID=:"+nomination.getParty().getPartyId());
-		Assert.assertEquals(10, actualResult.size());
+	public void testFindByConstituencyElection(){
+		List actualResult = nominationDAO.findByConstituencyElection(new Long(23));
+		for(int i = 0; i< actualResult.size();i++)
+		{	
+			Object[] nominationObj = (Object[])actualResult.get(i);
+			System.out.println("sName=:"+nominationObj[0].toString());
+			System.out.println("lName=:"+nominationObj[1].toString());
+			System.out.println("total votes=:"+Double.parseDouble(nominationObj[2].toString()));
+			System.out.println("rank votes=:"+Long.parseLong(nominationObj[3].toString()));
+		}	
+		
 	}
 	
-	
+	/*
 	public void testFindByStatePartyAndElectionId() {
 		List<Nomination> nominations = nominationDAO.findByStatePartyAndElectionId(new Long(1), new Long(27), new Long(1));
 		
@@ -543,10 +549,10 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(nominationDAO.getConstituenciesCountByDistrictForElectionStateAndParties(4l, 1l, "361").size());
 	}*/
 	
-	public void testGetAll(){
+	/*public void testGetAll(){
 		List<Nomination> nominations = nominationDAO.getAll();
 		assertEquals(nominations.size() >= 0, true);
-	}
+	}*/
 	
 }
 

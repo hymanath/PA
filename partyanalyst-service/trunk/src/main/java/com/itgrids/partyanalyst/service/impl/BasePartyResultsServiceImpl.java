@@ -117,6 +117,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 *         of votes, election year, seats win etc.) specific to the election
 	 */
 	
+	@SuppressWarnings("unchecked")
 	public List<PartyInfoVO> getPartyAndCompetetorsInfo(Election election, 
 			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, 
 			int competetorSize,ElectionScopeLevelEnum level,Boolean hasAlliance,List<SelectOptionVO> allianceParties) {
@@ -124,7 +125,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 		String electionYear = election.getElectionYear();
 		StringBuilder constituencyElectionIDs = new StringBuilder();
 		//Map<String, PartyInfoVO> partyAndCompetetorsInfo = new HashMap<String, PartyInfoVO>();
-		List<ConstituencyElection> ConstituencyElectionList = new ArrayList<ConstituencyElection>();
+		List ConstituencyElectionList = new ArrayList<ConstituencyElection>();
 		if(level.equals(ElectionScopeLevelEnum.DISTRICT_LEVEL)){
 			ConstituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(election.getElectionId(), districtID);
 		} else if(level.equals(ElectionScopeLevelEnum.CONSTITUENCY_LEVEL)){
@@ -139,14 +140,16 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 		if(ConstituencyElectionList.size()==0){
 			return new ArrayList<PartyInfoVO>();
 		}
-		for(ConstituencyElection constituencyElection : ConstituencyElectionList){
-			constituencyElectionIDs.append(",").append(constituencyElection.getConstiElecId());
+		Long constituencyGrandTotalValidVotes = 0l;
+		for(int i = 0; i< ConstituencyElectionList.size();i++){
+			Object[] obj = (Object[])ConstituencyElectionList.get(i);
+			constituencyElectionIDs.append(",").append(obj[0].toString());
+			constituencyGrandTotalValidVotes += new Double(obj[1].toString()).longValue();
+			
 		}
 		String strConstituencyElectionIDs = constituencyElectionIDs.substring(1);
 		log.debug("Constituency ElectionIDs="+strConstituencyElectionIDs);
-		
-		Long constituencyGrandTotalValidVotes = getConstituencyGrandTotalValidVotes(strConstituencyElectionIDs);
-		
+			
 		Map<String, PartyInfoVO> partyAndCompetetorsInfo = getConstituencyPartyResults(ConstituencyElectionList, electionYear);
 		
 		PartyInfoVO requiredPartyInfoVO = partyAndCompetetorsInfo.get(requiredPartyShortName);
@@ -249,14 +252,17 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 * @return partyAndCompetetorsInfo java.util.Map object contain the party details which are participated in the list of
 	 * constituencies.
 	 */
-	public Map<String, PartyInfoVO> getConstituencyPartyResults(List<ConstituencyElection> ConstituencyElectionList, String electionYear){
+	public Map<String, PartyInfoVO> getConstituencyPartyResults(List ConstituencyElectionList, String electionYear){
 		Map<String, PartyInfoVO> partyAndCompetetorsInfo = new HashMap<String, PartyInfoVO>();
-		for(ConstituencyElection constituencyElection : ConstituencyElectionList){
-			List<Nomination> constituencyNominations = nominationDAO.findByConstituencyElection(constituencyElection.getConstiElecId());
+		for(int i=0;i<ConstituencyElectionList.size();i++){
+			Object[] obj = (Object[])ConstituencyElectionList.get(i);
+
+			List constituencyNominations = nominationDAO.findByConstituencyElection(Long.parseLong(obj[0].toString()));
 			//StringBuilder nominationIDs = new StringBuilder();
-			for(Nomination nomination : constituencyNominations){
-				String partyShortName = nomination.getParty().getShortName();
-				String partyLongName = nomination.getParty().getLongName();
+			for(int j = 0; j< constituencyNominations.size();j++){
+				Object[] nominationObj = (Object[])constituencyNominations.get(j);
+				String partyShortName = nominationObj[0].toString();
+				String partyLongName = nominationObj[1].toString();
 				PartyInfoVO partyInfoVO;
 				if(partyAndCompetetorsInfo.get(partyShortName)==null){
 					partyInfoVO = new PartyInfoVO();
@@ -270,12 +276,12 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 				partyInfoVO = partyAndCompetetorsInfo.get(partyShortName);
 				long participatedSeats = partyInfoVO.getSeatsParticipated().longValue() + 1;
 				partyInfoVO.setSeatsParticipated(new Long(participatedSeats));
-				
-				long totalVotes = nomination.getCandidateResult().getVotesEarned().longValue();
+				long totalVotes = new Double(nominationObj[2].toString()).longValue();
 				long grandTotalVotes = partyInfoVO.getPartyTotalVotes().longValue();
+				
 				partyInfoVO.setPartyTotalVotes(new Long(totalVotes +grandTotalVotes));
 				
-				if(nomination.getCandidateResult().getRank().equals(new Long(1))){
+				if(new Long(nominationObj[3].toString()).intValue() == 1){
 					long winningSeats = partyInfoVO.getSeatsWin().longValue() +1;
 					partyInfoVO.setSeatsWin(new Long(winningSeats));
 				}
@@ -312,7 +318,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 			if(constituencyElectionResult.getValidVotes()!=null)
 				constituencyGrandTotalValidVotes += constituencyElectionResult.getValidVotes().longValue();
 		}
-		System.out.println("Contituency constituencyGrandTotalValidVotes="+constituencyGrandTotalValidVotes);
+		
 		return new Long(constituencyGrandTotalValidVotes);
 	}
 }

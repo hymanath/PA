@@ -62,11 +62,11 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 	 * to all elections for the specific election type.
 	 */
 	@SuppressWarnings("unchecked")
-	public List<PartyResultInfoVO> getPartyResultsInfo(String partyShortName, Long typeId, Long countryID, Long stateID, 
+	public List<PartyResultInfoVO> getPartyResultsInfo(String partyShortName, Long selectdPartyId, Long typeId, Long countryID, Long stateID, 
 			Long districtID, Long constituencyID, ElectionScopeLevelEnum level,Boolean hasAlliance){
 		List<PartyResultInfoVO> result = new ArrayList<PartyResultInfoVO>();
 		List<Election> elections = null;
-		Long selectdPartyId = null;
+		//Long selectdPartyId = null;
 		if(stateID==null){
 
 			elections = getElectionDAO().findByElectionTypeCountry(typeId, countryID);
@@ -79,11 +79,11 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 		// competetorSize value should be taken from the configuration 
 		int competetorSize = 3;
 		
-		List selectedParty = partyDAO.findPartyIdByShortName(partyShortName);
+		/*List selectedParty = partyDAO.findPartyIdByShortName(partyShortName);
 		if(selectedParty != null && selectedParty.size() > 0){
 			Object selectdParty = (Object)selectedParty.get(0);
 			selectdPartyId = (Long)selectdParty;
-		}
+		}*/
 		
 		for(Election election : elections){
 			

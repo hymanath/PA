@@ -249,7 +249,7 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 		ElectionType electionType = null;
 		State state = null;
 		LocalElectionBody localElectionBody = null;
-		List<ConstituencyElection> constituencyElections = null;
+		List constituencyElections = null;
 		ConstituencyElection constituencyElection = null;
 		ConstituencyElectionResult constituencyElectionResult = null;
 		Constituency constituency = null;
