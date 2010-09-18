@@ -31,15 +31,15 @@ public interface IAnalysisReportService {
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId,String category);
  	
- 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category);
+ 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category,Long stateId,Long districtId);
  	
  	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds,Long partyId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,List<Long> nominationIds,Long categoryTypeId);
  	
- 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position);
+ 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long stateId,Long districtId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long categoryTypeId);
  	
- 	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,Long partyId,String category);
+ 	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,Long partyId,String category,Long stateId,Long districtId);
 } 
