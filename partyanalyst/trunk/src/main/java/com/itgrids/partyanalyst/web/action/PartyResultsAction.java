@@ -48,8 +48,9 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private List<PartyResultInfoVO> partyResultInfoVOs;
 	private String selectedElectionTypeName;
 	private ServletContext context;
+	private String selectedPartyShortName;
+	private Long selectedPartyId;
 	
-
 	public String getSelectedLocationName() {
 		return selectedLocationName;
 	}
@@ -68,7 +69,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		this.partyResultInfoVOs = partyResultInfoVOs;
 	}
 
-	private String selectedPartyShortName;
+	
 	public String getSelectedPartyShortName() {
 		return selectedPartyShortName;
 	}
@@ -145,8 +146,16 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 
 	public void setConstituencySelectName(String constituencySelectName) {
 		this.constituencySelectName = constituencySelectName;
-	}
+	}	
 	
+	public Long getSelectedPartyId() {
+		return selectedPartyId;
+	}
+
+	public void setSelectedPartyId(Long selectedPartyId) {
+		this.selectedPartyId = selectedPartyId;
+	}
+
 	public String execute() {
 
 		System.out.println("IN Party Results action ");
@@ -195,7 +204,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		//List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(partySelectName, electionType, "1", stateSelectName, 
 		//		districtSelectName, constituencySelectName, level);
 		
-		List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(selectedPartyShortName, electionId, countryId, stateId, 
+		List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(selectedPartyShortName, selectedPartyId, electionId, countryId, stateId, 
 				districtId,constituencyId ,level,alliances);
 		//PartyResultInfoVO getPartyResultsInfo();
 	

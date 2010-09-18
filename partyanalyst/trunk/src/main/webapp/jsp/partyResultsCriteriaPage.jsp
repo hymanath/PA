@@ -509,9 +509,10 @@
 		
 		function setPartyName(id, name){
 		var selObj = document.getElementById("partyList");
-		val = selObj.options[selObj.selectedIndex].text;
+		var val = selObj.options[selObj.selectedIndex].text;
 		document.getElementById("selectedPartyShortName").value=val;
-		
+		var id = selObj.options[selObj.selectedIndex].value;
+		document.getElementById("selectedPartyId").value = id;
 		return true;
 		}
 
@@ -530,6 +531,7 @@
 
 <s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
 <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
+<input type="hidden" id="selectedPartyId" name="selectedPartyId">
 <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
 <input type="hidden" id="selectedLocationName" name="selectedLocationName">
 
