@@ -688,6 +688,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		Long electionId = new Long(jObj.getString("electionId"));
 		Long partyId = new Long(jObj.getString("partyId"));
 		String status = jObj.getString("status");
+		String reportLevel = jObj.getString("reportLevel");
+		Long locationId = new Long(jObj.getString("locationId"));
+		Long stateId = new Long(0);
+		Long districtId = new Long(0);
 		
 		String category = null;
 		if(status.equalsIgnoreCase("WON"))
@@ -695,7 +699,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category);
+		if("1".equalsIgnoreCase(reportLevel))
+			stateId = locationId;
+		else if("2".equalsIgnoreCase(reportLevel))
+			districtId = locationId;
+		
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,stateId,districtId);
 		
 		return Action.SUCCESS;
 	}
