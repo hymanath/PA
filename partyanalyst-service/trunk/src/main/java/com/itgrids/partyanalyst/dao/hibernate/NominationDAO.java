@@ -1228,6 +1228,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
 				" and model.party.partyId = ? and model.candidateResult.rank != ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(
+			Long electionId, Long partyId, Long rank,Long stateId) {
+		Object[] params = {electionId,stateId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.constituencyElection.constituency.state.stateId = ? and model.party.partyId = ? and model.candidateResult.rank != ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForLost(
+			Long electionId, Long partyId, Long rank,Long districtId) {
+		Object[] params = {electionId,districtId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.constituencyElection.constituency.district.districtId = ? and model.party.partyId = ? and model.candidateResult.rank != ?",params);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(
 			Long electionId, Long partyId, Long rank) {
@@ -1235,6 +1252,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
 				" and model.party.partyId = ? and model.candidateResult.rank = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(
+			Long electionId, Long partyId, Long rank,Long stateId) {
+		Object[] params = {electionId,stateId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.constituencyElection.constituency.state.stateId = ? and model.party.partyId = ? and model.candidateResult.rank = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForWon(
+			Long electionId, Long partyId, Long rank,Long districtId) {
+		Object[] params = {electionId,districtId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.constituencyElection.constituency.district.districtId = ? and model.party.partyId = ? and model.candidateResult.rank = ?",params);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Nomination> findByElectionIdAndRank(Long electionId, Long rank,List<Long> constituencyIds) {
 		Query queryObject = getSession().createQuery("from Nomination model where model.constituencyElection.election.electionId = ? "+
