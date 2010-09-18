@@ -40,6 +40,7 @@ ServletRequestAware, ServletContextAware{
 	private String electionType;
 	private String elecYear1;
 	private String elecYear2;
+	private String locationName;
 
 	
 	
@@ -133,6 +134,14 @@ ServletRequestAware, ServletContextAware{
 		this.hasAlliances = hasAlliances;
 	}	
 
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
 	public String getElectionType() {
 		return electionType;
 	}
@@ -189,6 +198,7 @@ ServletRequestAware, ServletContextAware{
 			logger.debug("Has Alliances:"+hasAlliances);
 				
 			comparedResultsVO = electionComparisonReportService.getComparedElectionResults(new Long(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, new Boolean(hasAlliances));
+			locationName = comparedResultsVO.getLocName();
 			
 			return Action.SUCCESS;
 		
