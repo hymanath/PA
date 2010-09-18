@@ -27,4 +27,16 @@ public class OpinionPollResultDAO extends GenericDaoHibernate<OpinionPollResult,
 	public OpinionPollResultDAO() {
 		super(OpinionPollResult.class);
 	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List getOpinionPollResultByQuestionAndOptionId(
+			Long opinionPollQuestionId, Long opinionPollQuestionOptionsId) {
+		
+		 Object[] parms = {opinionPollQuestionId,opinionPollQuestionOptionsId};
+		return getHibernateTemplate().find("select model.count,model.opinionPollResultID from OpinionPollResult model where" +
+				" model.opinionPollQuestions.opinionPollQuestionsId  = ? and model.opinionPollQuestionOptions.opinionPollQuestionOptionsId = ?",parms);
+	}
+	
+	
 }

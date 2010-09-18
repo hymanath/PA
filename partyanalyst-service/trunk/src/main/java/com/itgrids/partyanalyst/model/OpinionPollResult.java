@@ -44,7 +44,7 @@ public class OpinionPollResult extends BaseModel implements java.io.Serializable
 		return opinionPollResultID;
 	}
 
-	@Column(name = "opinion_poll_result")
+	@Column(name = "count")
 	public Long getCount() {
 		return count;
 	}

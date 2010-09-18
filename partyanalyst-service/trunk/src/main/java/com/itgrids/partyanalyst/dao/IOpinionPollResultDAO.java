@@ -11,4 +11,6 @@ import com.itgrids.partyanalyst.model.OpinionPollResult;
 
 public interface IOpinionPollResultDAO extends GenericDao<OpinionPollResult, Long>{
 
+	public List getOpinionPollResultByQuestionAndOptionId(Long opinionPollQuestionId,Long opinionPollQuestionOptionsId);
+	
 }
