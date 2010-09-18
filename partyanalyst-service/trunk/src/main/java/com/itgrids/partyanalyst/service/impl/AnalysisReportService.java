@@ -785,7 +785,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(
-			Long electionId, Long partyId, String category) {
+			Long electionId, Long partyId, String category,Long stateId,Long districtId) {
 		
 		 log.debug("Inside getVotesMarginAnalysisResults Method..... ");
 		 
@@ -796,7 +796,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 votesMarginAnalysisVO = new ArrayList<VotesMarginAnalysisVO>();
 			 Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
 			 				  
-			 marginNominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
+			 marginNominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category,stateId,districtId);
 			 log.error(" ................... Margin Values List :" + marginNominationIds.size());	 
 				  //get analyzed constituencies
 				  if(!marginNominationIds.isEmpty()){
@@ -805,6 +805,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					while(iterator.hasNext()){
 					Map.Entry entry = (Map.Entry)iterator.next();
 					List<Long> nominationIds = (List<Long>)entry.getValue();
+					Long key = (Long)entry.getKey();
 					
 					if(nominationIds != null && nominationIds.size() > 0){
 					Long id = (Long)entry.getKey();
@@ -813,6 +814,47 @@ public class AnalysisReportService implements IAnalysisReportService {
 					if(votesMarginAnalysis != null)
 						votesMarginAnalysisVO.add(votesMarginAnalysis);
 					}
+					else{
+						
+						VotesMarginAnalysisVO votesMarginAnalysis = new VotesMarginAnalysisVO();
+						
+						if(key.equals(new Long(1))){
+							votesMarginAnalysis.setMarginValueOne(new Long(0));
+							votesMarginAnalysis.setMarginValueTwo(new Long(2));
+							votesMarginAnalysis.setMarginRange("0 - 2 %");
+						 }
+						 else if(key.equals(new Long(2))){
+							 votesMarginAnalysis.setMarginValueOne(new Long(2));
+							 votesMarginAnalysis.setMarginValueTwo(new Long(5));
+							 votesMarginAnalysis.setMarginRange("2 - 5 %");
+						 }
+						 else if(key.equals(new Long(3))){
+							 votesMarginAnalysis.setMarginValueOne(new Long(5));
+							 votesMarginAnalysis.setMarginValueTwo(new Long(10));
+							 votesMarginAnalysis.setMarginRange("5 - 10 %");
+						 }
+						 else if(key.equals(new Long(4))){
+							 votesMarginAnalysis.setMarginValueOne(new Long(10));
+							 votesMarginAnalysis.setMarginValueTwo(new Long(20));
+							 votesMarginAnalysis.setMarginRange("10 - 20 %");
+						 }else if(key.equals(new Long(5))){
+							 votesMarginAnalysis.setMarginValueOne(new Long(20));
+							 votesMarginAnalysis.setMarginValueTwo(new Long(50));
+							 votesMarginAnalysis.setMarginRange("20 - 50 %");
+						 }
+						 else{
+							 votesMarginAnalysis.setMarginValueOne(new Long(50));
+							 votesMarginAnalysis.setMarginValueTwo(new Long(100));
+							 votesMarginAnalysis.setMarginRange("50 % and above %");
+						 }
+						
+						votesMarginAnalysis.setAnalyzedCount(0L);
+						votesMarginAnalysis.setCandidatesCount(0L);
+						votesMarginAnalysis.setMarginRange("");
+						
+						votesMarginAnalysisVO.add(votesMarginAnalysis);
+					}
+					
 					}
 				  }
 		 }
@@ -828,6 +870,8 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		return votesMarginAnalysisVO;
 	}
+	
+	
 	
 	/*
 	 * 
@@ -1118,7 +1162,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long)
 	 */
 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(
-			Long electionId, Long partyId, String category, Long position) {
+			Long electionId, Long partyId, String category, Long position,Long stateId,Long districtId) {
 		
 		log.debug("Inside getElectionResultsForAnPartyInAnElectionForParticularVotesMargin Method..... ");
 		
@@ -1127,7 +1171,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 		 
 		 try{
 			 List<Long> marginNominationIds = null;
-			 Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
+			 Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category,stateId,districtId);
 			 if(!nominationIds.isEmpty())
 				 marginNominationIds = nominationIds.get(position);
 			 
@@ -1150,7 +1194,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getNominationsIdsForAPartyInAnElection(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long)
 	 */
 	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,
-			Long partyId, String category) {
+			Long partyId, String category,Long stateId,Long districtId) {
 		
 		log.debug("Inside getNominationsIdsForAPartyInAnElection Method..... ");
 		
@@ -1166,12 +1210,30 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 if(electionId != null && partyId != null && category != null){
 				 
 				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
-					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+					  
+					  if(stateId > new Long(0) && districtId.equals(0L))
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId, new Long(1),stateId);
+					  else if(stateId.equals(0L) && districtId > new Long(0))
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdDistrictIdForWon(electionId,partyId,new Long(1),districtId);
+					  else
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+					  
+					  
+					  //Get Opposition Candidate Nominations
 					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
 					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2),constituencyIds);
 				  }
 				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
-					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
+					  
+                      if(stateId > new Long(0) && districtId.equals(0L))
+                    	  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1),stateId);
+					  else if(stateId.equals(0L) && districtId > new Long(0))
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdDistrictIdForLost(electionId,partyId, new Long(1),districtId);
+					  else
+						  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
+					  
+					  
+                      //Get Opposition Candidate Nominations
 					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
 					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1),constituencyIds);
 				  }
@@ -1247,7 +1309,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		try{
 			List<Long> marginNominationIds = null;
-			Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
+			Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category,0L,0L);
 			 if(!nominationIds.isEmpty())
 				 marginNominationIds = nominationIds.get(position);
 			 
