@@ -159,7 +159,8 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
-		<property name="stateDAO" ref="stateDAO" />		
+		<property name="stateDAO" ref="stateDAO" />	
+		<property name="districtDAO" ref="districtDAO" />		
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
