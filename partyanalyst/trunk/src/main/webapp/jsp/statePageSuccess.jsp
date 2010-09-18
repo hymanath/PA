@@ -65,7 +65,9 @@
 	
 
 	<!-- Local Files-->
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/statePage/statePage.js"></script>
+	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
@@ -81,6 +83,9 @@
   </style>
 
 	<script type="text/javascript">
+
+		google.load("elements", "1", {packages : ["newsshow"]});
+
 		function callAjax(param)
 		{
 			var myResults;
@@ -123,18 +128,18 @@
 			<div id="statePage_layout_main" class="yui-skin-sam"> </div>
 			<div id="statePage_layout_right">
 				<div id="stateInformation_main">					
-					<div id="stateInformation_body" style="padding-top:20px;">
+					<div id="stateInformation_body" >
 						<!--<div class="stateInformation_head">${statePage.stateName} At A Glance :${statePage.stateName} </div>-->
                         <div class="stateInformation_head">
 							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
 								<tr>
-									<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:196px;"><span>${statePage.stateName} Outline </span></div></td>
+									<td width="8%"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:259px;"><span>${statePage.stateName} Outline </span></div></td>
 									<td><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						 </div>
-						<div id="stateCensusDiv_body" style="width:250px;">
+						<div id="stateCensusDiv_body">
 						 <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable" width="90%">
 							 <tr>
 							     <td> <img src="images/icons/districtPage/listIcon.png"/></td>
@@ -163,13 +168,13 @@
                         <div class="stateInformation_head">
 							<table width="99%" border="0" cellpadding="0" cellspacing="0" style="width:99%;">
 									<tr>
-										<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:196px;"><span>${statePage.stateName} Census Info </span></div></td>
+										<td width="8%"><img src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center" style="height:14px;width:259px;"><span>${statePage.stateName} Census Info </span></div></td>
 										<td><img src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 							</table>
 						</div>
-						<div id="stateCensusDiv_body" style="width:250px;">
+						<div id="stateCensusDiv_body">
 						    
 							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="stateDetailsTable">
 								<tr>
@@ -190,10 +195,31 @@
 								</tr>
 								</c:forEach>
 								
-							</table>
-							
+							</table>							
 						</div>
 						</c:if>
+
+						<div class="productFeatureMain" style="margin-top:20px;">							
+							 <div class="productFeatureHeader">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center">
+											<span class="headerLabelSpan">
+												${statePage.stateName} News 
+											</span>
+										</div>
+									</td>
+									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
+							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;width:304px;height:220px;">
+								
+							</div>						
+						</div>
+
 					</div>
 				</div>			
 			</div>
@@ -273,6 +299,9 @@
 		statePageObj.stateDetails.stateLanguage = '${statePage.stateLanguage}';
 		statePageObj.stateDetails.stateSong = '${statePage.stateSong}';
 		statePageObj.stateDetails.adminCapital = '${statePage.adminCapital}';
+
+		searchHead = statePageObj.stateDetails.stateName;
+		searchString = statePageObj.stateDetails.stateName+", India";
 
 		<c:if test="${stateElections != null }">			
 			<c:forEach var="state" varStatus="stat" items="${stateElections}">

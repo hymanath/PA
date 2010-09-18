@@ -208,6 +208,7 @@ table.CandidateElectionResultsTable td {
 .electionPrfDiv
 {
 	padding:5px;
+	cursor:pointer;
 	/*word-spacing:0.6em;*/
 }
 

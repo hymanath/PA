@@ -126,6 +126,16 @@ function buildCandidateInitialProfile()
 
 }
 
+function setTextColor(elmt)
+{
+	elmt.style.color = "black";
+}
+
+function unSetTextColor(elmt)
+{
+	elmt.style.color = "#6C7076";
+}
+
 function buildCandidateElectionProfile()
 {		
 	var electionPrfElmtBody = document.getElementById("candidatePoliticalInfo");	
@@ -135,7 +145,7 @@ function buildCandidateElectionProfile()
 	for(var i in candidateInfoObject.candidateInfoArray)
 	{
 		var data = candidateInfoObject.candidateInfoArray[i];
-		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInNewWindow('+i+')">';
+		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInNewWindow('+i+')" onmouseover="setTextColor(this)" onmouseout="unSetTextColor(this)">';
 		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/indexPage/listIcon.png"/></span>';
 		ebStr+='<span>'+data.status+' in '+data.electionYear+' '+data.electionType+' Election with <b>'+data.votePercentage+'% </b>of votes gain in '+data.constituencyName+' constituency</span>';
 		ebStr+='</div>';

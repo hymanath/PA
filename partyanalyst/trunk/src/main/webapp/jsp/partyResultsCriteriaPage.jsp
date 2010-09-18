@@ -32,7 +32,8 @@
 		padding: 8px;
 		border-style: solid;
 		border-color: #666666;
-		background-color: #94A9C8;
+		background-color: #6380BA;
+		color:#FFFFFF;
 	}
 	table.PartyResultsReportInputSelection td {
 		border-width: 1px;

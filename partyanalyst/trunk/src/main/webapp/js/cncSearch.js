@@ -9,13 +9,13 @@ function buildAutoSuggest(value)
 	if(navigator.appName=="Microsoft Internet Explorer")
 	{		
 		var txtstr='<input id="myInput" type="text" name="searchText" style="position:absolute;top:2px;"/>';
-		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;"></div>';
+		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;height:250px;overflow-y:auto;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	else
 	{
 		var txtstr='<input id="myInput" type="text" name="searchText" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;"></div>';
+		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;height:250px;overflow-y:auto;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	
@@ -23,6 +23,8 @@ function buildAutoSuggest(value)
 	var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
 	myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
     myAutoComp.useShadow = true;
+	myAutoComp.minQueryLength = 3;
+	myAutoComp.maxResultsDisplayed = 20;
 	myAutoComp.useIFrame = true;
 	myAutoComp.textboxKeyEvent.subscribe(validateRadio); 
 }
@@ -114,19 +116,21 @@ function getAutoComplete()
 		if(navigator.appName=="Microsoft Internet Explorer")
 		{				
 			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="position:absolute;top:2px;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;"></div>';
+			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;height:250px;overflow-y:auto;"></div>';
 			txtDivElmt.innerHTML=txtstr;
 		}
 		else
 		{
 			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;"></div>';
+			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;height:250px;overflow-y:auto;"></div>';
 			txtDivElmt.innerHTML=txtstr;
 		}
 
 		var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
 		var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
 		myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
+		myAutoComp.minQueryLength = 3;
+		myAutoComp.maxResultsDisplayed = 20;
 	    myAutoComp.useShadow = true;
 		myAutoComp.useIFrame = true; 
 }

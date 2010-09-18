@@ -267,6 +267,8 @@
 .datatableClass table
 {
 	width:100%;
+	border-collapse:collapse;
+	border-color:#ADADAD;
 }
 .comparedResultsOuter
 {
@@ -314,4 +316,31 @@
 {
 	margin-top:5px;
 	
+}
+
+.datatableClass th
+{
+	background-image:url("../../images/icons/districtPage/header_body.png");
+	color:#4B74C6;
+	padding:6px;
+}
+
+.datatableClass td
+{
+	padding:5px;
+	color:#112B37;
+}
+
+.districtPage_headerAnc
+{
+	text-decoration:none;
+	color:#4B74C6;
+}
+
+.localBodiesElectionHead
+{
+	color:#AF5C24;
+	font-size:12px;
+	font-weight:bold;
+	padding:5px;
 }

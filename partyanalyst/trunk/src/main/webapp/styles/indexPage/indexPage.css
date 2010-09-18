@@ -130,7 +130,7 @@ a:hover
 }
 #index_footer
 {
-	height:40px;
+	height:105px;
 }
 
 #index_inner_footer
@@ -477,4 +477,11 @@ text-decoration:none;
 {
 	height:135px;
 	overflow:auto;
+}
+
+#copyRightTextDiv
+{
+	color:#0C3044;
+	word-spacing:4px;
+	line-height:16px;
 }

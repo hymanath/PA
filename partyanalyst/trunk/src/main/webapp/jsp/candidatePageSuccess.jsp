@@ -84,7 +84,7 @@
 		<div id="candidatePageLeftContentDiv_head"></div>
 		<div id="candidatePageLeftContentDiv_body" class="yui-skin-sam">
 			<div id="candidatePageLeftContentDiv_Image">
-				<img id="candidateImage" height="245" width="240" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
+				<img id="candidateImage" onerror="setDefaultImage(this)" height="245" width="240" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
 			</div>
 			<div id="candidatePageLeftContentDiv_leftNavLinks"></div>
 		</div>
@@ -343,6 +343,11 @@
 			candidateInfoObject.candidateInfoArray.push(candidateObj);			
 	</c:forEach>
 	
+	function setDefaultImage(img)
+	{
+		img.src = "images/candidates/Default_Candidate.JPG"
+	}
+
 	initializeCandidatePage();
 </script>
 

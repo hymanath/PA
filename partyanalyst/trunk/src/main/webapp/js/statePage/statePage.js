@@ -16,15 +16,18 @@ var statePageObj =	{
 var globalElectionType = '';
 var results = new Array();
 
+var searchHead = '';
+var searchString = '';
+
 
 function buildStatePageLayout()
 {
 	var statePageLayout = new YAHOO.widget.Layout('statePage_layout_main', { 
-	height:500,
+	height:600,
 	units: [			
 			{ 
 				position: 'right', 
-				width: 280,
+				width: 340,
 				header:false,
 				body: 'statePage_layout_right',
 				resize: false,
@@ -281,10 +284,29 @@ function showElectionResults(param,results)
 
    	var myDataTable = new YAHOO.widget.DataTable("elecResultsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
 }
+
+function buildLatestNews()
+{
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : searchHead,
+            "q" : searchString
+          }
+     ]
+  }
+
+
+  var content = document.getElementById('stateNewsBody');
+  var newsShow = new google.elements.NewsShow(content, options);
+}
+
 function initializeStatePage()
 {
 	buildStatePageLayout();
 	differentiateElectionTypes();
 	buildelectionTypeList();
 	buildElectionTypesAndYearsCarousel("electionTypesNYearsList",statePageObj.electionResultsByType[0]);
+	buildLatestNews();
 }

@@ -56,8 +56,9 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
-
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
+	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
 	<style type="text/css">
@@ -73,6 +74,9 @@
   </style>
 
 <script type="text/javascript">
+
+google.load("elements", "1", {packages : ["newsshow"]});
+
 var Localization = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 		String totalMuncipalities = rb.getString("totalMuncipalities");
@@ -80,6 +84,10 @@ var Localization = { <%
 		String muncipalDataAvailability = rb.getString("muncipalDataAvailability");
 		String corporationsDataAvailability = rb.getString("corporationsDataAvailability");
 	%> }
+
+var stateName = '${stateDetails.name}';
+var districtName = '${districtName}';
+
 var tehsilDetails={
 			zptcArray:[],
 			mptcArray:[],
@@ -433,8 +441,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		muncipalityDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';	
-		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
-		muncipalityDiv+='</td>';
+		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;">';
+		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
+		muncipalityDiv+='</div></td>';
+		muncipalityDiv+='<td><img src="images/icons/districtPage/header_right.gif"/></td>';	
 		muncipalityDiv+='</tr></table>';	
 		
 		muncipality.innerHTML = muncipalityDiv;
@@ -449,11 +459,15 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var corporationDiv='';	
 		corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 		corporationDiv+='<td width="30"><img src="images/icons/districtPage/header_left.gif"/></td>';	
-		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
-		corporationDiv+='</td></tr></table>';	
+		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;">';
+		corporationDiv+='<a class="districtPage_headerAnc" href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
+		corporationDiv+='</div></td>';
+		corporationDiv+='<td><img src="images/icons/districtPage/header_right.gif"/></td>';	
+		corporationDiv+='</tr></table>';	
 		corporation.innerHTML = corporationDiv;
 	}
 	function showMuncipalDetailsForLatestElectionYear(result,electionType){		
+		
 		var muncipalityDIV = '';
 		if(electionType == muncipalityElectionType){
 			localBodyArray = tehsilDetails.partyMuncipalArray;
@@ -463,10 +477,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			localBodyArray = tehsilDetails.partyCorporationArray;
 			muncipalityDIV = document.getElementById("corporationDiv");
 			corporationHeadConstruction(result);
-		}			 
+		}	
+		
 		var listSize = result[0].totalMuncipalities-1;
 		var rvStr = '';
-		rvStr+='<table width="95%">';		
+		rvStr+='<table width="98%">';		
 		for(var i in result)
 		{		
 			if(i%2==0){
@@ -479,9 +494,20 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			else
 				rvStr+='<td  style="vertical-align: top;">';		
 			assignToPartyDataArray = new Array();
-						
-			rvStr+='<div id="allMuncipalitiesDetails'+i+'" style="padding:10px;width:100%;vertical-align:top;" class="datatableClass">';
-			rvStr += '<table class="datatableClass" width="90%" style="background-color:#F3F6F7;margin-top:10px;margin-right:10px;">';
+			
+			rvStr += '<div class="localBodiesElectionHead">';
+			rvStr += '<table>';
+			rvStr += '<tr>';
+			rvStr += '<td width="10px"><img src="images/icons/indexPage/listIcon.png"></img></td>';
+			if(electionType == muncipalityElectionType)
+				rvStr += '<td><u> '+result[i].muncipalityName+' muncipality Election Details</u></td>';
+			else
+				rvStr += '<td><u> '+result[i].muncipalityName+' corporation Election Details</u></td>';
+			rvStr += '</tr>';
+			rvStr += '</table>';
+			rvStr += '</div>';
+			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:100%;vertical-align:top;padding:5px;" class="datatableClass">';
+			rvStr += '<table class="datatableClass" width="90%" border="1" style="background-color:#F3F6F7;">';
 			rvStr += '<tr>';
 			rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
 			rvStr += '<th align="left">Total Wards :</th><td align="left">'+result[i].totalWards+'</td>';
@@ -491,9 +517,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			rvStr += '<th align="left">Total Polled Votes :</th><td align="left">'+result[i].totalPolledVotes+'</td>';
 			rvStr += '</tr>';
 			rvStr += '</table>';	
-			rvStr +='<div class="yui-skin-sam" style="margin-top:10px;margin-bottom:10px;">';
+			rvStr +='<div class="yui-skin-sam">';
 			rvStr +='<table>';
-			rvStr +='<tr>';																					
+			/*rvStr +='<tr>';																					
 			rvStr +='<td style="vertical-align:top;">';			
 			if(electionType == muncipalityElectionType){
 				rvStr +='<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
@@ -501,7 +527,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				rvStr +='<a href="javascript:{}" onclick="redirectCorporationCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
 			}			
 			rvStr+='</td>';
-			rvStr +='</tr>';
+			rvStr +='</tr>';*/
 			rvStr +='<td></td>';
 			rvStr +='<td></td>';
 			rvStr +='<tr>';
@@ -1189,7 +1215,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 </head>
 <body>
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
-<%@ include file="navigator.jsp" %>
+<div style="padding:20px;"><%@ include file="navigator.jsp" %></div>
 <div id="districtPageMainDiv">	
 
 	<!--District Page Layout-->
@@ -1356,6 +1382,32 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</div>
 	</div>
 	<div id="detailedChartDiv" style="position:absolute;top:750px;left:150px;z-index:1;"></div>
+	
+	<!-- District News Start -->
+	<div class="productFeatureMain" style="padding:0 10px 10px 25px;text-align:left;">							
+		 <div class="productFeatureHeader">
+			<table width="60%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>                                    
+				<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+				<td width="98%">
+					<div class="productFeatureHeaderBackground_center" style="width:515px;">
+						<span class="headerLabelSpan">
+							${districtName} District News
+						</span>
+					</div>
+				</td>
+				<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+			  </tr>
+			</table>
+		</div>
+		<div id="districtNewsDiv_outer" class="productFeatureBody" style="overflow:hidden;width:553px;height:90px;">
+			<div id="districtNewsDiv" style="position:relative;left:-170px;">
+				
+			</div>
+		</div>						
+	</div>
+	<!-- District News End -->
+
 	<!--District Page MP, MLA Div-->
 	<div id="mpMla_main">
 		<div id="mp_main_div">
@@ -1462,7 +1514,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<tr>
 				<td align="left">
 					<div id="muncipalitiesDivHead" style="text-align:left;" onclick="hideMuncipalitiesDiv()"></div>
-					<div id="muncipalitiesDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;"></div>
+					<div id="muncipalitiesDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding-left:10px;"></div>
 				</td>
 			</tr>
 		</table>
