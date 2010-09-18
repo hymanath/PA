@@ -38,6 +38,8 @@ var electionYear = '${year}';
 var electionTypeId = '${electionType}';
 var electionId = '${stateData.electionId}';
 var electionType = '${electionTypeLiteral}';
+var reportLevel = '${stateData.reportLevel}';
+var districtId = '${stateData.districtId}';
 
 var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -924,12 +926,25 @@ function reportTitleDivFunc()
 
 function buildMarginVotes(localPartyId,status)
 {	
+    var locationId = "0";
+	if("1" == reportLevel)
+	{
+		locationId=stateId;
+	}
+	else if("2" == reportLevel)
+	{
+		locationId=districtId;
+	}
+
+
 	partyId = localPartyId;
 	var jsObj= 
 	{	
 		electionId: electionId,
 		partyId: partyId,		
 		status:status,
+		reportLevel:reportLevel,
+		locationId:locationId,
 		task:"getVotesMarginInfo"		
 	}
 	
@@ -1030,13 +1045,24 @@ function showMarginAnalysisData(index,task)
 
 function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 {
+
+	var locationId = "0";
+	if("1" == reportLevel)
+	{
+		locationId=stateId;
+	}
+	else if("2" == reportLevel)
+	{
+		locationId=districtId;
+	}
+
 	index = index+1;
 	if(status == "WON")
 		rank = 1;
 	else if(status == "LOST")
 		rank = 0;
 
-	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalysisPopup";
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&reportLevel="+reportLevel+"&locationId="+locationId+"&windowTask=mainPartyMarginCountAnalysisPopup";
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();

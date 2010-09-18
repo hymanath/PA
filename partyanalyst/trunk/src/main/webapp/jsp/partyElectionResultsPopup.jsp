@@ -158,6 +158,10 @@ function callAjax(param,jsObj,url){
 	var partyId = '${partyId}';
 	var rank = '${rank}';
 	var electionTypeId = '${electionTypeId}';
+    var locationId="${locationId}";
+	var reportLevel="${reportLevel}";
+
+
 	var partyElectionResultsObj={
 		candidateResultsArr:[]
 	};
@@ -613,6 +617,16 @@ function callAjax(param,jsObj,url){
 			nominationIds1 = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
 		else if(rank == 1)
 			nominationIds1= parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;*/
+        // changes made
+        var reportLvl="0";
+		var loctnId="0";
+		
+		if(reportLevel != null && reportLevel != "")
+		{
+			reportLvl= reportLevel;
+            loctnId=locationId;
+		}
+        // changes made
 		
 		var jsObj= 
 		{			
@@ -620,6 +634,8 @@ function callAjax(param,jsObj,url){
 			electionId:electionId,
 			resultStatus:resultStatus,
 			clickIndex:index,
+			reportLevel:reportLvl,
+			locationId:loctnId,
 			task:"getConstituencyStatusAnalysisForVotesMarginWindow"		
 		}
 		
