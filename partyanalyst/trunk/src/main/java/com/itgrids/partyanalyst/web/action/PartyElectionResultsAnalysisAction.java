@@ -452,7 +452,18 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		Long partyId = new Long(jObj.getString("partyId"));
 		Long electionId = new Long(jObj.getString("electionId"));
 		String resultStatus = jObj.getString("resultStatus");
-		Long clickIndex = new Long(jObj.getString("clickIndex"));		
+		Long clickIndex = new Long(jObj.getString("clickIndex"));	
+		Long locationId= new Long(jObj.getString("locationId"));
+		Long reportLevel = new Long(jObj.getString("reportLevel"));
+		Long stateId = new Long(0);
+		Long districtId = new Long(0);
+		
+		if(reportLevel != null && reportLevel.equals(1L))
+			stateId = locationId;
+		else if(reportLevel != null && reportLevel.equals(2L))
+			districtId = locationId;
+		
+		System.out.println(" Report Type :" + reportLevel + " Location ID :" + locationId);
 		
 		String category = null;
 		if(resultStatus.equalsIgnoreCase("WON"))
@@ -460,7 +471,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		else if(resultStatus.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		electionResultPartyVO = analysisReportService.getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex);
+		electionResultPartyVO = analysisReportService.getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex,stateId,districtId);
 			
 		return Action.SUCCESS;
 	}
