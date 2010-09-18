@@ -55,8 +55,25 @@ function buildMandalsListCarousel()
 	mandalListCaroousel.show();
 }
 
+function buildDistrictLatestNews()
+{	
+	var options = {
+    "format" : "800x90",
+	"queryList" : [
+          {
+            "title" : districtName,
+            "q" : districtName+","+stateName+", India"
+          }
+     ]
+  }
+
+  var content = document.getElementById('districtNewsDiv');
+  var newsShow = new google.elements.NewsShow(content, options);
+}
+
 function initializeDistrictPage()
 {
 	buildDistrictPageLayout();
+	buildDistrictLatestNews();
 	//buildMandalsListCarousel();
 }
