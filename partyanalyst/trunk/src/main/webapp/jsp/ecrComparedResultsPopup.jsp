@@ -94,7 +94,7 @@
 	border-left:1px solid #DBDCDB;
 	border-right:1px solid #DBDCDB;
 	margin-bottom:10px;
-	width:645px;
+	width:500px;
 	}
 	h3 {
 	background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
@@ -105,7 +105,7 @@
 	margin:0;
 	padding:5px;
 	text-align:left;
-	width:630px;
+	width:485px;
 	}
 	.head {
 	background-color:#EBEBEB;
@@ -127,7 +127,7 @@
 	padding:5px;
 	text-align:center;
 	}
-	.title
+	#title
 	{
 	background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
 	color:#4B74C6;
@@ -143,6 +143,14 @@
 	{
 	color:DodgerBlue;
 	font-size:12px;
+	}
+	#electionPageAjaxImgDiv
+	{
+		border:1px solid #ADADAD;
+		font-size:12px;
+		font-weight:bold;
+		width:300px;
+		margin-bottom:10px;
 	}
 </style>
 </head>
@@ -255,8 +263,13 @@ function callAjax(param,jsObj, url){
 function displayComparedResults(jsObj,data)
 {
 	var elmt = document.getElementById("comparedResults");
+	var titleElmt = document.getElementById("title");
+	var electionPageAjaxImgDiv = document.getElementById("electionPageAjaxImgDiv");
+	electionPageAjaxImgDiv.style.display="none";
+	
 	if(!elmt)
 		return;
+	titleElmt.innerHTML = 'Constituencywise '+electionType+' Results Comparision For '+data.locName+'';
 	
 	var str='';
 	str+='<table>';
@@ -628,15 +641,18 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 <body class="bodyClass">
 <center>
 <div id="header">
-
-</div>
 <TABLE border="0" cellpadding="0" cellspacing="0">
 	<TR>
 	<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>
-	<TD><div class="title">Constituencywise ${electionType} Results Comparision</div></TD>
+	<TD><div id="title"></div></TD>
 	<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>
 	</TR>
 	</TABLE>
+</div>
+<DIV id="electionPageAjaxImgDiv">
+	<DIV> Loading .... Please Wait..</DIV>
+	<IMG src="images/icons/barloader.gif"/>
+</DIV>	
 <div id="comparedResults" class="yui-skin-sam"></div>
 </center>
 <script type="text/javascript">
