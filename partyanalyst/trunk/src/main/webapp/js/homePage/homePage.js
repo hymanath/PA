@@ -35,7 +35,7 @@ function buildPolls()
 
 function buildNewPoll(result){
 	
-	if(result.quesitons=null){
+	if(result.quesitons!=null){
 		var elmt = document.getElementById("pollsWidgetBody");
 		if(!elmt)
 			return;
