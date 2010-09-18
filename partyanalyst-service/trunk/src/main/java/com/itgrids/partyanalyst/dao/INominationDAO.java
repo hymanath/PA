@@ -216,7 +216,15 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(Long electionId,Long partyId,Long rank);
 	
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(Long electionId, Long partyId, Long rank,Long stateId);
+	
+	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForWon(Long electionId, Long partyId, Long rank,Long districtId);
+	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(Long electionId,Long partyId,Long rank);
+	
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(Long electionId, Long partyId, Long rank,Long stateId);
+	
+	public List<Nomination> findByElectionIdAndPartyIdDistrictIdForLost(Long electionId, Long partyId, Long rank,Long districtId);
 	
 	public List<Nomination> findByElectionIdAndRank(Long electionId,Long rank,List<Long> constituencyIds);
 	
