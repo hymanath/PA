@@ -131,7 +131,12 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
-				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>				
+				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>		
+				<value>com.itgrids.partyanalyst.model.OpinionPoll.java</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestionOptions.java</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions.java</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollResult.java</value>
+				<value>com.itgrids.partyanalyst.model.QuestionsRepository.java</value>		
 				</list>
 		</property>
 	</bean>

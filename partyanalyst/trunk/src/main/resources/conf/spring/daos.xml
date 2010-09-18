@@ -5,6 +5,26 @@
 
 <beans>
   
+    <bean id="opinionPollDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollQuestionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollQuestionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="questionsRepositoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionsRepositoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
   	<bean id="smsTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTrackDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
