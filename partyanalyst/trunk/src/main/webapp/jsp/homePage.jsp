@@ -713,6 +713,17 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 		</table>		
 		
         <div id="index_footer" class="indexLayoutContainer">
+			<div id="cpyRight_info" style="padding:10px 0px 10px 0px;">
+				<table width="100%">
+					<tr>
+						<td valign="top" style="width:50px"><img src="images/icons/indexPage/importantNote.png"></img> </td>
+						<td valign="top">
+							<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
+							Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
+					</tr>
+				</table>
+				
+			</div>
             <div id="index_inner_footer">
             <table width="100%" id="copyrightLinksTable">
                 <tr>
