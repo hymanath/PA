@@ -383,7 +383,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		setVotesMarginAnalysisVO(analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category));
+		setVotesMarginAnalysisVO(analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,0L,0L));
 		
 		
 		return Action.SUCCESS;
