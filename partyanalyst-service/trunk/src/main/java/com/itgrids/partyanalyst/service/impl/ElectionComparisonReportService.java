@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -69,6 +70,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
 	private TransactionTemplate transactionTemplate;
 	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
 	private IElectionAllianceDAO electionAllianceDAO; 
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
@@ -107,6 +109,14 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 
 	public IElectionAllianceDAO getElectionAllianceDAO() {
@@ -442,8 +452,16 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		List<ConstituencyElection> constiElectionsForYearOne = null;
 		List<ConstituencyElection> constiElectionsForYearTwo = null;
 		Long stateId = stateOrDistrictId;
-		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
+		String locationName="";
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 			stateId = elecYearOne.getElectionScope().getState().getStateId();
+			District district = districtDAO.get(stateOrDistrictId);
+			locationName = district.getDistrictName();
+		}
+		else if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			State state = stateDAO.get(stateOrDistrictId);
+			locationName = state.getStateName();
+		}
 
 		try{
 			partyIdsYearOne = new ArrayList<Long>();
@@ -501,6 +519,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 					partyId,partyIdsYearOne,partyIdsYearTwo,hasAlliances);
 			comparedResultVO.setPositionsYearOne(posDetailsYearOne);
 			comparedResultVO.setPositionsYearTwo(posDetailsYearTwo);
+			comparedResultVO.setLocName(locationName);
 		    }
 		}
 		catch(Exception ex){
