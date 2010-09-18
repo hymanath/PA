@@ -1367,6 +1367,16 @@
 			<result type="json" name="success">
 				 <param name="root">comparedResultsVO</param> 
 			</result>
-		</action>           
+		</action>  
+		<action name="getAllPolls" class="votesPollAction" method="getAllPollsForTheDay">
+			<result type="json" name="success">
+				<param name="root">opinionPollVO</param>				
+			</result>		
+		</action>    
+		<action name="saveSelectedPoll" class="votesPollAction" method="saveSelectedPoll">
+			<result type="json" name="success">
+				<param name="root">opinionPollVO</param>				
+			</result>		
+		</action>        
 	</package>
 </struts>

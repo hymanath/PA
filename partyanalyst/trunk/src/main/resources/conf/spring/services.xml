@@ -5,6 +5,13 @@
 
 <beans>
 	
+	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
+		<property name="opinionPollQuestionsDAO" ref="opinionPollQuestionsDAO" /> 
+		<property name="opinionPollResultDAO" ref="opinionPollResultDAO" /> 
+		<property name="opinionPollQuestionOptionsDAO" ref="opinionPollQuestionOptionsDAO" /> 
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+	</bean>
+	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />

@@ -5,6 +5,11 @@
 	
 <beans>
 	<!-- Example of SAF2 action instantiated by Spring -->
+	
+	<bean id="votesPollAction" class="com.itgrids.partyanalyst.web.action.VotesPollAction" singleton="false">
+		<property name="opinionPollService" ref="opinionPollService" />
+	</bean>	
+	
 	<bean id="influencingPeopleAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />

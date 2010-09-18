@@ -19,26 +19,47 @@ function initializeHomePage()
 	getDistrictsComboBoxForAState(1, 'districtList_d');
 	getRecentElectionsInState(stateSelectElVal);
 	getProblemsInState(stateSelectElVal);
-	buildPolls()
+	buildPolls();
 }
 
 function buildPolls()
 {
+	var jsObj=
+	{
+			task:"getAllPolls"					
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPolls.action?"+rparam;						
+	homePageAjaxCall(rparam,jsObj,url);
+}
+
+function buildNewPoll(result){
+	
 	var elmt = document.getElementById("pollsWidgetBody");
 	if(!elmt)
 		return;
-
+	
+	var questionId = '';
 	var str = '';
-	str += '<div id="pollQuestionDiv">Q) Should Narendra Modi campaign in Bihar assembly polls?</div>';
-	str += '<div id="pollOptionsDiv">';
-	str += '<table>';
-	str += '<tr><td><input type="radio" name="pollradio" value="yes">Yes </td></tr>';
-	str += '<tr><td><input type="radio" name="pollradio" value="no">No </td></tr>';
-	str += '<tr><td><input type="radio" name="pollradio" value="cant Say">Cant Say </td></tr>';
-	str += '</table>';
-	str += '</div>';
+	for(var i=0; i<1;i++)
+	{
+		questionId = result.quesitons[i].questionId;
+		str += '<div id="pollQuestionDiv">Q)';
+		str += result.quesitons[i].question;
+		str += '</div>';
+		str += '<div id="pollOptionsDiv">';
+		str += '<table>';
+		for(var j=0 ; j<result.quesitons[i].options.length; j++){
+			str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
+			str += result.quesitons[i].options[j].option;
+			str += '</td></tr>';			
+		}
+		str += '</table>';
+		str += '</div>';
+	}
+	
 	str += '<div id="pollSubmitDiv">';
-	str += '<div onclick="javascript:{}" class="viewReportButtonSpan" style="left:">';
+	str += '<div onclick="savePollResult(\''+questionId+'\')" class="viewReportButtonSpan" style="left:">';
 	str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';
 	str += '</div>';
 	str += '</div>';
@@ -46,6 +67,28 @@ function buildPolls()
 
 	elmt.innerHTML = str;
 }
+
+function savePollResult(questionId){
+
+	var elmts = document.getElementsByName("pollradio");
+	var checkedElmtId = '';
+	
+	for(var i in elmts)
+	{
+		if(elmts[i].checked == true)
+			checkedElmtId = elmts[i].value;
+	}
+	var jsObj=
+	{
+			questionId:questionId,
+			selectedPollId:checkedElmtId,
+			task:"saveSelectedPoll"					
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveSelectedPoll.action?"+rparam;						
+	homePageAjaxCall(rparam,jsObj,url);	
+}
+
 
 function buildLogoImage()
 {
@@ -163,7 +206,11 @@ function homePageAjaxCall(param,jsObj,url){
 								if(jsObj.task == "getRecentElectionsInState")
 								{									
 									showResults(myResults);
-								}
+								} 
+								if(jsObj.task == "getAllPolls")
+								{									
+									buildNewPoll(myResults);
+								} 
 								
 						}
 						catch (e)
