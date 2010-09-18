@@ -143,11 +143,38 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionStateResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResultWithAlliance</value>
 				<value>com.itgrids.partyanalyst.model.GroupEntitlementRelation</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPoll</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestionOptions</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions</value>
+				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
+				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
+				
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="opinionPollDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollQuestionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollQuestionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollQuestionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="opinionPollResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="questionsRepositoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.QuestionsRepositoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

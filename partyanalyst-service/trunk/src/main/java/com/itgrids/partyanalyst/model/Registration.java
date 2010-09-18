@@ -55,6 +55,8 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserImpDate> userImpDates = new HashSet<UserImpDate>(0);
 	 private Set<UserGroupPrivileges> readWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
 	 private Set<UserGroupPrivileges> writeWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
+	 private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0); 
+	 
 	public Registration() {
 		 
 	}
@@ -356,6 +358,16 @@ public class Registration implements java.io.Serializable {
 
 	public void setUserGroupRelations(Set<UserGroupRelation> userGroupRelations) {
 		this.userGroupRelations = userGroupRelations;
+	}
+
+	public void setOpinionPoll(Set<OpinionPoll> opinionPoll) {
+		this.opinionPoll = opinionPoll;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<OpinionPoll> getOpinionPoll() {
+		return opinionPoll;
 	}
 
 	
