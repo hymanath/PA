@@ -24,6 +24,7 @@ public class ComparedReportVO implements java.io.Serializable{
 	private List<PartyPositionsVO> positionsYearTwo;
 	private String yearOne;
 	private String yearTwo;
+	private String locName;
 	
 	
 	public List<ComparedElectionResultVO> getVotesPercentGainedResults() {
@@ -77,6 +78,12 @@ public class ComparedReportVO implements java.io.Serializable{
 	}
 	public void setYearTwo(String yearTwo) {
 		this.yearTwo = yearTwo;
+	}
+	public String getLocName() {
+		return locName;
+	}
+	public void setLocName(String locName) {
+		this.locName = locName;
 	}
 	
 }
