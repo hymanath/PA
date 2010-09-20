@@ -279,7 +279,9 @@ public class PartyService implements IPartyService {
 		List<Election> elections = null;
 		
 		Party selectedParty = partyDAO.get(partyId); 
-		State stateVO = stateDAO.get(stateId);
+		State stateVO = null;
+		if(stateId != null && !stateId.equals(0L))
+		stateVO = stateDAO.get(stateId);
 		
 		//get ElectionType Model Object From ElectionTypeId
 		if(electionType != null && !electionType.equals(0l))
@@ -315,6 +317,7 @@ public class PartyService implements IPartyService {
 		// Process Selected Election Year Data
 		
 		partyPerformanceReportVO.setParty(selectedParty.getShortName());
+		if(stateVO != null)
 		partyPerformanceReportVO.setState(stateVO.getStateName());
 		partyPerformanceReportVO.setYear(year);
 		
