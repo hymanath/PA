@@ -6,7 +6,9 @@ import java.util.List;
 
 public class VillageDetailsVO extends ResultStatus implements Serializable{
 	private String mandalName;
+	private Boolean showRevenueVillageInfo = true;
 	private List<VillageCensusInfoVO> villageCensusList = new ArrayList<VillageCensusInfoVO>();
+
 	public String getMandalName() {
 		return mandalName;
 	}
@@ -18,6 +20,12 @@ public class VillageDetailsVO extends ResultStatus implements Serializable{
 	}
 	public void setVillageCensusList(List<VillageCensusInfoVO> villageCensusList) {
 		this.villageCensusList = villageCensusList;
+	}
+	public Boolean getShowRevenueVillageInfo() {
+		return showRevenueVillageInfo;
+	}
+	public void setShowRevenueVillageInfo(Boolean showRevenueVillageInfo) {
+		this.showRevenueVillageInfo = showRevenueVillageInfo;
 	}
 	
 

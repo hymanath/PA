@@ -226,8 +226,8 @@ public interface IConstants {
     public static final String CROSS_VOTING_REPORT = "CROSS_VOTING_REPORT";
     public static final String PARTY_BOOTHWISE_RESULTS_REPORT = "PARTY_BOOTHWISE_RESULTS_REPORT";
     public static final String ELECTION_RESULTS_ANALYSIS_REPORT = "ELECTION_RESULTS_ANALYSIS_REPORT";
-    public static final String DISTRICT_LEVEL_ACCESS = "DISTRICT_LEVEL_ACCESS";
-    public static final String CONSTITUENCY_LEVEL_ACCESS = "CONSTITUENCY_LEVEL_ACCESS";
+    public static final String CONSTITUENCY_ANALYSIS = "CONSTITUENCY_ANALYSIS";
+    public static final String TEHSIL_ANALYSIS = "TEHSIL_ANALYSIS";
     public static final String DEFAULT_ENTITLEMENTS_GROUP = "DEFAULT_ENTITLEMENTS";
     
     
