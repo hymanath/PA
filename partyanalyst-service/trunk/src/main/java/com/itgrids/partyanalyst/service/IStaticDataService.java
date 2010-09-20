@@ -136,6 +136,8 @@ public interface IStaticDataService {
 		//public List<SelectOptionVO> getParties();
 		public List<SelectOptionVO> getStaticParties();
 		
+		public List<SelectOptionVO> getAllNationalParties();
+		
 		public List<SelectOptionVO> getStaticNationalParties();
 		
 		public List<SelectOptionVO> getStaticStateParties(Long stateId);
