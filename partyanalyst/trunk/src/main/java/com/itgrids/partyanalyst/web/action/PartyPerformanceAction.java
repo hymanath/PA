@@ -761,7 +761,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			String reportLevel = jObj.getString("reportLevel");
 			
 			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel))
-				parties = staticDataService.getStaticNationalParties();
+				parties = staticDataService.getAllNationalParties();
 			else
 			    parties = staticDataService.getStaticPartiesListForAState(stateID);
 			
