@@ -163,8 +163,8 @@
 	{		
 		if(param.substring(0, 4) == "type")
 		{
-	    	fillDropDown(document.getElementById("stateList"), response.STATES);
-		 	fillDropDown(document.getElementById("yearList"), response.YEARS);
+	    	//fillDropDown(document.getElementById("stateList"), response.STATES);
+		 	//fillDropDown(document.getElementById("yearList"), response.YEARS);
 			buildRadioButton(response.LEVELS);
 
 		 	//fillDropDown(document.getElementById("partyList"), response.parties);
@@ -225,23 +225,55 @@
  	}
 
  	function doAjax(param){
+
+		var stateListEl = document.getElementById("stateList");
+		stateListEl.disabled=false;
+		var partyListEl = document.getElementById("partyList");
+		var yearListEl = document.getElementById("yearList");
+		if(stateListEl.options.length > 0)
+			stateListEl.selectedIndex = '0';
+		if(partyListEl.options.length > 0)
+			partyListEl.selectedIndex = '0';
+		if(yearListEl.options.length > 0)
+			yearListEl.selectedIndex = '0';
+		document.getElementById("alliances").disabled=false;
+		document.getElementById("alliances").checked = false;
  		var url = "<%=request.getContextPath()%>/partyPerformanceElectionTypeFilterData.action?";
  		pprCallAjax("type="+param, url);
  	}
 
- 	function getDistricts(level){
+ 	function getDistricts(level, flag){
+ 	 	
  	 	if(level == 2){
+ 	 		var stateListEl = document.getElementById("stateList");
+ 	 		var partyListEl = document.getElementById("partyList");
+			var yearListEl = document.getElementById("yearList");
+			
 	 	 	var index = document.getElementById("stateList").selectedIndex;
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
+	 	 	
 	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
 			pprCallAjax("stateId="+stateId, url);
  	 	}
 		if(level == 3){
 			document.getElementById("alliances").disabled=true;
 			document.getElementById("alliances").checked = false;
+			
+			var stateListEl = document.getElementById("stateList");
+			stateListEl.disabled=true;
+			
+			var yearListEl = document.getElementById("yearList");
+			fetchPartiesInState('0');
+			if(yearListEl.options.length > 0)
+				yearListEl.selectedIndex = '0';
+			
+			
 		}else {
  	 		document.getElementById("districtList").disabled= true; 
 			document.getElementById("alliances").disabled=false;
+			var stateListEl = document.getElementById("stateList");
+			stateListEl.disabled=false;
+				
 			
  	 	}
 		
@@ -249,12 +281,18 @@
 
  	function fetchDistricts(id,val)
 	{
+ 		
 		var elmt = document.getElementById("stateNameHiddenId");
 		if(!elmt)
 			return;
 
 		elmt.value=val;		
-
+		var yearsSelectEl = document.getElementById("yearList");
+		var yearsSelectElOptions = yearsSelectEl.options; 
+		if(yearsSelectElOptions.length > 0)
+		{
+			yearsSelectEl.selectedIndex = '0';
+		}
  	 	var reportLevels = document.getElementsByName("1");
  	 	for(var i=0; i < reportLevels.length; i++){
  	 	 	if(reportLevels[i].checked){
@@ -266,9 +304,24 @@
 
     function fetchPartiesInState(id)
 	{
+
+		var elecType = getSelectedValue(document.getElementsByName("electionType"));
+		var reportLevel = getSelectedValue(document.getElementsByName("1"));
+		var electionType;
+		if(elecType == "1")
+		{
+			electionType = "Parliament";
+		}
+		else
+		{
+			electionType = "Assembly";
+		}
+
 		    var jsObj=
 			{       elmtId:"partyList",
 					stateId:id,
+				    elecTypeId:electionType,
+				    reportLevel:reportLevel,
 					task:"getStatesListAjax"						
 			};
 		
@@ -383,6 +436,11 @@
 			<input id="parliamentRadio" type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
 		</td>
 	</tr>
+
+	<tr>
+		<th align="left"><%=reportLevel%></th>
+		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
+	</tr>	
 	<tr>
 		<th align="left"><%=state%></th>
 		<td>
@@ -405,10 +463,10 @@
 		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:120px;"/></td>
 	</tr>
 	
-	<tr>
+	<!--<tr>
 		<th align="left"><%=reportLevel%></th>
 		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
-	</tr>	
+	</tr>-->	
 	<tr>		
 		<th align="left"><%=dist%></th>
 		<td>
