@@ -426,6 +426,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		}
 		log.debug("Report Level :: " + reportLevel);
 		
+		if(state == null)
+			state="0";
 		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
 		reportVO.setElectionTypeId(new Long(electionType));
 		reportVO.setStateId(new Long(state));
@@ -755,7 +757,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			}
 						
 			Long stateID = new Long(jObj.getString("stateId"));
-			parties = staticDataService.getStaticPartiesListForAState(stateID);
+			String electionType = jObj.getString("elecTypeId");
+			String reportLevel = jObj.getString("reportLevel");
+			
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel))
+				parties = staticDataService.getStaticNationalParties();
+			else
+			    parties = staticDataService.getStaticPartiesListForAState(stateID);
 			
 		}
 		return Action.SUCCESS;
