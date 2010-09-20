@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
@@ -66,6 +67,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private List<ConstituencyRevenueVillagesVO> townshipWiseElectionResults;
 	private List<PartyResultVO> allElectionResults;
 	private NavigationVO navigationVO;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public List<PartyResultVO> getAllElectionResults() {
 		return allElectionResults;
@@ -223,6 +225,14 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.navigationVO = navigationVO;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute()throws Exception{
 		
 		mandalId = request.getParameter("MANDAL_ID");
@@ -242,6 +252,15 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		
 		villageDetailsVO = delimitationConstituencyMandalService.getVillagesFormMandal(new Long(mandalID));
 		villageDetailsVO.setMandalName(mandalName);
+		
+		//Entitlement Check
+		HttpSession session = request.getSession();
+		Object regVO = session.getAttribute(IConstants.USER);
+		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.TEHSIL_ANALYSIS)) ||
+				(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.TEHSIL_ANALYSIS)))
+			villageDetailsVO.setShowRevenueVillageInfo(false);
+		
+		
 		Throwable ex = villageDetailsVO.getExceptionEncountered();
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);

@@ -822,12 +822,14 @@ function getMoreResults(elecYear,elecType,constiId)
 		    label: 'Census Info in Revenue Villages',
 		    content: cencusInfo
 		}));
-		
-		myTabs.addTab( new YAHOO.widget.Tab({
-		    label: 'Revenue Villages Wise Election Info',
-		    content: buildRevenueVillagesInfoTab()
-		    
-		}));
+
+		<c:if test = "${villageDetailsVO.showRevenueVillageInfo}">
+			myTabs.addTab( new YAHOO.widget.Tab({
+			    label: 'Revenue Villages Wise Election Info',
+			    content: buildRevenueVillagesInfoTab()
+			    
+			}));
+		</c:if>
 
 		myTabs.appendTo('mandalPageTab');
 				

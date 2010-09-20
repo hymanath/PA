@@ -83,6 +83,7 @@
 	<bean id="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 
@@ -204,6 +205,7 @@
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 		
 	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">

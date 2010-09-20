@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
-import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
@@ -53,12 +51,14 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
@@ -113,7 +113,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private NavigationVO navigationVO;
 	 private String mptcElectionType,zptcElectionType,muncipalityElectionType,corporationElectionType;
 	 private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
+	 private EntitlementsHelper entitlementsHelper;
 	 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public Long getMptcElectionTypeId() {
 		return mptcElectionTypeId;
 	}
@@ -505,7 +514,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
-			
+		
+		HttpSession session = request.getSession();
+		Object regVO = session.getAttribute(IConstants.USER);
+		
+		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
+			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS)))
+			constituencyDetails.setHasAnalize(false);
+		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
