@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import com.itgrids.partyanalyst.model.OpinionPollQuestions;
 import com.itgrids.partyanalyst.model.OpinionPollResult;
 import com.itgrids.partyanalyst.model.QuestionsRepository;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class OpinionPollService implements IOpinionPollService {
 
@@ -70,7 +73,7 @@ public class OpinionPollService implements IOpinionPollService {
 
 	
 		
-	public void saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId){
+	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId){
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {	
@@ -95,15 +98,67 @@ public class OpinionPollService implements IOpinionPollService {
 				}				
 			}
 		});
-	}
 		
+		return getQuestionAndPercentageOfVotesForChoices(opinionPollQuestionId);
+	}
+	
+	
+	
+	/**
+	 * This method caluculates the percentage of votes that are obtained for each option in that question and 
+	 * sets the data in to QuestionsOptionsVO.
+	 *   
+	 * @param opinionPollQuestionId
+	 * @return
+	 */
+	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId){
+		Long totalPolledVotes=0l;
+		Double totalVotesPercentage = new Double(0);
+		QuestionsOptionsVO question = new QuestionsOptionsVO();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List result = opinionPollResultDAO.getOpinionPollAnswersForAQuestionByQuestionId(opinionPollQuestionId);		
+			List<OptionVO> opinionPollQuestionAndPercentages = new ArrayList<OptionVO>(0);
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				totalPolledVotes+=new Long(parms[0].toString());
+				question.setQuestion(parms[2].toString());			
+			}		
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				OptionVO optionVO = new OptionVO();
+				optionVO.setOption(parms[1].toString());			
+				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				opinionPollQuestionAndPercentages.add(optionVO);			
+			}		
+			question.setOptions(opinionPollQuestionAndPercentages);			
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			 question.setResultStatus(resultStatus);
+			return question; 
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			question.setResultStatus(resultStatus);
+			return question;
+		}
+	}
+	
+	
+	
+	/**
+	 * This method gets all the polls that are needed to be displayed for the user for that day.
+	 * 
+	 * @return OpinionPollVO
+	 * @author Ravi Kiran.Y
+	 */
+	
 	public OpinionPollVO getAllPollsForTheDay(){
 			List result  = null;
 			OpinionPollVO opinionPollVO  = new OpinionPollVO();
 			ResultStatus resultStatus = new ResultStatus();
 			try{
 				List<QuestionsOptionsVO> listOfQuestionsOptionsVO = new ArrayList<QuestionsOptionsVO>();
-				 result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime());
+				 result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.FALSE);
 				 for(int i=0;i<result.size();i++){
 						Object[] parms = (Object[])result.get(i);
 						OpinionPoll poll = (OpinionPoll) parms[0];
@@ -143,17 +198,25 @@ public class OpinionPollService implements IOpinionPollService {
 	}	
 
 	
+	/**
+	 * 
+	 * This method returns current date in dd/MM/yyyy format.
+	 * 
+	 * @return Date
+	 * @author Ravi Kiran.Y 
+	 */
 	 public Date getCurrentDateAndTime(){
 			try {
-			java.util.Date now = new java.util.Date();
-	        String DATE_FORMAT = "dd/MM/yyyy";
-	        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-	        String strDateNew = sdf.format(now);        
-				now = sdf.parse(strDateNew);
+					java.util.Date now = new java.util.Date();
+			        String DATE_FORMAT = "dd/MM/yyyy";
+			        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			        String strDateNew = sdf.format(now);        
+					now = sdf.parse(strDateNew);
 				return now;
-			} catch (ParseException e) {
-				e.printStackTrace();
+		    } catch (ParseException e) {
+		    		e.printStackTrace();
 				return null;
 			}
-		}
+	}
+	
 }

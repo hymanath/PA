@@ -1,12 +1,13 @@
 package com.itgrids.partyanalyst.service;
 
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 
 
 public interface IOpinionPollService {
 	
 	public OpinionPollVO getAllPollsForTheDay();
 	
-	public void saveSelectionResultOfThePoll(Long opinionPollQuestionId,Long opinionPollQuestionOptionsId);
+	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId);
 	
 }

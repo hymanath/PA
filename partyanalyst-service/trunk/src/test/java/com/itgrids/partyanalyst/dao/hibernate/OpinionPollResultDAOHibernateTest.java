@@ -1,11 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
-import com.itgrids.partyanalyst.model.OpinionPollResult;
+import com.itgrids.partyanalyst.dto.OptionVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 
 public class OpinionPollResultDAOHibernateTest extends BaseDaoTestCase{
 
@@ -20,16 +23,24 @@ public class OpinionPollResultDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	public void testGet(){
-		List st = opinionPollResultDAO.getOpinionPollResultByQuestionAndOptionId(1l,3l);
-		Long count = 0l;
-		Long opinionPollResultId =0l;
-		
-		for(int i=0;i<st.size();i++){
-			Object[] parms = (Object[])st.get(i);
-			count = new Long(parms[0].toString());
-			opinionPollResultId = new Long(parms[1].toString());			
-		}
-		System.out.println(count+"\t"+opinionPollResultId);
-		//assertEquals(st.size(),1);
+		List result = opinionPollResultDAO.getOpinionPollAnswersForAQuestionByQuestionId(1l);
+		Long totalPolledVotes=0l;
+		Double totalVotesPercentage = new Double(0);
+		QuestionsOptionsVO question = new QuestionsOptionsVO();
+		List<OptionVO> opinionPollQuestionAndPercentages = new ArrayList<OptionVO>(0);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			totalPolledVotes+=new Long(parms[0].toString());
+			question.setQuestion(parms[2].toString());			
+		}		
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			OptionVO optionVO = new OptionVO();
+			optionVO.setOption(parms[1].toString());			
+			optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			opinionPollQuestionAndPercentages.add(optionVO);		
+			System.out.println(optionVO.getPercentage()+"\t"+((new Long(parms[0].toString())*100)/totalPolledVotes));
+		}		
+		question.setOptions(opinionPollQuestionAndPercentages);				
 	}
 }

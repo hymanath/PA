@@ -16,10 +16,11 @@ public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQues
 	}
 
 	
-	public List getAllPollsForThePresentDay(Date currentDate) {	
-		Object[] parms = {currentDate,currentDate};
+	public List getAllPollsForThePresentDay(Date currentDate,String isDelete) {	
+		Object[] parms = {currentDate,currentDate,isDelete};
 		return getHibernateTemplate().find("select model.opinionPoll," +
 				" model.questionsRepository.question,model.questionsRepository from OpinionPollQuestions model where " +				
-				" date(model.opinionPoll.opinionPollStartDate) <= ? and date(model.opinionPoll.opinionPollEndDate) >= ? ",parms);
+				" date(model.opinionPoll.opinionPollStartDate) <= ? and date(model.opinionPoll.opinionPollEndDate) >= ? " +
+				" and model.opinionPoll.is_delete != ? ",parms);
 	}
 }

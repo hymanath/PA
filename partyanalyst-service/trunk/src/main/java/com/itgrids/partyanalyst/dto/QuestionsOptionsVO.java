@@ -6,9 +6,11 @@ public class QuestionsOptionsVO {
 	private Long questionId;
 	private String question;
 	private List<OptionVO> options;
-
+	private String imagePath;
+	private ResultStatus resultStatus;
+	
 	public QuestionsOptionsVO() {
-			}
+	}
 
 	
 	public QuestionsOptionsVO(Long questionId, String question,
@@ -17,6 +19,14 @@ public class QuestionsOptionsVO {
 		this.questionId = questionId;
 		this.question = question;
 		this.options = options;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public Long getQuestionId() {
@@ -42,4 +52,13 @@ public class QuestionsOptionsVO {
 	public void setOptions(List<OptionVO> options) {
 		this.options = options;
 	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}	
+	
 }

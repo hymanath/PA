@@ -3,18 +3,28 @@ package com.itgrids.partyanalyst.dto;
 public class OptionVO {
 	private Long optionId;
 	private String option;
+	private Double percentage;
 	
 	public OptionVO() {
-		}
+	}
 
 	/**
 	 * @param optionId
 	 * @param option
 	 */
-	public OptionVO(Long optionId, String option) {
+	public OptionVO(Long optionId, String option,Double percentage) {
 		super();
 		this.optionId = optionId;
 		this.option = option;
+		this.percentage = percentage;
+	}
+
+	public Double getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
 	}
 
 	public Long getOptionId() {

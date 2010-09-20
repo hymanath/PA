@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.model.OpinionPoll;
 import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
 import com.itgrids.partyanalyst.model.QuestionsRepository;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class OpinionPollQuestionsDAOHibernateTest extends BaseDaoTestCase {
@@ -29,7 +30,7 @@ public class OpinionPollQuestionsDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	 public void testGetAllPollsForTheCurrentDay(){
-		 java.util.List result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime());
+		 java.util.List result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.FALSE);
 		 for(int i=0;i<result.size();i++){
 			Object[] parms = (Object[])result.get(i);
 			OpinionPoll poll = (OpinionPoll) parms[0];
