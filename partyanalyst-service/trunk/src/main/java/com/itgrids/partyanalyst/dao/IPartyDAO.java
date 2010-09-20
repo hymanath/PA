@@ -54,5 +54,7 @@ public interface IPartyDAO extends GenericDao<Party, Long>{
 	
 	public List<Party> findStaticPartiesByRecognization(String partyType,String shortNames);
 	
+	public List<Party> findStaticParties(String partyType);
+	
 	public List<Party> findStatePartyByStateId(Long stateId);
 }
