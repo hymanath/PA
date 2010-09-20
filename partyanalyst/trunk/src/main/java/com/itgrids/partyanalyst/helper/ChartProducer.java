@@ -757,5 +757,51 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
             System.out.println("Exception while creating the chart");
         }
 	}
+
+
+public static void createBarChartForVotesPoll(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+	
+	JFreeChart chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.HORIZONTAL, false, true, false );
+	//chart.setBackgroundPaint(new Color(0xBBBBDD));
+	chart.setBackgroundPaint(Color.WHITE);
+	CategoryPlot plot = chart.getCategoryPlot();
+	CategoryAxis axis = plot.getDomainAxis();
+	axis.setCategoryMargin(0.3);
+	NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+	rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	BarRenderer renderer = (BarRenderer) plot.getRenderer();
+	renderer.setDrawBarOutline(false);
+	GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.RED, 0.0f, 0.0f, Color.white);
+	GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.DARK_GRAY, 0.0f, 0.0f, Color.white);	
+	GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.BLUE, 0.0f, 0.0f, Color.white);
+
+	          plot.setBackgroundPaint(Color.white);
+	          plot.setDomainGridlinePaint(Color.white);
+	          plot.setDomainGridlinesVisible(true);
+	          plot.setRangeGridlinePaint(Color.white);
+	          BarRenderer barRenderer = (BarRenderer) plot.getRenderer();
+	          barRenderer.setDrawBarOutline(false);
+	          renderer.setDrawBarOutline(false);
+
+	//axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+	CategoryItemRenderer itemRenderer = plot.getRenderer();
+	itemRenderer.setItemLabelsVisible(true);
+	
+	renderer.setSeriesPaint(0, gp0);
+	renderer.setSeriesPaint(1, gp1);
+	renderer.setSeriesPaint(2, gp2);
+	renderer.setItemMargin(0.0);
+	renderer.setMaximumBarWidth(0.15);
+	try	 {
+		final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+		final File image = new File(fileName);
+
+		ChartUtilities.saveChartAsPNG(image, chart, 250, 180, info);		
+	}
+	catch (Exception exc)
+	{
+		exc.printStackTrace();
+	}		
+}
   	
 }

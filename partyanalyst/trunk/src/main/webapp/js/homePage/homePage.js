@@ -89,10 +89,15 @@ function savePollResult(questionId){
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "saveSelectedPoll.action?"+rparam;						
-	homePageAjaxCall(rparam,jsObj,url);
-	//console.log(questionId ,checkedElmtId);
+	homePageAjaxCall(rparam,jsObj,url);	
 }
 
+function showVotesObtainedForOptions(myResults){
+	var elmt = document.getElementById("pollsWidgetBody");
+	var str = '';
+	//str += '<img src="\''+myResults+'\'"></img';
+	elmt.innerHTML = str;
+}
 
 function buildLogoImage()
 {
@@ -214,6 +219,10 @@ function homePageAjaxCall(param,jsObj,url){
 								if(jsObj.task == "getAllPolls")
 								{									
 									buildNewPoll(myResults);
+								}
+								if(jsObj.task == "saveSelectedPoll")
+								{									
+									showVotesObtainedForOptions(myResults);
 								} 
 								
 						}
