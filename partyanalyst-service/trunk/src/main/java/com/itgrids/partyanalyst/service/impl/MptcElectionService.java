@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.MPTCElectionResultVO;
 import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -260,7 +261,6 @@ public class MptcElectionService implements IMptcElectionService {
 		
 		Election election = checkAndInsertElection(electionScope,year);
 		
-		List<Candidate> candidates = candidateDAO.getAll();
 		List<Party> parties = partyDAO.getAll();
 		Workbook workbook=Workbook.getWorkbook(file);
 		int rowNo = 0;
@@ -334,7 +334,7 @@ public class MptcElectionService implements IMptcElectionService {
 			constituencyElectionResult = collectConstituencyElectionResultData(sheet, constituencyElectionResult, rowNo,candidateSize);
 			
 			resultVO.addConstituencyElectionResults();
-			addCandidateResultToDB(sheet, rowNo, candidateSize, candidates, parties, constituencyElection,resultVO,constituencyElectionResult.getValidVotes());
+			addCandidateResultToDB(sheet, rowNo, candidateSize, parties, constituencyElection,resultVO,constituencyElectionResult.getValidVotes());
 			log.debug("MptcElectionService.readAndInsertData() candidateSize:"+candidateSize);			
 			rowNo = rowNo + candidateSize;
 			/*constituencyName = checkCellData((sheet.getCell(excelHeaderData.get(constituencyMptcZptc), rowNo)).getContents());
@@ -475,8 +475,7 @@ public class MptcElectionService implements IMptcElectionService {
 	 * @throws Exception
 	 */
 	private void addCandidateResultToDB(Sheet sheet,int rowNo, int candidateSize, 
-									 List<Candidate> candidates, List<Party> parties,
-									ConstituencyElection constituencyElection,
+									 List<Party> parties, ConstituencyElection constituencyElection,
 									MPTCElectionResultVO resultVO, Double constituencyTotalValidVotes) throws Exception{
 		double[] array = new double[candidateSize];
 		//double totalSumOfCandidateVotes = 0;
@@ -515,7 +514,7 @@ public class MptcElectionService implements IMptcElectionService {
 				throw new CsvException("Party Name is not valid in Excel File " +
 						" Row No:" + (rowNo+i) + " Column No:" + excelHeaderData.get(IConstants.PARTY_NAME));
 			
-			Candidate candidate = checkAndInsertCandidate(candidates, candidateName, sheet, rowNo+i, resultVO);
+			Candidate candidate = checkAndInsertCandidate(candidateName, sheet, rowNo+i, resultVO);
 			Party party = checkAndInsertParty(parties, partyName, resultVO);
 			if(party==null)
 				throw new CsvException("Party not available in DB of Excel File at" +
@@ -613,52 +612,46 @@ public class MptcElectionService implements IMptcElectionService {
 	 * @return
 	 * @throws Exception
 	 */
-	private Candidate checkAndInsertCandidate(List<Candidate> candidates,
-			String candidateName, Sheet sheet, int row, 
+	private Candidate checkAndInsertCandidate(String candidateName, Sheet sheet, int row, 
 			MPTCElectionResultVO resultVO) throws Exception{
-		boolean candidateFlag = true;
+
 		Candidate lcandidateObj = null;
-		if(candidates!=null && candidates.size()>0){
-			for(Candidate can: candidates){
-				if(candidateName.equalsIgnoreCase(can.getLastname().trim())){
-					lcandidateObj = can;
-					candidateFlag = false;
-					break;
-				}
+		
+		lcandidateObj = candidateDAO.findCandidateByLastName(candidateName);
+		
+		if(lcandidateObj != null)
+			return lcandidateObj;
+		
+		lcandidateObj = new Candidate();
+		lcandidateObj.setLastname(candidateName);
+		if(excelHeaderData.get(IConstants.CANDIDATE_GENDER)!=null)
+			lcandidateObj.setGender(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_GENDER),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_EDUCATION)!=null)
+			lcandidateObj.setEducation(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_EDUCATION),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_ADDRESS)!=null)
+			lcandidateObj.setAddress(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_ADDRESS),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_MOBILE)!=null)
+			lcandidateObj.setMobile(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_MOBILE),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_PHONE)!=null)
+			lcandidateObj.setPhone(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_PHONE),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_EMAIL)!=null)
+			lcandidateObj.setEmailAddress(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_EMAIL),row)).getContents()));
+		if(excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH)!=null){
+			String age = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH),row)).getContents());
+			int candidateAge = 0;
+			try{
+				candidateAge = Integer.parseInt(age);
+				candidateAge = new Integer(this.year)-candidateAge-1900;
+			}catch(NumberFormatException ex){
+				throw new CsvException("Number Format Exception age is not a number which is not valid in Excel File " +
+						" Row No:" + row + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH));
 			}
+			lcandidateObj.setDateofbirth(new Date(candidateAge,0,1));
 		}
-		if(candidateFlag){
-			lcandidateObj = new Candidate();
-			lcandidateObj.setLastname(candidateName);
-			if(excelHeaderData.get(IConstants.CANDIDATE_GENDER)!=null)
-				lcandidateObj.setGender(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_GENDER),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_EDUCATION)!=null)
-				lcandidateObj.setEducation(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_EDUCATION),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_ADDRESS)!=null)
-				lcandidateObj.setAddress(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_ADDRESS),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_MOBILE)!=null)
-				lcandidateObj.setMobile(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_MOBILE),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_PHONE)!=null)
-				lcandidateObj.setPhone(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_PHONE),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_EMAIL)!=null)
-				lcandidateObj.setEmailAddress(checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_EMAIL),row)).getContents()));
-			if(excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH)!=null){
-				String age = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH),row)).getContents());
-				int candidateAge = 0;
-				try{
-					candidateAge = Integer.parseInt(age);
-					candidateAge = new Integer(this.year)-candidateAge-1900;
-				}catch(NumberFormatException ex){
-					throw new CsvException("Number Format Exception age is not a number which is not valid in Excel File " +
-							" Row No:" + row + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_DATE_OF_BIRTH));
-				}
-				lcandidateObj.setDateofbirth(new Date(candidateAge,0,1));
-			}
+		
+		lcandidateObj=candidateDAO.save(lcandidateObj);
+		resultVO.addCandidates();
 			
-			lcandidateObj=candidateDAO.save(lcandidateObj);
-			candidates.add(lcandidateObj);
-			resultVO.addCandidates();
-		}
 		return lcandidateObj;
 	}
 
