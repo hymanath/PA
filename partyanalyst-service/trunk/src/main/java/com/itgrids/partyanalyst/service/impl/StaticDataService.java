@@ -5836,7 +5836,7 @@ public class StaticDataService implements IStaticDataService {
 		if(scopeId != null){
 		ElectionScope electionScope = electionScopeDAO.get(scopeId);
 		if(electionScope.getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-			selectedParties = getStaticPartiesListForAState(1L);
+			selectedParties = getAllNationalParties();
 		else 
 			selectedParties = getStaticPartiesListForAState(electionScope.getState().getStateId());
 		}
@@ -5850,6 +5850,24 @@ public class StaticDataService implements IStaticDataService {
 		SelectOptionVO selectoptn = new SelectOptionVO(district.getState().getStateId(),district.getState().getStateName());
 		
 	 return selectoptn;
+	}
+
+
+	public List<SelectOptionVO> getAllNationalParties() {
+		
+		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
+		List<Party> parties = partyDAO.findStaticParties(IConstants.NATIONAL_PARTY_TYPE);
+		if(parties != null && parties.size() > 0){
+			for(Party party:parties){
+				SelectOptionVO partyVO = new SelectOptionVO();
+				partyVO.setId(party.getPartyId());
+				partyVO.setName(party.getShortName());
+				
+				selectedParties.add(partyVO);
+			}
+		}
+		
+	 return selectedParties;
 	}
 }
 
