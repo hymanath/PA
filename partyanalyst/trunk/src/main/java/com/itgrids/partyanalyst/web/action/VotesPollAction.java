@@ -145,10 +145,10 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 			}
 			if(jObj.getString("task").equals("saveSelectedPoll")){
 				questionsAndChoicesPercentage = opinionPollService.saveSelectionResultOfThePoll(jObj.getLong("questionId"),jObj.getLong("selectedPollId"));
-				String chartName = "opinionPoll.png";
+				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
 		        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);
-				 ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "Options", "Percentage", createDataset(questionsAndChoicesPercentage), chartPath);
+				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath);
 			}
 		}
 		return SUCCESS;		
