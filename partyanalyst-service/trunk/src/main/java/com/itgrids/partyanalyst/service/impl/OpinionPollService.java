@@ -131,6 +131,7 @@ public class OpinionPollService implements IOpinionPollService {
 				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				opinionPollQuestionAndPercentages.add(optionVO);			
 			}		
+			question.setQuestionId(opinionPollQuestionId);
 			question.setOptions(opinionPollQuestionAndPercentages);			
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			 question.setResultStatus(resultStatus);
