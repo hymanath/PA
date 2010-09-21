@@ -1377,6 +1377,13 @@
 			<result type="json" name="success">
 				<param name="root">questionsAndChoicesPercentage</param>				
 			</result>		
-		</action>        
+		</action>  
+		 
+		<action name="getAllPollsAction" class="getAllPollsAction">
+           <result name="success">/jsp/allPollsPopup.jsp</result>	
+        </action>  
+        <action name="completeResultForAPollAction" class="completeResultForAPollAction">
+           <result name="success">/jsp/completeResultForAPollPopup.jsp</result>	
+        </action>  
 	</package>
 </struts>

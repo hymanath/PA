@@ -148,7 +148,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
 		        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);
-				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath);
+				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 			}
 		}
 		return SUCCESS;		

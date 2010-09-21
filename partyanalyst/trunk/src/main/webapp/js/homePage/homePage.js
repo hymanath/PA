@@ -33,6 +33,16 @@ function buildPolls()
 	homePageAjaxCall(rparam,jsObj,url);
 }
 
+function getCompletePollResult(questionId){  
+	var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=600,width=650,left=200,top=200");
+	browser1.focus();
+}
+
+function getAllPollsResult(){ 
+	var browser1 = window.open("getAllPollsAction.action?","allPollResults","scrollbars=yes,height=600,width=650,left=200,top=200");
+	browser1.focus();
+}
+
 function buildNewPoll(result){
 	
 	if(result.quesitons!=null){
@@ -51,7 +61,11 @@ function buildNewPoll(result){
 			str += '<div id="pollOptionsDiv">';
 			str += '<table>';
 			for(var j=0 ; j<result.quesitons[i].options.length; j++){
-				str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
+				if(j==0){
+					str += '<tr><td><input type="radio" name="pollradio" checked=checked value="'+result.quesitons[i].options[j].optionId+'">';
+				}else{
+					str += '<tr><td><input type="radio" name="pollradio" value="'+result.quesitons[i].options[j].optionId+'">';
+				}				
 				str += result.quesitons[i].options[j].option;
 				str += '</td></tr>';			
 			}
@@ -61,8 +75,12 @@ function buildNewPoll(result){
 		
 		str += '<div id="pollSubmitDiv">';
 		str += '<div onclick="savePollResult(\''+questionId+'\')" class="viewReportButtonSpan" style="left:">';
-		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';
+		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';		
 		str += '</div>';
+		str += '</div>';
+		str += '<div onclick="getCompletePollResult(\''+questionId+'\')" style="text-align:right;margin-top:15px;text-decoration:underline;"> view current poll result';
+		str += '</div>';
+		str += '<div onclick="getAllPollsResult()" style="text-align:right;margin-top:15px;text-decoration:underline;"> view all polls';
 		str += '</div>';
 		str += '</div>';
 
@@ -76,7 +94,7 @@ function savePollResult(questionId){
 	var elmts = document.getElementsByName("pollradio");
 	var checkedElmtId = '';
 	
-	for(var i in elmts)
+	for(var i=0; i<elmts.length;i++)
 	{
 		if(elmts[i].checked == true)
 			checkedElmtId = elmts[i].value;
@@ -87,6 +105,7 @@ function savePollResult(questionId){
 			selectedPollId:checkedElmtId,
 			task:"saveSelectedPoll"					
 	};
+		
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "saveSelectedPoll.action?"+rparam;						
 	homePageAjaxCall(rparam,jsObj,url);	
@@ -224,7 +243,7 @@ function homePageAjaxCall(param,jsObj,url){
 								if(jsObj.task == "saveSelectedPoll")
 								{									
 									showVotesObtainedForOptions(myResults);
-								} 
+								}  
 								
 						}
 						catch (e)

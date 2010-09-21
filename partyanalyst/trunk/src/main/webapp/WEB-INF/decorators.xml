@@ -42,6 +42,7 @@
 		<pattern>/homePage.action*</pattern>
 		<pattern>/cadreSearchAction.action*</pattern>
 		<pattern>/ecrComparedResultsAction.action*</pattern>
+		<pattern>/completeResultForAPollAction.action*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

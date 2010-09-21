@@ -759,9 +759,15 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
 	}
 
 
-public static void createBarChartForVotesPoll(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+public static void createBarChartForVotesPoll(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName,String type) {
 	
-	JFreeChart chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.HORIZONTAL, false, true, false );
+	JFreeChart chart=null;
+	if(type.equalsIgnoreCase("votesPoll")){
+		chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.HORIZONTAL, false, true, false );
+	}else{
+		chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, false, true, false );
+	}
+	
 	//chart.setBackgroundPaint(new Color(0xBBBBDD));
 	chart.setBackgroundPaint(Color.WHITE);
 	CategoryPlot plot = chart.getCategoryPlot();
@@ -791,12 +797,21 @@ public static void createBarChartForVotesPoll(String title, String domainAxisL, 
 	renderer.setSeriesPaint(1, gp1);
 	renderer.setSeriesPaint(2, gp2);
 	renderer.setItemMargin(0.0);
-	renderer.setMaximumBarWidth(0.15);
+	if(type.equalsIgnoreCase("votesPoll")){
+		renderer.setMaximumBarWidth(0.15);
+	}else{
+		renderer.setMaximumBarWidth(0.30);
+	}
 	try	 {
 		final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 		final File image = new File(fileName);
 
-		ChartUtilities.saveChartAsPNG(image, chart, 250, 180, info);		
+		if(type.equalsIgnoreCase("votesPoll")){
+			ChartUtilities.saveChartAsPNG(image, chart, 250, 180, info);
+		}else{
+			ChartUtilities.saveChartAsPNG(image, chart, 300, 560, info);
+		}
+				
 	}
 	catch (Exception exc)
 	{
