@@ -166,14 +166,17 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 		else
 			log.debug("MPTCElectionAction.execute() File is not null");
 		
-		if(IConstants.MUNCIPLE_ELECTION_TYPE.equalsIgnoreCase(electionType) ||
-				IConstants.CORPORATION_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+		if(IConstants.MPTC_ELECTION_TYPE.equalsIgnoreCase(electionType) ||
+				IConstants.ZPTC_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			resultVO = mptcElectionService
+			.uploadMPTCElectionData(electionTypeID, countryID, stateID,
+					districtID, year, file, elecSubtype);
+			
+		}else{
 			resultVO = muncipleDataUploadService.readExcelDataForMuncipalities(file, electionTypeID, stateID, year, elecSubtype);
 			resultVO.setElectionType(electionType);
-		}else
-			resultVO = mptcElectionService
-				.uploadMPTCElectionData(electionTypeID, countryID, stateID,
-						districtID, year, file, elecSubtype);
+		}
+			
 		String result =ERROR;
 		if(resultVO.getExceptionEncountered()==null){
 			result = SUCCESS;
