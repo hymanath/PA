@@ -158,7 +158,7 @@ public class OpinionPollService implements IOpinionPollService {
 			ResultStatus resultStatus = new ResultStatus();
 			try{
 				List<QuestionsOptionsVO> listOfQuestionsOptionsVO = new ArrayList<QuestionsOptionsVO>();
-				 result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.FALSE);
+				 result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);
 				 for(int i=0;i<result.size();i++){
 						Object[] parms = (Object[])result.get(i);
 						OpinionPoll poll = (OpinionPoll) parms[0];

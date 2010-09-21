@@ -6,8 +6,12 @@ public class QuestionsOptionsVO {
 	private Long questionId;
 	private String question;
 	private List<OptionVO> options;
+	
 	private String imagePath;
+	private String hasAlreadyPolled;
+	
 	private ResultStatus resultStatus;
+	
 	
 	public QuestionsOptionsVO() {
 	}
@@ -19,6 +23,15 @@ public class QuestionsOptionsVO {
 		this.questionId = questionId;
 		this.question = question;
 		this.options = options;
+	}
+
+	
+	public String getHasAlreadyPolled() {
+		return hasAlreadyPolled;
+	}
+
+	public void setHasAlreadyPolled(String hasAlreadyPolled) {
+		this.hasAlreadyPolled = hasAlreadyPolled;
 	}
 
 	public String getImagePath() {
