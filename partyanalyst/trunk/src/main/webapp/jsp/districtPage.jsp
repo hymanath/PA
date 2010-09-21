@@ -7,8 +7,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>District Page</title>
+<title><c:out value='${districtName}'/> District Page - News, Details, Constituencies, Parties Performance, Election Results,MLA, MP,MPTC, ZPTC, Municipality, Corporation Election Results</title>
+ <META NAME="Keywords" CONTENT="<c:out value='${districtName}'/> District, About <c:out value='${districtName}' />, <c:out value='${districtName}'/> Elections, <c:out value='${districtName}'/> Elections Analysis,<c:out value='${districtName}'/> Elections Results, <c:out value='${districtName}'/> Leaders,  <c:out value='${districtName}'/> Parties, <c:out value='${districtName}'/> Problems, <c:out value='${districtName}'/> Politics, <c:out value='${districtName}'/> MLA's, <c:out value='${districtName}'/> MP's,<c:out value='${districtName}'/> Voting Trends,<c:out value='${districtName}'/> MPTC, <c:out value='${districtName}'/> ZPTC, <c:out value='${districtName}'/> Municipality,<c:out value='${districtName}'/> Cross Voting,<c:out value='${districtName}'/> Constituencies">
 
+<META NAME="Description" CONTENT=" <c:out value='${districtName}'/> district page provides the outline and basic information ,MLA constituencies information, MP constituencies information, district election results and latest news of the district.<c:out value='${districtName}'/> district page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
 <!-- YUI Dependency files (Start) -->
 
@@ -481,7 +483,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		
 		var listSize = result[0].totalMuncipalities-1;
 		var rvStr = '';
-		rvStr+='<table width="98%">';		
+		rvStr+='<table width="98%" border="1" style="border-collapse:collapse;">';		
 		for(var i in result)
 		{		
 			if(i%2==0){
@@ -507,7 +509,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			rvStr += '</table>';
 			rvStr += '</div>';
 			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:100%;vertical-align:top;padding:5px;" class="datatableClass">';
-			rvStr += '<table class="datatableClass" width="90%" border="1" style="background-color:#F3F6F7;">';
+			rvStr += '<table class="datatableClass" width="90%" border="1" style="background-color:#F3F6F7;width:auto;">';
 			rvStr += '<tr>';
 			rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
 			rvStr += '<th align="left">Total Wards :</th><td align="left">'+result[i].totalWards+'</td>';
@@ -1217,6 +1219,51 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
 <div style="padding:20px;"><%@ include file="navigator.jsp" %></div>
 <div id="districtPageMainDiv">	
+	
+	<!-- District News Start -->
+	<div>
+		<table width="100%">
+			<tr>
+				<td width="60%" valign="top">
+					<div class="productFeatureMain" style="padding:0 10px 10px 25px;text-align:left;">							
+						 <div class="productFeatureHeader">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:498px;"><span>${districtName} District News </span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="districtNewsDiv_outer" style="overflow:hidden;width:553px;height:90px;">
+							<div id="districtNewsDiv" style="position:relative;left:-170px;">
+								
+							</div>
+						</div>						
+					</div>
+				</td>
+				<td width="40%" valign="top">
+					<div class="productFeatureMain">							
+						 <div class="productFeatureHeader">
+							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${districtName} District Leaders </span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="district_Politician_news" class="productFeatureBody" style="overflow:hidden;width:300px;height:125px;">
+							
+						</div>						
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<!-- District News End -->
+
 
 	<!--District Page Layout-->
 	<div id="districtPageLayout_main"></div>	
@@ -1313,6 +1360,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	</div>
 
 	<!--District Page Center Layout-->
+	
+	
 	<div id="districtPageLayout_center">
 		<div id="districtMap">
 			<div id="districtMap_head">
@@ -1383,30 +1432,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	</div>
 	<div id="detailedChartDiv" style="position:absolute;top:750px;left:150px;z-index:1;"></div>
 	
-	<!-- District News Start -->
-	<div class="productFeatureMain" style="padding:0 10px 10px 25px;text-align:left;">							
-		 <div class="productFeatureHeader">
-			<table width="60%" border="0" cellspacing="0" cellpadding="0">
-			  <tr>                                    
-				<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
-				<td width="98%">
-					<div class="productFeatureHeaderBackground_center" style="width:515px;">
-						<span class="headerLabelSpan">
-							${districtName} District News
-						</span>
-					</div>
-				</td>
-				<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
-			  </tr>
-			</table>
-		</div>
-		<div id="districtNewsDiv_outer" class="productFeatureBody" style="overflow:hidden;width:553px;height:90px;">
-			<div id="districtNewsDiv" style="position:relative;left:-170px;">
-				
-			</div>
-		</div>						
-	</div>
-	<!-- District News End -->
+	
 
 	<!--District Page MP, MLA Div-->
 	<div id="mpMla_main">
@@ -1606,6 +1632,7 @@ getElectionTypesAndYears();
 getMuncipalPartyDetails();
 getCorporationPartyDetails();
 
+
 var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 			{
 				carouselEl: "UL",
@@ -1618,6 +1645,15 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 
 	allianceCarousel.render(); 
 	allianceCarousel.show();
+ 
+ <c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
+		districtMlas.push('${candidate.candidateName}');
+ </c:forEach>
+
+ <c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">
+		districtMps.push('${mpsDetails.candidateName}');
+ </c:forEach>
+
  
 </script>
 </body>

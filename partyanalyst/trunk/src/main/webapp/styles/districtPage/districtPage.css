@@ -264,12 +264,16 @@
 	width:910px;
 }
 
+
 .datatableClass table
 {
 	width:100%;
 	border-collapse:collapse;
 	border-color:#ADADAD;
 }
+
+
+
 .comparedResultsOuter
 {
 	border:1px solid #808080;
@@ -343,4 +347,18 @@
 	font-size:12px;
 	font-weight:bold;
 	padding:5px;
+}
+
+#districtNewsDiv_outer
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+#district_Politician_news
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
 }

@@ -4,6 +4,9 @@ var districtPageMainObj = {
 							mandalsList:[]
 					  };
 
+var districtMlas = new Array();
+var districtMps = new Array();
+
 function buildDistrictPageLayout()
 {
 	var cadreReportPageLayout = new YAHOO.widget.Layout('districtPageLayout_main', { 
@@ -71,9 +74,36 @@ function buildDistrictLatestNews()
   var newsShow = new google.elements.NewsShow(content, options);
 }
 
+function buildDistrictLeadersNews()
+{
+	var mlaCandidate = "";
+	var mpCandidate = "";
+
+	if(districtMlas.length > 0 && districtMps.length > 0)
+	{
+		mlaCandidate = districtMlas[0];
+		mpCandidate = districtMps[0];
+	}
+
+
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : districtName,
+            "q" : mlaCandidate+", "+mpCandidate+", "+districtName+","+stateName+", India"
+          }
+     ]
+  }
+
+  var content = document.getElementById('district_Politician_news');
+  var newsShow = new google.elements.NewsShow(content, options);
+}
+
 function initializeDistrictPage()
 {
 	buildDistrictPageLayout();
 	buildDistrictLatestNews();
+	buildDistrictLeadersNews();
 	//buildMandalsListCarousel();
 }

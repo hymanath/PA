@@ -8,8 +8,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> ${constituencyDetails.constituencyName} Constituency Details</title>
+<title><c:out value='${constituencyDetails.constituencyName}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
 
+<META NAME="Keywords" CONTENT="<c:out value='${constituencyDetails.constituencyName}'/> Constituency, About <c:out value='${constituencyDetails.constituencyName}'/> Constituency, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Analysis,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Results, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Leaders,  <c:out value='${constituencyDetails.constituencyName}'/> Constituency Parties, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Problems, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Politics, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MLA's, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MP's,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Voting Trends,<c:out value='${constituencyDetails.constituencyName}'/> Constituency MPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency ZPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Municipality, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Corporation,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Cross Voting,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Mandals">
+
+<META NAME="Description" CONTENT=" <c:out value='${constituencyDetails.constituencyName}'/> constituency page provides the outline and basic information ,mandals information,constituency election results and latest news of the state.<c:out value='${statePage.stateName}'/> constituency page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
 <!-- YUI Dependency files (Start) -->
 
