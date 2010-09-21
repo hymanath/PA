@@ -97,6 +97,7 @@
 				<option value="4">ZPTC</option>
 				<option value="5">MUNCIPALITY</option>
 				<option value="6">CORPORATION</option>
+				<option value="7">GMC</option>
 			</select><input id="hiddenEleId" type="hidden" name="electionType"></td>			
 		</tr>
 		<tr>
