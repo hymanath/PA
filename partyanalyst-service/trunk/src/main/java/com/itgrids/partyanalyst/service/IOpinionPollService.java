@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 
 public interface IOpinionPollService {
@@ -10,4 +13,7 @@ public interface IOpinionPollService {
 	
 	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId);
 	
+	public List<SelectOptionVO> getAllPolls();
+	
+	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId);
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
+import com.itgrids.partyanalyst.model.OpinionPoll;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
 
 public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQuestions, Long> implements IOpinionPollQuestionsDAO {
@@ -22,5 +23,12 @@ public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQues
 				" model.questionsRepository.question,model.questionsRepository from OpinionPollQuestions model where " +				
 				" date(model.opinionPoll.opinionPollStartDate) <= ? and date(model.opinionPoll.opinionPollEndDate) >= ? " +
 				" and model.opinionPoll.is_delete != ? ",parms);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List  getAllOpinionPolls(String isDelete){		
+		Object[] parms = {isDelete};
+		return getHibernateTemplate().find("select model.opinionPollQuestionsId," +
+				" model.questionsRepository.question from OpinionPollQuestions model where model.opinionPoll.is_delete != ? ",parms);
 	}
 }

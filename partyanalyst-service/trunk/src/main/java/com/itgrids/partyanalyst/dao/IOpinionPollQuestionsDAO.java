@@ -13,5 +13,7 @@ import com.itgrids.partyanalyst.model.QuestionsRepository;
 public interface IOpinionPollQuestionsDAO extends GenericDao<OpinionPollQuestions, Long>{
 
 	public List getAllPollsForThePresentDay(Date currentDate,String isDelete) ;
+	
+	public List  getAllOpinionPolls(String isDelete);
 }
 

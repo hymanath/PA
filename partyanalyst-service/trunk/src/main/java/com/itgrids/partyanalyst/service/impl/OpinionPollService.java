@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.OpinionPoll;
 import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
@@ -198,6 +199,27 @@ public class OpinionPollService implements IOpinionPollService {
 			}
 	}	
 
+	/**
+	 * This method is useful to retrive all the polls that are polled till now.
+	 * @return List<SelectOptionVO>
+	 * @author Ravi Kiran.Y
+	 */
+	public List<SelectOptionVO> getAllPolls(){		
+		List<SelectOptionVO> allPolls = new ArrayList<SelectOptionVO>(0);		 
+		try{
+			List result  = opinionPollQuestionsDAO.getAllOpinionPolls(IConstants.TRUE);
+			 for(int i=0;i<result.size();i++){
+				 Object[] parms = (Object[])result.get(i);
+				 SelectOptionVO resultVo = new SelectOptionVO(); 
+				 resultVo.setId(new Long(parms[0].toString()));
+				 resultVo.setName(parms[1].toString());
+				 allPolls.add(resultVo);
+			 }
+			return allPolls;
+		}catch(Exception e){
+			return null;
+		}		 
+	}
 	
 	/**
 	 * 
