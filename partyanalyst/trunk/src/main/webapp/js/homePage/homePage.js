@@ -95,7 +95,8 @@ function savePollResult(questionId){
 function showVotesObtainedForOptions(myResults){
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
-	//str += '<img src="\''+myResults+'\'"></img';
+	str += '<div id="pollQuestionDiv">Q)'+myResults.question;
+	str += '<img src="charts/'+myResults.imagePath+'"></img>';
 	elmt.innerHTML = str;
 }
 
