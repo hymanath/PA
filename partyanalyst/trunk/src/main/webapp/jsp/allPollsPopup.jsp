@@ -22,7 +22,7 @@
 </style>
 <script type="text/javascript">
 	function getCompletePollResult(questionId){  
-		var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=600,width=650,left=200,top=200");
+		var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=350,width=450,left=200,top=200");
 		browser1.focus();
 	}
 </script>
