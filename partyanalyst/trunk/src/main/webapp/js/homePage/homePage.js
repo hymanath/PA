@@ -73,16 +73,22 @@ function buildNewPoll(result){
 			str += '</div>';
 		}
 		
+		
 		str += '<div id="pollSubmitDiv">';
 		str += '<div onclick="savePollResult(\''+questionId+'\')" class="viewReportButtonSpan" style="left:">';
 		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';		
 		str += '</div>';
 		str += '</div>';
-		str += '<div onclick="getCompletePollResult(\''+questionId+'\')" style="text-align:right;margin-top:15px;text-decoration:underline;"> view current poll result';
-		str += '</div>';
-		str += '<div onclick="getAllPollsResult()" style="text-align:right;margin-top:15px;text-decoration:underline;"> view all polls';
-		str += '</div>';
-		str += '</div>';
+		
+		
+		str += '<table><tr><td>';
+		str += '<table><tr>';
+		str += '<td onclick="getCompletePollResult(\''+questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> view current poll result';
+		str += '</td>';
+		str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> view all polls';
+		str += '</td>';	
+		str += '</tr></table>';
+		str += '</tr></table>';
 
 		elmt.innerHTML = str;
 
@@ -112,14 +118,27 @@ function savePollResult(questionId){
 }
 
 function showVotesObtainedForOptions(myResults){
+
 	var elmt = document.getElementById("pollsWidgetBody");
 	var str = '';
+	str += '<table><tr><td>';
 	str += '<div id="pollQuestionDiv">Q)'+myResults.question;
+	str += '</div>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
 	str += '<img src="charts/'+myResults.imagePath+'"></img>';
-	str += '<div onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-align:right;text-decoration:underline;"> view current poll result';
-	str += '</div>';
-	str += '<div onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;"> view all polls';
-	str += '</div>';
+	str += '</td></tr>';
+	
+	str += '<tr><td>';
+	str += '<table><tr>';
+	str += '<td onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> view current poll result';
+	str += '</td>';
+	str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> view all polls';
+	str += '</td>';	
+	str += '</tr></table>';
+	str += '</tr></table>';
+	
 	elmt.innerHTML = str;
 }
 
