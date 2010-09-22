@@ -288,6 +288,7 @@ body
 	font-size:12px;
 	height:230px;
 	padding:10px;
+	overflow:auto;
 }
 
 #pollQuestionDiv
