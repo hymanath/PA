@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -29,13 +29,13 @@ public class GetAllPollsAction extends ActionSupport implements
 	
 	private IOpinionPollService opinionPollService;
 	
-	private List<SelectOptionVO> allPolls;
+	private List<QuestionsOptionsVO> allPolls;
 	
 		
-	public List<SelectOptionVO> getAllPolls() {
+	public List<QuestionsOptionsVO> getAllPolls() {
 		return allPolls;
 	}
-	public void setAllPolls(List<SelectOptionVO> allPolls) {
+	public void setAllPolls(List<QuestionsOptionsVO> allPolls) {
 		this.allPolls = allPolls;
 	}
 	public HttpServletRequest getRequest() {
