@@ -17,6 +17,7 @@
 		font-weight:bold;
 		color:#0C67AC;
 		text-align:left;
+		font-size:13px;
 	}
 </style>
 <script type="text/javascript">
