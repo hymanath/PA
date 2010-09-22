@@ -206,15 +206,16 @@ public class OpinionPollService implements IOpinionPollService {
 	 * @return List<SelectOptionVO>
 	 * @author Ravi Kiran.Y
 	 */
-	public List<SelectOptionVO> getAllPolls(){		
-		List<SelectOptionVO> allPolls = new ArrayList<SelectOptionVO>(0);		 
+	public List<QuestionsOptionsVO> getAllPolls(){		
+		List<QuestionsOptionsVO> allPolls = new ArrayList<QuestionsOptionsVO>(0);		 
 		try{
 			List result  = opinionPollQuestionsDAO.getAllOpinionPolls(IConstants.TRUE);
 			 for(int i=0;i<result.size();i++){
 				 Object[] parms = (Object[])result.get(i);
-				 SelectOptionVO resultVo = new SelectOptionVO(); 
-				 resultVo.setId(new Long(parms[0].toString()));
-				 resultVo.setName(parms[1].toString());
+				 QuestionsOptionsVO resultVo = new QuestionsOptionsVO(); 
+				 resultVo.setQuestionId(new Long(parms[0].toString()));
+				 resultVo.setQuestion(parms[1].toString());
+				 resultVo.setStartDate(parms[2].toString());
 				 allPolls.add(resultVo);
 			 }
 			return allPolls;

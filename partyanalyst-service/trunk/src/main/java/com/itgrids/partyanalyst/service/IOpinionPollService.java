@@ -13,7 +13,7 @@ public interface IOpinionPollService {
 	
 	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId);
 	
-	public List<SelectOptionVO> getAllPolls();
+	public List<QuestionsOptionsVO> getAllPolls();
 	
 	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId);
 }

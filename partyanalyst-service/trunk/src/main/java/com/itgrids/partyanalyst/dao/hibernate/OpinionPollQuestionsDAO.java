@@ -29,6 +29,6 @@ public class OpinionPollQuestionsDAO extends GenericDaoHibernate<OpinionPollQues
 	public List  getAllOpinionPolls(String isDelete){		
 		Object[] parms = {isDelete};
 		return getHibernateTemplate().find("select model.opinionPollQuestionsId," +
-				" model.questionsRepository.question from OpinionPollQuestions model where model.opinionPoll.is_delete != ? ",parms);
+				" model.questionsRepository.question,model.opinionPoll.opinionPollStartDate from OpinionPollQuestions model where model.opinionPoll.is_delete != ? ",parms);
 	}
 }

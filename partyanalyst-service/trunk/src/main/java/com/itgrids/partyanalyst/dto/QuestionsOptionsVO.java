@@ -10,6 +10,7 @@ public class QuestionsOptionsVO {
 	private String imagePath;
 	private String hasAlreadyPolled;
 	private Long totalVotesObtainedForPoll; 
+	private String startDate;
 	
 	private ResultStatus resultStatus;
 	
@@ -24,6 +25,15 @@ public class QuestionsOptionsVO {
 		this.questionId = questionId;
 		this.question = question;
 		this.options = options;
+	}
+
+	
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
 	public Long getTotalVotesObtainedForPoll() {
