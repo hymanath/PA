@@ -4,6 +4,7 @@ public class OptionVO {
 	private Long optionId;
 	private String option;
 	private Double percentage;
+	private Long votesObtained;
 	
 	public OptionVO() {
 	}
@@ -17,6 +18,14 @@ public class OptionVO {
 		this.optionId = optionId;
 		this.option = option;
 		this.percentage = percentage;
+	}
+
+	public Long getVotesObtained() {
+		return votesObtained;
+	}
+
+	public void setVotesObtained(Long votesObtained) {
+		this.votesObtained = votesObtained;
 	}
 
 	public Double getPercentage() {

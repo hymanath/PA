@@ -1,18 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
-import com.itgrids.partyanalyst.model.OpinionPoll;
-import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
+import com.itgrids.partyanalyst.dto.OpinionPollVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
-import com.itgrids.partyanalyst.model.QuestionsRepository;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -30,37 +26,21 @@ public class OpinionPollQuestionsDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	 public void testGetAllPollsForTheCurrentDay(){
-		 java.util.List result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.FALSE);
+		 
+		 List<SelectOptionVO> allPolls = new ArrayList<SelectOptionVO>(0);		 
+		 List result  = opinionPollQuestionsDAO.getAllOpinionPolls(IConstants.TRUE);
 		 for(int i=0;i<result.size();i++){
-			Object[] parms = (Object[])result.get(i);
-			OpinionPoll poll = (OpinionPoll) parms[0];
-			System.out.println(poll.getDescription()+"\t"+poll.getOpinionPollEndDate());
-			Set<OpinionPollQuestions> qr = (Set<OpinionPollQuestions>) poll.getOpinionPollQuestions();			
-			for(OpinionPollQuestions ops : qr){
-				QuestionsRepository questionsRepository = (QuestionsRepository) ops.getQuestionsRepository();
-				System.out.println(questionsRepository.getQuestion());
-				Set<OpinionPollQuestionOptions> opinionPollQuestionOptions = (Set<OpinionPollQuestionOptions>)  questionsRepository.getOpinionPollQuestionOptions();
-				for(OpinionPollQuestionOptions options : opinionPollQuestionOptions){
-					System.out.println(options.getQuestionOption());
-				}
-			}
+			 Object[] parms = (Object[])result.get(i);
+			 SelectOptionVO resultVo = new SelectOptionVO(); 
+			 resultVo.setId(new Long(parms[0].toString()));
+			 resultVo.setName(parms[1].toString());
+			 allPolls.add(resultVo);
+			 System.out.println(resultVo.getId()+"\t"+resultVo.getName());
 		 }
-		
+		 System.out.println(result.size());
+		 		 		
 	 }
 	 
-	 public Date getCurrentDateAndTime(){
-			try {
-			java.util.Date now = new java.util.Date();
-	        String DATE_FORMAT = "dd/MM/yyyy";
-	        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-	        String strDateNew = sdf.format(now);        
-				now = sdf.parse(strDateNew);
-				return now;
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
 }
 
 

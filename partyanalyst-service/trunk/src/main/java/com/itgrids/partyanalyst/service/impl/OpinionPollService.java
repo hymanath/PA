@@ -128,12 +128,14 @@ public class OpinionPollService implements IOpinionPollService {
 			for(int i=0;i<result.size();i++){
 				Object[] parms = (Object[])result.get(i);
 				OptionVO optionVO = new OptionVO();
-				optionVO.setOption(parms[1].toString());			
+				optionVO.setOption(parms[1].toString());	
+				optionVO.setVotesObtained(new Long(parms[0].toString()));
 				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				opinionPollQuestionAndPercentages.add(optionVO);			
 			}		
 			question.setQuestionId(opinionPollQuestionId);
-			question.setOptions(opinionPollQuestionAndPercentages);			
+			question.setOptions(opinionPollQuestionAndPercentages);		
+			question.setTotalVotesObtainedForPoll(totalPolledVotes);
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			 question.setResultStatus(resultStatus);
 			return question; 

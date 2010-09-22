@@ -9,6 +9,7 @@ public class QuestionsOptionsVO {
 	
 	private String imagePath;
 	private String hasAlreadyPolled;
+	private Long totalVotesObtainedForPoll; 
 	
 	private ResultStatus resultStatus;
 	
@@ -25,7 +26,14 @@ public class QuestionsOptionsVO {
 		this.options = options;
 	}
 
-	
+	public Long getTotalVotesObtainedForPoll() {
+		return totalVotesObtainedForPoll;
+	}
+
+	public void setTotalVotesObtainedForPoll(Long totalVotesObtainedForPoll) {
+		this.totalVotesObtainedForPoll = totalVotesObtainedForPoll;
+	}
+
 	public String getHasAlreadyPolled() {
 		return hasAlreadyPolled;
 	}
