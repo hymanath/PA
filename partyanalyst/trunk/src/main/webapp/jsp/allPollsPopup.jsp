@@ -31,11 +31,11 @@
 	<table>
       <c:forEach var="polls" varStatus="stat" items="${allPolls}">
       	<tr>
-      		<td>
+      		<td style="padding-right:40px;">
       		 	  ${polls.name}
       		</td>
       		<td>
-      			<div onclick="getCompletePollResult(${polls.id})" style="text-align:right;margin-top:15px;text-decoration:underline;"> view more details</div>
+      			<a href="javascript:{}" onclick="getCompletePollResult(${polls.id})" style="text-align:right;margin-top:15px;text-decoration:underline;"> view more details</div>
       		</td>
       	</tr>		
       </c:forEach>

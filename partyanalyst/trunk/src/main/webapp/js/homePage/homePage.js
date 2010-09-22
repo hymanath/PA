@@ -34,7 +34,7 @@ function buildPolls()
 }
 
 function getCompletePollResult(questionId){  
-	var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=600,width=650,left=200,top=200");
+	var browser1 = window.open("completeResultForAPollAction.action?questionId="+questionId,"completeResultForAPoll","scrollbars=yes,height=350,width=450,left=200,top=200");
 	browser1.focus();
 }
 
@@ -116,6 +116,10 @@ function showVotesObtainedForOptions(myResults){
 	var str = '';
 	str += '<div id="pollQuestionDiv">Q)'+myResults.question;
 	str += '<img src="charts/'+myResults.imagePath+'"></img>';
+	str += '<div onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-align:right;text-decoration:underline;"> view current poll result';
+	str += '</div>';
+	str += '<div onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;"> view all polls';
+	str += '</div>';
 	elmt.innerHTML = str;
 }
 

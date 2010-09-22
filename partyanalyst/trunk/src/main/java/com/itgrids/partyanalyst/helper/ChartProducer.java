@@ -765,7 +765,7 @@ public static void createBarChartForVotesPoll(String title, String domainAxisL, 
 	if(type.equalsIgnoreCase("votesPoll")){
 		chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.HORIZONTAL, false, true, false );
 	}else{
-		chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, false, true, false );
+		chart = ChartFactory.createBarChart3D("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, false, true, false );
 	}
 	
 	//chart.setBackgroundPaint(new Color(0xBBBBDD));
@@ -789,7 +789,10 @@ public static void createBarChartForVotesPoll(String title, String domainAxisL, 
 	          barRenderer.setDrawBarOutline(false);
 	          renderer.setDrawBarOutline(false);
 
-	//axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+	  if(! type.equalsIgnoreCase("votesPoll")){
+		  axis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+	  }
+	
 	CategoryItemRenderer itemRenderer = plot.getRenderer();
 	itemRenderer.setItemLabelsVisible(true);
 	
@@ -809,7 +812,7 @@ public static void createBarChartForVotesPoll(String title, String domainAxisL, 
 		if(type.equalsIgnoreCase("votesPoll")){
 			ChartUtilities.saveChartAsPNG(image, chart, 250, 180, info);
 		}else{
-			ChartUtilities.saveChartAsPNG(image, chart, 300, 560, info);
+			ChartUtilities.saveChartAsPNG(image, chart, 200, 300, info);
 		}
 				
 	}
