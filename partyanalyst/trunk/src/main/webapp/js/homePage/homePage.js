@@ -16,10 +16,78 @@ function initializeHomePage()
 
 	var stateEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
+
+	var statelocalEl = document.getElementById("stateList_l");
+	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
+
 	getDistrictsComboBoxForAState(1, 'districtList_d');
 	getRecentElectionsInState(stateSelectElVal);
 	getProblemsInState(stateSelectElVal);
 	buildPolls();
+	hideUnhideSelectBox('a_radio', 'constituency');
+	getLocalBodiesForState(stateSelectlocalElVal);
+}
+
+function getLocalBodiesForState(stateId)
+{
+	var jsObj=
+	{
+			stateId:stateId,
+			task:"getLocalBodiesForState"					
+	}; 
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	//var url = "getAllPolls.action?"+rparam;						
+	//homePageAjaxCall(rparam,jsObj,url);
+}
+
+function buildLocalBodiesForAState(jsObj,results)
+{
+	var elmt = document.getElementById("localBodiesRadioDiv");
+
+	if(!elmt)
+		return;
+
+	var str = '';
+	for(var i=0; i<results.length; i++)
+	{
+		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].name+'_'+results[i].id+'"> '+results[i].name+' </input>';
+		if(i == 1)
+			str += '<br/>';
+	}
+
+	elmt.innerHTML = str;
+}
+
+function buildLocalBodiesSelectElmt(jsObj,results)
+{
+	var labelElmt = document.getElementById("localBodiesSelectDiv_label");
+	var dataElmt = document.getElementById("localBodiesSelectDiv_data");
+
+	if(!labelElmt || !dataElmt)
+		return;
+
+	var labelStr = '';
+	labelStr += 'Select Location';
+	
+	var dataStr = '';
+	dataElmt.innerHTML = dataStr;
+}
+
+function getSelectElmtForLocalBody(localBodyId)
+{
+	var statelocalEl = document.getElementById("stateList_l");
+	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
+	
+	var jsObj =
+		{
+			stateId: stateSelectlocalElVal,
+			localbodyId:localBodyId,
+			task: "getLocalBodiesForState"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	//var url = "getRecentElectionsInState.action?"+rparam; 
+	//homePageAjaxCall(rparam,jsObj,url);	
 }
 
 function buildPolls()
@@ -259,14 +327,22 @@ function homePageAjaxCall(param,jsObj,url){
 								{									
 									showResults(myResults);
 								} 
-								if(jsObj.task == "getAllPolls")
+								else if(jsObj.task == "getAllPolls")
 								{									
 									buildNewPoll(myResults);
 								}
-								if(jsObj.task == "saveSelectedPoll")
+								else if(jsObj.task == "saveSelectedPoll")
 								{									
 									showVotesObtainedForOptions(myResults);
-								}  
+								} 
+								else if(jsObj.task == "getLocalBodiesForState")
+								{
+									buildLocalBodiesForAState(jsObj,myResults);
+								}
+								else if(jsObj.task == "getLocalBodiesForState")
+								{
+									buildLocalBodiesSelectElmt(jsObj,myResults)
+								}
 								
 						}
 						catch (e)
@@ -282,6 +358,8 @@ function homePageAjaxCall(param,jsObj,url){
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+
+
 
 function buildElectionTrendzTabView()
 {

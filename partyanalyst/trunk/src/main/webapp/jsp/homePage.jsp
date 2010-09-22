@@ -83,6 +83,7 @@ var Localization = { <%
 		String constSelect = rb.getString("constSelect");
 		String assembly = rb.getString("assembly");
 		String parliament = rb.getString("parliament");
+		String localBody = rb.getString("localBodies");
 		
 		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
 		String errorMsg = resb.getString("constTypeAlert");
@@ -345,7 +346,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
 										<span class="headerLabelSpan" style="color:#3b3b3b">
-											Gift Your MLA
+											Gift Your Leader
 										</span>
 									</div>
 								</td>
@@ -354,7 +355,8 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 							</table>	
 						 </div>
 						<div id="giftWidgetBody" class="yui-skin-sam">
-							
+							<font color="#184165" style="font-weight:bold;">Got Inspired!</font> Gift PartyAnalyst to your favourite leader.To get more details mail us 
+							at <font color="#184165" style="font-weight:bold;">info@itgrids.com</font> or <a class="newsHeadLink" href="landing.action">click here</a> for more details. 						
 						</div>
 						<div id="giftWidgetFooter">
 							
@@ -448,7 +450,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
         <div id="homePageLocationWidgets">
         	<table width="100%" border="0" cellspacing="5" cellpadding="0">
               <tr>
-                <td width="25%">
+                <td width="24%">
                 	<div class="widgetsMain">
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -466,6 +468,9 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
                         <div class="widgetsBody" style="background-color:#3e728e;">
 							<table>
 								<tr>
+									<td style="text-align:justify;padding-bottom:30px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
+								</tr>
+								<tr>
 									<td><%=stateSelect%></td>
 								</tr>
 								<tr>
@@ -478,7 +483,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 						</div>
                     </div>
                 </td>
-                <td width="25%">
+                <td width="24%">
                 	<div class="widgetsMain">
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -495,6 +500,9 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
                         </div>
                         <div class="widgetsBody" style="background-color:#d98d06;">
 							<table>
+								<tr>
+									<td style="text-align:justify;padding-bottom:25px;"> Select your district to view its election results in district level. </td>
+								</tr>
 								<tr>
 									<td><%=stateSelect%></td>
 								</tr>
@@ -514,7 +522,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 						</div>
                     </div>
                 </td>
-                <td width="25%">
+                <td width="24%">
                 	<div class="widgetsMain">
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -536,7 +544,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 									<td colspan="4">Select Constituency Type</td>
 								</tr>	
 								<tr>
-									<td colspan="2"><input type="radio" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
+									<td colspan="2"><input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
 									<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/><%=parliament%></td>
 								</tr>
 							</table>
@@ -565,7 +573,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 						</div>
                     </div>
                 </td>                
-                <td width="25%">
+                <td width="28%">
                 	<div class="widgetsMain">
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -573,14 +581,33 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
                                 <td width="1%"><img src="images/icons/homePage_new/4.jpg"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center" style="background-color:#a0a5a7;">
-                                    	<span class="headerLabelSpan" style="color:#000000"> View MPTC/ZPTC Elections  </span>
+                                    	<span class="headerLabelSpan" style="color:#000000"> View Local Bodies Elections  </span>
                                     </div>
                                 </td>
 								<td width="1%"><img src="images/icons/homePage_new/4r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
-                        <div class="widgetsBody" style="background-color:#909597;"></div>
+                        <div class="widgetsBody" style="background-color:#909597;">
+							<table>								
+								<tr>
+									<td><%=stateSelect%></td>
+								</tr>
+								<tr>
+									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="statesList" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
+								</tr>
+								<tr>
+									<td><%=localBody%></td>
+								</tr>
+								<tr>
+									<td><div id="localBodiesRadioDiv"></div></td>									
+								</tr>
+								<tr>
+									<td><div id="localBodiesSelectDiv_label"></div></td>
+									<td><div id="localBodiesSelectDiv_data"></div></td>									
+								</tr>
+							</table>
+						</div>
                         <div class="widgetsFooter" style="background-color:#a0a5a7;">
 							<img src="images/icons/homePage_new/b4.jpg" onclick=""></img>
 						</div>

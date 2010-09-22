@@ -308,5 +308,7 @@ body
 #giftWidgetBody
 {
 	border:1px solid #C5CBCD;
-	height:125px;
+	font-size:12px;
+	height:115px;
+	padding:5px;	
 }
