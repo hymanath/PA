@@ -8,6 +8,7 @@ var emptyArray = new Array();
 
 var selectedState = '';
 var selectedStateId = '';
+var localBodyString = '';
 
 function initializeHomePage()
 {
@@ -43,10 +44,24 @@ function getLocalBodiesForState(stateId)
 
 function buildLocalBodiesForAState(jsObj,results)
 {
-	var elmt = document.getElementById("localBodiesRadioDiv");
+	var elmtLabel = document.getElementById("localBodiesRadioDiv_label");
+	var elmtData = document.getElementById("localBodiesRadioDiv_data");
 
-	if(!elmt)
+	var selectElmtLabel = document.getElementById("localBodiesSelectDiv_label");
+	var selectElmtdata = document.getElementById("localBodiesSelectDiv_data");
+
+
+	if(!elmtLabel || !elmtData || !selectElmtLabel || !selectElmtdata)
 		return;
+	
+
+	selectElmtLabel.innerHTML = '';
+	selectElmtdata.innerHTML = '';
+
+	if(results.length == 0)
+		elmtLabel.innerHTML = '';
+	else
+		elmtLabel.innerHTML = localBodyString;
 
 	var str = '';
 	for(var i=0; i<results.length; i++)
@@ -56,7 +71,37 @@ function buildLocalBodiesForAState(jsObj,results)
 			str += '<br/>';
 	}
 
-	elmt.innerHTML = str;
+	elmtData.innerHTML = str;
+}
+
+function navigateToLocalBodyPage()
+{
+	var errorElmt = document.getElementById("localBodies_errorDiv");
+	var stateElmt = document.getElementById("stateList_l");		
+	var localBodySelectElmt = document.getElementById("localBodySelectElmt");
+	var radioElmts = document.getElementsByName("localBodyRadio");
+	var localBodyElectionId;
+
+	if(!stateElmt || !localBodySelectElmt || !radioElmts || radioElmts.length == 0)
+		return;
+	
+	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+	var localBodySelectElmtValue = localBodySelectElmt.options[localBodySelectElmt.selectedIndex].value;
+	for(var i=0; i<radioElmts.length; i++)
+	{
+		if(radioElmts[i].checked == true)
+			localBodyElectionId = radioElmts[i].value;
+	}
+	
+	if(localBodySelectElmtValue == 0 && errorElmt)
+	{
+		errorElmt.innerHTML = '<font color="red" style="font-size:10px;"> Please Select Location.. </font>';
+		return;
+	}
+	else
+		errorElmt.innerHTML = '';
+
+	window.location="localBodyElectionAction.action?stateId="+stateId+"&localBodyElectionTypeId="+localBodyElectionId+"&localBodyId="+localBodySelectElmtValue;
 }
 
 function getSelectElmtForLocalBody(localBodyId)
@@ -234,6 +279,7 @@ function buildLogoImage()
 
 	elmt.innerHTML = str;
 }
+
 
 function navigateToStatePage()
 {

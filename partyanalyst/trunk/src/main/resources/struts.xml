@@ -1387,7 +1387,7 @@
         </action>  
         
         <action name="localBodyElectionAction" class="localBodyElectionAction">
-           <result name="success">/jsp/logOut.jsp</result>	
+           <result name="success">/jsp/localBodyElectionPage.jsp</result>	
         </action>
         
         <action name="getLocalBodiesTypesInAState" class="localBodyElectionAction" method="getLocalBodiesTypesInAState">

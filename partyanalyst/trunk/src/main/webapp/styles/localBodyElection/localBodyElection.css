@@ -1,0 +1,26 @@
+
+#localBodyElectiondiv_main
+{
+	padding:10px;
+}
+
+#localBodyDetailsTable
+{
+	border-collapse:collapse;
+	border-color:#ADADAD;
+	width:100%
+}
+
+.productFeatureBody
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+#localBodyElectionResults_body_heading
+{
+	font-weight:bold;
+	padding-right:20px;
+	text-align:right;
+}

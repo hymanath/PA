@@ -52,11 +52,20 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	
 	private Long stateId;
 	private Long localBodyId;
+	private Long localBodyElectionTypeId; 
 	private List<SelectOptionVO> localBodys;
 	private List<SelectOptionVO> localBodyTypes;
 	
 	private LocalBodyElectionResultsVO localBodyElectionResults;
 		
+	public Long getLocalBodyElectionTypeId() {
+		return localBodyElectionTypeId;
+	}
+
+	public void setLocalBodyElectionTypeId(Long localBodyElectionTypeId) {
+		this.localBodyElectionTypeId = localBodyElectionTypeId;
+	}
+
 	public String getTask() {
 		return task;
 	}

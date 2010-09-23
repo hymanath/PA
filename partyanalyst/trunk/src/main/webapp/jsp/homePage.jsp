@@ -66,6 +66,7 @@
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/Javascript" src="js/homePage/jquery.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
@@ -89,6 +90,7 @@ var Localization = { <%
 		String errorMsg = resb.getString("constTypeAlert");
 %> }
 var errotMsg = '<%=errorMsg%>';
+localBodyString = '<%=localBody%>';
 
 <c:forEach var="state" items="${statesList}" >
 			
@@ -116,6 +118,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 	    if (this.getRoot() == this) { 	 
 		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
 		this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
+		this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
 	    } 
 	 
 	}); 
@@ -137,11 +140,16 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
 				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
 	        ]     
-	    }
+	    },
+		{
+			 id: "clientLogin", 
+	        itemdata: [] 
+		},
 	]; 
 </script>
 </head>
 <body>
+	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="homePageContainer">
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
@@ -177,6 +185,9 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 							</li> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="javascript:{}" onclick="buildLoginPopup()">CLIENT LOGIN</a> 
+							</li>
 						</ul> 
 					</div> 
 			</div> 
@@ -597,10 +608,10 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 									<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="statesList" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
 								</tr>
 								<tr>
-									<td><%=localBody%></td>
+									<td><div id="localBodiesRadioDiv_label"><%=localBody%></div></td>
 								</tr>
 								<tr>
-									<td><div id="localBodiesRadioDiv"></div></td>									
+									<td><div id="localBodiesRadioDiv_data"></div></td>									
 								</tr>
 								<tr>
 									<td><div id="localBodiesSelectDiv_label"></div></td>
@@ -608,10 +619,13 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								<tr>
 									<td><div id="localBodiesSelectDiv_data"></div></td>									
 								</tr>
+								<tr>
+									<td><div id="localBodies_errorDiv"></div></td>									
+								</tr>
 							</table>
 						</div>
                         <div class="widgetsFooter" style="background-color:#a0a5a7;">
-							<img src="images/icons/homePage_new/b4.jpg" onclick=""></img>
+							<img src="images/icons/homePage_new/b4.jpg" onclick="navigateToLocalBodyPage()"></img>
 						</div>
                     </div>
                 </td>
