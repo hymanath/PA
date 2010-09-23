@@ -261,5 +261,7 @@ public interface IStaticDataService {
 		
 		public SelectOptionVO getStateOfADistrict(Long districtId);
 		
+		public List<SelectOptionVO> getLocalBodyElectionTypesInAState(Long stateId);
 		
+		public List<SelectOptionVO> getLocalBodysInAStateByType(Long stateId,Long typeId);
 }
