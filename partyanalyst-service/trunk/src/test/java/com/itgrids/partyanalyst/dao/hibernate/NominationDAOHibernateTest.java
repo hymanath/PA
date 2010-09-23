@@ -78,7 +78,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	/*public void testFindByStatePartyAndElectionId() {
 		List<Nomination> nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(10l, 24l, 23l);
 		System.out.println(nominations.size());
-	}*/
+	}
 	
 	public void testFindByConstituencyElection(){
 		List actualResult = nominationDAO.findByConstituencyElection(new Long(23));
@@ -553,6 +553,35 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List<Nomination> nominations = nominationDAO.getAll();
 		assertEquals(nominations.size() >= 0, true);
 	}*/
+	
+	/*@SuppressWarnings("unchecked")
+	@Test
+	public void testGetLocalElectionResultsForParticipatedParties(){
+		List results = nominationDAO.getAllParticipatedPartyResultsInALocalBodyElection(488L, "2005");
+		
+		if(results != null && results.size() > 0){
+			ListIterator li = results.listIterator();
+			while(li.hasNext()){
+				Object[] values = (Object[])li.next();
+				System.out.println(" Party ID :" + (Long)values[0] + " Party :" + (String)values[1] + " Participated In :" + (Long)values[2] + " Valid Votes :" + (Double)values[3]);
+				
+			}
+		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetAllPartysSeatsStatusBasedOnRank(){
+		List results = nominationDAO.getResultsOfAllPartiesInLocalBodyELectionsBasedOnNthRank(488L, "2005", 3L);
+		
+		if(results != null && results.size() > 0){
+			ListIterator li = results.listIterator();
+			while(li.hasNext()){
+				Object[] values = (Object[])li.next();
+				System.out.println(" Party ID :" + (Long)values[0] + " Party :" + (String)values[1] + " Seats Gained :" + values[2]);
+			}
+		}
+	}
 	
 }
 

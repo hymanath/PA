@@ -128,5 +128,17 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			
 	}*/
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetElections(){
+		List elections = electionDAO.getLocalBodyElectionsInAState(IConstants.MUNCIPLE_ELECTION_TYPE, 1L);
+		if(elections !=  null){
+			for(int i=0;i<elections.size();i++){
+				Object[] params = (Object[])elections.get(i);
+				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
+			}
+		}
+	}
+	
 }
 

@@ -172,5 +172,15 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 
-	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetLocalBodyElections(){
+		List elections = constituencyElectionDAO.getLocalBodyElectionsInAState(488L, 1L);
+		if(elections !=  null){
+			for(int i=0;i<elections.size();i++){
+				Object[] params = (Object[])elections.get(i);
+				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
+			}
+		}
+	}
 }

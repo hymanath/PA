@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -18,16 +19,16 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
-	
+	/*
 	public void testGetAll(){
 		List<LocalElectionBody> list = localElectionBodyDAO.getAll();
 		assertEquals(list.size() >= 0 , true);
 	}
-	
+	*/
 	/*public void testFindByElectionTypeDistrictTehsilAndLEBName(){
 		List<LocalElectionBody> list = localElectionBodyDAO.findByElectionTypeDistrictTehsilAndLEBName(2l, "Chittoor", "Madanapalli", "Madanapalli");
 		assertEquals(1, list.size());
-	}*/
+	}
 	public void testFindByElectionTypeAndState(){
 	
 		List result = localElectionBodyDAO.findByElectionTypeAndState(6l, 1l);
@@ -39,6 +40,19 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 				
 		}
 	}
+	*/
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetLocalBodyElectionType(){
+		List elecTypes = localElectionBodyDAO.getLocalELectionTypesInAState(2L);
+		
+		if(elecTypes != null && elecTypes.size() > 0){
+		  for(int i=0;i<elecTypes.size();i++){
+			  Object[] values = (Object[])elecTypes.get(i);
+			  System.out.println(" Election Type Id :" + (Long)values[0] + " Election Type :" + (String)values[1]);
+		  }
+		}
+	}
 	
 }
