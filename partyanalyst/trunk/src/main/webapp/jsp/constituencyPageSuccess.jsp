@@ -62,9 +62,12 @@
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
+<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
+<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
+
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
-<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true"
             type="text/javascript"></script>
 <style type="text/css">
@@ -143,6 +146,9 @@
 										//hideMptcDiv();
 										hideMptcZptcDiv();			
 									}	
+								}else if(jsObj.task == "getProblemDetails")
+								{									
+									showProblemsHistoryReport(myResults);			
 								}		
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -357,6 +363,18 @@ function showNextPreviousCandidateVotingTrendz(index,type)
 			return;
 		}
 	}
+}
+
+function getProblemHistoryInfo(problemLocationId){
+	var jsObj=
+	{
+			locationId:problemLocationId,
+			task:"getProblemDetails"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/problemManagementHistoryResultsNew.action?"+rparam;
+	callAjax(jsObj,url);
 }
 
 function getVotingTrendzForElectionYears()
@@ -1109,7 +1127,8 @@ function showDetailedElectionResult(id)
 						email:'${problem.email}',						
 						phone:'${problem.phone}',
 						mobile:'${problem.mobile}',
-						address:'${problem.address}'
+						address:'${problem.address}',
+						problemLocationId:'${problem.problemLocationId}',
 					};
 		
 	constituencyPageMainObj.problemsInfo.push(problemObj);
