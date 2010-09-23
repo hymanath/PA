@@ -19,11 +19,14 @@ public class ConstituencyElectionResultVO {
 	private Long partyId;
 	private String partyName;
 	private Long votesEarned;
-	private Long validVotes;
 	private int rank;
 	private String percentageOfVotes;
 	private Boolean hasRebel;
 	private CandidateWonVO rebelCandidate;
+	
+	private Long totalVotes;
+	private Long validVotes;
+	private Long totPolledVotes;
 	
 	//getters and setters
 	public String getYear() {
@@ -116,6 +119,18 @@ public class ConstituencyElectionResultVO {
 	}
 	public void setRank(int rank) {
 		this.rank = rank;
+	}
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+	public Long getTotPolledVotes() {
+		return totPolledVotes;
+	}
+	public void setTotPolledVotes(Long totPolledVotes) {
+		this.totPolledVotes = totPolledVotes;
 	}
 	
 	
