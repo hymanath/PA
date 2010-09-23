@@ -128,8 +128,7 @@
 	</bean>
 	
 	<bean id="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction" singleton="false">
-		<property name="boothResultPopulationService" ref="boothResultPopulationService" />
-		<property name="parliamentBoothResultPopulationService" ref="parliamentBoothResultPopulationService" />
+		<property name="boothPopulationService" ref="boothPopulationService" />
 		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
@@ -203,7 +202,7 @@
 	</bean>
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
-		<property name="boothPopulationService" ref="boothPopulationService" />
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 		<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
 	

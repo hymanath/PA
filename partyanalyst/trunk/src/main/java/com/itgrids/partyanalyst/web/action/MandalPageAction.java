@@ -14,20 +14,20 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
+import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
-import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
-import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -42,7 +42,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private String task = null;
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
-	private IBoothPopulationService boothPopulationService;
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private MandalDataWithChartVO mandalDataWithChartVO;
 	private HttpSession session;
 	private ServletContext context;
@@ -129,13 +129,13 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.mandalDataWithChartVO = mandalDataWithChartVO;
 	}
 
-	public IBoothPopulationService getBoothPopulationService() {
-		return boothPopulationService;
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
 	}
 
-	public void setBoothPopulationService(
-			IBoothPopulationService boothPopulationService) {
-		this.boothPopulationService = boothPopulationService;
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
 	}
 
 	public void setServletContext(ServletContext context) {
@@ -239,7 +239,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         
         mandalDataWithChartVO = new MandalDataWithChartVO();
-		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
 		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);
 		mandalDataWithChartVO.setChart(chartName);
 	 	

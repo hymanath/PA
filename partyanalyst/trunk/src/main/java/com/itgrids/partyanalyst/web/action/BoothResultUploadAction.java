@@ -10,15 +10,13 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IBoothDataValidationService;
-import com.itgrids.partyanalyst.service.IBoothResultPopulationService;
-import com.itgrids.partyanalyst.service.IParliamentBoothResultPopulationService;
+import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class BoothResultUploadAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = 1L;
-	private IBoothResultPopulationService boothResultPopulationService;
-	private IParliamentBoothResultPopulationService parliamentBoothResultPopulationService;
+	private IBoothPopulationService boothPopulationService;
 	private IBoothDataValidationService boothDataValidationService;
 	private HttpServletRequest request;
 	private String electionScopeId;
@@ -73,24 +71,15 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 		this.electionScopeId = electionScopeId;
 	}
 	
-	public IBoothResultPopulationService getBoothResultPopulationService() {
-		return boothResultPopulationService;
+	public IBoothPopulationService getBoothPopulationService() {
+		return boothPopulationService;
 	}
 
-	public void setBoothResultPopulationService(
-			IBoothResultPopulationService boothResultPopulationService) {
-		this.boothResultPopulationService = boothResultPopulationService;
+	public void setBoothPopulationService(
+			IBoothPopulationService boothPopulationService) {
+		this.boothPopulationService = boothPopulationService;
 	}
 
-	public IParliamentBoothResultPopulationService getParliamentBoothResultPopulationService() {
-		return parliamentBoothResultPopulationService;
-	}
-
-	public void setParliamentBoothResultPopulationService(
-			IParliamentBoothResultPopulationService parliamentBoothResultPopulationService) {
-		this.parliamentBoothResultPopulationService = parliamentBoothResultPopulationService;
-	}
-	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request  = request;		
 	}
@@ -102,22 +91,12 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 			else
 				corrections = boothDataValidationService.readAssemblyBoothResultExcelAndPopulate(filePath, electionYear, new Long(electionScopeId.trim()));
 		}else{
-			if(Integer.parseInt(electionScopeId.trim()) == 1){
-				ResultStatus resultVO = parliamentBoothResultPopulationService.readExcel(filePath, new Long(electionScopeId.trim()), electionYear);
-				Throwable ex = resultVO.getExceptionEncountered();
-				if(ex!=null){
-					log.error("exception raised while Uploading Booth Result ", ex);
-					return ERROR;
-				}
-			}
-			else{
-				ResultStatus resultVO = boothResultPopulationService.readExcelAndInsertData(electionYear, new Long(electionScopeId.trim()), filePath);
-				Throwable ex = resultVO.getExceptionEncountered();
-				if(ex!=null){
-					log.error("exception raised while Uploading Booth Result ", ex);
-					return ERROR;
-				}
-			}		
+			ResultStatus resultVO = boothPopulationService.readExcelAndInsertData(electionYear, new Long(electionScopeId.trim()), filePath);
+			Throwable ex = resultVO.getExceptionEncountered();
+			if(ex!=null){
+				log.error("exception raised while Uploading Booth Result ", ex);
+				return ERROR;
+			}	
 		}
 		return SUCCESS;
 	}
