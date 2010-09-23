@@ -128,6 +128,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		LocalElectionBody localElectionBody = localElectionBodyDAO.get(localBodyId);
 		if(localElectionBody != null){
 			
+			localElectionBody.setNoOfWards(localElectionBody.getNoOfWards());
 			ElectionType electionType = localElectionBody.getElectionType();
 						
 			//Local Body Tehsil Info
@@ -186,14 +187,35 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	/*
 	 * Method to get All Party Election results from DB and set to VO
 	 */
+	@SuppressWarnings("unchecked")
 	public void getAllPartyElectionResulsInLocalBodyElections(LocalBodyElectionResultsVO localBodyElectionResultVO,Long localBodyId,String electionYear) 
 	                                                                                                                                   throws Exception{
 		if(log.isDebugEnabled())
 		log.debug(" Inside getAllPartyElectionResulsInLocalBodyElections Method ..");
 		List<TeshilPartyInfoVO> localBodyElecResList = new ArrayList<TeshilPartyInfoVO>();
 		
+		//Get LocalBodyElection Voters & Votes Info
+		Double constiValidVotes = null;
+		Double totalVotes = null;
+		Double totalPolledVotes = null;
+		List totalConstiValidVotes = constituencyElectionDAO.getConstituencyValidVotesForLocalBodyElection(localBodyId, electionYear);
+		if(totalConstiValidVotes != null){
+			Object[] params = (Object[])totalConstiValidVotes.get(0);
+			constiValidVotes = (Double)params[0];
+			totalPolledVotes = (Double)params[1];
+			totalVotes = (Double)params[2];
+			if(totalVotes != null)
+			localBodyElectionResultVO.setTotalVotes(totalVotes.longValue());
+			else
+				localBodyElectionResultVO.setTotalVotes(1L);
+			if(totalPolledVotes != null)
+			localBodyElectionResultVO.setTotPolledVotes(totalPolledVotes.longValue());
+			else
+				localBodyElectionResultVO.setTotPolledVotes(0L);
+		}
+		
 		//Map<PartyId,results> is a Hashmap that holds party results 
-		Map<Long,TeshilPartyInfoVO> partyVotesInfo = new HashMap<Long,TeshilPartyInfoVO>();
+		Map<Long,TeshilPartyInfoVO> partyVotesInfo = getPartyVotesStatusDetailsAsMap(localBodyId,electionYear,constiValidVotes.longValue());
 		Map<Long,TeshilPartyInfoVO> partyWonSeatsInfo = getPartySeatsStatusDetailsAsMap(localBodyId,electionYear,1L);
 		Map<Long,TeshilPartyInfoVO> partySecPosSeatsInfo = getPartySeatsStatusDetailsAsMap(localBodyId,electionYear,2L);
 		Map<Long,TeshilPartyInfoVO> partyThirdPosSeatsInfo = getPartySeatsStatusDetailsAsMap(localBodyId,electionYear,3L);
@@ -291,7 +313,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	 * Votes Details Of Party in participated local election
 	 */
 	@SuppressWarnings("unchecked")
-	public Map<Long,TeshilPartyInfoVO> getPartyVotesStatusDetailsAsMap(Long localBodyId,String electionYear) throws Exception{
+	public Map<Long,TeshilPartyInfoVO> getPartyVotesStatusDetailsAsMap(Long localBodyId,String electionYear,Long constiValidVotes) throws Exception{
 		
 		Map<Long,TeshilPartyInfoVO> partyVotesInfo = null;
 		
@@ -301,13 +323,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			List resultsList = nominationDAO.getAllParticipatedPartyResultsInALocalBodyElection(localBodyId, electionYear);
 			
 			if(resultsList != null){
-				Long constiValidVotes = null;
-				List totalConstiValidVotes = constituencyElectionDAO.getConstituencyValidVotesForLocalBodyElection(localBodyId, electionYear);
-				if(totalConstiValidVotes != null){
-					Object params = (Object)totalConstiValidVotes.get(0);
-					constiValidVotes = (Long)params;
-				}
-				
+								
 				ListIterator li = resultsList.listIterator();
 				while(li.hasNext()){
 					Object[] values = (Object[])li.next();
@@ -322,8 +338,8 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 					List partiPartiValidVotes = nominationDAO.getPartyParticipatedValidVotesForLocalBodyElection(localBodyId, infoVO.getPartyId(), electionYear);
 					if(partiPartiValidVotes != null){
 						Object params = (Object)partiPartiValidVotes.get(0);
-						Long partiValidVotes = (Long)params;
-						infoVO.setPartyParticipatedValidVotes(partiValidVotes);
+						Double partiValidVotes = (Double)params;
+						infoVO.setPartyParticipatedValidVotes(partiValidVotes.longValue());
 						Double partyPartiPercent = calculatePercentage(votesGained,new Double(partiValidVotes));
 						Double totConstiPercent = calculatePercentage(votesGained,new Double(constiValidVotes));
 						infoVO.setPartiPartiVotesPercent(partyPartiPercent.toString());
