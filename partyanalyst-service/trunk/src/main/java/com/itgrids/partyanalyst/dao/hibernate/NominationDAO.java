@@ -1374,6 +1374,20 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.localElectionBody.localElectionBodyId",params);
 	}
 	
+
+	@SuppressWarnings("unchecked")
+	public List getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfo(Long localBodyId,Long partyId,Long electionId){
+		Object[] params = {localBodyId,electionId,partyId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId,"+
+				"model.constituencyElection.constituency.name,"+
+				"sum(model.constituencyElection.constituencyElectionResult.validVotes),"+
+				"sum(model.constituencyElection.constituencyElectionResult.totalVotesPolled),"+
+				"sum(model.constituencyElection.constituencyElectionResult.totalVotes) "+
+				"from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? and "+
+				"model.constituencyElection.election.electionId = ? and model.party.partyId = ? group by "+
+				"model.constituencyElection.constituency.constituencyId",params);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List getAllPartiesForAMuncipality(String electionType,Long muncipalityId,String electionYear){
 		Object[] params = {electionType,muncipalityId,electionYear};
@@ -1614,6 +1628,37 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.election.electionId = ? and model.party.partyId in (" + alliancePartyIds + ") and " +
 				"model.constituencyElection.constituency.state.country.countryId = ? " +
 				"group by model.constituencyElection.constituency.state.stateId", parameters);
+	}
+	@SuppressWarnings("unchecked")
+	public List getResultsForAllPartiesInALocalBodyElectionInAWard(
+			Long localBodyId, Long electionId, Long wardId) {
+		Object[] params = {localBodyId,electionId,wardId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.candidate.candidateId,"+
+				"model.candidate.lastname,model.constituencyElection.constituency.constituencyId,model.constituencyElection."+
+				"constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank,"+
+				"model.party.partyFlag from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? "+
+				"and model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId = ? ",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List getWardWiseResultsForAPartyInALocalBodyElection(
+			Long localBodyId, Long electionId, Long partyId) {
+		Object[] params = {localBodyId,electionId,partyId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.candidate.candidateId,"+
+				"model.candidate.lastname,model.constituencyElection.constituency.constituencyId,model.constituencyElection."+
+				"constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank,"+
+				"model.party.partyFlag from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? "+
+				"and model.constituencyElection.election.electionId = ? and model.party.partyId = ? ",params);
+				
+	}
+	@SuppressWarnings("unchecked")
+	public List getWardWiseResultsOfAllPartiesInLocalElectionBodies(
+			Long localBodyId, Long electionId) {
+		Object[] params = {localBodyId,electionId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.candidate.candidateId,"+
+				"model.candidate.lastname,model.constituencyElection.constituency.constituencyId,model.constituencyElection."+
+				"constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank,"+
+				"model.party.partyFlag from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? "+
+				"and model.constituencyElection.election.electionId = ? order by model.constituencyElection.constituency.constituencyId",params);
 	}
 	
 }
