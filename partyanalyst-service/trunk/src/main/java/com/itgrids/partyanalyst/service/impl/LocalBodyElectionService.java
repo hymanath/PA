@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -21,7 +22,10 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -32,6 +36,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
+import com.itgrids.partyanalyst.utils.PartyElectionResultVOCompareByRank;
 
 public class LocalBodyElectionService implements ILocalBodyElectionService {
 
@@ -358,6 +363,189 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	public Double calculatePercentage(Double votesEarned,Double validVotes) throws Exception{
 		
 		return new BigDecimal(votesEarned/validVotes*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.ILocalBodyElectionService#getLocalBodyElectionResultsForAPartyInAnElection(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAPartyInAnElection(
+			Long localBodyId, Long stateId, Long electionId, Long partyId) {
+		
+		if(log.isDebugEnabled())
+		  log.debug(" Inside getLocalBodyElectionResultsForAPartyInAnElection Method ..");	
+		
+		List<PartyElectionResultsInConstituencyVO> partyResultsList = null;
+		
+        try{
+        	List resultsList = nominationDAO.getWardWiseResultsForAPartyInALocalBodyElection(localBodyId, electionId, partyId);
+        	List highLevelResults = nominationDAO.getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfo(localBodyId, partyId, electionId);
+        	
+        	if(resultsList != null && resultsList.size() > 0)
+				partyResultsList = getLocalBodyELectionWardWiseResults(resultsList,highLevelResults);
+        	
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(" Exception Raised :" + ex);
+			
+		}
+		
+	 return partyResultsList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.ILocalBodyElectionService#getLocalBodyElectionResultsInAnElection(java.lang.Long, java.lang.Long, java.lang.Long)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsInAnElection(
+			Long localBodyId, Long stateId, Long electionId) {
+		
+		if(log.isDebugEnabled())
+			  log.debug(" Inside getLocalBodyElectionResultsInAnElection Method ..");	
+		
+		List<PartyElectionResultsInConstituencyVO> partyResultsList = null;
+		try{
+			List resultsList = nominationDAO.getWardWiseResultsOfAllPartiesInLocalElectionBodies(localBodyId, electionId);
+			List highLevelResults = constituencyElectionDAO.getConstituencyVotesInfoForLocalBodyElection(localBodyId, electionId);
+			
+			if(resultsList != null && resultsList.size() > 0)
+				partyResultsList = getLocalBodyELectionWardWiseResults(resultsList,highLevelResults);
+				
+						
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error(" Exception Raised :" + ex);
+		}
+		
+	 return partyResultsList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyELectionWardWiseResults(List partyResultsList,List highLevelVotesInfo) throws Exception{
+		
+		if(log.isDebugEnabled())
+			  log.debug(" Inside getLocalBodyELectionWardWiseResults Method ..");	
+		
+		List<PartyElectionResultsInConstituencyVO> partyElecResultsList = null;
+		if(partyResultsList != null && partyResultsList.size() > 0){
+			//Map<wardId,resultsList>
+			Map<Long,List<PartyElectionResultsVO>> wardWisePartyResults = getWardLevelPartyResultsMap(partyResultsList);
+			Map<Long,ConstituencyElectionResultVO> wardVotesInfoMap = getWardWiseVotesInfoMap(highLevelVotesInfo);
+			
+			if(wardVotesInfoMap != null && !wardVotesInfoMap.isEmpty()){
+				
+				partyElecResultsList = new ArrayList<PartyElectionResultsInConstituencyVO>();
+				
+				Set<Long> keys = wardVotesInfoMap.keySet();
+				for(Long ward:keys){
+					
+					ConstituencyElectionResultVO votesInfo = wardVotesInfoMap.get(ward);
+					List<PartyElectionResultsVO> partyResults = wardWisePartyResults.get(ward);
+					//collections sort
+					Collections.sort(partyResults,new PartyElectionResultVOCompareByRank());
+					PartyElectionResultsVO wonCandResult = partyResults.get(0);
+					
+					PartyElectionResultsInConstituencyVO partyElectionResultObject = new PartyElectionResultsInConstituencyVO();
+					
+					partyElectionResultObject.setConstituencyId(votesInfo.getConstituencyId());
+					partyElectionResultObject.setConstituencyName(votesInfo.getConstituencyName());
+					partyElectionResultObject.setTotalPolledVotes(votesInfo.getTotPolledVotes());
+					partyElectionResultObject.setTotalVoters(votesInfo.getTotalVotes());
+					partyElectionResultObject.setWonPartyId(wonCandResult.getPartyId());
+					partyElectionResultObject.setWonPartyName(wonCandResult.getPartyName());
+					partyElectionResultObject.setWonCandidate(wonCandResult.getCandidateName());
+					partyElectionResultObject.setWonCandDesignation("");
+					
+					partyElectionResultObject.setPartyElectionResultsVO(partyResults);
+					
+					partyElecResultsList.add(partyElectionResultObject);
+				}
+				
+			}
+		}
+		
+	 return partyElecResultsList;
+	}
+	
+	/*
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<Long,List<PartyElectionResultsVO>> getWardLevelPartyResultsMap(List partyResultsList){
+		
+		Map<Long,List<PartyElectionResultsVO>> partyResultsMap = null;
+		if(partyResultsList != null && partyResultsList.size() > 0){
+			partyResultsMap = new HashMap<Long,List<PartyElectionResultsVO>>();
+			for(int i=0;i<partyResultsList.size();i++){
+				Object[] values = (Object[])partyResultsList.get(i);
+				
+				Long wardId = (Long)values[4];
+				List<PartyElectionResultsVO> partyResultsInMap = null;
+				
+				if(partyResultsMap.isEmpty() || !partyResultsMap.containsKey(wardId)){
+					partyResultsInMap = new ArrayList<PartyElectionResultsVO>();
+				}else if(partyResultsMap.containsKey(wardId)){
+					partyResultsInMap = partyResultsMap.get(wardId);
+				}
+				
+				PartyElectionResultsVO result = new PartyElectionResultsVO();
+				result.setPartyId((Long)values[0]);
+				result.setPartyName((String)values[1]);
+				result.setCandidateId((Long)values[2]);
+				result.setCandidateName((String)values[3]);
+				result.setConstituencyId((Long)values[4]);
+				result.setConstituencyName((String)values[5]);
+				Double votesGained = (Double)values[6];
+				result.setVotesEarned(votesGained.longValue());
+				result.setVotesPercentage((String)values[7]);
+				result.setRank((Long)values[8]);
+				
+				partyResultsInMap.add(result);	
+			}
+		}
+		
+	 return partyResultsMap;
+	}
+	
+	/*
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<Long,ConstituencyElectionResultVO> getWardWiseVotesInfoMap(List votesInfo){
+	
+		Map<Long,ConstituencyElectionResultVO> votesInfoMap = null;
+		if(votesInfo != null && votesInfo.size() > 0){
+			votesInfoMap = new HashMap<Long,ConstituencyElectionResultVO>();
+			
+			for(int i=0;i<votesInfo.size();i++){
+				Object[] values = (Object[])votesInfo.get(i);
+				
+				Long wardId = (Long)values[0];
+				 				
+				if(votesInfoMap.isEmpty() || !votesInfoMap.containsKey(wardId)){
+				 ConstituencyElectionResultVO votesInfoObject = new ConstituencyElectionResultVO();
+				 votesInfoObject.setConstituencyId(wardId);
+				 votesInfoObject.setConstituencyName((String)values[1]);
+				 Double totalVotes = (Double)values[4];
+				 if(totalVotes != null)
+				   votesInfoObject.setTotalVotes(totalVotes.longValue());
+				 Double totalPolledVotes = (Double)values[3];
+				 if(totalPolledVotes != null)
+				   votesInfoObject.setTotPolledVotes(totalPolledVotes.longValue());
+				 Double validVotes = (Double)values[2];
+				 if(validVotes != null)
+				 votesInfoObject.setValidVotes(validVotes.longValue());
+				 
+				 votesInfoMap.put(wardId, votesInfoObject);
+					
+				}
+				
+			}
+			
+		}
+	 return votesInfoMap;
 	}
 
 }
