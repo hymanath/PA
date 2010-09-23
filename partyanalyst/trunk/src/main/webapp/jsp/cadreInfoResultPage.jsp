@@ -125,6 +125,8 @@
 <script type="text/javascript">
 	
 var cadreId = '${cadreId}';
+var userParty = '${sessionScope.USER.partyShortName}';
+var userType = '${sessionScope.USER.userType}';
 
 function callAjax(jsObj,url)
 {			
@@ -275,42 +277,42 @@ function buildCadreInfo(jsObj,results)
 	str += '			<tr>';
 	str += '				<th style="width:125px">House No </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.houseNo+'</td>';
+	str += '				<td>'+results.phouseNo+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Street </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.street+'</td>';
+	str += '				<td>'+results.pstreet+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Hamlet </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.hamletName+'</td>';
+	str += '				<td>'+results.phamletName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Village </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.villageName+'</td>';
+	str += '				<td>'+results.pvillageName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Constituency</th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.constituencyName+'</td>';
+	str += '				<td>'+results.pconstituencyName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">District</th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.districtName+'</td>';
+	str += '				<td>'+results.pdistrictName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">State </th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.stateName+'</td>';
+	str += '				<td>'+results.pstateName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Pincode</th>';
 	str += '				<th> : </th>';
-	str += '				<td>'+results.pinCode+'</td>';
+	str += '				<td>'+results.ppinCode+'</td>';
 	str += '			</tr>';	
 	}
 	else if(results.sameAsCA == true)
@@ -383,28 +385,31 @@ function buildCadreInfo(jsObj,results)
 	str += '			<th style="width:125px">Cadre Level</th>';
 	str += '			<th>:</th>';
 	str += '			<td>'+results.strCadreLevel+'-'+results.strCadreLevelValue+'</td>';
-	str += '		</tr>';	
-	str += '		<tr>';
-	str += '			<th style="width:125px">Party Committee</th>';
-	str += '			<th>:</th>';
-	str += '			<td>'+results.partyCommitteeName+'</td>';
-	str += '			<th style="width:125px">Designation</th>';
-	str += '			<th>:</th>';
-	str += '			<td>'+results.designationStr+'</td>';
 	str += '		</tr>';
-	str += '		<tr>';
-	str += '			<th style="width:125px">Effective Date</th>';
-	str += '			<th>:</th>';
-	str += '			<td>'+results.effectiveDate+'</td>';
-	str += '			<th style="width:125px">Ending Date</th>';
-	str += '			<th>:</th>';
-	if(results.endingDate != null)
-	str += '			<td>'+results.endingDate+'</td>';
-	str += '		</tr>';
+		if(results.partyCommitteeName != null)
+		{		
+			str += '		<tr>';
+			str += '			<th style="width:125px">Party Committee</th>';
+			str += '			<th>:</th>';
+			str += '			<td>'+results.partyCommitteeName+'</td>';
+			str += '			<th style="width:125px">Designation</th>';
+			str += '			<th>:</th>';
+			str += '			<td>'+results.designationStr+'</td>';
+			str += '		</tr>';
+			str += '		<tr>';
+			str += '			<th style="width:125px">Effective Date</th>';
+			str += '			<th>:</th>';
+			str += '			<td>'+results.effectiveDate+'</td>';
+			str += '			<th style="width:125px">Ending Date</th>';
+			str += '			<th>:</th>';
+			if(results.endingDate != null)
+			str += '			<td>'+results.endingDate+'</td>';
+			str += '		</tr>';
+		}	
 	}
 	str += '		</table>';
 	str += '	</fieldset>';
-	if(results.memberType == "Active")
+	if(results.memberType == "Active" && userType == 'Party' && userParty == 'BJP')
 	{
 	str += '	<fieldset>';
 	str += '	<legend>Other Details</legend>';

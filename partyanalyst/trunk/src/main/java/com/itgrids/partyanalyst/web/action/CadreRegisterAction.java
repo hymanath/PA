@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -16,8 +17,11 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.util.ValueStack;
 import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
@@ -25,6 +29,10 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
+/**
+ * @author Administrator
+ *
+ */
 public class CadreRegisterAction extends ActionSupport implements
 		ServletRequestAware, ServletContextAware {
 
@@ -48,18 +56,18 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String gender;
 	private String state;
 	private String district;
-	private String constituency;
+	private String constituencyID;
 	private String mandal;
 	private String village;
-	private String cadreLevel = "Others";
-	private String cadreLevelValue = "0";
+	private String cadreLevel;
+	private String cadreLevelValue;
 	private String mobile;
 	private String email;
 	private String cadreId;
 	private Long cadreID = null;
 	private String pstate;
 	private String pdistrict;
-	private String pconstituency;
+	private String pconstituencyID;
 	private String pmandal;
 	private String pvillage;
 	private String phouseNo;
@@ -89,7 +97,34 @@ public class CadreRegisterAction extends ActionSupport implements
 	private List<String> trainingCamps;
 	private List<String> languageOptions_English;
 	private List<String> languageOptions_Hindi;
+	private String cadreLevelState;
+	private String cadreLevelDistrict;
+	private String cadreLevelConstituency;
+	private String cadreLevelMandal;
+	private String cadreLevelVillage;
+	//updating session variables
+	private List<SelectOptionVO> districtList;
+	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> mandalList;
+	private List<SelectOptionVO> villagesList;
+	private List<SelectOptionVO> districtsList_o;
+	private List<SelectOptionVO> constituenciesList_o;
+	private List<SelectOptionVO> mandalsList_o;
+	private List<SelectOptionVO> villagesList_o;
+	private List<SelectOptionVO> districtsList_c;
+	private List<SelectOptionVO> constituenciesList_c;
+	private List<SelectOptionVO> mandalsList_c;
+	private List<SelectOptionVO> villagesList_c;
+	private List<SelectOptionVO> designationsList;
 	
+	public CadreInfo getCadreInfo() {
+		return cadreInfo;
+	}
+
+	public void setCadreInfo(CadreInfo cadreInfo) {
+		this.cadreInfo = cadreInfo;
+	}
+
 	public List<String> getTrainingCamps() {
 		return cadreInfo.getTrainingCamps();
 	}
@@ -127,15 +162,17 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getFirstName();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Firstname is required")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFirstName(String firstName) {
 		this.cadreInfo.setFirstName(firstName);
 	}
 	
 	public String getMiddleName() {
-		return cadreInfo.getMiddleName();
+		return cadreInfo.getMiddleName(); 
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
 	public void setMiddleName(String middleName) {
 		this.cadreInfo.setMiddleName(middleName);
 	}
@@ -144,7 +181,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getLastName();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Lastname is required")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
 	public void setLastName(String lastName) {
 		this.cadreInfo.setLastName(lastName);
 	}
@@ -153,7 +191,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getFatherOrSpouseName();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse Name Required")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse Name is Mandatory", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
 	}
@@ -171,7 +210,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getDobOption();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth or Age Option")
 	public void setDobOption(String dobOption) {
 		this.cadreInfo.setDobOption(dobOption);
 	}
@@ -188,8 +227,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getMobile();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile number", shortCircuit = true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
 		this.cadreInfo.setMobile(mobile);
@@ -204,6 +243,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setEmail(email);
 	}
 
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9 ]+[0-9]*$", message = "Telephone Number should not contain alphabets and special characters")
 	public void setTelephone(String telephone) {
 		this.cadreInfo.setTelephone(telephone);
 	}
@@ -212,9 +253,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getTelephone();
 	}
 
-	/**
-	 * @return
-	 */
 	public String getHouseNo() {
 		return cadreInfo.getHouseNo();
 	}
@@ -236,7 +274,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9][0-9][0-9][0-9][0-9][0-9]", message = "Pin Code should contain digits ", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode should be 6 digits only", minLength = "6", maxLength = "6")
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode length should be 6 digits only", minLength = "6", maxLength = "6")
 	public void setPinCode(String pinCode) {
 		this.cadreInfo.setPinCode(pinCode);
 	}
@@ -245,7 +283,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getEducation().toString();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Education Details Required")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Education")
 	public void setEducation(String education) {
 		this.cadreInfo.setEducation(new Long(education));
 	}
@@ -254,7 +292,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getProfession().toString();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message ="Professon/Occupation Details Required")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Profession/Occupation")
 	public void setProfession(String profession) {
 		this.cadreInfo.setProfession(new Long(profession));
 	}
@@ -263,7 +301,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getSocialStatus().toString();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Social Category Required")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Social Category is Manatory")
 	public void setSocialStatus(String socialStatus) {
 		this.cadreInfo.setSocialStatus(new Long(socialStatus));
 	}
@@ -271,7 +309,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getState() {
 		return cadreInfo.getState();
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection in Current Address")
 	public void setState(String state) {
 		this.cadreInfo.setState(state);
 	}
@@ -280,22 +319,25 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getDistrict();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection in Current Address")
 	public void setDistrict(String district) {
 		this.cadreInfo.setDistrict(district);
 	}
 
-	public String getConstituency() {
+	public String getConstituencyID() {
 		return cadreInfo.getConstituencyID().toString();
 	}
 
-	public void setConstituency(String constituency) {
-		this.cadreInfo.setConstituencyID(new Long(constituency));
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Current Address")
+	public void setConstituencyID(String constituencyID) {
+		this.cadreInfo.setConstituencyID(new Long(constituencyID));
 	}
 
 	public String getMandal() {
 		return cadreInfo.getMandal();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Mandal Selection in Current Address")
 	public void setMandal(String mandal) {
 		this.cadreInfo.setMandal(mandal);
 	}
@@ -304,6 +346,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getVillage();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Village Selection in Current Address")
 	public void setVillage(String village) {
 		this.cadreInfo.setVillage(village);
 	}
@@ -312,6 +355,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevel().toString();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level")
 	public void setCadreLevel(String cadreLevel) {
 		this.cadreInfo.setCadreLevel(new Long(cadreLevel));
 	}
@@ -320,6 +364,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getStrCadreLevelValue();
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Cadre Level Value is Mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level Value")
 	public void setCadreLevelValue(String cadreLevelValue) {
 		this.cadreInfo.setStrCadreLevelValue(cadreLevelValue);
 	}	
@@ -327,7 +373,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getIncome() {
 		return cadreInfo.getIncome();
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9,]+$", message = "Income field accepts digits and commas only", shortCircuit = true)		
 	public void setIncome(String income) {
 		this.cadreInfo.setIncome(income);
 	}
@@ -352,7 +399,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getDesignation() {
 		return cadreInfo.getDesignation().toString();
 	}
-
+		
 	public void setDesignation(String designation) {
 		this.cadreInfo.setDesignation(new Long(designation));
 	}
@@ -362,6 +409,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getPstate();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection in Official Address")
 	public void setPstate(String pstate) {
 		this.cadreInfo.setPstate(pstate);
 	}
@@ -370,22 +418,25 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getPdistrict();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection in Official Address")
 	public void setPdistrict(String pdistrict) {
 		this.cadreInfo.setPdistrict(pdistrict);
 	}
 
-	public String getPconstituency() {
+	public String getPconstituencyID() {
 		return cadreInfo.getPconstituencyID().toString();
 	}
 
-	public void setPconstituency(String pconstituency) {
-		this.cadreInfo.setPconstituencyID(new Long(pconstituency));
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Official Address")
+	public void setPconstituencyID(String pconstituencyID) {
+		this.cadreInfo.setPconstituencyID(new Long(pconstituencyID));
 	}
 
 	public String getPmandal() {
 		return cadreInfo.getPmandal();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Mandal/Tehsil Selection in Official Address")
 	public void setPmandal(String pmandal) {
 		this.cadreInfo.setPmandal(pmandal);
 	}
@@ -394,6 +445,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getPvillage();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Village Selection in Official Address")
 	public void setPvillage(String pvillage) {
 		this.cadreInfo.setPvillage(pvillage);
 	}
@@ -436,15 +488,16 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([0-9]{6})$", message = "Pin Code should contain digits ", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode should be 6 digits only", minLength = "6", maxLength = "6")
-	public void setPPinCode(String pinCode) {
-		this.cadreInfo.setPpinCode(pinCode);
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode length should be 6 digits only", minLength = "6", maxLength = "6")
+	public void setPPinCode(String pPinCode) {
+		this.cadreInfo.setPpinCode(pPinCode);
 	}	
 
 	public String getAge() {
 		return this.cadreInfo.getAge();
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Age field accepts digits only", shortCircuit = true)
 	public void setAge(String age) {
 		this.cadreInfo.setAge(age);
 	}	
@@ -482,6 +535,157 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setLanguageOptions_Hindi(List<String> languageOptions_Hindi) {
 		log.error("inside setter hindi method:"+languageOptions_Hindi.size());
 		this.cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);
+	}	
+
+	public String getCadreLevelState() {
+		return cadreInfo.getCadreLevelState();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection in Cadre Level Region")
+	public void setCadreLevelState(String cadreLevelState) {
+		this.cadreInfo.setCadreLevelState(cadreLevelState);
+	}
+
+	public String getCadreLevelDistrict() {
+		return cadreInfo.getCadreLevelDistrict();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection in Cadre Level Region")
+	public void setCadreLevelDistrict(String cadreLevelDistrict) {
+		this.cadreInfo.setCadreLevelDistrict(cadreLevelDistrict);
+	}
+
+	public String getCadreLevelConstituency() {
+		return cadreInfo.getCadreLevelConstituency();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Cadre Level Region")
+	public void setCadreLevelConstituency(String cadreLevelConstituency) {
+		this.cadreInfo.setCadreLevelConstituency(cadreLevelConstituency);
+	}
+
+	public String getCadreLevelMandal() {
+		return cadreInfo.getCadreLevelMandal();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Mandal Selection in Cadre Level Region")
+	public void setCadreLevelMandal(String cadreLevelMandal) {
+		this.cadreInfo.setCadreLevelMandal(cadreLevelMandal);
+	}
+
+	public String getCadreLevelVillage() {
+		return cadreInfo.getCadreLevelVillage();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Village Selection in Cadre Level Region")
+	public void setCadreLevelVillage(String cadreLevelVillage) {
+		this.cadreInfo.setCadreLevelVillage(cadreLevelVillage);
+	}
+	
+	
+
+	public List<SelectOptionVO> getDistrictList() {
+		return districtList;
+	}
+
+	public void setDistrictList(List<SelectOptionVO> districtList) {
+		this.districtList = districtList;
+	}
+
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
+	public List<SelectOptionVO> getMandalList() {
+		return mandalList;
+	}
+
+	public void setMandalList(List<SelectOptionVO> mandalList) {
+		this.mandalList = mandalList;
+	}
+
+	public List<SelectOptionVO> getVillagesList() {
+		return villagesList;
+	}
+
+	public void setVillagesList(List<SelectOptionVO> villagesList) {
+		this.villagesList = villagesList;
+	}
+
+	public List<SelectOptionVO> getDistrictsList_o() {
+		return districtsList_o;
+	}
+
+	public void setDistrictsList_o(List<SelectOptionVO> districtsList_o) {
+		this.districtsList_o = districtsList_o;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList_o() {
+		return constituenciesList_o;
+	}
+
+	public void setConstituenciesList_o(List<SelectOptionVO> constituenciesList_o) {
+		this.constituenciesList_o = constituenciesList_o;
+	}
+
+	public List<SelectOptionVO> getMandalsList_o() {
+		return mandalsList_o;
+	}
+
+	public void setMandalsList_o(List<SelectOptionVO> mandalsList_o) {
+		this.mandalsList_o = mandalsList_o;
+	}
+
+	public List<SelectOptionVO> getVillagesList_o() {
+		return villagesList_o;
+	}
+
+	public void setVillagesList_o(List<SelectOptionVO> villagesList_o) {
+		this.villagesList_o = villagesList_o;
+	}
+
+	public List<SelectOptionVO> getDistrictsList_c() {
+		return districtsList_c;
+	}
+
+	public void setDistrictsList_c(List<SelectOptionVO> districtsList_c) {
+		this.districtsList_c = districtsList_c;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList_c() {
+		return constituenciesList_c;
+	}
+
+	public void setConstituenciesList_c(List<SelectOptionVO> constituenciesList_c) {
+		this.constituenciesList_c = constituenciesList_c;
+	}
+
+	public List<SelectOptionVO> getMandalsList_c() {
+		return mandalsList_c;
+	}
+
+	public void setMandalsList_c(List<SelectOptionVO> mandalsList_c) {
+		this.mandalsList_c = mandalsList_c;
+	}
+
+	public List<SelectOptionVO> getVillagesList_c() {
+		return villagesList_c;
+	}
+
+	public void setVillagesList_c(List<SelectOptionVO> villagesList_c) {
+		this.villagesList_c = villagesList_c;
+	}
+
+	public List<SelectOptionVO> getDesignationsList() {
+		return designationsList;
+	}
+
+	public void setDesignationsList(List<SelectOptionVO> designationsList) {
+		this.designationsList = designationsList;
 	}
 
 	public String execute() throws Exception {
@@ -533,11 +737,31 @@ public class CadreRegisterAction extends ActionSupport implements
 		if (languageOptions_Hindi != null && languageOptions_Hindi.length > 0)
 			cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);*/
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
+		if (rs.getExceptionEncountered() == null)
+		{
+			cadreInfo = new CadreInfo();
+			 
+			session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+					 
+			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
+			
+			session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
+		}
 		
 		if (rs.getExceptionEncountered() != null)
 			return "fail";
-		if (rs.getExceptionEncountered() == null && windowTask == IConstants.UPDATE_EXISTING)
-			return "update";
+			
 		return Action.SUCCESS;
 	}
 

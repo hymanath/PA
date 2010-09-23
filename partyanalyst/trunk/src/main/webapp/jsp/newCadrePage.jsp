@@ -15,6 +15,9 @@
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>	
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	
@@ -24,6 +27,7 @@
 	var successFlag = '${rs.resultCode}';
 	
 	function setCadreValue(value){
+		
 		document.getElementById("cadreLevelValue").value=value;
 		return true;
 	}
@@ -36,24 +40,24 @@
 		
 		if(name == "cadreLevelState" && cadreLevelElmtText == "State")
 		{
-			document.getElementById("cadreLevelValue").value=1;						
+			document.getElementById("cadreLevelValue").value=id;						
 		}
 		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
 			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village"))
 		{
-			getnextList("state",id,"true","null","null");				
+			getnextList("state",id,"true","cadreLevel","null");				
 		}
 		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
 		{
-			getnextList("constituency",id,"true","null","null");				
+			getnextList("constituency",id,"true","cadreLevel","null");				
 		}
 		else if(name == "cadreLevelDistrict" && (cadreLevelElmtText == "Mandal" || cadreLevelElmtText == "Village"))
 		{
-			getnextList("district",id,"true","null","null");				
+			getnextList("district",id,"true","cadreLevel","null");				
 		}
 		else if(name == "cadreLevelMandal" && (cadreLevelElmtText == "Village"))
 		{
-			getnextList("mandal",id,"true","null","null");				
+			getnextList("mandal",id,"true","cadreLevel","null");				
 		}
 		
 		//if(document.getElementById("cadreLevelField").value == 5)
@@ -67,7 +71,7 @@
 		var constituencyElmt = document.getElementById("cadreLevelConstituency");
 		var mandalElmt = document.getElementById("cadreLevelMandal");
 		var villageElmt = document.getElementById("cadreLevelVillage");
-
+		
 		if(!cadreLevelElmt || !stateElmt || !districtElmt || !constituencyElmt || !mandalElmt || !villageElmt)
 			alert("Selected Element is null !!");
 		
@@ -94,8 +98,7 @@
 		constituencyElmt.disabled = true;
 		mandalElmt.disabled = true;
 		villageElmt.disabled = true;
-		//alert(cadreLevelElmtText);
-					
+							
 		if(cadreLevelElmtText == "State")
 		{
 			stateElmt.disabled = false;	
@@ -136,7 +139,8 @@
 			{
 					type:level,
 					reportLevel:text,
-					selected:value
+					selected:value,
+					addresstype:'cadreLevel'
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -145,7 +149,7 @@
 	}
 	function getnextList(name,value,choice,type,selectBoxId)
 	{
-		if(value == '-1')
+		if(value == '-1' || value == '0')
 		{
 			alert("Please Select Valid Location");
 			return;
@@ -335,13 +339,24 @@
 	function showPartyCommittee(value)
 	{
 		var cadreLevelTableEl = document.getElementById("cadreLevelTable");
+		var cadreLevelFieldEl = document.getElementById("cadreLevelField");
+		var cadreLevelDistrictEl = document.getElementById("cadreLevelDistrict");
+		var cadreLevelStateEl = document.getElementById("cadreLevelState");
+		var cadreLevelConstituencyEl = document.getElementById("cadreLevelConstituency");
+		var cadreLevelMandalEl = document.getElementById("cadreLevelMandal");
+		var cadreLevelVillageEl = document.getElementById("cadreLevelVillage");
 		
 		if(value == "Active")			
 		{
-			cadreLevelTableEl.style.display ='block'
+			cadreLevelTableEl.style.display ='block';
+			cadreLevelFieldEl.selectedIndex = '0';
+			document.getElementById("cadreLevelValue").value='';
+			
 		} else if (value == "Normal")
 		{
-			cadreLevelTableEl.style.display ='none'
+			cadreLevelTableEl.style.display ='none';
+			cadreLevelFieldEl.selectedIndex = '1';
+			setCadreValue('1');
 		}
 				
 	}
@@ -395,10 +410,34 @@
 		
 		var sameAsCAEl = document.getElementById("sameAsCA");
 		var optElements = document.getElementById("permanantAddr");
-		
+		//get all official address elements
+		var pstateFieldEl = document.getElementById("pstateField");
+		var pdistrictFieldEl = document.getElementById("pdistrictField");
+		var pconstituencyFieldEl = document.getElementById("pconstituencyField");
+		var pmandalFieldEl = document.getElementById("pmandalField");
+		var pvillageFieldEl = document.getElementById("pvillageField");
+	
+		var optionsArray = new Array();
 		if(sameAsCAEl.checked == true && source == 'checkbox')
 		{	
+			
 				optElements.style.display = 'none';
+				clearOptionsListForSelectElmtId("pdistrictField");
+				clearOptionsListForSelectElmtId("pconstituencyField");
+				clearOptionsListForSelectElmtId("pmandalField");
+				clearOptionsListForSelectElmtId("pvillageField");
+				
+				var optionsArray = new Array();
+				var obj = {
+						id : 1,
+						name:'Please Select '
+						};
+				optionsArray.push(obj);
+				createOptionsForSelectElmtId("pdistrictField",optionsArray);
+				createOptionsForSelectElmtId("pconstituencyField",optionsArray);
+				createOptionsForSelectElmtId("pmandalField",optionsArray);
+				createOptionsForSelectElmtId("pvillageField",optionsArray);
+				pstateFieldEl.selectedIndex = '1';										
 		
 		} else if(source == 'button') 
 		{			
@@ -408,23 +447,46 @@
 					sameAsCAEl.checked = false;							
 		} else
 		{
+			var optionsArr = new Array();
 			if(optElements.style.display == "none")
+			{
 				optElements.style.display = '';
+			}
+			clearOptionsListForSelectElmtId("pdistrictField");
+			clearOptionsListForSelectElmtId("pconstituencyField");
+			clearOptionsListForSelectElmtId("pmandalField");
+			clearOptionsListForSelectElmtId("pvillageField");
+			var obj = {
+					id : '0',
+					name:'Please Select '
+					};
+			optionsArr.push(obj);
+			createOptionsForSelectElmtId("pdistrictField",optionsArr);
+			createOptionsForSelectElmtId("pconstituencyField",optionsArr);
+			createOptionsForSelectElmtId("pmandalField",optionsArr);
+			createOptionsForSelectElmtId("pvillageField",optionsArr);
+			pstateFieldEl.selectedIndex = '0';			
 		}	
 	}
 	function hideUnhideCrntAddOptions()
 	{
 		var btnEl = document.getElementById("editCrntBtn");
 		var optElement = document.getElementById("cuurrentAddTable");
+		//get all official address elements
+		var pstateFieldEl = document.getElementById("pstateField");
+		var pdistrictFieldEl = document.getElementById("pdistrictField");
+		var pconstituencyFieldEl = document.getElementById("pconstituencyField");
+		var pmandalFieldEl = document.getElementById("pmandalField");
+		var pvillageFieldEl = document.getElementById("pvillageField");
 		
 		if(btnEl.checked == true)
 		{	
-			optElement.style.display = 'none';
+			optElement.style.display = 'block';
 		
 		} else 
 		{			
-				if(optElement.style.display == "none")
-					optElement.style.display = '';			
+				if(optElement.style.display == "block")
+					optElement.style.display = 'none';			
 		}
 	}
 		
@@ -507,26 +569,65 @@
 		var textBoxEl = document.getElementById("firstNameField");
 		textBoxEl.focus();
 		
-		var samsAsCaEl = document.getElementById("sameAsCA");
+		//var samsAsCaEl = document.getElementById("sameAsCA");
 		var permanantAddrEl = document.getElementById("permanantAddr");
 		var cuurrentAddTableEl = document.getElementById("cuurrentAddTable");
 		var memberTypeRadioEl = document.getElementById("memberTypeActive");
 		var cadreLevelTableEl = document.getElementById("cadreLevelTable"); 
+		var cadreLevelFieldEl = document.getElementById("cadreLevelField");
 
+		var stateElmt = document.getElementById("cadreLevelState");
+		var districtElmt = document.getElementById("cadreLevelDistrict");
+		var constituencyElmt = document.getElementById("cadreLevelConstituency");
+		var mandalElmt = document.getElementById("cadreLevelMandal");
+		var villageElmt = document.getElementById("cadreLevelVillage");
+		
+		/*	
 		if(samsAsCaEl.checked == true)				
 		{
 			permanantAddrEl.style.display = 'none';
 				
-		}
+		}*/
 		if(memberTypeRadioEl.checked == true)
 		{
 			if(cadreLevelTableEl.style.display == 'none')
+			{	
 				cadreLevelTableEl.style.display = 'block';
+			}	
+			var selectedValue = cadreLevelFieldEl.options[cadreLevelFieldEl.selectedIndex].text;
+			if(selectedValue == "State")
+			{
+				stateElmt.disabled = false;				
+			}
+			else if(selectedValue == "District")			
+			{
+				stateElmt.disabled = false;
+				districtElmt.disabled = false;
+			}		
+			else if(selectedValue == "Constituency")
+			{
+				stateElmt.disabled = false;
+				districtElmt.disabled = false;
+				constituencyElmt.disabled = false;
+			}
+			else if(selectedValue == "Mandal")
+			{
+				stateElmt.disabled = false;
+				districtElmt.disabled = false;
+				mandalElmt.disabled = false;
+			}
+			else if(selectedValue == "Village")
+			{
+				stateElmt.disabled = false;
+				districtElmt.disabled = false;
+				mandalElmt.disabled = false;
+				villageElmt.disabled = false;
+			}	
 		}
-		if(currentTask == 'update_existing')
+		/*if(currentTask == 'update_existing')
 		{
 			cuurrentAddTableEl.style.display = 'none';
-		}
+		}*/
 					
 		 
 	}
@@ -631,7 +732,7 @@
 </style>
 </head>
 <body class="bodyStyle" onunload="loadOnUnload()">
-<s:form action="cadreRegisterAction" method="POST" theme="simple" onsubmit="return validateClientSide()">
+<s:form action="cadreRegisterAction" method="GET" theme="simple">
 	<CENTER>
 		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
@@ -648,9 +749,20 @@
 	</CENTER>
 	
 	<div id="registrationMainDiv">
-		<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">
-			<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>			
+	
+		<c:if test="${windowTask == 'new'}">
+			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">
+				<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Registered Successfully!</DIV>			
+			</c:if>
 		</c:if>
+		<c:if test="${windowTask == 'update_existing'}">
+			<c:if test="${rs.resultCode !=  '' && rs.resultCode == '0'}">	
+				<DIV id="alertMessage" style="color:green;font-weight:bold">Cadre Details Updated Successfully!</DIV>
+			</c:if>	
+		</c:if>	
+		
+		
+		
 		<table id="cadreRegistrationTable" class="registrationTable">
 		<tr>
 			<td colspan="2">
@@ -671,18 +783,20 @@
 	<input type="hidden" id="hiddenValue" name="windowTask" value="${windowTask}"/>
 	<FIELDSET>
 		<LEGEND><strong>Personal Details</strong></LEGEND>
-		<table class="cadreDetailsTable">		
+		<table class="cadreDetailsTable" width="100%">		
 			<tr>
 				<td><s:label for="firstNameField" id="fnameLabel" value="%{getText('firstName')}" /><font class="requiredFont"> * </font></td>
 				<td align="left"><s:textfield id="firstNameField" key="cadreInfo.firstName" name="firstName" size="25" tooltip="true" maxlength="40"/></td>
 				<td><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></td>
 				<td align="left"><s:textfield id="middleNameField" key="cadreInfo.middleName" name="middleName" size="25" tooltip="true" maxlength="40"/></td>
+			</tr>
+			<tr>	
 				<td><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /><font class="requiredFont"> * </font></td>
 				<td align="left"><s:textfield id="lastNameField" key="cadreInfo.lastName" name="lastName" size="25" maxlength="40"/>  </td>
-			</tr>
-			<tr>
 				<td><s:label for="father_spouseName" id="father_spouseNameLabel"  value="%{getText('father_spouseName')}" /><font class="requiredFont"> * </font></td>
 				<td align="left"><s:textfield id="father_spouseName" name="fatherOrSpouseName" size="25" maxlength="100"/>  </td>
+			</tr>
+			<tr>				
 				<td><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
 					<s:radio id="gender" name="gender" list="#session.genders"/>
@@ -697,7 +811,7 @@
 						<tr>
 							<td width="162"><input type="radio" id="dopOptionRadio" name="dobOption" value="dobOption" onclick="enableDisableCalBtn(this.value)"/>Date Of Birth<font class="requiredFont"> * </font></td>
 							<td align="left">
-								<s:textfield id="dobText" readonly="readonly" name="dateOfBirth" size="25"/>
+								<s:textfield id="dobText" readonly="true" name="dateOfBirth" size="25"/>
 								<DIV class="yui-skin-sam"><DIV id="dobText_div" style="position:absolute;"></DIV></DIV>
 							</td>
 							<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" disabled="true" onclick="showDateCal('dobText_div','dobText','1/1970')"/></td>
@@ -725,51 +839,23 @@
 			</tr>
 			<tr>
 				<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="%{getText('currAdd')}" /></u></th>
-			</tr>
+			</tr>			
+		</table>
+					
+		<table id="cuurrentAddTable"class="cadreDetailsTable" width="100%">
 			<tr>
 				<td width="165px"><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /></td>
 				<td align="left" width="165px"><s:textfield id="houseNoField" name="houseNo" maxlength="25" size="25" />  </td>
 				<td width="165px"><s:label for="streetField" id="streetLabel"  value="%{getText('street')}" /></td>
 				<td align="left" width="165px"><s:textfield id="streetField" name="street" maxlength="100" size="25" />  </td>
 			</tr>
-		</table>
-		
-		<c:if test="${windowTask == 'update_existing'}">
-			<div class = "addressDetailsDiv">
-			<table class ="adresDetailsTable" border="0" width="100%">		
-				<tr>
-					<th width="165px"><s:label id="villageLabel"  value="%{getText('VILLAGE')}" /></th>
-					<td align="left" width="165px"><s:property value="villageName" /></td>
-					<th width="165px"><s:label id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
-					<td align="left" width="165px"> <s:property value="mandalName" /></td>
-				</tr>
-				<tr>
-					<th width="165px"><s:label id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></th>
-					<td align="left" width="165px"><s:property value="constituencyName" /></td>
-					<th width="165px"><s:label  id="districtLabel"  value="%{getText('DISTRICT')}" /></th>
-					<td align="left" width="165px"><s:property value="districtName" /></td>
-				</tr>
-				<tr>
-					<th width="165px"><s:label id="stateLabel"  value="%{getText('STATE')}" /></th>
-					<td align="left" width="165px"><s:property value="stateName" /></td>
-					<th width="165px"><s:label id="pinCodeLabel"  value="%{getText('pincode')}" /></th>
-					<td align="left" width="165px"><s:property value="pinCode"/></td>				
-				</tr>
-				<tr>
-					<td colspan="4" style="text-align:right;"><input id="editCrntBtn" align="right" type="button" onclick="hideUnhideCrntAddOptions()" style="width:150px;" value="Edit Current Address" /></td>
-				</tr>
-			</table>
-			</div>	
-		</c:if>
-					
-		<table id="cuurrentAddTable"class="cadreDetailsTable" width="100%">
 			<tr>
 				<td width="165px"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','districtField')"></s:select></td>
 				<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 					<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" headerKey="0" headerValue="Select Constituency"></s:select>
+					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" headerKey="0" headerValue="Select District"></s:select>
 						<!--<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 								<option value="${dist.id}">${dist.name}</option>
@@ -788,7 +874,7 @@
 			<tr>
 				<td width="165px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
+					<s:select id="constituencyField" cssClass="regionSelect" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
 				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
@@ -803,7 +889,7 @@
 				<td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
 			</tr>
-		</table>
+		</table>			
 		<table class="cadreDetailsTable" width="100%">				
 			<tr width="165px">
 				<th><u><s:label for="prmntAddField" id="prmntAddLabel"  value="%{getText('officialAdd')}" /></u></th>
@@ -812,11 +898,8 @@
 				<td align="left" colspan="2">
 						<s:checkbox id="sameAsCA" name = "sameAsCA" onclick="hideUnhidePrmntAddOptions('checkbox')"/>Same As Current Address				
 				</td>
-				<c:if test="${windowTask == 'update_existing'}">
-					<td style="text-align:right;"><input id="editCrntBtn" align="right" type="button" onclick="hideUnhidePrmntAddOptions('button')" style="width:150px;" value="Edit Permanant Address" /></td>
-				</c:if>
 			</tr>
-		</table>
+		</table>		
 		<table id="permanantAddr" class="cadreDetailsTable" width="100%">
 			<tr>
 				<td width="165px"><s:label for="phouseNoField" id="phouseNoLabel"  value="%{getText('houseNo')}" /></td>
@@ -827,12 +910,12 @@
 			<tr>
 				<td width="165px"><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','permanent','pdistrictField')"></s:select>
+					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','official','pdistrictField')"></s:select>
 				</td>
 			<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 				<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_1" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" headerKey="0" headerValue="Select Constituency"></s:select>
+						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','official','pconstituencyField')" headerKey="0" headerValue="Select District"></s:select>
 						<!--<select id="pdistrictField" class="regionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 							<option value="${dist.id}">${dist.name}</option>
@@ -851,23 +934,25 @@
 			<tr>
 				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituency" list="#session.constituenciesList_1" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','permanent','pmandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
+					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','official','pmandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
 				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_1" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','permananent','pvillageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
+					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','official','pvillageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
 				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_1" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
+					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="ppinCode" maxlength="10" size="25" />  </td>
 			</tr>				
 		</table>
 	</FIELDSET>
+	
+			
 	<fieldset>
 		<legend><strong>Social Status</strong></legend>
 		<table class="cadreDetailsTable" width="100%">
@@ -886,11 +971,11 @@
 		-->
 		<tr>
 			<td>English</td>
-			<td><s:checkboxlist list="#session.language_options" name="languageOptions_English"/></td>			
+			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_English"/></td>			
 		</tr>
 		<tr>
 			<td>Hindi</td>
-			<td><s:checkboxlist list="#session.language_options" name="languageOptions_Hindi"/></td>			
+			<td colspan="3"><s:checkboxlist list="#session.language_options" name="languageOptions_Hindi"/></td>			
 		</tr>
 		<tr>
 			<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
@@ -930,45 +1015,50 @@
 					<option  value='5'>Mandal</option>		
 					<option  value='6'>Village</option>					
 				</select> 
-				--><s:select id="cadreLevelField" name="cadreLevel"list="#{'2':'State','3':'District','4':'Constituency','5':'Mandal','6':'Village'}"  headerKey="0" headerValue="Select Cadre Level" onchange="getStateList()"></s:select>
+				-->
+				<s:select id="cadreLevelField" name="cadreLevel"list="#{'2':'State','3':'District','4':'Constituency','5':'Mandal','6':'Village'}"  headerKey="0" headerValue="Select Cadre Level" onchange="getStateList()"></s:select>
 				<input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
 		</tr>
 		<tr>		
 			<td><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="%{getText('CADRE_LEVEL_VALUE')}" /><font class="requiredFont"> * </font></td>
 			<td align="left">
-				<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
-										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
-										this.options[this.selectedIndex].value)">
+			<s:select id="cadreLevelState" name="cadreLevelState" disabled = "true" list="#session.statesList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value);getCadreLevelValues(this.name,this.options[this.selectedIndex].text, this.options[this.selectedIndex].value)" headerKey="0" headerValue="Select State"></s:select>
+				<!--<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getCadreLevelValues(this.name,this.options[this.selectedIndex].text, this.options[this.selectedIndex].value)">
 					<option>Select State</option>					
 				</select> 
-			</td>
+			--></td>
 			<td>	
-				<select id="cadreLevelDistrict" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+			<s:select id="cadreLevelDistrict" name="cadreLevelDistrict" list="#session.districtsList_c" disabled = "true" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value);getCadreLevelValues(this.name,this.options[this.selectedIndex].text, this.options[this.selectedIndex].value)" headerKey="0" headerValue="Select District"></s:select>
+				<!--<select id="cadreLevelDistrict" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
 					<option>Select District</option>					
-				</select> 
-			</td>
-			<td>	
-				<select id="cadreLevelConstituency" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+				</select>				 
+			--></td>
+			<td>
+			<s:select id="cadreLevelConstituency" name="cadreLevelConstituency" list="#session.constituenciesList_c" listKey="id" listValue="name" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);getCadreLevelValues(this.name,this.options[this.selectedIndex].text, this.options[this.selectedIndex].value)" headerKey="0" headerValue="Select Constituency"></s:select>	
+				<!--<select id="cadreLevelConstituency" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
 					<option>Select Constituency</option>					
 				</select> 
-			</td>
+			--></td>
 			<td>
-				<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+			<s:select id="cadreLevelMandal" name="cadreLevelMandal" disabled = "true" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value);getCadreLevelValues(this.name,this.options[this.selectedIndex].text, this.options[this.selectedIndex].value)" headerKey="0" headerValue="Select Mandal"></s:select>
+				<!--<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
 					<option>Select Mandal</option>					
 				</select> 
-			</td>
+			--></td>
 			<td>	
-				<select id="cadreLevelVillage" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">
+			<s:select id="cadreLevelVillage" name="cadreLevelVillage" list="#session.villagesList_c" listKey="id" listValue="name" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value)" headerKey="0" headerValue="Select Village"></s:select>
+				<!--<select id="cadreLevelVillage" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">
 					<option>Select Village</option>					
 				</select> 
-			</td>
+			--></td>
 		</tr>
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
@@ -997,7 +1087,7 @@
 				<table class="cadreDetailsTable">
 					<tr>				
 						<td align="left">
-								<s:textfield id="effDateText" readonly="readonly" name="effectiveDate" size="15"/>
+								<s:textfield id="effDateText" readonly="true" name="effectiveDate" size="15"/>
 								<DIV class="yui-skin-sam"><DIV id="effDateText_div" style="position:absolute;"></DIV></DIV>
 						</td>
 						<td>		
@@ -1005,7 +1095,7 @@
 						</td>
 						<td>To</td>
 						<td>
-								<s:textfield id="tillDateText" readonly="readonly" name="endingDate" size="15"/>
+								<s:textfield id="tillDateText" readonly="true" name="endingDate" size="15"/>
 								<DIV class="yui-skin-sam"><DIV id="tillDateText_div" style="position:absolute;"></DIV></DIV>
 						</td>
 						<td>		
@@ -1070,7 +1160,11 @@
 			</div>
 		</c:if>
 		<c:if test="${windowTask == 'update_existing'}">
-			<div style="text-align: center;"><s:submit  value="Update" cssClass="button"></s:submit></div>
+			<div style="text-align: center;">
+				<s:submit  value="Update" cssClass="button"></s:submit>
+				<a href="cadreManagementAction.action" class="anchor">Go To Cadre Management Home Page</a>
+				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
+			</div>
 		</c:if>	
 	</div>
 	</s:form>
