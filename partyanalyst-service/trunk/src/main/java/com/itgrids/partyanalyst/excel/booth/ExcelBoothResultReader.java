@@ -17,65 +17,22 @@ import com.itgrids.partyanalyst.excel.CsvException;
 
 public class ExcelBoothResultReader {
 
-	private List<BoothResultExcelColumnMapper> excelRows;
-	private List<BoothResultValueObject> booths;
-	private List<CandidateBoothWiseResult> candidates;
-	private List<ConstituencyBoothBlock> constituenciesBlocks;
-	
-	public ExcelBoothResultReader(){
-	}
-
-	public List<CandidateBoothWiseResult> getCandidates() {
-		return candidates;
-	}
-
-	public void setCandidates(List<CandidateBoothWiseResult> candidates) {
-		this.candidates = candidates;
-	}
-
-	public List<BoothResultExcelColumnMapper> getExcelRows() {
-		return excelRows;
-	}
-
-	public void setExcelRows(List<BoothResultExcelColumnMapper> excelRows) {
-		this.excelRows = excelRows;
-	}
-
-	public List<BoothResultValueObject> getBooths() {
-		return booths;
-	}
-
-	public void setBooths(List<BoothResultValueObject> booths) {
-		this.booths = booths;
-	}
-	
-	public List<ConstituencyBoothBlock> getConstituenciesBlocsks() {
-		return constituenciesBlocks;
-	}
-
-	public void setConstituenciesBlocsks(
-			List<ConstituencyBoothBlock> constituenciesBlocsks) {
-		this.constituenciesBlocks = constituenciesBlocsks;
-	}
-
-	public void readExcel(File filePath, boolean isParliament) throws CsvException{
-		
+	public List<ConstituencyBoothBlock> readExcel(File filePath, boolean isParliament) throws CsvException{
+		List<ConstituencyBoothBlock> constituenciesBlocks = new ArrayList<ConstituencyBoothBlock>();
 		try{
-			System.out.println("In Reader "+ filePath);
+			//System.out.println("In Reader "+ filePath);
 			String headerInf[] = new String[100];
-			//File exceFile= new File(filePath);
-			excelRows= new ArrayList<BoothResultExcelColumnMapper>();
 			Workbook workbook=Workbook.getWorkbook(filePath);	
 			Sheet[] sheets = workbook.getSheets();
-			constituenciesBlocks = new ArrayList<ConstituencyBoothBlock>();
+			
 			for(Sheet sheet:sheets){
-				System.out.println("######### Sheet Start ##########");
+				//System.out.println("######### Sheet Start ##########");
 				ConstituencyBoothBlock assemblyConstituencyBlock = new ConstituencyBoothBlock();
 				String name = sheet.getCell(0,0).getContents().trim();
-				System.out.println("Sheet Name::"+name);
+				//System.out.println("Sheet Name::"+name);
 				String[] constiNameAndDistrictId = StringUtils.split(name.trim(), "_");
-				System.out.println("Size:"+constiNameAndDistrictId.length);
-				if(isParliament == true){
+			//	System.out.println("Size:"+constiNameAndDistrictId.length);
+				if(isParliament){
 					System.out.println("In true");
 					String parliamentName = constiNameAndDistrictId[0].trim();
 					System.out.println(parliamentName);
@@ -89,27 +46,25 @@ public class ExcelBoothResultReader {
 					assemblyConstituencyBlock.setStateId(stateId);
 					assemblyConstituencyBlock.setConstituencyName(constituencyName);
 					assemblyConstituencyBlock.setDistrictId(districtId);
-				}
-				
-				if(isParliament == false){
-					System.out.println("In False");
+				}else{
+				//	System.out.println("In False");
 					String constituencyName = constiNameAndDistrictId[0];
 					Long districtId = new Long(constiNameAndDistrictId[1]);
 					assemblyConstituencyBlock.setConstituencyName(constituencyName);
 					assemblyConstituencyBlock.setDistrictId(districtId);
 				}
+				
 				int rows = sheet.getRows();
 				int columns = sheet.getColumns();
 				fillHeaderInfo(sheet,sheet.getColumns(),headerInf);
-				System.out.println("Rows::"+rows);
-				excelRows = getExcelRecords(sheet, rows, columns);
-				identifyRowAndBindObject(excelRows, headerInf, columns);
+				List<CandidateBoothWiseResult> candidates = new ArrayList<CandidateBoothWiseResult>();
+				List<BoothResultValueObject> booths = new ArrayList<BoothResultValueObject>();
+				identifyRowAndBindObject(candidates, booths, getExcelRecords(sheet, rows, columns), headerInf, columns);
 				assemblyConstituencyBlock.setBoothResults(booths);
 				assemblyConstituencyBlock.setCandidateResults(candidates);
 				constituenciesBlocks.add(assemblyConstituencyBlock);
 			}
-			//Test for the data reading
-			testConstituencyBlock();
+
 		}catch(IOException ioe){
 			ioe.printStackTrace();
 			System.out.println("ioe1 =="+ioe.getMessage());
@@ -120,13 +75,15 @@ public class ExcelBoothResultReader {
 			excep.printStackTrace();
 			System.out.println("ioe3 =="+excep.getMessage());
 		}
+		
+		return constituenciesBlocks;
 	}
 
-	public void identifyRowAndBindObject(List<BoothResultExcelColumnMapper> boothResults,String headerInfo[],int columnsOfExcel) throws Exception{
-		candidates= new ArrayList<CandidateBoothWiseResult>();
-		booths= new ArrayList<BoothResultValueObject>();
+	public void identifyRowAndBindObject(List<CandidateBoothWiseResult> candidates, 
+			List<BoothResultValueObject> booths, List<BoothResultExcelColumnMapper> boothResults,
+			String headerInfo[],int columnsOfExcel) throws Exception{
 		BoothResultValueObject boothResultValueObject=null;
-		System.out.println("Total Columns::"+columnsOfExcel);
+		//System.out.println("Total Columns::"+columnsOfExcel);
 		int tempInt=columnsOfExcel-2;
 		try{
 			for(int i=2;i<columnsOfExcel-3;i++){
@@ -182,7 +139,6 @@ public class ExcelBoothResultReader {
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
 		File exceFile= new File("C:/Documents and Settings/ITGrids/Desktop/290710_New/TempBoothAcResults2010.xls");
 		excelBoothResultReader.readExcel(exceFile, false);
-		excelBoothResultReader.testConstituencyBlock();
 	}
 
 	private void fillHeaderInfo(Sheet sheet,int noOfColumns,String headerInformation[]){
@@ -229,8 +185,7 @@ public class ExcelBoothResultReader {
 		return totalRecords;
 	}
 
-	public void testConstituencyBlock(){
-		List<ConstituencyBoothBlock> list = getConstituenciesBlocsks();
+	public void testConstituencyBlock(List<ConstituencyBoothBlock> list){
 		System.out.println("Total Constituencies Read From EXCEL::"+list.size());
 		for(ConstituencyBoothBlock assemblyConstituencyBlock:list){
 			System.out.println("###########################################################################################");

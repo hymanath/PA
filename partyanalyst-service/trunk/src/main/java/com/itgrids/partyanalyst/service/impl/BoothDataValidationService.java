@@ -1,4 +1,4 @@
-package com.itgrids.partyanalyst.service.impl;
+ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -135,20 +135,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 		
 		if(!StringUtils.isNumeric(censusCode)){
-			String[] censusCodes = null; 
-			if(censusCode.contains("\n")||censusCode.contains(",")||censusCode.contains(" ")){
-				censusCodes = StringUtils.split(censusCode, ",\n ");
-				for(int i=0; i < censusCodes.length; i++){
-					Long censusCodeL = new Long(censusCodes[i]);
-				}
-			}else{
+			if(!(censusCode.contains("\n")||censusCode.contains(",")||censusCode.contains(" "))){
 				corrections.add(censusCode+" Contains Different CharecterSet in "+constituencyName+" With PartNo:"+partNo);
 			}
 		}
 		
-		Long maleVoters = checkAndAssignLong(boothRecord.getMaleVoters(),constituencyName,partNo, corrections);
-		Long femaleVoters = checkAndAssignLong(boothRecord.getFemaleVoters(),constituencyName,partNo, corrections);
-		Long totalVoters = checkAndAssignLong(boothRecord.getTotalVoters(),constituencyName,partNo, corrections);
+		checkAndAssignLong(boothRecord.getMaleVoters(),constituencyName,partNo, corrections);
+		checkAndAssignLong(boothRecord.getFemaleVoters(),constituencyName,partNo, corrections);
+		checkAndAssignLong(boothRecord.getTotalVoters(),constituencyName,partNo, corrections);
 		
 		List<Tehsil> tehsils = tehsilDAO.findByTehsilNameAndDistrict(tehsilName, districtId);
 		if(tehsils.size() != 1){
@@ -170,8 +164,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public List<String> readAssemblyBoothResultExcelAndPopulate(File filePath, String electionYear, Long electionScopeId)throws CsvException{
 		List<String> corrections = new ArrayList<String>();
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		excelBoothResultReader.readExcel(filePath, false);
-		List<ConstituencyBoothBlock> list = excelBoothResultReader.getConstituenciesBlocsks();
+		List<ConstituencyBoothBlock> list = excelBoothResultReader.readExcel(filePath, false);
 		for(ConstituencyBoothBlock assemblyConstituencyBlock:list){
 			String constituencyName = assemblyConstituencyBlock.getConstituencyName();
 			System.out.println("constituencyName "+constituencyName);
@@ -191,7 +184,6 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	}
 	
 	public void checkAndInsertBoothResult(ConstituencyElection constituencyElection, List<CandidateBoothWiseResult> candidateBoothResults, List<String> corrections){
-		String constituencyName = constituencyElection.getConstituency().getName();
 		for(CandidateBoothWiseResult candidateResult:candidateBoothResults){
 			String candidateName = candidateResult.getCandidateName();
 			List<Nomination> nominations = nominationDAO.findByConstituencyElectionAndCandidate(candidateName , constituencyElection.getConstiElecId());
@@ -205,8 +197,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 	public List<String> readParliamentBoothResultExcelAndPopulate(File filePath, String electionYear, Long electionScopeId) throws CsvException{
 		List<String> corrections = new ArrayList<String>();
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		excelBoothResultReader.readExcel(filePath, true);
-		List<ConstituencyBoothBlock> list = excelBoothResultReader.getConstituenciesBlocsks();
+		List<ConstituencyBoothBlock> list = excelBoothResultReader.readExcel(filePath, true);
 		for(ConstituencyBoothBlock assemblyConstituencyBlock:list){
 			String pcName = assemblyConstituencyBlock.getParliamentConstituencyName();
 			String acName = assemblyConstituencyBlock.getConstituencyName();

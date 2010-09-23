@@ -34,7 +34,7 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 	
 	public List getParliamentResultHappenedInAssembly(String ac, Long districtId, Long electionScopeId, String electionYear){
 		Object[] params = {ac, districtId, electionYear, electionScopeId, electionYear};
-		return getHibernateTemplate().find("select model.boothResultId from BoothResult model where " +
+		return getHibernateTemplate().find("select count(model.boothResultId) from BoothResult model where " +
 				"model.boothConstituencyElection.booth.boothId in( select model1.booth.boothId from BoothConstituencyElection model1 " +
 				"where model1.constituencyElection.constituency.name = ? and model1.constituencyElection.constituency.district.districtId = ? " +
 				"and model1.constituencyElection.constituency.electionScope.electionType.electionType = '"+IConstants.ASSEMBLY_ELECTION_TYPE+"' " +

@@ -728,7 +728,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						villageBoothInfoVO = new VillageBoothInfoVO();
 						villageBoothInfoVO.setVillageBoothElectionId(villageBoothElection.getVillageBoothElectionId());
 						villageBoothInfoVO.setPartNo(boothConstituencyElection.getBooth().getPartNo());
-						villageBoothInfoVO.setVillagesCovered(boothConstituencyElection.getBooth().getvillagesCovered());
+						villageBoothInfoVO.setVillagesCovered(boothConstituencyElection.getBooth().getVillagesCovered());
 						villageBoothInfoVO.setVillageName(villageBoothElection.getTownship().getTownshipName());
 						villageBoothInfoVO.setConstituencyName(boothConstituencyElection.getConstituencyElection().getConstituency().getName());
 						villagesInfo.add(villageBoothInfoVO);

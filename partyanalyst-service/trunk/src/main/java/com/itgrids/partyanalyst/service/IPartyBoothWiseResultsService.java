@@ -23,4 +23,6 @@ public interface IPartyBoothWiseResultsService {
 	public List<TeshilPartyInfoVO> getMPTCandZPTCResultsInAMandalForAElection(Long tehsilId,String electionType,String electionYear);
 	
 	public ConstituencyVO getBoothwiseResultsOfTwoElectionsForAConstituency(Long constituencyId);
+	
+	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag);
 }

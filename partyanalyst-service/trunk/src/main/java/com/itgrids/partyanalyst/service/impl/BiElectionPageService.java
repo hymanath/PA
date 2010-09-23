@@ -1005,7 +1005,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			boothResult.setPartNo(booth.getPartNo());
 			boothResult.setLocation(booth.getLocation());
 			boothResult.setMandal(booth.getTehsil().getTehsilName());
-			boothResult.setVillagesCovered(booth.getvillagesCovered());
+			boothResult.setVillagesCovered(booth.getVillagesCovered());
 			boothResult.setTotalVoters(validVotes.intValue());
 			boothResult.setVotesEarned(votesEarned.intValue());
 			boothResult.setPercentage((String)resultObj[8]);
@@ -1593,7 +1593,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 							
 							Booth booth = (Booth)boothResultObjArr[0];
 							Booth booth1 = (Booth)oppPartyResultObjArr[0];
-							String villagesCovered = booth.getvillagesCovered();
+							String villagesCovered = booth.getVillagesCovered();
 							if(booth.getBoothId() == booth1.getBoothId())
 							{
 								boothResultVO.setBoothId(booth.getBoothId());

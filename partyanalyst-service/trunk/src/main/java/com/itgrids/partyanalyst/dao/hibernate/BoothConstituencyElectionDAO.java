@@ -53,12 +53,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		Object[] params = {boothId, constiElecId};
 		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId=? and model.constituencyElection.constiElecId = ?", params);
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByConstituencyAndElection(String constituencyName, String electionYear, Long electionScopeId) {
-		Object[] params = {constituencyName, electionScopeId, electionYear};
-		return getHibernateTemplate().find("from BoothConstituencyElection model where model.constituencyElection.constituency.name = ? and model.constituencyElection.constituency.electionScope.electionScopeId = ? and model.constituencyElection.election.electionYear = ?", params);
-	}
 	
 	public List getAllElectionBoothVotersForMandal(Long tehsilID){
 		StringBuilder query = new StringBuilder();

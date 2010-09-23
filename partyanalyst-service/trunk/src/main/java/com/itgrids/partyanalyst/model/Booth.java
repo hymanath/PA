@@ -34,6 +34,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private Long totalVoters;
+	private Constituency constituency;
+	private Long year;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
 	
@@ -49,7 +51,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public Booth(String partNo, String partName, String location,
 			String villagesCovered, Tehsil tehsil, Long maleVoters, Long femaleVoters,
-			Long totalVoters,
+			Long totalVoters, Constituency constituency, Long year,
 			Set<BoothConstituencyElection> boothConstituencyElections,
 			Set<BoothVillageCensus> boothVillageCensuses) {
 		this.partNo = partNo;
@@ -62,6 +64,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.totalVoters = totalVoters;
 		this.boothConstituencyElections = boothConstituencyElections;
 		this.boothVillageCensuses = boothVillageCensuses;
+		this.constituency = constituency;
+		this.year = year;
 	}
 
 	@Id
@@ -102,15 +106,6 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.location = location;
 	}
 
-	@Column(name = "village_covered", length = 250)
-	public String getvillagesCovered() {
-		return villagesCovered;
-	}
-
-	public void setvillagesCovered(String villagesCovered) {
-		this.villagesCovered = villagesCovered;
-	}
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tehsil_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -167,6 +162,36 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setBoothVillageCensuses(Set<BoothVillageCensus> boothVillageCensuses) {
 		this.boothVillageCensuses = boothVillageCensuses;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
+
+	@Column(name = "year")
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
+	}
+
+	@Column(name = "village_covered", length = 250)
+	public String getVillagesCovered() {
+		return villagesCovered;
+	}
+
+	public void setVillagesCovered(String villagesCovered) {
+		this.villagesCovered = villagesCovered;
 	}
 	
 	

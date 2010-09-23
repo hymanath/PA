@@ -55,7 +55,7 @@ public class BoothDataExcelReader {
 				boothDataUploadVO.setBooths(identifyRowAndBindObject(boothDataExcelRows));
 				boothDataUploadVOs.add(boothDataUploadVO);
 			}
-			testExcelReading();
+			//testExcelReading();
 		} catch(IOException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(BiffException ioe){

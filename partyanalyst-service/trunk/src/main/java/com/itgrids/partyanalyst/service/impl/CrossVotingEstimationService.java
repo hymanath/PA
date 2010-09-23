@@ -261,7 +261,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			crossVotedBoothVO = new CrossVotedBoothVO();
 			crossVotedBoothVO.setBoothId(boothConstituencyElection.getBooth().getBoothId());
 			crossVotedBoothVO.setPartNO(boothConstituencyElection.getBooth().getPartNo());			
-			crossVotedBoothVO.setVillagesCovered(boothConstituencyElection.getBooth().getvillagesCovered());
+			crossVotedBoothVO.setVillagesCovered(boothConstituencyElection.getBooth().getVillagesCovered());
 			Long totalVoters = boothConstituencyElection.getBooth().getTotalVoters();
 			Long acValidVotes = boothConstituencyElection.getBoothResult().getValidVotes();
 			Long acRejectedVotes = boothConstituencyElection.getBoothResult().getRejectedVotes();

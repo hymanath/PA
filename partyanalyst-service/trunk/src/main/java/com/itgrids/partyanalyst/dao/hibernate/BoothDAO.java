@@ -56,4 +56,34 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				"and model1.constituencyElection.election.electionYear=?)",params);
 	}
 
+	public List findByConstituencyAndElectionYear(Long constituencyId,	Long year) {
+		Object[] params = {constituencyId, year};
+		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
+				"model.constituency.constituencyId = ? and model.year = ?",params);
+	}
+	
+	public List findByPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo){
+		Object[] params = {constituencyId, year, partNo};
+		return getHibernateTemplate().find("select count(model.boothId) from Booth model where " +
+		"model.constituency.constituencyId = ? and model.year = ? and model.partNo = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Booth> findbyConstituencyNameDistrictIdPartnoAndElectionYear(
+			String acName, Long districtId, Long electionYear, String partNumber) {
+		Object[] params = {acName, districtId, electionYear, partNumber};
+		return getHibernateTemplate().find("from Booth model where model.constituency.name = ? and " +
+		"model.constituency.district.districtId = ? and model.year = (select max(model1.year) from Booth model1 where " +
+		"model1.year <= ?) and model.partNo = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findbyConstituencyNameDistrictIdAndElectionYear(
+			String acName, Long districtId, Long electionYear) {
+		Object[] params = {acName, districtId, electionYear};
+		return getHibernateTemplate().find("select count(model.boothId) from Booth model where model.constituency.name = ? and " +
+		"model.constituency.district.districtId = ? and model.year = (select max(model1.year) from Booth model1 where " +
+		"model1.year <= ?)",params);
+	}
+
 }
