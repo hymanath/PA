@@ -1385,5 +1385,18 @@
         <action name="completeResultForAPollAction" class="completeResultForAPollAction">
            <result name="success">/jsp/completeResultForAPollPopup.jsp</result>	
         </action>  
+        
+        <action name="getLocalBodiesTypesInAState" class="localBodyElectionAction" method="getLocalBodiesTypesInAState">
+			<result type="json" name="success">
+				<param name="root">localBodyTypes</param>				
+			</result>		
+		</action>
+		
+		<action name="getLocalBodiesInAState" class="localBodyElectionAction" method="getLocalBodiesInAState">
+			<result type="json" name="success">
+				<param name="root">localBodys</param>				
+			</result>		
+		</action>
+		
 	</package>
 </struts>
