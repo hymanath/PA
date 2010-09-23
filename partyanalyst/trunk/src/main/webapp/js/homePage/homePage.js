@@ -37,8 +37,8 @@ function getLocalBodiesForState(stateId)
 	}; 
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	//var url = "getAllPolls.action?"+rparam;						
-	//homePageAjaxCall(rparam,jsObj,url);
+	var url = "getLocalBodiesTypesInAState.action?"+rparam;						
+	homePageAjaxCall(rparam,jsObj,url);
 }
 
 function buildLocalBodiesForAState(jsObj,results)
@@ -51,12 +51,28 @@ function buildLocalBodiesForAState(jsObj,results)
 	var str = '';
 	for(var i=0; i<results.length; i++)
 	{
-		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].name+'_'+results[i].id+'"> '+results[i].name+' </input>';
+		str += '<input type="radio" name="localBodyRadio" onclick="getSelectElmtForLocalBody(this.value)" value="'+results[i].id+'"> '+results[i].name+' </input>';
 		if(i == 1)
 			str += '<br/>';
 	}
 
 	elmt.innerHTML = str;
+}
+
+function getSelectElmtForLocalBody(localBodyId)
+{
+	var statelocalEl = document.getElementById("stateList_l");
+	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
+	
+	var jsObj =
+		{
+			stateId: stateSelectlocalElVal,
+			electionTypeId:localBodyId,
+			task: "getLocalBodiesSelectElmtForState"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getLocalBodiesInAState.action?"+rparam; 
+	homePageAjaxCall(rparam,jsObj,url);	
 }
 
 function buildLocalBodiesSelectElmt(jsObj,results)
@@ -69,26 +85,17 @@ function buildLocalBodiesSelectElmt(jsObj,results)
 
 	var labelStr = '';
 	labelStr += 'Select Location';
+	labelElmt.innerHTML = labelStr;
 	
 	var dataStr = '';
+	dataStr += '<select id="localBodySelectElmt"></select>';
+
 	dataElmt.innerHTML = dataStr;
+
+	clearOptionsListForSelectElmtId("localBodySelectElmt");
+	createOptionsForSelectElmtIdWithSelectOption("localBodySelectElmt",results);
 }
 
-function getSelectElmtForLocalBody(localBodyId)
-{
-	var statelocalEl = document.getElementById("stateList_l");
-	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
-	
-	var jsObj =
-		{
-			stateId: stateSelectlocalElVal,
-			localbodyId:localBodyId,
-			task: "getLocalBodiesForState"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	//var url = "getRecentElectionsInState.action?"+rparam; 
-	//homePageAjaxCall(rparam,jsObj,url);	
-}
 
 function buildPolls()
 {
@@ -339,7 +346,7 @@ function homePageAjaxCall(param,jsObj,url){
 								{
 									buildLocalBodiesForAState(jsObj,myResults);
 								}
-								else if(jsObj.task == "getLocalBodiesForState")
+								else if(jsObj.task == "getLocalBodiesSelectElmtForState")
 								{
 									buildLocalBodiesSelectElmt(jsObj,myResults)
 								}
