@@ -632,6 +632,11 @@ function buildProblemViewingWindow()
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
 }
+function openAddNewProblemWindow()
+{	
+	var browser1 = window.open("addNewProblemAction.action","addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
 
 function buildProblemPostingWindow()
 {
@@ -649,7 +654,7 @@ function buildProblemPostingWindow()
 	str+='<legend> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
-	str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="javascript:{}"/></div>';
+	str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
 	str+='</div>';
 	str+='</fieldset>';
 	
@@ -657,7 +662,7 @@ function buildProblemPostingWindow()
 		bodyElmt.innerHTML=str;
 
 	var postButton = new YAHOO.widget.Button("postButton");
-
+	postButton.on("click", openAddNewProblemWindow); 
 }
 
 function buildConstituencyConnectPeopleWindow()
