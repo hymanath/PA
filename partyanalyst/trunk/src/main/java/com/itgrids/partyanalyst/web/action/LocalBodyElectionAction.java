@@ -1,3 +1,10 @@
+/* 
+ * Copyright (c) 2010 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on September 21, 2010
+ */
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
@@ -215,7 +222,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String chartName = localBodyType+ chartId + session.getId()+".png";
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		
-		ChartProducer.createLineChart("", "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,300,700, null,true );
+		ChartProducer.createLineChart("", "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,700, null,true );
 		
 		return chartName;
 	}
