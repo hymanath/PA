@@ -377,7 +377,7 @@ public class ProblemManagementReportService implements
 				dateConversion = dateConversion(parms[2].toString());
 				problemBean.setExistingFrom(dateConversion); 	
 				problemBean.setName(parms[3].toString());
-				
+				problemBean.setProblemId(problemId);//Added ProblemId in this version Ravi Kiran.Y
 				if(parms[5]==null){
 					problemBean.setComments("No Comments received..");
 				}
