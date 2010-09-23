@@ -310,5 +310,17 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getAllParticipatedPartyResultsInALocalBodyElection(Long localBodyID,String electionYear);
+	
+	@SuppressWarnings("unchecked")
+	public List getWardWiseResultsOfAllPartiesInLocalElectionBodies(Long localBodyId,Long electionId);
+	
+	@SuppressWarnings("unchecked")
+	public List getWardWiseResultsForAPartyInALocalBodyElection(Long localBodyId,Long electionId,Long partyId);
+	
+	@SuppressWarnings("unchecked")
+	public List getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfo(Long localBodyId,Long partyId,Long electionId);
+	
+	@SuppressWarnings("unchecked")
+	public List getResultsForAllPartiesInALocalBodyElectionInAWard(Long localBodyId,Long electionId,Long wardId);
 
 }
