@@ -323,7 +323,7 @@ public class CadreManagementService {
 		
 		return rs;
 	}
-	public Cadre saveCadreInTransaction (final CadreInfo cadreInfo, String task) 
+	public Cadre saveCadreInTransaction (final CadreInfo cadreInfo,final String task) 
 	{
 		Cadre cadreObj = (Cadre) transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
@@ -334,7 +334,7 @@ public class CadreManagementService {
 
 			try {
 				
-				if(!("0".equals(cadreInfo.getCadreId())) && IConstants.UPDATE_EXISTING.equals(windowTask))
+				if(!("0".equals(cadreInfo.getCadreId())) && IConstants.UPDATE_EXISTING.equals(task))
 				{								
 					cadre = cadreDAO.get(new Long(cadreInfo.getCadreId()));
 				} else{
@@ -1268,17 +1268,32 @@ public class CadreManagementService {
 		Tehsil tehsilCA = currentAddress.getTehsil();
 		Township townshipCA = currentAddress.getTownship();
 		Hamlet hamletCA = currentAddress.getHamlet();
-
+		
+		cadreInfo.setState(stateCA.getStateId().toString());
 		cadreInfo.setStateName(stateCA.getStateName());
+		cadreInfo.setDistrict(districtCA.getDistrictId().toString());
 		cadreInfo.setDistrictName(districtCA.getDistrictName());
+		cadreInfo.setConstituencyID(constituencyCA.getConstituencyId());
 		cadreInfo.setConstituencyName(constituencyCA.getName());
+		cadreInfo.setMandal(tehsilCA.getTehsilId().toString());
 		cadreInfo.setMandalName(tehsilCA.getTehsilName());
+		cadreInfo.setVillage(townshipCA.getTownshipId().toString());
 		cadreInfo.setVillageName(townshipCA.getTownshipName());
 		if(hamletCA != null)
 			cadreInfo.setHamletName(hamletCA.getHamletName());
 		
 		if (currentAddress.equals(officialAddress)) {
 			cadreInfo.setSameAsCA(true);
+			cadreInfo.setPhouseNo(currentAddress.getHouseNo());
+			cadreInfo.setPstreet(currentAddress.getStreet());
+			cadreInfo.setPpinCode(currentAddress.getPinCode());
+			
+			cadreInfo.setPstate(stateCA.getStateId().toString());
+			cadreInfo.setPdistrict(districtCA.getDistrictId().toString());
+			cadreInfo.setPconstituencyID(constituencyCA.getConstituencyId());
+			cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
+			cadreInfo.setPvillage(townshipCA.getTownshipId().toString());
+			
 		} else {
 			cadreInfo.setSameAsCA(false);
 			cadreInfo.setPhouseNo(officialAddress.getHouseNo());
@@ -1291,11 +1306,16 @@ public class CadreManagementService {
 			Tehsil tehsilOA = officialAddress.getTehsil();
 			Township townshipOA = officialAddress.getTownship();
 			Hamlet hamletOA = officialAddress.getHamlet();
-
+			
+			cadreInfo.setPstate(stateOA.getStateId().toString());
 			cadreInfo.setPstateName(stateOA.getStateName());
+			cadreInfo.setPdistrict(districtOA.getDistrictId().toString());
 			cadreInfo.setPdistrictName(districtOA.getDistrictName());
+			cadreInfo.setPconstituencyID(constituencyOA.getConstituencyId());
 			cadreInfo.setPconstituencyName(constituencyOA.getName());
+			cadreInfo.setPmandal(tehsilOA.getTehsilId().toString());
 			cadreInfo.setPmandalName(tehsilOA.getTehsilName());
+			cadreInfo.setPvillage(townshipOA.getTownshipId().toString());
 			cadreInfo.setPvillageName(townshipOA.getTownshipName());
 			cadreInfo.setPhamletName(hamletOA.getHamletName());			
 		}
@@ -1344,21 +1364,21 @@ public class CadreManagementService {
 				if (IConstants.LANGUAGE_ENGLISH.equals(obj.getLanguage()
 						.getLanguage())) {
 					if (obj.getIsAbleToRead()!= null && obj.getIsAbleToRead().equals("true"))
-						languageOptions_English.add("read");
+						languageOptions_English.add(IConstants.READ_LANGUAGE);
 					if (obj.getIsAbleToSpeak() != null && obj.getIsAbleToSpeak().equals("true"))
-						languageOptions_English.add("speak");
+						languageOptions_English.add(IConstants.SPEAK_LANGUAGE);
 					if (obj.getIsAbleToWrite() != null && obj.getIsAbleToWrite().equals("true"))
-						languageOptions_English.add("write");
+						languageOptions_English.add(IConstants.WRITE_LANGUAGE);
 
 				}
 				if (IConstants.LANGUAGE_HINDI.equals(obj.getLanguage()
 						.getLanguage())) {
 					if (obj.getIsAbleToRead() != null && obj.getIsAbleToRead().equals("true"))
-						languageOptions_Hindi.add("read");
+						languageOptions_Hindi.add(IConstants.READ_LANGUAGE);
 					if (obj.getIsAbleToSpeak() != null && obj.getIsAbleToSpeak().equals("true"))
-						languageOptions_Hindi.add("speak");
+						languageOptions_Hindi.add(IConstants.SPEAK_LANGUAGE);
 					if (obj.getIsAbleToWrite() != null && obj.getIsAbleToWrite().equals("true"))
-						languageOptions_Hindi.add("write");
+						languageOptions_Hindi.add(IConstants.WRITE_LANGUAGE);
 
 				}
 

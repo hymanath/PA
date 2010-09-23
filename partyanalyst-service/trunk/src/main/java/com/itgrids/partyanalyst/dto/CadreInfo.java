@@ -92,6 +92,11 @@ public class CadreInfo implements Serializable{
 	private List<SelectOptionVO> selectedTrainingCamps = new ArrayList<SelectOptionVO>();
 	private String[] cadreParticipatedCampNames;
 	private List<String> trainingCamps;
+	private String cadreLevelState;
+	private String cadreLevelDistrict;
+	private String cadreLevelConstituency;
+	private String cadreLevelMandal;
+	private String cadreLevelVillage;
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;
@@ -536,6 +541,38 @@ public class CadreInfo implements Serializable{
 	public void setTrainingCamps(List<String> trainingCamps) {
 		this.trainingCamps = trainingCamps;
 	}
+	public String getCadreLevelState() {
+		return cadreLevelState;
+	}
+	public void setCadreLevelState(String cadreLevelState) {
+		this.cadreLevelState = cadreLevelState;
+	}
+	public String getCadreLevelDistrict() {
+		return cadreLevelDistrict;
+	}
+	public void setCadreLevelDistrict(String cadreLevelDistrict) {
+		this.cadreLevelDistrict = cadreLevelDistrict;
+	}
+	public String getCadreLevelConstituency() {
+		return cadreLevelConstituency;
+	}
+	public void setCadreLevelConstituency(String cadreLevelConstituency) {
+		this.cadreLevelConstituency = cadreLevelConstituency;
+	}
+	public String getCadreLevelMandal() {
+		return cadreLevelMandal;
+	}
+	public void setCadreLevelMandal(String cadreLevelMandal) {
+		this.cadreLevelMandal = cadreLevelMandal;
+	}
+	public String getCadreLevelVillage() {
+		return cadreLevelVillage;
+	}
+	public void setCadreLevelVillage(String cadreLevelVillage) {
+		this.cadreLevelVillage = cadreLevelVillage;
+	}
+	
+	
 	
 	
 	

@@ -237,7 +237,7 @@ public interface IConstants {
     public static final String GENERAL_EXCEPTION = "GENERAL_EXCEPTION";
     public static final String CREATE_NEW = "new";
     public static final String UPDATE_EXISTING = "update_existing";
-    public static final String SPEAK_LANGUAGE = "speak";
-    public static final String READ_LANGUAGE = "read"; 
-    public static final String WRITE_LANGUAGE = "write";
+    public static final String SPEAK_LANGUAGE = "Able To Speak";
+    public static final String READ_LANGUAGE = "Able To  Read"; 
+    public static final String WRITE_LANGUAGE = "Able To  Write";
 }
