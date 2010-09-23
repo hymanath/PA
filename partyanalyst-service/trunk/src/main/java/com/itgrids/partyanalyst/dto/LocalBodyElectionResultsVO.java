@@ -25,6 +25,10 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	private String localBodyElectionYear;
 	private String localBodyRegion;
 	
+	private Long totalWards;
+	private Long totalVotes;
+	private Long totPolledVotes;
+	
 	private Long stateId;
 	private Long tehsilId;
 	private Long districtId;
@@ -128,6 +132,23 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	public void setHighLevelChart(String highLevelChart) {
 		this.highLevelChart = highLevelChart;
 	}
-
-
+	public Long getTotalWards() {
+		return totalWards;
+	}
+	public void setTotalWards(Long totalWards) {
+		this.totalWards = totalWards;
+	}
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+	public Long getTotPolledVotes() {
+		return totPolledVotes;
+	}
+	public void setTotPolledVotes(Long totPolledVotes) {
+		this.totPolledVotes = totPolledVotes;
+	}
+		
 }
