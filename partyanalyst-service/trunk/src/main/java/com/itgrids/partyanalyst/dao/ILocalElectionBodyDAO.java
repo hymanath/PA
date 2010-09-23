@@ -8,9 +8,14 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 
 public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Long>{
 
-	List<LocalElectionBody> findByElectionTypeDistrictTehsilAndLEBName(Long electionTypeId, String districtName, String tehsilName,
+	public List<LocalElectionBody> findByElectionTypeDistrictTehsilAndLEBName(Long electionTypeId, String districtName, String tehsilName,
 			String localElecBodyName);
-	List findByElectionTypeAndState(Long electionTypeId, Long stateId);
+	
+	@SuppressWarnings("unchecked")
+	public List findByElectionTypeAndState(Long electionTypeId, Long stateId);
+	
+	@SuppressWarnings("unchecked")
+	public List getLocalELectionTypesInAState(Long stateId);
 	
 	
 }
