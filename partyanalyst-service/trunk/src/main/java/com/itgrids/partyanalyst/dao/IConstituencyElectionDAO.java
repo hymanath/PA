@@ -104,4 +104,9 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List getConstituenciesCountByStateForCountryAndElection(Long countryId, Long electionId);
 	
+	@SuppressWarnings("unchecked")
+	public List getConstituencyValidVotesForLocalBodyElection(Long localBodyId,String electionYear);
+	
+	@SuppressWarnings("unchecked")
+	public List getLocalBodyElectionsInAState(Long localBodyId,Long stateId);
 }
