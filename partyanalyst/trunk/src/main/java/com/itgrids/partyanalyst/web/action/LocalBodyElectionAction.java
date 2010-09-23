@@ -6,16 +6,20 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
@@ -34,8 +38,10 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	
 	private String task = null;
 	JSONObject jObj = null;
+	private HttpSession session;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+	private ServletContext context;
 	
 	private Long stateId;
 	private Long localBodyId;
@@ -78,6 +84,14 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		this.localBodyElectionService = localBodyElectionService;
 	}
 
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -86,8 +100,12 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		this.staticDataService = staticDataService;
 	}
 
-	public void setServletContext(ServletContext arg0) {
-		
+	public ServletContext getContext() {
+		return context;
+	}
+
+	public void setServletContext(ServletContext context) {
+		this.context = context;
 	}
 
 	public List<SelectOptionVO> getLocalBodys() {
@@ -136,7 +154,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		localBodyElectionResults = localBodyElectionService.getLocalBodyElectionResultsByLocalBodyTypeAndYear(localBodyId, stateId);
 		if(localBodyElectionResults != null){
 			if(localBodyElectionResults.getMuncipalityVO() != null){
-				String chartName = generateChartForResultsInElection(localBodyElectionResults.getMuncipalityVO(),localBodyElectionResults.getLocalBodyRegion(),localBodyElectionResults.getLocalBodyElectionYear());
+				String chartName = generateChartForResultsInElection(localBodyElectionResults.getMuncipalityVO(),localBodyElectionResults.getLocalBodyRegion(),localBodyElectionResults.getLocalBodyElectionYear(),localBodyElectionResults.getLocalBodyElectionType());
 				localBodyElectionResults.setHighLevelChart(chartName);
 			}
 		}
@@ -186,14 +204,40 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear){
+	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType){
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside generateChartForResultsInElection Method ..");
-		String chartName = null;
 		
+		session = request.getSession();
+				
+		String chartId = localBodyName.concat("_LocalBodyElection").concat("_For_").concat(electionYear);
+		String chartName = localBodyType+ chartId + session.getId()+".png";
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		
+		ChartProducer.createLineChart("", "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,300,700, null,true );
 		
 		return chartName;
+	}
+	
+	private CategoryDataset createDataSetForChart(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType){
+		
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		String series1 = "1st Position";
+		String series2 = "2nd Position";
+		String series3 = "3rd Position";
+		String series4 = "Nth Position";
+		
+		
+		if(partyResultsVO != null && partyResultsVO.size() > 0){
+			for(TeshilPartyInfoVO resultsList:partyResultsVO){
+				dataset.addValue(resultsList.getPartyWonSeats(), resultsList.getPartyName(), series1);
+				dataset.addValue(resultsList.getPartySecndPos(), resultsList.getPartyName(), series2);
+				dataset.addValue(resultsList.getPartyThirdPos(), resultsList.getPartyName(), series3);
+				dataset.addValue(resultsList.getPartyNthPos(), resultsList.getPartyName(), series4);
+			}
+		}
+	 return dataset;
 	}
 	
 }
