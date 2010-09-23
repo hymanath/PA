@@ -7,6 +7,7 @@ public class TeshilPartyInfoVO {
 	private String partyName;
 	private Long participatedSeats;
 	private Long totalValidVotes;
+	private Long votesGained;
 	private Long totalVotesWonByParty;
 	private Long seatsWonByParty;
 	private Float percentageOfVotesWonByParty;
@@ -24,6 +25,16 @@ public class TeshilPartyInfoVO {
 	private String chartName;
 	private Long partyId;
 	private String totalVotersInConstituency;
+	
+	private Long partyWonSeats;
+	private Long partySecndPos;
+	private Long partyThirdPos;
+	private Long partyNthPos;
+	
+	private String totConstiVotesPercent;
+	private String partiPartiVotesPercent;
+	private Long totalConstiValidVotes;
+	private Long partyParticipatedValidVotes;
 	
 	
 	public String getTotalVotersInConstituency() {
@@ -146,5 +157,59 @@ public class TeshilPartyInfoVO {
 	}
 	public void setOthersPercent(Float othersPercent) {
 		this.othersPercent = othersPercent;
+	}
+	public Long getPartyWonSeats() {
+		return partyWonSeats;
+	}
+	public void setPartyWonSeats(Long partyWonSeats) {
+		this.partyWonSeats = partyWonSeats;
+	}
+	public Long getPartySecndPos() {
+		return partySecndPos;
+	}
+	public void setPartySecndPos(Long partySecndPos) {
+		this.partySecndPos = partySecndPos;
+	}
+	public Long getPartyThirdPos() {
+		return partyThirdPos;
+	}
+	public void setPartyThirdPos(Long partyThirdPos) {
+		this.partyThirdPos = partyThirdPos;
+	}
+	public Long getPartyNthPos() {
+		return partyNthPos;
+	}
+	public void setPartyNthPos(Long partyNthPos) {
+		this.partyNthPos = partyNthPos;
+	}
+	public Long getVotesGained() {
+		return votesGained;
+	}
+	public void setVotesGained(Long votesGained) {
+		this.votesGained = votesGained;
+	}
+	public Long getTotalConstiValidVotes() {
+		return totalConstiValidVotes;
+	}
+	public void setTotalConstiValidVotes(Long totalConstiValidVotes) {
+		this.totalConstiValidVotes = totalConstiValidVotes;
+	}
+	public Long getPartyParticipatedValidVotes() {
+		return partyParticipatedValidVotes;
+	}
+	public void setPartyParticipatedValidVotes(Long partyParticipatedValidVotes) {
+		this.partyParticipatedValidVotes = partyParticipatedValidVotes;
+	}
+	public String getTotConstiVotesPercent() {
+		return totConstiVotesPercent;
+	}
+	public void setTotConstiVotesPercent(String totConstiVotesPercent) {
+		this.totConstiVotesPercent = totConstiVotesPercent;
+	}
+	public String getPartiPartiVotesPercent() {
+		return partiPartiVotesPercent;
+	}
+	public void setPartiPartiVotesPercent(String partiPartiVotesPercent) {
+		this.partiPartiVotesPercent = partiPartiVotesPercent;
 	}
 }
