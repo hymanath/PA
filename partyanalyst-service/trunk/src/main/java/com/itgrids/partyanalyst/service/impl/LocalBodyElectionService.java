@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.utils.PartyElectionResultVOCompareByRank;
+import com.itgrids.partyanalyst.utils.TehsilPartyInfoVOCompareByWonSeats;
 
 public class LocalBodyElectionService implements ILocalBodyElectionService {
 
@@ -274,6 +275,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				
 				localBodyElecResList.add(partyResultVO);
 			}
+			Collections.sort(localBodyElecResList,new TehsilPartyInfoVOCompareByWonSeats());
 			localBodyElectionResultVO.setMuncipalityVO(localBodyElecResList);
 		}
 		
