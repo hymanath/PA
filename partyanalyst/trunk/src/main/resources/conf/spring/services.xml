@@ -548,6 +548,13 @@
 	    <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
+	
+	<bean name="localBodyElectionService" class="com.itgrids.partyanalyst.service.impl.LocalBodyElectionService">
+	    <property name="electionDAO" ref="electionDAO" />
+        <property name="nominationDAO" ref="nominationDAO" />
+	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	</bean>
     
 </beans>		
 		

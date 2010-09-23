@@ -451,4 +451,9 @@
 	<bean id="ecrComparedResultsAction" class="com.itgrids.partyanalyst.web.action.ECRComparedResultsAction" singleton="false">
 		<property name="electionComparisonReportService" ref="electionComparisonReportService" />
 	</bean>
+	
+	<bean id="localBodyElectionAction" class="com.itgrids.partyanalyst.web.action.LocalBodyElectionAction" singleton="false">
+		<property name="localBodyElectionService" ref="localBodyElectionService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>		
