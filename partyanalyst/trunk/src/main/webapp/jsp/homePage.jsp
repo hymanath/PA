@@ -604,6 +604,8 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								</tr>
 								<tr>
 									<td><div id="localBodiesSelectDiv_label"></div></td>
+								</tr>
+								<tr>
 									<td><div id="localBodiesSelectDiv_data"></div></td>									
 								</tr>
 							</table>
