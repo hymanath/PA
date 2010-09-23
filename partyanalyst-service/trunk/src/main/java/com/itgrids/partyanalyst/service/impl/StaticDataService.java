@@ -3666,6 +3666,7 @@ public class StaticDataService implements IStaticDataService {
 	/**
 	 * This method return all parties that have participated in that particular election year.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getAllPartiesForAnElectionYear(String electionYear,String electionType){
 		ResultStatus resultVO = new ResultStatus();
 		resultVO.setResultCode(ResultCodeMapper.SUCCESS);
@@ -4092,6 +4093,7 @@ public class StaticDataService implements IStaticDataService {
 	 * @param districtId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public TeshilPartyInfoVO getAllPartyTrendsForAllMuncipalitiesInADistrict(String electionType,Long districtId){
 		 String latestMuncipalElectionYear; 
 		 List<TeshilPartyInfoVO> allMuncipalities = new ArrayList<TeshilPartyInfoVO>(0);
@@ -4127,6 +4129,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	}	
 
+	@SuppressWarnings("unchecked")
 	public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType){
 		BigDecimal percentage = new BigDecimal(0.0);		 
 		 Float totalValidVotes=0f;
@@ -5869,5 +5872,58 @@ public class StaticDataService implements IStaticDataService {
 		
 	 return selectedParties;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IStaticDataService#getLocalBodyElectionTypesInAState(java.lang.Long)
+	 * Method that returns a list of Local Body Election Types in a state
+	 */
+	public List<SelectOptionVO> getLocalBodyElectionTypesInAState(Long stateId){
+		
+		List<SelectOptionVO> localBodyElectionsList = new ArrayList<SelectOptionVO>();
+		
+		if(stateId != null){
+			List electionTypes = localElectionBodyDAO.getLocalELectionTypesInAState(stateId);
+			if(electionTypes != null && electionTypes.size() > 0){
+				 for(int i=0;i<electionTypes.size();i++){
+					  Object[] values = (Object[])electionTypes.get(i);
+					  SelectOptionVO option = new SelectOptionVO();
+					  option.setId((Long)values[0]);
+					  option.setName((String)values[1]);
+					  
+					  localBodyElectionsList.add(option);
+				 }
+			}
+		}
+		
+	 return localBodyElectionsList;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IStaticDataService#getLocalBodysInAStateByType(java.lang.Long, java.lang.Long)
+	 * Method returns a list of Local Bodys in a state 
+	 */
+	public List<SelectOptionVO> getLocalBodysInAStateByType(Long stateId,Long typeId){
+		List<SelectOptionVO> localBodysList = new ArrayList<SelectOptionVO>();
+		
+		if(stateId != null && typeId != null){
+			List localBodys = localElectionBodyDAO.findByElectionTypeAndState(typeId, stateId);
+			if(localBodys != null && localBodys.size() > 0){
+				 for(int i=0;i<localBodys.size();i++){
+					  Object[] values = (Object[])localBodys.get(i);
+					  SelectOptionVO option = new SelectOptionVO();
+					  option.setId((Long)values[0]);
+					  option.setName((String)values[1]);
+					  
+					  localBodysList.add(option);
+				 }
+			}
+		}
+		
+	 return localBodysList;
+	}
+	
+	
 }
 
