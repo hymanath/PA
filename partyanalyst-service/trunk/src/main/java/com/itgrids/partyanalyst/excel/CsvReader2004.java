@@ -21,6 +21,7 @@ public class CsvReader2004 implements IExcelReader{
 	private List<CandidateElectionResult> candidateElectionResults;
 	private ExcelRowExtracter columnMapper;
 	private String constituencyName;
+	private Long locationId;
 	public void readCSV(File filePath) throws CsvException{
 		
 		try{
@@ -85,6 +86,7 @@ public class CsvReader2004 implements IExcelReader{
 		} catch (Exception e) {
 			System.out.println("Exception == "+e.getMessage());
 		}
+					
 
 	}
 
@@ -107,9 +109,20 @@ public class CsvReader2004 implements IExcelReader{
 					String str=(String)methods[i].invoke(csvColumnMapperObj, null);
 					if(methods[i].getName().equals("getExcelColumn2")&& str.indexOf(".")>0 && csvColumnMapperObj.getExcelColumn3().length()==0 && csvColumnMapperObj.getExcelColumn4().length()==0 && csvColumnMapperObj.getExcelColumn5().length()==0 && csvColumnMapperObj.getExcelColumn6().length()==0 && csvColumnMapperObj.getExcelColumn7().length()==0 && csvColumnMapperObj.getExcelColumn8().length()==0){
 						candidateElectionResults=new ArrayList<CandidateElectionResult>();
-						constituencyBlock= checkConstituencyForReservation(str);
 						/*new ConstituencyBlock();
 						constituencyBlock.setConstituencyName(StringUtils.split(str,".")[1].trim());*/
+						
+						//modified by sai
+						boolean flag=false;
+						String constiName[] = str.split("-");
+						if(constiName.length > 1){
+							flag = true;
+							locationId = new Long(constiName[1].trim());
+							
+						}
+						//end
+						constituencyBlock= checkConstituencyForReservation(str,flag);
+						
 						break;
 					}else if(str.startsWith(ConstituencyElectionResultCSVColumnNames.ELECTORS))
 					{
@@ -189,6 +202,14 @@ public class CsvReader2004 implements IExcelReader{
 		this.candidateElectionResults = candidateElectionResults;
 	}
 
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
 	public ExcelRowExtracter getColumnMapper() {
 		return columnMapper;
 	}
@@ -205,11 +226,21 @@ public class CsvReader2004 implements IExcelReader{
 		this.constituencyName = constituencyName;
 	}
 
-	private ConstituencyBlock checkConstituencyForReservation(String constituencyName){
+	private ConstituencyBlock checkConstituencyForReservation(String constituencyName,Boolean flag){
 		ConstituencyBlock constituencyBlock = new ConstituencyBlock();
+		
+		//modified by sai
+		if(flag == true)
+			constituencyBlock.setDistrictId(locationId);
+		
+		//end
 		if(constituencyName!=null && constituencyName.length()>0){
 			String str[]=StringUtils.split(constituencyName+"(PA)", ".()");
-			constituencyBlock.setConstituencyName(str[1].trim());
+			String constiName[] = str[1].split("-");
+			if(constiName.length > 1)
+				constituencyBlock.setConstituencyName(constiName[0].trim());
+			else
+			    constituencyBlock.setConstituencyName(str[1].trim());
 			if(str.length>2 && !str[2].equalsIgnoreCase("PA")){
 				constituencyBlock.setReservationInfo(str[2].trim());
 			}			
@@ -218,4 +249,8 @@ public class CsvReader2004 implements IExcelReader{
 		
 		return constituencyBlock;
 	}
+	
+	
+	
+	
 }
