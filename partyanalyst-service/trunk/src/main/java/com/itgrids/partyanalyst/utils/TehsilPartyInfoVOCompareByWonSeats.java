@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 public class TehsilPartyInfoVOCompareByWonSeats implements Comparator<TeshilPartyInfoVO> {
 
 	public int compare(TeshilPartyInfoVO a, TeshilPartyInfoVO b) {
-		return b.getPartyWonSeats().compareTo(b.getPartyWonSeats());
+		return a.getVotesGained().compareTo(b.getVotesGained());
 	}
 
 }
