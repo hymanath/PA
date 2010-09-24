@@ -235,11 +235,6 @@ function buildCadreInfo(jsObj,results)
 	str += '					<td>'+results.street+'</td>';
 	str += '				</tr>';
 	str += '				<tr>';
-	str += '					<th style="width:125px">Hamlet </th>';
-	str += '					<th> : </th>';
-	str += '					<td>'+results.hamletName+'</td>';
-	str += '				</tr>';
-	str += '				<tr>';
 	str += '					<th style="width:125px">Village </th>';
 	str += '					<th> : </th>';
 	str += '					<td>'+results.villageName+'</td>';
