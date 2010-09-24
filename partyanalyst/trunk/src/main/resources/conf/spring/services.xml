@@ -10,6 +10,9 @@
 		<property name="opinionPollResultDAO" ref="opinionPollResultDAO" /> 
 		<property name="opinionPollQuestionOptionsDAO" ref="opinionPollQuestionOptionsDAO" /> 
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="opinionPollDAO" ref="opinionPollDAO" /> 
+		<property name="questionsRepositoryDAO" ref="questionsRepositoryDAO" /> 
 	</bean>
 	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
