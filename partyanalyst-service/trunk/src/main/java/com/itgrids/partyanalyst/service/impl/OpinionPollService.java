@@ -13,9 +13,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IOpinionPollDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
+import com.itgrids.partyanalyst.dao.IQuestionsRepositoryDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
@@ -36,8 +39,36 @@ public class OpinionPollService implements IOpinionPollService {
 	private IOpinionPollQuestionsDAO opinionPollQuestionsDAO;
 	private IOpinionPollResultDAO opinionPollResultDAO;
 	private IOpinionPollQuestionOptionsDAO opinionPollQuestionOptionsDAO;
+	private IQuestionsRepositoryDAO questionsRepositoryDAO;
+	private IOpinionPollDAO opinionPollDAO;
+	private IRegistrationDAO registrationDAO;
 	
 	
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
+	public IQuestionsRepositoryDAO getQuestionsRepositoryDAO() {
+		return questionsRepositoryDAO;
+	}
+
+	public void setQuestionsRepositoryDAO(
+			IQuestionsRepositoryDAO questionsRepositoryDAO) {
+		this.questionsRepositoryDAO = questionsRepositoryDAO;
+	}
+
+	public IOpinionPollDAO getOpinionPollDAO() {
+		return opinionPollDAO;
+	}
+
+	public void setOpinionPollDAO(IOpinionPollDAO opinionPollDAO) {
+		this.opinionPollDAO = opinionPollDAO;
+	}
+
 	public IOpinionPollQuestionOptionsDAO getOpinionPollQuestionOptionsDAO() {
 		return opinionPollQuestionOptionsDAO;
 	}
@@ -244,5 +275,56 @@ public class OpinionPollService implements IOpinionPollService {
 				return null;
 			}
 	}
+	 
+	 
+	 /**
+		 * This method creates the poll given by admin/user.
+		 * 
+		 * @return boolean
+		 * @author Kamalalakar Dandu
+		 */
+	 
+	 
+	 public boolean createPoll(OpinionPollVO dataVO, Long userId) {
+			boolean isSaved = false;
+			OpinionPoll opinionPoll = new OpinionPoll();
+			opinionPoll.setRegistration(registrationDAO.get(userId)); 
+			opinionPoll.setDescription(dataVO.getDescription());
+			opinionPoll.setOpinionPollStartDate(dataVO.getOpinionPollStartDate());
+			opinionPoll.setOpinionPollEndDate(dataVO.getOpinionPollEndDate());
+			opinionPoll.setTitle(dataVO.getTitle());
+			opinionPoll.setIs_delete("false");
+			opinionPoll = opinionPollDAO.save(opinionPoll);
+			
+			for(QuestionsOptionsVO result:dataVO.getQuesitons()){
+				
+				QuestionsRepository questionsRepository = new QuestionsRepository();
+				questionsRepository.setQuestion(result.getQuestion());
+				questionsRepository = questionsRepositoryDAO.save(questionsRepository);
+				
+				OpinionPollQuestions opinionPollQuestions = new OpinionPollQuestions();
+				opinionPollQuestions.setOpinionPoll(opinionPoll);
+				opinionPollQuestions.setQuestionsRepository(questionsRepository);
+				opinionPollQuestions = opinionPollQuestionsDAO.save(opinionPollQuestions);
+							
+				for(OptionVO result2 : result.getOptions()){
+					
+					OpinionPollQuestionOptions opinionPollQuestionOptions = new OpinionPollQuestionOptions();
+					opinionPollQuestionOptions.setQuestionsRepository(questionsRepository);
+					opinionPollQuestionOptions.setQuestionOption(result2.getOption());
+					
+					opinionPollQuestionOptions = opinionPollQuestionOptionsDAO.save(opinionPollQuestionOptions);
+					
+					/*OpinionPollResult opinionPollResult =new OpinionPollResult();
+					opinionPollResult.setOpinionPollQuestionOptions(opinionPollQuestionOptions);
+					opinionPollResult.setCount(0l);
+					opinionPollResultDAO.save(opinionPollResult);  */ 
+				}
+					
+			}
+			isSaved = true;
+			return isSaved;
+			
+		}
 	
 }
