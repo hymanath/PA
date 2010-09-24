@@ -10,6 +10,10 @@
 		<property name="opinionPollService" ref="opinionPollService" />
 	</bean>	
 	
+	<bean id="opinionPollPostAction" class="com.itgrids.partyanalyst.web.action.OpinionPollPostAction" singleton="false">
+		<property name="opinionPollService" ref="opinionPollService" />
+	</bean>
+	
 	<bean id="completeResultForAPollAction" class="com.itgrids.partyanalyst.web.action.CompleteResultForAPollAction" singleton="false">
 		<property name="opinionPollService" ref="opinionPollService" />
 	</bean>	
