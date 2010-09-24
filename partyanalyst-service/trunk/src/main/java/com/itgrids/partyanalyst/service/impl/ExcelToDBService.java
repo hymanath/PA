@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IExcelToDBService;
 import com.itgrids.partyanalyst.utils.CandidateVotesComparator;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ExcelToDBService implements IExcelToDBService {
 
@@ -197,11 +198,15 @@ public int processBatch(List<Party> parties,List<Constituency> constituencies,Co
 			}
 			Constituency constituencyObj;
 			//modified by sai
-			if(constituecBlock.getDistrictId() != null && constituecBlock.getDistrictId().longValue() != 0)
-				constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,constituecBlock.getDistrictId());
+			if(constituecBlock.getDistrictId() != null && constituecBlock.getDistrictId().longValue() != 0){
+				if(electionObj.getElectionScope().getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				    constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null,constituecBlock.getDistrictId());
+				else
+					constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,constituecBlock.getDistrictId(),null);
+			}
 			//end
 			else
-				constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null);
+				constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null,null);
 			
 			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
 			constituencyElectionObj.setConstituency(constituencyObj);
@@ -257,24 +262,44 @@ public int processBatch(List<Party> parties,List<Constituency> constituencies,Co
 		}
 	return constituencyNo;
 }
-private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope,Long districtId){
+private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope,Long districtId,Long stateId){
 	boolean constituencyFlag = true;
 	Constituency lconstituencyObj= null;
 	if(constituencis!=null && constituencis.size()>0){
 		for(Constituency con: constituencis){
-			if(districtId == null){
-			 if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
-				lconstituencyObj = con;
-				constituencyFlag = false;
-				break;
-			 }
+			
+			//Parliament Election Type
+			if(electionScope.getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+				if(stateId == null){
+					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
+						lconstituencyObj = con;
+						constituencyFlag = false;
+						break;
+					 }
+				}else if(stateId != null){
+					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && stateId.equals(con.getState().getStateId()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
+						 lconstituencyObj = con;
+						 constituencyFlag = false;
+						 break;
+					}
+				}
 			}
-			else if(districtId != null){
-				if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId()) && districtId.equals(con.getDistrict().getDistrictId())){
-				 lconstituencyObj = con;
-				 constituencyFlag = false;
-				 break;
+			//Assembly Election Type
+			else{
+				if(districtId == null){
+				 if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
+					lconstituencyObj = con;
+					constituencyFlag = false;
+					break;
 				 }
+				}
+				else if(districtId != null){
+					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId()) && districtId.equals(con.getDistrict().getDistrictId())){
+					 lconstituencyObj = con;
+					 constituencyFlag = false;
+					 break;
+					 }
+				}
 			}
 		}
 	}
@@ -508,7 +533,7 @@ public TransactionTemplate getTransactionTemplate() {
 public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 	this.transactionTemplate = transactionTemplate;
 }
-//Assembly-ElectionResults-AP-1989_Pattern2.xls
+
 private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws CsvException{
 	if(logger.isDebugEnabled())
 	logger.debug("In the selectReaderAndFetchConstituencyBlock metbod");
