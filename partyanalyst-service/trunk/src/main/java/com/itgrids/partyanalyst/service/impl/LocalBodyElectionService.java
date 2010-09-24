@@ -218,6 +218,8 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			localBodyElectionResultVO.setTotPolledVotes(totalPolledVotes.longValue());
 			else
 				localBodyElectionResultVO.setTotPolledVotes(0L);
+			if(constiValidVotes != null)
+				localBodyElectionResultVO.setTotalValidVotes(constiValidVotes.longValue());
 		}
 		
 		//Map<PartyId,results> is a Hashmap that holds party results 
@@ -252,38 +254,30 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				//won seats info
 				if(partyWonSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO wonSeats = partyWonSeatsInfo.get(partyId);
-				if(wonSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartyWonSeats(wonSeats.getSeatsWonByParty());
-				else
-				partyResultVO.setPartyWonSeats(0L);	
-    			}
+				}else if(!partyWonSeatsInfo.containsKey(partyId))
+    				partyResultVO.setPartyWonSeats(0L);	
 				
 				//2nd pos info
 				if(partySecPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO secndPosSeats = partySecPosSeatsInfo.get(partyId);
-				if(secndPosSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartySecndPos(secndPosSeats.getSeatsWonByParty());
-				else
-				partyResultVO.setPartySecndPos(0L);
-				}
+				}else if(!partySecPosSeatsInfo.containsKey(partyId))
+					partyResultVO.setPartySecndPos(0L);
 				
 				//3rd pos info
 				if(partyThirdPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO thirdPosSeats = partyThirdPosSeatsInfo.get(partyId);
-				if(thirdPosSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartyThirdPos(thirdPosSeats.getSeatsWonByParty());	
-				else
-				partyResultVO.setPartyThirdPos(0L);	
-				}
+				}else if(!partyThirdPosSeatsInfo.containsKey(partyId))
+					partyResultVO.setPartyThirdPos(0L);	
 				
 				//Nth pos info
 				if(partyNthPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO nthPosSeats = partyNthPosSeatsInfo.get(partyId);
-				if(nthPosSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartyNthPos(nthPosSeats.getSeatsWonByParty());		
-				else
-				partyResultVO.setPartyNthPos(0L);	
-				}
+				}else if(!partyNthPosSeatsInfo.containsKey(partyId))
+					partyResultVO.setPartyNthPos(0L);
 				
 				localBodyElecResList.add(partyResultVO);
 			}
