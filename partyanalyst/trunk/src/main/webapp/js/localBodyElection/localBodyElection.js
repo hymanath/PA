@@ -6,6 +6,7 @@ var localBodyElectionObj = {
 								localBodyElectionTypeName:'',
 								localBodyId:'',
 								localBodyName:'',
+								localBodyElectionId:'',
 								tehsilId:'',
 								tehsilName:'',
 								districtId:'',
@@ -16,6 +17,104 @@ function initializeLocalBodiesElectionPage()
 {
 	buildLocalBodyElectionNews();
 	buildElectionResultsDataTable();
+	//buildWardWiseElectionResults('all');
+}
+
+function buildWardWiseElectionResults(type)
+{
+	var jsObj=
+	{
+		stateId:localBodyElectionObj.stateId,
+		localBodyId:localBodyElectionObj.localBodyId,
+		localBodyElectionId:localBodyElectionObj.localBodyElectionId,
+		taskType:type,
+		partyId:"0",
+		task:"getWardWiseElectionResults"					
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getWardWiseElectionResults.action?"+rparam;						
+	
+	callAjax(jsObj,url);
+}
+
+function buildWardWiseElectionResults(jsObj,results)
+{
+	var elmt = document.getElementById("wardsElectionResults_body_results");
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="liquid">';
+	str += '<span class="previous"></span>';
+	str += '<div class="wrapper">';
+	str += '	<ul>';
+	str += '		<li><a class="customLink" rel="1"><div class="tabbox">Ward 1</div></a></li>';
+	str += '		<li><a class="customLink" rel="2"><div class="tabbox">Ward 2</div></a></li>';
+	str += '		<li><a class="customLink" rel="3"><div class="tabbox">Ward 3</div></a></li>';
+	str += '		<li><a class="customLink" rel="4"><div class="tabbox">Ward 4</div></a></li>';	
+	str += '		<li><a class="customLink" rel="5"><div class="tabbox">Ward 5</div></a></li>';
+	str += '		<li><a class="customLink" rel="6"><div class="tabbox">Ward 6</div></a></li>';
+	str += '		<li><a class="customLink" rel="7"><div class="tabbox">Ward 7</div></a></li>';
+	str += '		<li><a class="customLink" rel="8"><div class="tabbox">Ward 8</div></a></li>';
+	str += '	</ul>';
+	str += '</div>';
+	str += '<span class="next"></span>';
+	str += '</div>';
+	
+	str += '<div id="wardResultsSlider" class="slider" >';
+    str += '<ul style="height:241px;">';
+    str += '    <li >Content 1 </li>';
+    str += '    <li >Content 2</li>';
+    str += '    <li >Content 3</li>';
+	 str += '    <li >Content 4</li>';
+    str += '    <li >Content 5</li>';
+    str += '    <li >Content 6</li>';
+	 str += '    <li >Content 7</li>';
+    str += '    <li >Content 8</li>';
+    str += '</ul>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
+	
+	
+		$('#liquid').liquidcarousel({
+			height: 15,		//the height of the list
+			duration: 100,		//the duration of the animation
+			hidearrows: false	//hide arrows if all of the list items are visible
+		});
+	
+	
+	
+		$("#wardResultsSlider").sudoSlider({ 
+			prevNext: false,
+			customLink:'a.customLink',
+			updateBefore:true
+		});
+
+}
+
+function callAjax(jsObj,url)
+{			
+	
+	var callback = {			
+				   success : function( o ) {
+						try {
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							if(jsObj.task == "getWardWiseElectionResults")
+								buildWardWiseElectionResults(jsObj,myResults);							
+							
+						}catch (e) {   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
 function buildElectionResultsDataTable()
@@ -48,7 +147,7 @@ function buildElectionResultsDataTable()
 	var resultsColumnDefs = [ {
 		key : "partyName",
 		parser:"number",
-		label : "Party Name",
+		label : "Party",
 		sortable : true
 	}, {
 		key : "participatedSeats",
@@ -58,37 +157,37 @@ function buildElectionResultsDataTable()
 	}, {
 		key : "partyWonSeats",
 		parser:"number",
-		label : "Seats Won",
+		label : "Won",
 		sortable : true
 	}, {
 		key : "partySecndPos",
 		parser:"Second Position",
-		label : "2nd Pos",
+		label : "2nd",
 		sortable : true
 	}, {
 		key : "partyThirdPos",
 		parser:"3rd Pos",
-		label : "3rd Pos",
+		label : "3rd",
 		sortable : true
 	}, {
 		key : "partyNthPos",
 		parser:"Nth Pos",
-		label : "Nth Pos",
+		label : "Nth",
 		sortable : true
 	}, {
 		key : "votesGained",
 		parser:"number",
-		label : "Votes Gained",
+		label : "(V) Gained",
 		sortable : true
 	} , {
 		key : "partiPartiVotesPercent",
 		parser:"number",
-		label : "Votes % (P)",
+		label : "(V) % (P)",
 		sortable : true
 	} , {
 		key : "totConstiVotesPercent",
 		parser:"number",
-		label : "Total Votes %",
+		label : "Total (V)%",
 		sortable : true
 	} ];
 

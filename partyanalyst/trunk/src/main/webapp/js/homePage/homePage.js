@@ -175,7 +175,7 @@ function buildNewPoll(result){
 		for(var i=0; i<1;i++)
 		{
 			questionId = result.quesitons[i].questionId;
-			str += '<div id="pollQuestionDiv">Q)';
+			str += '<div id="pollQuestionDiv">';
 			str += result.quesitons[i].question;
 			str += '</div>';
 			str += '<div id="pollOptionsDiv">';
@@ -196,16 +196,16 @@ function buildNewPoll(result){
 		
 		str += '<div id="pollSubmitDiv">';
 		str += '<div onclick="savePollResult(\''+questionId+'\')" class="viewReportButtonSpan" style="left:">';
-		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Submit</span>';		
+		str += '	<span class="viewReportButtonLabel"  style="left:20px;top:5px;">Vote</span>';		
 		str += '</div>';
 		str += '</div>';
 		
 		
 		str += '<table><tr><td>';
 		str += '<table><tr>';
-		str += '<td onclick="getCompletePollResult(\''+questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> view current poll result';
+		str += '<td onclick="getCompletePollResult(\''+questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> View Result';
 		str += '</td>';
-		str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> view all polls';
+		str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> View Previous Polls';
 		str += '</td>';	
 		str += '</tr></table>';
 		str += '</tr></table>';

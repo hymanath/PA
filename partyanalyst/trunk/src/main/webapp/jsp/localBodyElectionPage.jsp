@@ -58,6 +58,17 @@
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <script type="text/javascript" src="js/localBodyElection/localBodyElection.js"></script>
+
+
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/jquery.liquidcarousel.js"></script>
+
+<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+
+
+<link  rel="stylesheet" type="text/css" href="styles/jQuery/liquidcarousel.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+
 <link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <link rel="stylesheet" type="text/css" href="styles/localBodyElection/localBodyElection.css">
@@ -72,6 +83,7 @@
 	localBodyElectionObj.localBodyElectionTypeName = '${localBodyElectionResults.localBodyElectionType}';
 	localBodyElectionObj.localBodyId = '${localBodyElectionResults.localBodyId}';
 	localBodyElectionObj.localBodyName = '${localBodyElectionResults.localBodyRegion}';
+	localBodyElectionObj.localBodyElectionId = '${localBodyElectionResults.localBodyElectionId}';
 	localBodyElectionObj.tehsilId = '${localBodyElectionResults.tehsilId}';
 	localBodyElectionObj.tehsilName = '${localBodyElectionResults.tehsil}';
 	localBodyElectionObj.districtId = '${localBodyElectionResults.districtId}';
@@ -90,7 +102,7 @@
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:548px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Details ... </span></div></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:8px;width:554px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Details  </span></div></td>
 									<td><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
@@ -101,8 +113,8 @@
 									<tr>
 										<th>${localBodyElectionResults.localBodyElectionType} Name</th>										
 										<td>${localBodyElectionResults.localBodyRegion}</td>
-										<th>Tehsil</th>										
-										<td>${localBodyElectionResults.tehsil}</td>
+										<th>Total Wards</th>										
+										<td>${localBodyElectionResults.totalWards}</td>
 									</tr>
 									<tr>
 										<th>District</th>										
@@ -110,16 +122,12 @@
 										<th>State</th>										
 										<td>${localBodyElectionResults.state}</td>
 									</tr>
-									<tr>
-										<th>Total Wards</th>										
-										<td>${localBodyElectionResults.totalWards}</td>
+									<tr>										
 										<th>Total Votes</th>										
 										<td>${localBodyElectionResults.totalVotes}</td>
-									</tr>
-									<tr>
-										<th>Total Polled Votes</th>										
-										<td colspan="3">${localBodyElectionResults.totPolledVotes}</td>										
-									</tr>
+										<th>Valid Votes</th>										
+										<td>${localBodyElectionResults.totValidVotes}</td>
+									</tr>									
 								</table>
 							</div>
 						</div>	
@@ -131,7 +139,7 @@
 							<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${localBodyElectionResults.localBodyRegion} ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
+									<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:8px;width:261px;"><span>${localBodyElectionResults.localBodyRegion} ${localBodyElectionResults.localBodyElectionType} News </span></div></td>
 									<td><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
@@ -141,21 +149,27 @@
 						</div>	
 					</div>
 				</td>
-			</tr>
+			</tr>			
+			</table>
+
+			<table>
 			<tr>
-				<td colspan="2">
+				<td width="70%" valign="top">
 					<div class="yui-skin-sam">
 						 <div class="productFeatureHeader">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
 									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:878px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Election Results ... </span></div></td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center" style="padding:8px;width:611px;"><span>${localBodyElectionResults.localBodyRegion}  ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+									<td><img  src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
 						<div id="localBodyElectionResults_body" class="productFeatureBody">
-							<div id="localBodyElectionResults_body_heading"> *P - Participated</div>
+							<div id="localBodyElectionResults_body_chart">
+								<img width="650px" height="280px" src="charts/${localBodyElectionResults.highLevelChart}"></img>
+							</div>
+							<div id="localBodyElectionResults_body_heading"> *V - Votes, *P - Participated</div>
 							<div id="localBodyElectionResults_body_dataTable">
 							<display:table id="localBodyElectionResultsTable" name="${localBodyElectionResults.muncipalityVO}"
 								defaultorder="ascending" defaultsort="4"
@@ -181,8 +195,38 @@
 							</display:table>
 							</div>
 						</div>
-				</td>				
+					</div>
+				</td>	
+				<td width="30%" rowspan="2" valign="top">
+					<div style="width:270px;height:583px;background-color:#DEE1E2;"></div>
+				</td>
 			</tr>
+			<!--<tr>
+				<td>
+					<div id="wardsElectionResults_main">
+						<div id="wardsElectionResults_head">
+							<div class="productFeatureHeader">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+											<tr>
+												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td><div class="districtPageRoundedHeaders_center" style="padding:8px;width:611px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+												<td><img  src="images/icons/districtPage/header_right.gif"/></td>
+											</tr>
+										</table>
+									</div>
+						</div>
+						<div id="wardsElectionResults_body" class="productFeatureBody">
+							<div id="wardsElectionResults_body_radioSelectDiv">
+								<input type="radio" name="wardWiseElectionRadio" value="all" checked="checked">All</input>
+								<input type="radio" name="wardWiseElectionRadio" value="partyWise">Party Wise Results</input>	
+							</div>
+							<div id="wardsElectionResults_body_results">
+								<img src="images/icons/barloader.gif"></img>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>-->
 		</table>
 	</div>
 

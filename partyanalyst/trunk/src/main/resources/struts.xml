@@ -1407,6 +1407,18 @@
 			</result>		
 		</action>
 		
+		<action name="getLocalBodiesInAState" class="localBodyElectionAction" method="getLocalBodiesInAState">
+			<result type="json" name="success">
+				<param name="root">localBodys</param>				
+			</result>		
+		</action>
+		
+		<action name="getWardWiseElectionResults" class="localBodyElectionAction" method="getWardWiseElectionResults">
+			<result type="json" name="success">
+				<param name="root">partyElectionResultsInConstituencyVO</param>				
+			</result>		
+		</action>
+		
 		<action name="opinionPollPost">
 			<result>/jsp/opinionPollPost.jsp</result>
 		</action>

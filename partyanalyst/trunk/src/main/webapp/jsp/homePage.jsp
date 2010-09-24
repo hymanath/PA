@@ -736,7 +736,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
 										<span class="headerLabelSpan" style="color:#C66E17;top:13px;">
-											Polls
+											Opinion Poll
 										</span>
 									</div>
 								</td>

@@ -24,6 +24,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
@@ -55,8 +56,17 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	private Long localBodyElectionTypeId; 
 	private List<SelectOptionVO> localBodys;
 	private List<SelectOptionVO> localBodyTypes;
-	
+	private List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyVO;
 	private LocalBodyElectionResultsVO localBodyElectionResults;
+	
+	public List<PartyElectionResultsInConstituencyVO> getPartyElectionResultsInConstituencyVO() {
+		return partyElectionResultsInConstituencyVO;
+	}
+
+	public void setPartyElectionResultsInConstituencyVO(
+			List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyVO) {
+		this.partyElectionResultsInConstituencyVO = partyElectionResultsInConstituencyVO;
+	}
 		
 	public Long getLocalBodyElectionTypeId() {
 		return localBodyElectionTypeId;
@@ -220,6 +230,33 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
+	public String getWardWiseElectionResults()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		}catch (ParseException e) {
+			e.printStackTrace();
+			log.error("Exception Raised :" + e);
+		}
+		
+		Long stateId = new Long(jObj.getString("stateId"));
+		Long localBodyId = new Long(jObj.getString("localBodyId"));
+		Long localBodyElectionId = new Long(jObj.getString("localBodyElectionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		String taskType = jObj.getString("taskType");
+		
+		if(taskType.equalsIgnoreCase("all"))
+			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsInAnElection(localBodyId, stateId, localBodyElectionId);
+		else if(taskType.equalsIgnoreCase("partyWise"))
+			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsForAPartyInAnElection(localBodyId, stateId, localBodyElectionId,partyId);
+			
+		return Action.SUCCESS;
+	}
 	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType){
 		
 		if(log.isDebugEnabled())
@@ -231,7 +268,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String chartName = localBodyType+ chartId + session.getId()+".png";
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		
-		ChartProducer.createLineChart("", "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,700, null,true );
+		String title = "All Parties Performance In ".concat(localBodyName).concat(" ").concat(localBodyType).concat(" In ").concat(electionYear);
+		ChartProducer.createLineChart(title, "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,650, null,true );
 		
 		return chartName;
 	}
