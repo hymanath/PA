@@ -1371,8 +1371,13 @@
 		<action name="getAllPolls" class="votesPollAction" method="getAllPollsForTheDay">
 			<result type="json" name="success">
 				<param name="root">opinionPollVO</param>				
-			</result>		
-		</action>    
+			</result>	
+		</action>  
+		<action name="opinionPollPostAction" class="opinionPollPostAction">
+			<result name="input">/jsp/opinionPollPost.jsp</result>
+            <result name="success">/jsp/opinionPollPost.jsp</result>		
+		</action>		
+		  
 		<action name="saveSelectedPoll" class="votesPollAction" method="saveSelectedPoll">
 			<result type="json" name="success">
 				<param name="root">questionsAndChoicesPercentage</param>				
@@ -1402,5 +1407,8 @@
 			</result>		
 		</action>
 		
+		<action name="opinionPollPost">
+			<result>/jsp/opinionPollPost.jsp</result>
+		</action>
 	</package>
 </struts>
