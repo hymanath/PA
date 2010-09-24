@@ -29,6 +29,7 @@
 
  <table  style="width:310px;" border="0">
  <tr><td align = "right"><h4>Register :<a href="<s:url action="userRegPageAction"/>"> Register </h4></a><br/></tr> 
+ <tr><td align="right"><h4>To Post a Opinion Poll :<a href="<s:url action="opinionPollPost"/>"><b>&nbsp; Post </b></h4></a><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Election Data :<a href="<s:url action="electionUpload"/>"> Upload </h4></a><br/></tr>
  <tr><td align = "right"><h4>To Upload Booth    Data :<a href="<s:url action="boothDataUpload"/>"> Upload </h4></a><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Booth Results :<a href="<s:url action="boothResultUpload"/>"> Upload </h4></a><br/></td></tr>
