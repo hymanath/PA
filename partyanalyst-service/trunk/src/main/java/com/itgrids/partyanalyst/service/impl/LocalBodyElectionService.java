@@ -134,7 +134,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		LocalElectionBody localElectionBody = localElectionBodyDAO.get(localBodyId);
 		if(localElectionBody != null){
 			
-			localElectionBody.setNoOfWards(localElectionBody.getNoOfWards());
+			localBodyElectionResultVO.setTotalWards(localElectionBody.getNoOfWards());
 			ElectionType electionType = localElectionBody.getElectionType();
 						
 			//Local Body Tehsil Info
@@ -252,25 +252,37 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				//won seats info
 				if(partyWonSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO wonSeats = partyWonSeatsInfo.get(partyId);
+				if(wonSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartyWonSeats(wonSeats.getSeatsWonByParty());
+				else
+				partyResultVO.setPartyWonSeats(0L);	
     			}
 				
 				//2nd pos info
 				if(partySecPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO secndPosSeats = partySecPosSeatsInfo.get(partyId);
+				if(secndPosSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartySecndPos(secndPosSeats.getSeatsWonByParty());
+				else
+				partyResultVO.setPartySecndPos(0L);
 				}
 				
 				//3rd pos info
 				if(partyThirdPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO thirdPosSeats = partyThirdPosSeatsInfo.get(partyId);
+				if(thirdPosSeats.getSeatsWonByParty() != null)
 				partyResultVO.setPartyThirdPos(thirdPosSeats.getSeatsWonByParty());	
+				else
+				partyResultVO.setPartyThirdPos(0L);	
 				}
 				
 				//Nth pos info
 				if(partyNthPosSeatsInfo.containsKey(partyId)){
 				TeshilPartyInfoVO nthPosSeats = partyNthPosSeatsInfo.get(partyId);
-				partyResultVO.setPartyNthPos(nthPosSeats.getSeatsWonByParty());			
+				if(nthPosSeats.getSeatsWonByParty() != null)
+				partyResultVO.setPartyNthPos(nthPosSeats.getSeatsWonByParty());		
+				else
+				partyResultVO.setPartyNthPos(0L);	
 				}
 				
 				localBodyElecResList.add(partyResultVO);
@@ -294,7 +306,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			
 			//DAO method to get Results from DB
 			if(rank > 3L)
-				resultsList = nominationDAO.getResultsOfAllPartiesInLocalBodyELectionsBasedOnNthRank(localBodyId, electionYear, rank);
+				resultsList = nominationDAO.getResultsOfAllPartiesInLocalBodyELectionsBasedOnNthRank(localBodyId, electionYear, 3L);
 			else
 			    resultsList = nominationDAO.getResultsOfAllPartiesInLocalBodyELectionsBasedOnRank(localBodyId, electionYear, rank);
 			
@@ -500,7 +512,10 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				result.setConstituencyId((Long)values[4]);
 				result.setConstituencyName((String)values[5]);
 				Double votesGained = (Double)values[6];
+				if(votesGained != null)
 				result.setVotesEarned(votesGained.longValue());
+				else
+				result.setVotesEarned(0L);
 				result.setVotesPercentage((String)values[7]);
 				result.setRank((Long)values[8]);
 				
@@ -532,10 +547,10 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				 votesInfoObject.setConstituencyName((String)values[1]);
 				 Double totalVotes = (Double)values[4];
 				 if(totalVotes != null)
-				   votesInfoObject.setTotalVotes(totalVotes.longValue());
+				 votesInfoObject.setTotalVotes(totalVotes.longValue());
 				 Double totalPolledVotes = (Double)values[3];
 				 if(totalPolledVotes != null)
-				   votesInfoObject.setTotPolledVotes(totalPolledVotes.longValue());
+				 votesInfoObject.setTotPolledVotes(totalPolledVotes.longValue());
 				 Double validVotes = (Double)values[2];
 				 if(validVotes != null)
 				 votesInfoObject.setValidVotes(validVotes.longValue());
