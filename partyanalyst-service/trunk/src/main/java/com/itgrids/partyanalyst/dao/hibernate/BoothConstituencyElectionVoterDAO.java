@@ -28,10 +28,12 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Voter> findVotersByHamletAndElectionYear(Long hamletId, String year){
+	public List findVotersByHamletAndElectionYear(Long hamletId, String year){
 		Object[] params = {hamletId, year};
-		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model where model.voter.hamlet.hamletId = ? and" +
-				" model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
+				"model.voter.relativeLastName, model.voter.relationshipType from BoothConstituencyElectionVoter model where " +
+				"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
 	}
 	
 	public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year){

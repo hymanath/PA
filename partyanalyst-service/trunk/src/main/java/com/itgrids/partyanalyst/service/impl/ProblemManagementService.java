@@ -11,7 +11,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
+import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceDAO;
@@ -34,8 +34,6 @@ import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
@@ -66,7 +64,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IRegistrationDAO registrationDAO = null;
 	private IHamletDAO hamletDAO = null;
 	private ITownshipDAO townshipDAO = null;
-	private ProblemExternalSourceDAO problemExternalSourceDAO = null;
+	private IProblemExternalSourceDAO problemExternalSourceDAO = null;
 	private TransactionTemplate transactionTemplate = null;
 	private IProblemSourceScopeDAO problemSourceScopeDAO = null;
 	private IProblemAndProblemSourceDAO problemAndProblemSourceDAO = null;
@@ -167,15 +165,15 @@ public class ProblemManagementService implements IProblemManagementService {
 		this.problemLocationDAO = problemLocationDAO;
 	}
 	
-	public ProblemExternalSourceDAO getProblemExternalSourceDAO() {
+	public IProblemExternalSourceDAO getProblemExternalSourceDAO() {
 		return problemExternalSourceDAO;
 	}
 
 	public void setProblemExternalSourceDAO(
-			ProblemExternalSourceDAO problemExternalSourceDAO) {
+			IProblemExternalSourceDAO problemExternalSourceDAO) {
 		this.problemExternalSourceDAO = problemExternalSourceDAO;
 	}
-	
+
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -307,36 +305,36 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemHistory problemHistory = null;
 				
 				try{					
-					ProblemSource problemSource = problemSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
+					ProblemSource problemSource = problemSourceDAO.get(problemBeanVO.getProbSourceId());
 					ProblemExternalSource problemExternalSource = null;
 					Registration reg = null;
 					Hamlet hamlet = null;
 					problem = new Problem();
 					problemAndProblemSource = new ProblemAndProblemSource();					
-					problem.setProblem(ProblemManagementService.this.problemBeanVO.getProblem());
-					problem.setDescription(ProblemManagementService.this.problemBeanVO.getDescription());
-					problem.setYear(ProblemManagementService.this.problemBeanVO.getYear());					
-					Date iDate = sdf.parse(ProblemManagementService.this.problemBeanVO.getReportedDate());
-					Date eDate = sdf.parse(ProblemManagementService.this.problemBeanVO.getExistingFrom());
+					problem.setProblem(problemBeanVO.getProblem());
+					problem.setDescription(problemBeanVO.getDescription());
+					problem.setYear(problemBeanVO.getYear());					
+					Date iDate = sdf.parse(problemBeanVO.getReportedDate());
+					Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
 					problem.setIdentifiedOn(iDate);
 					problem.setExistingFrom(eDate);
 					problemAndProblemSource.setProblemSource(problemSource);
 					problemAndProblemSource.setProblem(problem);
-					reg = registrationDAO.get(ProblemManagementService.this.problemBeanVO.getUserID());
+					reg = registrationDAO.get(problemBeanVO.getUserID());
 					problemAndProblemSource.setUser(reg);
 					
 					if(problemSource.getProblemSource().equals(IConstants.CALL_CENTER) || problemSource.getProblemSource().equals(IConstants.EXTERNAL_PERSON))
 					{
 						problemExternalSource = new ProblemExternalSource();
-						problemExternalSource.setName(ProblemManagementService.this.problemBeanVO.getName());
-						problemExternalSource.setMobile(ProblemManagementService.this.problemBeanVO.getMobile());
-						problemExternalSource.setEmail(ProblemManagementService.this.problemBeanVO.getEmail());
-						problemExternalSource.setAddress(ProblemManagementService.this.problemBeanVO.getAddress());
-						problemExternalSource.setTelePhone(ProblemManagementService.this.problemBeanVO.getPhone());
+						problemExternalSource.setName(problemBeanVO.getName());
+						problemExternalSource.setMobile(problemBeanVO.getMobile());
+						problemExternalSource.setEmail(problemBeanVO.getEmail());
+						problemExternalSource.setAddress(problemBeanVO.getAddress());
+						problemExternalSource.setTelePhone(problemBeanVO.getPhone());
 						problemAndProblemSource.setProblemExternalSource(problemExternalSource);
 					}
 					problemLocation = new ProblemLocation();
-					hamlet = hamletDAO.get(new Long(ProblemManagementService.this.problemBeanVO.getHamlet()));
+					hamlet = hamletDAO.get(new Long(problemBeanVO.getHamlet()));
 					problemLocation.setHamlet(hamlet);
 					problemLocation.setProblemAndProblemSource(problemAndProblemSource);
 					problemHistory = new ProblemHistory();
@@ -365,7 +363,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemBeanFromDB.setExceptionEncountered(e);
 					e.printStackTrace();
 				}
-				ProblemManagementService.this.problemBeanVO = problemBeanFromDB;
+				problemBeanVO = problemBeanFromDB;
 			}
 		});
 		return this.problemBeanVO;

@@ -14,7 +14,6 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
@@ -61,24 +60,24 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	}
 
 	public List<VoterVO> getVoterInfo(Long hamletId, String year){
-		List<Voter> voters = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(hamletId, year);
+		List voters = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(hamletId, year);
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
 		VoterVO voterVO = null;
 		Long count = 1l;
-		for(Voter voter:voters){
+		for(Object[] voter:(List<Object[]>)voters){
 			voterVO = new VoterVO();
 			voterVO.setSNO((count++)+"");
-			voterVO.setVoterFirstName(voter.getFirstName()+ voter.getLastName());
-			voterVO.setHouseNo(voter.getHouseNo());
-			voterVO.setAge(voter.getAge());
-			voterVO.setCast(voter.getCast());
-			voterVO.setCastCatagery(voter.getCastCatagery()+" "+voter.getCastSubCatagery());
-			voterVO.setGender(voter.getGender());
-			voterVO.setRelativeFirstName(voter.getRelativeFirstName()+" "+voter.getRelativeLastName());
-			voterVO.setRelationshipType(voter.getRelationshipType());
+			voterVO.setVoterFirstName(voter[0].toString()+ voter[1].toString());
+			voterVO.setHouseNo(voter[2].toString());
+			voterVO.setAge(Long.parseLong(voter[3].toString()));
+			voterVO.setCast(voter[4].toString());
+			voterVO.setCastCatagery(voter[5].toString()+" "+voter[6].toString());
+			voterVO.setGender(voter[7].toString());
+			voterVO.setRelativeFirstName(voter[8].toString()+" "+voter[9].toString());
+			voterVO.setRelationshipType(voter[10].toString());
 			voterVOs.add(voterVO);
 		}
-		
+		voters = null;
 		return voterVOs;
 	}
 

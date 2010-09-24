@@ -1,25 +1,40 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
+import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.impl.ConstituencyManagementService;
 import com.itgrids.partyanalyst.util.MockData;
 
-public class ConstituencyManagementServiceTest {
+public class ConstituencyManagementServiceTest extends BaseDaoTestCase{
 	
-	private ConstituencyManagementService constituencyManagementService;
-	
-	@Before
-	public void init(){
-		constituencyManagementService = new ConstituencyManagementService();
+	private IConstituencyManagementService constituencyManagementService;
+
+	public IConstituencyManagementService getConstituencyManagementService() {
+		return constituencyManagementService;
+	}
+
+	public void setConstituencyManagementService(
+			IConstituencyManagementService constituencyManagementService) {
+		this.constituencyManagementService = constituencyManagementService;
 	}
 	
-	@Test
+	
+	
+	/*	@Before
+	public void init(){
+		constituencyManagementService = new ConstituencyManagementService();
+	}*/
+	
+	/*@Test
 	public void checkForVoterCastDetails(){
 		VoterCastInfoVO voterCastInfoVO = constituencyManagementService.caluculatePercentage(MockData.getVoterCastDetails());
 		Assert.assertEquals(new Long(85), voterCastInfoVO.getTotalVoters());
@@ -33,5 +48,14 @@ public class ConstituencyManagementServiceTest {
 				Assert.assertEquals("35.29", obj.getCastPercentage());
 		}
 		
+	}*/
+	
+	public void testVoter(){
+		List<VoterVO> list = constituencyManagementService.getVoterInfo(42l, "2009");
+		int i=0;
+		for(VoterVO voterVO:list)
+			System.out.println((i++)+" "+ voterVO.getVoterFirstName()+" "+voterVO.getVoterLastName());
 	}
+	
+	
 }
