@@ -291,7 +291,7 @@ public class ProblemManagementReportService implements
 				else
 					tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MP", constituencyId);
 			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);
+				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);				
 			}
 			else{
 				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
@@ -317,6 +317,7 @@ public class ProblemManagementReportService implements
 			Long problemId=0l;
 			String dateConversion=null;
 			String departmentName = null;
+			Long userId = 0l;
 			if(log.isDebugEnabled())
 				log.debug("Entered into populateProblemInfo() method....");
 			try{
@@ -383,9 +384,11 @@ public class ProblemManagementReportService implements
 				}
 				else 
 					problemBean.setComments(parms[5].toString());
-				if(!(registrationId==0L)){
+				
+				userId = new Long(parms[10].toString());
+				if(userId!=0L){
 					if(parms[6]==null){
-						regUser = registrationDAO.findByUserRegistrationId(registrationId.longValue());					
+						regUser = registrationDAO.findByUserRegistrationId(userId);					
 						for(Registration registerdUser : regUser){
 							problemBean.setPostedPersonName(registerdUser.getFirstName());
 							problemBean.setPhone(registerdUser.getMobile());

@@ -52,6 +52,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
 				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" ,model.problemLocation.problemAndProblemSource.user.registrationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
 				") and model.isDelete is null ");
 	}
@@ -89,7 +90,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,model.problemLocation.problemAndProblemSource.user.registrationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
 				") and model.problemStatus.status = ? and model.isDelete is null",status);
 	}	
