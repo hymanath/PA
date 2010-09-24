@@ -28,6 +28,7 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	private Long totalWards;
 	private Long totalVotes;
 	private Long totPolledVotes;
+	private Long totValidVotes;
 	
 	private Long stateId;
 	private Long tehsilId;
@@ -149,6 +150,12 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	}
 	public void setTotPolledVotes(Long totPolledVotes) {
 		this.totPolledVotes = totPolledVotes;
+	}
+	public Long getTotValidVotes() {
+		return totValidVotes;
+	}
+	public void setTotValidVotes(Long totValidVotes) {
+		this.totValidVotes = totValidVotes;
 	}
 		
 }
