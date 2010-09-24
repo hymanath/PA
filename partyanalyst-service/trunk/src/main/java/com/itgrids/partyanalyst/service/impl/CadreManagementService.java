@@ -1277,10 +1277,15 @@ public class CadreManagementService {
 		cadreInfo.setConstituencyName(constituencyCA.getName());
 		cadreInfo.setMandal(tehsilCA.getTehsilId().toString());
 		cadreInfo.setMandalName(tehsilCA.getTehsilName());
-		cadreInfo.setVillage(townshipCA.getTownshipId().toString());
-		cadreInfo.setVillageName(townshipCA.getTownshipName());
-		if(hamletCA != null)
-			cadreInfo.setHamletName(hamletCA.getHamletName());
+		if(hamletCA == null)
+		{
+			cadreInfo.setVillage(IConstants.TOWNSHIP_TYPE+townshipCA.getTownshipId().toString());
+			cadreInfo.setVillageName(townshipCA.getTownshipName());
+		} else if(hamletCA != null)
+		{
+			cadreInfo.setVillage(IConstants.HAMLET_TYPE+townshipCA.getTownshipId().toString());
+			cadreInfo.setVillageName(hamletCA.getHamletName());
+		}	
 		
 		if (currentAddress.equals(officialAddress)) {
 			cadreInfo.setSameAsCA(true);
@@ -1292,7 +1297,15 @@ public class CadreManagementService {
 			cadreInfo.setPdistrict(districtCA.getDistrictId().toString());
 			cadreInfo.setPconstituencyID(constituencyCA.getConstituencyId());
 			cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
-			cadreInfo.setPvillage(townshipCA.getTownshipId().toString());
+			if(hamletCA == null)
+			{
+				cadreInfo.setPvillage(IConstants.TOWNSHIP_TYPE+townshipCA.getTownshipId().toString());
+				cadreInfo.setPvillageName(townshipCA.getTownshipName());
+			} else if(hamletCA != null)
+			{
+				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletCA.getHamletId().toString());
+				cadreInfo.setPvillageName(hamletCA.getHamletName());
+			}			
 			
 		} else {
 			cadreInfo.setSameAsCA(false);
@@ -1315,9 +1328,23 @@ public class CadreManagementService {
 			cadreInfo.setPconstituencyName(constituencyOA.getName());
 			cadreInfo.setPmandal(tehsilOA.getTehsilId().toString());
 			cadreInfo.setPmandalName(tehsilOA.getTehsilName());
-			cadreInfo.setPvillage(townshipOA.getTownshipId().toString());
-			cadreInfo.setPvillageName(townshipOA.getTownshipName());
-			cadreInfo.setPhamletName(hamletOA.getHamletName());			
+			if(hamletOA == null)
+			{
+				cadreInfo.setPvillage(IConstants.TOWNSHIP_TYPE+townshipOA.getTownshipId().toString());
+				cadreInfo.setPvillageName(townshipOA.getTownshipName());
+			} else if(hamletCA != null)
+			{
+				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletOA.getHamletId().toString());
+				cadreInfo.setPhamletName(hamletOA.getHamletName());
+				cadreInfo.setPvillageName(hamletOA.getHamletName());
+			}
+			
+				
+			
+			
+			
+				
+			
 		}
 
 		List<CadreLanguageEfficiency> cadreLanguageSkills = cadreLanguageEfficiencyDAO.findByCadreId(cadre.getCadreId());
