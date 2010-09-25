@@ -2,9 +2,8 @@
 var popupPanel=null;
 
 
-function callAjax(jsObj,url)
+function landingPageAjaxCall(jsObj,url)
 {			
-	
 	var callback = {			
 				   success : function( o ) {
 						try {
@@ -146,7 +145,7 @@ function checkUserLogin()
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 		var url = "userRegistrationInLandingAction.action?"+rparam;
-		callAjax(jsObj, url);
+		landingPageAjaxCall(jsObj, url);
 	}
 }
 
