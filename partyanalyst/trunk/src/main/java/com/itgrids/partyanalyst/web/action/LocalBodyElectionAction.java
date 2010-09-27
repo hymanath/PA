@@ -247,13 +247,16 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		Long stateId = new Long(jObj.getString("stateId"));
 		Long localBodyId = new Long(jObj.getString("localBodyId"));
 		Long localBodyElectionId = new Long(jObj.getString("localBodyElectionId"));
-		Long partyId = new Long(jObj.getString("partyId"));
+		Long elmtId = new Long(jObj.getString("elmtId"));
+		
 		String taskType = jObj.getString("taskType");
 		
 		if(taskType.equalsIgnoreCase("all"))
 			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsInAnElection(localBodyId, stateId, localBodyElectionId);
 		else if(taskType.equalsIgnoreCase("partyWise"))
-			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsForAPartyInAnElection(localBodyId, stateId, localBodyElectionId,partyId);
+			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsForAPartyInAnElection(localBodyId, stateId, localBodyElectionId,elmtId);
+		else if(taskType.equalsIgnoreCase("wardWise"))
+			partyElectionResultsInConstituencyVO = localBodyElectionService.getLocalBodyElectionResultsForAWardInAnElection(localBodyId, stateId, localBodyElectionId,elmtId);
 			
 		return Action.SUCCESS;
 	}

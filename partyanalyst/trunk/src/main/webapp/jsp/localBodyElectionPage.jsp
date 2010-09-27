@@ -88,7 +88,14 @@
 	localBodyElectionObj.tehsilName = '${localBodyElectionResults.tehsil}';
 	localBodyElectionObj.districtId = '${localBodyElectionResults.districtId}';
 	localBodyElectionObj.districtName = '${localBodyElectionResults.district}';
-
+	localBodyElectionObj.electionYear = '${localBodyElectionResults.localBodyElectionYear}';
+	
+	function showWardWiseMoreResults(constId,elecType,elecYear)
+	{
+		
+		var browser1 = window.open("<s:url action='constituencyElectionResultsAction.action'/>?constituencyId="+constId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+		browser1.focus();	
+	}
 	
 </script>
 </head>
@@ -198,28 +205,71 @@
 					</div>
 				</td>	
 				<td width="30%" rowspan="2" valign="top">
-					<div style="width:270px;height:583px;background-color:#DEE1E2;"></div>
+					<div id="adDataDiv_main">
+                    	<div id="adDataMain_header">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+								<td width="98%">
+									<div class="productFeatureHeaderBackground_center">
+										<span class="headerLabelSpan">
+											Advertisements
+										</span>
+									</div>
+								</td>
+								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+							  </tr>
+							</table>
+						</div>
+						<div id="adDataMain_body">
+							<div class="adData_main">
+								<div class="adData_head">
+									<a href="landing.action" class="newsHeadLink">Party Analyst</a>
+								</div>
+								<div class="adData_body">
+									<table>
+										<tr>
+											<td valign="top"><a href="landing.action"><img src="images/icons/homePage_new/header_human_main.jpg"/></a></td>
+											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b></td>
+										</tr>
+										<tr>
+											<td colspan="2">We help you to do Party Analysis, Politician Analysis,Cadre Management and Constituency Management through our effective tools.Creating a wealth of knowledge and know-how for a politician or a party to improve and stay on top.</td>
+										</tr>
+									</table>
+									
+								</div>
+								<div class="adData_footer">
+									<div onclick="javascript:{window.location = 'landing.action'}" class="votingTrendzHeadLabelDiv">
+										<span class="votingTrendzHeadLabelSpan">Know More</span>
+									</div>
+								</div>								
+							</div>
+						</div>
+                    </div>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<div id="wardsElectionResults_main">
 						<div id="wardsElectionResults_head">
 							<div class="productFeatureHeader">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 											<tr>
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td><div class="districtPageRoundedHeaders_center" style="padding:8px;width:611px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
+												<td><div class="districtPageRoundedHeaders_center" style="padding:8px;width:885px;"><span>${localBodyElectionResults.localBodyRegion}  Ward Wise ${localBodyElectionResults.localBodyElectionType} Election Results in  ${localBodyElectionResults.localBodyElectionYear}</span></div></td>
 												<td><img  src="images/icons/districtPage/header_right.gif"/></td>
 											</tr>
 										</table>
 									</div>
 						</div>
-						<div id="wardsElectionResults_body" class="productFeatureBody">
+						<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
 							<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
-								<!--Select Results Criteria :
-								<input type="radio" name="wardWiseElectionRadio" value="all" checked="checked">All</input>
-								<input type="radio" name="wardWiseElectionRadio" value="partyWise">Party Wise Results</input>	-->
+								Select Results Criteria :
+								<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked">All</input>
+								<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise">Party Wise Results</input>	
+								<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_parties" id="wardWise_parties" list="localBodyElectionResults.participatedParties" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('partyWise',this.options[this.selectedIndex].value)"/>
+								<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise">Ward Wise Results</input>	
+								<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_wards" id="wardWise_ward" list="localBodyElectionResults.wardsList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('wardWise',this.options[this.selectedIndex].value)"/>
 							</div>
 							<div id="wardsElectionResults_body_results">
 								<img src="images/icons/barloader.gif"></img>
@@ -233,6 +283,7 @@
 
 	<script type="text/javascript">
 		
+	
 		initializeLocalBodiesElectionPage();
 	</script>
 </body>

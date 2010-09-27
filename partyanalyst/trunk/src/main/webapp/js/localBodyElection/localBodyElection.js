@@ -10,7 +10,8 @@ var localBodyElectionObj = {
 								tehsilId:'',
 								tehsilName:'',
 								districtId:'',
-								districtName:''
+								districtName:'',
+								electionYear:''
 						   };
 
 function initializeLocalBodiesElectionPage()
@@ -18,10 +19,11 @@ function initializeLocalBodiesElectionPage()
 
 	buildLocalBodyElectionNews();
 	buildElectionResultsDataTable();
-	getWardWiseElectionResults('all');
+	getWardWiseElectionResults('all',0);
 }
 
-function getWardWiseElectionResults(type)
+
+function getWardWiseElectionResults(type,value)
 {	
 	var jsObj=
 	{
@@ -29,7 +31,7 @@ function getWardWiseElectionResults(type)
 		localBodyId:localBodyElectionObj.localBodyId,
 		localBodyElectionId:localBodyElectionObj.localBodyElectionId,
 		taskType:type,
-		partyId:"0",
+		elmtId:''+value,
 		task:"getWardWiseElectionResults"					
 	};
 
@@ -39,142 +41,123 @@ function getWardWiseElectionResults(type)
 	localBodyAjaxCall(jsObj,url);
 }
 
+
+
 function buildWardWiseElectionResults(jsObj,results)
 {
 	var elmt = document.getElementById("wardsElectionResults_body_results");
 	if(!elmt)
 		return;
 
-	var str = '';
-	str += '<div id="liquid">';
-	str += '<span class="previous"></span>';
-	str += '<div class="wrapper">';
-	str += '	<ul>';
-	for(var i =0; i<results.length; i++)
+	elmt.innerHTML = '';
+	var wardResults = [];
+
+	for(var i in results)
 	{
-		var rel = i+1;
-		str += '		<li><a class="customLink" rel="'+rel+'"><div class="tabbox">'+results[i].constituencyName+'</div></a></li>';
-	}	
-	str += '	</ul>';
-	str += '</div>';
-	str += '<span class="next"></span>';
-	str += '</div>';
-	
-	str += '<div id="wardResultsSlider" class="slider" >';
-    str += '<ul style="height:241px;">';
-	
-	for(var i =0; i<results.length; i++)
-	{
-		str += '<li>';
-		str += '<div id="wardResultsWonDetails_'+i+'">';
-		str += '<table border="1" width="100%" class="datatableClass" style="border-collapse:collapse;border-color:#ADADAD;">';
-		str += '<tr>';
-		str += '<th>Ward Name : </th>';
-		str += '<td>'+results[i].constituencyName+'</td>';
-		str += '<th>Total Voters : </th>';
-		str += '<td>'+results[i].totalVoters+'</td>';
-		str += '</tr>';		
-		str += '<tr>';
-		str += '<th>Party : </th>';
-		str += '<td>'+results[i].wonPartyName+'</td>';
-		str += '<th>Candidate : </th>';
-		str += '<td>'+results[i].wonCandidate+'</td>';
-		str += '</tr>';
-		str += '</table>';
-		str += '</div>';
-		str += '<div class="yui-skin-sam">';
-		str += '<div id="wardResultsOppositionDetails_'+i+'">';
-		str += '<table id="wardResultsOppositionDetails_'+i+'_table">';
-		for(var j=0; j<results[i].partyElectionResultsVO.length; j++)
+		for(var j in results[i].partyElectionResultsVO)
 		{
-			var local = results[i].partyElectionResultsVO[j];
-			str += '<tr>';
-			str += '<td>'+local.partyName+'</td>';
-			str += '<td>'+local.candidateName+'</td>';
-			str += '<td>'+local.votesEarned+'</td>';
-			str += '<td>'+local.votesPercentage+'</td>';
-			str += '<td>'+local.rank+'</td>';
-			str += '</tr>';
-		}		
-		str += '</table>';
-		str += '</div>';
-		str += '</div>';
-		str += '</li>';
-	}   
-    str += '</ul>';
-	str += '</div>';
+			var obj = {
+						candidateName:results[i].partyElectionResultsVO[j].candidateName,
+						constituencyName:results[i].constituencyName,
+						partyName:results[i].partyElectionResultsVO[j].partyName,
+						totalVoters:results[i].totalVoters,
+						votesEarned:results[i].partyElectionResultsVO[j].votesEarned,
+						votesPercentage:results[i].partyElectionResultsVO[j].votesPercentage,
+						rank:results[i].partyElectionResultsVO[j].rank,
+						moreDetails:'<a href="javascript:{}" onclick="showWardWiseMoreResults(\''+results[i].constituencyId+'\',\''+localBodyElectionObj.localBodyElectionTypeName+'\',\''+localBodyElectionObj.electionYear+'\')"> More Results</a>'
+					  };
+			wardResults.push(obj);			
+		}
+	}
 
-	elmt.innerHTML = str;
-
-
-	for(var i=0;i<results.length;i++)
-	{
-		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("wardResultsOppositionDetails_"+i+"_table"));
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	var resultsDataSource = new YAHOO.util.DataSource(wardResults);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		resultsDataSource.responseSchema = {
 			fields : [ {
+				key : "candidateName"
+			}, {
+				key : "constituencyName"
+			}, {
 				key : "partyName"
 			}, {
-				key : "candidateName"
+				key : "totalVoters",parser:"number"
 			}, {
 				key : "votesEarned",parser:"number"
 			}, {
 				key : "votesPercentage",parser:"number"
 			}, {
 				key : "rank",parser:"number"
+			}, {
+				key : "moreDetails"
 			}]
 		};
 
 		var resultsColumnDefs = [ {
+			key : "candidateName",
+			label : "Candidate",
+			sortable : true
+		},{
+			key : "constituencyName",
+			label : "Constituency",
+			sortable : true
+		}, {
 			key : "partyName",
 			label : "Party",
 			sortable : true
 		}, {
-			key : "candidateName",
-			label : "Candidate",
+			key : "totalVoters",
+			parser:"number",
+			label : "Voters",
 			sortable : true
 		}, {
 			key : "votesEarned",
 			parser:"number",
 			label : "Votes Earned",
-			sortable : false
+			sortable : true
 		}, {
 			key : "votesPercentage",
 			parser:"number",
 			label : "Votes %",
-			sortable : false
+			sortable : true
 		}, {
 			key : "rank",
 			parser:"number",
 			label : "Rank",
-			sortable : false
+			sortable : true
+		}, {
+			key : "moreDetails",			
+			label : "More Details",
 		}];	
 
-		/*var myConfigs = {
+		var myConfigs = {
 			paginator : new YAHOO.widget.Paginator({
-				rowsPerPage: 5
+				rowsPerPage: 20
 			})
-		};*/
-		var myDataTable = new YAHOO.widget.DataTable("wardResultsOppositionDetails_"+i,resultsColumnDefs, resultsDataSource);  
-	}
-	
-		$('#liquid').liquidcarousel({
-			height: 15,		//the height of the list
-			duration: 100,		//the duration of the animation
-			hidearrows: false	//hide arrows if all of the list items are visible
-		});
-	
-	
-	
-		$("#wardResultsSlider").sudoSlider({ 
-			prevNext: false,
-			width:500,
-			height:300,
-			customLink:'a.customLink',
-			updateBefore:true
-		});
+		};
+		var myDataTable = new YAHOO.widget.DataTable("wardsElectionResults_body_results",resultsColumnDefs, resultsDataSource, myConfigs);  
+}
 
+function changeWardWiseResultsCriteria(type)
+{
+	var partySelectElmt = document.getElementById("wardWise_parties");
+	var wardSelectElmt = document.getElementById("wardWise_ward");
+	
+	if(type == "all")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'hidden';		
+		getWardWiseElectionResults('all',0);
+	}
+	else if(type == "partyWise")
+	{
+		wardSelectElmt.style.visibility = 'hidden';
+		partySelectElmt.style.visibility = 'visible'			
+	}
+	else if(type == "wardWise")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'visible'			
+	}
 }
 
 function localBodyAjaxCall(jsObj,url)
