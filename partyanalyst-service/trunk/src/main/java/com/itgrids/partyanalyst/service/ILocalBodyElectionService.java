@@ -22,4 +22,6 @@ public interface ILocalBodyElectionService {
 	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsInAnElection(Long localBodyId,Long stateId,Long electionId);
 	
 	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAPartyInAnElection(Long localBodyId,Long stateId,Long electionId,Long partyId);
+	
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAWardInAnElection(Long localBodyId, Long stateId, Long electionId, Long wardId);
 }
