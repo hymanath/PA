@@ -1650,6 +1650,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and model.constituencyElection.election.electionId = ? and model.party.partyId = ? ",params);
 				
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAllPartyResultsInAWardInALocalBodyElection(
+			Long localBodyId, Long electionId, Long wardId) {
+		Object[] params = {localBodyId,electionId,wardId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.candidate.candidateId,"+
+				"model.candidate.lastname,model.constituencyElection.constituency.constituencyId,model.constituencyElection."+
+				"constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank,"+
+				"model.party.partyFlag from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? "+
+				"and model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId = ? ",params);
+				
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List getWardWiseResultsOfAllPartiesInLocalElectionBodies(
 			Long localBodyId, Long electionId) {
