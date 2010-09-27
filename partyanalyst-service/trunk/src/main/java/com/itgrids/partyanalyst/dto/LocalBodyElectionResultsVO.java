@@ -39,6 +39,7 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	
 	private String highLevelChart;
 	private List<SelectOptionVO> otherElectionYears;
+	private List<SelectOptionVO> participatedParties;
 	
 	public List<SelectOptionVO> getOtherElectionYears() {
 		return otherElectionYears;
@@ -156,6 +157,12 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	}
 	public void setTotValidVotes(Long totValidVotes) {
 		this.totValidVotes = totValidVotes;
+	}
+	public List<SelectOptionVO> getParticipatedParties() {
+		return participatedParties;
+	}
+	public void setParticipatedParties(List<SelectOptionVO> participatedParties) {
+		this.participatedParties = participatedParties;
 	}
 		
 }
