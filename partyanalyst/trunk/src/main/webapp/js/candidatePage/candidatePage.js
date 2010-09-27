@@ -141,13 +141,19 @@ function buildCandidateElectionProfile()
 	var electionPrfElmtBody = document.getElementById("candidatePoliticalInfo");	
 	var candidateFlag = document.getElementById("candidatePartyFlag");	
 	
+	
+
 	var ebStr='';
 	for(var i in candidateInfoObject.candidateInfoArray)
 	{
 		var data = candidateInfoObject.candidateInfoArray[i];
-		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInNewWindow('+i+')" onmouseover="setTextColor(this)" onmouseout="unSetTextColor(this)">';
+		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv"  onclick="showElectionResultsInNewWindow('+i+')" onmouseover="setTextColor(this)" onmouseout="unSetTextColor(this)">';
 		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/indexPage/listIcon.png"/></span>';
-		ebStr+='<span>'+data.status+' in '+data.electionYear+' '+data.electionType+' Election with <b>'+data.votePercentage+'% </b>of votes gain in '+data.constituencyName+' constituency</span>';
+		if(data.status == "Won")
+			ebStr+='<span><font color="green">'+data.status+'</font>';
+		else
+			ebStr+='<span><font color="red">'+data.status+'</font>';
+		ebStr+=' in '+data.electionYear+' '+data.electionType+' Election with <b>'+data.votePercentage+'% </b>of votes gain for '+data.partyName+' party in '+data.constituencyName+' constituency</span>';
 		ebStr+='</div>';
 	}
 	
@@ -499,11 +505,40 @@ function animateNext(id)
 	*/
 }
 
+function buildCandidateNews()
+{
+	var options = {
+		"format" : "728x90",
+		"queryList" : [
+			  {
+				"title" : candidateInfoObject.name,
+				"q" : candidateInfoObject.name+", India"
+			  }
+		 ]
+	  }
+	
+	var content = document.getElementById('one');
+	var newsShow = new google.elements.NewsShow(content, options);
+}
+
+function buildCandidateVideoGallery()
+{
+	
+
+	var value="http://www.youtube.com/v/8jhiIWiCch8?rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
+	var params = { allowScriptAccess: "always" };	 
+	swfobject.embedSWF(value, "candidatePageContent_body_videosMain", "425", "365", "8", null, null, params);
+}
+
 function initializeCandidatePage()
 {
+	
+
 	buildCandidatePageLayout();	
 	buildLeftNavLinks();
 	buildCandidateElectionProfile();
+	buildCandidateNews();
+	//buildCandidateVideoGallery();
 
 	//buildCandidateInitialProfile();	
 	//buildCandidatePhotoGallery();

@@ -59,11 +59,17 @@
 
 <!-- YUI Dependency files (End) -->
 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 <script type="text/javascript" src="js/candidatePage/carousel.js"></script>
+<script type="text/javascript" src="js/SWFObject/swfobject.js" ></script>
 
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">	
 
+<script type="text/javascript">
+		google.load("elements", "1", {packages : ["newsshow"]});
+</script>
 
 </head>
 <body class="yui-skin-sam">
@@ -120,7 +126,7 @@
 				<div id="candidatePoliticalCareer_body">
 					<table>
 						<tr>
-							<td style="vertical-align:top;width:500px;"><span id="candidatePoliticalInfo"></span></td>
+							<td style="vertical-align:top;"><span id="candidatePoliticalInfo"></span></td>
 							<td style="vertical-align:top;"><span id="candidatePartyFlag"></span></td>
 						</tr>
 					</table>
@@ -141,7 +147,8 @@
 				
 				<!-- News Info Div-->
 				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv">
-					<jsp:include page="<%= newsURL%>" flush="true"/>
+					<div id="one" style="position:relative;left:-165px;"> </div>
+					<div id="two" style="position:relative;left:-165px;"> </div>					
 				</div>
 
 				<!-- Developments Info Div-->
@@ -161,7 +168,7 @@
 
 				<!-- Videos Info Div-->
 				<div id="candidatePageContent_body_videosMain" class="candidateStaticContentDiv">
-					<jsp:include page="<%= videosURL%>" flush="true"/>
+					<!--<jsp:include page="<%= videosURL%>" flush="true"/>-->
 				</div>	
 
 				<!-- Contact Info Div-->
@@ -296,6 +303,8 @@
 </div>
 
 <script type="text/javascript">	
+	
+	
 	candidateInfoObject.name = "${candidateVO.candidateName}";
 	candidateInfoObject.candidateImgURL = "<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ;
 	candidateInfoObject.contextPath = "<%=request.getContextPath()%>";
@@ -343,6 +352,8 @@
 			candidateInfoObject.candidateInfoArray.push(candidateObj);			
 	</c:forEach>
 	
+
+
 	function setDefaultImage(img)
 	{
 		img.src = "images/candidates/Default_Candidate.JPG"
