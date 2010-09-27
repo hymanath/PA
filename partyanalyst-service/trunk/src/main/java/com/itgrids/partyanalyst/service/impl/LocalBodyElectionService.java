@@ -200,6 +200,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		if(log.isDebugEnabled())
 		log.debug(" Inside getAllPartyElectionResulsInLocalBodyElections Method ..");
 		List<TeshilPartyInfoVO> localBodyElecResList = new ArrayList<TeshilPartyInfoVO>();
+		List<SelectOptionVO> participatedParties = new ArrayList<SelectOptionVO>();
 		
 		//Get LocalBodyElection Voters & Votes Info
 		Double constiValidVotes = null;
@@ -243,6 +244,11 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				TeshilPartyInfoVO votesObtained = partyVotesInfo.get(partyId);
 				partyResultVO.setPartyId(partyId);
 				partyResultVO.setPartyName(votesObtained.getPartyName());
+				
+				//for Participated Parties list
+				SelectOptionVO selectOption = new SelectOptionVO(partyId,votesObtained.getPartyName());
+				participatedParties.add(selectOption);				
+				
 				partyResultVO.setParticipatedSeats(votesObtained.getParticipatedSeats());
 				partyResultVO.setVotesGained(votesObtained.getVotesGained());
 				partyResultVO.setPartyParticipatedValidVotes(votesObtained.getPartyParticipatedValidVotes());
@@ -284,6 +290,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			}
 			Collections.sort(localBodyElecResList,new TehsilPartyInfoVOBySeatsWonComparator());
 			localBodyElectionResultVO.setMuncipalityVO(localBodyElecResList);
+			localBodyElectionResultVO.setParticipatedParties(participatedParties);
 		}
 		
 	}
