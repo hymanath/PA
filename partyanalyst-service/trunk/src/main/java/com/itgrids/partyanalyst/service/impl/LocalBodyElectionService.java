@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.State;
@@ -94,6 +95,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		 log.debug(" Inside getLocalBodyElectionResultsByLocalBodyTypeAndYear Method ...");
 	 LocalBodyElectionResultsVO localBodyElectionResultVO = null;
 	 ResultStatus resultStatus = new ResultStatus();
+	 Long electionId = 0L;
 	 
 	 try{
 		 //initialize the outputVO
@@ -102,12 +104,13 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		 if(localBodyId != null){
 			 
 			 //Local Body Elections High Level Info
-			 getHighLevelInformationOfLocalBodyElection(localBodyElectionResultVO,localBodyId);
+			 getHighLevelInformationOfLocalBodyElection(localBodyElectionResultVO,localBodyId,electionId);
 			 
 			 //High Level Local Election Body Results
 			 getAllPartyElectionResulsInLocalBodyElections(localBodyElectionResultVO,localBodyId,localBodyElectionResultVO.getLocalBodyElectionYear());
 			 
-			 //Low Level ward wise results in Local Body Election
+			 //Get All Wards Participated In Election
+			 getAllWardDetailsParticipatedInLocalBodyElection(localBodyElectionResultVO,localBodyId,localBodyElectionResultVO.getLocalBodyElectionId());
 			 
 		 }
 		 
@@ -125,13 +128,41 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	}
 	
 	/*
+	 * Method to set PArticipated wards list to VO
+	 */
+	@SuppressWarnings("unchecked")
+	public void getAllWardDetailsParticipatedInLocalBodyElection(LocalBodyElectionResultsVO localBodyElectionResultVO,Long localBodyId,Long electionId) throws Exception{
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getAllWardDetailsParticipatedInLocalBodyElection Method ..");
+		
+		List<SelectOptionVO> wardsList = new ArrayList<SelectOptionVO>(); 
+		
+		if(localBodyId != null && electionId != null){
+			
+			List resultsList = constituencyElectionDAO.getAllWardsDetailsParticipatedInALocalBodyElection(localBodyId, electionId);
+			if(resultsList != null && resultsList.size() > 0){
+				for(int i=0;i<resultsList.size();i++){
+					Object[] values = (Object[])resultsList.get(i);
+					Long wardId = (Long)values[0];
+					String wardName = (String)values[1];
+					
+					SelectOptionVO option = new SelectOptionVO(wardId,wardName);
+					wardsList.add(option);
+				}
+				localBodyElectionResultVO.setWardsList(wardsList);
+			}
+		}
+	}
+	
+	/*
 	 * Method to get High Level Information for a Local Body Election
 	 */
-	public void getHighLevelInformationOfLocalBodyElection(LocalBodyElectionResultsVO localBodyElectionResultVO,Long localBodyId) throws Exception{
+	public void getHighLevelInformationOfLocalBodyElection(LocalBodyElectionResultsVO localBodyElectionResultVO,Long localBodyId,Long electionId) throws Exception{
 		if(log.isDebugEnabled())
 			log.debug(" Inside getHighLevelInformationOfLocalBodyElection Method ..");
 		
-		List<SelectOptionVO> electionsList = null;
+		List<SelectOptionVO> electionsList = new ArrayList<SelectOptionVO>();
 		LocalElectionBody localElectionBody = localElectionBodyDAO.get(localBodyId);
 		if(localElectionBody != null){
 			
@@ -160,11 +191,18 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			localBodyElectionResultVO.setLocalBodyRegion(localElectionBody.getName());
 			
 			//Local Body Election Info
-			electionsList = getLocalBodyElectionsList(localBodyId,state.getStateId());
-			if(electionsList != null && electionsList.size() > 0){
-				localBodyElectionResultVO.setLocalBodyElectionId(electionsList.get(0).getId());
-				localBodyElectionResultVO.setLocalBodyElectionYear(electionsList.get(0).getName());
+			if(electionId != null && !electionId.equals(0L)){
+				Election election = electionDAO.get(electionId);
+				localBodyElectionResultVO.setLocalBodyElectionId(electionId);
+				localBodyElectionResultVO.setLocalBodyElectionYear(election.getElectionYear());
 				localBodyElectionResultVO.setOtherElectionYears(electionsList);
+			}else{
+				electionsList = getLocalBodyElectionsList(localBodyId,state.getStateId());
+				if(electionsList != null && electionsList.size() > 0){
+					localBodyElectionResultVO.setLocalBodyElectionId(electionsList.get(0).getId());
+					localBodyElectionResultVO.setLocalBodyElectionYear(electionsList.get(0).getName());
+					localBodyElectionResultVO.setOtherElectionYears(electionsList);
+				}
 			}
 				
 		}
@@ -570,6 +608,34 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			
 		}
 	 return votesInfoMap;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.ILocalBodyElectionService#getLocalBodyElectionResultsForAWardInAnElection(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAWardInAnElection(
+			Long localBodyId, Long stateId, Long electionId, Long wardId) {
+		if(log.isDebugEnabled())
+			  log.debug(" Inside getLocalBodyElectionResultsForAWardInAnElection Method ..");	
+			
+			List<PartyElectionResultsInConstituencyVO> partyResultsList = null;
+			
+	        try{
+	        	List resultsList = nominationDAO.getAllPartyResultsInAWardInALocalBodyElection(localBodyId, electionId, wardId);
+	        	List highLevelResults = constituencyElectionDAO.getConstituencyVotesInfoForLocalBodyElection(localBodyId, electionId,wardId);
+	        	
+	        	if(resultsList != null && resultsList.size() > 0)
+					partyResultsList = getLocalBodyELectionWardWiseResults(resultsList,highLevelResults);
+	        	
+			}catch(Exception ex){
+				ex.printStackTrace();
+				log.error(" Exception Raised :" + ex);
+				
+			}
+			
+		 return partyResultsList;
 	}
 
 }
