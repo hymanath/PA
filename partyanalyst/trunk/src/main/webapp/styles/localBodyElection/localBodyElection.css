@@ -25,3 +25,28 @@
 	text-align:right;
 }
 
+#liquid
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	border:2px solid #E0E0D6;
+	-moz-border-radius:0px;
+	border-bottom:none;
+}
+
+.slider, .slider2 
+{
+	width:646px;
+}
+
+.slider ul li, .sliderli 
+{
+	width:646px;
+}
+
+#wardResultsSlider
+{
+	border-bottom:2px solid #E0E0D6;
+	border-left:2px solid #E0E0D6;
+	border-right:2px solid #E0E0D6;
+	height:300px;
+}
