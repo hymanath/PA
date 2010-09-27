@@ -55,8 +55,8 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 <!-- YUI Dependency files (End) -->
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/localBodyElection/localBodyElection.js"></script>
 
 
@@ -201,7 +201,7 @@
 					<div style="width:270px;height:583px;background-color:#DEE1E2;"></div>
 				</td>
 			</tr>
-			<!--<tr>
+			<tr>
 				<td>
 					<div id="wardsElectionResults_main">
 						<div id="wardsElectionResults_head">
@@ -216,9 +216,10 @@
 									</div>
 						</div>
 						<div id="wardsElectionResults_body" class="productFeatureBody">
-							<div id="wardsElectionResults_body_radioSelectDiv">
+							<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
+								<!--Select Results Criteria :
 								<input type="radio" name="wardWiseElectionRadio" value="all" checked="checked">All</input>
-								<input type="radio" name="wardWiseElectionRadio" value="partyWise">Party Wise Results</input>	
+								<input type="radio" name="wardWiseElectionRadio" value="partyWise">Party Wise Results</input>	-->
 							</div>
 							<div id="wardsElectionResults_body_results">
 								<img src="images/icons/barloader.gif"></img>
@@ -226,7 +227,7 @@
 						</div>
 					</div>
 				</td>
-			</tr>-->
+			</tr>
 		</table>
 	</div>
 
