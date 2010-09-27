@@ -111,5 +111,11 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List getConstituencyVotesInfoForLocalBodyElection(Long localBodyId,Long electionId);
 	
 	@SuppressWarnings("unchecked")
+	public List getConstituencyVotesInfoForLocalBodyElection(Long localBodyId,Long electionId,Long wardId);
+	
+	@SuppressWarnings("unchecked")
+	public List getAllWardsDetailsParticipatedInALocalBodyElection(Long localBodyId,Long electionId);
+	
+	@SuppressWarnings("unchecked")
 	public List getLocalBodyElectionsInAState(Long localBodyId,Long stateId);
 }
