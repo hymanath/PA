@@ -308,4 +308,23 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"where model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ? "+
 				"group by model.constituency.constituencyId",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAllWardsDetailsParticipatedInALocalBodyElection(Long localBodyId,Long electionId){
+		Object[] params = {localBodyId,electionId};
+		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,"+
+				"model.constituency.name from ConstituencyElection model where "+
+				"model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getConstituencyVotesInfoForLocalBodyElection(Long localBodyId,Long electionId,Long wardId){
+		Object[] params = {localBodyId,electionId,wardId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId,"+
+				"model.constituency.name,sum(model.constituencyElectionResult.validVotes),"+
+				"sum(model.constituencyElectionResult.totalVotesPolled),"+
+				"sum(model.constituencyElectionResult.totalVotes) from ConstituencyElection model "+
+				"where model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ? "+
+				"and model.constituency.constituencyId = ?",params);
+	}
 }
