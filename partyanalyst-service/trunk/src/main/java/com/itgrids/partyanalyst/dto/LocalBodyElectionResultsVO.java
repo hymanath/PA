@@ -40,6 +40,7 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	private String highLevelChart;
 	private List<SelectOptionVO> otherElectionYears;
 	private List<SelectOptionVO> participatedParties;
+	private List<SelectOptionVO> wardsList;
 	
 	public List<SelectOptionVO> getOtherElectionYears() {
 		return otherElectionYears;
@@ -163,6 +164,12 @@ public class LocalBodyElectionResultsVO extends TeshilPartyInfoVO implements
 	}
 	public void setParticipatedParties(List<SelectOptionVO> participatedParties) {
 		this.participatedParties = participatedParties;
+	}
+	public List<SelectOptionVO> getWardsList() {
+		return wardsList;
+	}
+	public void setWardsList(List<SelectOptionVO> wardsList) {
+		this.wardsList = wardsList;
 	}
 		
 }
