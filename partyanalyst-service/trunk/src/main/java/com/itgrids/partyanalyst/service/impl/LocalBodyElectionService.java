@@ -36,7 +36,8 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
-import com.itgrids.partyanalyst.utils.PartyElectionResultVOCompareByRank;
+import com.itgrids.partyanalyst.utils.PartyElectionResultVOByRankComparator;
+import com.itgrids.partyanalyst.utils.TehsilPartyInfoVOBySeatsWonComparator;
 import com.itgrids.partyanalyst.utils.TehsilPartyInfoVOCompareByWonSeats;
 
 public class LocalBodyElectionService implements ILocalBodyElectionService {
@@ -211,11 +212,11 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			totalPolledVotes = (Double)params[1];
 			totalVotes = (Double)params[2];
 			if(totalVotes != null)
-			localBodyElectionResultVO.setTotalVotes(totalVotes.longValue());
+			    localBodyElectionResultVO.setTotalVotes(totalVotes.longValue());
 			else
 				localBodyElectionResultVO.setTotalVotes(1L);
 			if(totalPolledVotes != null)
-			localBodyElectionResultVO.setTotPolledVotes(totalPolledVotes.longValue());
+			    localBodyElectionResultVO.setTotPolledVotes(totalPolledVotes.longValue());
 			else
 				localBodyElectionResultVO.setTotPolledVotes(0L);
 			if(constiValidVotes != null)
@@ -281,7 +282,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				
 				localBodyElecResList.add(partyResultVO);
 			}
-			Collections.sort(localBodyElecResList,new TehsilPartyInfoVOCompareByWonSeats());
+			Collections.sort(localBodyElecResList,new TehsilPartyInfoVOBySeatsWonComparator());
 			localBodyElectionResultVO.setMuncipalityVO(localBodyElecResList);
 		}
 		
@@ -420,7 +421,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			
 			if(resultsList != null && resultsList.size() > 0)
 				partyResultsList = getLocalBodyELectionWardWiseResults(resultsList,highLevelResults);
-				
+		
 						
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -431,7 +432,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PartyElectionResultsInConstituencyVO> getLocalBodyELectionWardWiseResults(List partyResultsList,List highLevelVotesInfo) throws Exception{
+	public List<PartyElectionResultsInConstituencyVO> getLocalBodyELectionWardWiseResults(List partyResultsList,List highLevelVotesInfo){
 		
 		if(log.isDebugEnabled())
 			  log.debug(" Inside getLocalBodyELectionWardWiseResults Method ..");	
@@ -449,10 +450,12 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				Set<Long> keys = wardVotesInfoMap.keySet();
 				for(Long ward:keys){
 					
+				   if(wardVotesInfoMap.containsKey(ward) && wardWisePartyResults.containsKey(ward))
+				   {
 					ConstituencyElectionResultVO votesInfo = wardVotesInfoMap.get(ward);
 					List<PartyElectionResultsVO> partyResults = wardWisePartyResults.get(ward);
 					//collections sort
-					Collections.sort(partyResults,new PartyElectionResultVOCompareByRank());
+					Collections.sort(partyResults, new PartyElectionResultVOByRankComparator());
 					PartyElectionResultsVO wonCandResult = partyResults.get(0);
 					
 					PartyElectionResultsInConstituencyVO partyElectionResultObject = new PartyElectionResultsInConstituencyVO();
@@ -464,11 +467,12 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 					partyElectionResultObject.setWonPartyId(wonCandResult.getPartyId());
 					partyElectionResultObject.setWonPartyName(wonCandResult.getPartyName());
 					partyElectionResultObject.setWonCandidate(wonCandResult.getCandidateName());
-					partyElectionResultObject.setWonCandDesignation("");
+					partyElectionResultObject.setWonCandDesignation("Counsellor");
 					
 					partyElectionResultObject.setPartyElectionResultsVO(partyResults);
 					
 					partyElecResultsList.add(partyElectionResultObject);
+				   }
 				}
 				
 			}
@@ -514,6 +518,8 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				result.setRank((Long)values[8]);
 				
 				partyResultsInMap.add(result);	
+				
+				partyResultsMap.put(wardId, partyResultsInMap);
 			}
 		}
 		
