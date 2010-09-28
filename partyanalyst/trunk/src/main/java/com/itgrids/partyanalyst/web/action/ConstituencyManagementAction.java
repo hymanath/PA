@@ -301,7 +301,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemSources.add(probSource2);
 		problemSources.add(probSource3);
 		
-		problemSources = problemManagementService.getAllTypesOfProblemSources();	
+		problemSources = staticDataService.getAllInformationSources();	
 				
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");

@@ -1066,26 +1066,12 @@
            		<param name="root">locationwiseProblemStatusInfoVO</param>
         	</result>       		
         </action>
+        
         <action name="problemsByDateBasedOnStatusAction" class="problemManagementReportAction" method="problemsByDateBasedOnStatusAction"> 
               <result type="json" name="success">
            		<param name="root">problemBean</param>
         	</result>       		
-        </action>
-        
-        <action name="getInformationSources" class="politicalChangesAction" method="getAllInformationSources" >
-			<result type="json" name="success">
-				<param name="root">informationSources</param>
-			</result> 
-		</action>
-		   
-		<action name="saveDataForLocalPoliticalChangesAjaxAction" class="politicalChangesAction" method="saveDataForLocalPoliticalChanges" >
-		</action>
-		
-		<action name="getAllStaticPartiesAjaxAction" class="politicalChangesAction" method="getAllStaticParties" >
-			<result type="json" name="success">
-					<param name="root">staticParties</param>
-			</result> 
-		</action> 
+        </action>			 
 		
 		<action name="getAllPoliticalChangesForTheUserAjaxAction" class="politicalChangesAction" method="getAllPoliticalChangesForTheUser" >
 			<result type="json" name="success">
@@ -1100,19 +1086,7 @@
 			<result type="json" name="success">
 					<param name="root">externalPersonInfo</param>
 			</result> 
-		</action>   
-	
-		<action name="getEffectedRangeForAUserAjaxAction" class="politicalChangesAction" method="getEffectedRangeForAUser" >
-			<result type="json" name="success">
-					<param name="root">effectedRange</param>
-			</result> 
-		</action>
-		
-		<action name="getDetailsByPoliticalChangeIdAjaxAction" class="politicalChangesAction" method="getDetailsByPoliticalChangeId" >
-			<result type="json" name="success">
-					<param name="root">editPoliticalChangeData</param>
-			</result> 
-		</action>
+		</action>		
 		
 		<action name="removeSessionVariablesForPoliticalChangesRegistrationAjaxAction" class="politicalChangesAction" method="removeSessionVariablesForPoliticalChanges">
 		</action>
@@ -1137,6 +1111,7 @@
 			 <result name="input">/jsp/politicalChangesRegistration.jsp</result>			
 			 <result name="error">/jsp/politicalChangesRegistration.jsp</result>
              <result name="success">/jsp/politicalChangesRegistration.jsp</result>
+             <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
 		</action>
 		 <action name="addNewProblemAction" class="addNewProblemAction"> 
               <result name="success">/jsp/addNewProblem.jsp</result>                                   		

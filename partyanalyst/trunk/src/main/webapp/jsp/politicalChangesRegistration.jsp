@@ -14,60 +14,31 @@
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 
+	<script src="js/yahoo/yui-js-2.8/build/connection/connection_core-min.js"></script>
+	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+	
 	<!-- YUI Skin Sam -->
-
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-    <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
-<!-- YUI Dependency files (End) -->
-	
-
+	 <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
+	<!-- YUI Dependency files (End) -->
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
 	<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
+	
+		
 	
 <style type="text/css">
-	.politicalChangesFieldBoxesWidth
-	{
-		width:178px;
-	}
 	.selectBoxWidth
 	{
-		width:181px;
+		width:180px;
 	}
 	.headingStyle
 	{
@@ -94,11 +65,14 @@
 		color:#FFFFFF;
 		width:50px;
 	}
+	.requiredFont
+	{
+		color:red;
+		margin-left:5px;
+	}
 </style>
 	
 <script type="text/javascript">
-
-
 <%			
 	ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 	String STATE = rb.getString("STATE");
@@ -122,143 +96,49 @@
 	String selectParty = rb.getString("selectParty");	
 	String mandatoryFields = rb.getString("mandatoryFields");	
  %> 
-
-
-var localizationObj = {
-						STATE : '<%=STATE%>',
-						DISTRICT : '<%=DISTRICT%>',
-						CONSTITUENCY : '<%=CONSTITUENCY%>',
-						MANDAL  : '<%=MANDAL%>',
-						VILLAGE : '<%=VILLAGE%>',
-						HAMLET  : '<%=HAMLET%>',
- 						title	:	'<%=title%>',
-						description	:	'<%=description%>',
-						moreDetails	:	'<%=moreDetails%>',
-						occuredDate	:	'<%=occuredDate%>',
-						reportedDate:	'<%=reportedDate%>',
-						selectRange	:	'<%=selectRange%>',
-						selectSource:	'<%=selectSource%>'							
-					  };
+ var localizationObj = {
+			STATE : '<%=STATE%>',
+			DISTRICT : '<%=DISTRICT%>',
+			CONSTITUENCY : '<%=CONSTITUENCY%>',
+			MANDAL  : '<%=MANDAL%>',
+			VILLAGE : '<%=VILLAGE%>',
+			HAMLET  : '<%=HAMLET%>',
+			title	:	'<%=title%>',
+			description	:	'<%=description%>',
+			moreDetails	:	'<%=moreDetails%>',
+			occuredDate	:	'<%=occuredDate%>',
+			reportedDate:	'<%=reportedDate%>',
+			selectRange	:	'<%=selectRange%>',
+			selectSource:	'<%=selectSource%>'							
+		  };
 
 //Variable Declaration Start here
 
 	var identifyDate = 1;
 	var reportDate = 2;
-	var informationSourcesObj = {
-			sourceArr : []
-	};
-	var staticParties = {
-			  staticPartiesDataList : []
-	}
-	var effectedRange = {
-			sourceArr : []
-	};	
+	
+		
 	var range='',rangeId=0;
-	var localPoliticalChangeId=0;
+	var localPoliticalChangeId="${localPoliticalChangeId}";
 	var requestType = "${type}";
-	var externalPerson = "EXTERNAL PERSON";
-	var editResults='';
+	
+	
 	
 // Variable Declaration Ends here
-	
-	function showDateCalendar(eleId) {
-	
-		var id ;
-		elementId = eleId;
-		
-		if(eleId==1){		
-			id = document.getElementById("identifiedFromText_Div");
-		}else if(eleId==2){
-			id = document.getElementById("reportedFromText_Div");
-		}
-
-		if (dateCalendar)
-			dateCalendar.destroy();
-	
-		var navConfig = {
-			strings : {
-				month : "Choose Month",
-				year : "Enter Year",
-				submit : "OK",
-				cancel : "Cancel",
-				invalidYear : "Please enter a valid year"
-			},
-			monthFormat : YAHOO.widget.Calendar.SHORT,
-			initialFocus : "year"
-		};
-	
-		var dateCalendar = new YAHOO.widget.Calendar(id, {
-			navigator : navConfig,
-			title : "Choose a date:",
-			close : true
-		});
-		
-		dateCalendar.selectEvent.subscribe(displayDateTextBoxs, dateCalendar, true);
-		dateCalendar.render();
-		dateCalendar.show();
-	}
-
-	function displayDateTextBoxs(type, args, obj) 
-	{
-		var dates = args[0];
-		var date = dates[0];
-		var year = date[0], month = date[1], day = date[2];
-		var txtDate1;
-		txtDate1 = document.getElementById("identifiedFromText");	
-		txtDate1.value = day + "/" + month + "/" + year;
-	}
-	
-	function displayDateTextMethod(type, args, obj) {
-		var dates = args[0];
-		var date = dates[0];
-		var year = date[0], month = date[1], day = date[2];
-		var txtDate1;
-		txtDate1 = document.getElementById("reportedFromText");
-		txtDate1.value = day + "/" + month + "/" + year;		
-	}
-	
-	function showDateCal(eleId) {
-		var id ;
-		elementID = eleId;
-		id = document.getElementById("reportedFromText_Div");
-
-		if (dateCalendar1)
-			dateCalendar1.destroy();
-
-		var navConfig = {
-			strings : {
-				month : "Choose Month",
-				year : "Enter Year",
-				submit : "OK",
-				cancel : "Cancel",
-				invalidYear : "Please enter a valid year"
-			},
-			monthFormat : YAHOO.widget.Calendar.SHORT,
-			initialFocus : "year"
-		};
-
-		var dateCalendar1 = new YAHOO.widget.Calendar(id, {
-			navigator : navConfig,
-			title : "Choose a date:",
-			close : true
-		});
-		dateCalendar1.selectEvent.subscribe(displayDateTextMethod, dateCalendar1, true);
-		dateCalendar1.render();
-		dateCalendar1.show();		
-	}
-	
-	
-	
 	//Ajax Calls Starts from here..
 
 	function getSelectOptionVOListForPoliticalChanges(id, task)
 	{	
+		if(id == 0)
+		{	
+			alert("Select Valid Location");
+			return;
+		}	
 		rangeId = id;
 		var rangeIdDIv= document.getElementById("rangeId");
 		rangeIdDIv.value = rangeId
 		
-		if(id == 0)
-			return;
+		
 		var jsObj=
 			{
 					locationId:id,
@@ -271,56 +151,19 @@ var localizationObj = {
 
 	function checkRequestType()
 	{
-		var resultStatus = "${resultStatus}";
-		var successMsgDIV = document.getElementById("successMsg");
-		var message = '';
-		if(resultStatus==""){
-			message+='';
-		}else if(resultStatus==0){
-			message+='<div id="successDIV" style="color:green;">Successfuly Saved</div>';
-		}else if(resultStatus==1){
-			message+='<div id="successDIV" style="color:green;"><p>Error Raised while saving data please check log for details.</p></div>';
-		}
-		successMsgDIV.innerHTML = message;
-		var saveTypeIDDIV = document.getElementById("saveTypeID");
-		var heading = document.getElementById("headingDiv");
-		var headingDiv = '';
-		if(requestType=="Edit"){
-			headingDiv+='Edit/Modify Political Changes';
-			saveTypeIDDIV.value = "edit";			
-		}else{
-			
-			saveTypeIDDIV.value = "new";	
-			headingDiv+='Add Political Changes';
-			var politicalId = document.getElementById("politicalChangeId");
-			politicalId.value = localPoliticalChangeId;
-		}		
-		heading.innerHTML = headingDiv;
-		if(requestType=="Edit"){									
-			localPoliticalChangeId = "${localPoliticalChangeId}";
-			var politicalId = document.getElementById("politicalChangeId");
-			politicalId.value = localPoliticalChangeId;			
-			var jsObj=
-				{
-					localPoliticalChangeId:localPoliticalChangeId,
-					task:"getDetailsBylocalPoliticalChangeId"					
-				};
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/getDetailsByPoliticalChangeIdAjaxAction.action?"+rparam;	
-				callAjax(rparam,jsObj,url);
-		}
-
-		var externalPersonsDiv = document.getElementById("otherSourcesInformationDiv");  
-		var nameDiv = document.getElementById("externalPersonName");
-		var mobileDiv = document.getElementById("externalPersonMobile");
-		var addressDiv = document.getElementById("externalPersonAddress");
-		
-			otherDetailsForPoliticalChanges = 0;			
-			externalPersonsDiv.style.display = 'none';
-			nameDiv.value='name';
-			mobileDiv.value='9000000000';
-			addressDiv.value='address';
 		document.getElementById("titleTextField").focus();
+		var effectedRangeEl = document.getElementById("effectedRange");
+		var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
+		
+		if(requestType=="new" && selectedeffectedRange != '0')
+			populateLocations(selectedeffectedRange,'onLoad');	
+		
+		var externalPersonsDiv = document.getElementById("otherSourcesInformationDiv");
+		var userTypeSelectBoxEl = document.getElementById("userTypeSelectBox");
+		var userTypeSelectBoxElVal = userTypeSelectBoxEl.options[userTypeSelectBoxEl.selectedIndex].value; 
+		if(userTypeSelectBoxElVal == '2' || userTypeSelectBoxElVal == '3' )
+			externalPersonsDiv.style.display = 'block';
+				
 	}
 	
 	//Ajax Calls ends here...
@@ -333,22 +176,11 @@ var localizationObj = {
 							try {												
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
-								
-									if(jsObj.task == "getAllPoliticalChangesForTheUser"){
-										buildDataTableForLocalPoliticalChanges(myResults);
-									} 
+															 
 									if(jsObj.task == "deltePoliticalChange"){
 										getAllPoliticalChangesForTheUser();
-									}
-									if(jsObj.task == "getExternalPersonDetails"){
-										buildExternalPersonDetailsPopUp(myResults);
-									}
-									if(jsObj.task == "getExternalPersonDetailsForEdit"){ 
-										getExternalPersonDetailsToSetData(myResults);
-									}
-									if(jsObj.task == "effectedRange"){
-										setEffectedRangeDetails(myResults);
-									}
+									}														
+									
 									if(jsObj.task == "getStates")
 									{
 										clearOptionsListForSelectElmtId("stateId");
@@ -379,11 +211,7 @@ var localizationObj = {
 										clearOptionsListForSelectElmtId("hamletField");
 										createOptionsForSelectElmtId("hamletField",myResults);
 									}		
-									if(jsObj.task == "getDetailsBylocalPoliticalChangeId")
-									{
-										editResults = myResults;
-										setDefaultDataToEdit(myResults);
-									}							
+																
 								}     
 							catch (e)
 								{   
@@ -400,96 +228,85 @@ var localizationObj = {
 		}														
 
 
-//Function to set Data for the DIV's starts here
-
-function setDefaultDataToEdit(results)
-{
-	
-	localPoliticalChangeId = results.politicalChangeId;		
-	document.getElementById("titleTextField").value = results.title;
-	document.getElementById("descriptionTextBox").value = results.description;
-	document.getElementById("reportedFromText").value = results.date;			
-	document.getElementById("identifiedFromText").value = results.identifiedDate;
-		
-	if(externalPerson==results.sourceOfInformation){
-		getOtherPersonDetails(externalPerson);
-		document.getElementById("externalPersonName").value = results.name;
-		document.getElementById("externalPersonMobile").value = results.mobile;
-		document.getElementById("externalPersonTelephoneNo").value = results.telephoneNo;
-		document.getElementById("externalPersonEmail").value = results.email;
-		document.getElementById("externalPersonAddress").value = results.address;				
-	}	
-	
-}
-
-function populateLocations(value)
+function populateLocations(val,source)
 {	
-	//debugger;
-	var populateLocationsDiv = '';
-	populateLocationsDiv+='<table>';
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+	var hiddenEl = document.getElementById("effectRangeVal");
+	row1El.style.display = 'none';
+	row2El.style.display = 'none';
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+	row6El.style.display = 'none';
+	var value = val
+	if(val == 'null')
+		value = hiddenEl.value;
 	if( (value>1) || (value==1) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td style="width:154px;">STATE:</td>';
-		populateLocationsDiv +='		<td><select id="stateId" name="state" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getDistricts\')" /></td>';
-		populateLocationsDiv +='	</tr>';
+		if(row1El.style.display == 'none')
+		{	
+			row1El.style.display = '';
+		}		
 		range = localizationObj.STATE;
 	}
 	if( (value>2) || (value==2) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td>DISTRICT:</td>';
-		populateLocationsDiv +='		<td><select id="districtField" name="district" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getConstituencies\')" /></td>';
-		populateLocationsDiv +='	</tr>';
+		if(row2El.style.display == 'none')
+		{	
+			row2El.style.display = '';
+		}
 		range = localizationObj.DISTRICT;
 	}
 	if( (value>3) || (value==3) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td><CONSTITUENCY:</td>';
-		populateLocationsDiv +='		<td><select id="constituencyField" name="constituency" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getMandals\')" /></td></tr>';
-		populateLocationsDiv +='	</tr>';
+		if(row3El.style.display == 'none')
+		{	
+			row3El.style.display = '';
+		}		
 		range = localizationObj.CONSTITUENCY;
 	}
 	if( (value>4) || (value==4) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td>MANDAL:</td>';
-		populateLocationsDiv +='		<th><select id="mandalField" name="mandal" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getTowhships\')" /></td>';
-		populateLocationsDiv +='	</tr>';
+		if(row4El.style.display == 'none')
+		{	
+			row4El.style.display = '';
+		}		
 		range = localizationObj.MANDAL;
 	}
 	if( (value>5) || (value==5) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td>Revenue VILLAGE:</td>';
-		populateLocationsDiv +='		<td><select id="villageField" name="village" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getVillages\')" /></td>';
-		populateLocationsDiv +='	</tr>';
+		if(row5El.style.display == 'none')
+		{	
+			row5El.style.display = '';
+		}
 		range = localizationObj.VILLAGE;
 	}
 	if( (value>6) || (value==6) ){
-		populateLocationsDiv +='	<tr>';
-		populateLocationsDiv +='		<td>Hamlet:</td>';
-		populateLocationsDiv +='		<td><select id="hamletField" name="hamlet" class="selectWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getHamletIdAndRange\')"/></td>';
-		populateLocationsDiv +='	</tr>';
+		if(row6El.style.display == 'none')
+		{	
+			row6El.style.display = '';
+		}
 		range = localizationObj.HAMLET;
 		rangeId = value;
 	}
-	populateLocationsDiv+='</table>';
+	
 
 	var rangeDIv= document.getElementById("range");
-	rangeDIv.value = range
-	
-	getSelectOptionVOListForPoliticalChanges(1,"getStates");
-	
-	var elementDiv = document.getElementById("locationPopulationDiv");
-	elementDiv.innerHTML = populateLocationsDiv; 
+	rangeDIv.value = range;
+	if(source == 'checkBox')
+		getSelectOptionVOListForPoliticalChanges(1,"getStates");	
+	 
 }
 
 
 	function getOtherPersonDetails(name)
-	{
+	{	
 		var externalPersonsDiv = document.getElementById("otherSourcesInformationDiv");  
 		var nameDiv = document.getElementById("externalPersonName");
 		var mobileDiv = document.getElementById("externalPersonMobile");
 		var addressDiv = document.getElementById("externalPersonAddress");
 		
-		if(name==externalPerson)
+		if(name=='External Person' || name=='Call Center')
 		{			
 			otherDetailsForPoliticalChanges = 1;			
 			externalPersonsDiv.style.display = 'block';
@@ -505,37 +322,17 @@ function populateLocations(value)
 			addressDiv.value='address';
 		}
 	}
+	var hidden = '${sessionScope.HiddenCount}';
 
-	function setDefaultDataForEditing()
+	function incrementHidden()
 	{
-
-		document.getElementById("titleTextField").value = title;
-		document.getElementById("descriptionTextBox").value = description;
-		document.getElementById("reportedFromText").value = date;			
-		document.getElementById("identifiedFromText").value = identifiedDate;
-		var partySelect = document.getElementById("selectedPartyBox");
-		for (var i=0; i<partySelect.options.length; ++i){ 
-			if (staticParties.staticPartiesDataList[i].value==partyName) 
-				partySelect.options[i].selected = true;				
-		}
-
-		var userSelect = document.getElementById("userTypeSelectBox");
-		for (var i=0; i<userSelect.options.length; ++i){ 
-			if (informationSourcesObj.sourceArr[i].value==sourceOfInformation) 
-				userSelect.options[i].selected = true;				
-		}
-		
-		if(externalPerson==sourceOfInformation){
-			getExternalPersonDetailsForEdit(politicalChangeId);
-			getOtherPersonDetails(sourceOfInformation);
-			document.getElementById("externalPersonName").value = externalPersonname;
-			document.getElementById("externalPersonMobile").value = externalPersonmobile;
-			document.getElementById("externalPersonTelephoneNo").value = externalPersontelephoneno;
-			document.getElementById("externalPersonEmail").value = externalPersonemail;
-			document.getElementById("externalPersonAddress").value = externalPersonaddress;				
-		}	
-
-		
+		<%
+		int hidden1 = (Integer)session.getAttribute("HiddenCount");
+		 
+		hidden1=hidden1+1;
+		   session.setAttribute( "HiddenCount", hidden1 );
+		%>
+		hidden= '${sessionScope.HiddenCount}';
 	}
 
 	function doUnload()
@@ -547,14 +344,21 @@ function populateLocations(value)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/removeSessionVariablesForPoliticalChangesRegistrationAjaxAction.action?"+rparam;	
 		callAjax(rparam,jsObj,url);
+		incrementHidden();
+		window.opener.document.location.reload(true);
+		window.close();
 	}
+
 	</script>
 </head>
 
-<body onload="checkRequestType()" onunload="doUnload()" style="background-color:#f2f2f2;">	
-
-<DIV id="headingDiv" class="headingStyle" align="center"></div>
-
+<body  onunload="doUnload()" style="background-color:#f2f2f2;">	
+<c:if test="${type == 'new'}">
+<DIV id="headingDiv" class="headingStyle" align="center">New Political Change</div>
+</c:if>
+<c:if test="${type == 'Edit'}">
+<DIV id="headingDiv" class="headingStyle" align="center">Edit Political Change</div>
+</c:if>
 <div id="errorMsgDiv">
 	<table class="registrationTable">
 			<tr>
@@ -567,159 +371,153 @@ function populateLocations(value)
 			</tr>
 		</table>
 </div>		
-	
-<s:form action="politicalChangesRegistrationAction" method="POST" theme="simple" name="form">			
+<c:if  test="${resultStatus == '0'}">
+	<div id="successMsg">Political Change Registered Successfully!</div>
+</c:if>	
+<c:if  test="${resultStatus == '1'}">
+	<div id="successMsg" style="color:red;">Error Raised while saving data please check log for details</div>
+</c:if>
+<s:form action="politicalChangesRegistrationAction" method="GET" theme="simple" name="form">			
 	<div id="mainPoliticalDiv" align="left">
-		<table>				
-			<tr>
-				<td><DIV id="politicalChangeTitleData" style="width:157px;"><b style="color:red">*</b> <%=title%> </div></td>
-				<td><input class="politicalChangesFieldBoxesWidth" name="title" id="titleTextField" type="text" width="300px"></input></td>
-			</tr>	
-			<tr>
-				<td><DIV id="politicalChangeDescripionData"><%=description%></div></td>
-				<td><textarea id="descriptionTextBox" name="description" rows="2" cols="20"></textarea></td>
-			</tr>
-		</table>
-				
 		<fieldset>
-			<legend style="font-family:arial,helvetica,clean,sans-serif;"><%=moreDetails%></legend>
+			<legend style="font-family:arial,helvetica,clean,sans-serif;">Political Change Info</legend>
+			<div>
+				<font class="requiredFont"> *  <%=mandatoryFields%></font>
+			</div>
 			<table>
 				<tr>
-					<td><b style="color:red">*</b> <%=occuredDate%></td>
+					<td style="width:140px;"><%=title%><font class="requiredFont"> * </font></td>
+					<td><s:textfield  name="title" id="titleTextField" maxlength="200" size="50"/></td>
+				</tr>	
+				<tr>
+					<td style="width:140px;"><%=description%></td>
+					<td><s:textarea id="descriptionTextBox" name="description" maxlength="500" rows="2" cols="38"/></td>
+				</tr>
+			</table>
+			<table>				
+				<tr>
+					<td style="width:140px;"><%=occuredDate%><font class="requiredFont"> * </font></td>
 					<td>
-						<input type="text"  READONLY="READONLY" name ="occuredDate" class="politicalChangesFieldBoxesWidth" id="identifiedFromText" style="margin-top:0px;" name="identifiedFromText" size="20"/>
-						<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div></td>					
-					</td>
+						<s:textfield  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" style="margin-top:0px;" size="25"/>
+						<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
+					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCalendar(identifyDate)"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
 					</td>
 				</tr>	
 				<tr>		
-					<td> <%=reportedDate%></td>
+					<td style="width:140px;"><%=reportedDate%></td>
 					<td>
-						<input type="text" READONLY="READONLY" name ="reportedDate" class="politicalChangesFieldBoxesWidth" id="reportedFromText" style="margin-top:0px;" name="reportedFromText" size="20"/>
-						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div></td>
-					</td>
+						<s:textfield READONLY="READONLY" name ="reportedDate" id="reportedFromText" style="margin-top:0px;" size="25"/>
+						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>
+					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(reportDate)"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
 					</td>
 				</tr>
+			</table>
+			<table border="0">	
 				<tr>
-					<td>
-						<%=selectParty%>	
-					</td>
-					<td>
-						<select id="selectedPartyBox" name="party" class="selectBoxWidth">
-							<c:forEach var="parties" varStatus="stat" items="${sessionScope.staticPartiesList}">
-								<option value="${parties.id}">${parties.name}</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>	
-					
+					<td style="width:140px;">Impacted Party</td>
+					<td><s:select id="selectedPartyBox" name="party" cssClass="selectBoxWidth" list="#session.mainPartiesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Party"/></td>					
+				</tr>					
 				<tr>
-					<td style="width:156px;">
-						<b style="color:red">*</b> <%=selectRange%>
-					</td>
-					<td>
-						<select id="effectedRange" name="effectRange" class="selectBoxWidth" onchange="populateLocations(this.options[this.selectedIndex].value)">
-							<option value="">Select Range</option>
-							<c:forEach var="effectedRange" varStatus="stat" items="${sessionScope.effectedRangeList}">
-								<option value="${effectedRange.id}">${effectedRange.name}</option>
-							</c:forEach>
-						</select>		
-					</td>
-				</tr>  
-				<tr> 
-					<table>	
-						<tr>
-							<td>
-								<div id="locationPopulationDiv"  align="left">
-									
-								</div>		
-							</td>
-						</tr>	
-					</table>
-				</tr> 
+					<td style="width:140px;">Effective Scope<font class="requiredFont"> * </font></td>
+					<td><s:select id="effectedRange" name="effectRange" cssClass="selectBoxWidth" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Effective Scope" class="selectBoxWidth" onchange="populateLocations(this.options[this.selectedIndex].value,'checkBox')"/></td>
+				</tr>
+				<c:if test="${type == 'Edit'}">
+				
+				<s:hidden id="effectRangeVal" name="effectRangeVal" value="%{effectRange}" />
+			 		<tr>
+						<td style="width:140px;">Location</td>
+						<td><s:property value="locationName" /></td>
+						<td><input type="button" value="Edit" onclick="populateLocations('null','checkBox')"  /></td>
+					</tr>
+		 		</c:if>				 
 		 </table>
+		 
+		 <div id="locationPopulationDiv"  align="left">
+		 <table>
+				<tr id="row1" style="display:none;">
+					<td style="width:140px;"><%=STATE%></td>
+					<td><s:select id="stateId" name="state" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select State" cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getDistricts\')" /></td>
+				</tr>
+				<tr id="row2" style="display:none;">
+					<td style="width:140px;"><%=DISTRICT%></td>
+					<td><s:select id="districtField" name="district" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getConstituencies\')" /></td>
+				</tr>
+				<tr id="row3" style="display:none;">
+					<td style="width:140px;"><%=CONSTITUENCY%></td>
+					<td><s:select id="constituencyField" name="constituency" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getMandals\')" /></td>
+				</tr>				
+				<tr id="row4" style="display:none;">
+					<td style="width:140px;"><%=MANDAL%></td>
+					<td><s:select id="mandalField" name="mandal" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Mandal"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getTowhships\')" /></td>
+				</tr>
+				<tr id="row5" style="display:none;">
+					<td style="width:140px;"><%=VILLAGE%></td>
+					<td><s:select id="villageField" name="village" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getVillages\')" /></td>
+				</tr>
+				<tr id="row6" style="display:none;">
+					<td style="width:140px;"><%=HAMLET%></td>
+					<td><s:select id="hamletField" name="hamlet" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Hamlet"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getHamletIdAndRange\')"/></td>
+				</tr>
+		</table>
+		 </div>
 		 </fieldset>
-		<table>
-			<tr>		
-				<td style="width:156px;">	
-					<%=selectSource%>			
-				</td>
-				<td>
-					<select id="userTypeSelectBox" name="sourceInformation" class="selectBoxWidth" onchange="getOtherPersonDetails(this.options[this.selectedIndex].text)">
-						<c:forEach var="informationSources" varStatus="stat" items="${sessionScope.informationSourcesList}">
-							<option value="${informationSources.id}">${informationSources.name}</option>
-						</c:forEach>
-					</select>		
-				</td>
-			</tr>
-		</table>	
-		
+		 <fieldset>
+			<legend style="font-family:arial,helvetica,clean,sans-serif;">Information Source</legend>
+			<table>
+				<tr>		
+					<td style="width:140px;">Information Source<font class="requiredFont"> * </font></td>
+					<td><s:select id="userTypeSelectBox" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Information Source" name="informationSource" class="selectBoxWidth" onchange="getOtherPersonDetails(this.options[this.selectedIndex].text)"/></td>
+				</tr>
+			</table>		
 			<div id="otherSourcesInformationDiv" style="display:none;">
-			<fieldset>
-			<legend style="font-family:arial,helvetica,clean,sans-serif;">Candidate Details</legend>			
-				<table>	
+			<table>	
 						<tr>	
-							<td style="width:152px;"> <b style="color:red">*</b> <%=name%></td>
-							<td><input type="text" name="name" id="externalPersonName" class="politicalChangesFieldBoxesWidth"></input></td>
+							<td style="width:140px;"><%=name%><font class="requiredFont"> * </font></td>
+							<td><s:textfield size="25"  name="name" id="externalPersonName" maxlength="50" class="politicalChangesFieldBoxesWidth"/></td>
 						</tr>		
 						<tr>
-							<td> <b style="color:red">*</b> <%=mobile%></td>
-							<td><input type="text" name="mobile" id="externalPersonMobile" class="politicalChangesFieldBoxesWidth"></input></td>
+							<td style="width:140px;"><%=mobile%><font class="requiredFont"> * </font></td>
+							<td><s:textfield size="25" name="mobile" id="externalPersonMobile" maxlength="12" class="politicalChangesFieldBoxesWidth"/></td>
 						</tr>		
 						<tr>
-							<td><%=telephoneNo%></td>
-							<td><input type="text" name="telephoneNo" id="externalPersonTelephoneNo" class="politicalChangesFieldBoxesWidth"></input></td>
+							<td style="width:140px;"><%=telephoneNo%></td>
+							<td><s:textfield size="25"  name="telephoneNo" id="externalPersonTelephoneNo" maxlength="12" class="politicalChangesFieldBoxesWidth"/></td>
 						</tr>
 						<tr>
-							<td><%=email%></td>
-							<td><input type="text" name="email" id="externalPersonEmail" class="politicalChangesFieldBoxesWidth"></input></td>
+							<td style="width:140px;"><%=email%></td>
+							<td><s:textfield size="25" name="email" id="externalPersonEmail" maxlength="50"  class="politicalChangesFieldBoxesWidth"/></td>
 						</tr>		
 						<tr>
-							<td><b style="color:red">*</b> <%=address%></td>
-							<td><input type="text" name="address" id="externalPersonAddress" class="politicalChangesFieldBoxesWidth"></input></td>
+							<td style="width:140px;"><%=address%><font class="requiredFont"> * </font></td>
+							<td><s:textfield size="25" name="address" id="externalPersonAddress" maxlength="100" class="politicalChangesFieldBoxesWidth"/></td>
 						</tr>							
 				</table>
-				</fieldset>
+			
 			</div>
-					
-			<table>			
-				<tr>
-					<td>
-							<input type="hidden" id="range" name="range"></input>
-					</td>
-					<td>
-							<input type="hidden" id="rangeId" name="rangeId"></input>
-					</td>
-					<td>
-							<input type="hidden" id="politicalChangeId" name="politicalChangeId"></input>
-					</td>
-					<td>
-							<input type="hidden" id="saveTypeID" name="saveType"></input>
-					</td>
-				</tr>
-				
-				<tr>
-					<td>
-							<b style="color:red">*</b> <%=mandatoryFields%>
-					</td>
-				</tr>
-				
-				<tr>
-					<td>
-							<div id="successMsg"></div>
-					</td>
-				</tr>	
-		</table>
+			</fieldset>
+			
+			<input type="hidden" id="range" name="range" value="${range}"></input>
+			<input type="hidden" id="rangeId" name="rangeId" value="${rangeId}"></input>
+			<input type="hidden" name="localPoliticalChangeId" value='${localPoliticalChangeId}'></input>
+			<input type="hidden" id="saveTypeID" name="type" value='${type}'></input>
 			
 </div>
 	<div id="saveDiv" align="center">
-		<s:submit cssClass="button" value="Save" name="Save"></s:submit>
+		<table>
+		<tr>
+			<td><s:submit cssClass="button" value="Save" name="Save"></s:submit></td>
+			<td><input type="button" value="Exit" class="button" onclick="doUnload()"/></td>
+		</tr>
+		</table>
 	</div>
 	
 </s:form>
+<script type="text/javascript">
+checkRequestType();
+</script>
 </body>
 </html>

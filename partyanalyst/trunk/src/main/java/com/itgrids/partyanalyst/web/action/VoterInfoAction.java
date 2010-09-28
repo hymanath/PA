@@ -170,7 +170,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			PoliticalChangesVO politicalChangesVO1 = new PoliticalChangesVO();
 			//PoliticalChangesVO politicalChangesVO2 = new PoliticalChangesVO();
 			
-			politicalChangesVO1.setDate("09-12-2009");
+			politicalChangesVO1.setOccuredDate("09-12-2009");
 			politicalChangesVO1.setDescription("Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!");
 			politicalChangesVO1.setImpact("Congress");
 			/*

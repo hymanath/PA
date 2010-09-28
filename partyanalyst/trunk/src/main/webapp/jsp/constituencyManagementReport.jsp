@@ -666,7 +666,7 @@
 				</div>
 				<div id="political_changes_body" class="containerBodyDivClass">
 					<DIV class="yui-skin-sam"><div id="localPoliticalChangesRegistration"></DIV>
-							<input type="button"  onclick='redirectToNewWindowForAddingPoliticalChanges("new")' value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
+							<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
 					</div>
 					<div id="political_changes_data_head">
 						<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> gives glance of total changes that occur in that constituency and helps the user to analyze the changes and act accordingly.

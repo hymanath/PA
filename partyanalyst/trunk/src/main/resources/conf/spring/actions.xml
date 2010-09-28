@@ -34,9 +34,7 @@
 	</bean>	
 	
 	<bean id="politicalChangesRegistrationAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesRegistrationAction" singleton="false">
-		<property name="politicalChangesService" ref="politicalChangesService" />
-		<property name="influencingPeopleService" ref="influencingPeopleService" />
-		<property name="staticDataService" ref="staticDataService" />
+		<property name="politicalChangesService" ref="politicalChangesService" />		
 	</bean>
 	
 	<bean id="influencingPeopleSaveAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleSaveAction" singleton="false">

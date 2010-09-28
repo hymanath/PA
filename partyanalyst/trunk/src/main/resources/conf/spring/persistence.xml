@@ -70,7 +70,7 @@
 				<value>com.itgrids.partyanalyst.model.FundSource</value>
 				<value>com.itgrids.partyanalyst.model.UserCategory</value>
 				<value>com.itgrids.partyanalyst.model.AssignedProblemProgress</value>
-				<value>com.itgrids.partyanalyst.model.ProblemSource</value>
+				<value>com.itgrids.partyanalyst.model.InformationSource</value>
 				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
 				<value>com.itgrids.partyanalyst.model.Hamlet</value>
 				<value>com.itgrids.partyanalyst.model.Voter</value>

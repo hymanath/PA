@@ -281,4 +281,9 @@ fieldset {
 	width:610px;
 	overflow:scroll;
 }
+.yui-skin-sam .yui-panel .hd 
+{
+	border-bottom:1px solid #CCCCCC;
+	text-align:left;
+}
 

@@ -572,13 +572,12 @@ function initializeConstituencyManagement() {
 
 			getAllPoliticalChangesForTheUser();
 }
-
-
-function redirectToNewWindowForAddingPoliticalChanges(type)
-{
-	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type,"politicalChangesWindow","scrollbars=yes,height=600,width=450,left=200,top=200");
-    politicalChangesWindow.focus();
-} 
+ 
+function redirectToNewWindowForEditingPoliticalChanges(type,id)
+{		
+	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type+"&localPoliticalChangeId="+id,"politicalChangesWindow","scrollbars=yes,height=600,width=600,left=200,top=200");
+    politicalChangesWindow.focus();	
+}
 
 function getAllPoliticalChangesForTheUser()
 {						
@@ -602,8 +601,8 @@ function buildDataTableForLocalPoliticalChanges(results)
 	for(var i in results)
 	{		
 		var sourceOfInformation;
-		if(externalPerson==results[i].sourceOfInformation){			
-			sourceOfInformation = '<A href="javascript:{}" title="Click To View Details" onclick="getExternalPersonDetails('+results[i].politicalChangeId+')">'+results[i].sourceOfInformation+'</A>';  //\''+results[i].sourceOfInformation+'\'
+		if(results[i].sourceOfInformation == 'External Person'){			
+			sourceOfInformation = '<A href="javascript:{}" title="Click To View Details" onclick="getExternalPersonDetails('+results[i].localPoliticalChangeId+')">'+results[i].sourceOfInformation+'</A>';  //\''+results[i].sourceOfInformation+'\'
 		}else{	
 		    sourceOfInformation = results[i].sourceOfInformation;
 		}
@@ -612,13 +611,13 @@ function buildDataTableForLocalPoliticalChanges(results)
 			 {		
 					title:results[i].title,
 					description:results[i].description,
-					occuredDate:results[i].date,
+					occuredDate:results[i].occuredDate,
 					party:results[i].partyName,
 					effectedRange :results[i].range,
 					effectedLocation : results[i].locationName,
 					sourceOfInformation : sourceOfInformation,
-					editDetails: '<center><A href="javascript:{}" title="Click To Edit Political change" onclick="redirectToNewWindowForEditingPoliticalChanges('+results[i].politicalChangeId+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A></center>',
-					deleteDetails: '<center><A href="javascript:{}" title="Click To Delte Political change"  onclick="deleteDetails('+results[i].politicalChangeId+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A></center>'  
+					editDetails: '<center><A href="javascript:{}" title="Click To Edit Political change" onclick="redirectToNewWindowForEditingPoliticalChanges(\'Edit\','+results[i].localPoliticalChangeId+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A></center>',
+					deleteDetails: '<center><A href="javascript:{}" title="Click To Delte Political change"  onclick="deleteDetails('+results[i].localPoliticalChangeId+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A></center>'  
 			 };
 		
 			assignTolocalPoliticalChangesDataArray.push(localPoliticalChangesObj);
@@ -749,29 +748,24 @@ function buildExternalPersonDetailsPopUp(results)
 			  close:true,
 			  x:400,
 			  y:300,
-			   buttons : [ { text:"Ok", handler: externalPersonCreateGroupSubmit, isDefault:true}, 
-					  { text:"Cancel", handler: handleCreateGroupCancel}]			 
+			   buttons : [ { text:"Ok", handler: externalPersonPopupSubmit, isDefault:true}, 
+					  { text:"Cancel", handler: externalPersonPopupCancel}]			 
              } );
 	externalPersonDetailsPanel.setHeader("External Person Details");
 	externalPersonDetailsPanel.setBody(externalPersonDataDiv);
 	externalPersonDetailsPanel.render();	
 }
 
-function externalPersonCreateGroupSubmit(){
+function externalPersonPopupSubmit(){
 	externalPersonDetailsPanel.hide();
 }
 
-function handleCreateGroupCancel()
+function externalPersonPopupCancel()
 {
 	this.hide();
 }
 
-function redirectToNewWindowForEditingPoliticalChanges(localPoliticalChangeId)
-{
-	type = "Edit";
-	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type+"&localPoliticalChangeId="+localPoliticalChangeId,"politicalChangesWindow","scrollbars=yes,height=600,width=450,left=200,top=200");
-    politicalChangesWindow.focus();	
-}
+
 
 function incrementHidden()
 {

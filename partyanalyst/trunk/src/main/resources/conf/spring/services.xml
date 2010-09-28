@@ -61,6 +61,7 @@
 		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
 		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />	
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="informationSourceDAO" ref="informationSourceDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -288,7 +289,6 @@
 	    <property name="constituencyDAO" ref="constituencyDAO" />
 	    <property name="boothDAO" ref="boothDAO" />
 	    <property name="problemDAO" ref="problemDAO" />
-	    <property name="problemSourceDAO" ref="problemSourceDAO" />
 	    <property name="problemLocationDAO" ref="problemLocationDAO" />
 	    <property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
@@ -328,7 +328,7 @@
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="problemClassificationDAO" ref="problemClassificationDAO" />
 		<property name="problemAndProblemSourceDAO" ref="problemAndProblemSourceDAO"/>
-		<property name="problemSourceDAO" ref="problemSourceDAO"/>
+		<property name="informationSourceDAO" ref="informationSourceDAO"/>
 		<property name="problemSourceScopeConcernedDepartmentDAO" ref="problemSourceScopeConcernedDepartmentDAO"/>
 		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" /> 
@@ -510,7 +510,6 @@
 	</bean>
 	
 	<bean name="politicalChangesService" class="com.itgrids.partyanalyst.service.impl.PoliticalChangesService" >
-		<property name="politicalChangesInformationSourceDAO" ref="politicalChangesInformationSourceDAO" />
 		<property name="partyDAO" ref="partyDAO"/>
 		<property name="politicalChangesDAO" ref="politicalChangesDAO"/>
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO"/>
@@ -522,6 +521,7 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
     	<property name="hamletDAO" ref="hamletDAO" />
+    	<property name="informationSourceDAO" ref="informationSourceDAO" />    	
 	</bean>  
 	
 	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService" >

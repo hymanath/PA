@@ -1,25 +1,19 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
-import org.jfree.util.Log;
-
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IPoliticalChangesService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
@@ -36,128 +30,125 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	private ServletContext context;
     private HttpSession session;
 	private HttpServletRequest request;
-	
-	private String title,description,occuredDate,reportedDate,party,effectRange,politicalChangeId,saveType;
-	private List<SelectOptionVO> informationSourcesList,staticPartiesList,effectedRangeList;
-	private String type,externalPerson,name,mobile,telephoneNo,email,address,sourceInformation,range,rangeId,Save;
+	private PoliticalChangesVO politicalChangesVO = new PoliticalChangesVO();
+	private String title,description,occuredDate,reportedDate,party,effectRange,localPoliticalChangeId;
+	private String type,externalPerson,name,mobile,telephoneNo,email,address,informationSource,range,rangeId;
 	private int resultStatus = 3;
-	private IPoliticalChangesService politicalChangesService;
-	private IInfluencingPeopleService influencingPeopleService;
-	private IStaticDataService staticDataService;
 	
-	public String getSaveType() {
-		return saveType;
+	private IPoliticalChangesService politicalChangesService;
+	
+	
+	public PoliticalChangesVO getPoliticalChangesVO() {
+		return politicalChangesVO;
 	}
 
-	public void setSaveType(String saveType) {
-		this.saveType = saveType;
-	}
-
+	public void setPoliticalChangesVO(PoliticalChangesVO politicalChangesVO) {
+		this.politicalChangesVO = politicalChangesVO;
+	}	
+	
 	public int getResultStatus() {
 		return resultStatus;
 	}
 
 	public void setResultStatus(int resultStatus) {
 		this.resultStatus = resultStatus;
+	}	
+	
+	public String getLocalPoliticalChangeId() {
+		return politicalChangesVO.getLocalPoliticalChangeId().toString();
 	}
 
-	public String getPoliticalChangeId() {
-		return politicalChangeId;
-	}
-
-	public void setPoliticalChangeId(String politicalChangeId) {
-		this.politicalChangeId = politicalChangeId;
-	}
-
-	public String getSave() {
-		return Save;
-	}
-
-	public void setSave(String save) {
-		Save = save;
+	public void setLocalPoliticalChangeId(String localPoliticalChangeId) {
+		this.politicalChangesVO.setLocalPoliticalChangeId(new Long(localPoliticalChangeId));
 	}
 
 	public String getRange() {
-		return range;
+		return politicalChangesVO.getRange();
 	}
 
 	public void setRange(String range) {
-		this.range = range;
+		this.politicalChangesVO.setRange(range);
 	}
 
 	public String getRangeId() {
-		return rangeId;
+		return politicalChangesVO.getRangeId().toString();
 	}
 
 	public void setRangeId(String rangeId) {
-		this.rangeId = rangeId;
+		this.politicalChangesVO.setRangeId(new Long(rangeId));
 	}
 
-	public String getSourceInformation() {
-		return sourceInformation;
+	public String getInformationSource() {
+		return politicalChangesVO.getInformationSource();
 	}
 
-	public void setSourceInformation(String sourceInformation) {
-		this.sourceInformation = sourceInformation;
+	public void setInformationSource(String informationSource) {
+		this.politicalChangesVO.setInformationSource(informationSource);
 	}
 
 	public String getDescription() {
-		return description;
+		return politicalChangesVO.getDescription();
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.politicalChangesVO.setDescription(description);
 	}
 
 	public String getReportedDate() {
-		return reportedDate;
+		return politicalChangesVO.getReportedDate();
 	}
 
 	public void setReportedDate(String reportedDate) {
-		this.reportedDate = reportedDate;
+		this.politicalChangesVO.setReportedDate(reportedDate);
 	}
 
 	public String getTelephoneNo() {
-		return telephoneNo;
+		return politicalChangesVO.getTelephoneNo();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9 ]+[0-9]*$", message = "Telephone Number should not contain alphabets and special characters")
 	public void setTelephoneNo(String telephoneNo) {
-		this.telephoneNo = telephoneNo;
+		this.politicalChangesVO.setTelephoneNo(telephoneNo);
 	}
 
 	public String getEmail() {
-		return email;
+		return politicalChangesVO.getEmail();
 	}
-
+	
+	@EmailValidator(message = "Invalid Email", shortCircuit = true)
 	public void setEmail(String email) {
-		this.email = email;
+		this.politicalChangesVO.setEmail(email);
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Address",shortCircuit=true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Address is Mandatory",shortCircuit=true)
 	public String getAddress() {
-		return address;
+		return politicalChangesVO.getAddress();
 	}
 
 	public void setAddress(String address) {
-		this.address = address;
+		this.politicalChangesVO.setAddress(address);
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Name",shortCircuit=true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Name is mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z]+$", message = "Name should not contain special characters and numbers", shortCircuit = true)
 	public String getName() {
-		return name;
+		return politicalChangesVO.getName();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.politicalChangesVO.setName(name);
 	}
 
 		
 	public String getMobile() {
-		return mobile;
+		return politicalChangesVO.getMobile();
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
-		this.mobile = mobile;
+		this.politicalChangesVO.setMobile(mobile);
 	}
 
 	public HttpSession getSession() {
@@ -176,24 +167,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 			IPoliticalChangesService politicalChangesService) {
 		this.politicalChangesService = politicalChangesService;
 	}
-
-	public IInfluencingPeopleService getInfluencingPeopleService() {
-		return influencingPeopleService;
-	}
-
-	public void setInfluencingPeopleService(
-			IInfluencingPeopleService influencingPeopleService) {
-		this.influencingPeopleService = influencingPeopleService;
-	}
-
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}
-
+	
 	public String getType() {
 		return type;
 	}
@@ -212,34 +186,25 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
    
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Occured Date",shortCircuit=true)
 	public String getOccuredDate() {
-		return occuredDate;
+		return politicalChangesVO.getOccuredDate();
 	}
 
 	public void setOccuredDate(String occuredDate) {
-		this.occuredDate = occuredDate;
-	}
-/*
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Reported Date",shortCircuit=true)
-	public String getReportedDate() {
-		return reportedDate;
-	}
-
-	public void setReportedDate(String reportedDate) {
-		this.reportedDate = reportedDate;
-	}
-*/
-	
+		this.politicalChangesVO.setOccuredDate(occuredDate);
+	}	
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Party is required",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Party")
 	public String getParty() {
-		return party;
+		return politicalChangesVO.getParty().toString();
 	}
 
 	public void setParty(String party) {
-		this.party = party;
+		this.politicalChangesVO.setParty(new Long(party));
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Effected Range is required",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select Valid Effective Scope")
 	public String getEffectRange() {
 		return effectRange;
 	}
@@ -247,54 +212,18 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	public void setEffectRange(String effectRange) {
 		this.effectRange = effectRange;
 	}
-
-	public List<SelectOptionVO> getStaticPartiesList() {
-		return staticPartiesList;
-	}
-	public void setStaticPartiesList(List<SelectOptionVO> staticPartiesList) {
-		this.staticPartiesList = staticPartiesList;
-	}
-	
-	public List<SelectOptionVO> getEffectedRangeList() {
-		return effectedRangeList;
-	}
-
-	public void setEffectedRangeList(List<SelectOptionVO> effectedRangeList) {
-		this.effectedRangeList = effectedRangeList;
-	}
-	
-
-	public List<SelectOptionVO> getInformationSourcesList() {
-		return informationSourcesList;
-	}
-
-	public void setInformationSourcesList(
-			List<SelectOptionVO> informationSourcesList) {
-		this.informationSourcesList = informationSourcesList;
-	}
-
-	
+		
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Title",shortCircuit=true)
 	public void setTitle(String title) {
-		this.title = title;
+		this.politicalChangesVO.setTitle(title);
 	}
 	public String getTitle() {
-		return title;
-	}
-	/*
-	public String getDescription() {
-		return description;
-	}
-
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Description",shortCircuit=true)
-	public void setDescription(String description) {
-		this.description = description;
-	}
-*/
+		return politicalChangesVO.getTitle();
+	}	
 		
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
-	}
+	}	
 	
 	public String execute() throws Exception
 	{
@@ -304,26 +233,14 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
 		
-		PoliticalChangesVO politicalChangesVO = new PoliticalChangesVO();
-		politicalChangesVO.setRange(range); 
-		politicalChangesVO.setRangeId(Long.parseLong(rangeId));
-		politicalChangesVO.setSaveType(saveType);
-		politicalChangesVO.setPoliticalChangeId(Long.parseLong(politicalChangeId));  
-		politicalChangesVO.setTitle(title);
-		politicalChangesVO.setDescription(description);
-		politicalChangesVO.setDate(occuredDate);
-		politicalChangesVO.setReportedDate(reportedDate);
-		politicalChangesVO.setSourceOfInformation(sourceInformation);
-		politicalChangesVO.setName(name);
-		politicalChangesVO.setMobile(mobile);
-		politicalChangesVO.setTelephoneNo(telephoneNo);
-		politicalChangesVO.setEmail(email);
-		politicalChangesVO.setAddress(address);
-		politicalChangesVO.setPartyId(Long.parseLong(party));
-		politicalChangesVO.setSelectedPersonId(Long.parseLong(sourceInformation));
 		politicalChangesVO.setUserId(userID);
-		ResultStatus result = politicalChangesService.savePoliticalChangeDataReceivedFromUser(politicalChangesVO);
+		ResultStatus result = politicalChangesService.savePoliticalChangeDataReceivedFromUser(politicalChangesVO, type);
 		resultStatus = result.getResultCode();
+		if(resultStatus == 0)
+			politicalChangesVO = new PoliticalChangesVO();
+		else if(resultStatus == 1)
+			return "fail";
+		
 				
 		return Action.SUCCESS;	
 	}

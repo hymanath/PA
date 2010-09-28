@@ -206,7 +206,7 @@
 	<bean id="problemLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLocationDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="problemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceDAO">
+	<bean id="informationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.InformationSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="problemExternalSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">

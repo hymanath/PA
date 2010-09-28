@@ -194,7 +194,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public String execute () throws Exception 
 	{
 		problemSources = new ArrayList<SelectOptionVO>();
-		problemSources = problemManagementService.getAllTypesOfProblemSources();
+		problemSources = staticDataService.getAllInformationSources();
 		problemSources.add(0,new SelectOptionVO(0L,"Select Problem Source"));		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
