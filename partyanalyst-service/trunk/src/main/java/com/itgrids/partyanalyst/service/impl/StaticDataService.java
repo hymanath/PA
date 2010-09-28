@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -102,6 +103,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Group;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Occupation;
@@ -163,6 +165,7 @@ public class StaticDataService implements IStaticDataService {
 	private IPartyElectionDistrictResultWithAllianceDAO partyElectionDistrictResultWithAllianceDAO;
 	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO; 
+	private IInformationSourceDAO informationSourceDAO;
 	
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -452,6 +455,14 @@ public class StaticDataService implements IStaticDataService {
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IInformationSourceDAO getInformationSourceDAO() {
+		return informationSourceDAO;
+	}
+
+	public void setInformationSourceDAO(IInformationSourceDAO informationSourceDAO) {
+		this.informationSourceDAO = informationSourceDAO;
 	}
 
 
@@ -5922,6 +5933,33 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	 return localBodysList;
+	}
+
+
+	/**
+	 * To Get The List Of All Different Sources Of Information(for Problems & political changes) From DB Into SelectOptionVO
+	 * @return
+	 */
+	public List<SelectOptionVO> getAllInformationSources() {
+		List<SelectOptionVO> sources = new ArrayList<SelectOptionVO>();
+		try{
+			List<InformationSource> informationSources = informationSourceDAO.getAll();
+			if(informationSources.size()>0)
+			{	
+				for(InformationSource infoSource:informationSources)
+					sources.add(new SelectOptionVO(infoSource.getInformationSourceId(), infoSource.getInformationSource()));
+				return sources;
+			}
+			else{
+				throw new Exception("Data Not Available");
+			}
+			
+		}catch(Exception e){
+			log.debug(e);
+			e.printStackTrace();			
+			return null;
+		}	
+				
 	}
 	
 	

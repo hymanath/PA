@@ -19,7 +19,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
-import com.itgrids.partyanalyst.dao.IProblemSourceDAO;
+import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -37,7 +37,7 @@ import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
-import com.itgrids.partyanalyst.model.ProblemSource;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IProblemUploadService;
@@ -54,7 +54,6 @@ public class ProblemUploadService implements IProblemUploadService {
 	private IConstituencyDAO constituencyDAO;
 	private IBoothDAO boothDAO;
 	private IProblemDAO problemDAO;
-	private IProblemSourceDAO problemSourceDAO;
 	private IProblemLocationDAO problemLocationDAO;
 	private IProblemExternalSourceDAO problemExternalSourceDAO;
 	
@@ -118,15 +117,7 @@ public class ProblemUploadService implements IProblemUploadService {
 	public void setProblemDAO(IProblemDAO problemDAO) {
 		this.problemDAO = problemDAO;
 	}
-
-	public IProblemSourceDAO getProblemSourceDAO() {
-		return problemSourceDAO;
-	}
-
-	public void setProblemSourceDAO(IProblemSourceDAO problemSourceDAO) {
-		this.problemSourceDAO = problemSourceDAO;
-	}
-
+	
 	public IProblemLocationDAO getProblemLocationDAO() {
 		return problemLocationDAO;
 	}
@@ -319,7 +310,7 @@ public class ProblemUploadService implements IProblemUploadService {
 			
 			problemAndProblemSource = new ProblemAndProblemSource();
 			problemAndProblemSource.setProblem(problem);
-			problemAndProblemSource.setProblemSource(new ProblemSource(new Long(1)));
+			problemAndProblemSource.setProblemSource(new InformationSource(new Long(1)));
 			problemAndProblemSource.setPostedBy("PartyAnalyst Survey Data Upload");
 			problemAndProblemSource.setProblemExternalSource(problemExternalSrc);
 					
