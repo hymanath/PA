@@ -21,6 +21,7 @@ public class RegistrationVO extends BaseDTO{
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	private String name;
 	private String gender;
 	private String userName;
 	private String password; 
@@ -30,6 +31,9 @@ public class RegistrationVO extends BaseDTO{
 	private String mobile;
 	private String address;
 	private String country;
+	private String state;
+	private String district;
+	private String constituency;
 	private String pincode;
 	private String accessType;
 	private String accessValue;
@@ -44,6 +48,14 @@ public class RegistrationVO extends BaseDTO{
 	private Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 
+	private ResultStatus resultStatus;
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public Long getRegistrationID() {
 		return registrationID;
 	}
@@ -63,6 +75,31 @@ public class RegistrationVO extends BaseDTO{
 	}
 
 
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
 	public String getMiddleName() {
 		return middleName;
 	}
