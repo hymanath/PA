@@ -5,6 +5,14 @@
 
 <beans>
 	
+	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>  
+	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
 		<property name="opinionPollQuestionsDAO" ref="opinionPollQuestionsDAO" /> 
 		<property name="opinionPollResultDAO" ref="opinionPollResultDAO" /> 
