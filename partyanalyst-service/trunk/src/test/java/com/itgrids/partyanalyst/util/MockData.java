@@ -30,7 +30,7 @@ import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
-import com.itgrids.partyanalyst.model.ProblemSource;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -2150,7 +2150,7 @@ public class MockData {
 		problem1.setExistingFrom(Calendar.getInstance().getTime());
 		
 		ProblemAndProblemSource problemAndProblemSource1 = new ProblemAndProblemSource();
-		problemAndProblemSource1.setProblemSource(new ProblemSource(1L));
+		problemAndProblemSource1.setProblemSource(new InformationSource(1L));
 		
 		
 		Hamlet hamlet1 = new Hamlet();
@@ -2168,7 +2168,7 @@ public class MockData {
 		problem2.setDescription("No Street Lights in Harijamwada Colony");
 		problem2.setIdentifiedOn(Calendar.getInstance().getTime());
 		problem2.setExistingFrom(Calendar.getInstance().getTime());
-		ProblemSource problemSource = new ProblemSource(new Long(1));
+		InformationSource problemSource = new InformationSource(new Long(1));
 		ProblemAndProblemSource problemAndProblemSource2 = new ProblemAndProblemSource();
 		problemAndProblemSource2.setProblemSource(problemSource);
 		
