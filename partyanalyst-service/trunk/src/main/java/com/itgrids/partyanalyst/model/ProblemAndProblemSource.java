@@ -32,7 +32,7 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	private String postedBy;
 	private Registration user;
 	private Problem problem;
-	private ProblemSource problemSource;
+	private InformationSource problemSource;
 	private ProblemExternalSource problemExternalSource;
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	
@@ -46,7 +46,7 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	
 	public ProblemAndProblemSource(String postedBy,
 			Registration user, Problem problem,ProblemExternalSource problemExternalSource, 
-			Set<ProblemLocation> problemLocations, ProblemSource problemSource) {
+			Set<ProblemLocation> problemLocations, InformationSource problemSource) {
 		this.postedBy = postedBy;
 		this.user = user;
 		this.problem = problem;
@@ -121,14 +121,14 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_source_id")
+	@JoinColumn(name = "information_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ProblemSource getProblemSource() {
+	public InformationSource getProblemSource() {
 		return problemSource;
 	}
 
-	public void setProblemSource(ProblemSource problemSource) {
+	public void setProblemSource(InformationSource problemSource) {
 		this.problemSource = problemSource;
 	}
 

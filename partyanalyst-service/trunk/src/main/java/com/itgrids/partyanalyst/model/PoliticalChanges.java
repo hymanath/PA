@@ -33,13 +33,12 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	private Party party;
 	private Registration registration;
 	private ProblemExternalSource externalSource;
-	private PoliticalChangesInformationSource politicalChangesInformationSource;
+	private InformationSource politicalChangesInformationSource;
 	private String title;
 	private String description;
 	private Date identifiedDate;
 	private Date occuredDate;
 	private Date updatedDate;	
-	private String sourceOfInformation;
 	private String isDelete;
 	private String effectedRange;
 	private Long effectedLocation;
@@ -59,14 +58,13 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	public PoliticalChanges(Long politicalChangesId,String sourceOfInformation,
 			                     Party party,Registration registration,ProblemExternalSource externalSource,
 			                     Date identifiedDate,Date occuredDate,
-			                     Date updatedDate,String description,PoliticalChangesInformationSource politicalChangesInformationSource
+			                     Date updatedDate,String description,InformationSource politicalChangesInformationSource
 								 ,String title,String isDelete,String effectedRange,Long effectedLocation) {
 		this.politicalChangesId = politicalChangesId;
 		this.party = party;
 		this.registration = registration;
 		this.externalSource = externalSource;
-		this.politicalChangesInformationSource = politicalChangesInformationSource;
-		this.sourceOfInformation = sourceOfInformation;
+		this.politicalChangesInformationSource = politicalChangesInformationSource;		
 		this.title = title;
 		this.identifiedDate = identifiedDate;
 		this.occuredDate = occuredDate;
@@ -128,15 +126,15 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "political_changes_information_source_id")
+	@JoinColumn(name = "information_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public PoliticalChangesInformationSource getPoliticalChangesInformationSource() {
+	public InformationSource getPoliticalChangesInformationSource() {
 		return politicalChangesInformationSource;
 	}
 
 	public void setPoliticalChangesInformationSource(
-			PoliticalChangesInformationSource politicalChangesInformationSource) {
+			InformationSource politicalChangesInformationSource) {
 		this.politicalChangesInformationSource = politicalChangesInformationSource;
 	}
 
@@ -183,15 +181,6 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	} 
-
-	@Column(name = "source_of_information", length = 200)
-	public String getSourceOfInformation() {
-		return sourceOfInformation;
-	}
-
-	public void setSourceOfInformation(String sourceOfInformation) {
-		this.sourceOfInformation = sourceOfInformation;
 	}
 
 	@Column(name = "is_delete", length = 25)

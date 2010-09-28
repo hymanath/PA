@@ -15,55 +15,55 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "problem_source")
-public class ProblemSource extends BaseModel implements Serializable{
+@Table(name = "information_source")
+public class InformationSource extends BaseModel implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3768383074738249375L;
-	private Long problemSourceId;
-	private String problemSource;
+	private Long informationSourceId;
+	private String informationSource;
 	private String description;
 	private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0); 
 	
-	public ProblemSource(){
+	public InformationSource(){
 		
 	}
 
-	public ProblemSource(Long problemSourceId){
-		this.problemSourceId = problemSourceId;
+	public InformationSource(Long informationSourceId){
+		this.informationSourceId = informationSourceId;
 	}
 	
-	public ProblemSource(String problemSource,
+	public InformationSource(String informationSource,
 			String description, Set<ProblemAndProblemSource> problemAndProblemSources) {
-		this.problemSource = problemSource;
+		this.informationSource = informationSource;
 		this.description = description;
 		this.problemAndProblemSources = problemAndProblemSources;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "problem_source_id", unique = true, nullable = false)
-	public Long getProblemSourceId() {
-		return problemSourceId;
+	@Column(name = "information_source_id", unique = true, nullable = false)
+	public Long getInformationSourceId() {
+		return informationSourceId;
 	}
 
-	public void setProblemSourceId(Long problemSourceId) {
-		this.problemSourceId = problemSourceId;
+	public void setInformationSourceId(Long informationSourceId) {
+		this.informationSourceId = informationSourceId;
 	}
 	
-	@Column(name = "problem_source", length = 50)
-	public String getProblemSource() {
-		return problemSource;
+	@Column(name = "information_source", length = 50)
+	public String getInformationSource() {
+		return informationSource;
 	}
 
 	
-	public void setProblemSource(String problemSource) {
-		this.problemSource = problemSource;
+	public void setInformationSource(String informationSource) {
+		this.informationSource = informationSource;
 	}
 
-	@Column(name = "description", length = 50)
+	@Column(name = "description", length = 250)
 	public String getDescription() {
 		return description;
 	}

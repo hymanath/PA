@@ -67,7 +67,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 		this.problemExternalSourceId = problemExternalSourceId;
 	}
 
-	@Column(name = "name", length = 25)
+	@Column(name = "name", length = 50)
 	public String getName() {
 		return name;
 	}
@@ -76,7 +76,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "mobile", length = 25)
+	@Column(name = "mobile", length = 12)
 	public String getMobile() {
 		return mobile;
 	}
@@ -85,7 +85,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 		this.mobile = mobile;
 	}
 
-	@Column(name = "email", length = 25)
+	@Column(name = "email", length = 50)
 	public String getEmail() {
 		return email;
 	}
@@ -94,7 +94,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "address", length = 25)
+	@Column(name = "address", length = 100)
 	public String getAddress() {
 		return address;
 	}
@@ -111,7 +111,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	public void setProblemAndProblemSources(Set<ProblemAndProblemSource> problemAndProblemSources) {
 		this.problemAndProblemSources = problemAndProblemSources;
 	}
-	@Column(name = "telephone", length = 25)
+	@Column(name = "telephone", length = 12)
 	public String getTelePhone() {
 		return telePhone;
 	}
