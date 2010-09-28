@@ -58,7 +58,7 @@ public class PoliticalChangesDAO extends GenericDaoHibernate<PoliticalChanges, L
 	@SuppressWarnings("unchecked")
 	public List<PoliticalChanges> getSourceNameByPoliticalChangesId(
 			Long politicalChangesId) {
-		return getHibernateTemplate().find("select model.politicalChangesInformationSource.sourceId from PoliticalChanges model where model.politicalChangesId = ?", politicalChangesId);
+		return getHibernateTemplate().find("select model.politicalChangesInformationSource.informationSourceId from PoliticalChanges model where model.politicalChangesId = ?", politicalChangesId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,8 +66,8 @@ public class PoliticalChangesDAO extends GenericDaoHibernate<PoliticalChanges, L
 			Long userId) {
 		return getHibernateTemplate().find("select model.title,model.description,model.occuredDate," +
 				" model.registration.firstName,model.registration.lastName," +
-				" model.registration.registrationId,model.politicalChangesInformationSource.sourceId," +
-				" model.politicalChangesInformationSource.sourceName,model.politicalChangesId,model.identifiedDate," +
+				" model.registration.registrationId,model.politicalChangesInformationSource.informationSourceId," +
+				" model.politicalChangesInformationSource.informationSource,model.politicalChangesId,model.identifiedDate," +
 				" model.party.shortName,model.effectedRange,model.effectedLocation from PoliticalChanges model " +
 				" where model.registration.registrationId = ? and model.isDelete is null order by model.updatedDate", userId);
 	}
@@ -75,9 +75,9 @@ public class PoliticalChangesDAO extends GenericDaoHibernate<PoliticalChanges, L
 	@SuppressWarnings("unchecked")
 	public List getAllPoliticalChangesByPoliticalChangeId(Long politicalChangeId) {
 		return getHibernateTemplate().find("select model.title,model.description,model.occuredDate," +
-				" model.identifiedDate,model.politicalChangesInformationSource.sourceName," +
+				" model.identifiedDate,model.politicalChangesInformationSource.informationSource," +
 				" model.party.shortName,model.effectedRange,model.effectedLocation," +
-				" model.politicalChangesInformationSource.sourceId from PoliticalChanges model " +
+				" model.politicalChangesInformationSource.informationSourceId from PoliticalChanges model " +
 				" where model.politicalChangesId = ?", politicalChangeId);
 	}
 		

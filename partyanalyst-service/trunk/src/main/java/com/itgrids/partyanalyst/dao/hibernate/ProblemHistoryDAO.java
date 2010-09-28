@@ -136,7 +136,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
 				"model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
@@ -151,7 +151,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
 				"model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
@@ -165,7 +165,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
 				"model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
