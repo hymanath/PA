@@ -17,7 +17,6 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IProblemManagementService {
 
-	public List<SelectOptionVO> getAllTypesOfProblemSources();
 	public ProblemManagementDataVO getProblemsForAHamlet(Long hamletId,String year);
 	public ProblemBeanVO saveNewProblemData(ProblemBeanVO problemBeanVOToSave);
 	public ProblemsOfUserVO getNewProblemsForUser(Long registrationId, Long statusId);

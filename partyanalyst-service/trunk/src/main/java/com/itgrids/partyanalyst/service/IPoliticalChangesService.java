@@ -8,9 +8,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IPoliticalChangesService {
 	
-	public List<SelectOptionVO> getAllPoliticalInformationSources();
-	
-	public ResultStatus savePoliticalChangeDataReceivedFromUser(PoliticalChangesVO politicalChangesVo);	
+	public ResultStatus savePoliticalChangeDataReceivedFromUser(PoliticalChangesVO politicalChangesVo, String task);	
 	
 	public List<PoliticalChangesVO> getAllPoliticalChanges(Long userId);
 	

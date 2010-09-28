@@ -264,4 +264,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getLocalBodyElectionTypesInAState(Long stateId);
 		
 		public List<SelectOptionVO> getLocalBodysInAStateByType(Long stateId,Long typeId);
+		
+		public List<SelectOptionVO> getAllInformationSources();
 }
