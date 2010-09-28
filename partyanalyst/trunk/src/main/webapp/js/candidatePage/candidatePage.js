@@ -75,7 +75,7 @@ function showDetails(id)
 function buildCandidatePageLayout()
 {
 	var candidatePageLayout = new YAHOO.widget.Layout('candidatePageLayoutDiv', { 
-			height:600,
+			height:650,
 			units: [					 	        
 					{ 
 						position: 'left',
@@ -338,7 +338,7 @@ function showLeftMenuContent(content)
 	if(content=="video")
 	{
 		str+=candidateInfoObject.name+"'s Video Gallery";
-		elmt = document.getElementById('candidatePageContent_body_videosMain');
+		elmt = document.getElementById('candidatePageContent_body_videosMain');		
 	}
 	if(content=="contact")
 	{
@@ -519,16 +519,75 @@ function buildCandidateNews()
 	
 	var content = document.getElementById('one');
 	var newsShow = new google.elements.NewsShow(content, options);
+
+	var options = {
+		"format" : "728x90",
+		"queryList" : [
+			  {
+				"title" : candidateInfoObject.candidateInfoArray[0].constituencyName,
+				"q" : candidateInfoObject.candidateInfoArray[0].constituencyName+", India"
+			  }
+		 ]
+	  }
+	
+	var content = document.getElementById('two');
+	var newsShow = new google.elements.NewsShow(content, options);
+
+	 
 }
 
 function buildCandidateVideoGallery()
 {
 	
 
-	var value="http://www.youtube.com/v/8jhiIWiCch8?rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
+	var value="http://www.youtube.com/v/8jhiIWiCch8?enablejsapi=1&playerapiid=ytplayer&rel=1&color1=0x2b405b&color2=0x6b8ab6&border=1&fs=1";
 	var params = { allowScriptAccess: "always" };	 
-	swfobject.embedSWF(value, "candidatePageContent_body_videosMain", "425", "365", "8", null, null, params);
+	var atts = { id: "myytplayer" };
+	swfobject.embedSWF(value, "videoBarOne", "300", "200", "8", null, null, params,atts);
+
+	
 }
+
+function LoadVideoBar()
+{
+	var vbl;
+	var vbr;
+
+	var searchString1 = candidateInfoObject.name+' interview';
+	var searchString2 = candidateInfoObject.name+' '+candidateInfoObject.candidateInfoArray[0].constituencyName;
+	
+
+	var options = {
+	  largeResultSet : false
+	}
+	vbl = new GSvideoBar(
+				document.getElementById("videoBarOne"),
+				document.getElementById("ytVideoPlayer"),				
+				options
+				);
+	
+	options = {
+      master : vbl,
+      largeResultSet : false
+    }
+    vbr = new GSvideoBar(
+                document.getElementById("videoBartwo"),
+                null,
+                options
+                );
+
+
+	vbl.execute(searchString1);
+	vbr.execute(searchString2);
+}
+
+
+function onYouTubePlayerReady(playerId)
+{
+	var ytplayer = document.getElementById("myytplayer");
+	//ytplayer.cueVideoById(videoId:, startSeconds:Number, suggestedQuality:String):Void
+}
+
 
 function initializeCandidatePage()
 {
@@ -538,6 +597,7 @@ function initializeCandidatePage()
 	buildLeftNavLinks();
 	buildCandidateElectionProfile();
 	buildCandidateNews();
+	LoadVideoBar();
 	//buildCandidateVideoGallery();
 
 	//buildCandidateInitialProfile();	

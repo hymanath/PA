@@ -142,7 +142,7 @@ table.CandidateElectionResultsTable td {
 
 #candidatePageLeftContentDiv_Image
 {
-	height:250px;
+	height:304px;
 }
 
 #candidatePageContent_body
@@ -152,7 +152,7 @@ table.CandidateElectionResultsTable td {
 	padding:12px;
 	text-align:justify;
 	word-spacing:2px;
-	height:535px;
+	height:585px;
 	border-bottom:1px solid #E0E0D6;
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
@@ -402,6 +402,7 @@ legend
 {
 	display:none;
 	overflow:hidden;
+	height:252px;
 }
 
 .highlightmenu

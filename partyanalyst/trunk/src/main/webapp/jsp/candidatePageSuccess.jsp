@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Candidate Details</title>
+<title>${candidateVO.candidateName} - Profile, Constituency, Photos, Videos, Political & Election Info</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -60,6 +60,15 @@
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script src="http://www.google.com/uds/api?file=uds.js&v=1.0"
+    type="text/javascript"></script>
+<link href="http://www.google.com/uds/css/gsearch.css"
+    rel="stylesheet" type="text/css"/>
+<script src="http://www.google.com/uds/solutions/videobar/gsvideobar.js"
+    type="text/javascript"></script>
+<link href="http://www.google.com/uds/solutions/videobar/gsvideobar.css"
+    rel="stylesheet" type="text/css"/>
+
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
 <script type="text/javascript" src="js/candidatePage/carousel.js"></script>
@@ -147,8 +156,8 @@
 				
 				<!-- News Info Div-->
 				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv">
-					<div id="one" style="position:relative;left:-165px;"> </div>
-					<div id="two" style="position:relative;left:-165px;"> </div>					
+					<div id="one" style="position:relative;left:-165px;padding-top:15px;"> </div>
+					<div id="two" style="position:relative;left:-165px;padding-top:15px;"> </div>					
 				</div>
 
 				<!-- Developments Info Div-->
@@ -168,6 +177,14 @@
 
 				<!-- Videos Info Div-->
 				<div id="candidatePageContent_body_videosMain" class="candidateStaticContentDiv">
+					<table width="100%">
+						<tr>
+							<td width="20%" align="left" valign="top"><div id="videoBarOne"> </div></td>
+							<td width="60%" align="center" valign="top"><div id="ytVideoPlayer"> </div></td>
+							<td width="20%" align="left" valign="top"><div id="videoBartwo"> </div></td>
+						</tr>
+					</table>
+					
 					<!--<jsp:include page="<%= videosURL%>" flush="true"/>-->
 				</div>	
 
