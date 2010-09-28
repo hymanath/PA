@@ -4,23 +4,23 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IProblemSourceDAO;
-import com.itgrids.partyanalyst.model.ProblemSource;
+import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
+import com.itgrids.partyanalyst.model.InformationSource;
 
 public class ProblemSourceDAOHibernateTest extends BaseDaoTestCase{
 
-	private IProblemSourceDAO problemSourceDAO;
+	private IInformationSourceDAO problemSourceDAO;
 
-	public IProblemSourceDAO getProblemSourceDAO() {
+	public IInformationSourceDAO getProblemSourceDAO() {
 		return problemSourceDAO;
 	}
 
-	public void setProblemSourceDAO(IProblemSourceDAO problemSourceDAO) {
+	public void setProblemSourceDAO(IInformationSourceDAO problemSourceDAO) {
 		this.problemSourceDAO = problemSourceDAO;
 	}
 
 	public void testGetAll(){
-		List<ProblemSource> list = problemSourceDAO.getAll();
+		List<InformationSource> list = problemSourceDAO.getAll();
 		assertEquals(1, list.size());
 	}
 }

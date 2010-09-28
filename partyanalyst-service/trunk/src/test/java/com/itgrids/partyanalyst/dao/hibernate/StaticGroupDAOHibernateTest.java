@@ -5,7 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
-import com.itgrids.partyanalyst.model.ProblemSource;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.StaticGroup;
 
 public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
