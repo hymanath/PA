@@ -9,9 +9,9 @@ package com.itgrids.partyanalyst.dao;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.model.ProblemSource;
+import com.itgrids.partyanalyst.model.InformationSource;
 
-public interface IProblemSourceDAO extends GenericDao<ProblemSource, Long> {
+public interface IInformationSourceDAO extends GenericDao<InformationSource, Long> {
 
 	
 }
