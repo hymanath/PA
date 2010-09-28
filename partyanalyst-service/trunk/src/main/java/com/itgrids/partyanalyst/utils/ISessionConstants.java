@@ -44,4 +44,14 @@ public interface ISessionConstants {
 	public static final String CADRE_SKILLS_FLAG = "cadreSkills_flag"; 
 	public static final String PARTY_TRAINING_CAMPS_FLAG = "partyTrainingCamps_flag";
 	
+	
+	//list of information sources for problem complains, local policitcal changes, influencing people 
+	public static final String INFO_SOURCES = "informationSourcesList";
+	
+	//list of information static(main) parties 
+	public static final String MAIN_PARTIES = "mainPartiesList";
+	
+	//list of impacted regions for local policitcal changes, influencing people 
+	public static final String IMPACTED_REGIONS = "impactedRegionsList";
+	
 }
