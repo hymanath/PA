@@ -8,23 +8,26 @@ public class PoliticalChangesVO implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String description;
-	private String date;
-	private String impact;
 	private String title;
+	private String description;
+	private String occuredDate;
+	private String impact;
+	private Long party;
+	private String effectRange;
 	private String name;
 	private String mobile;
 	private String telephoneNo;
 	private String address;
 	private String email;
+	private String informationSource;
 	private String sourceOfInformation;
 	private String reportedDate;
 	private String identifiedDate;
-	private Long partyId;
+	
 	private String partyName;
 	private Long userId;
 	private Long selectedPersonId;
-	private Long politicalChangeId;
+	private Long localPoliticalChangeId;
 	private String saveType;
 	private String range;
 	private Long rangeId;
@@ -66,12 +69,14 @@ public class PoliticalChangesVO implements java.io.Serializable {
 	public void setIdentifiedDate(String identifiedDate) {
 		this.identifiedDate = identifiedDate;
 	}
-	public Long getPoliticalChangeId() {
-		return politicalChangeId;
+	
+	public Long getLocalPoliticalChangeId() {
+		return localPoliticalChangeId;
 	}
-	public void setPoliticalChangeId(Long politicalChangeId) {
-		this.politicalChangeId = politicalChangeId;
+	public void setLocalPoliticalChangeId(Long localPoliticalChangeId) {
+		this.localPoliticalChangeId = localPoliticalChangeId;
 	}
+	
 	public Long getSelectedPersonId() {
 		return selectedPersonId;
 	}
@@ -84,13 +89,13 @@ public class PoliticalChangesVO implements java.io.Serializable {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	public Long getPartyId() {
-		return partyId;
+	public Long getParty() {
+		return party;
 	}
-	public void setPartyId(Long partyId) {
-		this.partyId = partyId;
+	public void setParty(Long party) {
+		this.party = party;
 	}
-		public String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
@@ -138,23 +143,37 @@ public class PoliticalChangesVO implements java.io.Serializable {
 	public void setReportedDate(String reportedDate) {
 		this.reportedDate = reportedDate;
 	}
-		public String getDescription() {
-			return description;
-		}
-		public void setDescription(String description) {
-			this.description = description;
-		}
-		public String getDate() {
-			return date;
-		}
-		public void setDate(String date) {
-			this.date = date;
-		}
-		public String getImpact() {
-			return impact;
-		}
-		public void setImpact(String impact) {
-			this.impact = impact;
-		}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}		
+	public String getImpact() {
+		return impact;
+	}
+	public void setImpact(String impact) {
+		this.impact = impact;
+	}
+	public String getOccuredDate() {
+		return occuredDate;
+	}
+	public void setOccuredDate(String occuredDate) {
+		this.occuredDate = occuredDate;
+	}
+	public String getEffectRange() {
+		return effectRange;
+	}
+	public void setEffectRange(String effectRange) {
+		this.effectRange = effectRange;
+	}
+	public String getInformationSource() {
+		return informationSource;
+	}
+	public void setInformationSource(String informationSource) {
+		this.informationSource = informationSource;
+	}
+	
+	
  
  	}
