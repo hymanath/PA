@@ -148,12 +148,18 @@
 				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
 				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
+				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>
 				
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="ananymousUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	<bean id="opinionPollDAO" class="com.itgrids.partyanalyst.dao.hibernate.OpinionPollDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
