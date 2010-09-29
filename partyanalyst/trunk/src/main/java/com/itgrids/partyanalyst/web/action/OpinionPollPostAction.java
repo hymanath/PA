@@ -234,7 +234,7 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 			OptionVO optionVO = new OptionVO();
 			String str = st.nextElement().toString().trim();
 	
-			if(!str.isEmpty())
+			if(str.length() != 0)
 			{
 			  optionVO.setOption(str);
 			  optionVOs.add(optionVO);
