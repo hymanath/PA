@@ -1384,7 +1384,7 @@ function getAllMptcYears()
 
 function initializeConstituencyPage()
 {		
-    buildRightlayoutMap();
+    
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
@@ -1393,6 +1393,7 @@ function initializeConstituencyPage()
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
+	buildRightlayoutMap();
 
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/

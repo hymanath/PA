@@ -93,7 +93,7 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 			corrections = boothDataValidationService.readBoothDataExcelFileAndPolpulate(filePath, electionYear, new Long(electionScopeId.trim()));
 			System.out.println("corrections:"+corrections.size());
 		}else{
-			ResultStatus resultVO = boothPopulationService.readExcelFileAndPolpulate(filePath, electionYear, new Long(electionScopeId.trim()));
+			ResultStatus resultVO = boothPopulationService.readExcelAndPopulateBoothData(filePath, electionYear, new Long(electionScopeId.trim()));
 			Throwable ex = resultVO.getExceptionEncountered();
 			if(ex!=null){
 				log.error("exception raised while Uploading Booth Data ", ex);

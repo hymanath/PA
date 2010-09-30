@@ -159,7 +159,7 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 					boothElecIds.add(new Long((String)boothJsonIds.get(i)));
 				}
 				ResultWithExceptionVO resultVO = constituencyPageService.saveAndUpdateHamletAndBoothInfo(new HamletAndBoothVO(hamletId, boothElecIds));
-				if(resultVO.getResultStatus().getExceptionEncountered() == null){
+				if(resultVO.getExceptionEncountered() == null){
 					villageBooths = (List<VillageBoothInfoVO>)resultVO.getFinalResult();
 				}
 			}else if(jObj.getString("task").equals("deleteVillageBoothInfo")){
@@ -167,7 +167,7 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 				Long villageBoothElectionId = jObj.getLong("villageBoothId");
 				hamletAndBoothVO.setHamletId(villageBoothElectionId);
 				ResultWithExceptionVO resultVO = constituencyPageService.deleteVillageBoothElectionRecord(hamletAndBoothVO);
-				if(resultVO.getResultStatus().getExceptionEncountered() == null){
+				if(resultVO.getExceptionEncountered() == null){
 					requestStatus = "Record Deleted";
 				}
 			}			

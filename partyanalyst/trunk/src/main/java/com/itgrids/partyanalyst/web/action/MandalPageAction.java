@@ -211,7 +211,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		}
 		
 		ResultWithExceptionVO influencingPeopleInMandalVO = constituencyPageService.getAllMandalLevelLeaders(new Long(mandalID));
-		if(influencingPeopleInMandalVO.getResultStatus().getExceptionEncountered() == null){
+		if(influencingPeopleInMandalVO.getExceptionEncountered() == null){
 			influencingPeopleInMandal = (List<InfluencingPeopleVO>)influencingPeopleInMandalVO.getFinalResult();
 		}
 		/*//ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID), 2l);

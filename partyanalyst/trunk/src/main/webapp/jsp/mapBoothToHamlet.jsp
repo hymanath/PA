@@ -153,7 +153,6 @@
 			var selectHamletEl = document.getElementById("hamletsList");
 			var selectBoothEl = document.getElementById("boothsList");
 			var selectButtonEl = document.getElementById("hamletButtonDiv");
-			console.log(selectButtonEl);
 			selectBoothEl.style.overflow='auto';
 			selectBoothEl.style.height = '120px';
 			selectBoothEl.style.width = '500px';
@@ -190,7 +189,6 @@
 			var strButton = '';
 			strButton += '<input type="button" value="Attach" onclick="showHamletBoothMappings()" align = "middle"/>';
 
-			console.log(strButton);
 			selectHamletEl.innerHTML = strHamlet;
 			selectBoothEl.innerHTML = strBoothInfo;
 			selectButtonEl.innerHTML = strButton;

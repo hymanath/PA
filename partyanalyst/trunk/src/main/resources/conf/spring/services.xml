@@ -47,7 +47,6 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
-		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
@@ -556,6 +555,13 @@
 	    <property name="electionDAO" ref="electionDAO" />
         <property name="nominationDAO" ref="nominationDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	</bean>
+	
+	<bean name="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService">
+	    <property name="boothDAO" ref="boothDAO" />
+        <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	</bean>
     

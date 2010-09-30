@@ -55,7 +55,7 @@ public class BoothResultsForAllElectionsPopupAction extends ActionSupport implem
 	public String execute () 
 	{
 		ResultWithExceptionVO resultOfBoothPage = partyBoothWiseResultsService.getBoothPageInfo(new Long(boothId));
-		if(resultOfBoothPage.getResultStatus().getExceptionEncountered() == null){
+		if(resultOfBoothPage.getExceptionEncountered() == null){
 			boothPanelVO = (BoothPanelVO) resultOfBoothPage.getFinalResult();
 			boothPanelVO.setResultPartial(false);
 			log.debug("All Elections Info In Booths::"+boothPanelVO.getElections().size());			

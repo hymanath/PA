@@ -91,7 +91,7 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 			else
 				corrections = boothDataValidationService.readAssemblyBoothResultExcelAndPopulate(filePath, electionYear, new Long(electionScopeId.trim()));
 		}else{
-			ResultStatus resultVO = boothPopulationService.readExcelAndInsertData(electionYear, new Long(electionScopeId.trim()), filePath);
+			ResultStatus resultVO = boothPopulationService.readExcelAndPopulateBoothResult(electionYear, new Long(electionScopeId.trim()), filePath);
 			Throwable ex = resultVO.getExceptionEncountered();
 			if(ex!=null){
 				log.error("exception raised while Uploading Booth Result ", ex);

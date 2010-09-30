@@ -137,6 +137,7 @@
 				<value>com.itgrids.partyanalyst.model.OpinionPollQuestionOptions</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
+				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
