@@ -32,4 +32,6 @@ public interface IHamletDAO extends GenericDao<Hamlet, Long> {
 	public List<Hamlet> findByHamletNameAndTownshipId(Long townshipId, String hamlet);
 	
 	public List getHamletIdBasedOnDistrictNameMandalIdAndTownship(String districtName,String mandalName,String townshipName,String hamletName);
+	
+	public List findHamletsByTehsilId(Long tehsilId);
 }
