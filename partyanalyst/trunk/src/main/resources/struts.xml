@@ -1348,7 +1348,6 @@
 				<param name="root">opinionPollVO</param>				
 			</result>	
 		</action>  
-		
 		<action name="opinionPollPostAction" class="opinionPollPostAction">
 			<result name="success">/jsp/opinionPollPost.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
@@ -1399,5 +1398,12 @@
 		<action name="opinionPollPost">
 			<result>/jsp/opinionPollPost.jsp</result>
 		</action>
+		
+		<action name="locationsHierarchiesAjaxAction" class="locationsHierarchyAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">regionsList</param>				
+			</result>		
+		</action>
+		
 	</package>
 </struts>

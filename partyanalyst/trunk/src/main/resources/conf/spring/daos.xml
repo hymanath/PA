@@ -403,4 +403,12 @@
 	<bean id="partyElectionDistrictResultWithAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultWithAllianceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="assemblyLocalElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="assemblyLocalElectionBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyWardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

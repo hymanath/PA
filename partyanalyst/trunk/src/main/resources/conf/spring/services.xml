@@ -313,6 +313,9 @@
 		<property name="electionObjectsDAO" ref="electionObjectsDAO"/>
 		<property name="hamletDAO" ref="hamletDAO"/>
 		<property name="townshipDAO" ref="townshipDAO"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+		
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
