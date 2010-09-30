@@ -142,6 +142,7 @@
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
 				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>	
+				<value>com.itgrids.partyanalyst.model.ProblemImpactLevel</value>
 				</list>
 		</property>
 	</bean>
