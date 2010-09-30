@@ -3,6 +3,10 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -21,9 +25,12 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.utils.IConstants;
+
 
 public class RegionServiceDataImp implements IRegionServiceData {
 
+	private static final Logger log = Logger.getLogger(RegionServiceDataImp.class);
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -33,6 +40,9 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IElectionObjectsDAO electionObjectsDAO;
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;  
+	
 	
 	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
 		this.electionObjectsDAO = electionObjectsDAO;
@@ -73,6 +83,24 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}	
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}	
+
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
 	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
@@ -96,7 +124,6 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getMandalsByConstituencyID(
 		Long constituencyID){List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
 		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
@@ -117,6 +144,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return mandalNames;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateDistrictByConstituencyID(Long constituencyID){
 		List stateDistrictConstituency = constituencyDAO.getStateDistrictConstituency(constituencyID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -141,6 +169,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 		
 	}
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateDistrictByDistrictID(Long districtID){
 		List stateDistrictConstituency = districtDAO.getStateDistrictByDistrictID(districtID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -170,6 +199,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStatesByCountryFromBooth(Long countryID){
 		List list = boothConstituencyElectionDAO.getStatesByCountryFromBooth(countryID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -180,6 +210,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getDistrictsByStateIDFromBooth(Long stateID) {
 		List list = boothConstituencyElectionDAO.getDistrictsByStateIDFromBooth(stateID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -190,6 +221,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByDistrictIDFromBooth(Long districtID) {
 		List list = boothConstituencyElectionDAO.getConstituenciesByDistrictIDFromBooth(districtID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -200,6 +232,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getMandalsByConstituencyIDFromBooth(Long constituencyID) {
 		List list = boothConstituencyElectionDAO.getMandalsByConstituencyIDFromBooth(constituencyID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -210,6 +243,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStateByParliamentConstituencyID(Long constituencyID){
 		List state = constituencyDAO.getStateForParliamentConstituency(constituencyID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
@@ -220,6 +254,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Long getLatestParliamentElectionYear(Long stateID){
 		List list = electionObjectsDAO.findLatestParliamentaryElectionYear(stateID);
 		Long year = null;
@@ -266,6 +301,113 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			constsList.add(selectOptionVO);
  		}
 		return constsList;
+	}
+/**
+ * This method returns all the sub-regions in a constituency based on its area type.If it is Rural it returns list of tehsils, If Urban returns municipalities, corporations, gmc's
+ * if UrbanRural then it returns tehsils, municipalities, corporations, etc.  
+ */
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year) {
+		Constituency constituency = constituencyDAO.get(constituencyId);
+		String areaType = constituency.getAreaType();
+		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
+		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+		{
+			subRegionsList = getTehsilsInConstituency(constituencyId);
+		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		{
+			subRegionsList = getLocalElectionBodies(constituencyId, year);
+			
+			
+		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+		{
+			subRegionsList = getTehsilsInConstituency(constituencyId);
+			List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
+			if(localElectionBodiesList.size() != 0)
+			{
+				subRegionsList.addAll(localElectionBodiesList);				
+			}
+			
+		}
+		return subRegionsList;
+	}
+	
+	/**
+	 * This method returns all the local election bodies in a constituency.This method is invoked from getSubRegionsInConstituency() method
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	private List<SelectOptionVO> getLocalElectionBodies(Long constituencyId, String year)
+	{
+		log.debug("Inside getLocalElectionBodies method in RegionServiceDataImp Class");
+		List<SelectOptionVO> localElectionBodiesList = new ArrayList<SelectOptionVO>(); 
+		try
+		{
+			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId, year);
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[]) result.get(i);
+				localElectionBodiesList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+obj[0].toString()),obj[1].toString().toUpperCase()+" "+ (obj[2])));
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.debug("Exception arised while retrieving local election bodies");
+		}
+		
+		return localElectionBodiesList;
+	}
+	
+	private List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
+	{
+		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
+		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
+		for(SelectOptionVO selectOptionVO:list)
+		{
+			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.TEHSIL));
+		}
+		return tehsilsList;
+	}
+
+	/**
+	 * This method retrieves all hamlets if the location is of type Rural and all wards if the location is of type Urban 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year) {
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		String areaFlag = locationId.toString().substring(0,1);
+		Long id = new Long(locationId.toString().substring(1));
+		
+		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE))
+		{
+			//fetch the wards in a municipal/corporation/greater corp region if it is partial
+			List wardsList = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(id, year);
+			if(wardsList.size() == 0)
+			{			
+				List<Constituency> wards = constituencyDAO.findWardsAndIdsInMuncipality(id);
+				for(Constituency constituency:wards)
+				{
+					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+constituency.getConstituencyId()),constituency.getName().toUpperCase()));
+				}				
+			}
+			//fetch the wards in a municipal/corporation/greater corp region if it is not partial
+			else if(wardsList.size()>0)
+			{
+				for(int j=0;j<wardsList.size();j++)
+				{
+					Object[] obj = (Object[])wardsList.get(j);
+					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),obj[1].toString().toUpperCase()));
+				}
+			}
+			
+		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
+		{
+			List resultsList = hamletDAO.findHamletsByTehsilId(id);
+			for(int i = 0; i<resultsList.size();i++)
+			{
+				Object[] obj = (Object[])resultsList.get(i);
+				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),obj[1].toString().toUpperCase()));				
+			}
+		}
+		return regionsList;
 	}
 	
 }
