@@ -1,5 +1,10 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
@@ -16,14 +22,19 @@ import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "local_election_body")
-public class LocalElectionBody extends BaseModel{
+public class LocalElectionBody extends BaseModel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long localElectionBodyId;
 	private String name;
 	private ElectionType electionType;
 	private Tehsil tehsil;
 	private District district;
 	private Long noOfWards;
+	private Set<Constituency> wards = new HashSet<Constituency>();
 	
 	public LocalElectionBody(){
 		
@@ -108,6 +119,17 @@ public class LocalElectionBody extends BaseModel{
 	public void setNoOfWards(Long noOfWards) {
 		this.noOfWards = noOfWards;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "localElectionBody")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Constituency> getWards() {
+		return wards;
+	}
+
+	public void setWards(Set<Constituency> wards) {
+		this.wards = wards;
+	}
+	
 	
 	
 }

@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "educational_qualifications" )
 
-public class EducationalQualifications implements java.io.Serializable {
+public class EducationalQualifications extends BaseModel{
 
 	/**
 	 * 
