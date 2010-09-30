@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
@@ -85,5 +86,25 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		"model.constituency.district.districtId = ? and model.year = (select max(model1.year) from Booth model1 where " +
 		"model1.year <= ?)",params);
 	}
+	
+	public List findBoothInfoByConstituencyIdAndYear(Long constituencyId, Long year){
+		Object[] params = {constituencyId, year};
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location " +
+				"from Booth model where model.constituency.constituencyId = ? and model.year = ? and model.localBody is null", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Booth> findByBoothIds(List<Long> boothIds) {
+		Query queryObject = getSession().createQuery("from Booth model where model.boothId in (:boothIds)");
+		queryObject.setParameterList("boothIds", boothIds);
+		return queryObject.list();
+	}
 
+	public int updateLocalBodyInfoByBoothIdsAndWardId(Long localBody, List<Long> boothIds) {
+		Query queryObject = getSession().createQuery("update Booth model set model.localBody = (select model1.localElectionBody from " +
+				"Constituency model1 where model1.constituencyId = ?) where model.boothId in (:boothIds)");
+		queryObject.setParameter(0, localBody);
+		queryObject.setParameterList("boothIds", boothIds);
+		return queryObject.executeUpdate();
+	}
 }

@@ -62,7 +62,6 @@ import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -397,7 +396,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	public ResultWithExceptionVO getAllMandalLevelLeaders(Long tehsilId){
 		ResultWithExceptionVO result = new ResultWithExceptionVO();
-		ResultStatus resultStatus = new ResultStatus();
 		List<InfluencingPeopleVO> influencingPeopleVOs = new ArrayList<InfluencingPeopleVO>();
 		InfluencingPeopleVO influencingPeopleVO = null;
 		try{
@@ -420,13 +418,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				influencingPeopleVOs.add(influencingPeopleVO);
 			}
 		}catch(Exception e){
-			resultStatus.setExceptionEncountered(e);
+			result.setExceptionEncountered(e);
 			if(log.isDebugEnabled()){
 				log.debug("Exception Raised In getAllMandalLevelLeaders", e);
 			}
 		}
 		result.setFinalResult(influencingPeopleVOs);
-		result.setResultStatus(resultStatus);
 		return result;
 	}
 	
@@ -712,7 +709,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		hamletAndBoothVO = hamletWithBoothId;
 		ResultWithExceptionVO resultWithExceptionVO = (ResultWithExceptionVO)transactionTemplate.execute(new TransactionCallback(){
 			public Object doInTransaction(TransactionStatus status) {
-				ResultStatus resultStatus = new ResultStatus(); 
+				ResultWithExceptionVO resultWithExceptionVO = new ResultWithExceptionVO();
 				List<VillageBoothInfoVO> villagesInfo = new ArrayList<VillageBoothInfoVO>();
 				try{
 					VillageBoothInfoVO villageBoothInfoVO;
@@ -737,10 +734,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				}catch(Exception e){
 					e.printStackTrace();
 					status.setRollbackOnly();
-					resultStatus.setExceptionEncountered(e);
+					resultWithExceptionVO.setExceptionEncountered(e);
 				}
 				hamletAndBoothVO = null;
-				return new ResultWithExceptionVO(villagesInfo, resultStatus);
+				resultWithExceptionVO.setFinalResult(villagesInfo);
+				return resultWithExceptionVO;
 			}
 			
 		});
@@ -753,14 +751,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		ResultWithExceptionVO result = (ResultWithExceptionVO)transactionTemplate.execute(new TransactionCallback(){
 
 			public Object doInTransaction(TransactionStatus status) {
-				ResultStatus resultStatus = new ResultStatus();
+				ResultWithExceptionVO result = new ResultWithExceptionVO();
 				try{
 					villageBoothElectionDAO.remove(hamletAndBoothVO.getHamletId());
 				}catch(Exception e){
 					e.printStackTrace();
-					resultStatus.setExceptionEncountered(e);
+					result.setExceptionEncountered(e);
 				}			
-				return new ResultWithExceptionVO(null, resultStatus);
+				return result;
 			}
 			
 		});

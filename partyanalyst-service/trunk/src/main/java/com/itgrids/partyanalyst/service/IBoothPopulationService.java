@@ -2,14 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.io.File;
 
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.excel.CsvException;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 
 
 public interface IBoothPopulationService {
 
-	public ResultStatus readExcelFileAndPolpulate(File filePath, String electionYear, Long electionScopeId) throws CsvException;
+	public ResultWithExceptionVO readExcelAndPopulateBoothData(File filePath, String electionYear, Long electionScopeId);
 	
-	public ResultStatus readExcelAndInsertData(String electionYear, Long electionScopeId, File filePath);	
+	public ResultWithExceptionVO readExcelAndPopulateBoothResult(String electionYear, Long electionScopeId, File filePath);	
 
 }

@@ -42,7 +42,7 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetLocalBodyElectionType(){
 		List elecTypes = localElectionBodyDAO.getLocalELectionTypesInAState(2L);
@@ -53,6 +53,11 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 			  System.out.println(" Election Type Id :" + (Long)values[0] + " Election Type :" + (String)values[1]);
 		  }
 		}
+	}*/
+
+	public void testFindByDistrictId(){
+		List list = localElectionBodyDAO.findByDistrictId(19l);
+		System.out.println(list.size());
 	}
 	
 }

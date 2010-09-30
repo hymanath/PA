@@ -1,13 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
-public class ResultWithExceptionVO {
+public class ResultWithExceptionVO extends ResultStatus{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Object finalResult;
-	private ResultStatus resultStatus;
 	
-	public ResultWithExceptionVO(Object finalResult, ResultStatus resultStatus) {
+	public ResultWithExceptionVO(Object finalResult) {
 		this.finalResult = finalResult;
-		this.resultStatus = resultStatus;
+		
 	}
 	
 	public ResultWithExceptionVO(){
@@ -21,15 +24,5 @@ public class ResultWithExceptionVO {
 	public void setFinalResult(Object finalResult) {
 		this.finalResult = finalResult;
 	}
-
-	public ResultStatus getResultStatus() {
-		return resultStatus;
-	}
-
-	public void setResultStatus(ResultStatus resultStatus) {
-		this.resultStatus = resultStatus;
-	}
-	
-	
 	
 }

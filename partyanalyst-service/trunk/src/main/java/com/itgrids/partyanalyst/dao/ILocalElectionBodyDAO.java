@@ -17,5 +17,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	@SuppressWarnings("unchecked")
 	public List getLocalELectionTypesInAState(Long stateId);
 	
+	public List findByDistrictId(Long districtId);
+	
 	
 }

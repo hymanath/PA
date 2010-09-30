@@ -61,7 +61,7 @@ public class BoothDataExcelReader {
 		}catch(BiffException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(Exception excep){
-
+			excep.printStackTrace();
 		}
 	}
 	

@@ -308,7 +308,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"where model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ? "+
 				"group by model.constituency.constituencyId",params);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List getAllWardsDetailsParticipatedInALocalBodyElection(Long localBodyId,Long electionId){
 		Object[] params = {localBodyId,electionId};

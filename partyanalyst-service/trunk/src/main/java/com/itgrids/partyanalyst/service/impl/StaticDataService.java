@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
-import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
@@ -143,7 +142,6 @@ public class StaticDataService implements IStaticDataService {
 	private IHamletDAO hamletDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
-	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
@@ -166,14 +164,12 @@ public class StaticDataService implements IStaticDataService {
 	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO; 
 	private IInformationSourceDAO informationSourceDAO;
-	
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
-
 
 	public IConstituencyPageService getConstituencyPageService() {
 		return constituencyPageService;
@@ -312,10 +308,6 @@ public class StaticDataService implements IStaticDataService {
 
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
-	}
-
-	public void setDelimitationConstituencyDAO(IDelimitationConstituencyDAO delimitationConstituencyDAO) {
-		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 	
 	public IPartyElectionResultDAO getPartyElectionResultDAO() {
@@ -5961,7 +5953,6 @@ public class StaticDataService implements IStaticDataService {
 		}	
 				
 	}
-	
-	
+
 }
 

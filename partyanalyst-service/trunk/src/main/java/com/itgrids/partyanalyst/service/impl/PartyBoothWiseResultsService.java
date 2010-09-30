@@ -195,7 +195,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	 * Provides Election Results Of A Booth To Display in A Pop Up Panel
 	 */
 	public ResultWithExceptionVO getBoothPageInfo(Long boothId){
-		ResultStatus resultStatus = new ResultStatus();
+		ResultWithExceptionVO resultStatus = new ResultWithExceptionVO();
 		List<ElectionInfoVO> electionsInBooth = new ArrayList<ElectionInfoVO>();
 		Map<String, List<PartyResultsInfoVO>> partiesInfoMap = new HashMap<String, List<PartyResultsInfoVO>>();
 		List<PartyResultsInfoVO> partyResults = null;
@@ -285,7 +285,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			if(log.isDebugEnabled())
 				log.debug("Exception Encountered::", e);
 		}
-		return new ResultWithExceptionVO(boothPageInfo, resultStatus);
+		resultStatus.setFinalResult(boothPageInfo);
+		return resultStatus;
 	}
 	
 	/**

@@ -10,11 +10,12 @@ package com.itgrids.partyanalyst.dto;
 import java.util.Date;
 import java.util.List;
 
-public class ConstituencyInfoVO {
+public class ConstituencyInfoVO extends ResultStatus{
 
-	/*
+	/**
 	 * 
 	 */
+	private static final long serialVersionUID = -2585252474166363454L;
 	private Long constituencyId;
 	private String constituencyName;
 	private Long districtId;
@@ -24,6 +25,7 @@ public class ConstituencyInfoVO {
 	private Date deformDate;
 	private String constituencyType;
 	private List<SelectOptionVO> assembyConstituencies;
+	private List<String> uploadInfo;
 	private Boolean hasAnalize = false;
 	
 	public String getConstituencyType() {
@@ -86,6 +88,12 @@ public class ConstituencyInfoVO {
 	}
 	public void setHasAnalize(Boolean hasAnalize) {
 		this.hasAnalize = hasAnalize;
+	}
+	public List<String> getUploadInfo() {
+		return uploadInfo;
+	}
+	public void setUploadInfo(List<String> uploadInfo) {
+		this.uploadInfo = uploadInfo;
 	}
 	
 }

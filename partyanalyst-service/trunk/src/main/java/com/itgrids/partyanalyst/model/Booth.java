@@ -35,6 +35,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long femaleVoters;
 	private Long totalVoters;
 	private Constituency constituency;
+	private LocalElectionBody localBody;
 	private Long year;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
@@ -51,7 +52,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public Booth(String partNo, String partName, String location,
 			String villagesCovered, Tehsil tehsil, Long maleVoters, Long femaleVoters,
-			Long totalVoters, Constituency constituency, Long year,
+			Long totalVoters, Constituency constituency, Long year, LocalElectionBody localBody,
 			Set<BoothConstituencyElection> boothConstituencyElections,
 			Set<BoothVillageCensus> boothVillageCensuses) {
 		this.partNo = partNo;
@@ -66,6 +67,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.boothVillageCensuses = boothVillageCensuses;
 		this.constituency = constituency;
 		this.year = year;
+		this.localBody = localBody;
 	}
 
 	@Id
@@ -193,6 +195,20 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	public void setVillagesCovered(String villagesCovered) {
 		this.villagesCovered = villagesCovered;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "local_election_body_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public LocalElectionBody getLocalBody() {
+		return localBody;
+	}
+
+	public void setLocalBody(LocalElectionBody localBody) {
+		this.localBody = localBody;
+	}
+
+	
 	
 	
 }

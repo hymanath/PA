@@ -20,7 +20,7 @@ public class BoothPopulationServiceTest extends BaseDaoTestCase{
 
 	public void testDataUpload(){
 		try{
-			boothPopulationService.readExcelFileAndPolpulate(new File("C:/Documents and Settings/Thaniga/Desktop/Datafiles28-04-10/BoothData/1.Nellore/2009/Nellore_boothdata_2009.xls"), "2009", 2l);
+			boothPopulationService.readExcelAndPopulateBoothData(new File("C:/Documents and Settings/Thaniga/Desktop/Datafiles28-04-10/BoothData/1.Nellore/2009/Nellore_boothdata_2009.xls"), "2009", 2l);
 			setComplete();	
 		}catch(Exception e){
 			e.printStackTrace();

@@ -148,9 +148,10 @@
 				<value>com.itgrids.partyanalyst.model.OpinionPollQuestions</value>
 				<value>com.itgrids.partyanalyst.model.OpinionPollResult</value>
 				<value>com.itgrids.partyanalyst.model.QuestionsRepository</value>
+				<value>com.itgrids.partyanalyst.model.BoothLocalBodyWard</value>
 				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>
-				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>				
+				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard</value>
 		 </list>
 		</property>
 	</bean>
@@ -527,6 +528,10 @@
 	<bean id="influencingPeoplePositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="boothLocalBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothLocalBodyWardDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -669,14 +674,6 @@
 
 	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 		<property name="transactionManager" ref="transactionManager" />
-	</bean>
-		
-	<bean id="assemblyLocalElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="assemblyLocalElectionBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyLocalElectionBodyWardDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 </beans>

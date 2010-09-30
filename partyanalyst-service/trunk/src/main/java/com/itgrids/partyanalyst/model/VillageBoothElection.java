@@ -15,6 +15,10 @@ import javax.persistence.Table;
 @Table(name = "village_booth_election")
 public class VillageBoothElection extends BaseModel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long villageBoothElectionId;
 	private BoothConstituencyElection boothConstituencyElection;
 	private Township township;
