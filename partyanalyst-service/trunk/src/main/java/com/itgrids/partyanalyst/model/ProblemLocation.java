@@ -32,6 +32,8 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	private Hamlet hamlet;
 	private Ward ward;
 	private Township township;
+	private ProblemImpactLevel problemImpactLevel;
+	private Long problemImpactLevelValue;
 	private ProblemAndProblemSource problemAndProblemSource;
 	private ProblemClassification problemClassification;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0); 
@@ -50,13 +52,17 @@ public class ProblemLocation extends BaseModel implements Serializable{
 			Ward ward, Township township,
 			ProblemClassification problemClassification,
 			ProblemAndProblemSource problemAndProblemSource,
-			Set<ProblemHistory> problemHistories) {
+			Set<ProblemHistory> problemHistories,
+			ProblemImpactLevel problemImpactLevel,
+			Long problemImpactLevelValue) {
 		this.hamlet = hamlet;
 		this.ward = ward;
 		this.township = township;
 		this.problemClassification = problemClassification;
 		this.problemAndProblemSource = problemAndProblemSource;
 		this.problemHistories = problemHistories;
+		this.problemImpactLevel = problemImpactLevel;
+		this.problemImpactLevelValue = problemImpactLevelValue;
 	}
 
 	@Id
@@ -137,6 +143,27 @@ public class ProblemLocation extends BaseModel implements Serializable{
 
 	public void setProblemAndProblemSource(ProblemAndProblemSource problemAndProblemSource) {
 		this.problemAndProblemSource = problemAndProblemSource;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "problem_impact_level_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemImpactLevel getProblemImpactLevel() {
+		return problemImpactLevel;
+	}
+
+	public void setProblemImpactLevel(ProblemImpactLevel problemImpactLevel) {
+		this.problemImpactLevel = problemImpactLevel;
+	}
+
+	@Column(name = "problem_impact_level_value", length = 15)
+	public Long getProblemImpactLevelValue() {
+		return problemImpactLevelValue;
+	}
+
+	public void setProblemImpactLevelValue(Long problemImpactLevelValue) {
+		this.problemImpactLevelValue = problemImpactLevelValue;
 	}
 	
 	
