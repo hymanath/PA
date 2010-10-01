@@ -8,7 +8,6 @@ import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothLocalBodyWard;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -52,22 +51,6 @@ public class BoothMapperService implements IBoothMapperService{
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
-	}
-
-	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId){
-		List<SelectOptionVO> localBodies = new ArrayList<SelectOptionVO>();
-		List rawData = localElectionBodyDAO.findByDistrictId(districtId);
-		for(Object[] values:(List<Object[]>)rawData)
-			localBodies.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString().toUpperCase()+" "+values[2].toString()));
-		return localBodies;		
-	}
-	
-	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId){
-		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
-		List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
-		for(Constituency ward:wardObjs)
-			wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
-		return wards;
 	}
 	
 	public List<ConstituencyBoothInfoVO> getBoothOfAssemblyByYear(Long constituencyId, Long year){

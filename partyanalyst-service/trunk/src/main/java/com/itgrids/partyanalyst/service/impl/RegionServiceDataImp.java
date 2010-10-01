@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -42,7 +43,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IHamletDAO hamletDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;  
-	
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
 	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
 		this.electionObjectsDAO = electionObjectsDAO;
@@ -101,6 +102,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setAssemblyLocalElectionBodyWardDAO(
 			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
 		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}	
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
@@ -408,6 +417,22 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			}
 		}
 		return regionsList;
+	}
+	
+	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId){
+		List<SelectOptionVO> localBodies = new ArrayList<SelectOptionVO>();
+		List rawData = localElectionBodyDAO.findByDistrictId(districtId);
+		for(Object[] values:(List<Object[]>)rawData)
+			localBodies.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString().toUpperCase()+" "+values[2].toString()));
+		return localBodies;		
+	}
+	
+	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId){
+		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
+		List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
+		for(Constituency ward:wardObjs)
+			wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
+		return wards;
 	}
 	
 }
