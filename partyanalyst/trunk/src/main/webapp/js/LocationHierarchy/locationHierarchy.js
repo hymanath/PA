@@ -1,4 +1,15 @@
-
+/*
+ selectId = locationId like country, state, district, constituency, mandal, hamlet etc.
+ task 
+ use the following task names for various functionalities
+ statesInCountry = to fetch all states in country
+ districtsInState =  to fetch all districts in state
+ constituenciesInDistrict =  to fetch all assembly constituencies in district 
+ subRegionsInConstituency = to fetch all types of regions like tehsils, municipalities, corporations, grater corporations in a constituency
+ hamletsOrWardsInRegion = to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
+ localElectionBodiesOfDistrict = to get all local election bodies in a  district
+ wardsInALocalElectionBody = to get all wards in a local election body 
+ */
 function getLocationHierarchies(selectedId, task, module, elementId, addressType)
 {		
 	var jsObj=
