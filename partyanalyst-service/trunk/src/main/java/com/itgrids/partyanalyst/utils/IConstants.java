@@ -246,4 +246,11 @@ public interface IConstants {
     public static final String URBAN_TYPE = "1";
     public static final String RURAL_TYPE = "2";
     
+    //Problem Management
+    public static final String MLA = "MLA";
+    public static final String MP = "MP";
+    public static final String PREVIOUS_DAY = "previous";
+    public static final String PRESENT_DAY = "present";
+    public static final String FUTURE_DAY = "future";
+    
 }

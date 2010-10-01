@@ -45,6 +45,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private District district;
 	 private Constituency constituency;
 	 
+	 private Set<ProblemAndProblemSource> problemAndProblemSource = new HashSet<ProblemAndProblemSource>(0); 
+	 
 	 public AnanymousUser()
 	 {
 	 }
@@ -69,6 +71,27 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 		 this.district = district;
 		 this.constituency = constituency;
 	 }
+
+	public AnanymousUser(String name, String gender,
+			String username, String password, Date dateofbirth, String email,
+			String phone, String mobile, String address, String pincode,
+			State state, District district, Constituency constituency,
+			Set<ProblemAndProblemSource> problemAndProblemSource) {
+		this.name = name;
+		this.gender = gender;
+		this.username = username;
+		this.password = password;
+		this.dateofbirth = dateofbirth;
+		this.email = email;
+		this.phone = phone;
+		this.mobile = mobile;
+		this.address = address;
+		this.pincode = pincode;
+		this.state = state;
+		this.district = district;
+		this.constituency = constituency;
+		this.problemAndProblemSource = problemAndProblemSource;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -206,6 +229,16 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "externalUser")
+	public Set<ProblemAndProblemSource> getProblemAndProblemSource() {
+		return problemAndProblemSource;
+	}
+
+	public void setProblemAndProblemSource(
+			Set<ProblemAndProblemSource> problemAndProblemSource) {
+		this.problemAndProblemSource = problemAndProblemSource;
 	}
 	
 }

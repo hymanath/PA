@@ -22,77 +22,73 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"and model.problemStatus.problemStatusId = ? order by model.problemLocation.problemAndProblemSource.problem.identifiedOn desc",params);
 	}
 	
+
+
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByHamletId(Long hamletId){
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.isDelete is null",hamletId);
+		
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);		
+		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and model.isDelete is null");
+		
+		return getHibernateTemplate().find(conditionQuery.toString(),hamletId);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByTehsilId(Long tehsilId) {
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.isDelete is null)",tehsilId);
+		
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.isDelete is null)");		
+		return getHibernateTemplate().find(conditionQuery.toString(),tehsilId);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByConstituencyId(String constituencyIds) {
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" ,model.problemLocation.problemAndProblemSource.user.registrationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") and model.isDelete is null ");
+		
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString());
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status) {
 		Object[] params = {hamletId,status};
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? " +
-				" and model.isDelete is null",params);
+		
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusForALocationsByTehsilId(Long tehsilId,String status) {
 		Object[] params = {tehsilId,status};
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ? " +
-				" and model.isDelete is null",params);
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ? and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds, String status) {
-		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
-				" model.problemLocation.problemAndProblemSource.problem.problem," +
-				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,model.problemLocation.problemAndProblemSource.user.registrationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") and model.problemStatus.status = ? and model.isDelete is null",status);
+		String query = buildCommonQuery();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.problemStatus.status = ? and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString(),status);
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -145,6 +141,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
 	}
 	
+		
 	public List findProblemsByDateAndLocation(String tehsilIds, Date fromDate, Date toDate){
 		Object[] params = {fromDate, toDate};
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
@@ -193,4 +190,85 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.assignedProblemProgresses from ProblemHistory model where model.problemHistoryId = ?",problemHistoryId) ;
 	}
 	
+	/**
+	 * @author Ravi Kiran.Y
+	 * @return
+	 */
+	public String buildCommonQuery(){		
+		StringBuilder query = new StringBuilder();
+		query.append(" Select model.problemStatus.status," );
+		query.append(" model.problemLocation.hamlet.hamletName,");
+		query.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
+		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
+		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
+		query.append(" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,");
+		query.append(" model.problemLocation.problemAndProblemSource.user.registrationId");
+		query.append(" from ProblemHistory model ");
+		return query.toString();		
+	}
+	
+	
+	public String getCommonDataForAllProblems(){
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append(" Select model.problemLocation.problemAndProblemSource.problem.problem,");	
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.description,");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel.problemImpactLevel,");
+		conditionQuery.append(" model.problemLocation.problemImpactLevelValue,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.name,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.problemId,");
+		conditionQuery.append(" model.problemHistoryId");
+		conditionQuery.append(" from ProblemHistory model ");
+		return conditionQuery.toString();
+	}
+	
+	///Uncompleted Query...........
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllNonApprovedProblemsPostedForCurrentDay(Date date,String status,String isApproved){
+		Object[] params = {date,status,isApproved};
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append(getCommonDataForAllProblems());
+		
+		conditionQuery.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? ");	
+		conditionQuery.append(" and model.isApproved = ? ");	
+		//conditionQuery.append(" and model.problemLocation.problemAndProblemSource.user is null ");
+		conditionQuery.append(" order by date(model.dateUpdated)");	
+		
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllNonApprovedProblemsBetweenDatesWithCompleteData(Date fromDate, Date toDate, String status,String isApproved){
+		Object[] params = {fromDate, toDate, status,isApproved};
+		StringBuilder query = new StringBuilder();
+		query.append(getCommonDataForAllProblems());		
+		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
+		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");		
+		return getHibernateTemplate().find(query.toString(),params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllNonApprovedProblemsBetweenDates(Date fromDate, Date toDate, String status,String isApproved){
+		Object[] params = {fromDate, toDate, status,isApproved};		
+		
+		StringBuilder query = new StringBuilder();		
+		query.append("select count(model.dateUpdated),date(model.dateUpdated) from ProblemHistory model ");
+		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
+		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");
+		//query.append(" and model.problemLocation.problemAndProblemSource.user is null " +
+		query.append(" group by date(model.dateUpdated)");			
+		return getHibernateTemplate().find(query.toString(),params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String isApproved){
+		Object[] params = {date, status,isApproved};		
+		
+		StringBuilder query = new StringBuilder();		
+		query.append( "select count(model.dateUpdated),model.problemLocation.problemImpactLevel.problemImpactLevel from ProblemHistory model ");
+		query.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? and model.isApproved = ? ");
+		//query.append(" and model.problemLocation.problemAndProblemSource.user is null " +
+		query.append(" group by model.problemLocation.problemImpactLevel.problemImpactLevelId");			
+		return getHibernateTemplate().find(query.toString(),params);
+	}
 }

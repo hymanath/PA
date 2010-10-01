@@ -34,6 +34,7 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 	private Problem problem;
 	private InformationSource problemSource;
 	private ProblemExternalSource problemExternalSource;
+	private AnanymousUser externalUser;
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	
 	public ProblemAndProblemSource(){
@@ -53,6 +54,19 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 		this.problemExternalSource = problemExternalSource;
 		this.problemLocations = problemLocations;
 		this.problemSource = problemSource;
+	}
+
+	public ProblemAndProblemSource(String postedBy, Registration user,
+			Problem problem, InformationSource problemSource,
+			ProblemExternalSource problemExternalSource,
+			AnanymousUser externalUser, Set<ProblemLocation> problemLocations) {
+		this.postedBy = postedBy;
+		this.user = user;
+		this.problem = problem;
+		this.problemSource = problemSource;
+		this.problemExternalSource = problemExternalSource;
+		this.externalUser = externalUser;
+		this.problemLocations = problemLocations;
 	}
 
 	@Id
@@ -130,6 +144,18 @@ public class ProblemAndProblemSource extends BaseModel implements Serializable{
 
 	public void setProblemSource(InformationSource problemSource) {
 		this.problemSource = problemSource;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "external_user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AnanymousUser getExternalUser() {
+		return externalUser;
+	}
+
+	public void setExternalUser(AnanymousUser externalUser) {
+		this.externalUser = externalUser;
 	}
 
 	

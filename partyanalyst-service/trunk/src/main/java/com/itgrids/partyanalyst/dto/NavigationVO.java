@@ -4,12 +4,45 @@ import java.util.List;
 
 public class NavigationVO extends ResultStatus{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private SelectOptionVO stateInfo;
 	private List<SelectOptionVO> districtInfo;
 	private List<SelectOptionVO> acsInfo;
 	private List<SelectOptionVO> pcsInfo;
 	private SelectOptionVO mandalInfo;
+	private List<SelectOptionVO> problemsCount;
+	private List<ProblemBeanVO> approvalProblems;
 	
+	private ResultStatus resultStatus;
+		
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public List<SelectOptionVO> getProblemsCount() {
+		return problemsCount;
+	}
+
+	public void setProblemsCount(List<SelectOptionVO> problemsCount) {
+		this.problemsCount = problemsCount;
+	}
+
+	public List<ProblemBeanVO> getApprovalProblems() {
+		return approvalProblems;
+	}
+
+	public void setApprovalProblems(List<ProblemBeanVO> approvalProblems) {
+		this.approvalProblems = approvalProblems;
+	}
+
 	public SelectOptionVO getStateInfo() {
 		return stateInfo;
 	}

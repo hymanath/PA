@@ -40,6 +40,8 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	private ProblemSourceScope problemSourceScope;
 	private Date dateUpdated;
 	private String isDelete;
+	private String isApproved;
+	
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0); 
 	private Set<ProblemFundSource> problemFundSources = new HashSet<ProblemFundSource>(0);
 	
@@ -55,7 +57,8 @@ public class ProblemHistory extends BaseModel implements Serializable{
 			ProblemStatus problemStatus, String comments,
 			ProblemSourceScope problemSourceScope, Date dateUpdated,
 			Set<AssignedProblemProgress> assignedProblemProgresses,
-			Set<ProblemFundSource> problemFundSources,String isDelete) {
+			Set<ProblemFundSource> problemFundSources,String isDelete,String isApproved) {
+		this.isApproved = isApproved;
 		this.isDelete = isDelete;
 		this.problemHistoryId = problemHistoryId;
 		this.problemLocation = problemLocation;
@@ -178,5 +181,16 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	public void setPreviousContent(String previousContent) {
 		this.previousContent = previousContent;
 	}
+
+	@Column(name = "is_approved", length = 5)
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
+	
+	
 		
 }

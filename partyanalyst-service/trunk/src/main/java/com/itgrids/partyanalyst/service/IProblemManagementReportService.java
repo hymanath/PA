@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -31,4 +33,16 @@ public interface IProblemManagementReportService {
 	public LocationwiseProblemStatusInfoVO getRecentProblemsWithInTheRegion(String accessType, Long accessValue, Long statusId, int limit);
 	
 	public ProblemBeanVO getProblemHistoryInfo(Long problemLocationId);
+	
+	public NavigationVO getProblemsCountInAWeek(Date fromDate,Date toDate,String status,String type);
+	
+	public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String status,String type);
+	
+	public NavigationVO getAllApprovalProblemsForTheCurrentDay(String status,String type);
+	
+	public NavigationVO getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String type);
+
+	public void deleteSelectedProblemsByAdmin(Integer[] problemIds);
+	
+	public void acceptSelectedProblemsByAdmin(Integer[] problemHistoryIds);
 }

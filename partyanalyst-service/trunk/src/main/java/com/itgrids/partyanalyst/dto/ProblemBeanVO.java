@@ -29,6 +29,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String tehsil;
 	private String village;
 	private String hamlet;
+	private String postedDate;
 	private String reportedDate;
 	private String existingFrom;
 	private String name;
@@ -54,9 +55,27 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String status;
 	private Long problemAndProblemSourceId;
 	private Boolean isAssigned;
+	private String impactLevel;
 	private List<ProblemHistoryVO> problemHistories;
 
+
 	
+	public String getPostedDate() {
+		return postedDate;
+	}
+
+	public void setPostedDate(String postedDate) {
+		this.postedDate = postedDate;
+	}
+
+	public String getImpactLevel() {
+		return impactLevel;
+	}
+
+	public void setImpactLevel(String impactLevel) {
+		this.impactLevel = impactLevel;
+	}
+
 	public List<ProblemHistoryVO> getProblemHistories() {
 		return problemHistories;
 	}

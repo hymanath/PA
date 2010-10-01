@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -19,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
@@ -30,9 +34,12 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -42,6 +49,7 @@ import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ProblemsCountByStatusComparator;
@@ -68,7 +76,34 @@ public class ProblemManagementReportService implements
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private List result = null;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IDateService dateService;
+	private IProblemDAO problemDAO;
+	private TransactionTemplate transactionTemplate;
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public IProblemDAO getProblemDAO() {
+		return problemDAO;
+	}
+
+	public void setProblemDAO(IProblemDAO problemDAO) {
+		this.problemDAO = problemDAO;
+	}
+
+	public IDateService getDateService() {
+		return dateService;
+	}
+
+	public void setDateService(IDateService dateService) {
+		this.dateService = dateService;
+	}
+
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -214,6 +249,7 @@ public class ProblemManagementReportService implements
 	/**
 	 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
 	 * selected hamlet by location-wise,department-wise as well as  status-wise.
+	 * @author Ravi Kiran.Y
 	 */
 		public List<ProblemBeanVO> getHamletProblemsInfo(Long hamletId,Long registrationId,String taskType){
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
@@ -221,10 +257,18 @@ public class ProblemManagementReportService implements
 			if(log.isDebugEnabled())
 				log.debug("Entered into getHamletProblemsInfo() method....");
 			try{
-					System.out.println("Making a DAO call to problemHistoryDAO.findProblemsForALocationsByHamletId() ");
-			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
+		/*
+		 * Modified in order to remove hard coding of status
+		 * Please check previous version to know exact modifications
+		 * @Author Ravi Kiran.Y
+		 * @Date 29-09-10
+		 * Starts from here.. 	
+		 */
+			//if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){	
+			if(taskType!=null && taskType!=""){
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByHamletId(hamletId,taskType);
 			}
+		//Ends here..
 			else{
 					result = problemHistoryDAO.findProblemsForALocationsByHamletId(hamletId);
 				}
@@ -247,11 +291,21 @@ public class ProblemManagementReportService implements
 		/**
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
 		 * selected Tehsil by location-wise,department-wise as well as  status-wise.
+		 * @author Ravi Kiran.Y
 		 */
 		public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long registrationId,String taskType) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
-			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
+			/*
+			 * Modified in order to remove hard coding of status
+			 * Please check previous version to know exact modifications
+			 * @Author Ravi Kiran.Y
+			 * @Date 29-09-10
+			 * Starts from here.. 	
+			 */
+				
+				if(taskType!=null && taskType!=""){
+			//Ends here...
 				try{
 					result = problemHistoryDAO.findProblemsByStatusForALocationsByTehsilId(tehsilId,taskType);
 				}catch(Exception e){
@@ -281,18 +335,33 @@ public class ProblemManagementReportService implements
 		/**
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
 		 * selected Constituency by location-wise,department-wise as well as  status-wise.
+		 * @author Ravi Kiran.Y
 		 */
 		public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType, String constituencyType) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
 			String tehsilIds = "";
 			try{
-				if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituencyType))
-					tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MLA", constituencyId);
-				else
-					tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MP", constituencyId);
-			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
+				
+			/*
+			 * Modified in order to remove hard coding of status
+			 * Please check previous version to know exact modifications
+			 * @Author Ravi Kiran.Y
+			 * @Date 29-09-10
+			 * Starts from here.. 	
+			 */
+				
+			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituencyType))
+				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(IConstants.MLA, constituencyId);
+			else
+				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(IConstants.MP,constituencyId);
+				
+			if(taskType!=null && taskType!=""){
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);				
 			}
+			/**
+			 * modification ends here...
+			 */
+			
 			else{
 				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
 			}
@@ -308,6 +377,7 @@ public class ProblemManagementReportService implements
 		/**
 		 * This method is used for designing ProblemManagementReport based on
 		 * user selected Location.
+		 * @author Ravi Kiran.Y
 		 */
 		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,String taskType){
 			
@@ -438,8 +508,16 @@ public class ProblemManagementReportService implements
 				else {
 					dateConversion = dateConversion(parms[8].toString());
 					problemBean.setUpdatedDate(dateConversion); 
-				}				
-				if(!(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending")  || taskType.equalsIgnoreCase("fixed") || taskType.equalsIgnoreCase(""))){
+				}			
+				/*
+				 * Modified in order to remove hard coding of status
+				 * Please check previous version to know exact modifications
+				 * @Author Ravi Kiran.Y
+				 * @Date 29-09-10
+				 * Starts from here.. 	
+				 */
+				if(taskType==null){
+				//Ends here..
 					if(taskType.equalsIgnoreCase(departmentName)){
 						if( !(problemBean.getDepartment().equalsIgnoreCase("Not Assigned."))){
 							problemBeanVO.add(problemBean);
@@ -669,6 +747,7 @@ public class ProblemManagementReportService implements
 				else
 					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(timeStampConversionToYYMMDD(fromDate)), sdf.parse(timeStampConversionToYYMMDD(toDate)));	
 					
+
 			}catch(Exception ex){
 				log.debug("Exception Raised While Formating Date:"+ex);
 			}
@@ -923,9 +1002,20 @@ public class ProblemManagementReportService implements
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
-			if(status.equalsIgnoreCase("new") || status.equalsIgnoreCase("classify") || status.equalsIgnoreCase("assigned") || status.equalsIgnoreCase("progress") || status.equalsIgnoreCase("pending") || status.equalsIgnoreCase("fixed")){
+			
+			/*
+			 * Modified in order to remove hard coding of status
+			 * Please check previous version to know exact modifications
+			 * @Author Ravi Kiran.Y
+			 * @Date 29-09-10
+			 * Starts from here.. 	
+			 */
+			if(status!=null && status!=""){
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
 			}
+			/**
+			 * modification ends here...
+			 */
 			else{
 				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
 			}
@@ -938,6 +1028,209 @@ public class ProblemManagementReportService implements
 			return problemBeanVO;
 		}
 
+		/**
+		 * The below method can be used to get all the problems count(for each day)
+		 * that are specified fromDate-toDate.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @date 29-09-10.
+		 * @return NavigationVO
+		 */
+		public NavigationVO getProblemsCountInAWeek(Date fromDate,Date toDate,String status,String type){
+			List list = null;	
+			NavigationVO carryingObject = null;
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDates(fromDate,toDate,status,type);
+				
+				carryingObject = setDataInToVOForNonApprovalProblemsCount(list);
+				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				 carryingObject.setResultStatus(resultStatus);
+				return carryingObject; 
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject;
+			}
+		}
 		
+		/**
+		 * This method is used to set all the data into a Data Transer Object that contains all the non approval problems
+		 * count based on calling method.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @date 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO setDataInToVOForNonApprovalProblemsCount(List list){
+			NavigationVO carryingObject = null;
+			List<SelectOptionVO> result = null;	
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+					carryingObject = new NavigationVO(); 
+					if(list.size()!=0){
+						result = new ArrayList<SelectOptionVO>(0); 
+						for(int i=0;i<list.size();i++){
+							Object[] parms = (Object[])list.get(i);
+							SelectOptionVO selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId((Long)parms[0]);
+							selectOptionVO.setName(parms[1].toString());
+							result.add(selectOptionVO);
+						}
+					}
+				 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+				 carryingObject.setProblemsCount(result);
+				 carryingObject.setResultStatus(resultStatus);
+				return carryingObject; 
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject;
+			}
+		}
+		
+		/**
+		 * This method retrives count of all the non approved problems by state,district,constituency,mandal,hamlet,booth wise
+		 * for the current day or present day.
+		 *  
+		 * @author Ravi Kiran.Y
+		 * @date 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String type){
+			List list = null;	
+			NavigationVO carryingObject = null;
+			ResultStatus resultStatus = new ResultStatus();
+			try {
+				list = problemHistoryDAO.getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(date,status,type);
+				
+				carryingObject = setDataInToVOForNonApprovalProblemsCount(list);
+				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject; 
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject;
+			}
+		}
+		
+		/**
+		 * This method retrives all the approval problems that are needed to be approved by
+		 * the user between the user selected dates .
+		 * @author Ravi Kiran.Y
+		 * @date 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO getAllApprovalProblemsBetweenTheDates(String fromDate,String toDate,String status,String type){
+			List<Object> list = null;
+			NavigationVO navigationVO = null;	
+			try{
+				Date firstDate = dateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
+				Date secondDate = dateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
+				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,type);
+				navigationVO = generateVoContainingAllApprovalProblems(list);
+				return navigationVO;
+			}catch(Exception e){				
+				return navigationVO;
+			}	
+		}
 	
+		/** 
+		 * This method retrives all the approval problems that are needed to be approved by the user for the current or
+		 * present day.
+		 *  
+		 * @author Ravi Kiran.Y
+		 * @date 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO getAllApprovalProblemsForTheCurrentDay(String status,String type){
+			List<Object> list = null;
+			NavigationVO navigationVO = null;	
+			Date todayDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);			
+			try{
+				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
+				navigationVO = generateVoContainingAllApprovalProblems(list);
+				return navigationVO;
+			}catch(Exception e){
+				return navigationVO;
+			}	
+		}
+		
+		/**
+		 * This method process and generates a Data Transer Object based on the given input by handling exception.
+		 * @author Ravi Kiran.Y
+		 * @date 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO generateVoContainingAllApprovalProblems(List<Object> list){
+			List<ProblemBeanVO> problemBeanVO = null;
+			NavigationVO carryingObject = null;
+			ResultStatus resultStatus = new ResultStatus();
+			try{
+				carryingObject = new NavigationVO();
+				problemBeanVO = new ArrayList<ProblemBeanVO>();		
+				if(list.size()!=0){
+					for(int i=0;i<list.size();i++){
+						Object[] parms = (Object[])list.get(i);
+						ProblemBeanVO resultStorage = new ProblemBeanVO();
+						resultStorage.setProblem(parms[0].toString());
+						resultStorage.setDescription(parms[1].toString());
+						resultStorage.setImpactLevel(parms[2].toString());
+						resultStorage.setPostedDate(parms[4].toString());
+						resultStorage.setName(parms[5].toString());
+						resultStorage.setProblemId((Long)parms[6]);
+						resultStorage.setProblemHistoryId((Long)parms[7]);
+						problemBeanVO.add(resultStorage);
+					}
+				}
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				carryingObject.setApprovalProblems(problemBeanVO);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject; 
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				carryingObject.setResultStatus(resultStatus);
+				return carryingObject;
+			}	
+		}
+		
+		/**
+		 * The below method deletes all the dependencies of problems that are rejected for 
+		 * approval by the administrator.
+		 * @param problemIds
+		 */
+		public void deleteSelectedProblemsByAdmin(final Integer[] problemIds){
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					for(int i=0;i<problemIds.length;i++){
+						System.out.println(problemIds[i]);
+						problemDAO.remove(problemIds[i].longValue());
+					}	
+				}
+			});
+		}
+		
+		public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds){
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					for(int i=0;i<problemHistoryIds.length;i++){
+						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());				
+						problemHistory.setIsApproved("true");
+						problemHistoryDAO.save(problemHistory);
+					}
+				}
+			});
+		}
 }
