@@ -461,4 +461,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	
+	<bean id="municipalWardsAssemblyBoothsMapperAction" class="com.itgrids.partyanalyst.web.action.MunicipalWardsAssemblyBoothsMapperAction" singleton="false">
+		<property name="boothMapperService" ref="boothMapperService" />
+	</bean>	
 </beans>		
