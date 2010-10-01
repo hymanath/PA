@@ -1415,8 +1415,17 @@
 			</result>
 		</action>
 		<action name="saveMunicipalWardsAssemblyBoothsAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="saveBoothsInAssemblyConstituency"/>
-			
-	
-				
+		
+		
+		<action name="problemManagementAdminAction" class="problemManagementAdminAction"> 
+             <result name="success">/jsp/adminProblemManagement.jsp</result> 
+             <result name="error">/jsp/adminProblemManagement.jsp</result> 		
+        </action>
+        
+		<action name="getAllProblems" class="problemManagementAdminAction" method="getAllProblemsNeededToBeApprovalForAdmin">
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result>		
+		</action>
 	</package>
 </struts>

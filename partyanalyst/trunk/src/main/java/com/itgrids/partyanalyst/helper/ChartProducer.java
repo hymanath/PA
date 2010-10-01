@@ -556,7 +556,12 @@ public class ChartProducer {
 				try	 {
 					final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 					final File image = new File(fileName);
-					ChartUtilities.saveChartAsPNG(image, chart, 880, 300, info);
+					if(category.contains("Problems")){
+						ChartUtilities.saveChartAsPNG(image, chart, 400, 300, info);
+					}else{
+						ChartUtilities.saveChartAsPNG(image, chart, 880, 300, info);
+					}
+					
 				}
 				catch (java.io.IOException exc)
 				{

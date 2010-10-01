@@ -5,6 +5,9 @@
 
 <beans>
 	
+	<bean name="dateService" class="com.itgrids.partyanalyst.service.impl.DateService" >
+	</bean>  
+	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="stateDAO" ref="stateDAO" />
@@ -441,6 +444,9 @@
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="stateDAO" ref="stateDAO"/>
+		<property name="dateService" ref="dateService"/> 
+		<property name="problemDAO" ref="problemDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
