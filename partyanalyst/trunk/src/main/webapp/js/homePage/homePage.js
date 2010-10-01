@@ -27,6 +27,64 @@ function initializeHomePage()
 	buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
+	buildleadersNews();
+	buildTopStoriesNews();
+	buildPartiesNews();
+}
+
+function buildPartiesNews()
+{
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : "Parties",
+            "q" : "INC, TDP, TRS, PRP"
+          }	
+     ],
+	"linkTarget" : "_blank"
+  }
+
+
+  var content = document.getElementById('partiesNews');
+  var newsShow = new google.elements.NewsShow(content, options);
+}
+
+function buildleadersNews()
+{	
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : "Leaders",
+            "q" : "Sonia Gandhi, Chandra Babu Naidu, Y S Jagan"
+          }	
+     ],
+	"linkTarget" : "_blank"
+  }
+
+
+  var content = document.getElementById('leadersNews');
+  var newsShow = new google.elements.NewsShow(content, options);
+}
+
+function buildTopStoriesNews()
+{
+	var options = {
+    "format" : "300x250",
+	"queryList" : [
+          {
+            "title" : "Nation",            
+			"topic" :  "n",
+			"ned"   : "in"
+          }	
+     ],
+	"linkTarget" : "_blank"
+  }
+
+
+  var content = document.getElementById('topStories');
+  var newsShow = new google.elements.NewsShow(content, options);
 }
 
 function getLocalBodiesForState(stateId)

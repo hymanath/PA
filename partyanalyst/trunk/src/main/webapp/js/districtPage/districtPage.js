@@ -67,7 +67,8 @@ function buildDistrictLatestNews()
             "title" : districtName,
             "q" : districtName+","+stateName+", India"
           }
-     ]
+     ],
+	"linkTarget" : "_blank"
   }
 
   var content = document.getElementById('districtNewsDiv');
@@ -93,7 +94,8 @@ function buildDistrictLeadersNews()
             "title" : districtName,
             "q" : mlaCandidate+", "+mpCandidate+", "+districtName+","+stateName+", India"
           }
-     ]
+     ],
+	"linkTarget" : "_blank"
   }
 
   var content = document.getElementById('district_Politician_news');

@@ -1404,6 +1404,9 @@
 				<param name="root">regionsList</param>				
 			</result>		
 		</action>
+		<action name="viewFeaturesAction" class="viewFeaturesAction">
+           <result name="success">/jsp/viewFeatures.jsp</result>	
+        </action>
 		
 		<action name="municipalWardsAssemblyBoothsMapperAction" class="municipalWardsAssemblyBoothsMapperAction">
 			<result>/jsp/boothLocalBodyMapper.jsp</result>

@@ -76,6 +76,9 @@
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 <link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
+
+google.load("elements", "1", {packages : ["newsshow"]});
+
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -103,7 +106,7 @@ localBodyString = '<%=localBody%>';
 
 
 
-google.load("elements", "1", {packages : ["newsshow"]});
+
 
 YAHOO.util.Event.onContentReady("navigationHead", function () { 	 
 	    
@@ -400,9 +403,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								</table>
 							</div>							
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
-								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
-										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=Y%20S%20Jagan%2C%20Sonia%20Gandhi%2C%20Chandra%20Babu%20Naidu%2C%20K%20Chandrasekhar%20Rao%2CK%20Chiranjeevi%2CJaya%20Prakash%20Narayana%2C%20&ned=in&rsz=small&hl=en&format=300x250">
-								</iframe>
+								<div id="leadersNews"></div>								
 							</div>						
 						</div>
 					</td>
@@ -424,9 +425,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								</table>
 							</div>
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
-								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
-										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?topic=n&ned=in&rsz=small&hl=en&format=300x250">
-								</iframe>
+								<div id="topStories"></div>								
 							</div>						
 						</div>
 					</td>
@@ -448,9 +447,10 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								</table>
 							</div>
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
-								<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
+							<div id="partiesNews"></div>
+								<!--<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
 										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
-								</iframe>
+								</iframe>-->
 							</div>						
 						</div>
 					</td>

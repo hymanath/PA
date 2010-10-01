@@ -293,8 +293,9 @@ function buildLatestNews()
           {
             "title" : searchHead,
             "q" : searchString
-          }
-     ]
+          }	
+     ],
+	"linkTarget" : "_blank"
   }
 
 
