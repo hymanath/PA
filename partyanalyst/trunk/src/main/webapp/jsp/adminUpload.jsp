@@ -28,7 +28,8 @@
   <h2><u>Welcome To Administrator Upload Page </u></h2>
 
  <table  style="width:310px;" border="0">
- <tr><td align = "right"><h4>Register :<a href="<s:url action="userRegPageAction"/>"> Register </a></h4><br/></td></tr> 
+ <tr><td align = "right"><h4>Register :<a href="<s:url action="userRegPageAction"/>"> Register </a></h4><br/></td></tr>
+ <tr><td align="right"><h4>To Manage Problems :<a href="<s:url action="problemManagementAdminAction"/>"><b>&nbsp; Post </b></a></h4><br/></td></tr> 
  <tr><td align="right"><h4>To Post a Opinion Poll :<a href="<s:url action="opinionPollPost"/>"><b>&nbsp; Post </b></a></h4><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Election Data :<a href="<s:url action="electionUpload"/>"> Upload </a></h4><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Booth    Data :<a href="<s:url action="boothDataUpload"/>"> Upload </a></h4><br/></td></tr>
