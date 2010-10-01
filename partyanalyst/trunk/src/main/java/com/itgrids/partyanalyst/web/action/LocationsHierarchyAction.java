@@ -110,34 +110,54 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		log.debug("Task::"+jObj.getString("task"));
 		if(jObj.getString("task").equalsIgnoreCase("statesInCountry"))
 		{
+			//to fetch all states in country
 			List<SelectOptionVO> states = getRegionServiceDataImp().getStatesByCountry(1l); 
 			states.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(states);
 		} else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
 		{
+			//to fetch all districts in state
 			Long stateId = jObj.getLong("id");
 			List<SelectOptionVO> districts = getRegionServiceDataImp().getDistrictsByStateID(stateId);
 			districts.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(districts);
 		} else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
 		{
+			//to fetch all assembly constituencies in district
 			Long districtId = jObj.getLong("id");
 			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByDistrictID(districtId);
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
 		} else if(jObj.getString("task").equalsIgnoreCase("subRegionsInConstituency"))
 		{
+			//to fetch all types of regions like tehsils, municipalities, corporations, grater corporations in a constituency
 			Long constituencyId = jObj.getLong("id");
 			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR);
 			subRegions.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(subRegions);
 		}  else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
 		{
+			//to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
 			Long locationId = jObj.getLong("id");
 			List<SelectOptionVO> hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(hamletsOrWards);
+		} else if(jObj.getString("task").equalsIgnoreCase("localElectionBodiesOfDistrict"))
+		{
+			//to get all local election bodies in a  district
+			Long locationId = jObj.getLong("id");
+			List<SelectOptionVO> localElectionBodies = getRegionServiceDataImp().getLocalElectionBodiesOfADistrict(locationId);
+			localElectionBodies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(localElectionBodies);
+		}  else if(jObj.getString("task").equalsIgnoreCase("wardsInALocalElectionBody"))
+		{
+			//to get all wards in a local election body 
+			Long locationId = jObj.getLong("id");
+			List<SelectOptionVO> localElectionBodies = getRegionServiceDataImp().getWardsInALocalElectionBody(locationId);
+			localElectionBodies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(localElectionBodies);
 		}
+		
 		return Action.SUCCESS;
 	
 	}
