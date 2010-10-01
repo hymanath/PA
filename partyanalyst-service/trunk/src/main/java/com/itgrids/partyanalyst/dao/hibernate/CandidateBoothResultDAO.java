@@ -401,16 +401,46 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" CandidateBoothResult model where model.boothConstituencyElection.villageBoothElection.township.townshipId = ?", townshipId);
 	}
 	
-
 	@SuppressWarnings("unchecked")
 	public List getCandidatesResultsForElectionAndConstituencyByMandal(Long constituencyId, String electionYear){
 		Object[] params = {constituencyId, electionYear};
-		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilName,model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilName," +
+				" model.boothConstituencyElection.booth.tehsil.tehsilId, " +
 				" model.nomination.candidateResult.rank, model.nomination.candidate.lastname, model.nomination.party.shortName," +
 				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.party.partyId from CandidateBoothResult model " +
 				" where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
-				" model.boothConstituencyElection.constituencyElection.election.electionYear = ? group by " +
-				" model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear = ? and " +
+				" model.boothConstituencyElection.booth.localBody is null " +
+				" group by model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				" model.nomination.nominationId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(Long constituencyId, String electionYear){
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.localBody.electionType.electionType," +
+				" model.boothConstituencyElection.booth.localBody.localElectionBodyId, " +
+				" model.nomination.candidateResult.rank, model.nomination.candidate.lastname, model.nomination.party.shortName," +
+				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.party.partyId, " +
+				" model.boothConstituencyElection.booth.localBody.name from CandidateBoothResult model " +
+				" where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				" group by model.boothConstituencyElection.booth.localBody.localElectionBodyId, " +
+				" model.nomination.nominationId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(Long constituencyId, String electionYear, String localBodyType){
+		Object[] params = {constituencyId, electionYear, localBodyType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.name," +
+				" model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.constituencyId, " +
+				" model.nomination.candidateResult.rank, model.nomination.candidate.lastname, model.nomination.party.shortName," +
+				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.party.partyId, " +
+				" model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.localElectionBody.name " +
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear = ? and " +
+				" model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.localElectionBody.electionType.electionType = ? " +
+				" group by model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.constituencyId, " +
 				" model.nomination.nominationId",params);
 	}
 
@@ -440,12 +470,11 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	}
 	
 	public List findAssemblyWiseParliamentResultsForParties(Long acId, Long pcId, String electionYear){
-		Object[] params = {acId, electionYear, pcId, electionYear};
+		Object[] params = {acId, new Long(electionYear.trim()), pcId, electionYear.trim()};
 		return getHibernateTemplate().find("select model.nomination.party.partyId, model.nomination.party.shortName, model.nomination.candidateResult.rank, " +
 				"sum(model.votesEarned), sum(model.boothConstituencyElection.boothResult.validVotes) from " +
 				"CandidateBoothResult model where model.boothConstituencyElection.booth.boothId in(" +
-				"select distinct model1.booth.boothId from BoothConstituencyElection model1 where " +
-				"model1.constituencyElection.constituency.constituencyId = ? and model1.constituencyElection.election.electionYear = ?) " +
+				"select distinct model1.boothId from Booth model1 where model1.constituency.constituencyId = ? and model1.year = ?) " +
 				"and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
 				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				"group by model.nomination.nominationId order by model.nomination.nominationId", params);
