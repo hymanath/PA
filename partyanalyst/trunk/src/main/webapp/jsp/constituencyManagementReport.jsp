@@ -470,7 +470,7 @@
 		}
 		
 		function redirectToNewWindowForAddingInfluencingPeople(){
-			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
+			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=570,left=200,top=200");
 			browser1.focus();
 		}
 		
