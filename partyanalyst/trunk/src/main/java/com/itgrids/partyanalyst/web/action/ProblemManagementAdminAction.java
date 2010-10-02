@@ -158,16 +158,21 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 		if(user != null)
 		{			
 			 allProblemsCount = problemManagementReportService.getProblemsCountInAWeek(dateAfterAWeek,currentDate,IConstants.NEW,IConstants.FALSE);
-			 if(allProblemsCount.getProblemsCount().size()!=0){
-				 chartNameForAllProblemsCount = "lastOneWeekProblemsGraph.png";
-		         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
-				 ChartProducer.create3DBarChart("Problems for the past 7 days", "Range",createDataset(allProblemsCount.getProblemsCount()), chartPath);
+			 if(allProblemsCount!=null){
+				 if(allProblemsCount.getProblemsCount().size()!=0){
+					 chartNameForAllProblemsCount = "lastOneWeekProblemsGraph.png";
+			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
+					 ChartProducer.create3DBarChart("Problems for the past 7 days", "Range",createDataset(allProblemsCount.getProblemsCount()), chartPath);
+				 }
 			 }
+			 
 			 currentDayProblemsCount = problemManagementReportService.getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(currentDate,IConstants.NEW,IConstants.FALSE);
-			 if(currentDayProblemsCount.getProblemsCount().size()!=0){
-				 chartNameForAllProblemsCount = "allUnApprovedProblemsTillDayGraph.png";
-		         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
-				 ChartProducer.create3DBarChart("All Non-Approved Problems By Location Wise ", "Range",createDataset(currentDayProblemsCount.getProblemsCount()), chartPath);
+			 if(currentDayProblemsCount!=null){
+				 if(currentDayProblemsCount.getProblemsCount().size()!=0){
+					 chartNameForAllProblemsCount = "allUnApprovedProblemsTillDayGraph.png";
+			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
+					 ChartProducer.create3DBarChart("All Non-Approved Problems By Location Wise ", "Range",createDataset(currentDayProblemsCount.getProblemsCount()), chartPath);
+				 }
 			 }
  		}
 		return SUCCESS;

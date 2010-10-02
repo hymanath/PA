@@ -180,14 +180,13 @@
 		            {key:"description", label: "<%=description%>", sortable:true, maxAutoWidth:250}, 
 					{key:"impactLevel", label: "Severity", sortable:true},						
 					{key:"postedDate", 	label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},			
-					{key:"name", label: "<%=source%>", sortable:true},
-					{key:" ", label: "More Details"}					
+					{key:"name", label: "<%=source%>", sortable:true}	
 		        ]; 
 			
 		        var myDataSource = new YAHOO.util.DataSource(results); 
 		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		        myDataSource.responseSchema = { 
-		            fields:["problemId","problemHistoryId","problem","description","impactLevel","postedDate","name","details"] 
+		            fields:["problemId","problemHistoryId","problem","description","impactLevel","postedDate","name"] 
 		        }; 
 				
 				var myConfigs = { 
@@ -323,7 +322,7 @@
 <div id="currentDateApprovalProblemsDiv">
 	<table>
 		<tr>
-			<td>
+			<td style="font-family:verdana;font-weight:bold;">
 				<input type="checkbox" onclick="getAllProblems()"> All Problems Posted For Today </input>
 			</td>		
 			<td style="padding-left:450px">
@@ -414,7 +413,7 @@
 <table>
 	<tr>
 		<td>
-			<div id="dropDownSelectDiv" style="display:none">Select an Operation
+			<div id="dropDownSelectDiv" style="display:none;font-family:verdana;font-weight:bold;">Select an Operation
 				<select id="dropDownSelect" onchange="getSelectedRecords()">
 					<option value="select">Select</option>
 					<option value="delete">Delete</option>
