@@ -98,6 +98,7 @@
 		</action>
 		
 		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
+			<result name="input">/jsp/entitlementErrorPage.jsp</result>
 			<result name="success">/jsp/partyPerformanceReport.jsp</result>
 		</action>
 		
