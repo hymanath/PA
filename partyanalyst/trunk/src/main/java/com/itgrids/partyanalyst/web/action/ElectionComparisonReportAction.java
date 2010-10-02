@@ -58,8 +58,41 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private IPartyService partyService;
 	private IStaticDataService staticDataService;
 	
+	private Long electionType,electionYears2,electionYears1,state;//variables comes from  electionComparisonReportPopUp
 	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
 	
+	public Long getState() {
+		return state;
+	}
+
+	public void setState(Long state) {
+		this.state = state;
+	}
+
+	public Long getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(Long electionType) {
+		this.electionType = electionType;
+	}
+
+	public Long getElectionYears2() {
+		return electionYears2;
+	}
+
+	public void setElectionYears2(Long electionYears2) {
+		this.electionYears2 = electionYears2;
+	}
+
+	public Long getElectionYears1() {
+		return electionYears1;
+	}
+
+	public void setElectionYears1(Long electionYears1) {
+		this.electionYears1 = electionYears1;
+	}
+
 	public String getSelectedPartyName() {
 		return selectedPartyName;
 	}
@@ -226,6 +259,16 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		if(logger.isDebugEnabled())
 			logger.debug("alliance-->" + allianceCheck);		
 		
+		if(electionId1==null ||  electionId2==null){
+			List result = staticDataService.getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(electionType,electionYears2,electionYears1,state,IConstants.ELECTION_SUBTYPE_MAIN);
+			for(int i=0;i<result.size();i++){
+				if(i==0){
+					electionId1	= result.get(i).toString();
+				}else if(i==1){
+					electionId2	= result.get(i).toString();
+				}
+			}
+		}
 		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getParty()), new Long(electionId1), new Long(electionId2), hasAlliances);
 		
 		String yearOne = electionComparisonReportVO.getYearOne();
