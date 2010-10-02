@@ -5950,9 +5950,15 @@ public class StaticDataService implements IStaticDataService {
 			log.debug(e);
 			e.printStackTrace();			
 			return null;
-		}	
-				
+		}					
 	}
 
+	public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType){
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		StringBuilder electionYears = new StringBuilder();		
+		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
+		List elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),stateId,electionSubType);			
+		return elections;
+	}
 }
 

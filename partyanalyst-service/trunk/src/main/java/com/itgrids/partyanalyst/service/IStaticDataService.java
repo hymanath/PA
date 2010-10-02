@@ -266,4 +266,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getLocalBodysInAStateByType(Long stateId,Long typeId);
 		
 		public List<SelectOptionVO> getAllInformationSources();
+		
+		public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType);
 }
