@@ -17,8 +17,8 @@
 			<tr>
 				<td colspan="2" align="center">
 					<table>
-						<td><img height="70px" width="200" src="images/icons/viewFeatures/know_icon.jpg"></img></td>
-						<td><img height="70px" width="200" src="images/icons/viewFeatures/analyse_icon.jpg"></img></td>
+						<td width="250"><img height="70px" width="200" src="images/icons/viewFeatures/know_icon.jpg"></img></td>
+						<td width="250"><img height="70px" width="200" src="images/icons/viewFeatures/analyse_icon.jpg"></img></td>
 						<td><img height="70px" width="200" src="images/icons/viewFeatures/act_icon.jpg"></img></td>
 					</table>
 				</td>
@@ -67,6 +67,8 @@
 													Content for party analysis 
 													******************************
 												-->
+
+												Different Tools like Party Performance Report, Election Comparison, Party Results, Party Influence  for parties to analyse their performance from state level to mandal level.
 											</div>
 											<div id="politicalAnalysis_footer" class="viewFeature_footer_content">
 												<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -106,6 +108,7 @@
 													Content for politician analysis 
 													******************************
 												-->
+													Different Tools like Mandal Voting Report, Cross Voting, Constituency Booth Results for politician to analyse their performance from state level to hamlet level.
 											</div>
 											<div id="politician_footer" class="viewFeature_footer_content">
 												<table width="100%" border="0" cellspacing="0" cellpadding="0">

@@ -102,7 +102,7 @@
 					<tr>
 						<td width="250px"><a href="javascript:{}" onclick="buildLoginPopup()"><img style="border:none;margin-top:2px" src="images/icons/homePage/analyze.png"/></a></td>
 						
-						<td width="250px"><a href="javascript:{}"><img style="border:none;margin-top:2px" src="images/icons/homePage/features.png"/></a></td>
+						<td width="250px"><a href="viewFeaturesAction.action"><img style="border:none;margin-top:2px" src="images/icons/homePage/features.png"/></a></td>
 						<td><div></div></td>
 					</tr>
 				</table>			
