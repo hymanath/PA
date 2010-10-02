@@ -1072,12 +1072,13 @@ function openElectionComparisionReportWindow()
 	var electionYears2 =  selectYearEl.options[selectYearEl.selectedIndex].text;	
 	var selectPartyEl = document.getElementById("selectPartyECR");
 	var party =  selectPartyEl.options[selectPartyEl.selectedIndex].value;
+	var selectedPartyName =  selectPartyEl.options[selectPartyEl.selectedIndex].text;
 	var allianceCheckboxEl = document.getElementById("ecrCheckBox");
 	var alliances = allianceCheckboxEl.checked;
 	var yearAlertSEl = document.getElementById("yearAlertECR");
 	var reportLevel = "1";
 	var browser1;
-	var urlStr = "<%=request.getContextPath()%>/electionComparisonReportPopUp.action?state=${stateID}&electionType=${electionTypeId}&electionYears2="+electionYears2+"&electionYears1=${year}&party="+party+"&allianceCheck="+alliances;
+	var urlStr = "<%=request.getContextPath()%>/electionComparisonReportPopUp.action?state=${stateID}&electionType=${electionTypeId}&electionYears2="+electionYears2+"&electionYears1=${year}&party="+party+"&allianceCheck="+alliances+"&selectedPartyName="+selectedPartyName;
 	if(electionYears2 == 'Select Year' && party == '0') 
 	{
 		yearAlertSEl.style.display ='block';
