@@ -6,13 +6,81 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Analyst - Features</title>
 
+
+<!-- YUI Dependency files (Start) -->
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+
+
+
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+<!-- YUI Skin Sam -->
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<!-- YUI Dependency files (End) -->
+
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
+<link href="styles/landingPage/landingPage.css" rel="stylesheet" type="text/css" />
 <link href="styles/viewFeatures/viewFeatures.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 
 </head>
 <body>
-
+   <div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
    <div id="viewFeatures_main">
+		<div id="navMenu_main" class="pageContentDivs">
+			<div id="navMenu_links">
+				<ul id="topLinksNav">					
+					<li><a href="javascript:{}" class="navLinksAnc">Pricing</a></li>						
+					<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
+					<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
+					<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>
+					<li><a href="javascript:{}" class="navLinksAnc">Our Blog</a></li>
+					<li>|</li>
+					<li><a href="javascript:{}" onclick="buildLoginPopup()" class="navLinksAnc">
+					Login </a></li>
+				</ul>
+			</div>
+			<div id="pa_logo" class="pa_logo_class">
+				<img src="images/icons/homePage/pa_logo.jpg"></img>
+			</div>
+		</div>
 		<table width="100%">
 			<tr>
 				<td colspan="2" align="center">

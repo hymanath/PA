@@ -44,6 +44,7 @@
 		<pattern>/ecrComparedResultsAction.action*</pattern>
 		<pattern>/completeResultForAPollAction.action*</pattern>  
 		<pattern>/getAllPollsAction.action*</pattern> 
+		<pattern>/viewFeaturesAction.action*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

@@ -1,4 +1,24 @@
 
+
+body
+{
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	direction:ltr;
+	background-color:#EAEDEF;
+}
+
+#viewFeatures_main
+{
+	width:960px;
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0px;
+}
+
 #featuresFlashDiv_main
 {
 	background-color:#D19D30;
