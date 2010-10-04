@@ -76,10 +76,13 @@ var hidden = '${sessionScope.HiddenCount}';
 function incrementHidden()
 {
 	<%
-	int hidden1 = (Integer)session.getAttribute("HiddenCount");
-	 
-	hidden1=hidden1+1;
-	   session.setAttribute( "HiddenCount", hidden1 );
+	if(session.getAttribute("HiddenCount")!=null){
+		int hidden1 = (Integer)session.getAttribute("HiddenCount");
+		 
+		hidden1=hidden1+1;
+		session.setAttribute( "HiddenCount", hidden1 );
+	}	
+	   
 	%>
 	hidden= '${sessionScope.HiddenCount}';
 }
