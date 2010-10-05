@@ -4485,9 +4485,7 @@ public class StaticDataService implements IStaticDataService {
 
 				for(Object[] values:(List<Object[]>)pcsInfo)
 				pcs.add(new SelectOptionVO((Long)values[0], values[1].toString()));
-			}			
-			
-			
+			}	
 		}if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 			State stateObj = districtDAO.get(locationId).getState();
 			state = new SelectOptionVO(stateObj.getStateId(), stateObj.getStateName());

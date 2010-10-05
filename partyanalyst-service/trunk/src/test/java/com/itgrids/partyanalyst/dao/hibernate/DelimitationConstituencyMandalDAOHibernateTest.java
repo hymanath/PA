@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -45,7 +46,7 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		//System.out.println(((Object[])list.get(3))[1]);
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetLatestAssemblyConstitueciesOfTehsil(){
 		List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(90l);
 		System.out.println(list.size());
@@ -58,6 +59,13 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			System.out.println(" Constitiuency Name :" + (String)params[5]);
 			}
 		}
+	}*/
+	
+	public void testGetAllMandalsByGivenConstituencies(){
+		List<Long> list = new ArrayList<Long>();
+		list.add(new Long(232));
+		List result = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(list);
+		System.out.println(result);
 	}
 	
 }

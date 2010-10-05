@@ -49,5 +49,7 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List<Object> getAllNonApprovedProblemsPostedForCurrentDay(Date date,String status,String isApproved);
 	
 	public List<Object> getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String isApproved);
+	
+	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel);
 
 }

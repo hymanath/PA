@@ -22,4 +22,9 @@ public interface IDateService {
 	
 	public Date convertStringToDate(String date,String dateFormat);
 	
+	public String timeStampConversionToYYMMDD(String idate);
+	
+	public String timeStampConversionToDDMMYY(String idate);
+	
+	public String timeStampConversion(String idate);
 }

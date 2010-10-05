@@ -95,6 +95,9 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Constituency> getAllParliamentConstituenciesInCountry(Long electionScopeId, Long countryId);
 
-	public List<Constituency> findByConstituencyNameElectionScopeAndDistrictId(
-			String constituencyName, Long districtId, Long electionScopeId);  
+	public List<Constituency> findByConstituencyNameElectionScopeAndDistrictId(String constituencyName, Long districtId, Long electionScopeId);
+	
+	public List<Long> getAllWardsByLocalElectionBodyIds(List<Long> localElectionBodyIds);
+	
+	public List<Long> getAllConstituencysByDistrictIds(List<Long> districtIds, String electionType);
 }

@@ -255,4 +255,7 @@ public interface IConstants {
     public static final String PRESENT_DAY = "present";
     public static final String FUTURE_DAY = "future";
     
+    public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
+    public static final String REJECTED = "rejected";
+    
 }

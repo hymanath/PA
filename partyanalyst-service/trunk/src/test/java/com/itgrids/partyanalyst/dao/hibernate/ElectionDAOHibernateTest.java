@@ -1,13 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Assert;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -128,7 +128,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 			
 	}*/
 	
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetElections(){
 		List elections = electionDAO.getLocalBodyElectionsInAState(IConstants.MUNCIPLE_ELECTION_TYPE, 1L);
@@ -138,6 +138,17 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
 			}
 		}
+	}*/
+	
+	public void testGet(){
+		getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(2l,2004l,2009l,1l,IConstants.ELECTION_SUBTYPE_MAIN);
+	}
+	public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType){
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		StringBuilder electionYears = new StringBuilder();		
+		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
+		List elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),1l,electionSubType);			
+		return elections;
 	}
 	
 }

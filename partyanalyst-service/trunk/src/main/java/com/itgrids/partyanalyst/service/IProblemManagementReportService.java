@@ -45,4 +45,26 @@ public interface IProblemManagementReportService {
 	public void deleteSelectedProblemsByAdmin(Integer[] problemIds);
 	
 	public void acceptSelectedProblemsByAdmin(Integer[] problemHistoryIds);
+	
+	
+	
+	
+	//Problem Retrival Methods (can be retrived based on locationIds and locationType)
+	
+	public NavigationVO getAllProblemsForGivenLocation(List<Long> locationIds,String locationType);
+	
+	public List<Object> getAllAcceptedProblemsInAWard(List<Long> locationIds, String locationType); 
+	
+	public List<Object> getAllAcceptedProblemsInAHamlet(List<Long> locationIds, String locationType);
+	
+	public List<Object> getAllAcceptedProblemsInATehsil(List<Long> locationIds, String locationType);
+	
+	public List<Object> getAllAcceptedProblemsInALocalElectionBody(List<Long> locationIds, String locationType);
+	
+	public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType);
+	
+	public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType); 
+	
+	public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType);
+	
 }

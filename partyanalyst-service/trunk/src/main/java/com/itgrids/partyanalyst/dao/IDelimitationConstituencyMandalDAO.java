@@ -25,4 +25,6 @@ public interface IDelimitationConstituencyMandalDAO extends GenericDao<Delimitat
 	public List getLatestAssemblyConstitueciesOfTehsil(Long tehsilId);
 	
 	public List getMandalDetailsForAConstituency(Long constituencyId,Long electionYear);
+	
+	public List<Long> getLatestMandalIdsByConstituenciesIds(List<Long> constituencyIds);
 }

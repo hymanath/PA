@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -240,5 +241,25 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? and " +
 				"model.district.districtId = ? and model.name = ?",params);
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllWardsByLocalElectionBodyIds(List<Long> localElectionBodyIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model.constituencyId from Constituency model where model.localElectionBody.localElectionBodyId in ( :localElectionBodyIds)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("localElectionBodyIds", localElectionBodyIds);
+		return queryObject.list();
+	} 
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllConstituencysByDistrictIds(List<Long> districtIds, String electionType) {	
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituencyId from Constituency model where model.electionScope.electionType.electionType=? and model.district.districtId in ( :districtIds)");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0,electionType);
+		queryObject.setParameterList("districtIds", districtIds);		
+		return queryObject.list();
+	} 
 	
 }

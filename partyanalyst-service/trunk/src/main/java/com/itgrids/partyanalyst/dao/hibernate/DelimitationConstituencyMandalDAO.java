@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
@@ -71,6 +72,17 @@ IDelimitationConstituencyMandalDAO {
 				" (select model1.delimitationConstituencyID from DelimitationConstituency model1 where model1.constituency.constituencyId in("+constituencyIds+")"+
 				" group by model1.constituency.constituencyId order by model1.year desc) ");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getLatestMandalIdsByConstituenciesIds(List<Long> constituencyIds){
+		StringBuilder query = new StringBuilder();
+		query.append("select model.tehsil.tehsilId from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID in " +
+				" (select model1.delimitationConstituencyID from DelimitationConstituency model1 where model1.constituency.constituencyId in( :constituencyIds)"+
+				" group by model1.constituency.constituencyId order by model1.year desc) ");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		return queryObject.list();
+	}	
 	
 	public List getLatestAssemblyConstitueciesOfTehsil(Long tehsilId){
 		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName," +

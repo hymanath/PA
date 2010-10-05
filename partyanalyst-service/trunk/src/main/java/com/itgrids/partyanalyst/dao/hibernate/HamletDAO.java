@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -80,5 +81,14 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 	public List findHamletsByTehsilId(Long tehsilId) {
 		
 		return getHibernateTemplate().find("select model.hamletId, model.hamletName from Hamlet model where model.township.tehsil.tehsilId = ? order by model.hamletName", tehsilId);
+	} 
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findHamletsByTehsilIds(List<Long> tehsilIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model.hamletId from Hamlet model where model.township.tehsil.tehsilId in ( :tehsilIds)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("tehsilIds", tehsilIds);
+		return queryObject.list();
 	} 
 }

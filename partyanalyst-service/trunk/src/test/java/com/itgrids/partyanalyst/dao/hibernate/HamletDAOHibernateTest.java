@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -18,7 +19,7 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 		this.hamletDAO = hamletDAO;
 	}
 	
-	
+/*	
 	public void testFindByTehsilTownshipAndHamletName(){
 		List<Hamlet> list = hamletDAO.findByTehsilTownshipAndHamletName(new Long(844), "Isakapalle", "Juvvagulakshmipuram");
 		assertEquals(2, list.size());
@@ -46,6 +47,13 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}
 	
-	
+	*/
+	public void testGetAllHamletsForGivenTehsils(){
+		List<Long> list = new ArrayList<Long>();
+		list.add(new Long(1));
+		list.add(new Long(2));
+		List  result = hamletDAO.findHamletsByTehsilIds(list);
+		System.out.println(result);
+	}
 	
 }

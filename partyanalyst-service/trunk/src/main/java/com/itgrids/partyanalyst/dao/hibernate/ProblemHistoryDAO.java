@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
@@ -196,7 +197,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	 */
 	public String buildCommonQuery(){		
 		StringBuilder query = new StringBuilder();
-		query.append(" Select model.problemStatus.status," );
+		query.append(" select model.problemStatus.status," );
 		query.append(" model.problemLocation.hamlet.hamletName,");
 		query.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
 		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
@@ -210,7 +211,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	
 	public String getCommonDataForAllProblems(){
 		StringBuilder conditionQuery = new StringBuilder();
-		conditionQuery.append(" Select model.problemLocation.problemAndProblemSource.problem.problem,");	
+		conditionQuery.append(" select model.problemLocation.problemAndProblemSource.problem.problem,");	
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.description,");
 		conditionQuery.append(" model.problemLocation.problemImpactLevel.problemImpactLevel,");
 		conditionQuery.append(" model.problemLocation.problemImpactLevelValue,");
@@ -271,4 +272,19 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" group by model.problemLocation.problemImpactLevel.problemImpactLevelId");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel){			
+		StringBuilder locationQuery = new StringBuilder();
+		locationQuery.append(getCommonDataForAllProblems());
+		locationQuery.append(" where model.problemLocation.problemImpactLevel.problemImpactLevel = ?");
+		locationQuery.append(" and model.problemLocation.problemImpactLevelValue in (:locationIds)");	
+		
+		Query queryObject = getSession().createQuery(locationQuery.toString());
+		queryObject.setString(0,impactLevel);
+		queryObject.setParameterList("locationIds", locationIds);
+		return queryObject.list();
+	}
+	
 }

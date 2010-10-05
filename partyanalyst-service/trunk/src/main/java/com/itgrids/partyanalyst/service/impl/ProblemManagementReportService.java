@@ -15,6 +15,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -79,7 +80,16 @@ public class ProblemManagementReportService implements
 	private IDateService dateService;
 	private IProblemDAO problemDAO;
 	private TransactionTemplate transactionTemplate;
-	
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -574,7 +584,7 @@ public class ProblemManagementReportService implements
 				else{
 					problemHistoryVO.setComments("--");
 				}
-				problemHistoryVO.setMovedDate(timeStampConversion(problemData[2].toString()));
+				problemHistoryVO.setMovedDate(dateService.timeStampConversion(problemData[2].toString()));
 				if(!(problemData[3] == null)){
 					problemHistoryVO.setIsDelete(problemData[3].toString());
 				}
@@ -652,7 +662,7 @@ public class ProblemManagementReportService implements
 				else{
 					problemHistoryVO.setComments("--");
 				}
-				problemHistoryVO.setMovedDate(timeStampConversion(problemData[2].toString()));
+				problemHistoryVO.setMovedDate(dateService.timeStampConversion(problemData[2].toString()));
 				if(!(problemData[3] == null)){
 					problemHistoryVO.setIsDelete(problemData[3].toString());
 				}
@@ -673,65 +683,7 @@ public class ProblemManagementReportService implements
 			return "--";			
 		}
 		
-		/*
-		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
-		 */
-		public String timeStampConversion(String idate){
-			String convertedDated=null;
-			SimpleDateFormat sdfInput =  
-		        new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss") ;  
-		     SimpleDateFormat sdfOutput =  
-		        new SimpleDateFormat  ("dd-MM-yyyy hh:mm:ss") ;  		  
-		  
-		     Date date;
-			try {
-				date = sdfInput.parse (idate);
-				convertedDated = sdfOutput.format(date).toString();
-			} catch (ParseException e){
-				e.printStackTrace();
-			}
-			return convertedDated;	
-		}
 		
-		/*
-		 * To convert timestamp which is in yyyy-MM-dd format to dd-MM-yyyy format.
-		 */
-		public String timeStampConversionToDDMMYY(String idate){
-			String convertedDated=null;
-			SimpleDateFormat sdfInput =  
-		        new SimpleDateFormat ("yyyy-MM-dd") ;  
-		     SimpleDateFormat sdfOutput =  
-		        new SimpleDateFormat  ("dd-MM-yyyy") ;  		  
-		  
-		     Date date;
-			try {
-				date = sdfInput.parse (idate);
-				convertedDated = sdfOutput.format(date).toString();
-			} catch (ParseException e){
-				e.printStackTrace();
-			}
-			return convertedDated;	
-		}
-		
-		/*
-		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
-		 */
-		public String timeStampConversionToYYMMDD(String idate){
-			String convertedDated=null;
-			SimpleDateFormat sdfInput =  
-		        new SimpleDateFormat ("yyyy/MM/dd");  
-		     SimpleDateFormat sdfOutput =  
-		        new SimpleDateFormat  ("dd/MM/yyyy");  		  
-		  
-		     Date date;
-			try {
-				date = sdfOutput.parse (idate);
-				convertedDated = sdfInput.format(date).toString();
-			} catch (ParseException e){
-				e.printStackTrace();
-			}
-			return convertedDated;	
-		}
 			
 		public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, String accessType, Long accessValue){
 			
@@ -743,9 +695,9 @@ public class ProblemManagementReportService implements
 			try{
 				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
 				if(statusId == 0)
-					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(timeStampConversionToYYMMDD(fromDate)), sdf.parse(timeStampConversionToYYMMDD(toDate)));
+					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 				else
-					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(timeStampConversionToYYMMDD(fromDate)), sdf.parse(timeStampConversionToYYMMDD(toDate)));	
+					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));	
 					
 
 			}catch(Exception ex){
@@ -761,7 +713,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemSourceScope(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(timeStampConversionToDDMMYY(values[7].toString()));
+				problemBeanVO.setExistingFrom(dateService.timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			
@@ -883,7 +835,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProbSource(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(timeStampConversionToDDMMYY(values[7].toString()));
+				problemBeanVO.setExistingFrom(dateService.timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			return problems;
@@ -1160,6 +1112,7 @@ public class ProblemManagementReportService implements
 			try{
 				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(todayDate,status,type);
 				navigationVO = generateVoContainingAllApprovalProblems(list);
+								
 				return navigationVO;
 			}catch(Exception e){
 				return navigationVO;
@@ -1206,31 +1159,256 @@ public class ProblemManagementReportService implements
 			}	
 		}
 		
+		
 		/**
 		 * The below method deletes all the dependencies of problems that are rejected for 
 		 * approval by the administrator.
 		 * @param problemIds
+		 * @author Ravi Kiran.Y
 		 */
 		public void deleteSelectedProblemsByAdmin(final Integer[] problemIds){
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					for(int i=0;i<problemIds.length;i++){
-						System.out.println(problemIds[i]);
-						problemDAO.remove(problemIds[i].longValue());
+						ProblemHistory problemHistory = problemHistoryDAO.get(problemIds[i].longValue());				
+						problemHistory.setIsApproved(IConstants.REJECTED);
+						problemHistoryDAO.save(problemHistory);
 					}	
 				}
 			});
 		}
 		
+		
+		/**
+		 * The below method approves all the problems that accepted for approval by the administrator.
+		 * @param problemIds
+		 * @author Ravi Kiran.Y
+		 */
 		public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds){
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					for(int i=0;i<problemHistoryIds.length;i++){
 						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());				
-						problemHistory.setIsApproved("true");
+						problemHistory.setIsApproved(IConstants.TRUE);
 						problemHistoryDAO.save(problemHistory);
 					}
 				}
 			});
 		}
+		
+		
+		/** 
+		 * The below method can be used to retrive all the approved problems based on location-type and location-id
+		 * 
+		 * for example 
+		 * location-id = 19(Location Id here (District-Id))  and
+		 * location-type = District
+		 *  
+		 * which are being approved by the administrator.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public NavigationVO getAllProblemsForGivenLocation(List<Long> locationIds,String locationType){
+			NavigationVO result = null;	
+			ResultStatus resultStatus = new ResultStatus();			
+			try{
+				result = new NavigationVO();
+				/*
+				 * The below if and else if conditions is helpful to get problems based on the user choices
+				 * and it calls appropriate methods and after getting results the data is sent to the 
+				 * generateVoContainingAllApprovalProblems method to set the data in to the DataTransferObject so that
+				 * it can be helpful for proper displaying purpose.
+				 */
+				if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAState(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInADistrict(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInALocalElectionBody(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.TEHSIL_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInATehsil(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.HAMLET_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAHamlet(locationIds,locationType));
+				}else if(locationType.equalsIgnoreCase(IConstants.CENSUS_WARD_LEVEL)){
+					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAWard(locationIds,locationType));
+				}				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				result.setResultStatus(resultStatus);
+				return result; 
+			}catch(Exception e){
+				e.printStackTrace();
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				result.setResultStatus(resultStatus);
+				return result;
+			}	
+		}
+
+		
+		/**
+		 * This method can be used to get all the problems in a ward or wards and this method
+		 * can be internally used by other methods to get all the problems in a LocalElectionBodies.
+		 *  
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInAWard(List<Long> locationIds, String locationType) {			
+			List<Object> wardResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);	
+			return wardResult;
+		}
+
+		/** 
+		 * This method can be used to get all the problems in a Hamlet or Hamlets and this method
+		 * can be internally used by other methods to get all the problems in a Mandals/Tehsils.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInAHamlet(List<Long> locationIds, String locationType) {			
+			List<Object> hamletResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);			
+			return hamletResult;
+		}
+
+		/**
+		 * This method can be used to get all the problems in a Mandal or Mandals and this method
+		 * can be internally used by other methods to get all the problems in a Constituency.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInATehsil(List<Long> locationIds, String locationType) {			
+			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);			
+			List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
+			List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
+			teshilResult.addAll(hamletResult);
+			return teshilResult;
+		}
+
+		/**
+		 * This method can be used to get all the problems in a LocalElectionBody or LocalElectionBody's and this method
+		 * can be internally used by other methods to get all the problems in a Constituency.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInALocalElectionBody(List<Long> locationIds, String locationType) {
+			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
+			List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
+			localElectionBodyResult.addAll(hamletResult);
+			return localElectionBodyResult;
+		}
+
+		/**
+		 * This method can be used to get all the problems in a Constituency or Constituency's and this method
+		 * can be internally used by other methods to get all the problems in a District.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType) {
+			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Long> urbanConstituencies = new ArrayList<Long>();
+			List<Long> ruralConstituencies = new ArrayList<Long>();
+			List<Long> urban_rural_constituencies = new ArrayList<Long>();
+			List<Object> tehsilResult = new ArrayList<Object>();
+			List<Object> localElectionBodyResult = new ArrayList<Object>();
+			for(Long constituencyId : locationIds){
+				Constituency constituency  = constituencyDAO.get(constituencyId);
+				if(constituency.getAreaType()!=null){
+					if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
+						urbanConstituencies.add(constituency.getConstituencyId());
+					}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
+						ruralConstituencies.add(constituency.getConstituencyId());
+					}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
+						urban_rural_constituencies.add(constituency.getConstituencyId());
+					}
+				}				
+			}
+			if(urbanConstituencies!=null && urbanConstituencies.size()!=0){				
+				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
+				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
+					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
+					constituencyResult.addAll(localElectionBodyResult);
+				}				
+			}
+			if(ruralConstituencies!=null && ruralConstituencies.size()!=0){
+				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
+				if(tehsilIds!=null && tehsilIds.size()!=0){
+					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
+					constituencyResult.addAll(tehsilResult);
+				}				
+			}
+			if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
+				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
+				if(tehsilIds!=null && tehsilIds.size()!=0){
+					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
+					constituencyResult.addAll(tehsilResult);
+				}				
+				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
+				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
+					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
+					constituencyResult.addAll(localElectionBodyResult);
+				}				
+			}
+			return constituencyResult;
+		}
+
+		/** 
+		 * This method can be used to get all the problems in a District or District's and this method
+		 * can be internally used by other methods to get all the problems in a State.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
+			List<Object> districtResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
+			List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
+			districtResult.addAll(consituencyResult);
+			return districtResult;
+		}
+
+		/**
+		 * This method can be used to get all the problems in a State or State's and this method
+		 * can be internally used by other methods to get all the problems in the Country.
+		 * 
+		 * @author Ravi Kiran.Y
+		 * @param locationIds
+		 * @param locationType
+		 * @return List<Object>
+		 * @date 06-10-10
+		 */
+		public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType) {			
+			List<Object> stateResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
+			List<Object> districtResult = getAllAcceptedProblemsInADistrict(listOfDistricts,IConstants.DISTRICT_LEVEL);
+			stateResult.addAll(districtResult);
+			return stateResult;
+		}
+		
 }

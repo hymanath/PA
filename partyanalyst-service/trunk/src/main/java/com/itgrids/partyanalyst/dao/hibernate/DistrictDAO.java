@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.IDistrictDAO; 
 import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames; 
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
@@ -76,5 +78,15 @@ IDistrictDAO {
 	@SuppressWarnings("unchecked")
 	public List getDistrictIdAndNameByState(Long stateId){
 		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ?",stateId);
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllDistrictByStateIds(List<Long> stateIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model.districtId from District model where model.state.stateId in ( :stateIds)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("stateIds", stateIds);
+		return queryObject.list();
 	}
 }
