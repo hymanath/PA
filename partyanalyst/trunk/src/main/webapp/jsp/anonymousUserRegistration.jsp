@@ -1,3 +1,50 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<%
+//Problem Management
+String redirectLoc = "";
+String task = "";
+String name = "";
+String stateId = "";
+String districtId = "";
+String localBodyId = "";
+String constituencyId = "";
+String localBodyElectionTypeId = "";
+
+if(request.getParameter("redirectLoc")!=null){
+	redirectLoc = request.getParameter("redirectLoc");
+}
+
+if(request.getParameter("task")!=null){
+	task = request.getParameter("task");
+}
+
+if(request.getParameter("name")!=null){
+	name = request.getParameter("name");
+}
+
+if(request.getParameter("stateId")!=null){
+	stateId = request.getParameter("stateId");
+}
+
+if(request.getParameter("districtId")!=null){
+	districtId = request.getParameter("districtId");
+}
+
+if(request.getParameter("localBodyId")!=null){
+	localBodyId = request.getParameter("localBodyId");
+}
+
+if(request.getParameter("constituencyId")!=null){
+	constituencyId = request.getParameter("constituencyId");
+}
+
+if(request.getParameter("localBodyElectionTypeId")!=null){
+	localBodyElectionTypeId = request.getParameter("localBodyElectionTypeId");
+}
+%>
+
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <html>  
 <head>  
@@ -57,7 +104,7 @@
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('name')}" /></td>
-						<td><s:textfield id="nameField" name="name"/>  </td>
+						<td><s:textfield id="nameField" name="fname"/>  </td>
 					</tr>
 										
 					<tr>
@@ -137,6 +184,15 @@
 		 </div>
 
 </div>
+         <!--  Problem Management Params -->
+         <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+		 <input type="hidden" name="task" value="<%=task %>" />
+		 <input type="hidden" name="name" value="<%=name %>" />
+		 <input type="hidden" name="stateId" value="<%=stateId %>" />
+		 <input type="hidden" name="districtId" value="<%=districtId %>" />
+		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
+		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
+		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
 </s:form>  
 </body>  
 </html>

@@ -26,8 +26,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	
-	
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	
 
@@ -36,6 +35,8 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	
 <script type="text/javascript">
+
+
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -65,8 +66,11 @@ var Localization = { <%
 		String mobile  = rb.getString("mobile");
 		String problemAddingSuccess  = rb.getString("problemAddingSuccess");
 		String locationAlert  = rb.getString("locationAlert");
+		//String problemScope = rb.getString("problemScope");
 	  %> }
-var accessType = '${accessType}';
+
+var isParliament = '${isParliament}';
+
 var localizationObj={
 		problemAddingSuccess:'<%=problemAddingSuccess%>',
 		locationAlert:'<%=locationAlert%>'
@@ -86,9 +90,18 @@ function incrementHidden()
 	%>
 	hidden= '${sessionScope.HiddenCount}';
 }
+function executeOnload()
+{
+	var effectedRangeEl = document.getElementById("scopeLevel");
+	var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
+	
+	if(selectedeffectedRange != '0')
+		populateLocations(selectedeffectedRange, 'onLoad');	
+	
+}
 </script>
 </head>
-<body  class="bodyStyle">
+<body onload="executeOnload()" class="bodyStyle">
 <CENTER>
 <TABLE border="0" cellpadding="0" cellspacing="0">
 	<TR>
@@ -101,7 +114,7 @@ function incrementHidden()
 </TABLE>
 </CENTER>
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<s:form action="addNewProblemSubmitAction" method="POST" theme="simple" name="form" onsubmit="return validateClientSide()">
+<s:form action="addNewProblemSubmitAction" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
 
  
 <div id = "addNewProblemMainDiv">
@@ -115,132 +128,119 @@ function incrementHidden()
 				</td>
 			</tr>
 	</table>		
-	<div id="problemDetailsDiv" class="accessDivMain" >
-			
-			<div id="problemDetailsDivBody" class="accessDivBody">
-				<c:if test="${problemBeanFromDB == null}">
-					<DIV id="alertMessage" style="display:none;"></DIV>
-				</c:if>
-				<c:if test="${problemBeanFromDB != null}">
-					<DIV id="alertMessage" style="color:green;font-weight:bold">Problem Added Successfully</DIV>
-				</c:if>
-				<DIV style="width:500px;">
-					<FIELDSET>
-						<LEGEND>Problem Details</LEGEND>
-						<table class="problemDetailsTable">
-							<tr>
-								<td width="100px;"><%=problemLabel%><font class="requiredFont"> * </font></td>
-								<td style="padding-left: 15px;"><INPUT type="text" size="53" id="nameText" name="problem"></td>						
-							</tr>
-							<tr>
-								<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
-								<td style="padding-left: 15px;"><textarea cols="40" id="descTextArea" name="description"></textarea></td>
-							</tr>
-							</TABLE>
-					</FIELDSET>	
-				</DIV>
-							<DIV style="width:500px;">
-							<FIELDSET>
-								<LEGEND>Problem Location</LEGEND>
-								<P>Select Problem Location from the following List boxes</P>
-								<DIV id="ajaxImgSpan" style="text-align:center;display:none;margin:10px;"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></DIV>
-								<DIV id="locationAlert" style="color:red;font-weight:bold"></DIV>
-								<TABLE>
-									<tr>
-										<td><%=STATE%><font class="requiredFont">*</font></td>
-										<td style="padding-left: 15px;"><select id="pstateField" class="selectWidth" name="state" onchange="getDistrictList(this.options[this.selectedIndex].value)">
-											<c:forEach var="state"  items="${sessionScope.stateList}" >
-												<option value='${state.id}'>${state.name}</option>
-											</c:forEach>										
-										</select>
-										</td>
-									</tr>
-									<c:if test="${accessType != 'MP'}">
-										<tr>
-										<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
-										<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district" onchange='getConstituencyList(this.name,this.options[this.selectedIndex].value,"addProblem")'>
-											<c:forEach var="district"  items="${sessionScope.districtList}" >
-												<option value='${district.id}'>${district.name}</option>	
-											</c:forEach>									
-										</select></td>
-									</tr>
-								</c:if>
-								<c:if test="${accessType == 'MP'}">
-										<TR>	
-											<TD><%=PCONSTITUENCY%></TD>
-											<TD style="padding-left: 15px;"><select id="parlConstField" class="selectWidth"  name="parliamentConstituency" />
-												<c:forEach var="parlConstituency"  items="${sessionScope.parliamentConstituencyList}" >
-														<option value='${parlConstituency.id}'>${parlConstituency.name}</option>
-												</c:forEach>
-											</TD>
-										</TR>
-								</c:if>
-								<tr>
-										<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>
-										<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency" onchange='getMandalList(this.name,this.options[this.selectedIndex].value,"addProblem")'>
-											<c:forEach var="constituency"  items="${sessionScope.constituencyList}" >
-												<option value='${constituency.id}'>${constituency.name}</option>
-											</c:forEach>										
-										</select></td>
-								</tr>								
-								<tr>
-									<td><%=MANDAL%><font class="requiredFont"> * </font></td>
-									<td style="padding-left: 15px;"><select id="pmandalField" class="selectWidth" name="mandal" onchange='getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,"addProblem")'>
-									<c:forEach var="mandal"  items="${sessionScope.mandalList}" >
-										<option value='${mandal.id}'>${mandal.name}</option>
-									</c:forEach>
-									</select></td>
-								</tr>
-								<tr>
-									<td><%=VILLAGE%><font class="requiredFont"> * </font></td>
-									<td style="padding-left: 15px;"><select class="selectWidth" id="pvillageField" name="village" onchange='getHamletList(this.name,this.options[this.selectedIndex].value,"addProblem")'>																
-									</select></td>
-								</tr>
-								<tr>
-									<td><%=HAMLET%><font class="requiredFont"> * </font></td>
-									<td style="padding-left: 15px;"><select class="selectWidth" id="phamletField" name="hamlet" onchange='validateInput(this.options[this.selectedIndex].value)'>																		
-									</select></td>
-								</tr>	
-								</TABLE>											
-							</FIELDSET>
-							</DIV>	
-				</div>
-				<div style="width:500px;">
+	<div id="problemDetailsDiv" class="accessDivMain" >		
+		<div id="problemDetailsDivBody" class="accessDivBody">
+			<c:if test="${problemBeanFromDB != null}">
+				<DIV id="alertMessage" style="color:green;font-weight:bold">Problem Added Successfully</DIV>
+			</c:if>
+			<DIV style="width:500px;">
+				<FIELDSET>
+					<LEGEND>Problem Details</LEGEND>
+					<TABLE class="problemDetailsTable">
+						<tr>
+							<td width="100px;"><%=problemLabel%><font class="requiredFont"> * </font></td>
+							<td style="padding-left: 15px;"><INPUT type="text" size="53" id="nameText" name="problem"></td>						
+						</tr>
+						<tr>
+							<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
+							<td style="padding-left: 15px;"><textarea cols="40" id="descTextArea" name="description"></textarea></td>
+						</tr>
+					</TABLE>
+				</FIELDSET>
+				<FIELDSET>
+					<LEGEND>Problem Location</LEGEND>
+					<P>Select Problem Location from the following List boxes</P>
+					<DIV id="ajaxImgSpan" style="text-align:center;display:none;margin:10px;"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></DIV>
+					<DIV id="locationAlert" style="color:red;font-weight:bold"></DIV>
+					<TABLE>
+					<tr>
+						<td>Problem Scope<font class="requiredFont">*</font></td>
+						<td style="padding-left: 15px;">
+							<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="defaultScope" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
+						</td>
+						</tr>
+					<c:if test="${isParliament == false}">
+						<tr id="row1" style="display:none;">
+							<td><%=STATE%><font class="requiredFont">*</font></td>
+							<td style="padding-left: 15px;">
+								<s:select id="stateField" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							</td>
+						</tr>
+						<tr id="row2" style="display:none;">
+							<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
+							<td style="padding-left: 15px;">
+								<s:select id="districtField" cssClass="selectWidth" name="state" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							</td>
+						</tr>
+					</c:if>
+					<c:if test="${isParliament == true}">
+						<tr id="row1" style="display:none;">
+							<td><%=STATE%><font class="requiredFont">*</font></td>
+							<td style="padding-left: 15px;">
+								<s:select id="stateField" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							</td>
+						</tr>
+						<TR id="row6" style="display:none;">	
+							<TD><%=PCONSTITUENCY%></TD>
+							<TD style="padding-left: 15px;">
+							<s:select id="pConstituencyField" cssClass="selectWidth" name="state" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							</TD>
+						</TR>
+					</c:if>
+					<tr id="row3" style="display:none;">
+						<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>
+						<td style="padding-left: 15px;">
+							<s:select id="constituencyField" cssClass="selectWidth" name="state" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+						</td>
+					</tr>								
+					<tr id="row4" style="display:none;">
+						<td><%=MANDAL%><font class="requiredFont"> * </font></td>
+						<td style="padding-left: 15px;">
+							<s:select id="mandalField" cssClass="selectWidth" name="state" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','newProblemPost','hamletField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+						</td>
+					</tr>					
+					<tr id="row5" style="display:none;">
+						<td><%=HAMLET%><font class="requiredFont"> * </font></td>
+						<td style="padding-left: 15px;">
+							<s:select id="hamletField" cssClass="selectWidth" name="state" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+						</td>
+					</tr>	
+					</TABLE>											
+				</FIELDSET>
 				<FIELDSET>
 				<LEGEND>More Details</LEGEND>
 				<Div id="sourceAlert"></Div>								
-					<TABLE width="85%">
-					<tr>
-						<td ><%=reportedDate%></td>
-						<td style="padding-left:15px;"><INPUT type="text" readonly="readonly" id="reportedDateField" name="reportedDate" size="20" /> 
-						</td>
-					</tr>
-					<tr>
-						<td ><%=existingFrom%><font class="requiredFont">*</font></td>						
-						<td style="padding-left:10px;">
-							<TABLE>
-								<TR>
-									<TD><input type="text" id="existingFromText" readonly="readonly" name="existingFromDate" size="20"/>
-									<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
-									<TD>
-										<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
-									</TD>
-								</TR>
-							</TABLE>									
-						</td>
-					</tr>
-					<tr>
-						<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
-						<td style="padding-left:15px;"> 
-							<select name="probSource" id="probSource" onchange="getPersonDetails(this.options[this.selectedIndex].text);">
-								<c:forEach var="probSource"  items="${sessionScope.problemSources}" >
-										<option value='${probSource.id}'>${probSource.name}</option>
-									</c:forEach>
-							</select>
-						</td>
-					</tr>													
-				</table>
-			
+				<TABLE width="85%">
+				<tr>
+					<td ><%=reportedDate%></td>
+					<td style="padding-left:15px;"><INPUT type="text" readonly="readonly" id="reportedDateField" name="reportedDate" size="20" /> 
+					</td>
+				</tr>
+				<tr>
+					<td ><%=existingFrom%><font class="requiredFont">*</font></td>						
+					<td style="padding-left:10px;">
+						<TABLE>
+							<TR>
+								<TD><input type="text" id="existingFromText" readonly="readonly" name="existingFromDate" size="20"/>
+								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
+								<TD>
+									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
+								</TD>
+							</TR>
+						</TABLE>									
+					</td>
+				</tr>
+				<!--<tr>
+					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
+					<td style="padding-left:15px;"> 
+						<select name="probSource" id="probSource" onchange="getPersonDetails(this.options[this.selectedIndex].text);">
+							<c:forEach var="probSource"  items="${sessionScope.problemSources}" >
+									<option value='${probSource.id}'>${probSource.name}</option>
+								</c:forEach>
+						</select>
+					</td>
+				</tr>													
+			--></table>			
 			<div id="personDetailsDiv" class="accessDivBody" style="display: none;">
 				<table class="personDetailsTable">
 					<tr class="accessDivHead">
@@ -273,13 +273,20 @@ function incrementHidden()
 				</table>
 			</div>
 			</FIELDSET>
-			</div>
-			<div style="margin-left:225px;"><s:submit name="Save" value="Save" cssClass="button"></s:submit></div>
-            </s:form>
-		    <input type="button" value="Exit" class="button" onclick="refreshParentWindow()"/>
-			</div>
+			<input type="hidden" id="problemLocation" name="problemLocationId" value="${problemLocation}" />	
+			<table>
+				<tr>
+					<td><div style="margin-left:225px;"><s:submit name="Save" value="Save" cssClass="button"></s:submit></div></td>
+					<td><input type="button" value="Exit" class="button" onclick="refreshParentWindow()"/></td>
+				</tr>
+			</table>	
+			</DIV>
+		</div>
+		
+	</div>
+</div>		
+</s:form>
 
-</div>
 <script type="text/javascript">
 getCurrentDate();
 </script>

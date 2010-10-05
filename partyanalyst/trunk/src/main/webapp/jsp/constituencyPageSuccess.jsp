@@ -935,6 +935,8 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
 	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";	
 	
+	constituencyPageMainObj.forwardTask = "${redirectLoc}";
+	constituencyPageMainObj.constituencyInfo.constituencyId = "${constituencyId}";
 	constituencyPageMainObj.constituencyInfo.constituencyName = "${constituencyDetails.constituencyName}";
 	constituencyPageMainObj.constituencyInfo.districtName = "${constituencyDetails.districtName}";
 	constituencyPageMainObj.constituencyInfo.stateName = "${constituencyDetails.stateName}";
@@ -1244,7 +1246,7 @@ function showDetailedElectionResult(id)
 									electionType:'${asmElection.electionType}',
 									stateId:'${asmElection.stateId}',
 									state:'${asmElection.state}',
-									electionYear:'${asmElection.electionYear}'
+									electionYear:'${asmElection.electionYear}' 
 								};
 
 			vTObj.previousElectionYears.assemblyElections.push(assemblyElecObj);
