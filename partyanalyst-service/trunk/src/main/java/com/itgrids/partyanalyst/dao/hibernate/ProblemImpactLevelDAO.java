@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
@@ -16,6 +18,12 @@ public class ProblemImpactLevelDAO extends GenericDaoHibernate<ProblemImpactLeve
 
 	public ProblemImpactLevelDAO() {
 		super(ProblemImpactLevel.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getProblemImpactLevelByName(String name) {
+		return getHibernateTemplate().find("select model.problemImpactLevelId,model.problemImpactLevel "+
+				"from ProblemImpactLevel model where model.problemImpactLevel = ?",name);
 	}
 
 }

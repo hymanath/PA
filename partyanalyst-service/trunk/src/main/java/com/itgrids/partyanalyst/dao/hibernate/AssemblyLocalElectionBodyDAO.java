@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
@@ -21,6 +20,15 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		Object[] params = {constituencyId,year};
 		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId, model.localElectionBody.name , model.localElectionBody.electionType.electionType, model.isPartial  from AssemblyLocalElectionBody model " +
 				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2 where model2.year <= ?)",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findConstituencyByLocalELectionBody(Long LocalElectionBodyId,
+			String year) {
+		Object[] params = {LocalElectionBodyId,year};
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name "+
+				"from AssemblyLocalElectionBody model where model.localElectionBody.localElectionBodyId = ? "+
+				"and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2 where model2.year <= ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")

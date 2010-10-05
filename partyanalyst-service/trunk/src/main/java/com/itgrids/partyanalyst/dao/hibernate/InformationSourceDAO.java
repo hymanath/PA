@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
@@ -17,6 +19,11 @@ public class InformationSourceDAO extends GenericDaoHibernate<InformationSource,
 	public InformationSourceDAO() {
 		super(InformationSource.class);
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<InformationSource> getInformationSourceByType(String sourceType) {
+		return getHibernateTemplate().find("from InformationSource model where model.informationSource = ?",sourceType);
 	}
 
 	
