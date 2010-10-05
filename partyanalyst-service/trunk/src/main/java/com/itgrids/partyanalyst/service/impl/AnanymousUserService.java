@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -76,22 +77,20 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param RegistrationVO
 	 * @return RegistrationVO
 	 */
-	public void saveAnonymousUserDetails(final RegistrationVO userDetails){
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			public void doInTransactionWithoutResult(TransactionStatus status) {	
+	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails){
+		
+		AnanymousUser ananymousUserReturn = (AnanymousUser)transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {	
 				AnanymousUser ananymousUser = new AnanymousUser();
-				
+				try{
 				ananymousUser.setName(userDetails.getName());
 				ananymousUser.setUsername(userDetails.getUserName());
 				ananymousUser.setPassword(userDetails.getPassword());
 				ananymousUser.setGender(userDetails.getGender());
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 				Date date =null;
-				try{
-					date= format.parse(userDetails.getDateOfBirth());
-				}catch(Exception e){
-					e.printStackTrace();
-				}
+				date= format.parse(userDetails.getDateOfBirth());
+				
 				ananymousUser.setDateofbirth(date);
 				ananymousUser.setEmail(userDetails.getEmail());
 				ananymousUser.setMobile(userDetails.getMobile());
@@ -102,9 +101,20 @@ public class AnanymousUserService implements IAnanymousUserService {
 				ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
 				ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
 				ananymousUser.setPincode(userDetails.getPincode());
-				ananymousUserDAO.save(ananymousUser);
+				ananymousUser = ananymousUserDAO.save(ananymousUser);
+				 
+				}catch(Exception e){
+					e.printStackTrace();
+					status.setRollbackOnly();
+				}
+			 return ananymousUser;
 			}
 		});
+		
+		if(ananymousUserReturn != null && ananymousUserReturn.getUserId() != null)
+			return true;
+		
+	 return false;
 	}
 	
 	

@@ -20,8 +20,12 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
@@ -34,6 +38,8 @@ import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -42,8 +48,12 @@ import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemClassification;
@@ -56,6 +66,8 @@ import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -77,11 +89,18 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IInformationSourceDAO informationSourceDAO = null;
 	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO = null;
 	private IAssignedProblemProgressDAO assignedProblemProgressDAO = null;
+	private IAnanymousUserDAO ananymousUserDAO;
+	private IProblemImpactLevelDAO problemImpactLevelDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private ITehsilDAO tehsilDAO;
+	
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	private IProblemImpactLevelDAO problemImpactLevelDAO;
-	
+		
 	
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
@@ -164,6 +183,46 @@ public class ProblemManagementService implements IProblemManagementService {
 		this.registrationDAO = registrationDAO;
 	}
 
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
 	public void setProblemLocationDAO(IProblemLocationDAO problemLocationDAO) {
 		this.problemLocationDAO = problemLocationDAO;
 	}
@@ -175,6 +234,14 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setProblemExternalSourceDAO(
 			IProblemExternalSourceDAO problemExternalSourceDAO) {
 		this.problemExternalSourceDAO = problemExternalSourceDAO;
+	}
+
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
+
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public IHamletDAO getHamletDAO() {
@@ -212,12 +279,13 @@ public class ProblemManagementService implements IProblemManagementService {
 	public IProblemImpactLevelDAO getProblemImpactLevelDAO() {
 		return problemImpactLevelDAO;
 	}
-
+	
 	public void setProblemImpactLevelDAO(
 			IProblemImpactLevelDAO problemImpactLevelDAO) {
 		this.problemImpactLevelDAO = problemImpactLevelDAO;
 	}
 
+    
 	/**
 	 * Used To Get The Problems Of a Hamlet In a Particular Year
 	 */
@@ -305,12 +373,20 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemHistory problemHistory = null;
 				
 				try{					
-					InformationSource problemSource = informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
-					ProblemExternalSource problemExternalSource = null;
+					//InformationSource problemSource = informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
+					InformationSource problemSource = null;
+					List<InformationSource> problemSourceList = informationSourceDAO.getInformationSourceByType(IConstants.User);
+					if(problemSourceList != null && problemSourceList.size() > 0)
+						problemSource = problemSourceList.get(0);
+					//ProblemExternalSource problemExternalSource = null;
 					Registration reg = null;
+					AnanymousUser externalUser = null;
 					Hamlet hamlet = null;
 					problem = new Problem();
-					problemAndProblemSource = new ProblemAndProblemSource();					
+					problemLocation = new ProblemLocation();
+					problemAndProblemSource = new ProblemAndProblemSource();	
+					problemHistory = new ProblemHistory();
+					
 					problem.setProblem(problemBeanVO.getProblem());
 					problem.setDescription(problemBeanVO.getDescription());
 					problem.setYear(problemBeanVO.getYear());					
@@ -320,9 +396,20 @@ public class ProblemManagementService implements IProblemManagementService {
 					problem.setExistingFrom(eDate);
 					problemAndProblemSource.setProblemSource(problemSource);
 					problemAndProblemSource.setProblem(problem);
-					reg = registrationDAO.get(problemBeanVO.getUserID());
-					problemAndProblemSource.setUser(reg);
 					
+					//Check for Party_Analyst Or Free User
+					if(problemBeanVO.getProblemPostedBy().equals(IConstants.PARTY_ANALYST_USER)){
+					     reg = registrationDAO.get(problemBeanVO.getUserID());
+					     problemAndProblemSource.setUser(reg);
+					     problemHistory.setIsApproved(IConstants.TRUE);
+					}
+					else if(problemBeanVO.getProblemPostedBy().equals(IConstants.FREE_USER)){
+						externalUser = ananymousUserDAO.get(problemBeanVO.getUserID());
+						problemAndProblemSource.setExternalUser(externalUser);
+						problemHistory.setIsApproved(IConstants.FALSE);
+					}
+							
+					/*
 					if(problemSource.getInformationSource().equals(IConstants.CALL_CENTER) || problemSource.getInformationSource().equals(IConstants.EXTERNAL_PERSON))
 					{
 						problemExternalSource = new ProblemExternalSource();
@@ -332,12 +419,15 @@ public class ProblemManagementService implements IProblemManagementService {
 						problemExternalSource.setAddress(problemBeanVO.getAddress());
 						problemExternalSource.setTelePhone(problemBeanVO.getPhone());
 						problemAndProblemSource.setProblemExternalSource(problemExternalSource);
-					}
-					problemLocation = new ProblemLocation();
-					hamlet = hamletDAO.get(new Long(problemBeanVO.getHamlet()));
-					problemLocation.setHamlet(hamlet);
+					}*/
+					
+					
+					/*hamlet = hamletDAO.get(new Long(problemBeanVO.getHamlet()));
+					problemLocation.setHamlet(hamlet);*/
+					ProblemImpactLevel problemImpactLevel = problemImpactLevelDAO.get(problemBeanVO.getProblemImpactLevelId());
+					problemLocation.setProblemImpactLevel(problemImpactLevel);
+					problemLocation.setProblemImpactLevelValue(problemBeanVO.getProblemImpactLevelValue());
 					problemLocation.setProblemAndProblemSource(problemAndProblemSource);
-					problemHistory = new ProblemHistory();
 					problemHistory.setProblemLocation(problemLocationDAO.save(problemLocation));
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
@@ -352,8 +442,11 @@ public class ProblemManagementService implements IProblemManagementService {
 					Date eDateOfAddNewProb = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
 					problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 					problemBeanFromDB.setExistingFrom(sdf.format(eDateOfAddNewProb));
-					problemBeanFromDB.setHamlet(problemHistory.getProblemLocation().getHamlet().getHamletName());
+					//problemBeanFromDB.setHamlet(problemHistory.getProblemLocation().getHamlet().getHamletName());
 					problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
+					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getProblemImpactLevelId());
+					problemBeanFromDB.setProblemImpactLevelValue(problemLocation.getProblemImpactLevelValue());
+					problemBeanFromDB.setIsApproved(problemHistory.getIsApproved());
 					
 				}catch(Exception e){
 					status.setRollbackOnly();
@@ -436,7 +529,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					ProblemBeanVO problemBeanVO = new ProblemBeanVO();				
 					problemBeanVO.setProblemId(problem.getProblemId());
 					problemBeanVO.setProblemLocationId(problemLocation.getProblemLocationId());
-					problemBeanVO.setHamletId(problemLocation.getHamlet().getHamletId());
+					//problemBeanVO.setHamletId(problemLocation.getHamlet().getHamletId());
+					problemBeanVO.setProblemImpactLevelId(problemLocation.getProblemImpactLevel().getProblemImpactLevelId());
+					problemBeanVO.setProblemImpactLevelValue(problemLocation.getProblemImpactLevelValue());
 					problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
 					problemBeanVO.setProblem(problem.getProblem());
 					problemBeanVO.setDescription(problem.getDescription());				
@@ -444,7 +539,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					eDate = problem.getExistingFrom();
 					problemBeanVO.setReportedDate(sdf.format(iDate));
 					problemBeanVO.setExistingFrom(sdf.format(eDate));
-					problemBeanVO.setHamlet(problemLocation.getHamlet().getHamletName());
+					//problemBeanVO.setHamlet(problemLocation.getHamlet().getHamletName());
+					problemBeanVO.setHamlet(getLocationDetails(problemBeanVO.getProblemImpactLevelId(),problemBeanVO.getProblemImpactLevelValue()));
 					problemBeanVO.setProbSource(problemAndProblemSource.getProblemSource().getInformationSource());	
 					problemBean.add(problemBeanVO);
 				}
@@ -453,6 +549,38 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		return problemBean;
  	}	
+	
+	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue){
+		
+		String result = "";
+		if(problemImpactLevelId != null && !problemImpactLevelId.equals(0L)){
+		ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(problemImpactLevelId);
+			if(impactLevel.getProblemImpactLevel().equals(IConstants.STATE)){
+				State state = stateDAO.get(problemImpactLevelValue);
+				return state.getStateName();
+			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.DISTRICT)){
+				District district = districtDAO.get(problemImpactLevelValue);
+				return district.getDistrictName();
+			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.CONSTITUENCY)){
+				Constituency constituency = constituencyDAO.get(problemImpactLevelValue);
+				return constituency.getName();
+			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.TEHSIL)){
+				Tehsil tehsil = tehsilDAO.get(problemImpactLevelValue);
+				return tehsil.getTehsilName();
+			}else if(impactLevel.getProblemImpactLevel().equalsIgnoreCase("LOCAL ELECTION BODY")){
+				LocalElectionBody localElec = localElectionBodyDAO.get(problemImpactLevelValue);
+				return localElec.getName();
+			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.WARD)){
+				Constituency constituency = constituencyDAO.get(problemImpactLevelValue);
+				return constituency.getName();
+			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.HAMLET)){
+				Hamlet hamlet = hamletDAO.get(problemImpactLevelValue);
+				return hamlet.getHamletName();
+			}
+		}
+		
+	 return result;
+	}
 	
 	/**
 	 * To Get The Classified Problem From DB OF A Particular User
@@ -470,7 +598,8 @@ public class ProblemManagementService implements IProblemManagementService {
 				problemFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
 				iDate = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 				problemFromDB.setReportedDate(sdf.format(iDate));
-				problemFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
+				//problemFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
+				problemFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getProblemImpactLevelId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
 				problemFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
 				problemFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());
 				problemFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
@@ -530,7 +659,9 @@ public class ProblemManagementService implements IProblemManagementService {
 						 problemBeanFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
 						 Date iDateOfAddNewProb = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 						 problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
-						 problemBeanFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
+						 //problemBeanFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
+						 
+						 problemBeanFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getProblemImpactLevelId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
 						 problemBeanFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
 						 problemBeanFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());					 
 						 problemBeanFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());

@@ -632,10 +632,9 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			}catch(Exception ex){
 				ex.printStackTrace();
 				log.error(" Exception Raised :" + ex);
-				
 			}
 			
-		 return partyResultsList;
+	 return partyResultsList;
 	}
 
 }

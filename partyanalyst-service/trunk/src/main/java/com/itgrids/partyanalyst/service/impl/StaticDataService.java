@@ -23,6 +23,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
@@ -104,6 +105,7 @@ import com.itgrids.partyanalyst.model.Group;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Language;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Party;
@@ -164,6 +166,8 @@ public class StaticDataService implements IStaticDataService {
 	private IPartyElectionStateResultWithAllianceDAO partyElectionStateResultWithAllianceDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO; 
 	private IInformationSourceDAO informationSourceDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
@@ -283,6 +287,15 @@ public class StaticDataService implements IStaticDataService {
 		this.constituencyDAO = constituencyDAO;
 	}
 	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	public void setConstituencyElectionDAO(IConstituencyElectionDAO constituencyElectionDAO) {
 		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
@@ -5957,6 +5970,56 @@ public class StaticDataService implements IStaticDataService {
 		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
 		List elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),stateId,electionSubType);			
 		return elections;
+	}
+
+	public List<SelectOptionVO> getLocationsHirarchyByType(String type, Long id) {
+		
+		log.debug(" Inside getLocationsHirarchyByType Method ..");
+		
+		List<SelectOptionVO> resultsList = null;
+		
+		if(type != null && id != null){
+			
+			resultsList = new ArrayList<SelectOptionVO>();
+			if(type.equalsIgnoreCase(IConstants.STATE)){
+				State state = stateDAO.get(id);
+				SelectOptionVO option = new SelectOptionVO(state.getStateId(),IConstants.STATE);
+				resultsList.add(option);
+			}else if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+				District district = districtDAO.get(id);
+				SelectOptionVO option = new SelectOptionVO(district.getDistrictId(),IConstants.DISTRICT);
+				resultsList.add(option);
+				SelectOptionVO option1 = new SelectOptionVO(district.getState().getStateId(),IConstants.STATE);
+				resultsList.add(option1);
+			}else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				Constituency constituency = constituencyDAO.get(id);
+				SelectOptionVO option = new SelectOptionVO(constituency.getConstituencyId(),IConstants.CONSTITUENCY);
+				resultsList.add(option);
+				SelectOptionVO option1 = new SelectOptionVO(constituency.getState().getStateId(),IConstants.STATE);
+				resultsList.add(option1);
+				if(!constituency.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					SelectOptionVO option2 = new SelectOptionVO(constituency.getDistrict().getDistrictId(),IConstants.DISTRICT);
+					resultsList.add(option2);
+				}
+			}else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+				LocalElectionBody localElecBody = localElectionBodyDAO.get(id);
+				SelectOptionVO option = new SelectOptionVO(localElecBody.getLocalElectionBodyId(),IConstants.LOCAL_ELECTION_BODY);
+				resultsList.add(option);
+				SelectOptionVO option1 = new SelectOptionVO(localElecBody.getDistrict().getState().getStateId(),IConstants.STATE);
+				resultsList.add(option1);
+				SelectOptionVO option2 = new SelectOptionVO(localElecBody.getDistrict().getDistrictId(),IConstants.DISTRICT);
+				resultsList.add(option2);
+				
+				List values = assemblyLocalElectionBodyDAO.findConstituencyByLocalELectionBody(id, IConstants.DELIMITATION_YEAR.toString());
+				if(values != null){
+					Object[] result = (Object[])values.get(0);
+					SelectOptionVO option3 = new SelectOptionVO((Long)result[0],IConstants.CONSTITUENCY);
+					resultsList.add(option3);
+				}
+			}
+		}
+		
+	 return resultsList;
 	}
 }
 

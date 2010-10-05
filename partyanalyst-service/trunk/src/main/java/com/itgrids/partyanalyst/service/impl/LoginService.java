@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -13,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
@@ -28,6 +30,7 @@ public class LoginService implements ILoginService{
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IGroupEntitlementDAO groupEntitlementDAO;
+	private IAnanymousUserDAO ananymousUserDAO;
 	
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
@@ -40,6 +43,14 @@ public class LoginService implements ILoginService{
 	public void setUserCountryAccessInfoDAO(
 			IUserCountryAccessInfoDAO userCountryAccessInfoDAO) {
 		this.userCountryAccessInfoDAO = userCountryAccessInfoDAO;
+	}
+
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
+
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
 	public IUserStateAccessInfoDAO getUserStateAccessInfoDAO() {
@@ -108,6 +119,7 @@ public class LoginService implements ILoginService{
 			regVO.setLastName(reg.getLastName());
 			regVO.setSubscribePartyImpDate(reg.getIncludePartyImpDateStatus());
 			regVO.setUserType(reg.getUserType());
+			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			
 			if(reg.getParty() != null){
 				regVO.setParty(reg.getParty().getPartyId());
@@ -171,6 +183,24 @@ public class LoginService implements ILoginService{
 		if(rawData.size() > 0)
 			for(Object[] values:(List<Object[]>)rawData)
 				locationList.add(new SelectOptionVO(new Long(values[0].toString()), values[1].toString()));
+	}
+
+	public RegistrationVO checkForValidNormalUser(String userName,
+			String password) {
+		RegistrationVO regVO = new RegistrationVO();
+		List<AnanymousUser> anamymousUser = ananymousUserDAO.checkAnonymousUserLogin(userName, password);
+		
+		if(anamymousUser == null || anamymousUser.size() != 1)
+			return regVO;
+		
+		AnanymousUser user = anamymousUser.get(0);
+		regVO.setRegistrationID(user.getUserId());
+		regVO.setUserName(user.getUsername());
+		regVO.setFirstName(user.getName());
+		regVO.setUserType(IConstants.FREE_USER);
+		regVO.setUserStatus(IConstants.FREE_USER);
+		
+		return regVO;
 	}
 
 }
