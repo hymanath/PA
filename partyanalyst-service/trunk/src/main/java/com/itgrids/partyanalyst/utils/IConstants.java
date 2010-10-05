@@ -95,7 +95,6 @@ public interface IConstants {
 	public final static Long MALETRENDZ = new Long(0);
 	public final static Long FEMALETRENDZ = new Long(0);
 	public final static String MALE_FEMALE_TRENDZ = "MALE_FEMALE_TRENDZ";
-	public final static String TEHSIL = "TEHSIL";
 	public static final int LATEST_CENSUS_YEAR = 2001;
 	public final static String USER_GROUP_CATEGORY_PARENT = "USER_GROUP_CATEGORY_PARENT";
 	public final static String USER_GROUP_CATEGORY_CHILD = "USER_GROUP_CATEGORY_CHILD";
@@ -255,6 +254,21 @@ public interface IConstants {
     public static final String PRESENT_DAY = "present";
     public static final String FUTURE_DAY = "future";
     
+    public static final String NOT_LOGGED_IN = "NOT_LOGGED_IN";
+	public static final String LOGGED_IN = "LOGGED_IN";
+	public static final String PROBLEM_MANAGEMENT_LOGIN = "PM_LOGIN";
+	public static final String PARTY_ANALYST_USER = "PARTY_ANALYST_USER";
+	public static final String FREE_USER = "FREE_USER";
+	public static final String POLITICIAN = "POLITICIAN";
+	public static final String STATE = "STATE";
+	public static final String DISTRICT = "DISTRICT";
+	public static final String CONSTITUENCY = "CONSTITUENCY";
+	public static final String TEHSIL = "TEHSIL";
+	public static final String HAMLET = "HAMLET";
+	public static final String User = "User";
+	public static final String External_person = "External_person";
+	public static final String Call_Center = "Call_Center";
+	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
     public static final String REJECTED = "rejected";
     
