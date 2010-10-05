@@ -132,7 +132,8 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		{
 			//to fetch all types of regions like tehsils, municipalities, corporations, grater corporations in a constituency
 			Long constituencyId = jObj.getLong("id");
-			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR);
+			String scope = jObj.getString("areaType");
+			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, scope);
 			subRegions.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(subRegions);
 		}  else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
@@ -156,6 +157,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> localElectionBodies = getRegionServiceDataImp().getWardsInALocalElectionBody(locationId);
 			localElectionBodies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(localElectionBodies);
+		} else if(jObj.getString("task").equalsIgnoreCase("getConstNotInGivenAreaType"))
+		{
+			//to get all constituenciesByAreaTypeInDistrict  
+			Long locationId = jObj.getLong("id");
+			String areaType = jObj.getString("areaType");
+			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByAreaTypeInDistrict(locationId, areaType);
+			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(constituencies);
 		}
 		
 		return Action.SUCCESS;
