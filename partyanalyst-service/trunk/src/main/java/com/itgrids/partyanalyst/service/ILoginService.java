@@ -8,6 +8,8 @@ public interface ILoginService {
 	
 	public RegistrationVO checkForValidUser(String userName,String password);
 	
+	public RegistrationVO checkForValidNormalUser(String userName,String password);
+	
 	public List<String> getDefaultEntitlements(String defaultEntitlementsGroup);
 	
 }

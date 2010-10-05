@@ -267,5 +267,8 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getAllInformationSources();
 		
+		@SuppressWarnings("unchecked")
 		public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType);
+		
+		public List<SelectOptionVO> getLocationsHirarchyByType(String type,Long id);
 }

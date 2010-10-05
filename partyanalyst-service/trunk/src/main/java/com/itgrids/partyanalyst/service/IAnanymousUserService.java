@@ -5,7 +5,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface IAnanymousUserService {
 
-	public void saveAnonymousUserDetails(RegistrationVO userDetails);
+	public Boolean saveAnonymousUserDetails(RegistrationVO userDetails);
 	
 	public RegistrationVO checkAnonymousUserLogin(String anonymousUserId,String password);
 	
