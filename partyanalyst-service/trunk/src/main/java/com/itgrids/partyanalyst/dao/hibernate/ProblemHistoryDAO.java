@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long> implements IProblemHistoryDAO{
 
@@ -223,7 +224,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return conditionQuery.toString();
 	}
 	
-	///Uncompleted Query...........
+	
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllNonApprovedProblemsPostedForCurrentDay(Date date,String status,String isApproved){
 		Object[] params = {date,status,isApproved};
@@ -232,7 +233,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		conditionQuery.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? ");	
 		conditionQuery.append(" and model.isApproved = ? ");	
-		//conditionQuery.append(" and model.problemLocation.problemAndProblemSource.user is null ");
+		conditionQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
 		conditionQuery.append(" order by date(model.dateUpdated)");	
 		
 		return getHibernateTemplate().find(conditionQuery.toString(),params);
@@ -244,7 +245,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();
 		query.append(getCommonDataForAllProblems());		
 		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
-		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");		
+		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");	
+		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
 		return getHibernateTemplate().find(query.toString(),params);
 	}
 	
@@ -256,7 +258,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append("select count(model.dateUpdated),date(model.dateUpdated) from ProblemHistory model ");
 		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
 		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");
-		//query.append(" and model.problemLocation.problemAndProblemSource.user is null " +
+		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
 		query.append(" group by date(model.dateUpdated)");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
@@ -268,21 +270,24 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder query = new StringBuilder();		
 		query.append( "select count(model.dateUpdated),model.problemLocation.problemImpactLevel.problemImpactLevel from ProblemHistory model ");
 		query.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? and model.isApproved = ? ");
-		//query.append(" and model.problemLocation.problemAndProblemSource.user is null " +
+		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
 		query.append(" group by model.problemLocation.problemImpactLevel.problemImpactLevelId");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
 	
 	
 	@SuppressWarnings("unchecked")
-	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel){			
+	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String problemType){			
 		StringBuilder locationQuery = new StringBuilder();
 		locationQuery.append(getCommonDataForAllProblems());
 		locationQuery.append(" where model.problemLocation.problemImpactLevel.problemImpactLevel = ?");
-		locationQuery.append(" and model.problemLocation.problemImpactLevelValue in (:locationIds)");	
-		
+		locationQuery.append(" and model.isApproved = ? ");
+		locationQuery.append(" and model.problemLocation.problemImpactLevelValue in (:locationIds)");		
+		locationQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
+		locationQuery.append(" order by date(model.dateUpdated)");	
 		Query queryObject = getSession().createQuery(locationQuery.toString());
 		queryObject.setString(0,impactLevel);
+		queryObject.setString(1,problemType);
 		queryObject.setParameterList("locationIds", locationIds);
 		return queryObject.list();
 	}

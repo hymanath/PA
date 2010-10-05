@@ -1262,7 +1262,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInAWard(List<Long> locationIds, String locationType) {			
-			List<Object> wardResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);	
+			List<Object> wardResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);	
 			return wardResult;
 		}
 
@@ -1277,7 +1277,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInAHamlet(List<Long> locationIds, String locationType) {			
-			List<Object> hamletResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);			
+			List<Object> hamletResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);			
 			return hamletResult;
 		}
 
@@ -1292,7 +1292,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInATehsil(List<Long> locationIds, String locationType) {			
-			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);			
+			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);			
 			List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
 			List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
 			teshilResult.addAll(hamletResult);
@@ -1310,7 +1310,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInALocalElectionBody(List<Long> locationIds, String locationType) {
-			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
 			List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
 			localElectionBodyResult.addAll(hamletResult);
@@ -1328,7 +1328,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType) {
-			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			List<Long> urbanConstituencies = new ArrayList<Long>();
 			List<Long> ruralConstituencies = new ArrayList<Long>();
 			List<Long> urban_rural_constituencies = new ArrayList<Long>();
@@ -1346,14 +1346,14 @@ public class ProblemManagementReportService implements
 					}
 				}				
 			}
-			if(urbanConstituencies!=null && urbanConstituencies.size()!=0){				
+			if(ruralConstituencies!=null && ruralConstituencies.size()!=0){				
 				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
 				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
 					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
 					constituencyResult.addAll(localElectionBodyResult);
 				}				
 			}
-			if(ruralConstituencies!=null && ruralConstituencies.size()!=0){
+			if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
 				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
 				if(tehsilIds!=null && tehsilIds.size()!=0){
 					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
@@ -1361,12 +1361,12 @@ public class ProblemManagementReportService implements
 				}				
 			}
 			if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
-				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
+				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urban_rural_constituencies);
 				if(tehsilIds!=null && tehsilIds.size()!=0){
 					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
 					constituencyResult.addAll(tehsilResult);
 				}				
-				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
+				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(urban_rural_constituencies);
 				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
 					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
 					constituencyResult.addAll(localElectionBodyResult);
@@ -1386,7 +1386,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
-			List<Object> districtResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Object> districtResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
 			List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
 			districtResult.addAll(consituencyResult);
@@ -1404,7 +1404,7 @@ public class ProblemManagementReportService implements
 		 * @date 06-10-10
 		 */
 		public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType) {			
-			List<Object> stateResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType);
+			List<Object> stateResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
 			List<Object> districtResult = getAllAcceptedProblemsInADistrict(listOfDistricts,IConstants.DISTRICT_LEVEL);
 			stateResult.addAll(districtResult);
