@@ -34,6 +34,8 @@
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
 			<result type="redirect" name="initailConstituencyManagementAction">initailConstituencyManagementAction.action</result>
@@ -52,7 +54,15 @@
 			<result type="redirect" name="adminUpload">adminUpload.action</result>
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
-		</action>
+
+			 <!-- Problem Management Flow From Different Pages -->
+			 <interceptor-ref name="basicStack"/>
+			 <result name="statePageRedirect" type="chain">statePageAction</result>
+			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
+			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
+			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
+
+        </action>
 		
 		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
 			<result name="input">/jsp/registration.jsp</result>
@@ -292,12 +302,16 @@
 		
 
 		<action name="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction">
-			<result name="input">/jsp/statePage.jsp</result>
+		 	<result name="input">/jsp/statePage.jsp</result>
 			<result name="error">/jsp/statePageError.jsp</result>
+			<interceptor-ref name="chain"/>
+            <interceptor-ref name="basicStack"/>
 			<result name="success">/jsp/statePageSuccess.jsp</result>
 		</action>
 		<action name="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction">
-			<result name="input">/jsp/constituencyPage.jsp</result>
+           	<result name="input">/jsp/constituencyPage.jsp</result>
+			<interceptor-ref name="chain"/>
+            <interceptor-ref name="basicStack"/>
 			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
 		</action>
 
@@ -504,6 +518,8 @@
 		</action>
 		
 		<action name="districtPageAction" class="districtPageAction">
+		  <interceptor-ref name="chain"/>
+          <interceptor-ref name="basicStack"/>
 			<result name="success">/jsp/districtPage.jsp</result>
 			<result name="error">/jsp/districtPageFail.jsp</result>
 		</action>
@@ -1115,8 +1131,9 @@
              <result name="success">/jsp/politicalChangesRegistration.jsp</result>
              <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
 		</action>
-		 <action name="addNewProblemAction" class="addNewProblemAction"> 
-              <result name="success">/jsp/addNewProblem.jsp</result>                                   		
+		<action name="addNewProblemAction" class="addNewProblemAction"> 
+		       <result name="input">/jsp/addNewProblem.jsp</result>
+               <result name="success">/jsp/addNewProblem.jsp</result>                   		
         </action>
         <action name="addNewProblemAjaxAction" class="addNewProblemAction" method="getDistricts"> 
               <result type="json" name="success">
@@ -1355,6 +1372,36 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=opinionPollPostAction</result>
          </action>		
+         
+		 <!-- Problem Posting Control From Different Pages -->
+         <action name="problemPostControlAction" class="problemPostControlAction">
+			
+			<result name="success">/jsp/homePage.jsp</result>
+    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
+
+            <!-- Problem Management Flow From Different Pages -->
+			 <interceptor-ref name="basicStack"/>
+			 <result name="statePageRedirect" type="chain">statePageAction</result>
+			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
+			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
+			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
+		 </action>
+         
+         <action name="anonymousUserAction" class="anonymousUserAction">
+			<result name="success">/jsp/anonymousUserRegistration.jsp</result>
+			<result name="input">/jsp/anonymousUserRegistration.jsp</result>
+		 </action>
+		 
+		 <action name="anonymousUserRegistrationAction" class="anonymousUserRegisterAction">
+		    <result name="input">/jsp/anonymousUserRegistration.jsp</result>
+			 <!-- Problem Management Flow From Different Pages -->
+			 <interceptor-ref name="basicStack"/>
+			 <result name="statePageRedirect" type="chain">statePageAction</result>
+			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
+			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
+			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
+		 </action>
 		  
 		<action name="saveSelectedPoll" class="votesPollAction" method="saveSelectedPoll">
 			<result type="json" name="success">
@@ -1370,6 +1417,8 @@
         </action>  
         
         <action name="localBodyElectionAction" class="localBodyElectionAction">
+		  <interceptor-ref name="chain"/>
+          <interceptor-ref name="basicStack"/>
            <result name="success">/jsp/localBodyElectionPage.jsp</result>	
         </action>
         
@@ -1406,14 +1455,8 @@
 				<param name="root">regionsList</param>				
 			</result>		
 		</action>
-		<action name="viewFeaturesAction" class="viewFeaturesAction">
-           <result name="success">/jsp/viewFeatures.jsp</result>	
-        </action>
 		
-		<action name="municipalWardsAssemblyBoothsMapperAction" class="municipalWardsAssemblyBoothsMapperAction">
-			<result>/jsp/boothLocalBodyMapper.jsp</result>
-		</action>
-		
+
 		<action name="municipalWardsAssemblyBoothsMapperAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="getBoothsInAssemblyConstituency">
 			<result type="json" name="success">
 				<param name="root">boothsInAssembly</param>				
