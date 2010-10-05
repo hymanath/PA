@@ -3,10 +3,12 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase {
@@ -40,6 +42,17 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.println("electionType:"+obj[2].toString());	
 			System.out.println("partial:"+obj[3].toString());			
 		}		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetConstituencyByLocalelectionBodyId(){
+		List result = assemblyLocalElectionBodyDAO.findConstituencyByLocalELectionBody(562L, IConstants.DELIMITATION_YEAR.toString());
+		
+		if(result != null){
+			Object[] values  =(Object[])result.get(0);
+			System.out.println(" Constituency :" + values[1]);
+		}
 	}
 
 	
