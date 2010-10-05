@@ -10,7 +10,7 @@
  localElectionBodiesOfDistrict = to get all local election bodies in a  district
  wardsInALocalElectionBody = to get all wards in a local election body 
  */
-function getLocationHierarchies(selectedId, task, module, elementId, addressType)
+function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType)
 {		
 	var jsObj=
 		{				
@@ -18,7 +18,8 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 			task: task,
 			taskType:module,
 			selectElementId: elementId ,
-			address: addressType 
+			address: addressType,
+			areaType: areaType
 		}
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -92,4 +93,66 @@ function fillOptionsForSelectedElmt(elmtId, optionsList)
 			elmt.add(option); // IE only
 		}
 	}
+}
+function getSubRegionsInDistrict(distId, module, elementId, addressType)
+{	
+	var scopeSelectEl = document.getElementById("scopeLevel");
+	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	var areaType = '';
+	if(scopeSelected == 'WARD')
+	{
+		areaType = 'RURAL';
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, null);
+		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
+		
+	} else if(scopeSelected == 'HAMLET')
+	{
+		areaType = 'URBAN';
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, null);
+		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
+	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL')
+	{
+		areaType = '';
+		getLocationHierarchies(distId, 'constituenciesInDistrict', module, elementId, addressType, null)
+	}	
+}
+
+function getSubRegionsInConstituency(id, module, elementId, addressType)
+{
+	var scopeSelectEl = document.getElementById("scopeLevel");
+	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	var areaType = '';
+	if(scopeSelected == 'WARD' || scopeSelected == 'LOCAL ELECTION BODY')
+	{
+		areaType = 'URBAN';
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
+		
+		
+	} else if(scopeSelected == 'HAMLET')
+	{
+		areaType = 'RURAL';
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
+		
+	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL')
+	{
+		areaType = '';
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, null)
+	}
+}
+
+function getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType)
+{
+	var jsObj=
+	{				
+		id: distId,
+		task: 'getConstNotInGivenAreaType',
+		taskType:module,
+		selectElementId: elementId ,
+		address: addressType,
+		areaType: areaType
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+callAjaxForLocations(jsObj,url);
 }
