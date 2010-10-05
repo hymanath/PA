@@ -56,6 +56,11 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long problemAndProblemSourceId;
 	private Boolean isAssigned;
 	private String impactLevel;
+	private String problemPostedBy;
+	private Long problemImpactLevelId;
+	private Long problemImpactLevelValue;
+	private String isApproved;
+	
 	private List<ProblemHistoryVO> problemHistories;
 
 
@@ -441,6 +446,38 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setIsAssigned(Boolean isAssigned) {
 		this.isAssigned = isAssigned;
+	}
+
+	public String getProblemPostedBy() {
+		return problemPostedBy;
+	}
+
+	public void setProblemPostedBy(String problemPostedBy) {
+		this.problemPostedBy = problemPostedBy;
+	}
+
+	public Long getProblemImpactLevelId() {
+		return problemImpactLevelId;
+	}
+
+	public void setProblemImpactLevelId(Long problemImpactLevelId) {
+		this.problemImpactLevelId = problemImpactLevelId;
+	}
+
+	public Long getProblemImpactLevelValue() {
+		return problemImpactLevelValue;
+	}
+
+	public void setProblemImpactLevelValue(Long problemImpactLevelValue) {
+		this.problemImpactLevelValue = problemImpactLevelValue;
+	}
+
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
 	}
 	
 	

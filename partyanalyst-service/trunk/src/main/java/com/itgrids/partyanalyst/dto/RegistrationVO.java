@@ -41,6 +41,7 @@ public class RegistrationVO extends BaseDTO{
 	private String partyShortName;
 	private String subscribePartyImpDate;
 	private String userType;
+	private String userStatus; // contains wheather commercial user or free user
 	private List<String> entitlements = new ArrayList<String>(0);
 	private Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
@@ -296,6 +297,12 @@ public class RegistrationVO extends BaseDTO{
 	
 	public void setPartyShortName(String partyShortName) {
 		this.partyShortName = partyShortName;
+	}
+	public String getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
 	}
 	
 }
