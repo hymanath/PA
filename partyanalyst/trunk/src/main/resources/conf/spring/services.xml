@@ -447,6 +447,7 @@
 		<property name="dateService" ref="dateService"/> 
 		<property name="problemDAO" ref="problemDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />

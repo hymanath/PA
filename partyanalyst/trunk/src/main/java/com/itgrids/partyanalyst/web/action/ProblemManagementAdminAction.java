@@ -152,13 +152,16 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	{
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
 		Date currentDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);
 		Date dateAfterAWeek = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,7,IConstants.PREVIOUS_DAY);
 		
 		if(user != null)
 		{			
 			 allProblemsCount = problemManagementReportService.getProblemsCountInAWeek(dateAfterAWeek,currentDate,IConstants.NEW,IConstants.FALSE);
-			 if(allProblemsCount!=null){
+			 if(allProblemsCount!=null  && allProblemsCount.getProblemsCount()!=null ){
 				 if(allProblemsCount.getProblemsCount().size()!=0){
 					 chartNameForAllProblemsCount = "lastOneWeekProblemsGraph.png";
 			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
@@ -167,7 +170,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 			 }
 			 
 			 currentDayProblemsCount = problemManagementReportService.getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(currentDate,IConstants.NEW,IConstants.FALSE);
-			 if(currentDayProblemsCount!=null){
+			 if(currentDayProblemsCount!=null && currentDayProblemsCount.getProblemsCount()!=null){
 				 if(currentDayProblemsCount.getProblemsCount().size()!=0){
 					 chartNameForAllProblemsCount = "allUnApprovedProblemsTillDayGraph.png";
 			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				

@@ -618,9 +618,9 @@ function buildProblemViewingWindow()
 		for(var i in constituencyPageMainObj.problemsInfo)
 		{
 			var data = constituencyPageMainObj.problemsInfo[i];			
-			str+='<div class="problemDataDivClass" onclick="getProblemHistoryInfo('+data.problemLocationId+')">';
+			str+='<div class="problemDataDivClass">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
-			str+='<span> '+data.name+' </span>';
+			str+='<span> '+data.problem+' </span>';
 			str+='</div>';
 			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
 		}

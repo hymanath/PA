@@ -50,6 +50,7 @@
 			<result type="redirect" name="crossVotingReportInputAction">crossVotingReportInputAction.action</result>
 			<result type="redirect" name="partyBoothResultAction">partyBoothResultAction.action</result>
 			<result type="redirect" name="adminUpload">adminUpload.action</result>
+			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -1423,7 +1424,8 @@
 		
 		<action name="problemManagementAdminAction" class="problemManagementAdminAction"> 
              <result name="success">/jsp/adminProblemManagement.jsp</result> 
-             <result name="error">/jsp/adminProblemManagement.jsp</result> 		
+             <result name="error">/jsp/loginForm.jsp?src=problemManagementAdminAction</result>	
+			 <result name="input">/jsp/adminProblemManagement.jsp</result>
         </action>
         
 		<action name="getAllProblems" class="problemManagementAdminAction" method="getAllProblemsNeededToBeApprovalForAdmin">

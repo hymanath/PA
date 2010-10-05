@@ -572,7 +572,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 		constituencyVO.setExtraInfo(extraInfo);
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
-		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"", constituencyVO.getElectionType());
+		List<Long> listOfConstituencies = new ArrayList<Long>();
+		listOfConstituencies.add(constituencyId);
+		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL).getApprovalProblems();
 		
 	
 		System.out.println("electionTrendzReportVO ============ "+electionTrendzReportVO);
