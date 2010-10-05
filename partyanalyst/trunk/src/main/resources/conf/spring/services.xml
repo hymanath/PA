@@ -99,6 +99,7 @@
 		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 	</bean>
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="registrationDAO" ref="registrationDAO" />
@@ -345,6 +346,13 @@
 		<property name="problemSourceScopeConcernedDepartmentDAO" ref="problemSourceScopeConcernedDepartmentDAO"/>
 		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" /> 
+		<property name="problemImpactLevelDAO" ref="problemImpactLevelDAO" />
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
    </bean>
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
