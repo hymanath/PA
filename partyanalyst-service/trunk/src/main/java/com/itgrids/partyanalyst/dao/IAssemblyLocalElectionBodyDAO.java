@@ -14,4 +14,8 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	
 	public List<Long> getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(List<Long> constituencyIds);
 	
+	@SuppressWarnings("unchecked")
+	List findConstituencyByLocalELectionBody(Long LocalElectionBodyId, String year);
+	
+	
 }
