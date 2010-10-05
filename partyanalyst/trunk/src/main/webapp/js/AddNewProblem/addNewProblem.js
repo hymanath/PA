@@ -11,6 +11,7 @@ var locationDetails={
 var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
 var hidden=1;
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
+
 function getCurrentDate()
 { 			
 	window.document.form.reportedDateField.value = date;
@@ -502,16 +503,14 @@ function validateInput(value)
 }
 function validateClientSide()
 {
-	var phamletFieldEl = document.getElementById("phamletField");
-	var pstateFieldEl = document.getElementById("pstateField");
-	var pdistrictFieldEl = document.getElementById("pdistrictField");
-	var pconstituencyFieldEl = document.getElementById("pconstituencyField");
-	var pmandalFieldEl = document.getElementById("pmandalField");
-	var pvillageFieldEl = document.getElementById("pvillageField");
-	var probSourceEl = document.getElementById("probSourceEl");
-	var sourceAlertEl = document.getElementById("sourceAlertEl");
+	var pstateFieldEl = document.getElementById("stateField");
+	var pdistrictFieldEl = document.getElementById("districtField");
+	var pconstituencyFieldEl = document.getElementById("constituencyField");
+	var pmandalFieldEl = document.getElementById("mandalField");
+	var pvillageFieldEl = document.getElementById("hamletField");
+	
+	
 	var stateValue = pstateFieldEl.options[pstateFieldEl.selectedIndex].value;
-	var hamletValue = phamletFieldEl.options[phamletFieldEl.selectedIndex].value;
 	var districtFieldVal = pdistrictFieldEl.options[pdistrictFieldEl.selectedIndex].value;
 	var constituencyFieldVal =pconstituencyFieldEl.options[pconstituencyFieldEl.selectedIndex].value; 
 	var mandalFieldEl=pmandalFieldEl.options[pmandalFieldEl.selectedIndex].value;
@@ -520,9 +519,10 @@ function validateClientSide()
 	var alertEl = document.getElementById("locationAlert");
 	var sourceAlertEl = document.getElementById("sourceAlert");
 	var flag;
+	alertEl.innerHTML = '';
 	if(stateValue == '0'|| hamletValue == '0' || districtFieldVal == '0' || constituencyFieldVal == '0' || mandalFieldEl == '0' || villageFieldEl == '0') 
 	{		
-		alertEl.innerHTML = '';
+		
 		alertEl.innerHTML = 'Please select valid location';
 		flag=false;
 			
@@ -530,14 +530,112 @@ function validateClientSide()
 		
 		flag=true;
 	}
+	
 		return flag;
 }
 
+function populateLocations(val,source)
+{	
+
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+	var hiddenEl = document.getElementById("problemLocation");
+	var stateFieldEl = document.getElementById("stateField");
+	var districtFieldEl = document.getElementById("districtField"); 
+	var constituencyFieldEl = document.getElementById("constituencyField");
+	var mandalFieldEl = document.getElementById("mandalField");
+	var hamletFieldEl = document.getElementById("hamletField");
+	var pConstituencyFieldEl = document.getElementById("pConstituencyField");
+	if(source == 'onChange')
+	{	
+		hiddenEl.value='';
+		stateFieldEl.selectedIndex = '0';
+		if(districtFieldEl)
+			districtFieldEl.selectedIndex = '0';
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+		if(pConstituencyFieldEl)
+		pConstituencyFieldEl.selectedIndex = '0';
+	}	
+	row1El.style.display = 'none';
+	if(row2El)
+		row2El.style.display = 'none';
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+	if(row6El)
+		row6El.style.display = 'none';
+	
+	var value = val;
+	
+	if( (value>1) || (value==1) ){
+		if(row1El.style.display == 'none')
+		{	
+			row1El.style.display = '';			 
+		}		
+	}
+	if( (value>2) || (value==2) ){
+		if(row2El)
+		{	
+			if(row2El.style.display == 'none')
+			{	
+				row2El.style.display = '';
+			}
+		}	
+	}
+	if( (value>3) || (value==3) ){
+				
+		if(isParliament == 'false' || source == 'onChange')
+		{	
+			if(row3El.style.display == 'none')
+			{	
+				row3El.style.display = '';
+			}
+		} 
+		if(isParliament == 'true')
+		{	
+			if(row6El.style.display == 'none')
+			{	
+				row6El.style.display = '';
+			}
+		}
+	}
+	if( (value>4) || (value==4) || (value>5) || (value==5)  ){
+		if(row4El.style.display == 'none')
+		{	
+			row4El.style.display = '';
+		}		
+	}
+	
+	if( (value>6) || (value==6) || (value>7) || (value==7) ){
+		if(row5El.style.display == 'none')
+		{	
+			row5El.style.display = '';
+		}		
+	}	 
+}
+
+function setLocationValue(value)
+{
+	if(value == '0')
+	{
+		alert("Please Select Valid Location");
+		return;
+	}	
+	var hiddenEl = document.getElementById("problemLocation");
+	hiddenEl.value = '';
+	hiddenEl.value = value;
+}
 
 function refreshParentWindow()
 {
 	incrementHidden();
-	window.opener.document.location.reload(true);
+	
 	window.close();
 
 }
