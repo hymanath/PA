@@ -51,6 +51,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String address;
 	private Long status;
 	
+	private Long problemScope;
+	private Long problemLocationId;
+		
 	
 	public void setServletRequest(HttpServletRequest request) {
 	this.request = request;
@@ -133,7 +136,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getState() {
 		return state;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select State",shortCircuit=true)
+	
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -141,7 +144,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getDistrict() {
 		return district;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select District",shortCircuit=true)
+	
+	
 	public void setDistrict(String district) {
 		this.district = district;
 	}
@@ -150,6 +154,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return parliamentConstituency;
 	}
 
+	
 	public void setParliamentConstituency(String parliamentConstituency) {
 		this.parliamentConstituency = parliamentConstituency;
 	}
@@ -157,7 +162,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getConstituency() {
 		return constituency;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Constituency",shortCircuit=true)
+	
+	
 	public void setConstituency(String constituency) {
 		this.constituency = constituency;
 	}
@@ -165,7 +171,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getMandal() {
 		return mandal;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Mandal",shortCircuit=true)
+	
+	
 	public void setMandal(String mandal) {
 		this.mandal = mandal;
 	}
@@ -173,7 +180,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getVillage() {
 		return village;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Village",shortCircuit=true)
+	
+	
 	public void setVillage(String village) {
 		this.village = village;
 	}
@@ -181,7 +189,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getHamlet() {
 		return hamlet;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Hamlet",shortCircuit=true)
+	
 	public void setHamlet(String hamlet) {
 		this.hamlet = hamlet;
 	}
@@ -205,7 +213,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getProbSource() {
 		return probSource;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select ProblemSource",shortCircuit=true)
+	
 	public void setProbSource(String probSource) {
 		this.probSource = probSource;
 	}
@@ -213,7 +221,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getName() {
 		return name;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Name field is mandatory",shortCircuit=true)
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -221,8 +229,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getMobile() {
 		return mobile;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile field is mandatory",shortCircuit=true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD,message = "Mobile number should be 10 digits", shortCircuit = true,  minLength = "10",  maxLength = "10")	
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -242,7 +248,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Address field is mandatory",shortCircuit=true)
+	
 	public String getAddress() {
 		return address;
 	}
@@ -257,6 +263,39 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public void setStatus(Long status) {
 		this.status = status;
+	}	
+
+	public Long getProblemScope() {
+		return problemScope;
+	}
+
+	public void setProblemScope(Long problemScope) {
+		this.problemScope = problemScope;
+	}
+	
+	public Long getDefaultState() {
+		return new Long(this.state);
+	}
+	
+	public Long getDefaultDistrict() {
+		return new Long(this.district);
+	}	
+
+	public Long getDefaultConstituency() {
+		return new Long(this.constituency);
+	}	
+
+	public Long getDefaultLocalElectionBody() {
+		return new Long(this.village);
+	}	
+
+
+	public Long getProblemLocationId() {
+		return problemLocationId;
+	}
+
+	public void setProblemLocationId(Long problemLocationId) {
+		this.problemLocationId = problemLocationId;
 	}
 
 	public String execute() throws Exception
@@ -272,15 +311,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		problemBeanVO.setUserID(user.getRegistrationID());
 		problemBeanVO.setProblem(getProblem());
 		problemBeanVO.setDescription(getDescription());
-		problemBeanVO.setState(getState());
+		
+		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
+			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
+		else
+			problemBeanVO.setProblemPostedBy(IConstants.FREE_USER);
+		/*problemBeanVO.setState(getState());
 		problemBeanVO.setDistrict(getDistrict());
 		problemBeanVO.setConstituency(getConstituency());
 		problemBeanVO.setTehsil(getMandal());
 		problemBeanVO.setVillage(getVillage());
-		problemBeanVO.setHamlet(getHamlet());
+		problemBeanVO.setHamlet(getHamlet());*/
 		problemBeanVO.setReportedDate(getReportedDate());
 		problemBeanVO.setExistingFrom(getExistingFromDate());
-		problemBeanVO.setProbSourceId(new Long(getProbSource()));
+		problemBeanVO.setProblemImpactLevelId(getProblemScope());
+		problemBeanVO.setProblemImpactLevelValue(getProblemLocationId());
+		
+		/*problemBeanVO.setProbSourceId(new Long(getProbSource()));
 		if(problemBeanVO.getProbSourceId() != 1L)
 		{
 			problemBeanVO.setName(getName());
@@ -288,36 +335,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemBeanVO.setPhone(getPhone());
 			problemBeanVO.setEmail(getEmail());			
 			problemBeanVO.setAddress(getAddress());
-		}
+		}*/
 		
 		problemBeanVO.setProblemStatusId(getStatus());
 		
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 					
-		 log.debug(problemBeanVO.getProblem());
-		 log.debug(problemBeanVO.getDescription());
-		 log.debug(problemBeanVO.getState());
-		 log.debug(problemBeanVO.getDistrict());
-		 log.debug(problemBeanVO.getConstituency());
-		 log.debug(problemBeanVO.getTehsil());
-		 log.debug(problemBeanVO.getHamlet());
-		 log.debug(problemBeanVO.getReportedDate());
-		 log.debug(problemBeanVO.getExistingFrom());
-		 log.debug(problemBeanVO.getProbSource());
-		 log.debug(problemBeanVO.getName());
-		 log.debug(problemBeanVO.getMobile());
-		 log.debug(problemBeanVO.getPhone());
-		 log.debug(problemBeanVO.getEmail());
-		 log.debug(problemBeanVO.getAddress());
 		 problemBeanFromDB = problemManagementService.saveNewProblemData(problemBeanVO);
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
-			 /*session.removeAttribute("stateList");
-			 session.removeAttribute("districtList");
-			 session.removeAttribute("constituencyList");
-			 session.removeAttribute("mandalList");
-			 session.removeAttribute("parliamentConstituencyList");*/
-			 
 			 isSuccessfullyInserted = true;
 		 } else 
 			 isSuccessfullyInserted = false;

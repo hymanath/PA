@@ -10,17 +10,17 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
+import com.itgrids.partyanalyst.service.impl.StaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class AddNewProblemAction extends ActionSupport implements ServletRequestAware{
 
@@ -36,17 +36,23 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> pConstituencyList;
 	private List<SelectOptionVO> mandalList;
-	private List<SelectOptionVO> villageList;
+	private List<SelectOptionVO> wardsOrHamletsList;
 	private List<SelectOptionVO> hamletList;
-	private List<SelectOptionVO> problemSources;
 	private List<SelectOptionVO> parliamentConstituencyList;
-	private IProblemManagementService problemManagementService;	
-	private String accessType;
 	private IRegionServiceData regionServiceDataImp;
-	private CadreManagementService cadreManagementService;
 	private IStaticDataService staticDataService;
+	private IProblemManagementService problemManagementService;
 	
+	private String requestSrc;
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private Long localElectionBodyId;
+	private Boolean isParliament;
+	private List<SelectOptionVO> problemScopes;
+	private Long  problemLocation;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -107,15 +113,15 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void setMandalList(List<SelectOptionVO> mandalList) {
 		this.mandalList = mandalList;
 	}
+	
+	public List<SelectOptionVO> getWardsOrHamletsList() {
+		return wardsOrHamletsList;
+	}
 
-	public List<SelectOptionVO> getVillageList() {
-		return villageList;
+	public void setWardsOrHamletsList(List<SelectOptionVO> wardsOrHamletsList) {
+		this.wardsOrHamletsList = wardsOrHamletsList;
 	}
-	
-	public void setVillageList(List<SelectOptionVO> villageList) {
-		this.villageList = villageList;
-	}
-	
+
 	public List<SelectOptionVO> getHamletList() {
 		return hamletList;
 	}
@@ -123,32 +129,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void setHamletList(List<SelectOptionVO> hamletList) {
 		this.hamletList = hamletList;
 	}
-
-	public List<SelectOptionVO> getProblemSources() {
-		return problemSources;
-	}
-
-	public void setProblemSources(List<SelectOptionVO> problemSources) {
-		this.problemSources = problemSources;
-	}
-
-	public IProblemManagementService getProblemManagementService() {
-		return problemManagementService;
-	}
-
-	public void setProblemManagementService(
-			IProblemManagementService problemManagementService) {
-		this.problemManagementService = problemManagementService;
-	}	
-
-	public String getAccessType() {
-		return accessType;
-	}
 	
-	public void setAccessType(String accessType) {
-		this.accessType = accessType;
-	}
-
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -156,23 +137,6 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
-
-	public CadreManagementService getCadreManagementService() {
-		return cadreManagementService;
-	}
-
-	public void setCadreManagementService(
-			CadreManagementService cadreManagementService) {
-		this.cadreManagementService = cadreManagementService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}
-
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}	
 
 	public void setParliamentConstituencyList(
 			List<SelectOptionVO> parliamentConstituencyList) {
@@ -191,111 +155,235 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		this.session = session;
 	}	
 
+	public String getRequestSrc() {
+		return requestSrc;
+	}
+
+	public void setRequestSrc(String requestSrc) {
+		this.requestSrc = requestSrc;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+
+	public Boolean getIsParliament() {
+		return isParliament;
+	}
+
+	public void setIsParliament(Boolean isParliament) {
+		this.isParliament = isParliament;
+	}
+
+	public Long getDefaultState() {
+		return this.stateId;
+	}
+	
+	public Long getDefaultDistrict() {
+		return this.districtId;
+	}	
+
+	public Long getDefaultConstituency() {
+		return this.constituencyId;
+	}	
+
+	public Long getDefaultLocalElectionBody() {
+		return this.localElectionBodyId;
+	}	
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+	
+	public Long  getDefaultScope()
+	{
+		return new Long(requestSrc);
+	}	
+
+	public List<SelectOptionVO> getProblemScopes() {
+		return problemScopes;
+	}
+
+	public void setProblemScopes(List<SelectOptionVO> problemScopes) {
+		this.problemScopes = problemScopes;
+	}
+
+	public Long getProblemLocation() {
+		return problemLocation;
+	}
+
+	public void setProblemLocation(Long problemLocation) {
+		this.problemLocation = problemLocation;
+	}	
+	
+	public List<SelectOptionVO> getPConstituencyList() {
+		return pConstituencyList;
+	}
+
+	public void setPConstituencyList(List<SelectOptionVO> constituencyList) {
+		pConstituencyList = constituencyList;
+	}
+
 	public String execute () throws Exception 
 	{
-		problemSources = new ArrayList<SelectOptionVO>();
-		problemSources = staticDataService.getAllInformationSources();
-		problemSources.add(0,new SelectOptionVO(0L,"Select Problem Source"));		
+		/*constituencyId = 232l;
+		stateId= 1l;
+		districtId = 19l;
+		isParliament =false;
+		requestSrc = "3";*/
 		HttpSession session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
-		if(user == null)
-			return ERROR;
-				
-		accessType =user.getAccessType();
-		Long accessValue= new Long(user.getAccessValue());
+		session = request.getSession();
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
-		villageList = new ArrayList<SelectOptionVO>();
+		wardsOrHamletsList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
-		session = request.getSession();
-		session.setAttribute("problemSources", problemSources);
-		if("MLA".equals(accessType))
-		{
-			log.debug("Access Type = MLA ****");
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
-			
-			stateList.add(list.get(0));			
-			districtList.add(list.get(1));			
-			constituencyList.add(list.get(2));
-			mandalList = regionServiceDataImp.getMandalsByConstituencyID(accessValue);
-			mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
-			session.setAttribute("stateList", stateList);
-			session.setAttribute("districtList",districtList);
-			session.setAttribute("constituencyList",constituencyList);
-			session.setAttribute("mandalList",mandalList);
-			
-						
-		}else if("COUNTRY".equals(accessType))
-		{
-			log.debug("Access Type = Country ****");
-			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
-			stateList.add(0,new SelectOptionVO(0L, "Select State"));
-			session.setAttribute("stateList", stateList);
-			
-		}else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");
-			
-			String name = cadreManagementService.getStateName(accessValue);
-			SelectOptionVO obj2 = new SelectOptionVO();
-			obj2.setId(accessValue);
-			obj2.setName(name);			
-			stateList.add(obj2);
-			districtList = staticDataService.getDistricts(accessValue);
-			districtList.add(0,new SelectOptionVO(0l,"Select District"));
-			session.setAttribute("stateList", stateList);
-			session.setAttribute("districtList",districtList);
-			
-		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
-			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
-			stateList.add(list.get(0));			
-			districtList.add(list.get(1));
-			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
-			constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
-			session.setAttribute("stateList", stateList);
-			session.setAttribute("districtList",districtList);
-			session.setAttribute("constituencyList",constituencyList);
-			
-		} else if("MP".equals(accessType)){
-			log.debug("Access Type = MP ****");
-			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-			stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
-			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
-			constituencyList = constituencyInfoVO.getAssembyConstituencies();
-			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
-			session.setAttribute("stateList", stateList);
-			session.setAttribute("parliamentConstituencyList",parliamentConstituencyList);
-			session.setAttribute("constituencyList",constituencyList);
-			log.debug("constituencyList.size():"+constituencyList.size());
-			log.debug("parliamentConstituencyList.size():"+parliamentConstituencyList.size());
-			
+		problemScopes = problemManagementService.getAllProblemImpactLevel();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		session.setAttribute(ISessionConstants.STATES, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
+		
+		try{
+			if("1".equalsIgnoreCase(requestSrc))	
+			{
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				setProblemLocation(stateId);
+				
+					
+			}else if("2".equalsIgnoreCase(requestSrc))
+			{
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				setProblemLocation(districtId);
+				List<SelectOptionVO> locationHirarchies = staticDataService.getLocationsHirarchyByType(IConstants.DISTRICT, districtId);
+				if(locationHirarchies != null){
+					stateId = getLocationIdFromHirarchy(IConstants.STATE,locationHirarchies);
+				}
+				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
+				
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS, districtList);	
+				
+				
+			} else if("3".equalsIgnoreCase(requestSrc))
+			{
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				setProblemLocation(constituencyId);
+				List<SelectOptionVO> locationHirarchies = staticDataService.getLocationsHirarchyByType(IConstants.CONSTITUENCY, constituencyId);
+				if(locationHirarchies != null){
+					stateId = getLocationIdFromHirarchy(IConstants.STATE,locationHirarchies);
+					if(locationHirarchies.size() == 2)
+						isParliament = true;
+					else if(locationHirarchies.size() == 3)
+						isParliament = false;
+				}
+				
+				if(isParliament)
+				{
+					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId);
+					session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
+					session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+					
+				} else 
+				{
+					districtId = getLocationIdFromHirarchy(IConstants.DISTRICT,locationHirarchies);
+					districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
+					constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+					session.setAttribute(ISessionConstants.DISTRICTS, districtList);
+					session.setAttribute(ISessionConstants.P_CONSTITUENCIES, new ArrayList<SelectOptionVO>());
+					session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
+					
+				}				
+				session.setAttribute(ISessionConstants.STATES, stateList);			
+			} else if(IConstants.LOCAL_ELECTION_BODY.equalsIgnoreCase(requestSrc))
+			{
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				setProblemLocation(localElectionBodyId);
+				List<SelectOptionVO> locationHirarchies = staticDataService.getLocationsHirarchyByType(IConstants.LOCAL_ELECTION_BODY, localElectionBodyId);
+				if(locationHirarchies != null){
+					stateId = getLocationIdFromHirarchy(IConstants.STATE,locationHirarchies);
+					districtId = getLocationIdFromHirarchy(IConstants.DISTRICT,locationHirarchies);
+					constituencyId = getLocationIdFromHirarchy(IConstants.CONSTITUENCY,locationHirarchies);
+				}
+				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
+				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
+				mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+							
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS, districtList);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
+				session.setAttribute(ISessionConstants.MANDALS, mandalList);
+			} else
+			{
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				setProblemLocation(0l);
+			}		
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error("Exception Raised :" + ex);
+			return Action.ERROR;
 		}
-		
-		
-		return SUCCESS;
+	 return SUCCESS;
 	}
 	
-	public String getDistricts()
-	{
-		session = request.getSession();
-		if(task != null){
-			try{
-				jObj = new JSONObject(getTask());				
-			}catch(Exception e){
-				e.printStackTrace();
+	public Long getLocationIdFromHirarchy(String locationType,List<SelectOptionVO> resultList){
+		if(resultList != null){
+			for(SelectOptionVO option:resultList){
+				if(option.getName().equals(locationType))
+					return option.getId();
 			}
-		}		
-		
-		Long stateId = jObj.getLong("id");
-		districtList = new ArrayList<SelectOptionVO>();
-		districtList = staticDataService.getDistricts(stateId);
-		districtList.add(0,new SelectOptionVO(0l,"Select District"));
-		session.setAttribute("districtList",districtList);
-		return SUCCESS;
+		}
+	 return null;
 	}
 	
 

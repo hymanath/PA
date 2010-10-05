@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
@@ -115,10 +116,15 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 			loginStatus = "false";		}
 		else
 		{
+			int hiden = 0;
+			registrationVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			session.setAttribute("loginStatus", "out");
 			session.setAttribute("USER",registrationVO);
 			session.setAttribute("UserName", name);
+			session.setAttribute("UserType", "PartyAnalyst");
+			session.setAttribute("HiddenCount", hiden);
 			loginStatus = "true";
+			
 		}
 		
 		return Action.SUCCESS;

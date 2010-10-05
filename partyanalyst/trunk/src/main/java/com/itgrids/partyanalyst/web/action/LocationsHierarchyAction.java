@@ -12,8 +12,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -30,6 +32,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private ServletContext context;
 	private HttpSession session;
 	private IRegionServiceData regionServiceDataImp;
+	private IStaticDataService staticDataService;
 	JSONObject jObj = null;
 	private String task = null;
 	private List<SelectOptionVO> regionsList;
@@ -88,6 +91,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 
 	public void setTask(String task) {
 		this.task = task;
+	}	
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	public String execute() throws Exception {
@@ -165,7 +176,25 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByAreaTypeInDistrict(locationId, areaType);
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
-		}
+		} else if(jObj.getString("task").equalsIgnoreCase("parliamentsInState"))
+		{
+			//to get all constituenciesByAreaTypeInDistrict  
+			Long locationId = jObj.getLong("id");
+			
+			List<SelectOptionVO> constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,locationId);;
+			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(constituencies);
+		} else if(jObj.getString("task").equalsIgnoreCase("assembliesInParliament"))
+		{
+			//to get all constituenciesByAreaTypeInDistrict  
+			Long locationId = jObj.getLong("id");
+			ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(locationId);
+			
+			List<SelectOptionVO> constituencies = constituencyInfoVO.getAssembyConstituencies();
+			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(constituencies);
+		} 
+		
 		
 		return Action.SUCCESS;
 	

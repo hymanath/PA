@@ -115,6 +115,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
 	 private EntitlementsHelper entitlementsHelper;
 	 
+	 private String forwardTask = null;
+	 
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -153,6 +155,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 
 	public void setCorporationElectionTypeId(Long corporationElectionTypeId) {
 		this.corporationElectionTypeId = corporationElectionTypeId;
+	}
+
+	public String getForwardTask() {
+		return forwardTask;
+	}
+
+	public void setForwardTask(String forwardTask) {
+		this.forwardTask = forwardTask;
 	}
 
 	public List<SelectOptionVO> getElectionTypes() {
