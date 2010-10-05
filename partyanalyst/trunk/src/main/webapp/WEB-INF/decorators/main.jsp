@@ -223,22 +223,22 @@
 						</li> 
 						</c:if>
 
-						<c:if test="${sessionScope.loginStatus == 'out'}">  
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 						</li> 
 						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out'}">
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 						</li> 
 						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out'}">
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
 						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out'}">
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
 						</li> 
