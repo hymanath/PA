@@ -3,8 +3,10 @@
 
 var constituencyPageMainObj={
 								constituencyAddress:'',
-								contextPath:'',								
+								contextPath:'',
+								forwardTask:'',
 								constituencyInfo:{
+									                constituencyId:'',
 													constituencyName:'',
 													districtName:'',
 													stateName:'',
@@ -633,9 +635,10 @@ function buildProblemViewingWindow()
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
 }
+
 function openAddNewProblemWindow()
 {	
-	var browser1 = window.open("addNewProblemAction.action","addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
 }
 
@@ -655,15 +658,16 @@ function buildProblemPostingWindow()
 	str+='<legend> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
-	str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
+	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
+	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">POST</a></div>';
 	str+='</div>';
 	str+='</fieldset>';
 	
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
 
-	var postButton = new YAHOO.widget.Button("postButton");
-	postButton.on("click", openAddNewProblemWindow); 
+	/*var postButton = new YAHOO.widget.Button("postButton");
+	postButton.on("click", openAddNewProblemWindow); */
 }
 
 function buildConstituencyConnectPeopleWindow()
@@ -1393,7 +1397,14 @@ function initializeConstituencyPage()
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
-	buildRightlayoutMap();
+    buildRightlayoutMap();
+    if(constituencyPageMainObj.forwardTask != null)
+	{
+		if(constituencyPageMainObj.forwardTask != "")
+		{
+          openAddNewProblemWindow();
+		}
+	}
 
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
