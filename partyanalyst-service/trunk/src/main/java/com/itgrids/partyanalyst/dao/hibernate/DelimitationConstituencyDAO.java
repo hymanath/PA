@@ -63,5 +63,12 @@ IDelimitationConstituencyDAO {
 		return getHibernateTemplate().find("select model.constituency from DelimitationConstituency model where " +
 				"model.constituency.district.state.stateId =? and model.year =(Select max(model.year) from DelimitationConstituency model)",stateId);
 	}
+
+	public List getConstituenciesByAreaTypeInDist(Long districtId,
+			String areaType) {
+		Object[] params = {districtId, areaType};
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.areaType from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) and model.constituency.areaType != ?", params);
+	}
 	
 }

@@ -10,13 +10,13 @@ import java.util.List;
 public interface IRegionServiceData {
 	public List<SelectOptionVO> getStatesByCountry(Long countryID);
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID);	
-	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID);
-	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year);
+	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID);	
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope);
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year);
 	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId);	
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId);	
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long LocationId);
-	
+	public List<SelectOptionVO> getConstituenciesByAreaTypeInDistrict(Long districtId, String areaType);
 	public List<SelectOptionVO> getStateDistrictByConstituencyID(Long constituencyID);
 	public List<SelectOptionVO> getStateDistrictByDistrictID(Long constituencyID);
 	public List<SelectOptionVO> getStatesByCountryFromBooth(Long countryID);

@@ -31,5 +31,6 @@ public interface IProblemManagementService {
 	public List<ProblemBeanVO> updateAndGetProblemsUnderFixed(List<ProblemBeanVO> problemsFixed);
 	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderPending(List<ProblemBeanVO> pendingProblems);
+	public List<SelectOptionVO> getAllProblemImpactLevel();
 		
 }

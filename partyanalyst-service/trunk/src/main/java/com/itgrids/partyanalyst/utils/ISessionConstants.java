@@ -5,10 +5,13 @@ public interface ISessionConstants {
 	public static final String STATES = "statesList";
 	public static final String DISTRICTS = "districtsList";
 	public static final String CONSTITUENCIES = "constituenciesList";
+	//parliament Constituencies
+	public static final String P_CONSTITUENCIES = "p_constituencies";
 	public static final String MANDALS = "mandalsList";
 	public static final String VILLAGES = "villagesList";
+	public static final String WARDS_OR_HAMLETS = "wardsOrHamletsList";
 	
-	// ADDRESS VARIBALES FOT OFFICIAL ADDRESS
+	// ADDRESS VARIBALES FOR OFFICIAL ADDRESS
 	public static final String DISTRICTS_O = "districtsList_o";
 	public static final String CONSTITUENCIES_O = "constituenciesList_o";
 	public static final String MANDALS_O = "mandalsList_o";
@@ -51,7 +54,7 @@ public interface ISessionConstants {
 	//list of information static(main) parties 
 	public static final String MAIN_PARTIES = "mainPartiesList";
 	
-	//list of impacted regions for local policitcal changes, influencing people 
+	//list of impacted regions for local policitcal changes, influencing people, problem management 
 	public static final String IMPACTED_REGIONS = "impactedRegionsList";
 	
 }

@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 
@@ -44,9 +45,21 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(list.size(), 10);
 	}*/
 	
-	public void testGetAssembliesInState(){
+	/*public void testGetAssembliesInState(){
 		List list = delimitationConstituencyDAO.getLatestDelimitationYear();
 		System.out.println(Long.parseLong(list.get(0).toString()));
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetConstituenciesByAreaTypeInDist(){
+		List list = delimitationConstituencyDAO.getConstituenciesByAreaTypeInDist(19l, "RURAL");
+		System.out.println(list.size());
+		for(int i = 0; i<list.size();i++)
+		{
+			Object[] obj = (Object[])list.get(i);
+		System.out.println("id:"+Long.parseLong(obj[0].toString()));
+		System.out.println("name:"+obj[1].toString());
+		System.out.println("area:"+obj[2].toString());
+		}
 	}
 }

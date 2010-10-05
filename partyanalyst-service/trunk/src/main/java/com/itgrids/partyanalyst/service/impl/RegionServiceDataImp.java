@@ -315,10 +315,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
  * This method returns all the sub-regions in a constituency based on its area type.If it is Rural it returns list of tehsils, If Urban returns municipalities, corporations, gmc's
  * if UrbanRural then it returns tehsils, municipalities, corporations, etc.  
  */
-	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year) {
+	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope) {
 		Constituency constituency = constituencyDAO.get(constituencyId);
-		String areaType = constituency.getAreaType();
 		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
+		
+		if(constituency.getAreaType() == null)
+			return subRegionsList;			
+		String areaType = constituency.getAreaType();
+		
+		
 		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
 		{
 			subRegionsList = getTehsilsInConstituency(constituencyId);
@@ -329,13 +334,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			
 		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 		{
-			subRegionsList = getTehsilsInConstituency(constituencyId);
-			List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
-			if(localElectionBodiesList.size() != 0)
+			if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
 			{
-				subRegionsList.addAll(localElectionBodiesList);				
-			}
-			
+				subRegionsList = getTehsilsInConstituency(constituencyId);
+			} else if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+			{
+				subRegionsList = getLocalElectionBodies(constituencyId, year);
+			} else {
+				subRegionsList = getTehsilsInConstituency(constituencyId);
+				List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
+				if(localElectionBodiesList.size() != 0)
+				{
+					subRegionsList.addAll(localElectionBodiesList);				
+				}
+			} 						
 		}
 		return subRegionsList;
 	}
@@ -433,6 +445,22 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		for(Constituency ward:wardObjs)
 			wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
 		return wards;
+	}
+	/**
+	 * This method fetches constituencies from delimitation constituency table.
+	 * This method wont fetch the constituencies  
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesByAreaTypeInDistrict(
+			Long districtId, String areaType) {
+		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
+		List rawData = delimitationConstituencyDAO.getConstituenciesByAreaTypeInDist(districtId, areaType);
+		for(int i = 0; i<rawData.size();i++)
+		{
+			Object[] obj = (Object[])rawData.get(i);
+			constituencies.add(new SelectOptionVO(Long.parseLong(obj[0].toString()), obj[1].toString().toUpperCase()));
+		}	
+		return constituencies;	
 	}
 	
 }

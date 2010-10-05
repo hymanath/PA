@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemClassification;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.model.ProblemImpactLevel;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
@@ -78,6 +80,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	private IProblemImpactLevelDAO problemImpactLevelDAO;
 	
 	
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
@@ -204,6 +207,15 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setProblemHistoryDAO(IProblemHistoryDAO problemHistoryDAO) {
 		this.problemHistoryDAO = problemHistoryDAO;
+	}	
+
+	public IProblemImpactLevelDAO getProblemImpactLevelDAO() {
+		return problemImpactLevelDAO;
+	}
+
+	public void setProblemImpactLevelDAO(
+			IProblemImpactLevelDAO problemImpactLevelDAO) {
+		this.problemImpactLevelDAO = problemImpactLevelDAO;
 	}
 
 	/**
@@ -912,6 +924,15 @@ public class ProblemManagementService implements IProblemManagementService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public List<SelectOptionVO> getAllProblemImpactLevel() {
+		List<ProblemImpactLevel> list = problemImpactLevelDAO.getAll();
+		List<SelectOptionVO> problemImpacts = new ArrayList<SelectOptionVO>();
+		for(ProblemImpactLevel problemImpactLevel:list){
+			problemImpacts.add(new SelectOptionVO(problemImpactLevel.getProblemImpactLevelId(),problemImpactLevel.getProblemImpactLevel()));
+		}
+		return problemImpacts;
 	}
 }
 
