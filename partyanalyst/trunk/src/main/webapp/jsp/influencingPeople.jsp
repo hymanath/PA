@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Influencing People Registration</title>
+<title>Add Influencing People </title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -37,7 +37,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -52,21 +52,58 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
     <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 <!-- YUI Dependency files (End) -->
- 
-	
 
-	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
+<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+
 <style type="text/css">
-	.selectWidth
-		{
-			width:140px;
-		}
-	#errorMessageDisplay{
-		color:red;
-		font-size:14px;
-		font-weight:bold;
+
+.selectWidth
+	{
+		width:145px;
 	}
+#errorMessageDisplay{
+	color:red;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.addInfluencingHeader
+{
+background-image:url("images/icons/cadreReport/bg_center.png");
+background-repeat:repeat-x;
+color:#FFFFFF;
+font-size:14px;
+font-weight:bold;
+height:24px;
+padding-top:1px;
+text-align:center;
+width:250px;
+}
+
+.bodyStyle {
+		font-family:verdana;
+		font-size:11px;
+	}
+
+.required
+{
+	color :red;
+}
+
+.tdstyle{
+color:#926682;
+font-family:verdana;
+font-weight:bold;
+text-align:left;
+}
+
+.regionSelect
+{
+width:146px;
+}
+
 </style>
 </head>
 <script type="text/javascript"> 
@@ -86,6 +123,7 @@ var Localization = { <%
 			String Occupation = rb.getString("occupation");
 			String Male  = rb.getString("Male");
 			String Female = rb.getString("Female");
+			String wardOrHamlet = rb.getString("wardOrHamlet");
   %> }
 
 
@@ -188,15 +226,25 @@ function doUnload()
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 </script>
-<body onload="checkRequestType()" onunload="doUnload()">
-<h2 align="center">Influencing People Registration Page</h2>
+<body class="bodyStyle" onload="checkRequestType()" onunload="doUnload()">
+
+ <CENTER>
+		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+			<TR>
+				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
+				<TD><div class="addInfluencingHeader"><span style="margin-top:2px;">Add Influencing People </span></div></TD>
+				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
+			</TR>
+		</TABLE>
+  </CENTER>
+
 <div id="registrationMainDiv">
 
 <div id="loginDetailsDiv" class="accessDivMain">
 	<div id="loginDetailsDivBody" align="center" class="accessDivBody">
 		
 	<div id="errorMsgDiv">
-		<table class="registrationTable">
+		<table class="registrationTable" >
 			<tr>
 				<td colspan="2">
 					<div style="color: red;">
@@ -208,66 +256,97 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		</table>
 	</div>		
 	
-		<s:form action="influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
-		
-				<table class="registrationTable">			
+	<s:form action="influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
+	<FIELDSET>
+	<LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
+
+	<table class="registrationTable" width="100%">			
+		<tr>
+			<td class="tdstyle" width="90px"><s:label class="selectWidth" for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}"/><font class="required">*</font></td>
+			<td align="left"><s:textfield id="firstNameField" theme="simple" name="firstName"/></td>
+
+			<td class="tdstyle"><s:label class="selectWidth" for="middleNameField" theme="simple" id="middleNameLabel"  value="%{getText('middleName')}"/></td>
+			<td><s:textfield id="middleNameField" theme="simple" name="middleName"/></td>
+		</tr>					
 	<tr>
-		<td><font class="requiredFont"> <b style="color:red">*</b></font><s:label class="selectWidth" for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}"/></td>
-		<td><s:textfield id="firstNameField" theme="simple" name="firstName"/></td>
-	</tr>					
-	<tr>
-		<td><font class="requiredFont"> <b style="color:red">*</b></font><s:label class="selectWidth" for="lastNameField" theme="simple" id="lastNameLabel" value="%{getText('lastName')}"/></td>
+		<td class="tdstyle"><s:label class="selectWidth" for="lastNameField" theme="simple" id="lastNameLabel" value="%{getText('lastName')}"/><font class="required">*</font></td>
 		<td><s:textfield id="lastNameField" theme="simple" name="lastName"/></td>
-	</tr>										
+		
+		<td class="tdstyle" width="120"><s:label class="selectWidth" for="father_spouseName" theme="simple" id="father_spouseNameLabel" value="%{getText('father_spouseName')}"/><font class="required">*</font></td>
+		<td><s:textfield id="father_spouseName" theme="simple" name="fatherOrSpouseName"/></td>
+
 	<tr>
-		<td style="padding-left:15px;"><s:label class="selectWidth" for="emailField" theme="simple" id="emailLabel" value="%{getText('email')}"/></td>
-		<td><s:textfield id="emailField" theme="simple" name="email"/>  </td>
-	</tr>										
-	<tr>
-		<td> <font class="requiredFont">  </font> <s:label class="selectWidth" for="mobileField" id="mobileLabel"  theme="simple" value="%{getText('mobile')}" /></td>
-		<td><s:textfield id="mobileField" theme="simple" name="mobile"/>  </td>
-	</tr>
-	<tr>
-		<td><font class="requiredFont"> <b style="color:red">*</b>  </font><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}" /></td>
-		<td align="left">
+		<td class="tdstyle"></font><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}"/><font class="required">*</td>
+		<td align="left" class="tdstyle">
+			<s:radio id="gender" name="gender" list="#session.genders"/>
+		</td>
+		
+		<%--<td align="left" class="tdstyle">
 			<input id="male" type="radio" name="gender" value="M" checked="checked"/><%=Male%>
 			<input id="feMale" type="radio" name="gender" value="F"/><%=Female%>
-		</td>		
+		</td> ---%>		
 	</tr>
+
+	</tr>										
+	
+	</table>
+	</FIELDSET>
+
+	<FIELDSET>
+	<LEGEND style="font-size:12px;"><strong>Contact Details</strong></LEGEND>
+	<table class="registrationTable" width="100%">	
 	<tr>
-		<td> <font class="requiredFont">  </font> <%=Occupation%></td>
-		<td><s:textfield class="selectWidth" id="occupationField" theme="simple" name="occupation"/>  </td>
+		<td class="tdstyle"><s:label class="selectWidth" for="mobileField" id="mobileLabel"  theme="simple" value="%{getText('mobile')}" /><font class="required"> * </font> </td>
+		<td><s:textfield id="mobileField" theme="simple" name="mobile"/>  </td>
+
+		<td class="tdstyle"><s:label class="selectWidth" for="emailField" theme="simple" id="emailLabel" value="%{getText('email')}"/></td>
+		<td><s:textfield id="emailField" theme="simple" name="email"/>  </td>
+	</tr><tr><td></td></tr>										
+	
+	<tr>
+		<th width="15px" class="tdstyle"><u><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" style="color:#0000AA;"/></u></th>
 	</tr>
+
 	<tr>
-		<td> <font class="requiredFont">  </font> <%=Cast%></td>
-		<td><s:textfield class="selectWidth" id="castField" theme="simple" name="cast"/>  </td>
-	</tr>		
+		<td class="tdstyle"><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /></td>
+		<td><s:textfield id="houseNoField" name="houseNo" maxlength="25" /></td>
+		<td class="tdstyle"><s:label for="streetField" id="streetLabel" value="%{getText('street')}" /></td>
+		<td><s:textfield id="streetField" name="streetName" maxlength="100"  /></td>
+			</tr>
 	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=STATE%></td>
-		<td><select id="stateId" name="state" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getDistricts','STATE')" /></td>
+		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+		<td ><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField','currentAdd')"></s:select></td>
+
+		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
+		<td><s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField','currentAdd')" headerKey="0" headerValue="Select District"></s:select>
 	</tr>
+	
 	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=DISTRICT%></td>
-		<td><select id="districtField" name="district" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getConstituencies','DISTRICT')" /></td>
-	</tr>	
-	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=CONSTITUENCY%></td>
-		<td><select id="constituencyField" name="constituency" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getMandals','CONSTIUENCY')" /></td>
+		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
+		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd')" headerKey="0" headerValue="Select Constituency"></s:select></td>
+	
+		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}"/><font class="required"> * </font></td>
+		<td><s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>
+	
 	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=MANDAL%></td>
-		<td><select id="mandalField" name="mandal" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getTowhships','TEHSIL')" /></td>
+ 		<td class="tdstyle" width="100px"><s:label for="wardOrHamlet" id="wardOrHamletLabel"  value="%{getText('wardOrHamlet')}" /><font class="required"> * </font></td>
+		<td><s:select id="villageField" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'getVillages','REVENUE VILLAGE / TOWN')" headerKey="0" headerValue="Select Village"></s:select></td>
+		
+		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="%{getText('pincode')}" /></td>
+		<td><s:textfield id="pinCodeField" name="pincode" maxlength="10"/></td>
 	</tr>
+	</table>
+</FIELDSET>
+<FIELDSET>
+	<LEGEND style="font-size:12px;"><strong>Influence Details</strong></LEGEND>
+	<table class="registrationTable" width="100%">	
 	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=VILLAGE%></td>
-		<td><select id="villageField" name="village" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getVillages','REVENUE VILLAGE / TOWN')" /></td>
-	</tr>
-	<tr>
-		<td> <font class="requiredFont"> <b style="color:red">*</b>  </font><s:label for="hamlet" theme="simple" id="hamletLabel"  value="%{getText('hamlet')}" /></td>
-		<td><select id="hamletField" name="hamlet" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getHamletIdAndRange','HAMLET')"/></td>
-	</tr>
-	<tr>
-		<td width="100px;"> <font class="requiredFont">  </font> <%=Party%> </td>
+		<td class="tdstyle" width="88px"><s:label for="occupationField" id="occupationLabel"  value="%{getText('occupation')}" /><font class="required"> * </font></td>
+		<td><s:select id="occupationField" cssClass="regionSelect" name="occupation"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
+		
+	
+		<td class="tdstyle" width="110px"><s:label for="partyField" id="partyLabel"  value="%{getText('party')}"/></td>
 		<td align="left">
 			 <select id="party" name="party" class="selectWidth">
 				<c:forEach var="parties" items="${sessionScope.staticParties}">
@@ -275,20 +354,30 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 				</c:forEach>
 			</select> 
 		 </td>
-	</tr>
+
+	</tr>	
+ </table>
+
+<table class="registrationTable" width="100%">
 	<tr>
-		<td width="100px;"> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=Position%> </td>
-		<td align="left"> 
-			<select id="position" name="position" class="selectWidth">
+		<td class="tdstyle" width="120px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="required"> * </font></td>
+		<td class="tdstyle" style="padding-left: 10px;">
+
+		<s:radio id="socialStatusField" name="cast" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio></td></tr>
+</table>
+
+<table class="registrationTable" width="100%">
+	<tr>
+		
+		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /></td>		
+		<td><select id="position" name="position" class="selectWidth">
 				<c:forEach var="positions" items="${sessionScope.positionsList}">
 					<option value='${positions.id}'>${positions.name}</option>
 				</c:forEach>
 			</select> 
 		</td>
-		<td><div id="specifyPosition"></div></td>
-	</tr>					
-	<tr>
-		<td width="100px;"> <font class="requiredFont"> <b style="color:red">*</b>  </font><%=InfluenceRange%> </td>
+		
+		<td width="120px" class="tdstyle"><%=InfluenceRange%><font class="required"> * </font></td>
 		<td align="left"> 
 			<select id="effectedRange" name="influenceRange" class="selectWidth" onchange="influenceRangeFunction(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">
 				<option value="">Select Range</option>
@@ -301,14 +390,16 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td><div id="specifyInfluenceRange"></div></td>
 	</tr>									
 </table>
-				<div id="saveDiv" align="center">
-					<s:submit cssClass="button" value="Save" name="Save"></s:submit>
-				</div>
-			</s:form>
+</FIELDSET> 
 
-			<div id="successMsg"></div>
-		</div>	
-	</div>		 
+<div id="saveDiv" align="center">
+	<s:submit cssClass="button" value="ADD" name="Save"></s:submit>
+</div>
+</s:form>
+
+<div id="successMsg"></div> 
+</div>	
+</div>		 
 </div>		
 </body>
 </html>
