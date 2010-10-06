@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
@@ -35,7 +37,11 @@ public class InfluencingPeople extends BaseModel{
 	private String gender;
 	private String email;
 	private InfluencingPeoplePosition influencingPeoplePosition;
+	private UserAddress userAddress;
+	private String middleName;
+	private String fatherOrSpouseName;
 	private Hamlet hamlet;
+	
 	
 	public InfluencingPeople(){
 		
@@ -48,7 +54,7 @@ public class InfluencingPeople extends BaseModel{
 	public InfluencingPeople(String firstName,
 			String lastName, String influencingScope,
 			Party party, String caste, String occupation, String phoneNo,
-			InfluencingPeoplePosition influencingPeoplePosition, Hamlet hamlet,String gender,String email) {
+			InfluencingPeoplePosition influencingPeoplePosition,String gender,String email, Hamlet hamlet,UserAddress userAddress) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.influencingScope = influencingScope;
@@ -57,6 +63,7 @@ public class InfluencingPeople extends BaseModel{
 		this.occupation = occupation;
 		this.phoneNo = phoneNo;
 		this.influencingPeoplePosition = influencingPeoplePosition;
+		this.userAddress = userAddress;
 		this.hamlet = hamlet;
 	}
 
@@ -168,6 +175,44 @@ public class InfluencingPeople extends BaseModel{
 		this.influencingPeoplePosition = influencingPeoplePosition;
 	}
 
+	@Column(name = "influencing_scope_value", length = 250)
+	public String getInfluencingScopeValue() {
+		return influencingScopeValue;
+	}
+
+	public void setInfluencingScopeValue(String influencingScopeValue) {
+		this.influencingScopeValue = influencingScopeValue;
+	}
+
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
+
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_address_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+
+	@Column(name = "father_or_spouse_name", length = 25)
+	public String getFatherOrSpouseName() {
+		return fatherOrSpouseName;
+	}
+
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.fatherOrSpouseName = fatherOrSpouseName;
+	}
+	@Column(name = "middle_name", length = 25)
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hamlet_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -179,14 +224,6 @@ public class InfluencingPeople extends BaseModel{
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
 	}
-
-	@Column(name = "influencing_scope_value", length = 250)
-	public String getInfluencingScopeValue() {
-		return influencingScopeValue;
-	}
-
-	public void setInfluencingScopeValue(String influencingScopeValue) {
-		this.influencingScopeValue = influencingScopeValue;
-	}
+	
 
 }
