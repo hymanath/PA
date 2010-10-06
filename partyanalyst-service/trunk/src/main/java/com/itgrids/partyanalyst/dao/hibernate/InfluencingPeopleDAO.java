@@ -23,4 +23,25 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("from InfluencingPeople model where model.hamlet.township.tehsil.tehsilId in ("+tehsilIds+")");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeople> findByStateId(Long stateId){
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.state.stateId = ?",stateId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeople> findByDistrictId(Long districtId){
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.district.districtId = ?",districtId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeople> findByConstituencyId(Long constituencyId){
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.constituency.constituencyId = ?",constituencyId);
+	}
+	
+	
+	
+	
+	
+	
+	
 }
