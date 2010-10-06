@@ -76,8 +76,8 @@
 
 #alliancePartiesCarousel .yui-carousel-element li
 {
-	height:350px;
-	width:710px;
+	height:400px;
+	width:580px;
 }
 
 #alliancePartiesCarousel .yui-carousel-item-selected 
@@ -128,7 +128,7 @@
 #mandalsDiv_main,#delimitMandalsDiv_main,#newConstDiv_main
 {
 	text-align:left;
-	width:190px;
+	width:315px;
 }
 
 #mandalsDiv_body
@@ -136,9 +136,9 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:182px;
+	width:313px;
 	overflow:auto;
-	height:450px;
+	height:100px;
 }
 
 #districtPageRoundedFooter_center
@@ -160,8 +160,8 @@
 
 #delimitMandalsDiv_main
 {
-	margin-top:30px;
-	margin-bottom:30px;
+	margin-top:10px;
+	margin-bottom:10px;
 }
 
 
@@ -170,9 +170,9 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:188px;
+	width:312px;
 	overflow:auto;
-	height:150px;
+	height:100px;
 }
 
 #newConstDiv_body
@@ -180,9 +180,9 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:188px;
+	width:312px;
 	overflow:auto;
-	height:125px;
+	height:100px;
 }
 
 #stateCensusDiv_body
@@ -195,7 +195,7 @@
 
 #districtMap
 {
-	width:100%px;
+	height:500px;
 }
 
 #partiesPerformanceGraphDistrict

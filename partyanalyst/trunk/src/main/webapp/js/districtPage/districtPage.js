@@ -6,15 +6,16 @@ var districtPageMainObj = {
 
 var districtMlas = new Array();
 var districtMps = new Array();
+var problemsInfo = new Array();
 
 function buildDistrictPageLayout()
 {
 	var cadreReportPageLayout = new YAHOO.widget.Layout('districtPageLayout_main', { 
-	height:950,
+	height:1000,
 	units: [
 			{ 
 				position: 'right', 
-				width: 220,
+				width: 350,
 				header:false,
 				body: 'districtPageLayout_right',
 				resize: false,
@@ -61,7 +62,7 @@ function buildMandalsListCarousel()
 function buildDistrictLatestNews()
 {	
 	var options = {
-    "format" : "800x90",
+    "format" : "300x250",
 	"queryList" : [
           {
             "title" : districtName,
@@ -71,7 +72,7 @@ function buildDistrictLatestNews()
 	"linkTarget" : "_blank"
   }
 
-  var content = document.getElementById('districtNewsDiv');
+  var content = document.getElementById('district_Politician_news');
   var newsShow = new google.elements.NewsShow(content, options);
 }
 
@@ -102,10 +103,51 @@ function buildDistrictLeadersNews()
   var newsShow = new google.elements.NewsShow(content, options);
 }
 
+function buildDistrictLevelProblemWindow()
+{
+	
+	var headElmt = document.getElementById('problemViewingDiv_Head');
+	var bodyElmt = document.getElementById('problemViewingDiv_Body');
+	
+	
+
+	var str='';
+	str+='<fieldset id="problemViewingFieldSet" style="width:292px">';
+	str+='<legend> View Your constituency Problems</legend>';
+	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+
+	if(problemsInfo.length == 0)
+	{
+		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
+		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span> No problems has been posted </span>';
+		str+='</div>';
+	}
+	else
+	{
+		for(var i in problemsInfo)
+		{
+			var data = problemsInfo[i];			
+			str+='<div class="problemDataDivClass">';
+			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='<span> '+data.problem+' </span>';
+			str+='</div>';
+			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
+		}
+	}
+	
+	str+='</marquee>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+}
+
 function initializeDistrictPage()
 {
 	buildDistrictPageLayout();
 	buildDistrictLatestNews();
-	buildDistrictLeadersNews();
-	//buildMandalsListCarousel();
+	buildDistrictLevelProblemWindow();
 }
