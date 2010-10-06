@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.eclipse.jdt.core.dom.ThisExpression;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -24,8 +25,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
-	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
-						constituency,mandal,village,hamlet,party,position,influencingRange;
+	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
+						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet;
 	private int resultStatus = 3;
 	
 	public int getResultStatus() {
@@ -152,7 +153,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.mandal = mandal;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Village",shortCircuit=true)
 	public String getVillage() {
 		return village;
 	}
@@ -161,7 +161,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.village = village;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Hamlet",shortCircuit=true)
 	public String getHamlet() {
 		return hamlet;
 	}
@@ -196,27 +195,88 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.influencingRange = influencingRange;
 	}
 
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Father or SpouseName",shortCircuit=true)
+	public String getFatherOrSpouseName() {
+		return fatherOrSpouseName;
+	}
+
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.fatherOrSpouseName = fatherOrSpouseName;
+	}
+
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Ward or Hamlet",shortCircuit=true)
+	public String getWardOrHamlet() {
+		return wardOrHamlet;
+	}
+
+	public void setWardOrHamlet(String wardOrHamlet) {
+		this.wardOrHamlet = wardOrHamlet;
+	}
+
 	public String execute() throws Exception{
+		
 		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
-		influencingPeopleBeanVO.setFirstName(firstName);
-		influencingPeopleBeanVO.setLastName(lastName);
-		influencingPeopleBeanVO.setEmail(email);
-		influencingPeopleBeanVO.setMobile(mobile);
+		influencingPeopleBeanVO.setFirstName(getFirstName().trim());
+		influencingPeopleBeanVO.setLastName(getLastName().trim());
+		influencingPeopleBeanVO.setEmail(getEmail().trim());
+		influencingPeopleBeanVO.setMobile(getMobile().trim());
 		influencingPeopleBeanVO.setGender(gender);
 		influencingPeopleBeanVO.setOccupation(occupation);
 		influencingPeopleBeanVO.setCast(cast);
 		influencingPeopleBeanVO.setParty(party);
 		influencingPeopleBeanVO.setInfluencingRange(influencingRange);
 		influencingPeopleBeanVO.setPosition(position);
-		influencingPeopleBeanVO.setHamlet(hamlet);
+		influencingPeopleBeanVO.setState(getState());
+		influencingPeopleBeanVO.setDistrict(getDistrict());
+		influencingPeopleBeanVO.setConstituency(getConstituency());
+		influencingPeopleBeanVO.setMandal(getMandal());
+		influencingPeopleBeanVO.setWardOrHamlet(getWardOrHamlet());
+		influencingPeopleBeanVO.setMiddleName(getMiddleName().trim());
+		influencingPeopleBeanVO.setFatherOrSpouseName(getFatherOrSpouseName().trim());
+		influencingPeopleBeanVO.setHouseNo(getHouseNo().trim());
+		influencingPeopleBeanVO.setStreetName(getStreetName().trim());
+		influencingPeopleBeanVO.setPincode(getPincode().trim());
+		
+				
 		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
 		try{
 			influRangeAndValueMap.put(IConstants.STATE_LEVEL, new Long(state));
 			influRangeAndValueMap.put(IConstants.DISTRICT_LEVEL, new Long(district));
 			influRangeAndValueMap.put(IConstants.CONSTITUENCY_LEVEL, new Long(constituency));
 			influRangeAndValueMap.put(IConstants.TEHSIL_LEVEL, new Long(mandal));
-			influRangeAndValueMap.put(IConstants.REVENUE_VILLAGE_LEVEL, new Long(village));
-			influRangeAndValueMap.put(IConstants.HAMLET_LEVEL,new Long(hamlet));	
+			influRangeAndValueMap.put(IConstants.HAMLET_LEVEL,new Long(wardOrHamlet));	
 		}catch(Exception ex){
 			ex.printStackTrace();
 			return ERROR;
