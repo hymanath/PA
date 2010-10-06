@@ -593,7 +593,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			if(electionScope != null){
 				electionYears = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
 			}
-			electionYears.add(0,new SelectOptionVO(0L,"Select Party"));
+			electionYears.add(0,new SelectOptionVO(0L,"Select Year"));
 			  
 						
 		}
