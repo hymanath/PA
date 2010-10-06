@@ -59,6 +59,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 	private LocalElectionBody localElectionBody;
 	private Set<BoothConstituencyElection> boothConstituencyElections;
+	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
+	private Set<UserAddress> ward = new HashSet<UserAddress>(0);
 	// Constructors
 
 	/** default constructor */
@@ -275,7 +277,27 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.areaType = areaType;
 	}
 
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserAddress> getUserAddress() {
+		return userAddress;
+	}
 
+	
+	public void setUserAddress(Set<UserAddress> userAddress) {
+		this.userAddress = userAddress;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserAddress> getWard() {
+		return ward;
+	}
+
+	public void setWard(Set<UserAddress> ward) {
+		this.ward = ward;
+	}
+
+	
 
 }
