@@ -7,7 +7,8 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private static final long serialVersionUID = 1L;
 	
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
-	constituency,mandal,village,hamlet,party,position,influencingRange;
+	constituency,mandal,village,hamlet,party,position,influencingRange,middleName,
+	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward;
 	private ResultStatus resultStatus;
 	
 	public ResultStatus getResultStatus() {
@@ -144,6 +145,62 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setInfluencingRange(String influencingRange) {
 		this.influencingRange = influencingRange;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getFatherOrSpouseName() {
+		return fatherOrSpouseName;
+	}
+
+	public void setFatherOrSpouseName(String fatherOrSpouseName) {
+		this.fatherOrSpouseName = fatherOrSpouseName;
+	}
+
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getWardOrHamlet() {
+		return wardOrHamlet;
+	}
+
+	public void setWardOrHamlet(String wardOrHamlet) {
+		this.wardOrHamlet = wardOrHamlet;
+	}
+
+	public String getWard() {
+		return ward;
+	}
+
+	public void setWard(String ward) {
+		this.ward = ward;
 	}
 	
 	
