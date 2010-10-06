@@ -28,10 +28,12 @@ import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
@@ -77,7 +79,23 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String mptcElectionType,zptcElectionType,muncipalityElectionType,corporationElectionType;
 	private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
 	private NavigationVO navigationVO;
+	private List<ProblemBeanVO> problemBean;
+	private IProblemManagementReportService problemManagementReportService;
 	
+		
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+	public List<ProblemBeanVO> getProblemBean() {
+		return problemBean;
+	}
+	public void setProblemBean(List<ProblemBeanVO> problemBean) {
+		this.problemBean = problemBean;
+	}
 	public Long getMptcElectionTypeId() {
 		return mptcElectionTypeId;
 	}
@@ -412,6 +430,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		log.debug("District Id = "+districtId+" & District Name = "+districtName);
 		
 		navigationVO = staticDataService.findHirarchiForNavigation(new Long(districtId), IConstants.DISTRICT_LEVEL);
+		
+		List<Long> listOfDistricts = new ArrayList<Long>();
+		listOfDistricts.add(Long.parseLong(districtId));
+		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfDistricts,IConstants.DISTRICT_LEVEL).getApprovalProblems();
 		
 		return Action.SUCCESS;
 	

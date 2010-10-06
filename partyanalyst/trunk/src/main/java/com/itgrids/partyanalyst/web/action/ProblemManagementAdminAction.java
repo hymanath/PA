@@ -223,8 +223,8 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				}
 				
 				else if(jObj.getString("task").equals("selectedDate")){
-					Date currentDate = dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY);
-					result = problemManagementReportService.getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(currentDate,IConstants.NEW,IConstants.FALSE);
+					Date selectedDate = dateService.convertStringToDate(jObj.getString("selectedDate"),IConstants.DATE_PATTERN);
+					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,IConstants.FALSE);
 				}
 				
 				else if(jObj.getString("task").equals("performDeletionOrAcceptenceProblems")){	

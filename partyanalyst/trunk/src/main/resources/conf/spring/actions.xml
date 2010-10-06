@@ -113,6 +113,7 @@
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="problemManagementReportService" ref="problemManagementReportService" />
 	</bean>			
 
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
