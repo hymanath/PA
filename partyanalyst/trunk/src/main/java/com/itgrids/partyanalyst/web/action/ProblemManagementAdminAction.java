@@ -43,12 +43,27 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	
 	private String fromDate;
 	private String toDate;
-	
+	private String problemsInAWeekGraphDataAvailability,problemsForCurrentDayGraphDataAvailability; 
 	private NavigationVO allProblemsCount,currentDayProblemsCount,result ;
 	private String chartNameForAllProblemsCount,chartNameForCurrentDayProblemsCount;
 	private IProblemManagementReportService problemManagementReportService;
 	private IDateService dateService;
 	
+	
+	public String getProblemsInAWeekGraphDataAvailability() {
+		return problemsInAWeekGraphDataAvailability;
+	}
+	public void setProblemsInAWeekGraphDataAvailability(
+			String problemsInAWeekGraphDataAvailability) {
+		this.problemsInAWeekGraphDataAvailability = problemsInAWeekGraphDataAvailability;
+	}
+	public String getProblemsForCurrentDayGraphDataAvailability() {
+		return problemsForCurrentDayGraphDataAvailability;
+	}
+	public void setProblemsForCurrentDayGraphDataAvailability(
+			String problemsForCurrentDayGraphDataAvailability) {
+		this.problemsForCurrentDayGraphDataAvailability = problemsForCurrentDayGraphDataAvailability;
+	}
 	public String getChartNameForAllProblemsCount() {
 		return chartNameForAllProblemsCount;
 	}
@@ -166,7 +181,10 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 					 chartNameForAllProblemsCount = "lastOneWeekProblemsGraph.png";
 			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
 					 ChartProducer.create3DBarChart("Problems for the past 7 days", "Range",createDataset(allProblemsCount.getProblemsCount()), chartPath);
-				 }
+					 problemsInAWeekGraphDataAvailability = "dataAvailable";
+				 }				
+			 }else{
+				 problemsInAWeekGraphDataAvailability = "dataUnAvailable";
 			 }
 			 
 			 currentDayProblemsCount = problemManagementReportService.getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(currentDate,IConstants.NEW,IConstants.FALSE);
@@ -175,7 +193,10 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 					 chartNameForAllProblemsCount = "allUnApprovedProblemsTillDayGraph.png";
 			         String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
 					 ChartProducer.create3DBarChart("All Non-Approved Problems By Location Wise ", "Range",createDataset(currentDayProblemsCount.getProblemsCount()), chartPath);
+					 problemsForCurrentDayGraphDataAvailability = "dataAvailable";
 				 }
+			 }else{
+				 problemsForCurrentDayGraphDataAvailability = "dataUnAvailable";
 			 }
  		}
 		return SUCCESS;
@@ -207,22 +228,15 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				}
 				
 				else if(jObj.getString("task").equals("performDeletionOrAcceptenceProblems")){	
-					
-					if(jObj.get("choice").equals("accept")){
-						JSONArray selectedProblemIds = jObj.getJSONArray("selectedProblems");
-						Integer problemIds[] = new Integer[selectedProblemIds.length()];					
-						for(int i=0; i<selectedProblemIds.length(); i++){
-							problemIds[i] = (Integer)selectedProblemIds.get(i);
-						}
-						problemManagementReportService.acceptSelectedProblemsByAdmin(problemIds);
+					JSONArray selectedProblemIds = jObj.getJSONArray("selectedProblemHistoryIds");
+					Integer problemIds[] = new Integer[selectedProblemIds.length()];					
+					for(int i=0; i<selectedProblemIds.length(); i++){
+						problemIds[i] = (Integer)selectedProblemIds.get(i);
 					}
-					
-					else{
-						JSONArray selectedProblemIds = jObj.getJSONArray("selectedProblemHistoryIds");
-						Integer problemIds[] = new Integer[selectedProblemIds.length()];					
-						for(int i=0; i<selectedProblemIds.length(); i++){
-							problemIds[i] = (Integer)selectedProblemIds.get(i);
-						}
+					if(jObj.get("choice").equals("accept")){						
+						problemManagementReportService.acceptSelectedProblemsByAdmin(problemIds);
+					}			
+					else{						
 						problemManagementReportService.deleteSelectedProblemsByAdmin(problemIds);
 					}
 					

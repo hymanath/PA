@@ -95,7 +95,6 @@
 		%> }
 	var newProbDataTable;
 	var recordsArray = new Array();
-	var selectedProblemIdsArray = new Array();
 	var selectedProblemHistoryIdsArray = new Array();	
 		function callAjax(param,jsObj,url){
 			
@@ -107,7 +106,6 @@
 							results = YAHOO.lang.JSON.parse(o.responseText);		
 							if(jsObj.task == "performDeletionOrAcceptenceProblems"){
 								selectedProblemHistoryIdsArray = "" ;
-								selectedProblemIdsArray = "";
 								getAllProblems();	
 							} else if(jsObj.task == "currentDate" || jsObj.task == "betweenDates"){
 								buildNewProblemsDataTable(results.approvalProblems);
@@ -212,8 +210,7 @@
 					  	    					  	        
 					  	   	if(newValue && hasRecordInArray(record))
 					  	  	{
-						  	  	recordsArray.push(record);					  	    
-						  	  	console.log(recordsArray);					  	  	
+						  	  	recordsArray.push(record);					  	  	
 					  	  	}else
 							{
 								deleteRecordFromArray(record);
@@ -246,28 +243,27 @@
 			return status;
 		} 
 
-		function getSelectedRecords()
+		function getSelectedRecords(value)
 		{
-			for(var i in recordsArray)
-			{
-				selectedProblemIdsArray.push(recordsArray[i]._oData.problemId);	
-				console.log(recordsArray[i]._oData.problemHistoryId);
-				selectedProblemHistoryIdsArray.push(recordsArray[i]._oData.problemHistoryId);			
-			}
-			var selectedChoice = document.getElementById("dropDownSelect").value;
-			if(selectedChoice!="select"){
-				var jsObj=
-				{		
-						choice : selectedChoice,			
-						selectedProblems:selectedProblemIdsArray,
-						selectedProblemHistoryIds:selectedProblemHistoryIdsArray,
-						task:"performDeletionOrAcceptenceProblems"						
-				};
-			
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
-				callAjax(rparam,jsObj,url);					
-			}
+			if(value!="select"){
+				for(var i in recordsArray)
+				{
+					selectedProblemHistoryIdsArray.push(recordsArray[i]._oData.problemHistoryId);			
+				}
+				var selectedChoice = document.getElementById("dropDownSelect").value;
+				if(selectedChoice!="select"){
+					var jsObj=
+					{		
+							choice : selectedChoice,			
+							selectedProblemHistoryIds:selectedProblemHistoryIdsArray,
+							task:"performDeletionOrAcceptenceProblems"						
+					};
+				
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "<%=request.getContextPath()%>/getAllProblems.action?"+rparam;					
+					callAjax(rparam,jsObj,url);					
+				}
+			}			
 		}	
 
 		function selectAndDeSelectAdvancedSearch()
@@ -309,12 +305,16 @@
 <div id="chartsDiv">
 	<table>
 		<tr>
-			<td style="align:left;padding-left:0px;padding-right:30px;">
-				<img src="charts/lastOneWeekProblemsGraph.png"></img>
-			</td>
-			<td>
-				<img src="charts/allUnApprovedProblemsTillDayGraph.png"></img>
-			</td>
+			<c:if test="${problemsInAWeekGraphDataAvailability == 'dataAvailable'}">
+				<td style="align:left;padding-left:0px;padding-right:30px;">			
+					<img src="charts/lastOneWeekProblemsGraph.png"></img>				
+				</td>
+			</c:if>
+			<c:if test="${problemsForCurrentDayGraphDataAvailability == 'dataAvailable'}">
+				<td>
+					<img src="charts/allUnApprovedProblemsTillDayGraph.png"></img>
+				</td>
+			</c:if>
 		</tr>
 	</table>	
 </div>
@@ -414,7 +414,7 @@
 	<tr>
 		<td>
 			<div id="dropDownSelectDiv" style="display:none;font-family:verdana;font-weight:bold;">Select an Operation
-				<select id="dropDownSelect" onchange="getSelectedRecords()">
+				<select id="dropDownSelect" onchange="getSelectedRecords(this.options[this.selectedIndex].text)">
 					<option value="select">Select</option>
 					<option value="delete">Delete</option>
 					<option value="accept">Accept</option>
