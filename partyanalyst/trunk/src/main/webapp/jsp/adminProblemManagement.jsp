@@ -168,7 +168,7 @@
 		
 		function buildNewProblemsDataTable(results)
 		{	
-			document.getElementById("dropDownSelectDiv").style.display = 'block';
+			document.getElementById("approvalDiv").style.display = 'block';
 			
 			var myColumnDefs = [ 
 		            {key:"select", label: "<%=select%>", formatter:"checkbox"},
@@ -245,12 +245,15 @@
 
 		function getSelectedRecords(value)
 		{
+			selectedProblemHistoryIdsArray=new Array();
+			selectedChoice = value;
+			
 			if(value!="select"){
 				for(var i in recordsArray)
 				{
 					selectedProblemHistoryIdsArray.push(recordsArray[i]._oData.problemHistoryId);			
 				}
-				var selectedChoice = document.getElementById("dropDownSelect").value;
+				//var selectedChoice = document.getElementById("dropDownSelect").value;
 				if(selectedChoice!="select"){
 					var jsObj=
 					{		
@@ -280,7 +283,7 @@
 <body>
 
 <div class="detailsHead">
-	 Problem Management
+	 <u>Problem Management Admin Control</u>
 </div>
 
 <table>	
@@ -323,11 +326,11 @@
 	<table>
 		<tr>
 			<td style="font-family:verdana;font-weight:bold;">
-				<input type="checkbox" onclick="getAllProblems()"> All Problems Posted For Today </input>
+				<input type="checkbox" onclick="getAllProblems()" checked="true"> All Problems Posted For Today </input>
 			</td>		
 			<td style="padding-left:450px">
-				<div id="advancedSearchDiv" class="linkButton" >
-					<a href="javascript:{}" onclick="selectAndDeSelectAdvancedSearch()" style="text-decoration: none">Advanced Search</a>
+				<div id="advancedSearchDiv" class="button">
+					<a href="javascript:{}" onclick="selectAndDeSelectAdvancedSearch()" style="text-decoration: none;color:white;">Advanced Search</a>
 				</div>	
 			</td>
 		</tr>	
@@ -335,10 +338,11 @@
 </div>
 
 <div class="yui-skin-sam">
-<div id="betweenDatesDiv" style="display:none">
+<div id="betweenDatesDiv" style="display:block;">
 <table>
+	
 	<tr>
-		<td style="padding-left:22px;">
+		<td style="padding-left:22px;"><h4>Select To View Problems Posted In Between Dates</h4>
 			<fieldset>
 			<legend style="font-family:arial,helvetica,clean,sans-serif;">Between Dates</legend>
 			<table>
@@ -360,22 +364,27 @@
 					<td valign="top">
 						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
 					</td>
+
+					<td><input type="button" value="view" onclick="getAllProblemsBetweenDates()"></input></td>
 				</tr>
 			</table>
 			</fieldset>	
 
-				<div id="saveDiv" align="center">
+				<!--<div id="saveDiv" align="center">
 					<table>
 					<tr>
 						<td><input type="button" value="view" onclick="getAllProblemsBetweenDates()"></input></td>
 					</tr>
 					</table>
-				</div>
+				</div>-->
 			</td>
 		
 			<td style="padding-left:55px;">
 				<div id="betweenDatesDiv">
 					<table>
+					<tr>
+					   <td><h4>Select To View Problems Posted On A Particular Date</h4></td>
+					</tr>
 						<tr>
 							<td>
 								<fieldset>
@@ -389,18 +398,20 @@
 										</td>					
 										<td valign="top">
 											<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('selectedDateDiv','selectedDate','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
-										</td>				
+										</td>		
+										
+										<td><input type="button" value="view" onclick="getAllProblemsForParticularDate()"></input></td>
 									</tr>
 								</table>
 								</fieldset>	
 					
-									<div id="saveDiv" align="center">
+									<!-- <div id="saveDiv" align="center">
 										<table>
 										<tr>
 											<td><input type="button" value="view" onclick="getAllProblemsForParticularDate()"></input></td>
 										</tr>
 										</table>
-									</div>
+									</div>-->
 								</td>
 							</tr>
 						</table>
@@ -413,21 +424,29 @@
 <table>
 	<tr>
 		<td>
-			<div id="dropDownSelectDiv" style="display:none;font-family:verdana;font-weight:bold;">Select an Operation
+			<!--<div id="dropDownSelectDiv" style="display:none;font-family:verdana;font-weight:bold;">Select an Operation
 				<select id="dropDownSelect" onchange="getSelectedRecords(this.options[this.selectedIndex].text)">
 					<option value="select">Select</option>
 					<option value="delete">Delete</option>
 					<option value="accept">Accept</option>
 				</select>
+			</div>-->
+			<div id="approvalDiv" style="display:none;">
+			  <input type="button" value="Approve" onclick="getSelectedRecords('accept')"></input>
+			  <input type="button" value="Reject" onclick="getSelectedRecords('delete')"></input>
 			</div>
+
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<div id="problsDataTable"></div>	
+			<div id="problsDataTable" style="width:800px;"></div>	
 		</td>
 	</tr>
 </table>	
 </div>
+<script type="text/javascript">
+getAllProblems();
+</script>
 </body>
 </html>
