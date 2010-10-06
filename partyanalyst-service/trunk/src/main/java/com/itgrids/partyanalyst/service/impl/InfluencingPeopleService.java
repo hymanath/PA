@@ -17,8 +17,15 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
@@ -28,15 +35,23 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
 	private IPartyDAO partyDAO;
+	private ICountryDAO countryDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
 	private IHamletDAO hamletDAO;
 	private InfluencingPeopleDAO influencingPeopleDAO;
 	private InfluencingPeoplePositionDAO influencingPeoplePositionDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IUserAddressDAO userAddressDAO;
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
 	private TransactionTemplate transactionTemplate = null;
 	private InfluencingPeopleVO influencingPeopleVO;
@@ -80,6 +95,64 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}
+
+	
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public Long saveInfluencePeople(InfluencingPeopleVO infPeopleVO){
@@ -235,23 +308,52 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		InfluencingPeopleBeanVO obj = (InfluencingPeopleBeanVO)transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
 				InfluencingPeople influencingPeople = new InfluencingPeople();
+				UserAddress userAddress = new UserAddress();
 				InfluencingPeopleBeanVO influencingPeopleVO = new InfluencingPeopleBeanVO();
 				ResultStatus resultStatus = new ResultStatus();
 				try{
 					influencingPeople.setFirstName(influencingPeopleBeanVO.getFirstName());
 					influencingPeople.setLastName(influencingPeopleBeanVO.getLastName());
+					influencingPeople.setMiddleName(influencingPeopleBeanVO.getMiddleName());
+					influencingPeople.setFatherOrSpouseName(influencingPeopleBeanVO.getFatherOrSpouseName());
+					influencingPeople.setGender(influencingPeopleBeanVO.getGender());
+					
+					influencingPeople.setPhoneNo(influencingPeopleBeanVO.getMobile());
+					influencingPeople.setEmail(influencingPeopleBeanVO.getEmail());
 					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
 					influencingPeople.setInfluencingScopeValue(influRangeAndValueMap.get(influencingPeopleBeanVO.getInfluencingRange()).toString());
 					influencingPeople.setParty(partyDAO.get(new Long(influencingPeopleBeanVO.getParty())));
 					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
 					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
-					influencingPeople.setPhoneNo(influencingPeopleBeanVO.getMobile());
-					influencingPeople.setGender(influencingPeopleBeanVO.getGender());
-					influencingPeople.setEmail(influencingPeopleBeanVO.getEmail());
 					influencingPeople.setInfluencingPeoplePosition(influencingPeoplePositionDAO.get(new Long(influencingPeopleBeanVO.getPosition())));
-					influencingPeople.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getHamlet())));
+					
+					userAddress.setCountry(countryDAO.get(new Long(1L)));
+					userAddress.setState(stateDAO.get(new Long(influencingPeopleBeanVO.getState())));
+					userAddress.setDistrict(districtDAO.get(new Long(influencingPeopleBeanVO.getDistrict())));
+					userAddress.setConstituency(constituencyDAO.get(new Long(influencingPeopleBeanVO.getConstituency())));
+					userAddress.setHouseNo(influencingPeopleBeanVO.getHouseNo());
+					userAddress.setStreet(influencingPeopleBeanVO.getStreetName());
+					userAddress.setPinCode(influencingPeopleBeanVO.getPincode());
+					
+					if (IConstants.URBAN_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
+					{
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(influencingPeopleBeanVO.getMandal().substring(1))));
+						userAddress.setWard(constituencyDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
+					}
+					
+					if (IConstants.RURAL_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
+					{
+						userAddress.setTehsil(tehsilDAO.get(new Long(influencingPeopleBeanVO.getMandal().substring(1))));
+						userAddress.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
+						influencingPeople.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
+					}
+										
+					userAddress = userAddressDAO.save(userAddress);
+					
+					influencingPeople.setUserAddress(userAddress);
 					
 					influencingPeople = influencingPeopleDAO.save(influencingPeople);
+					
 					influencingPeopleVO.setFirstName(influencingPeople.getFirstName());
 					influencingPeopleVO.setLastName(influencingPeople.getLastName());
 					
@@ -270,3 +372,4 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		return obj;
 	}		
 }
+
