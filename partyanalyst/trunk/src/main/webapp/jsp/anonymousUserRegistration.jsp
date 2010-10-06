@@ -65,11 +65,25 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 <script type="text/javascript">
 
 </script>
-
+<style type="text/css">
+    fieldset {
+		border:2px solid #CFD6DF;
+		margin-bottom:10px;
+		padding:10px;
+		width:300px;
+	}
+	legend {
+		background-color:#567AAF;
+		color:#FFFFFF;
+		font-size:10px;
+		padding:5px;
+	}
+</style>
 </head>  
 <body>  
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple">  
-    <h2>User Registration Form</h2> 
+   <br><br>
+  <div id="headerDiv" style="margin-right: 500px;font-size:20px;text-decoration:underline;" > User Registration Form </div>
  <div id="registrationMainDiv">
 		<table class="registrationTable">
 			<tr>
@@ -81,9 +95,10 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 				</td>
 			</tr>
 		</table>
-
+		 <br>
+        <FIELDSET>
+		<LEGEND><strong>Account Details</strong></LEGEND>
 		 <div id="loginDetailsDiv" class="accessDivMain">
-			<div id="loginDetailsDivHead" class="accessDivHead"><u>Login Details...</u></div>
 			<div id="loginDetailsDivBody" class="accessDivBody">
 				<table class="registrationTable">
 					<tr>
@@ -97,11 +112,12 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 				</table>
 			</div>
 		 </div>
-
+         </FIELDSET>
+		 <FIELDSET>
+		 <LEGEND><strong>Personal Details</strong></LEGEND>
 		 <div id="personalDetailsDiv" class="accessDivMain">
-			 <div id="personalDetailsDivHead" class="accessDivHead"><u>Personal Details...</u></div>
 			 <div id="personalDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">
+				<table class="registrationTable" cellspacing="2" cellpadding="2">
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('name')}" /></td>
 						<td><s:textfield id="nameField" name="fname"/>  </td>
@@ -119,15 +135,14 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 							<s:select name="year" id="dobYear" list="#session.dobYear" listKey="id" listValue="name"></s:select>							
 						 </td>
 					</tr>
-					
-					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
-						<td><s:textfield id="emailField" name="email"/>  </td>
-					</tr>
-					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
-					</tr>
+				  </table>
+				</div>
+				</FIELDSET>
+				<FIELDSET>
+				<LEGEND><strong>Contact Details</strong></LEGEND>
+				<div id="contactDetailsDiv" class="accessDivMain">
+					<table class="registrationTable" cellspacing="2" cellpadding="2">
+									
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
 						<td><s:textfield id="mobileField" name="mobile"/>  </td>
@@ -140,33 +155,33 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 					
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="countrySelectBox" id="countryLabel"  value="%{getText('country')}" /></td>
 					 	<td>
-								<select class="regionsSelectBox"  name="country" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')">
+								<select class="regionsSelectBox"  name="country" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')" style="width:130px;">
 								<option value="0"> Select Country </option>
 								<option value="1"> India </option>
 								</select>
 					 	</td>
 					</tr>
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="%{getText('state')}" /></td>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="State" /></td>
 								
 					 	<td>
-								<select class="regionsSelectBox"  name="state" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')">
+								<select class="regionsSelectBox"  name="state" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" style="width:130px;">
 								<option value="0"> Select State</option>
 								</select>
 						</td>
 					</tr>	
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="%{getText('district')}" /></td>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="District" /></td>
 						<td>
-								<select class="regionsSelectBox"  name="district" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')">
+								<select class="regionsSelectBox"  name="district" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" style="width:130px;">
 								<option value="0"> Select District</option>
 								</select>
 						</td>
 					</tr>	
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="constituencySelectBox" id="constituencytLabel"  value="%{getText('constituency')}" /></td>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="constituencySelectBox" id="constituencytLabel"  value="Constituency" /></td>
 						<td>							
-								<select class="regionsSelectBox"  name="constituency" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')">
+								<select class="regionsSelectBox"  name="constituency" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')" style="width:130px;">
 								<option value="0"> Select Constituency</option>
 								</select>
 						</td>
@@ -175,6 +190,16 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 						<td width="100px;" style="padding-left:15px;"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 						<td><s:textfield id="pincodeField" name="pincode"/>  </td>
 					</tr>	
+
+					<tr>
+						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
+						<td><s:textfield id="emailField" name="email"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
+					</tr>
+
 					<tr>
 						<td width="100px;"></td>
 						<td> <div style="text-align: left;"><s:submit name="Save"></s:submit></div></td>
@@ -182,6 +207,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 				</table>
 			</div>	
 		 </div>
+		 </FIELDSET>
 
 </div>
          <!--  Problem Management Params -->
