@@ -165,6 +165,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		statesListForACountry = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("countryId")));
+		if(statesListForACountry != null && statesListForACountry.size() > 0)
+			statesListForACountry.add(0, new SelectOptionVO(0L,"Select State"));
 		return Action.SUCCESS;
 	}
 	
@@ -181,8 +183,10 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("stateId")));
-		return Action.SUCCESS;
+		if(districtsListForACountry != null && districtsListForACountry.size() > 0)
+			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
 		
+	 return Action.SUCCESS;
 	}
 	
 	public String getConstituenciesForADistrict()
@@ -198,6 +202,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("districtId")));
+		if(constituenciesListForADistrict != null && constituenciesListForADistrict.size() > 0)
+			constituenciesListForADistrict.add(9, new SelectOptionVO(0L,"Select Constituency"));
+		
 		return Action.SUCCESS;
 	}
 	
