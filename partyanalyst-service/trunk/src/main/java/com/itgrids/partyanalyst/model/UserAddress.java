@@ -44,6 +44,8 @@ public class UserAddress implements java.io.Serializable {
 	private String houseNo;
 	private String street;
 	private String pinCode;
+	private LocalElectionBody localElectionBody;
+	private Constituency ward;
 	private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
 	
@@ -196,7 +198,26 @@ public class UserAddress implements java.io.Serializable {
 	public void setCadrePermanentAddress(Cadre cadrePermanentAddress) {
 		this.cadrePermanentAddress = cadrePermanentAddress;
 	}
-	
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "local_election_body")
+	public LocalElectionBody getLocalElectionBody() {
+		return localElectionBody;
+	}
+
+	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name ="ward")
+	public Constituency getWard() {
+		return ward;
+	}
+
+	public void setWard(Constituency ward) {
+		this.ward = ward;
+	}
 	
 	
 }
