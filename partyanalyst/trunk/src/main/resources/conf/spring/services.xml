@@ -89,6 +89,13 @@
 		<property name="influencingPeoplePositionDAO" ref="influencingPeoplePositionDAO" />		
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="partyDAO" ref="partyDAO" />
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 	</bean>
 	
@@ -161,7 +168,6 @@
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
-		<property name="electionDAO" ref="electionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
