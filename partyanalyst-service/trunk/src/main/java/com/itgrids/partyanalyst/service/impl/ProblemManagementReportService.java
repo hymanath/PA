@@ -1159,6 +1159,27 @@ public class ProblemManagementReportService implements
 			}	
 		}
 		
+		/** 
+		 * This method retrives all the approval problems that are needed to be approved by the user for a particular date.
+		 *  
+		 * @author Ravi Kiran.Y
+		 * @version 1.0, 01-10-10
+		 * @param list
+		 * @return NavigationVO
+		 */
+		public NavigationVO getAllApprovalProblemsForSelectedDate(Date date,String status,String type){
+			List<Object> list = null;
+			NavigationVO navigationVO = null;			
+			try{
+				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,type);
+				navigationVO = generateVoContainingAllApprovalProblems(list);
+								
+				return navigationVO;
+			}catch(Exception e){
+				return navigationVO;
+			}	
+		}
+		
 		/**
 		 * This method process and generates a Data Transer Object based on the given input by handling exception.
 		 * @author Ravi Kiran.Y
