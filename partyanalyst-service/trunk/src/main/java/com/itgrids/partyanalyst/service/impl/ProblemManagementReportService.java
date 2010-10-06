@@ -753,15 +753,38 @@ public class ProblemManagementReportService implements
 		}
 		
 		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag){
-			String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
+						
 			List<InfluencingPeople> impPeople = null;
-			if(hamletId == null && flag.equals(IConstants.CONSTITUENCY_LEVEL))
+			
+			if(accessType.equals(IConstants.STATE_LEVEL))
 			{
-				impPeople = influencingPeopleDAO.findByTehsils(tehsilIds);
-			} else if(hamletId != null && flag.equals(IConstants.HAMLET_LEVEL))
-			{
-				impPeople = influencingPeopleDAO.findByHamletId(hamletId);
+				impPeople = influencingPeopleDAO.findByStateId(new Long(accessValue));
 			}
+			
+			if(accessType.equals(IConstants.DISTRICT_LEVEL))
+			{
+				impPeople = influencingPeopleDAO.findByDistrictId(new Long(accessValue));
+			}
+			
+			if(accessType.equals(IConstants.MLA))
+			{
+				impPeople = influencingPeopleDAO.findByConstituencyId(new Long(accessValue));
+			}
+			
+			if(accessType.equals(IConstants.MP))
+			{
+				List assemblies = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(new Long(accessValue));
+				if(assemblies.size() >0)
+				{
+					for(Object[] values:(List<Object[]>)assemblies)
+					{
+						long assemblyId = Long.parseLong((values[0].toString()));
+						impPeople = influencingPeopleDAO.findByConstituencyId(new Long(assemblyId));
+					}
+				}
+				
+			 }
+				
 			List<InfluencingPeopleVO> influencies = new ArrayList<InfluencingPeopleVO>();
 			InfluencingPeopleVO influencingPeopleVO = null;
 			
@@ -777,6 +800,7 @@ public class ProblemManagementReportService implements
 					influencingPeopleVO.setPersonName(name);
 					influencingPeopleVO.setOccupation(people.getOccupation());
 					influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
+					
 					if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
 					}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
@@ -792,8 +816,23 @@ public class ProblemManagementReportService implements
 					}
 					influencingPeopleVO.setCast(people.getCaste());
 					influencingPeopleVO.setContactNumber(people.getPhoneNo());
-					influencingPeopleVO.setLocalArea(people.getHamlet().getHamletName());
 					influencingPeopleVO.setParty(people.getParty().getShortName());
+					
+					if(people.getUserAddress().getHamlet() != null)
+					{
+						String localArea = people.getUserAddress().getHamlet().getHamletName();
+						localArea = localArea + ", ";
+						localArea = localArea + people.getUserAddress().getTehsil().getTehsilName();
+						influencingPeopleVO.setLocalArea(localArea);
+					}
+					else
+					{
+						String localArea = people.getUserAddress().getWard().getName();
+						localArea = localArea + ", ";
+						localArea = localArea + people.getUserAddress().getLocalElectionBody().getName();
+						influencingPeopleVO.setLocalArea(localArea);
+					}
+										
 					influencies.add(influencingPeopleVO);
 				}
 			return influencies;
