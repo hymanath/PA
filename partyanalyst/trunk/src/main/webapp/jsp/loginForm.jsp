@@ -131,7 +131,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 			 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
 			 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
 			 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
-			 <s:submit value="Register" align="center"/>
+			 <s:submit value="Sign Up" align="center"/>
 
          <!--<h3><a href="anonymousUserAction.action">Register</a></h3>-->
 		 </s:form>
