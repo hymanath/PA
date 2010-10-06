@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -1253,7 +1254,9 @@ public class ProblemManagementReportService implements
 		 */
 		public NavigationVO getAllProblemsForGivenLocation(List<Long> locationIds,String locationType){
 			NavigationVO result = null;	
-			ResultStatus resultStatus = new ResultStatus();			
+			ResultStatus resultStatus = new ResultStatus();	
+			List<Long> assemblyConstituencies = new ArrayList<Long>();
+			List<Long> parliamentConstituencies = new ArrayList<Long>();
 			try{
 				result = new NavigationVO();
 				/*
@@ -1267,7 +1270,27 @@ public class ProblemManagementReportService implements
 				}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInADistrict(locationIds,locationType));
 				}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(locationIds,locationType));
+					for(Long constituencyId : locationIds){
+						Constituency constituency  = constituencyDAO.get(constituencyId);
+						if(constituency.getElectionScope().getElectionType().getElectionType().toString().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+							parliamentConstituencies.add(constituencyId);
+						}else{
+							assemblyConstituencies.add(constituencyId);
+						}
+					}
+					if(assemblyConstituencies!=null && assemblyConstituencies.size()!=0){
+						result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(assemblyConstituencies,locationType));
+					}
+					if(parliamentConstituencies!=null && parliamentConstituencies.size()!=0){
+						List<Long> listOfAssemblyConstituencies = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(parliamentConstituencies);
+						if(listOfAssemblyConstituencies!=null && listOfAssemblyConstituencies.size()!=0){
+							listOfAssemblyConstituencies.addAll(parliamentConstituencies);							
+							result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(listOfAssemblyConstituencies,locationType));
+						}else{
+							result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(assemblyConstituencies,locationType));
+						}
+					}
+					
 				}else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInALocalElectionBody(locationIds,locationType));
 				}else if(locationType.equalsIgnoreCase(IConstants.TEHSIL_LEVEL)){

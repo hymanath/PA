@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -70,5 +71,12 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		List list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(409l);
 		System.out.println(list.size());
 	}*/
+	
+	public void testFindAssemblyConstituenciesOfParliamentConstituency(){
+		List<Long> list = new ArrayList<Long>();
+		list.add(new Long(404));
+		List result = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(list);
+		System.out.println(result);
+	}
 	
 }

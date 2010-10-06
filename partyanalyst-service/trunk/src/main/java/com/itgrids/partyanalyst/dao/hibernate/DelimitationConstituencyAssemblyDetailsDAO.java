@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -83,4 +84,16 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) group by " +
 				"model.constituency.district.districtId", parliamentId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findAssembliesConstituenciesForAListOfParliamentConstituency(List<Long> parliamentConstituencyIds){	
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where ");
+		query.append(" model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and ");
+		query.append(" model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1)");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		return queryObject.list();
+	}
+
 }
