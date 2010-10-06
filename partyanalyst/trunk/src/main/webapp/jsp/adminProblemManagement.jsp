@@ -107,7 +107,7 @@
 							if(jsObj.task == "performDeletionOrAcceptenceProblems"){
 								selectedProblemHistoryIdsArray = "" ;
 								getAllProblems();	
-							} else if(jsObj.task == "currentDate" || jsObj.task == "betweenDates"){
+							} else if(jsObj.task == "currentDate" || jsObj.task == "betweenDates" || jsObj.task == "selectedDate"){
 								buildNewProblemsDataTable(results.approvalProblems);
 							}	
 							
@@ -397,7 +397,7 @@
 									<div id="saveDiv" align="center">
 										<table>
 										<tr>
-											<td><input type="button" value="view" onclick="getAllProblems()"></input></td>
+											<td><input type="button" value="view" onclick="getAllProblemsForParticularDate()"></input></td>
 										</tr>
 										</table>
 									</div>
