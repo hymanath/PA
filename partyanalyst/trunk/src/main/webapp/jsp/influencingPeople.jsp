@@ -226,13 +226,22 @@ function doUnload()
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 </script>
-<body class="bodyStyle" onload="checkRequestType()" onunload="doUnload()">
 
+<body class="bodyStyle" onload="checkRequestType()" onunload="doUnload()">
  <CENTER>
 		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
-				<TD><div class="addInfluencingHeader"><span style="margin-top:2px;">Add Influencing People </span></div></TD>
+				<c:if test="${windowTask == 'new'}">
+				<TD>				
+				<div class="addInfluencingHeader"><span style="margin-top:2px;">Add Influencing People </span></div>	
+				</TD>
+				</c:if>
+				<c:if test="${windowTask == 'edit'}">
+				<TD>
+				<div class="addInfluencingHeader"><span style="margin-top:2px;">Edit Influencing People </span></div>
+				</TD>
+				</c:if>
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
 			</TR>
 		</TABLE>
@@ -268,27 +277,20 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 			<td class="tdstyle"><s:label class="selectWidth" for="middleNameField" theme="simple" id="middleNameLabel"  value="%{getText('middleName')}"/></td>
 			<td><s:textfield id="middleNameField" theme="simple" name="middleName"/></td>
 		</tr>					
-	<tr>
-		<td class="tdstyle"><s:label class="selectWidth" for="lastNameField" theme="simple" id="lastNameLabel" value="%{getText('lastName')}"/><font class="required">*</font></td>
-		<td><s:textfield id="lastNameField" theme="simple" name="lastName"/></td>
+		<tr>
+			<td class="tdstyle"><s:label class="selectWidth" for="lastNameField" theme="simple" id="lastNameLabel" value="%{getText('lastName')}"/><font class="required">*</font></td>
+			<td><s:textfield id="lastNameField" theme="simple" name="lastName"/></td>
+			
+			<td class="tdstyle" width="120"><s:label class="selectWidth" for="father_spouseName" theme="simple" id="father_spouseNameLabel" value="%{getText('father_spouseName')}"/><font class="required">*</font></td>
+			<td><s:textfield id="father_spouseName" theme="simple" name="fatherOrSpouseName"/></td>
+		</tr>
+		<tr>
+			<td class="tdstyle"><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}"/><font class="required">*</font></td>
+			<td align="left" class="tdstyle">
+				<s:radio id="gender" name="gender" list="#session.genders"/>
+			</td>
 		
-		<td class="tdstyle" width="120"><s:label class="selectWidth" for="father_spouseName" theme="simple" id="father_spouseNameLabel" value="%{getText('father_spouseName')}"/><font class="required">*</font></td>
-		<td><s:textfield id="father_spouseName" theme="simple" name="fatherOrSpouseName"/></td>
-
-	<tr>
-		<td class="tdstyle"></font><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}"/><font class="required">*</td>
-		<td align="left" class="tdstyle">
-			<s:radio id="gender" name="gender" list="#session.genders"/>
-		</td>
-		
-		<%--<td align="left" class="tdstyle">
-			<input id="male" type="radio" name="gender" value="M" checked="checked"/><%=Male%>
-			<input id="feMale" type="radio" name="gender" value="F"/><%=Female%>
-		</td> ---%>		
-	</tr>
-
-	</tr>										
-	
+		</tr>	
 	</table>
 	</FIELDSET>
 
@@ -318,12 +320,12 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td ><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField','currentAdd')"></s:select></td>
 
 		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
-		<td><s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField','currentAdd')" headerKey="0" headerValue="Select District"></s:select>
+		<td><s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField','currentAdd')" headerKey="0" headerValue="Select District"></s:select></td>
 	</tr>
 	
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
-		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd')" headerKey="0" headerValue="Select Constituency"></s:select></td>
+		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd', 'null')" headerKey="0" headerValue="Select Constituency"></s:select></td>
 	
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}"/><font class="required"> * </font></td>
 		<td><s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
@@ -348,13 +350,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	
 		<td class="tdstyle" width="110px"><s:label for="partyField" id="partyLabel"  value="%{getText('party')}"/></td>
 		<td align="left">
-			 <select id="party" name="party" class="selectWidth">
-				<c:forEach var="parties" items="${sessionScope.staticParties}">
-					<option value='${parties.id}'>${parties.name}</option>
-				</c:forEach>
-			</select> 
-		 </td>
-
+		<s:select id="party" list="#session.staticParties" listKey="id" listValue="name" name="party" cssClass="regionSelect" /></td>
 	</tr>	
  </table>
 
@@ -369,23 +365,13 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 <table class="registrationTable" width="100%">
 	<tr>
 		
-		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /></td>		
-		<td><select id="position" name="position" class="selectWidth">
-				<c:forEach var="positions" items="${sessionScope.positionsList}">
-					<option value='${positions.id}'>${positions.name}</option>
-				</c:forEach>
-			</select> 
-		</td>
+		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /></td>	
+		<td> <s:select id="position" list="#session.positionsList" listKey="id" listValue="name" name="position" cssClass="regionSelect" /></td>
 		
 		<td width="120px" class="tdstyle"><%=InfluenceRange%><font class="required"> * </font></td>
-		<td align="left"> 
-			<select id="effectedRange" name="influenceRange" class="selectWidth" onchange="influenceRangeFunction(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">
-				<option value="">Select Range</option>
-				<c:forEach var="effectedRange" items="${sessionScope.influenceRange}">
-					<option value='${effectedRange.id}'>${effectedRange.name}</option>
-				</c:forEach>
-			</select> 
-		</td>
+			<td align="left">
+			<s:select id="effectedRange" list="#session.influenceRange" listKey="id" listValue="name" name="influenceRange" cssClass="regionSelect" onchange="influenceRangeFunction(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"/> 
+			</td>
 		<td><input type="hidden" id="influenceRangeInputId" name="influencingRange"></td>
 		<td><div id="specifyInfluenceRange"></div></td>
 	</tr>									
