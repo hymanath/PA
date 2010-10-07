@@ -14,6 +14,7 @@ public class ElectionInfoVO {
     private Double votesPercentage;
     private Double completeVotesPercentage;
     private Long totalSeatsWon;
+    private String electionType;
     
         
 	public Long getTotalSeatsWon() {
@@ -94,6 +95,14 @@ public class ElectionInfoVO {
 
 	public void setTotalValidVotes(Long totalValidVotes) {
 		this.totalValidVotes = totalValidVotes;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public String getElectionType() {
+		return electionType;
 	}
 	
 	

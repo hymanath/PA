@@ -274,6 +274,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				electionInfoVO.setConstituencyId(params[2]);
 				electionInfoVO.setConstituencyName(params[1]);
 				electionInfoVO.setElectionTypeYear(params[0]+" "+params[3]);
+				electionInfoVO.setElectionType(params[0].toString());
 				electionInfoVO.setPartyResults(entry.getValue());
 				electionsInBooth.add(electionInfoVO);
 			}
