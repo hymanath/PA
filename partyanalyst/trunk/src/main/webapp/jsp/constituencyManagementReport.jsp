@@ -469,8 +469,8 @@
 			smsHidden++;
 		}
 		
-		function redirectToNewWindowForAddingInfluencingPeople(){
-			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=570,left=200,top=200");
+		function redirectToNewWindowForAddingInfluencingPeople(type,id){
+			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleRegistration","scrollbars=yes,height=600,width=570,left=200,top=200");
 			browser1.focus();
 		}
 		
@@ -529,7 +529,7 @@
 			}
 		function openAddNewProblemWindow()
 		{	
-	var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
 							 
 			 browser1.focus();
 		}														
@@ -600,7 +600,7 @@
 
 							
 							<DIV class="yui-skin-sam" style="text-align:right;"><div id="localPoliticalChangesRegistration"></DIV>
-								<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople()" value="Add Influencing Persons" class="linkButton" />
+								<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
 							</DIV>
 					
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
