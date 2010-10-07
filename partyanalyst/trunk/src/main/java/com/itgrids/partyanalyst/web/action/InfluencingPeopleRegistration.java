@@ -35,6 +35,8 @@ public class InfluencingPeopleRegistration extends ActionSupport implements
 	private int positionSize;
 	private IInfluencingPeopleService influencingPeopleService;
 	private IStaticDataService staticDataService;
+	private String windowTask;
+	private Long influencingPersonId;
 	
 	public IInfluencingPeopleService getInfluencingPeopleService() {
 		return influencingPeopleService;
@@ -83,8 +85,24 @@ public class InfluencingPeopleRegistration extends ActionSupport implements
 	}
 	public void setSession(HttpSession session) {
 		this.session = session;
-	}
+	}	
 	
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+	public Long getInfluencingPersonId() {
+		return influencingPersonId;
+	}
+
+	public void setInfluencingPersonId(Long influencingPersonId) {
+		this.influencingPersonId = influencingPersonId;
+	}
+
 	public String execute() throws Exception {
 		positionsList = new ArrayList<SelectOptionVO>();
 		staticParties = new ArrayList<SelectOptionVO>();
