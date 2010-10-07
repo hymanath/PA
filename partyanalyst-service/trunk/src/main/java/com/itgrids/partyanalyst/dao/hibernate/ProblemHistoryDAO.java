@@ -236,7 +236,12 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
 		conditionQuery.append(" order by date(model.dateUpdated)");	
 		
-		return getHibernateTemplate().find(conditionQuery.toString(),params);
+		Query queryObject = getSession().createQuery(conditionQuery.toString());
+		queryObject.setDate(0,date);
+		queryObject.setString(1,status);
+		queryObject.setString(2,isApproved);
+		queryObject.setMaxResults(100);
+		return queryObject.list();	
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -247,7 +252,13 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
 		query.append(" and model.problemStatus.status = ? and model.isApproved = ? ");	
 		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
-		return getHibernateTemplate().find(query.toString(),params);
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setDate(0,fromDate);
+		queryObject.setDate(1,toDate);
+		queryObject.setString(2,status);
+		queryObject.setString(3,isApproved);
+		queryObject.setMaxResults(100);
+		return queryObject.list();		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -274,7 +285,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" group by model.problemLocation.problemImpactLevel.problemImpactLevelId");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
-	
+	//	queryObject.setMaxResults(20);
 	
 	@SuppressWarnings("unchecked")
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String problemType){			

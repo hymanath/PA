@@ -31,6 +31,7 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 
 	 private Long userId;
 	 private String name;
+	 private String lastName;
 	 private String gender;
 	 private String username;
 	 private String password;
@@ -66,7 +67,6 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 		 this.mobile = mobile;
 		 this.address = address;
 		 this.pincode = pincode;
-		 
 		 this.state = state;
 		 this.district = district;
 		 this.constituency = constituency;
@@ -241,4 +241,12 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 		this.problemAndProblemSource = problemAndProblemSource;
 	}
 	
+	@Column(name="last_name",length=70)
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }
