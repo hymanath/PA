@@ -1604,16 +1604,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 </div>
 
 <script language="javascript">
-initializeDistrictPage();
-getAllMptcYears();
-getAllZptcYears();
-initializeResultsTableForMp();
-initializeResultsTable();
-showAllElectionsInDistrictHead();
-getElectionTypesAndYears();
 
-getMuncipalPartyDetails();
-getCorporationPartyDetails();
 
 
 var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
@@ -1661,7 +1652,17 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 		
 	problemsInfo.push(problemObj);
 </c:forEach>
- 
+
+initializeDistrictPage();
+getAllMptcYears();
+getAllZptcYears();
+initializeResultsTableForMp();
+initializeResultsTable();
+showAllElectionsInDistrictHead();
+getElectionTypesAndYears();
+
+getMuncipalPartyDetails();
+getCorporationPartyDetails();
  
 </script>
 </body>

@@ -104,8 +104,7 @@ function buildDistrictLeadersNews()
 }
 
 function buildDistrictLevelProblemWindow()
-{
-	
+{		
 	var headElmt = document.getElementById('problemViewingDiv_Head');
 	var bodyElmt = document.getElementById('problemViewingDiv_Body');
 	
@@ -113,7 +112,7 @@ function buildDistrictLevelProblemWindow()
 
 	var str='';
 	str+='<fieldset id="problemViewingFieldSet" style="width:292px">';
-	str+='<legend> View Your constituency Problems</legend>';
+	str+='<legend> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
