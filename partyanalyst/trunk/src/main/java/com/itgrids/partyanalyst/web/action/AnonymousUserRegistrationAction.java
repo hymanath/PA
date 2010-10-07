@@ -33,10 +33,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	private String task;
 	org.json.JSONObject jObj;
 	
-	private String userName;
+	private String userName;	
 	private String password; 
+	private String reEnteredPassword; 
 	
-	private String fname;
+	private String firstName;
+	private String lastName;
 	private String gender;	
 	private String dateOfBirth;
 	private String day;
@@ -78,39 +80,56 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.regVO = regVO;
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Username is required",shortCircuit=true)	
+	
+//User Details Validation
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "UserName is required",shortCircuit=true)	
 	public void setUserName(String userName) {
 		this.regVO.setUserName(userName);
-	}
-	
+	}	
 	public String getUserName() {
 		return regVO.getUserName();
 	}
 	
-	public String getPassword() {
-		return regVO.getPassword();
-	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Password is required",shortCircuit=true)
 	public void setPassword(String password) {
 		this.regVO.setPassword(password);
 	}
+	public String getPassword() {
+		return regVO.getPassword();
+	}
+		
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "ReenteredPassword field is required",shortCircuit=true)	
+	public void setReEnteredPassword(String reEnteredPassword) {
+		this.reEnteredPassword = reEnteredPassword;
+	}	
+	public String getReEnteredPassword() {
+		return reEnteredPassword;
+	}
+	
+
+//User Personal Details Validation
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is required",shortCircuit=true)	
+	public void setFirstName(String firstName) {
+		this.regVO.setFirstName(firstName);
+	}
+	public String getFirstName() {
+		return regVO.getFirstName();
+	}
 	
 	
-	public void setName(String name) {
-		this.name = name;
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is required",shortCircuit=true)
+	public void setLastName(String lastName) {
+		this.regVO.setLastName(lastName);
 	}
-	public String getName() {
-		return this.name;
+	public String getLastName() {
+		return regVO.getLastName();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "name is required",shortCircuit=true)
-	public String getFname() {
-		return regVO.getName();
-	}
-	public void setFname(String fname) {
-		this.regVO.setName(fname);
-	}
+	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select gender",shortCircuit=true)
 	public void setGender(String gender) {
 		this.regVO.setGender(gender);
@@ -118,6 +137,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getGender() {
 		return regVO.getGender();
 	}
+	
 	
 	public String getDateOfBirth() {
 		return dateOfBirth;
@@ -154,23 +174,17 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	
 	
-	public String getEmail() {
-		return regVO.getEmail();
-	}
-
-	public void setEmail(String email) {
-		this.regVO.setEmail(email);
-	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required",shortCircuit=true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD,message = "mobile number should be 10 digits", shortCircuit = true,  minLength = "10",  maxLength = "10")
+	
+	
+//User Contact Details validation
+	
 	public void setMobile(String mobile) {
 		this.regVO.setMobile(mobile);
 	}
 	public String getMobile() {
 		return regVO.getMobile();
 	}
-	
 	
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Address is required",shortCircuit=true)
@@ -181,6 +195,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getAddress();
 	}
 	
+	public String getEmail() {
+		return regVO.getEmail();
+	}
+
+	public void setEmail(String email) {
+		this.regVO.setEmail(email);
+	}
+	
 	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Pin Code is required",shortCircuit=true)
 	public String getPincode() {
 		return regVO.getPincode();
@@ -188,15 +210,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public void setPincode(String pincode) {
 		this.regVO.setPincode(pincode);
 	}
-	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Country",shortCircuit=true)
-	public void setCountry(String country) {
-		this.regVO.setCountry(country);
-	}
-	public String getCountry() {
-		return regVO.getCountry();
-	}
-	
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select State",shortCircuit=true)
 	public void setState(String state) {
@@ -321,7 +334,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String execute(){
 		String dob=day+"/"+month+"/"+year;
 		this.regVO.setDateOfBirth(dob);
-		System.out.println("dob---->"+dob);
+				
+		if(!reEnteredPassword.equalsIgnoreCase(password)){
+			addActionMessage("Entered Password and Reentered Password are not Same.");
+			return Action.ERROR;
+		}
+			
 		
 		Boolean savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO);
 		
@@ -342,8 +360,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return SUCCESS;
 	}
 	
-	 public String getRedirectPageDetails(){
-			
+	
+	 public String getRedirectPageDetails(){			
 			if(redirectLoc != null){
 				if(redirectLoc.equalsIgnoreCase(IConstants.STATE)){
 					return "statePageRedirect";
