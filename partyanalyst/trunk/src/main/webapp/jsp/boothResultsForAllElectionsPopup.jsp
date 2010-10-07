@@ -54,6 +54,7 @@ legend
 	color:#FFFFFF;
 	font-size:12px;
 	padding:5px;
+	font-weight: bold;
 }
 .yui-skin-sam .yui-dt td {
 	border-color:-moz-use-text-color #CBCBCB -moz-use-text-color -moz-use-text-color;
@@ -127,7 +128,7 @@ legend
 				<c:forEach var="electionsList" varStatus="status" items="${boothPanelVO.elections}">
 					<TD valign="top">
 						<FIELDSET>
-							<LEGEND>${electionsList.constituencyName}</LEGEND>
+							<LEGEND>${electionsList.constituencyName} ${electionsList.electionType} Constituency</LEGEND>
 							<DIV id="div_${status.index}" class="boothDatatable"></DIV>
 													
 						</FIELDSET>
