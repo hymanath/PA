@@ -359,7 +359,6 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
-		<property name="problemLocationDAO" ref="problemLocationDAO" />
    </bean>
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
@@ -463,6 +462,7 @@
 		<property name="problemDAO" ref="problemDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="problemLocationDAO" ref="problemLocationDAO" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
