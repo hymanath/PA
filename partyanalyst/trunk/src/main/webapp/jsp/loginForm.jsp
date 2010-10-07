@@ -55,9 +55,6 @@ if(request.getParameter("constituencyId")!=null){
 if(request.getParameter("localBodyElectionTypeId")!=null){
 	localBodyElectionTypeId = request.getParameter("localBodyElectionTypeId");
 }
-
-
-
 %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -69,37 +66,53 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 		<META NAME="Keywords" CONTENT="">
 		<META NAME="Description" CONTENT="">
 		<script type="text/javascript">
-			window.onload=function() 
-			{
-				document.forms[0][0].focus();
-			}
+		function executeOnload()
+		{
+			var textBoxEl = document.getElementById("userName");
+			textBoxEl.focus();
+		}
+			
 		</script> 
-		
+	<style>
+	#loginPanel
+	{
+		border:1px solid;
+		width:300px;
+		background-color:#94A9C8;
+		color:#FFFFFF;
+		font-weight:bold;
+		padding:15px;
+		margin-top:25px;
+	}
+	btnStyle {
+		font-weight:bold;
+		width:50px;
+	}
+	</style>	
 	</head>
-	<body>
-
-	    <center>
-		        <h2>Login Details</h2>
-		</center>
-		</BR></BR>
+	<body>	    
+		<div id="loginPanel">
 		<table>
 			<tr>
 				<td colspan="2"><s:actionerror /></td>
 			</tr>
 		</table>
-		<s:form name="loginForm" action="loginAction" method="POST" >
+		<s:form name="loginForm" action="loginAction" method="POST">
 		<%
 		if(src != ""){
 		%>
 		<input type="hidden" name="src" value="<%=src %>" />
 		<% } %>
-
+		<P>Registered User Sign In</P>
 		<%
 		if(type != ""){
 		%>
+		
 	     <input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Commercial User
 	     <input id="freeUserRadio" type="radio" name="userType" value="2"/>Free User
-
+		<BR>
+		<BR>
+			
 		 <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 		 <input type="hidden" name="task" value="<%=task %>" />
 		 <input type="hidden" name="name" value="<%=name %>" />
@@ -112,16 +125,17 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
             
 			<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 			<c:remove var="USER_REG_SUCCESS" scope="session" />
-			<s:textfield name="userName" label="%{getText('userName')}"/>
+			<s:textfield name="userName" id="userName" label="%{getText('userName')}"/>
 			<s:password name="password" label="%{getText('password')}"/>
-			<s:submit value="Login" align="center"/>
+			<s:submit value="Sign In" cssClass="btnStyle" align="center"/>
+			
 		</s:form>
 		
 		<%
 		if(type != ""){
 		%>
-		 
-		 <s:form name="regForm" action="anonymousUserAction" method="POST" >
+		 <div>
+		  <s:form name="regForm" action="anonymousUserAction" method="POST" theme="simple" >
 
 		     <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 			 <input type="hidden" name="task" value="<%=task %>" />
@@ -131,10 +145,23 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 			 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
 			 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
 			 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
-			 <s:submit value="Sign Up" align="center"/>
+		 <hr>
+		 <table>
+		 <tr>
+		 <td><IMG src="images/icons/b_arrow.gif"></td>
+		 <td>New User?</td>
+		 <td><s:submit value="Sign Up" cssStyle="btnStyle" align="center"/></td>
+		 </tr>	
+		 </table>
+			 
 
          <!--<h3><a href="anonymousUserAction.action">Register</a></h3>-->
 		 </s:form>
+		 </div>
         <% } %>
+        </div>
+        <script type="text/javascript">
+        executeOnload();
+        </script>
 	</body>
 </html>
