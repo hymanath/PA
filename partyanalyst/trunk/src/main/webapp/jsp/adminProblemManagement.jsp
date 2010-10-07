@@ -127,8 +127,16 @@
 		{
 			var startDate = document.getElementById("identifiedFromText").value;
 			var endDate = document.getElementById("reportedFromText").value;
+			var selection = document.getElementsByName("problemRetrivalType");
+			var selectedRadio;
+			for(var i=0;i<selection.length;i++){
+				if(selection[i].checked == true){
+					selectedRadio = selection[i].value;					
+				}
+			}			
 			var jsObj=
 			{		
+					choice:selectedRadio,
 					fromDate:startDate,
 					toDate:endDate,					
 					task:"betweenDates"						
@@ -151,11 +159,19 @@
 			callAjax(rparam,jsObj,url);
 		}
 
-		function getAllProblemsForParticularDate()
+		function getAllProblemsForParticularDate()			
 		{
+			var selection = document.getElementsByName("problemType");
+			var selectedRadio;
+			for(var i=0;i<selection.length;i++){
+				if(selection[i].checked == true){
+					selectedRadio = selection[i].value;					
+				}
+			}				
 			var selectDate = document.getElementById("selectedDate").value;
 			var jsObj=
-			{					
+			{		
+					choice:selectedRadio,			
 					selectedDate:selectDate,
 					task:"selectedDate"						
 			};
@@ -345,7 +361,8 @@
 		<td style="padding-left:22px;"><h4>Select To View Problems Posted In Between Dates</h4>
 			<fieldset>
 			<legend style="font-family:arial,helvetica,clean,sans-serif;">Between Dates</legend>
-			<table>
+			<s:radio theme="simple" list="{'Newly Posted', 'Approved','Rejected'}" name="problemRetrivalType"></s:radio>
+			<table border="0">
 				<tr>							
 					<td><font class="requiredFont"> * </font></td>	
 					<td>
@@ -389,6 +406,7 @@
 							<td>
 								<fieldset>
 								<legend style="font-family:arial,helvetica,clean,sans-serif;">Particular Date</legend>
+								<s:radio theme="simple" list="{'Newly Posted', 'Approved','Rejected'}" name="problemType"></s:radio>
 								<table>
 									<tr>							
 										<td><font class="requiredFont"> * </font></td>	

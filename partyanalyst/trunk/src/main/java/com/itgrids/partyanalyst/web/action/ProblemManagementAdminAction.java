@@ -215,7 +215,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				jObj = new JSONObject(getTask());
 				
 				if(jObj.getString("task").equals("betweenDates")){	
-					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,IConstants.FALSE);
+					result = problemManagementReportService.getAllApprovalProblemsBetweenTheDates(jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.NEW,jObj.getString("choice"));
 				}
 				
 				else if(jObj.getString("task").equals("currentDate")){	
@@ -224,7 +224,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				
 				else if(jObj.getString("task").equals("selectedDate")){
 					Date selectedDate = dateService.convertStringToDate(jObj.getString("selectedDate"),IConstants.DATE_PATTERN);
-					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,IConstants.FALSE);
+					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,jObj.getString("choice"));
 				}
 				
 				else if(jObj.getString("task").equals("performDeletionOrAcceptenceProblems")){	
