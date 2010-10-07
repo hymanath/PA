@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
+import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -82,6 +83,15 @@ public class ProblemManagementReportService implements
 	private IProblemDAO problemDAO;
 	private TransactionTemplate transactionTemplate;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IProblemLocationDAO problemLocationDAO;
+	
+	public IProblemLocationDAO getProblemLocationDAO() {
+		return problemLocationDAO;
+	}
+
+	public void setProblemLocationDAO(IProblemLocationDAO problemLocationDAO) {
+		this.problemLocationDAO = problemLocationDAO;
+	}
 
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
@@ -1183,9 +1193,9 @@ public class ProblemManagementReportService implements
 		
 		public String getUserSelectedChoice(String choice){
 			if(choice.equalsIgnoreCase("Newly Posted")){
-				return IConstants.TRUE;
-			}else if(choice.equalsIgnoreCase("Approved")){
 				return IConstants.FALSE;
+			}else if(choice.equalsIgnoreCase("Approved")){
+				return IConstants.TRUE;
 			}else{
 				return IConstants.REJECTED;
 			}			
@@ -1258,10 +1268,13 @@ public class ProblemManagementReportService implements
 		public void acceptSelectedProblemsByAdmin(final Integer[] problemHistoryIds){
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					for(int i=0;i<problemHistoryIds.length;i++){
-						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());				
+					for(int i=0;i<problemHistoryIds.length;i++){						
+						ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryIds[i].longValue());						
 						problemHistory.setIsApproved(IConstants.TRUE);
 						problemHistoryDAO.save(problemHistory);
+						ProblemLocation problemLocation = problemLocationDAO.get(problemHistory.getProblemLocation().getProblemLocationId());
+						problemLocation.setUpdatedDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
+						problemLocationDAO.save(problemLocation);
 					}
 				}
 			});

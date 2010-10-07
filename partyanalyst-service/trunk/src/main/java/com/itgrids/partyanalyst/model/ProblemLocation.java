@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +39,8 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	private ProblemClassification problemClassification;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0); 
 	
+	private Date updatedDate;
+	
 	public ProblemLocation(){
 		
 	}
@@ -54,7 +57,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 			ProblemAndProblemSource problemAndProblemSource,
 			Set<ProblemHistory> problemHistories,
 			ProblemImpactLevel problemImpactLevel,
-			Long problemImpactLevelValue) {
+			Long problemImpactLevelValue,Date updatedDate) {
 		this.hamlet = hamlet;
 		this.ward = ward;
 		this.township = township;
@@ -63,6 +66,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.problemHistories = problemHistories;
 		this.problemImpactLevel = problemImpactLevel;
 		this.problemImpactLevelValue = problemImpactLevelValue;
+		this.updatedDate = updatedDate;
 	}
 
 	@Id
@@ -165,6 +169,16 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	public void setProblemImpactLevelValue(Long problemImpactLevelValue) {
 		this.problemImpactLevelValue = problemImpactLevelValue;
 	}
+
+	@Column(name = "updated_date", length = 15)
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+	
 	
 	
 }

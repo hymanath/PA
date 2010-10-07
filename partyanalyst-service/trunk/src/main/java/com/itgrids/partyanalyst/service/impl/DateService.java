@@ -60,14 +60,9 @@ public class DateService implements IDateService {
 	public Date convertStringToDate(String givenDate,String dateFormat){
 		 DateFormat formatter ; 
 	     Date date = null; 
-	     System.out.println("1");
 		 try{
-			 System.out.println("1");
 	              formatter = new SimpleDateFormat(dateFormat);
-	              System.out.println("1");
 	              date = (Date)formatter.parse(givenDate);
-	              System.out.println("1");
-	              System.out.println("Today is " + date);
 	              return date;
 	    }catch(Exception e){	    	
 	    	System.out.println("Exception :"+e);
