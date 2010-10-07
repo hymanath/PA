@@ -1128,7 +1128,7 @@ public class ProblemManagementReportService implements
 			try{
 				Date firstDate = dateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
 				Date secondDate = dateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
-				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,type);
+				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,getUserSelectedChoice(type));
 				navigationVO = generateVoContainingAllApprovalProblems(list);
 				return navigationVO;
 			}catch(Exception e){				
@@ -1171,7 +1171,8 @@ public class ProblemManagementReportService implements
 			List<Object> list = null;
 			NavigationVO navigationVO = null;			
 			try{
-				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,type);
+				
+				list = problemHistoryDAO.getAllNonApprovedProblemsPostedForCurrentDay(date,status,getUserSelectedChoice(type));
 				navigationVO = generateVoContainingAllApprovalProblems(list);
 								
 				return navigationVO;
@@ -1180,6 +1181,15 @@ public class ProblemManagementReportService implements
 			}	
 		}
 		
+		public String getUserSelectedChoice(String choice){
+			if(choice.equalsIgnoreCase("Newly Posted")){
+				return IConstants.TRUE;
+			}else if(choice.equalsIgnoreCase("Approved")){
+				return IConstants.FALSE;
+			}else{
+				return IConstants.REJECTED;
+			}			
+		}
 		/**
 		 * This method process and generates a Data Transer Object based on the given input by handling exception.
 		 * @author Ravi Kiran.Y
