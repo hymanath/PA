@@ -620,7 +620,7 @@ function buildProblemViewingWindow()
 		for(var i in constituencyPageMainObj.problemsInfo)
 		{
 			var data = constituencyPageMainObj.problemsInfo[i];			
-			str+='<div class="problemDataDivClass">';
+			str+='<div class="problemDataDivClass" onclick="buildMoreDetailsPopUp('+data.problemId+')">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='<span> '+data.problem+' </span>';
 			str+='</div>';
@@ -634,6 +634,77 @@ function buildProblemViewingWindow()
 	
 	if(bodyElmt)
 		bodyElmt.innerHTML=str;
+}
+
+function  buildMoreDetailsPopUp(selectedProblemId)
+{
+	for(var i in constituencyPageMainObj.problemsInfo)
+		{
+			var data = constituencyPageMainObj.problemsInfo[i];			
+			if(data.problemId==selectedProblemId){
+						var elmt = document.getElementById('constituencyMgmtBodyDiv');
+						var divChild = document.createElement('div');
+						divChild.setAttribute('id','createDiv');
+						var problemName = data.problem;
+						data.problem.name = problemName[0].toUpperCase();
+						elmt.appendChild(divChild);	
+
+						var showProblemData='';		
+						showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
+						showProblemData+='<fieldset>';  		
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
+						showProblemData+='<table id="probDetailsTable">';
+						showProblemData+='<tr><th>Problem</th>';		
+						showProblemData+='<th>Description</th>';
+						showProblemData+='<th>IdentifiedDate</th></tr>';
+						showProblemData+='<tr><td>'+data.problem+'</td>';
+						showProblemData+='<td>'+data.description+'</td>';
+						showProblemData+='<td>'+data.reportedDate+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+
+						showProblemData+='<fieldset>';
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
+						showProblemData+='<table id="postedPersonTable">';
+						showProblemData+='<tr><th>Name</th>';								
+						showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+						
+						showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
+
+						if(createGroupDialog)
+							createGroupDialog.destroy();
+						createGroupDialog = new YAHOO.widget.Dialog("createDiv",
+								{ width : "600px", 		
+								  fixedcenter : false, 
+								  visible : true,  
+								  constraintoviewport : true, 
+								  iframe :false,
+								  modal :false,
+								  hideaftersubmit:true,
+								  close:true,
+								  x:400,
+								  y:300,				  
+								  buttons : [ { text:"Ok", handler: handleSubmit, isDefault:true}, 
+											  { text:"Cancel", handler: handleCancel}]
+								 } );
+
+
+					
+						
+						createGroupDialog.setBody(showProblemData);
+						
+						createGroupDialog.render();
+			}
+		}
+}
+function handleSubmit()
+{
+	createGroupDialog.hide();			
+}
+
+function handleCancel()
+{
+	this.cancel();
 }
 
 function openAddNewProblemWindow()
@@ -1397,7 +1468,7 @@ function initializeConstituencyPage()
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
-    buildRightlayoutMap();
+   // buildRightlayoutMap();
     if(constituencyPageMainObj.forwardTask != null)
 	{
 		if(constituencyPageMainObj.forwardTask != "")

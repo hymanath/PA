@@ -62,7 +62,6 @@
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
-<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
@@ -1122,7 +1121,7 @@ function showDetailedElectionResult(id)
 						tehsil:'${problem.tehsil}',
 						village:'${problem.village}',
 						hamlet:'${problem.hamlet}',
-						reportedDate:'${problem.reportedDate}',
+						reportedDate:'${problem.postedDate}',
 						existingFrom:'${problem.existingFrom}',
 						name:'${problem.name}',
 						postedPersonName:'${problem.postedPersonName}',
