@@ -10,8 +10,17 @@ public class DataTransferVO extends ResultStatus{
 	private Object latestYearChart;
 	private List<CandidateVO> candidateVO;
 	private ResultStatus resultStatus;
+	private String loginStatus;
 	
 	
+	public String getLoginStatus() {
+		return loginStatus;
+	}
+
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus = loginStatus;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
