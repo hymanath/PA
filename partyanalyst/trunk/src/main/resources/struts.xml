@@ -1396,6 +1396,7 @@
 		 <action name="anonymousUserRegistrationAction" class="anonymousUserRegisterAction">
 		    <result name="input">/jsp/anonymousUserRegistration.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
+			 <!--<result name="error">/jsp/anonymousUserRegistration.jsp</result>-->			 
 			 <interceptor-ref name="basicStack"/>
 			 <result name="statePageRedirect" type="chain">statePageAction</result>
 			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
