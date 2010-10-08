@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
@@ -117,6 +119,35 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 
 	 private String forwardTask = null;
 	 
+	private IAnanymousUserService ananymousUserService;
+	private DataTransferVO userDetails;
+	private String userType = null;	
+	
+	
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+
+	public DataTransferVO getUserDetails() {
+		return userDetails;
+	}
+
+	public void setUserDetails(DataTransferVO userDetails) {
+		this.userDetails = userDetails;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -622,6 +653,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
+   		
+   		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL);		
+		//Free User
+		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
+				userDetails.setLoginStatus("true");
+			}else{
+				userDetails.setLoginStatus("false");
+			}
+		
    		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}

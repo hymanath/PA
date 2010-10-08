@@ -11,6 +11,8 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
@@ -29,10 +32,12 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -81,8 +86,36 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private NavigationVO navigationVO;
 	private List<ProblemBeanVO> problemBean;
 	private IProblemManagementReportService problemManagementReportService;
+	private IAnanymousUserService ananymousUserService;
+	private DataTransferVO userDetails;
+	private HttpSession session;
+	private String userType = null;	
 	
-		
+	
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public HttpSession getSession() {
+		return session;
+	}
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+	public DataTransferVO getUserDetails() {
+		return userDetails;
+	}
+	public void setUserDetails(DataTransferVO userDetails) {
+		this.userDetails = userDetails;
+	}
 	public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
 	}
@@ -434,6 +467,16 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		List<Long> listOfDistricts = new ArrayList<Long>();
 		listOfDistricts.add(Long.parseLong(districtId));
 		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfDistricts,IConstants.DISTRICT_LEVEL).getApprovalProblems();
+			
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL);	
+		//Free User
+		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
+			userDetails.setLoginStatus("true");
+		}else{
+			userDetails.setLoginStatus("false");
+		}
 		
 		return Action.SUCCESS;
 	
