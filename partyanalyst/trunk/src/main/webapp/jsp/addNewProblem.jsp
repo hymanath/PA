@@ -159,7 +159,7 @@ function executeOnload()
 							<s:select id="scopeLevel" cssClass="selectWidth" name="problemScope" value="defaultScope" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 						</tr>
-					<c:if test="${isParliament == false}">
+					<c:if test="${isParliament == null || isParliament == false}">
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
