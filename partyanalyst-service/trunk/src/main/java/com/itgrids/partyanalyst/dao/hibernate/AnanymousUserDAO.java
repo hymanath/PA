@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
@@ -39,5 +40,21 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return getHibernateTemplate().find("select model.username from AnanymousUser model where model.username = ?",userName);
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType) {
+		StringBuilder query = new StringBuilder();
+		query.append("select model.name,model.lastName,model.userId from AnanymousUser model where ");
+		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+			query.append("model.state.stateId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			query.append("model.district.districtId in (:locationIds)");
+		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			query.append("model.constituency.constituencyId in (:locationIds)");
+		}	
+		query.append("order by model.userId desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setMaxResults(20);
+		return queryObject.list();
+	}
 }

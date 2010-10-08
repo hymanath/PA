@@ -9,6 +9,8 @@ public class CandidateVO {
 	private String image;
 	private String year;
 	private String party;
+	private String status;
+	private ResultStatus resultStatus;
 	private List<CandidateElectionVO> candidateElectionVOs;
 	
 	public CandidateVO(){
@@ -23,6 +25,14 @@ public class CandidateVO {
 		this.candidateElectionVOs = candidateElectionVOs;
 		this.party = party;
 		this.image = image;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 	public Long getId() {
@@ -73,5 +83,12 @@ public class CandidateVO {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}	
 }

@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -10,4 +13,6 @@ public interface IAnanymousUserService {
 	public RegistrationVO checkAnonymousUserLogin(String anonymousUserId,String password);
 	
 	public ResultStatus checkForUserNameAvalilability(String userName);
+	
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType);
 }

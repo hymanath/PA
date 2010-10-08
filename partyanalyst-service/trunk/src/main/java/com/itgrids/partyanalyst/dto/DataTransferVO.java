@@ -1,12 +1,35 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class DataTransferVO extends ResultStatus{
 
 	private static final long serialVersionUID = 1L;
 	private Object presentYearChart;
 	private Object previousYearChart;
 	private Object latestYearChart;
+	private List<CandidateVO> candidateVO;
+	private ResultStatus resultStatus;
 	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+
+
+	public List<CandidateVO> getCandidateVO() {
+		return candidateVO;
+	}
+
+	public void setCandidateVO(List<CandidateVO> candidateVO) {
+		this.candidateVO = candidateVO;
+	}
+
 	public Object getPresentYearChart() {
 		return presentYearChart;
 	}

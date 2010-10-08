@@ -1,18 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -190,4 +192,48 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 		return resultStatus;
 	}
+	
+	/**
+	 * This method can be used to retrive ananymous/free users of party analyst based on location wise.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,08/10/2010
+	 * @param locationIds
+	 * @param locationType
+	 * @return DataTransferVO
+	 */
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType){
+		ResultStatus resultStatus = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();;
+		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
+		List<Object> result = new ArrayList<Object>();
+		try{
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType);			
+			if(result!=null && result.size()!=0){
+				for(int i=0;i<result.size();i++){
+					Object[] parms = (Object[])result.get(i);
+					CandidateVO candidateVO = new CandidateVO();
+					String lastName="";
+					if(parms[1]!=null){
+						lastName = parms[1].toString();
+					}
+					candidateVO.setCandidateName(parms[0].toString().concat(" ").concat(lastName));
+					candidateVO.setId(new Long(parms[2].toString()));
+					candidateDetails.add(candidateVO);
+				}
+			}			
+			dataTransferVO.setCandidateVO(candidateDetails);
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			dataTransferVO.setResultStatus(resultStatus);		
+			System.out.println(dataTransferVO.getCandidateVO().size());
+		}catch(Exception e){
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+	} 
+	
 }
