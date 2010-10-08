@@ -158,10 +158,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		param = getTask();
 		
 		try {
-			jObj = new JSONObject(param);
-			
+			jObj = new JSONObject(param);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		statesListForACountry = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("countryId")));
@@ -179,7 +177,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("stateId")));
@@ -198,12 +195,15 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(new Long(jObj.getString("districtId")));
-		if(constituenciesListForADistrict != null && constituenciesListForADistrict.size() > 0)
-			constituenciesListForADistrict.add(9, new SelectOptionVO(0L,"Select Constituency"));
+		/*
+		 * Modified by ravi 
+		 * please refer previous version to check for original code.
+		 */ 
+		if(constituenciesListForADistrict == null && constituenciesListForADistrict.size() == 0)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		
 		return Action.SUCCESS;
 	}
@@ -217,7 +217,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		mandalsListForAConstituency = regionServiceDataImp.getMandalsByConstituencyID(new Long(jObj.getString("constituencyId")));
@@ -233,7 +232,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		villagesListForAMandal = cadreManagementService.findVillagesByTehsilID(jObj.getString("mandalId"));
@@ -249,7 +247,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -270,7 +267,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -307,7 +303,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -326,7 +321,6 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			jObj = new JSONObject(param);
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
