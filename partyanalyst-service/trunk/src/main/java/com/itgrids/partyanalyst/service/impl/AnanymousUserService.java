@@ -83,7 +83,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 			public Object doInTransaction(TransactionStatus status) {	
 				AnanymousUser ananymousUser = new AnanymousUser();
 				try{
-				ananymousUser.setName(userDetails.getName());
+				ananymousUser.setName(userDetails.getFirstName());
+				ananymousUser.setLastName(userDetails.getLastName());
 				ananymousUser.setUsername(userDetails.getUserName());
 				ananymousUser.setPassword(userDetails.getPassword());
 				ananymousUser.setGender(userDetails.getGender());
