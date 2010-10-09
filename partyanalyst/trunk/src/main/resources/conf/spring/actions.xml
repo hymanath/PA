@@ -465,6 +465,7 @@
 	<bean id="localBodyElectionAction" class="com.itgrids.partyanalyst.web.action.LocalBodyElectionAction" singleton="false">
 		<property name="localBodyElectionService" ref="localBodyElectionService" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="problemManagementReportService" ref="problemManagementReportService" />
 	</bean>
 	
 	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">

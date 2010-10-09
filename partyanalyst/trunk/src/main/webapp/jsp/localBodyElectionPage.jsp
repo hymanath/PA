@@ -59,18 +59,17 @@
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/localBodyElection/localBodyElection.js"></script>
 
-
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/jquery.liquidcarousel.js"></script>
 
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
-
 
 <link  rel="stylesheet" type="text/css" href="styles/jQuery/liquidcarousel.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 
 <link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+
 <link rel="stylesheet" type="text/css" href="styles/localBodyElection/localBodyElection.css">
 
 <script type="text/javascript">
@@ -242,10 +241,17 @@
 									<div onclick="javascript:{window.location = 'landing.action'}" class="votingTrendzHeadLabelDiv">
 										<span class="votingTrendzHeadLabelSpan">Know More</span>
 									</div>
-								</div>								
-							</div>
+								</div>													
+							</div>							
+						</div>						
+                    </div>  
+                    <div id="problemViewingDiv">
+						<div id="problemViewingDiv_Head"></div>
+						<div id="problemViewingDiv_Body"></div>
+						<div id="constituencyMgmtBodyDiv" class="yui-skin-sam">
+							<div id="moreDetailsPanelDiv"></div>
 						</div>
-                    </div>
+					</div>                  
 				</td>
 			</tr>
 			<tr>
@@ -283,8 +289,33 @@
 
 	<script type="text/javascript">
 		
+	<c:forEach var="problem" items="${problemBean}">	
+	var problemObj={
+						problemId:'${problem.problemId}',
+						problem:'${problem.problem}',
+						description:'${problem.description}',
+						state:'${problem.state}',
+						district:'${problem.district}',
+						constituency:'${problem.constituency}',
+						tehsil:'${problem.tehsil}',
+						village:'${problem.village}',
+						hamlet:'${problem.hamlet}',
+						reportedDate:'${problem.reportedDate}',
+						existingFrom:'${problem.existingFrom}',
+						name:'${problem.name}',
+						postedPersonName:'${problem.postedPersonName}',
+						email:'${problem.email}',						
+						phone:'${problem.phone}',
+						mobile:'${problem.mobile}',
+						address:'${problem.address}',
+						problemLocationId:'${problem.problemLocationId}',
+					};
+		
+	problemsInfo.push(problemObj);
+	</c:forEach>
 	
 		initializeLocalBodiesElectionPage();
+		buildLocalElectionLevelProblemWindow("${localBodyElectionResults.localBodyElectionType}");
 	</script>
 </body>
 </html>

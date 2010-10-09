@@ -14,9 +14,11 @@ var localBodyElectionObj = {
 								electionYear:''
 						   };
 
+var problemsInfo = new Array();
+var createGroupDialog;
+
 function initializeLocalBodiesElectionPage()
 {
-
 	buildLocalBodyElectionNews();
 	buildElectionResultsDataTable();
 	getWardWiseElectionResults('all',0);
@@ -281,4 +283,110 @@ function buildLocalBodyElectionNews()
 
   var content = document.getElementById('local_body_news');
   var newsShow = new google.elements.NewsShow(content, options);
+}
+
+function buildLocalElectionLevelProblemWindow(areaType)
+{
+	var headElmt = document.getElementById('problemViewingDiv_Head');
+	var bodyElmt = document.getElementById('problemViewingDiv_Body');
+	
+	var str='';
+	str+='<fieldset id="problemViewingFieldSet" style="width:248px;margin-top:10px;">';
+	str+='<legend> View Your '+ areaType +' Problems</legend>';
+	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+	str+='';
+	if(problemsInfo.length == 0)
+	{
+		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
+		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span> No problems has been posted </span>';
+		str+='</div>';
+	}
+	else
+	{
+		for(var i in problemsInfo)
+		{
+			var data = problemsInfo[i];			
+			str+='<div class="problemDataDivClass" onclick="buildMoreDetailsPopUp('+data.problemId+')">';
+			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='<span> '+data.problem+' </span>';
+			str+='</div>';
+		}
+	}
+	
+	str+='</marquee>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;	
+}
+
+function  buildMoreDetailsPopUp(selectedProblemId)
+{		
+	for(var i in problemsInfo)
+		{
+			var data = problemsInfo[i];			
+			if(data.problemId==selectedProblemId){
+						var elmt = document.getElementById('constituencyMgmtBodyDiv');
+						var divChild = document.createElement('div');
+						divChild.setAttribute('id','createDiv');
+						var problemName = data.problem;
+						data.problem.name = problemName[0].toUpperCase();
+						elmt.appendChild(divChild);	
+
+						var showProblemData='';		
+						showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
+						showProblemData+='<fieldset>';  		
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
+						showProblemData+='<table id="probDetailsTable">';
+						showProblemData+='<tr><th>Problem</th>';		
+						showProblemData+='<th>Description</th>';
+						showProblemData+='<th>IdentifiedDate</th></tr>';
+						showProblemData+='<tr><td>'+data.problem+'</td>';
+						showProblemData+='<td>'+data.description+'</td>';
+						showProblemData+='<td>'+data.reportedDate+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+
+						showProblemData+='<fieldset>';
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
+						showProblemData+='<table id="postedPersonTable">';
+						showProblemData+='<tr><th>Name</th>';								
+						showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+						
+						showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
+
+						if(createGroupDialog)
+							createGroupDialog.destroy();
+						createGroupDialog = new YAHOO.widget.Dialog("createDiv",
+								{ width : "600px", 		
+								  fixedcenter : false, 
+								  visible : true,  
+								  constraintoviewport : true, 
+								  iframe :false,
+								  modal :false,
+								  hideaftersubmit:true,
+								  close:true,
+								  x:400,
+								  y:300,				  
+								  buttons : [ { text:"Ok", handler: handleSubmit, isDefault:true}, 
+											  { text:"Cancel", handler: handleCancel}]
+								 } );
+						
+						createGroupDialog.setBody(showProblemData);
+						
+						createGroupDialog.render();
+			}
+		}
+}
+function handleSubmit()
+{
+	createGroupDialog.hide();			
+}
+
+function handleCancel()
+{
+	this.cancel();
 }
