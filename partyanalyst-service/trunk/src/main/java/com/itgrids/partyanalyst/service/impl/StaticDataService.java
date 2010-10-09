@@ -2276,7 +2276,7 @@ public class StaticDataService implements IStaticDataService {
 				 nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
 			}else{
 						
-				if(electionType.equals(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equals(IConstants.MUNCIPLE_ELECTION_TYPE)){
+				if(electionType.equals(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equals(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equals(IConstants.GREATER_ELECTION_TYPE)){
 					result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionTypeForMuncipalAndCorporationElection(constituencyId);
 					nominationResult = nominationDAO.getCandidatesInfoForTheGivenMuncipalityOrCorporationConstituency(constituencyId.toString(),electionYear,electionType);
 				}else{
