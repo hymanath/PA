@@ -7,6 +7,7 @@ public interface IConstants {
 	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
 	public static final Long CENSUS_YEAR = 2001L;
 	public static final Long DELIMITATION_YEAR = 2009L;
+	public static final Long PREV_DELIMITATION_YEAR = 2004L;
 	public static final String ELECTION_SUBTYPE_MAIN = "MAIN";
 	public static final String ELECTION_SUBTYPE_BYE = "BYE";
 	public static final Long COUNTRY_INDIA_ID = 1L;
@@ -72,6 +73,7 @@ public interface IConstants {
 	public final static String CORPORATION_ELECTION_TYPE = "CORPORATION";
 	public final static String ASSEMBLY_ELECTION_TYPE = "Assembly";
 	public final static String PARLIAMENT_ELECTION_TYPE = "Parliament";
+	public final static String GREATER_ELECTION_TYPE = "Greater Municipal Corp";
 	
 	//Governing Body Position
 	public final static String MUNCIPALE_CHAIRMAN = "CHAIRPERSON";
