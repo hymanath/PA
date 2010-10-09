@@ -271,5 +271,7 @@ public interface IConstants {
 	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
     public static final String REJECTED = "rejected";
+    public static final Long MAX_PROBLEMS_DISPLAY = 20L;
+    
     
 }

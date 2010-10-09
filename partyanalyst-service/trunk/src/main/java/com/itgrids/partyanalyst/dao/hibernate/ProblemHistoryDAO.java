@@ -300,6 +300,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		queryObject.setString(0,impactLevel);
 		queryObject.setString(1,problemType);
 		queryObject.setParameterList("locationIds", locationIds);
+		queryObject.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
 		return queryObject.list();
 	}
 	

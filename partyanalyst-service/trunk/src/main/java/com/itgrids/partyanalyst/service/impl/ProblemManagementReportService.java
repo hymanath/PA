@@ -1399,9 +1399,11 @@ public class ProblemManagementReportService implements
 		 */
 		public List<Object> getAllAcceptedProblemsInATehsil(List<Long> locationIds, String locationType) {			
 			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);			
-			List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
-			List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
-			teshilResult.addAll(hamletResult);
+			if(teshilResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
+				List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
+				List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
+				teshilResult.addAll(hamletResult);
+			}			
 			return teshilResult;
 		}
 
@@ -1417,9 +1419,11 @@ public class ProblemManagementReportService implements
 		 */
 		public List<Object> getAllAcceptedProblemsInALocalElectionBody(List<Long> locationIds, String locationType) {
 			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
-			List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
-			List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
-			localElectionBodyResult.addAll(hamletResult);
+			if(localElectionBodyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
+				List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
+				List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
+				localElectionBodyResult.addAll(hamletResult);
+			}			
 			return localElectionBodyResult;
 		}
 
@@ -1435,48 +1439,50 @@ public class ProblemManagementReportService implements
 		 */
 		public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType) {
 			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
-			List<Long> urbanConstituencies = new ArrayList<Long>();
-			List<Long> ruralConstituencies = new ArrayList<Long>();
-			List<Long> urban_rural_constituencies = new ArrayList<Long>();
-			List<Object> tehsilResult = new ArrayList<Object>();
-			List<Object> localElectionBodyResult = new ArrayList<Object>();
-			for(Long constituencyId : locationIds){
-				Constituency constituency  = constituencyDAO.get(constituencyId);
-				if(constituency.getAreaType()!=null){
-					if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
-						urbanConstituencies.add(constituency.getConstituencyId());
-					}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
-						ruralConstituencies.add(constituency.getConstituencyId());
-					}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
-						urban_rural_constituencies.add(constituency.getConstituencyId());
-					}
-				}				
-			}
-			if(ruralConstituencies!=null && ruralConstituencies.size()!=0){				
-				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
-				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
-					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
-					constituencyResult.addAll(localElectionBodyResult);
-				}				
-			}
-			if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
-				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
-				if(tehsilIds!=null && tehsilIds.size()!=0){
-					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
-					constituencyResult.addAll(tehsilResult);
-				}				
-			}
-			if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
-				List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urban_rural_constituencies);
-				if(tehsilIds!=null && tehsilIds.size()!=0){
-					tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
-					constituencyResult.addAll(tehsilResult);
-				}				
-				List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(urban_rural_constituencies);
-				if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
-					localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
-					constituencyResult.addAll(localElectionBodyResult);
-				}				
+			if(constituencyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
+				List<Long> urbanConstituencies = new ArrayList<Long>();
+				List<Long> ruralConstituencies = new ArrayList<Long>();
+				List<Long> urban_rural_constituencies = new ArrayList<Long>();
+				List<Object> tehsilResult = new ArrayList<Object>();
+				List<Object> localElectionBodyResult = new ArrayList<Object>();
+				for(Long constituencyId : locationIds){
+					Constituency constituency  = constituencyDAO.get(constituencyId);
+					if(constituency.getAreaType()!=null){
+						if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
+							urbanConstituencies.add(constituency.getConstituencyId());
+						}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
+							ruralConstituencies.add(constituency.getConstituencyId());
+						}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
+							urban_rural_constituencies.add(constituency.getConstituencyId());
+						}
+					}				
+				}
+				if(ruralConstituencies!=null && ruralConstituencies.size()!=0){				
+					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
+					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
+						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
+						constituencyResult.addAll(localElectionBodyResult);
+					}				
+				}
+				if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
+					List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
+					if(tehsilIds!=null && tehsilIds.size()!=0){
+						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
+						constituencyResult.addAll(tehsilResult);
+					}				
+				}
+				if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
+					List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urban_rural_constituencies);
+					if(tehsilIds!=null && tehsilIds.size()!=0){
+						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
+						constituencyResult.addAll(tehsilResult);
+					}				
+					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(urban_rural_constituencies);
+					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
+						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
+						constituencyResult.addAll(localElectionBodyResult);
+					}				
+				}
 			}
 			return constituencyResult;
 		}
@@ -1493,9 +1499,11 @@ public class ProblemManagementReportService implements
 		 */
 		public List<Object> getAllAcceptedProblemsInADistrict(List<Long> locationIds, String locationType) {
 			List<Object> districtResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
-			List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
-			List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
-			districtResult.addAll(consituencyResult);
+			if(districtResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
+				List<Long> listOfconstituencies = constituencyDAO.getAllConstituencysByDistrictIds(locationIds,IConstants.ASSEMBLY_ELECTION_TYPE);
+				List<Object> consituencyResult = getAllAcceptedProblemsInAConstituency(listOfconstituencies,IConstants.CONSTITUENCY_LEVEL);
+				districtResult.addAll(consituencyResult);
+			}			
 			return districtResult;
 		}
 
@@ -1511,9 +1519,11 @@ public class ProblemManagementReportService implements
 		 */
 		public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType) {			
 			List<Object> stateResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
-			List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
-			List<Object> districtResult = getAllAcceptedProblemsInADistrict(listOfDistricts,IConstants.DISTRICT_LEVEL);
-			stateResult.addAll(districtResult);
+			if(stateResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
+				List<Long> listOfDistricts = districtDAO.getAllDistrictByStateIds(locationIds);
+				List<Object> districtResult = getAllAcceptedProblemsInADistrict(listOfDistricts,IConstants.DISTRICT_LEVEL);
+				stateResult.addAll(districtResult);
+			}		
 			return stateResult;
 		}
 		
