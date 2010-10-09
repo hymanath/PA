@@ -620,7 +620,7 @@ function buildProblemViewingWindow()
 		for(var i in constituencyPageMainObj.problemsInfo)
 		{
 			var data = constituencyPageMainObj.problemsInfo[i];			
-			str+='<div class="problemDataDivClass" onclick="buildMoreDetailsPopUp('+data.problemId+')">';
+			str+='<div class="problemDataDivClass" onclick="showProblemCompleteDetails('+data.problemId+')">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='<span> '+data.problem+' </span>';
 			str+='</div>';
@@ -636,7 +636,7 @@ function buildProblemViewingWindow()
 		bodyElmt.innerHTML=str;
 }
 
-function  buildMoreDetailsPopUp(selectedProblemId)
+function  showProblemCompleteDetails(selectedProblemId)
 {
 	for(var i in constituencyPageMainObj.problemsInfo)
 		{
@@ -1468,7 +1468,7 @@ function initializeConstituencyPage()
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
-   // buildRightlayoutMap();
+    buildRightlayoutMap();
     if(constituencyPageMainObj.forwardTask != null)
 	{
 		if(constituencyPageMainObj.forwardTask != "")
