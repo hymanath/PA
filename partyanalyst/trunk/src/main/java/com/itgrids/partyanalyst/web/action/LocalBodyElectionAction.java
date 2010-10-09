@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -25,11 +26,14 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -58,7 +62,27 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	private List<SelectOptionVO> localBodyTypes;
 	private List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyVO;
 	private LocalBodyElectionResultsVO localBodyElectionResults;
+	private List<ProblemBeanVO> problemBean;		
+	private IProblemManagementReportService problemManagementReportService;
 	
+	
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
+	public List<ProblemBeanVO> getProblemBean() {
+		return problemBean;
+	}
+
+	public void setProblemBean(List<ProblemBeanVO> problemBean) {
+		this.problemBean = problemBean;
+	}
+
 	public List<PartyElectionResultsInConstituencyVO> getPartyElectionResultsInConstituencyVO() {
 		return partyElectionResultsInConstituencyVO;
 	}
@@ -184,7 +208,9 @@ public class LocalBodyElectionAction extends ActionSupport implements
 				localBodyElectionResults.setHighLevelChart(chartName);
 			}
 		}
-		
+		List<Long> listOfLocalBodyElections = new ArrayList<Long>();
+		listOfLocalBodyElections.add(localBodyId);
+		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfLocalBodyElections,IConstants.LOCALELECTIONBODY).getApprovalProblems();
 		return Action.SUCCESS;
 	}
 	

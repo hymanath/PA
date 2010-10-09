@@ -416,13 +416,17 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			DistrictWisePartyResultVO allPartiesPositionsInElection) {
 		this.allPartiesPositionsInElection = allPartiesPositionsInElection;
 	}
-	
 	public NavigationVO getNavigationVO() {
 		return navigationVO;
 	}
 	public void setNavigationVO(NavigationVO navigationVO) {
 		this.navigationVO = navigationVO;
 	}
+	public void setServletContext(ServletContext context) {
+		this.context = context;		
+	}
+	
+	
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
@@ -470,7 +474,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL);	
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,"partial");	
 		//Free User
 		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
 			userDetails.setLoginStatus("true");
@@ -856,9 +860,4 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         chartColorsAndDataSetVO.setColorsSet(colorsSet);
         return chartColorsAndDataSetVO;
     }
-	public void setServletContext(ServletContext context) {
-		this.context = context;		
-	}
-	
-	
 }
