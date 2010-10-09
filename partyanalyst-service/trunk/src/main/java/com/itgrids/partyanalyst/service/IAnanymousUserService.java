@@ -14,5 +14,5 @@ public interface IAnanymousUserService {
 	
 	public ResultStatus checkForUserNameAvalilability(String userName);
 	
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType);
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,String retrivalCount);
 }

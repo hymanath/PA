@@ -201,13 +201,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param locationType
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType){
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,String retrivalCount){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();;
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Object> result = new ArrayList<Object>();
 		try{
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType);			
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
 			if(result!=null && result.size()!=0){
 				for(int i=0;i<result.size();i++){
 					Object[] parms = (Object[])result.get(i);
@@ -224,10 +224,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 			dataTransferVO.setCandidateVO(candidateDetails);
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			dataTransferVO.setResultStatus(resultStatus);		
-			System.out.println(dataTransferVO.getCandidateVO().size());
+			dataTransferVO.setResultStatus(resultStatus);	
 		}catch(Exception e){
-			e.printStackTrace();
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);

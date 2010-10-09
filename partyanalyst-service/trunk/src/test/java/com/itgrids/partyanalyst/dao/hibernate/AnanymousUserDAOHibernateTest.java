@@ -27,55 +27,14 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
-	/*public void testAnonymousUserLogin(){		
+	public void testAnonymousUserLogin(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkAnonymousUserLogin("ravi","kiran");	
 		assertEquals(detailsList.size(), 1);
-	}*/
+	}
 
-	/*public void testAvailabityOfUserNameForAnonymousUser(){		
+	public void testAvailabityOfUserNameForAnonymousUser(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkForUserNameAvailabiity("ravi");	
 		assertEquals(detailsList.size(), 1);
-	}*/
-	
-	public void testUserDataRetrivalByLocation(){		
-		List details = new ArrayList();
-		details.add(19l);
-		DataTransferVO detailsList = getAllRegisteredAnonymousUserBasedOnLocation(details,IConstants.DISTRICT_LEVEL);	
-		System.out.println(detailsList.getCandidateVO().size());
 	}
 	
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType){
-		ResultStatus resultStatus = new ResultStatus();
-		DataTransferVO dataTransferVO = new DataTransferVO();;
-		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
-		List<Object> result = new ArrayList<Object>();
-		try{
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType);			
-			if(result!=null && result.size()!=0){
-				for(int i=0;i<result.size();i++){
-					Object[] parms = (Object[])result.get(i);
-					CandidateVO candidateVO = new CandidateVO();
-					String lastName="";
-					if(parms[1]!=null){
-						lastName = parms[1].toString();
-					}
-					candidateVO.setCandidateName(parms[0].toString().concat(" ").concat(lastName));
-					candidateVO.setId(new Long(parms[2].toString()));
-					candidateDetails.add(candidateVO);
-				}
-			}			
-			dataTransferVO.setCandidateVO(candidateDetails);
-			resultStatus.setResultPartial(false);
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			dataTransferVO.setResultStatus(resultStatus);		
-			System.out.println(dataTransferVO.getCandidateVO().size());
-		}catch(Exception e){
-			e.printStackTrace();
-			resultStatus.setExceptionEncountered(e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			resultStatus.setResultPartial(true);
-			dataTransferVO.setResultStatus(resultStatus);	
-		}
-	return dataTransferVO;
-	} 
 }
