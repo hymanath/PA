@@ -47,10 +47,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(list.size(), 5);
 	}*/
 	
-	public void testFindByBoothAndConstiuencyElection(){
+	/*public void testFindByBoothAndConstiuencyElection(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection("200", new Long(1063));
 		assertEquals(list.size(), 5);
-	}
+	}*/
 	
 	/*public void testFindByConstituencyAndElection(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByConstituencyAndElection("kavali", "2004", new Long(2));
@@ -86,30 +86,6 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testmandalInfo()
-	{
-		List votersList  = boothConstituencyElectionDAO.findVoterInformationByMandalIdsAndDelimitationYear("849,851,852,853,854,859,860,862","2004", 235l);
-		List<VotersInfoForMandalVO> votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
-		for(int j = 0;j<votersList.size();j++)
-		{
-			VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
-			
-			Object[] vObj = (Object[]) votersList.get(j);
-			votersInfo.setMandalId( vObj[0].toString());
-			votersInfo.setMandalName(vObj[1].toString());
-			votersInfo.setTotalMaleVoters(vObj[2].toString());
-			votersInfo.setTotalFemaleVoters(vObj[3].toString());
-			votersInfo.setTotalVoters(vObj[4].toString());
-			
-			votersInfoForMandalList.add(votersInfo);
-		}
-		
-		for(VotersInfoForMandalVO obj : votersInfoForMandalList)
-		{
-			System.out.println(obj.getMandalId()+" - "+obj.getMandalName()+" - "+obj.getTotalVoters()+" - "+obj.getTotalMaleVoters()+" - "+obj.getTotalMaleVoters());
-		}
-	}*/
-	
 	/*public void test(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByConstituencyDistrictAndPartNo("Kavali", 19l, "243", "2009");
 		for(BoothConstituencyElection obj:list)
@@ -138,12 +114,6 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		List list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(3492l);
 		for(Object[] values:(List<Object[]>) list)
 			System.out.println(values[0]+" "+values[1]);
-	}*/
-	
-	/*public void testFindAssemblyConstituenciesDetailsForParliament(){
-		List list = boothConstituencyElectionDAO.findAssemblyConstituenciesDetailsForParliament("223,241,232,233,340,341,238", "2009");
-		for(Object[] values:(List<Object[]>)list)
-			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
 	}*/
 	
 	/*public void testFindBoothwiseResultsConstituency(){

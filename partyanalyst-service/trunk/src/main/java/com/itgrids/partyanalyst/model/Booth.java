@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
@@ -36,6 +37,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long totalVoters;
 	private Constituency constituency;
 	private LocalElectionBody localBody;
+	private BoothLocalBodyWard boothLocalBodyWard;
 	private Long year;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
@@ -206,6 +208,15 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setLocalBody(LocalElectionBody localBody) {
 		this.localBody = localBody;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
+	public BoothLocalBodyWard getBoothLocalBodyWard() {
+		return boothLocalBodyWard;
+	}
+
+	public void setBoothLocalBodyWard(BoothLocalBodyWard boothLocalBodyWard) {
+		this.boothLocalBodyWard = boothLocalBodyWard;
 	}
 
 	

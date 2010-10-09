@@ -15,6 +15,7 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	private Long totalPolledVotes;
 	private Long totalVoters;
 	private List<PartyElectionResultVO> partyElectionResultVOs;
+	private Boolean showLink = true;
 	
 	public Long getLocationId() {
 		return locationId;
@@ -46,5 +47,11 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	}
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
+	}
+	public Boolean getShowLink() {
+		return showLink;
+	}
+	public void setShowLink(Boolean showLink) {
+		this.showLink = showLink;
 	}
 }

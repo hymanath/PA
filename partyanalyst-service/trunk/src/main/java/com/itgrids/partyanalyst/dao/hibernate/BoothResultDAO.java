@@ -33,13 +33,11 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 	}
 	
 	public List getParliamentResultHappenedInAssembly(String ac, Long districtId, Long electionScopeId, String electionYear){
-		Object[] params = {ac, districtId, electionYear, electionScopeId, electionYear};
+		Object[] params = {ac, districtId, new Long(electionYear), electionScopeId};
 		return getHibernateTemplate().find("select count(model.boothResultId) from BoothResult model where " +
-				"model.boothConstituencyElection.booth.boothId in( select model1.booth.boothId from BoothConstituencyElection model1 " +
-				"where model1.constituencyElection.constituency.name = ? and model1.constituencyElection.constituency.district.districtId = ? " +
-				"and model1.constituencyElection.constituency.electionScope.electionType.electionType = '"+IConstants.ASSEMBLY_ELECTION_TYPE+"' " +
-				"and model1.constituencyElection.election.electionYear = ?) and model.boothConstituencyElection.constituencyElection." +
-				"constituency.electionScope.electionScopeId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+				"model.boothConstituencyElection.booth.constituency.name = ? and model.boothConstituencyElection.booth.constituency.district.districtId = ? " +
+				"and model.boothConstituencyElection.booth.year = ? and model.boothConstituencyElection.constituencyElection." +
+				"constituency.electionScope.electionScopeId = ?", params);
 	}
 	
 	public List getAllPolledVotesForMandalsInAnElection(String mandalIds, String electionYear, String electionType){

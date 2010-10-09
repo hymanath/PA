@@ -48,10 +48,8 @@ public interface IConstituencyPageService {
 	
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear,Boolean includeOthers);
 	
-	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear,String electionType,Boolean includeOthers);
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear,String electionType, Boolean includeOthers);
 		
-	public List<ConstituencyRevenueVillagesVO> getMandalElectionInfoForAParliamentConstituency(Long constituencyId,String electionYear);
-	
 	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO);
 	
 	public List<TeshilPartyInfoVO> getPartyWiseZptcOrMptcElectionDataForAConstituency(Long constituencyId,String electionYear,String electionType,String constituencyType);
@@ -69,6 +67,5 @@ public interface IConstituencyPageService {
 	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId);
 	
 	public ConstituencyRevenueVillagesVO getMandalsResultsInAnElectionForChart(String mandalIds, String electionYear, String electionType);
-	
 	
 }

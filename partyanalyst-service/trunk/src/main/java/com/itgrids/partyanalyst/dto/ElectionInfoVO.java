@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ElectionInfoVO {
 
+	private Long electionId;
 	private String electionTypeYear;
 	private String constituencyName;
 	private String constituencyId;
@@ -14,8 +15,8 @@ public class ElectionInfoVO {
     private Double votesPercentage;
     private Double completeVotesPercentage;
     private Long totalSeatsWon;
+    private String localBodyChartName;
     private String electionType;
-    
         
 	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
@@ -97,6 +98,22 @@ public class ElectionInfoVO {
 		this.totalValidVotes = totalValidVotes;
 	}
 
+	public Long getElectionId() {
+		return electionId;
+	}
+	
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public String getLocalBodyChartName() {
+		return localBodyChartName;
+	}
+
+	public void setLocalBodyChartName(String localBodyChartName) {
+		this.localBodyChartName = localBodyChartName;
+	}
+	
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
 	}
@@ -104,7 +121,6 @@ public class ElectionInfoVO {
 	public String getElectionType() {
 		return electionType;
 	}
-	
 	
 	
 }

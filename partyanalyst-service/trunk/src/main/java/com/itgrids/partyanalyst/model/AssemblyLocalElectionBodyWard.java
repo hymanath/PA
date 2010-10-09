@@ -33,7 +33,7 @@ public class AssemblyLocalElectionBodyWard extends BaseModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long assemblyLocalElectionBodyWardId;
-	private AssemblyLocalElectionBody assemblyLocaElectionBodyWard;
+	private AssemblyLocalElectionBody assemblyLocalElectionBody;
 	private Constituency constituency;
 	private String year;
 	
@@ -42,10 +42,10 @@ public class AssemblyLocalElectionBodyWard extends BaseModel {
 	}
 
 	public AssemblyLocalElectionBodyWard(Long assemblyLocalElectionBodyWardId,
-			AssemblyLocalElectionBody assemblyLocaElectionBodyWard, String year) {
+			AssemblyLocalElectionBody assemblyLocalElectionBody, String year) {
 		super();
 		this.assemblyLocalElectionBodyWardId = assemblyLocalElectionBodyWardId;
-		this.assemblyLocaElectionBodyWard = assemblyLocaElectionBodyWard;
+		this.assemblyLocalElectionBody = assemblyLocalElectionBody;
 		this.year = year;
 	}
 
@@ -64,13 +64,13 @@ public class AssemblyLocalElectionBodyWard extends BaseModel {
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "assembly_local_election_body_id")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AssemblyLocalElectionBody getAssemblyLocaElectionBodyWard() {
-		return assemblyLocaElectionBodyWard;
+	public AssemblyLocalElectionBody getAssemblyLocalElectionBody() {
+		return assemblyLocalElectionBody;
 	}
 
-	public void setAssemblyLocaElectionBodyWard(
-			AssemblyLocalElectionBody assemblyLocaElectionBodyWard) {
-		this.assemblyLocaElectionBodyWard = assemblyLocaElectionBodyWard;
+	public void setAssemblyLocalElectionBody(
+			AssemblyLocalElectionBody assemblyLocalElectionBody) {
+		this.assemblyLocalElectionBody = assemblyLocalElectionBody;
 	}
 
 	@Column(name="year", length=4)
@@ -93,14 +93,4 @@ public class AssemblyLocalElectionBodyWard extends BaseModel {
 		this.constituency = constituency;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -19,13 +19,14 @@ public class TeshilPartyInfoVO {
 	private Long totalSeats;
 	private Long totalWards;	
 	private int totalMuncipalities;
-	private List<TeshilPartyInfoVO> muncipalityVO; 
+	private List<TeshilPartyInfoVO> muncipalityVO;
 	private String latestMuncipalElectionYear;
 	private ResultStatus resultStatus;
 	private String chartName;
 	private Long partyId;
 	private String totalVotersInConstituency;
-	
+	private Long stateId;
+	private Long electionTypeId;
 	private Long partyWonSeats;
 	private Long partySecndPos;
 	private Long partyThirdPos;
@@ -211,5 +212,17 @@ public class TeshilPartyInfoVO {
 	}
 	public void setPartiPartiVotesPercent(String partiPartiVotesPercent) {
 		this.partiPartiVotesPercent = partiPartiVotesPercent;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
 	}
 }

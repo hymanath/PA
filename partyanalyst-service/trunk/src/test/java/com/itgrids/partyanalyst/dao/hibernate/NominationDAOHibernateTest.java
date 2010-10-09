@@ -569,7 +569,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetAllPartysSeatsStatusBasedOnRank(){
 		List results = nominationDAO.getResultsOfAllPartiesInLocalBodyELectionsBasedOnNthRank(488L, "2005", 3L);
@@ -581,6 +581,18 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Party ID :" + (Long)values[0] + " Party :" + (String)values[1] + " Seats Gained :" + values[2]);
 			}
 		}
+	}*/
+	
+	/*public void testFindAllElectionResultsForConstituencies(){
+		List list = nominationDAO.findAllElectionResultsForConstituencies("10876,10877,10878,10880, 10882");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
+	}*/
+	
+	public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
+		List list = nominationDAO.getLocalBodiesElecConstituenciesDetailsForAnElection(19l, "488, 478");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 	}
 	
 }

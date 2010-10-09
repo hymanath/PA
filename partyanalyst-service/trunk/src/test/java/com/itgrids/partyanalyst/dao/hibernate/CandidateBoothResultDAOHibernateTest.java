@@ -110,10 +110,10 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
 	}*/
-	/*
+	
 	/*public void testFindAssemblyWiseParliamentResultsForParties(){
 		long start = System.nanoTime();
-		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(231l, 403l, "2009");
+		List list = candidateBoothResultDAO.findAssemblyRegionResultsForPartiesForAConstituency(231l, 403l, "2009");
 		long end = System.nanoTime();
 		System.out.println((end-start)/1000000000);
 		for(int i=0; i<list.size(); i++)
@@ -127,13 +127,13 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 
-	public void testAssemblies(){
+	/*public void testAssemblies(){
 
 		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(50l,"2009");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 
-	}
+	}*/
 	
 	/*public void testGetcandidatesResultsByBoothConstiIds(){
 		List list = candidateBoothResultDAO.getcandidatesResultsByBoothConstiIds("2323,2324,2325,2326,2327,2328,2329,2330,2331,	2332,2333,				2334,				2335,				2336,				2337,				2338,				2339,				2340,				2341");
@@ -364,6 +364,15 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testGetPartNosOfAnElectionForAConstituency(){
 		List list = candidateBoothResultDAO.getPartNosOfAnElectionForAConstituency(341l, "2010");
 		System.out.println(list);
+	}*/
+	
+	/*public void testGetCandidatesResultsForElectionAndConstituencyByLocalElectionBody(){
+		//List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(232l, "2009");
+		//List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(232l,"2009");
+		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(232l,"2009");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
+		 
 	}*/
 	
 }

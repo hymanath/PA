@@ -42,8 +42,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List findPartNoConstituencyNameForTehsil(Long tehsilId,
 			String assemblyElectionType, String electionYear);
 	
-	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId);
-	
 	public List<BoothConstituencyElection> findByConstituencyDistrictAndPartNo(String constituencyName, Long districtId, String partNo, String year);
 	
 	public List<BoothConstituencyElection> findByBoothIds(String boothIds);
@@ -85,9 +83,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	@SuppressWarnings("unchecked")
 	public List findBoothwiseResultsConstituency(Long constituencyId);
     
-	@SuppressWarnings("unchecked")
-    public List getPreviousYearElectionDetails(Long electionId,Long constituencyId);
-
 	public List getBoothsInRevenueVillageForElection(Long townshipId, Long electionId);
 	
 	@SuppressWarnings("unchecked")
@@ -97,8 +92,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List getElectionIdForAElectionTypeAndYear(Long elecTypeId,String elecYear);
 	
 	public List findElectionsHappendInConstituency(Long constituencyId);
-	
-	public List findAssemblyConstituenciesDetailsForParliament(String assemblyIds, String electionYear);
 
 	public List findTotalBoothWiseValidVotesForConstituencyElection(
 			Long constituencyId, String electionYear);

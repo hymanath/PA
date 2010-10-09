@@ -74,8 +74,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			String acName, Long districtId, Long electionYear, String partNumber) {
 		Object[] params = {acName, districtId, electionYear, partNumber};
 		return getHibernateTemplate().find("from Booth model where model.constituency.name = ? and " +
-		"model.constituency.district.districtId = ? and model.year = (select max(model1.year) from Booth model1 where " +
-		"model1.year <= ?) and model.partNo = ?",params);
+		"model.constituency.district.districtId = ? and model.year = ? and model.partNo = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -83,8 +82,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			String acName, Long districtId, Long electionYear) {
 		Object[] params = {acName, districtId, electionYear};
 		return getHibernateTemplate().find("select count(model.boothId) from Booth model where model.constituency.name = ? and " +
-		"model.constituency.district.districtId = ? and model.year = (select max(model1.year) from Booth model1 where " +
-		"model1.year <= ?)",params);
+		"model.constituency.district.districtId = ? and model.year = ?",params);
 	}
 	
 	public List findBoothInfoByConstituencyIdAndYear(Long constituencyId, Long year){
@@ -107,4 +105,41 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		queryObject.setParameterList("boothIds", boothIds);
 		return queryObject.executeUpdate();
 	}
+	
+	public List findVotersInfoForConstituencyInAnYearByLocalElectionBody(Long constituencyId, Long year, String localBodyTypes){
+		Object[] params = {year, constituencyId, localBodyTypes};
+		return getHibernateTemplate().find("select model.localBody.localElectionBodyId, model.localBody.name, sum(model.maleVoters), " +
+				" sum(model.femaleVoters),sum(model.totalVoters) from Booth model where model.year = (select max(model1.year) from Booth model1 where " +
+				" model1.year <= ?) and model.constituency.constituencyId =? and model.localElectionBody.electionType.electionType in ("+localBodyTypes+")" +
+				" group by model.localBody.localElectionBodyId order by model.localBody.name",params);
+	}
+	
+	public List findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(Long constituencyId, Long year, String wardType){
+		Object[] params = {year, constituencyId, wardType};
+		return getHibernateTemplate().find("select model.boothLocalBodyWard.localBodyWard.constituencyId, model.boothLocalBodyWard.localBodyWard.name, " +
+				" sum(model.maleVoters), sum(model.femaleVoters),sum(model.totalVoters), model.boothLocalBodyWard.localBodyWard.localElectionBody.name, " +
+				" model.boothLocalBodyWard.localBodyWard.localElectionBody.electionType.electionType " +
+				" from Booth model where model.year = (select max(model1.year) from Booth model1 where model1.year <= ?) and " +
+				" model.constituency.constituencyId =? and model.boothLocalBodyWard.localBodyWard.localElectionBody.electionType.electionType = ? " +
+				" group by model.boothLocalBodyWard.localBodyWard.constituencyId order by model.boothLocalBodyWard.localBodyWard.name",params);
+	}
+	
+	public List findAssemblyConstituenciesDetailsForParliament(String assemblyIds, String electionYear){
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, sum(model.maleVoters)," +
+				"sum(model.femaleVoters), sum(model.totalVoters) from Booth model where model.constituency.constituencyId in("+assemblyIds+") " +
+				"and model.year = (select max(model1.year) from Booth model1 where model1.year <= ?) group by model.constituency.constituencyId " +
+				"order by model.constituency.name, model.year desc",new Long(electionYear));
+	}
+	
+	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId)
+	{
+		Object[] params = {new Long(year), constituencyId};
+		return getHibernateTemplate().find("select model.tehsil.tehsilId," +
+				" model.tehsil.tehsilName,sum(model.maleVoters),sum(model.femaleVoters),sum(model.totalVoters) " +
+				" from Booth model where model.tehsil.tehsilId in (" +mandalsIds+") and model.year = (select max(model1.year) from Booth model1 " +
+				" where model1.year <= ?) and model.constituency.constituencyId =? and model.localBody is null group by " +
+				" model.tehsil.tehsilId order by model.tehsil.tehsilName",params);
+	}
+	
+	
 }

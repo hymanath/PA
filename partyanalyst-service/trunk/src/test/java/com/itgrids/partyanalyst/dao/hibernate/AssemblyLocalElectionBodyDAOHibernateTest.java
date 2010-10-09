@@ -32,7 +32,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 	
 	public void testFindByConstituencyId()
 	{
-		List result = assemblyLocalElectionBodyDAO.findByConstituencyId(232l, "2010");
+		List result = assemblyLocalElectionBodyDAO.findByConstituencyId(232l);
 		System.out.println("Results Size:"+result.size());
 		for(int i = 0;i<result.size();i++)
 		{
@@ -44,7 +44,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}		
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetConstituencyByLocalelectionBodyId(){
 		List result = assemblyLocalElectionBodyDAO.findConstituencyByLocalELectionBody(562L, IConstants.DELIMITATION_YEAR.toString());
@@ -55,5 +55,5 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}
 
-	
+	*/
 }

@@ -11,12 +11,18 @@ public class PartyElectionResultsVO {
 
 	
 	private Long partyId;
+	private Long electionId;
+	private String electionYear;
+	private String electionType;
+	private Long lebId;
+	private String lebName;
 	private String partyName;
 	private Long candidateId;
 	private String candidateName;
 	private Long constituencyId;
 	private String constituencyName;
 	private Long votesEarned;
+	private Long totalVotes;
 	private Long rank;
 	private String votesPercentage;
 	private Double totalElectors;
@@ -158,6 +164,42 @@ public class PartyElectionResultsVO {
 	}
 	public void setMarginPercent(String marginPercent) {
 		this.marginPercent = marginPercent;
+	}
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public Long getLebId() {
+		return lebId;
+	}
+	public void setLebId(Long lebId) {
+		this.lebId = lebId;
+	}
+	public String getLebName() {
+		return lebName;
+	}
+	public void setLebName(String lebName) {
+		this.lebName = lebName;
+	}
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
 	}
 	
 	

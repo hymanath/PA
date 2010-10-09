@@ -376,7 +376,7 @@ public class ProblemManagementReportService implements
 			else
 				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(IConstants.MP,constituencyId);
 				
-			if(taskType!=null && taskType!=""){
+			if(taskType!=null && taskType!="" && tehsilIds.trim().length() > 0){
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);				
 			}
 			/**
@@ -384,7 +384,8 @@ public class ProblemManagementReportService implements
 			 */
 			
 			else{
-				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
+				if(tehsilIds.trim().length() > 0)
+					result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
 			}
 			problemBeanVO = populateProblemInfo(result,registrationId,taskType);
 			}catch(Exception e){
@@ -412,143 +413,124 @@ public class ProblemManagementReportService implements
 			if(log.isDebugEnabled())
 				log.debug("Entered into populateProblemInfo() method....");
 			try{
-			for(int i=0;i<list.size();i++){				
-				Object[] parms = (Object[]) list.get(i);
-				ProblemBeanVO problemBean = new ProblemBeanVO();
-				problemId = Long.parseLong(parms[4].toString());
-				if(!(parms[0].toString().equalsIgnoreCase("NEW") || parms[0].toString().equalsIgnoreCase("CLASSIFY"))){
-					if(log.isDebugEnabled())
-						log.debug("Making a DAO call to assignedProblemProgressDAO.findProblemsForAHamletByHistoryId() "); 
-					List result =  assignedProblemProgressDAO.findProblemsForAHamletByHistoryId(problemId);
-					if(result == null){
+				if(list != null)
+				for(int i=0;i<list.size();i++){				
+					Object[] parms = (Object[]) list.get(i);
+					ProblemBeanVO problemBean = new ProblemBeanVO();
+					problemId = Long.parseLong(parms[4].toString());
+					if(!(parms[0].toString().equalsIgnoreCase("NEW") || parms[0].toString().equalsIgnoreCase("CLASSIFY"))){
 						if(log.isDebugEnabled())
-							log.debug("0 rows have been retrived......");
-					}
-					else if(parms[0].toString().equalsIgnoreCase("ASSIGNED")){
-						for(int j=0;j<result.size();j++){
-							Object[] problemData = (Object[]) result.get(j);
-							departmentName = problemData[0].toString();
-							problemBean.setDepartment(problemData[0].toString());
-							problemBean.setDepartmentConcernedPersonName("Not Assigned.");
-							problemBean.setUpdatedDate("Not Assigned.");
-							problemBean.setContactNo("Not Assigned.");
-							problemBean.setDesignation("Not Assigned.");
+							log.debug("Making a DAO call to assignedProblemProgressDAO.findProblemsForAHamletByHistoryId() "); 
+						List result =  assignedProblemProgressDAO.findProblemsForAHamletByHistoryId(problemId);
+						if(result == null){
+							if(log.isDebugEnabled())
+								log.debug("0 rows have been retrived......");
+						}
+						else if(parms[0].toString().equalsIgnoreCase("ASSIGNED")){
+							for(int j=0;j<result.size();j++){
+								Object[] problemData = (Object[]) result.get(j);
+								departmentName = problemData[0].toString();
+								problemBean.setDepartment(problemData[0].toString());
+								problemBean.setDepartmentConcernedPersonName("Not Assigned.");
+								problemBean.setUpdatedDate("Not Assigned.");
+								problemBean.setContactNo("Not Assigned.");
+								problemBean.setDesignation("Not Assigned.");
+								}
+						}
+						else{
+							if(log.isDebugEnabled())
+								log.debug("Setting data into ProblemBeanVO......");
+							for(int j=0;j<result.size();j++){
+								Object[] problemData = (Object[]) result.get(j);
+								departmentName = problemData[0].toString();
+								problemBean.setDepartment(problemData[0].toString());
+								problemBean.setDepartmentConcernedPersonName(problemData[1].toString());
+								problemBean.setUpdatedDate(problemData[1].toString());
+								if(!(problemData[3]==null && problemData[4]==null)){
+									problemBean.setContactNo(problemData[3].toString());
+									problemBean.setDesignation(problemData[4].toString());
+								}
+								else{
+									problemBean.setContactNo(problemData[3].toString());
+									problemBean.setDesignation(problemData[4].toString());
+								}
 							}
+						}
+					}else{
+	
+						problemBean.setContactNo("Not Assigned.");
+						problemBean.setDesignation("Not Assigned.");
+						problemBean.setDepartment("Not Assigned.");
+						problemBean.setDepartmentConcernedPersonName("Not Assigned.");
+					}
+					
+					if(log.isDebugEnabled())
+						log.debug("Setting data into ProblemBeanVO......");
+					problemBean.setStatus(parms[0].toString());
+					problemBean.setHamlet(parms[1].toString());
+					dateConversion = dateConversion(parms[2].toString());
+					problemBean.setExistingFrom(dateConversion); 	
+					problemBean.setName(parms[3].toString());
+					problemBean.setProblemId(problemId);//Added ProblemId in this version Ravi Kiran.Y
+					if(parms[5]==null){
+						problemBean.setComments("No Comments received..");
+					}
+					else 
+						problemBean.setComments(parms[5].toString());
+					
+					userId = new Long(parms[10].toString());
+					if(userId!=0L){
+						if(parms[6]==null){
+							regUser = registrationDAO.findByUserRegistrationId(userId);					
+							for(Registration registerdUser : regUser){
+								problemBean.setPostedPersonName(registerdUser.getFirstName());
+								problemBean.setPhone(registerdUser.getMobile());
+								problemBean.setMobile(registerdUser.getPhone());
+								problemBean.setEmail(registerdUser.getEmail());
+								problemBean.setAddress(registerdUser.getAddress());			
+							}
+						}
+						else {
+							extRegUser = problemExternalSourceDAO.findByProblemExternalSourceId(Long.parseLong(parms[6].toString()));
+							for(ProblemExternalSource problemSource : extRegUser){
+								problemBean.setPostedPersonName(problemSource.getName());
+								problemBean.setPhone(problemSource.getMobile());
+								problemBean.setMobile(problemSource.getTelePhone());
+								problemBean.setEmail(problemSource.getEmail());
+								problemBean.setAddress(problemSource.getAddress());
+							}
+						}
 					}
 					else{
-						if(log.isDebugEnabled())
-							log.debug("Setting data into ProblemBeanVO......");
-						for(int j=0;j<result.size();j++){
-							Object[] problemData = (Object[]) result.get(j);
-							departmentName = problemData[0].toString();
-							problemBean.setDepartment(problemData[0].toString());
-							problemBean.setDepartmentConcernedPersonName(problemData[1].toString());
-							problemBean.setUpdatedDate(problemData[1].toString());
-							if(!(problemData[3]==null && problemData[4]==null)){
-								problemBean.setContactNo(problemData[3].toString());
-								problemBean.setDesignation(problemData[4].toString());
-							}
-							else{
-								problemBean.setContactNo(problemData[3].toString());
-								problemBean.setDesignation(problemData[4].toString());
-							}
-						}
 					}
-				}else{
-
-					problemBean.setContactNo("Not Assigned.");
-					problemBean.setDesignation("Not Assigned.");
-					problemBean.setDepartment("Not Assigned.");
-					problemBean.setDepartmentConcernedPersonName("Not Assigned.");
-				}
-				
-				if(log.isDebugEnabled())
-					log.debug("Setting data into ProblemBeanVO......");
-				problemBean.setStatus(parms[0].toString());
-				problemBean.setHamlet(parms[1].toString());
-				dateConversion = dateConversion(parms[2].toString());
-				problemBean.setExistingFrom(dateConversion); 	
-				problemBean.setName(parms[3].toString());
-				problemBean.setProblemId(problemId);//Added ProblemId in this version Ravi Kiran.Y
-				if(parms[5]==null){
-					problemBean.setComments("No Comments received..");
-				}
-				else 
-					problemBean.setComments(parms[5].toString());
-				
-				userId = new Long(parms[10].toString());
-				if(userId!=0L){
-					if(parms[6]==null){
-						regUser = registrationDAO.findByUserRegistrationId(userId);					
-						for(Registration registerdUser : regUser){
-							problemBean.setPostedPersonName(registerdUser.getFirstName());
-							problemBean.setPhone(registerdUser.getMobile());
-							problemBean.setMobile(registerdUser.getPhone());
-							problemBean.setEmail(registerdUser.getEmail());
-							problemBean.setAddress(registerdUser.getAddress());			
-						}
-					}
+					problemBean.setDescription(parms[7].toString());
+					problemBean.setProblemLocationId(Long.parseLong(parms[9].toString()));				
+									
+					if(parms[8]==null)
+						problemBean.setUpdatedDate("No Updations..");
 					else {
-						extRegUser = problemExternalSourceDAO.findByProblemExternalSourceId(Long.parseLong(parms[6].toString()));
-						for(ProblemExternalSource problemSource : extRegUser){
-							problemBean.setPostedPersonName(problemSource.getName());
-							problemBean.setPhone(problemSource.getMobile());
-							problemBean.setMobile(problemSource.getTelePhone());
-							problemBean.setEmail(problemSource.getEmail());
-							problemBean.setAddress(problemSource.getAddress());
+						dateConversion = dateConversion(parms[8].toString());
+						problemBean.setUpdatedDate(dateConversion); 
+					}			
+					/*
+					 * Modified in order to remove hard coding of status
+					 * Please check previous version to know exact modifications
+					 * @Author Ravi Kiran.Y
+					 * @Date 29-09-10
+					 * Starts from here.. 	
+					 */
+					if(taskType==null){
+					//Ends here..
+						if(taskType.equalsIgnoreCase(departmentName)){
+							if( !(problemBean.getDepartment().equalsIgnoreCase("Not Assigned."))){
+								problemBeanVO.add(problemBean);
+							}
 						}
 					}
-				}
-				else{
-				}
-				problemBean.setDescription(parms[7].toString());
-				problemBean.setProblemLocationId(Long.parseLong(parms[9].toString()));				
-								
-				// To get all the problem history details...
-				
-				/*
-				List result = problemHistoryDAO.findCompleteProblems(Long.parseLong(parms[9].toString()));
-				 List<ProblemHistoryVO> problemHistory = new ArrayList<ProblemHistoryVO>(0);
-				for(int j=0;j<result.size();j++){
-					Object[] problemData = (Object[])result.get(j);
-					ProblemHistoryVO problemHistoryVO = new ProblemHistoryVO();
-					problemHistoryVO.setProblemHistoryId(Long.parseLong(problemData[0].toString()));					
-					if(!(problemData[1]!= "null")){
-						problemHistoryVO.setComments(problemData[1].toString());
-					}					
-					problemHistoryVO.setMovedDate(problemData[2].toString());					
-					if(!(problemData[3]!= "null")){
-						problemHistoryVO.setIsDelete(problemData[3].toString());
-					}
-					problemHistory.add(problemHistoryVO);
-				}
-				problemBean.setProblemHistory(problemHistory);*/				
-				
-				if(parms[8]==null)
-					problemBean.setUpdatedDate("No Updations..");
-				else {
-					dateConversion = dateConversion(parms[8].toString());
-					problemBean.setUpdatedDate(dateConversion); 
-				}			
-				/*
-				 * Modified in order to remove hard coding of status
-				 * Please check previous version to know exact modifications
-				 * @Author Ravi Kiran.Y
-				 * @Date 29-09-10
-				 * Starts from here.. 	
-				 */
-				if(taskType==null){
-				//Ends here..
-					if(taskType.equalsIgnoreCase(departmentName)){
-						if( !(problemBean.getDepartment().equalsIgnoreCase("Not Assigned."))){
-							problemBeanVO.add(problemBean);
-						}
-					}
-				}
-				else{
-					problemBeanVO.add(problemBean);	
-				}				
-			}	
+					else{
+						problemBeanVO.add(problemBean);	
+					}				
+				}	
 			}catch(Exception e){
 				e.printStackTrace();
 				if(log.isDebugEnabled())

@@ -5,12 +5,11 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestCase {
 	
-	IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
@@ -21,7 +20,7 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
 	}	
 		
-	public void testFindByLocalElectionBody()
+	/*public void testFindByLocalElectionBody()
 	{
 		List result = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(562l, "2010");
 		System.out.println("Results Size:"+result.size());
@@ -31,5 +30,10 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 			System.out.println("id:"+Long.parseLong(obj[0].toString()));
 			System.out.println("name:"+obj[1].toString());			
 		}
+	}*/
+	
+	public void testFindByConstituencyIdAndYear(){
+		List list = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(315l, IConstants.GREATER_ELECTION_TYPE);
+		System.out.println(list.size());
 	}
 }

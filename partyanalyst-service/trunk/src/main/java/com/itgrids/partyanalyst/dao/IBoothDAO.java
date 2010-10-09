@@ -6,7 +6,6 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Tehsil;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{
@@ -40,5 +39,13 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public int updateLocalBodyInfoByBoothIdsAndWardId(Long localBody, List<Long> boothIds);
 	
 	public List<Booth> findByBoothIds(List<Long> boothIds);
+	
+	public List findVotersInfoForConstituencyInAnYearByLocalElectionBody(Long constituencyId, Long year, String localBodyTypes);
+	
+	public List findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(Long constituencyId, Long year, String wardType);
+	
+	public List findAssemblyConstituenciesDetailsForParliament(String assemblyIds, String electionYear);
+	
+	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId);
 	
 }

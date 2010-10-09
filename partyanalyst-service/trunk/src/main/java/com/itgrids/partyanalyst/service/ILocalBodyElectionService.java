@@ -9,8 +9,11 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 
 /*
  * Interface for Local Body Elections 
@@ -24,4 +27,10 @@ public interface ILocalBodyElectionService {
 	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAPartyInAnElection(Long localBodyId,Long stateId,Long electionId,Long partyId);
 	
 	public List<PartyElectionResultsInConstituencyVO> getLocalBodyElectionResultsForAWardInAnElection(Long localBodyId, Long stateId, Long electionId, Long wardId);
+	
+	public TeshilPartyInfoVO getMuncipalOrCorporationElectionsResultsForAnAssembly(Long electionId, Long constituencyId);
+	
+	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId);
+	
+	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception;
 }

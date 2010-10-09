@@ -31,8 +31,8 @@ public class PartyElectionResultVO implements Serializable {
 	private Long totalVoters;
 	private Long maleVoters;
 	private Long femaleVoters;
-	private String votesPercentage;
-	private BigDecimal votesPercent;
+	private String votesPercentage = "0";
+	private BigDecimal votesPercent = new BigDecimal(0);
 	private Long rank;
 	private Long totalBooths;
 	private String status;

@@ -151,16 +151,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId)
-	{
-		Object[] params = {year, constituencyId};
-		return getHibernateTemplate().find("select model.booth.tehsil.tehsilId," +
-				"model.booth.tehsil.tehsilName,sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothConstituencyElection model " +
-				"where model.booth.tehsil.tehsilId in (" +mandalsIds+") and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId =? " +
-						"group by model.booth.tehsil.tehsilId order by model.booth.tehsil.tehsilId",params);
-	}
-	
-	@SuppressWarnings("unchecked")
 	public List<BoothConstituencyElection> findByConstituencyDistrictAndPartNo(String constituencyName, Long districtId, String partNo, String year){
 		Object[] params = {constituencyName, districtId, partNo, year};
 		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId = (" +
@@ -329,12 +319,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-    public List getPreviousYearElectionDetails(Long electionId, Long constituencyId)
-	{   Object[] params = {electionId,constituencyId};
-		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionYear,Model.constituencyElection.election.electionId from BoothConstituencyElection Model where Model.constituencyElection.election.electionId != ? and Model.constituencyElection.constituency.constituencyId= ?", params);
-	}
-	
-	@SuppressWarnings("unchecked")
 	public List getPreviousElectionYearsDetails(String presentYear,Long constituencyId){
 		Object[] params = {presentYear,constituencyId};
 		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionYear,Model.constituencyElection.election.electionId,Model.constituencyElection.election.electionScope.electionType.electionTypeId from BoothConstituencyElection Model where Model.constituencyElection.election.electionYear != ? and Model.constituencyElection.constituency.constituencyId= ?", params);
@@ -359,14 +343,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				"BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId = ? order by model.constituencyElection.election.electionYear desc",constituencyId);
 	}
 	
-	public List findAssemblyConstituenciesDetailsForParliament(String assemblyIds, String electionYear){
-		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituency.name, sum(model.booth.maleVoters)," +
-				"sum(model.booth.femaleVoters), sum(model.booth.totalVoters) from BoothConstituencyElection model where " +
-				"model.constituencyElection.constituency.constituencyId in("+assemblyIds+") and " +
-						"model.constituencyElection.election.electionYear = ? group by model.constituencyElection.constituency.constituencyId order by " +
-						"model.constituencyElection.constituency.name, model.constituencyElection.election.electionYear desc",electionYear);
-	}
-
 	public List findTotalBoothWiseValidVotesForConstituencyElection(
 			Long constituencyId, String electionYear) {
 		Object[] params = {constituencyId, electionYear};

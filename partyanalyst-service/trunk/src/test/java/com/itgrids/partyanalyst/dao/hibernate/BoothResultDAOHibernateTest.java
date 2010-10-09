@@ -36,8 +36,8 @@ public class BoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	public void testGetParliamentResultHappenedInAssembly(){
-		List list = boothResultDAO.getParliamentResultHappenedInAssembly("Kavali", 19l, 2l, "2009");
-		System.out.println(list.size());
+		List list = boothResultDAO.getParliamentResultHappenedInAssembly("Amberpet", 5l, 1l, "2009");
+		System.out.println(list.get(0));
 	}
 	
 	/*public void testGetAllPolledVotesForMandalsInAnElection(){

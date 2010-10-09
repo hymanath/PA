@@ -2100,17 +2100,14 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> SelectOptionVO = new ArrayList<SelectOptionVO>(0);
 		Long stateId = 1l;
 		try{
-		/*	SelectOptionVO selectOption = new SelectOptionVO();
-			selectOption.setId(0l);
-			selectOption.setName("Select");
-			SelectOptionVO.add(selectOption);*/
+			SelectOptionVO selectOptionVO = null ;
 			List result = electionDAO.findElectionYearsForElectionTypeAndState(electionType,stateId);
 			for(int i=result.size()-1;i>=0;i--){
-				SelectOptionVO selectOptionVo = new SelectOptionVO();
+				selectOptionVO = new SelectOptionVO();
 				Object[] parms = (Object[])result.get(i);
-				selectOptionVo.setId(Long.parseLong(parms[1].toString()));
-				selectOptionVo.setName(parms[1].toString());
-				SelectOptionVO.add(selectOptionVo);
+				selectOptionVO.setId(Long.parseLong(parms[1].toString()));
+				selectOptionVO.setName(parms[1].toString());
+				SelectOptionVO.add(selectOptionVO);
 			}
 			return SelectOptionVO;
 		}catch(Exception e){
@@ -4166,6 +4163,10 @@ public class StaticDataService implements IStaticDataService {
 			 allMuncipalitiesVO.setMuncipalityId(Long.parseLong(parmss[1].toString()));
 			 allMuncipalitiesVO.setTotalWards(Long.parseLong(parmss[2].toString()));
 			 allMuncipalitiesVO.setTotalVoters((Double)parmss[3]);
+			 if(parmss.length == 6){
+				 allMuncipalitiesVO.setStateId(Long.parseLong(parmss[4].toString()));
+				 allMuncipalitiesVO.setElectionTypeId(Long.parseLong(parmss[5].toString()));	 
+			 }
 			 allMuncipalitiesVO.setLatestMuncipalElectionYear(latestMuncipalElectionYear);
 		     totalValidVotes = 0f;
 		     Map<String,Long> winningSeats =  new HashMap<String,Long>(0);

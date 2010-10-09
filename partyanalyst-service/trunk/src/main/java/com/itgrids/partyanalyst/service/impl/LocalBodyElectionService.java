@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -18,12 +19,16 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -37,9 +42,10 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyElectionResultVOByRankComparator;
 import com.itgrids.partyanalyst.utils.TehsilPartyInfoVOBySeatsWonComparator;
-import com.itgrids.partyanalyst.utils.TehsilPartyInfoVOCompareByWonSeats;
 
 public class LocalBodyElectionService implements ILocalBodyElectionService {
 
@@ -49,7 +55,9 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	private INominationDAO nominationDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	
+	private IStaticDataService staticDataService;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
@@ -82,6 +90,32 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
 	}
 
 	/*
@@ -209,10 +243,15 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<SelectOptionVO> getLocalBodyElectionsList(Long localBodyId,Long stateId) throws Exception{
+	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception{
 		List<SelectOptionVO> elections = null;
-		if(localBodyId != null && stateId != null){
-			List electionsList = constituencyElectionDAO.getLocalBodyElectionsInAState(localBodyId, stateId);
+		List electionsList = null;
+		if(localBody != null && stateId != null){
+			if(localBody instanceof Long)
+				electionsList = constituencyElectionDAO.getLocalBodyElectionsInAState((Long)localBody, stateId);
+			else
+				electionsList = electionDAO.getLocalBodyElectionsInAState(localBody.toString(), stateId);
+			
 			if(electionsList != null && electionsList.size() > 0){
 				
 				elections = new ArrayList<SelectOptionVO>();
@@ -226,8 +265,8 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				}
 			}
 		}
-	 return elections;
-	} 
+		return elections;
+	}
 	
 	/*
 	 * Method to get All Party Election results from DB and set to VO
@@ -634,7 +673,105 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				log.error(" Exception Raised :" + ex);
 			}
 			
-	 return partyResultsList;
+			return partyResultsList;
+	}
+	
+	public TeshilPartyInfoVO getMuncipalOrCorporationElectionsResultsForAnAssembly(Long electionId, Long constituencyId){
+		TeshilPartyInfoVO teshilPartyInfoVO = new TeshilPartyInfoVO();
+		Election election = electionDAO.get(electionId);
+		StringBuilder lebIds = new StringBuilder();
+		List result = null;
+		try {
+			List lebs = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			
+			for(Object[] values:(List<Object[]>)lebs){
+				if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(values[2].toString()))
+					lebIds.append(",").append(values[0]);
+			}
+			
+			if(lebIds.length() > 0){
+				result = nominationDAO.getLocalBodiesElecConstituenciesDetailsForAnElection(electionId, lebIds.toString().substring(1));
+				List<TeshilPartyInfoVO> allMuncipalities = staticDataService.getLocalElectionPartyDetails(result, election.getElectionYear(), 
+						election.getElectionScope().getElectionType().getElectionType());
+				teshilPartyInfoVO.setMuncipalityVO(allMuncipalities);
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return teshilPartyInfoVO;
+	}
+	
+	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId){
+		List wardsInfo = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(constituencyId, IConstants.GREATER_ELECTION_TYPE);
+		ConstituencyVO constituencyVO = new ConstituencyVO();
+		List<MandalVO> localElecBodies = new ArrayList<MandalVO>();
+		MandalVO mandalVO = null;
+		Map<Long, List<Object[]>> constituencyIdResultsMap = new LinkedHashMap<Long, List<Object[]>>();
+		StringBuilder wardIds = new StringBuilder(); 
+		for(Object[] values:(List<Object[]>)wardsInfo)
+			wardIds.append(",").append(values[0]);
+		
+		if(wardIds.toString().trim().length() == 0){
+			constituencyVO.setIsDataExists(false);
+			return constituencyVO;
+		}
+		
+		List allElectionsInfo = nominationDAO.findAllElectionResultsForConstituencies(electionId, wardIds.substring(1));
+		getAllElectionsInfo(constituencyIdResultsMap, allElectionsInfo);
+		for(Map.Entry<Long, List<Object[]>> entry:constituencyIdResultsMap.entrySet()){
+			mandalVO = new MandalVO();
+			mandalVO.setId(entry.getKey());
+			mandalVO.setName((entry.getValue().get(0)[4]).toString());
+			mandalVO.setElectionType((entry.getValue().get(0)[2]).toString());
+			mandalVO.setElectionYear((entry.getValue().get(0)[1]).toString());
+			mandalVO.setElectionTypeId((Long)entry.getValue().get(0)[15]);
+			mandalVO.setStateId((Long)entry.getValue().get(0)[14]);
+			mandalVO.setWardwiseResultsForParty(getSubDivisionswiseResults(entry.getValue()));
+			localElecBodies.add(mandalVO);
+		}
+		
+		constituencyVO.setLocalElectionsInfo(localElecBodies);
+		return constituencyVO;
+	}
+
+	private List<PartyElectionResultsVO> getSubDivisionswiseResults(
+			List<Object[]> results) {
+		List<PartyElectionResultsVO> wardswiseResults = new ArrayList<PartyElectionResultsVO>();
+		PartyElectionResultsVO wardAndPartyInfo = null;
+		for(Object[] wardResult:results){
+			wardAndPartyInfo = new PartyElectionResultsVO();
+			wardAndPartyInfo.setElectionId((Long)wardResult[0]);
+			wardAndPartyInfo.setElectionYear(wardResult[1].toString());
+			wardAndPartyInfo.setElectionType(wardResult[2].toString());
+			wardAndPartyInfo.setLebId((Long)wardResult[3]);
+			wardAndPartyInfo.setLebName(wardResult[4].toString());
+			wardAndPartyInfo.setConstituencyId((Long)wardResult[5]);
+			wardAndPartyInfo.setConstituencyName(wardResult[6].toString());
+			wardAndPartyInfo.setPartyId((Long)wardResult[7]);
+			wardAndPartyInfo.setPartyName(wardResult[8].toString());
+			wardAndPartyInfo.setVotesEarned(((Double)wardResult[9]).longValue());
+			wardAndPartyInfo.setVotesPercentage(wardResult[10].toString());
+			wardAndPartyInfo.setRank((Long)wardResult[11]);
+			wardAndPartyInfo.setCandidateName(wardResult[12].toString());
+			wardAndPartyInfo.setTotalVotes(((Double)wardResult[13]).longValue());
+			wardswiseResults.add(wardAndPartyInfo);
+		}
+		return wardswiseResults;
+	}
+
+	private void getAllElectionsInfo(
+			Map<Long, List<Object[]>> constituencyIdResultsMap,
+			List allElectionsInfo) {
+		Long lebId;
+		List<Object[]> results = null;
+		for(Object[] values:(List<Object[]>)allElectionsInfo){
+			lebId = (Long)values[3];
+			results = constituencyIdResultsMap.get(lebId);
+			if(results == null)
+				results = new ArrayList<Object[]>();
+			results.add(values);
+			constituencyIdResultsMap.put(lebId, results);
+		}
 	}
 
 }

@@ -271,4 +271,6 @@ public interface IStaticDataService {
 		public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType);
 		
 		public List<SelectOptionVO> getLocationsHirarchyByType(String type,Long id);
+		
+		public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType);
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ConstituencyVO {
+public class ConstituencyVO extends ResultStatus{
 	
 	private Long id;
 	private String name;
@@ -21,6 +21,7 @@ public class ConstituencyVO {
 	private Long totalVoters2009;
 	private Long totalPolledVotes;
 	private String votesPercent;
+	private List<MandalVO> localElectionsInfo;
 	
 	private Boolean isDataExists = true;
 	private List<PartyResultsVO> presentYearResults;
@@ -157,7 +158,11 @@ public class ConstituencyVO {
 	public void setIsDataExists(Boolean isDataExists) {
 		this.isDataExists = isDataExists;
 	}
-	
-	
+	public List<MandalVO> getLocalElectionsInfo() {
+		return localElectionsInfo;
+	}
+	public void setLocalElectionsInfo(List<MandalVO> localElectionsInfo) {
+		this.localElectionsInfo = localElectionsInfo;
+	}
 	
 }

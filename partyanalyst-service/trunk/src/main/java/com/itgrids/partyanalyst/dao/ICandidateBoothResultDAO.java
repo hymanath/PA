@@ -71,14 +71,10 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 
 	public List getAllACPCPartiesInRevenueVillage(Long townshipId);
 	
-	public List getCandidatesResultsForElectionAndConstituencyByMandal(Long constituencyId, String electionYear);
+	public List getCandidatesResultsForElectionAndConstituencyByMandal(Long constituencyId, String electionYear, String electionType);
 	
-	public List findAssemblyWiseParliamentResultsForParties(Long acId, Long pcId, String electionYear);
-	
-	public List getCandidatesResultsForElectionAndConstituencyByMandalByPaliamentWise(Long constituencyId,String mandalIds,String electionYear);
-	
-	public List getMandalsForAConstituencyForAGivenYear(Long constituencyId, String electionYear);
-	
+	public List findAssemblyRegionResultsForPartiesForAConstituency(Long acId, Long pcId, String electionYear);
+		
 	public List findAllPartiesElectionResultsInDistrictForElectionType(Long districtId, String electionType);
 
 	public List getcandidatesResultsByBoothConstiIds(String boothConstiElecIds);
@@ -127,5 +123,11 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getBoothwiseCandidateResultsForGivenPartNosInAnElectionYear(List partNos, String elecYear, Long constiId);
 
 	public List getPartNosOfAnElectionForAConstituency(Long constituencyId,	String electionYear);
+	
+	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(Long constituencyId, String electionYear, String electionType, 
+			String localBodyTypes);
+	
+	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(Long constituencyId, String electionYear, String electionType,
+			String localBodyType);
 	
 }

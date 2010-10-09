@@ -1293,6 +1293,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List getLocalBodiesElecConstituenciesDetailsForAnElection(Long electionId, String lebIds){
+		 return getHibernateTemplate().find("select model.constituencyElection.constituency.localElectionBody.name," +
+		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId," +
+		 		" model.constituencyElection.constituency.localElectionBody.noOfWards," +
+		 		" sum(model.constituencyElection.constituencyElectionResult.totalVotes)," +
+		 		" model.constituencyElection.constituency.localElectionBody.district.state.stateId," +
+				" model.constituencyElection.election.electionScope.electionType.electionTypeId " +
+		 		" from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId in("+lebIds+") and " +
+		    	" model.constituencyElection.election.electionId = ? group by " +
+		    	" model.constituencyElection.constituency.localElectionBody.localElectionBodyId ",electionId);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List getLocalElectionsCandidateDetailsInAConstituency(String electionType,String tehsilIds){		  
 		 return getHibernateTemplate().find("select model.constituencyElection.constituency.localElectionBody.name," +
 		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId," +
@@ -1672,6 +1685,21 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"constituency.name,model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank,"+
 				"model.party.partyFlag from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ? "+
 				"and model.constituencyElection.election.electionId = ? order by model.constituencyElection.constituency.constituencyId",params);
+	}
+	
+	public List findAllElectionResultsForConstituencies(Long electionId, String constituencyIds) {
+		return getHibernateTemplate().find("select model.constituencyElection.election.electionId, " +
+				"model.constituencyElection.election.electionYear, " +
+				"model.constituencyElection.election.electionScope.electionType.electionType, " +
+				"model.constituencyElection.constituency.localElectionBody.localElectionBodyId, " +
+				"model.constituencyElection.constituency.localElectionBody.name, model.constituencyElection.constituency.constituencyId, " +
+				"model.constituencyElection.constituency.name, model.party.partyId, model.party.shortName, model.candidateResult.votesEarned, " +
+				"model.candidateResult.votesPercengate, model.candidateResult.rank, model.candidate.lastname, " +
+				"model.constituencyElection.constituencyElectionResult.totalVotes," +
+				"model.constituencyElection.constituency.localElectionBody.district.state.stateId," +
+				"model.constituencyElection.election.electionScope.electionType.electionTypeId from Nomination model where " +
+				"model.constituencyElection.constituency.constituencyId in ("+constituencyIds+") and model.constituencyElection.election.electionId = ? " +
+				"order by model.constituencyElection.constituency.name, model.candidateResult.rank", electionId);
 	}
 	
 }
