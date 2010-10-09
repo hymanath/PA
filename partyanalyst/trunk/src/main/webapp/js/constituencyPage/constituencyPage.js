@@ -1481,3 +1481,48 @@ function initializeConstituencyPage()
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
 	
 }
+
+function getMunicipalityResults()
+{
+	var lebElmt = document.getElementById("municipalitySelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"municipalElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getCoroporationResults()
+{
+	var lebElmt = document.getElementById("corporationSelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"corporationElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getGreaterResults()
+{
+	var lebElmt = document.getElementById("greaterSelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"greaterElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGreaterConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}

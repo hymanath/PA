@@ -7,9 +7,12 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,14 +25,19 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -62,6 +70,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	private List<SelectOptionVO> localBodyTypes;
 	private List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyVO;
 	private LocalBodyElectionResultsVO localBodyElectionResults;
+	private TeshilPartyInfoVO teshilPartyInfoVO;
+	private ConstituencyVO greaterInfo;
 	private List<ProblemBeanVO> problemBean;		
 	private IProblemManagementReportService problemManagementReportService;
 	
@@ -199,6 +209,22 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		this.localBodyElectionResults = localBodyElectionResults;
 	}
 
+	public TeshilPartyInfoVO getTeshilPartyInfoVO() {
+		return teshilPartyInfoVO;
+	}
+
+	public void setTeshilPartyInfoVO(TeshilPartyInfoVO teshilPartyInfoVO) {
+		this.teshilPartyInfoVO = teshilPartyInfoVO;
+	}
+
+	public ConstituencyVO getGreaterInfo() {
+		return greaterInfo;
+	}
+
+	public void setGreaterInfo(ConstituencyVO greaterInfo) {
+		this.greaterInfo = greaterInfo;
+	}
+
 	public String execute(){
 		
 		localBodyElectionResults = localBodyElectionService.getLocalBodyElectionResultsByLocalBodyTypeAndYear(localBodyId, stateId);
@@ -311,7 +337,6 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String series3 = "3rd Position";
 		String series4 = "Nth Position";
 		
-		
 		if(partyResultsVO != null && partyResultsVO.size() > 0){
 			for(TeshilPartyInfoVO resultsList:partyResultsVO){
 				dataset.addValue(resultsList.getPartyWonSeats(), resultsList.getPartyName(), series1);
@@ -321,6 +346,89 @@ public class LocalBodyElectionAction extends ActionSupport implements
 			}
 		}
 	 return dataset;
+	}
+	
+	public String getLocalElectionBodyOverallResults(){
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		}catch (ParseException e) {
+			e.printStackTrace();
+			log.error("Exception Raised :" + e);
+		}
+		
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
+		teshilPartyInfoVO = localBodyElectionService.getMuncipalOrCorporationElectionsResultsForAnAssembly(localBodyElectionId, constituencyId);
+		String title = "";
+		String pieChartName = "";
+		String pieChartPath = "";
+		if(teshilPartyInfoVO.getMuncipalityVO() != null)
+		for(TeshilPartyInfoVO lebParty:teshilPartyInfoVO.getMuncipalityVO()){
+			title = "All Parties Performance In "+lebParty.getMuncipalityName()+" In "+lebParty.getLatestMuncipalElectionYear();
+			pieChartName = "lebInfo_"+lebParty.getMuncipalityName()+"_"+lebParty.getLatestMuncipalElectionYear()+".png";
+			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
+			if(lebParty.getMuncipalityVO().size() > 0)
+				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(lebParty.getMuncipalityVO()), pieChartPath, 
+						null,true,260,270);
+			lebParty.setChartName(pieChartName);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String getGreaterElectionsOverallResults(){
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		}catch (ParseException e) {
+			e.printStackTrace();
+			log.error("Exception Raised :" + e);
+		}
+		Set<String> partiesInChart = null;
+		Long constituencyId = jObj.getLong("constituencyId");
+		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
+		greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(localBodyElectionId, constituencyId);
+		if(greaterInfo.getLocalElectionsInfo() != null){
+			for(MandalVO electionInfoVO:greaterInfo.getLocalElectionsInfo()){
+				String lebChartName = "localElectionBodiesChart"+electionInfoVO.getName()+"_"+electionInfoVO.getId()+".png";
+		        String chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
+		        partiesInChart = new LinkedHashSet<String>();
+		   		if(electionInfoVO.getWardwiseResultsForParty().size() > 0)
+		   			ChartProducer.createLineChart("All Parties Performance In GHMC Elections Of "+electionInfoVO.getElectionYear(), "Wards", "Percentages", 
+		   				createDatasetForLEB(electionInfoVO, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true );
+		   		electionInfoVO.setChartName(lebChartName);
+			}
+		}
+		return SUCCESS;
+	}
+	
+	
+	private CategoryDataset createDatasetForLEB(MandalVO electionInfoVO,
+			Set<String> partiesInChart) {
+		 final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		 for(PartyElectionResultsVO ward:electionInfoVO.getWardwiseResultsForParty()){
+			 partiesInChart.add(ward.getPartyName());
+			 dataset.addValue(new BigDecimal(ward.getVotesPercentage()), ward.getPartyName(),
+					 ward.getConstituencyName());
+		 }
+		 return dataset;
+	}
+	
+	private DefaultPieDataset createPieDatasetForVoters(List<TeshilPartyInfoVO> wards) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		for(TeshilPartyInfoVO ward:wards)
+			dataset.setValue(ward.getPartyName(), new BigDecimal(ward.getPercentageOfVotesWonByParty()));
+			
+		return dataset;
 	}
 	
 }

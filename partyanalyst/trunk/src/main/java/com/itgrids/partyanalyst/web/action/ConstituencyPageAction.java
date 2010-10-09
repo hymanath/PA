@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
+import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
@@ -116,6 +117,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private String mptcElectionType,zptcElectionType,muncipalityElectionType,corporationElectionType;
 	 private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
 	 private EntitlementsHelper entitlementsHelper;
+	 private ILocalBodyElectionService localBodyElectionService;
+	 
+	 private List<SelectOptionVO> municipalElections;
+	 private List<SelectOptionVO> greaterElections;
+	 private List<SelectOptionVO> corporateElections;
 	 
 	 private String forwardTask = null;
 	 
@@ -531,6 +537,39 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.navigationVO = navigationVO;
 	}
 
+	public ILocalBodyElectionService getLocalBodyElectionService() {
+		return localBodyElectionService;
+	}
+
+	public void setLocalBodyElectionService(
+			ILocalBodyElectionService localBodyElectionService) {
+		this.localBodyElectionService = localBodyElectionService;
+	}
+
+	public List<SelectOptionVO> getMunicipalElections() {
+		return municipalElections;
+	}
+
+	public void setMunicipalElections(List<SelectOptionVO> municipalElections) {
+		this.municipalElections = municipalElections;
+	}
+
+	public List<SelectOptionVO> getGreaterElections() {
+		return greaterElections;
+	}
+
+	public void setGreaterElections(List<SelectOptionVO> greaterElections) {
+		this.greaterElections = greaterElections;
+	}
+
+	public List<SelectOptionVO> getCorporateElections() {
+		return corporateElections;
+	}
+
+	public void setCorporateElections(List<SelectOptionVO> corporateElections) {
+		this.corporateElections = corporateElections;
+	}
+
 	public String execute() throws Exception{
 				
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
@@ -577,8 +616,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 		log.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
 		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
-		
+		Set<String> partiesInChart = null;
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		
 		String pieChart = "";
 		String pieChartPath = "";
 		String title = "";
@@ -639,7 +679,6 @@ public class ConstituencyPageAction extends ActionSupport implements
         chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
        
-        Set<String> partiesInChart = null;
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
    				createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true );
@@ -651,6 +690,10 @@ public class ConstituencyPageAction extends ActionSupport implements
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
    				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);
 		
+   		municipalElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.MUNCIPLE_ELECTION_TYPE, 1l);
+   		corporateElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.CORPORATION_ELECTION_TYPE, 1l);
+   		greaterElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.GREATER_ELECTION_TYPE, 1l);
+   		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
    		
@@ -1134,8 +1177,8 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		electionTypeChartVO.setElectionYear(electionYear);	
 			
 	}
-  
-  public String getCandidateWiseConstituencyZptcOrMptcElectionTrends(){
+	
+	public String getCandidateWiseConstituencyZptcOrMptcElectionTrends(){
 
 	    if(task != null){
 			try {
@@ -1174,11 +1217,8 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		}	
 	    }
 	  return SUCCESS;
-}
-  
-  
-  
-  
+	}
+
   public String getParliamentConstituencyAssemblyWiseResults(){
 	  
 	  String param = getTask();
@@ -1205,7 +1245,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Mandals";
-			
+
 			detailedChartName = "detailedPartyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			detailedChartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			detailedDomainAxisName = "Mandals";
@@ -1230,9 +1270,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
         partiesInChart = new LinkedHashSet<String>();
         ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);   
 		}
-		else{
-			constituencyRevenueVillagesVO.setChartPath(null);
-		}
+		
 	  return SUCCESS;
   }
   
@@ -1243,15 +1281,20 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
   	  for(ConstituencyOrMandalWiseElectionVO constiInfoVO:constituencyObj.getConstituencyOrMandalWiseElectionVO()){
   		pariesInfo = constiInfoVO.getPartyElectionResultVOs();
   		for(int i=0; i<pariesInfo.size(); i++){
-  			partiesInChart.add(candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]");
-  			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]", constiInfoVO.getLocationName());	
-  			pariesInfo.get(i).setVotesPercent(new BigDecimal(pariesInfo.get(i).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
+  			try{
+  				partiesInChart.add(candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]");
+  	  			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]", constiInfoVO.getLocationName());	
+  	  			pariesInfo.get(i).setVotesPercent(new BigDecimal(pariesInfo.get(i).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
+  			}catch (Exception e) {
+  				e.printStackTrace();
+			}
   		}        		
       }
       return dataset;
   }
 	
   public String getAssemblyRelatedParliamentsMandalResults(){
+	  
 	  try{
 		  jObj = new JSONObject(getTask());
 		  System.out.println("jObj = "+jObj);
@@ -1262,25 +1305,25 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  String chartPath = "",detailedChartPath = null;
 	  String chartName = "",detailedChartName = null;
 	  String domainAxisName = "Mandals",detailedDomainAxisName = null;
-	  parliamentMandals = constituencyPageService.getMandalElectionInfoForAParliamentConstituency(jObj.getLong("constituencyId"), jObj.getString("electionYear"));
+	  constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.PARLIAMENT_ELECTION_TYPE, false);
 	  
-	  for(ConstituencyRevenueVillagesVO obj:parliamentMandals){
-		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
-		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+	  if(constituencyRevenueVillagesVO != null){
+		  chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
+		  chartName = "mandalWiseParliamentElectionsResults_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		  Set<String> partiesInChart = null;
 		  partiesInChart = new LinkedHashSet<String>();
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true);
-		  obj.setChartPath(chartName);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true);
+		  constituencyRevenueVillagesVO.setChartPath(chartName);
 		  
-		  detailedChartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
-		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+		  detailedChartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
+		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
 		  partiesInChart = new LinkedHashSet<String>();
-		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);
-		  obj.setDetailedChartPath(detailedChartName);
+		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);
+		  constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
 	  }
-	  
+	 
 	  return SUCCESS;
   }
   

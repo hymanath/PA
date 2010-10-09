@@ -122,27 +122,35 @@ function showHamletBoothMappings(){
 		errorDivEl.innerHTML = '';
 	}		
 	var str = '';
-	str += '<table>';
-	str += '<tr><th>Village</th>';
-	str += '<th>Booth No</th>';
-	str += '<th>Locations Covered</th></tr>';	
+	str += '<table width="100%">';
+	str += '<tr><th width="50" align="left">Village</th>';
+	str += '<th width="50" align="left">Booth No</th>';
+	str += '<th align="left">Locations Covered</th></tr>';
+	str +='</table>';
+	str += '<div style="overflow:auto;height:400px;">';
+	str +='<table width="100%">';	
 	for(var i in boothIds){
 		str += '<tr>';
-		str += '<td>'+locationName+'</td>';
-		str += '<td>'+document.getElementById(boothIds[i]+"_partNo").innerHTML+'</td>';
+		str += '<td width="50">'+locationName+'</td>';
+		str += '<td width="50">'+document.getElementById(boothIds[i]+"_partNo").innerHTML+'</td>';
 		str += '<td>'+document.getElementById(boothIds[i]+"_villagesCovered").innerHTML+'</td>';
 		str += '</tr>';
 	}
+	str += '</table>';
+	str += '</div>';
+	str += '<table>';
 	str += '<tr>';
 	str += '<td align="center"><input type="button" value="Confirm" onclick="sendDataToAction()" align = "middle"/></td>';
 	str += '<td><input type="button" value="Cancel" onclick="hidePanel()" align = "middle"/></td>';
 	str += '</tr>';
+	str += '</table>';
+	
 	myPanel = new YAHOO.widget.Panel("boothHamletMapPanel", {
             width: "450px", 
             fixedcenter: true, 
             constraintoviewport: false, 
             underlay: "none", 
-            close: false, 
+            close: true, 
             visible: true, 
             draggable: true
     });
@@ -234,7 +242,7 @@ function showHamletBoothMappings(){
 		<div id="boothsList"></div>
 		<div id="hamletButtonDiv" ></div>
 		<div class="yui-skin-sam">
-			<div id="boothHamletMapPanel"></div>
+			<div id="boothHamletMapPanel" ></div>
 		</div>	
 				
 		<script type="text/javascript">

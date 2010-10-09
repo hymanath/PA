@@ -32,6 +32,7 @@
 		
 		//boothResultsajaxCall(boothjsObj);	
 	}
+	
 
 	function boothResultsajaxCall(boothParam)
 	{

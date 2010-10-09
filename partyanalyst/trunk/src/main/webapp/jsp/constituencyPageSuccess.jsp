@@ -82,6 +82,16 @@
 			font-size:13px;
 			font-weight:bold;
 		}
+		
+	.localBodyHeadStyle{
+			color:#247CD4;
+			font-size:13px;
+			font-weight:bold;
+			margin-bottom:5px;
+			margin-left:0;
+			margin-top:0;
+			padding:4px;
+	}
 </style>
 <script type="text/javascript"><!--
 	var constituencyResults,createGroupDialog;
@@ -148,7 +158,16 @@
 								}else if(jsObj.task == "getProblemDetails")
 								{									
 									showProblemsHistoryReport(myResults);			
-								}		
+								}else if(jsObj.task == "municipalElectionsInfo")
+								{									
+									showMunicipalInfo(myResults);			
+								}else if(jsObj.task == "corporationElectionsInfo")
+								{									
+									showCorporationInfo(myResults);			
+								}else if(jsObj.task == "greaterElectionsInfo")
+								{									
+									showGreaterInfo(myResults);			
+								}
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -240,69 +259,76 @@
 		var str = '';
 		var details = document.getElementById("detailsDiv");
 		var detailsDIV = '';
-		for(var i in parliamentResult){
-			str += '<div><img src="charts/'+parliamentResult[i].chartPath+'"></div>';
-			detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult[i].detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
-			str += '<div id="parliamentElecResDiv_'+i+'" style="margin-top:20px;">';
-			str += '<table id = "parliamentElecResTable_'+i+'">';
-			for(var j in parliamentResult[i].constituencyOrMandalWiseElectionVO){
-				str += '<tr>';
-				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
-				for(var k in parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
-					if(checked == 'number')
-						str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
-					else
-						str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
-				}
-				str += '</tr>';
-			}
-			str += '</table>';
-			str += '</div>';
+
+		if(parliamentResult == null){
+			detailsDIV += 'No Data Available';
+			return;	
 		}
+		
+		str += '<div><img src="charts/'+parliamentResult.chartPath+'"></div>';
+		detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
+		str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
+		str += '<table id = "parliamentElecResTable">';
+		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
+			str += '<tr>';
+			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
+				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
+			else
+				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
+			for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
+				if(checked == 'number')
+					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
+				else
+					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
+			}
+			str += '</tr>';
+		}
+		str += '</table>';
+		str += '</div>';
+		
 		parliamentDiv.innerHTML = str;
 		if(counter!=0){
 			details.innerHTML = detailsDIV;
 		}
 		
-		for(var i in parliamentResult){
-			 var myColumnDefs = new Array();
-			 var myFields = new Array();
-			 
-			 var villageHead = {
-			 			key:"Mandal",
-			 			lable: "Mandal",
-			 			sortable:true
-				   }
+		 var myColumnDefs = new Array();
+		 var myFields = new Array();
+		 
+		 var villageHead = {
+		 			key:"Mandal",
+		 			lable: "Mandal",
+		 			sortable:true
+			   }
 
-			 var villageValue = {key:"Mandal"}
+		 var villageValue = {key:"Mandal"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+		 
+
+		 for(var j in parliamentResult.candidateNamePartyAndStatus){
+			var obj1 = {
+						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+						label:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+						sortable:true
+					}
+			var obj2 = {
+						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
+						parser:"number"
+					}
+			myColumnDefs.push(obj1);
+			myFields.push(obj2);
+		 }
+
+		 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+					.get("parliamentElecResTable")); 
+		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+		 myDataSource.responseSchema = { 
+								            fields:myFields    
+								        };
+		        
+		var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColumnDefs, myDataSource);
 		
-			 myColumnDefs.push(villageHead);
-			 myFields.push(villageValue);
-			 
-
-			 for(var j in parliamentResult[i].candidateNamePartyAndStatus){
-				var obj1 = {
-							key:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
-							label:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
-							sortable:true
-						}
-				var obj2 = {
-							key:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
-							parser:"number"
-						}
-				myColumnDefs.push(obj1);
-				myFields.push(obj2);
-			 }
-
-			 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-						.get("parliamentElecResTable_"+i)); 
-			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
-			 myDataSource.responseSchema = { 
-									            fields:myFields    
-									        };
-			        
-			var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv_"+i,myColumnDefs, myDataSource);
-		}
 		
 	}
 	
@@ -460,6 +486,8 @@ function getConstituencyElections(){
 }
 
 function buildConstituencyElecResultsDataTable(value){	
+	if(constituencyResults == null)
+		return;
 	if(constituencyResults.electionType == 'Assembly'){		
 		var parliamentButtonDiv = document.getElementById("parliamentResultsButtonDiv");
 		var str = '';
@@ -496,7 +524,8 @@ function buildConstituencyElecResultsDataTable(value){
 	str += '<table id = "elecResTable">';
 	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
 		str += '<tr>';
-		if(constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName == 'Others *')
+		if(constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName == 'Others *' || 
+				!constituencyResults.constituencyOrMandalWiseElectionVO[i].showLink)
 			str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
 		else
 		if(constituencyResults.electionType == 'Assembly')
@@ -840,8 +869,49 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 		</div>
 		</td>
 		</tr>
-		
-		
+	<!-- Local Elections Info -->	
+		<tr>		
+			<td colspan="2">
+				<div id="LocalElectionsDiv" class="rounded" style="width: 910px;">
+					<div class="corner topLeft"></div>
+					<div class="corner topRight"></div>
+					<div class="corner bottomLeft"></div>
+					<div class="corner bottomRight"></div>
+					<div id="LocalElections_heading" class="layoutHeadersClass">All Local Elections Happened In Constituency</div>
+					<table width="100%">
+						<tr>
+							<td>
+								<div id = "muncipalDiv">
+									<div>
+										<b>Select Municipal Election&nbsp;:&nbsp;</b><s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name" onchange="getMunicipalityResults()"></s:select>		
+									</div>
+									<div id="municipalityData_main"></div>
+								</div>
+							</td>
+							<td>
+								<div id = "corporationDiv">
+									<div>
+										<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
+									</div>
+									<div id="coroporationData_main"></div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id = "greaterDiv">
+									<div>
+										<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
+									</div>
+									<div id="GHMCData_main"></div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	<!-- Local Elections Info -->	
 		<tr>
 			<td colspan="2">
 			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
@@ -1013,6 +1083,159 @@ function buildElectionResults()
 	
 	if(BodyElmt)
 		BodyElmt.innerHTML=elecStr;
+}
+
+/*if(imgElmt.style.display == "block")
+{
+      imgElmt.style.display = "none";
+}*/
+
+function showCorporationInfo(myResults){
+	var HeadElmt = document.getElementById('coroporationData_main');
+	if(myResults.muncipalityVO == null){
+		var showDiv = document.getElementById('corporationDiv');
+		showDiv.style.display = "none";
+	}
+	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation");
+}
+
+function buildCorpOrMunicipTable(divId, myResults, elecType){
+	var str = '';
+	for(var i in myResults.muncipalityVO){
+		str += '<div  class="localBodyHeadStyle">';
+		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">'+myResults.muncipalityVO[i].muncipalityName+'</a> '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</div>';
+		str += '<table><tr>';
+		str += '<td><div id=\"'+elecType+'TableDiv_'+i+'\"></div></td>';
+		str += '<td><div><img src=\"charts\\'+myResults.muncipalityVO[i].chartName+'\"></div></td>';
+		str += '</tr></table>';
+	}
+	divId.innerHTML = str;
+	buildDataTable(elecType);
+}
+
+function buildDataTable(elecType){
+
+	for(var i in myResults.muncipalityVO){
+		var resultsDataSource = new YAHOO.util.DataSource(myResults.muncipalityVO[i].muncipalityVO);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "partyName"
+			}, {
+				key : "participatedSeats"
+			}, {
+				key : "seatsWonByParty"
+			}, {
+				key : "percentageOfVotesWonByParty"
+			}]
+		};
+
+		var resultsColumnDefs = [ {
+			key : "partyName",
+			label : "Party",
+			sortable : true
+		}, {
+			key : "participatedSeats",
+			label : "Seats Contested",
+			sortable : true
+		}, {
+			key : "seatsWonByParty",
+			label : "Won",
+			sortable : true
+		}, {
+			key : "percentageOfVotesWonByParty",
+			label : "Votes %",
+			sortable : true
+		} ];		
+		myDataTableForMptcParty = new YAHOO.widget.DataTable(elecType+"TableDiv_"+i,resultsColumnDefs, resultsDataSource,null);
+	}
+	
+}
+
+function showMunicipalInfo(myResults){
+	var HeadElmt = document.getElementById('municipalityData_main');
+	if(myResults.muncipalityVO == null){
+		var showDiv = document.getElementById('muncipalDiv');
+		showDiv.style.display = "none";
+	}
+	buildCorpOrMunicipTable(HeadElmt, myResults, "Municipality");
+}
+
+function showGreaterInfo(myResults){
+	var HeadElmt = document.getElementById('GHMCData_main');
+	if(myResults.localElectionsInfo == null){
+		var showDiv = document.getElementById('greaterDiv');
+		showDiv.style.display = "none";
+	}
+	var str = '';
+	for(var i in myResults.localElectionsInfo){
+		str += '<div class="localBodyHeadStyle">';
+		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">'+myResults.localElectionsInfo[i].name+'</a> In ' +myResults.localElectionsInfo[i].electionYear+'</div>';
+		str += '<div><img src=\"charts\\'+myResults.localElectionsInfo[i].chartName+'\"></div>';
+		str += '<div id=\"greaterTableDiv_'+i+'\"></div>';
+	}
+	HeadElmt.innerHTML = str;
+	for(var i in myResults.localElectionsInfo){
+		var resultsDataSource = new YAHOO.util.DataSource(myResults.localElectionsInfo[i].wardwiseResultsForParty);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "partyName"
+			}, {
+				key : "candidateName"
+			}, {
+				key : "votesEarned"
+			}, {
+				key : "votesPercentage"
+			}, {
+				key : "rank"
+			}, {
+				key : "totalVotes"
+			}]
+		};
+
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Ward",
+			sortable : true
+		}, {
+			key : "partyName",
+			label : "Party",
+			sortable : true
+		}, {
+			key : "candidateName",
+			label : "Candidate",
+			sortable : true
+		}, {
+			key : "votesEarned",
+			label : "Votes Gained",
+			sortable : true
+		}, {
+			key : "votesPercentage",
+			label : "Votes %",
+			sortable : true
+		}, {
+			key : "rank",
+			label : "Rank",
+			sortable : true
+		}, {
+			key : "totalVotes",
+			label : "Total Voters",
+			sortable : true
+		}  ];		
+		if(myResults.localElectionsInfo[i].wardwiseResultsForParty.length >10)
+		{
+			var recordsPerPage = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10 
+		    })
+			};
+		}	
+		myDataTableForMptcParty = new YAHOO.widget.DataTable("greaterTableDiv_"+i,resultsColumnDefs, resultsDataSource,recordsPerPage);
+	}
+	
 }
 
 function showDetailedElectionResult(id)
@@ -1283,6 +1506,9 @@ function showDetailedElectionResult(id)
 	getAllMptcYears();
 	initializeConstituencyPage();
 	getConstituencyElections();
+	getMunicipalityResults();
+	getCoroporationResults();
+	getGreaterResults();
 	
 </script>
 </body>

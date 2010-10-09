@@ -160,6 +160,8 @@
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="boothResultDAO" ref="boothResultDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
@@ -578,6 +580,9 @@
         <property name="nominationDAO" ref="nominationDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	    <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 	</bean>
 	
 	<bean name="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService">

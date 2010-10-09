@@ -103,6 +103,7 @@
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="localBodyElectionService" ref="localBodyElectionService" />
 	</bean>
 	
 
