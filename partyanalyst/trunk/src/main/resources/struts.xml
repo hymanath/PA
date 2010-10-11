@@ -1464,14 +1464,16 @@
 			</result>		
 		</action>
 		
-
+		<action name="municipalWardsAssemblyBoothsMapperAction" class="municipalWardsAssemblyBoothsMapperAction">
+			<result>/jsp/boothLocalBodyMapper.jsp</result>
+		</action>
+		
 		<action name="municipalWardsAssemblyBoothsMapperAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="getBoothsInAssemblyConstituency">
 			<result type="json" name="success">
 				<param name="root">boothsInAssembly</param>				
 			</result>
 		</action>
 		<action name="saveMunicipalWardsAssemblyBoothsAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="saveBoothsInAssemblyConstituency"/>
-		
 		
 		<action name="problemManagementAdminAction" class="problemManagementAdminAction"> 
              <result name="success">/jsp/adminProblemManagement.jsp</result> 
