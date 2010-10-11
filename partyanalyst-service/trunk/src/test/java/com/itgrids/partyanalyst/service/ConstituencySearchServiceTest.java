@@ -34,7 +34,7 @@ public class ConstituencySearchServiceTest{
 		constituencySearchService.setConstituencyDAO(constituencyDAO);
 	}
 	
-	@Test
+	/*@Test
 	public void checkConstituencyNamesSize(){
 		EasyMock.expect(constituencyDAO.getAll()).andReturn(DummyConstituencies.getConstituencies());
 		EasyMock.replay(constituencyDAO);	
@@ -50,7 +50,7 @@ public class ConstituencySearchServiceTest{
 		EasyMock.replay(constituencyDAO);	
 		Assert.assertEquals("Madanapalli",constituencySearchService.getConstituencyNamesAndIds().get(0).getName());
 		EasyMock.verify(constituencyDAO);
-	}
+	}*/
 	
 /*	@Test
 	public void testConstituencyNamesByElectionScope(){

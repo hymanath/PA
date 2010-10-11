@@ -7,7 +7,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface ICandidateSearchService {
 
-	public List<SelectOptionVO> getCandidateNamesAndIds();
+	public List<SelectOptionVO> getCandidateNamesAndIds(String electionType,
+			Long stateId);
 	
 	public List<CandidateVO> getCandidatesDetails(Long candidateId, String name);
 	public List<SelectOptionVO> getNominatedPartyCandidates(Long stateId, Long partyId, Long electionId);

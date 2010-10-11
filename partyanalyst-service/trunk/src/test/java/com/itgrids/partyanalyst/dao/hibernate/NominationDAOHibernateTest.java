@@ -300,8 +300,8 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		long endTime = System.currentTimeMillis();
 		System.out.println((endTime-startTime)/1000);
 		System.out.println(values.size());
-	}
-	
+	}*/
+	/*
 	public void testByAllZptcCandidatesForAnElectionYear(){
 		List result = nominationDAO.findAllZptcCandidatesInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,"2006");
 		Assert.assertEquals(1, result.size());	
@@ -582,18 +582,30 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	}*/
-	
-	/*public void testFindAllElectionResultsForConstituencies(){
-		List list = nominationDAO.findAllElectionResultsForConstituencies("10876,10877,10878,10880, 10882");
-		for(int i=0; i<list.size(); i++)
-			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
-	}*/
-	
-	public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
-		List list = nominationDAO.getLocalBodiesElecConstituenciesDetailsForAnElection(19l, "488, 478");
-		for(int i=0; i<list.size(); i++)
-			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
-	}
-	
-}
 
+	public void testGetAllCandidatesByElectionTypes(){
+		long startTime = System.currentTimeMillis();
+		List values = nominationDAO.getAllCandidatesByElectionTypeInState("Assembly", 1l);
+		System.out.println("size:"+values.size());
+		for(int i = 0; i<values.size(); i++)
+		{
+			System.out.println(((Object[])values.get(i))[0]+"\t"+((Object[])values.get(i))[1]+"\t"+((Object[])values.get(i))[2]+"\t"+((Object[])values.get(i))[3]);
+		}
+		long endTime = System.currentTimeMillis();
+		System.out.println((endTime-startTime)/1000);
+		//System.out.println(values.size());
+	}
+	/*public void testFindAllElectionResultsForConstituencies(){
+	List list = nominationDAO.findAllElectionResultsForConstituencies("10876,10877,10878,10880, 10882");
+	for(int i=0; i<list.size(); i++)
+		System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
+}*/
+/*
+public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
+	List list = nominationDAO.getLocalBodiesElecConstituenciesDetailsForAnElection(19l, "488, 478");
+	for(int i=0; i<list.size(); i++)
+		System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
+}
+*/
+}
+	

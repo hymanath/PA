@@ -38,14 +38,16 @@ public class CandidateSearchService implements ICandidateSearchService{
 		this.candidateDAO = candidateDAO;
 	}
 	
-	public List<SelectOptionVO> getCandidateNamesAndIds() {
+	public List<SelectOptionVO> getCandidateNamesAndIds(String electionType,
+			Long stateId) {
 		List<SelectOptionVO> candidateNamesAndIdsList = null;
 		System.out.println("======Start===============getCandidateNamesAndIds===============================");
 		if(candidateNamesAndIdsList == null){
 			List<SelectOptionVO> candidateNamesAndIds = new ArrayList<SelectOptionVO>();
 			StringBuilder candidateName = null;
-			List candidates = nominationDAO.getAllCandidatesByElectionTypes("'"+IConstants.ASSEMBLY_ELECTION_TYPE+"','" 
-					+IConstants.PARLIAMENT_ELECTION_TYPE+"'");
+			//List candidates = nominationDAO.getAllCandidatesByElectionTypes("'"+IConstants.ASSEMBLY_ELECTION_TYPE+"','" 
+				//	+IConstants.PARLIAMENT_ELECTION_TYPE+"'");
+			List candidates = nominationDAO.getAllCandidatesByElectionTypeInState(electionType, stateId);
 			for(int i=0; i<candidates.size(); i++){
 				Object[] values = (Object[])candidates.get(i);
 				candidateName = new StringBuilder();

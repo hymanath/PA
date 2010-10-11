@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IConstituencySearchService {
 
-	public List<SelectOptionVO>  getConstituencyNamesAndIds();
+	public List<SelectOptionVO>  getConstituencyNamesAndIds(Long electionTypeId , Long stateId);
 	
 	public List<ConstituencyVO> getConstituencyDetails(String name);
 

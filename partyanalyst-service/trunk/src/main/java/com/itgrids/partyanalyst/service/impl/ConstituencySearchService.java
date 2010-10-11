@@ -23,13 +23,14 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		this.electionScopeDAO = electionScopeDAO;
 	}
 	
-	public List<SelectOptionVO> getConstituencyNamesAndIds(){
+	public List<SelectOptionVO> getConstituencyNamesAndIds(Long electionTypeId , Long stateId){
 		List<SelectOptionVO> constituencyNamesAndIdsList = null;
 		Long constituencyId = null;
 		String constituencyName = "";
 		long beginTimeMillis = System.currentTimeMillis();
 		if(constituencyNamesAndIdsList == null){
-			List constituencies = constituencyDAO.getAllConstituencyNamesAndIds();
+			//List constituencies = constituencyDAO.getAllConstituencyNamesAndIds();
+			List constituencies = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateId);
 			constituencyNamesAndIdsList = new ArrayList<SelectOptionVO>();
 			for(int i=0; i<constituencies.size(); i++){
 				Object[] values = (Object[]) constituencies.get(i);
