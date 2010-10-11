@@ -27,6 +27,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 	private ICandidateSearchService candidateSearchService ; 
 	List<ConstituencyVO> constituencySearchList ;
 	List<CandidateVO> candidatateSearchList ;
+	private Long id;
 	
 	public String getSearchText() {
 		return searchText;
@@ -79,6 +80,14 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		this.request = request;
 		
 	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
@@ -86,13 +95,23 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		
 		if(getSearchName() != null && getSearchName().equals("Constituency"))
 		{			
-			constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText());		
+			constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText());
+			if(constituencySearchList.size() == 1)
+			{
+				id = constituencySearchList.get(0).getId();
+				return "redirectToConstituencyPage";
+			}
 		}
 		else if(getSearchName() != null && getSearchName().equals("Candidate"))
 		{			
 			List<SelectOptionVO> candidateNamesAndIds = (List<SelectOptionVO>)session.getAttribute("candidateNamesAndIds");
 			SelectOptionVO selectOptionVO = getNameAndIdForSearchText(candidateNamesAndIds, getSearchText());
 			candidatateSearchList = candidateSearchService.getCandidatesDetails(selectOptionVO.getId(), selectOptionVO.getName());
+			if(candidatateSearchList.size() == 1)
+			{
+				id = candidatateSearchList.get(0).getId();
+				return "redirectToCandidatePage";
+			}
 		}	
 		return SUCCESS;	
 	}

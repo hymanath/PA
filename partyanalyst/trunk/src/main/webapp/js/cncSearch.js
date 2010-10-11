@@ -57,18 +57,35 @@ function getXmlHttpObj()
 	return xmlHttp;	
 }
 
- function getParser(val)
- {
+ function getParser(stateId)
+ {	
 	var imgElmt=document.getElementById("ajaxLoaderimg");
-	imgElmt.style.display="block";
-
 	var errDivElmt=document.getElementById("errorDiv");
+	var searchNameEls = document.getElementsByName("searchName");
+	var constTypeEls = document.getElementsByName("constType");
+	
+	imgElmt.style.display="block";	
 	errDivElmt.innerHTML="";
-
-	SEARCHFOR=val;
+	
+	var searchType;
+	var constituencyType;
+	for(var i = 0; i< searchNameEls.length; i++)
+	{
+		if(searchNameEls[i].checked)
+			searchType = searchNameEls[i].value;
+	}
+	for(var j = 0; j< constTypeEls.length; j++)
+	{
+		if(constTypeEls[j].checked)
+			constituencyType = constTypeEls[j].value;
+	}
+	//SEARCHFOR=val;
 	var jsObj=
 	{
-		searchCriteria:val
+		searchCriteria: searchType,
+		stateId: stateId,
+		constituencyType: constituencyType 
+		
 	}
 	
 	//var param = "task="+JSON.stringify(jsObj);
@@ -110,6 +127,15 @@ function validateTextField()
 }
 function getAutoComplete()
 {
+		var row4El = document.getElementById("row4");
+			
+		if(row4El.style.display == 'none')
+			row4El.style.display = 'block';
+		var row5El = document.getElementById("row5");
+		
+		if(row5El.style.display == 'none')
+			row5El.style.display = 'block';
+		
 		var datastore="";
 		var txtDivElmt=document.getElementById("textFldDiv");
 		
@@ -133,6 +159,8 @@ function getAutoComplete()
 		myAutoComp.maxResultsDisplayed = 10;
 	    myAutoComp.useShadow = true;
 		myAutoComp.useIFrame = true; 
+		var myInputEl = document.getElementById("myInput");
+		myInputEl.focus();
 }
 function validateRadio()
 {
@@ -144,4 +172,75 @@ function validateRadio()
 		errElmt.innerHTML="Select search criteria... ";		
 	else
 		errElmt.innerHTML="";
+}
+
+function resetConstTypeOptions()
+{
+	var radioEl = document.getElementsByName("constType");
+
+	for(i=0; i< radioEl.length; i++)
+	{
+		if(radioEl[i].checked == true)
+			radioEl[i].checked = false;
+	}
+	resetStateSelect();
+}
+
+function resetStateSelect()
+{
+	var stateSelectEl = document.getElementById("stateSelect");
+	stateSelectEl.selectedIndex = '0';
+	
+}
+
+function getStates(selectedId, task, module, elementId, addressType, areaType)
+{		
+	var jsObj=
+		{				
+			id: selectedId,
+			task: task,
+			taskType:module,
+			selectElementId: elementId ,
+			address: addressType,
+			areaType: areaType
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	callAjaxForStates(jsObj,url);
+}
+
+function callAjaxForStates(jsObj,url)
+{			
+	
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							clearOptionsListForSelectElmtId(jsObj.selectElementId);
+							fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
+							executeonLoad();
+						}
+						catch(e)
+						{   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function executeonLoad()
+{
+	var selectEl = document.getElementById("stateSelect");
+	buildAutoSuggest();
+	selectEl.selectedIndex = '1';
+	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
+	getParser(selectedState);	
 }

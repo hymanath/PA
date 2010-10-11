@@ -194,8 +194,8 @@
 						</tr>
 						<tr>
 							<td id="searchBox">
-								<jsp:include page="../../jsp/cncSearch.jsp"/>
-							</td>
+								<!--<jsp:include page="../../jsp/cncSearch.jsp"/>
+							--></td>
 						</tr>
 					</table>
 				</td>

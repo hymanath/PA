@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
 	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 
 	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
 
@@ -46,45 +47,97 @@
 			}
 		} 
 	 </script>
+	 <style>
+	 .yui-skin-sam .yui-ac-input {
+		width:175px;
+		position:relative;
+	}
+	.searchBtn
+	{
+		width:25px;
+		background-image:url(images/usergroups/search.gif);
+	}
+	.viewReportButtonSpan {
+		background-image:url("images/icons/constituencyManagement/btn_cm.png");
+		cursor:pointer;
+		height:30px;
+		position:relative;
+		width:80px;
+		border-right:0px;
+		border-bottom:0px;
+		color:#FFFFFF;
+		font-size:12px;
+		font-weight:bold;		
+		position:relative;
+		top:6px;
+
+	}
+	 </style>
  </HEAD>
- <BODY onLoad="getAutoComplete()">
- <div style="height:auto;">
-<s:form name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
+ <BODY>
+ <div>
+<s:form theme="simple" name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 
 
-	<table class="yui-skin-sam" style="width:100%;" border="0" width="100%">
+	<table class="yui-skin-sam" border="0">
 	<tr>
-		<th width="80px" style="padding-top: 3px;color:#163447;">
-			Search Criteria
+		<th colspan="2" style="padding-top: 3px;color:#163447;">
+			Select	Search Criteria
 		</th>
-		<th width="200px" align="left" style="color:#163447;">		
-			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="getParser(this.value)"/>Candidate
-			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="getParser(this.value)"/>Constituency	
+	</tr>
+	<tr>	
+		<th align="left" style="color:#163447;">		
+			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="resetConstTypeOptions()" checked="checked"/>Candidate
+			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="resetConstTypeOptions()"/>Constituency	
 		</th>
-		<td width="40px">
+	</tr>
+	<tr id="row1">
+		<th colspan="2" style="padding-top: 3px;color:#163447;">
+			Select Constituency Type
+		</th>
+	</tr>
+	<tr id="row2">	
+		<th align="left" style="color:#163447;">		
+			<input id="candidateRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect()" checked="checked"/>MLA
+			<input id="constituencyRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect()"/>MP	
+		</th>		
+	</tr>
+	<tr id="row3">	
+		<th align="left" colspan="2" style="color:#163447;">		
+			Select State	
+		</th>
+	</tr>
+	<tr>	
+		<td>
+			<s:select list="{}" listKey="id" listValue="name" name="state" id="stateSelect" onchange="getAutoComplete();getParser(this.options[this.selectedIndex].value)"/>
+		</td>
+		<td>
 			<img  id="ajaxLoaderimg" height="16" width="16" src="<%=request.getContextPath()%>/images/icons/ajaxLoader.gif" style="display:none;">
+		</td>
+	</tr>		
+	<tr id="row4">	
+		<th colspan="3">
+			<div id="labelDiv" style="padding-top: 2px;color:#163447;">Search Text</div>
+		</th>
+	</tr>
+	<tr id="row5">	
+		<td style="color:black;position:relative;z-index:1;">		
+			<div id="textFldDiv"></div>				
 		</td>
 	</tr>
 	<tr>
 		<td colspan="3">
 			<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>
 		</td>
-	</tr>
-	<tr>	
-		<th width="80px">
-			<div id="labelDiv" style="padding-top: 2px;color:#163447;">Search Text</div>
-		</th>
-		<td width="200px" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;">		
-			<div id="textFldDiv"></div>				
-		</td>
-		<td width="40px">
-			<div id="buttonDiv" style="margin-left: 3px;"><input type="submit" name="searchButton" value="Search" /></div>		
-		</td>
-		
-	</tr>
+	</tr>	
 	</table>
+	<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" class="viewReportButtonSpan" value="Search"/></div>
 
 </s:form>
 </div>
+<script type="text/javascript">
+getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');
+
+</script>
  </BODY>
 </HTML>

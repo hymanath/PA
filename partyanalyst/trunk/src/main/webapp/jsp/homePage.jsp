@@ -68,6 +68,7 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
+<script type="text/javascript" src="js/cncSearch.js"> </script>
 <script type="text/Javascript" src="js/homePage/jquery.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 
@@ -167,8 +168,8 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
                         <table width="100%" style="width:100%">                           
                             <tr>
                                 <td id="searchBox">
-                                    <jsp:include page="../jsp/cncSearch.jsp"/>
-                                </td>
+                                    <!--<jsp:include page="../jsp/cncSearch.jsp"/>
+                                --></td>
                             </tr>
                         </table>
                     </td>
@@ -317,7 +318,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 								<td width="98%">
 									<div class="productFeatureHeaderBackground_center">
 										<span class="headerLabelSpan">
-											Advertisements
+											Search partyanalyst.com
 										</span>
 									</div>
 								</td>
@@ -328,26 +329,21 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 						<div id="adDataMain_body">
 							<div class="adData_main">
 								<div class="adData_head">
-									<a href="landing.action" class="newsHeadLink">Party Analyst</a>
+									<span class="newsHeadLink">Search for Candidate or Constituency</span>
 								</div>
 								<div class="adData_body">
 									<table>
-										<tr>
-											<td valign="top"><a href="landing.action"><img src="images/icons/homePage_new/header_human_main.jpg"/></a></td>
-											<td valign="top"><b>Political Analysis Software for politicians and political parties.</b></td>
-										</tr>
-										<tr>
-											<td colspan="2">We help you to do Party Analysis, Politician Analysis,Cadre Management and Constituency Management through our effective tools.Creating a wealth of knowledge and know-how for a politician or a party to improve and stay on top.</td>
-										</tr>
-									</table>
-									
+									<tr>
+									<td><jsp:include page="../jsp/cncSearch.jsp"/></td>
+									</tr>
+									</table>									
 								</div>
-								<div class="adData_footer">
+								<!--<div class="adData_footer">
 									<div onclick="javascript:{window.location = 'landing.action'}" class="votingTrendzHeadLabelDiv">
-										<span class="votingTrendzHeadLabelSpan">Know More</span>
+										<span class="votingTrendzHeadLabelSpan">Search</span>
 									</div>
 								</div>								
-							</div>
+							--></div>
 						</div>
                     </div>    
 					

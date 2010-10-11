@@ -290,6 +290,10 @@
 		</action> 
 		<action name="cncSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction">
 			<result name="success">/jsp/searchResultsPage.jsp</result>
+			<result name="redirectToCandidatePage" type="redirect">candidateElectionResultsAction.action?candidateId=${id}</result>
+			<result name="redirectToConstituencyPage" type="redirect">constituencyPageAction.action?constituencyId=${id}</result>
+			
+			
 		</action>
 		<action name="constituencySearchAction" class="com.itgrids.partyanalyst.web.action.ConstituencySearchAction">
 			<result name="success">/jsp/constituencyDetailsPage.jsp</result>

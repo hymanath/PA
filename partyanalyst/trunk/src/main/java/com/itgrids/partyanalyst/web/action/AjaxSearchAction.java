@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 
@@ -81,13 +82,26 @@ public class AjaxSearchAction implements ServletRequestAware{
 		
 		if(jObj.getString("searchCriteria").equalsIgnoreCase("Candidate"))
 		{
-			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds();
+			String electionType = null;
+			if("MLA".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			Long stateId = jObj.getLong("stateId");	
+			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
 			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));	
 			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);
 		}
 		else if (jObj.getString("searchCriteria").equalsIgnoreCase("Constituency"))
 		{
-				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds();
+			Long electionTypeId= 0l;
+			if("MLA".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionTypeId = 2l;
+			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionTypeId = 1l;
+			Long stateId = jObj.getLong("stateId");	
+			
+				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
 				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));					
 		}	
 		
