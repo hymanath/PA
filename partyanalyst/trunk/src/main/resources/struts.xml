@@ -1106,6 +1106,9 @@
 		<action name="deltePoliticalChangeAjaxAction" class="politicalChangesAction" method="deltePoliticalChange" >
 		</action> 
 		
+		<action name="deleteInfluencingPeopleAjaxAction" class="influencingPeopleAction" method="deleteInfluencingPeople" >
+		</action>
+		
 		<action name="getExternalPersonDetailsAjaxAction" class="politicalChangesAction" method="getExternalPersonDetails" >
 			<result type="json" name="success">
 					<param name="root">externalPersonInfo</param>
