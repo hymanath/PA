@@ -114,6 +114,7 @@ var Localization = { <%
 			String DISTRICT = rb.getString("DISTRICT");
 			String CONSTITUENCY = rb.getString("CONSTITUENCY");
 			String MANDAL  = rb.getString("MANDAL");
+			String TehsilOrMuncipality = rb.getString("TehsilOrMuncipality");
 			String VILLAGE = rb.getString("VILLAGE");
 			String HAMLET   = rb.getString("HAMLET");
 			String InfluenceRange  = rb.getString("influenceRange");
@@ -222,6 +223,8 @@ function doUnload()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/removeSessionVariablesForInfluencingPeopleAjaxAction.action?"+rparam;	
 	callAjax(rparam,jsObj,url);
+	window.opener.document.location.reload(true);
+	window.close();
 }
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
@@ -232,14 +235,14 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
-				<c:if test="${windowTask == 'new'}">
-				<TD>				
-				<div class="addInfluencingHeader"><span style="margin-top:2px;">Add Influencing People </span></div>	
-				</TD>
-				</c:if>
 				<c:if test="${windowTask == 'edit'}">
 				<TD>
 				<div class="addInfluencingHeader"><span style="margin-top:2px;">Edit Influencing People </span></div>
+				</TD>
+				</c:if>
+				<c:if test="${windowTask != 'edit'}">
+				<TD>
+				<div class="addInfluencingHeader"><span style="margin-top:2px;">Add Influencing People </span></div>
 				</TD>
 				</c:if>
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
@@ -265,7 +268,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		</table>
 	</div>		
 	
-	<s:form action="influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
+	<s:form action="/influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
 	<FIELDSET>
 	<LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
 
@@ -327,7 +330,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
 		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd', 'null')" headerKey="0" headerValue="Select Constituency"></s:select></td>
 	
-		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}"/><font class="required"> * </font></td>
+		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
 		<td><s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>
 	
@@ -368,24 +371,26 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /></td>	
 		<td> <s:select id="position" list="#session.positionsList" listKey="id" listValue="name" name="position" cssClass="regionSelect" /></td>
 		
-		<td width="120px" class="tdstyle"><%=InfluenceRange%><font class="required"> * </font></td>
-			<td align="left">
+		<td width="120px" class="tdstyle"><s:label for="effectedRange" id="influenceRangeId"  value="%{getText('InfluenceRange')}" /><font class="required"> * </font></td>
+		<td align="left">
 			<s:select id="effectedRange" list="#session.influenceRange" listKey="id" listValue="name" name="influenceRange" cssClass="regionSelect" onchange="influenceRangeFunction(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"/> 
 			</td>
-		<td><input type="hidden" id="influenceRangeInputId" name="influencingRange"></td>
+		<td><s:hidden id="influenceRangeInputId" name="influencingRange"/></td>
 		<td><div id="specifyInfluenceRange"></div></td>
-	</tr>									
+	</tr>
+	<tr>
+	<td><s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/></td>
+	<td><s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /></td>
+	</tr> 								
 </table>
 </FIELDSET> 
-
 <div id="saveDiv" align="center">
-	<s:submit cssClass="button" value="ADD" name="Save"></s:submit>
+	<s:submit cssClass="button" value="Save Record" name="Save"></s:submit>
 </div>
 </s:form>
-
 <div id="successMsg"></div> 
 </div>	
 </div>		 
 </div>		
 </body>
-</html>
+</html> 
