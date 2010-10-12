@@ -224,7 +224,6 @@ function doUnload()
 	var url = "<%=request.getContextPath()%>/removeSessionVariablesForInfluencingPeopleAjaxAction.action?"+rparam;	
 	callAjax(rparam,jsObj,url);
 	window.opener.document.location.reload(true);
-	window.close();
 }
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
