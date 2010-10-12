@@ -270,6 +270,7 @@ public interface IConstants {
 	public static final String User = "User";
 	public static final String External_person = "External_person";
 	public static final String Call_Center = "Call_Center";
+	public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
 	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
     public static final String REJECTED = "rejected";
