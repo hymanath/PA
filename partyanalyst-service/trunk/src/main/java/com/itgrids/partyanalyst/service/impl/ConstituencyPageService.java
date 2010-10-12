@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -51,7 +50,6 @@ import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultByLocationVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
@@ -1160,40 +1158,35 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * This method returns a VO containing all the information regarding the
 	 * assembly candidate voting trends in the assembly constituency.
 	 */
-	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear,String electionType, Boolean includeOthers){	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear,String electionType, 
+			Boolean includeOthers){	
 		try{
+			Constituency constituency = constituencyDAO.get(constituencyId);
 			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain = null;
 			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal = null;
 			List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(constituencyId, electionYear, electionType);
+			
 			if(list.size() > 0)
 				constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(list,constituencyId,
 					null, electionYear, electionType, false, true);
-			List listMuncipalInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(constituencyId, electionYear, electionType, 
-					"'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
-			if(listMuncipalInfo.size() > 0){
-				if(constituencyRevenueVillagesVOMain != null){
-					constituencyRevenueVillagesVOMunicipal = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
-							electionYear, electionType, true, false);
-					constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().addAll(0,constituencyRevenueVillagesVOMunicipal.
-							getConstituencyOrMandalWiseElectionVO());
-				}
-				else
-					constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
-							electionYear, electionType, true, false);
+			
+			if(!IConstants.CONST_TYPE_URBAN.equalsIgnoreCase(constituency.getAreaType())){
+				List listMuncipalInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(constituencyId, electionYear, electionType, 
+						"'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
+				getAssemblyOrParliamentResultsLEBswise(listMuncipalInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
+						constituencyId, electionYear, electionType);
+			}else{
+				List listGeaterInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(constituencyId, electionYear, electionType, 
+						IConstants.CORPORATION_ELECTION_TYPE);
+				getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
+						constituencyId, electionYear, electionType);
 			}
+			
 			List listGeaterInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(constituencyId, electionYear, electionType, 
 					IConstants.GREATER_ELECTION_TYPE);
-			if(listGeaterInfo.size() > 0){
-				if(constituencyRevenueVillagesVOMain != null){
-					constituencyRevenueVillagesVOMunicipal = setDataForVOForCorrespondingAssemblyOrParliament(listGeaterInfo,constituencyId, null, 
-							electionYear,electionType, true, false);
-					constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().addAll(0,constituencyRevenueVillagesVOMunicipal.
-							getConstituencyOrMandalWiseElectionVO());
-				}
-				else
-					constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(listGeaterInfo,constituencyId, null, 
-							electionYear,electionType, true, false);
-			}
+			getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
+					constituencyId, electionYear, electionType);
+			
 			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 				List result = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId, Long.parseLong(electionYear));
 				String pcNames = "";
@@ -1201,9 +1194,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					pcNames += ","+values[1];
 				if(constituencyRevenueVillagesVOMain != null){
 					constituencyRevenueVillagesVOMain.setConstituencyId((Long)((Object[])result.get(0))[0]);
-					constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));	
+					constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));
 				}
 			}
+			
 			//Others Calculation
 			if(constituencyRevenueVillagesVOMain != null && includeOthers){
 				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();
@@ -1222,6 +1216,22 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			return null;
 		}		
 	}
+	
+	private void getAssemblyOrParliamentResultsLEBswise(List listMuncipalInfo, ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain,
+			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal, Long constituencyId, String electionYear, String electionType){
+		if(listMuncipalInfo.size() > 0){
+			if(constituencyRevenueVillagesVOMain != null){
+				constituencyRevenueVillagesVOMunicipal = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
+						electionYear, electionType, true, false);
+				constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().addAll(0,constituencyRevenueVillagesVOMunicipal.
+						getConstituencyOrMandalWiseElectionVO());
+			}
+			else
+				constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
+						electionYear, electionType, true, false);
+		}
+	}
+	
 	/**
 	 * This method takes the result obtained from the DAO call and calls other methods for processing and sets data into VO.
 	 * @param list
