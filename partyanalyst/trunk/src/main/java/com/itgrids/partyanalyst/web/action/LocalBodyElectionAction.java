@@ -335,14 +335,14 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String series1 = "1st Position";
 		String series2 = "2nd Position";
 		String series3 = "3rd Position";
-		String series4 = "Nth Position";
+		//String series4 = "Nth Position";
 		
 		if(partyResultsVO != null && partyResultsVO.size() > 0){
 			for(TeshilPartyInfoVO resultsList:partyResultsVO){
 				dataset.addValue(resultsList.getPartyWonSeats(), resultsList.getPartyName(), series1);
 				dataset.addValue(resultsList.getPartySecndPos(), resultsList.getPartyName(), series2);
 				dataset.addValue(resultsList.getPartyThirdPos(), resultsList.getPartyName(), series3);
-				dataset.addValue(resultsList.getPartyNthPos(), resultsList.getPartyName(), series4);
+				//dataset.addValue(resultsList.getPartyNthPos(), resultsList.getPartyName(), series4);
 			}
 		}
 	 return dataset;
