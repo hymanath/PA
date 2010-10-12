@@ -27,6 +27,8 @@ function buildAutoSuggest(value)
 	myAutoComp.maxResultsDisplayed = 10;
 	myAutoComp.useIFrame = true;
 	myAutoComp.textboxKeyEvent.subscribe(validateRadio); 
+	var myInputEl = document.getElementById("myInput");
+	myInputEl.focus();
 }
 function getXmlHttpObj()
 {	
@@ -63,7 +65,13 @@ function getXmlHttpObj()
 	var errDivElmt=document.getElementById("errorDiv");
 	var searchNameEls = document.getElementsByName("searchName");
 	var constTypeEls = document.getElementsByName("constType");
-	
+	var mlaEl=document.getElementById("mlaRadio");
+	var mpEl=document.getElementById("mpRadio");
+	if(!mlaEl.checked && !mpEl.checked)
+	{
+		errDivElmt.innerHTML="Select Constituency Type";
+		return;
+	}
 	imgElmt.style.display="block";	
 	errDivElmt.innerHTML="";
 	
@@ -79,16 +87,14 @@ function getXmlHttpObj()
 		if(constTypeEls[j].checked)
 			constituencyType = constTypeEls[j].value;
 	}
-	//SEARCHFOR=val;
+	
 	var jsObj=
 	{
 		searchCriteria: searchType,
 		stateId: stateId,
-		constituencyType: constituencyType 
-		
-	}
+		constituencyType: constituencyType		
+	}	
 	
-	//var param = "task="+JSON.stringify(jsObj);
 	var param ="task="+YAHOO.lang.JSON.stringify(jsObj); 
 	
 	ajaxCall(param);
@@ -159,8 +165,7 @@ function getAutoComplete()
 		myAutoComp.maxResultsDisplayed = 10;
 	    myAutoComp.useShadow = true;
 		myAutoComp.useIFrame = true; 
-		var myInputEl = document.getElementById("myInput");
-		myInputEl.focus();
+		
 }
 function validateRadio()
 {
@@ -189,7 +194,9 @@ function resetConstTypeOptions()
 function resetStateSelect()
 {
 	var stateSelectEl = document.getElementById("stateSelect");
+	var errDivElmt=document.getElementById("errorDiv");
 	stateSelectEl.selectedIndex = '0';
+	errDivElmt.innerHTML="";
 	
 }
 
