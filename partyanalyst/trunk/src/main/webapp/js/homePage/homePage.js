@@ -494,11 +494,13 @@ function buildElectionTrendzTabView()
 	var content1 = '';
 	content1 += content;
 	content1 += '<div id="assemblyElectionTrendzDiv_main">';
+	content1 += '<div style="padding:10px;"><center><img src="images/icons/partypositions.gif"></center></div>';
 	content1 += '</div>';
 
 	var content2 = '';
 	//content2 += content;
 	content2 += '<div id="parliamentElectionTrendzDiv_main">';
+	content2 += '<div style="padding:10px;"><center><img src="images/icons/partypositions.gif"></center></div>';
 	content2 += '</div>';
 
 
@@ -579,7 +581,6 @@ function buildResultsHTMLTable(arr,divId,elecType)
 	
 	if(!elmt)
 		return;
-
 	var navigationArr = new Array();
 
 	var str = '';	
@@ -587,6 +588,9 @@ function buildResultsHTMLTable(arr,divId,elecType)
 	str += '<ul>';
 	for(var i=0;i<arr.length;i++)
 	{
+		if(i == 5)
+			break;
+
 		navigationArr.push(''+(i+1));
 		str += ' <li>';
 		str += '<div class="resultsHeading">';

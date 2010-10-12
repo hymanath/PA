@@ -8,7 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Welcome to Party Analyst</title>
+<title>Party Analyst - Know, Analyse, Act.</title>
+
+ <META NAME="Keywords" CONTENT="AP Elections, Assembly Elections, Parliament elections, Municipal elections, Election opinion polls, Andhra Elections, Andhra Politics, Andhra pradesh elections, Telugu Desam, Congress, PRP, TDP, CPI, CPM, TRA, BJP, Hyderabad, Chandrababu, Chiranjeevi, andhra polls, by-polls, by-elections, MLC, Rajyasabha, MPTC, ZPTC, Loksabha, Parliament, 2009 elections, Gram Panchayats, Mandals, Villages, Andhra municipalities, Municipal Corporations">
+
+<META NAME="Description" CONTENT=" Party Analyst is a tool used by the political parties, media, and politicians. This product has different interfaces for Constituency Management, Cadre Management, Party Results, Cross Voting, Party Performance, Election Comparison, States election results, District election results, Constituency election results, MLA constituencies information, MP constituencies information, Latest news .This tool also provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
 <!-- YUI Dependency files (Start) -->
 
