@@ -65,7 +65,8 @@ function callAjax(jsObj,url)
 				   success : function( o ) {
 						try
 						{
-							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							if(o.responseText)
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							if(jsObj.task == "boothsOfAssembly")
 							{
 								displayAssemblyBooths(myResults);
