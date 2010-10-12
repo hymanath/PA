@@ -244,7 +244,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception{
-		List<SelectOptionVO> elections = null;
+		List<SelectOptionVO> elections = new ArrayList<SelectOptionVO>();
 		List electionsList = null;
 		if(localBody != null && stateId != null){
 			if(localBody instanceof Long)
@@ -254,7 +254,6 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			
 			if(electionsList != null && electionsList.size() > 0){
 				
-				elections = new ArrayList<SelectOptionVO>();
 				for(int i=0;i<electionsList.size();i++){
 					Object[] params = (Object[])electionsList.get(i);
 					SelectOptionVO selectOption = new SelectOptionVO();
