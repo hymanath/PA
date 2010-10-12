@@ -10,5 +10,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	public List<InfluencingPeople> findByHamletId(Long hamletId);
 	public List<InfluencingPeople> findByTehsils(String tehsilIds);	
+	public List<Object[]> getDetailsByInfluencingPersonId(Long influencingPersonId);
+	public Integer deleteInfluencingPeopleById(Long influencingPeopleId);
 
 }
