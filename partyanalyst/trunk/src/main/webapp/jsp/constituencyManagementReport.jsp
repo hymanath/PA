@@ -470,7 +470,7 @@
 		}
 		
 		function redirectToNewWindowForAddingInfluencingPeople(type,id){
-			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleRegistration","scrollbars=yes,height=600,width=570,left=200,top=200");
+			var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=600,width=570,left=200,top=200");
 			browser1.focus();
 		}
 		
@@ -492,8 +492,8 @@
 										{											
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
-										{									
-											buildInfluencingPeopleDT(myResults);
+										{	
+											populateInfluencingPeople(myResults);
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
 											buildProblemsByStatusDialog(myResults,jsObj);
@@ -513,6 +513,10 @@
 										if(jsObj.task == "deltePoliticalChange"){
 											getAllPoliticalChangesForTheUser();
 										}
+										if(jsObj.task == "deleteInfluencingPerson"){
+											alert("Succesfully Deleted");
+											getInfluencingPeopleInAConstituency();	
+										}	
 									}
 								catch (e)
 									{   
@@ -532,7 +536,29 @@
 		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
 							 
 			 browser1.focus();
-		}														
+		}	
+
+		function deleteInfluencingPeopleDetails(influencingPeopleId){
+
+			var ask = confirm("Do You want to delete");
+			if (ask ==  true)
+		 {
+			var jsObj= 
+			{		
+				influencingPeopleId :influencingPeopleId,		  			
+				task: "deleteInfluencingPerson"		
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "deleteInfluencingPeopleAjaxAction.action?"+param;
+			callAjax(param,jsObj,url);
+		}	
+		
+		else
+		  {
+		  		return;	
+		  }	
+		}												
 		
 	</script>
 
@@ -600,7 +626,7 @@
 
 							
 							<DIV class="yui-skin-sam" style="text-align:right;"><div id="localPoliticalChangesRegistration"></DIV>
-								<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
+							<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
 							</DIV>
 					
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
