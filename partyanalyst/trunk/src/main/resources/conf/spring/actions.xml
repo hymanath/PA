@@ -30,6 +30,8 @@
 	<bean id="influencingPeopleAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
 	</bean>			
 	
 	<bean id="politicalChangesAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesAction" singleton="false">
@@ -381,7 +383,7 @@
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
 		<property name="countrySmsService" ref="countrySmsService" />
 	</bean>   
-	<bean id="influencingPeopleRegistration" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleRegistration" singleton="false">
+	<bean id="influencingPeopleRegistration" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
