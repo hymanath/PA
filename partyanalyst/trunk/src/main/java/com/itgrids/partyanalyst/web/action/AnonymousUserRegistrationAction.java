@@ -156,25 +156,22 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "day is required",shortCircuit=true)
+	
+	
 	public void setDay(String day) {
 		this.day = day;
 	}
 	public String getDay() {
 		return day;
-	}
+	}	
 	
-	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "month is required",shortCircuit=true)		
 	public void setMonth(String month) {
 		this.month = month;
 	}
 	public String getMonth() {
 			return month;
 	}
-
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "year is required",shortCircuit=true)	
 	public void setYear(String year) {
 		this.year = year;
 	}
@@ -212,7 +209,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.regVO.setEmail(email);
 	}
 	
-	//@RequiredStringValidator(type = ValidatorType.FIELD, message = "Pin Code is required",shortCircuit=true)
+	
 	public String getPincode() {
 		return regVO.getPincode();
 	}
@@ -220,24 +217,21 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.regVO.setPincode(pincode);
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select State",shortCircuit=true)
+	
 	public void setState(String state) {
 		this.regVO.setState(state);
 	}
 	public String getState() {
 		return regVO.getState();
 	}
-	
-	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select District",shortCircuit=true)
+		
 	public void setDistrict(String district) {
 		this.regVO.setDistrict(district);
 	}
 	public String getDistrict() {
 		return regVO.getDistrict();
 	}
-	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select District",shortCircuit=true)
+		
 	public void setConstituency(String constituency) {
 		this.regVO.setConstituency(constituency);
 	}
@@ -245,7 +239,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getConstituency();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Phone Number",shortCircuit=true)
 	public String getPhone() {
 		return regVO.getPhone();
 	}
@@ -343,13 +336,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String execute(){
 		String dob=day+"/"+month+"/"+year;
 		this.regVO.setDateOfBirth(dob);
-				
-		/*if(!reEnteredPassword.equalsIgnoreCase(password)){
-			addActionMessage("Entered Password and Reentered Password are not Same.");
-			return Action.ERROR;
-		}*/
-			
-		
 		Boolean savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO);
 		
 		if(savedSuccessfully){
@@ -369,6 +355,21 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return SUCCESS;
 	}
 		
+	   public void validate() {		       
+		       if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equalsIgnoreCase(password)){
+					addActionMessage("Entered Password and Reentered Password are not Same.");			
+		       }
+		       if(state==null || state.equalsIgnoreCase("0")){
+		    	   addActionMessage("Please select a State.");
+		       }
+		       if(district==null || district.equalsIgnoreCase("0")){
+		    	   addActionMessage("Please select a District.");
+		       }
+		       if(constituency==null || constituency.equalsIgnoreCase("0")){
+		    	   addActionMessage("Please select a Constituency.");
+		       }
+	   }
+	
 	 public String getRedirectPageDetails(){			
 			if(redirectLoc != null){
 				if(redirectLoc.equalsIgnoreCase(IConstants.STATE)){
