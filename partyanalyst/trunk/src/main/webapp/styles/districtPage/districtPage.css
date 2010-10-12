@@ -362,3 +362,57 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 }
+
+#districtPeopleConnect_main
+{
+	margin-left:10px;
+	margin-right:20px
+}
+
+#districtPeopleConnect_body
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	height:250px
+}
+
+#connectPeoplePopup_outer .yui-panel
+{
+	border:5px solid #808080;
+	-moz-border-radius:5px 5px 5px 5px;
+}
+
+#connectPeoplePopup_outer .underlay 
+{
+	display:none;
+}
+
+#connectPeople_Head
+{
+	color:#2D5773;
+	font-size:12px;
+	font-weight:bold;
+	padding:10px;
+	text-align:left;
+}
+
+.connectButton
+{
+	background-color:#2D5773;
+	border:medium none;
+	color:#FFFFFF;
+	cursor:pointer;
+	font-weight:bold;
+	margin:0 10px;
+	padding:5px;
+}
+
+.cancelButton
+{
+	background-color:#FFFFFF;
+	border:medium none;
+	color:#1A809A;
+	cursor:pointer;
+	font-weight:bold;
+}

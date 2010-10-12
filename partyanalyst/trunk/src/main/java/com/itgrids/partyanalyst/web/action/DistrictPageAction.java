@@ -476,8 +476,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,"partial");	
 		//Free User
+		
 		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
 			userDetails.setLoginStatus("true");
+			userDetails.setUserId(user.getRegistrationID());
 		}else{
 			userDetails.setLoginStatus("false");
 		}

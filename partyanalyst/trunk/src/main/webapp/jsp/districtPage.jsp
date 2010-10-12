@@ -90,7 +90,7 @@ var Localization = { <%
 	%> }
 
 var stateName = '${stateDetails.name}';
-var districtName = '${districtName}';
+districtName = '${districtName}';
 
 var tehsilDetails={
 			zptcArray:[],
@@ -101,7 +101,7 @@ var tehsilDetails={
 			partyCorporationArray:[],
 			localBodyArray:[]
 		};
-var districtId = ${districtId};
+districtId = ${districtId};
 var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
 var mptcElectionTypeId='${mptcElectionTypeId}',zptcElectionTypeId='${zptcElectionTypeId}',muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
 var mptcElectionType='${mptcElectionType}',zptcElectionType='${zptcElectionType}',muncipalityElectionType='${muncipalityElectionType}',corporationElectionType='${corporationElectionType}';
@@ -184,15 +184,15 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 		var resultsColumnDefsForTehsil = [  {
 			key : "constituencyName",
-			label : "Constituency Name",
+			label : "Constituency",
 			sortable : true
 		},{
 			key : "candidateName",
-			label : "Candidate Name",
+			label : "Candidate",
 			sortable : true
 		}, {
 			key : "partyFlag",
-			label : "Party Flag",
+			label : "Flag",
 			sortable : true	
 		} , {
 			key : "",
@@ -373,6 +373,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					}if(jsObj.task == "getAllElectionScopes")
 					{										
 						buildElectionTypesSelect(results);
+					}
+					if(jsObj.task == "connectToUser")
+					{
+						closeConnectPanel(jsObj,results);
 					}
 					
 			}catch (e) {   		
@@ -1217,6 +1221,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 </head>
 <body>
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
+<div id="connectPeoplePopup_outer" class="yui-skin-sam"><div id="connectPeoplePopup"></div></div>
 
 <div id="statePage_header" style="margin-top:10px;margin-bottom:10px;">
 	<table border="0" cellpadding="0" cellspacing="0">
@@ -1419,14 +1424,17 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 	<!--District Page MP, MLA Div-->
 	<div id="mpMla_main">
-		<div id="mp_main_div">
+	<table width="100%">
+	<tr>
+		<td width="75%" valign="top">
+		<div id="mp_main_div" style="width:auto">
 			<div id="mp_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 					<td><div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
-							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:528px;">
 								<span>Member of Parliament (MP) in the District</span>
 							</div>
 						</td>
@@ -1434,7 +1442,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>
 			</div>
-			<div id="mp_body" class="yui-skin-sam">
+			<div id="mp_body" class="yui-skin-sam" style="height:220px;">
 				<div id="mpsInfoDivBody">
 					<table id="mpsDataSortingTable">			
 						<c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">			
@@ -1462,6 +1470,26 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</div>
 			</div>
 		</div>
+		</td>
+		<td width="25%" valign="top">
+			<div id="districtPeopleConnect_main">
+				<div id="districtPeopleConnect_head">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+						<tr>
+							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+							<td>	
+								<div class="districtPageRoundedHeaders_center" style="width:253px;">
+									<span>Connect To Your District People</span>
+								</div>
+							</td>
+							<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						</tr>
+					</table>	
+				</div>
+				<div id="districtPeopleConnect_body"></div>
+			</div>			
+		</td>
+		</table>
 		<div id="mla_main_div">
 			<div id="mla_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1653,6 +1681,17 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 		
 	problemsInfo.push(problemObj);
 </c:forEach>
+
+<c:forEach var="candidate" items="${userDetails.candidateVO}">	
+	var userObj={
+						userId:'${candidate.id}',
+						userName:'${candidate.candidateName}'			
+					};
+		
+	connectedPeople.push(userObj);
+</c:forEach>
+userLoginStatus = '${userDetails.loginStatus}';
+userId = '${userDetails.userId}';
 
 initializeDistrictPage();
 getAllMptcYears();

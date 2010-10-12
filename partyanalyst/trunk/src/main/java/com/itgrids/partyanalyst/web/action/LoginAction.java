@@ -242,6 +242,8 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 				return "constituencyPageRedirect";
 			}else if(redirectLoc.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
 				return "localElectionBodyPageRedirect";
+			}else if(redirectLoc.equalsIgnoreCase(IConstants.CONNECT_REDIRECT)){
+				return "connectPeoplePageRedirect";
 			}
 		}
 		

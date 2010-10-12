@@ -1,0 +1,68 @@
+
+#connectPeoplePage_main
+{
+	padding:10px;	
+}
+
+.connectPeopleCenter
+{
+	background-color:#ECECEC;
+	height:30px;
+}
+
+#connectPeople_leftNav_center
+{
+	background-color:#ECECEC;
+	height:250px;
+	width:225px;
+}
+
+#connectPeople_connect_center
+{
+	/*background-color:#ECECEC;*/
+	height:250px;
+}
+
+#connectPeople_leftNav_list
+{
+	margin:0px;
+}
+
+#connectPeople_leftNav_list li
+{
+	color:#0F4D7C;
+	font-size:12px;
+	font-weight:bold;
+	list-style-type:none;
+	padding:5px;
+	cursor:pointer
+}
+
+#connectPeople_connect_center .yui-content 
+{
+	background-color:#FFFFFF;
+	height:280px;
+}
+
+#connectPeople_connect_center .yui-nav
+{
+	border-bottom:medium none;
+}
+
+#connectPeople_connect_center .yui-navset .yui-nav li
+{
+	position:relative;
+	left:5px;
+}
+
+#connectPeople_connect_center .yui-nav a em 
+{
+	padding:0.55em 0.95em;
+}
+
+#connectPeople_connect_center .yui-navset .yui-nav .selected a
+{
+	background:none;
+	color:#123B5A;
+	font-weight:bold;
+}

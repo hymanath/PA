@@ -349,8 +349,10 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			session.setAttribute("HiddenCount", 0);
 		}
 		
-		if(redirectLoc != null && redirectLoc != "")
+		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();
+		else if("".equalsIgnoreCase(redirectLoc))
+			return "connect";
 		
 		return SUCCESS;
 	}
