@@ -11,7 +11,7 @@ var mobileNumbersArray = new Array();
 
 var assignTolocalPoliticalChangesDataArray,localPoliticalChanges,externalPersonDetailsPanel;
 var hidden = 1;
-
+var inf_peopleArr = new Array();
 function getTodayDateTime() {
 	now = new Date();
 	hour = now.getHours();
@@ -350,9 +350,30 @@ function buildProblemsDetailsDT(results) {
 		}
 		
 }
-
-function buildInfluencingPeopleDT(results) {
+function populateInfluencingPeople(results)
+{
 	resultsGlobal = results;
+	inf_peopleArr = new Array();
+	for(var i in results)
+	{
+		var inf_peopleObj = {
+				influencingPeopleId: results[i].influencingPeopleId,
+				personName: results[i].personName,
+				contactNumber: results[i].contactNumber,
+				party: results[i].party,
+				localArea: results[i].localArea,
+				influencingRange: results[i].influencingRange,
+				influencingRangeName: results[i].influencingRangeName,
+				editDetails: '<center><A href="javascript:{}" title="Click To Edit Details" onclick="redirectToNewWindowForAddingInfluencingPeople(\'edit\','+results[i].influencingPeopleId+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A></center>',
+				deleteDetails: '<center><A href="javascript:{}" title="Click To Delte"  onclick="deleteInfluencingPeopleDetails('+results[i].influencingPeopleId+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A></center>'
+				
+		};
+		inf_peopleArr.push(inf_peopleObj);
+	}
+	buildInfluencingPeopleDT();
+}
+function buildInfluencingPeopleDT() {
+	
 	var ipDTColumnDefs = [ {
 		key : "influencingPeopleId",
 		hidden: true
@@ -383,17 +404,22 @@ function buildInfluencingPeopleDT(results) {
 		key : "influencingRangeName",
 		label : "Influencing Place",
 		sortable : true
-	} 
-	];
+	}, {
+		key : "editDetails",
+		label : "Edit"		
+	}, {
+		key : "deleteDetails",
+		label : "Delete"		
+	}];
 
-	var ipDTDataSource = new YAHOO.util.DataSource(results);
+	var ipDTDataSource = new YAHOO.util.DataSource(inf_peopleArr);
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	ipDTDataSource.responseSchema = {
 		fields : ["influencingPeopleId","personName", "contactNumber", "party", "localArea",
-				"influencingRange","influencingRangeName" ]
+				"influencingRange","influencingRangeName", "editDetails", "deleteDetails"]
 	};
 
-	if (results.length > 10) {
+	if (inf_peopleArr.length > 10) {
 		var myConfigs = {
 			paginator : new YAHOO.widget.Paginator( {
 				rowsPerPage : 10
@@ -679,12 +705,10 @@ function buildDataTableForLocalPoliticalChanges(results)
 		sortable : true
 	}, {
 		key : "editDetails",
-		label : "Edit",
-		sortable : true
+		label : "Edit"		
 	}, {
 		key : "deleteDetails",
-		label : "Delete",
-		sortable : true
+		label : "Delete"		
 	} ];
 
 					
