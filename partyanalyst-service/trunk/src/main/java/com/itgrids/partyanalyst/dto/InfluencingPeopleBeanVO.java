@@ -8,8 +8,18 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
 	constituency,mandal,village,hamlet,party,position,influencingRange,middleName,
-	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward;
+	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,windowTask,influencingPersonId;
+	
 	private ResultStatus resultStatus;
+	
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -201,6 +211,22 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setWard(String ward) {
 		this.ward = ward;
+	}
+
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
+	public String getInfluencingPersonId() {
+		return influencingPersonId;
+	}
+
+	public void setInfluencingPersonId(String influencingPersonId) {
+		this.influencingPersonId = influencingPersonId;
 	}
 	
 	
