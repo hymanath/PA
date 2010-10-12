@@ -11,8 +11,17 @@ public class DataTransferVO extends ResultStatus{
 	private List<CandidateVO> candidateVO;
 	private ResultStatus resultStatus;
 	private String loginStatus;
+	private Long userId; 
 	
 	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public String getLoginStatus() {
 		return loginStatus;
 	}
