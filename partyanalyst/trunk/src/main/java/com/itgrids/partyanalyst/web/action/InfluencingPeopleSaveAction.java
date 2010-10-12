@@ -26,7 +26,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
 	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
-						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet;
+						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId;
 	private int resultStatus = 3;
 	
 	public int getResultStatus() {
@@ -58,20 +58,24 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.influencingPeopleService = influencingPeopleService;
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter First Name",shortCircuit=true)
+	
 	public String getFirstName() {
 		return firstName;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Last Name",shortCircuit=true)
+	
 	public String getLastName() {
 		return lastName;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -92,11 +96,12 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.mobile = mobile;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Gender",shortCircuit=true)
+
 	public String getGender() {
 		return gender;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select Gender")
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
@@ -105,6 +110,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return cast;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please select the Caste Category")
 	public void setCast(String cast) {
 		this.cast = cast;
 	}
@@ -113,46 +119,52 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return occupation;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select State",shortCircuit=true)
+	
 	public String getState() {
 		return state;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection")
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select District",shortCircuit=true)
+	
 	public String getDistrict() {
 		return district;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
 	public void setDistrict(String district) {
 		this.district = district;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Constituency",shortCircuit=true)
+
 	public String getConstituency() {
 		return constituency;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
 	public void setConstituency(String constituency) {
 		this.constituency = constituency;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Mandal",shortCircuit=true)
+	
 	public String getMandal() {
 		return mandal;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Tehsil/Muncipality Selection")
 	public void setMandal(String mandal) {
 		this.mandal = mandal;
 	}
-
+	
+	
 	public String getVillage() {
 		return village;
 	}
@@ -186,11 +198,12 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.position = position;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Influencing Range",shortCircuit=true)
+	
 	public String getInfluencingRange() {
 		return influencingRange;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Influencing Range",shortCircuit=true)
 	public void setInfluencingRange(String influencingRange) {
 		this.influencingRange = influencingRange;
 	}
@@ -199,15 +212,18 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return middleName;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Father or SpouseName",shortCircuit=true)
+	
 	public String getFatherOrSpouseName() {
 		return fatherOrSpouseName;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse name is mandatory")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.fatherOrSpouseName = fatherOrSpouseName;
 	}
@@ -236,13 +252,30 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.pincode = pincode;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Ward or Hamlet",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid ward or hamlet selection")
 	public String getWardOrHamlet() {
 		return wardOrHamlet;
 	}
 
 	public void setWardOrHamlet(String wardOrHamlet) {
 		this.wardOrHamlet = wardOrHamlet;
+	}
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+
+	public String getInfluencingPersonId() {
+		return influencingPersonId;
+	}
+
+	public void setInfluencingPersonId(String influencingPersonId) {
+		this.influencingPersonId = influencingPersonId;
 	}
 
 	public String execute() throws Exception{
@@ -268,8 +301,10 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		influencingPeopleBeanVO.setHouseNo(getHouseNo().trim());
 		influencingPeopleBeanVO.setStreetName(getStreetName().trim());
 		influencingPeopleBeanVO.setPincode(getPincode().trim());
+		influencingPeopleBeanVO.setWindowTask(getWindowTask());
+		influencingPeopleBeanVO.setInfluencingPersonId(getInfluencingPersonId());
 		
-				
+						
 		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
 		try{
 			influRangeAndValueMap.put(IConstants.STATE_LEVEL, new Long(state));
@@ -281,7 +316,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 			ex.printStackTrace();
 			return ERROR;
 		}
-		
 		
 		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO, influRangeAndValueMap);
 		
