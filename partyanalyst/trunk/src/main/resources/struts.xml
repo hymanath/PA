@@ -1535,6 +1535,9 @@
 		</action>
 		<action name="viewFeaturesAction" class="viewFeaturesAction"> 
              <result name="success">/jsp/viewFeatures.jsp</result>              
+        </action>
+        <action name="searchPartyAnalystAction" class="searchPartyAnalystAction"> 
+             <result name="success">/jsp/searchPage.jsp</result>              
         </action>		
 	</package>
 </struts>

@@ -487,6 +487,8 @@
 	
 	<bean id="municipalWardsAssemblyBoothsMapperAction" class="com.itgrids.partyanalyst.web.action.MunicipalWardsAssemblyBoothsMapperAction" singleton="false">
 		<property name="boothMapperService" ref="boothMapperService" />
+	</bean>
+	<bean id="searchPartyAnalystAction" class="com.itgrids.partyanalyst.web.action.SearchPartyAnalystAction" singleton="false">		
 	</bean>	
 	
 	<bean id="connectPeopleAction" class="com.itgrids.partyanalyst.web.action.ConnectPeopleAction" singleton="false">
