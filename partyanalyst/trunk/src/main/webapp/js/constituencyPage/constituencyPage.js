@@ -1468,7 +1468,6 @@ function initializeConstituencyPage()
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
-    buildRightlayoutMap();
     if(constituencyPageMainObj.forwardTask != null)
 	{
 		if(constituencyPageMainObj.forwardTask != "")
@@ -1476,7 +1475,7 @@ function initializeConstituencyPage()
           openAddNewProblemWindow();
 		}
 	}
-
+    buildRightlayoutMap();
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
 	
