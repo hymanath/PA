@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CnCSearchResultsAction extends ActionSupport implements ServletRequestAware{
@@ -28,6 +29,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 	List<ConstituencyVO> constituencySearchList ;
 	List<CandidateVO> candidatateSearchList ;
 	private Long id;
+	private String constType;
 	
 	public String getSearchText() {
 		return searchText;
@@ -87,6 +89,14 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 
 	public void setId(Long id) {
 		this.id = id;
+	}	
+
+	public String getConstType() {
+		return constType;
+	}
+
+	public void setConstType(String constType) {
+		this.constType = constType;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,8 +104,13 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		session = request.getSession();		
 		
 		if(getSearchName() != null && getSearchName().equals("Constituency"))
-		{			
-			constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText());
+		{	
+			String electionType = null;
+			if(getConstType().equalsIgnoreCase(IConstants.MLA))
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			if(getConstType().equalsIgnoreCase(IConstants.MP))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText(), electionType);
 			if(constituencySearchList.size() == 1)
 			{
 				id = constituencySearchList.get(0).getId();

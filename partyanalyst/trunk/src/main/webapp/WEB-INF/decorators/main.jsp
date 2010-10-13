@@ -247,7 +247,7 @@
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li>
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH PARTYANALYST</a> 
+							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH</a> 
 						</li> 
 					</ul> 
 				</div> 
