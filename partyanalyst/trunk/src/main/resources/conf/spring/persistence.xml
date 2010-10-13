@@ -143,6 +143,9 @@
 				<value>com.itgrids.partyanalyst.model.AssemblyLocalElectionBody</value>	
 				<value>com.itgrids.partyanalyst.model.AnanymousUser</value>	
 				<value>com.itgrids.partyanalyst.model.ProblemImpactLevel</value>
+				<value>com.itgrids.partyanalyst.model.CustomMessage</value>
+				<value>com.itgrids.partyanalyst.model.MessageType</value>
+				<value>com.itgrids.partyanalyst.model.UserConnectedto</value>
 				</list>
 		</property>
 	</bean>

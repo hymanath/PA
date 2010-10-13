@@ -420,4 +420,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="customMessageDAO" class="com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="messageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+		<bean id="userConnectedtoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
