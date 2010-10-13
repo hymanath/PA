@@ -201,7 +201,7 @@ function influenceRangeFunction(id,text){
 }
 function checkRequestType()
 {
-	var resultStatus = "${resultStatus}";
+	/*var resultStatus = "${resultStatus}";
 	var successMsgDIV = document.getElementById("successMsg");
 	var message = '';
 	if(resultStatus==""){
@@ -211,7 +211,7 @@ function checkRequestType()
 	}else if(resultStatus==1){
 		message+='<div id="successDIV" style="color:green;"><p>Error Raised while saving data please check log for details.</p></div>';
 	}
-	successMsgDIV.innerHTML = message;
+	successMsgDIV.innerHTML = message; */
 }
 
 function doUnload()
@@ -273,10 +273,6 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
   </CENTER>
 
 <div id="registrationMainDiv">
-
-<div id="loginDetailsDiv" class="accessDivMain">
-	<div id="loginDetailsDivBody" align="center" class="accessDivBody">
-		
 	<div id="errorMsgDiv">
 		<table class="registrationTable" >
 			<tr>
@@ -290,6 +286,13 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		</table>
 	</div>		
 	
+	<c:if  test="${resultStatus == '0'}">
+	<div id="successMsg" style="color:green;" >Influencing People Registered Successfully!</div>
+	</c:if>	
+	<c:if  test="${resultStatus == '1'}">
+	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
+	</c:if>
+
 	<s:form action="/influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
 	<FIELDSET>
 	<LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
@@ -297,17 +300,17 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<table class="registrationTable" width="100%">			
 		<tr>
 			<td class="tdstyle" width="90px"><s:label class="selectWidth" for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}"/><font class="required">*</font></td>
-			<td align="left"><s:textfield id="firstNameField" theme="simple" name="firstName"/></td>
+			<td align="left"><s:textfield id="firstNameField" theme="simple" name="firstName" maxlength="25"/></td>
 
 			<td class="tdstyle"><s:label class="selectWidth" for="middleNameField" theme="simple" id="middleNameLabel"  value="%{getText('middleName')}"/></td>
-			<td><s:textfield id="middleNameField" theme="simple" name="middleName"/></td>
+			<td><s:textfield id="middleNameField" theme="simple" name="middleName" maxlength="25" /></td>
 		</tr>					
 		<tr>
 			<td class="tdstyle"><s:label class="selectWidth" for="lastNameField" theme="simple" id="lastNameLabel" value="%{getText('lastName')}"/><font class="required">*</font></td>
-			<td><s:textfield id="lastNameField" theme="simple" name="lastName"/></td>
+			<td><s:textfield id="lastNameField" theme="simple" name="lastName" maxlength="25"/></td>
 			
 			<td class="tdstyle" width="120"><s:label class="selectWidth" for="father_spouseName" theme="simple" id="father_spouseNameLabel" value="%{getText('father_spouseName')}"/><font class="required">*</font></td>
-			<td><s:textfield id="father_spouseName" theme="simple" name="fatherOrSpouseName"/></td>
+			<td><s:textfield id="father_spouseName" theme="simple" name="fatherOrSpouseName" maxlength="25"/></td>
 		</tr>
 		<tr>
 			<td class="tdstyle"><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}"/><font class="required">*</font></td>
@@ -324,10 +327,10 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<table class="registrationTable" width="100%">	
 	<tr>
 		<td class="tdstyle"><s:label class="selectWidth" for="mobileField" id="mobileLabel"  theme="simple" value="%{getText('mobile')}" /><font class="required"> * </font> </td>
-		<td><s:textfield id="mobileField" theme="simple" name="mobile"/>  </td>
+		<td><s:textfield id="mobileField" theme="simple" name="mobile" maxlength="15"/>  </td>
 
 		<td class="tdstyle"><s:label class="selectWidth" for="emailField" theme="simple" id="emailLabel" value="%{getText('email')}"/></td>
-		<td><s:textfield id="emailField" theme="simple" name="email"/>  </td>
+		<td><s:textfield id="emailField" theme="simple" name="email" maxlength="25"/>  </td>
 	</tr><tr><td></td></tr>										
 	
 	<tr>
@@ -365,11 +368,12 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	</tr>
 	</table>
 </FIELDSET>
+
 <FIELDSET>
 	<LEGEND style="font-size:12px;"><strong>Influence Details</strong></LEGEND>
 	<table class="registrationTable" width="100%">	
 	<tr>
-		<td class="tdstyle" width="88px"><s:label for="occupationField" id="occupationLabel"  value="%{getText('occupation')}" /><font class="required"> * </font></td>
+		<td class="tdstyle" width="88px"> <s:label for="occupationField" id="occupationLabel"  value="%{getText('occupation')}" /><font class="required"> * </font> </td>
 		<td><s:select id="occupationField" cssClass="regionSelect" name="occupation"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
 		
 	
@@ -410,9 +414,6 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<s:submit cssClass="button" value="Save Record" name="Save"></s:submit>
 </div>
 </s:form>
-<div id="successMsg"></div> 
-</div>	
-</div>		 
 </div>		
 </body>
 </html> 
