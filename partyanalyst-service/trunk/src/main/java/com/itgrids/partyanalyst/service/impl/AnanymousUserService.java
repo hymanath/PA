@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -13,6 +15,7 @@ import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -30,7 +33,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
-	
+	private CustomMessageDAO customMessageDAO;
+
+	public CustomMessageDAO getCustomMessageDAO() {
+		return customMessageDAO;
+	}
+
+	public void setCustomMessageDAO(CustomMessageDAO customMessageDAO) {
+		this.customMessageDAO = customMessageDAO;
+	}
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -179,7 +190,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		List<AnanymousUser> detailsList = null;
 		try{
 			detailsList = ananymousUserDAO.checkForUserNameAvailabiity(userName);
-			if(detailsList.size()==1){
+			if(detailsList!=null && detailsList.size()!=0){
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}else{
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
@@ -201,26 +212,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param locationType
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,String retrivalCount){
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,String retrivalCount,Long loginId){
 		ResultStatus resultStatus = new ResultStatus();
-		DataTransferVO dataTransferVO = new DataTransferVO();;
+		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
-		List<Object> result = new ArrayList<Object>();
+		List<Object> result = new ArrayList<Object>();		
+		
 		try{
 			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
-			if(result!=null && result.size()!=0){
-				for(int i=0;i<result.size();i++){
-					Object[] parms = (Object[])result.get(i);
-					CandidateVO candidateVO = new CandidateVO();
-					String lastName="";
-					if(parms[1]!=null){
-						lastName = parms[1].toString();
-					}
-					candidateVO.setCandidateName(parms[0].toString().concat(" ").concat(lastName));
-					candidateVO.setId(new Long(parms[2].toString()));
-					candidateDetails.add(candidateVO);
-				}
-			}			
+			candidateDetails = setFriendsListForAUser(result,loginId);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -233,5 +233,62 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 	return dataTransferVO;
 	} 
+	
+	
+	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId){
+		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
+		List<Long> candidates = new ArrayList<Long>();
+		Map<Long, CandidateVO> userIdAndRelationShipWithLogedUser = new HashMap<Long, CandidateVO>();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(result!=null && result.size()!=0){
+				for(int i=0;i<result.size();i++){
+					Object[] parms = (Object[])result.get(i);
+					CandidateVO candidateVO = new CandidateVO();
+					Long userId = new Long(parms[2].toString());
+					String lastName="";
+					if(parms[1]!=null){
+						lastName = parms[1].toString();
+					}
+					candidateVO.setCandidateName(parms[0].toString().concat(" ").concat(lastName));
+					candidateVO.setId(userId);
+					candidateVO.setStatus(IConstants.NOTCONNECTED);
+					if(loginId!=0){
+						candidates.add(userId);
+						userIdAndRelationShipWithLogedUser.put(userId,candidateVO);
+					}else{
+						candidateDetails.add(candidateVO);
+					}				
+				}
+				if(loginId!=0){					
+					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId);	
+					for(int i=0;i<detailsList.size();i++){
+						Object[] parms = (Object[])detailsList.get(i);				
+						Long userId = new Long(parms[0].toString());					
+						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());				
+					}
+					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
+						candidateDetails.add(data.getValue());
+					}
+				}
+				
+				dataTransferVO.setCandidateVO(candidateDetails);
+				resultStatus.setResultPartial(false);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				dataTransferVO.setResultStatus(resultStatus);	
+			}else{				
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+				resultStatus.setResultPartial(true);
+				dataTransferVO.setResultStatus(resultStatus);
+			}
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);
+		}
+		return candidateDetails;
+	}
 	
 }

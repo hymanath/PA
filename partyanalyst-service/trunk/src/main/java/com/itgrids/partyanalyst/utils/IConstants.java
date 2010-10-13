@@ -270,11 +270,18 @@ public interface IConstants {
 	public static final String User = "User";
 	public static final String External_person = "External_person";
 	public static final String Call_Center = "Call_Center";
-	public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
+		public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
 	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
     public static final String REJECTED = "rejected";
     public static final Long MAX_PROBLEMS_DISPLAY = 20L;
     public static final Long MAX_ANONYMOUS_USER_DISPLAY = 20L;
+    
+    
+    public static final String CONNECTED = "CONNECTED";
+    public static final String NOTCONNECTED = "NOTCONNECTED";   
+    public static final String FRIEND_REQUEST = "FRIEND REQUEST";
+    public static final String COMMENTS = "COMMENTS";
+    public static final String SCRAP = "SCRAP";
     
 }

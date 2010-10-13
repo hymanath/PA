@@ -48,6 +48,12 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 
 	 private Set<ProblemAndProblemSource> problemAndProblemSource = new HashSet<ProblemAndProblemSource>(0); 
 	 
+	 private Set<CustomMessage> customMessageSenderId = new HashSet<CustomMessage>(0); 
+	 private Set<CustomMessage> customMessageRecepientId = new HashSet<CustomMessage>(0); 
+	 
+	 private Set<UserConnectedto> userConnectedtosenderId = new HashSet<UserConnectedto>(0); 
+	 private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
+	 
 	 public AnanymousUser()
 	 {
 	 }
@@ -249,4 +255,45 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "senderId")
+	public Set<CustomMessage> getCustomMessageSenderId() {
+		return customMessageSenderId;
+	}
+
+	public void setCustomMessageSenderId(Set<CustomMessage> customMessageSenderId) {
+		this.customMessageSenderId = customMessageSenderId;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recepientId")
+	public Set<CustomMessage> getCustomMessageRecepientId() {
+		return customMessageRecepientId;
+	}
+
+	public void setCustomMessageRecepientId(
+			Set<CustomMessage> customMessageRecepientId) {
+		this.customMessageRecepientId = customMessageRecepientId;
+	}
+
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "senderId")
+	public Set<UserConnectedto> getUserConnectedtosenderId() {
+		return userConnectedtosenderId;
+	}
+
+	public void setUserConnectedtosenderId(
+			Set<UserConnectedto> userConnectedtosenderId) {
+		this.userConnectedtosenderId = userConnectedtosenderId;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recepientId")
+	public Set<UserConnectedto> getUserConnectedtorecepientId() {
+		return userConnectedtorecepientId;
+	}
+
+	public void setUserConnectedtorecepientId(
+			Set<UserConnectedto> userConnectedtorecepientId) {
+		this.userConnectedtorecepientId = userConnectedtorecepientId;
+	}
+	
 }

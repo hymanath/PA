@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AnanymousUser;
+import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -27,7 +28,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
-	public void testAnonymousUserLogin(){		
+	/*public void testAnonymousUserLogin(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkAnonymousUserLogin("ravi","kiran");	
 		assertEquals(detailsList.size(), 1);
 	}
@@ -35,6 +36,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 	public void testAvailabityOfUserNameForAnonymousUser(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkForUserNameAvailabiity("ravi");	
 		assertEquals(detailsList.size(), 1);
-	}
+	}*/
+	
 	
 }
