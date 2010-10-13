@@ -158,12 +158,12 @@ function limitText(limitField, limitCount, limitNum)
 						</tr>
 						<tr>
 							<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
-							<td style="padding-left: 15px;"><textarea cols="40" id="descTextArea" onkeyup="limitText('descTextArea','maxcount',250)"  name="description"></textarea></td>
+							<td style="padding-left: 15px;"><textarea cols="40" id="descTextArea" onkeyup="limitText('descTextArea','maxcount',500)"  name="description"></textarea></td>
 							
 							<div id="limitDiv">
 									<table style="width:100%;"><tr>
-										<td style="width:50%;"><div id="remainChars"><span id="maxcount">250 </span> <span>chars remaining..</span></div></td>
-										<td style="width:50%;"><div>Should not exceed 250 chars</div></td>
+										<td style="width:50%;"><div id="remainChars"><span id="maxcount">500 </span> <span>chars remaining..</span></div></td>
+										<td style="width:50%;"><div>Should not exceed 500 chars</div></td>
 									</tr></table>
 								</div>	
 						</tr>
