@@ -226,6 +226,29 @@ function doUnload()
 	window.opener.document.location.reload(true);
 }
 
+function cleanOptionsList(string)
+{
+	if(string == "state")
+	{
+		clearOptionsListForSelectElmtId("constituencyField");
+		clearOptionsListForSelectElmtId("mandalField");
+		clearOptionsListForSelectElmtId("villageField");
+		
+	}
+
+	else if(string == "district")
+	{
+		clearOptionsListForSelectElmtId("mandalField");
+		clearOptionsListForSelectElmtId("villageField");
+	}
+
+	else if(string == "constituency")
+	{
+		clearOptionsListForSelectElmtId("villageField");
+	}
+	
+	
+}
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 </script>
 
@@ -319,15 +342,15 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 			</tr>
 	<tr>
 		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
-		<td ><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField','currentAdd')"></s:select></td>
+		<td ><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField','currentAdd');cleanOptionsList('state')"></s:select></td>
 
 		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
-		<td><s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField','currentAdd')" headerKey="0" headerValue="Select District"></s:select></td>
+		<td><s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField','currentAdd');cleanOptionsList('district')" headerKey="0" headerValue="Select District"></s:select></td>
 	</tr>
 	
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
-		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd', 'null')" headerKey="0" headerValue="Select Constituency"></s:select></td>
+		<td><s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" headerValue="Select Constituency"></s:select></td>
 	
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
 		<td><s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
