@@ -128,8 +128,17 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private IAnanymousUserService ananymousUserService;
 	private DataTransferVO userDetails;
 	private String userType = null;	
+	private String mapKey;
 	
 	
+	public String getMapKey() {
+		return mapKey;
+	}
+
+	public void setMapKey(String mapKey) {
+		this.mapKey = mapKey;
+	}
+
 	public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
 	}
@@ -571,7 +580,17 @@ public class ConstituencyPageAction extends ActionSupport implements
 	}
 
 	public String execute() throws Exception{
-				
+		
+		String url = request.getRequestURL().toString();
+		String substr = url.substring(7);
+		String path = substr.substring(0, substr.indexOf('/')) ;
+		
+		
+		if(path.equalsIgnoreCase("partyanalyst.com"))
+			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
+		else
+			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true";
+		
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
