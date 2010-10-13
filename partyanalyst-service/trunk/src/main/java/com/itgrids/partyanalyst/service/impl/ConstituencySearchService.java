@@ -48,8 +48,8 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		return constituencyNamesAndIdsList;
 	}
 	
-	public List<ConstituencyVO> getConstituencyDetails(String name){
-		List<Constituency> constituencies = constituencyDAO.findByConstituencyNamePattern(name);
+	public List<ConstituencyVO> getConstituencyDetails(String name, String constType){
+		List<Constituency> constituencies = constituencyDAO.findByConstituencyNamePattern(constType, name);
 		List<ConstituencyVO> constituencyVOs = new ArrayList<ConstituencyVO>();
 		String districtName = "";
 		for(Constituency constituency:constituencies){

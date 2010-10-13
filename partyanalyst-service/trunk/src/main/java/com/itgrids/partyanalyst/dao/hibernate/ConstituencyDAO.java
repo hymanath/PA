@@ -47,8 +47,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Constituency> findByConstituencyNamePattern(String constituencyName){
-		return getHibernateTemplate().find("from Constituency model where model.name like ?","%"+constituencyName+"%");
+	public List<Constituency> findByConstituencyNamePattern(String constituencyType, String constituencyName){
+		String cName = "%"+constituencyName+"%";
+		Object[] params = {constituencyType, cName};
+		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionType.electionType = ? and model.name like ?", params);
 	}
 		
 	@SuppressWarnings("unchecked")
