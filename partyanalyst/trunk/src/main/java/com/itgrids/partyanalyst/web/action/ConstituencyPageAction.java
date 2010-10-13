@@ -717,7 +717,12 @@ public class ConstituencyPageAction extends ActionSupport implements
    		
    		
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,"partial");		
+   		if(user==null){
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,"partial",0l);	
+   		}else{
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,"partial",user.getRegistrationID());
+   		}
+				
 		//Free User
 		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
 				userDetails.setLoginStatus("true");
