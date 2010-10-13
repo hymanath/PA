@@ -8,25 +8,25 @@ function buildAutoSuggest(value)
 	var txtDivElmt=document.getElementById("textFldDiv");
 	if(navigator.appName=="Microsoft Internet Explorer")
 	{		
-		var txtstr='<input id="myInput" type="text" name="searchText" style="position:absolute;top:2px;"/>';
+		var txtstr='<input id="myInput" size="40" type="text" name="searchText" style="position:absolute;top:2px;"/>';
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	else
 	{
-		var txtstr='<input id="myInput" type="text" name="searchText" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
+		var txtstr='<input id="myInput" size="40" type="text" name="searchText" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	
-	var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
+	/*var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
 	var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
 	myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
     myAutoComp.useShadow = true;
 	myAutoComp.minQueryLength = 3;
 	myAutoComp.maxResultsDisplayed = 10;
 	myAutoComp.useIFrame = true;
-	myAutoComp.textboxKeyEvent.subscribe(validateRadio); 
+	myAutoComp.textboxKeyEvent.subscribe(validateRadio); */
 	var myInputEl = document.getElementById("myInput");
 	myInputEl.focus();
 }
@@ -249,5 +249,5 @@ function executeonLoad()
 	buildAutoSuggest();
 	selectEl.selectedIndex = '1';
 	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
-	getParser(selectedState);	
+	//getParser(selectedState);	
 }
