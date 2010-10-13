@@ -363,6 +363,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					{
 						userAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(influencingPeopleBeanVO.getMandal().substring(1))));
 						userAddress.setWard(constituencyDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
+						userAddress.setTehsil(null);
+						userAddress.setHamlet(null);
+						influencingPeople.setHamlet(null);
 					}
 					
 					if (IConstants.RURAL_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
@@ -370,6 +373,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 						userAddress.setTehsil(tehsilDAO.get(new Long(influencingPeopleBeanVO.getMandal().substring(1))));
 						userAddress.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
 						influencingPeople.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
+						userAddress.setLocalElectionBody(null);
+						userAddress.setWard(null);
 					}
 										
 					userAddress = userAddressDAO.save(userAddress);
