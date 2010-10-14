@@ -25,23 +25,65 @@
 
 </script>
 	
+	<!-- YUI Dependency files (Start) -->
 
-	<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container_core-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>	
 
 
-	<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script src="js/yahoo/yui-js-2.8/build/container/container_core-min.js"></script>
-	<script src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>	
 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-	<script type="text/javascript" src="js/partyPerformance.js" ></script>
-	<script type="text/javascript" src="js/partyPerformanceReport.js" ></script>	
-	
-	<link href="styles/pa.css" rel="stylesheet" type="text/css" />
-	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
-	<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+<!-- YUI Skin Sam -->
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
+<!-- YUI Dependency files (End) -->
+
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/partyPerformance.js" ></script>
+<script type="text/javascript" src="js/partyPerformanceReport.js" ></script>	
+
+<link href="styles/pa.css" rel="stylesheet" type="text/css" />
+<link href="styles/styles.css" rel="stylesheet" type="text/css" />
+<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
 	
 	<script type="text/javascript">
 	 
@@ -61,7 +103,8 @@
 		this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
 		this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
 		this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
-		this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]); 
+		this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]);
+		this.getItem(6).cfg.setProperty("submenu", aSubmenuData[6]);
 	    } 
 	 
 	}); 
@@ -120,7 +163,12 @@
 	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
 				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
 	        ]     
-	    }
+	    }, 
+	    { 
+	        id: "search", 
+	        itemdata: [
+	        ] 
+	    }  
 	     
 	     
 	]; 
@@ -275,7 +323,7 @@
 		<div id="index_inner_footer">
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
-				<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+				<td align="left"> Â© Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
 				<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
 			</tr>
 		</table>
