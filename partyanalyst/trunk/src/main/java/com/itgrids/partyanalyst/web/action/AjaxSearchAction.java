@@ -26,6 +26,42 @@ public class AjaxSearchAction implements ServletRequestAware{
 	private ICandidateSearchService candidateSearchService;
 	private HttpServletRequest request;
 	private HttpSession session;
+	private Long stateId;
+	private String searchCriteria;
+	private String constituencyType;
+	private List<SelectOptionVO> resultNames;	
+
+	public List<SelectOptionVO> getResultNames() {
+		return resultNames;
+	}
+
+	public void setResultNames(List<SelectOptionVO> resultNames) {
+		this.resultNames = resultNames;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getSearchCriteria() {
+		return searchCriteria;
+	}
+
+	public void setSearchCriteria(String searchCriteria) {
+		this.searchCriteria = searchCriteria;
+	}
+
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
 
 	public ICandidateSearchService getCandidateSearchService() {
 		return candidateSearchService;
@@ -88,9 +124,9 @@ public class AjaxSearchAction implements ServletRequestAware{
 			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
 				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
 			Long stateId = jObj.getLong("stateId");	
-			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
+			/*List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
 			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));	
-			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);
+			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);*/
 		}
 		else if (jObj.getString("searchCriteria").equalsIgnoreCase("Constituency"))
 		{
@@ -101,13 +137,39 @@ public class AjaxSearchAction implements ServletRequestAware{
 				electionTypeId = 1l;
 			Long stateId = jObj.getLong("stateId");	
 			
-				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
-				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));					
+			/*	List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
+				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));				*/	
 		}	
 		
 		 return Action.SUCCESS;
 	}
 	
+	public String getNames()throws Exception
+	{
+		System.out.println(stateId);
+		System.out.println(searchCriteria);
+		System.out.println(constituencyType);
+		resultNames = new ArrayList<SelectOptionVO>();
+		
+		SelectOptionVO o1 = new SelectOptionVO();
+		o1.setId(new Long(1));
+		o1.setName("Sai");
+		
+		SelectOptionVO o2 = new SelectOptionVO();
+		o2.setId(new Long(2));
+		o2.setName("Shiva");
+		
+		SelectOptionVO o3 = new SelectOptionVO();
+		o3.setId(new Long(3));
+		o3.setName("Raghu");
+		
+		resultNames.add(o1);
+		resultNames.add(o2);
+		resultNames.add(o3);
+		
+		
+		return Action.SUCCESS; 
+	}
 	private List<String> getNamesFromSelectOptionVos(List<SelectOptionVO> namesAndIds){
 			List<String> names = new ArrayList<String>();
 			for(SelectOptionVO nameAndId:namesAndIds)
