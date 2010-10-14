@@ -50,6 +50,25 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public List<Object> getCountOfAllNonApprovedProblemsByLocationWiseForCurrentDate(Date date,String status,String isApproved);
 	
+	@SuppressWarnings("unchecked")
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String problemType);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemHistoryByProblemStatusForAUser(Long userId,Long statusId,String isPushed,String isDeleted);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemHistoryForAUser(Long userId,String isPushed,String isDeleted);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountInAllStatusByLocation(Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(Long userId, String statusIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByDateAndLocation(Long userId, Date fromDate, Date toDate);
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate);
 
 }
