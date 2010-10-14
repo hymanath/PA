@@ -152,6 +152,9 @@ Owner of DHTMLgoodies.com
 		var letters = inputObj.value;
 		//var content = ajax_list_objects[ajaxIndex].response;
 		var results = eval('('+ajax_list_objects[ajaxIndex].response+')');
+		if(results.length == 0)
+			return;
+
 		var resultsString = '';
 		for(var i=0; i<results.length; i++)
 		{
