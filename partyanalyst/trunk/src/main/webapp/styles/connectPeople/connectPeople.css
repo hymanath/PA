@@ -41,7 +41,9 @@
 #connectPeople_connect_center .yui-content 
 {
 	background-color:#FFFFFF;
-	height:280px;
+	height:550px;
+	border:1px solid #808080;
+	-moz-border-radius:10px 10px 10px 10px;
 }
 
 #connectPeople_connect_center .yui-nav
@@ -52,7 +54,7 @@
 #connectPeople_connect_center .yui-navset .yui-nav li
 {
 	position:relative;
-	left:5px;
+	left:15px;
 }
 
 #connectPeople_connect_center .yui-nav a em 
@@ -62,7 +64,7 @@
 
 #connectPeople_connect_center .yui-navset .yui-nav .selected a
 {
-	background:none;
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 #D8D8D8;
 	color:#123B5A;
 	font-weight:bold;
 }

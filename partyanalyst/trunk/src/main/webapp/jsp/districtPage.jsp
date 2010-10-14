@@ -378,6 +378,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					{
 						closeConnectPanel(jsObj,results);
 					}
+					if(jsObj.task == "getAllConnectedUsers")
+					{
+						showAllConnectedUsersInPanel(jsObj,results);
+					}					
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -1685,11 +1689,13 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 <c:forEach var="candidate" items="${userDetails.candidateVO}">	
 	var userObj={
 						userId:'${candidate.id}',
-						userName:'${candidate.candidateName}'			
+						userName:'${candidate.candidateName}',
+						userStatus:'${candidate.status}'
 					};
 		
 	connectedPeople.push(userObj);
 </c:forEach>
+
 userLoginStatus = '${userDetails.loginStatus}';
 userId = '${userDetails.userId}';
 

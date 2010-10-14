@@ -1,6 +1,30 @@
-function buildAutoSuggest(value)
+
+var stateId = '';
+var searchType = '';
+var constituencyType = '';
+
+
+function buildAutoSuggest()
 {
-	var datastore= value;
+	//var datastore= value;
+
+	var selectEl = document.getElementById("stateSelect");
+	stateId =  selectEl.options[selectEl.selectedIndex].value;
+
+	var searchNameEls = document.getElementsByName("searchName");
+	var constTypeEls = document.getElementsByName("constType");
+	
+	for(var i = 0; i< searchNameEls.length; i++)
+	{
+		if(searchNameEls[i].checked)
+			searchType = searchNameEls[i].value;
+	}
+	for(var j = 0; j< constTypeEls.length; j++)
+	{
+		if(constTypeEls[j].checked)
+			constituencyType = constTypeEls[j].value;
+	}
+	
 	
 	var imgElmt=document.getElementById("ajaxLoaderimg");
 	imgElmt.style.display="none";
@@ -8,17 +32,24 @@ function buildAutoSuggest(value)
 	var txtDivElmt=document.getElementById("textFldDiv");
 	if(navigator.appName=="Microsoft Internet Explorer")
 	{		
-		var txtstr='<input id="myInput" size="40" type="text" name="searchText" style="position:absolute;top:2px;"/>';
+		var txtstr='<input id="myInput" type="text" size="40" name="searchText" onkeyup="ajax_showOptions(this,\'getCountriesByLetters\',event)" style="position:absolute;top:2px;"/>';
+		txtstr += '<input type="hidden" id="myInput_hidden" name="myInput_ID">';
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	else
 	{
-		var txtstr='<input id="myInput" size="40" type="text" name="searchText" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
+		var txtstr='<input id="myInput" type="text" size="40" name="searchText" onkeyup="ajax_showOptions(this,\'getCountriesByLetters\',event)" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
+		txtstr += '<input type="hidden" id="myInput_hidden" name="myInput_ID">';
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	
+	var myInputEl = document.getElementById("myInput");
+	myInputEl.focus();
+
+
+
 	/*var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
 	var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
 	myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
@@ -26,9 +57,57 @@ function buildAutoSuggest(value)
 	myAutoComp.minQueryLength = 3;
 	myAutoComp.maxResultsDisplayed = 10;
 	myAutoComp.useIFrame = true;
-	myAutoComp.textboxKeyEvent.subscribe(validateRadio); */
-	var myInputEl = document.getElementById("myInput");
-	myInputEl.focus();
+	myAutoComp.textboxKeyEvent.subscribe(validateRadio);
+	
+
+	var selectEl = document.getElementById("stateSelect");
+	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
+	var searchNameEls = document.getElementsByName("searchName");
+	var constTypeEls = document.getElementsByName("constType");
+	var mlaEl=document.getElementById("mlaRadio");
+	var mpEl=document.getElementById("mpRadio");
+	if(!mlaEl.checked && !mpEl.checked)
+	{
+		errDivElmt.innerHTML="Select Constituency Type";
+		return;
+	}
+	
+	var searchType;
+	var constituencyType;
+	for(var i = 0; i< searchNameEls.length; i++)
+	{
+		if(searchNameEls[i].checked)
+			searchType = searchNameEls[i].value;
+	}
+	for(var j = 0; j< constTypeEls.length; j++)
+	{
+		if(constTypeEls[j].checked)
+			constituencyType = constTypeEls[j].value;
+	}
+	
+	
+	
+	/*var oDS = new YAHOO.util.XHRDataSource("cncSearchAction.action"); 
+	    // Set the responseType 
+	    oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON; 
+		oDS.responseSchema = { 	       
+	        fields : ["id","name"] 
+	    }; 
+	    
+
+	 // Instantiate the AutoComplete 
+	    var oAC = new YAHOO.widget.AutoComplete("myInput", "suggestDiv", oDS); 
+	    // Throttle requests sent 
+	    oAC.queryDelay = .5; 
+	    // The webservice needs additional parameters 
+	    oAC.generateRequest = function(sQuery) { 
+	        return "?output=json&results=100&stateId="+selectedState+"&searchCriteria="+searchType+"&constituencyType="+constituencyType+"&query=" + sQuery ; 
+	    }; 
+	     
+	    return { 
+	        oDS: oDS, 
+	        oAC: oAC 
+	    }; */
 }
 function getXmlHttpObj()
 {	
@@ -243,11 +322,15 @@ function callAjaxForStates(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+
+
+
 function executeonLoad()
 {
-	var selectEl = document.getElementById("stateSelect");
-	buildAutoSuggest();
+	var selectEl = document.getElementById("stateSelect");	
 	selectEl.selectedIndex = '1';
+
+	buildAutoSuggest();
 	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
 	//getParser(selectedState);	
 }

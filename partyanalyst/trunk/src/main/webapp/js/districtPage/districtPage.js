@@ -152,7 +152,7 @@ function buildDistrictLevelProblemWindow()
 }
 
 function buildDistrictConnectPeopleWindow()
-{
+{	
 	var bodyElmt = document.getElementById('districtPeopleConnect_body');
 	
 	if(connectedPeople.length == 0)
@@ -184,7 +184,17 @@ function buildDistrictConnectPeopleWindow()
 		if(userLoginStatus == "false")
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'&connectUserId='+connectedPeople[i].userId+'">Connect</a>';
 		else
-			bodyStr+='<a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].userId+'\',\''+connectedPeople[i].userName+'\')">Connect</a>';
+		{
+			if(connectedPeople[i].userStatus == "NOTCONNECTED")
+			{
+				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
+				bodyStr+=' - <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].userId+'\',\''+connectedPeople[i].userName+'\')">Connect</a>';
+			}
+			else if(connectedPeople[i].userStatus == "CONNECTED")
+				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Connected</font>';
+			else if(connectedPeople[i].userStatus == "PENDING")
+				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Request Pending</font>';
+		}
 
 		bodyStr+='</span></td>';
 		bodyStr+='</tr>';
@@ -203,7 +213,10 @@ function buildDistrictConnectPeopleWindow()
 	bodyStr+='<div id="viewAllPersonConnectDiv">';
 	bodyStr+='<table width = "100%"><tr>';
 	bodyStr+='<td align="right">';
-	bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc">View All</a> </span>';
+	if(userLoginStatus == "false")
+		bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'&connectUserId='+connectedPeople[i].userId+'" class="connectAnc">View All</a> </span>';
+	else
+		bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" onclick="showAllConnectPeopleWindow()" class="connectAnc">View All</a> </span>';
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
 	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
 	bodyStr+='</td>';
@@ -215,6 +228,55 @@ function buildDistrictConnectPeopleWindow()
 
 	var connectButton = new YAHOO.widget.Button("connectButton");
 
+}
+
+function showAllConnectPeopleWindow()
+{
+	var str = '';
+	str += '<div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div>';
+
+	connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
+				 width:'350px',
+                 fixedcenter : true, 
+                 visible : true,
+                 constraintoviewport : true, 
+        		 iframe :false,
+        		 modal :false,
+        		 hideaftersubmit:true,
+        		 close:true,
+				 draggable:false
+       });	 
+	
+	connectPopupPanel.setHeader("People Connected to "+districtName+" district");   
+	connectPopupPanel.setBody(str);
+    connectPopupPanel.render();
+
+	getAllConnectedUserInDistrict();
+}
+
+function getAllConnectedUserInDistrict()
+{
+	var jsObj ={
+				districtId:districtId,
+				districtName:districtName,				
+				userId:userId,
+				task:"getAllConnectedUsers"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllConnectedUserAction.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
+
+function showAllConnectedUsersInPanel(jsObj,results)
+{
+	var str = '';	
+	str	+= '<div id="connectPeople_Head">Total People Connected to '+districtName+' district - '+results.length+'</div>';
+	str	+= '<div id="connectPeople_body">';
+	str == '';
+	str	+= '</div>';
+	
+	connectPopupPanel.setBody(str);
 }
 
 function showConnectConfirmDialogBox(userId,userName)

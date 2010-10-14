@@ -101,16 +101,7 @@
 				<td width="75%" valign="top">
 					<div id="connectPeople_connect_main">
 						<div id="connectPeople_connect_center" class="yui-skin-sam">
-							<div id="demo" class="yui-navset">
-								<ul class="yui-nav">
-									<li class="selected"><a href="#tab1"><em>Story Board</em></a></li>
-									<li><a href="#tab2"><em>Connections</em></a></li>
-								</ul>            
-								<div class="yui-content">
-									<div><p>User Update Content</p></div>
-									<div><p>Connections Content</p></div>
-								</div>
-							</div>							 
+												 
 						</div>
 					</div>
 				</td>

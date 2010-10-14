@@ -26,10 +26,19 @@ public class AjaxSearchAction implements ServletRequestAware{
 	private ICandidateSearchService candidateSearchService;
 	private HttpServletRequest request;
 	private HttpSession session;
-	private Long stateId;
+	private String stateId;
 	private String searchCriteria;
 	private String constituencyType;
+	private String letters;
 	private List<SelectOptionVO> resultNames;	
+
+	public String getLetters() {
+		return letters;
+	}
+
+	public void setLetters(String letters) {
+		this.letters = letters;
+	}
 
 	public List<SelectOptionVO> getResultNames() {
 		return resultNames;
@@ -39,11 +48,11 @@ public class AjaxSearchAction implements ServletRequestAware{
 		this.resultNames = resultNames;
 	}
 
-	public Long getStateId() {
+	public String getStateId() {
 		return stateId;
 	}
 
-	public void setStateId(Long stateId) {
+	public void setStateId(String stateId) {
 		this.stateId = stateId;
 	}
 
@@ -101,7 +110,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 	
 	public String execute() 
 	{
-		session = request.getSession();
+		/*session = request.getSession();
 		String param=null;
 		
 		param=getTask();
@@ -124,9 +133,9 @@ public class AjaxSearchAction implements ServletRequestAware{
 			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
 				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
 			Long stateId = jObj.getLong("stateId");	
-			/*List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
+			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
 			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));	
-			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);*/
+			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);
 		}
 		else if (jObj.getString("searchCriteria").equalsIgnoreCase("Constituency"))
 		{
@@ -137,36 +146,37 @@ public class AjaxSearchAction implements ServletRequestAware{
 				electionTypeId = 1l;
 			Long stateId = jObj.getLong("stateId");	
 			
-			/*	List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
-				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));				*/	
-		}	
+				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
+				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));					
+		}	*/
 		
 		 return Action.SUCCESS;
 	}
 	
 	public String getNames()throws Exception
 	{
-		System.out.println(stateId);
-		System.out.println(searchCriteria);
-		System.out.println(constituencyType);
-		resultNames = new ArrayList<SelectOptionVO>();
-		
-		SelectOptionVO o1 = new SelectOptionVO();
-		o1.setId(new Long(1));
-		o1.setName("Sai");
-		
-		SelectOptionVO o2 = new SelectOptionVO();
-		o2.setId(new Long(2));
-		o2.setName("Shiva");
-		
-		SelectOptionVO o3 = new SelectOptionVO();
-		o3.setId(new Long(3));
-		o3.setName("Raghu");
-		
-		resultNames.add(o1);
-		resultNames.add(o2);
-		resultNames.add(o3);
-		
+		session = request.getSession();
+		String electionType = null;
+		if(searchCriteria.equalsIgnoreCase("Candidate"))
+		{
+			if("MLA".equalsIgnoreCase(constituencyType))
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			if("MP".equalsIgnoreCase(constituencyType))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			
+			resultNames = candidateSearchService.getCandidateNamesAndIds(electionType, new Long(stateId),letters);
+			session.setAttribute("candidateNamesAndIds", resultNames);
+		}
+		else if(searchCriteria.equalsIgnoreCase("Constituency"))
+		{
+			Long electionTypeId= 0l;
+			if("MLA".equalsIgnoreCase(constituencyType))
+				electionTypeId = 2l;
+			if("MP".equalsIgnoreCase(constituencyType))
+				electionTypeId = 1l;
+			
+			resultNames = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,new Long(stateId),letters);
+		}
 		
 		return Action.SUCCESS; 
 	}

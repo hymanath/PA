@@ -20,13 +20,17 @@
 	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
 	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 
 	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
 
 	<!-- YUI Dependency files (End) -->
+	
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
+	<script type="text/javascript" src="js/cncSearch.js"></script>	
+	<script type="text/javascript" src="js/ajaxSearch/ajax.js" ></script>
+	<script type="text/javascript" src="js/ajaxSearch/ajax-dynamic-list.js" ></script>
 
-	<script type="text/javascript" src="js/cncSearch.js"></script>
+
 	 <script type="text/javascript"> 		
 		URL="<%=request.getContextPath()%>/ajaxSearchAction.action?" 	
 	
@@ -71,6 +75,36 @@
 		position:relative;
 		top:6px;
 
+	}
+	/* Big box with list of options */
+	#ajax_listOfOptions{
+		position:absolute;	/* Never change this one */
+		width:175px;	/* Width of box */
+		height:200px;	/* Height of box */
+		overflow:auto;	/* Scrolling features */
+		border:1px solid #317082;	/* Dark green border */
+		background-color:#FFF;	/* White background color */
+		text-align:left;
+		font-size:0.9em;
+		z-index:100;
+	}
+	#ajax_listOfOptions div{	/* General rule for both .optionDiv and .optionDivSelected */
+		margin:1px;		
+		padding:1px;
+		cursor:pointer;
+		font-size:0.9em;
+	}
+	#ajax_listOfOptions .optionDiv{	/* Div for each item in list */
+		
+	}
+	#ajax_listOfOptions .optionDivSelected{ /* Selected item in the list */
+		background-color:#317082;
+		color:#FFF;
+	}
+	#ajax_listOfOptions_iframe{
+		background-color:#F00;
+		position:absolute;
+		z-index:5;
 	}
 	 </style>
  </HEAD>
@@ -142,6 +176,8 @@
 </s:form>
 </div>
 <script type="text/javascript">
+
+
 getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');
 
 </script>

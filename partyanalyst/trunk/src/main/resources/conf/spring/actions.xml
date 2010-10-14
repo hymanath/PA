@@ -494,5 +494,6 @@
 	</bean>	
 	
 	<bean id="connectPeopleAction" class="com.itgrids.partyanalyst.web.action.ConnectPeopleAction" singleton="false">
+		<property name="ananymousUserService" ref="ananymousUserService" />	
 	</bean>
 </beans>		
