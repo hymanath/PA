@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 
 public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
@@ -262,6 +263,24 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		queryObject.setParameter(0,electionType);
 		queryObject.setParameterList("districtIds", districtIds);		
 		return queryObject.list();
+	}
+
+	public List getConstituenciesBySearchString(Long electionTypeId,
+			Long stateId, String searchString) {
+		
+		String cName = ""+searchString+"%";
+		Query queryObject = getSession().createQuery("select model.constituencyId , model.name from Constituency model" +
+				" where model.electionScope.electionType.electionTypeId = ? and model.state.stateId=? and model.name like ? order by model.name");
+		queryObject.setLong(0,electionTypeId);
+		queryObject.setLong(1,stateId);
+		queryObject.setString(2, cName);
+		queryObject.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
+		return queryObject.list();
+			
+		
+		
 	} 
+	
+	
 	
 }

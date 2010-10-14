@@ -171,14 +171,34 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	
 	*/
 	
-	public void testFindByConstituencyNamePattern()
+	/*public void testFindByConstituencyNamePattern()
 	{
 		List<Constituency> list = constituencyDAO.findByConstituencyNamePattern("Assembly", "Nellore");
 		for(Constituency constituency:list)
 		{
 			System.out.println("name:"+constituency.getName());			
+		}	
+	}*/
+	public void testGetConstituenciesByElectionTypeAndStateId()
+	{
+		List constituenciesList  = constituencyDAO.getConstituenciesBySearchString(new Long(2), new Long(1), "kav");
+		
+		if(constituenciesList!=null && constituenciesList.size()>0)
+		{			
+			for(int i=0;i<constituenciesList.size();i++)
+			{
+				Object[] obj = (Object[])constituenciesList.get(i);
+				Long constituencyId = (Long) obj[0];
+				String constituencyName = (String) obj[1];			
+				
+				System.out.println(constituencyId);
+				System.out.println(constituencyName);
+				
+				
+					
+			}		
+			
 		}
-	
 	}
 	
 }

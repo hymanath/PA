@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
 *@author <a href="mailto:sai.basetti@gmail.com">Sai Krishna</a>
@@ -1687,10 +1688,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and model.constituencyElection.election.electionId = ? order by model.constituencyElection.constituency.constituencyId",params);
 	}
 	public List getAllCandidatesByElectionTypeInState(String electionType,
-			Long stateId) {
-		Object[] params = {electionType,stateId};
-		return getHibernateTemplate().find("select distinct model.candidate.candidateId, model.candidate.firstname, model.candidate.middlename, model.candidate.lastname from " +
-				"Nomination model where model.constituencyElection.election.electionScope.electionType.electionType = ? and model.constituencyElection.constituency.state.stateId = ?", params);
+			Long stateId, String searchString) {
+		String cName = ""+searchString+"%";
+		Query queryObject = getSession().createQuery("select distinct model.candidate.candidateId, model.candidate.firstname, model.candidate.middlename, model.candidate.lastname from " +
+				"Nomination model where model.constituencyElection.election.electionScope.electionType.electionType = ? and model.constituencyElection.constituency.state.stateId = ? and model.candidate.lastname like ?");
+		queryObject.setString(0,electionType);
+		queryObject.setLong(1,stateId);
+		queryObject.setString(2, cName);
+		queryObject.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
+		return queryObject.list();		
 	}
 	
 	public List findAllElectionResultsForConstituencies(Long electionId, String constituencyIds) {

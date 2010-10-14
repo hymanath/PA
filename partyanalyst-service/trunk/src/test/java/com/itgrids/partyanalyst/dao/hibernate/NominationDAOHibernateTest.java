@@ -585,7 +585,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 
 	public void testGetAllCandidatesByElectionTypes(){
 		long startTime = System.currentTimeMillis();
-		List values = nominationDAO.getAllCandidatesByElectionTypeInState("Assembly", 1l);
+		List values = nominationDAO.getAllCandidatesByElectionTypeInState("Assembly", 1l, "");
 		System.out.println("size:"+values.size());
 		for(int i = 0; i<values.size(); i++)
 		{
