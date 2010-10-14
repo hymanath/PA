@@ -678,7 +678,7 @@ public class ProblemManagementReportService implements
 		
 		
 			
-		public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, String accessType, Long accessValue){
+		public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(Long userId,String fromDate, String toDate, Long statusId, String accessType, Long accessValue){
 			
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 			List problemsRawData = null;
@@ -688,9 +688,11 @@ public class ProblemManagementReportService implements
 			try{
 				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
 				if(statusId == 0)
-					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					//problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 				else
-					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));	
+					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(userId, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					//problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));	
 					
 
 			}catch(Exception ex){
@@ -745,6 +747,7 @@ public class ProblemManagementReportService implements
 				return tehsilIds.toString();
 		}
 		
+		@SuppressWarnings("unchecked")
 		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag){
 						
 			List<InfluencingPeople> impPeople = null;
@@ -874,7 +877,7 @@ public class ProblemManagementReportService implements
 		}
 		
 		@SuppressWarnings("unchecked")
-		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue, int limit) {
+		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(Long userId,String accessType, Long accessValue, int limit) {
 			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
 			List<ProblemsCountByStatus> problemsCountByStatusList = new ArrayList<ProblemsCountByStatus>();
 			ProblemsCountByStatus problemsCountByStatusObj = null;
@@ -917,7 +920,8 @@ public class ProblemManagementReportService implements
 					}
 				}
 				if(constituencyIds.length() > 0)
-					problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
+					problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(userId);
+					//problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
 				
 				for(int i=0;i<problemsCountByStatusRawList.size();i++){
 					Object[] parms = (Object[])problemsCountByStatusRawList.get(i);
@@ -931,7 +935,8 @@ public class ProblemManagementReportService implements
 				}
 				
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
-				problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
+				//problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
+				problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(userId,"1,6");
 				
 				for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
 					date = dateFormater.format((Date)values[1]);
