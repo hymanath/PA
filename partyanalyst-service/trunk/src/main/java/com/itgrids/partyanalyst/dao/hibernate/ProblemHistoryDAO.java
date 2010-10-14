@@ -116,6 +116,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"group by model.problemStatus.problemStatusId",params );
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getProblemsCountInAllStatusByLocation(String locationIds) {
 		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
 				"count(model.problemHistoryId) " +
@@ -126,6 +127,14 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model2.constituency.constituencyId in ("+locationIds+") and model.isDelete is null group by " +
 				"model2.constituency.constituencyId order by model2.year desc)) group " +
 				"by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountInAllStatusByLocation(Long userId) {
+		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
+				"count(model.problemHistoryId) from ProblemHistory model where " +
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.isDelete is null " +
+				"group by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId",userId);
 	}
 	
 	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate){
@@ -140,6 +149,22 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
 				" from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
 				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
+				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate){
+		Object[] params = {fromDate, toDate,userId, statusId};
+		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
+				"model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+				"model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
+				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
+				"model.problemStatus.status," +
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn "+
+				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ?"+
 				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
 	}
 	
@@ -159,6 +184,22 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				") and model.isDelete is null",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByDateAndLocation(Long userId, Date fromDate, Date toDate){
+		Object[] params = {fromDate, toDate,userId};
+		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
+				"model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+				"model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
+				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
+				"model.problemStatus.status," +
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn "+
+				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ?"+
+				") and model.isDelete is null",params);
+	}
+	
 	public List findLatestProblemsByMandals(String tehsilIds, Long statusId){		
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
@@ -173,11 +214,20 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 						" and model.isDelete is null order by model.dateUpdated desc", statusId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(String tehsilIds, String statusIds){
 		return getHibernateTemplate().find("select count(model.problemHistoryId), model.dateUpdated, model.problemStatus.problemStatusId, " +
 				"model.problemStatus.status from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
 				"(" + tehsilIds +") and model.problemStatus.problemStatusId in("+statusIds+")  " +
 						" group by date(model.dateUpdated),model.problemStatus.problemStatusId order by model.dateUpdated desc");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(Long userId, String statusIds){
+		return getHibernateTemplate().find("select count(model.problemHistoryId), model.dateUpdated, model.problemStatus.problemStatusId, " +
+				"model.problemStatus.status from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? " +
+				"and model.problemStatus.problemStatusId in("+statusIds+")  " +
+						" group by date(model.dateUpdated),model.problemStatus.problemStatusId order by model.dateUpdated desc",userId);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -302,6 +352,42 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setMaxResults(IConstants.MAX_PROBLEMS_DISPLAY.intValue());
 		return queryObject.list();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.dao.IProblemHistoryDAO#getProblemHistoryByProblemStatusForAUser(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
+	 * DAO Method that retrieves problems data in a particular status(like NEW,ASSIGNED,FIXED ...) posted by a user
+	 */
+	@SuppressWarnings("unchecked")
+	public List getProblemHistoryByProblemStatusForAUser(Long userId,
+			Long statusId, String isPushed,String isDeleted) {
+		Object[] params = {userId,statusId,isPushed,isDeleted};
+		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.problemImpactLevelId,"+
+				"model.problemLocation.problemImpactLevelValue,model.problemStatus.problemStatusId,model.dateUpdated,"+
+				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problem.problemId,model.isApproved,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemAndProblemSource."+
+				"problem.existingFrom,model.isDelete,model.problemLocation.problemLocationId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
+				"user.registrationId = ? and model.problemStatus.problemStatusId = ? and model.problemLocation.problemAndProblemSource."+
+				"isPushed != ? and model.isDelete != ?",params);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.dao.IProblemHistoryDAO#getProblemHistoryForAUser(java.lang.Long, java.lang.String, java.lang.String)
+	 * DAO Method that retrieves all problems data posted by a user
+	 */
+	@SuppressWarnings("unchecked")
+	public List getProblemHistoryForAUser(Long userId, String isPushed,String isDeleted) {
+		Object[] params = {userId,isPushed,isDeleted};
+		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.problemImpactLevelId,"+
+				"model.problemLocation.problemImpactLevelValue,model.problemStatus.problemStatusId,model.dateUpdated,"+
+				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problem.problemId,model.isApproved,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemAndProblemSource."+
+				"problem.existingFrom,model.isDelete,model.problemLocation.problemLocationId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
+				"user.registrationId = ? and model.problemLocation.problemAndProblemSource.isPushed != ? and model.isDelete != ?",params);
 	}
 	
 }
