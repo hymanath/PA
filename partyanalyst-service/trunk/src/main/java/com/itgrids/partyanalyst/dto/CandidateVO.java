@@ -11,6 +11,8 @@ public class CandidateVO {
 	private String year;
 	private String party;
 	private String status;
+	private Long constituencyId;
+	private String constituencyName;
 	private ResultStatus resultStatus;
 	private List<CandidateElectionVO> candidateElectionVOs;
 	
@@ -26,6 +28,24 @@ public class CandidateVO {
 		this.candidateElectionVOs = candidateElectionVOs;
 		this.party = party;
 		this.image = image;
+	}
+
+	
+	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 
 	public String getData() {

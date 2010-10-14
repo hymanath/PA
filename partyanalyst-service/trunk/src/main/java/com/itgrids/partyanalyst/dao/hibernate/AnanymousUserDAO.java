@@ -43,7 +43,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,String retrivalCount) {
 		StringBuilder query = new StringBuilder();
-		query.append("select model.name,model.lastName,model.userId,model.constituency.constituencyId ");
+		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId ");
 		query.append(" from AnanymousUser model where ");
 		if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 			query.append("model.state.stateId in (:locationIds)");
