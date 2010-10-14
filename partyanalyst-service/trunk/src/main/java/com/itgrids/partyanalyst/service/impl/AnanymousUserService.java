@@ -252,7 +252,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param locationType
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,String retrivalCount,Long loginId){
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
