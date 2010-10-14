@@ -72,12 +72,15 @@ var yearsPopulation={
 		remainingYearsArray:[]
 	}; 
 
-		function getElectionScopes(id){
-			removeErrorMessage();
-						
+		function getElectionScopes(elmt,id)
+		{
+			removeErrorMessage();			
+			showBusyImgWithId(elmt.id);
+
 			if(id!=0){				
 				var jsObj=
 				{
+						elmtId:elmt.id,
 						electionTypeId:id,
 						task:"getElectionScopes"						
 				};
@@ -96,13 +99,16 @@ var yearsPopulation={
 			}
 		}
 
-		function getElectionYears(id,name)
+		function getElectionYears(elmt,id,name)
 		{
 			removeErrorMessage();
+			showBusyImgWithId(elmt.id);
+
 			document.getElementById("selectedParty").value = name; 
 			selectedParty = name;
 			var jsObj=
 			{
+					elmtId:elmt.id,
 					electionScopeId:selectedElectionScopeId,
 					partyId:id,
 					task:"getElectionYears"						
@@ -113,11 +119,12 @@ var yearsPopulation={
 			callAjax(rparam,jsObj,url);
 		}
 
-		function getPartiesInState()
+		function getPartiesInState(elmtId)
 		{
 			removeErrorMessage();
 			var jsObj=
 			{
+					elmtId:elmtId,
 					stateId: selectedElectionScopeId,
 					task:"getPartiesInState"						
 			};
@@ -150,11 +157,13 @@ var yearsPopulation={
 									{			
 										clearOptionsListForSelectElmtId("partyList");															
 										createOptionsForSelectElmtIdWithSelectOption("partyList",resultVO);
+										hideBusyImgWithId(jsObj.elmtId);
 									}
 									if(jsObj.task == "getElectionScopes")
 									{			
 										clearOptionsListForSelectElmtId("electionScopeSelect");															
 										createOptionsForSelectElmtIdWithSelectOption("electionScopeSelect",resultVO);
+										hideBusyImgWithId(jsObj.elmtId);
 									}else
 									if(jsObj.task == "getElectionYears")
 									{								
@@ -165,7 +174,8 @@ var yearsPopulation={
 										clearOptionsListForSelectElmtId("electionYearSelect1");
 										createOptionsForSelectElmtIdWithSelectOption("electionYearSelect1",resultVO);		
 										clearOptionsListForSelectElmtId("electionYearSelect2");	
-										storeYears(resultVO);										
+										storeYears(resultVO);
+										hideBusyImgWithId(jsObj.elmtId);
 									}				
 							}catch (e)  {   
 							   	alert("Invalid JSON result" + e);   
@@ -179,6 +189,20 @@ var yearsPopulation={
 		
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);			
 		}
+		
+		function hideBusyImgWithId(elmtId)
+		{
+			var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+			if(spanElmt)
+				spanElmt.style.display = "none";
+		}
+
+		function showBusyImgWithId(elmtId)
+		{
+			var spanElmt = document.getElementById(elmtId+"_ImgSpan");
+			if(spanElmt)
+				spanElmt.style.display = "";
+		}
 
 		function getPartyname(value)
 		{
@@ -189,11 +213,12 @@ var yearsPopulation={
 			elmt.value=value;
 		}
 
-		function getSelectedElectionScope(id)
-		{
+		function getSelectedElectionScope(elmt,id)
+		{	
+			showBusyImgWithId(elmt.id);
 			removeErrorMessage();
 			selectedElectionScopeId = id;
-			getPartiesInState();
+			getPartiesInState(elmt.id);
 		}
 		function populateElectionYearsForSecondElectionYearsSelectBox(value)
 		{
@@ -214,8 +239,9 @@ var yearsPopulation={
 
 			createOptionsForSelectElmtId("electionYearSelect2",yearsPopulation.remainingYearsArray);	
 		}
-		function validateAndForwardToAction()
+		function validateAndForwardToAction(elmt)
 		{			
+			showBusyImgWithId(elmt.id);
 			var errorFlag=0;
 			var message="";	
 			var electionFlag=0;				
@@ -279,26 +305,29 @@ var yearsPopulation={
 			<tr>
 				<th align="left"><%=electionType%></th>
 				<td align="left">
-					<select id="electionTypeSelect" onchange = "getElectionScopes(this.options[this.selectedIndex].value)" class = "selectWidth">
+					<select id="electionTypeSelect" onchange = "getElectionScopes(this,this.options[this.selectedIndex].value)" class = "selectWidth">
 						<option value="0">Select Election Type</option>
 						<option value="1">Parliament</option>
 						<option value="2">Assembly</option>
 					</select>
+					<span id="electionTypeSelect_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif"></span>
 				</td>
 			</tr>
 			<tr>
 				<th align="left"><%=electionScope%></th>
 				<td align="left">
-					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this.options[this.selectedIndex].value)" class = "selectWidth" >
+					<select id="electionScopeSelect" onchange = "getSelectedElectionScope(this,this.options[this.selectedIndex].value)" class = "selectWidth" >
 						<option value="0">Select Election Scope </option>
 					</select>
+					<span id="electionScopeSelect_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif"></span>
 				</td>
 			</tr>
 			<tr>
 			   <th align="left"><%=party%></th>
 			   <td  align="left">
-					<s:select theme="simple" name="party" id="partyList" cssClass = "selectWidth"  onchange = "getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="{}" headerKey="0" headerValue="Select Party" listKey="id" listValue="name" />
+					<s:select theme="simple" name="party" id="partyList" cssClass = "selectWidth"  onchange = "getElectionYears(this,this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" list="{}" headerKey="0" headerValue="Select Party" listKey="id" listValue="name" />
 					<input type="hidden" id="selectedParty" name="selectedPartyName">
+					<span id="partyList_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif"></span>
 			   </td>
 			</tr>
 			<tr>
@@ -318,7 +347,8 @@ var yearsPopulation={
 	 		</tr>
 	 		<tr>
 				<th colspan="2" align="center">
-					<input type="button" onClick="return validateAndForwardToAction()"  value="View Report"/>
+					<input id="viewReportButton" type="button" onClick="return validateAndForwardToAction(this)"  value="View Report"/>
+					<span id="viewReportButton_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif"></span>
 				</th>
 	 		</tr>	 		
 		</table>
