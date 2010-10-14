@@ -14,7 +14,10 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
-		<property name="customMessageDAO" ref="customMessageDAO" />
+		<property name="customMessageDAO" ref="customMessageDAO" />		
+		<property name="messageTypeDAO" ref="messageTypeDAO"/>
+		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
+		<property name="dateService" ref="dateService"/> 
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
