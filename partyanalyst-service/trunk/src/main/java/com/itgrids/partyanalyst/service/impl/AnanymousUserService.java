@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -14,7 +16,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
@@ -22,18 +26,54 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AnanymousUser;
+import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.model.MessageType;
+import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnanymousUserService implements IAnanymousUserService {
 
-	public IAnanymousUserDAO ananymousUserDAO;
-
+	
+	//Other Templates
 	private TransactionTemplate transactionTemplate = null;
+	
+	//DAO's
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
 	private CustomMessageDAO customMessageDAO;
+	private IMessageTypeDAO messageTypeDAO;
+	private IAnanymousUserDAO ananymousUserDAO;
+	private IUserConnectedtoDAO userConnectedtoDAO;
+	
+	//Service
+	private IDateService dateService;
+	
+	public IUserConnectedtoDAO getUserConnectedtoDAO() {
+		return userConnectedtoDAO;
+	}
+
+	public void setUserConnectedtoDAO(IUserConnectedtoDAO userConnectedtoDAO) {
+		this.userConnectedtoDAO = userConnectedtoDAO;
+	}
+
+	public IMessageTypeDAO getMessageTypeDAO() {
+		return messageTypeDAO;
+	}
+
+	public void setMessageTypeDAO(IMessageTypeDAO messageTypeDAO) {
+		this.messageTypeDAO = messageTypeDAO;
+	}
+
+	public IDateService getDateService() {
+		return dateService;
+	}
+
+	public void setDateService(IDateService dateService) {
+		this.dateService = dateService;
+	}
 
 	public CustomMessageDAO getCustomMessageDAO() {
 		return customMessageDAO;
@@ -235,6 +275,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 	} 
 	
 	
+
+	/**
+	 * This method can be used by other methods to populate or set data into a data transfer object which contains the list of 
+	 * registered users.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,13/10/2010	
+	 */
 	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId){
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Long> candidates = new ArrayList<Long>();
@@ -272,7 +319,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 						candidateDetails.add(data.getValue());
 					}
 				}
-				
 				dataTransferVO.setCandidateVO(candidateDetails);
 				resultStatus.setResultPartial(false);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -290,5 +336,412 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 		return candidateDetails;
 	}
+	
+	/**
+	 * This method can be used to send a request / accepting the request / posting a scrap / posting a comment / deleting a user.
+	 * @author Y.Ravi Kiran.  
+	 * @param senderId
+	 * @param recipeintId
+	 * @param messageType
+	 * @param subject
+	 */
+	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject){
+		final ResultStatus resultStatus = new ResultStatus();	
+		transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				CustomMessage customMessage = new CustomMessage();
+				try{
+						Long messageTypeId=0l;
+						Long pendingId=0l;
+						Long disconectedId=0l;
+						for(MessageType type: messageTypeDAO.getAll()){
+							if(type.getMessageType().equalsIgnoreCase(messageType)){
+								messageTypeId =type.getMessageTypeId();							
+							}
+							if(type.getMessageType().equalsIgnoreCase(IConstants.PENDING)){
+								pendingId =type.getMessageTypeId();							
+							}
+							if(type.getMessageType().equalsIgnoreCase(IConstants.DISCONNECTED)){
+								disconectedId =type.getMessageTypeId();							
+							}
+						}
+						
+						if(messageType.equalsIgnoreCase(IConstants.FRIEND_REQUEST)){	
+							for(int i=0;i<recipeintId.size();i++){
+								customMessage.setSubject(subject);								
+								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
+								customMessage.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
+								customMessage.setMessageType(messageTypeDAO.get(pendingId));
+								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessageDAO.save(customMessage);
+							}
+						}
+						
+						else if(messageType.equalsIgnoreCase(IConstants.CONNECTED)){
+							UserConnectedto userConnectedto = new UserConnectedto();
+							for(int i=0;i<recipeintId.size();i++){
+								userConnectedto.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
+								userConnectedto.setSenderId(ananymousUserDAO.get(senderId.get(0)));		
+								userConnectedtoDAO.save(userConnectedto);
+							}
+							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
+							for(CustomMessage users : result){
+								users.setMessageType(messageTypeDAO.get(messageTypeId));
+								users.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
+								customMessageDAO.save(users);
+							}
+						}
+						
+						else if(messageType.equalsIgnoreCase(IConstants.COMMENTS) || messageType.equalsIgnoreCase(IConstants.SCRAP)){
+							for(int i=0;i<recipeintId.size();i++){
+								customMessage.setSubject(subject);
+								customMessage.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
+								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
+								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
+								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessageDAO.save(customMessage);
+							}							
+						}
+						
+						else if(messageType.equalsIgnoreCase(IConstants.REJECTED)){														
+							List<UserConnectedto> result = userConnectedtoDAO.checkForRelationBetweenUsers(senderId,recipeintId);
+							if(result!=null && result.size()!=0){
+								userConnectedtoDAO.deleteRejectedRequest(senderId,recipeintId);
+							}
+							List<CustomMessage> customMessageresult = customMessageDAO.checkForRelationBetweenUsers(senderId,recipeintId);
+							for(CustomMessage users : customMessageresult){
+								users.setMessageType(messageTypeDAO.get(disconectedId));								
+								customMessageDAO.save(users);
+							}
+						}
+						resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						resultStatus.setResultPartial(false);
+					}catch(Exception e){
+						resultStatus.setExceptionEncountered(e);
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						resultStatus.setResultPartial(true);
+					}
+			 return customMessage;
+			}
+		});
+		return resultStatus;
+	}
+	
+	
+	/**
+	 * This method can be used to get all details for building user profile.
+	 * it takes userId or list of userIds as input and builds a datatransfer object that contains all
+	 * details for building user profile.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-0-10.
+	 * @param userId
+	 * @return DataTransferVO
+	 */
+	public DataTransferVO getDataForAUserProfile(List<Long> userId){
+		ResultStatus resultStatus = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		List<CandidateVO> resultVO = new ArrayList<CandidateVO>(); 
+		try{
+			
+			/*
+			 * This block is used to get all the connected people for the given user or users.
+			 * 
+			 * The 			
+			 * 			resultStatusForConnectedPeople 
+			 * 
+			 * contains whether the block has been executed successfully or not.
+			 */
+			dataTransferVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1);
+			ResultStatus resultStatusForConnectedPeople = new ResultStatus(); 
+			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
+			}else{
+				resultVO = dataTransferVO.getCandidateVO();
+				if(resultVO!=null && resultVO.size()!=0){
+					resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.SUCCESS);
+					dataTransferVO.setConnectedPeople(resultVO);				
+				}else{
+					resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			}
+			dataTransferVO.setResultStatusForConnectedPeople(resultStatusForConnectedPeople);
+			
+			
+			
+
+			/*
+			 * This block is used to get all the connected people based on the level specified in 	
+			 * 
+			 * 			IConstants.MAX_LEVEL_OF_CONNECTION.
+			 * 
+			 * The 			
+			 * 			resultStatusForPeopleYouMayKnow 
+			 * 
+			 * contains whether the block has been executed successfully or not.
+			 */
+			resultVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,IConstants.MAX_LEVEL_OF_CONNECTION).getCandidateVO();			
+			ResultStatus resultStatusForPeopleYouMayKnow = new ResultStatus(); 
+			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
+			}else{
+				resultVO = dataTransferVO.getCandidateVO();
+				if(resultVO!=null && resultVO.size()!=0){
+					resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.SUCCESS);
+					dataTransferVO.setPeopleYouMayKnow(resultVO);				
+				}else{
+					resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} 
+			dataTransferVO.setResultStatusForPeopleYouMayKnow(resultStatusForPeopleYouMayKnow);
+			
+			
+			
+			/*
+			 * This block is used to get all the scraps for the user or users.
+			 * 
+			 * The 			
+			 * 			resultStatusForScraps 
+			 * 
+			 * contains whether the block has been executed successfully or not.
+			 */
+			
+			resultVO = getAllMessagesForUser(userId,IConstants.SCRAP).getCandidateVO();
+			ResultStatus resultStatusForScraps = new ResultStatus(); 
+			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				resultStatusForScraps.setResultCode(ResultCodeMapper.FAILURE);
+			}else{			
+				resultVO = dataTransferVO.getCandidateVO();
+				if(resultVO!=null && resultVO.size()!=0){
+					resultStatusForScraps.setResultCode(ResultCodeMapper.SUCCESS);
+					dataTransferVO.setScraps(resultVO);		
+				}else{
+					resultStatusForScraps.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} 
+			dataTransferVO.setResultStatusForScraps(resultStatusForScraps);
+			
+			
+			/*
+			 * This block is used to get all the comments for the user or users.
+			 * 
+			 * The 			
+			 * 			resultStatusForScraps 
+			 * 
+			 * contains whether the block has been executed successfully or not.
+			 */
+			
+			resultVO = getAllMessagesForUser(userId,IConstants.COMMENTS).getCandidateVO();			
+			ResultStatus resultStatusForComments = new ResultStatus(); 
+			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
+			}else{			
+				resultVO = dataTransferVO.getCandidateVO();
+				if(resultVO!=null && resultVO.size()!=0){
+					resultStatusForComments.setResultCode(ResultCodeMapper.SUCCESS);
+					dataTransferVO.setComments(resultVO);
+				}else{
+					resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} 
+			dataTransferVO.setResultStatusForComments(resultStatusForComments);
+			
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			dataTransferVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+	} 
+	
+	
+	/**
+	 * This method is used to get all connected/not connected people for the user/users based on the level specified.
+	 * 
+	 * level can be explained as follows....
+	 * level 1 means your friends.
+	 * level 2 means friends of your friends.
+	 * level 3 means friends of your friends of your friends.
+	 * .....
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-10-10.
+	 * 
+	 * @param userId
+	 * @param levels
+	 * @return DataTransferVO
+	 */
+	public DataTransferVO getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(List<Long> userId,int levels){
+		List<Long> originalList = new ArrayList<Long>();			
+		originalList.addAll(userId);
+		List<Long> newList = new ArrayList<Long>(originalList);
+		List<Long> tempIds = new ArrayList<Long>();
+		ResultStatus resultStatus = new ResultStatus();
+		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		DataTransferVO resultVO = new DataTransferVO();
+		List<Long> unKnownPeople = new ArrayList<Long>();
+		try{
+			for(int i=0;i<levels;i++){
+				tempIds =  getUserIds(newList,originalList);
+				if(i!=1){
+					unKnownPeople.addAll(tempIds);
+				}
+				newList.clear();
+				newList.addAll(tempIds);	
+				originalList.addAll(tempIds);			
+			}
+			//unKnownPeople list gives the list of id's of all the people to the level
+			//i.e., if we want all unknown people up to third level 
+			
+			//newList list contains id's of all the people of that particular level
+			
+			if(unKnownPeople!=null && unKnownPeople.size()!=0){
+				List<AnanymousUser> result = ananymousUserDAO.getDetailsForUsers(unKnownPeople);
+				resultVO = setUserProfileData(result);	
+			}
+			
+			if(resultVO==null && resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				dataTransferVO.setCandidateVO(candiateVO);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setResultPartial(false);
+				dataTransferVO.setResultStatus(resultStatus);
+			}else{
+				dataTransferVO.setCandidateVO(candiateVO);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				resultStatus.setResultPartial(false);
+				dataTransferVO.setResultStatus(resultStatus);
+			}
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);
+		}
+		return dataTransferVO;
+	}
+	
+	/**
+	 * This method is used to set data for user profiles.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-10-10.
+	 * @param List<AnanymousUser>
+	 * @return DataTransferVO
+	 */
+	public DataTransferVO setUserProfileData(List<AnanymousUser> result){		
+		ResultStatus resultStatus = new ResultStatus();
+		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		try{
+			if(result!=null && result.size()!=0){
+				for(AnanymousUser details : result){
+					CandidateVO candidateResults = new CandidateVO();
+					String candidateName = null;
+					String name = details.getName();
+					if(name!=null){
+						candidateName+=name;
+					}
+					name = details.getLastName();
+					if(name!=null){
+						candidateName+=name;
+					}
+					candidateResults.setCandidateName(candidateName);
+					candidateResults.setId(details.getUserId());
+					candiateVO.addAll(candiateVO);
+				}
+			}
+			dataTransferVO.setCandidateVO(candiateVO);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			dataTransferVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);
+		}
+		return dataTransferVO;		
+	}
+	
+	
+	
+	/**
+	 * This method is used to filter the list of connected people.
+	 * As the data from db may/maynot contains some duplicate records passing such records to this method,
+	 * can helps to remove the duplicate records.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-10-10.
+	 * @param userId
+	 * @param ids
+	 * @return
+	 */
+	public List<Long> getUserIds(List<Long> userId,List<Long> ids){		
+		Set<Long> setOfUserIds = new HashSet<Long>(0);
+		List<Long> listOfUserIds = new ArrayList<Long>(0);
+		List<Object> connectedPeopleIds = userConnectedtoDAO.getAllConnectedPeopleForUser(userId);
+		for(int i=0;i<connectedPeopleIds.size();i++){
+			Object[] parms = (Object[])connectedPeopleIds.get(i);
+			setOfUserIds.add(new Long(parms[0].toString()));
+			setOfUserIds.add(new Long(parms[1].toString()));
+		}
+		setOfUserIds.removeAll(userId);
+		setOfUserIds.removeAll(ids);
+		listOfUserIds.addAll(setOfUserIds);
+		return listOfUserIds;
+	}
+	
+	
+	
+	/**
+	 * This method is used to get all the comments or scraps that are being received by the user.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-10-10.
+	 * @param userId
+	 * @param messageType
+	 * @return
+	 */
+	public DataTransferVO getAllMessagesForUser(List<Long> userId,String messageType){
+		ResultStatus resultStatus = new ResultStatus();
+		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		try{
+			List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
+			if(result!=null && result.size()!=0){
+				for(int i=0;i<result.size();i++){
+					Object[] parms = (Object[])result.get(i);
+					CandidateVO candidateResults = new CandidateVO();
+					candidateResults.setData(parms[0].toString());
+					candidateResults.setId(new Long(parms[1].toString()));
+					String candidateName=null;
+					if(parms[2]!=null){
+						candidateName+=parms[2].toString();
+					}
+					if(parms[3]!=null){
+						candidateName+=parms[3].toString();
+					}					
+					candidateResults.setCandidateName(candidateName);
+					candiateVO.addAll(candiateVO);
+				}
+			}
+			dataTransferVO.setCandidateVO(candiateVO);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			dataTransferVO.setResultStatus(resultStatus);
+			}catch(Exception e){
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setResultPartial(true);
+				dataTransferVO.setResultStatus(resultStatus);	
+			}
+		return dataTransferVO;		
+	}
+	
 	
 }

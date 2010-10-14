@@ -6,7 +6,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
-import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CustomMessage;
 
 public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> implements
@@ -27,6 +26,54 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong(0,logedUserId);
 		queryObject.setParameterList("userIds", userIds);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CustomMessage> checkForRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId){
+		StringBuilder query = new StringBuilder();				
+		query.append(" from CustomMessage model where ");
+		query.append(" (model.senderId.userId in (:senderId) and model.recepientId.userId in (:recipeintId) )");
+		query.append(" or ( model.recepientId.userId in (:senderId)  and model.senderId.userId in (:recipeintId) ) ");
+				
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CustomMessage> checkForRelationBetweenUsersBasedOnType(List<Long> senderId,List<Long> recipeintId,String type){
+		StringBuilder query = new StringBuilder();				
+		query.append("  from CustomMessage model where model.messageType.messageType = ? and");
+		query.append(" (model.senderId.userId in (:senderId) and model.recepientId.userId in (:recipeintId) )");
+		query.append(" or (model.senderId.userId in (:recipeintId) and model.recepientId.userId in (:senderId) ) ");	
+	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setString(0,type);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		queryObject.setParameterList("senderId", senderId);
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType){
+		StringBuilder query = new StringBuilder();				
+		query.append(" select model.message,model.senderId.userId,model.senderId.name,model.senderId.lastName from CustomMessage ");
+		query.append(" model where model.messageType.messageType = ? and");
+		query.append(" model.senderId.userId in (:senderId) order by customMessageId desc ");
+				
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setString(0,messageType);
+		queryObject.setParameterList("senderId", senderId);
+		
 		return queryObject.list();
 	}
 }

@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 
@@ -20,18 +21,36 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		this.customMessageDAO = customMessageDAO;
 	}
 	
-	public void testUsersRelation(){		
+	/*public void testUsersRelation(){	
+		List<Long> list = new ArrayList<Long>();
+		list.add(5l);
+		
 		List<Long> usersList = new ArrayList<Long>();
-		usersList.add(5l);
+		usersList.add(2l);
 		usersList.add(6l);
 		usersList.add(26l);
 		usersList.add(28l);
-		List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(usersList,2l);	
-		for(int i=0;i<detailsList.size();i++){
-			Object[] parms = (Object[])detailsList.get(i);
-			System.out.println(parms[0]+"\t"+parms[1]);
+		
+		List<CustomMessage> detailsList = customMessageDAO.checkForRelationBetweenUsers(list,usersList);	
+		for(CustomMessage result : detailsList){
+			System.out.println(result.getCustomMessageId());
+		}		
+	}*/
+	
+	public void testUsersRelationBasedOnType(){	
+		List<Long> list = new ArrayList<Long>();
+		list.add(5l);
+		
+		List<Long> usersList = new ArrayList<Long>();
+		usersList.add(2l);
+		usersList.add(6l);
+		usersList.add(26l);
+		usersList.add(28l);
+		
+		List<CustomMessage> detailsList = customMessageDAO.checkForRelationBetweenUsersBasedOnType(list,usersList,IConstants.PENDING);	
+		for(CustomMessage result : detailsList){
+			System.out.println(result.getCustomMessageId());
 		}
-		System.out.println(detailsList.size());
 		
 	}
 }

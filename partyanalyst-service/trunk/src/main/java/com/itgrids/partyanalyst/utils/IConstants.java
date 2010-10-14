@@ -279,9 +279,10 @@ public interface IConstants {
     
     
     public static final String CONNECTED = "CONNECTED";
-    public static final String NOTCONNECTED = "NOTCONNECTED";   
+    public static final String NOTCONNECTED = "NOTCONNECTED"; 
+    public static final String DISCONNECTED = "DISCONNECTED";   
     public static final String FRIEND_REQUEST = "FRIEND REQUEST";
     public static final String COMMENTS = "COMMENTS";
     public static final String SCRAP = "SCRAP";
-    
+    public static final int MAX_LEVEL_OF_CONNECTION = 2;
 }

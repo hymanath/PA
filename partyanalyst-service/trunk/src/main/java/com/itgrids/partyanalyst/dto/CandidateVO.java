@@ -6,6 +6,7 @@ public class CandidateVO {
 	
 	private Long id;
 	private String candidateName;
+	private String data;
 	private String image;
 	private String year;
 	private String party;
@@ -25,6 +26,14 @@ public class CandidateVO {
 		this.candidateElectionVOs = candidateElectionVOs;
 		this.party = party;
 		this.image = image;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 	public ResultStatus getResultStatus() {
