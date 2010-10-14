@@ -371,7 +371,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			accessType = user.getAccessType();
 			accessValue = new Long(user.getAccessValue());
-			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue, 10);
+			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(user.getRegistrationID(),accessType, accessValue, 10);
 					
 			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
 			
@@ -428,6 +428,10 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	{
 		if(log.isDebugEnabled())
 			log.debug("Entered in to problemsByDateBasedOnStatusAction in problem mgmt report service");
+		
+		session=request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
@@ -441,7 +445,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		String accessType = jObj.getString("accessType");
 		Long accessValue = jObj.getLong("accessValue");
 		
-		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(fromDate, toDate, statusId, accessType, accessValue);
+		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(user.getRegistrationID(),fromDate, toDate, statusId, accessType, accessValue);
 		return SUCCESS;
 		
 	}
