@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ProblemsCountByStatusComparator;
 
@@ -84,6 +86,7 @@ public class ProblemManagementReportService implements
 	private TransactionTemplate transactionTemplate;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IProblemLocationDAO problemLocationDAO;
+	private IProblemManagementService problemManagementService;
 	
 	public IProblemLocationDAO getProblemLocationDAO() {
 		return problemLocationDAO;
@@ -226,6 +229,15 @@ public class ProblemManagementReportService implements
 		this.influencingPeopleDAO = influencingPeopleDAO;
 	}
 
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -298,7 +310,7 @@ public class ProblemManagementReportService implements
 					log.debug("0 rows have been retrived......");
 			}
 			else{
-				problemBeanVO = populateProblemInfo(result,registrationId,taskType);
+				problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
 			}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -344,7 +356,7 @@ public class ProblemManagementReportService implements
 					return null;			
 				}
 			}
-			problemBeanVO = populateProblemInfo(result,registrationId,taskType);
+			problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
@@ -387,7 +399,7 @@ public class ProblemManagementReportService implements
 				if(tehsilIds.trim().length() > 0)
 					result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
 			}
-			problemBeanVO = populateProblemInfo(result,registrationId,taskType);
+			problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
@@ -401,7 +413,8 @@ public class ProblemManagementReportService implements
 		 * user selected Location.
 		 * @author Ravi Kiran.Y
 		 */
-		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,String taskType){
+		@SuppressWarnings("unchecked")
+		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,String taskType,String status){
 			
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
 			List<Registration> regUser = new ArrayList<Registration>();
@@ -467,7 +480,13 @@ public class ProblemManagementReportService implements
 					if(log.isDebugEnabled())
 						log.debug("Setting data into ProblemBeanVO......");
 					problemBean.setStatus(parms[0].toString());
-					problemBean.setHamlet(parms[1].toString());
+					if(status != null && status.equals(IConstants.PROBLEMS_MANAGEMENT)){
+						Long impactValue = (Long)parms[11];
+						Long impactId = (Long)parms[1];
+						problemBean.setHamlet(problemManagementService.getLocationDetails(impactId, impactValue));
+					}
+					else
+						problemBean.setHamlet(parms[1].toString());
 					dateConversion = dateConversion(parms[2].toString());
 					problemBean.setExistingFrom(dateConversion); 	
 					problemBean.setName(parms[3].toString());
@@ -1000,15 +1019,17 @@ public class ProblemManagementReportService implements
 			 * Starts from here.. 	
 			 */
 			if(status!=null && status!=""){
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
+				//result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
+				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(registrationId,status);
 			}
 			/**
 			 * modification ends here...
 			 */
 			else{
-				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
+				//result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
+				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(registrationId);	
 			}
-			problemBeanVO = populateProblemInfo(result,registrationId,status);
+			problemBeanVO = populateProblemInfo(result,registrationId,status,IConstants.PROBLEMS_MANAGEMENT);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
