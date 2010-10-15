@@ -285,4 +285,7 @@ public interface IConstants {
     public static final String COMMENTS = "COMMENTS";
     public static final String SCRAP = "SCRAP";
     public static final int MAX_LEVEL_OF_CONNECTION = 2;
+    public static final String COMPLETE_DETAILS = "COMPLETE_DETAILS";
+    public static final String PARTIAL_DETAILS = "PARTIAL_DETAILS";
+    
 }
