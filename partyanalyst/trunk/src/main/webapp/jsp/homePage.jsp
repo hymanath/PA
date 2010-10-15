@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -172,8 +173,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
                         <table width="100%" style="width:100%">                           
                             <tr>
                                 <td id="searchBox">
-                                    <!--<jsp:include page="../jsp/cncSearch.jsp"/>
-                                --></td>
+                                </td>
                             </tr>
                         </table>
                     </td>
