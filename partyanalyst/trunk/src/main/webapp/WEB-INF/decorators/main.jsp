@@ -13,7 +13,7 @@
 	<title><decorator:title default="Party Analyst"/></title>
 	<script type="text/javascript">
 
-  var _gaq = _gaq || [];
+ var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-7871302-2']);
   _gaq.push(['_trackPageview']);
 
@@ -75,7 +75,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
-<!-- YUI Dependency files (End) -->
+ <!--YUI Dependency files (End) -->
 
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/partyPerformance.js" ></script>
@@ -112,8 +112,7 @@
 	oMenuBar.render();  
 	 
 	}); 
-	
-	<c:if test="${sessionScope.loginStatus == 'out'}">
+	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 	
 		var aSubmenuData = [ 
 		{
 			 id: "home", 
@@ -173,6 +172,31 @@
 	     
 	]; 
 	</c:if>
+	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+		var aSubmenuData = [ 
+					{
+						 id: "home", 
+						itemdata: [ 				
+							  
+
+						] 
+					},
+					{ 
+						id: "staticData",  
+						itemdata: [ 
+							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+						]     
+					}, 
+					{ 
+						id: "search", 
+						itemdata: [
+						] 
+					}  					 
+				]; 
+	</c:if>
 	<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 		var aSubmenuData = [ 
 					{
@@ -190,7 +214,12 @@
 							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
 							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
 						]     
-					}					 
+					}, 
+					{ 
+						id: "search", 
+						itemdata: [
+						] 
+					}  					 
 				]; 
 	</c:if>
 
