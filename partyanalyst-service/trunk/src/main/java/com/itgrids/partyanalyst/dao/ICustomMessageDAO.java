@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.model.CustomMessage;
 
 public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 
-	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId);
+	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId,String status);
 	
 	public List<CustomMessage> checkForRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId);
 

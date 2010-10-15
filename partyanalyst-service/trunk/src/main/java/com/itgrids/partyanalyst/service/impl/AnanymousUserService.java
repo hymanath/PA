@@ -252,7 +252,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param locationType
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId){
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
@@ -260,7 +260,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		
 		try{
 			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
-			candidateDetails = setFriendsListForAUser(result,loginId);		
+			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -274,7 +274,48 @@ public class AnanymousUserService implements IAnanymousUserService {
 	return dataTransferVO;
 	} 
 	
-	
+	/**
+	 * This method is used to save the friend request between the users.
+	 *
+	 * @author Y.Ravi Kiran
+	 * @version 1.0,14-10-10.
+	 * 
+	 * @param locationIds
+	 * @param locationType
+	 * @param retrivalCount
+	 * @param loginId
+	 * @param senderId
+	 * @param recipeintId
+	 * @param messageType
+	 * @param subject
+	 * @return
+	 */
+	public DataTransferVO getAllUsersAfterAcceptingRequest(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,
+			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject){
+		ResultStatus resultStatus = new ResultStatus();
+		ResultStatus resultStatusForSaving = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
+		List<Object> result = new ArrayList<Object>();		
+		
+		try{
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
+			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
+			dataTransferVO.setCandidateVO(candidateDetails);
+			
+			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject);
+			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+	return dataTransferVO;
+	} 
 
 	/**
 	 * This method can be used by other methods to populate or set data into a data transfer object which contains the list of 
@@ -282,7 +323,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @author Ravi Kiran.Y
 	 * @version 1.0,13/10/2010	
 	 */
-	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId){
+	public List<CandidateVO> setFriendsListForAUser(List result,Long loginId,String status){
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Long> candidates = new ArrayList<Long>();
 		Map<Long, CandidateVO> userIdAndRelationShipWithLogedUser = new HashMap<Long, CandidateVO>();
@@ -311,13 +352,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 					}				
 				}
 				if(loginId!=0){					
-					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId);	
+					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
 					for(int i=0;i<detailsList.size();i++){
 						Object[] parms = (Object[])detailsList.get(i);				
 						Long userId = new Long(parms[0].toString());					
-						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());				
+						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());						
 					}
-					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
+					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){						
 						candidateDetails.add(data.getValue());
 					}
 				}
@@ -743,7 +784,5 @@ public class AnanymousUserService implements IAnanymousUserService {
 				dataTransferVO.setResultStatus(resultStatus);	
 			}
 		return dataTransferVO;		
-	}
-	
-	
+	}	
 }

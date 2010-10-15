@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> implements
 		ICustomMessageDAO {
@@ -16,15 +17,19 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId){
+	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId,String status){
 		StringBuilder query = new StringBuilder();		
 		query.append(" select model.recepientId.userId,model.messageType.messageType ");
 		query.append(" from CustomMessage model where ");
-		query.append(" model.senderId.userId = ? and ");
+		query.append(" model.senderId.userId = ? and ");		
+		if(!status.equalsIgnoreCase(IConstants.ALL)){
+			query.append("model.messageType.messageType = ?");
+		}		
 		query.append(" model.recepientId.userId in (:userIds)");	
-				
+		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong(0,logedUserId);
+		queryObject.setString(1,status);
 		queryObject.setParameterList("userIds", userIds);
 		return queryObject.list();
 	}
