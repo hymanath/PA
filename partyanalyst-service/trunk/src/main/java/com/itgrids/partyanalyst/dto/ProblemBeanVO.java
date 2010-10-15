@@ -11,6 +11,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	
 	private Long problemId;
 	private Long problemLocationId;
+	private String problemLocation;
 	private Long problemHistoryId;
 	private Long userID;
 	private Long tehsilId;
@@ -60,9 +61,10 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long problemImpactLevelId;
 	private Long problemImpactLevelValue;
 	private String isApproved;
+	private String isDeleted;
 	
 	private List<ProblemHistoryVO> problemHistories;
-
+    
 
 	
 	public String getPostedDate() {
@@ -478,6 +480,22 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setIsApproved(String isApproved) {
 		this.isApproved = isApproved;
+	}
+
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public String getProblemLocation() {
+		return problemLocation;
+	}
+
+	public void setProblemLocation(String problemLocation) {
+		this.problemLocation = problemLocation;
 	}
 	
 	
