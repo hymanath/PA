@@ -31,5 +31,9 @@ public interface IProblemManagementService {
 	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderPending(List<ProblemBeanVO> pendingProblems);
 	public List<SelectOptionVO> getAllProblemImpactLevel();
+	
+	//Problems Push Methods
+	public List<ProblemBeanVO> getProblemDetailsBasedOnProblemStatusForAUser(Long userId,Long statusId,String isPushed,String isDeleted);
+	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue);
 		
 }
