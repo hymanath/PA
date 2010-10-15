@@ -57,7 +57,7 @@ function buildleadersNews()
 	"queryList" : [
           {
             "title" : "Leaders",
-            "q" : "Sonia Gandhi, Chandra Babu Naidu, Y S Jagan"
+            "q" : "Chandra Babu Naidu, Y S Jagan"
           }	
      ],
 	"linkTarget" : "_blank"
