@@ -47,67 +47,6 @@ function buildAutoSuggest()
 	
 	var myInputEl = document.getElementById("myInput");
 	myInputEl.focus();
-
-
-
-	/*var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
-	var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
-	myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
-    myAutoComp.useShadow = true;
-	myAutoComp.minQueryLength = 3;
-	myAutoComp.maxResultsDisplayed = 10;
-	myAutoComp.useIFrame = true;
-	myAutoComp.textboxKeyEvent.subscribe(validateRadio);
-	
-
-	var selectEl = document.getElementById("stateSelect");
-	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
-	var searchNameEls = document.getElementsByName("searchName");
-	var constTypeEls = document.getElementsByName("constType");
-	var mlaEl=document.getElementById("mlaRadio");
-	var mpEl=document.getElementById("mpRadio");
-	if(!mlaEl.checked && !mpEl.checked)
-	{
-		errDivElmt.innerHTML="Select Constituency Type";
-		return;
-	}
-	
-	var searchType;
-	var constituencyType;
-	for(var i = 0; i< searchNameEls.length; i++)
-	{
-		if(searchNameEls[i].checked)
-			searchType = searchNameEls[i].value;
-	}
-	for(var j = 0; j< constTypeEls.length; j++)
-	{
-		if(constTypeEls[j].checked)
-			constituencyType = constTypeEls[j].value;
-	}
-	
-	
-	
-	/*var oDS = new YAHOO.util.XHRDataSource("cncSearchAction.action"); 
-	    // Set the responseType 
-	    oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON; 
-		oDS.responseSchema = { 	       
-	        fields : ["id","name"] 
-	    }; 
-	    
-
-	 // Instantiate the AutoComplete 
-	    var oAC = new YAHOO.widget.AutoComplete("myInput", "suggestDiv", oDS); 
-	    // Throttle requests sent 
-	    oAC.queryDelay = .5; 
-	    // The webservice needs additional parameters 
-	    oAC.generateRequest = function(sQuery) { 
-	        return "?output=json&results=100&stateId="+selectedState+"&searchCriteria="+searchType+"&constituencyType="+constituencyType+"&query=" + sQuery ; 
-	    }; 
-	     
-	    return { 
-	        oDS: oDS, 
-	        oAC: oAC 
-	    }; */
 }
 function getXmlHttpObj()
 {	
@@ -137,9 +76,13 @@ function getXmlHttpObj()
 	}
 	return xmlHttp;	
 }
-
  function getParser(stateId)
  {	
+	if(stateId == '0')
+	{
+		alert("Invalid Selection");
+		return;
+	}	
 	var imgElmt=document.getElementById("ajaxLoaderimg");
 	var errDivElmt=document.getElementById("errorDiv");
 	var searchNameEls = document.getElementsByName("searchName");
@@ -185,22 +128,34 @@ function validateTextField()
 	var errDivElmt=document.getElementById("errorDiv");
 	var cand=document.getElementById("candidateRadio");
 	var cons=document.getElementById("constituencyRadio");
-
+	var mlaRadio=document.getElementById("mlaRadio");
+	var mpRadio=document.getElementById("mpRadio");
+	var stateSelectEl = document.getElementById("stateSelect");
 	if(!txtElmt)
 		return false;
 	if(!errDivElmt)
 		return false;	
-	
+	errDivElmt.innerHTML="";
 	if(!cand.checked && !cons.checked)
-	{
-		errDivElmt.innerHTML="Select search criteria... ";
+	{		
+		errDivElmt.innerHTML="Select Search Criteria";
 		return false;
 	}
-
+	if(!mlaRadio.checked && !mpRadio.checked)
+	{
+		errDivElmt.innerHTML="Select Consituency Type";
+		return false;
+	}
+	if(stateSelectEl.options[stateSelectEl.selectedIndex].value == '0')
+	{
+		errDivElmt.innerHTML="Select Valid State";
+		return false;
+	}
+	
 	var value=txtElmt.value;		
 	if(value=="")
 	{		
-		errDivElmt.innerHTML="* Search text cannot be empty";
+		errDivElmt.innerHTML="Search String cannot be empty";
 		return false;	
 	}
 	else
@@ -209,42 +164,6 @@ function validateTextField()
 		return true;
 	}
 	
-}
-function getAutoComplete()
-{
-		var row4El = document.getElementById("row4");
-			
-		if(row4El.style.display == 'none')
-			row4El.style.display = 'block';
-		var row5El = document.getElementById("row5");
-		
-		if(row5El.style.display == 'none')
-			row5El.style.display = 'block';
-		
-		var datastore="";
-		var txtDivElmt=document.getElementById("textFldDiv");
-		
-		if(navigator.appName=="Microsoft Internet Explorer")
-		{				
-			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="position:absolute;top:2px;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;max-height:250px;"></div>';
-			txtDivElmt.innerHTML=txtstr;
-		}
-		else
-		{
-			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;max-height:250px;"></div>';
-			txtDivElmt.innerHTML=txtstr;
-		}
-
-		var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
-		var myAutoComp = new YAHOO.widget.AutoComplete("myInput","suggestDiv",dsLocalArray);
-		myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
-		myAutoComp.minQueryLength = 3;
-		myAutoComp.maxResultsDisplayed = 10;
-	    myAutoComp.useShadow = true;
-		myAutoComp.useIFrame = true; 
-		
 }
 function validateRadio()
 {
@@ -322,9 +241,6 @@ function callAjaxForStates(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-
-
-
 function executeonLoad()
 {
 	var selectEl = document.getElementById("stateSelect");	
@@ -332,5 +248,5 @@ function executeonLoad()
 
 	buildAutoSuggest();
 	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
-	//getParser(selectedState);	
+	
 }

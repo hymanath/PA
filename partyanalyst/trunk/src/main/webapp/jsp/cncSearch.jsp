@@ -52,15 +52,7 @@
 		} 
 	 </script>
 	 <style>
-	 .yui-skin-sam .yui-ac-input {
-		width:175px;
-		position:relative;
-	}
-	.searchBtn
-	{
-		width:25px;
-		background-image:url(images/usergroups/search.gif);
-	}
+	 		
 	.viewReportButtonSpan {
 		background-image:url("images/icons/constituencyManagement/btn_cm.png");
 		cursor:pointer;
@@ -79,7 +71,7 @@
 	/* Big box with list of options */
 	#ajax_listOfOptions{
 		position:absolute;	/* Never change this one */
-		width:175px;	/* Width of box */
+		width:185px;	/* Width of box */
 		height:200px;	/* Height of box */
 		overflow:auto;	/* Scrolling features */
 		border:1px solid #317082;	/* Dark green border */
@@ -150,7 +142,7 @@
 			<table>
 			<tr>
 			<td>
-				<s:select list="{}" listKey="id" cssStyle="width:177px;" listValue="name" name="state" id="stateSelect" onchange="getAutoComplete();getParser(this.options[this.selectedIndex].value)"/>
+				<s:select list="{}" listKey="id" cssStyle="width:177px;" listValue="name" name="state" id="stateSelect" onchange="getParser(this.options[this.selectedIndex].value)"/>
 			</td>
 			<td>
 				<img  id="ajaxLoaderimg" height="16" width="16" src="<%=request.getContextPath()%>/images/icons/ajaxLoader.gif" style="display:none;">
@@ -176,10 +168,7 @@
 </s:form>
 </div>
 <script type="text/javascript">
-
-
 getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');
-
 </script>
  </BODY>
 </HTML>
