@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -1064,6 +1065,97 @@ public class ProblemManagementService implements IProblemManagementService {
 			problemImpacts.add(new SelectOptionVO(problemImpactLevel.getProblemImpactLevelId(),problemImpactLevel.getProblemImpactLevel()));
 		}
 		return problemImpacts;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IProblemManagementService#getProblemDetailsBasedOnProblemStatusForAUser(java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
+	 * Method that retrieves problems data of a particular status(like NEW,ASSIGNED,FIXED ...) posted by a user
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProblemBeanVO> getProblemDetailsBasedOnProblemStatusForAUser(
+			Long userId, Long statusId, String isPushed, String isDeleted) {
+		
+		List<ProblemBeanVO> problemsResultList = new ArrayList<ProblemBeanVO>();
+				
+		try{
+			List resultsList = null;
+			if(statusId == null || statusId.equals(0L))
+				resultsList = problemHistoryDAO.getProblemHistoryByProblemStatusForAUser(userId, statusId, isPushed, isDeleted); // results filtered based on status (like NEW,ASSIGNED,FIXED ...)
+			else 
+				resultsList = problemHistoryDAO.getProblemHistoryForAUser(userId, isPushed, isDeleted); // get all results irrespective of status 
+			
+			if(resultsList != null && resultsList.size() > 0){
+				problemsResultList = getProcessedProblemResultsList(resultsList,userId,statusId);
+			}
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			ProblemBeanVO resultStatus = new ProblemBeanVO();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setExceptionClass(ex.getClass().toString());
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			
+			problemsResultList.add(resultStatus);
+		}
+		
+	 return problemsResultList;
+	}
+	
+	/*
+	 * Method to process posted problems results list and set details to VO 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProblemBeanVO> getProcessedProblemResultsList(List resultsList,Long userId,Long statusId){
+		
+		List<ProblemBeanVO> problemsResultList = null;
+		if(resultsList != null && resultsList.size() > 0){
+			
+			problemsResultList = new ArrayList<ProblemBeanVO>();
+			Iterator resultsIterator = resultsList.listIterator();
+			while(resultsIterator.hasNext()){
+				
+				ProblemBeanVO beanVO = new ProblemBeanVO();
+				Object[] values = (Object[])resultsIterator.next();
+				
+				//to get problem location
+				Long problemImpactLevelId    = (Long)values[0];
+				Long problemImpactLevelValue = (Long)values[1];
+            	String locationName = getLocationDetails(problemImpactLevelId,problemImpactLevelValue);
+			 
+            	Long problemId = (Long)values[5];
+            	String problem = (String)values[8];
+            	String isDelete = (String)values[11];
+            	String isApproved = (String)values[6];
+            	String description = (String)values[7];
+            	
+            	Date identifiedOn = (Date)values[9];
+            	Date existingFrom  = (Date)values[10];
+            	
+            	Long problemStatusId = (Long)values[2];
+            	String problemStatus  = (String)values[4];
+            	Long problemLocationId = (Long)values[12];
+            	
+            	//setting values to VO
+            	beanVO.setProblem(problem);
+            	beanVO.setIsDeleted(isDelete);
+            	beanVO.setProblemId(problemId);
+            	beanVO.setStatus(problemStatus);
+            	beanVO.setIsApproved(isApproved);
+            	
+            	beanVO.setDescription(description);
+            	beanVO.setProblemLocation(locationName);
+            	beanVO.setProblemStatusId(problemStatusId);
+            	
+            	beanVO.setProblemLocationId(problemLocationId);
+            	beanVO.setReportedDate(identifiedOn.toString());
+            	beanVO.setExistingFrom(existingFrom.toString());
+            	
+            	problemsResultList.add(beanVO);
+			}
+		}
+		
+	 return problemsResultList;
 	}
 }
 
