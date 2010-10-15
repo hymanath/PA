@@ -517,7 +517,7 @@ function buildProblemsByStatusDataTable(divId, results, caption) {
 		label : localizationObj.existingFrom
 	}, {
 		key : "hamlet",
-		label : localizationObj.HAMLET,
+		label : "Location",
 		sortable : true
 	}, {
 		key : "problemAmdProblemSourceId",
