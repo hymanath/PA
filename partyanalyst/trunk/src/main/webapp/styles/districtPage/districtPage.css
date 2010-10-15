@@ -388,7 +388,7 @@
 	display:none;
 }
 
-#connectPeople_Head
+#allConnectPeople_Head
 {
 	color:#2D5773;
 	font-size:12px;
@@ -415,4 +415,61 @@
 	color:#1A809A;
 	cursor:pointer;
 	font-weight:bold;
+}
+
+#connectButtonDiv
+{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.connectPeople_body_name
+{
+	color:#094776;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.connectPeople_body_constituency
+{
+	color:#754815;
+	font-size:11px;
+	font-weight:bold;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.connectPeople_body_status
+{
+	font-size:10px;	
+	padding-top:5px;
+	padding-bottom:5px;
+	font-style:italic;
+}
+
+
+#connectPeoplePopup_outer .yui-panel .hd 
+{
+	color:#403131;
+	font-size:11px;
+	padding:2px 10px;
+}
+
+#connectUserMsgFieldSet
+{
+	border:none;
+	margin:0;
+	padding:0;
+}
+
+#allConnectPeople_body
+{
+	border-bottom:1px solid #ADADAD;
+	height:320px;
+	overflow:auto;	
+}
+
+.allConnectPeopleDataDiv_main
+{
+	border-bottom:1px solid #ADADAD;
 }

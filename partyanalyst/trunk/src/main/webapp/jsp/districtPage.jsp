@@ -57,8 +57,8 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
-	<!-- YUI Dependency files (End) -->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<!-- YUI Dependency files (End)-->
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
@@ -381,7 +381,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "getAllConnectedUsers")
 					{
 						showAllConnectedUsersInPanel(jsObj,results);
-					}					
+					}		
+					if(jsObj.task == "connectUserSet")
+					{
+						showAllConnectedUsersStatus(jsObj,results);
+					}
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -1690,7 +1694,8 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 	var userObj={
 						userId:'${candidate.id}',
 						userName:'${candidate.candidateName}',
-						userStatus:'${candidate.status}'
+						userStatus:'${candidate.status}',
+						constituency:'${candidate.constituencyName}'
 					};
 		
 	connectedPeople.push(userObj);
