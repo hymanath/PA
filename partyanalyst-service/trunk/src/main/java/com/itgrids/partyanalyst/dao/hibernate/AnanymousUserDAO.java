@@ -63,7 +63,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	@SuppressWarnings("unchecked")
 	public List<AnanymousUser> getDetailsForUsers(List<Long> userIds){
 		StringBuilder query = new StringBuilder();				
-		query.append(" select model.name,model.lastName,model.userId");
+	//	query.append(" select model.name,model.lastName,model.userId");
 		query.append(" from AnanymousUser model where ");
 		query.append(" model.userId in (:userIds)");	
 		Query queryObject = getSession().createQuery(query.toString());
