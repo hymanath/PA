@@ -70,5 +70,11 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate);
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, String status);
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsForALocationsByConstituencyId(Long userId);
 
 }
