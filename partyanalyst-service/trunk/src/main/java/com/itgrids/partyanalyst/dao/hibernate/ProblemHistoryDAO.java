@@ -179,14 +179,14 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
-				"model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
+				"model.problemLocation.problemImpactLevel.problemImpactLevelId," +
+				"model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
-				"model.problemLocation.problemAndProblemSource.problem.identifiedOn "+
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemImpactLevelValue "+
 				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ?"+
-				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
 	}
 	
 		
@@ -211,14 +211,14 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
-				"model.problemLocation.hamlet.hamletName," +
-				" model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
+				"model.problemLocation.problemImpactLevel.problemImpactLevelId," +
+				"model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
-				"model.problemLocation.problemAndProblemSource.problem.identifiedOn "+
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemImpactLevelValue "+
 				"from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
-				"model.problemLocation.problemAndProblemSource.user.registrationId = ?"+
-				") and model.isDelete is null",params);
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"and model.isDelete is null",params);
 	}
 	
 	public List findLatestProblemsByMandals(String tehsilIds, Long statusId){		
