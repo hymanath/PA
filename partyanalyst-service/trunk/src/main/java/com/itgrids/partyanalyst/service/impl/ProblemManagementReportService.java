@@ -705,12 +705,13 @@ public class ProblemManagementReportService implements
 			List<ProblemBeanVO> problems = new ArrayList<ProblemBeanVO>();
 			String tehsilIds = "";
 			try{
-				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
-				if(statusId == 0)
+				//tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
+				if(statusId.equals(0L))
 					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(userId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
-					//problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
 				else
 					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(userId, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+					//problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));
+				
 					//problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(dateService.timeStampConversionToYYMMDD(fromDate)), sdf.parse(dateService.timeStampConversionToYYMMDD(toDate)));	
 					
 
@@ -723,7 +724,11 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemLocationId((Long)values[0]);
 				problemBeanVO.setProblem(values[1].toString());
 				problemBeanVO.setDescription(values[2].toString());
-				problemBeanVO.setHamlet(values[3].toString());
+				//problemBeanVO.setHamlet(values[3].toString());
+				Long impactLevelId = (Long)values[3];
+				Long impactLevelValue = (Long)values[8];
+				problemBeanVO.setHamlet(problemManagementService.getLocationDetails(impactLevelId,impactLevelValue));
+				
 				problemBeanVO.setProblemSourceScope(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
