@@ -59,6 +59,17 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString());
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsForALocationsByConstituencyId(Long userId) {
+		
+		String query = buildCommonQueryForProblems();
+		
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString());
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status) {
@@ -92,6 +103,16 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.problemStatus.status = ? and model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString(),status);
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, String status) {
+		Object[] params = {userId,status};
+		String query = buildCommonQueryForProblems();
+		StringBuilder conditionQuery = new StringBuilder();		
+		conditionQuery.append(query);
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemStatus.status = ? and model.isDelete is null");
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List findCompleteProblems(Long problemLocationId) {
@@ -255,6 +276,19 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
 		query.append(" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,");
 		query.append(" model.problemLocation.problemAndProblemSource.user.registrationId");
+		query.append(" from ProblemHistory model ");
+		return query.toString();		
+	}
+	
+	public String buildCommonQueryForProblems(){		
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.problemStatus.status," );
+		query.append(" model.problemLocation.problemImpactLevel.problemImpactLevelId,");
+		query.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
+		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
+		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
+		query.append(" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId,");
+		query.append(" model.problemLocation.problemAndProblemSource.user.registrationId,model.problemLocation.problemImpactLevelValue");
 		query.append(" from ProblemHistory model ");
 		return query.toString();		
 	}
