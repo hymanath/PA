@@ -15,6 +15,7 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	private Long totalPolledVotes;
 	private Long totalVoters;
 	private List<PartyElectionResultVO> partyElectionResultVOs;
+	private Boolean isUrban = false;
 	private Boolean showLink = true;
 	
 	public Long getLocationId() {
@@ -53,5 +54,11 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	}
 	public void setShowLink(Boolean showLink) {
 		this.showLink = showLink;
+	}
+	public Boolean getIsUrban() {
+		return isUrban;
+	}
+	public void setIsUrban(Boolean isUrban) {
+		this.isUrban = isUrban;
 	}
 }

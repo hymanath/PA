@@ -1174,18 +1174,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				List listMuncipalInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(constituencyId, electionYear, electionType, 
 						"'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
 				getAssemblyOrParliamentResultsLEBswise(listMuncipalInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
-						constituencyId, electionYear, electionType);
+						constituencyId, electionYear, electionType, true);
 			}else{
 				List listGeaterInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(constituencyId, electionYear, electionType, 
 						IConstants.CORPORATION_ELECTION_TYPE);
 				getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
-						constituencyId, electionYear, electionType);
+						constituencyId, electionYear, electionType, false);
 			}
 			
 			List listGeaterInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(constituencyId, electionYear, electionType, 
 					IConstants.GREATER_ELECTION_TYPE);
 			getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
-					constituencyId, electionYear, electionType);
+					constituencyId, electionYear, electionType, false);
 			
 			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 				List result = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId, Long.parseLong(electionYear));
@@ -1218,17 +1218,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	}
 	
 	private void getAssemblyOrParliamentResultsLEBswise(List listMuncipalInfo, ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain,
-			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal, Long constituencyId, String electionYear, String electionType){
+			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal, Long constituencyId, String electionYear, String electionType,
+			Boolean showLink){
 		if(listMuncipalInfo.size() > 0){
 			if(constituencyRevenueVillagesVOMain != null){
 				constituencyRevenueVillagesVOMunicipal = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
-						electionYear, electionType, true, false);
+						electionYear, electionType, true, showLink);
 				constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().addAll(0,constituencyRevenueVillagesVOMunicipal.
 						getConstituencyOrMandalWiseElectionVO());
 			}
 			else
 				constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
-						electionYear, electionType, true, false);
+						electionYear, electionType, true, showLink);
 		}
 	}
 	
@@ -1241,7 +1242,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 */
 	@SuppressWarnings("unchecked")
 	public ConstituencyRevenueVillagesVO setDataForVOForCorrespondingAssemblyOrParliament(List list, Long constituencyId, String constituencyName, 
-			String electionYear,String electionType, Boolean containsGreaterInfo, Boolean showLink){
+			String electionYear,String electionType, Boolean isUrban, Boolean showLink){
 		if(log.isDebugEnabled()){
 			log.debug("Entered into setDataForVOForCorrespondingAssemblyOrParliament() method..");
 		}
@@ -1280,7 +1281,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				}  
 				partyNameAndRank.put((Long)parms[2],parms[4].toString());
 				
-				if(containsGreaterInfo)
+				if(isUrban)
 					tehsilOrLocalBodyName = parms[8].toString() + " " + parms[0].toString();
 				else
 					tehsilOrLocalBodyName = parms[0].toString();
@@ -1297,6 +1298,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyOrMandalWiseElectionVo.setLocationId(tehsilIds.get(i));
 				constituencyOrMandalWiseElectionVo.setLocationName(tehsilNameAndIds.get(tehsilIds.get(i)));
 				constituencyOrMandalWiseElectionVo.setShowLink(showLink);
+				constituencyOrMandalWiseElectionVo.setIsUrban(isUrban);
 				constituencyOrMandalWiseElectionVo.setTotalPolledVotes(totalVotesForAMandal.get(tehsilIds.get(i)));
 				constituencyOrMandalWiseElectionVo.setPartyElectionResultVOs(partyVotes);
 				if(log.isDebugEnabled()){
