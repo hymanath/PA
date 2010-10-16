@@ -478,10 +478,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * 
 	 * @author Ravi Kiran.Y
 	 * @version 1.0,14-0-10.
+	 * @version 1.1,15-0-10.
 	 * @param userId
+	 * @param informationStatus
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getDataForAUserProfile(List<Long> userId){
+	public DataTransferVO getDataForAUserProfile(List<Long> userId,String informationStatus){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> resultVO = new ArrayList<CandidateVO>(); 
@@ -495,7 +497,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * 
 			 * contains whether the block has been executed successfully or not.
 			 */
-			dataTransferVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1);
+			dataTransferVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1,informationStatus);
 			ResultStatus resultStatusForConnectedPeople = new ResultStatus(); 
 			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
@@ -523,7 +525,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * 
 			 * contains whether the block has been executed successfully or not.
 			 */
-			resultVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,IConstants.MAX_LEVEL_OF_CONNECTION).getCandidateVO();			
+			resultVO = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,IConstants.MAX_LEVEL_OF_CONNECTION,informationStatus).getCandidateVO();			
 			ResultStatus resultStatusForPeopleYouMayKnow = new ResultStatus(); 
 			if(dataTransferVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
@@ -614,12 +616,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * 
 	 * @author Ravi Kiran.Y
 	 * @version 1.0,14-10-10.
+	 * @version 1.1,15-10-10.
 	 * 
 	 * @param userId
 	 * @param levels
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(List<Long> userId,int levels){
+	public DataTransferVO getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(List<Long> userId,int levels,String informationStatus){
 		List<Long> originalList = new ArrayList<Long>();			
 		originalList.addAll(userId);
 		List<Long> newList = new ArrayList<Long>(originalList);
@@ -646,7 +649,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			
 			if(unKnownPeople!=null && unKnownPeople.size()!=0){
 				List<AnanymousUser> result = ananymousUserDAO.getDetailsForUsers(unKnownPeople);
-				resultVO = setUserProfileData(result);	
+				resultVO = setUserProfileData(result,informationStatus);	
 			}
 			
 			if(resultVO==null && resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
@@ -674,30 +677,53 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * 
 	 * @author Ravi Kiran.Y
 	 * @version 1.0,14-10-10.
+	 * @version 1.1,15-10-10.
 	 * @param List<AnanymousUser>
 	 * @return DataTransferVO
+	 * @return informationStatus
+	 * @see getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection()
 	 */
-	public DataTransferVO setUserProfileData(List<AnanymousUser> result){		
+	public DataTransferVO setUserProfileData(List<AnanymousUser> result,String informationStatus){		
 		ResultStatus resultStatus = new ResultStatus();
 		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		try{
 			if(result!=null && result.size()!=0){
-				for(AnanymousUser details : result){
-					CandidateVO candidateResults = new CandidateVO();
-					String candidateName = null;
-					String name = details.getName();
-					if(name!=null){
-						candidateName+=name;
+				if(informationStatus.equalsIgnoreCase(IConstants.COMPLETE_DETAILS)){
+					for(AnanymousUser details : result){
+						CandidateVO candidateResults = new CandidateVO();
+						String candidateName = null;
+						String name = details.getName();
+						if(name!=null){
+							candidateName+=name;
+						}
+						name = details.getLastName();
+						if(name!=null){
+							candidateName+=name;
+						}						
+						candidateResults.setCandidateName(candidateName);
+						candidateResults.setId(details.getUserId());
+						//candidateResults.set
+						candiateVO.addAll(candiateVO);
 					}
-					name = details.getLastName();
-					if(name!=null){
-						candidateName+=name;
+				}else{
+					for(AnanymousUser details : result){
+						CandidateVO candidateResults = new CandidateVO();
+						String candidateName = null;
+						String name = details.getName();
+						if(name!=null){
+							candidateName+=name;
+						}
+						name = details.getLastName();
+						if(name!=null){
+							candidateName+=name;
+						}
+						candidateResults.setCandidateName(candidateName);
+						candidateResults.setId(details.getUserId());					
+						candiateVO.addAll(candiateVO);
 					}
-					candidateResults.setCandidateName(candidateName);
-					candidateResults.setId(details.getUserId());
-					candiateVO.addAll(candiateVO);
 				}
+				
 			}
 			dataTransferVO.setCandidateVO(candiateVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

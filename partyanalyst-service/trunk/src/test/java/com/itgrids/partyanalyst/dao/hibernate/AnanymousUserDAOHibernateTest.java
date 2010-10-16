@@ -31,12 +31,17 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 	/*public void testAnonymousUserLogin(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkAnonymousUserLogin("ravi","kiran");	
 		assertEquals(detailsList.size(), 1);
-	}
+	}*/
 
 	public void testAvailabityOfUserNameForAnonymousUser(){		
-		List<AnanymousUser> detailsList = ananymousUserDAO.checkForUserNameAvailabiity("ravi");	
-		assertEquals(detailsList.size(), 1);
-	}*/
+		List<Long> details =  new ArrayList<Long>(0);
+		details.add(2l);
+		List<AnanymousUser> detailsList = ananymousUserDAO.getDetailsForUsers(details);	
+		for(AnanymousUser result : detailsList){
+			System.out.println(result.getLastName());
+		}
+		System.out.println(detailsList.size());
+	}
 	
 	
 }
