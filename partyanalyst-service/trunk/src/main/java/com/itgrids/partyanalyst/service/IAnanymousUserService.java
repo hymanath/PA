@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -22,4 +23,6 @@ public interface IAnanymousUserService {
 	
 	public DataTransferVO getAllUsersAfterAcceptingRequest(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,
 			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject);
+	
+	public NavigationVO getAllMessageTypes();
 }

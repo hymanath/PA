@@ -16,9 +16,18 @@ public class NavigationVO extends ResultStatus{
 	private SelectOptionVO mandalInfo;
 	private List<SelectOptionVO> problemsCount;
 	private List<ProblemBeanVO> approvalProblems;
+	private List<SelectOptionVO> messageTypes;
 	
 	private ResultStatus resultStatus;
-		
+	
+	public List<SelectOptionVO> getMessageTypes() {
+		return messageTypes;
+	}
+
+	public void setMessageTypes(List<SelectOptionVO> messageTypes) {
+		this.messageTypes = messageTypes;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}

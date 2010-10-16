@@ -22,9 +22,11 @@ import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
@@ -811,4 +813,34 @@ public class AnanymousUserService implements IAnanymousUserService {
 			}
 		return dataTransferVO;		
 	}	
+	
+	/**
+	 * This method can be used to get all the message types.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,16-10-10.
+	 * @return
+	 */
+	public NavigationVO getAllMessageTypes(){
+		ResultStatus resultStatus = new ResultStatus();
+		NavigationVO navigationVO = new  NavigationVO();
+		 List<SelectOptionVO> selList = new ArrayList<SelectOptionVO>(0);
+		try{
+			for(MessageType type: messageTypeDAO.getAll()){
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(type.getMessageTypeId());
+				selectOptionVO.setName(type.getMessageType());
+				selList.add(selectOptionVO);
+			}
+			navigationVO.setMessageTypes(selList);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			navigationVO.setResultStatus(resultStatus);	
+		}
+	return navigationVO;
+	}
 }
