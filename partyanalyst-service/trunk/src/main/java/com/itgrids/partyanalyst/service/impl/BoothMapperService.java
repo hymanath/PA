@@ -124,9 +124,12 @@ public class BoothMapperService implements IBoothMapperService{
 		Constituency constituency = constituencyDAO.get(assemblyId);
 		LocalElectionBody localElectionBody = null;
 		AssemblyLocalElectionBody assemblyLocalElectionBody = null;
+		AssemblyLocalElectionBodyWard assemblyLocalElectionBodyWard = null;
+		List<AssemblyLocalElectionBody> assemblyLocalBodies = null;
+		List rawData = null;
 		try {
 			if(isWard){
-				List<AssemblyLocalElectionBody> assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(localBodyId, 
+				assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(localBodyId, 
 						assemblyId, year);
 				if(assemblyLocalBodies.size() == 1)
 					assemblyLocalElectionBody = assemblyLocalBodies.get(0);
@@ -141,7 +144,11 @@ public class BoothMapperService implements IBoothMapperService{
 				}
 				List<Constituency> wards = constituencyDAO.getAllWardsObjsByLocalElectionBodyWardIds(localBodyOrWardIds);
 				for(Constituency ward:wards){
-					AssemblyLocalElectionBodyWard assemblyLocalElectionBodyWard = new AssemblyLocalElectionBodyWard();
+					rawData = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(assemblyLocalElectionBody.getAssemblyLocalElectionBodyId(),
+							ward.getConstituencyId(), year);
+					if(rawData.size() > 0)
+						continue;
+					assemblyLocalElectionBodyWard = new AssemblyLocalElectionBodyWard();
 					assemblyLocalElectionBodyWard.setAssemblyLocalElectionBody(assemblyLocalElectionBody);
 					assemblyLocalElectionBodyWard.setConstituency(ward);
 					assemblyLocalElectionBodyWard.setYear(year);
@@ -150,6 +157,10 @@ public class BoothMapperService implements IBoothMapperService{
 			}else{
 				List<LocalElectionBody> localBodies = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
 				for(LocalElectionBody electionBody:localBodies){
+					assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(electionBody.getLocalElectionBodyId(), 
+							assemblyId, year);
+					if(assemblyLocalBodies.size() > 0)
+						continue;
 					assemblyLocalElectionBody = new AssemblyLocalElectionBody();
 					assemblyLocalElectionBody.setConstituency(constituency);
 					assemblyLocalElectionBody.setLocalElectionBody(electionBody);

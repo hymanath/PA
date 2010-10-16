@@ -17,12 +17,12 @@ public class BoothMapperServiceTest extends BaseDaoTestCase{
 		this.boothMapperService = boothMapperService;
 	}
 	
-	/*public void testSaveBoothLocalElectionBodyMappingInfo(){
+	public void testSaveBoothLocalElectionBodyMappingInfo(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(67000l);boothIds.add(67001l);boothIds.add(67002l);boothIds.add(67003l);boothIds.add(67004l);boothIds.add(67005l);
 		boothMapperService.saveBoothLocalElectionBodyMappingInfo(boothIds, 488l, false);
 		setComplete();
-	}*/
+	}
 	
 	public void testSaveAssemblyLocalBodyMappingInfo(){
 		List<Long> localBodyOrWardIds = new ArrayList<Long>();

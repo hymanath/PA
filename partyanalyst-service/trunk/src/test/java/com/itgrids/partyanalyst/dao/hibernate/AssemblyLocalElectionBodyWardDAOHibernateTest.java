@@ -32,8 +32,13 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		}
 	}*/
 	
-	public void testFindByConstituencyIdAndYear(){
+	/*public void testFindByConstituencyIdAndYear(){
 		List list = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(315l, IConstants.GREATER_ELECTION_TYPE);
+		System.out.println(list.size());
+	}*/
+	
+	public void testFindByAssemblyLocalElectionBodyWardAndYear(){
+		List list = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(2l, 7696l, "2009");
 		System.out.println(list.size());
 	}
 }
