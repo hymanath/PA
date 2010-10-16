@@ -46,7 +46,7 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 	@SuppressWarnings("unchecked")
 	public List<LocalElectionBody> findByLocalElectionBodyIds(List<Long> localElectionBodyIds) {	
 		StringBuilder query = new StringBuilder();
-		query.append("select model where model.localElectionBodyId in ( :localElectionBodyIds)");		
+		query.append("select model from LocalElectionBody model where model.localElectionBodyId in ( :localElectionBodyIds)");		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("localElectionBodyIds", localElectionBodyIds);
 		return queryObject.list();

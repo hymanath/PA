@@ -159,6 +159,7 @@ public class BoothMapperService implements IBoothMapperService{
 				}
 			}	
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setExceptionEncountered(e);
 		}
 		

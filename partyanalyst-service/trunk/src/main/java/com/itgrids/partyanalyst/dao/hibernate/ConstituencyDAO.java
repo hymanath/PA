@@ -258,7 +258,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings("unchecked")
 	public List<Constituency> getAllWardsObjsByLocalElectionBodyWardIds(List<Long> localElectionBodyWardIds) {	
 		StringBuilder query = new StringBuilder();
-		query.append("select model where model.constituencyId in ( :localElectionBodyIds)");		
+		query.append("select model from Constituency model where model.constituencyId in ( :localElectionBodyIds)");		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("localElectionBodyIds", localElectionBodyWardIds);
 		return queryObject.list();
