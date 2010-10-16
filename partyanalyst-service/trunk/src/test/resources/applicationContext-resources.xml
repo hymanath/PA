@@ -696,12 +696,21 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-		<bean id="messageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageTypeDAO" >
+	<bean id="messageTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MessageTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-		<bean id="userConnectedtoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO" >
+	<bean id="userConnectedtoDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserConnectedtoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	</bean>
 	
 </beans>
