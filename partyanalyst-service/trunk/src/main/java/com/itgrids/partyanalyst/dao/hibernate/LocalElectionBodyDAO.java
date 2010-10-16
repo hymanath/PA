@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -41,5 +42,14 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		return getHibernateTemplate().find("select model.localElectionBodyId, model.name, model.electionType.electionType from " +
 				"LocalElectionBody model where model.district.districtId = ?", districtId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<LocalElectionBody> findByLocalElectionBodyIds(List<Long> localElectionBodyIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append("select model where model.localElectionBodyId in ( :localElectionBodyIds)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("localElectionBodyIds", localElectionBodyIds);
+		return queryObject.list();
+	} 
 
 }

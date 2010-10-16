@@ -19,5 +19,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public List findByDistrictId(Long districtId);
 	
+	public List<LocalElectionBody> findByLocalElectionBodyIds(List<Long> localElectionBodyIds);
+	
 	
 }

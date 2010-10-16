@@ -47,7 +47,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testUpdateLocalBodyInfoByBoothIdsAndWardId(){
+	public void testUpdateLocalBodyInfoByBoothIdsAndWardId(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(9000l);
 		boothIds.add(9001l);
@@ -56,7 +56,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(i);
 	}
 	
-	public void testGetBoothsByIds(){
+	/*public void testGetBoothsByIds(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(9000l);
 		boothIds.add(9001l);
@@ -101,8 +101,8 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testFindbyConstituencyNameDistrictIdAndElectionYear(){
+	/*public void testFindbyConstituencyNameDistrictIdAndElectionYear(){
 		List list = boothDAO.findbyConstituencyNameDistrictIdAndElectionYear("Kavali", 19l, 2009l);
-	}
+	}*/
 
 }

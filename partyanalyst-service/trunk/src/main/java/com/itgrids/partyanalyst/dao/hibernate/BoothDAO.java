@@ -98,10 +98,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return queryObject.list();
 	}
 
-	public int updateLocalBodyInfoByBoothIdsAndWardId(Long localBody, List<Long> boothIds) {
-		Query queryObject = getSession().createQuery("update Booth model set model.localBody = (select model1.localElectionBody from " +
-				"Constituency model1 where model1.constituencyId = ?) where model.boothId in (:boothIds)");
-		queryObject.setParameter(0, localBody);
+	public int updateLocalBodyInfoByBoothIdsAndWardId(Long localBodyId, List<Long> boothIds) {
+		Query queryObject = getSession().createQuery("update Booth model set model.localBody = (select model1 from " +
+				"LocalElectionBody model1 where model1.localElectionBodyId = ?) where model.boothId in (:boothIds)");
+		queryObject.setParameter(0, localBodyId);
 		queryObject.setParameterList("boothIds", boothIds);
 		return queryObject.executeUpdate();
 	}
