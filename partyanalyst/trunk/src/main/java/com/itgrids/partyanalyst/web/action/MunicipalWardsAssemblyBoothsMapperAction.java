@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -33,7 +34,8 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 	JSONObject jObj = null;
 	private String task = null;
 	private List<ConstituencyBoothInfoVO> boothsInAssembly;
-	private IBoothMapperService boothMapperService; 
+	private IBoothMapperService boothMapperService;
+	private ResultWithExceptionVO resultWithExceptionVO; 
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -43,14 +45,6 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 
 	public void setServletContext(ServletContext context) {
 		this.context = context;
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
 	}
 
 	public ServletContext getContext() {
@@ -93,12 +87,18 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 		this.boothMapperService = boothMapperService;
 	}
 
+	public ResultWithExceptionVO getResultWithExceptionVO() {
+		return resultWithExceptionVO;
+	}
+
+	public void setResultWithExceptionVO(ResultWithExceptionVO resultWithExceptionVO) {
+		this.resultWithExceptionVO = resultWithExceptionVO;
+	}
+
 	public String execute() throws Exception {
 		
 		return Action.SUCCESS;		
 	}
-	
-	
 	
 	public String getBoothsInAssemblyConstituency()
 	{
@@ -109,7 +109,6 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Long id = jObj.getLong("id");
@@ -121,24 +120,34 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 	{
 		String param = null;
 		param = getTask();
-		
+
 		try {
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Long wardId = jObj.getLong("wardId");
-		JSONArray boothJsonIds = jObj.getJSONArray("boothIds");
-		List<Long> boothElecIds = new ArrayList<Long>();
 		
-		for(int i=0; i < boothJsonIds.length(); i++){
-			boothElecIds.add(new Long((String)boothJsonIds.get(i)));
-		}
-		boothMapperService.saveBoothLocalElectionBodyMappingInfo(boothElecIds, wardId);
+		Boolean isAssemblyLevelMap = jObj.getBoolean("isAssemblyToLocal");
+		Boolean isBoothLevelMap = jObj.getBoolean("isBoothToLocal");
+		Boolean isMapToWard = jObj.getBoolean("isWard");
+		
+		Long mappedlocationId = jObj.getLong("mappedlocationId");
+		JSONArray boothsOrWardsOrLEBIds = jObj.getJSONArray("listOfIds");
+		
+		Long lebId = jObj.getLong("lebId");
+		String year = jObj.getString("year");
+		
+		List<Long> mappedIdsList = new ArrayList<Long>();
+		
+		for(int i=0; i < boothsOrWardsOrLEBIds.length(); i++)
+			mappedIdsList.add(new Long((String)boothsOrWardsOrLEBIds.get(i)));
+		
+		if(isBoothLevelMap)
+			resultWithExceptionVO = boothMapperService.saveBoothLocalElectionBodyMappingInfo(mappedIdsList, mappedlocationId, isMapToWard);
+		
+		if(isAssemblyLevelMap)
+			resultWithExceptionVO = boothMapperService.saveAssemblyLocalBodyMappingInfo(lebId, mappedIdsList, mappedlocationId, year, isMapToWard);
 	}
 	
-	
-
 }

@@ -595,6 +595,8 @@
         <property name="constituencyDAO" ref="constituencyDAO" />
 	    <property name="boothLocalBodyWardDAO" ref="boothLocalBodyWardDAO" />
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	    <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 	</bean>
     
 </beans>		

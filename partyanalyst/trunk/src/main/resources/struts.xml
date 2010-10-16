@@ -1501,7 +1501,11 @@
 				<param name="root">boothsInAssembly</param>				
 			</result>
 		</action>
-		<action name="saveMunicipalWardsAssemblyBoothsAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="saveBoothsInAssemblyConstituency"/>
+		<action name="saveMunicipalWardsAssemblyBoothsAjaxAction" class="municipalWardsAssemblyBoothsMapperAction" method="saveBoothsInAssemblyConstituency">
+			<result type="json" name="success">
+				<param name="root">resultWithExceptionVO</param>				
+			</result>
+		</action>
 		
 		<action name="problemManagementAdminAction" class="problemManagementAdminAction"> 
              <result name="success">/jsp/adminProblemManagement.jsp</result> 
