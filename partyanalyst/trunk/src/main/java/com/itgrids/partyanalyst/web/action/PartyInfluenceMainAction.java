@@ -107,15 +107,15 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletRe
 		electionYears.add("2004");			
 		
 		// Setting samples of New Party
-		newParty.add(new SelectOptionVO(43l, "PRP"));
-		newParty.add(new SelectOptionVO(32l, "Lok Satta"));
+		newParty.add(new SelectOptionVO(661l, "PRP"));
+		newParty.add(new SelectOptionVO(513l, "Lok Satta"));
 		
 		//Setting party for party names
-		partyNames.add(new SelectOptionVO(24l, "INC"));
-		partyNames.add(new SelectOptionVO(15l, "BJP"));
-		partyNames.add(new SelectOptionVO(17l, "CPI"));
-		partyNames.add(new SelectOptionVO(62l, "TDP"));
-		partyNames.add(new SelectOptionVO(61l, "TRS"));
+		partyNames.add(new SelectOptionVO(361l, "INC"));
+		partyNames.add(new SelectOptionVO(163l, "BJP"));
+		partyNames.add(new SelectOptionVO(265l, "CPI"));
+		partyNames.add(new SelectOptionVO(871l, "TDP"));
+		partyNames.add(new SelectOptionVO(885l, "TRS"));
 				
 		return Action.SUCCESS;
 	}
