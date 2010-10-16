@@ -29,7 +29,9 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong(0,logedUserId);
-		queryObject.setString(1,status);
+		if(!status.equalsIgnoreCase(IConstants.ALL)){
+			queryObject.setString(1,status);
+		}
 		queryObject.setParameterList("userIds", userIds);
 		return queryObject.list();
 	}
