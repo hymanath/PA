@@ -14,16 +14,34 @@ public class DataTransferVO extends ResultStatus{
 	private List<CandidateVO> peopleYouMayKnow;
 	private List<CandidateVO> scraps;
 	private List<CandidateVO> comments;
+	private List<CandidateVO> friendRequest;
 	private ResultStatus resultStatus;
 	private ResultStatus resultStatusForConnectedPeople;
 	private ResultStatus resultStatusForPendingRequests;
 	private ResultStatus resultStatusForPeopleYouMayKnow;
 	private ResultStatus resultStatusForScraps;
 	private ResultStatus resultStatusForComments;
+	private ResultStatus resultStatusForFriendRequest;
 	private String loginStatus;
 	private Long userId; 
 	
-	
+	public List<CandidateVO> getFriendRequest() {
+		return friendRequest;
+	}
+
+	public void setFriendRequest(List<CandidateVO> friendRequest) {
+		this.friendRequest = friendRequest;
+	}
+
+	public ResultStatus getResultStatusForFriendRequest() {
+		return resultStatusForFriendRequest;
+	}
+
+	public void setResultStatusForFriendRequest(
+			ResultStatus resultStatusForFriendRequest) {
+		this.resultStatusForFriendRequest = resultStatusForFriendRequest;
+	}
+
 	public ResultStatus getResultStatusForConnectedPeople() {
 		return resultStatusForConnectedPeople;
 	}
@@ -164,5 +182,7 @@ public class DataTransferVO extends ResultStatus{
 	public void setLatestYearChart(Object latestYearChart) {
 		this.latestYearChart = latestYearChart;
 	}
+
+
 
 }

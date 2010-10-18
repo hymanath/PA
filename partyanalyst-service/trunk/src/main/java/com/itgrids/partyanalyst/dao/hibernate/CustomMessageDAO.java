@@ -73,9 +73,13 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType){
 		StringBuilder query = new StringBuilder();				
-		query.append(" select model.message,model.senderId.userId,model.senderId.name,model.senderId.lastName from CustomMessage ");
+		query.append(" select model.subject,model.senderId.userId,model.senderId.name,model.senderId.lastName from CustomMessage ");
 		query.append(" model where model.messageType.messageType = ? and");
-		query.append(" model.senderId.userId in (:senderId) order by customMessageId desc ");
+		if(messageType.equalsIgnoreCase(IConstants.PENDING)){
+			query.append(" model.recepientId.userId in (:senderId) order by customMessageId desc ");
+		}else{
+			query.append(" model.senderId.userId in (:senderId) order by customMessageId desc ");
+		}	
 				
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setString(0,messageType);

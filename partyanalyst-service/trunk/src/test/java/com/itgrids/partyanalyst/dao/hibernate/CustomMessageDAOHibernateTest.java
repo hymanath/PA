@@ -39,18 +39,18 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testUsersRelationBasedOnType(){	
 		List<Long> list = new ArrayList<Long>();
-		list.add(5l);
+		list.add(39l);
 		
-		List<Long> usersList = new ArrayList<Long>();
-		usersList.add(2l);
-		usersList.add(6l);
-		usersList.add(26l);
-		usersList.add(28l);
-		
-		List<CustomMessage> detailsList = customMessageDAO.checkForRelationBetweenUsersBasedOnType(list,usersList,IConstants.PENDING);	
-		for(CustomMessage result : detailsList){
-			System.out.println(result.getCustomMessageId());
+		List<Object> detailsList = customMessageDAO.getAllMessagesForUser(list,IConstants.PENDING);
+		try{
+			for(int i=0;i<detailsList.size();i++){
+				Object[] parms = (Object[])detailsList.get(i);
+				System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+		
 		
 	}
 }
