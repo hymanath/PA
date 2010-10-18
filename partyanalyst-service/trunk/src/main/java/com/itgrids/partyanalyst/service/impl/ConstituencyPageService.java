@@ -1184,7 +1184,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			List listGeaterInfo = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(constituencyId, electionYear, electionType, 
 					IConstants.GREATER_ELECTION_TYPE);
-			getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
+			constituencyRevenueVillagesVOMain = getAssemblyOrParliamentResultsLEBswise(listGeaterInfo, constituencyRevenueVillagesVOMain, constituencyRevenueVillagesVOMunicipal, 
 					constituencyId, electionYear, electionType, false);
 			
 			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
@@ -1217,7 +1217,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}		
 	}
 	
-	private void getAssemblyOrParliamentResultsLEBswise(List listMuncipalInfo, ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain,
+	private ConstituencyRevenueVillagesVO getAssemblyOrParliamentResultsLEBswise(List listMuncipalInfo, ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain,
 			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMunicipal, Long constituencyId, String electionYear, String electionType,
 			Boolean showLink){
 		if(listMuncipalInfo.size() > 0){
@@ -1231,6 +1231,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(listMuncipalInfo,constituencyId, null, 
 						electionYear, electionType, true, showLink);
 		}
+		
+		return constituencyRevenueVillagesVOMain;
 	}
 	
 	/**
