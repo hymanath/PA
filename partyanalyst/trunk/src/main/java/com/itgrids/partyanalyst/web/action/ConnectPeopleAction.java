@@ -155,6 +155,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		Long userId = new Long(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
 		
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(districtId);
 		
 		List<Long> senderIds = new ArrayList<Long>();
 		senderIds.add(userId);
@@ -162,8 +164,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> connectUserIds = new ArrayList<Long>(); 
 		connectUserIds.add(connectUserId);
 		
-		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
-		
+		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, IConstants.DISTRICT_LEVEL, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
 		return Action.SUCCESS;
 	}
 	
@@ -208,6 +210,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		Long userId = new Long(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
 		
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(districtId);
+		
 		List<Long> senderIds = new ArrayList<Long>();
 		senderIds.add(userId);
 		
@@ -221,8 +226,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			connectUserIdsList.add(new Long(connectUserIds.getString(j)));
 		}		
 		
-		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
-		
+		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, IConstants.DISTRICT_LEVEL, IConstants.ALL_CONNECTED_USER_DISPLAY, userId, senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
 		return Action.SUCCESS;
 	}
 	

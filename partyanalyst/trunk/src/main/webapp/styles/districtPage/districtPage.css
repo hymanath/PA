@@ -473,3 +473,10 @@
 {
 	border-bottom:1px solid #ADADAD;
 }
+
+.errorStr
+{
+	color:#584D47;
+	font-size:12px;
+	padding:5px;
+}

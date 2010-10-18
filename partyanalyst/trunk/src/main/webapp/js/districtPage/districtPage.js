@@ -153,12 +153,29 @@ function buildDistrictConnectPeopleWindow()
 {	
 	var bodyElmt = document.getElementById('districtPeopleConnect_body');
 	
-	if(connectedPeople.length == 0)
+	if(connectedPeople.length == 0 && userLoginStatus == "false")
 	{
-		bodyElmt = 'No People Connect Connected';
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';
+		errorStr += '<div class="errorStr">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">Login</a></div>';
+		
+		bodyElmt.innerHTML = errorStr;
 		return;
 	}
-	
+	else if(connectedPeople.length == 0 && userLoginStatus == "true")
+	{
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';		
+		bodyElmt.innerHTML = errorStr;
+		return;
+	}
+
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
 	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
@@ -180,7 +197,7 @@ function buildDistrictConnectPeopleWindow()
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">';
 		if(userLoginStatus == "false")
-			bodyStr+='<a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'&connectUserId='+connectedPeople[i].userId+'">Connect</a>';
+			bodyStr+='<a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">Connect</a>';
 		else
 		{
 			if(connectedPeople[i].userStatus == "NOTCONNECTED")
@@ -212,7 +229,11 @@ function buildDistrictConnectPeopleWindow()
 	bodyStr+='<table width = "100%"><tr>';
 	bodyStr+='<td align="right">';
 	if(userLoginStatus == "false")
-		bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'&connectUserId='+connectedPeople[i].userId+'" class="connectAnc">View All</a> </span>';
+	{
+		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'" class="connectAnc">Login</a> </span>';
+		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="anonymousUserAction.action" class="connectAnc">Register</a> </span>';
+		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'" class="connectAnc">View All</a> </span>';
+	}
 	else
 		bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" onclick="showAllConnectPeopleWindow()" class="connectAnc">View All</a> </span>';
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
