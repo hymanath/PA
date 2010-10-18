@@ -7,6 +7,7 @@ var districtPageMainObj = {
 var districtId;
 var districtName;
 
+var constituencies = new Array();
 var districtMlas = new Array();
 var districtMps = new Array();
 var problemsInfo = new Array();
@@ -175,15 +176,22 @@ function buildDistrictConnectPeopleWindow()
 		bodyElmt.innerHTML = errorStr;
 		return;
 	}
+	
+	buildConnectUsersContent(connectedPeople);
+}
+
+function buildConnectUsersContent(connectedPeopleData)
+{
+	var bodyElmt = document.getElementById('districtPeopleConnect_body');
 
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
 	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeople.length+' people connected to this district </span>';
+	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected to this district </span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
 	bodyStr+='<table width="100%">';
-	for(var i =0; i<connectedPeople.length; i++)
+	for(var i =0; i<connectedPeopleData.length; i++)
 	{
 		if(i == 3)
 			break;
@@ -192,7 +200,7 @@ function buildDistrictConnectPeopleWindow()
 		bodyStr+='<table width="100%">';
 		bodyStr+='<tr>';
 		bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeople[i].userName+'</span></td>';
+		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeopleData[i].candidateName+'</span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
 		bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">';
@@ -200,14 +208,14 @@ function buildDistrictConnectPeopleWindow()
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">Connect</a>';
 		else
 		{
-			if(connectedPeople[i].userStatus == "NOTCONNECTED")
+			if(connectedPeopleData[i].status == "NOTCONNECTED")
 			{
 				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
-				bodyStr+=' - <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeople[i].userId+'\',\''+connectedPeople[i].userName+'\',\''+connectedPeople[i].constituency+'\')">Connect</a>';
+				bodyStr+=' - <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\')">Connect</a>';
 			}
-			else if(connectedPeople[i].userStatus == "CONNECTED")
+			else if(connectedPeopleData[i].status == "CONNECTED")
 				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Connected</font>';
-			else if(connectedPeople[i].userStatus == "PENDING")
+			else if(connectedPeopleData[i].status == "PENDING")
 				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Request Pending</font>';
 		}
 
@@ -235,7 +243,10 @@ function buildDistrictConnectPeopleWindow()
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&districtId='+districtId+'&districtName='+districtName+'" class="connectAnc">View All</a> </span>';
 	}
 	else
+	{
+		bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
 		bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" onclick="showAllConnectPeopleWindow()" class="connectAnc">View All</a> </span>';
+	}
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
 	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
 	bodyStr+='</td>';
@@ -244,8 +255,6 @@ function buildDistrictConnectPeopleWindow()
 
 	if(bodyElmt)
 		bodyElmt.innerHTML=bodyStr;
-
-	var connectButton = new YAHOO.widget.Button("connectButton");
 
 }
 
@@ -307,7 +316,23 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		return
 	}
 
-	str	+= '<div id="allConnectPeople_Head">Total People Connected to '+districtName+' district - '+users.length+'</div>';
+	str	+= '<div id="allConnectPeople_Head">';
+	str += '<div>Total People Connected to '+districtName+' district - '+users.length+'</div>';
+	str += '<div>';
+	str += '<table>';
+	str += '<tr>';
+	str += '<th>View People By :</th>';
+	str += '<th>Constituency</th>';
+	str += '<th><select>';
+	str += '<option>All</option>';
+	for(var consti=0; consti<constituencies.length;consti++)
+		str += '<option>'+constituencies[consti]+'</option>';
+	str += '</select></th>';
+	str += '<tr>';
+	str += '</table>';
+	
+	str += '</div>';	
+	str += '</div>';
 	str	+= '<div id="allConnectPeople_body">';	
 	for(var i=0; i<users.length; i++)
 	{
@@ -340,7 +365,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str	+= '<tr>';
 	str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
 	str	+= '<td width="60%" align="left"><textarea id="AllConnectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></td>';
-	str	+= '<td width="10%" align="center"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></td>';
+	str	+= '<td width="10%" align="center"><div id="allConnectPeopleButtonDiv"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></div></td>';
 	str	+= '</tr>';
 	str += '<tr>';
 	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';
@@ -371,7 +396,10 @@ function connectUserSetPeople()
 	}
 	
 	if(users.length == 0)
+	{
 		statusElmt.innerHTML = '<font color="red">Atleast One User Has To Selected To Connect</font>';
+		return;
+	}
 	else
 		statusElmt.innerHTML = '';
 
@@ -393,8 +421,16 @@ function connectUserSetPeople()
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
-	var statusElmt = document.getElementById("allConnectPeopleStatusTextDiv");
-	statusElmt.innerHTML = '<font color="green">Users Successfully Connected</font>';
+	var elmt = document.getElementById("allConnectPeopleStatusTextDiv");
+
+	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
+	{		
+		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent to selected users successfully.</font></blink>';
+		showAllConnectedUsersInPanel(jsObj,results);		
+		buildConnectUsersContent(results.candidateVO);		
+	}
+	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
+		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent to selected users due to some technically difficulty.</blink></font>';
 }
 
 function showConnectConfirmDialogBox(userId,userName,constituency)
@@ -481,9 +517,28 @@ function doConnectPeople(connectUserId,connectUserName)
 function closeConnectPanel(jsObj,results)
 {
 	var elmt = document.getElementById("connectStatus");
-	elmt.innerHTML = '<font color="green" style="font-weight:bold;"><blink>'+jsObj.connectUserName+" is successfully connected</blink></font>";
+	var buttonElmt = document.getElementById("connectButtonDiv");
+	
+	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
+	{
+		buttonElmt.innerHTML = '';
+		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent to '+jsObj.connectUserName+" successfully.</font></blink>";
+		buildConnectUsersContent(results.candidateVO);		
+		var t=setTimeout("closeConnectPopup()",2000);
+	}
+	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
+		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent to '+jsObj.connectUserName+" due to some technically difficulty.</blink></font>";
+		
+}
 
-	//var t=setTimeout("closeConnectPeoplePopup()",3000);
+function closeConnectPopup()
+{
+	var elmt = document.getElementById("connectPeoplePopup_outer");
+	if(!elmt)
+		return;
+	var str = '<div id="connectPeoplePopup"></div>';
+
+	elmt.innerHTML = str;
 }
 
 function initializeDistrictPage()

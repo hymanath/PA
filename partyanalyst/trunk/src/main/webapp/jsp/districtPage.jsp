@@ -1692,13 +1692,17 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 
 <c:forEach var="candidate" items="${userDetails.candidateVO}">	
 	var userObj={
-						userId:'${candidate.id}',
-						userName:'${candidate.candidateName}',
-						userStatus:'${candidate.status}',
-						constituency:'${candidate.constituencyName}'
+						id:'${candidate.id}',
+						candidateName:'${candidate.candidateName}',
+						status:'${candidate.status}',
+						constituencyName:'${candidate.constituencyName}'
 					};
 		
 	connectedPeople.push(userObj);
+</c:forEach>
+
+<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
+	constituencies.push('${candidate.constituencyName}');
 </c:forEach>
 
 userLoginStatus = '${userDetails.loginStatus}';
