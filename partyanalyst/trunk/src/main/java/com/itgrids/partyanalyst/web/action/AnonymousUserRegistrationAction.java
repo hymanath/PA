@@ -104,6 +104,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Password is required",shortCircuit=true)
 	public void setPassword(String password) {
 		this.regVO.setPassword(password);
+		this.password = password;
 	}
 	public String getPassword() {
 		return regVO.getPassword();
@@ -220,6 +221,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	public void setState(String state) {
 		this.regVO.setState(state);
+		this.state = state;
 	}
 	public String getState() {
 		return regVO.getState();
@@ -227,6 +229,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 	public void setDistrict(String district) {
 		this.regVO.setDistrict(district);
+		this.district = district;
 	}
 	public String getDistrict() {
 		return regVO.getDistrict();
@@ -234,6 +237,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 	public void setConstituency(String constituency) {
 		this.regVO.setConstituency(constituency);
+		this.constituency = constituency;
 	}
 	public String getConstituency() {
 		return regVO.getConstituency();

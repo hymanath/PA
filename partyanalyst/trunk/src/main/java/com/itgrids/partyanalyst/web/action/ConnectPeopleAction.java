@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -22,6 +23,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ConnectPeopleAction extends ActionSupport implements ServletRequestAware{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5360785727347677445L;
+
 	private static final Logger log = Logger.getLogger(ProblemPostControlAction.class);
 	
 	private HttpServletRequest request;
@@ -136,6 +142,38 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	/*
+	 * 
+	 * session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		List<Long> userId = new ArrayList<Long>();
+		userId.add(user.getRegistrationID());
+		userDetails = ananymousUserService.getDataForAUserProfile(userId,IConstants.FRIEND_REQUEST);
+		return Action.SUCCESS;
+	 */
+	public String getRequestMessagesForUser() throws Exception
+	{
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		List<Long> userId = new ArrayList<Long>();
+		userId.add(user.getRegistrationID());
+		userDetails = ananymousUserService.getDataForAUserProfile(userId,IConstants.FRIEND_REQUEST);
+		return Action.SUCCESS;
+	}
 	public String connectToUser() throws Exception
 	{
 		String param;
@@ -144,7 +182,6 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		try {
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -201,7 +238,6 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		try {
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

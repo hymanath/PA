@@ -129,7 +129,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private DataTransferVO userDetails;
 	private String userType = null;	
 	private String mapKey;
+	private NavigationVO messageTypes;
 	
+	
+	
+	public NavigationVO getMessageTypes() {
+		return messageTypes;
+	}
+	public void setMessageTypes(NavigationVO messageTypes) {
+		this.messageTypes = messageTypes;
+	}
 	
 	public String getMapKey() {
 		return mapKey;
@@ -730,12 +739,15 @@ public class ConstituencyPageAction extends ActionSupport implements
 				userDetails.setLoginStatus("false");
 			}
 		
+		messageTypes = ananymousUserService.getAllMessageTypes();
+		
    		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}
 		else
 			return Action.ERROR;
 		
+   	
 	}
 	
 	private DefaultPieDataset createPieDatasetForVoters(List<VotersInfoForMandalVO> votersInfoForMandalVO) {

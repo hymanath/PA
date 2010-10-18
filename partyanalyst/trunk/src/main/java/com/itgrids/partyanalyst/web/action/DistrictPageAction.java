@@ -90,8 +90,16 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private DataTransferVO userDetails;
 	private HttpSession session;
 	private String userType = null;	
+	private NavigationVO messageTypes;
 	
 	
+	
+	public NavigationVO getMessageTypes() {
+		return messageTypes;
+	}
+	public void setMessageTypes(NavigationVO messageTypes) {
+		this.messageTypes = messageTypes;
+	}
 	public String getUserType() {
 		return userType;
 	}
@@ -488,6 +496,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			userDetails.setLoginStatus("false");
 		}
 		
+		messageTypes = ananymousUserService.getAllMessageTypes();
 		return Action.SUCCESS;
 	
 	}
