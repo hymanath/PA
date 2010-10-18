@@ -98,13 +98,13 @@
 		oMenuBar.subscribe("beforeRender", function () { 
 	 
 	    if (this.getRoot() == this) { 	 
-		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
-		this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
-		this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
-		this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
-		this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
-		this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]);
-		this.getItem(6).cfg.setProperty("submenu", aSubmenuData[6]);
+			this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
+			this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
+			this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
+			this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
+			this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
+			this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]);
+			this.getItem(6).cfg.setProperty("submenu", aSubmenuData[6]);
 	    } 
 	 
 	}); 
@@ -172,7 +172,7 @@
 	     
 	]; 
 	</c:if>
-	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+	<c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
 		var aSubmenuData = [ 
 					{
 						 id: "home", 
@@ -182,29 +182,11 @@
 						] 
 					},
 					{ 
-						id: "staticData",  
-						itemdata: [ 
-							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
-							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
-						]     
-					}, 
-					{ 
-						id: "search", 
-						itemdata: [
-						] 
-					}  					 
-				]; 
-	</c:if>
-	<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-		var aSubmenuData = [ 
-					{
-						 id: "home", 
-						itemdata: [ 				
-							  
-
-						] 
+						id: "partyanalysis",  
+				        itemdata: [	            
+				            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" }	                       
+				        ]    
 					},
 					{ 
 						id: "staticData",  
@@ -315,11 +297,10 @@
 							<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
 						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
+						
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
 						</li> 
-						</c:if>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li>
