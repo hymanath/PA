@@ -49,8 +49,18 @@ function callAjax(param,jsObj,url){
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getAllRequestMessagesForUser")
 					{
+						if(results.friendRequest!=null){
 							showAllRequestMessagesForUser(results);
-					}					
+						}							
+					}	
+					if(jsObj.task == "acceptRequest")
+					{
+						getAllRequestMessagesForUser();
+					}
+					if(jsObj.task == "rejectRequest")
+					{
+						getAllRequestMessagesForUser();
+					}
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -64,8 +74,8 @@ function callAjax(param,jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
-function showAllRequestMessagesForUser(results){
-	console.log(results);
+function showAllRequestMessagesForUser(results){	
+	
 	var elmt = document.getElementById("storyBoard_main");
 
 	if(!elmt)
@@ -74,7 +84,7 @@ function showAllRequestMessagesForUser(results){
 	var str = '';
 	str += '<div id="totalNumberOfRequestsDIV"> You have '+results.friendRequest.length+' Requests</div>';
 	for(var i in list){
-		str += '<table width="50%" border=1>';
+		str += '<table width="50%">';
 		str += '<tr>';
 		str+='<td>';
 		str+='<div id="userFriendRequestInfo">';
@@ -83,8 +93,8 @@ function showAllRequestMessagesForUser(results){
 		str += '</tr>';
 		str += '<tr>';
 		str += '<td align="left" class="connectPeopleNames"><span>'+results.friendRequest[i].candidateName+'</span></td>';
-		str += '<td align="left"><input type="button" value="Accept" class="acceptButton"></input></td>';
-		str += '<td align="left"><input type="button" value="Reject"></input></td>';
+		str += '<td align="left"><input type="button" onclick="acceptRequest('+results.friendRequest[i].id+')" value="Accept" class="acceptButton"></input></td>';
+		str += '<td align="left"><input type="button" onclick="rejectRequest('+results.friendRequest[i].id+')" value="Reject" class="rejectButton"></input></td>';
 		str += '</tr>';
 		str += '</table>';
 	}		
@@ -92,6 +102,33 @@ function showAllRequestMessagesForUser(results){
 	elmt.innerHTML = str;
 }
 
+function acceptRequest(requestId)
+{
+	var jsObj=
+	{		
+			type:"accept",
+			recepientId:requestId,
+			task:"acceptRequest"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
+
+function rejectRequest(requestId)
+{
+	var jsObj=
+	{		
+			type:"reject",
+			recepientId:requestId,
+			task:"rejectRequest"			
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
 function getAllRequestMessagesForUser(){
 	
 	var jsObj=

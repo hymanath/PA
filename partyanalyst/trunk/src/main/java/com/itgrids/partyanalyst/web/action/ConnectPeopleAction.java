@@ -141,19 +141,40 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		return Action.SUCCESS;
 	}
-	
-	/*
-	 * 
-	 * session = request.getSession();
+	public String updateUserStatus() throws Exception
+	{
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user==null){
 			return IConstants.NOT_LOGGED_IN;
 		}
 		List<Long> userId = new ArrayList<Long>();
 		userId.add(user.getRegistrationID());
-		userDetails = ananymousUserService.getDataForAUserProfile(userId,IConstants.FRIEND_REQUEST);
+		
+		List<Long> recepientId = new ArrayList<Long>();
+		recepientId.add(jObj.getLong("recepientId"));
+		
+		
+		if(jObj.getString("task").equalsIgnoreCase("acceptRequest"))
+		{
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.CONNECTED,"");
+		}
+		if(jObj.getString("task").equalsIgnoreCase("rejectRequest"))
+		{
+			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.REJECTED,"");
+		}
+		
 		return Action.SUCCESS;
-	 */
+	}
+	
 	public String getRequestMessagesForUser() throws Exception
 	{
 		String param;
@@ -214,7 +235,6 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		try {
 			jObj = new JSONObject(param);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
