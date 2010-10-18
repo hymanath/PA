@@ -1562,6 +1562,12 @@
 			<result type="json" name="success">
 				<param name="root">userDetails</param>				
 			</result>		
+		</action>   
+		
+		<action name="getRequestMessagesForUserAction" class="connectPeopleAction" method="getRequestMessagesForUser">
+			<result type="json" name="success">
+				<param name="root">userDetails</param>				
+			</result>		
 		</action>        
 	</package>
 </struts>

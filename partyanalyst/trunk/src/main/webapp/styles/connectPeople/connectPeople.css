@@ -68,3 +68,27 @@
 	color:#123B5A;
 	font-weight:bold;
 }
+
+#totalNumberOfRequestsDIV
+{
+	color:#0F4D7C;
+	font-size:12px;
+	font-weight:bold;
+	list-style-type:none;
+	padding:5px;
+	cursor:pointer
+}
+.connectPeopleNames
+{
+	color:#3B5998;
+	cursor:pointer;
+	font-weight:bold;
+	text-decoration:none;
+}
+.acceptButton
+{
+	background-color:#5B74A8;
+	background-position:0 -48px;
+	border-color:#29447E #29447E #1A356E;
+	color:#FFFFFF;
+}
