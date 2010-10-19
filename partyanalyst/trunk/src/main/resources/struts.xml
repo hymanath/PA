@@ -431,7 +431,7 @@
            <result type="json" name="success">
            		<param name="root">mandals</param>
         	</result>
-        </action> 
+        </action>
         
         <action name="villageBoothMapperFinalAjaxAction" class="hamletBoothMapperAction">
            <result type="json" name="success">
@@ -884,7 +884,7 @@
 		<action name="getNextPrevCandidateVotingTrendz" class="constituencyPageAction" method="getNextPrevCandidateVotingTrendz">
 			<result type="json" name="success">
 				<param name="root">candidateVotingTrendzCharts</param>				
-			</result>		
+			</result>
 		</action>
 		<action name="getVotingTrendzForElectionYears" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction" method="getVotingTrendzForElectionYears">
            <result type="json" name="success">
