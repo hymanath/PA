@@ -64,6 +64,8 @@
 	<!-- jQuery dependency file end-->
 
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+
+	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
@@ -393,6 +395,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					}
 					if(jsObj.task == "getAllConnectedUsersByFilterView")
 					{
+						console.log(results);
 						showAllConnectedUsersInPanelByFilterView(jsObj,results);
 					}
 					
