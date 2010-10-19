@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class PartyResultsVO {
@@ -20,6 +21,7 @@ public class PartyResultsVO {
 	private Long votesEarned;
 	private Long validVotes;
 	private String percentage;
+	private BigDecimal votesPercent;
 	private int totalSeatsWon;
 	private Long totalPolledVotes;
 	private Long rank;
@@ -142,6 +144,12 @@ public class PartyResultsVO {
 	}
 	public void setDiffPercent(String diffPercent) {
 		this.diffPercent = diffPercent;
+	}
+	public BigDecimal getVotesPercent() {
+		return votesPercent;
+	}
+	public void setVotesPercent(BigDecimal votesPercent) {
+		this.votesPercent = votesPercent;
 	}
 	
 }
