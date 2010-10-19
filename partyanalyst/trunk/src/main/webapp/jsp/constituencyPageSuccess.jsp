@@ -172,6 +172,9 @@
 								}else if(jsObj.task == "mandalVotesShareDetailsChart")
 								{
 									showMandalVotesShareDetailsChart(myResults);
+								}else if(jsObj.task == "partiesPerformanceInDiffElectionsAjax")
+								{
+									showAllPartiesAllElectionResultsChart(myResults);
 								}
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -687,7 +690,8 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
 
 	  var ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear; 
 	  new google.visualization.LineChart(chartResultDiv).
-	  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
+	  //draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
+	   draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 }
 
 function getParliamentResults(elecYear){
@@ -1253,6 +1257,44 @@ function showMandalVotesShareDetailsChart(myResults)
 
 			chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 		}
+}
+
+function showAllPartiesAllElectionResultsChart(myResults)
+{
+   var chartColumns = myResults[0].partiesList;
+  
+     var data = new google.visualization.DataTable();
+	 data.addColumn('string', 'Party');
+
+     //for chart columns
+	 for(var i in chartColumns)
+	 {
+	   var colData = chartColumns[i].name;
+	   data.addColumn('number', colData);
+	 }
+
+      //for chart rows
+	  for(var j in myResults)
+	  {
+		  var array = new Array();
+		  var year = myResults[j].electionYear+" "+myResults[j].electionType;
+		  array.push(year);
+
+		  for(var k in myResults[j].partyResultsVO)
+		  {
+			  var percentage = myResults[j].partyResultsVO[k].votesPercent;
+              array.push(percentage);
+		  }
+		 
+		  data.addRow(array);
+	  }
+
+	  var ctitle = 'All Parties Performance In Different Elections'; 
+	  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
+	  new google.visualization.LineChart(chartResultDiv).
+	  draw(data, {curveType: "function",width: 650, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+
+
 }
 
 function showGreaterInfo(myResults){
