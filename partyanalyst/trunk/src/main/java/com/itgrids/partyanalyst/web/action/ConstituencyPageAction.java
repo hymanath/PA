@@ -750,6 +750,24 @@ public class ConstituencyPageAction extends ActionSupport implements
    	
 	}
 	
+	public String getMandalsVotesShareInConstituencyAjax(){
+		
+		String param=null;		
+		param=request.getParameter("task");
+		log.debug("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long constiId = jObj.getLong("constituencyId");
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constiId);
+		
+		return Action.SUCCESS;
+	}
+	
 	private DefaultPieDataset createPieDatasetForVoters(List<VotersInfoForMandalVO> votersInfoForMandalVO) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		Long totalVotes = 0l;
