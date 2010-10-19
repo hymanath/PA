@@ -462,6 +462,7 @@ function buildCenterVotersCandidateInfoContent()
 		}
 			
 		str+='</div>';
+		str+='<div id="divInteractive_Chart_'+i+'"></div>';
 		str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
 		divChild.innerHTML=str;
 
@@ -1475,6 +1476,7 @@ function initializeConstituencyPage()
           openAddNewProblemWindow();
 		}
 	}
+	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
     buildRightlayoutMap();
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
@@ -1493,6 +1495,17 @@ function getMunicipalityResults()
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getLocalBodyConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getMandalVotesShareDetailsChart(constId)
+{
+    var jsObj = {
+			constituencyId:constId,
+			task:"mandalVotesShareDetailsChart"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getMandalsVotesShareInConstituencyAjaxAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
 
