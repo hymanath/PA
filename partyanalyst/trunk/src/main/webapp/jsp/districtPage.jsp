@@ -395,7 +395,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					}
 					if(jsObj.task == "getAllConnectedUsersByFilterView")
 					{
-						console.log(results);
 						showAllConnectedUsersInPanelByFilterView(jsObj,results);
 					}
 					
