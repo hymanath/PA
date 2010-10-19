@@ -31,6 +31,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private String totalVotes;
 	private String totalPolledVotes;
 	private String votingPercentage;
+	private Long votesPercentage;
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
 	private CandidateOppositionVO runnerUp;
@@ -186,6 +187,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setChartName(String chartName) {
 		this.chartName = chartName;
+	}
+	public Long getVotesPercentage() {
+		return votesPercentage;
+	}
+	public void setVotesPercentage(Long votesPercentage) {
+		this.votesPercentage = votesPercentage;
 	}
 	
 }
