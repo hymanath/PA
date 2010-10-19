@@ -39,6 +39,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private List<SelectOptionVO> allElectionYears;
 	private Boolean resultsFlag;
 	private String chartName;
+	private List<SelectOptionVO> partiesList;
 	
 	
 	//getters and setters
@@ -193,6 +194,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setVotesPercentage(Long votesPercentage) {
 		this.votesPercentage = votesPercentage;
+	}
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
 	}
 	
 }
