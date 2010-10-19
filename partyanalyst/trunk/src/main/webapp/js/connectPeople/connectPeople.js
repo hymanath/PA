@@ -72,7 +72,6 @@ function callAjax(param,jsObj,url){
 					}
 					if(jsObj.task == "blockRequest")
 					{
-						showStatus(results)
 						getAllRequestMessagesForUser();						
 					}
 			}catch (e) {   		
