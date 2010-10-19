@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -16,4 +17,6 @@ public interface ICustomMessageDAO extends GenericDao<CustomMessage, Long> {
 	public List<CustomMessage> checkForRelationBetweenUsersBasedOnType(List<Long> senderId,List<Long> recipeintId,String type);
 	
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType);
+	
+	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate);
 }

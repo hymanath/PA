@@ -283,6 +283,8 @@ public interface IConstants {
     public static final String DISCONNECTED = "DISCONNECTED";   
     public static final String FRIEND_REQUEST = "FRIEND REQUEST";
     public static final String COMMENTS = "COMMENTS";
+    public static final String BLOCK = "BLOCK";
+    public static final String UNBLOCK = "UNBLOCK";
     public static final String SCRAP = "SCRAP";
     public static final int MAX_LEVEL_OF_CONNECTION = 2;
     public static final String COMPLETE_DETAILS = "COMPLETE_DETAILS";

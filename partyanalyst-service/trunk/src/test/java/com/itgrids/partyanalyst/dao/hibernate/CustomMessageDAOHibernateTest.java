@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -21,36 +23,48 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		this.customMessageDAO = customMessageDAO;
 	}
 	
-	/*public void testUsersRelation(){	
-		List<Long> list = new ArrayList<Long>();
-		list.add(5l);
+	public void testUsersRelation(){	
+		
 		
 		List<Long> usersList = new ArrayList<Long>();
-		usersList.add(2l);
-		usersList.add(6l);
+		usersList.add(44l);
+		usersList.add(43l);	
+		usersList.add(42l);	
+		usersList.add(41l);	
+		usersList.add(40l);	
+		usersList.add(39l);	
 		usersList.add(26l);
-		usersList.add(28l);
-		
-		List<CustomMessage> detailsList = customMessageDAO.checkForRelationBetweenUsers(list,usersList);	
-		for(CustomMessage result : detailsList){
-			System.out.println(result.getCustomMessageId());
-		}		
-	}*/
-	
-	public void testUsersRelationBasedOnType(){	
+
 		List<Long> list = new ArrayList<Long>();
 		list.add(39l);
 		
-		List<Object> detailsList = customMessageDAO.getAllMessagesForUser(list,IConstants.PENDING);
+		List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(usersList,39l,IConstants.PENDING);	
+		for(int i=0;i<detailsList.size();i++){
+			Object[] parms = (Object[])detailsList.get(i);
+			System.out.println(parms[0]);
+		}	
+		
+	}
+	
+/*	public void testUsersRelationBasedOnType(){	
+		List<Long> list = new ArrayList<Long>();
+		list.add(39l);
+		List<Long> delist = new ArrayList<Long>();
+		delist.add(42l);
+		delist.add(44l);
 		try{
-			for(int i=0;i<detailsList.size();i++){
-				Object[] parms = (Object[])detailsList.get(i);
-				System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]);
-			}
+			java.util.Date updatedDate = new java.util.Date();
+			String DATE_FORMAT = IConstants.DATE_PATTERN;
+			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			String strDateNew = sdf.format(updatedDate) ;
+			updatedDate = sdf.parse(strDateNew);
+			int detailsList = customMessageDAO.updateRelationBetweenUsers(list,delist,3l,updatedDate);
+			System.out.println(detailsList);	
+			setComplete();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
 	}
+	*/
+	
 }

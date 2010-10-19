@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -19,20 +20,22 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId,String status){
 		StringBuilder query = new StringBuilder();		
-		query.append(" select model.recepientId.userId,model.messageType.messageType ");
-		query.append(" from CustomMessage model where ");
-		query.append(" model.senderId.userId = ? and ");		
+		query.append(" select model.senderId.userId,model.messageType.messageType ");
+		query.append(" from CustomMessage model ");
+		query.append(" where model.recepientId.userId = ? and");		
 		if(!status.equalsIgnoreCase(IConstants.ALL)){
-			query.append("model.messageType.messageType = ?");
+			query.append(" model.messageType.messageType = ? and");
 		}		
-		query.append(" model.recepientId.userId in (:userIds)");	
+		query.append(" model.senderId.userId in (:userIds)");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
+		
 		queryObject.setLong(0,logedUserId);
 		if(!status.equalsIgnoreCase(IConstants.ALL)){
 			queryObject.setString(1,status);
 		}
 		queryObject.setParameterList("userIds", userIds);
+	
 		return queryObject.list();
 	}
 	
@@ -87,4 +90,21 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public int updateRelationBetweenUsers(List<Long> senderId,List<Long> recipeintId,Long messageTypeId,Date currentDate){
+		StringBuilder query = new StringBuilder();				
+		query.append(" update CustomMessage model set model.messageType.messageTypeId = ? where ");
+		query.append(" (model.senderId.userId in (:senderId) and model.recepientId.userId in (:recipeintId) )");
+		query.append(" or ( model.recepientId.userId in (:senderId)  and model.senderId.userId in (:recipeintId) ) ");
+	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, messageTypeId);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		queryObject.setParameterList("senderId", senderId);
+		queryObject.setParameterList("recipeintId", recipeintId);
+		return queryObject.executeUpdate();
+	}
+	
 }

@@ -361,10 +361,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 						Long userId = new Long(parms[0].toString());					
 						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());						
 					}
-					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){	
-						if(!loginId.equals(data.getKey())){
+					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
+						if(status.equalsIgnoreCase(IConstants.ALL)){
 							candidateDetails.add(data.getValue());
-						}						
+						}else{
+							if(status.equalsIgnoreCase(data.getValue().getStatus())){
+								candidateDetails.add(data.getValue());
+							}
+						}
+																		
 					}
 				}
 				dataTransferVO.setCandidateVO(candidateDetails);
@@ -402,6 +407,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						Long messageTypeId=0l;
 						Long pendingId=0l;
 						Long disconectedId=0l;
+						Long blockId=0l;
 						for(MessageType type: messageTypeDAO.getAll()){
 							if(type.getMessageType().equalsIgnoreCase(messageType)){
 								messageTypeId =type.getMessageTypeId();							
@@ -411,6 +417,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 							}
 							if(type.getMessageType().equalsIgnoreCase(IConstants.DISCONNECTED)){
 								disconectedId =type.getMessageTypeId();							
+							}
+							if(type.getMessageType().equalsIgnoreCase(IConstants.BLOCK)){
+								blockId =type.getMessageTypeId();							
 							}
 						}
 						
@@ -423,6 +432,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessageDAO.save(customMessage);
 							}
+						}
+						
+						if(messageType.equalsIgnoreCase(IConstants.BLOCK)){	
+							int result = customMessageDAO.updateRelationBetweenUsers(senderId,recipeintId,blockId,dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));						
 						}
 						
 						else if(messageType.equalsIgnoreCase(IConstants.CONNECTED)){
@@ -852,10 +865,19 @@ public class AnanymousUserService implements IAnanymousUserService {
 		 List<SelectOptionVO> selList = new ArrayList<SelectOptionVO>(0);
 		try{
 			for(MessageType type: messageTypeDAO.getAll()){
-				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId(type.getMessageTypeId());
-				selectOptionVO.setName(type.getMessageType());
-				selList.add(selectOptionVO);
+				if(
+				   IConstants.CONNECTED.equalsIgnoreCase(type.getMessageType()) 	|| 
+				   
+				   IConstants.NOTCONNECTED.equalsIgnoreCase(type.getMessageType()) 	||
+				   
+				   IConstants.PENDING.equalsIgnoreCase(type.getMessageType())){
+					
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(type.getMessageTypeId());
+					selectOptionVO.setName(type.getMessageType());
+					selList.add(selectOptionVO);
+				}
+				
 			}
 			navigationVO.setMessageTypes(selList);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

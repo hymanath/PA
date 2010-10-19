@@ -22,9 +22,30 @@ public class DataTransferVO extends ResultStatus{
 	private ResultStatus resultStatusForScraps;
 	private ResultStatus resultStatusForComments;
 	private ResultStatus resultStatusForFriendRequest;
+	private ResultStatus resultStatusForBlockRequest;
+	private ResultStatus resultStatusForUnBlockRequest;
 	private String loginStatus;
 	private Long userId; 
 	
+	
+	public ResultStatus getResultStatusForBlockRequest() {
+		return resultStatusForBlockRequest;
+	}
+
+	public void setResultStatusForBlockRequest(
+			ResultStatus resultStatusForBlockRequest) {
+		this.resultStatusForBlockRequest = resultStatusForBlockRequest;
+	}
+
+	public ResultStatus getResultStatusForUnBlockRequest() {
+		return resultStatusForUnBlockRequest;
+	}
+
+	public void setResultStatusForUnBlockRequest(
+			ResultStatus resultStatusForUnBlockRequest) {
+		this.resultStatusForUnBlockRequest = resultStatusForUnBlockRequest;
+	}
+
 	public List<CandidateVO> getFriendRequest() {
 		return friendRequest;
 	}
