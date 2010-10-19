@@ -12,6 +12,7 @@ var districtMlas = new Array();
 var districtMps = new Array();
 var problemsInfo = new Array();
 var connectedPeople = new Array();
+var connectStatus = new Array();
 var userLoginStatus = '';
 var userId = '';
 function buildDistrictPageLayout()
@@ -264,7 +265,7 @@ function showAllConnectPeopleWindow()
 	str += '<div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div>';
 	
 	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
-				 width:'450px',
+				 width:'500px',
                  fixedcenter : true, 
                  visible : true,
                  constraintoviewport : true, 
@@ -296,6 +297,43 @@ function getAllConnectedUserInDistrict()
 	callAjax(rparam,jsObj,url);
 }
 
+function showsearchFilter()
+{
+	 $("#filterViewContent").slideToggle("slow");
+}
+
+function getAllConnectedUsersByFilterView()
+{
+	var connectConstiSelectElmt = document.getElementById("connectConstituencySelect");
+	var connectConstiSelectElmtValue = connectConstiSelectElmt.options[connectConstiSelectElmt.selectedIndex].value;
+	var connectConstiArray = new Array();
+
+	var connectStatusSelectElmt = document.getElementById("connectStatusSelect");
+	var connectStatusSelectElmtValue = connectStatusSelectElmt.options[connectStatusSelectElmt.selectedIndex].value;
+	var connectStatusSelectElmtText  = connectStatusSelectElmt.options[connectStatusSelectElmt.selectedIndex].text;
+	
+	if(connectConstiSelectElmtValue == 0)
+	{
+		for(var consti=0; consti<constituencies.length;consti++)
+			connectConstiArray.push(constituencies[consti].id);		
+	}
+	else
+		connectConstiArray.push(connectConstiSelectElmtValue);
+
+	var jsObj ={
+				districtId:districtId,
+				districtName:districtName,				
+				userId:userId,
+				constituencyIds:connectConstiArray,				
+				statusText:connectStatusSelectElmtText,
+				task:"getAllConnectedUsersByFilterView"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
+
 function showAllConnectedUsersInPanel(jsObj,results)
 {	
 	var str = '';	
@@ -306,27 +344,47 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !=0)
 	{
 		str	+= '<div> Data Not Found Due To Some Exeption</div>';
-		connectPopupPanel.setBody(str);
+		elmt.innerHTML = str;
 		return
 	}
 	else if(users.length == 0)
 	{
 		str	+= '<div> No People Connected In this District</div>';
-		connectPopupPanel.setBody(str);
+		elmt.innerHTML = str;
 		return
 	}
 
 	str	+= '<div id="allConnectPeople_Head">';
-	str += '<div>Total People Connected to '+districtName+' district - '+users.length+'</div>';
-	str += '<div>';
-	str += '<table>';
+	str += '<div class="allConnectPeople_Head_content">';
+	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<th>View People By :</th>';
-	str += '<th>Constituency</th>';
-	str += '<th><select>';
-	str += '<option>All</option>';
+	str += '<td align="left">Total People Connected to '+districtName+' district - '+users.length+'</td>';
+	str += '<td align="right">';
+	str += '<table border="0" cellpadding="0" cellspacing="0">';
+	str += '<tr>';
+	str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
+	str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showsearchFilter()">Filter View</span></div></td>';
+	str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '<div class="allConnectPeople_Head_content" style="display:none;" id="filterViewContent">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th>By Constituency:</th>';
+	str += '<th><select id="connectConstituencySelect" onchange="getAllConnectedUsersByFilterView()">';
+	str += '<option value="0">All</option>';
 	for(var consti=0; consti<constituencies.length;consti++)
-		str += '<option>'+constituencies[consti]+'</option>';
+		str += '<option value="'+constituencies[consti].id+'">'+constituencies[consti].name+'</option>';
+	str += '</select></th>';
+	str += '<th>By Status:</th>';
+	str += '<th><select id="connectStatusSelect" onchange="getAllConnectedUsersByFilterView()">';
+	str += '<option value="0">All</option>';
+	for(var status=0; status<connectStatus.length;status++)
+		str += '<option value="'+connectStatus[status].id+'">'+connectStatus[status].name+'</option>';
 	str += '</select></th>';
 	str += '<tr>';
 	str += '</table>';
@@ -334,6 +392,27 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str += '</div>';	
 	str += '</div>';
 	str	+= '<div id="allConnectPeople_body">';	
+	str += buildAllConnectUserString(users);
+	str	+= '</div>';
+	str	+= '<div id="allConnectPeople_footer">';
+	str	+= '<table width="100%">';
+	str	+= '<tr>';
+	str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
+	str	+= '<td width="60%" align="left"><textarea id="AllConnectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></td>';
+	str	+= '<td width="10%" align="center"><div id="allConnectPeopleButtonDiv"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></div></td>';
+	str	+= '</tr>';
+	str += '<tr>';
+	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';
+	str += '</tr>';
+	str	+= '</table>';
+	str	+= '</div>';
+	
+	elmt.innerHTML = str;
+}
+
+function buildAllConnectUserString(users)
+{
+	var str = '';
 	for(var i=0; i<users.length; i++)
 	{
 		str += '<div class="allConnectPeopleDataDiv_main">';
@@ -359,21 +438,34 @@ function showAllConnectedUsersInPanel(jsObj,results)
 		str += '</table>';
 		str += '</div>';
 	}	
-	str	+= '</div>';
-	str	+= '<div id="allConnectPeople_footer">';
-	str	+= '<table width="100%">';
-	str	+= '<tr>';
-	str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
-	str	+= '<td width="60%" align="left"><textarea id="AllConnectUserMsg" onkeyup="limitText(\'connectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></td>';
-	str	+= '<td width="10%" align="center"><div id="allConnectPeopleButtonDiv"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></div></td>';
-	str	+= '</tr>';
-	str += '<tr>';
-	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';
-	str += '</tr>';
-	str	+= '</table>';
-	str	+= '</div>';
-	
-	elmt.innerHTML = str;
+
+	return str;
+}
+
+function showAllConnectedUsersInPanelByFilterView(jsObj,results)
+{
+	var str = '';	
+	var elmt = document.getElementById("allConnectPeople_body");
+	var elmtFooter = document.getElementById("allConnectPeople_footer");
+
+	var users = results.candidateVO;
+
+	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !=0)
+	{
+		str	+= '<div> Data Not Found Due To Some Exeption</div>';
+		elmt.innerHTML = str;
+		return
+	}
+	else if(users.length == 0)
+	{
+		str	+= '<div> No people connected in this district with this view..</div>';
+		elmt.innerHTML = str;
+		return
+	}
+	else
+	{
+		str += buildAllConnectUserString(users);	
+	}
 }
 
 function connectUserSetPeople()
@@ -464,7 +556,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency)
 	str	+= '</div>';
 	
 	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
-				 width:'450px',
+				 width:'500px',
                  fixedcenter : true, 
                  visible : true,
                  constraintoviewport : true, 

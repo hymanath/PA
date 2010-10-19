@@ -464,7 +464,7 @@
 #allConnectPeople_body
 {
 	border-bottom:1px solid #ADADAD;
-	height:320px;
+	height:300px;
 	overflow:auto;	
 }
 
@@ -478,4 +478,28 @@
 	color:#584D47;
 	font-size:12px;
 	padding:5px;
+}
+
+.allConnectPeople_Head_content
+{
+	background-color:#E3EDF0;
+	border-bottom:1px solid #99B0B9;
+	padding:1px 3px;
+	font-size:11px;
+}
+
+.allConnectPeople_Head_botton_center_div
+{	
+	background-image:url("../../images/icons/cadreReport/bg_center.png");
+	height:20px;
+}
+
+.allConnectPeople_Head_botton_center_span
+{
+	color:#FFFFFF;
+	font-size:11px;
+	padding:0 5px;
+	position:relative;
+	top:3px;
+	cursor:pointer;
 }

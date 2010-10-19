@@ -45,7 +45,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
 	<!-- YUI Skin Sam -->
-
+	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -58,6 +58,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End)-->
+
+	<!-- jQuery dependency file start-->
+		<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
+	<!-- jQuery dependency file end-->
+
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
@@ -385,6 +390,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "connectUserSet")
 					{
 						showAllConnectedUsersStatus(jsObj,results);
+					}
+					if(jsObj.task == "getAllConnectedUsersByFilterView")
+					{
+						showAllConnectedUsersInPanelByFilterView(jsObj,results);
 					}
 					
 			}catch (e) {   		
@@ -1701,8 +1710,20 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 	connectedPeople.push(userObj);
 </c:forEach>
 
-<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
-	constituencies.push('${candidate.constituencyName}');
+<c:forEach var="constituency" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
+	var obj =	{
+					id:'${constituency.constituencyId}',
+					name:'${constituency.constituencyName}'
+				};
+	constituencies.push(obj);
+</c:forEach>
+
+<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
+	var obj =	{
+					id:'${status.id}',
+					name:'${status.name}'
+				};
+	connectStatus.push(obj);
 </c:forEach>
 
 userLoginStatus = '${userDetails.loginStatus}';

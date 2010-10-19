@@ -287,4 +287,57 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String getAllConnectedUsersByFilterView() throws Exception
+	{
+		HttpSession session = request.getSession();		
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+   		
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Long districtId = new Long(jObj.getString("districtId"));
+		String districtName = jObj.getString("districtName");		
+		Long userId = new Long(jObj.getString("userId"));	
+		String statusText = jObj.getString("statusText");
+		
+		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		
+		List<Long> listOfConstituencies = new ArrayList<Long>();
+		
+		for(int i=0; i<constituencyIds.length();i++)
+			listOfConstituencies.add(new Long(constituencyIds.getString(i)));
+		
+		
+		
+		String status = null;
+		if(statusText.equalsIgnoreCase(IConstants.ALL))
+			status = IConstants.ALL;
+		else if(statusText.equalsIgnoreCase(IConstants.CONNECTED))
+			status = IConstants.CONNECTED;
+		else if(statusText.equalsIgnoreCase(IConstants.DISCONNECTED))
+			status = IConstants.DISCONNECTED;
+		else if(statusText.equalsIgnoreCase(IConstants.PENDING))
+			status = IConstants.PENDING;
+		else if(statusText.equalsIgnoreCase(IConstants.FRIEND_REQUEST))
+			status = IConstants.FRIEND_REQUEST;
+		else if(statusText.equalsIgnoreCase(IConstants.COMMENTS))
+			status = IConstants.COMMENTS;
+		else if(statusText.equalsIgnoreCase(IConstants.SCRAP))
+			status = IConstants.SCRAP;
+		
+		
+		if(user==null){
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.ALL_CONNECTED_USER_DISPLAY,0l,status);	
+   		}else{
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.ALL_CONNECTED_USER_DISPLAY,user.getRegistrationID(),status);
+   		}
+   		
+		return Action.SUCCESS;
+	}
+	
 }
