@@ -1477,6 +1477,7 @@ function initializeConstituencyPage()
 		}
 	}
 	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
     buildRightlayoutMap();
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
@@ -1506,6 +1507,17 @@ function getMandalVotesShareDetailsChart(constId)
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getMandalsVotesShareInConstituencyAjaxAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getAllPartiesAllElectionResultsChart(constId)
+{
+    var jsObj = {
+			constituencyId:constId,
+			task:"partiesPerformanceInDiffElectionsAjax"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getPartiesPerformanceInDiffElectionsAjax.action?"+rparam;
 	callAjax(jsObj, url);
 }
 
