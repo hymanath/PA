@@ -63,6 +63,7 @@
 
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
@@ -113,6 +114,7 @@
 	};
 	var constituencyId = ${constituencyId};
 	var constituencyTYPE;
+	google.load("visualization", "1", {packages:["corechart"]});
 	function callAjax(jsObj,url)
 	{					
  		var callback = {			
@@ -167,6 +169,9 @@
 								}else if(jsObj.task == "greaterElectionsInfo")
 								{									
 									showGreaterInfo(myResults);			
+								}else if(jsObj.task == "mandalVotesShareDetailsChart")
+								{
+									showMandalVotesShareDetailsChart(myResults);
 								}
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -265,7 +270,7 @@
 			return;	
 		}
 		
-		str += '<div><img src="charts/'+parliamentResult.chartPath+'"></div>';
+		str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
 		detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
 		str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
 		str += '<table id = "parliamentElecResTable">';
@@ -329,7 +334,11 @@
 		        
 		var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColumnDefs, myDataSource);
 		
-		
+		var conName = parliamentResult.constituencyName;
+		var elecYear = parliamentResult.electionYear;
+		var elecTyp = parliamentResult.electionType;
+		var parlDivElmnt = document.getElementById("parliamentChartDiv");
+		getInteractiveChart(parlDivElmnt, parliamentResult.constituencyOrMandalWiseElectionVO,parliamentResult.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
 	}
 	
 function showNextPreviousCandidateVotingTrendz(index,type)
@@ -498,6 +507,8 @@ function buildConstituencyElecResultsDataTable(value){
 		str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';
 		str += "</tr></table>";
 		parliamentButtonDiv.innerHTML = str;		
+
+		
 	}
 	if(constituencyResults.electionType != 'Assembly'){		
 		var details = document.getElementById("detailsDiv");
@@ -517,6 +528,11 @@ function buildConstituencyElecResultsDataTable(value){
 	var chart = '';
 	chart += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
 	chartResultDiv.innerHTML = chart;
+
+    var conName = constituencyResults.constituencyName;
+	var elecYear = constituencyResults.electionYear;
+	var elecTyp = constituencyResults.electionType;
+    getInteractiveChart(chartResultDiv,constituencyResults.constituencyOrMandalWiseElectionVO,constituencyResults.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
 	
 	var resultDiv = document.getElementById("resultsDataTableDiv");	
 	var str = '';
@@ -636,6 +652,42 @@ function buildConstituencyElecResultsDataTable(value){
 	{
           imgElmt.style.display = "none";
 	}
+}
+
+function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,constiType,constiName,electionYear)
+{
+	
+    var chartColumns = partiesList;
+	var chartRows = constituencyResults;
+
+	 var data = new google.visualization.DataTable();
+	 data.addColumn('string', 'Party');
+
+     //for chart columns
+	 for(var i in chartColumns)
+	 {
+	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
+	   data.addColumn('number', colData);
+	 }
+
+      //for chart rows
+	  for(var j in constituencyResults)
+	  {
+		  var array = new Array();
+		  array.push(constituencyResults[j].locationName);
+
+		  for(var k in chartRows[j].partyElectionResultVOs)
+		  {
+			  var percentage = chartRows[j].partyElectionResultVOs[k].votesPercent;
+              array.push(percentage);
+		  }
+		 
+		  data.addRow(array);
+	  }
+
+	  var ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear; 
+	  new google.visualization.LineChart(chartResultDiv).
+	  draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
 }
 
 function getParliamentResults(elecYear){
@@ -796,7 +848,8 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 						<div class="corner bottomRight"></div>
 
 						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
-							<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
+						<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
+							<!--
 							<table width="100%" border="1" cellspacing="3">
 								<tr>
 									<c:forEach var="chart" items="${constituencyVO.pieChartNames}">
@@ -809,9 +862,10 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 									</c:forEach>
 								</tr>
 							</table>
-							<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
+							
+						</div>-->
+						<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
-					</div>
 				
 				</div>
 			</td>
@@ -1163,6 +1217,42 @@ function showMunicipalInfo(myResults){
 		showDiv.style.display = "none";
 	}
 	buildCorpOrMunicipTable(HeadElmt, myResults, "Municipality");
+}
+
+function showMandalVotesShareDetailsChart(myResults)
+{
+	var mandalwiseVotersShare = myResults.assembliesOfParliamentInfo;
+		
+		for(var c in mandalwiseVotersShare){
+
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Mandals');
+			data.addColumn('number', 'Voters % Share');
+
+
+			data.addRows(mandalwiseVotersShare[c].votersInfoForMandalVO.length);
+			var k=0;
+			for (var i in mandalwiseVotersShare[c].votersInfoForMandalVO)
+			{
+			data.setValue(k, 0, mandalwiseVotersShare[c].votersInfoForMandalVO[i].mandalName);
+			data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totVoters);
+			k++;
+			}
+			
+			var ctitle;
+			var chartDiv;
+			if(c == 0){
+			chartDiv = document.getElementById('divInteractive_Chart_0');
+			ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+			}
+			else if(c == 1){
+			chartDiv = document.getElementById('divInteractive_Chart_1');
+			ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+			}
+			var chart = new google.visualization.PieChart(chartDiv);
+
+			chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
+		}
 }
 
 function showGreaterInfo(myResults){
