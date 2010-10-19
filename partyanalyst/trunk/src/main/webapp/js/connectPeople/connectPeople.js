@@ -53,7 +53,7 @@ function callAjax(param,jsObj,url){
 				"",					
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getAllRequestMessagesForUser")
-					{						
+					{													
 						if(results.friendRequest!=null){
 							showAllRequestMessagesForUser(results);
 						}else{
@@ -67,7 +67,7 @@ function callAjax(param,jsObj,url){
 					}
 					if(jsObj.task == "rejectRequest")
 					{
-						showStatus(results)
+						showStatus(results);
 						getAllRequestMessagesForUser();						
 					}
 					if(jsObj.task == "blockRequest")

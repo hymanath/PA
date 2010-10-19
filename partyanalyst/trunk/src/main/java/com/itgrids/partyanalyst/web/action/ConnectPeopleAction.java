@@ -28,7 +28,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	 */
 	private static final long serialVersionUID = -5360785727347677445L;
 
-	private static final Logger log = Logger.getLogger(ProblemPostControlAction.class);
+	private static final Logger log = Logger.getLogger(ConnectPeopleAction.class);
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -171,7 +171,10 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		{
 			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.REJECTED,"");
 		}
-		
+		if(jObj.getString("task").equalsIgnoreCase("blockRequest"))
+		{
+			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.BLOCK,"");
+		}
 		return Action.SUCCESS;
 	}
 	
