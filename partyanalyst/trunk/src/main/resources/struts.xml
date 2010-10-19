@@ -1575,6 +1575,18 @@
 			<result type="json" name="success">
 				<param name="root">userDetails</param>				
 			</result>		
-		</action>        
+		</action>  
+		
+		<action name="updateUserStatusAction" class="connectPeopleAction" method="updateUserStatus">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllConnectedUsersByFilterViewAction" class="connectPeopleAction" method="getAllConnectedUsersByFilterView">
+			<result type="json" name="success">
+				<param name="root">userDetails</param>				
+			</result>		
+		</action>      
 	</package>
 </struts>
