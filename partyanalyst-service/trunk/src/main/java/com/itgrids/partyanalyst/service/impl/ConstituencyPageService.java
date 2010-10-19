@@ -59,6 +59,7 @@ import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
@@ -282,6 +283,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId);
 		List<ConstituencyElectionResultsVO> constituencyElectionResultList = new ArrayList<ConstituencyElectionResultsVO>(0);
 		ConstituencyElectionResultsVO constElecResultVO = null;
+		Map<Long,SelectOptionVO> partiesList = new HashMap<Long,SelectOptionVO>();
 		Election election = null;
 		
 		 if(constituencyElectionResults != null){
@@ -296,12 +298,21 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				 constElecResultVO.setElectionYear(election.getElectionYear());
 				 List<Nomination> nominationsList = new ArrayList<Nomination>(result.getConstituencyElection().getNominations());
 				 CandidateWonVO candidateWon = getCandidateWon(nominationsList);
+				 if(partiesList.isEmpty() || !partiesList.containsKey(candidateWon.getPartyId())){
+					 if(!candidateWon.getPartyShortName().equalsIgnoreCase("IND"))
+					 partiesList.put(candidateWon.getPartyId(), new SelectOptionVO(candidateWon.getPartyId(),candidateWon.getPartyShortName()));
+				 }
 				 
 				  for(Nomination nomination:nominationsList){
 				    CandidateOppositionVO candidateOpposition = getCandidatesOpposition(nominationsList,rank);
 				    rank++;
-				    if(candidateOpposition!=null)
+				    if(candidateOpposition!=null){
 				    	candidateOppositionList.add(candidateOpposition);
+				    	if(partiesList.isEmpty() || !partiesList.containsKey(candidateOpposition.getPartyId())){
+				    		 if(!candidateOpposition.getPartyShortName().equalsIgnoreCase("IND"))
+				    		 partiesList.put(candidateOpposition.getPartyId(), new SelectOptionVO(candidateOpposition.getPartyId(),candidateOpposition.getPartyShortName()));
+				    	}
+				    }
 				  }
 				  constElecResultVO.setCandidateResultsVO(candidateWon);
 				  constElecResultVO.setCandidateOppositionList(candidateOppositionList);
@@ -309,9 +320,73 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				 constituencyElectionResultList.add(constElecResultVO);
 			 }
 			 Collections.sort(constituencyElectionResultList,new ElectionDetailsVOComparator());
+			 getPartyResultsOverviewForChart(partiesList,constituencyElectionResultList);
+			 if(!partiesList.isEmpty()){
+				 List<SelectOptionVO> partysListVO = new ArrayList<SelectOptionVO>();
+				 Set<Long> partyIds = partiesList.keySet();
+				 for(Long partyId:partyIds){
+					 SelectOptionVO optionVO = partiesList.get(partyId);
+					 partysListVO.add(optionVO);
+				 }
+				 constituencyElectionResultList.get(0).setPartiesList(partysListVO);
+			 }
+			 
+			 
 		 return constituencyElectionResultList;
 		 }
 	return null;	
+	}
+	
+	
+	public void getPartyResultsOverviewForChart(Map<Long,SelectOptionVO> partiesList,List<ConstituencyElectionResultsVO> constituencyElectionResultList){
+		
+		log.debug("Inside getPartyResultsOverviewForChart Method ....");
+		
+		if(partiesList != null && !partiesList.isEmpty() && constituencyElectionResultList != null){
+			
+			Set<Long> mapKeys = partiesList.keySet();
+			for(ConstituencyElectionResultsVO resultVO:constituencyElectionResultList){
+				List<PartyResultsVO> partyResultsVO = new ArrayList<PartyResultsVO>();
+				
+				for(Long partyIds:mapKeys){
+					Boolean flag = false;
+					if(resultVO.getCandidateResultsVO() != null){
+						if(resultVO.getCandidateResultsVO().getPartyId().equals(partyIds)){
+							flag = true;
+							PartyResultsVO partyRes = new PartyResultsVO();
+							partyRes.setPartyId(partyIds);
+							partyRes.setPartyName(resultVO.getCandidateResultsVO().getPartyShortName());
+							partyRes.setPercentage(resultVO.getCandidateResultsVO().getVotesPercentage());
+							partyRes.setVotesPercent(new BigDecimal(resultVO.getCandidateResultsVO().getVotesPercentage()));
+							partyResultsVO.add(partyRes);
+						}
+					}
+					if(flag == false){
+						for(CandidateOppositionVO oppCand:resultVO.getCandidateOppositionList()){
+							if(oppCand.getPartyId().equals(partyIds)){
+								flag = true;
+								PartyResultsVO partyRes = new PartyResultsVO();
+								partyRes.setPartyId(partyIds);
+								partyRes.setPartyName(oppCand.getPartyShortName());
+								partyRes.setPercentage(oppCand.getVotesPercentage());
+								partyRes.setVotesPercent(new BigDecimal(oppCand.getVotesPercentage()));
+								partyResultsVO.add(partyRes);
+							}
+						}
+					}
+					if(flag == false){
+						PartyResultsVO partyRes = new PartyResultsVO();
+						partyRes.setPartyId(partyIds);
+						SelectOptionVO partyMapValue = partiesList.get(partyIds);
+						partyRes.setPartyName(partyMapValue.getName());
+						partyRes.setPercentage("0");
+						partyRes.setVotesPercent(new BigDecimal(0));
+						partyResultsVO.add(partyRes);
+					}
+				}
+				resultVO.setPartyResultsVO(partyResultsVO);
+			}
+		}
 	}
 	
 	public CandidateWonVO getCandidateWon(List<Nomination> nominationsList){
