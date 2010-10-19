@@ -1,27 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
-import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
-import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
-import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
-import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
-import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.CandidateBoothResult;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -374,5 +357,23 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
 		 
 	}*/
+	
+	/*public void testGetBoothwisePartyResultsOfNominationInMandalWithInConstituency(){
+		List list = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInMandalWithInConstituency(16261l, 232l, 835l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
+	}*/
+	
+	/*public void testGetBoothwisePartyResultsOfNominationInLocalBodyWithInConstituency(){
+		List list = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInLocalBodyWithInConstituency(16261l, 232l, 835l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
+	}*/
+	
+	public void testGetBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(){
+		List list = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(16261l, 232l, 835l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
+	}
 	
 }

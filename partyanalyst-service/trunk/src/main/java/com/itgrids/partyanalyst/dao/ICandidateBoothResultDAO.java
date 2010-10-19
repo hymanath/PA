@@ -130,4 +130,13 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBodyWard(Long constituencyId, String electionYear, String electionType,
 			String localBodyType);
 	
+	public List getBoothwisePartyResultsOfNominationInMandalWithInConstituency(Long nominationId, 
+			Long assemblyId, Long tehsilId);
+	
+	public List getBoothwisePartyResultsOfNominationInLocalBodyWithInConstituency(Long nominationId, 
+			Long assemblyId, Long localBodyId);
+	
+	public List getBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(Long nominationId, 
+			Long assemblyId, Long localBodyWardId);
+	
 }

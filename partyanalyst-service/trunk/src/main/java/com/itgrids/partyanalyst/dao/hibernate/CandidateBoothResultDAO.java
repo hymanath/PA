@@ -12,6 +12,39 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothResult, Long> implements ICandidateBoothResultDAO{
 
+	public List getBoothwisePartyResultsOfNominationInMandalWithInConstituency(Long nominationId, 
+			Long assemblyId, Long tehsilId){
+		Object[] params = {nominationId, assemblyId, tehsilId};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, " +
+				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes, model.votesEarned " +
+				"from CandidateBoothResult model where model.nomination.nominationId = ? and " +
+				"model.boothConstituencyElection.booth.constituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.boothConstituencyElection.booth.localBody is null", params);
+	}
+	
+	public List getBoothwisePartyResultsOfNominationInLocalBodyWithInConstituency(Long nominationId, 
+			Long assemblyId, Long localBodyId){
+		Object[] params = {nominationId, assemblyId, localBodyId};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, " +
+				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes, model.votesEarned " +
+				"from CandidateBoothResult model where model.nomination.nominationId = ? and " +
+				"model.boothConstituencyElection.booth.constituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.booth.localBody.localElectionBodyId = ?", params);
+	}
+	
+	public List getBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(Long nominationId, 
+			Long assemblyId, Long localBodyWardId){
+		Object[] params = {nominationId, assemblyId, localBodyWardId};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, " +
+				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes, model.votesEarned " +
+				"from CandidateBoothResult model where model.nomination.nominationId = ? and " +
+				"model.boothConstituencyElection.booth.constituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.booth.boothLocalBodyWard.localBodyWard.constituencyId = ?", params);
+	}
+	
 	public CandidateBoothResultDAO(){
 		super(CandidateBoothResult.class);
 	}
@@ -600,7 +633,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.boothConstituencyElection.villageBoothElection.township.townshipName, " +
 				"model.boothConstituencyElection.constituencyElection.election.electionId", params);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List getPartyResultsInAMandalForAnElection(Long tehsilId,
 			Long constituencyId, Long partyId, String electionYear) {

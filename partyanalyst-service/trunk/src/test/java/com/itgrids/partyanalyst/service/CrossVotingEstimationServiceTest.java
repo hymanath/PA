@@ -63,14 +63,7 @@ public class CrossVotingEstimationServiceTest{
 		}		
 		EasyMock.verify(delimitationConstituencyAssemblyDetailsDAO);
 	}
-	
-	
-	@Test
-	public void checkPecentages(){
-		String value = crossVotingEstimationService.calculateVotesPercengate(new Long(4000), new Long(5000));
-		Assert.assertEquals(value, "0.0");
-	}
-	
+		
 	@Test
 	public void checkPercentageImpactOnConstituency(){
 		EasyMock.expect(delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(new Long(408), new Long(2004))).andReturn(MockData.getConstituencies());

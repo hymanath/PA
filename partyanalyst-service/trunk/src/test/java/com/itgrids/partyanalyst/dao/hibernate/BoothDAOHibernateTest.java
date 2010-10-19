@@ -8,6 +8,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -47,14 +48,14 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testUpdateLocalBodyInfoByBoothIdsAndWardId(){
+	/*public void testUpdateLocalBodyInfoByBoothIdsAndWardId(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(9000l);
 		boothIds.add(9001l);
 		int i = boothDAO.updateLocalBodyInfoByBoothIdsAndWardId(7700l, boothIds);
 		setComplete();
 		System.out.println(i);
-	}
+	}*/
 	
 	/*public void testGetBoothsByIds(){
 		List<Long> boothIds = new ArrayList<Long>();
@@ -105,4 +106,22 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		List list = boothDAO.findbyConstituencyNameDistrictIdAndElectionYear("Kavali", 19l, 2009l);
 	}*/
 
+	/*public void testFindTehsilsByElectionAndConstituency(){
+		List list = boothDAO.findTehsilsByElectionAndConstituency("2009", 315l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]);
+	}*/
+	
+	/*public void testFindLocalBodiesByElectionAndConstituency(){
+		List list = boothDAO.findLocalBodiesByElectionAndConstituency("2009", 232l, "'"+IConstants.MUNCIPLE_ELECTION_TYPE+"'");
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
+	}*/
+	
+	public void testFindLocalBodyWardsByElectionAndConstituency(){
+		List list = boothDAO.findLocalBodyWardsByElectionAndConstituency("2009", 315l, "'"+IConstants.GREATER_ELECTION_TYPE+"'");
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
+	}
+	
 }

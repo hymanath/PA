@@ -49,12 +49,26 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("from Booth model where model.tehsil.tehsilName = ? and model.partNo = ?", params);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Tehsil> findTehsilsByElectionAndConstituency(String electionYear,Long constituencyId){
-		Object[] params = {constituencyId, electionYear};
-		return getHibernateTemplate().find("select distinct model.tehsil from Booth model where model.boothId in(select model1.booth.boothId from " +
-				"BoothConstituencyElection model1 where model1.constituencyElection.constituency.constituencyId = ? " +
-				"and model1.constituencyElection.election.electionYear=?)",params);
+	//Tehsil, Local Body and Local Body Ward Info Of an Assembly Constituency...
+	public List findTehsilsByElectionAndConstituency(String electionYear,Long constituencyId){
+		Object[] params = {constituencyId, Long.parseLong(electionYear)};
+		return getHibernateTemplate().find("select distinct model.tehsil.tehsilId, model.tehsil.tehsilName from Booth model " +
+				"where model.constituency.constituencyId = ? and model.year= ? and model.localBody is null",params);
+	}
+	
+	public List findLocalBodiesByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes){
+		Object[] params = {constituencyId, Long.parseLong(electionYear)};
+		return getHibernateTemplate().find("select distinct model.localBody.localElectionBodyId, model.localBody.name, " +
+				"model.localBody.electionType.electionType from Booth model where model.constituency.constituencyId = ? " +
+				"and model.year= ? and model.localBody.electionType.electionType in ("+localBodyTypes+") and model.localBody is not null",params);
+	}
+	
+	public List findLocalBodyWardsByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes){
+		Object[] params = {constituencyId, Long.parseLong(electionYear)};
+		return getHibernateTemplate().find("select distinct model.boothLocalBodyWard.localBodyWard.constituencyId, " +
+				"model.boothLocalBodyWard.localBodyWard.localElectionBody.name, model.boothLocalBodyWard.localBodyWard.name from Booth model " +
+				"where model.constituency.constituencyId = ? and model.year= ? and " +
+				"model.localBody.electionType.electionType in ("+localBodyTypes+") and model.localBody is not null",params);
 	}
 
 	public List findByConstituencyAndElectionYear(Long constituencyId,	Long year) {

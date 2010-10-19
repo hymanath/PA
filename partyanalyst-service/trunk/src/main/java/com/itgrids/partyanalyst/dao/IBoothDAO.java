@@ -22,7 +22,11 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Booth> findByTehsilAndPartNo(String tehsilName, String partNo);
 
-	public List<Tehsil> findTehsilsByElectionAndConstituency(String electionYear,Long constituencyId);
+	public List findTehsilsByElectionAndConstituency(String electionYear,Long constituencyId);
+	
+	public List findLocalBodiesByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes);
+	
+	public List findLocalBodyWardsByElectionAndConstituency(String electionYear,Long constituencyId, String localBodyTypes);
 
 	public List findByConstituencyAndElectionYear(Long constituencyId, Long year);
 	
