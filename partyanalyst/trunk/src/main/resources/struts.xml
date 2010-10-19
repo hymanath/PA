@@ -951,6 +951,13 @@
            		<param name="root">constituencyRevenueVillagesVO</param>
         	</result>		
         </action>
+        
+        <action name="getMandalsVotesShareInConstituencyAjaxAction" class="constituencyPageAction" method="getMandalsVotesShareInConstituencyAjax">
+              <result type="json" name="success">
+           		<param name="root">constituencyVO</param>
+        	</result>		
+        </action>
+        
         <action name="districtwiseElectionResultsAnalysysForElectionReportAction" class="districtwiseElectionResultsAnalysysForElectionReportAction">
 			<result name="success">/jsp/districtwiseElectionResultsComparision.jsp</result>		
 		</action>
@@ -1568,18 +1575,6 @@
 			<result type="json" name="success">
 				<param name="root">userDetails</param>				
 			</result>		
-		</action>
-		
-		<action name="updateUserStatusAction" class="connectPeopleAction" method="updateUserStatus">
-			<result type="json" name="success">
-				<param name="root">resultStatus</param>				
-			</result>		
-		</action>
-		
-		<action name="getAllConnectedUsersByFilterViewAction" class="connectPeopleAction" method="getAllConnectedUsersByFilterView">
-			<result type="json" name="success">
-				<param name="root">userDetails</param>				
-			</result>		
-		</action>
+		</action>        
 	</package>
 </struts>
