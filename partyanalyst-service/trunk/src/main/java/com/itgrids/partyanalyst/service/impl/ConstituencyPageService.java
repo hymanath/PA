@@ -854,6 +854,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				votersInfo.setTotalMaleVoters(vObj[2].toString());
 				votersInfo.setTotalFemaleVoters(vObj[3].toString());
 				votersInfo.setTotalVoters(vObj[4].toString());
+				votersInfo.setTotVoters(new BigDecimal(vObj[4].toString()));
 				
 				Object[] obj = (Object[]) mandalsList.get(j);
 				
@@ -1731,6 +1732,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				votersInfoForAcVO.setTotalMaleVoters(values[2].toString());
 				votersInfoForAcVO.setTotalFemaleVoters(values[3].toString());
 				votersInfoForAcVO.setTotalVoters(values[4].toString());
+				votersInfoForAcVO.setTotVoters(new BigDecimal(values[4].toString()));
 				votersInfoForAcVOs.add(votersInfoForAcVO);
 			}
 			votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoForAcVOs);
