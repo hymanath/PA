@@ -1034,6 +1034,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyRevenueVillagesVO.setConstituencyName(constituency.getName());
 				constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
 						getElectionType().getElectionType());	
+				constituencyRevenueVillagesVO.setElectionYear(electionYear);
 			}
 			return constituencyRevenueVillagesVO;
 		}
@@ -1047,6 +1048,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			constituencyRevenueVillagesVO.setConstituencyName(constituency.getName());
 			constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
 					getElectionType().getElectionType());
+			constituencyRevenueVillagesVO.setElectionYear(electionYear);
 			List<SelectOptionVO> assemblies = getAssembliesForParliament(constituencyId, new Long(electionYear));
 			int i=0;
 			
@@ -1197,6 +1199,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				if(constituencyRevenueVillagesVOMain != null){
 					constituencyRevenueVillagesVOMain.setConstituencyId((Long)((Object[])result.get(0))[0]);
 					constituencyRevenueVillagesVOMain.setConstituencyName(pcNames.substring(1));
+					constituencyRevenueVillagesVOMain.setElectionType(electionType);
+					constituencyRevenueVillagesVOMain.setElectionYear(electionYear);
 				}
 			}
 			
@@ -1209,6 +1213,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						getConstituencyOrMandalWiseElectionVO(), constituencyId, electionYear, electionType));
 				constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO().add(constituencyOrMandalWiseElectionVo);	
 			}
+			
 			return constituencyRevenueVillagesVOMain;		
 		}catch(Exception e){
 			e.printStackTrace();
