@@ -8,6 +8,7 @@ public class ConstituencyRevenueVillagesVO extends ResultStatus{
 	private Long constituencyId;
 	private String constituencyName;
 	private String electionType;
+	private String electionYear;
 	private List<CandidatePartyInfoVO> candidateNamePartyAndStatus;
 	private List<RevenueVillageElectionVO> revenueVillageElectionVO;
 	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
@@ -134,6 +135,14 @@ public class ConstituencyRevenueVillagesVO extends ResultStatus{
 	public void setElectionInfoByLocations(
 			List<ElectionWiseMandalPartyResultVO> electionInfoByLocations) {
 		this.electionInfoByLocations = electionInfoByLocations;
+	}
+
+	public String getElectionYear() {
+		return electionYear;
+	}
+
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
 	}
 
 	@Override
