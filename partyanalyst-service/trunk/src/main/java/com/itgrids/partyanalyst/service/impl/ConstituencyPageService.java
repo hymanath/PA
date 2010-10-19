@@ -1076,6 +1076,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					partyElectionResultVO.setVotesEarned((Long)values[3]);
 					partyElectionResultVO.setVotesPercentage(new BigDecimal(((Long)values[3])*100.0/(Long)values[4])
 																	.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+					partyElectionResultVO.setVotesPercent(new BigDecimal(((Long)values[3])*100.0/(Long)values[4])
+																	.setScale(2,BigDecimal.ROUND_HALF_UP));
 					
 					partyElectionResultVOs.add(partyElectionResultVO);
 				}
