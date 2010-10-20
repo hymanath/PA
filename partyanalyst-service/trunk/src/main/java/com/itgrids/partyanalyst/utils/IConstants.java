@@ -270,7 +270,7 @@ public interface IConstants {
 	public static final String User = "User";
 	public static final String External_person = "External_person";
 	public static final String Call_Center = "Call_Center";
-		public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
+	public static final String CONNECT_REDIRECT = "CONNECT_REDIRECT";
 	
     public static final String LOCALELECTIONBODY = "LOCAL ELECTION BODY";
     public static final String REJECTED = "rejected";
@@ -286,6 +286,10 @@ public interface IConstants {
     public static final String BLOCK = "BLOCK";
     public static final String UNBLOCK = "UNBLOCK";
     public static final String SCRAP = "SCRAP";
+    public static final String PARLIAMENT_CONSTITUENCY_LEVEL = "PARLIAMENT CONSTITUENCY";
+    public static final String ASSEMBLY_CONSTITUENCY_LEVEL = "ASSEMBLY CONSTITUENCY";
+    public static final String MUNCIPALITY_CORPORATION_LEVEL = "MUNCIPALITY/CORPORATION";
+    public static final String MANDAL_LEVEL = "MANDAL";
     public static final int MAX_LEVEL_OF_CONNECTION = 2;
     public static final String COMPLETE_DETAILS = "COMPLETE_DETAILS";
     public static final String PARTIAL_DETAILS = "PARTIAL_DETAILS";
