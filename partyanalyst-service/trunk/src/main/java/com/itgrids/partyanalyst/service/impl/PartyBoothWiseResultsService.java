@@ -154,6 +154,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		System.out.println("In getBoothWiseResultsForParty::constituencyId, electionYear::"+constituencyId+","+electionYear);
 		List<PartyBoothPerformanceVO> boothResultsForParties = new ArrayList<PartyBoothPerformanceVO>();
 		List<Nomination> nominations  = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, constituencyId, electionYear);
+		BoothResultVO boothResultVO = null;
 		for(Nomination nomination:nominations){
 			List<BoothResultVO> boothResultVOs = new ArrayList<BoothResultVO>();
 			PartyBoothPerformanceVO partyBoothPerformanceVO = new PartyBoothPerformanceVO();
@@ -174,7 +175,22 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				int totalValidVotes = candidateBoothResult.getBoothConstituencyElection().getBoothResult().getValidVotes().intValue();
 				int votesEarned = candidateBoothResult.getVotesEarned().intValue();
 				String percentage = calculateVotesPercengate(new Double(totalValidVotes), new Double(votesEarned));	
-				BoothResultVO boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), votesEarned, totalValidVotes, percentage, booth.getTehsil().getTehsilName());
+				if(booth.getBoothLocalBodyWard() != null)
+					boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
+							votesEarned, totalValidVotes, percentage, booth.getBoothLocalBodyWard().getLocalBodyWard().getLocalElectionBody().
+							getName()+" "+booth.getBoothLocalBodyWard().getLocalBodyWard().getName(), false);
+				else
+					if(booth.getLocalBody() != null)
+						boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
+								votesEarned, totalValidVotes, percentage, booth.getLocalBody().getName()+" "+
+								booth.getLocalBody().getElectionType().getElectionType(), false);
+				else
+				if(booth.getTehsil() != null)
+					boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
+							votesEarned, totalValidVotes, percentage, booth.getTehsil().getTehsilName(), false);
+				else
+					boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getVillagesCovered(), 
+							votesEarned, totalValidVotes, percentage, "", true);
 				boothResultVOs.add(boothResultVO);
 			}
 			partyBoothPerformanceVO.setBoothResults(boothResultVOs);
