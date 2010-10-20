@@ -845,33 +845,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 					</div>
 				
 
-					<div id="constituencyCenterContentOuter1" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
 
-						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
-						<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
-							<!--
-							<table width="100%" border="1" cellspacing="3">
-								<tr>
-									<c:forEach var="chart" items="${constituencyVO.pieChartNames}">
-										<td align="center"><img src="charts/${chart}" border="0"></td>
-									</c:forEach>	
-								</tr>
-								<tr>
-									<c:forEach var="extra" items="${constituencyVO.extraInfo}">
-										<td align="left" style="border: 0px;color:#707070;"><b>${extra}</b></td>
-									</c:forEach>
-								</tr>
-							</table>
-							
-						</div>-->
-						<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
-						</div>
-				
-				</div>
 			</td>
 			<!--<td> <div class="spacerTD"> </div> </td>-->
 			<td class="alignTD">
@@ -906,7 +880,37 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 				</div>
 			</td>			
 		</tr>
-		
+		<tr>
+			<td colspan="2">
+									<div id="constituencyCenterContentOuter1" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+
+						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
+						<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
+							<!--
+							<table width="100%" border="1" cellspacing="3">
+								<tr>
+									<c:forEach var="chart" items="${constituencyVO.pieChartNames}">
+										<td align="center"><img src="charts/${chart}" border="0"></td>
+									</c:forEach>	
+								</tr>
+								<tr>
+									<c:forEach var="extra" items="${constituencyVO.extraInfo}">
+										<td align="left" style="border: 0px;color:#707070;"><b>${extra}</b></td>
+									</c:forEach>
+								</tr>
+							</table>
+							
+						</div>-->
+						<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
+						</div>
+				
+				</div>
+			</td>
+		</tr>
 		
 		<tr>		
 		<td colspan="2">
