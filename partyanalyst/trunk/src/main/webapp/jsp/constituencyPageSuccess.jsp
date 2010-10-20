@@ -279,8 +279,12 @@
 		str += '<table id = "parliamentElecResTable">';
 		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
 			str += '<tr>';
-			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
-				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
+			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink){
+				if(constituencyResults.constituencyOrMandalWiseElectionVO[j].isUrban)
+					str += '<td><a href="localBodyElectionAction.action?stateId=1&localBodyElectionTypeId=5&localBodyId='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
+				else
+					str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
+			}
 			else
 				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
 			for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
