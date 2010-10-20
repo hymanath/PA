@@ -301,7 +301,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		}; 		
 	}
 	
-	function callAjax(param,jsObj,url){
+	function callAjax(jsObj,url){
 	var results;	
 	var callback = {			
 	    success : function( o ) {
@@ -637,7 +637,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	//wkg
 	function buildElectionTypesSelect(result){
@@ -892,7 +892,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageTehsilElectionYearsAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	
 	function getAllMptcYearsForTeshil()
@@ -905,7 +905,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageMptcElectionYearsAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	function getPartyDetails(id)
 	{	
@@ -922,7 +922,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPagePartyDetailsAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	function getMptcPartyDetails(id)
 	{
@@ -940,7 +940,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageMptcPartyDetailsAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	function getAllZptcParties(){
 		
@@ -954,7 +954,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPagePartyDetailsAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	
 	function getAllMptcParties(){
@@ -968,7 +968,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageMptcPartyDetailsAjaxAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	function hideZptcDiv(){
 	     var zptcElmt = document.getElementById("zptcAjaxLoadDiv");
@@ -1146,7 +1146,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsSelectInDistrictAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	
 	function getPartiesPositions(id,value){
@@ -1161,7 +1161,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllPartiesPositionsInDistrictAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 
 	function showAlliancePartiesWindow(){
@@ -1208,7 +1208,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionScopesSelectInDistrictAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 
 	function getMuncipalPartyDetails(){
@@ -1221,7 +1221,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageMuncipalPartyDetailsAjaxAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 	function getCorporationPartyDetails(){
 		var jsObj=
@@ -1233,7 +1233,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageCorporationPartyDetailsAjaxAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 </script>
  
@@ -1730,6 +1730,7 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 
 userLoginStatus = '${userDetails.loginStatus}';
 userId = '${userDetails.userId}';
+
 
 initializeDistrictPage();
 getAllMptcYears();

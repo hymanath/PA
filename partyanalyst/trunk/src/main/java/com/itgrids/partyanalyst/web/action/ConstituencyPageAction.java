@@ -731,13 +731,14 @@ public class ConstituencyPageAction extends ActionSupport implements
    		}else{
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL);
    		}
-				
-		//Free User
-		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
-				userDetails.setLoginStatus("true");
-			}else{
-				userDetails.setLoginStatus("false");
-			}
+   		
+   		//	Free User
+   		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
+			userDetails.setLoginStatus("true");
+			userDetails.setUserId(user.getRegistrationID());
+		}else{
+			userDetails.setLoginStatus("false");
+		}
 		
 		messageTypes = ananymousUserService.getAllMessageTypes();
 		

@@ -61,6 +61,11 @@
 
 <!-- YUI Dependency files (End) -->
 
+<!-- jQuery dependency file start-->
+	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
+<!-- jQuery dependency file end-->
+
+<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -116,7 +121,7 @@
 	var constituencyTYPE;
 	google.load("visualization", "1", {packages:["corechart"]});
 	function callAjax(jsObj,url)
-	{					
+	{	
  		var callback = {			
  		               success : function( o ) {
 							try {
@@ -175,6 +180,22 @@
 								}else if(jsObj.task == "partiesPerformanceInDiffElectionsAjax")
 								{
 									showAllPartiesAllElectionResultsChart(myResults);
+								}
+								else if(jsObj.task == "connectToUser")
+								{	
+									closeConnectPanel(jsObj,myResults);
+								}
+								else if(jsObj.task == "getAllConnectedUsers")
+								{	
+									showAllConnectedUsersInPanel(jsObj,myResults);
+								}	
+								if(jsObj.task == "connectUserSet")
+								{									
+									showAllConnectedUsersStatus(jsObj,myResults);
+								}
+								if(jsObj.task == "getAllConnectedUsersByFilterView")
+								{
+									showAllConnectedUsersInPanelByFilterView(jsObj,myResults);
 								}
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -279,12 +300,8 @@
 		str += '<table id = "parliamentElecResTable">';
 		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
 			str += '<tr>';
-			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink){
-				if(constituencyResults.constituencyOrMandalWiseElectionVO[j].isUrban)
-					str += '<td><a href="localBodyElectionAction.action?stateId=1&localBodyElectionTypeId=5&localBodyId='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
-				else
-					str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
-			}
+			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
+				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
 			else
 				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
 			for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
@@ -785,6 +802,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 </head>
 <body onLoad="getString()">
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
+<div id="connectPeoplePopup_outer" class="yui-skin-sam"><div id="connectPeoplePopup"></div></div>
 <div id="constituencyPageMain">
 
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
@@ -1646,6 +1664,28 @@ function showDetailedElectionResult(id)
 				};
 		tehsilElections.mptcElectionYears.push(ob);	
 		</c:forEach>
+		
+		<c:forEach var="candidate" items="${userDetails.candidateVO}">	
+			var userObj={
+								id:'${candidate.id}',
+								candidateName:'${candidate.candidateName}',
+								status:'${candidate.status}',
+								constituencyName:'${candidate.constituencyName}'
+							};
+				
+			constituencyConnectedPeople.push(userObj);
+		</c:forEach>
+		<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
+			var obj =	{
+							id:'${status.id}',
+							name:'${status.name}'
+						};
+			connectStatus.push(obj);
+		</c:forEach>
+		
+		userLoginStatus = '${userDetails.loginStatus}';
+		userId = '${userDetails.userId}';
+	
 	getAllZptcYears();	  
 	getAllMptcYears();
 	initializeConstituencyPage();

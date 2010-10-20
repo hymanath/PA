@@ -209,15 +209,20 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		String districtName = jObj.getString("districtName");
+		Long locationId = new Long(jObj.getString("locationId"));
 		Long connectUserId = new Long(jObj.getString("connectUserId"));
-		String connectUserName = jObj.getString("connectUserName");
 		Long userId = new Long(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
+		String locationType = jObj.getString("locationType");
 		
+		String locationTypeConst = null;
+		if(locationType.equalsIgnoreCase("DISTRICT"))
+			locationTypeConst = IConstants.DISTRICT_LEVEL;
+		else if(locationType.equalsIgnoreCase("CONSTITUENCY"))
+			locationTypeConst = IConstants.CONSTITUENCY_LEVEL;
+			
 		List<Long> locationIds = new ArrayList<Long>();
-		locationIds.add(districtId);
+		locationIds.add(locationId);
 		
 		List<Long> senderIds = new ArrayList<Long>();
 		senderIds.add(userId);
@@ -226,7 +231,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		connectUserIds.add(connectUserId);
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
-		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, IConstants.DISTRICT_LEVEL, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.MAX_ANONYMOUS_USER_DISPLAY, userId, senderIds, connectUserIds, IConstants.FRIEND_REQUEST, subject);
 		return Action.SUCCESS;
 	}
 	
@@ -241,14 +246,20 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}		
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		String districtName = jObj.getString("districtName");
+		Long locationId = new Long(jObj.getString("locationId"));
 		Long userId = new Long(jObj.getString("userId"));
+		String locationType = jObj.getString("locationType");
+		
+		String locationTypeConst = null;
+		if(locationType.equalsIgnoreCase("DISTRICT"))
+			locationTypeConst = IConstants.DISTRICT_LEVEL;
+		else if(locationType.equalsIgnoreCase("CONSTITUENCY"))
+			locationTypeConst = IConstants.CONSTITUENCY_LEVEL;
 		
 		List<Long> listOfDistricts = new ArrayList<Long>();
-		listOfDistricts.add(districtId);
+		listOfDistricts.add(locationId);
 		
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.ALL_CONNECTED_USER_DISPLAY,userId,IConstants.ALL);
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,locationTypeConst,IConstants.ALL_CONNECTED_USER_DISPLAY,userId,IConstants.ALL);
 		
 		return Action.SUCCESS;
 	}
@@ -264,10 +275,16 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long districtId = new Long(jObj.getString("districtId"));
-		String districtName = jObj.getString("districtName");		
+		Long districtId = new Long(jObj.getString("connetLocationId"));		
 		Long userId = new Long(jObj.getString("userId"));
 		String subject = jObj.getString("connectMessage");
+		String locationType = jObj.getString("locationType");
+		
+		String locationTypeConst = null;
+		if(locationType.equalsIgnoreCase("DISTRICT"))
+			locationTypeConst = IConstants.DISTRICT_LEVEL;
+		else if(locationType.equalsIgnoreCase("CONSTITUENCY"))
+			locationTypeConst = IConstants.CONSTITUENCY_LEVEL;
 		
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(districtId);
@@ -286,7 +303,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		}		
 		
 		//resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
-		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, IConstants.DISTRICT_LEVEL, IConstants.ALL_CONNECTED_USER_DISPLAY, userId, senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
+		userDetails = ananymousUserService.getAllUsersAfterAcceptingRequest(locationIds, locationTypeConst, IConstants.ALL_CONNECTED_USER_DISPLAY, userId, senderIds, connectUserIdsList, IConstants.FRIEND_REQUEST, subject);
 		return Action.SUCCESS;
 	}
 	
@@ -304,9 +321,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			e.printStackTrace();
 		}
 		
-		Long districtId = new Long(jObj.getString("districtId"));
+		/*Long districtId = new Long(jObj.getString("districtId"));
 		String districtName = jObj.getString("districtName");		
-		Long userId = new Long(jObj.getString("userId"));	
+		Long userId = new Long(jObj.getString("userId"));	*/
 		String statusText = jObj.getString("statusText");
 		
 		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		

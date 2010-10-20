@@ -99,7 +99,10 @@ var constituencyPageMainObj={
 							};
 
 var candidateIndex = 1,candidateListSize,prevButtonElmt,nextButtonElmt;
-
+var constituencyConnectedPeople = new Array();
+var connectStatus = new Array();
+var userLoginStatus;
+var userId = '';
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
 		var map = new GMap2(document.getElementById("map_canvas"));
 		var geocoder = new GClientGeocoder();
@@ -746,90 +749,36 @@ function buildConstituencyConnectPeopleWindow()
 {
 	var headElmt = document.getElementById('constituencyPeopleConnectDiv_Head');
 	var bodyElmt = document.getElementById('constituencyPeopleConnectDiv_Body');
-
+	var constiId = constituencyPageMainObj.constituencyInfo.constituencyId;
+	var constituencyName = constituencyPageMainObj.constituencyInfo.constituencyName;
 	var headStr = 'Connect To Your Constituency People';
 	if(headElmt)
 		headElmt.innerHTML=headStr;
-
-	var bodyStr='';
-	bodyStr+='<div id="connectedNumberDiv"> ';
-	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> 20 people connected to this constituency </span>';
-	bodyStr+='</div>';
-	bodyStr+='<div id="connectedPersonsDiv">';
-	bodyStr+='<table width="100%">';
-	bodyStr+='<tr>';
-	bodyStr+='<td>';
-	bodyStr+='<table width="100%">';
-	bodyStr+='<tr>';
-	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Sai Krishna </span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='<tr>';	
-	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='</table>';
-	bodyStr+='</td>';
-	bodyStr+='</tr>';
-
-	bodyStr+='<tr>';
-	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
-	bodyStr+='</tr>';
+	if(constituencyConnectedPeople.length == 0 && userLoginStatus == "false")
+	{
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';
+		errorStr += '<div class="errorStr">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'">Login</a></div>';
+		
+		bodyElmt.innerHTML = errorStr;
+		return;
+	}
+	else if(constituencyConnectedPeople.length == 0 && userLoginStatus == "true")
+	{
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';		
+		bodyElmt.innerHTML = errorStr;
+		return;
+	}
 	
-	bodyStr+='<tr>';
-	bodyStr+='<td>';
-	bodyStr+='<table width="100%">';
-	bodyStr+='<tr>';
-	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Siva Kumar</span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='<tr>';	
-	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='</table>';
-	bodyStr+='</td>';
-	bodyStr+='</tr>';
+	buildConnectUsersContent(constituencyConnectedPeople,"constituencyPeopleConnectDiv_Body","CONSTITUENCY",constiId,constituencyName,userLoginStatus,userId);
 	
-	bodyStr+='<tr>';
-	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
-	bodyStr+='</tr>';
-
-	bodyStr+='<tr>';
-	bodyStr+='<td>';
-	bodyStr+='<table width="100%">';
-	bodyStr+='<tr>';
-	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
-	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Raghavendra Prasad</span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='<tr>';	
-	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
-	bodyStr+='</tr>';
-	bodyStr+='</table>';
-	bodyStr+='</td>';
-	bodyStr+='</tr>';
-
-	bodyStr+='<tr>';
-	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
-	bodyStr+='</tr>';
-
-	bodyStr+='</table>';
-	bodyStr+='</div>';
-
-	bodyStr+='<div id="viewAllPersonConnectDiv">';
-	bodyStr+='<table width = "100%"><tr>';
-	bodyStr+='<td align="right">';
-	bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc">View All</a> </span>';
-	bodyStr+='<span class="connectAncSpan"> | </span>';
-	bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
-	bodyStr+='</td>';
-	bodyStr+='</tr></table>';
-	bodyStr+='</div>';
-
-	if(bodyElmt)
-		bodyElmt.innerHTML=bodyStr;
-
-	var connectButton = new YAHOO.widget.Button("connectButton");
-
 }
 
 
@@ -1458,9 +1407,9 @@ function getAllMptcYears()
 	}			  		
 }
 
+
 function initializeConstituencyPage()
-{		
-    
+{	    
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
@@ -1477,6 +1426,7 @@ function initializeConstituencyPage()
 		}
 	}
 	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+
 	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
     buildRightlayoutMap();
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
