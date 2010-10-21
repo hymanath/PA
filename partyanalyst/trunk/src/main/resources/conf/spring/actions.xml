@@ -31,7 +31,8 @@
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />
-		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="problemManagementService" ref="problemManagementService" />			
 	</bean>			
 	
 	<bean id="politicalChangesAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesAction" singleton="false">
@@ -158,7 +159,8 @@
 	<bean id="cadreRegisterPageAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterPageAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="staticDataService" ref="staticDataService" />
-		<property name="regionServiceDataImp" ref="regionServiceDataImp" />		
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />		
 	</bean>
 	
 	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">
