@@ -321,6 +321,16 @@
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH</a> 
 						</li> 
+						<c:if test="${sessionScope.loginStatus == 'out'}">  
+							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+										User Profile
+									</a>  
+								</c:if>	
+								
+							</li> 
+						</c:if>
 					</ul> 
 				</div> 
 		</div> 
