@@ -358,8 +358,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
 					for(int i=0;i<detailsList.size();i++){
 						Object[] parms = (Object[])detailsList.get(i);				
-						Long userId = new Long(parms[0].toString());					
-						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());						
+						Long userId = new Long(parms[0].toString());			
+						if(userIdAndRelationShipWithLogedUser.get(userId)!=null){
+							userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());	
+						}
+											
 					}
 					userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
 					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
