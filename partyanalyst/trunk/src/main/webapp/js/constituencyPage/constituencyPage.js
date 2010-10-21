@@ -16,6 +16,7 @@ var constituencyPageMainObj={
 												 },
 								constituencyElectionInfo:[],
 								constituencyVotersInfo:[],
+								constituencyVotersBasicInfo:[],
 								presentAssemblyCandidate:[],
 								presentParliamentCandidate:[],
 								problemsInfo:[],
@@ -436,7 +437,7 @@ function buildCenterVotersCandidateInfoContent()
 	var elmt = document.getElementById("mandalsVotersInfoDiv_Body");
 	
 	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
-	{
+	{		
 		elmt.innerHTML='Voter Info Unavailable';
 			return;
 	}
@@ -445,7 +446,8 @@ function buildCenterVotersCandidateInfoContent()
 	for(var i in constituencyPageMainObj.constituencyVotersInfo)
 	{
 		var data = constituencyPageMainObj.constituencyVotersInfo[i];
-
+		var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
+		
 		var divChild = document.createElement('div');
 		divChild.setAttribute("id","divChild"+i);
 
@@ -465,10 +467,18 @@ function buildCenterVotersCandidateInfoContent()
 		}
 			
 		str+='</div>';
-		str+='<div id="divInteractive_Chart_'+i+'"></div>';
-		str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
+		if(data.info.length!=0){
+			str+='<div id="divInteractive_Chart_'+i+'"></div>';
+			str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
+		}else{
+			str+='<div id="divChild_Body_'+i+'" class="voterBasicInfoBody"></div>';
+		}
+		
 		divChild.innerHTML=str;
 
+		if(elmt)
+			elmt.appendChild(divChild);
+		
 		var field,column;
 		
 		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
@@ -480,31 +490,47 @@ function buildCenterVotersCandidateInfoContent()
 			field = {key:"mandalName"};
 			column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
 		}
+				
+		if(data.info.length!=0){
+			 var myDataSource = new YAHOO.util.DataSource(data.info); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			 myDataSource.responseSchema = { 
+						fields: [
+						         	field,
+									{	key : "mandalMaleVoters",parser:"number"},
+									{	key : "mandalFemaleVoters",parser:"number"},
+									{	key : "mandalTotalVoters",parser:"number"},
+									{	key : "isPartial"}
+								]
+					}; 
+			
+			 var myColumnDefs = [ 
+			             column,
+						{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
+						{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
+						{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
+						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+					]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+		}else{			
+			 var myDataSource = new YAHOO.util.DataSource(basicData.info); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			 myDataSource.responseSchema = { 
+						fields: [
+						         	field,									
+									{	key : "isPartial"}
+								]
+					}; 
+			
+			 var myColumnDefs = [ 
+			             column,						
+						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+					]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+		}
 		
-		if(elmt)
-			elmt.appendChild(divChild);
-		
-		 var myDataSource = new YAHOO.util.DataSource(data.info); 
-		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		 myDataSource.responseSchema = { 
-					fields: [
-					         	field,
-								{	key : "mandalMaleVoters",parser:"number"},
-								{	key : "mandalFemaleVoters",parser:"number"},
-								{	key : "mandalTotalVoters",parser:"number"},
-								{	key : "isPartial"}
-							]
-				}; 
-		
-		 var myColumnDefs = [ 
-		             column,
-					{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
-					{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
-					{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
-					{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
-				]; 
-		 
-		var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
 
 	}
 }

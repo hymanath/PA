@@ -70,8 +70,9 @@
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
-<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 
 <script src="${mapKey}" type="text/javascript"></script>
 <style type="text/css">
@@ -927,6 +928,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 							</table>
 							
 						</div>-->
+						
 						<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
 				
@@ -1281,17 +1283,24 @@ function showMandalVotesShareDetailsChart(myResults)
 			
 			var ctitle;
 			var chartDiv;
-			if(c == 0){
-			chartDiv = document.getElementById('divInteractive_Chart_0');
-			ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+            
+			if(document.getElementById('divInteractive_Chart_0')){
+				if(c == 0){
+					chartDiv = document.getElementById('divInteractive_Chart_0');
+					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+				}
+				var chart = new google.visualization.PieChart(chartDiv);
+				chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 			}
-			else if(c == 1){
-			chartDiv = document.getElementById('divInteractive_Chart_1');
-			ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+			if(document.getElementById('divInteractive_Chart_1')){
+				if(c == 1){
+				chartDiv = document.getElementById('divInteractive_Chart_1');
+				ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+				}
+				var chart = new google.visualization.PieChart(chartDiv);
+				chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 			}
-			var chart = new google.visualization.PieChart(chartDiv);
-
-			chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
+			
 		}
 }
 
@@ -1432,6 +1441,28 @@ function showDetailedElectionResult(id)
 	   browser1.focus();
 	}
 
+	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentBasicInfo}" >	
+		var obj ={
+					year:'${vInfo.year}',
+					info:[]
+				};
+		<c:forEach var="info" items="${vInfo.votersBasicInfoForMandalVO}" >	
+		var urlStr = '';
+		if('${constituencyVO.electionType}' == 'Parliament')
+			urlStr += 'constituencyPageAction.action?constituencyId=${info.mandalId}';
+		else
+			urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
+		var vObj=
+				{					
+					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',					
+					isPartial:'${info.isPartial}'
+				 };
+			obj.info.push(vObj);
+		</c:forEach>
+			constituencyPageMainObj.constituencyVotersBasicInfo.push(obj);
+	</c:forEach>
+		
+	
 	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" >	
 		var obj ={
 					year:'${vInfo.year}',
