@@ -370,8 +370,14 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
 	}*/
 	
-	public void testGetBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(){
+	/*public void testGetBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(){
 		List list = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(16261l, 232l, 835l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
+	}*/
+	
+	public void testGetBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(){
+		List list = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(14147l, 315l, "2009");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
 	}

@@ -23,6 +23,18 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.boothConstituencyElection.booth.localBody is null", params);
 	}
 	
+	public List getBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(Long nominationId, 
+			Long assemblyId, String electionYear){
+		Object[] params = {nominationId, assemblyId, assemblyId, new Long(electionYear)};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, " +
+				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes, model.votesEarned " +
+				"from CandidateBoothResult model where model.nomination.nominationId = ? and " +
+				"model.boothConstituencyElection.booth.constituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.booth.boothId not in(select model1.booth.boothId from BoothLocalBodyWard model1 where " +
+				"model1.booth.constituency.constituencyId = ? and model1.booth.year = ?) and model.boothConstituencyElection.booth.tehsil is null", params);
+	}
+	
 	public List getBoothwisePartyResultsOfNominationInLocalBodyWithInConstituency(Long nominationId, 
 			Long assemblyId, Long localBodyId){
 		Object[] params = {nominationId, assemblyId, localBodyId};

@@ -18,12 +18,9 @@ import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.BoothConstituencyElection;
-import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -205,6 +202,9 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			getGroupResultsIntoMandalOrLocalBodywise(greaterOrCorps, crossVotedMandalVOs, acNominationId, 
 					pcNominationId, acId, true, false);
 		
+		//Calculating Unmapped Booths Results Info For Urban Areas.
+		calculateUnmappedBoothsResults(crossVotedMandalVOs, acNominationId, pcNominationId, acId, electionYear);
+		
 		Long acVotesEarnedInConstituency = 0l;
 		Long acValidVotesInConstituency = 0l;
 		Long pcVotesEarnedInConstituency = 0l;
@@ -240,6 +240,22 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		return crossVotedMandalVOs;
 	}
 	
+	private void calculateUnmappedBoothsResults(
+			List<CrossVotedMandalVO> crossVotedMandalVOs, Long acNominationId,
+			Long pcNominationId, Long acId, String electionYear) {
+		List acUnmappedInfo = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(acNominationId, acId, electionYear);
+		List pcUnmappedInfo = candidateBoothResultDAO.getBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(pcNominationId, acId, electionYear);
+		if((acUnmappedInfo.size() == pcUnmappedInfo.size()) && acUnmappedInfo.size() > 0){
+			CrossVotedMandalVO crossVotedMandalVO = new CrossVotedMandalVO();
+			crossVotedMandalVO.setMandalId(0l);
+			crossVotedMandalVO.setMandalName("Unmapped Booths");
+			Map<Long, Object[]> assemblyInfoMap = getConsolidatedMap(acUnmappedInfo);
+			Map<Long, Object[]> parliamentInfoMap = getConsolidatedMap(pcUnmappedInfo);
+			crossVotedMandalVO.setCrossVotedBooths(getCrossVotingDetails(assemblyInfoMap, parliamentInfoMap, crossVotedMandalVO));
+			crossVotedMandalVOs.add(crossVotedMandalVO);	
+		}
+	}
+
 	public void getGroupResultsIntoMandalOrLocalBodywise(List tehsils, List<CrossVotedMandalVO> crossVotedMandalVOs, 
 			Long acNominationId, Long pcNominationId, Long acId, Boolean isUrban, Boolean isMunicipal){
 		Long tehsilId = 0l;
@@ -275,7 +291,12 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 				assemblyInfoMap = getConsolidatedMap(assemblyInfo);
 				parliamentInfoMap = getConsolidatedMap(parliamentInfo);
 			}
-			crossVotedMandalVO.setCrossVotedBooths(getCrossVotingDetails(assemblyInfoMap, parliamentInfoMap, crossVotedMandalVO));
+			
+			if((assemblyInfoMap.size() == parliamentInfoMap.size()) && parliamentInfoMap.size() > 0)
+				crossVotedMandalVO.setCrossVotedBooths(getCrossVotingDetails(assemblyInfoMap, parliamentInfoMap, crossVotedMandalVO));
+			else
+				crossVotedMandalVO.setCrossVotedBooths(new ArrayList<CrossVotedBoothVO>());
+			
 			crossVotedMandalVOs.add(crossVotedMandalVO);
 		}
 	}

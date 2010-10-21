@@ -139,4 +139,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getBoothwisePartyResultsOfNominationInLocalBodyWardWithInConstituency(Long nominationId, 
 			Long assemblyId, Long localBodyWardId);
 	
+	public List getBoothwisePartyResultsOfNominationInUnMappedBoothsWithInConstituency(Long nominationId, 
+			Long assemblyId, String electionYear);
+	
 }
