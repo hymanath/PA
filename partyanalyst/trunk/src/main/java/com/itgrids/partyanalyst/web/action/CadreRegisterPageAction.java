@@ -385,7 +385,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
      
     public void prepopulateLocations(CadreInfo  cadreInfo)
     {
-    	session = request.getSession();
+    		session = request.getSession();
     		System.out.println("inside method populate const");
     		//get districts
     		List<SelectOptionVO> districtNames_c=cadreManagementService.findDistrictsByState(cadreInfo.getState());			
