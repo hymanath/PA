@@ -34,7 +34,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	var bodyStr='';
 	bodyStr+='<div id="connectedNumberDiv"> ';
 	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
-	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected to this district </span>';
+	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> '+connectedPeopleData.length+' people connected from this district </span>';
 	bodyStr+='</div>';
 	bodyStr+='<div id="connectedPersonsDiv">';
 	bodyStr+='<table width="100%">';
@@ -93,8 +93,8 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	}
 	else
 	{
-		bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
-		bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All</a> </span>';
+		//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
+		bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#514830" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All Connected People</a> </span>';
 	}
 	//bodyStr+='<span class="connectAncSpan"> | </span>';
 	//bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
