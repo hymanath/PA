@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -30,7 +31,11 @@ public interface ILocalBodyElectionService {
 	
 	public TeshilPartyInfoVO getMuncipalOrCorporationElectionsResultsForAnAssembly(Long electionId, Long constituencyId);
 	
-	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId);
+	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId,Long partyId,Long wardId);
 	
 	public List<SelectOptionVO> getLocalBodyElectionsList(Object localBody,Long stateId) throws Exception;
+	
+	public NavigationVO getLatestGHMCElectionIdAndLatestElectionYear(String electionType);
+			
+	public NavigationVO getLocalBodyElectionIdsForAConstituency(Long constituencyId,String electionType);
 }

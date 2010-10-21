@@ -141,15 +141,13 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testGet(){
-		getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(2l,2004l,2009l,1l,IConstants.ELECTION_SUBTYPE_MAIN);
+		List elections = electionDAO.findLatestElectionYearForGHMC(IConstants.GREATER_ELECTION_TYPE);
+		for(int i=0;i<elections.size();i++){
+			Object[] params = (Object[])elections.get(i);
+			System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
+		}
 	}
-	public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(Long electinTypeId,Long electionYear1,Long electionYear2,Long stateId,String electionSubType){
-		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
-		StringBuilder electionYears = new StringBuilder();		
-		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
-		List elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),1l,electionSubType);			
-		return elections;
-	}
+	
 	
 }
 

@@ -32,15 +32,13 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 	
 	public void testFindByConstituencyId()
 	{
-		List result = assemblyLocalElectionBodyDAO.findByConstituencyId(232l);
+		List result = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituencyId(232L,IConstants.GREATER_ELECTION_TYPE);
 		System.out.println("Results Size:"+result.size());
 		for(int i = 0;i<result.size();i++)
 		{
 			Object[] obj = (Object[])result.get(i);
 			System.out.println("id:"+Long.parseLong(obj[0].toString()));
-			System.out.println("name:"+obj[1].toString());
-			System.out.println("electionType:"+obj[2].toString());	
-			System.out.println("partial:"+obj[3].toString());			
+			System.out.println("name:"+obj[1].toString());	
 		}		
 	}
 	

@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -29,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -700,22 +703,47 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		return teshilPartyInfoVO;
 	}
 	
-	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId){
+	public ConstituencyVO findConstituencywiseGreaterElectionResults(Long electionId, Long constituencyId,Long partyId,Long wardId){
 		List wardsInfo = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(constituencyId, IConstants.GREATER_ELECTION_TYPE);
 		ConstituencyVO constituencyVO = new ConstituencyVO();
 		List<MandalVO> localElecBodies = new ArrayList<MandalVO>();
 		MandalVO mandalVO = null;
+		List<SelectOptionVO> listOfWards = new ArrayList<SelectOptionVO>(0);
+		List<SelectOptionVO> listOfParties = new ArrayList<SelectOptionVO>(0);
 		Map<Long, List<Object[]>> constituencyIdResultsMap = new LinkedHashMap<Long, List<Object[]>>();
 		StringBuilder wardIds = new StringBuilder(); 
-		for(Object[] values:(List<Object[]>)wardsInfo)
-			wardIds.append(",").append(values[0]);
+		Map<Long,String> parties = new HashMap<Long,String>();
+		for(Object[] values:(List<Object[]>)wardsInfo){
+			wardIds.append(",").append(Long.parseLong(values[0].toString()));
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(Long.parseLong(values[0].toString()));
+			selectOptionVO.setName(values[1].toString());
+			listOfWards.add(selectOptionVO);
+		}
+		constituencyVO.setListOfWards(listOfWards);
+		
 		
 		if(wardIds.toString().trim().length() == 0){
 			constituencyVO.setIsDataExists(false);
 			return constituencyVO;
 		}
 		
-		List allElectionsInfo = nominationDAO.findAllElectionResultsForConstituencies(electionId, wardIds.substring(1));
+		
+		List partyIds = nominationDAO.getALLPartiesByElectionId(electionId, wardIds.substring(1));
+		for(Object[] values:(List<Object[]>)partyIds){		
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(Long.parseLong(values[0].toString()));
+			selectOptionVO.setName(values[1].toString());
+			listOfParties.add(selectOptionVO);
+		}
+		constituencyVO.setListOfParties(listOfParties);
+		List allElectionsInfo = null;
+		if(wardId==0l){
+			 allElectionsInfo = nominationDAO.findAllElectionResultsForConstituencies(electionId, wardIds.substring(1),partyId);	
+		}else{
+			 allElectionsInfo = nominationDAO.findAllElectionResultsForConstituencies(electionId, wardId.toString(),0l);
+		}
+		
 		getAllElectionsInfo(constituencyIdResultsMap, allElectionsInfo);
 		for(Map.Entry<Long, List<Object[]>> entry:constituencyIdResultsMap.entrySet()){
 			mandalVO = new MandalVO();
@@ -726,17 +754,18 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			mandalVO.setElectionTypeId((Long)entry.getValue().get(0)[15]);
 			mandalVO.setStateId((Long)entry.getValue().get(0)[14]);
 			mandalVO.setWardwiseResultsForParty(getSubDivisionswiseResults(entry.getValue()));
-			localElecBodies.add(mandalVO);
+			localElecBodies.add(mandalVO);			
 		}
 		
 		constituencyVO.setLocalElectionsInfo(localElecBodies);
 		return constituencyVO;
 	}
-
+	
 	private List<PartyElectionResultsVO> getSubDivisionswiseResults(
 			List<Object[]> results) {
 		List<PartyElectionResultsVO> wardswiseResults = new ArrayList<PartyElectionResultsVO>();
 		PartyElectionResultsVO wardAndPartyInfo = null;
+		try{
 		for(Object[] wardResult:results){
 			wardAndPartyInfo = new PartyElectionResultsVO();
 			wardAndPartyInfo.setElectionId((Long)wardResult[0]);
@@ -755,6 +784,10 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			wardAndPartyInfo.setTotalVotes(((Double)wardResult[13]).longValue());
 			wardswiseResults.add(wardAndPartyInfo);
 		}
+				
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return wardswiseResults;
 	}
 
@@ -771,6 +804,77 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			results.add(values);
 			constituencyIdResultsMap.put(lebId, results);
 		}
+	}
+	
+	/**
+	 * This method is used to get all local election bodies that are present in a constituency.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,20-10-10
+	 * @param constituencyId
+	 * @param electionType
+	 * @return
+	 */
+	public NavigationVO getLatestGHMCElectionIdAndLatestElectionYear(String electionType){
+		NavigationVO navigationVO = new NavigationVO();
+		List<SelectOptionVO> selList = new ArrayList<SelectOptionVO>(0);
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List result = electionDAO.findLatestElectionYearForGHMC(electionType);			
+			for(int i = 0;i<result.size();i++)
+			{
+				Object[] obj = (Object[])result.get(i);
+				SelectOptionVO selectOptionVO = new SelectOptionVO();				
+				selectOptionVO.setId(Long.parseLong(obj[0].toString()));
+				selectOptionVO.setName(obj[1].toString());	
+				selList.add(selectOptionVO);
+			}
+			navigationVO.setMessageTypes(selList);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			navigationVO.setResultStatus(resultStatus);	
+		}
+		return navigationVO;
+	}
+	
+	
+	/**
+	 * This method is used to get all local election bodies that are present in a constituency.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,20-10-10
+	 * @param constituencyId
+	 * @param electionType
+	 * @return
+	 */
+	public NavigationVO getLocalBodyElectionIdsForAConstituency(Long constituencyId,String electionType){
+		NavigationVO navigationVO = new NavigationVO();
+		List<SelectOptionVO> selList = new ArrayList<SelectOptionVO>(0);
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List result = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituencyId(constituencyId,IConstants.GREATER_ELECTION_TYPE);			
+			for(int i = 0;i<result.size();i++)
+			{
+				Object[] obj = (Object[])result.get(i);
+				SelectOptionVO selectOptionVO = new SelectOptionVO();				
+				selectOptionVO.setId(Long.parseLong(obj[0].toString()));
+				selectOptionVO.setName(obj[1].toString());	
+				selList.add(selectOptionVO);
+			}
+			navigationVO.setMessageTypes(selList);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			navigationVO.setResultStatus(resultStatus);	
+		}
+		return navigationVO;
 	}
 
 }

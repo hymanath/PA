@@ -5,11 +5,21 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestCase {
 	
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	private INominationDAO nominationDAO;
+	
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
 
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
@@ -32,10 +42,22 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		}
 	}*/
 	
-	/*public void testFindByConstituencyIdAndYear(){
-		List list = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(315l, IConstants.GREATER_ELECTION_TYPE);
+	public void testFindByConstituencyIdAndYear(){
+		List wardsInfo = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(51l, IConstants.GREATER_ELECTION_TYPE);
+		for(int i = 0;i<wardsInfo.size();i++)
+		{
+			Object[] obj = (Object[])wardsInfo.get(i);
+			System.out.println("id:"+Long.parseLong(obj[0].toString()));
+			System.out.println("name:"+obj[1].toString());			
+		}
+		StringBuilder wardIds = new StringBuilder(); 
+		for(Object[] values:(List<Object[]>)wardsInfo){
+			wardIds.append(",").append(values[0]);
+		}
+		List list = nominationDAO.getALLPartiesByElectionId(33l,wardIds.substring(1));
 		System.out.println(list.size());
-	}*/
+		
+	}
 	
 	/*public void testFindByAssemblyLocalElectionBodyWardAndYear(){
 		List list = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(2l, 7696l, "2009");

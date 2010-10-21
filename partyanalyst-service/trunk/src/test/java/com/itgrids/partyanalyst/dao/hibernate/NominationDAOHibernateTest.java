@@ -583,7 +583,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 
-	public void testGetAllCandidatesByElectionTypes(){
+/*	public void testGetAllCandidatesByElectionTypes(){
 		long startTime = System.currentTimeMillis();
 		List values = nominationDAO.getAllCandidatesByElectionTypeInState("Assembly", 1l, "");
 		System.out.println("size:"+values.size());
@@ -594,7 +594,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		long endTime = System.currentTimeMillis();
 		System.out.println((endTime-startTime)/1000);
 		//System.out.println(values.size());
-	}
+	}*/
 	/*public void testFindAllElectionResultsForConstituencies(){
 	List list = nominationDAO.findAllElectionResultsForConstituencies("10876,10877,10878,10880, 10882");
 	for(int i=0; i<list.size(); i++)
@@ -607,5 +607,9 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 }
 */
+	public void testGet(){
+		List list = nominationDAO.getALLPartiesByElectionId(33l,"18398,18400,18441,18447");
+		System.out.println(list.size());
+	}
 }
 	

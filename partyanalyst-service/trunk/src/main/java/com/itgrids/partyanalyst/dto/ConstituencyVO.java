@@ -28,6 +28,9 @@ public class ConstituencyVO extends ResultStatus{
 	private List<PartyResultsVO> previousYearResults;
 	private List<PartyElectionVotersVO> partiesCombinedResults;
 	
+	private List<SelectOptionVO> listOfWards;
+	private List<SelectOptionVO> listOfParties;
+	
 	public ConstituencyVO(){
 		
 	}
@@ -41,6 +44,19 @@ public class ConstituencyVO extends ResultStatus{
 		this.delemitationInfo = delemitationInfo;
 	}
 	
+	
+	public List<SelectOptionVO> getListOfWards() {
+		return listOfWards;
+	}
+	public void setListOfWards(List<SelectOptionVO> listOfWards) {
+		this.listOfWards = listOfWards;
+	}
+	public List<SelectOptionVO> getListOfParties() {
+		return listOfParties;
+	}
+	public void setListOfParties(List<SelectOptionVO> listOfParties) {
+		this.listOfParties = listOfParties;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -22,6 +22,15 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId, model.localElectionBody.name , model.localElectionBody.electionType.electionType, model.isPartial  from AssemblyLocalElectionBody model " +
 				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getLocalElectionBodyIdByConstituencyId(Long constituencyId,String type) {
+		Object[] params = {constituencyId,type};
+		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId, model.localElectionBody.name " +
+				"from AssemblyLocalElectionBody model " +
+				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)" +
+				"and model.localElectionBody.electionType.electionType=?",params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findConstituencyByLocalELectionBody(Long LocalElectionBodyId,
