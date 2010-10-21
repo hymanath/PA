@@ -172,7 +172,7 @@
 								}else if(jsObj.task == "corporationElectionsInfo")
 								{									
 									showCorporationInfo(myResults);			
-								}else if(jsObj.task == "greaterElectionsInfo")
+								}else if(jsObj.task == "greaterElectionsInfo" || jsObj.task == "getGhmcResultsBasedOnSelection")
 								{									
 									showGreaterInfo(myResults);			
 								}else if(jsObj.task == "mandalVotesShareDetailsChart")
