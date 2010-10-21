@@ -332,6 +332,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		Map<Long, CandidateVO> userIdAndRelationShipWithLogedUser = new HashMap<Long, CandidateVO>();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		ResultStatus resultStatus = new ResultStatus();
+		String originalStatus = status;
 		try{
 			if(result!=null && result.size()!=0){
 				for(int i=0;i<result.size();i++){
@@ -354,28 +355,37 @@ public class AnanymousUserService implements IAnanymousUserService {
 						candidateDetails.add(candidateVO);
 					}				
 				}
-				if(loginId!=0){					
+				if(loginId!=0){	
+					if(originalStatus.equalsIgnoreCase(IConstants.NOTCONNECTED)){
+						status = IConstants.ALL;
+					}
 					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
 					for(int i=0;i<detailsList.size();i++){
 						Object[] parms = (Object[])detailsList.get(i);				
 						Long userId = new Long(parms[0].toString());			
 						if(userIdAndRelationShipWithLogedUser.get(userId)!=null){
 							userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());	
-						}
-											
+						}				
 					}
 					if(userIdAndRelationShipWithLogedUser.get(loginId)!=null){
 						userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
 					}
 					
 					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
-						if(status.equalsIgnoreCase(IConstants.ALL)){
-							candidateDetails.add(data.getValue());
-						}else{
-							if(status.equalsIgnoreCase(data.getValue().getStatus())){
+						if(originalStatus.equalsIgnoreCase(IConstants.NOTCONNECTED)){
+							if(originalStatus.equalsIgnoreCase(data.getValue().getStatus())){
 								candidateDetails.add(data.getValue());
 							}
+						}else{
+							if(status.equalsIgnoreCase(IConstants.ALL)){
+								candidateDetails.add(data.getValue());
+							}else{
+								if(status.equalsIgnoreCase(data.getValue().getStatus())){
+									candidateDetails.add(data.getValue());
+								}
+							}
 						}
+						
 																		
 					}
 				}
@@ -389,6 +399,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 				dataTransferVO.setResultStatus(resultStatus);
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
