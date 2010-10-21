@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
@@ -119,6 +120,8 @@ public class CadreManagementService {
 	private ICadreLanguageEfficiencyDAO cadreLanguageEfficiencyDAO;
 	private ICadreLevelDAO cadreLevelDAO;
 	private String windowTask;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
 	}
@@ -282,6 +285,14 @@ public class CadreManagementService {
 
 	public void setWindowTask(String windowTask) {
 		this.windowTask = windowTask;
+	}	
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<String> skills, String task) {
@@ -323,6 +334,7 @@ public class CadreManagementService {
 		
 		return rs;
 	}
+		
 	public Cadre saveCadreInTransaction (final CadreInfo cadreInfo,final String task) 
 	{
 		Cadre cadreObj = (Cadre) transactionTemplate.execute(new TransactionCallback() {
@@ -347,8 +359,8 @@ public class CadreManagementService {
 				cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
 				cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
 				cadre.setConstituency(constituencyDAO.get(new Long(cadreInfo.getDistrict())));
-				cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
+				
 				// setting address
 				currentAddress.setHouseNo(cadreInfo.getHouseNo());
 				currentAddress.setStreet(cadreInfo.getStreet());
@@ -356,12 +368,32 @@ public class CadreManagementService {
 				currentAddress.setState(stateDAO.get(new Long(cadreInfo.getState())));
 				currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
 				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
-				currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
+				
+				if (IConstants.URBAN_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
+				{
+					currentAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+					currentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+					currentAddress.setTehsil(null);
+					currentAddress.setHamlet(null);
+					cadre.setTehsil(null);
+				}
+				
+				if (IConstants.RURAL_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
+				{
+					currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+					currentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+					currentAddress.setLocalElectionBody(null);
+					currentAddress.setWard(null);
+					cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+				}
+			
+				/*currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
 				String villageFlag = "";
 				Long id = 0l;
 				villageFlag = cadreInfo.getVillage().substring(0, 1);
 				id = new Long(cadreInfo.getVillage().substring(1));
-				processAddressValues(villageFlag, id, cadre,currentAddress);
+				processAddressValues(villageFlag, id, cadre,currentAddress);*/
+				
 				if (log.isDebugEnabled())
 					log.debug("sameas ca::::::::::::::::::::::"+cadreInfo.getSameAsCA());
 				if (cadreInfo.getSameAsCA() == true) {
@@ -369,16 +401,36 @@ public class CadreManagementService {
 				} else {
 					if (log.isDebugEnabled())
 						log.debug("inside permanent address block");
-					villageFlag = cadreInfo.getVillage().substring(0, 1);
-					id = new Long(cadreInfo.getVillage().substring(1));
+					
+					/*villageFlag = cadreInfo.getVillage().substring(0, 1);
+					id = new Long(cadreInfo.getVillage().substring(1));*/
+					
 					permanentAddress.setHouseNo(cadreInfo.getPhouseNo());
 					permanentAddress.setStreet(cadreInfo.getPstreet());
 					permanentAddress.setPinCode(cadreInfo.getPpinCode());
 					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
 					permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
 					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
-					permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal())));
-					processAddressValues(villageFlag, id, cadre, permanentAddress);
+					
+					if (IConstants.URBAN_TYPE.equals(cadreInfo.getPmandal().substring(0,1)))
+					{
+						permanentAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(cadreInfo.getPmandal().substring(1))));
+						permanentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getPvillage().substring(1))));
+						permanentAddress.setTehsil(null);
+						permanentAddress.setHamlet(null);
+					}
+					
+					if (IConstants.RURAL_TYPE.equals(cadreInfo.getPmandal().substring(0,1)))
+					{
+						permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal().substring(1))));
+						permanentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getPvillage().substring(1))));
+						permanentAddress.setLocalElectionBody(null);
+						permanentAddress.setWard(null);
+					}
+					
+					
+					/*permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal())));
+					processAddressValues(villageFlag, id, cadre, permanentAddress);*/
 				} 
 				cadre.setCurrentAddress(currentAddress);
 				cadre.setPermanentAddress(permanentAddress);

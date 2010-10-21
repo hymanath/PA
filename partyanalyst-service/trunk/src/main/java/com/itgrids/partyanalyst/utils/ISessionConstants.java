@@ -12,6 +12,7 @@ public interface ISessionConstants {
 	public static final String WARDS_OR_HAMLETS = "wardsOrHamletsList";
 	
 	// ADDRESS VARIBALES FOR OFFICIAL ADDRESS
+	public static final String STATES_O = "statesList_o";
 	public static final String DISTRICTS_O = "districtsList_o";
 	public static final String CONSTITUENCIES_O = "constituenciesList_o";
 	public static final String MANDALS_O = "mandalsList_o";
