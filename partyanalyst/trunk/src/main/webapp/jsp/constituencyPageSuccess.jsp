@@ -98,6 +98,10 @@
 			margin-top:0;
 			padding:4px;
 	}
+
+	a:link {
+			COLOR: #247CD4;
+	}
 </style>
 <script type="text/javascript">
 	
@@ -967,7 +971,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 					<div class="corner topRight"></div>
 					<div class="corner bottomLeft"></div>
 					<div class="corner bottomRight"></div>
-					<div id="LocalElections_heading" class="layoutHeadersClass">All Local Elections Happened In Constituency</div>
+					<div id="LocalElections_heading" class="layoutHeadersClass">All Local Elections Happened In ${constituencyDetails.constituencyName} Constituency</div>
 					<table width="100%">
 						<tr>
 							<td>
@@ -1351,7 +1355,7 @@ function showGreaterInfo(myResults){
 	var str = '';
 	for(var i in myResults.localElectionsInfo){
 		str += '<div class="localBodyHeadStyle">';
-		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">'+myResults.localElectionsInfo[i].name+'</a> In ' +myResults.localElectionsInfo[i].electionYear+'</div>';
+		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">Detailed view of '+myResults.localElectionsInfo[i].name+' Election Results In '+myResults.localElectionsInfo[i].electionYear+'</a></div>';
 		str += '<div><img src=\"charts\\'+myResults.localElectionsInfo[i].chartName+'\"></div>';
 		str += '<div id=\"greaterTableDiv_'+i+'\"></div>';
 	}
