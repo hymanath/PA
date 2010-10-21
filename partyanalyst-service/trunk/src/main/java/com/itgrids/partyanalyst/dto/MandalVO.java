@@ -16,6 +16,7 @@ public class MandalVO extends ResultStatus{
 	private List<SelectOptionVO> partiesInMandal;
 	private Set<SelectOptionVO> electionsInMandal;
 	private String chartName;
+	private String isPartial;
 	private List<PartyElectionResultsVO> wardwiseResultsForParty;; 
 	
 	public MandalVO(){}
@@ -25,6 +26,15 @@ public class MandalVO extends ResultStatus{
 		this.name = name;
 	}
 	
+	
+	public String getIsPartial() {
+		return isPartial;
+	}
+
+	public void setIsPartial(String isPartial) {
+		this.isPartial = isPartial;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -13,6 +13,7 @@ public class ConstituencyVO extends ResultStatus{
 	private String electionType;
 	private Date delemitationInfo;
 	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo;
+	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentBasicInfo;
 	private String[] pieChartNames;
 	private String[] extraInfo;
 	private List<PartyResultVO> predictedPartiesResults;
@@ -44,7 +45,13 @@ public class ConstituencyVO extends ResultStatus{
 		this.delemitationInfo = delemitationInfo;
 	}
 	
-	
+	public List<VotersWithDelimitationInfoVO> getAssembliesOfParliamentBasicInfo() {
+		return assembliesOfParliamentBasicInfo;
+	}
+	public void setAssembliesOfParliamentBasicInfo(
+			List<VotersWithDelimitationInfoVO> assembliesOfParliamentBasicInfo) {
+		this.assembliesOfParliamentBasicInfo = assembliesOfParliamentBasicInfo;
+	}
 	public List<SelectOptionVO> getListOfWards() {
 		return listOfWards;
 	}

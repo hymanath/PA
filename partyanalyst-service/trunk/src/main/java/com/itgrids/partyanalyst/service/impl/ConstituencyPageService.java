@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
@@ -878,18 +879,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 		
 		List mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(constituencyId);
-		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>();
-		List<VotersInfoForMandalVO> votersInfoForMandalList = null;
 		
+		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>(0);
+		List<VotersWithDelimitationInfoVO> votersWithDelimitationBasicInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>(0);
+		
+		List<VotersInfoForMandalVO> votersInfoForMandalList = null;
+		List<VotersInfoForMandalVO> votersBasicInfoForMandalList = null;
+		List<MandalVO> localElectionsInfo = new ArrayList<MandalVO>(0);
 		 
-		Map<String, String> mandalsIdsYear = new HashMap<String, String>();
-		Map<String, List<String>> isPartialByYear = new HashMap<String, List<String>>();
+		Map<String, String> mandalsIdsYear = new HashMap<String, String>(0);
+		Map<String, List<String>> isPartialByYear = new HashMap<String, List<String>>(0);
 		List<String> isPartialInfoForMandal = null;
 		for (int i = 0; i < mandalsList.size(); i++) 
 		{
-			Object[] obj = (Object[]) mandalsList.get(i);			
+			Object[] obj = (Object[]) mandalsList.get(i);	
+			MandalVO mandalVO = new MandalVO();
+			mandalVO.setId(new Long(obj[0].toString()));
+			mandalVO.setName(obj[1].toString());
+			
 			String year = obj[2].toString();
+			mandalVO.setElectionYear(year);
 			String partialData = obj[3].toString();
+			mandalVO.setIsPartial(obj[3].toString().equalsIgnoreCase("1")?"NO":"YES");
 			isPartialInfoForMandal = isPartialByYear.get(year);
 			if(isPartialInfoForMandal == null)
 				isPartialInfoForMandal = new ArrayList<String>();
@@ -905,15 +916,37 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				ids.append(value).append(IConstants.COMMA).append(obj[0].toString());
 			}
 			mandalsIdsYear.put(year, ids.toString());
-			
+			localElectionsInfo.add(mandalVO);
 		}	
+		constituencyVO.setLocalElectionsInfo(localElectionsInfo);
 		
 		Set<String>  keys = mandalsIdsYear.keySet();
+		
 		for(String year:keys)
 		{	
-			votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
+			votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>(0);
+			votersBasicInfoForMandalList = new ArrayList<VotersInfoForMandalVO>(0);
+			
 			VotersWithDelimitationInfoVO votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
+			VotersWithDelimitationInfoVO votersWithDelimitationBasicInfoVO = new VotersWithDelimitationInfoVO();
+			
 			votersWithDelimitationInfoVO.setYear(year);
+			votersWithDelimitationBasicInfoVO.setYear(year);
+			
+			for(MandalVO result: localElectionsInfo){
+				VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
+				votersInfo.setMandalId(result.getId().toString());
+				votersInfo.setMandalName(result.getName());
+				votersInfo.setIsPartial(result.getIsPartial());
+				if(year.equalsIgnoreCase(result.getElectionYear())){
+					votersBasicInfoForMandalList.add(votersInfo);
+				}
+			}
+			votersWithDelimitationBasicInfoVO.setVotersBasicInfoForMandalVO(votersBasicInfoForMandalList);
+			votersWithDelimitationBasicInfoVOList.add(votersWithDelimitationBasicInfoVO);
+			constituencyVO.setAssembliesOfParliamentBasicInfo(votersWithDelimitationBasicInfoVOList);
+			
+			
 			
 			String mandalIds = mandalsIdsYear.get(year);
 			List<String> partailData = isPartialByYear.get(year);

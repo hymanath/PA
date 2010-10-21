@@ -7,7 +7,7 @@ public class VotersWithDelimitationInfoVO {
 	
 	private String year;
 	private List<VotersInfoForMandalVO> votersInfoForMandalVO; 
-	
+	private List<VotersInfoForMandalVO> votersBasicInfoForMandalVO; 
 	
 	public String getYear() {
 		return year;
@@ -22,5 +22,13 @@ public class VotersWithDelimitationInfoVO {
 			List<VotersInfoForMandalVO> votersInfoForMandalVO) {
 		this.votersInfoForMandalVO = votersInfoForMandalVO;
 	}
+	public List<VotersInfoForMandalVO> getVotersBasicInfoForMandalVO() {
+		return votersBasicInfoForMandalVO;
+	}
+	public void setVotersBasicInfoForMandalVO(
+			List<VotersInfoForMandalVO> votersBasicInfoForMandalVO) {
+		this.votersBasicInfoForMandalVO = votersBasicInfoForMandalVO;
+	}
+	
 	
 }
