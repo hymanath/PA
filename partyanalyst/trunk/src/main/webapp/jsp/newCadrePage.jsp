@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script>
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	
@@ -564,6 +566,52 @@
 		return flag;
 	}
 
+	function cleanOptionsList(string)
+	{
+		if(string == "state")
+		{
+			clearOptionsListForSelectElmtId("constituencyField");
+			clearOptionsListForSelectElmtId("mandalField");
+			clearOptionsListForSelectElmtId("villageField");
+			
+		}
+
+		else if(string == "district")
+		{
+			clearOptionsListForSelectElmtId("mandalField");
+			clearOptionsListForSelectElmtId("villageField");
+		}
+
+		else if(string == "constituency")
+		{
+			clearOptionsListForSelectElmtId("villageField");
+		}
+
+		if(string == "pstate")
+		{
+			clearOptionsListForSelectElmtId("pconstituencyField");
+			clearOptionsListForSelectElmtId("pmandalField");
+			clearOptionsListForSelectElmtId("pvillageField");
+			
+		}
+
+		else if(string == "pdistrict")
+		{
+			clearOptionsListForSelectElmtId("pmandalField");
+			clearOptionsListForSelectElmtId("pvillageField");
+		}
+
+		else if(string == "pconstituency")
+		{
+			clearOptionsListForSelectElmtId("pvillageField");
+		}
+
+		
+		
+	}
+
+	
+
 	function executeOnload()
 	{
 		var textBoxEl = document.getElementById("firstNameField");
@@ -851,11 +899,11 @@
 			</tr>
 			<tr>
 				<td width="165px"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
-				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','districtField')"></s:select></td>
+				<td align="left" width="165px"><s:select id="stateField" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField','currentAdd');cleanOptionsList('state')"></s:select></td>
 				<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 					<td><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" headerKey="0" headerValue="Select District"></s:select>
+					<s:select id="districtField" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','constituencyField','currentAdd');cleanOptionsList('district')" ></s:select>
 						<!--<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','current','constituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 								<option value="${dist.id}">${dist.name}</option>
@@ -874,11 +922,11 @@
 			<tr>
 				<td width="165px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="constituencyField" cssClass="regionSelect" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false','current','mandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
+					<s:select id="constituencyField" cssClass="regionSelect" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
 				</td>
 				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false','current','villageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
+					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
@@ -910,12 +958,12 @@
 			<tr>
 				<td width="165px"><s:label for="pstateField" id="pstateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getnextList('state',this.options[this.selectedIndex].value,'false','official','pdistrictField')"></s:select>
+					<s:select id="pstateField" cssClass="regionSelect" name="pstate" list="#session.statesList_o" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','pdistrictField','OfficialAdd');cleanOptionsList('pstate')"></s:select>
 				</td>
 			<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
 				<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false','official','pconstituencyField')" headerKey="0" headerValue="Select District"></s:select>
+						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','pconstituencyField','OfficialAdd');cleanOptionsList('pdistrict')" headerKey="0" headerValue="Select District"></s:select>
 						<!--<select id="pdistrictField" class="regionSelect" name="pdistrict" onchange="getConstituencyList('district',this.options[this.selectedIndex].value,'false','permananent','pconstituencyField')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 							<c:forEach var="dist" items="${districtList}" >
 							<option value="${dist.id}">${dist.name}</option>
@@ -934,11 +982,11 @@
 			<tr>
 				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getMandalList('constituency',this.options[this.selectedIndex].value,'false','official','pmandalField')" headerKey="0" headerValue="Select Constituency"></s:select> 
+					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','pmandalField','OfficialAdd', 'null');cleanOptionsList('pconstituency')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
 				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getnextList('mandal',this.options[this.selectedIndex].value,'false','official','pvillageField')" headerKey="0" headerValue="Select Mandal"></s:select>				 
+					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','pvillageField','OfficialAdd')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
@@ -947,7 +995,7 @@
 					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
-				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="ppinCode" maxlength="10" size="25" />  </td>
+				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="10" size="25" />  </td>
 			</tr>				
 		</table>
 	</FIELDSET>
