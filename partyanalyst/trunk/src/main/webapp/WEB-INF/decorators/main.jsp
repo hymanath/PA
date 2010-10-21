@@ -241,7 +241,12 @@
 								<c:if test="${sessionScope.loginStatus == 'out'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
+									<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
+										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
+									</c:if>	
+									<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >Home</a> | 
+									</c:if>	
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
@@ -267,10 +272,19 @@
 					<ul class="first-of-type"> 
 						<c:if test="${sessionScope.loginStatus == 'out'}">  
 						<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
-							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+							<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
+								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
 								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
 								HOME
 							</a> 
+							</c:if>	
+							<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
+									<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+									HOME
+								</a>  
+							</c:if>	
+							
 						</li> 
 						</c:if>
 						<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
