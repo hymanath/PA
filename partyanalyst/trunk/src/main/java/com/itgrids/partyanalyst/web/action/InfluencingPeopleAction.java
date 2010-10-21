@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -51,6 +52,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private List<SelectOptionVO> occupationsList = new ArrayList<SelectOptionVO>();
 	private RegionServiceDataImp regionServiceDataImp;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
+	private IProblemManagementService problemManagementService;
 	
 	public List<SelectOptionVO> getInfluenceRange() {
 		return influenceRange;
@@ -185,14 +187,23 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	}
 	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
+	}	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
 	}
 	public String execute() throws Exception {
 		
 		positionsList = influencingPeopleService.getAllInfluencePeoplePositions();
 		positionSize =  positionsList.size();
 		staticParties = staticDataService.getStaticParties();
+		staticParties.add(0,new SelectOptionVO(0l,"Select Party"));
 		occupationsList = staticDataService.getAllOccupations();
-		influenceRange = influencingPeopleService.getInfluenceRange();
+		influenceRange = problemManagementService.getAllProblemImpactLevel();
+		influenceRange.add(0,new SelectOptionVO(0l,"Select Influence Scope"));
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		
 		stateList = new ArrayList<SelectOptionVO>();
