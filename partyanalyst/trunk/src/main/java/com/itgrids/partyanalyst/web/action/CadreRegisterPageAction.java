@@ -13,6 +13,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -37,6 +38,10 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private HttpServletRequest request;
 	private HttpSession session;
 	private List<SelectOptionVO> stateList;
+	private List<SelectOptionVO> stateList_o;
+	private List<SelectOptionVO> districtList;
+	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyCommitteesList;
@@ -56,6 +61,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private CadreInfo cadreInfo;
 	private List<String> language_options;
 	private RegionServiceDataImp regionServiceDataImp;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	
 	public ServletContext getContext() {
 		return context;
@@ -214,6 +220,39 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
+	}	
+
+	public List<SelectOptionVO> getDistrictList() {
+		return districtList;
+	}
+
+	public void setDistrictList(List<SelectOptionVO> districtList) {
+		this.districtList = districtList;
+	}
+
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
+	public List<SelectOptionVO> getMandalList() {
+		return mandalList;
+	}
+
+	public void setMandalList(List<SelectOptionVO> mandalList) {
+		this.mandalList = mandalList;
+	}
+
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
 
 	public String execute(){
@@ -227,20 +266,21 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
-
+		stateList_o = cadreManagementService.findStatesByCountryID("1");  
 		stateList = new ArrayList<SelectOptionVO>();
+		districtList = new ArrayList<SelectOptionVO>();
+		constituencyList = new ArrayList<SelectOptionVO>();
+		mandalList = new ArrayList<SelectOptionVO>();
 		
 		language_options = new ArrayList<String>();
 		language_options.add(IConstants.SPEAK_LANGUAGE);
 		language_options.add(IConstants.READ_LANGUAGE);
 		language_options.add(IConstants.WRITE_LANGUAGE);
-		
-		
-		stateList = cadreManagementService.findStatesByCountryID("1");
+			
 		
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
-		session.setAttribute(ISessionConstants.STATES, stateList);
-				
+		
+		session.setAttribute(ISessionConstants.STATES_O, stateList_o);
 		session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
@@ -248,80 +288,86 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 		if(windowTask.equals(IConstants.CREATE_NEW))
 		{	
-			session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
-					 
+			if("MLA".equals(accessType))
+			{
+				log.debug("Access Type = MLA ****");
+				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+				
+				stateList.add(list.get(0));			
+				districtList.add(list.get(1));
+				constituencyList.add(list.get(2));
+				mandalList = regionServiceDataImp.getMandalsByConstituencyID(accessValue);
+				mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
+				session.setAttribute(ISessionConstants.MANDALS,mandalList);	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+							
+			}else if("COUNTRY".equals(accessType))
+			{
+				log.debug("Access Type = Country ****");
+				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+				stateList.add(0,new SelectOptionVO(0l,"Select State"));
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				
+			}else if("STATE".equals(accessType)){
+				log.debug("Access Type = State ****");
+				
+				String name = cadreManagementService.getStateName(accessValue);
+				SelectOptionVO obj2 = new SelectOptionVO();
+				obj2.setId(accessValue);
+				obj2.setName(name);
+				stateList.add(obj2);
+				districtList = staticDataService.getDistricts(accessValue);
+				districtList.add(0,new SelectOptionVO(0l,"Select District"));
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				
+			}else if("DISTRICT".equals(accessType)){
+				log.debug("Access Type = District ****");			
+
+				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+				stateList.add(list.get(0));
+				districtList.add(list.get(1));
+				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
+				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				
+			} else if("MP".equals(accessType)){
+				log.debug("Access Type = MP ****");
+				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				SelectOptionVO state = stateList.get(0);
+				Long stateID = state.getId();
+				Long year = regionServiceDataImp.getLatestParliamentElectionYear(stateID);
+				log.debug("year:::::"+year);
+				log.debug("stateID:::::"+stateID);
+				if(year!=null){
+					constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
+				}	
+				log.debug("constituencyList.size():"+constituencyList.size());	
+				session.setAttribute("constituenciesList",constituencyList);			
+			}
+			
 			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
-		}	
-		
-/*		if("MLA".equals(accessType))
-		{
-			log.debug("Access Type = MLA ****");
-			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
-			
-			stateList.add(list.get(0));			
-			districtList.add(list.get(1));
-			constituencyList.add(list.get(2));
-			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);
-			session.setAttribute("statesList", stateList);
-			session.setAttribute("districtsList",districtList);
-			session.setAttribute("constituenciesList",constituencyList);
-			session.setAttribute("mandalsList",mandalList);
-			
-						
-		}else if("COUNTRY".equals(accessType))
-		{
-			log.debug("Access Type = Country ****");
-			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
-			session.setAttribute("statesList", stateList);
-			
-		}else if("STATE".equals(accessType)){
-			log.debug("Access Type = State ****");
-			
-			String name = cadreManagementService.getStateName(accessValue);
-			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select State");
-			SelectOptionVO obj2 = new SelectOptionVO();
-			obj2.setId(accessValue);
-			obj2.setName(name);
-			stateList.add(obj2);
-			districtList = staticDataService.getDistricts(accessValue);
-			districtList.add(0,new SelectOptionVO(0l,"Select District"));
-			session.setAttribute("statesList", stateList);
-			session.setAttribute("districtsList",districtList);
-			
-		}else if("DISTRICT".equals(accessType)){
-			log.debug("Access Type = District ****");			
-
-			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
-			stateList.add(list.get(0));
-			districtList.add(list.get(1));
-			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
-			session.setAttribute("statesList", stateList);
-			session.setAttribute("districtsList",districtList);
-			session.setAttribute("constituenciesList",constituencyList);
-			
-			
-		} else if("MP".equals(accessType)){
-			log.debug("Access Type = MP ****");
-			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
-			SelectOptionVO state = stateList.get(0);
-			Long stateID = state.getId();
-			Long year = regionServiceData.getLatestParliamentElectionYear(stateID);
-			log.debug("year:::::"+year);
-			log.debug("stateID:::::"+stateID);
-			if(year!=null){
-				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
-			}	
-			log.debug("constituencyList.size():"+constituencyList.size());	
-			session.setAttribute("constituenciesList",constituencyList);
-			
-		}*/
-		
+		}		
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		eduStatus = staticDataService.getAllEducationalQualifications();
 		occupationsList = staticDataService.getAllOccupations();
