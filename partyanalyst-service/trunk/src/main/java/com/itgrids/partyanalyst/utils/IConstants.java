@@ -286,6 +286,9 @@ public interface IConstants {
     public static final String BLOCK = "BLOCK";
     public static final String UNBLOCK = "UNBLOCK";
     public static final String SCRAP = "SCRAP";
+    public static final String LOGGED_USER = "LOGGED_USER";
+    
+    
     public static final String PARLIAMENT_CONSTITUENCY_LEVEL = "PARLIAMENT CONSTITUENCY";
     public static final String ASSEMBLY_CONSTITUENCY_LEVEL = "ASSEMBLY CONSTITUENCY";
     public static final String MUNCIPALITY_CORPORATION_LEVEL = "MUNCIPALITY/CORPORATION";

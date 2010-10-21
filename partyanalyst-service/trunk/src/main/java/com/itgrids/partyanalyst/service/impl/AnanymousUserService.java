@@ -361,6 +361,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						Long userId = new Long(parms[0].toString());					
 						userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());						
 					}
+					userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
 					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
 						if(status.equalsIgnoreCase(IConstants.ALL)){
 							candidateDetails.add(data.getValue());
@@ -563,7 +564,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * This block is used to get all the friend requests that are sent for the user or users.
 			 * 
 			 * The 			
-			 * 			resultStatusForScraps 
+			 * 			resultStatusForFriendRequest 
 			 * 
 			 * contains whether the block has been executed successfully or not.
 			 */
