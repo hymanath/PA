@@ -132,7 +132,7 @@
 				</tr>-->
 				
 				<tr>
-					<th><font color="#FF0000"> * </font> Cadre Type</span></th>
+					<th><font color="#FF0000"> * </font> Cadre Type</th>
 					<td>
 						<input type="radio" name="cadreTypeRadio" value="all" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
 						<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
@@ -145,7 +145,7 @@
 			<div id="filterOptionsCadresSearch">
 				<table width="100%" class="cadreSearchInputTable">
 				<tr>
-					<th valign="top"><font color="#FF0000"> * </font> Social Status</span></th>
+					<th valign="top"><font color="#FF0000"> * </font> Social Status</th>
 					<td valign="top">
 						<input type="checkbox" id="socialStatusCheck" value="socialStatus" onclick="showSocialStatus(this)"/> Include Cadre Social Status
 						<div>	
