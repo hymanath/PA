@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Language;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyCadreSkills;
 import com.itgrids.partyanalyst.model.PartyTrainingCamps;
 import com.itgrids.partyanalyst.model.PartyWorkingCommittee;
@@ -1317,9 +1318,12 @@ public class CadreManagementService {
 		State stateCA = currentAddress.getState();
 		District districtCA = currentAddress.getDistrict();
 		Constituency constituencyCA = currentAddress.getConstituency();
+		
 		Tehsil tehsilCA = currentAddress.getTehsil();
-		Township townshipCA = currentAddress.getTownship();
+		//Township townshipCA = currentAddress.getTownship();
 		Hamlet hamletCA = currentAddress.getHamlet();
+		LocalElectionBody localBodyCA = currentAddress.getLocalElectionBody();
+		Constituency wardCA = currentAddress.getWard();
 		
 		cadreInfo.setState(stateCA.getStateId().toString());
 		cadreInfo.setStateName(stateCA.getStateName());
@@ -1327,9 +1331,21 @@ public class CadreManagementService {
 		cadreInfo.setDistrictName(districtCA.getDistrictName());
 		cadreInfo.setConstituencyID(constituencyCA.getConstituencyId());
 		cadreInfo.setConstituencyName(constituencyCA.getName());
-		cadreInfo.setMandal(tehsilCA.getTehsilId().toString());
-		cadreInfo.setMandalName(tehsilCA.getTehsilName());
-		if(hamletCA == null)
+		
+		if(tehsilCA != null){
+			cadreInfo.setMandal(tehsilCA.getTehsilId().toString());
+			cadreInfo.setMandalName(tehsilCA.getTehsilName());
+			cadreInfo.setVillage(hamletCA.getHamletId().toString());
+			cadreInfo.setVillageName(hamletCA.getHamletName());
+		}else if(localBodyCA != null){
+			cadreInfo.setMandal(localBodyCA.getLocalElectionBodyId().toString());
+			cadreInfo.setMandalName(localBodyCA.getName());
+			cadreInfo.setVillage(wardCA.getConstituencyId().toString());
+			cadreInfo.setVillageName(wardCA.getName());
+		}
+		
+		//Urban Rural Scenario
+		/*if(hamletCA == null)
 		{
 			cadreInfo.setVillage(IConstants.TOWNSHIP_TYPE+townshipCA.getTownshipId().toString());
 			cadreInfo.setVillageName(townshipCA.getTownshipName());
@@ -1337,7 +1353,7 @@ public class CadreManagementService {
 		{
 			cadreInfo.setVillage(IConstants.HAMLET_TYPE+townshipCA.getTownshipId().toString());
 			cadreInfo.setVillageName(hamletCA.getHamletName());
-		}	
+		}*/
 		
 		if (currentAddress.equals(officialAddress)) {
 			cadreInfo.setSameAsCA(true);
@@ -1348,6 +1364,20 @@ public class CadreManagementService {
 			cadreInfo.setPstate(stateCA.getStateId().toString());
 			cadreInfo.setPdistrict(districtCA.getDistrictId().toString());
 			cadreInfo.setPconstituencyID(constituencyCA.getConstituencyId());
+			
+			if(tehsilCA != null){
+				cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
+				cadreInfo.setPmandalName(tehsilCA.getTehsilName());
+				cadreInfo.setPvillage(hamletCA.getHamletId().toString());
+				cadreInfo.setPvillageName(hamletCA.getHamletName());
+			}else if(localBodyCA != null){
+				cadreInfo.setPmandal(localBodyCA.getLocalElectionBodyId().toString());
+				cadreInfo.setPmandalName(localBodyCA.getName());
+				cadreInfo.setPvillage(wardCA.getConstituencyId().toString());
+				cadreInfo.setPvillageName(wardCA.getName());
+			}
+			
+			/*
 			cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
 			if(hamletCA == null)
 			{
@@ -1357,7 +1387,7 @@ public class CadreManagementService {
 			{
 				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletCA.getHamletId().toString());
 				cadreInfo.setPvillageName(hamletCA.getHamletName());
-			}			
+			}		*/	
 			
 		} else {
 			cadreInfo.setSameAsCA(false);
@@ -1369,8 +1399,10 @@ public class CadreManagementService {
 			District districtOA = officialAddress.getDistrict();
 			Constituency constituencyOA = officialAddress.getConstituency();
 			Tehsil tehsilOA = officialAddress.getTehsil();
-			Township townshipOA = officialAddress.getTownship();
+			//Township townshipOA = officialAddress.getTownship();
 			Hamlet hamletOA = officialAddress.getHamlet();
+			LocalElectionBody localBodyOA = officialAddress.getLocalElectionBody();
+			Constituency wardOA = officialAddress.getWard();
 			
 			cadreInfo.setPstate(stateOA.getStateId().toString());
 			cadreInfo.setPstateName(stateOA.getStateName());
@@ -1378,6 +1410,19 @@ public class CadreManagementService {
 			cadreInfo.setPdistrictName(districtOA.getDistrictName());
 			cadreInfo.setPconstituencyID(constituencyOA.getConstituencyId());
 			cadreInfo.setPconstituencyName(constituencyOA.getName());
+			
+			if(tehsilOA != null){
+				cadreInfo.setPmandal(tehsilOA.getTehsilId().toString());
+				cadreInfo.setPmandalName(tehsilOA.getTehsilName());
+				cadreInfo.setPvillage(hamletOA.getHamletId().toString());
+				cadreInfo.setPvillageName(hamletOA.getHamletName());
+			}else if(localBodyOA != null){
+				cadreInfo.setPmandal(localBodyOA.getLocalElectionBodyId().toString());
+				cadreInfo.setPmandalName(localBodyOA.getName());
+				cadreInfo.setPvillage(wardOA.getConstituencyId().toString());
+				cadreInfo.setPvillageName(wardOA.getName());
+			}
+			/*
 			cadreInfo.setPmandal(tehsilOA.getTehsilId().toString());
 			cadreInfo.setPmandalName(tehsilOA.getTehsilName());
 			if(hamletOA == null)
@@ -1389,14 +1434,8 @@ public class CadreManagementService {
 				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletOA.getHamletId().toString());
 				cadreInfo.setPhamletName(hamletOA.getHamletName());
 				cadreInfo.setPvillageName(hamletOA.getHamletName());
-			}
-			
-				
-			
-			
-			
-				
-			
+			}*/
+					
 		}
 
 		List<CadreLanguageEfficiency> cadreLanguageSkills = cadreLanguageEfficiencyDAO.findByCadreId(cadre.getCadreId());
