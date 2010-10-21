@@ -39,7 +39,26 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private Long localBodyId = null;
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
+    
+    private String districtName;	
+	private String constituencyName;
 	
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
 	private static final Logger log = Logger.getLogger(LoginAction.class);
 	
 	public String getSrc() {

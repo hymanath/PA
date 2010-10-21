@@ -35,6 +35,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private HttpSession session;
 	private String redirectLoc;
 	private String districtId;
+	private String districtName;
+	private String constituencyId;
+	private String constituencyName;
 	private String task;
 	JSONObject jObj;
 	private List<CandidateVO> candidates;
@@ -42,6 +45,30 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private ResultStatus resultStatus;
 	private DataTransferVO userDetails;
 	
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(String constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
 	public DataTransferVO getUserDetails() {
 		return userDetails;
 	}

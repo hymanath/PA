@@ -13,6 +13,8 @@ String districtId = "";
 String localBodyId = "";
 String constituencyId = "";
 String localBodyElectionTypeId = "";
+String districtName = "";
+String constituencyName = "";
 
 if(request.getParameter("src")!=null){
 	src = request.getParameter("src");
@@ -55,6 +57,15 @@ if(request.getParameter("constituencyId")!=null){
 if(request.getParameter("localBodyElectionTypeId")!=null){
 	localBodyElectionTypeId = request.getParameter("localBodyElectionTypeId");
 }
+
+if(request.getParameter("districtName")!=null){
+	districtName = request.getParameter("districtName");
+}
+
+if(request.getParameter("constituencyName")!=null){
+	constituencyName = request.getParameter("constituencyName");
+}
+
 %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -121,13 +132,16 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
 		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
+		 <input type="hidden" name="districtName" value="<%=districtName %>" />
+		 <input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
+		   
 	    <% } %>
             
-			<c:out value="${sessionScope.USER_REG_SUCCESS}" />
-			<c:remove var="USER_REG_SUCCESS" scope="session" />
-			<s:textfield name="userName" id="userName" label="%{getText('userName')}"/>
-			<s:password name="password" label="%{getText('password')}"/>
-			<s:submit value="Sign In" cssClass="btnStyle" align="center"/>
+		<c:out value="${sessionScope.USER_REG_SUCCESS}" />
+		<c:remove var="USER_REG_SUCCESS" scope="session" />
+		<s:textfield name="userName" id="userName" label="%{getText('userName')}"/>
+		<s:password name="password" label="%{getText('password')}"/>
+		<s:submit value="Sign In" cssClass="btnStyle" align="center"/>
 			
 		</s:form>
 		
@@ -137,14 +151,17 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 		 <div>
 		  <s:form name="regForm" action="anonymousUserAction" method="POST" theme="simple" >
 
-		     <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-			 <input type="hidden" name="task" value="<%=task %>" />
-			 <input type="hidden" name="name" value="<%=name %>" />
-			 <input type="hidden" name="stateId" value="<%=stateId %>" />
-			 <input type="hidden" name="districtId" value="<%=districtId %>" />
-			 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-			 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
-			 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
+		 <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+		 <input type="hidden" name="task" value="<%=task %>" />
+		 <input type="hidden" name="name" value="<%=name %>" />
+		 <input type="hidden" name="stateId" value="<%=stateId %>" />
+		 <input type="hidden" name="districtId" value="<%=districtId %>" />
+		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
+		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
+		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />			 
+		 <input type="hidden" name="districtName" value="<%=districtName %>" />
+		 <input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
+
 		 <hr>
 		 <table>
 		 <tr>
