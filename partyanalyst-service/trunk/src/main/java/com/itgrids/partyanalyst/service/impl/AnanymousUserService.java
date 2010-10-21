@@ -364,7 +364,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 						}
 											
 					}
-					userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
+					if(userIdAndRelationShipWithLogedUser.get(loginId)!=null){
+						userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
+					}
+					
 					for(Map.Entry<Long, CandidateVO> data : userIdAndRelationShipWithLogedUser.entrySet()){
 						if(status.equalsIgnoreCase(IConstants.ALL)){
 							candidateDetails.add(data.getValue());
