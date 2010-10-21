@@ -38,10 +38,10 @@ public class CustomMessageDAOHibernateTest extends BaseDaoTestCase {
 		List<Long> list = new ArrayList<Long>();
 		list.add(39l);
 		
-		List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(usersList,39l,IConstants.PENDING);	
+		List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(usersList,39l,IConstants.ALL);	
 		for(int i=0;i<detailsList.size();i++){
 			Object[] parms = (Object[])detailsList.get(i);
-			System.out.println(parms[0]);
+			System.out.println(parms[0]+"\t"+parms[1]);
 		}	
 		
 	}

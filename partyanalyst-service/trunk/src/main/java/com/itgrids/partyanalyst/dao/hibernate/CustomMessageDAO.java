@@ -20,9 +20,9 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getRelationShipBetweenTheUsers(List<Long> userIds,Long logedUserId,String status){
 		StringBuilder query = new StringBuilder();		
-		query.append(" select model.senderId.userId,model.messageType.messageType ");
+		query.append(" select model.recepientId.userId,model.messageType.messageType ");
 		query.append(" from CustomMessage model ");
-		query.append(" where model.recepientId.userId = ? and");		
+		query.append(" where model.senderId.userId = ? and");		
 		if(!status.equalsIgnoreCase(IConstants.ALL)){
 			query.append(" model.messageType.messageType = ? and");
 		}		
