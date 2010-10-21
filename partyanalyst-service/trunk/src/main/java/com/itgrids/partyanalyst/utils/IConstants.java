@@ -279,7 +279,7 @@ public interface IConstants {
     public static final Long ALL_CONNECTED_USER_DISPLAY = 100L;
     
     public static final String CONNECTED = "CONNECTED";
-    public static final String NOTCONNECTED = "NOTCONNECTED"; 
+    public static final String NOTCONNECTED = "NOT CONNECTED"; 
     public static final String DISCONNECTED = "DISCONNECTED";   
     public static final String FRIEND_REQUEST = "FRIEND REQUEST";
     public static final String COMMENTS = "COMMENTS";
