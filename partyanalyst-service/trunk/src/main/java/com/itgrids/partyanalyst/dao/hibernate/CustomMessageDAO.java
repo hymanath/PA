@@ -26,7 +26,7 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 		if(!status.equalsIgnoreCase(IConstants.ALL)){
 			query.append(" model.messageType.messageType = ? and");
 		}		
-		query.append(" model.senderId.userId in (:userIds)");	
+		query.append(" model.recepientId.userId in (:userIds)");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
