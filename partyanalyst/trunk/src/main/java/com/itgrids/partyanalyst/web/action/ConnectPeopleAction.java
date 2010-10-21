@@ -376,6 +376,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			status = IConstants.COMMENTS;
 		else if(statusText.equalsIgnoreCase(IConstants.SCRAP))
 			status = IConstants.SCRAP;
+		else if(statusText.equalsIgnoreCase(IConstants.NOTCONNECTED))
+			status = IConstants.NOTCONNECTED;
 		
 		
 		if(user==null){
