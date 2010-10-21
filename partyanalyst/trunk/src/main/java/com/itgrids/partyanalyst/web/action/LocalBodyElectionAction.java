@@ -396,7 +396,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		Set<String> partiesInChart = null;
 		Long constituencyId = jObj.getLong("constituencyId");
 		Long localBodyElectionId = jObj.getLong("localBodyElectionId");
-		greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(localBodyElectionId, constituencyId);
+		greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(localBodyElectionId, constituencyId,0l,0l);
 		if(greaterInfo.getLocalElectionsInfo() != null){
 			for(MandalVO electionInfoVO:greaterInfo.getLocalElectionsInfo()){
 				String lebChartName = "localElectionBodiesChart"+electionInfoVO.getName()+"_"+electionInfoVO.getId()+".png";

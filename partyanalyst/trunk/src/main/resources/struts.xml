@@ -1594,5 +1594,13 @@
 				<param name="root">userDetails</param>				
 			</result>		
 		</action>      
+		
+		
+		<action name="getGhmcResultsAction" class="constituencyPageAction" method="getGhmcResults">
+			<result type="json" name="success">
+				<param name="root">greaterInfo</param>				
+			</result>		
+		</action>
+		
 	</package>
 </struts>

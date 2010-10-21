@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
+import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
@@ -67,6 +68,7 @@ import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.PartyInfluenceService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -122,6 +124,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private List<SelectOptionVO> municipalElections;
 	 private List<SelectOptionVO> greaterElections;
 	 private List<SelectOptionVO> corporateElections;
+
+	 private List<SelectOptionVO> allLocalBodyIds,localBodyId;
 	 
 	 private String forwardTask = null;
 	 
@@ -130,9 +134,28 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private String userType = null;	
 	private String mapKey;
 	private NavigationVO messageTypes;
+	private LocalBodyElectionResultsVO localBodyElectionResults;
+	private ConstituencyVO greaterInfo;
 	
-	
-	
+	public List<SelectOptionVO> getLocalBodyId() {
+		return localBodyId;
+	}
+	public void setLocalBodyId(List<SelectOptionVO> localBodyId) {
+		this.localBodyId = localBodyId;
+	}
+	public ConstituencyVO getGreaterInfo() {
+		return greaterInfo;
+	}
+	public void setGreaterInfo(ConstituencyVO greaterInfo) {
+		this.greaterInfo = greaterInfo;
+	}
+	public LocalBodyElectionResultsVO getLocalBodyElectionResults() {
+		return localBodyElectionResults;
+	}
+	public void setLocalBodyElectionResults(
+			LocalBodyElectionResultsVO localBodyElectionResults) {
+		this.localBodyElectionResults = localBodyElectionResults;
+	}
 	public NavigationVO getMessageTypes() {
 		return messageTypes;
 	}
@@ -722,6 +745,16 @@ public class ConstituencyPageAction extends ActionSupport implements
    		corporateElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.CORPORATION_ELECTION_TYPE, 1l);
    		greaterElections = localBodyElectionService.getLocalBodyElectionsList(IConstants.GREATER_ELECTION_TYPE, 1l);
    		
+   		allLocalBodyIds = localBodyElectionService.getLatestGHMCElectionIdAndLatestElectionYear(IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
+   		localBodyId = localBodyElectionService.getLocalBodyElectionIdsForAConstituency(constituencyId,IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
+   		if(localBodyId!=null && localBodyId.size()!=0){
+   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,0l,0l);
+   		}else{  
+   			greaterInfo = new ConstituencyVO();
+   			greaterInfo.setListOfParties(getSelectOptionData());
+   			greaterInfo.setListOfWards(getSelectOptionData());
+   		}
+   		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
    		
@@ -742,15 +775,68 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 		messageTypes = ananymousUserService.getAllMessageTypes();
 		
+	
+				
    		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}
 		else
-			return Action.ERROR;
-		
-   	
+			return Action.ERROR;   	
 	}
 	
+	public String getGhmcResults(){
+
+		String param=null;		
+		param=request.getParameter("task");
+		log.debug("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long constituencyId = jObj.getLong("constituencyId");
+	
+		allLocalBodyIds = localBodyElectionService.getLatestGHMCElectionIdAndLatestElectionYear(IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
+   	
+		if(jObj.getString("type").equalsIgnoreCase(IConstants.ALL)){
+			if(allLocalBodyIds!=null && allLocalBodyIds.size()!=0){
+	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,0l,0l);
+	   		}else{  
+	   			greaterInfo = new ConstituencyVO();
+	   			greaterInfo.setListOfParties(getSelectOptionData());
+	   			greaterInfo.setListOfWards(getSelectOptionData());
+	   		}
+		}else if(jObj.getString("type").equalsIgnoreCase("partyWise")){
+			if(allLocalBodyIds!=null && allLocalBodyIds.size()!=0){
+	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,new Long(jObj.getLong("value")),0l);
+	   		}else{  
+	   			greaterInfo = new ConstituencyVO();
+	   			greaterInfo.setListOfParties(getSelectOptionData());
+	   			greaterInfo.setListOfWards(getSelectOptionData());
+	   		}
+		}else if(jObj.getString("type").equalsIgnoreCase("wardWise")){
+			if(allLocalBodyIds!=null && allLocalBodyIds.size()!=0){
+	   			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,new Long(0l),new Long(jObj.getLong("value")));
+	   		}else{  
+	   			greaterInfo = new ConstituencyVO();
+	   			greaterInfo.setListOfParties(getSelectOptionData());
+	   			greaterInfo.setListOfWards(getSelectOptionData());
+	   		}
+		}
+   		
+		return Action.SUCCESS;
+	}
+	
+	public List<SelectOptionVO> getSelectOptionData(){
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		SelectOptionVO result = new SelectOptionVO();
+		result.setId(0l);
+		result.setName("");
+		list.add(result);
+		return list;
+	}
 	public String getMandalsVotesShareInConstituencyAjax(){
 		
 		String param=null;		

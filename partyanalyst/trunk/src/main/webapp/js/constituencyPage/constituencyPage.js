@@ -1500,3 +1500,42 @@ function getGreaterResults()
 	var url = "getGreaterConstiResults.action?"+rparam;
 	callAjax(jsObj, url);
 }
+
+function changeWardWiseResultsCriteria(type)
+{
+	var partySelectElmt = document.getElementById("wardWise_parties");
+	var wardSelectElmt = document.getElementById("wardWise_ward");
+	
+	if(type == "all")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'hidden';		
+		getWardWiseElectionResults('all',0);
+	}
+	else if(type == "partyWise")
+	{
+		wardSelectElmt.style.visibility = 'hidden';
+		partySelectElmt.style.visibility = 'visible'			
+	}
+	else if(type == "wardWise")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'visible'			
+	}
+}
+
+function getWardWiseElectionResults(type,value)
+{	
+	var jsObj=
+	{		
+		type:type,
+		value:value,
+		constituencyId:constituencyId,
+		task:"getGhmcResultsBasedOnSelection"					
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getGhmcResultsAction.action?"+rparam;						
+	
+	callAjax(jsObj,url);
+}
