@@ -55,7 +55,9 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 			bodyStr+='<a href="connectPeopleAction.action?redirectLoc='+locationType+'&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'">Connect</a>';
 		else
 		{
-			if(connectedPeopleData[i].status == "NOTCONNECTED")
+			if(connectedPeopleData[i].status == "LOGGED_USER")
+				bodyStr+='<font color="#4A610B" style="padding-right:10px;">Logged User</font>';
+			else if(connectedPeopleData[i].status == "NOT CONNECTED")
 			{
 				bodyStr+='<font color="#7F5A22" style="padding-right:10px;">Not Connected</font>';
 				bodyStr+=' - <a href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+connectedPeopleData[i].id+'\',\''+connectedPeopleData[i].candidateName+'\',\''+connectedPeopleData[i].constituencyName+'\',\''+userLoginId+'\',\''+locationId+'\',\''+locationType+'\',\''+locationName+'\')">Connect</a>';
@@ -334,7 +336,7 @@ function buildAllConnectUserString(users)
 		str += '<tr>';
 		str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
 		str += '<td width="80%"><div class="connectPeople_body_name">'+users[i].candidateName+'</div></td>';				
-		if(users[i].status == "NOTCONNECTED")
+		if(users[i].status == "NOT CONNECTED")
 			str += '<td rowspan="2" width="10%"><input type="checkbox" name="connectUserCheck" value="'+users[i].id+'"/></td>';
 		else
 			str += '<td rowspan="2" width="10%">&nbsp</td>';		
