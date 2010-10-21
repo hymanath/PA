@@ -325,7 +325,7 @@
 							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
 								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
 									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
-										User Profile
+										USER PROFILE
 									</a>  
 								</c:if>	
 								
