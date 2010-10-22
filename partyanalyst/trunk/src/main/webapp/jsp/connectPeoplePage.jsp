@@ -133,7 +133,7 @@
 			connectedPeopleInfo.connectPeople.push(obj);
 		</c:forEach>
 		
-
+		
 		commentsInfo.connectPeopleStatus.resultCode = '${dataTransferVO.resultStatusForConnectedPeople.resultCode}';	
 		commentsInfo.connectPeopleStatus.exceptionMsg = '${dataTransferVO.resultStatusForConnectedPeople.exceptionMsg}';
 		commentsInfo.connectPeopleStatus.isResultPartial = '${dataTransferVO.resultStatusForConnectedPeople.isResultPartial}';
@@ -147,6 +147,7 @@
 							district:'${connect.district}',
 							state:'${connect.state}',
 							status:'${connect.status}',
+							data : '${connect.data}'
 						};
 			commentsInfo.comments.push(obj);
 		</c:forEach>

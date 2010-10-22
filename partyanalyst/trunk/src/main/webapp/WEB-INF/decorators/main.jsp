@@ -84,6 +84,7 @@
 <link href="styles/pa.css" rel="stylesheet" type="text/css" />
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
 <link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 	
 	<script type="text/javascript">
 	 

@@ -21,6 +21,8 @@ var commentsInfo = {
 						  };
 
 var loginUserId = '';
+
+
 function initializeTabView()
 {
 	var myTabs = new YAHOO.widget.TabView();
@@ -29,6 +31,12 @@ function initializeTabView()
 	str += '<div id="storyBoard_header_Div"></div>';
 	str += '<div id="storyBoard_body_Div"></div>';
 	str += '<div id="storyBoard_fotter_Div"></div>';
+	str += '</div>';
+
+	str += '<div id="messages_main">';
+	str += '<div id="messages_header_Div"></div>';
+	str += '<div id="messages_body_Div"></div>';
+	str += '<div id="messages_fotter_Div"></div>';
 	str += '</div>';
 	
 	myTabs.addTab( new YAHOO.widget.Tab({
@@ -44,8 +52,66 @@ function initializeTabView()
  
 	myTabs.appendTo("connectPeople_connect_center");
 	
-	buildConnectionsTabContent();
+	
 }
+
+function buildInboxMessagesForUser()
+{
+	var arrData = commentsInfo.comments;
+	var arrStatus = commentsInfo.connectPeopleStatus;
+
+	var elmt = document.getElementById("messages_body_Div");
+	
+	if(!elmt)
+		return;
+	
+	var str = '';
+	if(arrStatus.resultCode != "0")
+	{
+		str += '<fieldset>';
+		str += '<legend>Messages</legend>';
+		str += '<div> Data could not be retrived due to some technical difficulties</div>';
+		str += '</fieldset>';
+		elmt.innerHTML = str;
+		return;
+	}
+	else if(arrData.length == 0)
+	{
+		str += '<fieldset>';
+		str += '<legend>Messages</legend>';
+		str += '<div> There are no Messages .</div>';
+		str += '</fieldset>';		
+		elmt.innerHTML = str;
+		return;
+	}
+
+	str += '<fieldset>';
+	str += '<legend>Messages</legend>';
+	str += '<div> There are '+arrData.length+' messages</div>';
+	str += '<div>';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th>Name</th>';
+	str += '<th>Constituency</th>';
+	str += '<th>Message</th>';
+	str += '</tr>';
+	
+	for(var i=0;i<arrData.length;i++)
+	{
+		str += '<tr>';
+		str += '<td align="center">'+arrData[i].candidateName+'</td>';
+		str += '<td align="center">'+arrData[i].constituencyName+'</td>';
+		str += '<td align="center">'+arrData[i].data+'</td>';
+		str += '</tr>';
+	}
+	
+	str += '</table>';
+	str += '</div>';
+	str += '</fieldset>';
+
+	elmt.innerHTML = str;
+}
+
 
 function buildConnectionsTabContent()
 {
@@ -159,12 +225,36 @@ function sendMessageToConnectedUser(userId)
 	callAjax(rparam,jsObj,url);
 }
 
+function showMessageSentConfirmation(results)
+{
+	var elmt = document.getElementById("connectStatus");
+
+	if(results.resuktCode != 0)
+	{
+		elmt.innerHTML = '<blink><font color="green">Message Sent Successfully..</font></blink>';
+		var t=setTimeout("closeMessagePopup()",2000);
+	}
+	else
+	{
+		elmt.innerHTML = 'Message Cannot Be sent Due To Some Technical Difficulties';
+	}
+}
+
+function closeMessagePopup()
+{
+	var elmt = document.getElementById("connectPeopleMessagePopup_main");
+
+	if(elmt)
+		elmt.innerHTML = '<div id="connectPeopleMessagePopup"></div>';
+}
+
+
 function callAjax(param,jsObj,url){
 	var results;	
 	var callback = {			
 	    success : function( o ) {
 			try {							
-				"",					
+									
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getAllRequestMessagesForUser")
 					{													
@@ -174,19 +264,23 @@ function callAjax(param,jsObj,url){
 							hideRequestDiv();
 						}
 					}	
-					if(jsObj.task == "acceptRequest")
+					else if(jsObj.task == "acceptRequest")
 					{
 						showStatus(results);						
 						getAllRequestMessagesForUser();
 					}
-					if(jsObj.task == "rejectRequest")
+					else if(jsObj.task == "rejectRequest")
 					{
 						showStatus(results);
 						getAllRequestMessagesForUser();						
 					}
-					if(jsObj.task == "blockRequest")
+					else if(jsObj.task == "blockRequest")
 					{
 						getAllRequestMessagesForUser();						
+					}
+					else if(jsObj.task == "sendMessageToConnectUser")
+					{
+						showMessageSentConfirmation(results);
 					}
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -321,8 +415,11 @@ function getAllRequestMessagesForUser(){
 	callAjax(rparam,jsObj,url);
 }
 
+
 function initializeConnectPeople()
 {
 	initializeTabView();	
 	getAllRequestMessagesForUser();
+	buildInboxMessagesForUser();
+	buildConnectionsTabContent();
 }
