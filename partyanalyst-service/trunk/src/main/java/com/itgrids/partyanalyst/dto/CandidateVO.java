@@ -15,6 +15,9 @@ public class CandidateVO {
 	private String constituencyName;
 	private ResultStatus resultStatus;
 	private List<CandidateElectionVO> candidateElectionVOs;
+	private String state;
+	private String district;
+	private String constituency;
 	
 	public CandidateVO(){
 		
@@ -30,8 +33,31 @@ public class CandidateVO {
 		this.image = image;
 	}
 
-	
-	
+		
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
 	public String getConstituencyName() {
 		return constituencyName;
 	}

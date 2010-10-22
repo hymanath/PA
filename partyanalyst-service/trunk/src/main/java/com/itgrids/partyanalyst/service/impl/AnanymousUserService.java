@@ -762,7 +762,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 							candidateName+=name;
 						}						
 						candidateResults.setCandidateName(candidateName);
-						candidateResults.setId(details.getUserId());						
+						candidateResults.setId(details.getUserId());	
+						candidateResults.setState(details.getState().getStateName());
+						candidateResults.setDistrict(details.getDistrict().getDistrictName());						
+						candidateResults.setConstituency(details.getConstituency().getName());
 						candiateVO.add(candidateResults);
 					}
 				}else{
