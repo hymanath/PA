@@ -513,7 +513,9 @@ function buildCenterVotersCandidateInfoContent()
 					]; 
 			 
 			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
-		}else{			
+		}else{	
+			if(basicData != null)
+			{
 			 var myDataSource = new YAHOO.util.DataSource(basicData.info); 
 			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 			 myDataSource.responseSchema = { 
@@ -529,6 +531,7 @@ function buildCenterVotersCandidateInfoContent()
 					]; 
 			 
 			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+			}
 		}
 		
 
