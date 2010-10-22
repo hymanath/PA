@@ -17,7 +17,6 @@ public class CandidateVO {
 	private List<CandidateElectionVO> candidateElectionVOs;
 	private String state;
 	private String district;
-	private String constituency;
 	
 	public CandidateVO(){
 		
@@ -48,14 +47,6 @@ public class CandidateVO {
 
 	public void setDistrict(String district) {
 		this.district = district;
-	}
-
-	public String getConstituency() {
-		return constituency;
-	}
-
-	public void setConstituency(String constituency) {
-		this.constituency = constituency;
 	}
 
 	public String getConstituencyName() {
