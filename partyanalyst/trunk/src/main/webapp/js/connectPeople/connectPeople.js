@@ -1,4 +1,26 @@
 
+
+var connectedPeopleInfo = {
+							connectPeopleStatus:{
+													resultCode:'',													
+													exceptionMsg:'',
+													isResultPartial:'',
+													exceptionClass:''
+												},
+							connectPeople:[]
+						  };
+
+var commentsInfo = {
+							connectPeopleStatus:{
+													resultCode:'',													
+													exceptionMsg:'',
+													isResultPartial:'',
+													exceptionClass:''
+												},
+							comments:[]
+						  };
+
+var loginUserId = '';
 function initializeTabView()
 {
 	var myTabs = new YAHOO.widget.TabView();
@@ -27,24 +49,116 @@ function initializeTabView()
 
 function buildConnectionsTabContent()
 {
+	var arrData = connectedPeopleInfo.connectPeople;
+	var arrStatus = connectedPeopleInfo.connectPeopleStatus;
+
 	var elmt = document.getElementById("connections_main");
 
 	if(!elmt)
 		return;
-
+	
 	var str = '';
-	str += '<table width="100%">';
+
+	if(arrStatus.resultCode != "0")
+	{
+		str += '<div> Data could not be retrived due to some technical difficulties</div>';
+		elmt.innerHTML = str;
+		return;
+	}
+	else if(arrData.length == 0)
+	{
+		str += '<div> There are no connections established till now.</div>';
+		elmt.innerHTML = str;
+		return;
+	}
+	
+	str += '<div id="connecttion_main_head">';
+	str += '<p>You have '+arrData.length+' connections in total</p>';
+	str += '</div>';
+	str += '<div>';
+	str += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
 	str += '<tr>';
-	str += '<td colspan="2"><p>You have 12 connections in total</p></td>';
+	str += '<td width="30%" valign="top">';
+	str += '<div id="connection_main_search">';
+	str += '</div>';
+	str += '</td>';
+	str += '<td width="70%" valign="top">';
+	str += '<div id="connection_main_data">';
+	for(var i=0; i<arrData.length; i++)
+	{
+		str += '<div>';
+		str += '<table>';
+		str += '<tr>';
+		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
+		str += '</tr>';
+		str += '<tr>';		
+		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
+		str += '</tr>';	
+		str += '<tr>';		
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\')">mail</a></td>';
+		str += '</tr>';	
+		str += '</table>';
+		str += '</div>';
+	}
+	str += '</div>';
+	str += '</td>';
 	str += '</tr>';	
-	str += '<tr>';
-	str += '<td></td>';
-	str += '<td></td>';
-	str += '</tr>';
 	str += '</table>';
+	str += '</div>';
+	
 
 	elmt.innerHTML = str;
 }
+
+function showMailPopup(id,name)
+{
+	var str = '';	
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th>Message</th>';
+	str += '<td><textarea id="connectMessageText" cols="50" rows="4"></textarea></td>';
+	str += '</tr>';
+	str += '<tr>';	
+	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\')"></td>';
+	str += '</tr>';
+	str += '</table>';
+	str	+= '<div id="connectStatus"></div>';
+	str	+= '</div>';
+	
+	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
+				 width:'400px',
+                 fixedcenter : true, 
+                 visible : true,
+                 constraintoviewport : true, 
+        		 iframe :false,
+        		 modal :false,
+        		 hideaftersubmit:true,
+        		 close:true,
+				 draggable:true
+       });	 
+	
+	connectPopupPanel.setHeader("Send Message To "+name);
+    connectPopupPanel.setBody(str);
+    connectPopupPanel.render();
+}
+
+function sendMessageToConnectedUser(userId)
+{	
+	var connectTextAreaElmt = document.getElementById("connectMessageText");
+	var connectMsg = connectTextAreaElmt.value;
+	var jsObj ={
+				loginUserId:loginUserId,
+				meassage:connectMsg,				
+				recipientId:userId,
+				task:"sendMessageToConnectUser"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "messageToConnectedUser.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
+
 function callAjax(param,jsObj,url){
 	var results;	
 	var callback = {			

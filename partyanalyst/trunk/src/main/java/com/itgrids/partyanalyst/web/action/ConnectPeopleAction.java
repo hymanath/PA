@@ -45,8 +45,17 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private ResultStatus resultStatus;
 	private DataTransferVO userDetails;
 	private DataTransferVO dataTransferVO;
+	private Long loginUserId;
 	
 	
+	public Long getLoginUserId() {
+		return loginUserId;
+	}
+
+	public void setLoginUserId(Long loginUserId) {
+		this.loginUserId = loginUserId;
+	}
+
 	public DataTransferVO getDataTransferVO() {
 		return dataTransferVO;
 	}
@@ -178,7 +187,8 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
 		List<Long> userId = new ArrayList<Long>(0);
-		userId.add(new Long(user.getRegistrationID()));
+		loginUserId = new Long(user.getRegistrationID());
+		userId.add(loginUserId);
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
 		
@@ -402,6 +412,32 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.ALL_CONNECTED_USER_DISPLAY,user.getRegistrationID(),status);
    		}
    		
+		return Action.SUCCESS;
+	}
+	
+	public String sendMessageToConnectedUser()
+	{
+		String param;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Long loginUserId = new Long(jObj.getString("loginUserId"));		
+		Long recipientId = new Long(jObj.getString("recipientId"));
+		String message = jObj.getString("meassage");		
+		
+		List<Long> senderIds = new ArrayList<Long>();
+		senderIds.add(loginUserId);
+		
+		List<Long> recipientIds = new ArrayList<Long>();
+		recipientIds.add(recipientId);
+		
+		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds, IConstants.COMMENTS,message);
+		
 		return Action.SUCCESS;
 	}
 	

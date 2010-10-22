@@ -118,3 +118,14 @@
 	white-space:nowrap;
 }
 
+#connection_main_data
+{
+	border-left:1px solid #ADADAD;
+	height:500px;
+}
+
+#connectPeopleMessagePopup_main .yui-panel .hd 
+{
+	text-align:left;
+	padding:2px 10px;
+}
