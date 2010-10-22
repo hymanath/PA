@@ -45,6 +45,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyCommitteesList;
+	private List<String> dobOptionsList  = new ArrayList<String>(); 
 	private List<SelectOptionVO> cadreSkillsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyTrainingCampsList = new ArrayList<SelectOptionVO>();
 	private IStaticDataService staticDataService; 
@@ -254,6 +255,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			ICrossVotingEstimationService crossVotingEstimationService) {
 		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
+	
+	public List<String> getDobOptionsList() {
+		return dobOptionsList;
+	}
+
+	public void setDobOptionsList(List<String> dobOptionsList) {
+		this.dobOptionsList = dobOptionsList;
+	}
 
 	public String execute(){
 		if(log.isDebugEnabled())
@@ -281,7 +290,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
 		
 		session.setAttribute(ISessionConstants.STATES_O, stateList_o);
-		session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+		session.setAttribute(ISessionConstants.STATES_C, stateList_o);
 		session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
@@ -390,12 +399,17 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			gender.add("Male");
 			gender.add("Female");
 		}
+		
+		dobOptionsList.add("Date Of Birth");
+		dobOptionsList.add("Age");
+		
 		if(cadreType.size() == 0)
 		{
 			cadreType.add(IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			cadreType.add(IConstants.CADRE_MEMBER_TYPE_NORMAL);
 		}
 		cadreLevels = cadreManagementService.getAllCadreLevels();
+		session.setAttribute(ISessionConstants.DOB_OPTIONS, dobOptionsList);
 		session.setAttribute(ISessionConstants.CADRE_LEVELS, cadreLevels );
 		session.setAttribute(ISessionConstants.CADRETYPES, cadreType);
 		session.setAttribute(ISessionConstants.GENDERS, gender);
@@ -419,11 +433,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
         {	
         	cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
         	prepopulateLocations(cadreInfo);
-        }	
-        	
-        
-	}
-    
+        }        
+	}    
 
      public Object getModel() {
         return cadreInfo;
