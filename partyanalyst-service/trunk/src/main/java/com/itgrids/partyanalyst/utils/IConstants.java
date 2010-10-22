@@ -277,6 +277,7 @@ public interface IConstants {
     public static final Long MAX_PROBLEMS_DISPLAY = 20L;
     public static final Long MAX_ANONYMOUS_USER_DISPLAY = 20L;
     public static final Long ALL_CONNECTED_USER_DISPLAY = 100L;
+    public static final Long MAX_SEARCH_RESULTS_DISPLAY = 100L;
     
     public static final String CONNECTED = "CONNECTED";
     public static final String NOTCONNECTED = "NOT CONNECTED"; 

@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 /**
@@ -103,9 +104,10 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		}
 		
 		String query = queryBuffer.toString().substring(0, queryBuffer.toString().length()-3);
-		System.out.println("query: "+query);
-		return getHibernateTemplate().find(query); 
 		
+		Query queryObject = getSession().createQuery(query);		
+		queryObject.setMaxResults(IConstants.MAX_SEARCH_RESULTS_DISPLAY.intValue());
+		return queryObject.list();		
 	}
 	
 
