@@ -635,12 +635,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			DataTransferVO statusForScraps = getAllMessagesForUser(userId,IConstants.COMMENTS);			
+			DataTransferVO statusForComments = getAllMessagesForUser(userId,IConstants.COMMENTS);			
 			ResultStatus resultStatusForComments = new ResultStatus(); 
-			if(statusForScraps.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(statusForComments.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
 			}else{			
-				resultVO = statusForScraps.getCandidateVO();
+				resultVO = statusForComments.getCandidateVO();
 				if(resultVO!=null && resultVO.size()!=0){
 					resultStatusForComments.setResultCode(ResultCodeMapper.SUCCESS);
 					dataTransferVO.setComments(resultVO);
@@ -857,7 +857,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 					}
 					if(parms[3]!=null){
 						candidateName+=parms[3].toString();
-					}					
+					}				
+					candidateResults.setState(parms[4].toString());
+					candidateResults.setDistrict(parms[5].toString());					
+					candidateResults.setConstituencyName(parms[6].toString());
 					candidateResults.setCandidateName(candidateName);
 					candiateVO.add(candidateResults);
 				}
