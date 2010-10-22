@@ -44,7 +44,17 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private IAnanymousUserService ananymousUserService;
 	private ResultStatus resultStatus;
 	private DataTransferVO userDetails;
+	private DataTransferVO dataTransferVO;
 	
+	
+	public DataTransferVO getDataTransferVO() {
+		return dataTransferVO;
+	}
+
+	public void setDataTransferVO(DataTransferVO dataTransferVO) {
+		this.dataTransferVO = dataTransferVO;
+	}
+
 	public String getDistrictName() {
 		return districtName;
 	}
@@ -165,6 +175,12 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			log.error(" No User Log In .....");			
 			return IConstants.NOT_LOGGED_IN;
 		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
+		List<Long> userId = new ArrayList<Long>(0);
+		userId.add(new Long(user.getRegistrationID()));
+		
+		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
 		
 		return Action.SUCCESS;
 	}
