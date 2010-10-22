@@ -41,6 +41,7 @@ public interface ISessionConstants {
 	// training camps based on party
 	public static final String PARTY_TRAINING_CAMPS="partyTrainingCamps";
 	public static final String GENDERS = "genders";
+	public static final String DOB_OPTIONS = "dob_Options";
 	public static final String CADRETYPES = "cadreType";
 	public static final String LANGUAGE_OPTIONS = "language_options";
 	//booleans used whether to show or hide the corresponding content 

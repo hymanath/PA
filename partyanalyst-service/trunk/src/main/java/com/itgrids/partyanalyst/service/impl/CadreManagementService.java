@@ -439,10 +439,10 @@ public class CadreManagementService {
 				cadre.setEmail(cadreInfo.getEmail());
 				cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
 				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-				if (cadreInfo.getDobOption() != null && "dobOption".equals(cadreInfo.getDobOption())) {
+				if (cadreInfo.getDobOption() != null && "Date Of Birth".equals(cadreInfo.getDobOption())) {
 					cadre.setDateOfBirth(format.parse(cadreInfo.getDateOfBirth()));
 					cadre.setExactDateOfBirth("true");
-				} else if (cadreInfo.getDobOption() != null && "age".equals(cadreInfo.getDobOption())) {
+				} else if (cadreInfo.getDobOption() != null && "Age".equals(cadreInfo.getDobOption())) {
 					Calendar cal = Calendar.getInstance();
 					Date todaysDate = new Date();
 					cal.setTime((todaysDate));
@@ -470,7 +470,7 @@ public class CadreManagementService {
 				{
 					CadreLevel level = new CadreLevel();
 					level.setCadreLevelID(cadreInfo.getCadreLevel());
-					String[] values = { "", "COUNTRY", "STATE","DISTRICT", "CONSTITUENCY", "MANDAL","VILLAGE" };
+					String[] values = { "", "COUNTRY", "STATE","DISTRICT", "CONSTITUENCY", "MANDAL","VILLAGE","MUNICIPAL-CORP-GMC","WARD","BOOTH" };
 					level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
 					cadre.setCadreLevel(level);
 					//if (!StringUtils.isBlank(cadreInfo.getCadreLevelValue()))
