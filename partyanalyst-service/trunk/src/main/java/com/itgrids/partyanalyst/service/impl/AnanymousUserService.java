@@ -522,7 +522,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public DataTransferVO getDataForAUserProfile(List<Long> userId,String informationStatus){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
-		DataTransferVO dataVo = new DataTransferVO();
+		//DataTransferVO dataVo = new DataTransferVO();
 		List<CandidateVO> resultVO = new ArrayList<CandidateVO>(); 
 		try{
 			
@@ -534,7 +534,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * 
 			 * contains whether the block has been executed successfully or not.
 			 */
-			dataVo = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1,informationStatus);
+			DataTransferVO dataVo = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1,informationStatus);
 			ResultStatus resultStatusForConnectedPeople = new ResultStatus(); 
 			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
@@ -562,12 +562,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * 
 			 * contains whether the block has been executed successfully or not.
 			 */
-			dataVo = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,IConstants.MAX_LEVEL_OF_CONNECTION,informationStatus);			
+			DataTransferVO peopleYouMayKnow  = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,IConstants.MAX_LEVEL_OF_CONNECTION,informationStatus);			
 			ResultStatus resultStatusForPeopleYouMayKnow = new ResultStatus(); 
-			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(peopleYouMayKnow.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
 			}else{
-				resultVO = dataVo.getCandidateVO();
+				resultVO = peopleYouMayKnow.getCandidateVO();
 				if(resultVO!=null && resultVO.size()!=0){
 					resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.SUCCESS);
 					dataTransferVO.setPeopleYouMayKnow(resultVO);				
@@ -586,12 +586,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			dataVo = getAllMessagesForUser(userId,IConstants.PENDING);
+			DataTransferVO friendRequest = getAllMessagesForUser(userId,IConstants.PENDING);
 			ResultStatus resultStatusForFriendRequest = new ResultStatus(); 
-			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(friendRequest.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForFriendRequest.setResultCode(ResultCodeMapper.FAILURE);
 			}else{			
-				resultVO = dataVo.getCandidateVO();
+				resultVO = friendRequest.getCandidateVO();
 				if(resultVO!=null && resultVO.size()!=0){
 					resultStatusForFriendRequest.setResultCode(ResultCodeMapper.SUCCESS);
 					dataTransferVO.setFriendRequest(resultVO);		
@@ -610,12 +610,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			dataVo = getAllMessagesForUser(userId,IConstants.SCRAP);
+			DataTransferVO scraps = getAllMessagesForUser(userId,IConstants.SCRAP);
 			ResultStatus resultStatusForScraps = new ResultStatus(); 
-			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(scraps.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForScraps.setResultCode(ResultCodeMapper.FAILURE);
 			}else{			
-				resultVO = dataVo.getCandidateVO();
+				resultVO = scraps.getCandidateVO();
 				if(resultVO!=null && resultVO.size()!=0){
 					resultStatusForScraps.setResultCode(ResultCodeMapper.SUCCESS);
 					dataTransferVO.setScraps(resultVO);		
@@ -635,12 +635,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			 * contains whether the block has been executed successfully or not.
 			 */
 			
-			dataVo = getAllMessagesForUser(userId,IConstants.COMMENTS);			
+			DataTransferVO statusForScraps = getAllMessagesForUser(userId,IConstants.COMMENTS);			
 			ResultStatus resultStatusForComments = new ResultStatus(); 
-			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(statusForScraps.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
 			}else{			
-				resultVO = dataVo.getCandidateVO();
+				resultVO = statusForScraps.getCandidateVO();
 				if(resultVO!=null && resultVO.size()!=0){
 					resultStatusForComments.setResultCode(ResultCodeMapper.SUCCESS);
 					dataTransferVO.setComments(resultVO);
@@ -711,18 +711,19 @@ public class AnanymousUserService implements IAnanymousUserService {
 				resultVO = setUserProfileData(result,informationStatus);	
 			}
 			
-			if(resultVO==null && resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
-				dataTransferVO.setCandidateVO(candiateVO);
+			if(resultVO==null || resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				resultStatus.setResultPartial(false);
 				dataTransferVO.setResultStatus(resultStatus);
 			}else{
-				dataTransferVO.setCandidateVO(candiateVO);
+				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				resultStatus.setResultPartial(false);
 				dataTransferVO.setResultStatus(resultStatus);
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
@@ -751,7 +752,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 				if(informationStatus.equalsIgnoreCase(IConstants.COMPLETE_DETAILS)){
 					for(AnanymousUser details : result){
 						CandidateVO candidateResults = new CandidateVO();
-						String candidateName = null;
+						String candidateName = " ";
 						String name = details.getName();
 						if(name!=null){
 							candidateName+=name;
@@ -761,9 +762,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 							candidateName+=name;
 						}						
 						candidateResults.setCandidateName(candidateName);
-						candidateResults.setId(details.getUserId());
-						//candidateResults.set
-						candiateVO.addAll(candiateVO);
+						candidateResults.setId(details.getUserId());						
+						candiateVO.add(candidateResults);
 					}
 				}else{
 					for(AnanymousUser details : result){
@@ -789,6 +789,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			resultStatus.setResultPartial(false);
 			dataTransferVO.setResultStatus(resultStatus);
 		}catch(Exception e){
+			e.printStackTrace();
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
