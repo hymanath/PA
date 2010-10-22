@@ -215,6 +215,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setDobOption(dobOption);
 	}
 	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth")
 	public void setDateOfBirth(String dateOfBirth) {
 		this.cadreInfo.setDateOfBirth(dateOfBirth);
 	}
@@ -496,8 +497,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getAge() {
 		return this.cadreInfo.getAge();
 	}
-	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Age field accepts digits only", shortCircuit = true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Enter Age", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Age field accepts digits only")
 	public void setAge(String age) {
 		this.cadreInfo.setAge(age);
 	}	
