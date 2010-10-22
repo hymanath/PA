@@ -97,18 +97,20 @@ function fillOptionsForSelectedElmt(elmtId, optionsList)
 function getSubRegionsInDistrict(distId, module, elementId, addressType)
 {	
 	var scopeSelectEl = document.getElementById("scopeLevel");
+	
 	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	
 	var areaType = '';
-	if(scopeSelected == 'WARD')
+	if(scopeSelected == 'WARD' || scopeSelected == 'MUNICIPAL-CORP-GMC')
 	{
 		areaType = 'RURAL';
-		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, null);
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
 		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
 		
-	} else if(scopeSelected == 'HAMLET')
+	} else if(scopeSelected == 'HAMLET' ||  scopeSelected == 'MANDAL')
 	{
 		areaType = 'URBAN';
-		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, null);
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
 		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
 	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL')
 	{
@@ -122,13 +124,13 @@ function getSubRegionsInConstituency(id, module, elementId, addressType)
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
 	var areaType = '';
-	if(scopeSelected == 'WARD' || scopeSelected == 'LOCAL ELECTION BODY')
+	if(scopeSelected == 'WARD' || scopeSelected == 'LOCAL ELECTION BODY' || scopeSelected == 'MUNICIPAL-CORP-GMC')
 	{
 		areaType = 'URBAN';
 		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
 		
 		
-	} else if(scopeSelected == 'HAMLET')
+	} else if(scopeSelected == 'HAMLET' || scopeSelected == 'VILLAGE' || scopeSelected == 'MANDAL')
 	{
 		areaType = 'RURAL';
 		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
