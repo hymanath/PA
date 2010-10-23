@@ -6,9 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Influencing People Page Success</title>
 </head>
-<body>
+<body style="color:green;" >
 
-		Successfully Inserted
+		<center><h2> Influencing People Inserted Successfully.</h2></center>
 
 </body>
 </html>
