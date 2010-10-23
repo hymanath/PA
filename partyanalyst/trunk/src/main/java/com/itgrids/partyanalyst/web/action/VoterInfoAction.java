@@ -10,21 +10,18 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.LocalLeadersVO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
-import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 
 public class VoterInfoAction extends ActionSupport implements ServletRequestAware{
 
@@ -143,7 +140,6 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			jObj=new JSONObject(param);
 			System.out.println("jObj = "+jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -151,11 +147,10 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		{
 			String hamletId = jObj.getString("selected");
 			constituencyManagementVO = new ConstituencyManagementVO();
-			constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009"));
-			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009"));
+			constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009", 0l, 20000, false));
+			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009", 0l, 20000, false));
 			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
 			constituencyManagementVO.setVoterCastInfodetails(votersByCast);								
-			
 			
 			problemManagementDataVO = problemManagementService.getProblemsForAHamlet(new Long(hamletId), "2009");
 			ResultStatus resultStatus = problemManagementDataVO.getResultStatus();
