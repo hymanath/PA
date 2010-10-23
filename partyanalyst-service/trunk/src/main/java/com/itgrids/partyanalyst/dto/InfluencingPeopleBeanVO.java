@@ -8,7 +8,7 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
 	constituency,mandal,village,hamlet,party,position,influencingRange,middleName,
-	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,windowTask,influencingPersonId;
+	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,windowTask,influencingPersonId,influencingScopeValue;
 	
 	private ResultStatus resultStatus;
 	
@@ -227,6 +227,14 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setInfluencingPersonId(String influencingPersonId) {
 		this.influencingPersonId = influencingPersonId;
+	}
+	
+	public String getInfluencingScopeValue() {
+		return influencingScopeValue;
+	}
+
+	public void setInfluencingScopeValue(String influencingScopeValue) {
+		this.influencingScopeValue = influencingScopeValue;
 	}
 	
 	
