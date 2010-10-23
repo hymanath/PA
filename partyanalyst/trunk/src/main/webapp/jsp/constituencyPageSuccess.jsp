@@ -124,6 +124,7 @@
 	};
 	var constituencyId = ${constituencyId};
 	var constituencyTYPE;
+	var totalNoOflocalElectionsBodies = 0;
 	google.load("visualization", "1", {packages:["corechart"]});
 	function callAjax(jsObj,url)
 	{	
@@ -171,14 +172,35 @@
 								{									
 									showProblemsHistoryReport(myResults);			
 								}else if(jsObj.task == "municipalElectionsInfo")
-								{									
-									showMunicipalInfo(myResults);			
+								{		
+									if(myResults.muncipalityVO!=null){	
+										totalNoOflocalElectionsBodies++;						
+										showMunicipalInfo(myResults);
+									}else{										
+										document.getElementById("muncipalDiv").style.display = "none";
+										totalNoOflocalElectionsBodies--;
+										checkTohideLocalElectionsBodyDiv();
+									}				
 								}else if(jsObj.task == "corporationElectionsInfo")
-								{									
-									showCorporationInfo(myResults);			
+								{	
+									if(myResults.muncipalityVO!=null){
+										totalNoOflocalElectionsBodies++;								
+										showCorporationInfo(myResults);
+									}else{
+										totalNoOflocalElectionsBodies--;
+										document.getElementById("corporationDiv").style.display = "none";
+										checkTohideLocalElectionsBodyDiv();
+									}			
 								}else if(jsObj.task == "greaterElectionsInfo" || jsObj.task == "getGhmcResultsBasedOnSelection")
-								{									
-									showGreaterInfo(myResults);			
+								{		
+									if(myResults.isDataExists==true){			
+										totalNoOflocalElectionsBodies++;				
+										showGreaterInfo(myResults);
+									}else{
+										totalNoOflocalElectionsBodies--;
+										document.getElementById("greaterDiv").style.display = "none";
+										checkTohideLocalElectionsBodyDiv();
+									}			
 								}else if(jsObj.task == "mandalVotesShareDetailsChart")
 								{
 									showMandalVotesShareDetailsChart(myResults);
@@ -214,6 +236,14 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}	
+
+	function checkTohideLocalElectionsBodyDiv(){					
+		if(totalNoOflocalElectionsBodies!=-3){
+			document.getElementById("LocalElectionsDiv").style.display = "block";//Show's content
+		}else{
+			document.getElementById("LocalElectionsDiv").style.display = "none";//Hide's content
+		}
+	}
 	
 	function redirectZptcCandidateLink(){												
 		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
