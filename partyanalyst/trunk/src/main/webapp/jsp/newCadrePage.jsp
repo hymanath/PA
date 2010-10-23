@@ -796,7 +796,7 @@
 		<tr>
 			<td width="200"><s:label for="scopeLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /><font class="requiredFont"> * </font></td>
 			<td align="left">				
-				<s:select id="scopeLevel" cssClass="regionSelect" name="cadreLevel"list="#{'2':'STATE','3':'DISTRICT','4':'CONSTITUENCY','5':'MANDAL','6':'VILLAGE','7':'MUNICIPAL-CORP-GMC','8':'WARD','9':'BOOTH'}"  headerKey="0" headerValue="Select Cadre Level" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="scopeLevel" cssClass="regionSelect" name="cadreLevel"list="#{'2':'STATE','3':'DISTRICT','4':'CONSTITUENCY','5':'MANDAL','6':'VILLAGE','7':'MUNICIPAL-CORP-GMC','8':'WARD'}"  headerKey="0" headerValue="Select Cadre Level" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
 				<input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
 		</tr>
