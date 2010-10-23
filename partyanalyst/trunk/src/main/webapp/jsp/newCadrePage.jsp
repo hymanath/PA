@@ -369,7 +369,8 @@
 		var row3El = document.getElementById("row3");
 		var row4El = document.getElementById("row4");
 		var row5El = document.getElementById("row5");
-		
+		var row6El = document.getElementById("row6");
+		var boothNoTextEl = document.getElementById("boothNoText");
 		var hiddenEl = document.getElementById("cadreLevelValue");
 		var stateFieldEl = document.getElementById("stateField_s");
 		var districtFieldEl = document.getElementById("districtField_s"); 
@@ -389,7 +390,8 @@
 		row2El.style.display = 'none';
 		row3El.style.display = 'none';
 		row4El.style.display = 'none';
-		row5El.style.display = 'none';		
+		row5El.style.display = 'none';
+		row6El.style.display = 'none';		
 		var value = val;
 		
 		if( (value>1) || (value==2) ){
@@ -425,6 +427,17 @@
 			{	
 				row5El.style.display = '';
 			}		
+		} if( ((value>8) || (value==9))){
+			row1El.style.display = 'none';
+			row2El.style.display = 'none';
+			row3El.style.display = 'none';
+			row4El.style.display = 'none';
+			row5El.style.display = 'none';
+			if(row6El.style.display == 'none')
+			{	
+				row6El.style.display = '';
+			}
+			boothNoTextEl.focus();		
 		}	 
 	}		
 </script>
@@ -671,13 +684,13 @@
 				<td align="left" width="165px">
 					<s:select id="constituencyField" cssClass="regionSelect" name="constituencyID" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','mandalField','currentAdd', 'null');cleanOptionsList('constituency')"></s:select> 
 				</td>
-				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
+				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
 					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
-				<td width="165px"><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
+				<td width="165px"><s:label for="villageField" id="villageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
 					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
@@ -726,13 +739,13 @@
 				<td align="left" width="165px">
 					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','pmandalField','OfficialAdd', 'null');cleanOptionsList('pconstituency')" headerKey="0" headerValue="Select Constituency"></s:select> 
 				</td>
-				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('MANDAL')}" /><font class="requiredFont"> * </font></td>
+				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
 					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','pvillageField','OfficialAdd')" headerKey="0" headerValue="Select Mandal"></s:select>				 
 				</td>
 			</tr>
 			<tr>
-				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('VILLAGE')}" /><font class="requiredFont"> * </font></td>
+				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
 					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select>				
 				</td>
@@ -788,35 +801,41 @@
 			</td>
 		</tr>
 		</table>
-		<table border="0">
+		<table border="0" class="cadreDetailsTable">
 		<tr id="row1" style="display:none;">
-			<td width="200">State<font class="requiredFont">*</font></td>
+			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
 				<s:select id="stateField_s" cssClass="regionSelect" list="#session.statesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setCadreValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
-			<td>District<font class="requiredFont"> * </font></td>
+			<td width="200"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 			<td>
 				<s:select id="districtField_s" cssClass="regionSelect" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setCadreValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
-			<td>Constituency<font class="requiredFont"> * </font></td>
+			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td>
 				<s:select id="constituencyField_s" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setCadreValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
-			<td>Mandal/Municipality/Corporation/GMC<font class="requiredFont"> * </font></td>
+			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
 				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','newProblemPost','hamletField_s','currentAdd', 'null');setCadreValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
-			<td>Village/Ward<font class="requiredFont"> * </font></td>
+			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /></td>
 			<td>
 				<s:select id="hamletField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value)"></s:select>
+			</td>
+		</tr>
+		<tr id="row6" style="display:none;">
+			<td width="200">Booth No</td>
+			<td>
+				<s:textfield id="boothNoText" name="cadreLevelValue" size="25"/>
 			</td>
 		</tr>
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
