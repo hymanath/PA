@@ -189,7 +189,8 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 	}
 	
 	private Voter checkAndInsertVoterData(Voter voter){
-		List<Voter> voters = voterDAO.findByVoterFirstNameLastNameRelativeFirstNameLastNameAndVoterIdNo(voter.getFirstName(), voter.getLastName(), voter.getRelativeFirstName(), voter.getRelativeLastName(), voter.getVoterIDCardNo());
+		List<Voter> voters = voterDAO.findByVoterFirstNameLastNameRelativeFirstNameLastNameAndVoterIdNo(voter.getFirstName(), 
+				voter.getLastName(), voter.getRelativeFirstName(), voter.getRelativeLastName(), voter.getVoterIDCardNo());
 		if(voters.size() > 0 ){
 			if(log.isDebugEnabled()){
 				log.debug("Voter Already Exists Name:"+voter.getFirstName()+" "+voter.getLastName()+" and Voter ID:"+voter.getVoterIDCardNo());

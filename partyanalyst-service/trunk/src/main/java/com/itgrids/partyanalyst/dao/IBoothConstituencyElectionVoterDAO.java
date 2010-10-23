@@ -13,7 +13,9 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 
 	public List<BoothConstituencyElectionVoter> findByBoothConstituencyElectionAndVoter(Long boothConstituencyElectionId, Long voterId);
 	
-	public List findVotersByHamletAndElectionYear(Long hamletId, String year);
+	public List findNextVotersFromViterIdByHamletAndElectionYear(Long hamletId, String year, Long voterId, int maxResult);
+	
+	public List findPrevVotersFromViterIdByHamletAndElectionYear(Long hamletId, String year, Long voterId, int maxResult);
 	
 	public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year);
 
@@ -21,8 +23,6 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 
 	public List<Voter> findVotersByHouseNoAndHamlet(String houseNo, Long hamletId,	String year);
 	
-	public List<Voter> findVotersGroupByHouseNoAndAgeForHamletAndYear(Long hamletId, String year);
-
 	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId);
 	
 	public List findTotalVotersForHamlet(Long revenueVillageID, String year, String electionType);

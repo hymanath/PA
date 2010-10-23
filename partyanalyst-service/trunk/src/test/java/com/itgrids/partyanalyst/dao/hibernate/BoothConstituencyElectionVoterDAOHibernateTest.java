@@ -59,7 +59,7 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 	
 	/*public void testFindVotersByHamletAndElectionYear(){
 		constituencyManagementService = new ConstituencyManagementService();
-		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersCastInfoByHamletAndElectionYear(new Long(6), "2009");
+		List list = boothConstituencyElectionVoterDAO.findVotersCastInfoByHamletAndElectionYear(5l, "2009");
 		VoterCastInfoVO voterCastInfoVO = constituencyManagementService.caluculatePercentage(list);
 		System.out.println("TOTAL HAMLETS::"+list.size());
 		System.out.println(" Total Voters:"+voterCastInfoVO.getTotalVoters());
@@ -76,6 +76,13 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		assertEquals(1, list.size());
 	}*/
 	
+	/*public void testFindVotersByHamletAndElectionYear(){
+		List list = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(5l, "2009", 800l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]);
+		System.out.println(list.size());
+	}*/
+	
 	/*public void testFindVotersGroupByHouseNoForHamlet(){
 		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoForHamlet(new Long(6), "2009");
 		System.out.println("TOTAL HAMLETS::"+list.size());
@@ -85,12 +92,6 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		List<String> list = boothConstituencyElectionVoterDAO.findVoterHouseNosInHamlet(new Long(6), "2009");
 		System.out.print(list.size());
 		System.out.print(list);
-	}*/
-	
-	/*public void testFindVotersGroupByHouseNoAndAgeForHamletAndYear(){
-		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoAndAgeForHamletAndYear(new Long(6), "2009");
-		System.out.print(list.size());
-		//System.out.print(list);
 	}*/
 	
 	/*public void t11estFindTownshipWiseBoothDetailsForTehsil(){
@@ -135,9 +136,9 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		}
 	}*/
 	
-	public void testGetBoothsForTownship(){
+	/*public void testGetBoothsForTownship(){
 		List list = boothConstituencyElectionVoterDAO.getBoothsForTownship(21815l);
 		for(int i=0; i<list.size(); i++)
 			System.out.print(list.get(i)+",");
-	}
+	}*/
 }

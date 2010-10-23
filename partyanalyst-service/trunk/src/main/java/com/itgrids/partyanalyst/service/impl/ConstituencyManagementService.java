@@ -59,8 +59,12 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		this.electionDAO = electionDAO;
 	}
 
-	public List<VoterVO> getVoterInfo(Long hamletId, String year){
-		List voters = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(hamletId, year);
+	public List<VoterVO> getVoterInfo(Long hamletId, String year, Long voterId, Integer maxRecords, Boolean isPrev){
+		List voters = null;
+		if(isPrev)
+			voters = boothConstituencyElectionVoterDAO.findPrevVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
+		else
+			voters = boothConstituencyElectionVoterDAO.findNextVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
 		VoterVO voterVO = null;
 		Long count = 1l;
@@ -146,21 +150,26 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return voterCastInfoVO;				
 	}
 	
-	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId,String year) {	
-		List<Voter> voters = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoAndAgeForHamletAndYear(hamletId, year);
+	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId,String year, Long voterId, Integer maxRecords, Boolean isPrev) {	
+		List voters = null;
+		if(isPrev)
+			voters = boothConstituencyElectionVoterDAO.findPrevVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
+		else
+			voters = boothConstituencyElectionVoterDAO.findNextVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
+			
 		Map<String, List<VoterVO>> voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
 		List<VoterHouseInfoVO> voterHouseInfoVOs = new ArrayList<VoterHouseInfoVO>();
 		VoterHouseInfoVO voterHouseInfoVO = null;
 		List<VoterVO> voterVOs = null;
 		VoterVO voterVO = null;
 		String houseNo = "";
-		for(Voter voter : voters){
-			houseNo = voter.getHouseNo();
+		for(Object[] voter : (List<Object[]>)voters){
+			houseNo = voter[2].toString();
 			voterVO = new VoterVO();
-			voterVO.setVoterFirstName(voter.getFirstName());
-			voterVO.setVoterLastName(voter.getLastName());
-			voterVO.setAge(voter.getAge());
-			voterVO.setCast(voter.getCast());
+			voterVO.setVoterFirstName(voter[0].toString());
+			voterVO.setVoterLastName(voter[1].toString());
+			voterVO.setAge((Long)voter[3]);
+			voterVO.setCast(voter[4].toString());
 			voterVOs = voterByHouseNoMap.get(houseNo);
 			if(voterVOs ==null)
 				voterVOs = new ArrayList<VoterVO>();

@@ -3,10 +3,12 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<BoothConstituencyElectionVoter, Long> implements IBoothConstituencyElectionVoterDAO{
 	public BoothConstituencyElectionVoterDAO(){
@@ -28,18 +30,38 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findVotersByHamletAndElectionYear(Long hamletId, String year){
-		Object[] params = {hamletId, year};
-		return getHibernateTemplate().find("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+	public List findNextVotersFromViterIdByHamletAndElectionYear(Long hamletId, String year, Long voterId, int maxResult){
+		Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
 				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
-				"model.voter.relativeLastName, model.voter.relationshipType from BoothConstituencyElectionVoter model where " +
-				"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+				"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+				"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				"and model.voter.voterId > ? order by model.voter.voterId ");
+		queryObject.setLong(0, hamletId);
+		queryObject.setString(1, year);
+		queryObject.setLong(2, voterId);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List findPrevVotersFromViterIdByHamletAndElectionYear(Long hamletId, String year, Long voterId, int maxResult){
+		Query queryObject = getSession().createQuery("select model.voter.firstName, model.voter.lastName, model.voter.houseNo, model.voter.age, " +
+				"model.voter.cast, model.voter.castCatagery, model.voter.castSubCatagery, model.voter.gender,model.voter.relativeFirstName, " +
+				"model.voter.relativeLastName, model.voter.relationshipType, model.voter.voterId from BoothConstituencyElectionVoter model where " +
+				"model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				"and model.voter.voterId < ? order by model.voter.voterId ");
+		queryObject.setLong(0, hamletId);
+		queryObject.setString(1, year);
+		queryObject.setLong(2, voterId);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();
+	}
+	
+	//
 	public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year){
-		Object[] params = {hamletId, year};
+		Object[] params = {hamletId, new Long(year)};
 		return getHibernateTemplate().find("select count(model.voter.voterId), model.voter.gender, model.voter.cast from BoothConstituencyElectionVoter model " +
-				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?" +
+				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.booth.year = ? " +
 				"group by model.voter.cast, model.voter.gender order by model.voter.cast", params);
 	}
 	
@@ -63,14 +85,6 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model " +
 				"where model.voter.houseNo = ? and model.voter.hamlet.hamletId = ? and model.voter.gender = ? and " +
 				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? order by age", params);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Voter> findVotersGroupByHouseNoAndAgeForHamletAndYear(Long hamletId, String year){
-		Object[] params = {hamletId, year};
-		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model " +
-				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?" +
-				" group by model.voter.houseNo, model.voter.age", params);
 	}
 	
 	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
