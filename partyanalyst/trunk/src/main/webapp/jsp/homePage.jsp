@@ -574,7 +574,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 									<td><%=stateSelect%></td>
 								</tr>
 								<tr>
-									<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"/></td>
+									<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/></td>
 								</tr>
 							</table>
 								
