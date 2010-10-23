@@ -629,12 +629,6 @@ function buildProblemViewingWindow()
 	var headElmt = document.getElementById('problemViewingDiv_Head');
 	var bodyElmt = document.getElementById('problemViewingDiv_Body');
 	
-	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
-	{		
-		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
-		return;
-	}
-
 	var str='';
 	str+='<fieldset id="problemViewingFieldSet">';
 	str+='<legend> View Your constituency Problems</legend>';
@@ -750,13 +744,7 @@ function buildProblemPostingWindow()
 {
 	var headElmt = document.getElementById('problemPostingDiv_Head');
 	var bodyElmt = document.getElementById('problemPostingDiv_Body');
-	
-	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
-	{		
-		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
-		return;
-	}
-
+		
 	var str='';
 	str+='<fieldset id="ProblemPostingFieldSet">';
 	str+='<legend> Post Your constituency Problem</legend>';
@@ -1177,12 +1165,6 @@ function buildVotingTrendzInPopUp()
 	var headElmt = document.getElementById('votingTrendzDiv_Head');
 	var bodyElmt = document.getElementById('votingTrendzDiv_Body');
 	
-	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
-	{		
-		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
-		return;
-	}
-
 	var str='';
 	str+='<fieldset id="votingTrendzFieldSet">';
 	str+='<legend> View Voting Trendz </legend>';
@@ -1436,33 +1418,6 @@ function getAllMptcYears()
 	}			  		
 }
 
-
-function initializeConstituencyPage()
-{	    
-	buildConstituencyInfo();
-	buildConstituencyConnectPeopleWindow();
-	buildProblemPostingWindow();
-	buildProblemViewingWindow();
-	buildVotingTrendzInPopUp();
-	buildElectionResults();	
-	buildCenterVotersCandidateInfoContent();
-	showCurrentlyElectedCandidate();
-    if(constituencyPageMainObj.forwardTask != null)
-	{
-		if(constituencyPageMainObj.forwardTask != "")
-		{
-          openAddNewProblemWindow();
-		}
-	}
-	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
-
-	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
-    buildRightlayoutMap();
-	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
-	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
-	
-}
-
 function getMunicipalityResults()
 {
 	var lebElmt = document.getElementById("municipalitySelect");
@@ -1567,4 +1522,30 @@ function getWardWiseElectionResults(type,value)
 	var url = "getGhmcResultsAction.action?"+rparam;						
 	
 	callAjax(jsObj,url);
+}
+
+function initializeConstituencyPage()
+{	    
+	buildConstituencyInfo();
+	buildConstituencyConnectPeopleWindow();
+	buildProblemPostingWindow();
+	buildProblemViewingWindow();
+	buildVotingTrendzInPopUp();
+	buildElectionResults();	
+	buildCenterVotersCandidateInfoContent();
+	showCurrentlyElectedCandidate();
+    if(constituencyPageMainObj.forwardTask != null)
+	{
+		if(constituencyPageMainObj.forwardTask != "")
+		{
+          openAddNewProblemWindow();
+		}
+	}
+	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+
+	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+    buildRightlayoutMap();
+	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
+	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
+	
 }
