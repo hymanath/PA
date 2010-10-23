@@ -18,6 +18,7 @@ public interface ISessionConstants {
 	public static final String MANDALS_O = "mandalsList_o";
 	public static final String VILLAGES_O = "villagesList_o";
 	// cadre levle variables
+	public static final String CADRE_LEVELS_LIST = "cadreLevelsList";
 	public static final String DISTRICTS_C = "districtsList_c";
 	public static final String STATES_C = "statesList_c";
 	public static final String CONSTITUENCIES_C = "constituenciesList_c";
