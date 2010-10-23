@@ -33,12 +33,6 @@ function initializeTabView()
 	str += '<div id="storyBoard_fotter_Div"></div>';
 	str += '</div>';
 
-	str += '<div id="messages_main">';
-	str += '<div id="messages_header_Div"></div>';
-	str += '<div id="messages_body_Div"></div>';
-	str += '<div id="messages_fotter_Div"></div>';
-	str += '</div>';
-	
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: 'Story Board',
 		content: str,
@@ -46,11 +40,11 @@ function initializeTabView()
 	}));
 	 
 	myTabs.addTab( new YAHOO.widget.Tab({
-		label: 'Connections',
-		content: '<div id="connections_main"></div>'
+		label: 'Inbox',
+		content: '<div id="inboxMessages_main"></div>'
 	}));
  
-	myTabs.appendTo("connectPeople_connect_center");
+	myTabs.appendTo("connectPeople_messages_center");
 	
 	
 }
@@ -60,7 +54,7 @@ function buildInboxMessagesForUser()
 	var arrData = commentsInfo.comments;
 	var arrStatus = commentsInfo.connectPeopleStatus;
 
-	var elmt = document.getElementById("messages_body_Div");
+	var elmt = document.getElementById("inboxMessages_main");
 	
 	if(!elmt)
 		return;
@@ -68,57 +62,62 @@ function buildInboxMessagesForUser()
 	var str = '';
 	if(arrStatus.resultCode != "0")
 	{
-		str += '<fieldset>';
-		str += '<legend>Messages</legend>';
-		str += '<div> Data could not be retrived due to some technical difficulties</div>';
-		str += '</fieldset>';
+		str += '<div id="messagesCountMessage">';
+		str += '<table><tr>';
+		str += '<td width="35px"><img height="25" width="25" src="images/icons/candidatePage/contact.png"></td>';
+		str += '<td>There are 0 messages.</td>';
+		str += '</tr></table>';
+		str += '</div>';		
+		str += '<div id="messagesContent">';
+		str += 'Data could not be retrived due to some technical difficulties.';
+		str += '</div>';	
 		elmt.innerHTML = str;
 		return;
+		
 	}
 	else if(arrData.length == 0)
 	{
-		str += '<fieldset>';
-		str += '<legend>Messages</legend>';
-		str += '<div> There are no Messages .</div>';
-		str += '</fieldset>';		
+		str += '<div id="messagesCountMessage">';
+		str += '<table><tr>';
+		str += '<td width="35px"><img height="25" width="25" src="images/icons/candidatePage/contact.png"></td>';
+		str += '<td>There are 0 messages.</td>';
+		str += '</tr></table>';
+		str += '</div>';		
+		str += '<div id="messagesContent">';
+		str += 'No messages has been sent to you.';
+		str += '</div>';	
 		elmt.innerHTML = str;
 		return;
 	}
-
-	str += '<fieldset>';
-	str += '<legend>Messages</legend>';
-	str += '<div> There are '+arrData.length+' messages</div>';
-	str += '<div>';
-	str += '<table width="100%">';
-	str += '<tr>';
-	str += '<th>Name</th>';
-	str += '<th>Constituency</th>';
-	str += '<th>Message</th>';
-	str += '</tr>';
 	
+	str += '<div id="messagesCountMessage">';
+	str += '<table><tr>';
+	str += '<td width="35px"><img height="25" width="25" src="images/icons/candidatePage/contact.png"></td>';
+	str += '<td>There are '+arrData.length+' messages</td>';
+	str += '</tr></table>';
+	str += '</div>';
+	str += '<div id="messagesContent">';
+	str += '<table width="100%" id="messagesContentTable" cellpadding="0" cellspacing="0">';
 	for(var i=0;i<arrData.length;i++)
 	{
 		str += '<tr>';
-		str += '<td align="center">'+arrData[i].candidateName+'</td>';
-		str += '<td align="center">'+arrData[i].constituencyName+'</td>';
-		str += '<td align="center">'+arrData[i].data+'</td>';
+		str += '<th width="25%" align="left">'+arrData[i].candidateName+'</th>';	
+		str += '<td width="75%" align="left">'+arrData[i].data+'</td>';
 		str += '</tr>';
-	}
-	
+	}	
 	str += '</table>';
-	str += '</div>';
-	str += '</fieldset>';
+	str += '</div>';	
 
 	elmt.innerHTML = str;
 }
 
 
-function buildConnectionsTabContent()
+function buildConnectionsContentForUser()
 {
 	var arrData = connectedPeopleInfo.connectPeople;
 	var arrStatus = connectedPeopleInfo.connectPeopleStatus;
 
-	var elmt = document.getElementById("connections_main");
+	var elmt = document.getElementById("connectPeople_connect_center");
 
 	if(!elmt)
 		return;
@@ -138,10 +137,15 @@ function buildConnectionsTabContent()
 		return;
 	}
 	
-	str += '<div id="connecttion_main_head">';
-	str += '<p>You have '+arrData.length+' connections in total</p>';
+	str += '<div id="connection_main_head">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td width="40px"><img src="images/icons/indexPage/group_icon.png"></td>';
+	str += '<td>You have total '+arrData.length+' connections.</td>';
+	str += '</tr>';
+	str += '</table>';	
 	str += '</div>';
-	str += '<div>';
+	str += '<div id="connecttion_main_body">';
 	str += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
 	str += '<tr>';
 	str += '<td width="30%" valign="top">';
@@ -415,11 +419,95 @@ function getAllRequestMessagesForUser(){
 	callAjax(rparam,jsObj,url);
 }
 
+function buildPeopleYouMayKnowContent()
+{
+	var elmt = document.getElementById("connectPeople_PeopleMayKnow_center");
+
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="peopleMayKnow_main">';
+	str += '<div id="peopleMayKnow_head"> People You may Know</div>';
+	str += '<div id="peopleMayKnow_body">';
+	str += '	<div class="peopleMayKnow_data">';
+	str += '	<table width="100%" class="peopleMayKnow_data_table">';
+	str += '	<tr>';
+	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+	str += '	<td colspan="2" style="font-weight:bold;">Sai Krishna</td>';
+	str += '	</tr>';
+	str += '	<tr>';	
+	str += '	<td colspan="2">Kavali, Nellore</td>';
+	str += '	</tr>';	
+	str += '	<tr>';	
+	str += '	<td>Andhra Pradesh</td>';
+	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
+	str += '	</tr>';
+	str += '	</table>';
+	str += '	</div>';
+
+	str += '	<div class="peopleMayKnow_data">';
+	str += '	<table width="100%" class="peopleMayKnow_data_table">';
+	str += '	<tr>';
+	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+	str += '	<td colspan="2" style="font-weight:bold;">Siva Reddivari</td>';
+	str += '	</tr>';
+	str += '	<tr>';	
+	str += '	<td colspan="2">Atmakur, Nellore</td>';
+	str += '	</tr>';	
+	str += '	<tr>';	
+	str += '	<td>Andhra Pradesh</td>';
+	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
+	str += '	</tr>';
+	str += '	</table>';
+	str += '	</div>';
+
+	str += '	<div class="peopleMayKnow_data">';
+	str += '	<table width="100%" class="peopleMayKnow_data_table">';
+	str += '	<tr>';
+	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+	str += '	<td colspan="2" style="font-weight:bold;">Raghu</td>';
+	str += '	</tr>';
+	str += '	<tr>';	
+	str += '	<td colspan="2">Kavali, Nellore</td>';
+	str += '	</tr>';	
+	str += '	<tr>';	
+	str += '	<td>Andhra Pradesh</td>';
+	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
+	str += '	</tr>';
+	str += '	</table>';
+	str += '	</div>';
+
+	str += '	<div class="peopleMayKnow_data">';
+	str += '	<table width="100%" class="peopleMayKnow_data_table">';
+	str += '	<tr>';
+	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+	str += '	<td colspan="2" style="font-weight:bold;">Ravi Kiran</td>';
+	str += '	</tr>';
+	str += '	<tr>';	
+	str += '	<td colspan="2">Allur, Nellore</td>';
+	str += '	</tr>';	
+	str += '	<tr>';	
+	str += '	<td>Andhra Pradesh</td>';
+	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
+	str += '	</tr>';
+	str += '	</table>';
+	str += '	</div>';
+
+	str += '	<div id="peopleMayKnow_buttonDiv">';
+	str += '	<a href="javascript:{}"> View All </a>';
+	str += '	</div>';
+	str += '</div>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
+}
 
 function initializeConnectPeople()
 {
 	initializeTabView();	
 	getAllRequestMessagesForUser();
 	buildInboxMessagesForUser();
-	buildConnectionsTabContent();
+	buildConnectionsContentForUser();
+	buildPeopleYouMayKnowContent();
 }
