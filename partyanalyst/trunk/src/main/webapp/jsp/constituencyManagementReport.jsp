@@ -470,7 +470,7 @@
 		}
 		
 		function redirectToNewWindowForAddingInfluencingPeople(type,id){
-			var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=570,width=582,left=300,top=30");
+			var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 			browser1.focus();
 		}
 		
