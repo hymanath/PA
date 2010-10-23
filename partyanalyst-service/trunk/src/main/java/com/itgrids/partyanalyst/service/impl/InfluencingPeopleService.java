@@ -254,9 +254,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			selectOptionVOs.add(new SelectOptionVO(1l,IConstants.STATE_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.DISTRICT_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.CONSTITUENCY_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(4l,IConstants.TEHSIL_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(5l,IConstants.REVENUE_VILLAGE_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.HAMLET_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(4l,"MUNICIPAL-CORP-GMC"));
+			selectOptionVOs.add(new SelectOptionVO(5l,IConstants.MANDAL_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.VILLAGE));
+			selectOptionVOs.add(new SelectOptionVO(7l,IConstants.WARD));
 			return selectOptionVOs;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -341,11 +342,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeople.setMiddleName(influencingPeopleBeanVO.getMiddleName());
 					influencingPeople.setFatherOrSpouseName(influencingPeopleBeanVO.getFatherOrSpouseName());
 					influencingPeople.setGender(influencingPeopleBeanVO.getGender());
-					
 					influencingPeople.setPhoneNo(influencingPeopleBeanVO.getMobile());
 					influencingPeople.setEmail(influencingPeopleBeanVO.getEmail());
-					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
-					influencingPeople.setInfluencingScopeValue(influRangeAndValueMap.get(influencingPeopleBeanVO.getInfluencingRange()).toString());
+					
 					influencingPeople.setParty(partyDAO.get(new Long(influencingPeopleBeanVO.getParty())));
 					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
 					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
@@ -358,6 +357,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					userAddress.setHouseNo(influencingPeopleBeanVO.getHouseNo());
 					userAddress.setStreet(influencingPeopleBeanVO.getStreetName());
 					userAddress.setPinCode(influencingPeopleBeanVO.getPincode());
+										
+					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
+					influencingPeople.setInfluencingScopeValue(influencingPeopleBeanVO.getInfluencingScopeValue());
 					
 					if (IConstants.URBAN_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
 					{
@@ -446,14 +448,17 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(influRange.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL))
 					influencingPeopleBeanVO.setInfluencingRange("3");
 				
-				if(influRange.equalsIgnoreCase(IConstants.TEHSIL_LEVEL))
+				if(influRange.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
 					influencingPeopleBeanVO.setInfluencingRange("4");
 				
-				if(influRange.equalsIgnoreCase(IConstants.REVENUE_VILLAGE_LEVEL))
+				if(influRange.equalsIgnoreCase(IConstants.MANDAL_LEVEL))
 					influencingPeopleBeanVO.setInfluencingRange("5");
 				
-				if(influRange.equalsIgnoreCase(IConstants.HAMLET_LEVEL))
+				if(influRange.equalsIgnoreCase(IConstants.VILLAGE))
 					influencingPeopleBeanVO.setInfluencingRange("6");
+				
+				if(influRange.equalsIgnoreCase(IConstants.WARD))
+					influencingPeopleBeanVO.setInfluencingRange("7");
 				
 				if(userAddress.getLocalElectionBody() != null )
 				{
