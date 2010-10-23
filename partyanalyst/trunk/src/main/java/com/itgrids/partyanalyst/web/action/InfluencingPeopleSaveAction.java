@@ -26,7 +26,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
 	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
-						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId;
+						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId,influencingScopeValue;
 	private int resultStatus = 3;
 	
 	public int getResultStatus() {
@@ -278,32 +278,84 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.influencingPersonId = influencingPersonId;
 	}
 
+	
+	public String getInfluencingScopeValue() {
+		return influencingScopeValue;
+	}
+
+	public void setInfluencingScopeValue(String influencingScopeValue) {
+		this.influencingScopeValue = influencingScopeValue;
+	}
+
 	public String execute() throws Exception{
 		
 		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+		
 		influencingPeopleBeanVO.setFirstName(getFirstName().trim());
 		influencingPeopleBeanVO.setLastName(getLastName().trim());
-		influencingPeopleBeanVO.setEmail(getEmail().trim());
+		influencingPeopleBeanVO.setMiddleName(getMiddleName().trim());
+		influencingPeopleBeanVO.setFatherOrSpouseName(getFatherOrSpouseName().trim());
+		influencingPeopleBeanVO.setGender(getGender());
 		influencingPeopleBeanVO.setMobile(getMobile().trim());
-		influencingPeopleBeanVO.setGender(gender);
-		influencingPeopleBeanVO.setOccupation(occupation);
-		influencingPeopleBeanVO.setCast(cast);
-		influencingPeopleBeanVO.setParty(party);
-		influencingPeopleBeanVO.setInfluencingRange(influencingRange);
-		influencingPeopleBeanVO.setPosition(position);
+		influencingPeopleBeanVO.setEmail(getEmail().trim());
+		influencingPeopleBeanVO.setHouseNo(getHouseNo().trim());
+		influencingPeopleBeanVO.setStreetName(getStreetName().trim());
 		influencingPeopleBeanVO.setState(getState());
 		influencingPeopleBeanVO.setDistrict(getDistrict());
 		influencingPeopleBeanVO.setConstituency(getConstituency());
 		influencingPeopleBeanVO.setMandal(getMandal());
 		influencingPeopleBeanVO.setWardOrHamlet(getWardOrHamlet());
-		influencingPeopleBeanVO.setMiddleName(getMiddleName().trim());
-		influencingPeopleBeanVO.setFatherOrSpouseName(getFatherOrSpouseName().trim());
-		influencingPeopleBeanVO.setHouseNo(getHouseNo().trim());
-		influencingPeopleBeanVO.setStreetName(getStreetName().trim());
 		influencingPeopleBeanVO.setPincode(getPincode().trim());
+		influencingPeopleBeanVO.setOccupation(getOccupation());
+		influencingPeopleBeanVO.setParty(getParty());
+		influencingPeopleBeanVO.setCast(getCast());
+		influencingPeopleBeanVO.setPosition(getPosition());
+		
 		influencingPeopleBeanVO.setWindowTask(getWindowTask());
 		influencingPeopleBeanVO.setInfluencingPersonId(getInfluencingPersonId());
 		
+				
+		if("1".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.STATE_LEVEL);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+		}
+		
+		else if("2".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.DISTRICT_LEVEL);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+		}
+		
+		else if("3".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.CONSTITUENCY_LEVEL);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+		}
+		
+		else if("4".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+		}
+		
+		else if("5".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.MANDAL_LEVEL);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+		}
+		
+		else if("6".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.VILLAGE);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+		}
+		
+		else if("7".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.WARD);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+		}
 						
 		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
 		try{
@@ -321,6 +373,9 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		
 		if(result.getExceptionEncountered() != null){			
 			return ERROR;
+		}
+		else{
+			influencingPeopleBeanVO =new InfluencingPeopleBeanVO();
 		}
 		resultStatus = result.getResultCode();
 		return SUCCESS;
