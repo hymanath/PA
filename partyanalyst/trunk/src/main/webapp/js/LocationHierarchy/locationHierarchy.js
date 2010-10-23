@@ -107,7 +107,7 @@ function getSubRegionsInDistrict(distId, module, elementId, addressType)
 		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
 		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
 		
-	} else if(scopeSelected == 'HAMLET' ||  scopeSelected == 'MANDAL')
+	} else if(scopeSelected == 'HAMLET' ||  scopeSelected == 'MANDAL' || scopeSelected == 'VILLAGE')
 	{
 		areaType = 'URBAN';
 		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
