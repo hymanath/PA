@@ -305,7 +305,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				stateList.add(list.get(0));			
 				districtList.add(list.get(1));
 				constituencyList.add(list.get(2));
-				mandalList = regionServiceDataImp.getMandalsByConstituencyID(accessValue);
+				mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 				mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
 				session.setAttribute(ISessionConstants.STATES, stateList);
 				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
