@@ -692,12 +692,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
-		//String[] skills = null;
-		//String[] trainingCamps = null;
-		//String[] languageOptions_English = null;
-		//String[] languageOptions_Hindi = null;
-		//languageOptions_English = request.getParameterValues("languageOptions_English");
-		//languageOptions_Hindi = request.getParameterValues("languageOptions_Hindi");
+		
 		String name1 = request.getParameter("firstName");
 		String name2 = request.getParameter("lastName");
 		String name3 = request.getParameter("constituency");
@@ -727,36 +722,61 @@ public class CadreRegisterAction extends ActionSupport implements
 			}
 			
 		}
-
-		if (IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.BJP.equals(regVO.getPartyShortName())) {
-			//skills = request.getParameterValues("skills");
-			//log.error("skills length:"+skills.length);
-			//trainingCamps = request.getParameterValues("trainingCamps");
-		}
-		/*if (languageOptions_English != null && languageOptions_English.length > 0)
-			cadreInfo.setLanguageOptions_English(languageOptions_English);
-		if (languageOptions_Hindi != null && languageOptions_Hindi.length > 0)
-			cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);*/
+		
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
 		if (rs.getExceptionEncountered() == null)
 		{
 			cadreInfo = new CadreInfo();
-			 
-			session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+			
+			if("MLA".equals(regVO.getAccessType()))
+			{
+				log.debug("Access Type = MLA ****");
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());				
+							
+			}else if("COUNTRY".equals(regVO.getAccessType()))
+			{
+				log.debug("Access Type = Country ****");
+				session.setAttribute(ISessionConstants.DISTRICTS,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());				
+				
+			}else if("STATE".equals(regVO.getAccessType())){
+				log.debug("Access Type = State ****");
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				//clear cadre level selections 
+				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				
+				
+			}else if("DISTRICT".equals(regVO.getAccessType())){
+				log.debug("Access Type = District ****");			
+
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());	
+				
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				
+			}			
 					 
 			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
 			
-			session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
 		}
 		
