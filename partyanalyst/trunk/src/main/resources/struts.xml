@@ -273,8 +273,8 @@
         
         <action name="influencingPeopleSaveAction" class="influencingPeopleSaveAction" >
         	<result name="input">/jsp/influencingPeople.jsp</result>
-         	<result name="success">/jsp/influencingPeople.jsp</result>
-         	<result name="error">/jsp/influencingPeople.jsp</result>
+         	<result name="success">/jsp/influencingPeoplePageSuccess.jsp</result>
+         	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
         </action>
  		
 		<!-- End Party Performance Actions -->
