@@ -2,6 +2,7 @@
 #connectPeoplePage_main
 {
 	padding:10px;	
+	background-color:#E4EDF0;
 }
 
 .connectPeopleCenter
@@ -38,31 +39,31 @@
 	cursor:pointer
 }
 
-#connectPeople_connect_center .yui-content 
+#connectPeople_messages_center .yui-content 
 {
 	background-color:#FFFFFF;
-	height:550px;
+	height:307px;
 	border:1px solid #808080;
 	-moz-border-radius:10px 10px 10px 10px;
 }
 
-#connectPeople_connect_center .yui-nav
+#connectPeople_messages_center .yui-nav
 {
 	border-bottom:medium none;
 }
 
-#connectPeople_connect_center .yui-navset .yui-nav li
+#connectPeople_messages_center .yui-navset .yui-nav li
 {
 	position:relative;
 	left:15px;
 }
 
-#connectPeople_connect_center .yui-nav a em 
+#connectPeople_messages_center .yui-nav a em 
 {
 	padding:0.55em 0.95em;
 }
 
-#connectPeople_connect_center .yui-navset .yui-nav .selected a
+#connectPeople_messages_center .yui-navset .yui-nav .selected a
 {
 	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 #D8D8D8;
 	color:#123B5A;
@@ -121,11 +122,129 @@
 #connection_main_data
 {
 	border-left:1px solid #ADADAD;
-	height:500px;
+	
 }
 
 #connectPeopleMessagePopup_main .yui-panel .hd 
 {
 	text-align:left;
 	padding:2px 10px;
+}
+
+#messagesFieldSet
+{
+	margin:0;
+	padding:0;
+	border:none;
+}
+
+#messagesFieldSet legend
+{
+	background-color:#58ABC4;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+#messagesCountMessage
+{
+	background-color:#ECF3F5;
+	color:#1B7AB0;
+	font-weight:bold;
+	margin-top:10px;
+	font-size:12px;
+}
+
+#messagesContent
+{
+	height:200px;
+	overflow:auto;
+	padding-top:15px;
+}
+
+#messagesContentTable th
+{
+	padding:5px;
+	border-bottom:1px solid #CCCCCC;
+}
+
+#messagesContentTable td
+{
+	padding:5px;
+	border-bottom:1px solid #CCCCCC;
+}
+
+#connection_main_head
+{
+	background-color:#ECF3F5;
+	color:#1B7AB0;
+	font-size:12px;
+	font-weight:bold;
+	margin-top:10px;
+}
+
+#connecttion_main_body
+{
+	margin-top:10px;
+}
+
+#connectPeople_PeopleMayKnow_center
+{
+	height:335px;
+}
+
+#peopleMayKnow_main
+{
+	border:2px solid #D6E7EC;
+	margin-top:10px;
+	height:320px;
+}
+
+#peopleMayKnow_head
+{
+	background-image:url("../../images/icons/constituencyPage/background_head_blue.png");
+	background-repeat:repeat;
+	color:#FFFFFF;
+	padding:5px;
+	font-weight:bold;
+}
+
+.peopleMayKnow_data
+{
+	background-color:#E6EFF2;
+	margin:5px;
+}
+
+#peopleMayKnow_buttonDiv
+{
+	padding:5px 20px 5px 5px;
+	text-align:right;
+}
+
+#peopleMayKnow_buttonDiv a
+{
+	color:#476F7D;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.peopleMayKnow_data_table td
+{	
+	color:#2A3A44;
+}
+
+#peopleMayKnow_body a
+{
+	color:#476F7D;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#totalNumberOfRequestsDIV
+{
+	background-color:#ECF3F5;
+	color:#1B7AB0;
+	font-size:12px;
+	font-weight:bold;
+	margin-top:10px;
 }

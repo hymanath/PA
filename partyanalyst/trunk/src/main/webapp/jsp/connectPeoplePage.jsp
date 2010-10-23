@@ -63,7 +63,8 @@
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
-<link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css"><>
+<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+<link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
 
 </head>
 <body>
@@ -71,45 +72,51 @@
 	<div id="connectPeoplePage_main">
 		<table width="100%">
 			<tr>
-				<td width="25%" valign="top">
-					<div id="connectPeople_leftNav_main">
-						<div id="connectPeople_leftNav_top">
-							<table border="0" cellpadding="0" cellspacing="0">
-								<tr>
-									<td><img border="none" src="images/icons/connectPeople/header_left.png"></td>
-									<td><div class="connectPeopleCenter" style="width:215px;"><span id="stateNameSpan"></div></span></td>
-									<td><img border="none" src="images/icons/connectPeople/header_right.png"></td>
-								</tr>
-							</table>
-						</div>
-						<div id="connectPeople_leftNav_center">
-								<ul id="connectPeople_leftNav_list">
-									<li>Home</li>
-									<li>Messages</li>
-									<li>Events</li>
-									<li>Filter Search</li>
-								</ul>
-						</div>
-						<div id="connectPeople_leftNav_bottom">
-							<table border="0" cellpadding="0" cellspacing="0">
-								<tr>
-									<td><img border="none" src="images/icons/connectPeople/header_bottom_left.png"></td>
-									<td><div class="connectPeopleCenter" style="width:215px;"><span></span></div></td>
-									<td><img border="none" src="images/icons/connectPeople/header_bottom_right.png"></td>
-								</tr>
-							</table>
-						</div>
+				<td width="70%" valign="top">
+					
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+						
+							<div id="connectPeople_messages_center" class="yui-skin-sam">
+											 
+							</div>
+					</div>
+
+					
+				</td>
+				<td width="30%" valign="top">
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+						
+							<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
+											 
+							</div>
 					</div>
 				</td>
-				<td width="75%" valign="top">
-					<div id="connectPeople_connect_main">
-						<div id="connectPeople_connect_center" class="yui-skin-sam">
-												 
-						</div>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top">
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+						
+							<div id="connectPeople_connect_center" class="yui-skin-sam">
+											 
+							</div>
 					</div>
 				</td>
 			</tr>
 		</table>
+
+		
 	</div>
 
 	<script type="text/javascript"> 
