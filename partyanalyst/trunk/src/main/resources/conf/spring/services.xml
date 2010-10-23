@@ -460,6 +460,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />	
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />	
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />		
 		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
