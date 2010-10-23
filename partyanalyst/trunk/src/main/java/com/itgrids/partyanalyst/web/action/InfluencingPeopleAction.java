@@ -202,7 +202,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		staticParties = staticDataService.getStaticParties();
 		staticParties.add(0,new SelectOptionVO(0l,"Select Party"));
 		occupationsList = staticDataService.getAllOccupations();
-		influenceRange = problemManagementService.getAllProblemImpactLevel();
+		influenceRange = influencingPeopleService.getInfluenceRange();
 		influenceRange.add(0,new SelectOptionVO(0l,"Select Influence Scope"));
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		
