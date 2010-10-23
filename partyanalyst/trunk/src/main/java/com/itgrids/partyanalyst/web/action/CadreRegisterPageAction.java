@@ -63,6 +63,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<String> language_options;
 	private RegionServiceDataImp regionServiceDataImp;
 	private ICrossVotingEstimationService crossVotingEstimationService;
+	private List<SelectOptionVO> stateList_c;
+	private List<SelectOptionVO> districtList_c;
+	private List<SelectOptionVO>  constituencyList_c;
+	private Long defaultStateId;
+	private Long defaultDistId;
+	private Long defaultConstId;
+	private List<SelectOptionVO> cadreLevelsList = new ArrayList<SelectOptionVO>();
+	private Long defaultCadreLevelId;
 	
 	public ServletContext getContext() {
 		return context;
@@ -262,6 +270,91 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setDobOptionsList(List<String> dobOptionsList) {
 		this.dobOptionsList = dobOptionsList;
+	}	
+
+	public List<SelectOptionVO> getDistrictList_c() {
+		return districtList_c;
+	}
+
+	public void setDistrictList_c(List<SelectOptionVO> districtList_c) {
+		this.districtList_c = districtList_c;
+	}
+
+	public List<SelectOptionVO> getConstituencyList_c() {
+		return constituencyList_c;
+	}
+
+	public void setConstituencyList_c(List<SelectOptionVO> constituencyList_c) {
+		this.constituencyList_c = constituencyList_c;
+	}
+
+	public List<SelectOptionVO> getStateList_c() {
+		return stateList_c;
+	}
+
+	public void setStateList_c(List<SelectOptionVO> stateList_c) {
+		this.stateList_c = stateList_c;
+	}	
+	
+	public Long getDefaultStateId() {
+		return defaultStateId;
+	}
+
+	public void setDefaultStateId(Long defaultStateId) {
+		this.defaultStateId = defaultStateId;
+	}
+
+	public Long getDefaultDistId() {
+		return defaultDistId;
+	}
+
+	public void setDefaultDistId(Long defaultDistId) {
+		this.defaultDistId = defaultDistId;
+	}
+
+	public Long getDefaultConstId() {
+		return defaultConstId;
+	}
+
+	public void setDefaultConstId(Long defaultConstId) {
+		this.defaultConstId = defaultConstId;
+	}
+
+	public Long getDefaultState() {
+		return this.defaultStateId;
+	}
+	
+	public Long getDefaultDistrict() {
+		return this.defaultDistId;
+	}	
+
+	public Long getDefaultConstituency() {
+		return this.defaultConstId;
+	}
+	// to make the active or normal cadre type radio button to pre select active radio button
+	public String getDefaultCadreType() {
+		return "Active";
+	}
+
+	public List<SelectOptionVO> getCadreLevelsList() {
+		return cadreLevelsList;
+	}
+
+	public void setCadreLevelsList(List<SelectOptionVO> cadreLevelsList) {
+		this.cadreLevelsList = cadreLevelsList;
+	}
+	
+	public Long getDefaultCadreLevel()
+	{
+		return this.defaultCadreLevelId;
+	}	
+
+	public Long getDefaultCadreLevelId() {
+		return defaultCadreLevelId;
+	}
+
+	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
+		this.defaultCadreLevelId = defaultCadreLevelId;
 	}
 
 	public String execute(){
@@ -275,26 +368,37 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
-		stateList_o = cadreManagementService.findStatesByCountryID("1");  
+		stateList_o = regionServiceDataImp.getStatesByCountry(1l);  
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
-		
+		stateList_c = new ArrayList<SelectOptionVO>();
+		districtList_c = new ArrayList<SelectOptionVO>();
+		constituencyList_c = new ArrayList<SelectOptionVO>();
 		language_options = new ArrayList<String>();
 		language_options.add(IConstants.SPEAK_LANGUAGE);
 		language_options.add(IConstants.READ_LANGUAGE);
 		language_options.add(IConstants.WRITE_LANGUAGE);
-			
 		
+		//'2':'STATE','3':'DISTRICT','4':'CONSTITUENCY','5':'MANDAL','6':'VILLAGE','7':'MUNICIPAL-CORP-GMC','8':'WARD','9':'BOOTH'
+		cadreLevelsList.add(new SelectOptionVO(2l,"STATE"));
+		cadreLevelsList.add(new SelectOptionVO(3l,"DISTRICT"));
+		cadreLevelsList.add(new SelectOptionVO(4l,"CONSTITUENCY"));
+		cadreLevelsList.add(new SelectOptionVO(5l,"MANDAL"));
+		cadreLevelsList.add(new SelectOptionVO(6l,"VILLAGE"));
+		cadreLevelsList.add(new SelectOptionVO(7l,"MUNICIPAL-CORP-GMC"));
+		cadreLevelsList.add(new SelectOptionVO(8l,"WARD"));
+		cadreLevelsList.add(new SelectOptionVO(9l,"BOOTH"));
+		session.setAttribute(ISessionConstants.CADRE_LEVELS_LIST,cadreLevelsList);
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
 		
 		session.setAttribute(ISessionConstants.STATES_O, stateList_o);
-		session.setAttribute(ISessionConstants.STATES_C, stateList_o);
-		session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-		session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+		//session.setAttribute(ISessionConstants.STATES_C, stateList_o);
+		//session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+		//session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+		//session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+		//session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 		if(windowTask.equals(IConstants.CREATE_NEW))
 		{	
 			if("MLA".equals(accessType))
@@ -307,22 +411,51 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				constituencyList.add(list.get(2));
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 				mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
+				//session variables used to pre populate cadre current address selection
+				
 				session.setAttribute(ISessionConstants.STATES, stateList);
 				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
 				session.setAttribute(ISessionConstants.MANDALS,mandalList);	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				//session variables used to pre populate cadre level selecton for active cadre
+				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+				constituencyList_c = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
+				session.setAttribute(ISessionConstants.STATES_C, stateList_o);
+				session.setAttribute(ISessionConstants.DISTRICTS_C, districtList_c);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, constituencyList_c);
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default state element to be selected in cadre level selection for active cadre
+				setDefaultStateId(list.get(0).getId());
+				//default district element to be selected in cadre level selection for active cadre
+				setDefaultDistId(list.get(1).getId());
+				//default constituency element to be selected in cadre level selection for active cadre
+				setDefaultConstId(list.get(2).getId());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(4l);
+				
 							
 			}else if("COUNTRY".equals(accessType))
 			{
 				log.debug("Access Type = Country ****");
 				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 				stateList.add(0,new SelectOptionVO(0l,"Select State"));
+				//session variables used to pre populate cadre current address selection
 				session.setAttribute(ISessionConstants.STATES, stateList);
 				session.setAttribute(ISessionConstants.DISTRICTS,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				//session variables used to pre populate cadre level selecton for active cadre
+				session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(0l);
 				
 				
 			}else if("STATE".equals(accessType)){
@@ -335,12 +468,24 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				stateList.add(obj2);
 				districtList = staticDataService.getDistricts(accessValue);
 				districtList.add(0,new SelectOptionVO(0l,"Select District"));
+				// session varibales for pre populating current address selection based on user access level
 				session.setAttribute(ISessionConstants.STATES, stateList);
 				session.setAttribute(ISessionConstants.DISTRICTS,districtList);
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 				
+				// session varibales for pre populating cadre level selection 
+				session.setAttribute(ISessionConstants.STATES_C, stateList_o);
+				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+			
+				//default state element to be selected in cadre level selection for active cadre
+				setDefaultStateId(accessValue);
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(2l);
 				
 			}else if("DISTRICT".equals(accessType)){
 				log.debug("Access Type = District ****");			
@@ -355,6 +500,22 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+				// session varibales for pre populating cadre level selection 
+				session.setAttribute(ISessionConstants.STATES_C, stateList_o);
+				session.setAttribute(ISessionConstants.DISTRICTS_C, districtList_c);
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				
+				//default state element to be selected in cadre level selection for active cadre
+				setDefaultStateId(list.get(0).getId());
+				//default district element to be selected in cadre level selection for active cadre
+				setDefaultDistId(list.get(1).getId());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(3l);
+				
 				
 				
 			} else if("MP".equals(accessType)){
