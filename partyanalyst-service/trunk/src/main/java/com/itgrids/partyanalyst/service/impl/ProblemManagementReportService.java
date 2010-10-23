@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -77,6 +79,7 @@ public class ProblemManagementReportService implements
 	private InfluencingPeopleDAO influencingPeopleDAO;
 	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private List result = null;
@@ -162,6 +165,8 @@ public class ProblemManagementReportService implements
 		this.tehsilDAO = tehsilDAO;
 	}
 
+	
+
 	public IProblemExternalSourceDAO getProblemExternalSourceDAO() {
 		return problemExternalSourceDAO;
 	}
@@ -227,6 +232,14 @@ public class ProblemManagementReportService implements
 
 	public void setInfluencingPeopleDAO(InfluencingPeopleDAO influencingPeopleDAO) {
 		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public IProblemManagementService getProblemManagementService() {
@@ -827,18 +840,26 @@ public class ProblemManagementReportService implements
 					influencingPeopleVO.setOccupation(people.getOccupation());
 					influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
 					
-					if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-						influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
-					}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+					if(IConstants.STATE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(stateDAO.get(new Long(people.getInfluencingScopeValue())).getStateName());
-					}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+					}
+					else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(districtDAO.get(new Long(people.getInfluencingScopeValue())).getDistrictName());
-					}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+					}
+					else if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
+					}
+					else if(IConstants.MUNCIPALITY_CORPORATION_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(localElectionBodyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
+					}
+					else if(IConstants.MANDAL_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(tehsilDAO.get(new Long(people.getInfluencingScopeValue())).getTehsilName());
-					}else if(IConstants.REVENUE_VILLAGE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-						influencingPeopleVO.setInfluencingRangeName(townshipDAO.get(new Long(people.getInfluencingScopeValue())).getTownshipName());
-					}else if(IConstants.HAMLET_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+					}
+					else if(IConstants.VILLAGE.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(hamletDAO.get(new Long(people.getInfluencingScopeValue())).getHamletName());
+					}
+					else if(IConstants.WARD.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
 					}
 					influencingPeopleVO.setCast(people.getCaste());
 					influencingPeopleVO.setContactNumber(people.getPhoneNo());
