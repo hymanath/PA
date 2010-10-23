@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.OpinionPoll;
 import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
@@ -316,9 +314,11 @@ public class OpinionPollService implements IOpinionPollService {
 					opinionPollQuestionOptions = opinionPollQuestionOptionsDAO.save(opinionPollQuestionOptions);
 					
 					/*OpinionPollResult opinionPollResult =new OpinionPollResult();
+					opinionPollResult.setOpinionPollQuestions(opinionPollQuestions);
 					opinionPollResult.setOpinionPollQuestionOptions(opinionPollQuestionOptions);
 					opinionPollResult.setCount(0l);
-					opinionPollResultDAO.save(opinionPollResult);  */ 
+					
+					opinionPollResult = opinionPollResultDAO.save(opinionPollResult);  */
 				}
 					
 			}
