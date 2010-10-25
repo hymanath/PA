@@ -46,7 +46,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List<Object[]> getDetailsByInfluencingPersonId(Long influencingPersonId){
 		return getHibernateTemplate().find("select model.firstName, model.middleName, model.lastName, model.fatherOrSpouseName, model.gender,"+
 					"model.phoneNo, model.email, model.occupation, model.party.partyId, model.caste, model.influencingPeoplePosition.influencingPeoplePositionId, " +
-					"model.influencingScope,model.userAddress.userAddressId from "+
+					"model.influencingScope,model.influencingScopeValue,model.userAddress.userAddressId from "+
 					"InfluencingPeople model where model.influencingPeopleId = ?", influencingPersonId);
 	}
 	
