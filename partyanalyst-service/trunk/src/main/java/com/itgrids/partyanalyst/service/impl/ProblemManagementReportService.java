@@ -855,7 +855,7 @@ public class ProblemManagementReportService implements
 					else if(IConstants.MANDAL_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(tehsilDAO.get(new Long(people.getInfluencingScopeValue())).getTehsilName());
 					}
-					else if(IConstants.VILLAGE.equalsIgnoreCase(people.getInfluencingScope())){
+					else if(IConstants.CENSUS_VILLAGE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
 						influencingPeopleVO.setInfluencingRangeName(hamletDAO.get(new Long(people.getInfluencingScopeValue())).getHamletName());
 					}
 					else if(IConstants.WARD.equalsIgnoreCase(people.getInfluencingScope())){
