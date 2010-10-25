@@ -116,6 +116,10 @@ public class CadreRegisterAction extends ActionSupport implements
 	private List<SelectOptionVO> mandalsList_c;
 	private List<SelectOptionVO> villagesList_c;
 	private List<SelectOptionVO> designationsList;
+	private Long defaultStateId;
+	private Long defaultDistId;
+	private Long defaultConstId;
+	private Long defaultCadreLevelId;
 	
 	public CadreInfo getCadreInfo() {
 		return cadreInfo;
@@ -687,7 +691,51 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	public void setDesignationsList(List<SelectOptionVO> designationsList) {
 		this.designationsList = designationsList;
+	}	
+
+	public Long getDefaultStateId() {
+		return defaultStateId;
 	}
+
+	public void setDefaultStateId(Long defaultStateId) {
+		this.defaultStateId = defaultStateId;
+	}
+
+	public Long getDefaultDistId() {
+		return defaultDistId;
+	}
+
+	public void setDefaultDistId(Long defaultDistId) {
+		this.defaultDistId = defaultDistId;
+	}
+
+	public Long getDefaultConstId() {
+		return defaultConstId;
+	}
+
+	public void setDefaultConstId(Long defaultConstId) {
+		this.defaultConstId = defaultConstId;
+	}
+
+	public Long getDefaultCadreLevelId() {
+		return defaultCadreLevelId;
+	}
+
+	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
+		this.defaultCadreLevelId = defaultCadreLevelId;
+	}
+	
+	// to make the active or normal cadre type radio button to pre select active radio button
+	public String getDefaultCadreType() {
+		return "Active";
+	}
+	
+	// to pre select cadre level  based on user access type
+	public Long getDefaultCadreLevel()
+	{
+		return this.defaultCadreLevelId;
+	}	
+
 
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
@@ -733,7 +781,10 @@ public class CadreRegisterAction extends ActionSupport implements
 				log.debug("Access Type = MLA ****");
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());				
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(4l);
+				
 							
 			}else if("COUNTRY".equals(regVO.getAccessType()))
 			{
@@ -746,7 +797,10 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());				
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(0l);
+				
 				
 			}else if("STATE".equals(regVO.getAccessType())){
 				log.debug("Access Type = State ****");
@@ -758,6 +812,9 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(2l);
+				
 				
 				
 			}else if("DISTRICT".equals(regVO.getAccessType())){
@@ -769,6 +826,8 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(3l);	
 				
 			}			
 					 
