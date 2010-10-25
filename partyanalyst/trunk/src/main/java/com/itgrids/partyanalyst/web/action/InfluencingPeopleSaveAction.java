@@ -347,7 +347,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		
 		else if("6".equalsIgnoreCase(getInfluencingRange()))
 		{
-			influencingPeopleBeanVO.setInfluencingRange(IConstants.VILLAGE);
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.CENSUS_VILLAGE_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
