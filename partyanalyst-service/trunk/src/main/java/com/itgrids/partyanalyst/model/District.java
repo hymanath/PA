@@ -55,6 +55,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<Tehsil> tehsils = new HashSet<Tehsil>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 
 	// Constructors
 
@@ -71,7 +72,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	public District(Long districtId, String districtName,
 			String districtCapital, Double area, Double population,  State state,
 			Long districtCode, Date startDate, Date deformDate,
-			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<LocalGroupRegion> localGroupRegion) {
 		this.districtId = districtId;
 		this.state = state;
 		this.districtName = districtName;
@@ -84,6 +85,7 @@ public class District extends BaseModel implements java.io.Serializable {
 		this.constituencies = constituencies;
 		this.tehsils = tehsils;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	// Property accessors
@@ -200,5 +202,15 @@ public class District extends BaseModel implements java.io.Serializable {
 	public void setPartyElectionDistrictResult(
 			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "district")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 }
