@@ -47,6 +47,7 @@ private Date createdDate;
 private String location;
 private String designation;
 private String phoneNumber;
+private StaticUserDesignation staticUserDesignation;
 private Set<StaticUserGroup> staticUserGroups = new HashSet<StaticUserGroup>(0);
 //constructors
 
@@ -62,7 +63,8 @@ public StaticUsers(Long staticUserId) {
 }
 public StaticUsers(Long staticUserId, String name, String mobileNumber,
 		String emailId, String address, Date updatedDate,String location,
-		String designation,Date createdDate,String phoneNumber, Set<StaticUserGroup> staticUserGroups) {
+		String designation,Date createdDate,String phoneNumber, Set<StaticUserGroup> staticUserGroups,
+		StaticUserDesignation staticUserDesignation) {
 	
 	this.staticUserId = staticUserId;
 	this.name = name;
@@ -75,6 +77,7 @@ public StaticUsers(Long staticUserId, String name, String mobileNumber,
 	this.createdDate=createdDate;
 	this.phoneNumber=phoneNumber;
 	this.staticUserGroups = staticUserGroups;
+	this.staticUserDesignation = staticUserDesignation;
 }
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -163,6 +166,17 @@ public Set<StaticUserGroup> getStaticUserGroups() {
 }
 public void setStaticUserGroups(Set<StaticUserGroup> staticUserGroups) {
 	this.staticUserGroups = staticUserGroups;
+}
+
+@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name="static_user_designation_id")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+public StaticUserDesignation getStaticUserDesignation() {
+	return staticUserDesignation;
+}
+public void setStaticUserDesignation(StaticUserDesignation staticUserDesignation) {
+	this.staticUserDesignation = staticUserDesignation;
 }
 
 }
