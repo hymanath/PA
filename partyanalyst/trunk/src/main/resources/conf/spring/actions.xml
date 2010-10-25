@@ -450,6 +450,11 @@
 	<bean id="cadreInfoAction" class="com.itgrids.partyanalyst.web.action.CadreInfoAction" singleton="false">				
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
+	
+	<bean id="influencingPersonInfoAction" class="com.itgrids.partyanalyst.web.action.InfluencingPersonInfoAction" singleton="false">				
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
+	</bean>
+	
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">			
 		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
