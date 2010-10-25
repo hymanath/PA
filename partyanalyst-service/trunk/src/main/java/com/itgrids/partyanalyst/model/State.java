@@ -68,6 +68,7 @@ public class State implements java.io.Serializable {
 	private Set<District> districts = new HashSet<District>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	private Set<Party> party = new HashSet<Party>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	
 	
 	// Constructors
@@ -90,7 +91,7 @@ public class State implements java.io.Serializable {
 			String stateTree, String stateSport, String stateDance,
 			String stateFlower, String isoCode, Long stateCode, Date startDate,
 			Date deformDate, Set<Constituency> constituencies,
-			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<Party> party) {
+			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<Party> party,Set<LocalGroupRegion> localGroupRegion) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -115,6 +116,7 @@ public class State implements java.io.Serializable {
 		this.districts = districts;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
 		this.party = party;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 
@@ -351,6 +353,16 @@ public class State implements java.io.Serializable {
 
 	public void setParty(Set<Party> party) {
 		this.party = party;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	/* (non-Javadoc)
