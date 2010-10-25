@@ -44,7 +44,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
 	<!-- YUI Skin Sam -->
-
+	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -56,7 +56,11 @@
 
 	
 	<link type="text/css" rel="stylesheet" href="styles/indexPage/indexPage.css">
-	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
+		
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <style type="text/css">
 
@@ -243,8 +247,7 @@
 	}
 	#partyPositionsHead
 	{
-		background:transparent url(js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;
-		text-align:right;
+		background:transparent url(js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;		
 		padding:5px;
 	}
 	#partyPositionsCloseSpan
@@ -362,7 +365,7 @@
 		text-align:justify;
 		word-spacing:2px;
 		width:90%;
-		color:#73787E;
+		color:#192535;
 		font-size:12px;
 	}
 
@@ -392,10 +395,47 @@
 	}
 	#panelFortwoYear
 	{
-		width:95%;
+		width:100%;
 	}
 	
+	#ecrLayout_main
+	{
+		width:90%;
+	}
 	
+	#ecrLayout_main fieldset
+	{
+		border:0 none;
+		margin:0;
+		padding:0;
+	}
+
+	#ecrLayout_main fieldset legend
+	{
+		background-color:#567AAF;
+		color:#FFFFFF;
+		font-size:13px;
+		padding:6px;
+	}
+
+	#diffPercentage_main_outer
+	{
+		background-color:#E4EDF0;
+		padding:5px;
+	}
+
+	#diffPercentage_main
+	{
+		position:relative;
+	}
+
+	.yearsResults_body
+	{
+		border-bottom:1px solid #E0E0D6;
+		border-left:1px solid #E0E0D6;
+		border-right:1px solid #E0E0D6;
+	}
+
 </style>
 <script type="text/javascript">	
 var labelResources = { <%		
@@ -919,8 +959,16 @@ function overallResultsForYearOne()
 
 
    var str='';
-   str+='<div id="yearOneResults_head" class="resultsHeadClass">Complete Results for '+electionType+' '+electionObject.yearOne+' Elections </div>';
-   str+='<div class="resultBodyClass">';
+   str+='<div id="yearOneResults_head">';
+	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
+	str+='	<tr>';
+	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections </span></div></td>';
+	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
+	str+='	</tr>';
+	str+='</table>';
+    str += '</div>';
+   str+='<div id="yearOneResults_body" class="yearsResults_body">';
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th><%=party%></th>';
@@ -990,9 +1038,17 @@ function overallResultsForYearTwo()
 	if(!elmt)
 		return;
 
-   var str='';
-   str+='<div id="yearTwoResults_head" class="resultsHeadClass">Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections </div>';
-   str+='<div class="resultBodyClass">';
+	var str='';
+	str+='<div id="yearTwoResults_head">';
+	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
+	str+='	<tr>';
+	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections </span></div></td>';
+	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
+	str+='	</tr>';
+	str+='</table>';
+   str += '</div>';
+   str+='<div id="yearTwoResults_body" class="yearsResults_body">';
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th><%=party%></th>';
@@ -1046,14 +1102,14 @@ function overallResultsForYearTwo()
 
 function getDiffPercent()
 {
-	var elmt = document.getElementById("diffPercentPanel");	
+	var elmt = document.getElementById("diffPercentage_main");	
 	if(!elmt)
 		return;
 
     var diffPercent = '${electionComparisonReportVO.votesPercentDiff}';
 	var seatesDiff =  '${electionComparisonReportVO.seatsDiff}';
 	var str = '';
-	str+='<div class="resultBodyClass">';
+	str+='<div class="resultBodyClass" style="background-color:#FFFFFF;">';
 	str+='<table style="width:100%">';
 	
 		
@@ -1066,7 +1122,8 @@ function getDiffPercent()
     str+='<td style="color:red;font-size:15px;width:25%;text-align:left;"> '+seatesDiff+' Seats </td>';
     if(seatesDiff == 0)
     str+='<td style="color:red;font-size:15px;width:25%;text-align:left;"> 0 Seats </td>';
-    
+    str += '</tr>';
+	str+='<tr>';
 	str+='<th align="left" style="width: 33%;text-align:left;" > <%=diffVotesPercent%> ( '+electionObject.yearOne+'  --  '+electionObject.yearTwo+'  ) :   </th>';
 	if(diffPercent > 0)
 	str+='<td style="color:green;font-size:15px;text-align:left;">'+diffPercent+' % increase</td>';
@@ -1147,6 +1204,7 @@ function displayPartyPositionResults(jsObj,data)
 	}
 
 	var divElmt = document.getElementById("partyPositions");
+	
 	var divElmtBody = document.getElementById("partyPositionsBody");
 	var imgElmt = document.getElementById("imageYearOneId");
 
@@ -1200,7 +1258,8 @@ function buildPartyPositionDataTable(info,rank)
 {
 	var divHead = document.getElementById('partyPositionsHead');
 	var hStr = '';
-	hStr+='<span id="partyPositionsCloseSpan" onclick="closePartyPosition()"> X </span>'
+	hStr += '<table width="100%"><tr><td align="left"><span style="color:#4B74C6"><b>Comparison Report For the Rank - '+rank+'</b></span></td>';
+	hStr +='<td align="right"><span id="partyPositionsCloseSpan" onclick="closePartyPosition()"> X </span></td></tr></table>'
 	if(divHead)
 		divHead.innerHTML = hStr;
 
@@ -1700,6 +1759,85 @@ function buildYearDataTable(divId,data)
 	myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
 }
 
+function createCoulmnChart()
+{
+	var years = new Array();
+	years.push('${electionComparisonReportVO.yearOne}');
+	years.push('${electionComparisonReportVO.yearTwo}');
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Year');
+	data.addColumn('number', 'Seats Won');
+	data.addColumn('number', '2nd Pos');
+	data.addColumn('number', '3rd Pos');
+	data.addColumn('number', '4th Pos');
+	
+	data.addRows(years.length);
+	
+	<c:if test="${allianceCheck == 'true'}">
+		
+		var totalSeatsWonYearOne = 0;
+		var secondPosWonYearOne = 0;
+		var thirdPosWonYearOne = 0;
+		var fourthPosWonYearOne = 0;			
+
+		<c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
+			totalSeatsWonYearOne += ${partyPositions.totalSeatsWon};
+			secondPosWonYearOne += ${partyPositions.secondPosWon};
+			thirdPosWonYearOne += ${partyPositions.thirdPosWon};
+			fourthPosWonYearOne += ${partyPositions.fourthPosWon};
+		</c:forEach>
+
+		data.setValue(0, 0, '2009');				
+		data.setValue(0, 1, totalSeatsWonYearOne);
+		data.setValue(0, 2, secondPosWonYearOne);
+		data.setValue(0, 3, thirdPosWonYearOne);
+		data.setValue(0, 4, fourthPosWonYearOne);
+
+		var totalSeatsWonYearTwo = 0;
+		var secondPosWonYearTwo = 0;
+		var thirdPosWonYearTwo = 0;
+		var fourthPosWonYearTwo = 0;
+		
+		<c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
+			totalSeatsWonYearTwo += ${partyPositions.totalSeatsWon};
+			secondPosWonYearTwo += ${partyPositions.secondPosWon};
+			thirdPosWonYearTwo += ${partyPositions.thirdPosWon};
+			fourthPosWonYearTwo += ${partyPositions.fourthPosWon};
+		</c:forEach>
+
+		data.setValue(1, 0, '2004');				
+		data.setValue(1, 1, totalSeatsWonYearTwo);
+		data.setValue(1, 2, secondPosWonYearTwo);
+		data.setValue(1, 3, thirdPosWonYearTwo);
+		data.setValue(1, 4, fourthPosWonYearTwo);
+		 
+	</c:if>
+
+	<c:if test="${allianceCheck == 'false'}">
+		 data.setValue(0, 0, '2009');
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
+			data.setValue(0, 1, ${partyPositions.totalSeatsWon});
+			data.setValue(0, 2, ${partyPositions.secondPosWon});
+			data.setValue(0, 3, ${partyPositions.thirdPosWon});
+			data.setValue(0, 4, ${partyPositions.fourthPosWon});
+		 </c:forEach>
+			
+		  data.setValue(1, 0, '2004');
+		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
+			data.setValue(1, 1, ${partyPositions.totalSeatsWon});
+			data.setValue(1, 2, ${partyPositions.secondPosWon});
+			data.setValue(1, 3, ${partyPositions.thirdPosWon});
+			data.setValue(1, 4, ${partyPositions.fourthPosWon});
+		 </c:forEach>
+	</c:if>
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('graphDiv'));
+		chart.draw(data, {width: 320, height: 410,legend:'right',legendTextStyle:{fontSize:10}, title: 'Party Positions in ${electionComparisonReportVO.yearOne} and ${electionComparisonReportVO.yearTwo}',
+				  hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+				 });
+
+}
 </script>
 </head>
 <body>
@@ -1722,12 +1860,93 @@ function buildYearDataTable(divId,data)
 </div>
 <div id="CandidatePageLayoutDiv">
 	<div id="cand_elect_div" class="yui-skin-sam" style="position:absolute;">
-		<div id="cand_elec_div_panel">
+		<div id="cand_elec_div_panel"></div>
 	</div>
 </div>
 
 <div id="imageYearOneId" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
 </div>
+
+<!-- New UI Changes start -->
+<div id="ecrLayout_main">
+	<div id="ecr_ElectionAnalysis_data_div">
+		<fieldset>			
+				<div class="productFeatureHeader">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					  <tr>                                    
+						<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+						<td width="98%">
+							<div class="productFeatureHeaderBackground_center">
+								<span class="headerLabelSpan">
+									Election Results Analysis  
+								</span>
+							</div>
+						</td>
+						<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+					  </tr>
+					</table>
+				</div>
+				<div id="diffPercentage_main_outer">				
+				<table width="100%">
+					<tr>
+						<td width="50%" valign="top">							
+							<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px;"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+
+									<div id="diffPercentage_main"></div>
+							</div>
+							<div id="constituencyCenterContentOuter" class="rounded"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+
+									 <div id="overallResultsYearTwoDiv" class="yui-skin-sam" style="position:relative;">
+										 <div id="overallResultsYearTwoPanel" class="panelOuterDiv" style="border:0px none;"></div>
+									 </div>
+									 <div id="commentsDiv">  <%=pc%> -- <%=participatedConsts%> |  <%=tc%> -- <%=tcDef%></div>
+									<div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div>
+							</div>
+							
+							<div id="constituencyCenterContentOuter" class="rounded"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+
+									<div id="overallResultsYearOneDiv" class="yui-skin-sam" style="position:relative">
+										 <div id="overallResultsYearOnePanel" class="panelOuterDiv" style="border:0px none;"></div>
+									</div>
+									<div id="commentsDiv">  <%=pc%> -- <%=participatedConsts%> |  <%=tc%> -- <%=tcDef%></div>
+									<div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div>
+							</div>
+						</td>
+						<td width="50%" valign="top">
+							<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px;"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+
+									<div id="mainGraphDiv" class="yui-skin-sam">
+										 <div id="graphDiv">
+										  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>" WIDTH="300" HEIGHT="480">
+										 </div>
+									</div>
+							</div>
+							
+						</td>
+					</tr>
+				</table>
+				</div>
+		</fieldset>
+	</div>
+	<div></div>
+</div>
+<!-- New UI Changes end -->
 
 <table style="width:70%;" border="0">
 <tr>
@@ -1736,35 +1955,6 @@ function buildYearDataTable(divId,data)
 		     <div id="diffPercentPanel" class="panelOuterDiv"></div>
 		 </div>
 	 </td>
-</tr>
-<tr>
-	<td id="tdTwo"  style="padding:-left	">
-		 <div id="overallResultsYearTwoDiv" class="yui-skin-sam" style="margin-top:10px;margin-left:20px">
-			 <div id="overallResultsYearTwoPanel" class="panelOuterDiv"></div>
-		 </div>
-	 </td>
-	 <td rowspan="2" style="vertical-align:top;">
-	     <div id="mainGraphDiv" class="yui-skin-sam" style="margin-left:15px">
-		     <div id="graphDiv">
-			  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>" WIDTH="350" HEIGHT="300">
-			 </div>
-		 </div>
-	 </td>
-</tr>
-<tr>	
-	<td id="tdOne" >
-	     <div id="overallResultsYearOneDiv" class="yui-skin-sam" style="margin-left:20px;">
-		     <div id="overallResultsYearOnePanel" class="panelOuterDiv"></div>
-		 </div>
-	 </td>
-    
-</tr>
-
-<tr>
-     <td align="left"><div id="commentsDiv">  <%=pc%> -- <%=participatedConsts%> |  <%=tc%> -- <%=tcDef%></div></td>
-</tr>
-<tr>
-	 <td align="left"><div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div></td>
 </tr>
 
 <tr>
@@ -1825,6 +2015,9 @@ function buildYearDataTable(divId,data)
 		overallResultsForYearOne();
 		overallResultsForYearTwo();
 		getDiffPercent();
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback(createCoulmnChart);
+
 		
 		var allianceCarousel = new YAHOO.widget.Carousel("electionComparisonGraphCarousel",
 			{
