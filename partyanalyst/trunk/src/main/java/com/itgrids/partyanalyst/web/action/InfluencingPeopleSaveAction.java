@@ -92,6 +92,9 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return mobile;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -119,7 +122,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return occupation;
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Occupation Selection")
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
@@ -185,15 +188,18 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return party;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Party Selection")
 	public void setParty(String party) {
 		this.party = party;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Position",shortCircuit=true)
+	
 	public String getPosition() {
 		return position;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Position",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Position Selection")
 	public void setPosition(String position) {
 		this.position = position;
 	}
@@ -204,6 +210,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Influencing Range",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Influencing Range Selection")
 	public void setInfluencingRange(String influencingRange) {
 		this.influencingRange = influencingRange;
 	}
@@ -248,15 +255,18 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return pincode;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9][0-9][0-9][0-9][0-9][0-9]", message = "Pin Code should contain digits ", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode length should be 6 digits only", minLength = "6", maxLength = "6")
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid ward or hamlet selection")
+	
 	public String getWardOrHamlet() {
 		return wardOrHamlet;
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid ward or hamlet selection")
 	public void setWardOrHamlet(String wardOrHamlet) {
 		this.wardOrHamlet = wardOrHamlet;
 	}
