@@ -358,7 +358,7 @@ function populateInfluencingPeople(results)
 	{
 		var inf_peopleObj = {
 				influencingPeopleId: results[i].influencingPeopleId,
-				personName: results[i].personName,
+				personName: '<center><A href="javascript:{}" title="Click To View More Details" onclick=getInfluencingPersonInfo('+results[i].influencingPeopleId+')>'+results[i].personName+'</A></center>',
 				contactNumber: results[i].contactNumber,
 				party: results[i].party,
 				localArea: results[i].localArea,
