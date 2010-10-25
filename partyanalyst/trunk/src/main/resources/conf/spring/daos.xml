@@ -5,6 +5,10 @@
 
 <beans>
   
+  	<bean id="localElectionBodyWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyWardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
   	<bean id="ananymousUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

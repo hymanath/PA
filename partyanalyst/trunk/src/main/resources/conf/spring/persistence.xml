@@ -146,6 +146,7 @@
 				<value>com.itgrids.partyanalyst.model.CustomMessage</value>
 				<value>com.itgrids.partyanalyst.model.MessageType</value>
 				<value>com.itgrids.partyanalyst.model.UserConnectedto</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
 				</list>
 		</property>
 	</bean>
