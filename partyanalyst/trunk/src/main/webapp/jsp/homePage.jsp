@@ -68,6 +68,7 @@
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
@@ -81,6 +82,7 @@
 <link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 <link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 <script type="text/javascript">
 
 google.load("elements", "1", {packages : ["newsshow"]});
