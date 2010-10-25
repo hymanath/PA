@@ -473,6 +473,13 @@
 			var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 			browser1.focus();
 		}
+
+		function getInfluencingPersonInfo(influencingPersonId)
+		{
+			var urlStr = "getInfluencingPersonInfoAction.action?windowTask=influencingPersonInfoPopup&influencingPersonId="+influencingPersonId;
+			var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=500,width=600,left=200,top=200");	
+			browser2.focus();
+		}
 		
 		
 		function callAjax(param,jsObj,url){
@@ -626,6 +633,7 @@
 
 							
 							<DIV class="yui-skin-sam" style="text-align:right;"><div id="localPoliticalChangesRegistration"></DIV>
+
 							<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
 							</DIV>
 					
