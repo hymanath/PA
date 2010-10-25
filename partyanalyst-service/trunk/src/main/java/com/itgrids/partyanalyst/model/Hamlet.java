@@ -47,6 +47,7 @@ public class Hamlet extends BaseModel implements Serializable {
 	private Set<Voter> voters = new HashSet<Voter>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<HamletBoothElection> hamletBoothElections = new HashSet<HamletBoothElection>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	
 	
 	//default constructor
@@ -62,7 +63,7 @@ public class Hamlet extends BaseModel implements Serializable {
 	//parameterized constructor
 	public Hamlet(String hamletCode,String hamletName,Township township,
 			String panchayatCode,String panchayatName,String mppCode,
-			Set<Voter> voters, Set<ProblemLocation> problemLocations){
+			Set<Voter> voters, Set<ProblemLocation> problemLocations,Set<LocalGroupRegion> localGroupRegion){
 		this.hamletCode = hamletCode;
 		this.hamletName = hamletName;
 		this.township = township;
@@ -71,6 +72,7 @@ public class Hamlet extends BaseModel implements Serializable {
 		this.mppCode = mppCode;
 		this.voters = voters;
 		this.problemLocations = problemLocations;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	@Id
@@ -167,6 +169,16 @@ public class Hamlet extends BaseModel implements Serializable {
 	public void setHamletBoothElections(
 			Set<HamletBoothElection> hamletBoothElections) {
 		this.hamletBoothElections = hamletBoothElections;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hamlet")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	
