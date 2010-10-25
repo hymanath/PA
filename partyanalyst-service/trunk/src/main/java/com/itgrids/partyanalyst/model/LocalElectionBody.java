@@ -35,6 +35,7 @@ public class LocalElectionBody extends BaseModel {
 	private Long noOfWards;
 	private Set<Constituency> wards = new HashSet<Constituency>();
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0); 
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	
 	public LocalElectionBody(){
 		
@@ -46,13 +47,14 @@ public class LocalElectionBody extends BaseModel {
 
 	public LocalElectionBody(Long localElectionBodyId, String name,
 			ElectionType electionType, Tehsil tehsil, District district,
-			Long noOfWards) {
+			Long noOfWards,Set<LocalGroupRegion> localGroupRegion) {
 		this.localElectionBodyId = localElectionBodyId;
 		this.name = name;
 		this.electionType = electionType;
 		this.tehsil = tehsil;
 		this.district = district;
 		this.noOfWards = noOfWards;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	@Id
@@ -138,6 +140,16 @@ public class LocalElectionBody extends BaseModel {
 
 	public void setUserAddress(Set<UserAddress> userAddress) {
 		this.userAddress = userAddress;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "localBody")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 	
 	
