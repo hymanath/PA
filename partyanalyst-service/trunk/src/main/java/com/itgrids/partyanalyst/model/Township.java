@@ -46,6 +46,7 @@ public class Township implements java.io.Serializable {
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<Hamlet> hamlets = new HashSet<Hamlet>(0);
 	private Set<VillageBoothElection> villageBoothElections = new HashSet<VillageBoothElection>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	//private Set<Census> censuses = new HashSet<Census>();
 	
 	// Constructors
@@ -62,7 +63,7 @@ public class Township implements java.io.Serializable {
 	/** full constructor */
 	public Township(Long townshipId, Tehsil tehsil, String townshipName,
 			Long townshipCode, String townshipType, Set<Ward> wards,
-			Set<ProblemLocation> problemLocations, Set<VillageBoothElection> villageBoothElections) {
+			Set<ProblemLocation> problemLocations, Set<VillageBoothElection> villageBoothElections,Set<LocalGroupRegion> localGroupRegion) {
 		this.townshipId = townshipId;
 		this.tehsil = tehsil;
 		this.townshipName = townshipName;
@@ -71,6 +72,7 @@ public class Township implements java.io.Serializable {
 		this.wards = wards;
 		this.problemLocations = problemLocations;
 		this.villageBoothElections = villageBoothElections;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	// Property accessors
@@ -157,6 +159,16 @@ public class Township implements java.io.Serializable {
 	public void setVillageBoothElections(
 			Set<VillageBoothElection> villageBoothElections) {
 		this.villageBoothElections = villageBoothElections;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "township")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "township")
