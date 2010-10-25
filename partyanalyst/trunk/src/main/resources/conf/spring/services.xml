@@ -591,6 +591,7 @@
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	    <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+	    <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO"/>
 	</bean>
 	
 	<bean name="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService">
