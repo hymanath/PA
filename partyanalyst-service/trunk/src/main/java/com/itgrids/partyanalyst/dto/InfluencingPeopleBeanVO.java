@@ -8,7 +8,10 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
 	constituency,mandal,village,hamlet,party,position,influencingRange,middleName,
-	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,windowTask,influencingPersonId,influencingScopeValue;
+	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,
+	windowTask,influencingPersonId,influencingScopeValue,influencingRangeScope,
+	stateName,districtName,constituencyName,mandalName,wardOrHamletName,
+	occupationType,partyName,castType,positionType;
 	
 	private ResultStatus resultStatus;
 	
@@ -235,6 +238,86 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setInfluencingScopeValue(String influencingScopeValue) {
 		this.influencingScopeValue = influencingScopeValue;
+	}
+
+	public String getInfluencingRangeScope() {
+		return influencingRangeScope;
+	}
+
+	public void setInfluencingRangeScope(String influencingRangeScope) {
+		this.influencingRangeScope = influencingRangeScope;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public String getMandalName() {
+		return mandalName;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public String getWardOrHamletName() {
+		return wardOrHamletName;
+	}
+
+	public void setWardOrHamletName(String wardOrHamletName) {
+		this.wardOrHamletName = wardOrHamletName;
+	}
+
+	public String getOccupationType() {
+		return occupationType;
+	}
+
+	public void setOccupationType(String occupationType) {
+		this.occupationType = occupationType;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public String getCastType() {
+		return castType;
+	}
+
+	public void setCastType(String castType) {
+		this.castType = castType;
+	}
+
+	public String getPositionType() {
+		return positionType;
+	}
+
+	public void setPositionType(String positionType) {
+		this.positionType = positionType;
 	}
 	
 	
