@@ -427,7 +427,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemLocation.setHamlet(hamlet);*/
 					ProblemImpactLevel problemImpactLevel = problemImpactLevelDAO.get(problemBeanVO.getProblemImpactLevelId());
 					problemLocation.setProblemImpactLevel(problemImpactLevel);
-					problemLocation.setProblemImpactLevelValue(problemBeanVO.getProblemImpactLevelValue());
+					problemLocation.setProblemImpactLevelValue(getProblemImpactValue(problemBeanVO.getProblemImpactLevelId(),problemBeanVO.getProblemImpactLevelValue()));
 					problemLocation.setProblemAndProblemSource(problemAndProblemSource);
 					problemHistory.setProblemLocation(problemLocationDAO.save(problemLocation));
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
@@ -446,7 +446,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					//problemBeanFromDB.setHamlet(problemHistory.getProblemLocation().getHamlet().getHamletName());
 					problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
 					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getProblemImpactLevelId());
-					problemBeanFromDB.setProblemImpactLevelValue(problemLocation.getProblemImpactLevelValue());
+					//Long impactValue = getProblemImpactValue(problemLocation.getProblemImpactLevelValue());
+					problemBeanFromDB.setProblemImpactLevelValue(getProblemImpactValue(problemImpactLevel.getProblemImpactLevelId(),problemLocation.getProblemImpactLevelValue()));
 					problemBeanFromDB.setIsApproved(problemHistory.getIsApproved());
 					
 				}catch(Exception e){
@@ -461,6 +462,23 @@ public class ProblemManagementService implements IProblemManagementService {
 			}
 		});
 		return this.problemBeanVO;
+	}
+	
+	public Long getProblemImpactValue(Long impactLevelId,Long impactLevelValue){
+		
+		ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(impactLevelId);
+		if(impactLevel != null){
+			if(impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.STATE) || impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.DISTRICT) 
+					|| impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			   return impactLevelValue;
+			}
+			else{
+				String value = impactLevelValue.toString().substring(1);
+				return new Long(value);
+			}
+		}
+		
+	 return impactLevelValue;	
 	}
 	/**
 	 * To Get The New Problems Of A User From DB 
