@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * Tehsil entity. 
@@ -49,6 +50,7 @@ public class Tehsil implements java.io.Serializable {
 	private Set<Township> townships = new HashSet<Township>(0);
 	private Set<Booth> booths = new HashSet<Booth>(0);
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 
 	// Constructors
 
@@ -64,7 +66,7 @@ public class Tehsil implements java.io.Serializable {
 	/** full constructor */
 	public Tehsil(Long tehsilId, District district, String tehsilName,
 			Long tehsilCode, Date startDate, String deformDate,
-			Set<Township> townships, Set<Booth> booths) {
+			Set<Township> townships, Set<Booth> booths,Set<LocalGroupRegion> localGroupRegion) {
 		this.tehsilId = tehsilId;
 		this.district = district;
 		this.tehsilName = tehsilName;
@@ -73,6 +75,7 @@ public class Tehsil implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.townships = townships;
 		this.booths = booths;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	// Property accessors
@@ -158,6 +161,16 @@ public class Tehsil implements java.io.Serializable {
 
 	public void setConstituencies(Set<Constituency> constituencies) {
 		this.constituencies = constituencies;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tehsil")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}	
 
 }
