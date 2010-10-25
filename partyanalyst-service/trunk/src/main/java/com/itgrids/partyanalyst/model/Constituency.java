@@ -62,6 +62,9 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<BoothConstituencyElection> boothConstituencyElections;
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
 	private Set<UserAddress> ward = new HashSet<UserAddress>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	private Set<LocalGroupRegion> localGroupWardRegion = new HashSet<LocalGroupRegion>(0);
+	
 	private LocalElectionBodyWard localElectionBodyWard;
 	// Constructors
 
@@ -100,7 +103,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 			Date startDate, Date deformDate, Long countryId,
 			Set<ConstituencyElection> constituencyElections,
 			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses,
-			Set<CommentCategoryConstituency> commentCategoryConstituency) {
+			Set<CommentCategoryConstituency> commentCategoryConstituency,Set<LocalGroupRegion> localGroupRegion,
+			Set<LocalGroupRegion> localGroupWardRegion) {
 		this.constituencyId = constituencyId;
 		this.district = district;
 		this.electionScope = electionScope;
@@ -112,6 +116,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.constituencyElections = constituencyElections;
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 		this.commentCategoryConstituency = commentCategoryConstituency;
+		this.localGroupRegion = localGroupRegion;
+		this.localGroupWardRegion = localGroupWardRegion;
 	}
 
 	// Property accessors
@@ -299,6 +305,27 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setWard(Set<UserAddress> ward) {
 		this.ward = ward;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupWardRegion() {
+		return localGroupWardRegion;
+	}
+
+	public void setLocalGroupWardRegion(Set<LocalGroupRegion> localGroupWardRegion) {
+		this.localGroupWardRegion = localGroupWardRegion;
+	}
+	
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
 	public LocalElectionBodyWard getLocalElectionBodyWard() {
