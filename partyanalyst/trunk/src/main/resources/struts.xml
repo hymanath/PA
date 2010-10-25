@@ -1336,6 +1336,11 @@
            		<param name="root">cadreInfo</param>
         	</result>       		
         </action>
+        
+        <action name="getInfluencingPersonInfoAction" class="influencingPersonInfoAction"> 
+             <result name="success">/jsp/influencingPersonInfoResultPage.jsp</result> 		
+        </action>
+         
         <action name="deleteCadreInfoAjaxAction" class="cadreInfoAction" method="deleteCadre"> 
         	<result type="json" name="success">
         		<param name="root">rows</param>
