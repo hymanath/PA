@@ -27,7 +27,7 @@
 	var currentTask = '${windowTask}';
 	var successFlag = '${rs.resultCode}';
 	var accessValue = '${sessionScope.USER.accessValue}';
-	alert('${defaultStateId}');
+	
 	function setCadreValue(value, source){
 		if(value == '0')
 		{
