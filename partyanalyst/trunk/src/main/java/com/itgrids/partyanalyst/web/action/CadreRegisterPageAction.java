@@ -66,9 +66,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> stateList_c;
 	private List<SelectOptionVO> districtList_c;
 	private List<SelectOptionVO>  constituencyList_c;
-	private Long defaultStateId;
-	private Long defaultDistId;
-	private Long defaultConstId;
+	private Long defaultStateId = 0l;
+	private Long defaultDistId = 0l;
+	private Long defaultConstId = 0l;
 	private List<SelectOptionVO> cadreLevelsList = new ArrayList<SelectOptionVO>();
 	private Long defaultCadreLevelId;
 	
@@ -343,7 +343,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	public void setCadreLevelsList(List<SelectOptionVO> cadreLevelsList) {
 		this.cadreLevelsList = cadreLevelsList;
 	}
-	
+	// to pre select cadre level  based on user access type
 	public Long getDefaultCadreLevel()
 	{
 		return this.defaultCadreLevelId;
@@ -394,11 +394,6 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.LANGUAGE_OPTIONS,language_options);
 		
 		session.setAttribute(ISessionConstants.STATES_O, stateList_o);
-		//session.setAttribute(ISessionConstants.STATES_C, stateList_o);
-		//session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
-		//session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
-		//session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
-		//session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 		if(windowTask.equals(IConstants.CREATE_NEW))
 		{	
 			if("MLA".equals(accessType))

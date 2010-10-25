@@ -26,7 +26,8 @@
 <script type="text/javascript">
 	var currentTask = '${windowTask}';
 	var successFlag = '${rs.resultCode}';
-	
+	var accessValue = '${sessionScope.USER.accessValue}';
+	alert('${defaultStateId}');
 	function setCadreValue(value, source){
 		if(value == '0')
 		{
@@ -411,7 +412,11 @@
 			constituencyFieldEl.selectedIndex = '0';
 			mandalFieldEl.selectedIndex = '0';
 			hamletFieldEl.selectedIndex = '0';			
-		}	
+		} else 
+			if(source == "onLoad")
+			{
+				setCadreValue(accessValue,'onChange');
+			}	
 		row1El.style.display = 'none';
 		row2El.style.display = 'none';
 		row3El.style.display = 'none';
@@ -938,6 +943,10 @@
 				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
 			</div>
 		</c:if>	
+		<input type="hidden" name="defaultStateId" value="${defaultStateId}">
+		<input type="hidden" name="defaultDistId" value="${defaultDistId}">
+		<input type="hidden" name="defaultConstId" value="${defaultConstId}">
+		 		
 	</div>
 	</s:form>
 <script type="text/javascript">
