@@ -26,7 +26,9 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
@@ -61,7 +63,16 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	private IStaticDataService staticDataService;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
-	
+	public ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+
+	public ILocalElectionBodyWardDAO getLocalElectionBodyWardDAO() {
+		return localElectionBodyWardDAO;
+	}
+
+	public void setLocalElectionBodyWardDAO(
+			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
+		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
+	}
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
@@ -619,6 +630,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	public Map<Long,ConstituencyElectionResultVO> getWardWiseVotesInfoMap(List votesInfo){
 	
 		Map<Long,ConstituencyElectionResultVO> votesInfoMap = null;
+		List<Long> constituencyIds = new ArrayList<Long>(0);
 		if(votesInfo != null && votesInfo.size() > 0){
 			votesInfoMap = new HashMap<Long,ConstituencyElectionResultVO>();
 			
@@ -640,11 +652,28 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 				 Double validVotes = (Double)values[2];
 				 if(validVotes != null)
 				 votesInfoObject.setValidVotes(validVotes.longValue());
-				 
+				 constituencyIds.add(wardId);
 				 votesInfoMap.put(wardId, votesInfoObject);
+				}
+			}
+			
+			List wardsInfo= localElectionBodyWardDAO.getLocalBodyElectionInfo(constituencyIds);
+			for(int i=0;i<wardsInfo.size();i++){
+				Object[] values = (Object[])wardsInfo.get(i);
+				if(votesInfoMap.get(values[0])!=null){
+					if(values[1]!= null && values[1].toString()!= null){
+						String name = votesInfoMap.get(values[0]).getConstituencyName();
+						name = values[1].toString()+" ("+name+")";
+						votesInfoMap.get(values[0]).setConstituencyName(name);						
+					}
+					if(values[2]!= null && values[2].toString()!= null){
+						 votesInfoMap.get(values[0]).setCircleName(values[2].toString());												
+					}
+					if(values[3]!= null && values[3].toString()!= null){
+						 votesInfoMap.get(values[0]).setCircleZone(values[3].toString());												
+					}
 					
 				}
-				
 			}
 			
 		}

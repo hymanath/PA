@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,6 +62,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<BoothConstituencyElection> boothConstituencyElections;
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
 	private Set<UserAddress> ward = new HashSet<UserAddress>(0);
+	private LocalElectionBodyWard localElectionBodyWard;
 	// Constructors
 
 	/** default constructor */
@@ -297,6 +299,17 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setWard(Set<UserAddress> ward) {
 		this.ward = ward;
 	}
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	public LocalElectionBodyWard getLocalElectionBodyWard() {
+		return localElectionBodyWard;
+	}
+
+	public void setLocalElectionBodyWard(LocalElectionBodyWard localElectionBodyWard) {
+		this.localElectionBodyWard = localElectionBodyWard;
+	}
+
+	
 
 	
 

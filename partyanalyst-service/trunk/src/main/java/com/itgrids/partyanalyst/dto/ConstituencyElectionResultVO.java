@@ -28,6 +28,8 @@ public class ConstituencyElectionResultVO {
 	private Long validVotes;
 	private Long totPolledVotes;
 	
+	private String circleName;
+	private String circleZone;
 	//getters and setters
 	public String getYear() {
 		return year;
@@ -132,6 +134,16 @@ public class ConstituencyElectionResultVO {
 	public void setTotPolledVotes(Long totPolledVotes) {
 		this.totPolledVotes = totPolledVotes;
 	}
-	
-	
+	public String getCircleName() {
+		return circleName;
+	}
+	public void setCircleName(String circleName) {
+		this.circleName = circleName;
+	}
+	public String getCircleZone() {
+		return circleZone;
+	}
+	public void setCircleZone(String circleZone) {
+		this.circleZone = circleZone;
+	}
 }
