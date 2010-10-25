@@ -49,7 +49,10 @@ private Set<UserGroupPrivileges> userGroupPrivileges=new HashSet<UserGroupPrivil
 private Date updatedDate;
 private Date createdDate;
 private MyGroup myGroup;
+private StaticLocalGroup staticLocalGroup;
+private LocalGroupRegion localGroupRegion;
 private Set<StaticUserGroup> staticUserGroups = new HashSet<StaticUserGroup>(0);
+
 
 //constructors
 
@@ -80,6 +83,27 @@ public PersonalUserGroup(Long personalUserGroupId, String groupName,
 	this.parentGroupName=parentGroupName;
 	this.myGroup = myGroup;
 	this.staticUserGroups = staticUserGroups;
+}
+public PersonalUserGroup(String groupName, String description,
+		StaticGroup staticGroup, PersonalUserGroup parentGroupId,
+		String parentGroupName, Registration createdUserId,
+		Set<UserGroupPrivileges> userGroupPrivileges, Date updatedDate,
+		Date createdDate, MyGroup myGroup, StaticLocalGroup staticLocalGroup,
+		Set<StaticUserGroup> staticUserGroups,LocalGroupRegion localGroupRegion) {
+	super();
+	this.groupName = groupName;
+	this.description = description;
+	this.staticGroup = staticGroup;
+	this.parentGroupId = parentGroupId;
+	this.parentGroupName = parentGroupName;
+	this.createdUserId = createdUserId;
+	this.userGroupPrivileges = userGroupPrivileges;
+	this.updatedDate = updatedDate;
+	this.createdDate = createdDate;
+	this.myGroup = myGroup;
+	this.staticLocalGroup = staticLocalGroup;
+	this.staticUserGroups = staticUserGroups;
+	this.localGroupRegion = localGroupRegion;
 }
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -184,6 +208,26 @@ public Set<StaticUserGroup> getStaticUserGroups() {
 }
 public void setStaticUserGroups(Set<StaticUserGroup> staticUserGroups) {
 	this.staticUserGroups = staticUserGroups;
+}
+
+@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "static_local_group_id")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+public StaticLocalGroup getStaticLocalGroup() {
+	return staticLocalGroup;
+}
+public void setStaticLocalGroup(StaticLocalGroup staticLocalGroup) {
+	this.staticLocalGroup = staticLocalGroup;
+}
+
+@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "local_group_region_id")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+public LocalGroupRegion getLocalGroupRegion() {
+	return localGroupRegion;
+}
+public void setLocalGroupRegion(LocalGroupRegion localGroupRegion) {
+	this.localGroupRegion = localGroupRegion;
 }
 
 
