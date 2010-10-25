@@ -1315,24 +1315,30 @@ function showMandalVotesShareDetailsChart(myResults)
 			k++;
 			}
 			
-			var ctitle;
-			var chartDiv;
+			var ctitle='';
+			var chartDiv='';
             
-			if(document.getElementById('divInteractive_Chart_0')){
-				if(c == 0){
-					chartDiv = document.getElementById('divInteractive_Chart_0');
-					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+			if(c == 0)
+			{
+				if(document.getElementById('divInteractive_Chart_0')){
+					if(c == 0){
+						chartDiv = document.getElementById('divInteractive_Chart_0');
+						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+					}
+					var chart = new google.visualization.PieChart(chartDiv);
+					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 				}
-				var chart = new google.visualization.PieChart(chartDiv);
-				chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 			}
-			if(document.getElementById('divInteractive_Chart_1')){
-				if(c == 1){
-				chartDiv = document.getElementById('divInteractive_Chart_1');
-				ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+			else
+			{
+				if(document.getElementById('divInteractive_Chart_1')){
+					if(c == 1){
+					chartDiv = document.getElementById('divInteractive_Chart_1');
+					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+					}
+					var chart = new google.visualization.PieChart(chartDiv);
+					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 				}
-				var chart = new google.visualization.PieChart(chartDiv);
-				chart.draw(data, {width: 550, height: 300, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
 			}
 			
 		}
