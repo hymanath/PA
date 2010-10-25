@@ -46,6 +46,7 @@
 		<pattern>/getAllPollsAction.action*</pattern> 
 		<pattern>/viewFeaturesAction.action*</pattern>
 		<pattern>/influencingPeopleAction*</pattern>
+		<pattern>/getInfluencingPersonInfoAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
