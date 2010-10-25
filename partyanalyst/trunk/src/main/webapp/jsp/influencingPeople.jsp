@@ -126,7 +126,6 @@ var Localization = { <%
 			String Male  = rb.getString("Male");
 			String Female = rb.getString("Female");
 			String wardOrHamlet = rb.getString("wardOrHamlet");
-			String wardOrVillage = rb.getString("wardOrVillage");
 			String ACONSTITUENCY = rb.getString("ACONSTITUENCY");
 			String PCONSTITUENCY = rb.getString("PCONSTITUENCY");
   %> }
@@ -513,7 +512,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
-		<td width="120px" class="tdstyle"><%=wardOrVillage%><font class="required"> * </font></td>
+		<td width="120px" class="tdstyle"><%=wardOrHamlet%><font class="required"> * </font></td>
 		<td>
 			<s:select id="hamletField" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 		</td>
