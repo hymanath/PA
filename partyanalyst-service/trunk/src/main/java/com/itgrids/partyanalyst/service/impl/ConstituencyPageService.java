@@ -1086,6 +1086,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				if(result.size()!=0){
 					candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(extractCandidateNPartyDataFromList(result).get(0));
 				}else{
+					log.error("Assembly candidate data for this constituency is not present");
 					candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(null);
 				}			
 			}else{
@@ -1118,6 +1119,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				if(result.size()!=0){
 					candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(result));
 				}else{
+					log.error("Parliament candidate data for this constituency is not present");
 					candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(null);
 				}			    
 			}
