@@ -82,9 +82,14 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testFindAllGroupCategoriesInfoAndCountsOfLocationsByLocation(){
+	/*public void testFindAllGroupCategoriesInfoAndCountsOfLocationsByLocation(){
 		List list = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.hamlet.hamletId", 
 				1l, 5l, "model.localGroupRegion.district.districtId");
+		System.out.println(list.size());
+	}*/
+	
+	public void testFindGroupsInfoByCategoryAndUserId(){
+		List list = personalUserGroupDAO.findGroupsInfoByCategoryAndUserIdByRegion(1l, 1l, "model.localGroupRegion.state.stateId");
 		System.out.println(list.size());
 	}
 	

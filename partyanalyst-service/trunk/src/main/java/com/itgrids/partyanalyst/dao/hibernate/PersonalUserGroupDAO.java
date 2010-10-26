@@ -109,4 +109,19 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"where model.createdUserId.registrationId = ? and "+compareLocationInfo+" = ? " +
 						"group by model.staticLocalGroup.staticLocalGroupId", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserIdByRegion(Long userId, Long categoryId, String regionInfo){
+		Object[] params = {userId, categoryId};
+		return getHibernateTemplate().find("from PersonalUserGroup model where model.createdUserId.registrationId = ? and " +
+				"model.staticLocalGroup.staticLocalGroupId = ? group by "+regionInfo,params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserId(Long userId, Long categoryId){
+		Object[] params = {userId, categoryId};
+		return getHibernateTemplate().find("from PersonalUserGroup model where model.createdUserId.registrationId = ? and " +
+				"model.staticLocalGroup.staticLocalGroupId = ? ",params);
+	}
+	
 }

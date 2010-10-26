@@ -56,4 +56,8 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List findAllGroupCategoriesInfoAndCountsOfLocationsByLocation(String countLocationInfo, Long userId, 
 			Long locationId, String compareLocationInfo );
 	
+	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserIdByRegion(Long userId, Long categoryId, String regionInfo);
+	
+	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserId(Long userId, Long categoryId);
+	
 }
