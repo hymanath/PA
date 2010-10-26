@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.service.impl.BoothDataValidationService;
 import com.itgrids.partyanalyst.util.DummyPartyResultsData;
@@ -36,7 +37,7 @@ public class BoothDataValidationServiceTest {
 		BoothInfo boothRecord = new BoothInfo();
 		boothRecord.setCensusCode("222332# 3456");
 		boothRecord.setPartNo("12_ramulapalem");
-		boothDataValidationService.checkAndInsertBooth(new ConstituencyElection(new Long(128)), boothRecord, new Long(19), "Atmakur", new ArrayList<String>());
+		boothDataValidationService.checkAndInsertBooth(new Constituency(new Long(128)), boothRecord, new Long(19), "Atmakur", new ArrayList<String>());
 		EasyMock.verify(tehsilDAO);
 	}
 }
