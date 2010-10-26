@@ -105,4 +105,9 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List findLatestElectionYearForGHMC(String electionType);
 	
+	public List<Election> getRecentElectionHappendForAnElectionType(String electionType,Long stateId);
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId,String electionSubType);
+	
 }

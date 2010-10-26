@@ -334,4 +334,11 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getLocalBodiesElecConstituenciesDetailsForAnElection(Long electionId, String lebIds);
 	
 	public List getALLPartiesByElectionId(Long electionId, String constituencyIds);
+	
+	@SuppressWarnings("unchecked")
+	public List checkForResultsAvailabilityForAnElection(Long electionId);
+	
+	@SuppressWarnings("unchecked")
+	public List getParliamentCandidateNPartyInfo(Long constituencyId,String electionType,Long rank,String elecSubType);
+	
 }
