@@ -52,4 +52,8 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List getGroupsByName(Long userId, String groupName);
+	
+	public List findAllGroupCategoriesInfoAndCountsOfLocationsByLocation(String countLocationInfo, Long userId, 
+			Long locationId, String compareLocationInfo );
+	
 }

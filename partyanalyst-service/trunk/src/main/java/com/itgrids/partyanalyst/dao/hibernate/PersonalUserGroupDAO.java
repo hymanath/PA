@@ -101,4 +101,12 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,groupName};
 		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and  model.groupName = ?",params);
 	}
+	
+	public List findAllGroupCategoriesInfoAndCountsOfLocationsByLocation(String countLocationInfo, Long userId, Long locationId, String compareLocationInfo ){
+		Object[] params = {userId, locationId};
+		return getHibernateTemplate().find("select model.staticLocalGroup.staticLocalGroupId, model.staticLocalGroup.groupType, " +
+				"count("+countLocationInfo+"), count(model.personalUserGroupId) from PersonalUserGroup model " +
+				"where model.createdUserId.registrationId = ? and "+compareLocationInfo+" = ? " +
+						"group by model.staticLocalGroup.staticLocalGroupId", params);
+	}
 }

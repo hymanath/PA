@@ -159,6 +159,7 @@
 				<value>com.itgrids.partyanalyst.model.StaticLocalGroup</value>
 				<value>com.itgrids.partyanalyst.model.StaticUserDesignation</value>
 				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
 		 </list>
 		</property>
 	</bean>

@@ -14,15 +14,17 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
+import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
+import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -32,6 +34,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private IHamletDAO hamletDAO;
 	private ICandidateResultDAO candidateResultDAO;
 	private IElectionDAO electionDAO;
+	private IPersonalUserGroupDAO personalUserGroupDAO;
 
 	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
 	public IHamletDAO getHamletDAO() {
@@ -57,6 +60,14 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	
 	public void setElectionDAO(IElectionDAO electionDAO) {
 		this.electionDAO = electionDAO;
+	}
+
+	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
+		return personalUserGroupDAO;
+	}
+
+	public void setPersonalUserGroupDAO(IPersonalUserGroupDAO personalUserGroupDAO) {
+		this.personalUserGroupDAO = personalUserGroupDAO;
 	}
 
 	public List<VoterVO> getVoterInfo(Long hamletId, String year, Long voterId, Integer maxRecords, Boolean isPrev){
@@ -301,6 +312,90 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		log.debug("total size of hamlets::::"+hamletsListWithBoothsAndVotersList.size());
 		hamletsListWithBoothsAndVotersVO.setHamletsListWithBoothsAndVoters(hamletsListWithBoothsAndVotersList);
 		return hamletsListWithBoothsAndVotersVO;
+	}
+	
+	public List<LocalUserGroupsInfoVO> getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(Long userId, String accessType, String accessValue){
+		String compareLocationInfo = "";
+		List rawData = null;
+		List<LocalUserGroupsInfoVO> allCategoriesInfo = new ArrayList<LocalUserGroupsInfoVO>();
+		LocalUserGroupsInfoVO localUserGroupsInfoVO = null;
+		Map<Long, List<UserGroupBasicInfoVO>> groupInfoMapByCategories = new HashMap<Long, List<UserGroupBasicInfoVO>>();
+		if(IConstants.STATE.equalsIgnoreCase(accessType))
+			compareLocationInfo = "model.localGroupRegion.state.stateId";
+		else if(IConstants.DISTRICT.equalsIgnoreCase(accessType))
+			compareLocationInfo = "model.localGroupRegion.district.districtId";
+		else if(IConstants.MLA.equalsIgnoreCase(accessType) || 
+				IConstants.MP.equalsIgnoreCase(accessType))
+			compareLocationInfo = "model.localGroupRegion.constituency.constituencyId";
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.hamlet.hamletId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Villages");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.ward.constituencyId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Wards");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.tehsil.tehsilId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Tehsils");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.localBody.localElectionBodyId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Towns/Cities");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.constituency.constituencyId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Constituencies");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.district.districtId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "Districts");
+		
+		rawData = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.state.stateId", userId, 
+				Long.parseLong(accessValue), compareLocationInfo);
+		if(rawData.size() > 0)
+			consolidatedMapForCategories(rawData, groupInfoMapByCategories, "States");
+		
+		Long categoryGroupsCount = 0l;
+		for(Map.Entry<Long, List<UserGroupBasicInfoVO>> entry:groupInfoMapByCategories.entrySet()){
+			localUserGroupsInfoVO = new LocalUserGroupsInfoVO();
+			localUserGroupsInfoVO.setCategoryId(entry.getKey());
+			localUserGroupsInfoVO.setDescription(entry.getValue().get(0).getCategoryName());
+			
+			for(UserGroupBasicInfoVO basicInfoVO:entry.getValue())
+				categoryGroupsCount +=	basicInfoVO.getGroupsCount();
+			
+			localUserGroupsInfoVO.setGroupsCount(categoryGroupsCount);
+			allCategoriesInfo.add(localUserGroupsInfoVO);
+		}
+		
+		return allCategoriesInfo;
+	}
+
+	private void consolidatedMapForCategories(List rawData,
+			Map<Long, List<UserGroupBasicInfoVO>> groupInfoMapByCategories,
+			String areaType) {
+		UserGroupBasicInfoVO basicInfoVO = null;
+		List<UserGroupBasicInfoVO> groupsInfo = null;
+		for(Object[] values:(List<Object[]>)rawData){
+			basicInfoVO = new UserGroupBasicInfoVO();
+			basicInfoVO.setAreaType(areaType);
+			basicInfoVO.setCategoryName(values[1].toString());
+			basicInfoVO.setGroupsCount(Long.parseLong(values[3].toString()));
+			basicInfoVO.setLocationsCount(Long.parseLong(values[2].toString()));
+			groupsInfo = groupInfoMapByCategories.get(values[0]);
+			if(groupsInfo == null)
+				groupsInfo = new ArrayList<UserGroupBasicInfoVO>();
+			groupsInfo.add(basicInfoVO);
+			groupInfoMapByCategories.put(Long.parseLong(values[0].toString()), groupsInfo);
+		}
 	}
 	
 }

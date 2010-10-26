@@ -8,7 +8,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<BoothConstituencyElectionVoter, Long> implements IBoothConstituencyElectionVoterDAO{
 	public BoothConstituencyElectionVoterDAO(){
