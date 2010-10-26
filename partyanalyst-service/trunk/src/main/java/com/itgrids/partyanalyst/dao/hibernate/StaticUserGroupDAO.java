@@ -48,5 +48,74 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 	public List getGroupMembersMobileNumbers(Long groupId) {
 		return getHibernateTemplate().find("select model.staticUser.mobileNumber from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? ",groupId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAGroup(Long groupId){
+		return getHibernateTemplate().find("select model.staticUser.staticUserId,model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId,"+
+				"model.staticUser.address,model.staticUser.staticUserDesignation.designationType,model.staticUser.staticUserDesignation.description,"+
+				"model.personalUserGroup.personalUserGroupId,model.personalUserGroup.groupName,model.personalUserGroup.description,"+
+				"model.personalUserGroup.createdDate,model.personalUserGroup.staticLocalGroup.staticLocalGroupId,"+
+				"model.personalUserGroup.staticLocalGroup.description,model.personalUserGroup.staticLocalGroup.groupType,"+
+				"model.personalUserGroup.localGroupRegion.groupRegionScope,model.personalUserGroup.localGroupRegion.state,"+
+				"model.personalUserGroup.localGroupRegion.district,model.personalUserGroup.localGroupRegion.constituency,"+
+				"model.personalUserGroup.localGroupRegion.tehsil,model.personalUserGroup.localGroupRegion.township,"+
+				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
+				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
+				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
+				"model.personalUserGroup.personalUserGroupId = ?",groupId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAGroupCatgory(Long groupCategoryId,Long userId){
+		Object[] params = {groupCategoryId,userId};
+		return getHibernateTemplate().find("select model.staticUser.staticUserId,model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId,"+
+				"model.staticUser.address,model.staticUser.staticUserDesignation.designationType,model.staticUser.staticUserDesignation.description,"+
+				"model.personalUserGroup.personalUserGroupId,model.personalUserGroup.groupName,model.personalUserGroup.description,"+
+				"model.personalUserGroup.createdDate,model.personalUserGroup.staticLocalGroup.staticLocalGroupId,"+
+				"model.personalUserGroup.staticLocalGroup.description,model.personalUserGroup.staticLocalGroup.groupType,"+
+				"model.personalUserGroup.localGroupRegion.groupRegionScope,model.personalUserGroup.localGroupRegion.state,"+
+				"model.personalUserGroup.localGroupRegion.district,model.personalUserGroup.localGroupRegion.constituency,"+
+				"model.personalUserGroup.localGroupRegion.tehsil,model.personalUserGroup.localGroupRegion.township,"+
+				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
+				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
+				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
+				"model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ? and model.personalUserGroup.createdUserId.registrationId = ?",params);
+				
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId, Long userId){
+		Object[] params = {designationId,userId};
+		return getHibernateTemplate().find("select model.staticUser.staticUserId,model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId,"+
+				"model.staticUser.address,model.staticUser.staticUserDesignation.designationType,model.staticUser.staticUserDesignation.description,"+
+				"model.personalUserGroup.personalUserGroupId,model.personalUserGroup.groupName,model.personalUserGroup.description,"+
+				"model.personalUserGroup.createdDate,model.personalUserGroup.staticLocalGroup.staticLocalGroupId,"+
+				"model.personalUserGroup.staticLocalGroup.description,model.personalUserGroup.staticLocalGroup.groupType,"+
+				"model.personalUserGroup.localGroupRegion.groupRegionScope,model.personalUserGroup.localGroupRegion.state,"+
+				"model.personalUserGroup.localGroupRegion.district,model.personalUserGroup.localGroupRegion.constituency,"+
+				"model.personalUserGroup.localGroupRegion.tehsil,model.personalUserGroup.localGroupRegion.township,"+
+				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
+				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
+				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
+				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId, Long userId, Long groupCategoryId){
+		Object[] params = {designationId,userId,groupCategoryId};
+		return getHibernateTemplate().find("select model.staticUser.staticUserId,model.staticUser.name,model.staticUser.mobileNumber,model.staticUser.emailId,"+
+				"model.staticUser.address,model.staticUser.staticUserDesignation.designationType,model.staticUser.staticUserDesignation.description,"+
+				"model.personalUserGroup.personalUserGroupId,model.personalUserGroup.groupName,model.personalUserGroup.description,"+
+				"model.personalUserGroup.createdDate,model.personalUserGroup.staticLocalGroup.staticLocalGroupId,"+
+				"model.personalUserGroup.staticLocalGroup.description,model.personalUserGroup.staticLocalGroup.groupType,"+
+				"model.personalUserGroup.localGroupRegion.groupRegionScope,model.personalUserGroup.localGroupRegion.state,"+
+				"model.personalUserGroup.localGroupRegion.district,model.personalUserGroup.localGroupRegion.constituency,"+
+				"model.personalUserGroup.localGroupRegion.tehsil,model.personalUserGroup.localGroupRegion.township,"+
+				"model.personalUserGroup.localGroupRegion.localBody,model.personalUserGroup.localGroupRegion.ward,"+
+				"model.personalUserGroup.localGroupRegion.hamlet from StaticUserGroup model where model.personalUserGroup.staticGroup is null "+
+				"and model.personalUserGroup.myGroup is null and model.personalUserGroup.staticLocalGroup is not null and "+
+				"model.staticUser.staticUserDesignation.staticUserDesignationId = ? and model.personalUserGroup.createdUserId.registrationId = ? "+
+				"and model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ?",params);
+	}
 
 }
