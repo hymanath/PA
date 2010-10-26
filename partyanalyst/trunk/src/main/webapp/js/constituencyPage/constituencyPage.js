@@ -1,1209 +1,274 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="s" uri="/struts-tags" %>
-<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><c:out value='${constituencyDetails.constituencyName}'/> Constituency Page - News, Details, Mandals, Parties Performance, Voting Trendz, Election Results,MLA, MP,MPTC, ZPTC Election Results</title>
-
-<META NAME="Keywords" CONTENT="<c:out value='${constituencyDetails.constituencyName}'/> Constituency, About <c:out value='${constituencyDetails.constituencyName}'/> Constituency, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Analysis,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Results, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Leaders,  <c:out value='${constituencyDetails.constituencyName}'/> Constituency Parties, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Problems, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Politics, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MLA's, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MP's,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Voting Trends,<c:out value='${constituencyDetails.constituencyName}'/> Constituency MPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency ZPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Municipality, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Corporation,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Cross Voting,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Mandals">
-
-<META NAME="Description" CONTENT=" <c:out value='${constituencyDetails.constituencyName}'/> constituency page provides the outline and basic information ,mandals information,constituency election results and latest news of the state.<c:out value='${statePage.stateName}'/> constituency page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
-
-<!-- YUI Dependency files (Start) -->
-
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
 
 
-<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+var constituencyPageMainObj={
+								constituencyAddress:'',
+								contextPath:'',
+								forwardTask:'',
+								constituencyInfo:{
+									                constituencyId:'',
+													constituencyName:'',
+													districtName:'',
+													stateName:'',
+													startDate:'',
+													deformDate:'',
+													constituencyType:''
+												 },
+								constituencyElectionInfo:[],
+								constituencyVotersInfo:[],
+								constituencyVotersBasicInfo:[],
+								presentAssemblyCandidate:[],
+								presentParliamentCandidate:[],
+								problemsInfo:[],
+								electionTrendzReportVO:{
+															state:'',
+															electionType:'',
+															electionYear:'',
+															constituencyId:'',
+															constituencyName:'',
+															otherElectionYears:[],
+															electionTrendzOverviewVO:{
+																						totalVoters:'',
+																						maleVoters:'',
+																						femaleVoters:'',
+																						maleAndFemaleVoters:'',
 
-<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+																						totalPolledVotes:'',
+																						malePolledVotes:'',
+																						femalePolledVotes:'',
+																						maleAndFemalePolledVotes:'',
 
-<!-- YUI Skin Sam -->
+																						pollingPercent:'',
+																						malePollingPercent:'',
+																						femalePollingPercent:'',
+																						maleAndFemalePollingPercent:'',
 
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+																						maleVotersPercent:'',
+																						femaleVotersPercent:'',
+																						maleOrFemaleVotersPercent:'',	
 
-<!-- YUI Dependency files (End) -->
+																						overallMalePollPercent:'',
+																						overallFemalePollPercent:'',
+																						overallMaleOrFemalePollPercent:'',
+																						
+																						maleVotersInConstituency:'',
+																						femaleVotersInConstituency:'',
 
-<!-- jQuery dependency file start-->
-	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
-<!-- jQuery dependency file end-->
+																						maleVotersPercentInConsti:'',
+																						femaleVotersPercentInConsti:'',
 
-<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
-<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
-<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
-<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+																						malePolledPercentInTotalPolled:'',
+																						femalePolledPercentInTotalPolled:'',
+																						maleOrFemalePolledPercentInTotalPolled:'',
+																						
+																						electionTrendzCharts:	{
+																									pollingDetailsChart:'',
+																									votingTrendzMainChart:'',
+																									candOverallVotesPercent:'',
+																									candVotingTrendz:''
+																								},
+																																			
+																						wonCandidateResultTrendz:
+																												{
+																													candidateName:'',	
+																													partyName:'',
+																													totalVotes:'',
+																													maleVotes:'',
+																													femaleVotes:'',
+																													maleAndFemaleVotes:'',
+																													totalVotesPercent:'',
+																													maleVotesPercent:'',
+																													femaleVotesPercent:'',
+																													maleAndFemaleVotesPercent:'',
+																													overallMaleVotesPercent:'',
+																													overallFemaleVotesPercent:'',
+																													overallMaleOrFemaleVotesPercent:'',
+																													maleVotesPercentInConstiVotes:'',
+																													femaleVotesPercentInConstiVotes:'',
+																													maleOrFemaleVotesPercentInConstiVotes:'',
+																													status:''	
+																												},
+																						partyElectionTrendzVO:[]
+													
+																					
+																					 },
+															previousElectionYears:{
+																					assemblyElections:[],
+																					parliamentElections:[]
+																				  }
+														}
+							};
 
-
-<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
-
-<script src="${mapKey}" type="text/javascript"></script>
-<style type="text/css">
-	.candidateDetailsStyle{
-			background-color:#EFF3F7;
-			border-color:#96B4D3;
-			border-style:solid;
-			border-width:1px 1px 1px 1px;
-			margin-bottom:5px;margin-left:0;
-			margin-top:0;
-			padding:4px;
-			color:#247CD4;
-			font-size:13px;
-			font-weight:bold;
-		}
-		
-	.localBodyHeadStyle{
-			color:#247CD4;
-			font-size:13px;
-			font-weight:bold;
-			margin-bottom:5px;
-			margin-left:0;
-			margin-top:0;
-			padding:4px;
-	}
-
-	a:link {
-			COLOR: #247CD4;
-	}
-</style>
-<script type="text/javascript">
-	
-	var constituencyResults,createGroupDialog;
-	var parliamentResult;
-	var tehsilElections={
-			zptcElectionYears:[],
-			mptcElectionYears:[]
-	};
-	var totalZptcSeats,totalMptcSeats;
-	var counter = 0;
-	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
-	var mptcElectionTypeId=${mptcElectionId},zptcElectionTypeId=${zptcElectionId};
-	var mptcElectionType="${mptcElectionType}",zptcElectionType="${zptcElectionType}";
-	var tehsilDetails={
-			zptcArray:[],
-			mptcArray:[],
-			partyArray:[],
-			partyMptcArray:[]
-	};
-	var constituencyId = ${constituencyId};
-	var constituencyTYPE;
-	var totalNoOflocalElectionsBodies = 0;
-	google.load("visualization", "1", {packages:["corechart"]});
-	function callAjax(jsObj,url)
-	{	
- 		var callback = {			
- 		               success : function( o ) {
-							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								
-								
-								if(jsObj.task == "getNextPrevCandidateTrendz")
-								{
-									buildCandidateVotingTrendzGraphData(jsObj,myResults);
-								}										
-								else if(jsObj.task == "getVotingTrendzForElectionYears")
-								{									
-									buildVotingTrendzData(myResults);
-								}else if(jsObj.task == "getConstituencyResultsBySubLocations")
-								{		
-									constituencyResults = myResults;							
-									buildConstituencyElecResultsDataTable("number");
-								}else if(jsObj.task == "getConstituencyElections")
-								{		
-									buildElectionsSelectBox(myResults);									
-								}else if(jsObj.task == "getParliamentConstituencyElectionResults")
-								{		
-									parliamentResult = myResults;
-									buildParliamentResults(myResults);			
-								}else if(jsObj.task == "getZptcElectionResults")
-								{		
-									if(myResults!= null &&  myResults.length>0){
-										buildZptcResults(myResults);	
-									}else{
-										//hideZptcDiv();
-										hideMptcZptcDiv();			
-									}	
-								}else if(jsObj.task == "getMptcElectionResults")
-								{		
-									if(myResults!= null &&  myResults.length>0){
-										buildMptcResults(myResults);
-									}else{
-										//hideMptcDiv();
-										hideMptcZptcDiv();			
-									}	
-								}else if(jsObj.task == "getProblemDetails")
-								{									
-									showProblemsHistoryReport(myResults);			
-								}else if(jsObj.task == "municipalElectionsInfo")
-								{		
-									if(myResults.muncipalityVO!=null){	
-										totalNoOflocalElectionsBodies++;						
-										showMunicipalInfo(myResults);
-									}else{										
-										document.getElementById("muncipalDiv").style.display = "none";
-										totalNoOflocalElectionsBodies--;
-										checkTohideLocalElectionsBodyDiv();
-									}				
-								}else if(jsObj.task == "corporationElectionsInfo")
-								{	
-									if(myResults.muncipalityVO!=null){
-										totalNoOflocalElectionsBodies++;								
-										showCorporationInfo(myResults);
-									}else{
-										totalNoOflocalElectionsBodies--;
-										document.getElementById("corporationDiv").style.display = "none";
-										checkTohideLocalElectionsBodyDiv();
-									}			
-								}else if(jsObj.task == "greaterElectionsInfo" || jsObj.task == "getGhmcResultsBasedOnSelection")
-								{		
-									if(myResults.isDataExists==true){			
-										totalNoOflocalElectionsBodies++;				
-										showGreaterInfo(myResults);
-									}else{
-										totalNoOflocalElectionsBodies--;
-										document.getElementById("greaterDiv").style.display = "none";
-										checkTohideLocalElectionsBodyDiv();
-									}			
-								}else if(jsObj.task == "mandalVotesShareDetailsChart")
-								{
-									showMandalVotesShareDetailsChart(myResults);
-								}else if(jsObj.task == "partiesPerformanceInDiffElectionsAjax")
-								{
-									showAllPartiesAllElectionResultsChart(myResults);
-								}
-								else if(jsObj.task == "connectToUser")
-								{	
-									closeConnectPanel(jsObj,myResults);
-								}
-								else if(jsObj.task == "getAllConnectedUsers")
-								{	
-									showAllConnectedUsersInPanel(jsObj,myResults);
-								}	
-								if(jsObj.task == "connectUserSet")
-								{									
-									showAllConnectedUsersStatus(jsObj,myResults);
-								}
-								if(jsObj.task == "getAllConnectedUsersByFilterView")
-								{
-									showAllConnectedUsersInPanelByFilterView(jsObj,myResults);
-								}
-							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
-							}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}	
-
-	function checkTohideLocalElectionsBodyDiv(){					
-		if(totalNoOflocalElectionsBodies!=-3){
-			document.getElementById("LocalElectionsDiv").style.display = "block";//Show's content
-		}else{
-			document.getElementById("LocalElectionsDiv").style.display = "none";//Hide's content
-		}
-	}
-	
-	function redirectZptcCandidateLink(){												
-		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
-		 browser1.focus();
-	}
-
-	function redirectMptcCandidateLink(){
-		 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
-		 browser2.focus();
-	}
-		
-		
-	function buildParliamentResults(){
-		var parliamentDiv = document.getElementById("parliamentElectionResultsDiv");
-		if(parliamentDiv.style.display == "none")
-		{
-			parliamentDiv.style.display = "block";
-		}
-		var str = '';
-		str += '<table>';
-		str += '<th>Select Format You Want:</th>';
-		str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)">By Votes</td>';
-		str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)">By Percentage</td>';
-		str += '</table>';
-		str += '<div id="resultDataTableDiv"></div>';
-		parliamentDiv.innerHTML = str;
-		buildParliamentResultDT("number");
-	}
-
-	function showDetailedChart(chartName)
-	{		
-		var elmt = document.getElementById('detailedChartDIV');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','createGroupmDiv');
-
-	    var str='';
-		str+='<img src="charts/'+chartName+'" />';
-		divChild.innerHTML=str;
-		elmt.appendChild(divChild);	
-		if(createGroupDialog)
-			createGroupDialog.destroy();
-		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-				{ width : "800px", 		
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:600,
-				  y:800
-	             } );
-		createGroupDialog.render();
-	}
-	function handleCreateGroupSubmit()
-	{
-		createGroupDialog.hide();			
-	}
-
-	function handleCreateGroupCancel()
-	{
-		this.cancel();
-	}
-	function hideComparedResultsDiv()
-    {
-	var elmt = document.getElementById("detailedChartDiv");
-	if(!elmt)
-		return;
-		
-	elmt.style.display = 'none';
-	
-    }
-	
-	function buildParliamentResultDT(checked){
-		var parliamentDiv = document.getElementById("resultDataTableDiv");
-		var str = '';
-		var details = document.getElementById("detailsDiv");
-		var detailsDIV = '';
-
-		if(parliamentResult == null){
-			detailsDIV += 'No Data Available';
-			return;	
-		}
-		
-		str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
-		detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
-		str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
-		str += '<table id = "parliamentElecResTable">';
-		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
-			str += '<tr>';
-			if(parliamentResult.constituencyOrMandalWiseElectionVO[j].showLink)
-				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
-			else
-				str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
-			for(var k in parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
-				if(checked == 'number')
-					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
-				else
-					str += '<td>'+parliamentResult.constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
-			}
-			str += '</tr>';
-		}
-		str += '</table>';
-		str += '</div>';
-		
-		parliamentDiv.innerHTML = str;
-		if(counter!=0){
-			details.innerHTML = detailsDIV;
-		}
-		
-		 var myColumnDefs = new Array();
-		 var myFields = new Array();
-		 
-		 var villageHead = {
-		 			key:"Mandal",
-		 			lable: "Mandal",
-		 			sortable:true
-			   }
-
-		 var villageValue = {key:"Mandal"}
-	
-		 myColumnDefs.push(villageHead);
-		 myFields.push(villageValue);
-		 
-
-		 for(var j in parliamentResult.candidateNamePartyAndStatus){
-			var obj1 = {
-						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						label:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						sortable:true
-					}
-			var obj2 = {
-						key:parliamentResult.candidateNamePartyAndStatus[j].party +'['+parliamentResult.candidateNamePartyAndStatus[j].rank+']',
-						parser:"number"
-					}
-			myColumnDefs.push(obj1);
-			myFields.push(obj2);
-		 }
-
-		 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-					.get("parliamentElecResTable")); 
-		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
-		 myDataSource.responseSchema = { 
-								            fields:myFields    
-								        };
-		        
-		var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColumnDefs, myDataSource);
-		
-		var conName = parliamentResult.constituencyName;
-		var elecYear = parliamentResult.electionYear;
-		var elecTyp = parliamentResult.electionType;
-		var parlDivElmnt = document.getElementById("parliamentChartDiv");
-		getInteractiveChart(parlDivElmnt, parliamentResult.constituencyOrMandalWiseElectionVO,parliamentResult.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
-	}
-	
-function showNextPreviousCandidateVotingTrendz(index,type)
-{
-	if(type == 'previous')
-		candidateIndex-=1;
-	else if(type == 'next')
-		candidateIndex+=1;
-
-	if(candidateIndex!=1)
-		prevButtonElmt.disabled = false;
-	else
-		prevButtonElmt.disabled = true;
-
-	if(candidateListSize>1 && candidateIndex!=candidateListSize)
-		nextButtonElmt.disabled = false;
-	else
-		nextButtonElmt.disabled = true;
-
-	for(var i =0;i<constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO.length;i++)
-	{		
-		var data = constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO[i];
-		if(data.rank == candidateIndex)
-		{
-			var jsObj=	{
-							partyId:data.partyId,
-							partyName:data.partyName,
-							partyLogo:data.partyLogo,
-							partyFlag:data.partyFlag,
-							candidateId:data.candidateId,
-							candidateName:data.candidateName,							
-							validVotes:data.validVotes,
-							totalVotes:data.totalVotes,
-							maleVotes:data.maleVotes,
-							femaleVotes:data.femaleVotes,
-							maleAndFemaleVotes:data.maleAndFemaleVotes,
-							totalVotesPercent:data.totalVotesPercent,
-							maleVotesPercent:data.maleVotesPercent,
-							femaleVotesPercent:data.femaleVotesPercent,
-							maleAndFemaleVotesPercent:data.maleAndFemaleVotesPercent,
-							rank:data.rank,
-							overallMaleVotesPercent : data.overallMaleVotesPercent,
-							overallFemaleVotesPercent : data.overallFemaleVotesPercent,
-							overallMaleOrFemaleVotesPercent : data.overallMaleOrFemaleVotesPercent,						
-							status:data.status,
-							maleVotesPercentInConstiVotes : data.maleVotesPercentInConstiVotes,
-							femaleVotesPercentInConstiVotes :data.femaleVotesPercentInConstiVotes,
-							maleOrFemaleVotesPercentInConstiVotes : data.maleOrFemaleVotesPercentInConstiVotes, 
-							task:'getNextPrevCandidateTrendz'
-						}
-
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-			var url = "<%=request.getContextPath()%>/getNextPrevCandidateVotingTrendz.action?"+rparam;
-			
-			callAjax(jsObj, url);			
-			return;
-		}
-	}
-}
-
-function getProblemHistoryInfo(problemLocationId){
-	var jsObj=
-	{
-			locationId:problemLocationId,
-			task:"getProblemDetails"						
-	};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/problemManagementHistoryResultsNew.action?"+rparam;
-	callAjax(jsObj,url);
-}
-
-function getVotingTrendzForElectionYears()
-{
-	var jsObj=	{					
-					task:'getVotingTrendzForElectionYears'
-				}
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getVotingTrendzForElectionYears.action?"+rparam;
-	callAjax(jsObj, url);	
-}
-
-function getVotingTrendzForyear()
-{
-
-	var elements = document.getElementsByTagName('input'); 
-	var electionType;
-	for(var i=0;i<elements.length;i++)
-	{
-		if(elements[i].type=="radio" && elements[i].name=="electionType" && elements[i].checked==true)
-			electionType = elements[i].value;
-	}
-	if(!electionType)
-		return;
-	
-	var selectElmt = document.getElementById(electionType+"_YearSelect");
-	if(!selectElmt)
-		return;
-	selectElmt.disabled = false;
-
-	var year = selectElmt.options[selectElmt.selectedIndex].text;
-	if(year == "Assembly" || year == "Parliament")
-		return;
-
-	var value = selectElmt.options[selectElmt.selectedIndex].value;	
-	var electionId = value.substring(0,(value.indexOf('_')));
-	var electionTypeId = value.substring((value.indexOf('_')+1),value.length);
-
-	
-
-	var jsObj = {
-					constituencyId:constituencyPageMainObj.electionTrendzReportVO.constituencyId,
-					electionId:electionId,
-					electionTypeId:electionTypeId,
-					electionYear:year,
-					task:'getVotingTrendzForElectionYears'
-				};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getVotingTrendzForElectionYears.action?"+rparam;
-	callAjax(jsObj, url);	
-	
-}
-function getConstituencyResults(elecYear){
-	var imgElmt = document.getElementById('AjaxImgDiv');
-	var parliamentDiv = document.getElementById('parliamentElectionResultsDiv');
-	parliamentDiv.style.display = "none";
-
-	if(imgElmt.style.display == "none")
-	{
-          imgElmt.style.display = "block";
-	}
-	var jsObj = {
-			constituencyId:${constituencyId},
-			electionYear:elecYear,
-			chartHeight: 350,
-			chartWidth: 700,
-			others:true,
-			task:"getConstituencyResultsBySubLocations"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
-	callAjax(jsObj, url);
-}
-
-function getConstituencyElections(){
-	var jsObj = {
-			constituencyId:${constituencyId},
-			task:"getConstituencyElections"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getElectionYearsAction.action?"+rparam;
-	callAjax(jsObj, url);
-}
-
-function buildConstituencyElecResultsDataTable(value){	
-	if(constituencyResults == null)
-		return;
-	if(constituencyResults.electionType == 'Assembly'){		
-		var parliamentButtonDiv = document.getElementById("parliamentResultsButtonDiv");
-		var str = '';
-		var electionSelect = document.getElementById("electionYearSelect");
-		var elecYear = electionSelect.options[electionSelect.selectedIndex].text;
-		str += "<table><tr>";
-		str += '<td><input type="button" class="button" value="Know About Parliament(s)" onclick="getParliamentResults('+elecYear+')"/></td>';
-		str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';
-		str += "</tr></table>";
-		parliamentButtonDiv.innerHTML = str;		
-
-		
-	}
-	if(constituencyResults.electionType != 'Assembly'){		
-		var details = document.getElementById("detailsDiv");
-		var detailsDIV = '';
-		detailsDIV += '<table><tr>';
-		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart"></div></td>';
-		details.innerHTML = detailsDIV;
-	}
-	if(counter>=1){
-		var details = document.getElementById("detailsDiv");
-		var detailsDIV = '';
-		detailsDIV += '<table><tr>';
-		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Parliament"></div></td>';
-		details.innerHTML = detailsDIV;
-	}
-	var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
-	var chart = '';
-	chart += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
-	chartResultDiv.innerHTML = chart;
-
-    var conName = constituencyResults.constituencyName;
-	var elecYear = constituencyResults.electionYear;
-	var elecTyp = constituencyResults.electionType;
-    getInteractiveChart(chartResultDiv,constituencyResults.constituencyOrMandalWiseElectionVO,constituencyResults.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
-	
-	var resultDiv = document.getElementById("resultsDataTableDiv");	
-	var str = '';
-	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
-	str += '<table id = "elecResTable">';
-	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
-		str += '<tr>';
-		if(constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName == 'Others *' || 
-				!constituencyResults.constituencyOrMandalWiseElectionVO[i].showLink)
-			str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
-		else
-		if(constituencyResults.electionType == 'Assembly'){
-			if(constituencyResults.constituencyOrMandalWiseElectionVO[i].isUrban)
-				str += '<td><a href="localBodyElectionAction.action?stateId=1&localBodyElectionTypeId=5&localBodyId='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
-			else
-				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'&MANDAL_NAME='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
-		}
-		else
-			str += '<td><a href="constituencyPageAction.action?constituencyId='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
-		for(var j in constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs){
-			if(value == 'number')
-				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
-			else
-				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesPercentage+'</td>';
-		}
-		str += '</tr>';
-	}		
-	str += '</table>';
-	str += '</div>';
-	resultDiv.innerHTML = str;
-
-	var resultDiv = document.getElementById("missingDataInfoDiv");	
-	var missingVotesDiv = '';
-	missingVotesDiv+='<b>';
-	missingVotesDiv += '<font color="Red"><b>*</b></font>';		
-	missingVotesDiv += ' Others Include Postal Ballet Votes';
-	missingVotesDiv+='</b>';
-	resultDiv.innerHTML = missingVotesDiv;
-
-	 var myColumnDefs = new Array();
-	 var myFields = new Array();
-	 
-	 if(constituencyResults.electionType == 'Assembly'){
-		 var villageHead = {
-		 			key:"Mandal",
-		 			lable: "Mandal",
-		 			sortable:true
-			   }
-
-		 var villageValue = {key:"Mandal"}
-	
-		 myColumnDefs.push(villageHead);
-		 myFields.push(villageValue);
-	 }else{
-		 var villageHead = {
-		 			key:"Assembly Constituency",
-		 			lable: "Assembly Constituency",
-		 			sortable:true
-			   }
-
-		 var villageValue = {key:"Assembly Constituency"}
-	
-		 myColumnDefs.push(villageHead);
-		 myFields.push(villageValue);
-	 }
-	 
-
-	 for(var i in constituencyResults.candidateNamePartyAndStatus){
-		var obj1 = {
-					key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
-					label:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
-					sortable:true
-				}
-		var obj2 = {
-					key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
-					parser:"number"
-				}
-		myColumnDefs.push(obj1);
-		myFields.push(obj2);
-	 }
-
-	 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get("elecResTable")); 
-	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
-	 myDataSource.responseSchema = { 
-							            fields:myFields    
-							        };
-
-	 if(constituencyResults.electionType == 'Parliament'){
-		var extraInfoDiv = document.getElementById("missingDataInfoDiv");
-		var str = '';
-		str += '<br>';
-		str += '<table>';
-		str += '<tr>';
-		str += '<td>';
-		str += '<font color="Red"><b>*</b></font>';				
-		str += '</td>';
-		str += '<td><b>';
-			if(constituencyResults.isDataInsufficient){
-				str += ' Others Include Postal Ballet Votes, ';
-				for(var i in constituencyResults.missingConstituencies)
-					str += '<a href="constituencyPageAction.action?constituencyId='+constituencyResults.missingConstituencies[i].id+'">'+constituencyResults.missingConstituencies[i].name + '</a> Assembly ,';
-				str = str.substring(0,str.length-1);
-				str += ' Wise ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Election Results';
-			}else{
-				str += ' Others Include Postal Ballet Votes';
-			}
-		str += '</b></td>';
-		str += '</tr>';
-		str += '</table>';		
-		extraInfoDiv.innerHTML = str;		
-	 }
-	 
-	var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
-	var imgElmt = document.getElementById('AjaxImgDiv');
-	if(imgElmt.style.display == "block")
-	{
-          imgElmt.style.display = "none";
-	}
-}
-
-function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,constiType,constiName,electionYear)
-{
-	
-    var chartColumns = partiesList;
-	var chartRows = constituencyResults;
-
-	 var data = new google.visualization.DataTable();
-	 data.addColumn('string', 'Party');
-
-     //for chart columns
-	 for(var i in chartColumns)
-	 {
-	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
-	   data.addColumn('number', colData);
-	 }
-
-      //for chart rows
-	  for(var j in constituencyResults)
-	  {
-		  var array = new Array();
-		  array.push(constituencyResults[j].locationName);
-
-		  for(var k in chartRows[j].partyElectionResultVOs)
+var candidateIndex = 1,candidateListSize,prevButtonElmt,nextButtonElmt;
+var constituencyConnectedPeople = new Array();
+var connectStatus = new Array();
+var userLoginStatus;
+var userId = '';
+/*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
+		var map = new GMap2(document.getElementById("map_canvas"));
+		var geocoder = new GClientGeocoder();
+		geocoder.getLatLng(address,
+		function(point)
+		{			
+	      if (!point) 
 		  {
-			  var percentage = chartRows[j].partyElectionResultVOs[k].votesPercent;
-              array.push(percentage);
+			alert(address + " not found");
 		  }
-		 
-		  data.addRow(array);
-	  }
-
-	  var ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear; 
-	  new google.visualization.LineChart(chartResultDiv).
-	  //draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
-	   draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
-}
-
-function getParliamentResults(elecYear){
-	counter++;	
-	var jsObj = {
-			constituencyId:${constituencyId},
-			electionYear:elecYear,
-			task:"getParliamentConstituencyElectionResults"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
-	callAjax(jsObj, url);
-}
+		  else 
+		  {
+			map.setCenter(point, 8);
+			var marker = new GMarker(point);
+			map.addOverlay(marker);
+			map.setUIToDefault();
+		  }
+		})
 
 
-function getZptcPartyDetails(elecYear){
-	zptcElectionYear = elecYear;
-	constituencyTYPE = constituencyPageMainObj.constituencyInfo.constituencyType;
-	var jsObj = {
-			constituencyType:constituencyPageMainObj.constituencyInfo.constituencyType,
-			constituencyId:${constituencyId},
-			electionYear:elecYear,
-			task:"getZptcElectionResults"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
-	callAjax(jsObj, url);
-}
+function showDetails(id)
+{	
+	tr=document.getElementsByTagName('tr')
 
-function getMptcPartyDetails(elecYear){
-	mptcElectionYear = elecYear;
-	var jsObj = {
-			constituencyType:constituencyPageMainObj.constituencyInfo.constituencyType,
-			constituencyId:${constituencyId},
-			electionYear:elecYear,
-			task:"getMptcElectionResults"
-		};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
-	callAjax(jsObj, url);
-}
-function buildElectionsSelectBox(myResults){
-	var selectDiv = document.getElementById("electionIdsSelectDiv");
-	var electionYearSelect = '';
-	var selectDivEl = document.getElementById("MandalwiseVotingTrendz");
-	if(myResults.length == 0){
-		selectDivEl.style.display = 'none';
-		//electionYearSelect +='<b>Sorry, Constituency/Mandal Data Not Available For This Constituency</b>';
-		//var resultDiv = document.getElementById("mandalOrConstiElecResultDiv");
-		//resultDiv.style.display = "none";
-		//selectDiv.innerHTML = electionYearSelect; 
-		return;
-	}
-
-	var headingDiv = document.getElementById("MandalVotingTrendz_head");
-	if('${constituencyDetails.constituencyType}' == 'Assembly')
-		headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
-	if('${constituencyDetails.constituencyType}' == 'Parliament')
-		headingDiv.innerHTML = ' Assembly Wise Voting Trendz '; 
-	
-	electionYearSelect += '<table>';
-	electionYearSelect += '<th>Select Election Year :</th>';
-	electionYearSelect += '<th>';
-	electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getConstituencyResults(this.options[this.selectedIndex].text)">';
-	for(var i in myResults)
+	for (i=0;i<tr.length;i++)
 	{			
-		electionYearSelect += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+		if (tr[i].id && tr[i].id==id)
+		{				
+			if ( tr[i].style.display=='none' )
+			{
+				tr[i].style.display = '';
+			}
+			else
+			{
+				tr[i].style.display = 'none';
+			}
+		}
+	}		
+}
+function getString() 
+{
+  alert("In function");
+  if (GBrowserIsCompatible())
+  {        
+	//var str=document.getElementById("add").value;
+	//console.log("In second if");
+//	showAddress(str);      
+  }
+}
+
+function showAddress(address)
+{
+	var map = new GMap2(document.getElementById("map_canvas"));
+	var geocoder = new GClientGeocoder();
+	geocoder.getLatLng(address,
+	function(point)
+	{			
+	  if (!point) 
+	  {
+		//alert(address + " not found");
+	  }
+	  else 
+	  {
+		map.setCenter(point, 14);
+		var marker = new GMarker(point);
+		map.addOverlay(marker);
+		//marker.openInfoWindowHtml(address);
+		map.setUIToDefault();
+	  }
+	})
+}
+*/
+
+function buildRightlayoutMap()
+{
+	var address=constituencyPageMainObj.constituencyAddress;		
+		var map = new GMap2(document.getElementById("map_canvas"));
+		var geocoder = new GClientGeocoder();
+		geocoder.getLatLng(address,
+		function(point)
+		{			
+	      if (!point) 
+		  {
+			alert(address + " not found");
+		  }
+		  else 
+		  {
+			map.setCenter(point, 8);
+			var marker = new GMarker(point);
+			map.addOverlay(marker);
+			map.setUIToDefault();
+		  }
+		})
+
+}
+
+function buildConstituencyInfo()
+{
+	var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
+
+	var divElmtHead = document.getElementById("constituencyInfoDiv_Head");
+	var divElmtBody = document.getElementById("constituencyInfoDiv_Body");
+
+	/*var heading='<h3>Constituency Info </h3>';
+	if(divElmtHead)
+		divElmtHead.innerHTML=heading;*/
+	
+	var str = '';
+	str+='<table id="constituencyInfoTable">';
+	str+='<tr>';
+	str+='<th> Constituency Name </th>';
+	str+='<th> : </th>';
+	str+='<td> '+constituencyPageMainObj.constituencyInfo.constituencyName+' </td>';
+	str+='</tr>';
+	if(constituencyPageMainObj.constituencyInfo.constituencyType.length > 0)
+	{
+		str+='<tr>';
+		str+='<th> Constituency Type </th>';
+		str+='<th> : </th>';
+		str+='<td> '+constituencyPageMainObj.constituencyInfo.constituencyType+' </td>';
+		str+='</tr>';
 	}
-	electionYearSelect += '</select>';
-	electionYearSelect += '</th>';
-	electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
-	electionYearSelect += '<td><div id="parliamentResultsButtonDiv"></td>';
-	electionYearSelect += '<td><div id="detailsDiv"></td>';
-	electionYearSelect += '</table>';
-	selectDiv.innerHTML = electionYearSelect; 
-	getConstituencyResults(myResults[0].name);
+	if(constituencyPageMainObj.constituencyInfo.constituencyType != 'Parliament')
+	{
+		str+='<tr>';
+		str+='<th> District Name </th>';
+		str+='<th> : </th>';
+		str+='<td> '+constituencyPageMainObj.constituencyInfo.districtName+' </td>';
+		str+='</tr>';
+	}
+	str+='<tr>';
+	str+='<th> State Name </th>';
+	str+='<th> : </th>';
+	str+='<td> '+constituencyPageMainObj.constituencyInfo.stateName+' </td>';
+	str+='</tr>';
+	if(constituencyPageMainObj.constituencyInfo.startDate.length > 0)
+	{
+		str+='<tr>';
+		str+='<th> Start Date </th>';
+		str+='<th> : </th>';
+		str+='<td> '+constituencyPageMainObj.constituencyInfo.startDate+' </td>';
+		str+='</tr>';
+	}
+	if(constituencyPageMainObj.constituencyInfo.deformDate.length > 0)
+	{
+		str+='<tr>';
+		str+='<th> Deformation Year </th>';
+		str+='<th> : </th>';
+		str+='<td> '+defDate.substring(0,4)+' </td>';
+		str+='</tr>';
+	}
+	
+	if(divElmtBody)
+		divElmtBody.innerHTML=str;
+
 }
-
-function openConstVotingTrendzWindow(distId,constId,constName)
-{			
-	var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,left=200,top=200");
-
-	browser1.focus();
-}
-
-</script>
-</head>
-<body onLoad="getString()">
-<div id="detailedChartDIV" class="yui-skin-sam"></div>
-<div id="connectPeoplePopup_outer" class="yui-skin-sam"><div id="connectPeoplePopup"></div></div>
-<div id="constituencyPageMain">
-
-	<div id="electionResults_Panel_Main" class="yui-skin-sam">
-			<div id="electionResults_Panel">
-	</div>
-	
-	
-	<table width="100%">
-	<tr>
-		<td><%@ include file="navigator.jsp" %></td>
-		<c:if test="${constituencyDetails.hasAnalize}">
-			<td><input type="button" class="button" value="${constituencyDetails.constituencyName} Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" /></td>
-		</c:if>
-	</tr>
-		<tr>
-			<td class="alignTD">
-				
-				<div id="constituencyPageCenterInfoDiv">
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
-						
-							<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
-								<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
-								<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass">
-									<div id="constituencyInfoDiv">
-										<div id="constituencyInfoDiv_Head"></div>
-										<div id="constituencyInfoDiv_Body"></div>
-									</div>	
-								</div>
-							</div>
-					</div>	
-					
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
-					
-						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
-							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
-							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
-								<div id="constituencyPageCandidateInfo_Top"></div>
-								<div id="constituencyPageCandidateInfo_Bottom"></div>
-							</div>
-						</div>		
-					</div>
-
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>	
-						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">							
-							<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
-							<div id="constituencyPageElectionEnlargedImgDiv" class="layoutHeadersClass"></div>
-							<div id="constituencyPageElectionImgDiv" class="layoutHeadersClass"></div>
-							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
-						</div>		
-					</div>
-				
-
-
-			</td>
-			<!--<td> <div class="spacerTD"> </div> </td>-->
-			<td class="alignTD">
-				<div id="constituencyRightContentDiv">					
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div> 
-
-						<div id="constituencyPageRightMapDiv" class="contentDivClass">
-							<div id="map_canvas"></div>
-											
-							<div id="constituencyPeopleConnectDiv">
-								<div id="constituencyPeopleConnectDiv_Head"></div>
-								<div id="constituencyPeopleConnectDiv_Body"></div>
-							</div>
-							<div id="problemViewingDiv">
-								<div id="problemViewingDiv_Head"></div>
-								<div id="problemViewingDiv_Body"></div>
-							</div>
-							<div id="problemPostingDiv">
-								<div id="problemPostingDiv_Head"></div>
-								<div id="problemPostingDiv_Body"></div>
-							</div>
-							<div id="votingTrendzDiv">
-								<div id="votingTrendzDiv_Head"></div>
-								<div id="votingTrendzDiv_Body"></div>
-							</div>							
-						</div>	
-					</div>
-				</div>
-			</td>			
-		</tr>
-		<tr>
-			<td colspan="2">
-									<div id="constituencyCenterContentOuter1" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
-
-						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
-						<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
-							<!--
-							<table width="100%" border="1" cellspacing="3">
-								<tr>
-									<c:forEach var="chart" items="${constituencyVO.pieChartNames}">
-										<td align="center"><img src="charts/${chart}" border="0"></td>
-									</c:forEach>	
-								</tr>
-								<tr>
-									<c:forEach var="extra" items="${constituencyVO.extraInfo}">
-										<td align="left" style="border: 0px;color:#707070;"><b>${extra}</b></td>
-									</c:forEach>
-								</tr>
-							</table>
-							
-						</div>-->
-						
-						<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
-						</div>
-				
-				</div>
-			</td>
-		</tr>
-		
-		<tr>		
-		<td colspan="2">
-		<div id="MandalwiseVotingTrendz" class="rounded" style="width: 910px;">
-			<div class="corner topLeft"></div>
-			<div class="corner topRight"></div>
-			<div class="corner bottomLeft"></div>
-			<div class="corner bottomRight"></div>
-			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
-			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
-			<div id="mandalOrConstiElecResultDiv">
-			<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
-			<div id="electionResultsInConstituencyDiv"></div>
-			<table><tr>
-					<td id="labelRadio"><b>Select The Format You Want :</b></td>
-					<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
-					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)"/>By Percentage </td>
-			</tr></table>			
-			<div id="resultsDataTableDiv"></div>
-			<div id="missingDataInfoDiv"></div>
-			</div>
-		</div>
-		</td>
-		</tr>
-	<!-- Local Elections Info -->	
-		<tr>		
-			<td colspan="2">
-				<div id="LocalElectionsDiv" class="rounded" style="width: 910px;">
-					<div class="corner topLeft"></div>
-					<div class="corner topRight"></div>
-					<div class="corner bottomLeft"></div>
-					<div class="corner bottomRight"></div>
-					<div id="LocalElections_heading" class="layoutHeadersClass">All Local Elections Happened In ${constituencyDetails.constituencyName} Constituency</div>
-					<table width="100%">
-						<tr>
-							<td>
-								<div id = "muncipalDiv">
-									<div>
-										<b>Select Municipal Election&nbsp;:&nbsp;</b><s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name" onchange="getMunicipalityResults()"></s:select>		
-									</div>
-									<div id="municipalityData_main"></div>
-								</div>
-							</td>
-							<td>
-								<div id = "corporationDiv">
-									<div>
-										<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
-									</div>
-									<div id="coroporationData_main"></div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id = "greaterDiv">
-									<div>
-										<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
-									</div>
-									<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
-											<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
-												Select Results Criteria :
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked">All</input>
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise">Party Wise Results</input>	
-												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_parties" id="wardWise_parties" list="greaterInfo.listOfParties" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('partyWise',this.options[this.selectedIndex].value)"/>
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise">Ward Wise Results</input>	
-												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_wards" id="wardWise_ward" list="greaterInfo.listOfWards" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('wardWise',this.options[this.selectedIndex].value)"/>
-											</div>											
-										</div>
-									<div id="GHMCData_main"></div>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-	<!-- Local Elections Info -->	
-		<tr>
-			<td colspan="2">
-			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
-			<div class="corner topLeft"></div>
-			<div class="corner topRight"></div>
-			<div class="corner bottomLeft"></div>
-			<div class="corner bottomRight"></div>
-				<table>
-						<tr>
-							<td align="center" valign="center">
-								<div id="zptc_main">
-									<div id="zptc_head">
-										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-											<tr>
-												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td>	
-													<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
-														<span>Total Number of ZPTC's : </span>
-														<span id="totalZptcCountResultDiv"></span>
-													</div>
-												</td>
-												<td><img src="images/icons/districtPage/header_right.gif"/></td>
-											</tr>
-										</table>
-									</div>
-								<div id="zptc_body">
-										<table>									
-											<tr><td>
-													<table><tr><td>
-																	<table ><tr>
-																   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-																   		<td><div id="zptcCandidateLink"></div></td>
-															   		</tr></table>
-															   </td></tr><tr><br></tr><tr><br></tr>
-														   <tr>
-															   <td><div id="zptcPartyTrendsDetailsDiv" style="margin-top: 13px;"></div></td>
-													</tr></table>
-											</td></tr>
-										</table>	
-									</div>
-								</div>
-							</td>			
-							
-							<td align="center"  valign="center">
-								<div id="mptc_main">
-									<div id="mptc_head">
-										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-											<tr>
-												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-												<td>	
-													<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
-														<span>Total Number of MPTC's : </span>
-														<span id="totalMptcCountResultDiv"></span>
-													</div>
-												</td>
-												<td><img src="images/icons/districtPage/header_right.gif"/></td>
-											</tr>
-										</table>
-									</div>
-								<div id="mptc_body">
-										<table>									
-											<tr><td>
-													<table><tr><td>
-																	<table ><tr>
-																   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-																   		<td><div id="mptcCandidateLink"></div></td>
-															   		</tr></table>
-															   </td></tr><tr><br></tr><tr><br></tr>
-														   <tr>
-															   <td> <div id="mptcPartyTrendsDetailsDiv" style="margin-top: 13px;" ></div></td>
-													</tr></table>
-											</td></tr>
-										</table>	
-									</div>
-								</div>
-							</td>	
-						</tr>
-				</table>
-			</div>
-			</td>
-		</tr>		
-	</table>	
-</div>
-</div>
-<script type="text/javascript">
-
-	/*	Constituency Page basic Info
-		-----------------------------
-	*/
-	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
-	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";	
-	
-	constituencyPageMainObj.forwardTask = "${redirectLoc}";
-	constituencyPageMainObj.constituencyInfo.constituencyId = "${constituencyId}";
-	constituencyPageMainObj.constituencyInfo.constituencyName = "${constituencyDetails.constituencyName}";
-	constituencyPageMainObj.constituencyInfo.districtName = "${constituencyDetails.districtName}";
-	constituencyPageMainObj.constituencyInfo.stateName = "${constituencyDetails.stateName}";
-	constituencyPageMainObj.constituencyInfo.startDate = "${constituencyDetails.startDate}";
-	constituencyPageMainObj.constituencyInfo.deformDate = "${constituencyDetails.deformDate}";
-	constituencyPageMainObj.constituencyInfo.constituencyType = "${constituencyDetails.constituencyType}";
-	
-	
-	/*	Constituency Election Results Info
-		----------------------------------
-	*/
-
-	<c:forEach var="constituencyElectionResults" items="${constituencyElectionResultsVO}">	
-	var constiObj=
-				{
-					candidateName:'${constituencyElectionResults.candidateResultsVO.candidateName}',
-					partyName:'${constituencyElectionResults.candidateResultsVO.partyName}',
-					year:'${constituencyElectionResults.electionYear}',
-					votesEarned:'${constituencyElectionResults.candidateResultsVO.votesEarned}',
-					votesPercentage:'${constituencyElectionResults.candidateResultsVO.votesPercentage}',
-					oppositionCandInfo:[]
-				 };
-			<c:forEach var="detailedResult" items="${constituencyElectionResults.candidateOppositionList}" >
-				var oppositionList={
-										candidateName:'${detailedResult.candidateName}',
-										partyName:'${detailedResult.partyName}',
-										year:'${constituencyElectionResults.electionYear}',
-										votesEarned:'${detailedResult.votesEarned}',
-										votesPercentage:'${detailedResult.votesPercentage}'										
-									};
-						
-					constiObj.oppositionCandInfo.push(oppositionList);
-			</c:forEach>			
-			constituencyPageMainObj.constituencyElectionInfo.push(constiObj);			
-	</c:forEach>
-	
-	/*	Constituency Voters Info
-		-------------------------
-	*/
-
+/*
 function buildElectionResults()
 {
-		
 	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
-	var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
 	var BodyElmt = document.getElementById('constituencyPageElectionInfoDiv_Body');
-
-	
 	
 	if(HeadElmt)
 		HeadElmt.innerHTML = ' Election Information in '+constituencyPageMainObj.constituencyInfo.constituencyName;
 
-	var chartName = "${chartName}";
-	var chart = '';
-	chart+='<img src="charts/'+chartName+'" style="width:600px"/>';
-	chartResultDiv.innerHTML = chart;
-
-	var enlargedChartName = "${enlargedChartName}";
-	var details = document.getElementById("constituencyPageElectionEnlargedImgDiv");
-	var detailsDIV = '';
-	detailsDIV += '<table><tr>';
-	detailsDIV += '<td><div><input type="button" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart"></div></td>';
-	details.innerHTML = detailsDIV;
-	
 	var elecStr = '';
 	for(var i in constituencyPageMainObj.constituencyElectionInfo)
 	{
@@ -1219,562 +284,1268 @@ function buildElectionResults()
 		BodyElmt.innerHTML=elecStr;
 }
 
-/*if(imgElmt.style.display == "block")
-{
-      imgElmt.style.display = "none";
-}*/
-
-function showCorporationInfo(myResults){
-	var HeadElmt = document.getElementById('coroporationData_main');
-	if(myResults.muncipalityVO == null){
-		var showDiv = document.getElementById('corporationDiv');
-		showDiv.style.display = "none";
-	}
-	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation");
-}
-
-function buildCorpOrMunicipTable(divId, myResults, elecType){
-	var str = '';
-	for(var i in myResults.muncipalityVO){
-		str += '<div  class="localBodyHeadStyle">';
-		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' Election Results '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
-		str += '<table><tr>';
-		str += '<td><div id=\"'+elecType+'TableDiv_'+i+'\"></div></td>';
-		str += '<td><div><img src=\"charts\\'+myResults.muncipalityVO[i].chartName+'\"></div></td>';
-		str += '</tr></table>';
-	}
-	divId.innerHTML = str;
-	buildDataTable(elecType);
-}
-
-function buildDataTable(elecType){
-
-	for(var i in myResults.muncipalityVO){
-		var resultsDataSource = new YAHOO.util.DataSource(myResults.muncipalityVO[i].muncipalityVO);
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "partyName"
-			}, {
-				key : "participatedSeats"
-			}, {
-				key : "seatsWonByParty"
-			}, {
-				key : "percentageOfVotesWonByParty"
-			}]
-		};
-
-		var resultsColumnDefs = [ {
-			key : "partyName",
-			label : "Party",
-			sortable : true
-		}, {
-			key : "participatedSeats",
-			label : "Seats Contested",
-			sortable : true
-		}, {
-			key : "seatsWonByParty",
-			label : "Won",
-			sortable : true
-		}, {
-			key : "percentageOfVotesWonByParty",
-			label : "Votes %",
-			sortable : true
-		} ];		
-		myDataTableForMptcParty = new YAHOO.widget.DataTable(elecType+"TableDiv_"+i,resultsColumnDefs, resultsDataSource,null);
-	}
-	
-}
-
-function showMunicipalInfo(myResults){
-	var HeadElmt = document.getElementById('municipalityData_main');
-	if(myResults.muncipalityVO == null){
-		var showDiv = document.getElementById('muncipalDiv');
-		showDiv.style.display = "none";
-	}
-	buildCorpOrMunicipTable(HeadElmt, myResults, "Municipality");
-}
-
-function showMandalVotesShareDetailsChart(myResults)
-{
-	var mandalwiseVotersShare = myResults.assembliesOfParliamentInfo;
-		
-		for(var c in mandalwiseVotersShare){
-
-			var data = new google.visualization.DataTable();
-			data.addColumn('string', 'Mandals');
-			data.addColumn('number', 'Voters % Share');
-
-
-			data.addRows(mandalwiseVotersShare[c].votersInfoForMandalVO.length);
-			var k=0;
-			for (var i in mandalwiseVotersShare[c].votersInfoForMandalVO)
-			{
-			data.setValue(k, 0, mandalwiseVotersShare[c].votersInfoForMandalVO[i].mandalName);
-			data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totVoters);
-			k++;
-			}
-			
-			var ctitle='';
-			var chartDiv='';
-            
-			if(c == 0)
-			{
-				if(document.getElementById('divInteractive_Chart_0')){
-					if(c == 0){
-						chartDiv = document.getElementById('divInteractive_Chart_0');
-						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
-					}
-					var chart = new google.visualization.PieChart(chartDiv);
-					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
-				}
-			}
-			else
-			{
-				if(document.getElementById('divInteractive_Chart_1')){
-					if(c == 1){
-					chartDiv = document.getElementById('divInteractive_Chart_1');
-					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
-					}
-					var chart = new google.visualization.PieChart(chartDiv);
-					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
-				}
-			}
-			
-		}
-}
-
-function showAllPartiesAllElectionResultsChart(myResults)
-{
-   var chartColumns = myResults[0].partiesList;
-  
-     var data = new google.visualization.DataTable();
-	 data.addColumn('string', 'Party');
-
-     //for chart columns
-	 for(var i in chartColumns)
-	 {
-	   var colData = chartColumns[i].name;
-	   data.addColumn('number', colData);
-	 }
-
-      //for chart rows
-	  for(var j in myResults)
-	  {
-		  var array = new Array();
-		  var year = myResults[j].electionYear+" "+myResults[j].electionType;
-		  array.push(year);
-
-		  for(var k in myResults[j].partyResultsVO)
-		  {
-			  var percentage = myResults[j].partyResultsVO[k].votesPercent;
-              array.push(percentage);
-		  }
-		 
-		  data.addRow(array);
-	  }
-
-	  var ctitle = 'All Parties Performance In Different Elections'; 
-	  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
-	  new google.visualization.LineChart(chartResultDiv).
-	  draw(data, {curveType: "function",width: 650, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
-
-
-}
-
-function showGreaterInfo(myResults){
-	var HeadElmt = document.getElementById('GHMCData_main');
-	if(myResults.localElectionsInfo == null){
-		var showDiv = document.getElementById('greaterDiv');
-		showDiv.style.display = "none";
-	}
-	var str = '';
-	for(var i in myResults.localElectionsInfo){
-		str += '<div class="localBodyHeadStyle">';
-		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">Detailed view of '+myResults.localElectionsInfo[i].name+' Election Results In '+myResults.localElectionsInfo[i].electionYear+'</a></div>';
-		str += '<div><img src=\"charts\\'+myResults.localElectionsInfo[i].chartName+'\"></div>';
-		str += '<div id=\"greaterTableDiv_'+i+'\"></div>';
-	}
-	HeadElmt.innerHTML = str;
-	for(var i in myResults.localElectionsInfo){
-		var resultsDataSource = new YAHOO.util.DataSource(myResults.localElectionsInfo[i].wardwiseResultsForParty);
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "constituencyName"
-			}, {
-				key : "partyName"
-			}, {
-				key : "candidateName"
-			}, {
-				key : "votesEarned"
-			}, {
-				key : "votesPercentage"
-			}, {
-				key : "rank"
-			}, {
-				key : "totalVotes"
-			}]
-		};
-
-		var resultsColumnDefs = [ {
-			key : "constituencyName",
-			label : "Ward",
-			sortable : true
-		}, {
-			key : "partyName",
-			label : "Party",
-			sortable : true
-		}, {
-			key : "candidateName",
-			label : "Candidate",
-			sortable : true
-		}, {
-			key : "votesEarned",
-			label : "Votes Gained",
-			sortable : true
-		}, {
-			key : "votesPercentage",
-			label : "Votes %",
-			sortable : true
-		}, {
-			key : "rank",
-			label : "Rank",
-			sortable : true
-		}, {
-			key : "totalVotes",
-			label : "Total Voters",
-			sortable : true
-		}  ];		
-		if(myResults.localElectionsInfo[i].wardwiseResultsForParty.length >10)
-		{
-			var recordsPerPage = {
-		    paginator : new YAHOO.widget.Paginator({
-		        rowsPerPage: 10 
-		    })
-			};
-		}	
-		myDataTableForMptcParty = new YAHOO.widget.DataTable("greaterTableDiv_"+i,resultsColumnDefs, resultsDataSource,recordsPerPage);
-	}
-	
-}
-
 function showDetailedElectionResult(id)
 {
-
+	
 	var index = id.substring((id.indexOf('_')+1),id.length);
+	
 	var data = constituencyPageMainObj.constituencyElectionInfo[index];
 	var info = constituencyPageMainObj.constituencyInfo;
+		
+	var str='';
+	str+='<fieldset id="constituencyInfoFieldSet">';
+	str+='<legend> Constituency Info </legend>';
+	str+='<div id="coinstituencyInfoDiv">';
+	str+='<table id="constituencyInfoTableClass" class="legendTable" width="100%">';
+	str+='<tr>';
+	str+='<th>Constituency Name</th>';
+	str+='<td>'+info.constituencyName+'</td>';
+	str+='<th>Constituency Type</th>';
+	str+='<td>'+info.constituencyType+'</td>';	
+	str+='</tr>';
 
-	var constiId = ${constituencyId}; 
-	var elecType = constituencyPageMainObj.constituencyInfo.constituencyType; 
-	var elecYear = data.year; 
+	str+='<tr>';	
+	str+='<th>District</th>';
+	str+='<td>'+info.districtName+'</td>';
+	str+='<th>State</th>';
+	str+='<td>'+info.stateName+'</td>';	
+	str+='</tr>';	
+	str+='</table>';
+	str+='</div>';
+	str+='</fieldset>';
+	//--------------
+	str+='<fieldset id="WinningCandidateFieldSet">';
+	str+='<legend> Winning Candidate Info </legend>';
+	str+='<div id="WinningCandidateDiv">';
+	str+='<table id="WinningCandidateTableClass" class="legendTable" width="100%">';
+	str+='<tr>';
+	str+='<th>Name</th>';
+	str+='<td colspan="3">'+data.candidateName+'</td>';
+	str+='</tr>';
 
+	str+='<tr>';
+	str+='<th>Party</th>';
+	str+='<td>'+data.partyName+'</td>';	
+	str+='<th>Year</th>';
+	str+='<td>'+data.year+'</td>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Votes Earned</th>';
+	str+='<td>'+data.votesEarned+'</td>';	
+	str+='<th>Votes Percentage</th>';
+	str+='<td>'+data.votesPercentage+'</td>'
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';	
+	str+='</fieldset>';
+	//--------
+	str+='<fieldset id="oppositionResultsField">';
+	str+='<legend> Opposition\'s Results Info </legend>';
+	str+='<div id="oppCandResultsDiv">';	
+	str+='</div>';
+	str+='</fieldset>';
+
+	ElectionResultPanel = new YAHOO.widget.Panel("electionResults_Panel", 
+				{
+					width:"800px", 
+					fixedcenter : false, 
+					visible : true,  
+					constraintoviewport : true,
+					x:200,
+					y:400,
+					iframe :true,
+					modal :true,
+					visible:true,						
+					draggable:true, 
+					close:true
+				} ); 
 	
-    var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
-    browser1.focus();	
+
+	ElectionResultPanel.render();
+	ElectionResultPanel.setHeader(' Election Results');
+	ElectionResultPanel.setBody(str);
+	
+	 var myDataSource = new YAHOO.util.DataSource(data.oppositionCandInfo); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+	            fields: [
+							{key:"candidateName"},
+							{key:"partyName"},
+							{key:"year",parser:"number"},
+							{key:"votesEarned",parser:"number"},
+							{key:"votesPercentage",parser:"number"}
+						] 
+	        }; 
+	
+	 var myColumnDefs = [ 
+	            {key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+	            {key:"partyName", label:'Party Name', sortable:true, resizeable:true}, 
+	            {key:"year", label:'Year',sortable:true, resizeable:true}, 
+	            {key:"votesEarned",label:'Votes Earned',formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:true}, 
+	            {key:"votesPercentage",label:'Votes %', sortable:true, resizeable:true} 
+	        ]; 
+	 
+	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
+}
+*/
+/*
+function buildConstituencyLayout()
+{
+	var constituencyPageLayout = new YAHOO.widget.Layout('constituencyPageLayoutDiv', { 
+			height:900,
+			units: [					 
+					{ 
+						position: 'right',
+						header:false,
+						width: 280,							
+						resize: false,
+						gutter: '5px',
+						collapse: false,
+						scroll: false,
+						body: 'constituencyPageRightMapDiv',
+						animate: true
+					},	 
+					{ 
+						position: 'center',						
+						body: 'constituencyPageCenterInfoDiv',
+						resize: false,
+						gutter: '5px',
+						collapse: true,
+						scroll: false,						
+						animate: true
+					} 
+	    ] 
+		}); 
+		constituencyPageLayout.render(); 
+}*/
+
+function buildCenterVotersCandidateInfoContent()
+{
+	var divElmt = document.getElementById("constituencyCenterContentOuter1");
+	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
+	{
+		divElmt.style.display='none';
+			return;
+	}
+	
+	var elmtHead = document.getElementById("mandalsVotersInfoDiv_Head");
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		elmtHead.innerHTML = 'Mandals Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Assembly:';
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+		elmtHead.innerHTML = 'Assemblies Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Parliament:';
+	var elmt = document.getElementById("mandalsVotersInfoDiv_Body");
+	
+	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
+	{		
+		elmt.innerHTML='Voter Info Unavailable';
+			return;
+	}
+	
+
+	for(var i in constituencyPageMainObj.constituencyVotersInfo)
+	{
+		var data = constituencyPageMainObj.constituencyVotersInfo[i];
+		var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
+		
+		var divChild = document.createElement('div');
+		divChild.setAttribute("id","divChild"+i);
+
+		var str = '';
+		str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
+		if(data.year == "2009"){
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+				str+='Mandals After Delimitation';
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+				str+='Assemblies After Delimitation';
+		}
+		else{
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+				str+='Mandals Before Delimitation';
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+				str+='Assemblies Before Delimitation';
+		}
+			
+		str+='</div>';
+		if(data.info.length!=0){
+			str+='<div id="divInteractive_Chart_'+i+'"></div>';
+			str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
+		}else{
+			str+='<div id="divChild_Body_'+i+'" class="voterBasicInfoBody"></div>';
+		}
+		
+		divChild.innerHTML=str;
+
+		if(elmt)
+			elmt.appendChild(divChild);
+		
+		var field,column;
+		
+		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+			field = {key:"mandalName"};
+			column = {key:"mandalName", label:'Assembly Name', sortable:true, resizeable:true};
+		}
+		
+		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly'){
+			field = {key:"mandalName"};
+			column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
+		}
+				
+		if(data.info.length!=0){
+			 var myDataSource = new YAHOO.util.DataSource(data.info); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			 myDataSource.responseSchema = { 
+						fields: [
+						         	field,
+									{	key : "mandalMaleVoters",parser:"number"},
+									{	key : "mandalFemaleVoters",parser:"number"},
+									{	key : "mandalTotalVoters",parser:"number"},
+									{	key : "isPartial"}
+								]
+					}; 
+			
+			 var myColumnDefs = [ 
+			             column,
+						{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
+						{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
+						{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
+						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+					]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+		}else{	
+			if(basicData != null)
+			{
+			 var myDataSource = new YAHOO.util.DataSource(basicData.info); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			 myDataSource.responseSchema = { 
+						fields: [
+						         	field,									
+									{	key : "isPartial"}
+								]
+					}; 
+			
+			 var myColumnDefs = [ 
+			             column,						
+						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+					]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+			}
+		}
+		
+
+	}
 }
 
-	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+function showCurrentlyElectedCandidate()
+{	
+
+    var HeadElmt = document.getElementById('constituencyPageCandidateInfo_Head');
+	var BodyElmt = document.getElementById('constituencyPageCandidateInfo_Body');
+
+	var headStr = '';
+	headStr+='Elected Candidate Info';
+	if(HeadElmt)
+		HeadElmt.innerHTML=headStr;
+
+	/* ---- Building Assembly candidate Info datatable ---- */
+	if(constituencyPageMainObj.presentAssemblyCandidate == null && constituencyPageMainObj.presentParliamentCandidate == null)
 	{
-	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
-	   browser1.focus();
+		BodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
 	}
 
-	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentBasicInfo}" >	
-		var obj ={
-					year:'${vInfo.year}',
-					info:[]
-				};
-		<c:forEach var="info" items="${vInfo.votersBasicInfoForMandalVO}" >	
-		var urlStr = '';
-		if('${constituencyVO.electionType}' == 'Parliament')
-			urlStr += 'constituencyPageAction.action?constituencyId=${info.mandalId}';
-		else
-			urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
-		var vObj=
-				{					
-					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',					
-					isPartial:'${info.isPartial}'
-				 };
-			obj.info.push(vObj);
-		</c:forEach>
-			constituencyPageMainObj.constituencyVotersBasicInfo.push(obj);
-	</c:forEach>
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 && constituencyPageMainObj.presentParliamentCandidate.length == 0)
+	{		
+		BodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+
+	 if(constituencyPageMainObj.presentAssemblyCandidate != null && constituencyPageMainObj.presentAssemblyCandidate.length != 0)
+	{
 		
+	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentAssemblyCandidate); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},
+							{	key : "constituencyName"},
+							{	key : "party"},
+							{	key : "partyFlag"},
+							{	key : "knowMore"}
+						]
+			}; 
 	
-	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" >	
-		var obj ={
-					year:'${vInfo.year}',
-					info:[]
-				};
-		<c:forEach var="info" items="${vInfo.votersInfoForMandalVO}" >	
-		var urlStr = '';
-		if('${constituencyVO.electionType}' == 'Parliament')
-			urlStr += 'constituencyPageAction.action?constituencyId=${info.mandalId}';
-		else
-			urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
-		var vObj=
-				{
-					mandalId:'${info.mandalId}',
-					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',
-					mandalMaleVoters:'${info.totalMaleVoters}',
-					mandalFemaleVoters:'${info.totalFemaleVoters}',
-					mandalTotalVoters:'${info.totalVoters}',
-					isPartial:'${info.isPartial}'
-				 };
-			obj.info.push(vObj);
-		</c:forEach>
-			constituencyPageMainObj.constituencyVotersInfo.push(obj);
-	</c:forEach>
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
+				{key:"party", label:'Party',sortable:true, resizeable:true},
+				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true},
+				{key : "knowMore", label:'Complete Results', resizeable:true}
+			]; 
+		 
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
+	else
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
+
+	}
+
+     if(constituencyPageMainObj.presentParliamentCandidate != null && constituencyPageMainObj.presentParliamentCandidate.length != 0)
+	{
+	/* ---- Building Parliament candidate Info datatable ---- */
+
+	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentParliamentCandidate); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},
+							{	key : "constituencyName"},
+							{	key : "party"},
+							{	key : "partyFlag"},
+							{	key : "knowMore"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
+				{key:"party", label:'Party',sortable:true, resizeable:true},
+				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true},
+				{key : "knowMore", label:'Complete Results', resizeable:true}
+			]; 
+	
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
+	else
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
+
+	}
+}
+
+function buildProblemViewingWindow()
+{
+	var headElmt = document.getElementById('problemViewingDiv_Head');
+	var bodyElmt = document.getElementById('problemViewingDiv_Body');
+	
+	var str='';
+	str+='<fieldset id="problemViewingFieldSet">';
+	str+='<legend> View Your constituency Problems</legend>';
+	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+
+	if(constituencyPageMainObj.problemsInfo.length == 0)
+	{
+		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
+		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span> No problems has been posted </span>';
+		str+='</div>';
+	}
+	else
+	{
+		for(var i in constituencyPageMainObj.problemsInfo)
+		{
+			var data = constituencyPageMainObj.problemsInfo[i];			
+			str+='<div class="problemDataDivClass" onclick="showProblemCompleteDetails('+data.problemId+')">';
+			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='<span> '+data.problem+' </span>';
+			str+='</div>';
+			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
+		}
+	}
+	
+	str+='</marquee>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+}
+
+function  showProblemCompleteDetails(selectedProblemId)
+{
+	for(var i in constituencyPageMainObj.problemsInfo)
+		{
+			var data = constituencyPageMainObj.problemsInfo[i];			
+			if(data.problemId==selectedProblemId){
+						var elmt = document.getElementById('constituencyMgmtBodyDiv');
+						var divChild = document.createElement('div');
+						divChild.setAttribute('id','createDiv');
+						var problemName = data.problem;
+						data.problem.name = problemName[0].toUpperCase();
+						elmt.appendChild(divChild);	
+
+						var showProblemData='';		
+						showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
+						showProblemData+='<fieldset>';  		
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
+						showProblemData+='<table id="probDetailsTable">';
+						showProblemData+='<tr><th>Problem</th>';		
+						showProblemData+='<th>Description</th>';
+						showProblemData+='<th>IdentifiedDate</th></tr>';
+						showProblemData+='<tr><td>'+data.problem+'</td>';
+						showProblemData+='<td>'+data.description+'</td>';
+						showProblemData+='<td>'+data.reportedDate+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+
+						showProblemData+='<fieldset>';
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
+						showProblemData+='<table id="postedPersonTable">';
+						showProblemData+='<tr><th>Name</th>';								
+						showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+						
+						showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
+
+						if(createGroupDialog)
+							createGroupDialog.destroy();
+						createGroupDialog = new YAHOO.widget.Dialog("createDiv",
+								{ width : "600px", 		
+								  fixedcenter : false, 
+								  visible : true,  
+								  constraintoviewport : true, 
+								  iframe :false,
+								  modal :false,
+								  hideaftersubmit:true,
+								  close:true,
+								  x:400,
+								  y:300,				  
+								  buttons : [ { text:"Ok", handler: handleSubmit, isDefault:true}, 
+											  { text:"Cancel", handler: handleCancel}]
+								 } );
+
+
+					
+						
+						createGroupDialog.setBody(showProblemData);
+						
+						createGroupDialog.render();
+			}
+		}
+}
+function handleSubmit()
+{
+	createGroupDialog.hide();			
+}
+
+function handleCancel()
+{
+	this.cancel();
+}
+
+function openAddNewProblemWindow()
+{	
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
+
+function buildProblemPostingWindow()
+{
+	var headElmt = document.getElementById('problemPostingDiv_Head');
+	var bodyElmt = document.getElementById('problemPostingDiv_Body');
+		
+	var str='';
+	str+='<fieldset id="ProblemPostingFieldSet">';
+	str+='<legend> Post Your constituency Problem</legend>';
+	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
+	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
+	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">POST</a></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+
+	/*var postButton = new YAHOO.widget.Button("postButton");
+	postButton.on("click", openAddNewProblemWindow); */
+}
+
+function buildConstituencyConnectPeopleWindow()
+{
+	var headElmt = document.getElementById('constituencyPeopleConnectDiv_Head');
+	var bodyElmt = document.getElementById('constituencyPeopleConnectDiv_Body');
+	var constiId = constituencyPageMainObj.constituencyInfo.constituencyId;
+	var constituencyName = constituencyPageMainObj.constituencyInfo.constituencyName;
+	var headStr = 'Connect To Your Constituency People';
+	if(headElmt)
+		headElmt.innerHTML=headStr;
+	if(constituencyConnectedPeople.length == 0 && userLoginStatus == "false")
+	{
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';
+		errorStr += '<div class="errorStr">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constiId+'&constituencyName='+constituencyName+'">Login</a></div>';
+		
+		bodyElmt.innerHTML = errorStr;
+		return;
+	}
+	else if(constituencyConnectedPeople.length == 0 && userLoginStatus == "true")
+	{
+		var errorStr = '';
+		errorStr += '<div class="errorStr"> No people have been connected.</div>';
+		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
+		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';		
+		bodyElmt.innerHTML = errorStr;
+		return;
+	}
+	
+	buildConnectUsersContent(constituencyConnectedPeople,"constituencyPeopleConnectDiv_Body","CONSTITUENCY",constiId,constituencyName,userLoginStatus,userId);
+	
+}
+
+
+function buildVotingTrendzLayout(divId,obj)
+{	
+	var elmt = document.getElementById(divId);
+
+	var str = '';	
+	str+='	<div id="constituencyVotersInfoDiv_Body">';
+	str+='	<table>';
+	str+='		<tr>';
+	str+='			<td><div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass"></div></td>';
+	str+='			<td><div id="constituencyVotersInfoDiv_Navigation"></div></td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div>';
+	str+='			</td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td width="50%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>';
+	str+='          <td width="50%"><div class="commentsDiv"> ';
+	str+='				* Total Male Voters In Constituency   : <font style="color:#FF0000;">'+obj.electionTrendzOverviewVO.maleVotersInConstituency+' 							</font> </div>';
+	str+='              <div class="commentsDiv"> * Total Female Voters In Constituency : <font 																				style="color:#FF0000;">'+obj.electionTrendzOverviewVO.femaleVotersInConstituency+' </font> </div>';
+    str+='              <div class="commentsDiv"> ';
+	str+='				 * Known Classified Male Voters % In Total Male Voters :<font style="color:#FF0000;"> '+obj.electionTrendzOverviewVO.maleVoters+' </font><font style="color:#0000FF;"> ( '+obj.electionTrendzOverviewVO.maleVotersPercentInConsti+' % )</font> </div>';
+	str+='              <div class="commentsDiv"> ';
+	str+='				 * Known Classified Female Voters % In Total Female Voters   :<font     			   style="color:#FF0000;">'+obj.electionTrendzOverviewVO.femaleVoters+'</font><font style="color:#0000FF;"> ( '+obj.electionTrendzOverviewVO.femaleVotersPercentInConsti+' % )</font> </div>';
+	str+='           </td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">';
+	str+='					<div id="candidateTrendzGraph_head"></div>';
+	str+='					<div id="candidateTrendzGraph_body">';
+	str+='					<table>';
+	str+='						<tr>';
+	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph1" class="graphHeadingDivClass"></div></td>';
+	str+='							<td style="vertical-align:center"> <div id="candidateTrendzGraphDataDiv" class="graphHeadingDivClass"></div> </td>';
+	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph2" class="graphHeadingNewDivClass"></div></td>';
+	str+='						</tr>';
+	str+='					</table>';
+	str+='				</div>';
+	str+='				<div id="candidateTrendzGraph_footer"></div>';
+	str+='				</div>';
+	str+='			</td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>';
+	str+='			</td>';
+	str+='		</tr>';
+	str+='	</table>';
+	str+='	</div>';
+	str+='<div id="constituencyVotersInfoDiv_Footer"></div>';
+
+	if(elmt)
+		elmt.innerHTML = str;
+	
+	buildVotingTrendzData(obj);
+}
+
+function buildVotingTrendzData(obj)
+{	
+	constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO = obj.electionTrendzOverviewVO;
+
+	buildConstituencyVotingTrendzHeader(obj);
+	buildCenterConstituencyVotersInfoContent(obj.electionTrendzOverviewVO);	
+	buildConstituencyVotingTrendzGraph(obj.electionTrendzOverviewVO);	
+	buildCandidateVotingTrendzGraphData(obj.electionTrendzOverviewVO,"");
+	candidateVotingTrendzDatatable(obj.electionTrendzOverviewVO);
+}
+
+function buildCandidateVotingTrendzGraphData(obj,results)
+{	
+	var candidateTrendzGraphelmt_head = document.getElementById('candidateTrendzGraph_head');
+	var candidateTrendzGraphelmt_footer = document.getElementById('candidateTrendzGraph_footer');
+	var candidateTrendzGraphelmt = document.getElementById('candidateTrendzGraphDataDiv');
+
+	var data;
+	var localObj = constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO;
+	
+	
+	if(candidateTrendzGraphelmt_head && candidateTrendzGraphelmt_footer && candidateTrendzGraphelmt)
+	{
+		candidateTrendzGraphelmt_head.innerHTML = '';
+		candidateTrendzGraphelmt_footer.innerHTML = '';
+		candidateTrendzGraphelmt.innerHTML = '';
+	}
+	
+	if(results)
+		data = obj;
+	else
+		data = obj.wonCandidateResultTrendz;
+
+	candidateListSize = localObj.partyElectionTrendzVO.length;
+
+	var hStr = '';
+	hStr += '<font style="color:Tomato">'+data.candidateName+'</font> Voting Trendz';
+	hStr += ' ... ';
+	hStr += ' Total Votes Earned : <font style="color:Tomato">' +data.totalVotes + '</font>';
+	hStr += ' ... ';
+	hStr += ' Total Votes % : <font style="color:Tomato">' +data.totalVotesPercent+' %</font>';
+	hStr += ' ... ';
+	hStr += ' Result Status : <font style="color:Tomato">' +data.status + '</font>';
+	
+	if(candidateTrendzGraphelmt_head)
+		candidateTrendzGraphelmt_head.innerHTML=hStr;
+
+	var fStr = '';
+	fStr += '<table width="100%">';
+	fStr += '<tr>';
+	fStr += '<td align="left"><input type="button"  id="prevButton" value="Previous" onclick="showNextPreviousCandidateVotingTrendz(candidateIndex,\'previous\')"></td>';
+	fStr += '<td></td>';
+	fStr += '<td align="right"><input type="button" id="nextButton" value="Next" onclick="showNextPreviousCandidateVotingTrendz(candidateIndex,\'next\')"></td>';
+	fStr += '</tr>';
+	fStr += '</table>';
+
+
+	if(candidateTrendzGraphelmt_footer)
+		candidateTrendzGraphelmt_footer.innerHTML=fStr;
+
+	prevButtonElmt = document.getElementById("prevButton");
+	nextButtonElmt = document.getElementById("nextButton");
+	
+	if(candidateIndex!=1)
+		prevButtonElmt.disabled = false;
+	else
+		prevButtonElmt.disabled = true;
+
+	if(candidateListSize>1 && candidateIndex!=candidateListSize)
+		nextButtonElmt.disabled = false;
+	else
+		nextButtonElmt.disabled = true;
+	
 	
 
-	/*	Assembly Candidate Info
-		-------------------------
-	*/
-	<c:if test="${candidateDetailsForConstituency.assemblyCandidateInfo != null}">
-	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
-	var candidateObj={
-						constituencyId : '${cInfo.constituencyId}',
-						constituencyName : '<a href="constituencyPageAction.action?constituencyId=${cInfo.constituencyId}"> ${cInfo.constituencyName}</a>',
-						constituencyType:'${cInfo.constituencyType}',
-						deformDate:'${cInfo.deformDate}',
-						candidateId : '${cInfo.candidateId}',
-						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
-						partyId:' ${cInfo.partyId}',
-						party : '${cInfo.party}',
-						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>',
-						knowMore:'<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\'${cInfo.constituencyId}\',\'${cInfo.constituencyType}\',\'${cInfo.latestElecYear}\')">view results</a>'
-					 };		
+	var str = '';
+	str+='<div class="CandidateResultsInfoHeading_head">MALE</div>';
+	str+='<div class="CandidateResultsInfoHeading_body">';
+	str+='<div>M Votes Earned                      : <font style="color:#CA6666">'+data.maleVotes+' ('+data.maleVotesPercent+ ' %)</font> </div>';
+	str+='<div>M Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallMaleVotesPercent+'%</font> </div>';
+    str+='<div>Total M Votes %  In Constituency    : <font style="color:MediumPurple">'+data.maleVotesPercentInConstiVotes+ ' % </font></div>';
+
+	str+='<div class="CandidateResultsInfoHeading_head">FEMALE</div>';
+	str+=' <div class="CandidateResultsInfoHeading_body">';
+	str+=' <div>F Votes Earned                     : <font style="color:#CA6666">'+data.femaleVotes+' ('+data.femaleVotesPercent+ ' %)</font> </div>';
+	str+='<div>F Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallFemaleVotesPercent+'%</font> </div>';
+	str+='<div>Total F Votes %  In Constituency    : <font style="color:MediumPurple">'+data.femaleVotesPercentInConstiVotes+ ' % </font></div>';
+
+	str+='<div class="CandidateResultsInfoHeading_head">MALE/FEMALE</div>';
+	str+=' <div class="CandidateResultsInfoHeading_body">';
+	str+=' <div>M/F Votes Earned                     : <font style="color:#CA6666">'+data.maleAndFemaleVotes+' ('+data.maleAndFemaleVotesPercent+ ' %) </font></div>';
+	str+='<div>M/F Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallMaleOrFemaleVotesPercent+'%</font> </div>';
+	str+='<div>Total M/F Votes %  In Constituency    : <font style="color:MediumPurple">'+data.maleOrFemaleVotesPercentInConstiVotes+ ' % </font></div>';
+
+
+	if(candidateTrendzGraphelmt)
+		candidateTrendzGraphelmt.innerHTML = str;
 	
-	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
-	</c:forEach>
-	</c:if>
+	if(results)
+	{		
+		var imgChart1 = document.getElementById("candVotingTrendz");
+		var imgChart2 = document.getElementById("candOverallVotesPercent");
+		
+		imgChart1.src = 'charts/'+results.candOverallVotesPercent;
+		imgChart2.src = 'charts/'+results.candVotingTrendz;
+
+		
+	}
+	else
+	{		
+		var graph1Elmt = document.getElementById("candidateVotingGraph1");
+		var graph2Elmt = document.getElementById("candidateVotingGraph2");
+
+		
+		graph2Elmt.innerHTML='<div >% Votes Gained By Candidate In Total Constituency ...</div><IMG id="candVotingTrendz" SRC="charts/'+obj.electionTrendzCharts.candOverallVotesPercent+'"/>';
+		graph1Elmt.innerHTML='<div > Male,Female,M/F Votes % In Candidate Gained Votes ... </div><IMG id="candOverallVotesPercent" SRC="charts/'+obj.electionTrendzCharts.candVotingTrendz+'"/>';
+	}
+}
+
+function buildConstituencyVotingTrendzHeader(obj)
+{
+	var headElmt = document.getElementById("constituencyVotersInfoDiv_Head");
 	
+	var str = '';
+	str += '<div id="constituencyTrendzHead">'+obj.constituencyName +' Voting Trendz For The Year '+obj.electionYear+'</div>';
+
+	if(headElmt)
+		headElmt.innerHTML = str;
+}	
+
+function buildCenterConstituencyVotersInfoContent(obj)
+{		
+	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
+	var  votersGraphElmt = document.getElementById('constituencyVotersInfoDiv_Body_votersGraph');		
+
+	var str = '';
+	str+='<table class="constituencyInfoTable" width="100%">';
 	
-	/*	Parliament Candidate Info
-		-------------------------
-	*/
-	<c:if test="${candidateDetailsForConstituency.parliamentCandidateInfo != null}">
-	var pmtObj = {
-					constituencyId : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}',
-					constituencyName :  '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',									
-					constituencyType:'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}',
-					deformDate:'${candidateDetailsForConstituency.parliamentCandidateInfo.deformDate}',
-					candidateId : '${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}',
-					candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"> ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a>',		
-					partyId:' ${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}',
-					party : '${candidateDetailsForConstituency.parliamentCandidateInfo.party}',
-					partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/>',
-					knowMore:'<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}\')">view results</a>'
-				 };		
-	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
-	</c:if>
-	//constituencyName : '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}&electionType=${constituencyDetails.constituencyType}&delimitation=${constituencyDetails.deformDate}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',
-
-	/*	Constituency problems Info
-		-------------------------
-	*/
+	str+='<tr>';
+	str+='<th colspan="5"> Constituency Voting Info</th>';
+	str+='</tr>';
 	
-	<c:forEach var="problem" items="${problemBean}">	
-	var problemObj={
-						problemId:'${problem.problemId}',
-						problem:'${problem.problem}',
-						description:'${problem.description}',
-						state:'${problem.state}',
-						district:'${problem.district}',
-						constituency:'${problem.constituency}',
-						tehsil:'${problem.tehsil}',
-						village:'${problem.village}',
-						hamlet:'${problem.hamlet}',
-						reportedDate:'${problem.postedDate}',
-						existingFrom:'${problem.existingFrom}',
-						name:'${problem.name}',
-						postedPersonName:'${problem.postedPersonName}',
-						email:'${problem.email}',						
-						phone:'${problem.phone}',
-						mobile:'${problem.mobile}',
-						address:'${problem.address}',
-						problemLocationId:'${problem.problemLocationId}',
-					};
-		
-	constituencyPageMainObj.problemsInfo.push(problemObj);
-	</c:forEach>
+	str+='<tr>';
+	str+='<th></th>';
+	str+='<th>Voters</th>';
+	str+='<th>Polled Votes</th>';
+	str+='<th>Polling % </th>';
+	str+='</tr>';
 
-	/*
-		Voting Trendz Info 
-		------------------
-	*/	
+	str+='<tr>';
+	str+='<th>Male</th>';
+	str+='<td>'+obj.maleVoters+'</td>';
+	str+='<td>'+obj.malePolledVotes+'<font style="color:Tomato"> ( '+obj.malePolledPercentInTotalPolled+' % )</font></td>';
+	str+='<td>'+obj.malePollingPercent+'</td>';
+	str+='</tr>';
 
-		var vTObj = constituencyPageMainObj.electionTrendzReportVO;
+	str+='<tr>';
+	str+='<th>Female</th>';
+	str+='<td>'+obj.femaleVoters+'</td>';
+	str+='<td>'+obj.femalePolledVotes+'<font style="color:Tomato"> ( '+obj.femalePolledPercentInTotalPolled+' % )</font></td>';
+	str+='<td>'+obj.femalePollingPercent+'</td>';
+	str+='</tr>';
 
-		vTObj.state = '${electionTrendzReportVO.state}';
-		vTObj.electionType = '${electionTrendzReportVO.electionType}';
-		vTObj.electionYear = '${electionTrendzReportVO.electionYear}';
-		vTObj.constituencyId = '${electionTrendzReportVO.constituencyId}';
-		vTObj.constituencyName = '${electionTrendzReportVO.constituencyName}';
-				
+	str+='<tr>';
+	str+='<th>Male/Female</th>';
+	str+='<td>'+obj.maleAndFemaleVoters+'</td>';
+	str+='<td>'+obj.maleAndFemalePolledVotes+'<font style="color:Tomato"> ( '+obj.maleOrFemalePolledPercentInTotalPolled+' % )</font></td>';
+	str+='<td>'+obj.maleAndFemalePollingPercent+'</td>';
+	str+='</tr>';
 
-		vTObj.electionTrendzOverviewVO.totalVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.totalVoters}';
-		vTObj.electionTrendzOverviewVO.maleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVoters}';
-		vTObj.electionTrendzOverviewVO.femaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVoters}';
-		vTObj.electionTrendzOverviewVO.maleAndFemaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemaleVoters}';	
-		
-		vTObj.electionTrendzOverviewVO.totalPolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.totalPolledVotes}';
-		vTObj.electionTrendzOverviewVO.malePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.malePolledVotes}';
-		vTObj.electionTrendzOverviewVO.femalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePolledVotes}';
-		vTObj.electionTrendzOverviewVO.maleAndFemalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePolledVotes}';
+	str+='<tr>';
+	str+='<th>Total</th>';
+	str+='<td>'+obj.totalVoters+'</td>';
+	str+='<td>'+obj.totalPolledVotes+'<font style="color:Tomato"> ( 100 % )</font></td>';
+	str+='<td>'+obj.pollingPercent+'</td>';
+	str+='</tr>';
 
-		vTObj.electionTrendzOverviewVO.pollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.pollingPercent}';
-		vTObj.electionTrendzOverviewVO.malePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercent}';
-		vTObj.electionTrendzOverviewVO.femalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercent}';
-		vTObj.electionTrendzOverviewVO.maleAndFemalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePollingPercent}';
-		
-		vTObj.electionTrendzOverviewVO.maleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersPercent}';
-		vTObj.electionTrendzOverviewVO.femaleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersPercent}';
-		vTObj.electionTrendzOverviewVO.maleOrFemaleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleOrFemaleVotersPercent}';
+	str+='</table>';
 
-		vTObj.electionTrendzOverviewVO.overallMalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMalePollPercent}';
-		vTObj.electionTrendzOverviewVO.overallFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallFemalePollPercent}';
-		vTObj.electionTrendzOverviewVO.overallMaleOrFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMaleOrFemalePollPercent}';
-				
-		vTObj.electionTrendzOverviewVO.maleVotersInConstituency = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersInConstituency}';
-		vTObj.electionTrendzOverviewVO.femaleVotersInConstituency = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersInConstituency}';
+	if(votersElmt)
+		votersElmt.innerHTML=str;
 
-		vTObj.electionTrendzOverviewVO.maleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersPercentInConsti}';
-		vTObj.electionTrendzOverviewVO.femaleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersPercentInConsti}';
 
-		vTObj.electionTrendzOverviewVO.malePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercentInTotalPolledVotes}';
-		vTObj.electionTrendzOverviewVO.femalePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercentInTotalPolledVotes}';
-		vTObj.electionTrendzOverviewVO.maleOrFemalePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.maleOrFemalePollingPercentInTotalPolledVotes}';
+	/*var gStr = '';
+	gStr+='<IMG id="pollingDetailsChartImg" SRC="charts/'+obj.electionTrendzCharts.pollingDetailsChart+'"/>';
 	
-		
-		vTObj.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart}';
-		vTObj.electionTrendzOverviewVO.electionTrendzCharts.votingTrendzMainChart = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.votingTrendzMainChart}';
-		vTObj.electionTrendzOverviewVO.electionTrendzCharts.candOverallVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.candOverallVotesPercent}';
-		vTObj.electionTrendzOverviewVO.electionTrendzCharts.candVotingTrendz = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.candVotingTrendz}';
+	if(votersGraphElmt)
+		votersGraphElmt.innerHTML = gStr;*/
+}	
 
-
-		<c:forEach var="candidate" items="${electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO}">	
-			var cObj = {
-							partyId:'${candidate.partyId}',
-							partyName:'${candidate.partyName}',
-							partyLogo:'${candidate.partyLogo}',
-							partyFlag:'${candidate.partyFlag}',
-							candidateId:'${candidate.candidateId}',
-							candidateName:'${candidate.candidateName}',							
-							validVotes:'${candidate.validVotes}',
-							totalVotes:'${candidate.totalVotes}',
-							maleVotes:'${candidate.maleVotes}',
-							femaleVotes:'${candidate.femaleVotes}',
-							maleAndFemaleVotes:'${candidate.maleAndFemaleVotes}',
-							totalVotesPercent:'${candidate.totalVotesPercent}',
-							maleVotesPercent:'${candidate.maleVotesPercent}',
-							femaleVotesPercent:'${candidate.femaleVotesPercent}',
-							maleAndFemaleVotesPercent:'${candidate.maleAndFemaleVotesPercent}',
-							rank:'${candidate.rank}',
-							overallMaleVotesPercent : '${candidate.overallMaleVotesPercent}',
-							overallFemaleVotesPercent : '${candidate.overallFemaleVotesPercent}',
-							overallMaleOrFemaleVotesPercent : '${candidate.overallMaleOrFemaleVotesPercent}',						
-							maleVotesPercentInConstiVotes:'${candidate.maleVotesPercentInConstiVotes}',
-							femaleVotesPercentInConstiVotes:'${candidate.femaleVotesPercentInConstiVotes}',
-							maleOrFemaleVotesPercentInConstiVotes:'${candidate.maleOrFemaleVotesPercentInConstiVotes}',
-							status:'${candidate.status}'
-					   };
-					  vTObj.electionTrendzOverviewVO.partyElectionTrendzVO.push(cObj);
-		</c:forEach>
-		
-		
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.candidateName = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.candidateName}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.partyName = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.partyName}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallFemaleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleOrFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleOrFemaleVotesPercent}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.status = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.status}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercentInConstiVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercentInConstiVotes}';
-		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleOrFemaleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleOrFemaleVotesPercentInConstiVotes}';
-
-		
-		<c:forEach var="asmElection" items="${electionTrendzReportVO.prevElectionYearsInfo.assemblyElections}">	
-			var assemblyElecObj={
-									electionId:'${asmElection.electionId}',
-									electionTypeId:'${asmElection.electionTypeId}',
-									electionType:'${asmElection.electionType}',
-									stateId:'${asmElection.stateId}',
-									state:'${asmElection.state}',
-									electionYear:'${asmElection.electionYear}' 
-								};
-
-			vTObj.previousElectionYears.assemblyElections.push(assemblyElecObj);
-		</c:forEach>
-
-		<c:forEach var="parElection" items="${electionTrendzReportVO.prevElectionYearsInfo.parliamentElections}">	
-			var parElecObj={
-									electionId:'${parElection.electionId}',
-									electionTypeId:'${parElection.electionTypeId}',
-									electionType:'${parElection.electionType}',
-									stateId:'${parElection.stateId}',
-									state:'${parElection.state}',
-									electionYear:'${parElection.electionYear}'
-								};
-
-			vTObj.previousElectionYears.parliamentElections.push(parElecObj);
-		</c:forEach>
-
-		<c:forEach var="zptcElectionYears"  items="${zptcElectionYears}" >
-		var ob={
-					id:'${zptcElectionYears.id}',
-					value:'${zptcElectionYears.name}'
-				};
-		tehsilElections.zptcElectionYears.push(ob);	
-		</c:forEach>
-
-		<c:forEach var="mptcElectionYears"  items="${mptcElectionYears}" >
-		var ob={
-					id:'${mptcElectionYears.id}',
-					value:'${mptcElectionYears.name}'
-				};
-		tehsilElections.mptcElectionYears.push(ob);	
-		</c:forEach>
-		
-		<c:forEach var="candidate" items="${userDetails.candidateVO}">	
-			var userObj={
-								id:'${candidate.id}',
-								candidateName:'${candidate.candidateName}',
-								status:'${candidate.status}',
-								constituencyName:'${candidate.constituencyName}'
-							};
-				
-			constituencyConnectedPeople.push(userObj);
-		</c:forEach>
-		<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
-			var obj =	{
-							id:'${status.id}',
-							name:'${status.name}'
-						};
-			connectStatus.push(obj);
-		</c:forEach>
-		
-		userLoginStatus = '${userDetails.loginStatus}';
-		userId = '${userDetails.userId}';
+function buildConstituencyVotingTrendzGraph(obj)
+{	
 	
-	getAllZptcYears();	  
-	getAllMptcYears();
-	initializeConstituencyPage();
-	getConstituencyElections();
-	getMunicipalityResults();
-	getCoroporationResults();
-	getGreaterResults();
+	var elmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
 	
-</script>
-</body>
-</html>
+	if(elmt)
+		elmt.innerHTML = '<IMG id="votingTrendzChartImg" SRC="charts/'+obj.electionTrendzCharts.votingTrendzMainChart+'"/>';
+
+	/*var imgElmt = document.getElementById("votingTrendzChartImg");
+	imgElmt.src = 'charts/'+obj.electionTrendzCharts.votingTrendzMainChart;	*/
+}
+
+
+function candidateVotingTrendzDatatable(obj)
+{
+	
+	var candidateTrendzArr = obj.partyElectionTrendzVO;
+	 var myDataSource = new YAHOO.util.DataSource(candidateTrendzArr); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},							
+							{	key : "partyName"},																		
+							{	key : "totalVotes",parser:"number"},							
+							{	key : "maleVotes",parser:"number"},
+							{	key : "femaleVotes",parser:"number"},
+							{	key : "maleAndFemaleVotes",parser:"number"},
+							{	key : "totalVotesPercent",parser:"number"},
+							{	key : "maleVotesPercent",parser:"number"},
+							{	key : "femaleVotesPercent",parser:"number"},
+							{	key : "maleAndFemaleVotesPercent",parser:"number"},
+							{	key : "status"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Name', sortable:true}, 
+				{key:"partyName", label:'Party', sortable:true}, 							
+				{key:"totalVotes", label:'Total Votes', sortable:true},
+				{key:"maleVotes", label:'Votes(M)', sortable:true},
+				{key:"femaleVotes", label:'Votes(F)', sortable:true},
+				{key:"maleAndFemaleVotes", label:'Votes(M/F )', sortable:true},
+				{key:"totalVotesPercent", label:'Votes %', sortable:true},
+				{key:"maleVotesPercent", label:'M %', sortable:true},
+				{key:"femaleVotesPercent", label:'F %', sortable:true},
+				{key:"maleAndFemaleVotesPercent", label:'M/F %', sortable:true},
+				{key:"status", label:'status', sortable:true}
+			]; 
+		 
+
+	var captionStr = '';
+	captionStr += '<div width="100%">';
+	captionStr += '<span id="dataTableTitle">Candidate Voting Trendz</span>';
+	captionStr += '<span id="dataTableHead"> <Font color="Red">* </Font>M - Male , <Font color="Red">* </Font> F - Female </span>';
+	captionStr += '</div>';
+	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource,{caption:captionStr}); 
+
+}
+
+
+function buildelectionYearsForVotingTrendz(obj)
+{
+	
+
+	var elmt = document.getElementById('constituencyVotersInfoDiv_Navigation');
+
+	var str = '';
+	str+='<span>View Voting Trendz : </span>';
+	str+='<span>';
+	str+='<input type="radio" name="electionType" value="assembly" onclick="enableElectionYearSelect(this.value)">';
+	str+='<select id="assembly_YearSelect" disabled="disabled">';
+	str+='<option value="0">Assembly</option>';
+	for(var i in obj.assemblyElections)
+		str+='<option value="'+obj.assemblyElections[i].electionId+'_'+obj.assemblyElections[i].electionTypeId+'">'+obj.assemblyElections[i].electionYear+'</option>';
+	str+='</select>';
+	str+='</input>';
+	str+='</span>';
+
+	str+='<span>';
+	str+='<input type="radio" name="electionType" value="parliament" onclick="enableElectionYearSelect(this.value)"/>';
+	str+='<select id="parliament_YearSelect" disabled="disabled">';
+	str+='<option value="0">Parliament</option>';
+	for(var i in obj.parliamentElections)
+		str+='<option value="'+obj.parliamentElections[i].electionId+'_'+obj.parliamentElections[i].electionTypeId+'">'+obj.parliamentElections[i].electionYear+'</option>';
+	str+='</select>';
+	str+='</span>';
+
+	str+='<span>';
+	str+='<input type="button" value="View" onclick="getVotingTrendzForyear()">';
+	str+='</span>';
+	if(elmt)
+		elmt.innerHTML = str;
+				  
+}
+
+function enableElectionYearSelect(value)
+{
+	var asmbSelectElmt = document.getElementById("assembly_YearSelect");
+	var parSelectElmt = document.getElementById("parliament_YearSelect");
+
+	if(value=="assembly")
+	{
+		asmbSelectElmt.disabled = false;
+		parSelectElmt.disabled = true;
+	}
+	else if(value=="parliament")
+	{
+		asmbSelectElmt.disabled = true;
+		parSelectElmt.disabled = false;
+	}
+}
+
+function buildVotingTrendzInPopUp()
+{
+	var headElmt = document.getElementById('votingTrendzDiv_Head');
+	var bodyElmt = document.getElementById('votingTrendzDiv_Body');
+	
+	var str='';
+	str+='<fieldset id="votingTrendzFieldSet">';
+	str+='<legend> View Voting Trendz </legend>';
+	str+='<div id="votingTrendzContentDiv_main" class="votingTrendzContentDivClass">';	
+	str+='<div id="votingTrendzContentDiv">View '+constituencyPageMainObj.constituencyInfo.constituencyName+' complete male and female voting trendz.</div>';
+	str+='<div id="votingTrendzButtonDiv"><input type="button" id="votingTrendzButton" value = "View" onclick="viewVotingTrendzPopup()"/></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+
+	var postButton = new YAHOO.widget.Button("votingTrendzButton");
+	postButton.on("click", viewVotingTrendzPopup); 
+}
+
+function viewVotingTrendzPopup()
+{	
+	var popup1 = window.open("jsp/votingTrendzPopup.jsp","popup1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	popup1.focus();
+	//popup1.electionTrendzReportVO = constituencyPageMainObj.electionTrendzReportVO;
+}
+function hideZptcDiv(){
+	var imgElmt = document.getElementById("zptcPartyTrendsDetailsDiv");
+	var electionDetails="";
+	electionDetails +="<br/>";
+	electionDetails +="<b>Zptc Data is not available.</b>";			
+	imgElmt.innerHTML = electionDetails;		
+
+	 var candLink = document.getElementById("zptcCandidateLink");
+	 var candidateLink="";
+	 candLink.innerHTML = candidateLink;
+}
+function hideMptcDiv(){
+	var imgElmt = document.getElementById("mptcPartyTrendsDetailsDiv");
+	var electionDetails="";
+	electionDetails +="<br/>";
+	electionDetails +="<b>Mptc Data is not available.</b>";			
+	imgElmt.innerHTML = electionDetails;
+
+	 var candLink = document.getElementById("mptcCandidateLink");
+	 var candidateLink="";
+	 candLink.innerHTML = candidateLink;
+}
+function hideMptcZptcDiv()
+{
+	var divElmt = document.getElementById("zptcMptcCompleteData");
+	divElmt.style.display = 'none';	
+}
+function buildZptcResults(results){
+	
+	assignToPartyDataArray = new Array();
+	var candLink = document.getElementById("zptcCandidateLink");
+	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+	candLink.innerHTML = linkRef;
+	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
+	for(var i in results)
+	{		
+		var problemObj=		
+		 {		
+				partyName:results[i].partyName,
+				participatedSeats:results[i].participatedSeats,
+				seatsWonByParty:results[i].seatsWonByParty,
+				percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+		 };
+		
+		assignToPartyDataArray.push(problemObj);
+		tehsilDetails.partyArray=assignToPartyDataArray;	
+	}
+
+	var zptcCount = document.getElementById("totalZptcCountResultDiv");
+	zptcCount.innerHTML ='';
+
+	
+	var totalZptcSeats='';
+	totalZptcSeats+="<b>"+results[0].totalSeats+"</b>";
+	zptcCount.innerHTML +=totalZptcSeats;
+
+	var emptyArr = new Array();
+    if(results.length == 0)
+	{	tehsilDetails.partyArray = emptyArr;				
+	}
+    initializeResultsTableForParty();
+}
+
+function buildMptcResults(results){
+	
+	assignToPartyDataArray = new Array();
+
+	var candLink = document.getElementById("mptcCandidateLink");
+	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+	candLink.innerHTML = linkRef;
+	  totalMptcSeats = results[0].totalSeats;
+	for(var i in results)
+	{		
+		var problemObj=		
+		 {		
+				partyName:results[i].partyName,
+				participatedSeats:results[i].participatedSeats,
+				seatsWonByParty:results[i].seatsWonByParty,
+				percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+		 };
+		
+		assignToPartyDataArray.push(problemObj);
+		tehsilDetails.partyMptcArray=assignToPartyDataArray;	
+	}
+
+	var mptcCount = document.getElementById("totalMptcCountResultDiv");
+	mptcCount.innerHTML='';
+	
+	var totalMptcSeats='';
+	totalMptcSeats+="<b>";
+	totalMptcSeats+=results[0].totalSeats;
+	totalMptcSeats+="</b>";
+	mptcCount.innerHTML +=totalMptcSeats;
+	
+	var emptyArr = new Array();
+    if(results.length == 0)
+	{	
+    	tehsilDetails.partyMptcArray = emptyArr;				
+	}
+    initializeMptcResultsTableForParty(); 
+}
+function initializeResultsTableForParty(){
+	var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
+	resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSourceForTehsil.responseSchema = {
+		fields : [ {
+			key : "partyName"
+		}, {
+			key : "participatedSeats"
+		}, {
+			key : "seatsWonByParty"
+		}, {
+			key : "percentageOfVotesWonByParty"
+		}]
+	};
+
+	var resultsColumnDefsForTehsil = [ {
+		key : "partyName",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "participatedSeats",
+		label : "Seats",
+		sortable : true
+	}, {
+		key : "seatsWonByParty",
+		label : "Won",
+		sortable : true
+	}, {
+		key : "percentageOfVotesWonByParty",
+		label : "Votes %",
+		sortable : true
+	} ];
+	if(tehsilDetails.partyArray.length >10)
+	{
+		var myConfigsForTehsil = {
+					paginator : new YAHOO.widget.Paginator({
+			        rowsPerPage: 10		  
+	    })
+		};
+	}		
+	myDataTableForParty = new YAHOO.widget.DataTable("zptcPartyTrendsDetailsDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+	 
+	return {
+		oDS:resultsDataSourceForTehsil, 
+		oDT:myDataTableForParty			
+	};  		
+}
+function initializeMptcResultsTableForParty(){
+	
+	var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyMptcArray);
+	resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSourceForTehsil.responseSchema = {
+		fields : [ {
+			key : "partyName"
+		}, {
+			key : "participatedSeats"
+		}, {
+			key : "seatsWonByParty"
+		}, {
+			key : "percentageOfVotesWonByParty"
+		}]
+	};
+
+	var resultsColumnDefsForTehsil = [ {
+		key : "partyName",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "participatedSeats",
+		label : "Seats",
+		sortable : true
+	}, {
+		key : "seatsWonByParty",
+		label : "Won",
+		sortable : true
+	}, {
+		key : "percentageOfVotesWonByParty",
+		label : "Votes %",
+		sortable : true
+	} ];
+	if(tehsilDetails.partyMptcArray.length >10)
+	{
+		var myConfigsForTehsil = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10 
+	    })
+		};
+	}		
+	myDataTableForMptcParty = new YAHOO.widget.DataTable("mptcPartyTrendsDetailsDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+
+	return {
+		oDS:resultsDataSourceForTehsil, 
+		oDT:myDataTableForMptcParty			
+	}; 		
+}
+function getAllZptcYears()
+{	 			
+	if(tehsilElections.zptcElectionYears.length!=0){
+		var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
+		var electionYearSelect="";
+		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp;</b>";
+		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="zptcYears" onchange="getZptcPartyDetails(this.options[this.selectedIndex].value)">';
+		for(var i in tehsilElections.zptcElectionYears)
+		{
+			electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
+		}
+		electionYearSelect+='</select>&nbsp;&nbsp;&nbsp;';
+		selectDiv.innerHTML = electionYearSelect;
+		getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
+	}
+}
+
+function getAllMptcYears()
+{
+	if(tehsilElections.mptcElectionYears.length!=0){
+		var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
+		var electionYearSelect="";
+		electionYearSelect+="<b>Select a Election Year :&nbsp;&nbsp;&nbsp; </b>";
+		electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="mptcYears" onchange="getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
+
+		for(var i in tehsilElections.zptcElectionYears)
+		{			   
+			electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
+		}
+		electionYearSelect+='</select>&nbsp;&nbsp;&nbsp;';
+		selectDiv.innerHTML = electionYearSelect;
+		getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+	}			  		
+}
+
+function getMunicipalityResults()
+{
+	var lebElmt = document.getElementById("municipalitySelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"municipalElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getMandalVotesShareDetailsChart(constId)
+{
+    var jsObj = {
+			constituencyId:constId,
+			task:"mandalVotesShareDetailsChart"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getMandalsVotesShareInConstituencyAjaxAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getAllPartiesAllElectionResultsChart(constId)
+{
+    var jsObj = {
+			constituencyId:constId,
+			task:"partiesPerformanceInDiffElectionsAjax"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getPartiesPerformanceInDiffElectionsAjax.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getCoroporationResults()
+{
+	var lebElmt = document.getElementById("corporationSelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"corporationElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getLocalBodyConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function getGreaterResults()
+{
+	var lebElmt = document.getElementById("greaterSelect");
+	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
+	
+	var jsObj = {
+			localBodyElectionId:lebElmtValue,
+			constituencyId:constituencyId,
+			task:"greaterElectionsInfo"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGreaterConstiResults.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function changeWardWiseResultsCriteria(type)
+{
+	var partySelectElmt = document.getElementById("wardWise_parties");
+	var wardSelectElmt = document.getElementById("wardWise_ward");
+	
+	if(type == "all")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'hidden';		
+		getWardWiseElectionResults('all',0);
+	}
+	else if(type == "partyWise")
+	{
+		wardSelectElmt.style.visibility = 'hidden';
+		partySelectElmt.style.visibility = 'visible'			
+	}
+	else if(type == "wardWise")
+	{
+		partySelectElmt.style.visibility = 'hidden';
+		wardSelectElmt.style.visibility = 'visible'			
+	}
+}
+
+function getWardWiseElectionResults(type,value)
+{	
+	var jsObj=
+	{		
+		type:type,
+		value:value,
+		constituencyId:constituencyId,
+		task:"getGhmcResultsBasedOnSelection"					
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getGhmcResultsAction.action?"+rparam;						
+	
+	callAjax(jsObj,url);
+}
+
+function initializeConstituencyPage()
+{	    
+	buildConstituencyInfo();
+	buildConstituencyConnectPeopleWindow();
+	buildProblemPostingWindow();
+	buildProblemViewingWindow();
+	buildVotingTrendzInPopUp();
+	buildElectionResults();	
+	buildCenterVotersCandidateInfoContent();
+	showCurrentlyElectedCandidate();
+    if(constituencyPageMainObj.forwardTask != null)
+	{
+		if(constituencyPageMainObj.forwardTask != "")
+		{
+          openAddNewProblemWindow();
+		}
+	}
+	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+
+	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
+    buildRightlayoutMap();
+	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
+	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
+	
+}
