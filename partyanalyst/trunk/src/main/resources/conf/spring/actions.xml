@@ -155,6 +155,8 @@
 	
 	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		
 	</bean>
 	<bean id="cadreRegisterPageAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterPageAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
