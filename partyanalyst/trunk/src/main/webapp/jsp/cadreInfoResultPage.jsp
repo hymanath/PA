@@ -163,7 +163,7 @@ function buildCadreInfo(jsObj,results)
 
 	var str = '';
 	str += '<div id="cadreInfo_head">';
-	str += results.firstName+"Complete Profile";
+	str += results.firstName+" "+results.lastName+" "+"Complete Profile";
 	str += '</div>';
 	str += '<div id="cadreInfo_body">';
 	str += '	<fieldset>';
