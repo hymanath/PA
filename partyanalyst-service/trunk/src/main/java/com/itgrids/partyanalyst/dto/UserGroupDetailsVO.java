@@ -23,6 +23,7 @@ public class UserGroupDetailsVO  implements Serializable {
 	private List<UserGroupDetailsVO> userSubGroups;
 	private Long myGroupId;
 	private ResultStatus rs;
+	private String locationInfo;
 	
 	public Long getGroupId() {
 		return groupId;
@@ -126,5 +127,11 @@ public class UserGroupDetailsVO  implements Serializable {
 	}
 	public ResultStatus getRs() {
 		return rs;
+	}
+	public String getLocationInfo() {
+		return locationInfo;
+	}
+	public void setLocationInfo(String locationInfo) {
+		this.locationInfo = locationInfo;
 	}	
 }
