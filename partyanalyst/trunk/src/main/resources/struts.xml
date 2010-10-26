@@ -401,6 +401,19 @@
 		<action name="cadresInfoAjaxAction" class="cadresInfoAjaxAction">
 			<result type="json" name="success"/>
 		</action>
+		
+		<action name="cadreInfoAjaxAction" class="cadresInfoAjaxAction" method="getCadreRegionLevelInfo">
+			<result type="json" name="success" >
+			  <param name="root">cadreDetailsInfoVO</param>
+			</result>
+		</action>
+		
+		<action name="cadreDetailsByRegionAction" class="cadresInfoAjaxAction" method="getZeroLevelCadre">
+			<result type="json" name="success" >
+			  <param name="root">cadreDetailsInfoVO</param>
+			</result>
+		</action>
+			
 		<action name="cadreRegisterPageAction" class="cadreRegisterPageAction">
 			<result name="success">/jsp/newCadrePage.jsp</result>			
 		</action>
