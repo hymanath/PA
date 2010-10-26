@@ -481,7 +481,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			constituencyDetails.setStartDate(constituency.getStartDate());
 			constituencyDetails.setDeformDate(constituency.getDeformDate());
 			constituencyDetails.setConstituencyType(constituency.getElectionScope().getElectionType().getElectionType());
-			
+			constituencyDetails.setArea_type(constituency.getAreaType());
 			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType) && 
 					(constituency.getStartDate()== null || StringUtils.isBlank(constituency.getStartDate().toString())) && 
 					(constituency.getDeformDate() == null || StringUtils.isBlank(constituency.getDeformDate().toString())))
