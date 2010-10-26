@@ -24,4 +24,16 @@ public interface IStaticUserGroupDAO extends GenericDao<StaticUserGroup ,Long> {
 	
 	@SuppressWarnings("unchecked")
 	public List getGroupMembersMobileNumbers(Long groupId);
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAGroup(Long groupId);
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAGroupCatgory(Long groupCategoryId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId, Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId, Long userId, Long groupCategoryId);
 }
