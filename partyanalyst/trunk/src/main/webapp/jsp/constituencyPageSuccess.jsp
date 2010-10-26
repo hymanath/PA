@@ -1079,9 +1079,9 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 																   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 																   		<td><div id="zptcCandidateLink"></div></td>
 															   		</tr></table>
-															   </td></tr><tr><br></tr>
+															   </td></tr><tr><br></tr><tr><br></tr>
 														   <tr>
-															   <td><div id="zptcPartyTrendsDetailsDiv"></div></td>
+															   <td><div id="zptcPartyTrendsDetailsDiv" style="margin-top: 13px;"></div></td>
 													</tr></table>
 											</td></tr>
 										</table>	
@@ -1113,9 +1113,9 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 																   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 																   		<td><div id="mptcCandidateLink"></div></td>
 															   		</tr></table>
-															   </td></tr><tr><br></tr>
+															   </td></tr><tr><br></tr><tr><br></tr>
 														   <tr>
-															   <td> <div id="mptcPartyTrendsDetailsDiv"></div></td>
+															   <td> <div id="mptcPartyTrendsDetailsDiv" style="margin-top: 13px;" ></div></td>
 													</tr></table>
 											</td></tr>
 										</table>	
