@@ -532,7 +532,16 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
-		}		
+		} else if(windowTask.equals(IConstants.UPDATE_EXISTING))
+		{
+			session.setAttribute(ISessionConstants.STATES, stateList_o);
+			session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.DISTRICTS_C, districtList_c);
+			session.setAttribute(ISessionConstants.CONSTITUENCIES_C,new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
+			session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+			
+		}
 		socialStatus = staticDataService.getAllSocialCategories(); 
 		eduStatus = staticDataService.getAllEducationalQualifications();
 		occupationsList = staticDataService.getAllOccupations();
