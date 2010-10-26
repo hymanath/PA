@@ -569,7 +569,7 @@
 </style>
 </head>
 <body class="bodyStyle" onunload="loadOnUnload()">
-<s:form action="cadreRegisterAction" method="GET" theme="simple">
+<s:form action="cadreRegisterAction" method="POST" theme="simple">
 	<CENTER>
 		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
@@ -717,7 +717,7 @@
 				</td>
 				<td width="165px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select>				 
+					<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','villageField','currentAdd')"></s:select>				 
 				</td>
 			</tr>
 			<tr>
