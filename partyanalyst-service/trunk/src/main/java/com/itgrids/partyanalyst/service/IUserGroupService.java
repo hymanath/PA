@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
+import com.itgrids.partyanalyst.dto.UserGroupMembersInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 
 public interface IUserGroupService {
@@ -45,5 +46,10 @@ public interface IUserGroupService {
     public boolean checkForAvailability(Long userId, String groupName);
     public boolean checkForExistingGroupMemeberByName(Long groupId, String memberName);
    
+    public Boolean checkForGroupMembersAvailability(Long userId,Long groupId);
+    public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAGroup(Long groupId);
+    public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAGroupCatgory(Long groupCategoryId,Long userId);
+    public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId,Long userId);
+    public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(Long designationId,Long userId,Long groupCategoryId);
     
  }
