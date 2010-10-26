@@ -433,6 +433,7 @@
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
     	<property name="electionDAO" ref="electionDAO" />
+    	<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
 	</bean>
 	<bean name="mptcElectionService" class="com.itgrids.partyanalyst.service.impl.MptcElectionService" >		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
