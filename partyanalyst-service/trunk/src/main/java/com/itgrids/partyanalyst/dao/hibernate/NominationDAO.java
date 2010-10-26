@@ -351,6 +351,21 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List getParliamentCandidateNPartyInfo(Long constituencyId,String electionType,Long rank,String elecSubType)
+	{
+		Object[] params = {constituencyId, rank, electionType,elecSubType};
+		
+		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
+				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
+				"model.candidate.middlename,model.candidate.lastname,model.party.partyId,model.party.shortName, " +
+				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
+				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.candidateResult.rank = ? and " +
+				"model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where nModel.electionScope.electionType.electionType = ? and nModel.elecSubtype = ?)",params);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndPartyId(Long electionId,Long partyId){
 		   Object[] params={electionId,partyId};
 		   return getHibernateTemplate().find("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.party.partyId = ?",params);
@@ -1734,6 +1749,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		sb.append(" model.constituencyElection.constituency.constituencyId in ("+constituencyIds+")");
 		return getHibernateTemplate().find(sb.toString());
 		
+	}
+	@SuppressWarnings("unchecked")
+	public List checkForResultsAvailabilityForAnElection(Long electionId) {
+		return getHibernateTemplate().find("select count(model.nominationId) from Nomination model where model.constituencyElection.election.electionId = ?",electionId);
 	}
 	
 }
