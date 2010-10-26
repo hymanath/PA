@@ -132,7 +132,7 @@
 								nodeLabel:val,
 								nodeType:type
 							};
-				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+val+"&cadreId="+id+"&cadreType="+type; 
+				var cadreUrl = "<%=request.getContextPath()%>/cadreDetailsByRegionAction.action?cadreRegion="+val+"&cadreId="+id+"&cadreType="+type; 
 				
 
 				callAjax(jsObj,cadreUrl);
@@ -150,7 +150,7 @@
 								task:"totalcadres"
 							};
 
-				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id+"&cadreType="+node.data.type; 
+				var cadreUrl = "<%=request.getContextPath()%>/cadreInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id+"&cadreType="+node.data.type; 
 		 		
 
 				var callback = {			
