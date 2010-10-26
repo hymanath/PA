@@ -877,9 +877,25 @@ public class StaticDataService implements IStaticDataService {
 		Set<Long> parliamentConstituencies = new HashSet<Long>();
 		try{
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo()...started started..");
-			Long electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(
-					IConstants.ASSEMBLY_ELECTION_TYPE, districtDAO.get(districtId).getState().getStateId())
+			Long electionYear = 0L;
+			Long count = 0L;
+			Long stateId = districtDAO.get(districtId).getState().getStateId();
+			// Check for Bye Election
+			/*Election election = electionDAO.getRecentElectionHappendForAnElectionType(IConstants.ASSEMBLY_ELECTION_TYPE,stateId).get(0);
+			if(election.getElecSubtype().equalsIgnoreCase("BYE")){
+				List resultsCount = nominationDAO.checkForResultsAvailabilityForAnElection(election.getElectionId());
+				Object value = (Object)resultsCount.get(0);
+				count = (Long)value;
+			}
+			
+			if(count > 0L)
+				electionYear = Long.parseLong(election.getElectionYear());
+			else{*/
+			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(
+					IConstants.ASSEMBLY_ELECTION_TYPE, stateId,"MAIN")
 					.get(0).toString()) ;
+			
+			
 			Long rank = 1l;
 			getAllParliamentWinningCandidatesForADistrict(districtId, parliamentConstituencies);
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
@@ -2056,6 +2072,7 @@ public class StaticDataService implements IStaticDataService {
 	 * 
 	 * This method retrieves all the MP's present in the district for the latest election year.
 	 */
+	@SuppressWarnings("unchecked")
 	public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId,
 			Set<Long> parliamentConstituencies){
 		CandidateDetailsVO candidateVo= new CandidateDetailsVO();
@@ -2064,7 +2081,7 @@ public class StaticDataService implements IStaticDataService {
 		log.info("Making nominationDAO.getParliamentCandidateNPartyInfoForADistrict() DAO call");
 		Iterator<Long> iterator = parliamentConstituencies.iterator();
 		while(iterator.hasNext()){
-			List list = nominationDAO.getParliamentCandidateNPartyInfo(Long.parseLong(iterator.next().toString()),IConstants.PARLIAMENT_ELECTION_TYPE,1L);	
+			List list = nominationDAO.getParliamentCandidateNPartyInfo(Long.parseLong(iterator.next().toString()),IConstants.PARLIAMENT_ELECTION_TYPE,1L,"MAIN");	
 			for(int i=0;i<list.size();i++){
 				 CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();							
 				 Object[] parms = (Object[])list.get(i);
