@@ -1055,7 +1055,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 			<div class="corner bottomRight"></div>
 				<table>
 						<tr>
-							<td style="vertical-align:top;">
+							<td align="center" valign="center">
 								<div id="zptc_main">
 									<div id="zptc_head">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1079,7 +1079,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 																   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 																   		<td><div id="zptcCandidateLink"></div></td>
 															   		</tr></table>
-															   </td></tr>
+															   </td></tr><tr><br></tr>
 														   <tr>
 															   <td><div id="zptcPartyTrendsDetailsDiv"></div></td>
 													</tr></table>
@@ -1089,7 +1089,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 								</div>
 							</td>			
 							
-							<td style="vertical-align:top;">
+							<td align="center"  valign="center">
 								<div id="mptc_main">
 									<div id="mptc_head">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1113,7 +1113,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 																   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 																   		<td><div id="mptcCandidateLink"></div></td>
 															   		</tr></table>
-															   </td></tr>
+															   </td></tr><tr><br></tr>
 														   <tr>
 															   <td> <div id="mptcPartyTrendsDetailsDiv"></div></td>
 													</tr></table>
@@ -1237,7 +1237,7 @@ function buildCorpOrMunicipTable(divId, myResults, elecType){
 	var str = '';
 	for(var i in myResults.muncipalityVO){
 		str += '<div  class="localBodyHeadStyle">';
-		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">'+myResults.muncipalityVO[i].muncipalityName+'</a> '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</div>';
+		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.muncipalityVO[i].stateId+'&localBodyElectionTypeId='+myResults.muncipalityVO[i].electionTypeId+'&localBodyId='+myResults.muncipalityVO[i].muncipalityId+'\">Detailed View of '+myResults.muncipalityVO[i].muncipalityName+' Election Results '+elecType+' In '+myResults.muncipalityVO[i].latestMuncipalElectionYear+'</a></div>';
 		str += '<table><tr>';
 		str += '<td><div id=\"'+elecType+'TableDiv_'+i+'\"></div></td>';
 		str += '<td><div><img src=\"charts\\'+myResults.muncipalityVO[i].chartName+'\"></div></td>';
