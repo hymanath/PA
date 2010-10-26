@@ -167,7 +167,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFirstName(String firstName) {
 		this.cadreInfo.setFirstName(firstName);
 	}
@@ -176,7 +176,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getMiddleName(); 
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
 	public void setMiddleName(String middleName) {
 		this.cadreInfo.setMiddleName(middleName);
 	}
@@ -186,7 +186,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
 	public void setLastName(String lastName) {
 		this.cadreInfo.setLastName(lastName);
 	}
@@ -196,7 +196,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse Name is Mandatory", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
 	}
