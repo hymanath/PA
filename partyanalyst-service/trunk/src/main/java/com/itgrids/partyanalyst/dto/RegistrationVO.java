@@ -54,35 +54,39 @@ public class RegistrationVO extends BaseDTO{
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
+	
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	
 	public Long getRegistrationID() {
 		return registrationID;
 	}
+	
 	public void setRegistrationID(Long registrationID) {
 		this.registrationID = registrationID;
 	}
+	
 	public RegistrationVO() {
 		
-  	 } 
-	 public String getFirstName() {
+  	} 
+	
+	public String getFirstName() {
 		return firstName;
 	}
-
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
-
 	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getState() {
 		return state;
 	}
