@@ -80,8 +80,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeStateWise(Long userID){
-		List  results = getHibernateTemplate().find("Select model.state.stateId, count(model.state)from Cadre model " +
-				"where model.registration.registrationId = ? group by model.state", userID); 
+		List  results = getHibernateTemplate().find("Select model.currentAddress.state.stateId, count(model.currentAddress.state.stateId)from Cadre model " +
+				"where model.registration.registrationId = ? group by model.currentAddress.state.stateId", userID); 
 		return results;
 	}
 	@SuppressWarnings("unchecked")
@@ -134,12 +134,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 
-	public List findConstituencyCadresByDist(Long districtID, Long userID, String cadreType){
+	/*public List findConstituencyCadresByDist(Long districtID, Long userID, String cadreType){
 		Object[] params = {userID,districtID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.constituency.constituencyId, model.constituency.name, count(model.constituency.constituencyId)from Cadre model " +
 				"where model.registration.registrationId = ? and model.district.districtId=? and model.memberType = ? group by model.constituency.constituencyId order by model.constituency.name", params); 
 		return results;
-	}
+	}*/
 	public List findMandalCadresByConstituency(Long constituencyID, Long userID, String cadreType){
 		Object[] params = {userID,constituencyID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
@@ -169,14 +169,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? and model.village.townshipId=? and model.memberType = ?", params); 
 		return results;
 	}
-	
+	/*
 	public List findMandalCadresByMandals(String mandalIDs, Long userID, String cadreType){
 		Object[] params = {cadreType};
 		List result = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId) from Cadre model " +
 				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") and model.memberType = ?" +
 						" group by model.tehsil.tehsilId order by model.tehsil.tehsilName",params);
 		return result;
-	}
+	}*/
 	
 
 	@SuppressWarnings("unchecked")
@@ -321,13 +321,13 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? and model.village.townshipId=?", params); 
 		return results;
 	}*/
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType){
 		Object[] params = {userID,hamletID,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.hamlet.hamletId=? and model.memberType = ?", params); 
 		return results;
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public List findHamletsByRVs(String townships){
@@ -499,6 +499,62 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		queryObject.setParameter(0, cadreId);
 		return queryObject.executeUpdate();
 		
+	}
+	
+	public List findConstituencyCadresByDist(Long districtID, Long userID, String cadreType){
+		Object[] params = {userID,districtID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.constituency.constituencyId, model.currentAddress.constituency.name, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.district.districtId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params); 
+		return results;
+	}
+
+	public List findLocalElectionBodiesCadresByConst(Long constituencyId,
+			Long userID, String cadreType) {
+		Object[] params = {constituencyId,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.localElectionBody.localElectionBodyId, model.currentAddress.localElectionBody.name, count(model.currentAddress.localElectionBody.localElectionBodyId), model.currentAddress.localElectionBody.electionType.electionType from Cadre model " +
+				"where model.currentAddress.constituency.constituencyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.localElectionBody.localElectionBodyId order by model.currentAddress.localElectionBody.name", params); 
+		return results;
+	}
+	
+
+	public List findMandalCadresByMandals(String mandalIDs, Long userID, String cadreType){
+		Object[] params = {cadreType};
+		List result = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, model.currentAddress.tehsil.tehsilName, count(model.currentAddress.tehsil.tehsilId) from Cadre model " +
+				"where model.registration.registrationId = "+userID+" and model.currentAddress.tehsil.tehsilId in(" + mandalIDs + ") and model.memberType = ?" +
+						" group by model.currentAddress.tehsil.tehsilId order by model.currentAddress.tehsil.tehsilName",params);
+		return result;
+	}
+
+	public List findHamletCadresByMandal(Long mandalID, Long userID,
+			String cadreType) {
+		Object[] params = {mandalID,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, model.currentAddress.hamlet.hamletName, count(model.currentAddress.hamlet.hamletId) from Cadre model " +
+				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params); 
+		return results;
+		
+	}
+
+	public List findCadresByWard(Long localElectionBodyId, Long userID,
+			String cadreType) {
+		Object[] params = {localElectionBodyId,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.ward.constituencyId, model.currentAddress.ward.name, count(model.currentAddress.ward.constituencyId) from Cadre model " +
+				"where model.currentAddress.localElectionBody.localElectionBodyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.ward.constituencyId order by model.currentAddress.ward.name", params); 
+		return results;
+	}
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType){
+		Object[] params = {userID,hamletID,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params); 
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Cadre> getCadresByWard(Long wardId, Long userID, String cadreType) {
+		Object[] params = {userID,wardId,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId=? and model.memberType = ?", params); 
+		return results;
 	}
 		
 }
