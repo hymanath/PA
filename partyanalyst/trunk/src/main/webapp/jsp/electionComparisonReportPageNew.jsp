@@ -149,6 +149,7 @@
 		font-weight:bold;
 		height:27px;
 		padding:4px;
+		color: #000000;
 	}
 	
 	#tdThr .yui-skin-sam .yui-panel .hd 
