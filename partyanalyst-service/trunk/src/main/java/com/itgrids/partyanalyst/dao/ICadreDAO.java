@@ -115,4 +115,15 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findCadreByUserAndCadreLevel(Long userId,Long levelId);
 	
 	public Integer deleteByCadreId(Long cadreId);
+	
+	public List findLocalElectionBodiesCadresByConst(Long constituencyId, Long userID, String cadreType);
+	
+	public List findHamletCadresByMandal(Long mandalID, Long userID, String cadreType);
+	
+	public List findCadresByWard(Long localElectionBodyId, Long userID, String cadreType);
+	
+	public List<Cadre> getCadresByWard(Long wardId, Long userID, String cadreType);
+	
+	
+	
 }
