@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,14 +39,21 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
+import com.itgrids.partyanalyst.dto.UserGroupMembersInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.StaticGroup;
 import com.itgrids.partyanalyst.model.StaticUserGroup;
 import com.itgrids.partyanalyst.model.StaticUsers;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1124,5 +1132,230 @@ public class UserGroupService implements IUserGroupService {
 			log.debug("FLAG::::::::::::::::::::"+flag);
 		}		
 		return flag;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#checkForGroupMembersAvailability(java.lang.Long, java.lang.Long)
+	 * Check for wheather group members available for a group or not
+	 */
+	@SuppressWarnings("unchecked")
+	public Boolean checkForGroupMembersAvailability(Long userId, Long groupId) {
+		
+		log.debug("Checking for group members availability for a user group ..");
+		
+		List groupMembersList = staticUserGroupDAO.findMembersByUserId(userId, groupId);
+		if(groupMembersList != null && groupMembersList.size() > 0){
+			log.debug("Group Members Available ..");
+			return true;
+		}
+	
+	 log.debug("Group Members Not Available ..");
+	 return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getCompleteUserGroupMemberDetailsForAGroup(java.lang.Long)
+	 * ALL Group Member Details In A Particular Group
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAGroup(
+			Long groupId) {
+		List<UserGroupMembersInfoVO> groupMembersList = new ArrayList<UserGroupMembersInfoVO>();
+		log.debug("Getting Complete Group Member Details For A Group ..");
+		try{
+			if(groupId != null){
+				List memberResults = staticUserGroupDAO.getCompleteUserGroupMemberDetailsForAGroup(groupId);
+				if(memberResults != null && memberResults.size() > 0)
+					groupMembersList = getProcessedGroupMemberResultsToVO(memberResults);
+			}
+		}catch(Exception ex){
+			UserGroupMembersInfoVO memberDetails = new UserGroupMembersInfoVO();
+			ResultStatus resultStatus = new ResultStatus();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionMsg("Sorry Unable To Process Your Request Due To Some Error ..");
+			memberDetails.setRs(resultStatus);
+			groupMembersList.add(memberDetails);
+			
+			log.error("Exception Raised In User Groups Module :" + ex);
+		}
+		
+	 return groupMembersList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getCompleteUserGroupMemberDetailsForAGroupCatgory(java.lang.Long)
+	 * Group Member Details For A Specific Group Category
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAGroupCatgory(
+			Long groupCategoryId,Long userId) {
+		
+		List<UserGroupMembersInfoVO> groupMembersList = new ArrayList<UserGroupMembersInfoVO>();
+		log.debug("Getting Complete Group Member Details For A Group Category ..");
+		
+		try{
+			if(groupCategoryId != null && userId != null){
+				List memberResults = staticUserGroupDAO.getCompleteUserGroupMemberDetailsForAGroupCatgory(groupCategoryId, userId);
+				if(memberResults != null && memberResults.size() > 0)
+					groupMembersList = getProcessedGroupMemberResultsToVO(memberResults);
+			}
+		}catch(Exception ex){
+			UserGroupMembersInfoVO memberDetails = new UserGroupMembersInfoVO();
+			ResultStatus resultStatus = new ResultStatus();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionMsg("Sorry Unable To Process Your Request Due To Some Error ..");
+			memberDetails.setRs(resultStatus);
+			groupMembersList.add(memberDetails);
+			
+			log.error("Exception Raised In User Groups Module :" + ex);
+		}
+		
+		
+	 return groupMembersList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(java.lang.Long, java.lang.Long)
+	 * Group Member Details For A Specific Group Designation
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(
+			Long designationId, Long userId) {
+		
+		List<UserGroupMembersInfoVO> groupMembersList = new ArrayList<UserGroupMembersInfoVO>();
+		log.debug("Getting Complete Group Member Details For A Specific Designation ..");
+		
+		try{
+			if(designationId != null && userId != null){
+				List memberResults = staticUserGroupDAO.getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(designationId, userId);
+				if(memberResults != null && memberResults.size() > 0)
+					groupMembersList = getProcessedGroupMemberResultsToVO(memberResults);
+			}
+		}catch(Exception ex){
+			UserGroupMembersInfoVO memberDetails = new UserGroupMembersInfoVO();
+			ResultStatus resultStatus = new ResultStatus();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionMsg("Sorry Unable To Process Your Request Due To Some Error ..");
+			memberDetails.setRs(resultStatus);
+			groupMembersList.add(memberDetails);
+			
+			log.error("Exception Raised In User Groups Module :" + ex);
+		}
+		
+	 return groupMembersList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(java.lang.Long, java.lang.Long, java.lang.Long)
+	 * Group Member Details For A Specific Group Designation and Group Category
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersInfoVO> getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(
+			Long designationId, Long userId, Long groupCategoryId) {
+		
+		List<UserGroupMembersInfoVO> groupMembersList = new ArrayList<UserGroupMembersInfoVO>();
+		log.debug("Getting Complete Group Member Details For A Specific Designation ..");
+		
+		try{
+			if(designationId != null && userId != null){
+				List memberResults = staticUserGroupDAO.getCompleteUserGroupMemberDetailsForAUserOfSpecificDesignation(designationId, userId, groupCategoryId);
+				if(memberResults != null && memberResults.size() > 0)
+					groupMembersList = getProcessedGroupMemberResultsToVO(memberResults);
+			}
+		}catch(Exception ex){
+			UserGroupMembersInfoVO memberDetails = new UserGroupMembersInfoVO();
+			ResultStatus resultStatus = new ResultStatus();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionMsg("Sorry Unable To Process Your Request Due To Some Error ..");
+			memberDetails.setRs(resultStatus);
+			groupMembersList.add(memberDetails);
+			
+			log.error("Exception Raised In User Groups Module :" + ex);
+		}
+		
+	 return groupMembersList;
 	}	
+	
+	/*
+	 * Members Processing To VO
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersInfoVO> getProcessedGroupMemberResultsToVO(List memberResultsList){
+		
+		List<UserGroupMembersInfoVO> membersResultsList = null; 
+		if(memberResultsList != null && memberResultsList.size() > 0){
+			
+			membersResultsList = new ArrayList<UserGroupMembersInfoVO>();
+			Iterator listItr = memberResultsList.listIterator();
+			while(listItr.hasNext()){
+				Object[] params = (Object[])listItr.next();
+				UserGroupMembersInfoVO memberDetails = new UserGroupMembersInfoVO();
+				
+				memberDetails.setGroupMemberId((Long)params[0]);
+				memberDetails.setName((String)params[1]);
+				memberDetails.setMobileNumber((String)params[2]);
+				memberDetails.setEmailId((String)params[3]);
+				memberDetails.setAddress((String)params[4]);
+				memberDetails.setDesignationType((String)params[5]);
+				memberDetails.setGroupId((Long)params[7]);
+				memberDetails.setGroupName((String)params[8]);
+				memberDetails.setGroupDesc((String)params[9]);
+				Date createdDate = (Date)(Date)params[10];
+				memberDetails.setCreatedDate(createdDate.toString());
+				memberDetails.setGroupCategoryId((Long)params[11]);
+				memberDetails.setDescription((String)params[12]);
+				memberDetails.setGroupCategoryType((String)params[13]);
+				String groupScope  = (String)params[14];
+				memberDetails.setGroupScope(groupScope);
+				
+				//To Get Static Member Region Details
+				Long regionId = 0L;
+				String regionValue = "";
+				if(groupScope.equalsIgnoreCase(IConstants.STATE)){
+					State state = (State)params[15];
+					regionId = state.getStateId();
+					regionValue = state.getStateName().concat("(STATE)");
+				}else if(groupScope.equalsIgnoreCase(IConstants.DISTRICT)){
+					District district = (District)params[16];
+					regionId = district.getDistrictId();
+					regionValue = district.getDistrictName().concat("(DISTRICT)");
+				}else if(groupScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					Constituency constituency = (Constituency)params[17];
+					regionId = constituency.getConstituencyId();
+					regionValue = constituency.getName().concat("(CONSTITUENCY)");
+				}else if(groupScope.equalsIgnoreCase(IConstants.TEHSIL)){
+					Tehsil tehsil = (Tehsil)params[18];
+					regionId = tehsil.getTehsilId();
+					regionValue = tehsil.getTehsilName().concat("(TEHSIL)");
+				}else if(groupScope.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
+					LocalElectionBody localBody = (LocalElectionBody)params[20];
+					regionId = localBody.getLocalElectionBodyId();
+					regionValue = localBody.getName().concat(" ").concat(localBody.getElectionType().getElectionType());
+				}else if(groupScope.equalsIgnoreCase(IConstants.HAMLET)){
+					Hamlet hamlet = (Hamlet)params[22];
+					regionId = hamlet.getHamletId();
+					regionValue = hamlet.getHamletName().concat("(HAMLET)");
+				}else if(groupScope.equalsIgnoreCase(IConstants.WARD)){
+					Constituency ward = (Constituency)params[21];
+					regionId = ward.getConstituencyId();
+					regionValue = ward.getName().concat("(WARD)");
+				}
+				
+				memberDetails.setGroupScopeRegionId(regionId);
+				memberDetails.setGroupScopeRegion(regionValue);
+				
+				membersResultsList.add(memberDetails);
+			}
+		}
+	 return membersResultsList;
+	}
 }
