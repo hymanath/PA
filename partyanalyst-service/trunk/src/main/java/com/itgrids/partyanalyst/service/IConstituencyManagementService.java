@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
+import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -19,6 +20,8 @@ public interface IConstituencyManagementService {
 	public TotalMPTCMandalLeaderVO getMPTCElectionResultForMandal(Long mandalID);
 	
 	public HamletsListWithBoothsAndVotersVO getAllHamletBoothInfoForRevenueVillage(Long revenueVillageID, String year, String electionType);
+	
+	public List<LocalUserGroupsInfoVO> getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(Long userId, String accessType, String accessValue);
 	
 	//public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
 }

@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 
 public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
-	IPersonalUserGroupDAO  personalUserGroupDAO;
+	private IPersonalUserGroupDAO  personalUserGroupDAO;
 
 	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
 		return personalUserGroupDAO;
@@ -27,7 +27,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1,result.size());
 	}*/
 	
-	public void testFindSubGroupsCountInSystemGroupsByUserId()
+	/*public void testFindSubGroupsCountInSystemGroupsByUserId()
 	{
 		List result=personalUserGroupDAO.findSubGroupsCountInSystemGroupsByUserId(1L);
 		for(int i=0;i<result.size();i++){
@@ -37,7 +37,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.print(Long.parseLong(parms[2].toString()));
 		}	
 		//assertEquals(1,result.size());		
-	}
+	}*/
 	/*
 	@SuppressWarnings("unchecked")
 	public void testGetSubGroupsCountInMyGroupsByUserId()
@@ -81,4 +81,11 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		
 		
 	}*/
+	
+	public void testFindAllGroupCategoriesInfoAndCountsOfLocationsByLocation(){
+		List list = personalUserGroupDAO.findAllGroupCategoriesInfoAndCountsOfLocationsByLocation("model.localGroupRegion.hamlet.hamletId", 
+				1l, 5l, "model.localGroupRegion.district.districtId");
+		System.out.println(list.size());
+	}
+	
 }
