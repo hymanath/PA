@@ -27,6 +27,7 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private List<SelectOptionVO> assembyConstituencies;
 	private List<String> uploadInfo;
 	private Boolean hasAnalize = false;
+	private String area_type;
 	
 	public String getConstituencyType() {
 		return constituencyType;
@@ -95,5 +96,13 @@ public class ConstituencyInfoVO extends ResultStatus{
 	public void setUploadInfo(List<String> uploadInfo) {
 		this.uploadInfo = uploadInfo;
 	}
+	public String getArea_type() {
+		return area_type;
+	}
+	public void setArea_type(String area_type) {
+		this.area_type = area_type;
+	}
+	
+	
 	
 }
