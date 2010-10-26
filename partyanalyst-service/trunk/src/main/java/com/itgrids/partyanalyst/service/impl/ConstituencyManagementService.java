@@ -22,9 +22,11 @@ import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
+import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -396,6 +398,49 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			groupsInfo.add(basicInfoVO);
 			groupInfoMapByCategories.put(Long.parseLong(values[0].toString()), groupsInfo);
 		}
+	}
+	
+	public List<UserGroupDetailsVO> findUserGroupsByLocationCategoryAndUserId(Long userId, Long categoryId, String locationType){
+		List<UserGroupDetailsVO> userGroups = new ArrayList<UserGroupDetailsVO>();
+		List<PersonalUserGroup> groupModels = null;
+		UserGroupDetailsVO groupDetailsVO = null;
+		String regionInfo = "";
+		if(IConstants.STATE.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.state.stateId";
+		else if(IConstants.DISTRICT.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.district.districtId";
+		else if(IConstants.CONSTITUENCY.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.constituency.constituencyId";
+		else if(IConstants.TEHSIL.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.tehsil.tehsilId";
+		else if(IConstants.WARD.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.ward.constituencyId";
+		else if(IConstants.HAMLET.equalsIgnoreCase(locationType))
+			regionInfo = "model.localGroupRegion.hamlet.hamletId";
+		
+		if(locationType.length() > 0 && regionInfo.length() > 0)
+			groupModels = personalUserGroupDAO.findGroupsInfoByCategoryAndUserIdByRegion(userId, categoryId, regionInfo);
+		else
+			groupModels = personalUserGroupDAO.findGroupsInfoByCategoryAndUserId(userId, categoryId);
+		
+		for(PersonalUserGroup group:groupModels){
+			groupDetailsVO = new UserGroupDetailsVO();
+			groupDetailsVO.setGroupId(group.getPersonalUserGroupId());
+			groupDetailsVO.setGroupName(group.getGroupName());
+			groupDetailsVO.setGroupDesc(group.getDescription());
+			groupDetailsVO.setCreatedDate(group.getCreatedDate().toString());
+			groupDetailsVO.setNoOfPersons(group.getStaticUserGroups().size()+"");
+			if(group.getLocalGroupRegion().getHamlet() != null)
+				groupDetailsVO.setLocationInfo(group.getLocalGroupRegion().getHamlet().getHamletName()+ " " +IConstants.VILLAGE);
+			else if(group.getLocalGroupRegion().getWard() != null)
+				groupDetailsVO.setLocationInfo(group.getLocalGroupRegion().getWard().getLocalElectionBody().getName()+ " " +
+						group.getLocalGroupRegion().getWard().getLocalElectionBody().getElectionType().getElectionType()+" "+
+						group.getLocalGroupRegion().getWard().getName());
+			
+			userGroups.add(groupDetailsVO);
+		}
+		
+		return userGroups;
 	}
 	
 }
