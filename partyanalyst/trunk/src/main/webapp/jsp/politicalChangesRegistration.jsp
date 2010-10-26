@@ -346,7 +346,6 @@ function populateLocations(val,source)
 		callAjax(rparam,jsObj,url);
 		incrementHidden();
 		window.opener.document.location.reload(true);
-		window.close();
 	}
 
 	</script>
