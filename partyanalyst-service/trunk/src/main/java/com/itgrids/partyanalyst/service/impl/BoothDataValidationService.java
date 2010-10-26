@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterDataUploadVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -35,6 +37,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 
 	private ITehsilDAO tehsilDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
+	private IConstituencyDAO constituencyDAO;
 	private INominationDAO nominationDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
@@ -95,6 +98,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		this.nominationDAO = nominationDAO;
 	}
 	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public List<String> readBoothDataExcelFileAndPolpulate(File filePath, String electionYear, Long electionScopeId) throws CsvException{
 		BoothDataExcelReader excelReader = new BoothDataExcelReader();
 		excelReader.readExcelFile(filePath);
@@ -105,20 +116,20 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			String constituencyName = boothDataUploadVO.getConstituencyName();
 			List<BoothInfo> boothsInConstituency = boothDataUploadVO.getBooths();
 			corrections.add("#For The Constituency::"+constituencyName);
-			List<ConstituencyElection> constituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, constituencyName, electionScopeId, districtId);
-			if(constituencyElections.size() != 1 ){
-				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+constituencyName+" and District Id:"+districtId);
+			List<Constituency> constituencies = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(constituencyName, districtId, electionScopeId);
+			if(constituencies.size() != 1 ){
+				corrections.add("More than One or no Constituencies Exists For electionYear:"+ electionYear+" Constituency Name:"+constituencyName+" and District Id:"+districtId);
 				continue;
 			}
-			ConstituencyElection constituencyElection = constituencyElections.get(0);
+			Constituency constituency = constituencies.get(0);
 			for(BoothInfo boothRecord:boothsInConstituency){
-				checkAndInsertBooth(constituencyElection, boothRecord, districtId, constituencyName, corrections);
+				checkAndInsertBooth(constituency, boothRecord, districtId, constituencyName, corrections);
 			}
 		}
 		return corrections;
 	}
 	
-	public void checkAndInsertBooth(ConstituencyElection constituencyElection, BoothInfo boothRecord, Long districtId, String constituencyName, List<String> corrections){
+	public void checkAndInsertBooth(Constituency constituency, BoothInfo boothRecord, Long districtId, String constituencyName, List<String> corrections){
 		String tehsilName = boothRecord.getMandalName();
 		String partNo = boothRecord.getPartNo();
 		String partName = boothRecord.getPartName();
@@ -204,14 +215,14 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			Long districtId = assemblyConstituencyBlock.getDistrictId();
 			Long stateId = assemblyConstituencyBlock.getStateId();
 			corrections.add("#For The Constituency::"+acName);
-			List<ConstituencyElection> acConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, acName, new Long(2), districtId);
+			List<Constituency> constituencies = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(acName, districtId, 2l);
 			List<ConstituencyElection> pcConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndState(electionYear, pcName, electionScopeId, stateId);
 			if(pcConstituencyElections.size() != 1){
 				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+pcName);
 				continue;	
 			}
-			if(acConstituencyElections.size() != 1){
-				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+acName+" and District Id:"+districtId);
+			if(constituencies.size() != 1){
+				corrections.add("More than One or no Assembly Constituencies Exists For electionYear:"+ electionYear+" Constituency Name:"+acName+" and District Id:"+districtId);
 				continue;
 			}
 			List<CandidateBoothWiseResult> candidateBoothResults = assemblyConstituencyBlock.getCandidateResults();
