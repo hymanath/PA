@@ -24,7 +24,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 	
-	public void testFindCadresByLevels()
+	/*public void testFindCadresByLevels()
 	{
 		List result = cadreDAO.findCadresByLevels(7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(int i=0;i<result.size();i++){
@@ -34,9 +34,9 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 		
-	}
+	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testFindCadreSearchCriteria(){
 		//List result = cadreDAO.findCadreDetailsByLevelAndProperty(new Long(7), "currentAddress", "district", "districtId", new Long(1));
 		List<Long> cadreIds = new ArrayList<Long>();
@@ -67,12 +67,78 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		List result = cadreDAO.findCadreByPartyWorkingCommitteeDesignationListAndCadreIds(propertyIds, cadreIds);
 		
 		System.out.println(" Result Size :" + result.size());
-	}
+	}*/
 	
-	public void testDeleteCadre()
+	/*public void testDeleteCadre()
 	{
 		int result=cadreDAO.deleteByCadreId(5l);
 		System.out.println("No of records deleted:"+result);
 		setComplete();
+	}*/
+	
+	/*public void testFindConstituencyCadresByDist()
+	{
+		List result = cadreDAO.findConstituencyCadresByDist(19l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			
+		}
+		
+	}*/
+	
+	/*public void testFindLocalElectionBodiesCadresByConst()
+	{
+		List result = cadreDAO.findLocalElectionBodiesCadresByConst(340l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			System.out.println(parms[3].toString());
+			
+		}
+		
+	}*/
+	
+	/*public void testFindHamletCadresByMandal()
+	{
+		List result = cadreDAO.findHamletCadresByMandal(844l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			
+		}
+		
 	}
+	
+	public void testFindWardCadresByMandal()
+	{
+		List result = cadreDAO.findCadresByWard(562l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			
+		}
+		
+	}*/
+	public void testFindCadresByHamlet()
+	{
+		List<Cadre> result = cadreDAO.findCadresByHamlet(857l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.println(result.size());
+		for(Cadre cadre:result){
+			
+			System.out.print(cadre.getFirstName()+cadre.getLastName());
+			System.out.println(cadre.getMemberType());
+			
+			
+		}
+	}
+	
 }
