@@ -14,9 +14,12 @@ public class UserGroupMembersVO implements Serializable {
 	private String phoneNumber;
 	private String mobileNumber;
 	private String location;
+	private Long groupId;
 	private String groupName;
+	private String groupDesc;
 	private String designation;
 	private Long groupMemberId;
+	private String createdDate;
 	private String emailId;
 	private ResultStatus rs;
 	private Boolean confirmation;
@@ -94,6 +97,24 @@ public class UserGroupMembersVO implements Serializable {
 	}
 	public Boolean getConfirmation() {
 		return confirmation;
+	}
+	public Long getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
+	}
+	public String getGroupDesc() {
+		return groupDesc;
+	}
+	public void setGroupDesc(String groupDesc) {
+		this.groupDesc = groupDesc;
+	}
+	public String getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
 	}
 
 
