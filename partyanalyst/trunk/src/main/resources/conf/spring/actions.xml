@@ -271,6 +271,8 @@
 	<bean id="initailConstituencyManagementAction" class="com.itgrids.partyanalyst.web.action.InitailConstituencyManagementAction" singleton="false">				
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
+		<property name="constituencyManagementService" ref="constituencyManagementService" />
+		<property name="userGroupService" ref="userGroupService" />
 	</bean>
 	
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			

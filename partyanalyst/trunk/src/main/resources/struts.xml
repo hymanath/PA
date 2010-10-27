@@ -1625,5 +1625,25 @@
 				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
+		
+		<action name="getLocalUserGroupsAction" class="initailConstituencyManagementAction" method="getLocalUserGroups">
+			<result type="json" name="success">
+				<param name="root">localUserGroupsInfoVO</param>				
+			</result>		
+			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>	
+		</action>		
+		
+		<action name="getUserGroupsBasedOnCriteriaAction" class="initailConstituencyManagementAction" method="getUserGroupsBasedOnCriteria">
+			<result type="json" name="success">
+				<param name="root">userGroupDetailsVO</param>				
+			</result>		
+			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>	
+		</action>	
+		
+		<action name="getUserGroupsCandidatesAction" class="initailConstituencyManagementAction" method="getUserGroupsCandidates">
+			<result name="success">/jsp/userGroupsCandidatesPage.jsp</result> 	
+			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>	
+		</action>
+			
 	</package>
 </struts>
