@@ -429,7 +429,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			groupDetailsVO.setGroupId(group.getPersonalUserGroupId());
 			groupDetailsVO.setGroupName(group.getGroupName());
 			groupDetailsVO.setGroupDesc(group.getDescription());
-			groupDetailsVO.setCreatedDate(group.getCreatedDate().toString());
+			if(group.getCreatedDate() != null)
+				groupDetailsVO.setCreatedDate(group.getCreatedDate().toString());
 			groupDetailsVO.setNoOfPersons(group.getStaticUserGroups().size()+"");
 			if(group.getLocalGroupRegion().getHamlet() != null)
 				groupDetailsVO.setLocationInfo(group.getLocalGroupRegion().getHamlet().getHamletName()+ " " +IConstants.VILLAGE);
