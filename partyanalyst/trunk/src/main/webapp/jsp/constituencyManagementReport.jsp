@@ -481,7 +481,7 @@
 		function getInfluencingPersonInfo(influencingPersonId)
 		{
 			var urlStr = "getInfluencingPersonInfoAction.action?windowTask=influencingPersonInfoPopup&influencingPersonId="+influencingPersonId;
-			var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=500,width=600,left=200,top=200");	
+			var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=600,left=200,top=50");	
 			browser2.focus();
 		}
 		
