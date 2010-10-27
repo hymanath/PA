@@ -287,3 +287,64 @@ fieldset {
 	text-align:left;
 }
 
+/* Local user groups styles*/
+
+#local_user_group_main
+{
+	margin-bottom:10px;
+}
+
+#local_user_group_body
+{
+	background-color:#E4EDF0;
+}
+
+#usergroupsCategoryViewDiv , #userGroupsDetailsViewDiv
+{
+	height:200px;
+}
+
+#usergroupsCategoryViewDiv_outer
+{
+	padding-left:20px;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion-item-icon 
+{
+	background:url("../../images/icons/indexPage/listIcon.png") no-repeat scroll 0 0 transparent;
+	margin-top:5px;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion 
+{
+	border:0 none;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion-item .yui-widget-hd
+{
+	border:0px none;
+}
+
+#userGroupsDetailsViewDiv
+{
+	position:relative;
+}
+
+.groupHeaders
+{
+	background-color:#EEF2F5;
+	color:#0F2B3A;
+	font-size:13px;
+	font-weight:bold;
+	position:relative;
+}
+
+#userGroupDetails_Body
+{
+	padding-top:10px;
+}
+
+#userGroupDetails_Body table
+{
+	width:95%;
+}

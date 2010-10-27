@@ -49,8 +49,12 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-    <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
+    
 <!-- YUI Dependency files (End) -->
+
+	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 	
 
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
@@ -524,6 +528,14 @@
 											alert("Succesfully Deleted");
 											getInfluencingPeopleInAConstituency();	
 										}	
+										if(jsObj.task == "getLocalUserGroups")
+										{
+											buildLocalUserGroupsCriteria(jsObj,myResults);
+										}
+										if(jsObj.task == "getUserGroupsBasedOnCriteria")
+										{
+											buildUserGroupsBasedOnCriteria(jsObj,myResults);
+										}
 									}
 								catch (e)
 									{   
@@ -688,6 +700,61 @@
 			</tr>
 			</table>
 			
+			<!-- Local User groups (start)-->
+			<div id="local_user_group_main">
+				<div id="local_user_group_head">
+					<table cellspacing="0" cellpadding="0" width="100%">
+						<tr>
+							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
+							<td><div id="politicalChanges_head_label" class="containerHeadLabelDivClass" style="width:892px;">Local User Groups </div></td>
+							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
+						</tr>
+					</table>	
+				</div>
+				<div id="local_user_group_body" class="containerBodyDivClass">					
+					<table cellspacing="5" cellpadding="0" width="100%">
+						<tr>
+							<td colspan="2">
+								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+										<div id="usergroupsNumberViewDiv" class="groupHeaders">
+											
+										</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td width="30%">								
+								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+										<div id="usergroupsCategoryViewDiv_outer" class="yui-skin-sam"><div id="usergroupsCategoryViewDiv" ></div></div>
+
+								</div>
+							</td>
+							<td width="70%">
+								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+										<div id="userGroupsDetailsViewDiv">
+									
+										</div>
+								</div>
+							</td>
+							
+						</tr>
+					</table>	
+				</div>
+			</div>			
+			<!-- Local User groups (end)-->
+
 			<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
 				<div id="political_changes_head">
 					<table cellspacing="0" cellpadding="0" width="100%">

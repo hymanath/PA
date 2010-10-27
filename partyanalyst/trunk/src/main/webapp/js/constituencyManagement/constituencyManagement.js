@@ -595,10 +595,203 @@ function initializeConstituencyManagement() {
 	buildPoliticalChanges();
 	getProblemsStatusCountByAccessType();
 	getInfluencingPeopleInAConstituency();
+	getAllPoliticalChangesForTheUser();
 
-			getAllPoliticalChangesForTheUser();
+	getLocalUserGroups();
 }
  
+function getLocalUserGroups()
+{
+	var jsObj= 
+	{			 			  			
+		task: "getLocalUserGroups"				
+	};
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocalUserGroupsAction.action?"+param;
+	
+	callAjax(param,jsObj,url);	
+}
+
+function buildLocalUserGroupsCriteria(jsObj,results)
+{	
+	var helmt = document.getElementById("usergroupsNumberViewDiv");
+	var elmt = document.getElementById("usergroupsCategoryViewDiv");
+	
+	if(!helmt || !elmt)
+		return;
+	
+	var hstr = '<table>';
+	hstr += '	<tr>';
+	hstr += '		<td><img src="images/icons/indexPage/group_icon.png"></td>';
+	hstr += '		<td>There are groups in '+results.length+' categories.</td>';
+	hstr += '	</tr>';
+	hstr += '	</table>';
+
+	helmt.innerHTML = hstr;
+
+	if(results.length == 0)
+	{
+		//getGroupsBasedOnCriteria(1,"Apartment","");
+		return;
+	}
+
+	 YUI().use( 'gallery-accordion', function(Y) {
+		
+		var accordion = new Y.Accordion( {
+		contentBox: "#usergroupsCategoryViewDiv",
+		useAnimation: true,
+		collapseOthersOnExpand: true
+		});
+	 
+		accordion.render();
+		
+		var item1, item2, item3, item4;
+		
+		for(var i=0; i<results.length; i++)
+		{
+			if(i == 0)
+			{
+				var item = 	new Y.AccordionItem( {
+				label: ""+results[i].groupCategoryName+" - "+results[i].groupsCount,
+				expanded: true,
+				contentHeight: {
+					method: "fixed",
+					height: 50
+				},
+				closable: false
+				});
+			}
+			else
+			{
+				var item = 	new Y.AccordionItem( {
+				label: ""+results[i].groupCategoryName+" - "+results[i].groupsCount,
+				expanded: false,
+				contentHeight: {
+					method: "fixed",
+					height: 50
+				},
+				closable: false
+				});
+			}
+			
+			var itemstr='';
+			itemstr+='<ul class="regionsList">';
+			for(var j = 0; j<results[i].locationsWiseGroupInfo.length; j++)
+			{
+				var data = results[i].locationsWiseGroupInfo[j];
+				itemstr+='<li><a href="javascript:{}">'+data.areaType+' - '+data.groupsCount+'</a></li>';
+			}
+			itemstr+='</ul>';
+			item.set( "bodyContent",itemstr);
+			accordion.addItem( item );
+		}
+	
+	 });
+
+	 getGroupsBasedOnCriteria(results[0].categoryId, results[0].groupCategoryName,"");
+}
+
+function getGroupsBasedOnCriteria(groupId,groupName,locationType)
+{
+	var jsObj= 
+	{		
+		groupId:groupId,
+		groupName:groupName,
+		locationType:locationType,
+		task: "getUserGroupsBasedOnCriteria"				
+	};
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getUserGroupsBasedOnCriteriaAction.action?"+param;
+	
+	callAjax(param,jsObj,url);	
+}
+
+function buildUserGroupsBasedOnCriteria(jsObj,results)
+{
+	var elmt = document.getElementById("userGroupsDetailsViewDiv");
+
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="userGroupDetails_Head" class="groupHeaders"> ';
+	str += '	<table>';
+	str += '	<tr>';
+	str += '		<td><img src="images/icons/indexPage/group_icon.png"></td>';
+	str += '		<td>There are '+results.length+' groups under the '+jsObj.groupName+' Category</td>';
+	str += '	</tr>';
+	str += '	</table>';
+	str += '</div>';
+
+	str += '<div id="userGroupDetails_Body" class="yui-skin-sam">';
+	str += '<div id="userGroupDetails_datatable"></div>';
+	str += '</div>';
+	elmt.innerHTML = str;
+
+	var groupsArray = new Array();
+	for(var i=0;i<results.length;i++)
+	{
+		var obj =	{
+						groupName:results[i].groupName,
+						createdDate:results[i].createdDate,
+						noOfPersons:results[i].noOfPersons,
+						locationInfo:results[i].locationInfo,
+						view:'<a href="javascript:{}" onclick="showGroupCandidateDetails(\''+results[i].groupId+'\')"> View Candidates</a>'
+					};
+		groupsArray.push(obj);
+	}
+	
+
+	var myColumnDefs = [ 
+	            {key:"groupName",label:"Group Name", sortable:true, resizeable:true}, 
+	            {key:"createdDate", label:"Date", sortable:true, resizeable:true}, 
+	            {key:"noOfPersons", label:"Persons", formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:true}, 
+	            {key:"locationInfo", label:"Location", sortable:true, resizeable:true}, 
+	            {key:"view", label:"View", sortable:false, resizeable:true} 
+	        ]; 
+	 
+	        var myDataSource = new YAHOO.util.DataSource(groupsArray); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: [
+							{	
+								key:"groupName"
+							},
+							{
+								key:"createdDate"
+							},
+							{
+								key:"noOfPersons"
+							},
+							{
+								key:"locationInfo"
+							},
+							{
+								key:"view"
+							}
+				] 
+	        }; 
+	var myConfigs = {
+		paginator : new YAHOO.widget.Paginator({
+			rowsPerPage: 10
+		})
+	};
+
+	var myDataTable = new YAHOO.widget.DataTable("userGroupDetails_datatable", 
+	                myColumnDefs, myDataSource,myConfigs); 
+}
+
+function showGroupCandidateDetails(groupId)
+{
+	return;
+	var urlStr = "getUserGroupsCandidatesAction.action?groupId="+groupId+"&windowTask=getUserGroupsCandidates";
+	var browser1 = window.open(urlStr,"userGroupsCandidatesPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");	
+	browser1.focus();
+}
+	
+
 function redirectToNewWindowForEditingPoliticalChanges(type,id)
 {		
 	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type+"&localPoliticalChangeId="+id,"politicalChangesWindow","scrollbars=yes,height=600,width=600,left=200,top=200");
