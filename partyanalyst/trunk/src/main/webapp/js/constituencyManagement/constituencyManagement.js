@@ -615,13 +615,13 @@ function getLocalUserGroups()
 
 function callLocationWiseGroups(groupId,groupName,locationType)
 {
-	console.log(groupId,groupName,locationType);
+	
 	getGroupsBasedOnCriteria(groupId,groupName,locationType)
 }
 
 function buildLocalUserGroupsCriteria(jsObj,results)
 {	
-	console.log(results);
+	
 	var helmt = document.getElementById("usergroupsNumberViewDiv");
 	var elmt = document.getElementById("usergroupsCategoryViewDiv");
 	
