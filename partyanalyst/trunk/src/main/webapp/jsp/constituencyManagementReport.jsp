@@ -727,7 +727,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="30%">								
+							<td width="30%" valign="top">								
 								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
 									<div class="corner topLeft"></div>
 									<div class="corner topRight"></div>
@@ -737,7 +737,7 @@
 
 								</div>
 							</td>
-							<td width="70%">
+							<td width="70%" valign="top">
 								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
 									<div class="corner topLeft"></div>
 									<div class="corner topRight"></div>

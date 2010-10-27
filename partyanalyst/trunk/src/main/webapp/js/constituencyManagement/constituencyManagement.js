@@ -613,8 +613,15 @@ function getLocalUserGroups()
 	callAjax(param,jsObj,url);	
 }
 
+function callLocationWiseGroups(groupId,groupName,locationType)
+{
+	console.log(groupId,groupName,locationType);
+	getGroupsBasedOnCriteria(groupId,groupName,locationType)
+}
+
 function buildLocalUserGroupsCriteria(jsObj,results)
 {	
+	console.log(results);
 	var helmt = document.getElementById("usergroupsNumberViewDiv");
 	var elmt = document.getElementById("usergroupsCategoryViewDiv");
 	
@@ -653,11 +660,11 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 			if(i == 0)
 			{
 				var item = 	new Y.AccordionItem( {
-				label: ""+results[i].groupCategoryName+" - "+results[i].groupsCount,
+				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[0].categoryId+"\",\""+results[0].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
 				expanded: true,
 				contentHeight: {
 					method: "fixed",
-					height: 50
+					height: 150
 				},
 				closable: false
 				});
@@ -665,11 +672,11 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 			else
 			{
 				var item = 	new Y.AccordionItem( {
-				label: ""+results[i].groupCategoryName+" - "+results[i].groupsCount,
+				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[0].categoryId+"\",\""+results[0].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
 				expanded: false,
 				contentHeight: {
 					method: "fixed",
-					height: 50
+					height: 150
 				},
 				closable: false
 				});
@@ -677,10 +684,16 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 			
 			var itemstr='';
 			itemstr+='<ul class="regionsList">';
-			for(var j = 0; j<results[i].locationsWiseGroupInfo.length; j++)
+			if(results[i].locationsWiseGroupInfo != null)
 			{
-				var data = results[i].locationsWiseGroupInfo[j];
-				itemstr+='<li><a href="javascript:{}">'+data.areaType+' - '+data.groupsCount+'</a></li>';
+				for(var j = 0; j<results[i].locationsWiseGroupInfo.length; j++)
+				{
+					var data = results[i].locationsWiseGroupInfo[j];
+					if(data.locationsCount == 0)
+						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[0].categoryId+'\',\''+results[0].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.areaType+'</a></li>';
+					else
+						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[0].categoryId+'\',\''+results[0].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.locationsCount+' '+data.areaType+'</a></li>';
+				}
 			}
 			itemstr+='</ul>';
 			item.set( "bodyContent",itemstr);
