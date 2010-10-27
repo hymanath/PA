@@ -369,8 +369,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		for(Map.Entry<Long, List<UserGroupBasicInfoVO>> entry:groupInfoMapByCategories.entrySet()){
 			localUserGroupsInfoVO = new LocalUserGroupsInfoVO();
 			localUserGroupsInfoVO.setCategoryId(entry.getKey());
-			localUserGroupsInfoVO.setDescription(entry.getValue().get(0).getCategoryName());
-			
+			localUserGroupsInfoVO.setGroupCategoryName(entry.getValue().get(0).getCategoryName());
+			categoryGroupsCount = 0l;
 			for(UserGroupBasicInfoVO basicInfoVO:entry.getValue())
 				categoryGroupsCount +=	basicInfoVO.getGroupsCount();
 			
