@@ -660,7 +660,7 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 			if(i == 0)
 			{
 				var item = 	new Y.AccordionItem( {
-				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[0].categoryId+"\",\""+results[0].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
+				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[i].categoryId+"\",\""+results[i].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
 				expanded: true,
 				contentHeight: {
 					method: "fixed",
@@ -672,7 +672,7 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 			else
 			{
 				var item = 	new Y.AccordionItem( {
-				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[0].categoryId+"\",\""+results[0].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
+				label: "<a style='text-decoration:none;color:#444444' href='javascript:{}' onclick='callLocationWiseGroups(\""+results[i].categoryId+"\",\""+results[i].groupCategoryName+"\",\"\")'>"+results[i].groupCategoryName+" - "+results[i].groupsCount+"</a>",
 				expanded: false,
 				contentHeight: {
 					method: "fixed",
@@ -690,9 +690,9 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 				{
 					var data = results[i].locationsWiseGroupInfo[j];
 					if(data.locationsCount == 0)
-						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[0].categoryId+'\',\''+results[0].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.areaType+'</a></li>';
+						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[i].categoryId+'\',\''+results[i].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.areaType+'</a></li>';
 					else
-						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[0].categoryId+'\',\''+results[0].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.locationsCount+' '+data.areaType+'</a></li>';
+						itemstr+='<li><a href="javascript:{}" onclick="callLocationWiseGroups(\''+results[i].categoryId+'\',\''+results[i].groupCategoryName+'\',\''+data.areaType+'\')">'+data.groupsCount+' groups in '+data.locationsCount+' '+data.areaType+'</a></li>';
 				}
 			}
 			itemstr+='</ul>';
