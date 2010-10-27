@@ -375,6 +375,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				categoryGroupsCount +=	basicInfoVO.getGroupsCount();
 			
 			localUserGroupsInfoVO.setGroupsCount(categoryGroupsCount);
+			localUserGroupsInfoVO.setLocationsWiseGroupInfo(entry.getValue());
 			allCategoriesInfo.add(localUserGroupsInfoVO);
 		}
 		
