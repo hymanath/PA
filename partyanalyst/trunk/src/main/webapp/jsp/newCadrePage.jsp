@@ -833,25 +833,25 @@
 		<tr id="row1" style="display:none;">
 			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="stateField_s" cssClass="regionSelect" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State"  onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="stateField_s" cssClass="regionSelect" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
 			<td width="200"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="districtField_s" cssClass="regionSelect" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="districtField_s" cssClass="regionSelect" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
 			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td>
-				<s:select id="constituencyField_s" value="defaultConstId" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="constituencyField_s" value="defaultConstId" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','newProblemPost','hamletField_s','currentAdd', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
