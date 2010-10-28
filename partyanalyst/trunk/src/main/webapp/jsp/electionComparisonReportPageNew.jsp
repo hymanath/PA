@@ -401,7 +401,7 @@
 	
 	#ecrLayout_main
 	{
-		width:90%;
+		width:94%;
 	}
 	
 	#ecrLayout_main fieldset

@@ -278,8 +278,7 @@ fieldset {
 }
 #influencingPeopleDtDiv
 {
-	width:610px;
-	overflow:scroll;
+	overflow:auto;
 }
 .yui-skin-sam .yui-panel .hd 
 {
