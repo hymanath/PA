@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -125,6 +127,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> states = getRegionServiceDataImp().getStatesByCountry(1l); 
 			states.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(states);
+			
 		} else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
 		{
 			//to fetch all districts in state
@@ -132,6 +135,18 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> districts = getRegionServiceDataImp().getDistrictsByStateID(stateId);
 			districts.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(districts);
+			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.DISTRICTS_O, districts);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.DISTRICTS, districts);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.DISTRICTS_C, districts);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
 		{
 			//to fetch all assembly constituencies in district
@@ -139,6 +154,18 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByDistrictID(districtId);
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
+			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencies);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencies);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, constituencies);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("subRegionsInConstituency"))
 		{
 			//to fetch all types of regions like tehsils, municipalities, corporations, grater corporations in a constituency
@@ -147,6 +174,18 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> subRegions = getRegionServiceDataImp().getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, scope);
 			subRegions.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(subRegions);
+			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.MANDALS_O, subRegions);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.MANDALS, subRegions);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.MANDALS_C, subRegions);
+			}
 		}  else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
 		{
 			//to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
@@ -154,6 +193,18 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(hamletsOrWards);
+			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.VILLAGES_O, hamletsOrWards);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.VILLAGES, hamletsOrWards);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.VILLAGES_C, hamletsOrWards);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("localElectionBodiesOfDistrict"))
 		{
 			//to get all local election bodies in a  district
@@ -176,6 +227,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByAreaTypeInDistrict(locationId, areaType);
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
+			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
+			{
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, constituencies);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("parliamentsInState"))
 		{
 			//to get all constituenciesByAreaTypeInDistrict  
