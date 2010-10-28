@@ -444,7 +444,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 				//session variables used to pre populate cadre level selecton for active cadre
-				session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.STATES_C, stateList);
 				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
@@ -558,6 +558,18 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
 			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
+		}
+		if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.TDP.equals(regVO.getPartyShortName()))
+		{
+			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
+			partyCommittees_flag = true;
+			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);			
+		}
+		if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType()) && IConstants.INC.equals(regVO.getPartyShortName()))
+		{
+			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
+			partyCommittees_flag = true;
+			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);			
 		}
 		
 		if(gender.size() == 0){
