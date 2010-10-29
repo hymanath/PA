@@ -25,18 +25,21 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByStateId(Long stateId){
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.state.stateId = ?",stateId);
+	public List<InfluencingPeople> findByStateId(Long stateId,Long registrationId){
+		Object[] params = {stateId, registrationId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.state.stateId = ? and model.registration.registrationId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByDistrictId(Long districtId){
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.district.districtId = ?",districtId);
+	public List<InfluencingPeople> findByDistrictId(Long districtId,Long registrationId){
+		Object[] params = {districtId, registrationId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.district.districtId = ? and model.registration.registrationId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeople> findByConstituencyId(Long constituencyId){
-		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.constituency.constituencyId = ?",constituencyId);
+	public List<InfluencingPeople> findByConstituencyId(Long constituencyId,Long registrationId){
+		Object[] params = {constituencyId, registrationId};
+		return getHibernateTemplate().find("from InfluencingPeople model where model.userAddress.constituency.constituencyId = ? and model.registration.registrationId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
