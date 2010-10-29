@@ -7,6 +7,6 @@
 <title>Influencing People Error Page</title>
 </head>
 <body>
- 				Error Occured While inserting Influencing People
+ <h2><font color="red"><center>Error Occured While inserting Influencing People</center></font></h2>
 </body>
 </html>
