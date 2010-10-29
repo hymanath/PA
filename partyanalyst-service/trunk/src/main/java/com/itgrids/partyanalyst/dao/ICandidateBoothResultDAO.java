@@ -11,8 +11,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 
 	public List<CandidateBoothResult> findByProperty(Object value);
 	
-	public List<CandidateBoothResult> findByNominationAndBoothConstituencyElection(Long nominationId, Long boothConstituencyElectionId);
-	
 	public List<CandidateBoothResult> findByBoothElectionScopeAndParty(Long boothId, String electionYear, Long electionScopeId, Long partyId);
 	
 	public List<CandidateBoothResult> findByConstituencyElection(Long constituencyElectionId);

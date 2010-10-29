@@ -12,10 +12,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 
 	public List<Booth> findBoothsByConstituencyElection(Long constiElecId);
 	
-	public List<BoothConstituencyElection> findByElectionConstituencyAndBooth(Long boothId, String electionYear, Long constituencyId);
-
-	public List<BoothConstituencyElection> findByElectionConstituencyAndTehsil(String electionYear, Long tehsilId, Long constituencyId);
-
 	public List<BoothConstituencyElection> findByConstituencyElectionTehsilAndPartNo(Long constituencyElectionId, Long tehsilId, String partNo);
 
 	public List<BoothConstituencyElection> findByBoothAndConstiuencyElection(String partNo, Long constiElecId);
@@ -45,10 +41,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<BoothConstituencyElection> findByConstituencyDistrictAndPartNo(String constituencyName, Long districtId, String partNo, String year);
 	
 	public List<BoothConstituencyElection> findByBoothIds(String boothIds);
-
-	public List<Long> findByConstituencyElectionAndPartNo(
-			Long constituencyElectionId, String partNos);
-	
 	
 	@SuppressWarnings("unchecked")
 	public List findMandalWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue);

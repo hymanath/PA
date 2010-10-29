@@ -607,9 +607,17 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 }
 */
-	public void testGet(){
+	/*public void testGet(){
 		List list = nominationDAO.getALLPartiesByElectionId(33l,"18398,18400,18441,18447");
 		System.out.println(list.size());
+	}*/
+	
+	public void testGet(){
+		Long start = System.currentTimeMillis();
+		List list = nominationDAO.getNominations("select model from Constituency model");
+		Long end = System.currentTimeMillis(); 
+		System.out.println(list.size()+" Time Taken = "+(end - start)/1000);
 	}
+	
 }
 	
