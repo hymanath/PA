@@ -36,6 +36,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private IProblemManagementService problemManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
 	private ConstituencyManagementVO constituencyManagementVO;
+	private HttpSession session;
 	private HttpServletRequest request;
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
@@ -85,6 +86,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public void setConstituencyManagementVO(
 			ConstituencyManagementVO constituencyManagementVO) {
 		this.constituencyManagementVO = constituencyManagementVO;
+	}
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
 	}
 
 	public void setServletRequest(HttpServletRequest arg0) {
@@ -385,6 +394,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	
 	public String getInfluencingPeopleByLocation()
 	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
@@ -401,7 +414,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		}  
 		String flag = jObj.getString("flag");
 		
-		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue, hamletId,flag);
+		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue, hamletId,flag,userId);
 		
 		
 		
