@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.eclipse.jdt.core.dom.ThisExpression;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,8 +28,10 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
 	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
-						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId,influencingScopeValue;
+						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId,
+						influencingScopeValue,registrationId;
 	private int resultStatus = 3;
+	private HttpSession session;
 	
 	public int getResultStatus() {
 		return resultStatus;
@@ -64,7 +68,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -75,7 +79,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last Name should not contain special characters and numbers", shortCircuit = true)
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -168,6 +172,14 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 	
 	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
 	public String getVillage() {
 		return village;
 	}
@@ -219,7 +231,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return middleName;
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Middle Name should not contain special characters and numbers", shortCircuit = true)
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
@@ -230,7 +242,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse name is mandatory")
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.fatherOrSpouseName = fatherOrSpouseName;
 	}
@@ -293,14 +305,28 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingScopeValue;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Influence Range Value is Mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Influence Range Value")
 	public void setInfluencingScopeValue(String influencingScopeValue) {
 		this.influencingScopeValue = influencingScopeValue;
 	}
 
+	public String getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
+	}
+
 	public String execute() throws Exception{
+		
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		
 		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 		
+		influencingPeopleBeanVO.setRegistrationId(regVO.getRegistrationID().toString());
 		influencingPeopleBeanVO.setFirstName(getFirstName().trim());
 		influencingPeopleBeanVO.setLastName(getLastName().trim());
 		influencingPeopleBeanVO.setMiddleName(getMiddleName().trim());
