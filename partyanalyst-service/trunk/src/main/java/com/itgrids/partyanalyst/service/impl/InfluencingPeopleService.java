@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -60,6 +61,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IUserAddressDAO userAddressDAO;
 	private IOccupationDAO occupationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
+	private IRegistrationDAO registrationDAO;
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
 	private TransactionTemplate transactionTemplate = null;
 	private InfluencingPeopleVO influencingPeopleVO;
@@ -169,6 +171,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setOccupationDAO(IOccupationDAO occupationDAO) {
 		this.occupationDAO = occupationDAO;
+	}
+
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
 	}
 
 	public InfluencingPeopleBeanVO getInfluencingPeopleBeanVO() {
@@ -360,6 +370,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 				ResultStatus resultStatus = new ResultStatus();
 				try{
+					influencingPeople.setRegistration(registrationDAO.get(new Long(influencingPeopleBeanVO.getRegistrationId())));
 					influencingPeople.setFirstName(influencingPeopleBeanVO.getFirstName());
 					influencingPeople.setLastName(influencingPeopleBeanVO.getLastName());
 					influencingPeople.setMiddleName(influencingPeopleBeanVO.getMiddleName());
@@ -372,7 +383,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
 					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
 					influencingPeople.setInfluencingPeoplePosition(influencingPeoplePositionDAO.get(new Long(influencingPeopleBeanVO.getPosition())));
-					
+										
 					userAddress.setCountry(countryDAO.get(new Long(1L)));
 					userAddress.setState(stateDAO.get(new Long(influencingPeopleBeanVO.getState())));
 					userAddress.setDistrict(districtDAO.get(new Long(influencingPeopleBeanVO.getDistrict())));
