@@ -11,7 +11,7 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,
 	windowTask,influencingPersonId,influencingScopeValue,influencingRangeScope,
 	stateName,districtName,constituencyName,mandalName,wardOrHamletName,
-	occupationType,partyName,castType,positionType;
+	occupationType,partyName,castType,positionType,registrationId;
 	
 	private ResultStatus resultStatus;
 	
@@ -318,6 +318,14 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setPositionType(String positionType) {
 		this.positionType = positionType;
+	}
+
+	public String getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
 	}
 	
 	
