@@ -205,9 +205,15 @@ function influenceRangeFunction(id,text){
 
 function setLocationValue(value) { if(value == '0') { alert("Please Select Valid Location"); return; }	var hiddenEl = document.getElementById("influenceRangeInputId"); hiddenEl.value = ''; hiddenEl.value = value; }
 
-function executeOnload() { var effectedRangeEl = document.getElementById("scopeLevel"); var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
-
-if(selectedeffectedRange != '0') populateLocations(selectedeffectedRange, 'onLoad');	
+function executeOnload() 
+{
+	
+	var effectedRangeEl = document.getElementById("scopeLevel");
+	
+	var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value; 
+		if(selectedeffectedRange != '0')
+		populateLocations(selectedeffectedRange, 'onLoad');	
+	
 
 }
 
@@ -262,24 +268,32 @@ function populateLocations(val,source)
 	var mandalFieldEl = document.getElementById("mandalField");
 	var hamletFieldEl = document.getElementById("hamletField");
 	var pConstituencyFieldEl = document.getElementById("pConstituencyField");
+	
 	if(source == 'onChange')
 	{	
 		hiddenEl.value='';
 		stateFieldEl.selectedIndex = '0';
+		
 		if(districtFieldEl)
 			districtFieldEl.selectedIndex = '0';
+		
 		constituencyFieldEl.selectedIndex = '0';
 		mandalFieldEl.selectedIndex = '0';
 		hamletFieldEl.selectedIndex = '0';
+		
 		if(pConstituencyFieldEl)
 		pConstituencyFieldEl.selectedIndex = '0';
 	}	
+	
 	row1El.style.display = 'none';
+	
 	if(row2El)
 		row2El.style.display = 'none';
+	
 	row3El.style.display = 'none';
 	row4El.style.display = 'none';
 	row5El.style.display = 'none';
+
 	if(row6El)
 		row6El.style.display = 'none';
 	
@@ -332,9 +346,10 @@ function populateLocations(val,source)
 	}	 
 }
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
+
 </script>
 
-<body class="bodyStyle" onload="executeOnload">
+<body onLoad="executeOnload()" class="bodyStyle">
  	<center>
  	<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
@@ -423,13 +438,13 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	</tr>
 	<tr>
 		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
-		<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
+		<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
 		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
-		<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" headerKey="0" headerValue="Select District"></s:select></td>
+		<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" headerKey="0" ></s:select></td>
 	</tr>	
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
-		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" headerValue="Select Constituency"></s:select></td>
+		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
 		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>	
@@ -468,18 +483,18 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<tr>		
 			<td width="120px" class="tdstyle"><s:label for="scopeLevel" id="influenceRangeId"  value="%{getText('InfluenceRange')}" /><font class="required"> * </font></td>
 			<td align="left">
-				<s:select id="scopeLevel" list="#session.influenceRange" listKey="id" listValue="name" name="influencingRange" cssClass="regionSelect" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"/> 
+				<s:select id="scopeLevel" list="#session.influenceRange" listKey="id" listValue="name" value="defaultInfluenceRange" name="influencingRange" cssClass="regionSelect" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"/> 
 			</td>			
 		</tr>	 								
 	<c:if test="${userAccess !=  'MP'}">
 		<tr id="row1" style="display:none;">
-			<td width="120px" class="tdstyle"><%=STATE%><font class="requiredFont">*</font></td>
+			<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
 			<td>
 			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
-			<td width="120px" class="tdstyle"><%=DISTRICT%><font class="requiredFont"> * </font></td>
+			<td width="120px" class="tdstyle"><%=DISTRICT%><font class="required"> * </font></td>
 			<td>
 			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
