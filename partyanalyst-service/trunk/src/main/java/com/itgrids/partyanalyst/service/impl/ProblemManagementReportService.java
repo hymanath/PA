@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
@@ -76,7 +77,7 @@ public class ProblemManagementReportService implements
 	private IConstituencyDAO constituencyDAO;
 	private IHamletDAO hamletDAO;
 	private ITehsilDAO tehsilDAO;
-	private InfluencingPeopleDAO influencingPeopleDAO;
+	private IInfluencingPeopleDAO influencingPeopleDAO;
 	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
@@ -225,15 +226,6 @@ public class ProblemManagementReportService implements
 		this.assignedProblemProgressDAO = assignedProblemProgressDAO;
 	}
 
-
-	public InfluencingPeopleDAO getInfluencingPeopleDAO() {
-		return influencingPeopleDAO;
-	}
-
-	public void setInfluencingPeopleDAO(InfluencingPeopleDAO influencingPeopleDAO) {
-		this.influencingPeopleDAO = influencingPeopleDAO;
-	}
-
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -257,6 +249,14 @@ public class ProblemManagementReportService implements
 
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
+	}
+
+	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+
+	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
 	}
 
 	public IDistrictDAO getDistrictDAO() {
@@ -791,23 +791,23 @@ public class ProblemManagementReportService implements
 		}
 		
 		@SuppressWarnings("unchecked")
-		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag){
+		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag,Long userId){
 						
 			List<InfluencingPeople> impPeople = null;
 			
 			if(accessType.equals(IConstants.STATE_LEVEL))
 			{
-				impPeople = influencingPeopleDAO.findByStateId(new Long(accessValue));
+				impPeople = influencingPeopleDAO.findByStateId(new Long(accessValue),userId);
 			}
 			
 			if(accessType.equals(IConstants.DISTRICT_LEVEL))
 			{
-				impPeople = influencingPeopleDAO.findByDistrictId(new Long(accessValue));
+				impPeople = influencingPeopleDAO.findByDistrictId(new Long(accessValue),userId);
 			}
 			
 			if(accessType.equals(IConstants.MLA))
 			{
-				impPeople = influencingPeopleDAO.findByConstituencyId(new Long(accessValue));
+				impPeople = influencingPeopleDAO.findByConstituencyId(new Long(accessValue),userId);
 			}
 			
 			if(accessType.equals(IConstants.MP))
@@ -818,7 +818,7 @@ public class ProblemManagementReportService implements
 					for(Object[] values:(List<Object[]>)assemblies)
 					{
 						long assemblyId = Long.parseLong((values[0].toString()));
-						impPeople = influencingPeopleDAO.findByConstituencyId(new Long(assemblyId));
+						impPeople = influencingPeopleDAO.findByConstituencyId(new Long(assemblyId),userId);
 					}
 				}
 				
