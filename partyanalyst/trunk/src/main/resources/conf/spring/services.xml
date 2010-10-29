@@ -549,10 +549,12 @@
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
     	<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
-    	<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />
     	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
     	<property name="townshipDAO" ref="townshipDAO" />
     	<property name="hamletDAO" ref="hamletDAO" />
+    	<property name="electionDAO" ref="electionDAO" />
+    	<property name="boothDAO" ref="boothDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
