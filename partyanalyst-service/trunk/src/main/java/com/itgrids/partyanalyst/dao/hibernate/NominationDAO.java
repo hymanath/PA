@@ -1755,4 +1755,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select count(model.nominationId) from Nomination model where model.constituencyElection.election.electionId = ?",electionId);
 	}
 	
+	public List getNominations(String str){
+		return getHibernateTemplate().find(str);
+	}
+	
 }

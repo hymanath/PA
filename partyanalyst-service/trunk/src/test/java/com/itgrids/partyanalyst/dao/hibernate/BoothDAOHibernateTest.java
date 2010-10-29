@@ -118,10 +118,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
 	}*/
 	
-	public void testFindLocalBodyWardsByElectionAndConstituency(){
+	/*public void testFindLocalBodyWardsByElectionAndConstituency(){
 		List list = boothDAO.findLocalBodyWardsByElectionAndConstituency("2009", 315l, "'"+IConstants.GREATER_ELECTION_TYPE+"'");
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
+	}*/
+	
+	public void testFindByConstituencyElectionAndPartNo(){
+		List<Long> list = boothDAO.findByConstituencyElectionAndPartNo(232l, 2009l, "1,2,3");
+		System.out.println(list.size());
 	}
 	
 }

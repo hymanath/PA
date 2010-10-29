@@ -21,22 +21,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByElectionConstituencyAndTehsil(String electionYear, Long tehsilId, Long constituencyId){
-		Object[] params = {tehsilId, electionYear, constituencyId};
-		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.tehsil.tehsilId = ? " +
-				"and model.constituencyElection.election.electionYear = ? " +
-				"and model.constituencyElection.constituency.constituencyId = ?", params);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByElectionConstituencyAndBooth(Long boothId, String electionYear, Long constituencyId) {
-		Object[] params = {boothId, electionYear, constituencyId};
-		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId = ? and " +
-				"model.constituencyElection.election.electionYear = ? and " +
-				"model.constituencyElection.constituency.constituencyId = ?", params);
-	}
-
-	@SuppressWarnings("unchecked")
 	public List<BoothConstituencyElection> findByConstituencyElectionTehsilAndPartNo(Long constituencyElectionId, Long tehsilId, String partNo) {
 		Object[] params = {partNo, tehsilId, constituencyElectionId};
 		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.partNo=? and model.booth.tehsil.tehsilId = ? and model.constituencyElection.constiElecId = ?", params);
@@ -164,14 +148,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId in("+boothIds+")");
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Long> findByConstituencyElectionAndPartNo(
-			Long constituencyElectionId, String partNos) {
-		return getHibernateTemplate().find("select model.booth.boothId from BoothConstituencyElection model where " +
-				"model.booth.partNo in ( "+ partNos + ") and model.constituencyElection.constiElecId =?",constituencyElectionId);
-	}
-	
-	
 	@SuppressWarnings("unchecked")
 	public List findMandalWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
 		Object[] params = {electionId,tehsilId,trendValue};
