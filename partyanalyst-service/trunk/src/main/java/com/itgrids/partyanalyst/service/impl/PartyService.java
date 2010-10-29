@@ -271,7 +271,7 @@ public class PartyService implements IPartyService {
 			Boolean includeAllianceParties, boolean b,String reportLevel){
 		
 		log.debug("getElectionData start.....for year.." + year);
-		log.error(" Party Performance Report For " +  year );
+		log.debug(" Party Performance Report For " +  year );
 		PartyPerformanceReportVO partyPerformanceReportVO = new PartyPerformanceReportVO();
 		Election election = null;
 		ElectionType electionTyp = null;
