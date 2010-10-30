@@ -554,7 +554,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long totalVotersInVillage = new Long(0);
 		Long polledVotes = 0l;
 		try{
-						
 			List boothDetails = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId, electionId);
 
 			for(Object[] values:(List<Object[]>)boothDetails){
@@ -887,8 +886,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List<VotersInfoForMandalVO> votersBasicInfoForMandalList = null;
 		List<MandalVO> localElectionsInfo = new ArrayList<MandalVO>(0);
 		 
-		Map<String, String> mandalsIdsYear = new HashMap<String, String>(0);
-		Map<String, List<String>> isPartialByYear = new HashMap<String, List<String>>(0);
+		Map<String, String> mandalsIdsYear = new LinkedHashMap<String, String>(0);
+		Map<String, List<String>> isPartialByYear = new LinkedHashMap<String, List<String>>(0);
 		List<String> isPartialInfoForMandal = null;
 		for (int i = 0; i < mandalsList.size(); i++) 
 		{
