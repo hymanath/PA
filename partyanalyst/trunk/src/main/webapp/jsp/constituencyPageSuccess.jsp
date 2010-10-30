@@ -1298,7 +1298,7 @@ function showMunicipalInfo(myResults){
 function showMandalVotesShareDetailsChart(myResults)
 {
 	var mandalwiseVotersShare = myResults.assembliesOfParliamentInfo;
-		
+			
 		for(var c in mandalwiseVotersShare){
 
 			var data = new google.visualization.DataTable();
@@ -1323,7 +1323,10 @@ function showMandalVotesShareDetailsChart(myResults)
 				if(document.getElementById('divInteractive_Chart_0')){
 					if(c == 0){
 						chartDiv = document.getElementById('divInteractive_Chart_0');
-						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+						if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+						ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+						else 
+						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
 					}
 					var chart = new google.visualization.PieChart(chartDiv);
 					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
@@ -1334,7 +1337,10 @@ function showMandalVotesShareDetailsChart(myResults)
 				if(document.getElementById('divInteractive_Chart_1')){
 					if(c == 1){
 					chartDiv = document.getElementById('divInteractive_Chart_1');
-					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+					ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
+					else
+					ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2004';
 					}
 					var chart = new google.visualization.PieChart(chartDiv);
 					chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
