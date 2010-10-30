@@ -83,57 +83,25 @@
 				</tr>
 
 				<tr>
-					<th><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
-					<td>
+					<th align="left"><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
+					<td align="left">
 						<input type="radio" name="searchBasedRadio" onClick="searchBased(this.value)"  checked="checked" value="location"/> Cadre Location  
 						<input type="radio" name="searchbasedRadio" onClick="searchBased(this.value)" value="level"/> Cadre Region Level
 					</td>
 				</tr>
 
 				<tr>
-					<th><font color="#FF0000"> * </font>Select Range</th>                
-					<td>
+					<th align="left"><font color="#FF0000"> * </font>Select Range</th>                
+					<td align="left">
 						<div id="rangeRegionsRadioElmtDiv"></div>
-						<div id="rangeRegionsSelectElmtDiv"></div>
+						<div id="rangeRegionsSelectElmtDiv" style="width:600px;"></div>
 				         
 					</td>
 				</tr>
-				<!--<tr id="locationRangeRow">
-					<th>
-						<span id="accessRegion_label"></span>
-					</th>                
-					<td>
-						<span id="accessRegion_data"> 
-							<select class="regionsSelectBox" style="display:none;" id="countrySelectBox" onchange="getStatesComboBoxForACountry(this.options[this.selectedIndex].value,'stateSelectBox')">
-							<option value="0"> Select Country </option>
-							<option value="1"> India </option>
-							</select>
-
-							<select class="regionsSelectBox" style="display:none;" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')">
-							<option value="0"> Select State</option>
-							</select>
-
-							<select class="regionsSelectBox" style="display:none;" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')">
-							<option value="0"> Select District</option>
-							</select>
-
-							<select class="regionsSelectBox" style="display:none;" id="constituencySelectBox" onchange="getMandalsComboBoxForAConstituency(this.options[this.selectedIndex].value,'mandalSelectBox')">
-							<option value="0"> Select Constituency</option>
-							</select>
-							
-							<select class="regionsSelectBox" style="display:none;" id="mandalSelectBox" onchange="getVillagesComboBoxForAMandal(this.options[this.selectedIndex].value,'villageSelectBox')">
-							<option value="0"> Select Mandal</option>
-							</select>
-
-							<select class="regionsSelectBox" style="display:none;" id="villageSelectBox" onchange="javascript:{REPORTLOCATIONVALUE = this.options[this.selectedIndex].value}">
-							<option value="0"> Select Village</option>
-							</select>
-						</span>
-				</tr>-->
 				
 				<tr>
-					<th><font color="#FF0000"> * </font> Cadre Type</th>
-					<td>
+					<th align="left"><font color="#FF0000"> * </font> Cadre Type</th>
+					<td align="left">
 						<input type="radio" name="cadreTypeRadio" value="all" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
 						<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
 						<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
@@ -145,8 +113,8 @@
 			<div id="filterOptionsCadresSearch">
 				<table width="100%" class="cadreSearchInputTable">
 				<tr>
-					<th valign="top"><font color="#FF0000"> * </font> Social Status</th>
-					<td valign="top">
+					<th valign="top" align="left"><font color="#FF0000"> * </font> Social Status</th>
+					<td valign="top" align="left">
 						<input type="checkbox" id="socialStatusCheck" value="socialStatus" onclick="showSocialStatus(this)"/> Include Cadre Social Status
 						<div>	
 							<table>
@@ -180,8 +148,8 @@
 				</tr>			
 				
 				<tr>
-					<th valign="top"><div id="searchCriteria_label"></div></th>
-					<td valign="top">
+					<th valign="top" align="left"><div id="searchCriteria_label"></div></th>
+					<td valign="top" align="left">
 						<div id="searchCriteria_data">
 							
 						</div>
@@ -189,8 +157,8 @@
 				</tr>
 				
 				<tr>
-					<th valign="top"><div id="searchPerform_label">Perform ${windowTask} with</div></th>
-					<td valign="top">
+					<th valign="top" align="left"><div id="searchPerform_label">Perform ${windowTask} with</div></th>
+					<td valign="top" align="left">
 						<div id="searchPerform_label">
 							<input type="radio" name="performSearch" value="and" checked="checked" onclick="javascript:{PERFORMSEARCH = this.value}">all of these words
 							<input type="radio" name="performSearch" value="or" onclick="javascript:{PERFORMSEARCH = this.value}">Any one of these words

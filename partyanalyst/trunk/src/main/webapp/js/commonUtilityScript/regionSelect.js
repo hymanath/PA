@@ -273,9 +273,10 @@ function changeSearchCriteriaValue(elmt)
 function changeSocialStatus(elmt)
 {	
 	var elmtValue = elmt.id.substring(elmt.id.indexOf('_')+1,elmt.id.length);
+	clickIndex = elmt.selectedIndex;
 	
-	var sdValues = [];
-
+	var sdValues = [];	
+	
 	if(clickIndex != 0)
 	{
 		elmt.options[0].selected = false;
@@ -437,7 +438,7 @@ function showSocialStatus(elmt)
 {	
 	var checkElmts = document.getElementsByName("socialStatus");
 	var status;
-
+		
 	if(elmt.checked == true)
 	{
 		SOCIALSTATUS = true;
@@ -452,9 +453,10 @@ function showSocialStatus(elmt)
 
 	if(checkElmts.length == 0)
 		return;
-	
-	for(var i in checkElmts)
+
+	for(var i=0; i<checkElmts.length; i++)
 	{		
+
 		checkElmts[i].disabled = status;		
 	}
 
