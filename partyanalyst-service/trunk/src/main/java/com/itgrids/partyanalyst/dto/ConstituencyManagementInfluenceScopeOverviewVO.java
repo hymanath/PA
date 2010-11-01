@@ -23,6 +23,8 @@ public class ConstituencyManagementInfluenceScopeOverviewVO implements
 	private static final long serialVersionUID = 1L;
 	
 	private String influenceScope;
+	
+	private Long countValue;
 	private List<ConstituencyManagementInfluenceScopeDetailsVO> influenceScopeDetails;
 	
 	public String getInfluenceScope() {
@@ -30,6 +32,12 @@ public class ConstituencyManagementInfluenceScopeOverviewVO implements
 	}
 	public void setInfluenceScope(String influenceScope) {
 		this.influenceScope = influenceScope;
+	}
+	public Long getCountValue() {
+		return countValue;
+	}
+	public void setCountValue(Long countValue) {
+		this.countValue = countValue;
 	}
 	public List<ConstituencyManagementInfluenceScopeDetailsVO> getInfluenceScopeDetails() {
 		return influenceScopeDetails;
