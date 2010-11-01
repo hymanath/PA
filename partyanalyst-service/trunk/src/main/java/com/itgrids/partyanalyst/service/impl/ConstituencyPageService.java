@@ -465,6 +465,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long districtId = 0l;
 		String electionType = "";
 		Boolean hasAnalyzeData = false;
+		List list = new ArrayList(0);
 		if(constituency != null){
 			
 			if(constituency.getDistrict() != null){
@@ -482,6 +483,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			constituencyDetails.setDeformDate(constituency.getDeformDate());
 			constituencyDetails.setConstituencyType(constituency.getElectionScope().getElectionType().getElectionType());
 			constituencyDetails.setArea_type(constituency.getAreaType());
+			
+			List<Long> constituencyIds = new ArrayList<Long>(0);
+			constituencyIds.add(constituencyId);
+			
+			list = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
+					
+			for(int i=0;i<list.size();i++){
+				Object[] params = (Object[])list.get(i);
+				if(params[0]!=null){
+					constituencyDetails.setReservation_zone(params[0].toString());
+				}
+			}
+			
 			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType) && 
 					(constituency.getStartDate()== null || StringUtils.isBlank(constituency.getStartDate().toString())) && 
 					(constituency.getDeformDate() == null || StringUtils.isBlank(constituency.getDeformDate().toString())))
