@@ -33,6 +33,8 @@
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
 	
 	<!-- YUI Dependency Files-->
+
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <style type="text/css">
 table.CandidateElectionResultsTable{
 	font-family: verdana,arial,sans-serif;
@@ -126,6 +128,16 @@ table.CandidateElectionResultsTable td {
 	{
 		text-decoration:underline;
 		color:#344C7C;
+	}
+
+	.partyDetailsBody
+	{
+		border-bottom:1px solid #E0E0D6;
+		border-left:1px solid #E0E0D6;
+		border-right:1px solid #E0E0D6;
+		height:150px;
+		overflow:auto;
+		padding:10px;
 	}
 
 </style>
@@ -348,60 +360,79 @@ table.CandidateElectionResultsTable td {
             <br>
 			<div id="influenceReportMain">				
 				<div id="reportMain">
-				<div id="tableDiv" style="text-align:left;margin-left:85px;">
-
-					
-
-					<table>
+				<div id="tableDiv" style="text-align:left;margin-left:80px;margin-right:20px;">
+					<table width="100%">						
 						<tr>
-							<th><span class="partyDetSpan">${partyInfluenceReportVO.newPartyName} State Wise Results for ${partyInfluenceReportVO.year} ..</span></th>
-							<th style="padding-left:20px;"><span class="partyDetSpan">${partyInfluenceReportVO.impactedPartyName} State Wise Results for ${partyInfluenceReportVO.year} and ${partyInfluenceReportVO.previousYear} ...</span></th>
-						</tr>
-						<tr>
-							<td>
-								<table class="CandidateElectionResultsTable">
-									<tr>
-										<th><c:out value="New Party " /></th>
-										<td align="center"><c:out value="${partyInfluenceReportVO.newPartyName}" /></td>
-										
-									</tr>
-									<tr>
-										<th><c:out value="Votes % in " /><c:out value="${partyInfluenceReportVO.year}" /></th>
-										<td align="center"><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</td>
-										
-									</tr>
-									<tr>
-										<th><c:out value="Constituencies Considered " /></th>
-										<td align="center"><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></td>
-										
-									</tr>
-									
-								</table>	
+							<td valign="top">
+								<div id="newPartyDiv_main">
+									<div id="newPartyDiv_head">										
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+											<tr>
+												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td><div class="districtPageRoundedHeaders_center"><span>${partyInfluenceReportVO.newPartyName} State Wise Results for ${partyInfluenceReportVO.year}</span></div></td>
+												<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+											</tr>
+										</table>											
+									</div>
+									<div id="newPartyDiv_body" class="partyDetailsBody">
+										<table class="CandidateElectionResultsTable" width="100%">
+											<tr>
+												<th><c:out value="New Party " /></th>
+												<td align="center"><c:out value="${partyInfluenceReportVO.newPartyName}" /></td>
+												
+											</tr>
+											<tr>
+												<th><c:out value="Votes % in " /><c:out value="${partyInfluenceReportVO.year}" /></th>
+												<td align="center"><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</td>
+												
+											</tr>
+											<tr>
+												<th><c:out value="Constituencies Considered " /></th>
+												<td align="center"><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></td>
+												
+											</tr>											
+										</table>	
+									</div>
+								</div>
+								
 							</td>
-							<td style="padding-left:20px;">
-								<table class="CandidateElectionResultsTable" style="margin:left:10px;">
-									<tr>
-										
-										<th><c:out value="Impacted Party " /></th>
-										<td align="center"><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></td>
-									</tr>
-									<tr>
-										
-										<th><c:out value=" Votes % in "/> <c:out value="${partyInfluenceReportVO.year}" /></th>
-										<td ><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearOne}" /> %</td>
-									</tr>
-									<tr>
-										
-										<th><c:out value="Votes % in " /><c:out value="${partyInfluenceReportVO.previousYear}" /></th>
-										<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</td>
-									</tr>
-									<tr>
-										<th align="center"><c:out value="Votes % Diff ( " />
-								   <c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" />  <c:out value=") " /></th>
-									<td style="color:red;"><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</td>
-										
-									</tr>
-								</table>
+							<td style="padding-left:20px;" valign="top">								
+								<div id="impactedPartyDiv_main">
+									<div id="impactedPartyDiv_head">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+											<tr>
+												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td><div class="districtPageRoundedHeaders_center"><span>${partyInfluenceReportVO.impactedPartyName} State Wise Results for ${partyInfluenceReportVO.year} and ${partyInfluenceReportVO.previousYear}</span></div></td>
+												<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+											</tr>
+										</table>											
+									</div>
+									<div id="impactedPartyDiv_body" class="partyDetailsBody">
+										<table class="CandidateElectionResultsTable" style="margin:left:10px;" width="100%">
+											<tr>
+												
+												<th><c:out value="Impacted Party " /></th>
+												<td align="center"><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></td>
+											</tr>
+											<tr>
+												
+												<th><c:out value=" Votes % in "/> <c:out value="${partyInfluenceReportVO.year}" /></th>
+												<td ><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearOne}" /> %</td>
+											</tr>
+											<tr>
+												
+												<th><c:out value="Votes % in " /><c:out value="${partyInfluenceReportVO.previousYear}" /></th>
+												<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</td>
+											</tr>
+											<tr>
+												<th align="center"><c:out value="Votes % Diff ( " />
+										   <c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" />  <c:out value=") " /></th>
+											<td style="color:red;"><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</td>
+												
+											</tr>
+										</table>
+									</div>
+								</div>								
 							</td>
 						</tr>
 					</table>
