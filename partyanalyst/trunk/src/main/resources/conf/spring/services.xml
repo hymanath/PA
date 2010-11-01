@@ -104,6 +104,7 @@
 		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
