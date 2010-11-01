@@ -8,7 +8,7 @@
 </head>
 <body style="color:green;" >
 
-		<center><h2> Influencing People Inserted Successfully.</h2></center>
+		<center><h2> Influencing People Added Successfully.</h2></center>
 
 </body>
 </html>
