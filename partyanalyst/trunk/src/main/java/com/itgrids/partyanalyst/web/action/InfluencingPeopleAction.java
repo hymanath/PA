@@ -424,9 +424,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			List<SelectOptionVO> subRegions_c = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 			session.setAttribute(ISessionConstants.MANDALS, subRegions_c);
 			
-			/*List<SelectOptionVO> villageList_c = new ArrayList<SelectOptionVO>();
-			session.setAttribute(ISessionConstants.VILLAGES, villageList_c);*/
-			
 			List<SelectOptionVO> hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 			session.setAttribute(ISessionConstants.VILLAGES, hamletsOrWards);
 			
