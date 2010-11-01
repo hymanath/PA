@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Sai Krishna
@@ -25,6 +26,8 @@ public class ConstituencyManagementRegionWiseOverviewVO implements Serializable 
 	private String regionType;
 	
 	private Long countValue;
+	
+	private List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionWiseOverview;
 
 	public Long getRegionId() {
 		return regionId;
@@ -56,6 +59,15 @@ public class ConstituencyManagementRegionWiseOverviewVO implements Serializable 
 
 	public void setCountValue(Long countValue) {
 		this.countValue = countValue;
+	}
+
+	public List<ConstituencyManagementSubRegionWiseOverviewVO> getSubRegionWiseOverview() {
+		return subRegionWiseOverview;
+	}
+
+	public void setSubRegionWiseOverview(
+			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionWiseOverview) {
+		this.subRegionWiseOverview = subRegionWiseOverview;
 	}
 
 }
