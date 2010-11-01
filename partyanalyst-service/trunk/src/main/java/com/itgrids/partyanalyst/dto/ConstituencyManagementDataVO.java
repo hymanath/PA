@@ -14,7 +14,7 @@ import java.util.List;
  * @author Sai Krishna
  *
  */
-public class ConstituencyManagementDataVO implements Serializable {
+public class ConstituencyManagementDataVO extends ResultStatus implements Serializable {
 
 	/**
 	 * 
