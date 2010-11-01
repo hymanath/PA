@@ -23,7 +23,6 @@ public class ConstituencyManagementDataVO implements Serializable {
 	
 	private String dataCategory;
 	private ConstituencyManagementRegionWiseOverviewVO regionWiseOverview;
-	private List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionWiseOverview;
 	private List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverview;
 	
 	public String getDataCategory() {
@@ -38,13 +37,6 @@ public class ConstituencyManagementDataVO implements Serializable {
 	public void setRegionWiseOverview(
 			ConstituencyManagementRegionWiseOverviewVO regionWiseOverview) {
 		this.regionWiseOverview = regionWiseOverview;
-	}
-	public List<ConstituencyManagementSubRegionWiseOverviewVO> getSubRegionWiseOverview() {
-		return subRegionWiseOverview;
-	}
-	public void setSubRegionWiseOverview(
-			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionWiseOverview) {
-		this.subRegionWiseOverview = subRegionWiseOverview;
 	}
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getInfluenceScopeOverview() {
 		return influenceScopeOverview;
