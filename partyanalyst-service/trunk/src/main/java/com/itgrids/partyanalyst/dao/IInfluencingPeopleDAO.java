@@ -15,5 +15,60 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List<InfluencingPeople> findByStateId(Long stateId,Long registrationId);
 	public List<InfluencingPeople> findByDistrictId(Long districtId,Long registrationId);
 	public List<InfluencingPeople> findByConstituencyId(Long constituencyId,Long registrationId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInState(Long userId,Long stateId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInState(Long userId,Long stateId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInDistrictsByState(Long userId,Long stateId);
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInDistrict(Long userId,Long districtId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInDistrict(Long userId,Long districtId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInConstituenciesByDistrict(Long userId,Long districtId);
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInTehsilsByConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(Long userId,Long constituencyId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,Long localBodyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInLocalBodys(Long userId,Long localBodyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,Long localBodyId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInTehsil(Long userId,Long tehsilId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInTehsil(Long userId,Long tehsilId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInVillagesByTehsil(Long userId,Long tehsilId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInVillage(Long userId,Long hamletId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInVillage(Long userId,Long hamletId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInWard(Long userId,Long wardId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInWard(Long userId,Long wardId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId,String influencingScope);
 
 }
