@@ -1146,7 +1146,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	constituencyPageMainObj.constituencyInfo.startDate = "${constituencyDetails.startDate}";
 	constituencyPageMainObj.constituencyInfo.deformDate = "${constituencyDetails.deformDate}";
 	constituencyPageMainObj.constituencyInfo.constituencyType = "${constituencyDetails.constituencyType}";
-	
+	constituencyPageMainObj.constituencyInfo.reservation_zone = "${constituencyDetails.reservation_zone}";	
 	
 	/*	Constituency Election Results Info
 		----------------------------------

@@ -12,7 +12,8 @@ var constituencyPageMainObj={
 													stateName:'',
 													startDate:'',
 													deformDate:'',
-													constituencyType:''
+													constituencyType:'',
+													reservation_zone:''
 												 },
 								constituencyElectionInfo:[],
 								constituencyVotersInfo:[],
@@ -256,6 +257,14 @@ function buildConstituencyInfo()
 		str+='</tr>';
 	}
 	
+	if(constituencyPageMainObj.constituencyInfo.reservation_zone.length > 0)
+	{
+		str+='<tr>';
+		str+='<th> Reservation Zone </th>';
+		str+='<th> : </th>';
+		str+='<td> '+constituencyPageMainObj.constituencyInfo.reservation_zone+' </td>';
+		str+='</tr>';
+	}
 	if(divElmtBody)
 		divElmtBody.innerHTML=str;
 
