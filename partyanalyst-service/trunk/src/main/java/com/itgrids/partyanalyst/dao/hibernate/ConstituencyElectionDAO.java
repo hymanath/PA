@@ -10,13 +10,17 @@ package com.itgrids.partyanalyst.dao.hibernate;
 *@author <a href="mailto:sai.basetti@gmail.com">Sai Krishna</a>
 *@author <a href="mailto:sriharigopalnalam@gmail.com">Srihari</a>
 */
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyElection, Long> implements
@@ -327,4 +331,24 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"where model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ? "+
 				"and model.constituency.constituencyId = ?",params);
 	}
+	
+	public List getLatestReservationZone(List<Long> constituencyIds){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.reservationZone,model.election.electionYear,model.constituency.constituencyId from ConstituencyElection model");			
+		query.append(" where (model.election.electionYear in ");
+		query.append(" (select max(model2.electionYear) from Election model2 where model2.elecSubtype = ? ) ");
+		query.append(" or model.election.electionYear in ");
+		query.append(" (select max(model2.electionYear) from Election model2 where model2.elecSubtype = ? )) ");
+		query.append(" and model.constituency.constituencyId in (:constituencyIds)");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setString(0,IConstants.ELECTION_SUBTYPE_MAIN);
+		queryObject.setString(1,IConstants.ELECTION_SUBTYPE_BYE);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		return queryObject.list();
+	}
+	
+	
 }
+
+
