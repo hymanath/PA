@@ -875,6 +875,8 @@ public class StaticDataService implements IStaticDataService {
 	@SuppressWarnings("unchecked")
 	public ConstituenciesStatusVO getConstituenciesWinnerInfo(Long districtId){
 		Set<Long> parliamentConstituencies = new HashSet<Long>();
+		List<Long> constituencyIds = new ArrayList<Long>(0);
+		List yearsList = new ArrayList(0);
 		try{
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo()...started started..");
 			Long electionYear = 0L;
@@ -891,8 +893,7 @@ public class StaticDataService implements IStaticDataService {
 			if(count > 0L)
 				electionYear = Long.parseLong(election.getElectionYear());
 			else{*/
-			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(
-					IConstants.ASSEMBLY_ELECTION_TYPE, stateId,"MAIN")
+			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, stateId,"MAIN")
 					.get(0).toString()) ;
 			
 			
@@ -907,16 +908,32 @@ public class StaticDataService implements IStaticDataService {
 			constituenciesStatusVO.setTotalDeletedConstituencies(constituenciesStatusVO.getDeletedConstituencies().size());
 			List<ConstituencyWinnerInfoVO> constituencyWinnerInfoVOList = new ArrayList<ConstituencyWinnerInfoVO>();
 			StringBuilder constituencyIDs = new StringBuilder();
+			
 			for(SelectOptionVO constituency : constituencies){
 				constituencyIDs.append(",").append(constituency.getId());
+				constituencyIds.add(constituency.getId());
 			}	
 			
-			log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);
-			List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(constituencyIDs.substring(1), electionYear.toString());
+			log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);			
+			HashMap<Long,Long> constituencyIdsAndYears = new HashMap<Long,Long>();
+			yearsList = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
+						
+			for(int i=0;i<yearsList.size();i++){
+				Object[] params = (Object[])yearsList.get(i);			
+				Long constituencyId = new Long(params[2].toString());
+				Long year = new Long(params[1].toString());
+				if(constituencyIdsAndYears.containsKey(constituencyId) && (constituencyIdsAndYears.get(constituencyId)<year)){
+					constituencyIdsAndYears.put(constituencyId, year);
+				}else{
+					constituencyIdsAndYears.put(constituencyId, new Long(params[1].toString()));
+				}			
+			}
+			
 			constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
 			
-			log.debug("DistrictPageService.getConstituenciesWinnerInfo() total candidates:"+candidates.size());
-			for(int i = 0; i<candidates.size(); i++){
+			for(Map.Entry<Long,Long> result : constituencyIdsAndYears.entrySet()){
+				List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
+				for(int i=0;i<candidates.size();i++){				
 				ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
 				Object[] obj = (Object[]) candidates.get(i);
 				constituencyWinnerInfoVO.setConstituencyName(obj[0].toString());
@@ -935,6 +952,7 @@ public class StaticDataService implements IStaticDataService {
 					constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
 				}
 				constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
+				}
 			}	
 			constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 			constituenciesStatusVO.setDelimitationYear(electionYear);

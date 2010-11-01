@@ -1,18 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Date;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Assert;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -172,7 +166,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetLocalBodyElections(){
 		List elections = constituencyElectionDAO.getLocalBodyElectionsInAState(488L, 1L);
@@ -182,5 +176,28 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
 			}
 		}
+	}*/
+	
+	public void testGetReservationZoneForAConstituency(){
+		//List list = constituencyElectionDAO.getLatestReservationZone(21l,IConstants.ELECTION_SUBTYPE_MAIN);
+		List<Long> constituencyIds = new ArrayList<Long>(0);
+		constituencyIds.add(232l);
+		constituencyIds.add(21l);
+		
+		HashMap<Long,Long> hm = new HashMap<Long,Long>();
+		List list = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
+		
+		for(int i=0;i<list.size();i++){
+			Object[] params = (Object[])list.get(i);
+			System.out.println(params[0] + " \t" + params[1]+ " \t" + params[2]);
+			Long constituencyId = new Long(params[2].toString());
+			Long electionYear = new Long(params[1].toString());
+			if(hm.containsKey(constituencyId) && (hm.get(constituencyId)<electionYear)){
+				hm.put(constituencyId, electionYear);
+			}else{
+				hm.put(constituencyId, new Long(params[1].toString()));
+			}			
+		}
+		System.out.println(hm);
 	}
 }
