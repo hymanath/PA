@@ -28,7 +28,15 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private List<String> uploadInfo;
 	private Boolean hasAnalize = false;
 	private String area_type;
+	private String reservation_zone;
 	
+	
+	public String getReservation_zone() {
+		return reservation_zone;
+	}
+	public void setReservation_zone(String reservation_zone) {
+		this.reservation_zone = reservation_zone;
+	}
 	public String getConstituencyType() {
 		return constituencyType;
 	}
