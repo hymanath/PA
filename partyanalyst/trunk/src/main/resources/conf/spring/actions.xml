@@ -6,6 +6,10 @@
 <beans>
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
+	<bean id="villageBoothMapperAction" class="com.itgrids.partyanalyst.web.action.VillageBoothMapperAction" singleton="false">
+		<property name="boothMapperService" ref="boothMapperService" />
+	</bean>	
+	
 	<bean id="problemManagementAdminAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAdminAction" singleton="false">	
 		<property name="problemManagementReportService" ref="problemManagementReportService" />
 		<property name="dateService" ref="dateService" />
