@@ -72,6 +72,8 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getDistricts(Long stateId);
 		
 		public CandidateDetailsVO getElectionResultsForADistrictForAllYears(Long districtId);
+		
+		public List<SelectOptionVO> getLatestAssemblyConstituenciesInDistrict(Long districtId);
 	//>>>>>District Related Methods End
 	
 	//>>>>>Constituency Related Methods Start
