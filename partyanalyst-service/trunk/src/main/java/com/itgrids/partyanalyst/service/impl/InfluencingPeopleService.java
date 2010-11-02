@@ -617,14 +617,17 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		try{
 			Registration user = registrationDAO.get(userId);
+			String accessValue = user.getAccessValue();
 			
 			//State Level Access User
 			if(user.getAccessType().equals(IConstants.STATE)){
-				
+				Long stateId = new Long(accessValue);
+				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true);
 			}
 			//District Level Access User
 			else if(user.getAccessType().equals(IConstants.DISTRICT)){
-				
+				Long districtId = new Long(accessValue);
+				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true);
 			}
 			//MP Access User
 			else if(user.getAccessType().equals(IConstants.MP)){
@@ -632,7 +635,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}
 			//MLA Access User
 			else if(user.getAccessType().equals(IConstants.MLA)){
-				
+				Long constituencyId = new Long(accessValue);
+				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true);
 			}
 			
 			
