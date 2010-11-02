@@ -642,6 +642,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 		}catch(Exception ex){
 			log.error("Exception Raised In Influencing People Retrieval :" + ex);
+			ex.printStackTrace();
 			constituencyManagementDataVO.setExceptionEncountered(ex);
 			constituencyManagementDataVO.setResultCode(ResultCodeMapper.FAILURE);
 			constituencyManagementDataVO.setExceptionMsg(ex.getMessage());
@@ -981,7 +982,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap1 = null;
 				List<SelectOptionVO> subRegionsList1 = regionServiceDataImp.getTehsilsInAConstituency(constituencyId);
 				if(subRegionsList1 != null && subRegionsList1.size() > 0)
-					subRegionsDetailsMap1 = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.LOCAL_BODY_ELECTION);
+					subRegionsDetailsMap1 = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList1,IConstants.LOCAL_BODY_ELECTION);
 				
 				if(subRegionsDetailsMap1 != null && !subRegionsDetailsMap1.isEmpty())
 				 subRegionsDetailsMap.putAll(subRegionsDetailsMap1);
@@ -995,7 +996,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		    if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 			 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
 			else
-			 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.TEHSIL);	
+			 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,"");	
 			
 			if(subRegionsInfPeopleList != null && subRegionsInfPeopleList.size() > 0)
 			 regionWiseOverview.setSubRegionWiseOverview(subRegionsInfPeopleList);
@@ -1041,6 +1042,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 		}catch(Exception ex){
 			log.error(" Exception Raised In Influencing People Retrieval :" + ex);
+			ex.printStackTrace();
 			ResultStatus rs = new ResultStatus();
 			rs.setExceptionEncountered(ex);
 			rs.setResultCode(ResultCodeMapper.FAILURE);
