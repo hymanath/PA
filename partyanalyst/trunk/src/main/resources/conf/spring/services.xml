@@ -105,6 +105,8 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
