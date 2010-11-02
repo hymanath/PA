@@ -1645,5 +1645,15 @@
 			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>	
 		</action>
 			
+		<action name="villageBoothMapperAction" class="villageBoothMapperAction">
+           <result name="success">/jsp/villageBoothMapper.jsp</result>	
+        </action>  
+        
+        <action name="setDataForVillageBooth" class="villageBoothMapperAction" method="setDataForVillageBoothRelation">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		
 	</package>
 </struts>
