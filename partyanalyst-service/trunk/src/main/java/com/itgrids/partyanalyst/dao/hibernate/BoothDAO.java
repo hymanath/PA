@@ -8,7 +8,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Tehsil;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -163,5 +162,22 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				"model.partNo in ( "+ partNos + ") and model.year = ? and model.constituency.constituencyId = ?",params);
 	}
 	
+	public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId){
+		Object[] params = {constituencyId, tehsilId, year};
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
+				"model.tehsil.tehsilId = ? and model.year = ? and model.localBody is null", params);
+	}
+	
+	public List findBoothsInfoForALocalElectionBodyByConstituencyAndYear(Long localBodyId, Long year, Long constituencyId){
+		Object[] params = {constituencyId, localBodyId, year};
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
+				"model.localBody.localElectionBodyId = ? and model.year = ? ", params);
+	}
+	
+	public List findBoothsInfoForALocalBodyWardByConstituencyAndYear(Long localBodyWardId, Long year, Long constituencyId){
+		Object[] params = {constituencyId, localBodyWardId, year};
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
+				"model.boothLocalBodyWard.localBodyWard.constituencyId = ? and model.year = ? ", params);
+	}
 	
 }

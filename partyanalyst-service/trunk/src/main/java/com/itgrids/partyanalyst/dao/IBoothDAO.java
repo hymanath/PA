@@ -55,4 +55,10 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> findByConstituencyElectionAndPartNo(
 			Long constituencyId, Long electionYear, String partNos);
 	
+	public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId);
+	
+	public List findBoothsInfoForALocalElectionBodyByConstituencyAndYear(Long localBodyId, Long year, Long constituencyId);
+	
+	public List findBoothsInfoForALocalBodyWardByConstituencyAndYear(Long localBodyWardId, Long year, Long constituencyId);
+	
 }
