@@ -1009,5 +1009,44 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return constituencyManagementDataVO;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(java.lang.Long, java.lang.Long, java.lang.String)
+	 */
+	public List<ConstituencyManagementRegionWiseOverviewVO> getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(
+			Long userId, Long regionId, String regionType) {
+
+		List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVOList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
+		
+		try{
+			if(regionType.equalsIgnoreCase(IConstants.STATE)){
+				List<SelectOptionVO> districtsInState = staticDataService.getDistricts(regionId);
+			    for(SelectOptionVO district:districtsInState){
+			    	ConstituencyManagementDataVO constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,district.getId(),false);
+			    	if(constituencyManagementDataVO != null)
+			    		constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
+			    }
+			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
+				List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
+				for(SelectOptionVO consti:constituenciesInDistrict){
+					ConstituencyManagementDataVO constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, consti.getId(), false);
+					if(constituencyManagementDataVO != null)
+						constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
+				}
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				
+			}
+			
+		}catch(Exception ex){
+			log.error(" Exception Raised In Influencing People Retrieval :" + ex);
+			ResultStatus rs = new ResultStatus();
+			rs.setExceptionEncountered(ex);
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		
+	 return constituencyManagementRegionWiseOverviewVOList;
+	}
 }
 
