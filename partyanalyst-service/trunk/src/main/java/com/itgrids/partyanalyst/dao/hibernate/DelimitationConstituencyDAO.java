@@ -71,4 +71,10 @@ IDelimitationConstituencyDAO {
 				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) and model.constituency.areaType != ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getLatestConstituenciesForADistrict(Long districtId){
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+	}
+	
 }
