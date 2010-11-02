@@ -160,6 +160,7 @@
 				<value>com.itgrids.partyanalyst.model.StaticUserDesignation</value>
 				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.BoothVillage</value>
 		 </list>
 		</property>
 	</bean>
@@ -717,6 +718,10 @@
 	</bean>
 	
 	<bean id="localGroupRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalGroupRegionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="boothVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

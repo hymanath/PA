@@ -1,16 +1,25 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothLocalBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IBoothVillageDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
 import com.itgrids.partyanalyst.model.Booth;
@@ -27,7 +36,26 @@ public class BoothMapperService implements IBoothMapperService{
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
+	private IBoothVillageDAO boothVillageDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;	 
 	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
+	public IBoothVillageDAO getBoothVillageDAO() {
+		return boothVillageDAO;
+	}
+
+	public void setBoothVillageDAO(IBoothVillageDAO boothVillageDAO) {
+		this.boothVillageDAO = boothVillageDAO;
+	}
+
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -172,10 +200,54 @@ public class BoothMapperService implements IBoothMapperService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setExceptionEncountered(e);
-		}
-		
-		return result;
-		
+		}		
+		return result;		
 	}
+	
+	public void setDataForVillageBoothRelation(Long districtId,Long electionYear){
+		try{	
+		List<Constituency> conList = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtId);
+			
+			for(Constituency result : conList){			
+				Long constituencyId = result.getConstituencyId();
+				List<Object> partNo = boothDAO.getPartNumbersAndVillagesCoveredInAConstituency(constituencyId, electionYear);
+				 
+				 if(partNo!=null && partNo.size()!=0){
+					 for(int i=0;i<partNo.size();i++){
+						 Object[] parms = (Object[])partNo.get(i);						 
+						
+						 Long partNumber = new Long(parms[0].toString());
+						 
+						 List villageNames = boothVillageDAO.getVillagesForABoothInAConstituency(result.getName(),partNumber);
+						 
+						 List<String> villages = Arrays.asList(parms[1].toString().toLowerCase().split(","));
+						 Set<String> unDuplicateVillages = new HashSet<String>(villages);
+						 if(villageNames!=null && villageNames.size()!=0){
+							 for(int j=0;j<villageNames.size();j++){
+								 Object[] data = (Object[])villageNames.get(j);
+								 if(data[0]!=null){
+									 String names = data[0].toString();
+									 if(!villages.contains(names)){									
+										 Set<String> villageSet =  new HashSet<String>(Arrays.asList(names.toLowerCase().split(",")));
+										 unDuplicateVillages.addAll(villageSet);
+									 }
+								 }
+							 }
+						 }
+						
+						String uniqueNames = new String();
+				        for (Iterator iterator = unDuplicateVillages.iterator(); iterator.hasNext();) {
+				        	uniqueNames += iterator.next().toString();
+				        	uniqueNames +=",";			            
+				         }					
+						 boothDAO.updateVillagesCoveredInfoInAConstituency(constituencyId,uniqueNames,partNumber.toString(),electionYear);
+					 }
+				 }
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
 	
 }
