@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -27,6 +28,7 @@ public interface IInfluencingPeopleService {
 	public Integer deleteInfluencingPeople(Long influencingPeopleId);
 	
 	public ConstituencyManagementDataVO getInfluencingPeopleOverviewDetails(Long userId);
+	public List<ConstituencyManagementRegionWiseOverviewVO> getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(Long userId,Long regionId,String regionType);
 	
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getInfluencingPeopleByInfluenceScope(Long userId);
 	public ConstituencyManagementDataVO getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long stateId,Boolean isScopeData);
