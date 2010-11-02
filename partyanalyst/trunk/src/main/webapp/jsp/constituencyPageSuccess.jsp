@@ -803,6 +803,9 @@ function buildElectionsSelectBox(myResults){
 	}
 
 	var headingDiv = document.getElementById("MandalVotingTrendz_head");
+
+	if(headingDiv == null)
+		return;
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 		headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
 	if('${constituencyDetails.constituencyType}' == 'Parliament')
@@ -972,30 +975,33 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 		
 		<tr>		
 		<td colspan="2">
-		<div id="MandalwiseVotingTrendz" class="rounded" style="width: 910px;">
-			<div class="corner topLeft"></div>
-			<div class="corner topRight"></div>
-			<div class="corner bottomLeft"></div>
-			<div class="corner bottomRight"></div>
-			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
-			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
-			<div id="mandalOrConstiElecResultDiv">
-			<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
-			<div id="electionResultsInConstituencyDiv"></div>
-			<table><tr>
-					<td id="labelRadio"><b>Select The Format You Want :</b></td>
-					<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
-					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)"/>By Percentage </td>
-			</tr></table>			
-			<div id="resultsDataTableDiv"></div>
-			<div id="missingDataInfoDiv"></div>
+		<c:if test="${constituencyDetails.hasAnalize}">
+			<div id="MandalwiseVotingTrendz" class="rounded" style="width: 910px;" >
+				<div class="corner topLeft"></div>
+				<div class="corner topRight"></div>
+				<div class="corner bottomLeft"></div>
+				<div class="corner bottomRight"></div>
+				<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
+				<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
+				<div id="mandalOrConstiElecResultDiv">
+				<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
+				<div id="electionResultsInConstituencyDiv"></div>
+				<table><tr>
+						<td id="labelRadio"><b>Select The Format You Want :</b></td>
+						<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
+						<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)"/>By Percentage </td>
+				</tr></table>			
+				<div id="resultsDataTableDiv"></div>
+				<div id="missingDataInfoDiv"></div>
+				</div>
 			</div>
-		</div>
+		</c:if>
 		</td>
 		</tr>
 	<!-- Local Elections Info -->	
 		<tr>		
 			<td colspan="2">
+			<c:if test="${constituencyDetails.hasAnalize}">
 				<div id="LocalElectionsDiv" class="rounded" style="width: 910px;">
 					<div class="corner topLeft"></div>
 					<div class="corner topRight"></div>
@@ -1043,11 +1049,13 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 						</tr>
 					</table>
 				</div>
+				</c:if>
 			</td>
 		</tr>
 	<!-- Local Elections Info -->	
 		<tr>
 			<td colspan="2">
+			<c:if test="${constituencyDetails.hasAnalize}">
 			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
@@ -1125,6 +1133,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 						</tr>
 				</table>
 			</div>
+			</c:if>
 			</td>
 		</tr>		
 	</table>	
@@ -1601,7 +1610,7 @@ function showDetailedElectionResult(id)
 						phone:'${problem.phone}',
 						mobile:'${problem.mobile}',
 						address:'${problem.address}',
-						problemLocationId:'${problem.problemLocationId}',
+						problemLocationId:'${problem.problemLocationId}'
 					};
 		
 	constituencyPageMainObj.problemsInfo.push(problemObj);

@@ -1204,6 +1204,8 @@ function hideZptcDiv(){
 	imgElmt.innerHTML = electionDetails;		
 
 	 var candLink = document.getElementById("zptcCandidateLink");
+	 if(candLink == null)
+		 return;
 	 var candidateLink="";
 	 candLink.innerHTML = candidateLink;
 }
@@ -1227,6 +1229,8 @@ function buildZptcResults(results){
 	
 	assignToPartyDataArray = new Array();
 	var candLink = document.getElementById("zptcCandidateLink");
+	if(candLink == null)
+		return;
 	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
@@ -1264,6 +1268,8 @@ function buildMptcResults(results){
 	assignToPartyDataArray = new Array();
 
 	var candLink = document.getElementById("mptcCandidateLink");
+	if(candLink == null)
+		return;
 	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	  totalMptcSeats = results[0].totalSeats;
@@ -1404,7 +1410,8 @@ function getAllZptcYears()
 			electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
 		}
 		electionYearSelect+='</select>&nbsp;&nbsp;&nbsp;';
-		selectDiv.innerHTML = electionYearSelect;
+		if(selectDiv != null)
+			selectDiv.innerHTML = electionYearSelect;
 		getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 	}
 }
@@ -1422,7 +1429,8 @@ function getAllMptcYears()
 			electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
 		}
 		electionYearSelect+='</select>&nbsp;&nbsp;&nbsp;';
-		selectDiv.innerHTML = electionYearSelect;
+		if(selectDiv != null)
+			selectDiv.innerHTML = electionYearSelect;
 		getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 	}			  		
 }
@@ -1430,6 +1438,8 @@ function getAllMptcYears()
 function getMunicipalityResults()
 {
 	var lebElmt = document.getElementById("municipalitySelect");
+	if(lebElmt == null)
+		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
 	
 	var jsObj = {
@@ -1467,6 +1477,8 @@ function getAllPartiesAllElectionResultsChart(constId)
 function getCoroporationResults()
 {
 	var lebElmt = document.getElementById("corporationSelect");
+	if(lebElmt == null)
+		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
 	
 	var jsObj = {
@@ -1482,6 +1494,8 @@ function getCoroporationResults()
 function getGreaterResults()
 {
 	var lebElmt = document.getElementById("greaterSelect");
+	if(lebElmt == null)
+		return;
 	var lebElmtValue = lebElmt.options[lebElmt.selectedIndex].value; 
 	
 	var jsObj = {
