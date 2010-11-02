@@ -68,7 +68,6 @@ import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.PartyInfluenceService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -652,6 +651,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
 			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS)))
 			constituencyDetails.setHasAnalize(false);
+		
+		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
+				(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS)))
+				constituencyDetails.setHasAnalize(false);
 		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
