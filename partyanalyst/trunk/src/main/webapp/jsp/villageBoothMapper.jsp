@@ -151,8 +151,7 @@ function yearsPopulationForMapping(elmtId)
 	str += '<th style="padding-right:13px;">Year:  </th>';
 	str += '<td><select id="yearsId" class="selectWidth" onchange="getElectionYear(this.options[this.selectedIndex].value)">';
 	str += '<option value="0">Select an year</option>';
-	str += '<option value="2009">2009</option>';
-	str += '<option value="2004">2004</option>';
+	str += '<option value="2009">2009</option>';	
 	str == '</select>';
 	str += '</td>';
 	str += '<tr>';
