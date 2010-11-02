@@ -27,4 +27,6 @@ public interface IRegionServiceData {
 	public Long getLatestParliamentElectionYear(Long stateID);
 	public List<SelectOptionVO> getTownshipsHamletsWards(String type, Long id);
 	public List<SelectOptionVO> getAllParliamentConstituencies(Long electionScopeId, Long countryId);
+	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId);
+	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year);
 }
