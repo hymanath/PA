@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
@@ -167,6 +168,7 @@ public class StaticDataService implements IStaticDataService {
 	private ILocalElectionBodyDAO localElectionBodyDAO; 
 	private IInformationSourceDAO informationSourceDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
 	
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -207,6 +209,15 @@ public class StaticDataService implements IStaticDataService {
 		this.partyElectionStateResultWithAllianceDAO = partyElectionStateResultWithAllianceDAO;
 	}
 
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 
 	/**
 	 * @param stateDAO the stateDAO to set
@@ -6062,6 +6073,26 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	 return resultsList;
+	}
+
+	public List<SelectOptionVO> getLatestAssemblyConstituenciesInDistrict(
+			Long districtId) {
+		if(log.isDebugEnabled())
+		log.debug("Getting Latest Assembly Constituencies In A District ..");
+		
+		List<SelectOptionVO> latestConstituencies = null;
+		
+		List constituenciesList = delimitationConstituencyDAO.getLatestConstituenciesForADistrict(districtId);
+		if(constituenciesList != null && constituenciesList.size() > 0){
+			latestConstituencies = new ArrayList<SelectOptionVO>();
+			Iterator lstItr = constituenciesList.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				SelectOptionVO option = new SelectOptionVO((Long)values[0],(String)values[1]);
+				latestConstituencies.add(option);
+			}
+		}
+	 return latestConstituencies;
 	}
 }
 
