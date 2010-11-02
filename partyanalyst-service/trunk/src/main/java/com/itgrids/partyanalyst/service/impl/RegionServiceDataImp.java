@@ -377,6 +377,31 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return localElectionBodiesList;
 	}
 	
+	/**
+	 * This method returns all the local election bodies in a constituency.This method is invoked from getSubRegionsInConstituency() method
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year)
+	{
+		log.debug("Inside getLocalElectionBodies method in RegionServiceDataImp Class");
+		List<SelectOptionVO> localElectionBodiesList = new ArrayList<SelectOptionVO>(); 
+		try
+		{
+			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			for(int i=0; i<result.size(); i++){
+				Object[] obj = (Object[]) result.get(i);
+				localElectionBodiesList.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString().toUpperCase()+" "+ (obj[2])));
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.debug("Exception arised while retrieving local election bodies");
+		}
+		
+		return localElectionBodiesList;
+	}
+	
 	private List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
@@ -384,6 +409,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		for(SelectOptionVO selectOptionVO:list)
 		{
 			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.TEHSIL));
+		}
+		return tehsilsList;
+	}
+	
+	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId)
+	{
+		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
+		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
+		for(SelectOptionVO selectOptionVO:list)
+		{
+			tehsilsList.add(new SelectOptionVO(new Long(selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.TEHSIL));
 		}
 		return tehsilsList;
 	}
