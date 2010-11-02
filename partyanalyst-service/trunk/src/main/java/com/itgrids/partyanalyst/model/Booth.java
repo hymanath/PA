@@ -189,7 +189,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.year = year;
 	}
 
-	@Column(name = "village_covered", length = 250)
+	@Column(name = "village_covered", length = 500)
 	public String getVillagesCovered() {
 		return villagesCovered;
 	}
