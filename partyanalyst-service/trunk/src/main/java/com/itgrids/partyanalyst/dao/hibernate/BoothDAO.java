@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -162,7 +163,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				"model.partNo in ( "+ partNos + ") and model.year = ? and model.constituency.constituencyId = ?",params);
 	}
 	
-	public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId){
+		public List findBoothsInfoForAMandalByConstituencyAndYear(Long tehsilId, Long year, Long constituencyId){
 		Object[] params = {constituencyId, tehsilId, year};
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
 				"model.tehsil.tehsilId = ? and model.year = ? and model.localBody is null", params);
@@ -179,5 +180,35 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.location from Booth model where model.constituency.constituencyId = ? and " +
 				"model.boothLocalBodyWard.localBodyWard.constituencyId = ? and model.year = ? ", params);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Long> getCountOfPartNumbersInAConstituency(Long constituencyId, Long electionYear) {
+		Object[] params = {electionYear, constituencyId};
+		return getHibernateTemplate().find("select count(*) from Booth model where " +
+				"and model.year = ? and model.constituency.constituencyId = ?",params);
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> getPartNumbersAndVillagesCoveredInAConstituency(Long constituencyId, Long electionYear) {
+		Object[] params = {electionYear, constituencyId};
+		return getHibernateTemplate().find("select model.partNo,model.villagesCovered from Booth model where " +
+				" model.year = ? and model.constituency.constituencyId = ?",params);
+	}
+	
+	public int updateVillagesCoveredInfoInAConstituency(Long constituencyId, String villagesCovered,String partNo,Long electionYear) {
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" update Booth model set model.villagesCovered = ? ");
+		query.append(" where model.constituency.constituencyId = ? ");
+		query.append(" and model.partNo = ? ");
+		query.append(" and model.year = ? ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setString(0, villagesCovered);
+		queryObject.setLong(1, constituencyId);		
+		queryObject.setString(2, partNo);
+		queryObject.setLong(3, electionYear);
+		
+		return queryObject.executeUpdate();
+	}
 }

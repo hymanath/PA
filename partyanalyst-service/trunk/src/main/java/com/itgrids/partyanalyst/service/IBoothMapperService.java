@@ -13,4 +13,6 @@ public interface IBoothMapperService {
 
 	public ResultWithExceptionVO saveAssemblyLocalBodyMappingInfo(Long localBodyId, List<Long> localBodyOrWardIds, 
 			Long assemblyId, String year, Boolean isWards);
+	
+	public void setDataForVillageBoothRelation(Long districtId,Long electionYear);
 }
