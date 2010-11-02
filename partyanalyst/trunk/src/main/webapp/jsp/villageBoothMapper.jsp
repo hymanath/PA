@@ -119,7 +119,10 @@ function callAjax(jsObj,url)
 							else if(jsObj.task == "localElectionBodiesOfDistrict" && jsObj.taskType == "localBodyWise")
 							{
 								displayDistrictLocalBodies(myResults);
-							}							
+							}		
+							else if(jsObj.task == "setDataForVillageBoothRelation"){
+								hideBarLoaderImage();
+							}					
 						}
 						catch(e)
 						{   
@@ -140,6 +143,10 @@ function getElectionYear(eleYear){
 }
 function yearsPopulationForMapping(elmtId)
 {
+
+	
+	//var barloaderDiv = document.getElementById("barloaderImage");
+	
 	var elmt = document.getElementById(elmtId);
 
 	if(!elmt)
@@ -188,6 +195,8 @@ function validateAndForwardToAction(elmt)
 		document.getElementById("errorMessage").innerHTML = message;
 		return false;
 	}else{
+		document.getElementById("errorMessage").innerHTML = "";
+		showBarLoaderImage();		
 		var jsObj=
 		{
 				districtId:districtId,
@@ -201,6 +210,24 @@ function validateAndForwardToAction(elmt)
 		return true;							
 	}	
 }
+	function showBarLoaderImage()
+	{
+		var elmt = document.getElementById("barloaderImage");
+		if(!elmt)
+			return;
+			
+		elmt.style.display = 'block';
+	
+	}
+	function hideBarLoaderImage()
+	{
+		var elmt = document.getElementById("barloaderImage");
+		if(!elmt)
+			return;
+			
+		elmt.style.display = 'none';
+	
+	}
 </script>
 <style>
 	.selectWidth{
@@ -249,6 +276,11 @@ function validateAndForwardToAction(elmt)
 					</table>
 				</td>
 			</tr>	
+			<tr>
+				<th align="center">
+					<img id="barloaderImage" src="images/icons/barloader.gif" style="display:none;"></img>				
+				</th>
+	 		</tr>	
 			<tr>
 				<th colspan="2" align="center">
 					<input id="viewReportButton" type="button" onClick="return validateAndForwardToAction(this)"  value="Submit"/>					
