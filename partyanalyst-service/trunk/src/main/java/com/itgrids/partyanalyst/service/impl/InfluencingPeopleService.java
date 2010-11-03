@@ -963,14 +963,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
 				subRegionsList = regionServiceDataImp.getLocalElectionBodiesInConstituency(constituencyId, IConstants.DELIMITATION_YEAR.toString());
 				if(subRegionsList != null && subRegionsList.size() > 0)
-					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.TEHSIL);
+					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.LOCAL_BODY_ELECTION);
 				
 				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsilsByConstituency(userId, constituencyId);
 				
 			}else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
 				subRegionsList = regionServiceDataImp.getTehsilsInAConstituency(constituencyId);
 				if(subRegionsList != null && subRegionsList.size() > 0)
-					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.LOCAL_BODY_ELECTION);
+					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.TEHSIL);
 				
 				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(userId, constituencyId);
 				
