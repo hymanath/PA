@@ -232,6 +232,7 @@ public interface IConstants {
     public static final String CONSTITUENCY_ANALYSIS = "CONSTITUENCY_ANALYSIS";
     public static final String TEHSIL_ANALYSIS = "TEHSIL_ANALYSIS";
     public static final String DEFAULT_ENTITLEMENTS_GROUP = "DEFAULT_ENTITLEMENTS";
+    public static final String DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES = "DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES";
     
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
