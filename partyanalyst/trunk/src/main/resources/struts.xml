@@ -1647,7 +1647,7 @@
 		
 		 <action name="subLevelInfluenceAction" class="constituencyManagementAction" method="getSubLevelInfluenceAction"> 
             <result type="json" name="success">
-           	<param name="root">constituencyManagementRegionWiseOverviewVO</param>
+           	<param name="root">regionWiseCompleteDataVO</param>
         	</result>       		
         </action>
         

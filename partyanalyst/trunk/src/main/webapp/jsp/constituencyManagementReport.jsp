@@ -490,13 +490,14 @@
 			browser2.focus();
 		}
 		
-		function getSubLevelInfluenceData(regionId,regionName,regionType)
+		function getSubLevelInfluenceData(regionId,regionName,regionType,status)
 		{
 			var jsObj= 
 			{	
 				regionId:regionId,
 				regionName:regionName,	
 				regionType:regionType,
+				status:status,
 				task: "getSubLevelInfluencePeople"						
 			};
 			

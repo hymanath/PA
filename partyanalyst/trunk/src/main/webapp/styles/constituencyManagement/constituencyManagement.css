@@ -486,6 +486,7 @@ fieldset {
 	margin-left:5px;
 	margin-right:5px;
 	padding:5px;
+	display:none;
 }
 
 .influenceDetailData_table 
@@ -514,4 +515,48 @@ fieldset {
 .regionCountAnc
 {
 	text-decoration:none;
+}
+
+.zeroRegionsData_main
+{
+	border-top:1px solid #A99276;
+	margin-top:5px;
+	padding-top:5px;	
+}
+
+.zeroRegionsData_head
+{
+	background-color:#DEE8EF;
+	color:#4B74C6;
+	font-size:10px;
+	font-weight:bold;
+	padding:5px;
+}
+
+.availableRegionsData_main
+{
+	margin-top:5px;
+	padding-top:5px;
+}
+
+.availableRegionsData_head
+{
+	background-color:#DEE8EF;
+	color:#4B74C6;
+	font-size:10px;
+	font-weight:bold;
+	padding:5px;
+}
+
+.zeroRegionsData_body, .availableRegionsData_body
+{
+	padding-bottom:10px;
+	padding-top:10px;
+}
+
+.influencePeopleRegionsList
+{
+	margin:5px;
+	padding:5px;
+	text-align:right;
 }
