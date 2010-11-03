@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -91,9 +92,15 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private HttpSession session;
 	private String userType = null;	
 	private NavigationVO messageTypes;
+	private EntitlementsHelper entitlementsHelper;
 	
-	
-	
+		
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public NavigationVO getMessageTypes() {
 		return messageTypes;
 	}
@@ -710,9 +717,20 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 		Long districtID = new Long(jObj.getString("distId"));
 		
-		//electionsInDistrict = staticDataService.getAllElectionScopes();
-		electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
-		electionsInDistrict.add(0, new SelectOptionVO(0l, "Select Election Type"));
+		session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
+			electionsInDistrict = new ArrayList<SelectOptionVO>();
+			electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			electionsInDistrict.add(1, new SelectOptionVO(1l, "Assembly"));	
+		}else if(session.getAttribute(IConstants.USER) != null ){
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
+				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			}
+		}
+		
 		return SUCCESS;
 	}
 	
