@@ -29,4 +29,5 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getAllParliamentConstituencies(Long electionScopeId, Long countryId);
 	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId);
 	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year);
+	public List<SelectOptionVO> getHamletsInATehsil(Long tehsilId);
 }
