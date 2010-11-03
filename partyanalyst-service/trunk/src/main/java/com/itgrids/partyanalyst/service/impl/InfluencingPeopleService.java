@@ -1067,56 +1067,64 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		try{
 			
 			List influencingPeopleList = null;
+			List influencingPeopleAddress = null;
 			
 			if(regionType.equalsIgnoreCase(IConstants.STATE)){
 				
 				State state = stateDAO.get(new Long(regionId));
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInState(userId, state.getStateId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInState(userId, state.getStateId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.STATE,IConstants.DISTRICT,0L,"","");	
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.STATE,IConstants.DISTRICT,0L,"","");	
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				
 				District district = districtDAO.get(new Long(regionId));
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInDistrict(userId, district.getDistrictId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInDistrict(userId, district.getDistrictId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.DISTRICT,IConstants.CONSTITUENCY,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.DISTRICT,IConstants.CONSTITUENCY,0L,"","");
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				
 				Constituency constituency = constituencyDAO.get(new Long(regionId));
 				
-				if(constituency.getAreaType() == null || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+				if(constituency.getAreaType() == null || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
 				 influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituency(userId, constituency.getConstituencyId());
+				 influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInConstituency(userId, constituency.getConstituencyId());
 				
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
-				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+				}
+				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
 				 influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
+				 influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInConstituencyByLocalBody(userId, constituency.getConstituencyId());
 					
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+				}
 				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
 					
 					//rural areas
 					influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituency(userId, constituency.getConstituencyId());
+					influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInConstituency(userId, constituency.getConstituencyId());
 					
 					//Process and set details to VO
 					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
 					
 					//for urban
                     List influencingPeopleList1 = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
-					
+					List influencingPeopleAddress1 = influencingPeopleDAO.getTotalInfluencingPeopleAddressInConstituencyByLocalBody(userId, constituency.getConstituencyId());
 					//Process and set details to VO
 					if(influencingPeopleList1 != null && influencingPeopleList1.size() > 0){
-						List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList1 = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+						List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList1 = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList1,influencingPeopleAddress1,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
 						influencingPeopleDetailsList.addAll(influencingPeopleDetailsList1);
 					}
 				}
@@ -1126,37 +1134,41 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
 				String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInLocalBodys(userId, localBody.getLocalElectionBodyId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInLocalBodys(userId, localBody.getLocalElectionBodyId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.LOCAL_BODY_ELECTION,IConstants.WARD,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.LOCAL_BODY_ELECTION,IConstants.WARD,0L,"","");
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.MANDAL) || regionType.equalsIgnoreCase(IConstants.TEHSIL)){
 				
 				Tehsil tehsil = tehsilDAO.get(new Long(regionId));
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInTehsil(userId, tehsil.getTehsilId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInTehsil(userId, tehsil.getTehsilId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.TEHSIL,IConstants.VILLAGE,0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.TEHSIL,IConstants.VILLAGE,0L,"","");
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.VILLAGE) || regionType.equalsIgnoreCase(IConstants.HAMLET)){
 				
 				Hamlet hamlet = hamletDAO.get(new Long(regionId));
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInVillage(userId, hamlet.getHamletId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInVillage(userId, hamlet.getHamletId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.HAMLET,"",0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.HAMLET,"",0L,"","");
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.WARD)){
 				
 				Constituency constituency = constituencyDAO.get(new Long(regionId));
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInWard(userId, constituency.getConstituencyId());
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInWard(userId, constituency.getConstituencyId());
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
-					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.WARD,"",0L,"","");
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddress,IConstants.WARD,"",0L,"","");
 				
 			}
 			
@@ -1178,7 +1190,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * Processed Influencing People Results To VO
 	 */
 	@SuppressWarnings("unchecked")
-	public List<InfluencingPeopleDetailsVO> getProcessedInfluencingPeopleDetailsToVO(List influencingPeopleList,String regionType,String subRegionType,Long id,String scopeRegion,String scopeType){
+	public List<InfluencingPeopleDetailsVO> getProcessedInfluencingPeopleDetailsToVO(List influencingPeopleList,List influencingPeopleAddress,String regionType,String subRegionType,Long id,String scopeRegion,String scopeType){
 		
 		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO = null;
 		Map<Long,InfluencingPeopleDetailsVO> influencePeopleMap = new HashMap<Long,InfluencingPeopleDetailsVO>();
@@ -1186,6 +1198,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		if(influencingPeopleList != null && influencingPeopleList.size() > 0){
 			
 			influencingPeopleDetailsVO = new ArrayList<InfluencingPeopleDetailsVO>();
+			int i=0;
 			Iterator lstItr = influencingPeopleList.listIterator();
 			while(lstItr.hasNext()){
 				
@@ -1219,13 +1232,30 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setFatherOrSpouseName((String)values[13]);
 				influencingPeopleBeanVO.setPosition((String)values[15]);
 				
-				State state = (State)values[16];
-				District district = (District)values[17];
-				Constituency constituency = (Constituency)values[18];
-				Tehsil tehsil = (Tehsil)values[19];
-				LocalElectionBody localBody  = (LocalElectionBody)values[20];
-				Hamlet hamlet = (Hamlet)values[22];
-				Constituency ward  =(Constituency)values[23];
+				State state = null;
+				District district = null;
+				Constituency constituency = null;
+				Tehsil tehsil = null;
+				LocalElectionBody localBody = null;
+				Hamlet hamlet  = null;
+				Constituency ward = null;
+				
+				Object infAddress = (Object)influencingPeopleAddress.get(i++);
+				UserAddress userAddr = (UserAddress)infAddress;
+				if(userAddr.getState() != null)
+				state = userAddr.getState();
+				if(userAddr.getDistrict() != null)
+				district = userAddr.getDistrict();
+				if(userAddr.getConstituency() != null)
+				constituency = userAddr.getConstituency();
+				if(userAddr.getTehsil() != null)
+				tehsil = userAddr.getTehsil();
+				if(userAddr.getLocalElectionBody() != null)
+				localBody  = userAddr.getLocalElectionBody();
+				if(userAddr.getHamlet() != null)
+				hamlet = userAddr.getHamlet();
+				if(userAddr.getWard() != null)
+				ward = userAddr.getWard();
 				
 				influencingPeopleBeanVO.setState(state.getStateName());
 				influencingPeopleBeanVO.setDistrict(district.getDistrictName());
@@ -1251,6 +1281,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.DISTRICT);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(districtId, infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(districtId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(districtId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1266,6 +1297,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.CONSTITUENCY);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(constiId,infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(constiId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(constiId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1281,6 +1313,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.LOCAL_BODY_ELECTION);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(localBodyId, infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(localBodyId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(localBodyId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1296,6 +1329,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.TEHSIL);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(tehsilId,infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(tehsilId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(tehsilId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1311,6 +1345,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.HAMLET);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(hamletId, infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(hamletId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(hamletId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1325,6 +1360,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(IConstants.WARD);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(wardId, infPeopleDetailsVO);
 					}else if(influencePeopleMap.containsKey(wardId)){
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(wardId);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1337,6 +1373,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     	infPeopleDetailsVO.setRegionType(scopeType);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+                    	influencePeopleMap.put(id, infPeopleDetailsVO);
 					}else{
 						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(id);
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
@@ -1369,18 +1406,21 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList = new ArrayList<InfluencingPeopleDetailsVO>();
 		try{
 			List influencingPeopleList = null;
+			List influencingPeopleAddrList = null;
 			String regionName = "";
 			String scopeType = getRegionTypeMatchingString(regionType);
 			
 			if(regionId.equals(0L)){
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(userId, scopeType);
+				influencingPeopleAddrList = influencingPeopleDAO.getTotalInfluencingPeopleAddressByInfluencingScope(userId, scopeType);
 			}else{
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(userId, scopeType,regionId.toString());
+				influencingPeopleAddrList = influencingPeopleDAO.getTotalInfluencingPeopleAddressByInfluencingScope(userId, scopeType,regionId.toString());
 				regionName = getRegionNameBasedOnScope(regionType,regionId.toString());
 			}
 			
 			if(influencingPeopleList != null && influencingPeopleList.size() > 0){
-				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,"","",regionId,regionName,scopeType);
+				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,influencingPeopleAddrList,"","",regionId,regionName,scopeType);
 			}
 		}catch(Exception ex){
 			log.error("Exception Raised In Influencing People Details Retrieval :" + ex);
