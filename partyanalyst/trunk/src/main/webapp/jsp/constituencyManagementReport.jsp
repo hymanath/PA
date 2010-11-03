@@ -52,10 +52,15 @@
     
 <!-- YUI Dependency files (End) -->
 
+	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jQuery/development-bundle/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
 	
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
-	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
-	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
 
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
@@ -63,8 +68,10 @@
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 	<script type="text/javascript">
-		
+		google.load("visualization", "1", {packages:["corechart"]});
 		 <%			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 			String problemLabel = rb.getString("problem");
@@ -357,9 +364,7 @@
 			var jsObj= 
 			{	
 				accessType:accessType,
-				accessValue:accessValue,
-				flag: "CONSTITUENCY",
-				hamletId: "null",				 			  			
+				accessValue:accessValue,						 			  			
 				task: "getInfluencingPeopleInAConstituency"
 						
 			};
@@ -485,7 +490,22 @@
 			browser2.focus();
 		}
 		
-		
+		function getSubLevelInfluenceData(regionId,regionName,regionType)
+		{
+			var jsObj= 
+			{	
+				regionId:regionId,
+				regionName:regionName,	
+				regionType:regionType,
+				task: "getSubLevelInfluencePeople"						
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/subLevelInfluenceAction.action?"+param;
+			
+			callAjax(param,jsObj,url);		
+		}
+
 		function callAjax(param,jsObj,url){
 			var myResults;
 	 					
@@ -503,7 +523,7 @@
 										{											
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
-										{	
+										{												
 											populateInfluencingPeople(myResults);
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
@@ -535,6 +555,10 @@
 										if(jsObj.task == "getUserGroupsBasedOnCriteria")
 										{
 											buildUserGroupsBasedOnCriteria(jsObj,myResults);
+										}
+										if(jsObj.task == "getSubLevelInfluencePeople")
+										{
+											buildSubLevelInfluencePeople(jsObj,myResults);
 										}
 									}
 								catch (e)
@@ -627,6 +651,101 @@
 					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 				</div>
 			</div>
+			
+			<!-- New Layout (Start)-->
+			<div id="constituencyManagement_mainTabContainer">
+				<div id="tabs">					
+					<ul>
+						<li><a href="#tabs-1">Influencing People</a></li>
+						<li><a href="#tabs-2">Local User Groups</a></li>
+						<li><a href="#tabs-3">Local Political Changes</a></li>
+					</ul>
+					<div id="tabs-1">
+						<table width="100%" cellpadding="0" cellspacing="5">
+						<tr>
+							<td colspan="2">
+								<div id="influencePeopleChartDiv_Outer" class="rounded" style="margin:0px;"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
+
+									<div id="influencePeopleChartDiv_main" class="contentDivClass">
+										<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+									</div>	
+								</div>														
+							</td>
+						</tr>
+						<tr>
+						<td width="30%" valign="top">
+							<div id="influencePeopleRegionWisOverView_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+
+								<div id="influencePeopleRegionWiseOverView_main" class="contentDivClass">
+									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+								</div>	
+							</div>
+							
+							<div id="influencePeopleScopeWiseOverView_Outer" class="rounded"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+
+								<div id="influencePeopleScopeWiseOverView_main" class="contentDivClass">
+									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+								</div>	
+							</div>
+
+						</td>
+						<td width="70%" valign="top">
+							<div id="influencePeopleDetail_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+
+								<div id="influencePeopleDetail_main" class="contentDivClass">
+									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+								</div>	
+							</div>
+						</td>
+						</tr>
+						</table>
+						
+					</div>
+					<div id="tabs-2">
+						<div id="localUserGroups_Outer" class="rounded"> 						
+							<div class="corner topLeft"></div>
+							<div class="corner topRight"></div>
+							<div class="corner bottomLeft"></div>
+							<div class="corner bottomRight"></div> 
+
+							<div id="localUserGroups_main" class="contentDivClass">
+								<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed  Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+							</div>	
+						</div>
+					
+					</div>
+					<div id="tabs-3">
+						<div id="localPoliticalChanges_Outer" class="rounded"> 						
+							<div class="corner topLeft"></div>
+							<div class="corner topRight"></div>
+							<div class="corner bottomLeft"></div>
+							<div class="corner bottomRight"></div> 
+
+							<div id="localPoliticalChanges_main" class="contentDivClass">
+								<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>	
+							</div>	
+						</div>
+										
+					</div>
+				</div>
+			</div>
+			<!-- New Layout (End)-->
 
 			<div id="voters_stats_main" style="margin-bottom:10px;">
 				<div id="voters_stats_head">
@@ -791,7 +910,13 @@
 		problemMgmtObj.problemsStatusArr.push(ob);
 		</c:forEach>
 		initializeConstituencyManagement();	
-		
+		$(
+			function()
+			{
+				$("#tabs").tabs();
+			}
+		);
+
 	</script>
 	
 </body>

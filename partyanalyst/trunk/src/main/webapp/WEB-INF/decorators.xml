@@ -47,6 +47,7 @@
 		<pattern>/viewFeaturesAction.action*</pattern>
 		<pattern>/influencingPeopleAction*</pattern>
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
+		<pattern>/influencingPeopleDataAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

@@ -350,9 +350,188 @@ function buildProblemsDetailsDT(results) {
 		}
 		
 }
+
+function createCoulmnChart(regionData,divId)
+{
+	var subRegions = regionData.subRegionWiseOverview;
+
+	var data = new google.visualization.DataTable();
+	
+	var regions = new Array();
+	for(var i=0; i<subRegions.length; i++)
+	{
+		regions.push(''+subRegions[i].subRegionName);
+	}
+
+
+	data.addColumn('string', 'Region');
+	data.addColumn('number', 'Influence People');	
+
+	data.addRows(regions.length);
+	
+	for(var i=0; i<subRegions.length; i++)
+	{
+		data.setValue(i, 0, ''+subRegions[i].subRegionName);
+		data.setValue(i, 1, subRegions[i].countValue);
+	}
+
+	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
+		chart.draw(data, {width: 820, height: 250,legend:'right',legendTextStyle:{fontSize:10}, title: 'Influence People',
+				  hAxis: {slantedText:true, slantedTextAngle:45, titleTextStyle: {color: 'red'}}
+				 });
+
+}
+
+function buildRegionWiseOverViewData(data,divId)
+{
+	var elmt = document.getElementById(divId);
+
+	if(!elmt)
+		return;
+	
+	var availablePeople = new Array();
+	var zeroPeople = new Array();
+	var subRegions = data.subRegionWiseOverview;
+
+	for(var i=0; i<subRegions.length; i++)
+	{
+		if(subRegions[i].countValue == 0)
+			zeroPeople.push(subRegions[i]);
+		else
+			availablePeople.push(subRegions[i]);
+	}
+
+	var str = '';
+	str += '<div id="regionScope_main">';
+	str += '<div id="region_available">';
+	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
+	str += '	<tr>';
+	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
+	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label">';
+	str +=				data.regionName+' ( '+data.regionType+') -';
+	str += '			<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openCandidatesPopup(\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\'region\')">'+data.countValue+' </a></span></div></td>';
+	str += '		<td><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+	str += '	</tr>';
+	str += '</table>';
+	
+	if(subRegions.length == 0)
+	{
+		str += '<p class="zeroPeoplePara"> No regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+		elmt.innerHTML = str;
+		return;
+	}
+
+	if(availablePeople.length == 0)
+	{
+		str += '<p class="zeroPeoplePara"> No regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+	}
+	else
+	{
+		str += '<table class="region_available_head">';
+		for(var j=0; j<availablePeople.length; j++)
+		{				
+			str += '<tr>';
+			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td>'+availablePeople[j].subRegionName+' ( '+availablePeople[j].subRegionType+' )</td>';
+			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\''+availablePeople[j].subRegionId+'\',\''+availablePeople[j].subRegionName+'\',\''+availablePeople[j].subRegionType+'\',\'region\')">'+availablePeople[j].countValue+'</a></td>';
+			str += '</tr>';
+		}
+		str += '</table>';		
+	}
+	str += '</div>';
+
+	str += '<div id="region_unavailable">';
+	str += '<div id="region_unavailable_head"> Regions Having Zero Influence People </div>';
+	if(zeroPeople.length == 0)
+	{
+		str += '<p class="zeroPeoplePara"> All the regions under the '+data.regionName+' '+data.regionType+' are having influencing people.</p>';
+	}
+	else
+	{
+		str += '<table class="region_available_head">';
+		for(var j=0; j<zeroPeople.length; j++)
+		{				
+			str += '<tr>';
+			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td>'+zeroPeople[j].subRegionName+' ( '+zeroPeople[j].subRegionType+' )</td>';
+			//str += '<td>'+zeroPeople[j].countValue+'</td>';
+			str += '</tr>';
+		}
+		str += '</table>';
+	}
+
+	str += '</div>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
+
+}
+
+function openCandidatesPopup(regionId,regionName,regionType,scopeType)
+{
+	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
+	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=800,left=200,top=50");	
+	browser2.focus();
+}
+
+function buildScopeWiseOverViewData(data,divId)
+{
+	var elmt = document.getElementById(divId);
+
+	if(!elmt)
+		return;
+	
+	var str = '';
+	str += '<div id="influencePeopleScopeWiseOverView_head">';
+	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
+	str += '	<tr>';
+	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
+	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label"> Based On Influence Scope </span></div></td>';
+	str += '		<td><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+	str += '	</tr>';
+	str += '</table>';
+	str += '</div>';
+
+	str += '<div id="influencePeopleScopeWiseOverView_body">';
+
+	for(var i=0; i<data.length; i++)
+	{
+		str += '<div class="scopeWise_data_main">';
+		str += '<div class="scopeWise_head">';
+		str += '<table class="scopeWise_head_table">';
+		str += '<tr>';
+		str += '<td><img src="images/icons/system_grps.png"></td>';
+		str += '<td>'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '<div class="scopeWise_body">';
+		str += '<table class="region_available_head">';		
+		for(var j=0 ; j<data[i].influenceScopeDetails.length; j++)
+		{
+			str += '<tr>';
+			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td>'+data[i].influenceScopeDetails[j].influenceScopeRegion+'</td>';
+			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
+			str += '</tr>';
+		}
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+	}
+	str += '</div>';
+	
+	elmt.innerHTML = str;
+}
+
 function populateInfluencingPeople(results)
 {
-	resultsGlobal = results;
+	createCoulmnChart(results.regionWiseOverview,"influencePeopleChartDiv_main");
+	buildRegionWiseOverViewData(results.regionWiseOverview,"influencePeopleRegionWiseOverView_main");
+	buildScopeWiseOverViewData(results.influenceScopeOverview,"influencePeopleScopeWiseOverView_main");
+	getSubLevelInfluenceData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType);
+	
+	/*resultsGlobal = results;
 	inf_peopleArr = new Array();
 	for(var i in results)
 	{
@@ -370,8 +549,111 @@ function populateInfluencingPeople(results)
 		};
 		inf_peopleArr.push(inf_peopleObj);
 	}
-	buildInfluencingPeopleDT();
+	buildInfluencingPeopleDT();*/
 }
+
+function buildSubLevelInfluencePeople(jsObj,results)
+{
+	var elmt = document.getElementById("influencePeopleDetail_main");
+
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="influencePeopleDetail_head">';
+	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%">';
+	str += '	<tr>';
+	str += '		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str += '		<td><div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">';
+	str += '			<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>';
+	str += '		</div></td>';
+	str += '		<td><img src="images/icons/districtPage/header_right.gif"></td>';
+	str += '	</tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '<div id="influencePeopleDetail_body">';	
+
+	for(var i=0; i<results.length; i++)
+	{
+		if(results[i].countValue == 0)
+			continue;
+		str += '<div class="influenceDetailData_main">';
+		str += '<div class="influenceDetailData_head">';	
+		str += '<div class="scopeWise_head">';
+		str += '<table><tr>';
+		str += '<td><img src="images/icons/system_grps.png"></td>';
+		str += '<td>'+results[i].regionName+' ( '+results[i].regionType+' ) - ';
+		str += '<a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].regionId+'\',\''+results[i].regionName+'\',\''+results[i].regionType+'\',\'region\')">'+results[i].countValue+'</a></td>';
+		str += '</tr></table>';
+		str += '</div>';
+		
+		/*str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
+		str += '	<tr>';
+		str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
+		str += '		<td><div style="height: 30px; padding: 0px;" class="regionsHead_center">';		
+		str += '			<span class="regionsHead_center_label"> '+results[i].regionName+' ( '+results[i].regionType+' ) - '+results[i].countValue+' </span>';
+		str += '		</div></td>';
+		str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+		str += '	</tr>';
+		str += '</table>';*/
+
+		str += '</div>';
+		str += '<div class="influenceDetailData_body">';
+		str += '<table width="100%">';
+		str += '	<tr>';			
+		str += '		<td width="50%">';
+		str += '			<div id="subRegionChartDiv_'+i+'_main"></div>';
+		str += '		</td>';
+		str += '		<td width="50%">';
+		str += '			<table width="100%" border="0" class="influenceDetailData_table">';
+		for(var j=0; j<results[i].subRegionWiseOverview.length; j++)
+		{
+			str += '			<tr>';
+			str += '			<td><img width="8" height="8" src="images/icons/constituencyPage/bullet_blue.png"></td>';
+			str += '			<th width="80%" align="left">'+results[i].subRegionWiseOverview[j].subRegionName+'</th>';
+			str += '			<td width="15%" align="left"><a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].subRegionWiseOverview[j].subRegionId+'\',\''+results[i].subRegionWiseOverview[j].subRegionName+'\',\''+results[i].subRegionWiseOverview[j].subRegionType+'\',\'region\')">'+results[i].subRegionWiseOverview[j].countValue+'</a></td>';
+			str += '			</tr>';
+		}
+		str += '			</table>';
+		str += '		</td>';	
+		str += '	</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+	}
+	str += '</div>';
+
+	elmt.innerHTML = str;
+	
+	buildSubRegionsPieChart(results);
+}
+
+function buildSubRegionsPieChart(results)
+{
+	for(var i=0; i<results.length; i++)
+	{
+		if(results[i].countValue == 0)
+			continue;
+		var data = new google.visualization.DataTable();
+		var chartData = results[i].subRegionWiseOverview;
+		
+		data.addColumn('string', 'Region');
+		data.addColumn('number', 'Count');	
+
+		data.addRows(chartData.length);
+		
+		for(var j=0; j<chartData.length; j++)
+		{
+			data.setValue(j, 0, ''+chartData[j].subRegionName);
+			data.setValue(j, 1, chartData[j].countValue);
+		}
+		
+		var chart = new google.visualization.PieChart(document.getElementById("subRegionChartDiv_"+i+"_main"));
+        chart.draw(data, {width: 250, height: 150, titleTextStyle:{color:'77471D',fontWeight:'bold'}, title: 'Sub Regions Share under '+results[i].regionName+' '+results[i].regionType+'', legend:'right'});
+ 
+	}
+}
+
 function buildInfluencingPeopleDT() {
 	
 	var ipDTColumnDefs = [ {
@@ -596,7 +878,6 @@ function initializeConstituencyManagement() {
 	getProblemsStatusCountByAccessType();
 	getInfluencingPeopleInAConstituency();
 	getAllPoliticalChangesForTheUser();
-
 	getLocalUserGroups();
 }
  

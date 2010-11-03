@@ -358,7 +358,38 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 					
 		Long groupId = new Long(request.getParameter("groupId"));//contains access value
 		
-		userGroupMembersInfoVO = userGroupService.getCompleteUserGroupMemberDetailsForAGroup(groupId);
+		//userGroupMembersInfoVO = userGroupService.getCompleteUserGroupMemberDetailsForAGroup(groupId);
+		
+		userGroupMembersInfoVO = new ArrayList<UserGroupMembersInfoVO>();
+		
+		UserGroupMembersInfoVO u1 = new UserGroupMembersInfoVO();
+		u1.setName("Candidate 1");
+		u1.setUserId(new Long(1));
+		u1.setMobileNumber("9959985735");
+		u1.setLocation("Nellore");
+		
+		UserGroupMembersInfoVO u2 = new UserGroupMembersInfoVO();
+		u2.setName("Candidate 2");
+		u2.setUserId(new Long(2));
+		u2.setMobileNumber("99899722789");
+		u2.setLocation("Nellore");
+		
+		UserGroupMembersInfoVO u3 = new UserGroupMembersInfoVO();
+		u3.setName("Candidate 3");
+		u3.setUserId(new Long(3));
+		u3.setMobileNumber("9948755741");
+		u3.setLocation("Nellore");
+		
+		UserGroupMembersInfoVO u4 = new UserGroupMembersInfoVO();
+		u4.setName("Candidate 4");
+		u4.setUserId(new Long(4));
+		u4.setMobileNumber("9989876597");
+		u4.setLocation("Nellore");
+		
+		userGroupMembersInfoVO.add(u1);
+		userGroupMembersInfoVO.add(u2);
+		userGroupMembersInfoVO.add(u3);
+		userGroupMembersInfoVO.add(u4);
 		
 		return Action.SUCCESS;
 	}
