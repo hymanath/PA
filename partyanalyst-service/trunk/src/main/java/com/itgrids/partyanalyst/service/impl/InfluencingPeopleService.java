@@ -1307,10 +1307,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                	}else if(subRegionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || subRegionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION")){
                		
                		Long localBodyId = localBody.getLocalElectionBodyId();
+               		String type = localBody.getElectionType().getElectionType();
                     if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(localBodyId)){
                     	infPeopleDetailsVO.setRegionId(localBodyId);
                     	infPeopleDetailsVO.setRegionName(localBody.getName());
-                    	infPeopleDetailsVO.setRegionType(IConstants.LOCAL_BODY_ELECTION);
+                    	infPeopleDetailsVO.setRegionType(type);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
                     	influencePeopleMap.put(localBodyId, infPeopleDetailsVO);
@@ -1342,7 +1343,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
                     if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(hamletId)){
                     	infPeopleDetailsVO.setRegionId(hamletId);
                     	infPeopleDetailsVO.setRegionName(hamlet.getHamletName());
-                    	infPeopleDetailsVO.setRegionType(IConstants.HAMLET);
+                    	infPeopleDetailsVO.setRegionType(IConstants.VILLAGE);
                     	infPeopleDetails.add(influencingPeopleBeanVO);
                     	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
                     	influencePeopleMap.put(hamletId, infPeopleDetailsVO);
