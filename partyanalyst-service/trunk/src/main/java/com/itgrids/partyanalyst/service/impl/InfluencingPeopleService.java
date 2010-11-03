@@ -1084,7 +1084,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			rs.setResultCode(ResultCodeMapper.FAILURE);
 		}
 		
-	 return ConstituencyManagementRegionWiseCompleteDataVO;
+	 return constituencyManagementRegionWiseCompleteDataVO;
 	}
 
 	/*
