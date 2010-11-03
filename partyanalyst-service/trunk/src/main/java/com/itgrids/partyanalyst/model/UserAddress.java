@@ -48,6 +48,7 @@ public class UserAddress implements java.io.Serializable {
 	private Constituency ward;
 	private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
+	private InfluencingPeople influencingPeople;
 	
 	public UserAddress() {
 		super();		
@@ -56,7 +57,8 @@ public class UserAddress implements java.io.Serializable {
 	public UserAddress(Long userAddressId, Country country, State state,
 			District district, Constituency constituency, Tehsil tehsil,
 			Township township, Hamlet hamlet, String houseNo, String street,
-			String pinCode, Cadre cadreCurrentAddress, Cadre cadrePermanentAddress) {
+			String pinCode, Cadre cadreCurrentAddress, Cadre cadrePermanentAddress,
+			InfluencingPeople influencingPeople) {
 		super();
 		this.userAddressId = userAddressId;
 		this.country = country;
@@ -71,6 +73,7 @@ public class UserAddress implements java.io.Serializable {
 		this.pinCode = pinCode;
 		this.cadreCurrentAddress = cadreCurrentAddress;
 		this.cadrePermanentAddress = cadrePermanentAddress;
+		this.influencingPeople = influencingPeople;
 	}
 
 	@Id
@@ -217,6 +220,15 @@ public class UserAddress implements java.io.Serializable {
 
 	public void setWard(Constituency ward) {
 		this.ward = ward;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAddress")
+	public InfluencingPeople getInfluencingPeople() {
+		return influencingPeople;
+	}
+
+	public void setInfluencingPeople(InfluencingPeople influencingPeople) {
+		this.influencingPeople = influencingPeople;
 	}
 	
 	
