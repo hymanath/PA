@@ -22,13 +22,13 @@ public class ConstituencyManagementRegionWiseCompleteDataVO implements
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<SelectOptionVO> regionsList;
+	private List<ConstituencyManagementSubRegionWiseOverviewVO> regionsList;
 	private List<ConstituencyManagementRegionWiseOverviewVO> regionWiseOverview;
 	
-	public List<SelectOptionVO> getRegionsList() {
+	public List<ConstituencyManagementSubRegionWiseOverviewVO> getRegionsList() {
 		return regionsList;
 	}
-	public void setRegionsList(List<SelectOptionVO> regionsList) {
+	public void setRegionsList(List<ConstituencyManagementSubRegionWiseOverviewVO> regionsList) {
 		this.regionsList = regionsList;
 	}
 	public List<ConstituencyManagementRegionWiseOverviewVO> getRegionWiseOverview() {
