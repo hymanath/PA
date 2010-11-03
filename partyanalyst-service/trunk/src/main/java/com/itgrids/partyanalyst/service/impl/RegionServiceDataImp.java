@@ -467,6 +467,19 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionsList;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getHamletsInATehsil(Long tehsilId){
+		
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		List resultsList = hamletDAO.findHamletsByTehsilId(tehsilId);
+		for(int i = 0; i<resultsList.size();i++)
+		{
+			Object[] obj = (Object[])resultsList.get(i);
+			regionsList.add(new SelectOptionVO((Long)obj[0],obj[1].toString().toUpperCase()));				
+		}
+	 return regionsList;
+	}
+	
 	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId){
 		List<SelectOptionVO> localBodies = new ArrayList<SelectOptionVO>();
 		List rawData = localElectionBodyDAO.findByDistrictId(districtId);
