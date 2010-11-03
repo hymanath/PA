@@ -1026,7 +1026,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 		ConstituencyManagementRegionWiseCompleteDataVO constituencyManagementRegionWiseCompleteDataVO = new ConstituencyManagementRegionWiseCompleteDataVO();
 		List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVOList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
-		List<SelectOptionVO> regionsListOption = new ArrayList<SelectOptionVO>();
+		List<ConstituencyManagementSubRegionWiseOverviewVO> regionsList = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
 		
 		try{
 			if(regionType.equalsIgnoreCase(IConstants.STATE)){
@@ -1036,7 +1036,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			    	if(constituencyManagementDataVO != null)
 			    		constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 			    }
-			    regionsListOption.addAll(districtsInState);
+			    regionsList.addAll(getRegionsListData(districtsInState,IConstants.DISTRICT));
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
 				for(SelectOptionVO consti:constituenciesInDistrict){
@@ -1044,7 +1044,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					if(constituencyManagementDataVO != null)
 						constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 				}
-				 regionsListOption.addAll(constituenciesInDistrict);
+				regionsList.addAll(getRegionsListData(constituenciesInDistrict,IConstants.CONSTITUENCY));
 			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				
 				Constituency constituency  = constituencyDAO.get(regionId);
@@ -1060,7 +1060,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 								constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 						}
 					}
-					regionsListOption.addAll(mandalsInConstituency);
+					regionsList.addAll(getRegionsListData(mandalsInConstituency,IConstants.TEHSIL));
 				}if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
 					localBodysInConstituency = regionServiceDataImp.getLocalElectionBodiesInConstituency(regionId, IConstants.DELIMITATION_YEAR.toString());
 					if(localBodysInConstituency != null){
@@ -1070,11 +1070,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 								constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 						}
 					}
-					regionsListOption.addAll(localBodysInConstituency);
+					regionsList.addAll(getRegionsListData(localBodysInConstituency,IConstants.LOCAL_BODY_ELECTION));
 				}
 				
 			}
-			constituencyManagementRegionWiseCompleteDataVO.setRegionsList(regionsListOption);
+			constituencyManagementRegionWiseCompleteDataVO.setRegionsList(regionsList);
 			constituencyManagementRegionWiseCompleteDataVO.setRegionWiseOverview(constituencyManagementRegionWiseOverviewVOList);
 			
 		}catch(Exception ex){
@@ -1086,6 +1086,21 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 		
 	 return constituencyManagementRegionWiseCompleteDataVO;
+	}
+	
+	public List<ConstituencyManagementSubRegionWiseOverviewVO> getRegionsListData(List<SelectOptionVO> regionsListOption,String regionType){
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> regionList = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		for(SelectOptionVO option:regionsListOption){
+			ConstituencyManagementSubRegionWiseOverviewVO regionVO = new ConstituencyManagementSubRegionWiseOverviewVO();
+			regionVO.setSubRegionId(option.getId());
+			regionVO.setSubRegionName(option.getName());
+			regionVO.setSubRegionType(regionType);
+			
+			regionList.add(regionVO);
+		}
+		
+	 return regionList;
 	}
 
 	/*
