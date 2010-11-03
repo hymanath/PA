@@ -198,16 +198,16 @@ public class InfluencingPeople extends BaseModel{
 		this.influencingScopeValue = influencingScopeValue;
 	}
 
-	public void setUserAddress(UserAddress userAddress) {
-		this.userAddress = userAddress;
-	}
-
 	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
 		return userAddress;
+	}
+	
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
 	}
 
 	@Column(name = "father_or_spouse_name", length = 25)
