@@ -177,7 +177,7 @@
 					<table>
 						<tr>
 							<td><img src="images/icons/system_grps.png"></td>
-							<td>${region.regionName}</td>
+							<td>${region.regionName} ${region.regionType}</td>
 						</tr>
 					</table>
 				</div>

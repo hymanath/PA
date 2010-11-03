@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseCompleteDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementSubRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
@@ -70,13 +71,23 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private ISmsService smsCountrySmsService;
 	private Long remainingSms;
 	private ConstituencyManagementDataVO constituencyManagementDataVO;
-	private List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVO;
+	
 	private IInfluencingPeopleService influencingPeopleService;
 	private List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO;
 	private String regionName = null;
 	private String regionType = null;
 	private String scopeType = null;
+	private ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO;
 	
+
+	public ConstituencyManagementRegionWiseCompleteDataVO getRegionWiseCompleteDataVO() {
+		return regionWiseCompleteDataVO;
+	}
+
+	public void setRegionWiseCompleteDataVO(
+			ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO) {
+		this.regionWiseCompleteDataVO = regionWiseCompleteDataVO;
+	}
 
 	public String getRegionName() {
 		return regionName;
@@ -118,15 +129,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public void setInfluencingPeopleService(
 			IInfluencingPeopleService influencingPeopleService) {
 		this.influencingPeopleService = influencingPeopleService;
-	}
-
-	public List<ConstituencyManagementRegionWiseOverviewVO> getConstituencyManagementRegionWiseOverviewVO() {
-		return constituencyManagementRegionWiseOverviewVO;
-	}
-
-	public void setConstituencyManagementRegionWiseOverviewVO(
-			List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVO) {
-		this.constituencyManagementRegionWiseOverviewVO = constituencyManagementRegionWiseOverviewVO;
 	}
 
 	public ConstituencyManagementDataVO getConstituencyManagementDataVO() {
@@ -496,7 +498,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
 		
-		constituencyManagementRegionWiseOverviewVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType);
+		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType);
 		
 		return Action.SUCCESS;
 	}
