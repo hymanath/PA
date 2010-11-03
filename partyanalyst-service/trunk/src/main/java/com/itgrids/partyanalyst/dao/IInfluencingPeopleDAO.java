@@ -22,7 +22,9 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleDetailsInState(Long userId,Long stateId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInDistrictsByState(Long userId,Long stateId);
-	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInState(Long userId,Long stateId);
+		
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInDistrict(Long userId,Long districtId);
@@ -30,6 +32,8 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleDetailsInDistrict(Long userId,Long districtId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInConstituenciesByDistrict(Long userId,Long districtId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInDistrict(Long userId,Long districtId);
 	
 	
 	@SuppressWarnings("unchecked")
@@ -42,6 +46,10 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(Long userId,Long constituencyId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInConstituencyByLocalBody(Long userId,Long constituencyId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,Long localBodyId);
@@ -49,6 +57,8 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleDetailsInLocalBodys(Long userId,Long localBodyId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,Long localBodyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInLocalBodys(Long userId,Long localBodyId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInTehsil(Long userId,Long tehsilId);
@@ -56,16 +66,22 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleDetailsInTehsil(Long userId,Long tehsilId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInVillagesByTehsil(Long userId,Long tehsilId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInTehsil(Long userId,Long tehsilId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInVillage(Long userId,Long hamletId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInVillage(Long userId,Long hamletId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInVillage(Long userId,Long hamletId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInWard(Long userId,Long wardId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInWard(Long userId,Long wardId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInWard(Long userId, Long wardId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId);
@@ -75,8 +91,12 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,String influencingScope,String scopeValueId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,String influencingScope, String scopeValueId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,String influencingScope);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,String influencingScope);
 
 }
