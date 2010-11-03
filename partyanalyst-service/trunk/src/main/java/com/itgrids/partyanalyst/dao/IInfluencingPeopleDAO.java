@@ -40,6 +40,8 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalCountOfInfluencingPeopleInTehsilsByConstituency(Long userId,Long constituencyId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(Long userId,Long constituencyId);
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,Long localBodyId);
@@ -70,5 +72,11 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId,String influencingScope);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,String influencingScope,String scopeValueId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,String influencingScope);
 
 }
