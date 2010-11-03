@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverview
 import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementSubRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -56,6 +57,7 @@ import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -1049,6 +1051,368 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 		
 	 return constituencyManagementRegionWiseOverviewVOList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getInfluencingPeopleDetailsByRegion(java.lang.Long, java.lang.String)
+	 * Influencing People Details By Location/Region
+	 */
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,
+			Long regionId, String regionType) {
+		
+		log.debug("Getting influencing People Details Region Wise ...");
+		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList = new ArrayList<InfluencingPeopleDetailsVO>();
+		try{
+			
+			List influencingPeopleList = null;
+			
+			if(regionType.equalsIgnoreCase(IConstants.STATE)){
+				
+				State state = stateDAO.get(new Long(regionId));
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInState(userId, state.getStateId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.STATE,IConstants.DISTRICT,0L,"","");	
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
+				
+				District district = districtDAO.get(new Long(regionId));
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInDistrict(userId, district.getDistrictId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.DISTRICT,IConstants.CONSTITUENCY,0L,"","");
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				
+				Constituency constituency = constituencyDAO.get(new Long(regionId));
+				
+				if(constituency.getAreaType() == null || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+				 influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituency(userId, constituency.getConstituencyId());
+				
+					//Process and set details to VO
+					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+				 influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
+					
+					//Process and set details to VO
+					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+				else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
+					
+					//rural areas
+					influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituency(userId, constituency.getConstituencyId());
+					
+					//Process and set details to VO
+					if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+						influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.TEHSIL,0L,"","");
+					
+					//for urban
+                    List influencingPeopleList1 = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInConstituencyByLocalBody(userId, constituency.getConstituencyId());
+					
+					//Process and set details to VO
+					if(influencingPeopleList1 != null && influencingPeopleList1.size() > 0){
+						List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList1 = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.CONSTITUENCY,IConstants.LOCAL_BODY_ELECTION,0L,"","");
+						influencingPeopleDetailsList.addAll(influencingPeopleDetailsList1);
+					}
+				}
+				
+			}else if(regionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION") || regionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
+				
+				LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
+				String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInLocalBodys(userId, localBody.getLocalElectionBodyId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.LOCAL_BODY_ELECTION,IConstants.WARD,0L,"","");
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.MANDAL) || regionType.equalsIgnoreCase(IConstants.TEHSIL)){
+				
+				Tehsil tehsil = tehsilDAO.get(new Long(regionId));
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInTehsil(userId, tehsil.getTehsilId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.TEHSIL,IConstants.VILLAGE,0L,"","");
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.VILLAGE) || regionType.equalsIgnoreCase(IConstants.HAMLET)){
+				
+				Hamlet hamlet = hamletDAO.get(new Long(regionId));
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInVillage(userId, hamlet.getHamletId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.HAMLET,"",0L,"","");
+				
+			}else if(regionType.equalsIgnoreCase(IConstants.WARD)){
+				
+				Constituency constituency = constituencyDAO.get(new Long(regionId));
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInWard(userId, constituency.getConstituencyId());
+				
+				//Process and set details to VO
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+					influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,IConstants.WARD,"",0L,"","");
+				
+			}
+			
+	    }catch(Exception ex){
+			log.error("Exception Raised In Influencing People Details Retrieval :" + ex);
+			ex.printStackTrace();
+			InfluencingPeopleDetailsVO rs = new InfluencingPeopleDetailsVO();
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			influencingPeopleDetailsList.add(rs);
+		}
+	
+	 return influencingPeopleDetailsList;
+	}
+	
+	/*
+	 * Processed Influencing People Results To VO
+	 */
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeopleDetailsVO> getProcessedInfluencingPeopleDetailsToVO(List influencingPeopleList,String regionType,String subRegionType,Long id,String scopeRegion,String scopeType){
+		
+		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO = null;
+		Map<Long,InfluencingPeopleDetailsVO> influencePeopleMap = new HashMap<Long,InfluencingPeopleDetailsVO>();
+		
+		if(influencingPeopleList != null && influencingPeopleList.size() > 0){
+			
+			influencingPeopleDetailsVO = new ArrayList<InfluencingPeopleDetailsVO>();
+			Iterator lstItr = influencingPeopleList.listIterator();
+			while(lstItr.hasNext()){
+				
+				InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+								
+				Object[] values = (Object[])lstItr.next();
+				
+				Long infPersonId = (Long)values[0];
+				String fname = (String)values[1];
+				String mname = (String)values[3];
+				String lname = (String)values[2];
+				
+				influencingPeopleBeanVO.setInfluencingPersonId(infPersonId.toString());
+				influencingPeopleBeanVO.setFirstName(fname = fname != null ? fname : "");
+				influencingPeopleBeanVO.setMiddleName(mname = mname != null ? mname : "");
+				influencingPeopleBeanVO.setLastName(lname = lname != null ? lname : "");
+				influencingPeopleBeanVO.setInfluencingRangeScope((String)values[4]);
+				influencingPeopleBeanVO.setInfluencingScopeValue(getRegionNameBasedOnScope((String)values[4],(String)values[5]));
+				influencingPeopleBeanVO.setPartyName((String)values[7]);
+				String casteCategoryId = (String)values[8];
+				String occupationId = (String)values[9];
+				
+				SocialCategory caste = socialCategoryDAO.get(new Long(casteCategoryId));
+				Occupation occupation = occupationDAO.get(new Long(occupationId));
+				
+				influencingPeopleBeanVO.setCast(caste.getCategory());
+				influencingPeopleBeanVO.setOccupation(occupation.getOccupation());
+				influencingPeopleBeanVO.setMobile((String)values[10]);
+				influencingPeopleBeanVO.setGender((String)values[11]);
+				influencingPeopleBeanVO.setEmail((String)values[12]);
+				influencingPeopleBeanVO.setFatherOrSpouseName((String)values[13]);
+				influencingPeopleBeanVO.setPosition((String)values[15]);
+				
+				State state = (State)values[16];
+				District district = (District)values[17];
+				Constituency constituency = (Constituency)values[18];
+				Tehsil tehsil = (Tehsil)values[19];
+				LocalElectionBody localBody  = (LocalElectionBody)values[20];
+				Hamlet hamlet = (Hamlet)values[22];
+				Constituency ward  =(Constituency)values[23];
+				
+				influencingPeopleBeanVO.setState(state.getStateName());
+				influencingPeopleBeanVO.setDistrict(district.getDistrictName());
+				influencingPeopleBeanVO.setConstituency(constituency.getName());
+				if(tehsil != null && tehsil.getTehsilId() != null){
+					influencingPeopleBeanVO.setMandal(tehsil.getTehsilName());
+					influencingPeopleBeanVO.setWardOrHamlet(hamlet.getHamletName());
+				}else if(localBody != null && localBody.getLocalElectionBodyId() != null){
+					String localBodyName = localBody.getName() + " (" +localBody.getElectionType().getElectionType()+" )"; 
+					influencingPeopleBeanVO.setMandal(localBodyName);
+					influencingPeopleBeanVO.setWardOrHamlet(ward.getName());
+				}
+				
+				InfluencingPeopleDetailsVO infPeopleDetailsVO = new InfluencingPeopleDetailsVO();
+				List<InfluencingPeopleBeanVO> infPeopleDetails = new ArrayList<InfluencingPeopleBeanVO>();
+				
+				if(subRegionType.equalsIgnoreCase(IConstants.DISTRICT)){
+					
+					Long districtId = district.getDistrictId();
+                    if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(districtId)){
+                    	infPeopleDetailsVO.setRegionId(districtId);
+                    	infPeopleDetailsVO.setRegionName(district.getDistrictName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.DISTRICT);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(districtId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(districtId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(districtId, infPeopleDetailsVO1);
+					}
+									
+				}else if(subRegionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+                    
+					Long constiId = constituency.getConstituencyId();
+					if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(constiId)){
+						infPeopleDetailsVO.setRegionId(constiId);
+                    	infPeopleDetailsVO.setRegionName(constituency.getName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.CONSTITUENCY);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(constiId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(constiId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(constiId, infPeopleDetailsVO1);
+					}
+                    
+               	}else if(subRegionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || subRegionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION")){
+               		
+               		Long localBodyId = localBody.getLocalElectionBodyId();
+                    if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(localBodyId)){
+                    	infPeopleDetailsVO.setRegionId(localBodyId);
+                    	infPeopleDetailsVO.setRegionName(localBody.getName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.LOCAL_BODY_ELECTION);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(localBodyId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(localBodyId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(localBodyId, infPeopleDetailsVO1);
+					}
+					
+				}else if(subRegionType.equalsIgnoreCase(IConstants.TEHSIL) || subRegionType.equalsIgnoreCase(IConstants.MANDAL)){
+					
+					Long tehsilId = tehsil.getTehsilId();
+                    if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(tehsilId)){
+                    	infPeopleDetailsVO.setRegionId(tehsilId);
+                    	infPeopleDetailsVO.setRegionName(tehsil.getTehsilName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.TEHSIL);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(tehsilId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(tehsilId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(tehsilId, infPeopleDetailsVO1);
+					}
+                    
+				}else if(subRegionType.equalsIgnoreCase(IConstants.HAMLET) || subRegionType.equalsIgnoreCase(IConstants.VILLAGE)){
+					
+					Long hamletId = hamlet.getHamletId();
+                    if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(hamletId)){
+                    	infPeopleDetailsVO.setRegionId(hamletId);
+                    	infPeopleDetailsVO.setRegionName(hamlet.getHamletName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.HAMLET);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(hamletId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(hamletId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(hamletId, infPeopleDetailsVO1);
+					}
+				}else if(subRegionType.equalsIgnoreCase(IConstants.WARD)){
+					
+					Long wardId = ward.getConstituencyId();
+                    if(influencePeopleMap.isEmpty() || !influencePeopleMap.containsKey(wardId)){
+                    	infPeopleDetailsVO.setRegionId(wardId);
+                    	infPeopleDetailsVO.setRegionName(ward.getName());
+                    	infPeopleDetailsVO.setRegionType(IConstants.WARD);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else if(influencePeopleMap.containsKey(wardId)){
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(wardId);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(wardId, infPeopleDetailsVO1);
+					}
+				}else if(!scopeType.equalsIgnoreCase("")){
+					if(influencePeopleMap.isEmpty()){
+						infPeopleDetailsVO.setRegionId(id);
+                    	infPeopleDetailsVO.setRegionName(scopeRegion);
+                    	infPeopleDetailsVO.setRegionType(scopeType);
+                    	infPeopleDetails.add(influencingPeopleBeanVO);
+                    	infPeopleDetailsVO.setInfluencingPeopleDetails(infPeopleDetails);
+					}else{
+						InfluencingPeopleDetailsVO infPeopleDetailsVO1 = influencePeopleMap.get(id);
+						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
+						influencePeopleMap.put(id, infPeopleDetailsVO1);
+					}
+				}
+				
+			}
+			
+			//Process The Map And Set to List
+			Set<Long> keys = influencePeopleMap.keySet();
+			for(Long regId:keys){
+				influencingPeopleDetailsVO.add(influencePeopleMap.get(regId));
+			}
+		}
+		
+	 return influencingPeopleDetailsVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getInfluencingPeopleDetailsByScope(java.lang.Long, java.lang.Long, java.lang.String)
+	 * Influencing People Details By Influence Scope
+	 */
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,
+			Long regionId, String regionType) {
+		
+		log.debug("Getting Influencing People Details Scope Wise ...");
+		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList = new ArrayList<InfluencingPeopleDetailsVO>();
+		try{
+			List influencingPeopleList = null;
+			String regionName = "";
+			String scopeType = getRegionTypeMatchingString(regionType);
+			
+			if(regionId.equals(0L)){
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(userId, scopeType);
+			}else{
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsByInfluencingScope(userId, scopeType,regionId.toString());
+				regionName = getRegionNameBasedOnScope(regionType,regionId.toString());
+			}
+			
+			if(influencingPeopleList != null && influencingPeopleList.size() > 0){
+				influencingPeopleDetailsList = getProcessedInfluencingPeopleDetailsToVO(influencingPeopleList,"","",regionId,regionName,scopeType);
+			}
+		}catch(Exception ex){
+			log.error("Exception Raised In Influencing People Details Retrieval :" + ex);
+			ex.printStackTrace();
+			InfluencingPeopleDetailsVO rs = new InfluencingPeopleDetailsVO();
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			influencingPeopleDetailsList.add(rs);
+		}
+		
+	 return influencingPeopleDetailsList;
+	}
+	
+	public String getRegionTypeMatchingString(String type){
+		if(type.equalsIgnoreCase(IConstants.STATE))
+			return IConstants.STATE;
+		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			return IConstants.DISTRICT;
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			return IConstants.CONSTITUENCY;
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			return "MUNCIPALITY/CORPORATION";
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL) || type.equalsIgnoreCase(IConstants.MANDAL))
+			return IConstants.MANDAL;
+		else if(type.equalsIgnoreCase(IConstants.VILLAGE) || type.equalsIgnoreCase(IConstants.HAMLET))
+			return IConstants.VILLAGE;
+		else if(type.equalsIgnoreCase(IConstants.WARD))
+			return IConstants.WARD;
+		
+	 return null;
 	}
 }
 
