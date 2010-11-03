@@ -979,12 +979,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				//for tehsils
 				subRegionsList = regionServiceDataImp.getLocalElectionBodiesInConstituency(constituencyId, IConstants.DELIMITATION_YEAR.toString());
 				if(subRegionsList != null && subRegionsList.size() > 0)
-					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.TEHSIL);
+					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.LOCAL_BODY_ELECTION);
 				//for local bodys
 				Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap1 = null;
 				List<SelectOptionVO> subRegionsList1 = regionServiceDataImp.getTehsilsInAConstituency(constituencyId);
 				if(subRegionsList1 != null && subRegionsList1.size() > 0)
-					subRegionsDetailsMap1 = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList1,IConstants.LOCAL_BODY_ELECTION);
+					subRegionsDetailsMap1 = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList1,IConstants.TEHSIL);
 				
 				if(subRegionsDetailsMap1 != null && !subRegionsDetailsMap1.isEmpty())
 				 subRegionsDetailsMap.putAll(subRegionsDetailsMap1);
