@@ -123,6 +123,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="problemManagementReportService" ref="problemManagementReportService" />
 		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>			
 
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
@@ -183,7 +184,7 @@
 	
 	<bean id="electionComparisonAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAction" singleton="false">
 	   <property name="staticDataService" ref="staticDataService" />		
-		<property name="entitlementsHelper" ref="entitlementsHelper" />																		
+	   <property name="entitlementsHelper" ref="entitlementsHelper" />																		
 	</bean>																				
 	
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">

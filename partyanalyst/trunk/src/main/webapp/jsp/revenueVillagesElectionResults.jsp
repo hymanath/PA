@@ -55,6 +55,20 @@
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<style type="text/css">
+		.mainHeading 
+		{
+			background-image:url("images/icons/electionResultsReport/heading.png");
+			border:0 solid #AEE2FF;
+			color:#000000;
+			font-family:MS Sans-serif;
+			font-size:18px;
+			font-weight:bold;
+			height:25px;
+			margin-bottom:15px;
+			margin-top:15px;
+			padding:10px;
+			text-align:center;
+		}
 		.button 
 		{
 			background-attachment:scroll;
@@ -146,6 +160,22 @@
 	</script>
 </head>
 <body>
+<table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
+		<tbody><tr>		
+		<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
+			<td width="72%" align="left">
+				<table cellspacing="0" cellpadding="0" border="0" style="margin-left:30px;">
+				<tbody><tr>
+					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td>
+					<td valign="top"><div class="mainHeading" id="mainHead"> All Parties Results In All Elections</div></td>
+					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo2.png"></td>
+				</tr>
+				</tbody></table>
+			</td>
+			<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
+		</tr>
+	</tbody></table>
+	
 	<div style="color:#247CD4;font-size:19px;font-weight:bold;margin-bottom:23px;margin-top:36px;text-align:center;">All Parties Trends In All Elections Of ${tehsilName } Mandal</div>
 	<div>
 	<c:if test="${! empty mandalVO}">
