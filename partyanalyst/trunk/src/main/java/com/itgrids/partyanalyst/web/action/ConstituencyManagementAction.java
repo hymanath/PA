@@ -11,10 +11,19 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementSubRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -23,6 +32,7 @@ import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyManagementAction extends ActionSupport implements ServletRequestAware {
@@ -59,9 +69,75 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private IStaticDataService staticDataService;
 	private ISmsService smsCountrySmsService;
 	private Long remainingSms;
+	private ConstituencyManagementDataVO constituencyManagementDataVO;
+	private List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVO;
+	private IInfluencingPeopleService influencingPeopleService;
+	private List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO;
+	private String regionName = null;
+	private String regionType = null;
+	private String scopeType = null;
 	
-	
-	
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
+	}
+
+	public String getRegionType() {
+		return regionType;
+	}
+
+	public void setRegionType(String regionType) {
+		this.regionType = regionType;
+	}
+
+	public String getScopeType() {
+		return scopeType;
+	}
+
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
+	}
+
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsVO() {
+		return influencingPeopleDetailsVO;
+	}
+
+	public void setInfluencingPeopleDetailsVO(
+			List<InfluencingPeopleDetailsVO> influencingPeopleDetailsVO) {
+		this.influencingPeopleDetailsVO = influencingPeopleDetailsVO;
+	}
+
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
+	}
+
+	public List<ConstituencyManagementRegionWiseOverviewVO> getConstituencyManagementRegionWiseOverviewVO() {
+		return constituencyManagementRegionWiseOverviewVO;
+	}
+
+	public void setConstituencyManagementRegionWiseOverviewVO(
+			List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVO) {
+		this.constituencyManagementRegionWiseOverviewVO = constituencyManagementRegionWiseOverviewVO;
+	}
+
+	public ConstituencyManagementDataVO getConstituencyManagementDataVO() {
+		return constituencyManagementDataVO;
+	}
+
+	public void setConstituencyManagementDataVO(
+			ConstituencyManagementDataVO constituencyManagementDataVO) {
+		this.constituencyManagementDataVO = constituencyManagementDataVO;
+	}
+
 	public String getCmTask() {
 		return cmTask;
 	}
@@ -398,6 +474,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
+		constituencyManagementDataVO = influencingPeopleService.getInfluencingPeopleOverviewDetails(userId);
+		
+		return SUCCESS;		
+	}
+	
+	public String getSubLevelInfluenceAction()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());				
@@ -405,25 +492,496 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				e.printStackTrace();
 			}
 		}
-		String accessType = jObj.getString("accessType");
-		Long accessValue = jObj.getLong("accessValue");
-		Long hamletId = null;
-		if(!jObj.getString("hamletId").equals("null"))
-		{	
-			hamletId = new Long(jObj.getString("hamletId"));
-		}  
-		String flag = jObj.getString("flag");
+		Long regionId = new Long(jObj.getString("regionId"));
+		String regionName = jObj.getString("regionName");
+		String regionType = jObj.getString("regionType");
 		
-		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue, hamletId,flag,userId);
+		constituencyManagementRegionWiseOverviewVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType);
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getInfluencingPeopleData()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
 		
+		Long regionId = new Long(request.getParameter("regionId"));
+		regionName = request.getParameter("regionName");
+		regionType = request.getParameter("regionType");
+		scopeType = request.getParameter("scopeType");
 		
-		log.debug("influencingPeopleVO.size()::::::::::::::::::"+influencingPeopleVO.size());
-		return SUCCESS;
+		if(scopeType.equalsIgnoreCase("region"))
+			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByRegion(userId,regionId,regionType);
+		else if(scopeType.equalsIgnoreCase("scope"))
+			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByScope(userId,regionId,regionType);
+		
+		return Action.SUCCESS;
+	}
+	
+	/*
+	public List<InfluencingPeopleDetailsVO> getInfluencePeopleDummyList()
+	{
+		List<InfluencingPeopleDetailsVO> peopleVO = new ArrayList<InfluencingPeopleDetailsVO>();
+		
+		//--
+		InfluencingPeopleDetailsVO p1 = new InfluencingPeopleDetailsVO();
+		p1.setRegionId(new Long(1));
+		p1.setRegionName("Kavali");
+		p1.setRegionType("Assembly");
+		
+		List<InfluencingPeopleBeanVO> influencingPeople = new ArrayList<InfluencingPeopleBeanVO>();
+		
+		InfluencingPeopleBeanVO bean1 = new InfluencingPeopleBeanVO();
+		bean1.setFirstName("Sai Krishna");
+		bean1.setLastName("Basetti");
+		bean1.setEmail("sai@gmail.com");
+		bean1.setMobile("9988558877");
+		bean1.setGender("Male");
+		bean1.setCast("BC");
+		bean1.setConstituencyName("Kavali");
+		bean1.setDistrictName("Nellore");
+		bean1.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean2 = new InfluencingPeopleBeanVO();
+		bean2.setFirstName("Siva");
+		bean2.setLastName("Reddivari");
+		bean2.setEmail("siva@gmail.com");
+		bean2.setMobile("995599887788");
+		bean2.setGender("Male");
+		bean2.setCast("BC");
+		bean2.setConstituencyName("Allur");
+		bean2.setDistrictName("Nellore");
+		bean2.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean3 = new InfluencingPeopleBeanVO();
+		bean3.setFirstName("Raghavender");
+		bean3.setLastName("Prasad");
+		bean3.setEmail("raghu@gmail.com");
+		bean3.setMobile("9989922789");
+		bean3.setGender("Male");
+		bean3.setCast("BC");
+		bean3.setConstituencyName("Kavali");
+		bean3.setDistrictName("Nellore");
+		bean3.setStateName("Andhra Pradesh");
+		
+		influencingPeople.add(bean1);
+		influencingPeople.add(bean2);
+		influencingPeople.add(bean3);
+		
+		p1.setInfluencingPeopleDetails(influencingPeople);
+		//--
+		
+		//--
+		InfluencingPeopleDetailsVO p2 = new InfluencingPeopleDetailsVO();
+		p2.setRegionId(new Long(1));
+		p2.setRegionName("Allur");
+		p2.setRegionType("Assembly");
+		
+		List<InfluencingPeopleBeanVO> influencingPeople1 = new ArrayList<InfluencingPeopleBeanVO>();
+		
+		InfluencingPeopleBeanVO bean21 = new InfluencingPeopleBeanVO();
+		bean21.setFirstName("Sai Krishna");
+		bean21.setLastName("Basetti");
+		bean21.setEmail("sai@gmail.com");
+		bean21.setMobile("9988558877");
+		bean21.setGender("Male");
+		bean21.setCast("BC");
+		bean21.setConstituencyName("Kavali");
+		bean21.setDistrictName("Nellore");
+		bean21.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean22 = new InfluencingPeopleBeanVO();
+		bean22.setFirstName("Siva");
+		bean22.setLastName("Reddivari");
+		bean22.setEmail("siva@gmail.com");
+		bean22.setMobile("995599887788");
+		bean22.setGender("Male");
+		bean22.setCast("BC");
+		bean22.setConstituencyName("Allur");
+		bean22.setDistrictName("Nellore");
+		bean22.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean23 = new InfluencingPeopleBeanVO();
+		bean23.setFirstName("Raghavender");
+		bean23.setLastName("Prasad");
+		bean23.setEmail("raghu@gmail.com");
+		bean23.setMobile("9989922789");
+		bean23.setGender("Male");
+		bean23.setCast("BC");
+		bean23.setConstituencyName("Kavali");
+		bean23.setDistrictName("Nellore");
+		bean23.setStateName("Andhra Pradesh");
+		
+		influencingPeople1.add(bean21);
+		influencingPeople1.add(bean22);
+		influencingPeople1.add(bean23);
+		
+		p2.setInfluencingPeopleDetails(influencingPeople1);
+		//--
+		
+		//--
+		InfluencingPeopleDetailsVO p3 = new InfluencingPeopleDetailsVO();
+		p3.setRegionId(new Long(1));
+		p3.setRegionName("Atmakur");
+		p3.setRegionType("Assembly");
+		
+		List<InfluencingPeopleBeanVO> influencingPeople3 = new ArrayList<InfluencingPeopleBeanVO>();
+		
+		InfluencingPeopleBeanVO bean31 = new InfluencingPeopleBeanVO();
+		bean31.setFirstName("Sai Krishna");
+		bean31.setLastName("Basetti");
+		bean31.setEmail("sai@gmail.com");
+		bean31.setMobile("9988558877");
+		bean31.setGender("Male");
+		bean31.setCast("BC");
+		bean31.setConstituencyName("Kavali");
+		bean31.setDistrictName("Nellore");
+		bean31.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean32 = new InfluencingPeopleBeanVO();
+		bean32.setFirstName("Siva");
+		bean32.setLastName("Reddivari");
+		bean32.setEmail("siva@gmail.com");
+		bean32.setMobile("995599887788");
+		bean32.setGender("Male");
+		bean32.setCast("BC");
+		bean32.setConstituencyName("Allur");
+		bean32.setDistrictName("Nellore");
+		bean32.setStateName("Andhra Pradesh");
+		
+		InfluencingPeopleBeanVO bean33 = new InfluencingPeopleBeanVO();
+		bean33.setFirstName("Raghavender");
+		bean33.setLastName("Prasad");
+		bean33.setEmail("raghu@gmail.com");
+		bean33.setMobile("9989922789");
+		bean33.setGender("Male");
+		bean33.setCast("BC");
+		bean33.setConstituencyName("Kavali");
+		bean33.setDistrictName("Nellore");
+		bean33.setStateName("Andhra Pradesh");
+		
+		influencingPeople3.add(bean31);
+		influencingPeople3.add(bean32);
+		influencingPeople3.add(bean33);
+		
+		p3.setInfluencingPeopleDetails(influencingPeople3);
+		//--
+		
+		peopleVO.add(p1);
+		peopleVO.add(p2);
+		peopleVO.add(p3);
+		
+		return peopleVO;		
+	}
+	public List<ConstituencyManagementRegionWiseOverviewVO> getSubRegionsDummyData()
+	{
+		List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVO = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
+		
+		//--
+		ConstituencyManagementRegionWiseOverviewVO region = new ConstituencyManagementRegionWiseOverviewVO();
+		region.setRegionId(new Long(1));
+		region.setRegionName("Allur");
+		region.setRegionType("Mandal");
+		region.setCountValue(new Long(100));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub1 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub1.setSubRegionId(new Long(1));
+		sub1.setSubRegionName("Allur");
+		sub1.setSubRegionType("Village");
+		sub1.setCountValue(new Long(25));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub2 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub2.setSubRegionId(new Long(2));
+		sub2.setSubRegionName("Allurpeta");
+		sub2.setSubRegionType("Village");
+		sub2.setCountValue(new Long(25));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub3 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub3.setSubRegionId(new Long(3));
+		sub3.setSubRegionName("Beeramgunta");
+		sub3.setSubRegionType("Village");
+		sub3.setCountValue(new Long(30));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub4 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub4.setSubRegionId(new Long(4));
+		sub4.setSubRegionName("Gogulapalli");
+		sub4.setSubRegionType("Village");
+		sub4.setCountValue(new Long(20));
+		
+		subRegions.add(sub1);
+		subRegions.add(sub2);
+		subRegions.add(sub3);
+		subRegions.add(sub4);
+		
+		region.setSubRegionWiseOverview(subRegions);
+		//--
+		
+		//--
+		ConstituencyManagementRegionWiseOverviewVO region2 = new ConstituencyManagementRegionWiseOverviewVO();
+		region2.setRegionId(new Long(1));
+		region2.setRegionName("Bogole");
+		region2.setRegionType("Mandal");
+		region2.setCountValue(new Long(200));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions2 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub21 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub21.setSubRegionId(new Long(1));
+		sub21.setSubRegionName("Allur");
+		sub21.setSubRegionType("Village");
+		sub21.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub22 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub22.setSubRegionId(new Long(2));
+		sub22.setSubRegionName("Allurpeta");
+		sub22.setSubRegionType("Village");
+		sub22.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub23 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub23.setSubRegionId(new Long(3));
+		sub23.setSubRegionName("Beeramgunta");
+		sub23.setSubRegionType("Village");
+		sub23.setCountValue(new Long(25));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub24 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub24.setSubRegionId(new Long(4));
+		sub24.setSubRegionName("Gogulapalli");
+		sub24.setSubRegionType("Village");
+		sub24.setCountValue(new Long(75));
+		
+		subRegions2.add(sub21);
+		subRegions2.add(sub22);
+		subRegions2.add(sub23);
+		subRegions2.add(sub24);
+		
+		region2.setSubRegionWiseOverview(subRegions2);
+		//--
+		
+		//--
+		ConstituencyManagementRegionWiseOverviewVO region3 = new ConstituencyManagementRegionWiseOverviewVO();
+		region3.setRegionId(new Long(1));
+		region3.setRegionName("Kavali");
+		region3.setRegionType("Municipality");
+		region3.setCountValue(new Long(100));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions3 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub31 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub31.setSubRegionId(new Long(1));
+		sub31.setSubRegionName("Anantapuram");
+		sub31.setSubRegionType("ward");
+		sub31.setCountValue(new Long(20));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub32 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub32.setSubRegionId(new Long(2));
+		sub32.setSubRegionName("Laxmipuram");
+		sub32.setSubRegionType("Ward");
+		sub32.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub33 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub33.setSubRegionId(new Long(3));
+		sub33.setSubRegionName("Beeramgunta");
+		sub33.setSubRegionType("ward");
+		sub33.setCountValue(new Long(10));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub34 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub34.setSubRegionId(new Long(4));
+		sub34.setSubRegionName("Gogulapalli");
+		sub34.setSubRegionType("Ward");
+		sub34.setCountValue(new Long(20));
+		
+		subRegions3.add(sub31);
+		subRegions3.add(sub32);
+		subRegions3.add(sub33);
+		subRegions3.add(sub34);
+		
+		region3.setSubRegionWiseOverview(subRegions3);
+		//--
+		
+		//--
+		ConstituencyManagementRegionWiseOverviewVO region4 = new ConstituencyManagementRegionWiseOverviewVO();
+		region4.setRegionId(new Long(1));
+		region4.setRegionName("Dagadarthi");
+		region4.setRegionType("mandal");
+		region4.setCountValue(new Long(100));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions4 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub41 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub41.setSubRegionId(new Long(1));
+		sub41.setSubRegionName("Allur");
+		sub41.setSubRegionType("Village");
+		sub41.setCountValue(new Long(20));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub42 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub42.setSubRegionId(new Long(2));
+		sub42.setSubRegionName("Allurpeta");
+		sub42.setSubRegionType("Village");
+		sub42.setCountValue(new Long(30));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub43 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub43.setSubRegionId(new Long(3));
+		sub43.setSubRegionName("Beeramgunta");
+		sub43.setSubRegionType("Village");
+		sub43.setCountValue(new Long(20));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub44 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub44.setSubRegionId(new Long(4));
+		sub44.setSubRegionName("Gogulapalli");
+		sub44.setSubRegionType("Village");
+		sub44.setCountValue(new Long(30));
+		
+		subRegions4.add(sub41);
+		subRegions4.add(sub42);
+		subRegions4.add(sub43);
+		subRegions4.add(sub44);
+		
+		region4.setSubRegionWiseOverview(subRegions4);
+		
+		//--
+		
+		constituencyManagementRegionWiseOverviewVO.add(region);
+		constituencyManagementRegionWiseOverviewVO.add(region2);
+		constituencyManagementRegionWiseOverviewVO.add(region3);
+		constituencyManagementRegionWiseOverviewVO.add(region4);
+		
+		return constituencyManagementRegionWiseOverviewVO;
 		
 	}
 
-	
+	public ConstituencyManagementDataVO getInfluenceDummyData()
+	{
+		ConstituencyManagementDataVO constVO = new ConstituencyManagementDataVO();
+		
+		ConstituencyManagementRegionWiseOverviewVO region = new ConstituencyManagementRegionWiseOverviewVO();
+		region.setRegionId(new Long(1));
+		region.setRegionName("Kavali");
+		region.setRegionType("Assembly");
+		region.setCountValue(new Long(500));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub1 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub1.setSubRegionId(new Long(1));
+		sub1.setSubRegionName("Allur");
+		sub1.setSubRegionType("Mandal");
+		sub1.setCountValue(new Long(100));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub2 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub2.setSubRegionId(new Long(2));
+		sub2.setSubRegionName("Bogole");
+		sub2.setSubRegionType("Mandal");
+		sub2.setCountValue(new Long(200));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub3 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub3.setSubRegionId(new Long(3));
+		sub3.setSubRegionName("Kavali");
+		sub3.setSubRegionType("Municipality");
+		sub3.setCountValue(new Long(100));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub4 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub4.setSubRegionId(new Long(4));
+		sub4.setSubRegionName("Dagadarthi");
+		sub4.setSubRegionType("Mandal");
+		sub4.setCountValue(new Long(100));
+		
+		subRegions.add(sub1);
+		subRegions.add(sub2);
+		subRegions.add(sub3);
+		subRegions.add(sub4);
+		
+		region.setSubRegionWiseOverview(subRegions);
+		
+		List<ConstituencyManagementInfluenceScopeOverviewVO> scopeList = new ArrayList<ConstituencyManagementInfluenceScopeOverviewVO>();
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope1 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope1.setInfluenceScope("State");
+		scope1.setCountValue(new Long(50));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList1 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope11 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope11.setInfluenceScopeRegionId(new Long(1));
+		subScope11.setInfluenceScopeRegion("Andhra Pradesh");		
+		subScope11.setCountValue(new Long(50));
+		
+		subScopeList1.add(subScope11);
+		scope1.setInfluenceScopeDetails(subScopeList1);
+		//--
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope2 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope2.setInfluenceScope("District");
+		scope2.setCountValue(new Long(100));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList2 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope21 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope21.setInfluenceScopeRegionId(new Long(1));
+		subScope21.setInfluenceScopeRegion("Nellore");		
+		subScope21.setCountValue(new Long(50));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope22 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope22.setInfluenceScopeRegionId(new Long(2));
+		subScope22.setInfluenceScopeRegion("Prakasam");		
+		subScope22.setCountValue(new Long(20));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope23 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope23.setInfluenceScopeRegionId(new Long(3));
+		subScope23.setInfluenceScopeRegion("Chittor");		
+		subScope23.setCountValue(new Long(30));
+		
+		subScopeList2.add(subScope21);
+		subScopeList2.add(subScope22);
+		subScopeList2.add(subScope23);
+		
+		scope2.setInfluenceScopeDetails(subScopeList2);
+		//--
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope3 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope3.setInfluenceScope("Constituency");
+		scope3.setCountValue(new Long(250));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList3 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope31 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope31.setInfluenceScopeRegionId(new Long(1));
+		subScope31.setInfluenceScopeRegion("Kavali");		
+		subScope31.setCountValue(new Long(50));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope32 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope32.setInfluenceScopeRegionId(new Long(2));
+		subScope32.setInfluenceScopeRegion("Gudur");		
+		subScope32.setCountValue(new Long(100));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope33 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope33.setInfluenceScopeRegionId(new Long(3));
+		subScope33.setInfluenceScopeRegion("Ongole");		
+		subScope33.setCountValue(new Long(100));
+		
+		subScopeList3.add(subScope31);
+		subScopeList3.add(subScope32);
+		subScopeList3.add(subScope33);
+		
+		scope3.setInfluenceScopeDetails(subScopeList3);
+		//--
+		
+		scopeList.add(scope1);
+		scopeList.add(scope2);
+		scopeList.add(scope3);
+		
+		constVO.setRegionWiseOverview(region);
+		constVO.setInfluenceScopeOverview(scopeList);
+		
+		return constVO;
+	}
+	*/
 }
 
 
