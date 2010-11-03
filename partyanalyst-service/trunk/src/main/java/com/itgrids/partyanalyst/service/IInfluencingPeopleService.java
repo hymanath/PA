@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverviewVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -34,4 +35,7 @@ public interface IInfluencingPeopleService {
 	public ConstituencyManagementDataVO getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long stateId,Boolean isScopeData);
 	public ConstituencyManagementDataVO getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long districtId,Boolean isScopeData);
 	public ConstituencyManagementDataVO getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long constituencyId,Boolean isScopeData);
+	
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType);
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
 }
