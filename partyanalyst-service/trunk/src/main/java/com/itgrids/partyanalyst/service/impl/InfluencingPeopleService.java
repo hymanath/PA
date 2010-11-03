@@ -1072,9 +1072,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					}
 					regionsListOption.addAll(localBodysInConstituency);
 				}
-				constituencyManagementRegionWiseCompleteDataVO.setRegionsList(regionsListOption);
-				constituencyManagementRegionWiseCompleteDataVO.setRegionWiseOverview(constituencyManagementRegionWiseOverviewVOList);
+				
 			}
+			constituencyManagementRegionWiseCompleteDataVO.setRegionsList(regionsListOption);
+			constituencyManagementRegionWiseCompleteDataVO.setRegionWiseOverview(constituencyManagementRegionWiseOverviewVOList);
 			
 		}catch(Exception ex){
 			log.error(" Exception Raised In Influencing People Retrieval :" + ex);
