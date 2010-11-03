@@ -175,9 +175,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"and model.userAddress.tehsil is not null order by model.userAddress.tehsil.tehsilId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInConstituency(Long userId,
+			Long constituencyId) {
+		Object[] params = {userId,constituencyId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.tehsil is not null order by model.userAddress.tehsil.tehsilId",params);
 	}
@@ -188,9 +195,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
+				"and model.userAddress.localElectionBody is not null order by model.userAddress.localElectionBody.localElectionBodyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInConstituencyByLocalBody(Long userId,
+			Long constituencyId) {
+		Object[] params = {userId,constituencyId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.constituency is not null and model.userAddress.constituency.constituencyId = ? "+
 				"and model.userAddress.localElectionBody is not null order by model.userAddress.localElectionBody.localElectionBodyId",params);
 	}
@@ -201,10 +215,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.district is not null and model.userAddress.district.districtId = ? "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position "+
+				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.district.districtId = ? "+
+				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInDistrict(Long userId,
+			Long districtId) {
+		Object[] params = {userId,districtId};
+		return getHibernateTemplate().find("select model.userAddress "+
+				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.district.districtId = ? "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId",params);
 	}
 
@@ -214,9 +235,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,localBodyId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
+				"and model.userAddress.ward is not null order by model.userAddress.ward.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInLocalBodys(Long userId,
+			Long localBodyId) {
+		Object[] params = {userId,localBodyId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
 				"and model.userAddress.ward is not null order by model.userAddress.ward.constituencyId",params);
 	}
@@ -227,9 +255,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,stateId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
+				"and model.userAddress.district is not null order by model.userAddress.district.districtId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInState(Long userId,
+			Long stateId) {
+		Object[] params = {userId,stateId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.state is not null and model.userAddress.state.stateId = ? "+
 				"and model.userAddress.district is not null order by model.userAddress.district.districtId",params);
 	}
@@ -240,9 +275,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
+				"and model.userAddress.hamlet is not null order by model.userAddress.hamlet.hamletId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInTehsil(Long userId,
+			Long tehsilId) {
+		Object[] params = {userId,tehsilId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.tehsil is not null and model.userAddress.tehsil.tehsilId = ? "+
 				"and model.userAddress.hamlet is not null order by model.userAddress.hamlet.hamletId",params);
 	}
@@ -253,9 +295,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,hamletId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
+				
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInVillage(Long userId,
+			Long hamletId) {
+		Object[] params = {userId,hamletId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.hamlet is not null and model.userAddress.hamlet.hamletId = ? ",params);
 				
 	}
@@ -265,9 +314,14 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInWard(Long userId, Long wardId) {
+		Object[] params = {userId,wardId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
 	}
 
@@ -291,9 +345,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,influencingScope,scopeValueId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,
+			String influencingScope, String scopeValueId) {
+		Object[] params = {userId,influencingScope,scopeValueId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.influencingScope = ? and model.influencingScopeValue = ? order by model.influencingScope",params);
 	}
 
@@ -303,9 +363,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		Object[] params = {userId,influencingScope};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
-				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position,model.userAddress.state,"+
-				"model.userAddress.district,model.userAddress.constituency,model.userAddress.tehsil,model.userAddress.localElectionBody,"+
-				"model.userAddress.township,model.userAddress.hamlet,model.userAddress.ward from InfluencingPeople model where "+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.influencingScope = ? order by model.influencingScope",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,
+			String influencingScope) {
+		Object[] params = {userId,influencingScope};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 
