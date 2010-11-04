@@ -71,6 +71,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private Long defaultConstId = 0l;
 	private List<SelectOptionVO> cadreLevelsList = new ArrayList<SelectOptionVO>();
 	private Long defaultCadreLevelId;
+	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
+	private Boolean sameAsCAFlag = true;
+	
 	
 	public ServletContext getContext() {
 		return context;
@@ -355,6 +358,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
 		this.defaultCadreLevelId = defaultCadreLevelId;
+	}	
+
+	public Boolean getSameAsCAFlag() {
+		return sameAsCAFlag;
+	}
+
+	public void setSameAsCAFlag(Boolean sameAsCAFlag) {
+		this.sameAsCAFlag = sameAsCAFlag;
 	}
 
 	public String execute(){

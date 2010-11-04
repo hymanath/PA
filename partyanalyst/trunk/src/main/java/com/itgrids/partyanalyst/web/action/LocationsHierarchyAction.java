@@ -248,6 +248,22 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> constituencies = constituencyInfoVO.getAssembyConstituencies();
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
+		} else if(jObj.getString("task").equalsIgnoreCase("boothsInTehsilOrMunicipality"))
+		{
+			//to get all booths in tehsil or municipality  
+			Long locationId = jObj.getLong("id");
+			Long constituencyId = jObj.getLong("constId");
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			booths.add(0, new SelectOptionVO(0l, "Select Location"));	
+			setRegionsList(booths);
+		}  else if(jObj.getString("task").equalsIgnoreCase("boothsInWard"))
+		{
+			//to get all booths in ward  
+			Long locationId = jObj.getLong("id");
+			Long constituencyId = jObj.getLong("constId");
+			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
+			booths.add(0, new SelectOptionVO(0l, "Select Location"));
+			setRegionsList(booths);
 		} 
 		
 		

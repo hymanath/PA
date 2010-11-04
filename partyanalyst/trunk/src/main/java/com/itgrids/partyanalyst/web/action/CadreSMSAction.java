@@ -107,6 +107,9 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			regions.add(new SelectOptionVO(4L,"Constituency"));
 			regions.add(new SelectOptionVO(5L,"Mandal"));
 			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+			regions.add(new SelectOptionVO(8L,"WARD"));
+			regions.add(new SelectOptionVO(9L,"BOOTH"));
 			cadreSMSVO.setRegions(regions);
 			//states = cadreManagementService.getUserAccessStates(userID);
 			states = regionServiceDataImp.getStatesByCountry(new Long(1));
@@ -121,6 +124,9 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			regions.add(new SelectOptionVO(4L,"Constituency"));
 			regions.add(new SelectOptionVO(5L,"Mandal"));
 			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+			regions.add(new SelectOptionVO(8L,"WARD"));
+			regions.add(new SelectOptionVO(9L,"BOOTH"));
 			cadreSMSVO.setRegions(regions);
 			SelectOptionVO object = new SelectOptionVO();
 			String name = cadreManagementService.getStateName(new Long(accessValue));
@@ -141,6 +147,9 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			regions.add(new SelectOptionVO(4L,"Constituency"));
 			regions.add(new SelectOptionVO(5L,"Mandal"));
 			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+			regions.add(new SelectOptionVO(8L,"WARD"));
+			regions.add(new SelectOptionVO(9L,"BOOTH"));
 			cadreSMSVO.setRegions(regions);
 			List<SelectOptionVO> stateDistrict = cadreManagementService.getStateDistrictByDistrictID(id);
 			states.add(stateDistrict.get(0));
@@ -160,6 +169,9 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			regions.add(new SelectOptionVO(4L,"Constituency"));
 			regions.add(new SelectOptionVO(5L,"Mandal"));
 			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+			regions.add(new SelectOptionVO(8L,"WARD"));
+			regions.add(new SelectOptionVO(9L,"BOOTH"));
 			cadreSMSVO.setRegions(regions);
 			List<SelectOptionVO> stateDistrictConstituency = cadreManagementService.getStateDistricConstituencytByConstituencyID(id);
 			states.add(stateDistrictConstituency.get(0));

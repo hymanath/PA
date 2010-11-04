@@ -281,7 +281,8 @@
 		<property name="languageDAO" ref="languageDAO" />
 		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />
 		<property name="cadreLevelDAO" ref="cadreLevelDAO" />
-		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />					   	  	
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />				   	  	
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
@@ -340,7 +341,8 @@
 		<property name="townshipDAO" ref="townshipDAO"/>
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
-		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>	
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		<property name="boothDAO" ref="boothDAO" />	
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />

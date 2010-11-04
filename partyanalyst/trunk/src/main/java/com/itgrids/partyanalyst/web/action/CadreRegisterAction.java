@@ -120,6 +120,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Long defaultDistId;
 	private Long defaultConstId;
 	private Long defaultCadreLevelId;
+	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
+	private Boolean sameAsCAFlag;
 	
 	public CadreInfo getCadreInfo() {
 		return cadreInfo;
@@ -734,8 +736,15 @@ public class CadreRegisterAction extends ActionSupport implements
 	public Long getDefaultCadreLevel()
 	{
 		return this.defaultCadreLevelId;
-	}	
+	}
 
+	public Boolean getSameAsCAFlag() {
+		return sameAsCAFlag;
+	}
+
+	public void setSameAsCAFlag(Boolean sameAsCAFlag) {
+		this.sameAsCAFlag = sameAsCAFlag;
+	}
 
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
