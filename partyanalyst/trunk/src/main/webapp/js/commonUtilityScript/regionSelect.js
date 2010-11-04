@@ -390,6 +390,9 @@ function getLevelWiseRangeDetails()
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Constituency';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="5"/> Mandal';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="6"/> Village';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="7"/> MUNICIPAL-CORP-GMC';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="8"/> WARD';
+   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="9"/> BOOTH';
 
    divElmt.innerHTML=rangeStr;
 
@@ -586,12 +589,12 @@ function getCadresResults(btnType)
 		return;
 	
 	var countrySelectElmt = document.getElementById("countrySelectBox");
-	var stateSelectElmt = document.getElementById("stateSelectBox");
-	var districtSelectElmt = document.getElementById("districtSelectBox");
-	var constituencySelectElmt = document.getElementById("constituencySelectBox");
-	var mandalSelectElmt = document.getElementById("mandalSelectBox");
-	var villageSelectElmt = document.getElementById("villageSelectBox");
-		
+	var stateSelectElmt = document.getElementById("stateField_s");
+	var districtSelectElmt = document.getElementById("districtField_s");
+	var constituencySelectElmt = document.getElementById("constituencyField_s");
+	var mandalSelectElmt = document.getElementById("mandalField_s");
+	var villageSelectElmt = document.getElementById("hamletField_s");
+	var boothSelectElmt = document.getElementById("boothField_s");
 	
 	if(REPORTLEVEL == '') 
 	{
@@ -679,6 +682,45 @@ function getCadresResults(btnType)
 			{
 				elmt.innerHTML = '';
 				locationValue = villageSelectElmt.options[villageSelectElmt.selectedIndex].value;
+			}
+		}
+		else if(REPORTLEVEL == "7")
+		{
+			if(!mandalSelectElmt || mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Mandal Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = mandalSelectElmt.options[mandalSelectElmt.selectedIndex].value;
+			}
+		}
+		else if(REPORTLEVEL == "8")
+		{
+			if(!villageSelectElmt || villageSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Village Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = villageSelectElmt.options[villageSelectElmt.selectedIndex].value;
+			}
+		}
+		else if(REPORTLEVEL == "9")
+		{
+			if(!boothSelectElmt || boothSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
+			{
+				elmt.innerHTML = 'Select Village Location';
+				return;
+			}
+			else
+			{
+				elmt.innerHTML = '';
+				locationValue = boothSelectElmt.options[boothSelectElmt.selectedIndex].value;
 			}
 		}
 		REPORTLOCATIONVALUE = locationValue;
@@ -1338,8 +1380,8 @@ function buildRegionsSelectBoxes(jsObj,results)
 	var firstValue = '';
 	regTask = "cadreSearch";
 	var str='';
-		for(var i in results.regions)
-		{
+		/*for(var i in results.regions)
+		{setCadreValue(this.options[this.selectedIndex].value,'onChange')"
 			if(i == 0)
 			{
 				str+='<input type="radio" checked="checked" name="region_type_radio" value="'+results.regions[i].name+'_'+results.regions[i].id+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
@@ -1348,7 +1390,18 @@ function buildRegionsSelectBoxes(jsObj,results)
 			}
 			else
 				str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'_'+results.regions[i].id+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
-		}		
+		}*/
+	for(var i in results.regions)
+	{
+		if(i == 0)
+		{
+			str+='<input type="radio" checked="checked" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\')" /> '+results.regions[i].name+'';
+			REPORTLEVEL = results.regions[i].id;
+			firstValue = results.regions[i].name+'_'+results.regions[i].id;				
+		}
+		else
+			str+='<input type="radio" name="region_type_radio" id="'+results.regions[i].id+'" value="'+results.regions[i].name+'" onclick="populateLocations(this.id,\'onChange\')" /> '+results.regions[i].name+'';
+	}
 	if(radioElmt)
 		radioElmt.innerHTML=str;
 	
@@ -1430,10 +1483,11 @@ function buildRegionsSelectBoxes(jsObj,results)
 	}
 	regionStr+='</select>';
 
-	if(selectElmt)
-		selectElmt.innerHTML=regionStr;
+	//if(selectElmt)
+		//selectElmt.innerHTML=regionStr;
 
-	displayRegionsSelect(firstValue,regTask);
+	//displayRegionsSelect(firstValue,regTask);
+	populateLocations(results.regions[0].id,'onLoad');
 
 }
 
