@@ -128,7 +128,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}*/
-	public void testFindCadresByHamlet()
+	/*public void testFindCadresByHamlet()
 	{
 		List<Cadre> result = cadreDAO.findCadresByHamlet(857l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		System.out.println(result.size());
@@ -137,6 +137,19 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.print(cadre.getFirstName()+cadre.getLastName());
 			System.out.println(cadre.getMemberType());
 			
+			
+		}
+	}*/
+	
+	public void testFindStateCadresByCountry()
+	{
+		List result = cadreDAO.findStateCadresByCountry(1l,7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
 			
 		}
 	}

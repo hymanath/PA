@@ -32,17 +32,18 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		
 	/*public void testFindByLocalElectionBody()
 	{
-		List result = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(562l, "2010");
+		List result = assemblyLocalElectionBodyWardDAO.findByLocalElectionBody(562l, "2010", 340l);
 		System.out.println("Results Size:"+result.size());
 		for(int i = 0;i<result.size();i++)
 		{
 			Object[] obj = (Object[])result.get(i);
 			System.out.println("id:"+Long.parseLong(obj[0].toString()));
-			System.out.println("name:"+obj[1].toString());			
+			System.out.println("name:"+obj[1].toString());
+			System.out.println("name:"+obj[2].toString());
 		}
 	}*/
 	
-	public void testFindByConstituencyIdAndYear(){
+	/*public void testFindByConstituencyIdAndYear(){
 		List wardsInfo = assemblyLocalElectionBodyWardDAO.findByConstituencyIdAndYear(51l, IConstants.GREATER_ELECTION_TYPE);
 		for(int i = 0;i<wardsInfo.size();i++)
 		{
@@ -57,10 +58,24 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		List list = nominationDAO.getALLPartiesByElectionId(33l,wardIds.substring(1));
 		System.out.println(list.size());
 		
-	}
+	}*/
 	
 	/*public void testFindByAssemblyLocalElectionBodyWardAndYear(){
 		List list = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(2l, 7696l, "2009");
 		System.out.println(list.size());
 	}*/
+	
+	
+	public void testFindByAssemblyLocalElectionBody()
+	{
+		List result = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(116l, "2010");
+		System.out.println("Results Size:"+result.size());
+		for(int i = 0;i<result.size();i++)
+		{
+			Object[] obj = (Object[])result.get(i);
+			System.out.println("id:"+Long.parseLong(obj[0].toString()));
+			System.out.println("name:"+obj[1].toString());
+			System.out.println("name:"+obj[2].toString());
+		}
+	}
 }

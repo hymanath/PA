@@ -16,12 +16,12 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		 
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List findByConstituencyId(Long constituencyId) {
 		Object[] params = {constituencyId};
 		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId, model.localElectionBody.name , model.localElectionBody.electionType.electionType, model.isPartial  from AssemblyLocalElectionBody model " +
 				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)",params);
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public List getLocalElectionBodyIdByConstituencyId(Long constituencyId,String type) {
@@ -71,5 +71,21 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 				"model.localElectionBody.localElectionBodyId = ? and model.constituency.constituencyId = ? and " +
 				"model.year = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findByConstituencyId(Long constituencyId) {
+		Object[] params = {constituencyId};
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId, model.localElectionBody.name , model.localElectionBody.electionType.electionType, model.isPartial  from AssemblyLocalElectionBody model " +
+				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)",params);
+	}
+
+	public List getLocalElectionBodyId(Long assemblyLocalElectionBodyId) {
+		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model where model.assemblyLocalElectionBodyId = ?", assemblyLocalElectionBodyId);
+	}
+	
+	public List getAssemblyLocalElectionBodyId(Long localElectionBodyId) {
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId from AssemblyLocalElectionBody  model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
+	}
+	
 	
 }

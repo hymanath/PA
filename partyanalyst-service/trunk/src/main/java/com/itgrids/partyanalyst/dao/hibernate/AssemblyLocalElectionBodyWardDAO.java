@@ -16,7 +16,7 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 
 	public List findByLocalElectionBody(Long localElectionBodyId, String year) {
 		Object[] params = {localElectionBodyId,year};
-		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name from AssemblyLocalElectionBodyWard model " +
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
 				"where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
 	}
 	
@@ -32,5 +32,17 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 		return getHibernateTemplate().find("select model.constituency.constituencyId from AssemblyLocalElectionBodyWard model where " +
 				"model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and model.constituency.constituencyId = ? and model.year = ?",params);
 	}
+	
+	public List findByAssemblyLocalElectionBody(Long localElectionBodyId, String year) {
+		Object[] params = {localElectionBodyId,year};
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
+				"where model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
+	}	
+	
+	/*public List findByLocalElectionBody(Long localElectionBodyId, String year, Long constituencyId) {
+		Object[] params = {localElectionBodyId,year, constituencyId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
+				"where model.assemblyLocalElectionBody.localElectionBody.localElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?) and model.assemblyLocalElectionBody.constituency.constituencyId = ?", params);
+	}*/
 
 }

@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
@@ -122,6 +123,7 @@ public class CadreManagementService {
 	private ICadreLevelDAO cadreLevelDAO;
 	private String windowTask;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -294,6 +296,15 @@ public class CadreManagementService {
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}	
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<String> skills, String task) {
@@ -344,7 +355,12 @@ public class CadreManagementService {
 			UserAddress currentAddress = new UserAddress();
 			UserAddress permanentAddress = new UserAddress();
 			Cadre cadre = null;
-
+			//used for current address
+			Long assemblyLocalElectionBodyId1 = null;
+			//used for official address
+			Long assemblyLocalElectionBodyId2 = null;
+			// used for cadre level
+			Long assemblyLocalElectionBodyId3 = null;
 			try {
 				
 				if(!("0".equals(cadreInfo.getCadreId())) && IConstants.UPDATE_EXISTING.equals(task))
@@ -372,7 +388,11 @@ public class CadreManagementService {
 				
 				if (IConstants.URBAN_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
 				{
-					currentAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+					assemblyLocalElectionBodyId1 = new Long(cadreInfo.getMandal().substring(1));
+					List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalElectionBodyId1);
+					Object object = (Object)localElectionBodies.get(0);
+					Long localElectionBodyId = (Long)object;
+					currentAddress.setLocalElectionBody(localElectionBodyDAO.get(localElectionBodyId));
 					currentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getVillage().substring(1))));
 					currentAddress.setTehsil(null);
 					currentAddress.setHamlet(null);
@@ -415,7 +435,11 @@ public class CadreManagementService {
 					
 					if (IConstants.URBAN_TYPE.equals(cadreInfo.getPmandal().substring(0,1)))
 					{
-						permanentAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(cadreInfo.getPmandal().substring(1))));
+						assemblyLocalElectionBodyId2 = new Long(cadreInfo.getPmandal().substring(1));
+						List localElectionBodyIds = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalElectionBodyId2);
+						Object object = (Object)localElectionBodyIds.get(0);
+						Long offLocalElectionBodyId = (Long)object;
+						permanentAddress.setLocalElectionBody(localElectionBodyDAO.get(offLocalElectionBodyId));
 						permanentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getPvillage().substring(1))));
 						permanentAddress.setTehsil(null);
 						permanentAddress.setHamlet(null);
@@ -474,7 +498,20 @@ public class CadreManagementService {
 					level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
 					cadre.setCadreLevel(level);
 					//if (!StringUtils.isBlank(cadreInfo.getCadreLevelValue()))
-					cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
+					if("MANDAL".equalsIgnoreCase(level.getLevel()) || "VILLAGE".equalsIgnoreCase(level.getLevel()))
+					{
+						cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue().substring(1)));
+					} else if ("MUNICIPAL-CORP-GMC".equalsIgnoreCase(level.getLevel()))
+					{
+						assemblyLocalElectionBodyId3 = new Long(cadreInfo.getStrCadreLevelValue().substring(1));
+						List localElectionBodyIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalElectionBodyId3);
+						Object object = (Object)localElectionBodyIdsList.get(0);
+						Long cadreLevelLocalElectionBodyId = (Long)object;
+						cadre.setCadreLevelValue(cadreLevelLocalElectionBodyId);
+					} else{
+						cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
+					}						
+					
 					if (IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType())&& IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName())) {
 						if (!cadreInfo.getDesignation().equals(0l))
 							cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
@@ -503,7 +540,7 @@ public class CadreManagementService {
 		return cadreObj;
 	}
 	
-	private void processAddressValues(String villageFlag, Long id, Cadre cadre,
+	/*private void processAddressValues(String villageFlag, Long id, Cadre cadre,
 			UserAddress address) {
 		if (IConstants.HAMLET_TYPE.equalsIgnoreCase(villageFlag)) {
 			Hamlet hamlet = hamletDAO.get(id);
@@ -518,7 +555,7 @@ public class CadreManagementService {
 			address.setTownship(townshipDAO.get(id));
 		}
 	}
-
+*/
 	private void setCadreSkillsInfo(final Cadre cadreObj, final List<String> skills, String task) {
 		log.debug("inside cadre skills block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -2561,8 +2598,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 
 		List<Long> cadreIds = null;
 		if (levelId != null && locationId != null) {
-
-			String ObjectOne = "", ObjectTwo = "", field = "";
+				
+			String ObjectOne = "", ObjectTwo = "", field = "", id = "";
 			ObjectOne = "currentAddress";
 
 			if (levelId.equals(new Long(1))) {
@@ -2581,15 +2618,29 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				ObjectTwo = "tehsil";
 				field = "tehsilId";
 			} else if (levelId.equals(new Long(6))) {
-				ObjectTwo = "township";
-				field = "townshipId";
+				ObjectTwo = "hamlet";
+				field = "hamletId";
+				id = locationId.toString().substring(1);
+				locationId = new Long(id);
+			} else if (levelId.equals(new Long(7))) {
+				ObjectTwo = "localElectionBody";
+				field = "localElectionBodyId";
+				id = locationId.toString().substring(1);
+				List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(id));
+				Object object = (Object)localElectionBodies.get(0);
+				locationId  = (Long)object;
+			} else if (levelId.equals(new Long(8))) {
+				ObjectTwo = "ward";
+				field = "constituencyId";
+			} else if (levelId.equals(new Long(9))) {
+				ObjectTwo = "booth";
+				field = "boothId";
 			}
 
 			if (!"".equalsIgnoreCase(ObjectOne)
 					&& !"".equalsIgnoreCase(ObjectTwo)
 					&& !"".equalsIgnoreCase(field)) {
-				List cadreObjList = cadreDAO
-						.findCadreDetailsByLevelAndProperty(userId, ObjectOne,
+				List cadreObjList = cadreDAO.findCadreDetailsByLevelAndProperty(userId, ObjectOne,
 								ObjectTwo, field, locationId);
 				if (cadreObjList != null && cadreObjList.size() > 0)
 					cadreIds = getProcessedObjects(cadreObjList);
