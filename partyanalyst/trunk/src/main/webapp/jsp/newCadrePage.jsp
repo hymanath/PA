@@ -29,6 +29,8 @@
 	var accessValue = '${sessionScope.USER.accessValue}';
 	
 	function setCadreValue(value, source){
+		var scopeLevelEl = document.getElementById("scopeLevel");
+		var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].text;
 		if(value == '0')
 		{
 			alert("Please Select Valid Location");
@@ -44,6 +46,11 @@
 		{
 			hiddenEl.value = value;
 		}
+		if(scopeLevelElVal == 'BOOTH')
+		{
+			
+		}
+		
 		
 				
 	}
@@ -167,11 +174,11 @@
 		var pconstituencyFieldEl = document.getElementById("pconstituencyField");
 		var pmandalFieldEl = document.getElementById("pmandalField");
 		var pvillageFieldEl = document.getElementById("pvillageField");
-	
+		var sameAsCAFlagEl = document.getElementById("sameAsCAFlag");
 		var optionsArray = new Array();
 		if(sameAsCAEl.checked == true && source == 'checkbox')
 		{	
-			
+				sameAsCAFlagEl.value = true;
 				optElements.style.display = 'none';
 				clearOptionsListForSelectElmtId("pdistrictField");
 				clearOptionsListForSelectElmtId("pconstituencyField");
@@ -192,6 +199,7 @@
 		
 		}  else
 		{
+			sameAsCAFlagEl.value = false;
 			var optionsArr = new Array();
 			if(optElements.style.display == "none")
 			{
@@ -397,7 +405,7 @@
 		var row4El = document.getElementById("row4");
 		var row5El = document.getElementById("row5");
 		var row6El = document.getElementById("row6");
-		var boothNoTextEl = document.getElementById("boothNoText");
+		//var boothNoTextEl = document.getElementById("boothNoText");
 		var hiddenEl = document.getElementById("cadreLevelValue");
 		var stateFieldEl = document.getElementById("stateField_s");
 		var districtFieldEl = document.getElementById("districtField_s"); 
@@ -424,52 +432,88 @@
 		row5El.style.display = 'none';
 		row6El.style.display = 'none';		
 		var value = val;
-		
-		if( (value>1) || (value==2) ){
+		if(value == 1)
+		{
 			if(row1El.style.display == 'none')
-			{	
 				row1El.style.display = '';			 
-			}		
-		}
-		if( (value>2) || (value==3) ){
-			if(row2El)
-			{	
-				if(row2El.style.display == 'none')
-				{	
-					row2El.style.display = '';
-				}
-			}	
-		}
-		if( (value>3) || (value==4) ){
-					
-				
-				if(row3El.style.display == 'none')
-				{	
-					row3El.style.display = '';
-				}			
-		}
-		if( (value>4) || (value==5) ||(value == 7)){
+			
+		} else if(value == 2)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+		} else if(value == 3)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';					
+		} else if(value == 4)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';			
+		} else if(value == 5)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
 			if(row4El.style.display == 'none')
-			{	
+				row4El.style.display = '';				
+		} else if(value == 6)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
 				row4El.style.display = '';
-			}		
-		} if( ((value>6) || (value==6) || (value==8)) && (value != 7)){
 			if(row5El.style.display == 'none')
-			{	
-				row5El.style.display = '';
-			}		
-		} if( ((value>8) || (value==9))){
-			row1El.style.display = 'none';
-			row2El.style.display = 'none';
-			row3El.style.display = 'none';
-			row4El.style.display = 'none';
-			row5El.style.display = 'none';
+				row5El.style.display = '';			
+		} else if(value == 7)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';				
+		} else if(value == 8)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';			
+		} else if(value == 9)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
 			if(row6El.style.display == 'none')
-			{	
-				row6El.style.display = '';
-			}
-			boothNoTextEl.focus();		
-		}	 
+				row6El.style.display = '';			
+		}
+		
+			 
 	}		
 </script>
 <style type="text/css">
@@ -733,11 +777,20 @@
 			<tr width="165px">
 				<th><u><s:label for="prmntAddField" id="prmntAddLabel"  value="%{getText('officialAdd')}" /></u></th>
 			</tr>
+			<c:if test="${ sameAsCAFlag == true}">
 			<tr>
 				<td align="left" colspan="2">
 						<s:checkbox id="sameAsCA" checked="checked" name = "sameAsCA" onclick="hideUnhidePrmntAddOptions('checkbox')"/>Same As Current Address				
 				</td>
 			</tr>
+			</c:if>
+			<c:if test="${ sameAsCAFlag == false}">
+			<tr>
+				<td align="left" colspan="2">
+						<s:checkbox id="sameAsCA" name = "sameAsCA" onclick="hideUnhidePrmntAddOptions('checkbox')"/>Same As Current Address				
+				</td>
+			</tr>
+			</c:if>
 		</table>		
 		<table id="permanantAddr" class="cadreDetailsTable" width="100%">
 			<tr>
@@ -851,7 +904,7 @@
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreReg','null','cadreLevel','constituencyField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
@@ -863,8 +916,9 @@
 		<tr id="row6" style="display:none;">
 			<td width="200">Booth No</td>
 			<td>
-				<s:textfield id="boothNoText" size="25" onKeyUp = "setCadreValue('null','onKeyUp')"/>
-			</td>
+				<s:select id="boothField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<!--<s:textfield id="boothNoText" size="25" onKeyUp = "setCadreValue('null','onKeyUp')"/>
+			--></td>
 		</tr>
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
@@ -946,7 +1000,7 @@
 		<input type="hidden" name="defaultStateId" value="${defaultStateId}">
 		<input type="hidden" name="defaultDistId" value="${defaultDistId}">
 		<input type="hidden" name="defaultConstId" value="${defaultConstId}">
-		 		
+		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">		 		
 	</div>
 	</s:form>
 <script type="text/javascript">

@@ -40,7 +40,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <!-- YUI Skin Sam -->
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -61,6 +61,123 @@
 <link type="text/css" rel="stylesheet" href="styles/cadreSearch/cadreSearch.css"></link>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
+<script type = "text/javascript">
+function populateLocations(val,source)
+{	
+	REPORTLEVEL = val;
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+	//var boothNoTextEl = document.getElementById("boothNoText");
+	//var hiddenEl = document.getElementById("cadreLevelValue");
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s"); 
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var hamletFieldEl = document.getElementById("hamletField_s");		
+	if(source != 'onLoad')
+	{
+		clearOptionsListForSelectElmtId("stateField_s");
+		clearOptionsListForSelectElmtId("districtField_s");
+		clearOptionsListForSelectElmtId("constituencyField_s");
+		clearOptionsListForSelectElmtId("mandalField_s");
+		clearOptionsListForSelectElmtId("hamletField_s");
+		getLocationHierarchies(1, "statesInCountry", "cadreSearch", "stateField_s", null, null, null);
+	}	
+	
+	row1El.style.display = 'none';
+	row2El.style.display = 'none';
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+	row6El.style.display = 'none';		
+	var value = val;
+	if(value == 1)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		
+	} else if(value == 2)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+	} else if(value == 3)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';					
+	} else if(value == 4)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';			
+	} else if(value == 5)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 6)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 7)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 8)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 9)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row6El.style.display == 'none')
+			row6El.style.display = '';			
+	}
+			 
+}
+</script>
 </head>
 <body>
 	
@@ -94,7 +211,47 @@
 					<th align="left"><font color="#FF0000"> * </font>Select Range</th>                
 					<td align="left">
 						<div id="rangeRegionsRadioElmtDiv"></div>
-						<div id="rangeRegionsSelectElmtDiv" style="width:600px;"></div>
+						<div id="rangeRegionsSelectElmtDiv" style="width:600px;">
+						
+							<table  width="100%" >
+								<tr id="row1" style="display:none;">
+									<td width="200"><s:label for="stateField_s" id="stateLabel" theme="simple" value="%{getText('STATE')}" /></td>
+									<td>
+										<s:select id="stateField_s" cssClass="regionSelect" theme="simple" list="stateList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreSearch','districtField_s','cadreSearch', 'null')"></s:select>
+									</td>
+								</tr>
+								<tr id="row2" style="display:none;">
+									<td width="200"><s:label for="districtField_s" id="districtLabel" theme="simple" value="%{getText('DISTRICT')}" /></td>
+									<td>
+										<s:select id="districtField_s" cssClass="regionSelect" theme="simple" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreSearch','constituencyField_s','cadreSearch')"></s:select>
+									</td>
+								</tr>
+								<tr id="row3" style="display:none;">
+									<td width="200"><s:label for="constituencyField_s" id="constituencyLabel" theme="simple"  value="%{getText('CONSTITUENCY')}"/></td>
+									<td>
+										<s:select id="constituencyField_s" theme="simple" cssClass="regionSelect" list="constituencyList" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreSearch','mandalField_s','cadreSearch')"></s:select>
+									</td>
+								</tr>								
+								<tr id="row4" style="display:none;">
+									<td width="200"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /></td>
+									<td>
+										<s:select id="mandalField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreSearch','null','cadreSearch','constituencyField_s')"></s:select>
+									</td>
+								</tr>					
+								<tr id="row5" style="display:none;">
+									<td width="200"><s:label for="hamletField_s" id="mandalLabel" theme="simple"  value="%{getText('wardOrHamlet')}" /></td>
+									<td>
+										<s:select id="hamletField_s" cssClass="regionSelect" list="{}" theme="simple" listKey="id" listValue="name"></s:select>
+									</td>
+								</tr>
+								<tr id="row6" style="display:none;">
+									<td width="200">Booth No</td>
+									<td>
+										<s:select id="boothField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name"></s:select>
+									</td>
+								</tr>
+							</table>
+						</div>
 				         
 					</td>
 				</tr>
