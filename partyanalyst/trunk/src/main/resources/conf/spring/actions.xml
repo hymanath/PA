@@ -452,7 +452,8 @@
 	</bean>	
 	<bean id="cadreSearchAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />	
-		<property name="cadreManagementService" ref="cadreManagementService" />			
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />					
 	</bean>
 	<bean id="cadreSearchAjaxAction" class="com.itgrids.partyanalyst.web.action.CadreSearchAjaxAction" singleton="false">		
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />	
