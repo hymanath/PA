@@ -1012,16 +1012,34 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 						<tr>
 							<td>
 								<div id = "muncipalDiv">
-									<div>
-										<b>Select Municipal Election&nbsp;:&nbsp;</b><s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name" onchange="getMunicipalityResults()"></s:select>		
+									<div id="muncipalHeadingDIV">
+										<table>
+											<tr>
+												<td>
+													<b>Select Municipal Election&nbsp;:&nbsp;</b><s:select theme="simple" id="municipalitySelect" name="municipalities" list="municipalElections" listKey="id" listValue="name" onchange="getMunicipalityResults()"></s:select>
+												</td>
+												<td>
+													<div id="showMoreMuncipalResultsDiv"></div>										
+												</td>
+											</tr>
+										</table>		
 									</div>
 									<div id="municipalityData_main"></div>
 								</div>
-							</td>
+							</td>   
 							<td>
 								<div id = "corporationDiv">
-									<div>
-										<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
+									<div id="corporationHeadingDIV">
+									<table>
+											<tr>
+												<td>
+													<b>Select Corporation Election&nbsp;:&nbsp;</b><s:select theme="simple" id="corporationSelect" label="Select Cororation Election" name="corporations" list="corporateElections" listKey="id" listValue="name" onchange="getCoroporationResults()"></s:select>
+												</td>
+												<td>
+													<div id="showMoreCorporationResultsDiv"></div>										
+												</td>
+											</tr>
+										</table>	
 									</div>
 									<div id="coroporationData_main"></div>
 								</div>
@@ -1031,7 +1049,16 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 							<td colspan="2">
 								<div id = "greaterDiv">
 									<div>
-										<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
+									<table>
+											<tr>
+												<td>
+													<b>Select Greater Election&nbsp;:&nbsp;</b><s:select theme="simple" id="greaterSelect" label="Select Greater Election" name="greaters" list="greaterElections" listKey="id" listValue="name" onchange="getGreaterResults()"></s:select>
+													</td>
+												<td>
+													<div id="showMoreGreaterResultsDiv"></div>										
+												</td>
+											</tr>
+										</table>
 									</div>
 									<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
 											<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
@@ -1239,10 +1266,24 @@ function showCorporationInfo(myResults){
 		var showDiv = document.getElementById('corporationDiv');
 		showDiv.style.display = "none";
 	}
-	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation");
-}
 
-function buildCorpOrMunicipTable(divId, myResults, elecType){
+	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation","showMoreCorporationResultsDiv");
+}
+function redirectMuncipalityCandidateLink(muncipalityElectionType,muncipalityElectionId,muncipalityId,latestMuncipalElectionYear,name){	
+	var browser3 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
+	browser3.focus();
+}
+function buildCorpOrMunicipTable(divId, myResults, elecType,showMoreDiv){
+
+	
+	var moreElmt = document.getElementById(showMoreDiv);
+	
+	var appendingStr = '';
+	for(var i in myResults.muncipalityVO){
+		appendingStr += '<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.muncipalityVO[i].electionTypeId+','+ myResults.muncipalityVO[i].muncipalityId+','+myResults.muncipalityVO[i].latestMuncipalElectionYear+',\''+myResults.muncipalityVO[i].muncipalityName+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+	}	
+	moreElmt.innerHTML = appendingStr;
+	
 	var str = '';
 	for(var i in myResults.muncipalityVO){
 		str += '<div  class="localBodyHeadStyle">';
@@ -1255,6 +1296,93 @@ function buildCorpOrMunicipTable(divId, myResults, elecType){
 	divId.innerHTML = str;
 	buildDataTable(elecType);
 }
+
+function showGreaterInfo(myResults){
+	var moreElmt = document.getElementById('showMoreGreaterResultsDiv');	
+	var elecType= "Greater Municipal Corp";
+	var appendingStr = '';
+	for(var i in myResults.localElectionsInfo){
+		appendingStr += '<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink(\''+elecType+'\','+ myResults.localElectionsInfo[i].electionTypeId+','+ myResults.localElectionsInfo[i].id+','+myResults.localElectionsInfo[i].electionYear+',\''+myResults.localElectionsInfo[i].name+'\')" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+	}	
+	moreElmt.innerHTML = appendingStr;
+	
+	var HeadElmt = document.getElementById('GHMCData_main');
+	if(myResults.localElectionsInfo == null){
+		var showDiv = document.getElementById('greaterDiv');
+		showDiv.style.display = "none";
+	}
+	var str = '';
+	for(var i in myResults.localElectionsInfo){
+		str += '<div class="localBodyHeadStyle">';
+		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">Detailed view of '+myResults.localElectionsInfo[i].name+' Election Results In '+myResults.localElectionsInfo[i].electionYear+'</a></div>';
+		str += '<div><img src=\"charts\\'+myResults.localElectionsInfo[i].chartName+'\"></div>';
+		str += '<div id=\"greaterTableDiv_'+i+'\"></div>';
+	}
+	HeadElmt.innerHTML = str;
+	for(var i in myResults.localElectionsInfo){
+		var resultsDataSource = new YAHOO.util.DataSource(myResults.localElectionsInfo[i].wardwiseResultsForParty);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "partyName"
+			}, {
+				key : "candidateName"
+			}, {
+				key : "votesEarned"
+			}, {
+				key : "votesPercentage"
+			}, {
+				key : "rank"
+			}, {
+				key : "totalVotes"
+			}]
+		};
+
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Ward",
+			sortable : true
+		}, {
+			key : "partyName",
+			label : "Party",
+			sortable : true
+		}, {
+			key : "candidateName",
+			label : "Candidate",
+			sortable : true
+		}, {
+			key : "votesEarned",
+			label : "Votes Gained",
+			sortable : true
+		}, {
+			key : "votesPercentage",
+			label : "Votes %",
+			sortable : true
+		}, {
+			key : "rank",
+			label : "Rank",
+			sortable : true
+		}, {
+			key : "totalVotes",
+			label : "Total Voters",
+			sortable : true
+		}  ];		
+		if(myResults.localElectionsInfo[i].wardwiseResultsForParty.length >10)
+		{
+			var recordsPerPage = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10 
+		    })
+			};
+		}	
+		myDataTableForMptcParty = new YAHOO.widget.DataTable("greaterTableDiv_"+i,resultsColumnDefs, resultsDataSource,recordsPerPage);
+	}
+	
+}
+	
+
 
 function buildDataTable(elecType){
 
@@ -1297,11 +1425,13 @@ function buildDataTable(elecType){
 
 function showMunicipalInfo(myResults){
 	var HeadElmt = document.getElementById('municipalityData_main');
+		
 	if(myResults.muncipalityVO == null){
 		var showDiv = document.getElementById('muncipalDiv');
 		showDiv.style.display = "none";
 	}
-	buildCorpOrMunicipTable(HeadElmt, myResults, "Municipality");
+	
+	buildCorpOrMunicipTable(HeadElmt, myResults, "MUNCIPALITY","showMoreMuncipalResultsDiv","showMoreMuncipalResultsDiv");
 }
 
 function showMandalVotesShareDetailsChart(myResults)
@@ -1397,82 +1527,6 @@ function showAllPartiesAllElectionResultsChart(myResults)
 
 }
 
-function showGreaterInfo(myResults){
-	var HeadElmt = document.getElementById('GHMCData_main');
-	if(myResults.localElectionsInfo == null){
-		var showDiv = document.getElementById('greaterDiv');
-		showDiv.style.display = "none";
-	}
-	var str = '';
-	for(var i in myResults.localElectionsInfo){
-		str += '<div class="localBodyHeadStyle">';
-		str += '<a href=\"localBodyElectionAction.action?stateId='+myResults.localElectionsInfo[i].stateId+'&localBodyElectionTypeId='+myResults.localElectionsInfo[i].electionTypeId+'&localBodyId='+myResults.localElectionsInfo[i].id+'\">Detailed view of '+myResults.localElectionsInfo[i].name+' Election Results In '+myResults.localElectionsInfo[i].electionYear+'</a></div>';
-		str += '<div><img src=\"charts\\'+myResults.localElectionsInfo[i].chartName+'\"></div>';
-		str += '<div id=\"greaterTableDiv_'+i+'\"></div>';
-	}
-	HeadElmt.innerHTML = str;
-	for(var i in myResults.localElectionsInfo){
-		var resultsDataSource = new YAHOO.util.DataSource(myResults.localElectionsInfo[i].wardwiseResultsForParty);
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "constituencyName"
-			}, {
-				key : "partyName"
-			}, {
-				key : "candidateName"
-			}, {
-				key : "votesEarned"
-			}, {
-				key : "votesPercentage"
-			}, {
-				key : "rank"
-			}, {
-				key : "totalVotes"
-			}]
-		};
-
-		var resultsColumnDefs = [ {
-			key : "constituencyName",
-			label : "Ward",
-			sortable : true
-		}, {
-			key : "partyName",
-			label : "Party",
-			sortable : true
-		}, {
-			key : "candidateName",
-			label : "Candidate",
-			sortable : true
-		}, {
-			key : "votesEarned",
-			label : "Votes Gained",
-			sortable : true
-		}, {
-			key : "votesPercentage",
-			label : "Votes %",
-			sortable : true
-		}, {
-			key : "rank",
-			label : "Rank",
-			sortable : true
-		}, {
-			key : "totalVotes",
-			label : "Total Voters",
-			sortable : true
-		}  ];		
-		if(myResults.localElectionsInfo[i].wardwiseResultsForParty.length >10)
-		{
-			var recordsPerPage = {
-		    paginator : new YAHOO.widget.Paginator({
-		        rowsPerPage: 10 
-		    })
-			};
-		}	
-		myDataTableForMptcParty = new YAHOO.widget.DataTable("greaterTableDiv_"+i,resultsColumnDefs, resultsDataSource,recordsPerPage);
-	}
-	
-}
 
 function showDetailedElectionResult(id)
 {
