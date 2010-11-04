@@ -3,6 +3,9 @@ var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + n
 var minDate;
 var resultsGlobal; 
 var availableLength = 0;
+var loginUserRegionId;
+var loginUserRegionName;
+var loginUserRegionType;
 
 var problemMgmtObj = {
 	problemsStatusArr : [],
@@ -386,9 +389,13 @@ function createCoulmnChart(regionData,divId)
 function buildRegionWiseOverViewData(data,divId)
 {
 	var elmt = document.getElementById(divId);
-
+	
 	if(!elmt)
 		return;
+
+	loginUserRegionId = data.regionId;
+	loginUserRegionName = data.regionName;
+	loginUserRegionType = data.regionType;
 	
 	var availablePeople = new Array();
 	var zeroPeople = new Array();
@@ -530,7 +537,7 @@ function populateInfluencingPeople(results)
 	createCoulmnChart(results.regionWiseOverview,"influencePeopleChartDiv_main");
 	buildRegionWiseOverViewData(results.regionWiseOverview,"influencePeopleRegionWiseOverView_main");
 	buildScopeWiseOverViewData(results.influenceScopeOverview,"influencePeopleScopeWiseOverView_main");
-	getSubLevelInfluenceData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType);
+	getSubLevelInfluenceData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,true);
 	
 	/*resultsGlobal = results;
 	inf_peopleArr = new Array();
@@ -567,27 +574,71 @@ function showInfluenceDetailDataBody(divId)
 	$("#"+bodyDivId).slideDown("slow");
 }
 
-function buildSubLevelInfluencePeople(jsObj,results)
+function getSubLevelInfluenceDataLabel(elmt)
 {
-	var elmt = document.getElementById("influencePeopleDetail_main");
+	var img = document.getElementById("influenceBusyCursor");
+	if(img)
+		img.style.display = "block";
+
+	var value = elmt.options[elmt.selectedIndex].value;
+	var regionName;
+	var regionId;
+	var regionType;
 	
-	if(!elmt)
+	if(value == 0)
+	{
+		regionId = loginUserRegionId;
+		regionName = loginUserRegionName;
+		regionType = loginUserRegionType;
+	}
+	else
+	{
+		regionName = elmt.options[elmt.selectedIndex].text;
+		regionId = value.substring(0,value.indexOf('_'));
+		regionType = value.substring(value.indexOf('_')+1,value.length);
+	}	
+
+	getSubLevelInfluenceData(regionId,regionName,regionType,false);
+}
+
+
+function buildSubLevelInfluencePeople(jsObj,data)
+{
+	var results = data.regionWiseOverview;
+	var relmt = document.getElementById("influencePeopleRegionsList");
+	var elmt = document.getElementById("influencePeopleRegionsData_main");
+	
+	if(!relmt || !elmt)
 		return;
+	
+	var img = document.getElementById("influenceBusyCursor");
+	if(img)
+		img.style.display = "none";
+
+	var rStr = '';	
+	
+	if(jsObj.status && data.regionsList.length > 0)
+	{
+		rStr += '<table width="100%">';
+		rStr += '<tr>';
+		rStr += '<td style="font-weight:bold;font-size:11px;color:#4B74C6">Select sub regions under '+jsObj.regionName+' '+jsObj.regionType+' to view its influence people</td>';
+		rStr += '<td>';
+		rStr += '<select onchange="getSubLevelInfluenceDataLabel(this)">';
+		rStr += '<option value="0">All</option>';
+		for(var option=0; option<data.regionsList.length; option++)
+		{
+			rStr += '<option value="'+data.regionsList[option].subRegionId+'_'+data.regionsList[option].subRegionType+'">'+data.regionsList[option].subRegionName+'</option>';
+		}
+		rStr += '</select>';
+		rStr += '</td>';
+		rStr += '<td><img id="influenceBusyCursor" style="display:none;" src="images/icons/partypositions.gif"></td>';
+		rStr += '</tr>';
+		rStr += '</table>';
+		
+		relmt.innerHTML = rStr;
+	}
 
 	var str = '';
-	str += '<div id="influencePeopleDetail_head">';
-	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%">';
-	str += '	<tr>';
-	str += '		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
-	str += '		<td><div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">';
-	str += '			<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>';
-	str += '		</div></td>';
-	str += '		<td><img src="images/icons/districtPage/header_right.gif"></td>';
-	str += '	</tr>';
-	str += '</table>';
-	str += '</div>';
-	str += '<div id="influencePeopleDetail_body">';	
-
 	for(var i=0; i<results.length; i++)
 	{
 		if(results[i].countValue == 0)
@@ -614,17 +665,6 @@ function buildSubLevelInfluencePeople(jsObj,results)
 		str += '<a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].regionId+'\',\''+results[i].regionName+'\',\''+results[i].regionType+'\',\'region\')">'+results[i].countValue+'</a></td>';
 		str += '</tr></table>';
 		str += '</div>';
-		
-		/*str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
-		str += '	<tr>';
-		str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-		str += '		<td><div style="height: 30px; padding: 0px;" class="regionsHead_center">';		
-		str += '			<span class="regionsHead_center_label"> '+results[i].regionName+' ( '+results[i].regionType+' ) - '+results[i].countValue+' </span>';
-		str += '		</div></td>';
-		str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
-		str += '	</tr>';
-		str += '</table>';*/
-
 		str += '</div>';
 		if(i==0)
 			str += '<div id="influenceDetailData_'+i+'_body" class="influenceDetailData_body" style="display:block;">';
@@ -685,8 +725,7 @@ function buildSubLevelInfluencePeople(jsObj,results)
 		str += '</div>';
 		str += '</div>';
 	}
-	str += '</div>';
-
+	
 	elmt.innerHTML = str;
 	
 	buildSubRegionsPieChart(results);

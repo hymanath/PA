@@ -686,7 +686,7 @@
 								<div class="corner bottomRight"></div> 
 
 								<div id="influencePeopleRegionWiseOverView_main" class="contentDivClass">
-									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+									
 								</div>	
 							</div>
 							
@@ -697,7 +697,7 @@
 								<div class="corner bottomRight"></div> 
 
 								<div id="influencePeopleScopeWiseOverView_main" class="contentDivClass">
-									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+									
 								</div>	
 							</div>
 
@@ -710,7 +710,23 @@
 								<div class="corner bottomRight"></div> 
 
 								<div id="influencePeopleDetail_main" class="contentDivClass">
-									<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+									<div id="influencePeopleDetail_head">
+									<table cellspacing="0" cellpadding="0" border="0" width="100%">
+									<tr>
+										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
+										<td>
+											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
+												<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
+											</div>
+										</td>
+										<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>
+									</tr>
+									</table>
+									</div>
+									<div id="influencePeopleDetail_body">
+										<div id="influencePeopleRegionsList" class="influencePeopleRegionsList"></div>
+										<div id="influencePeopleRegionsData_main"></div>
+									</div>
 								</div>	
 							</div>
 						</td>
