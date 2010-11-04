@@ -1,6 +1,6 @@
 /*
  selectId = locationId like country, state, district, constituency, mandal, hamlet etc.
- task 
+ task  
  use the following task names for various functionalities
  statesInCountry = to fetch all states in country
  districtsInState =  to fetch all districts in state
@@ -9,8 +9,11 @@
  hamletsOrWardsInRegion = to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
  localElectionBodiesOfDistrict = to get all local election bodies in a  district
  wardsInALocalElectionBody = to get all wards in a local election body 
+ boothsInWard = to retrieve booth's part numbers in a ward for a Corporation /GHMC
+ boothsInTehsilOrMunicipality = booth's part numbers in a tehsil or municipality
+ 
  */
-function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType)
+function getLocationHierarchies(selectedId, task, module, elementId, addressType, areaType, constituencyId)
 {		
 	var jsObj=
 		{				
@@ -19,7 +22,9 @@ function getLocationHierarchies(selectedId, task, module, elementId, addressType
 			taskType:module,
 			selectElementId: elementId ,
 			address: addressType,
-			areaType: areaType
+			areaType: areaType,
+			constId: constituencyId 
+			
 		}
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -98,21 +103,34 @@ function getSubRegionsInDistrict(distId, module, elementId, addressType)
 {	
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	
-	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	var scopeSelected;
 	
 	var areaType = '';
+	if(module == 'cadreSearch')
+	{
+		var regionalRadioBtns = document.getElementsByName("region_type_radio");
+		for (i=0; i< regionalRadioBtns.length; i++)
+		{
+			if(regionalRadioBtns[i].checked == true)
+			{
+				scopeSelected = regionalRadioBtns[i].value.toUpperCase();
+			}
+		}		
+	} else {
+		scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	}
 	if(scopeSelected == 'WARD' || scopeSelected == 'MUNICIPAL-CORP-GMC')
 	{
 		areaType = 'RURAL';
-		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType,null);
 		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
 		
 	} else if(scopeSelected == 'HAMLET' ||  scopeSelected == 'MANDAL' || scopeSelected == 'VILLAGE')
 	{
 		areaType = 'URBAN';
-		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType);
+		getLocationHierarchies(distId, 'getConstNotInGivenAreaType', module, elementId, addressType, areaType,null);
 		//getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType);
-	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL')
+	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL' || scopeSelected == 'BOOTH')
 	{
 		areaType = '';
 		getLocationHierarchies(distId, 'constituenciesInDistrict', module, elementId, addressType, null)
@@ -120,26 +138,74 @@ function getSubRegionsInDistrict(distId, module, elementId, addressType)
 }
 
 function getSubRegionsInConstituency(id, module, elementId, addressType)
-{
+{	
 	var scopeSelectEl = document.getElementById("scopeLevel");
-	var scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	var scopeSelected;
 	var areaType = '';
+	if(module == 'cadreSearch')
+	{
+		var regionalRadioBtns = document.getElementsByName("region_type_radio");
+		for (i=0; i< regionalRadioBtns.length; i++)
+		{
+			if(regionalRadioBtns[i].checked == true)
+			{
+				scopeSelected = regionalRadioBtns[i].value.toUpperCase();
+			}
+		}		
+	} else {
+		scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	}		
+	
 	if(scopeSelected == 'WARD' || scopeSelected == 'LOCAL ELECTION BODY' || scopeSelected == 'MUNICIPAL-CORP-GMC')
 	{
 		areaType = 'URBAN';
-		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType,null);
 		
 		
 	} else if(scopeSelected == 'HAMLET' || scopeSelected == 'VILLAGE' || scopeSelected == 'MANDAL')
 	{
 		areaType = 'RURAL';
-		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType);
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, areaType,null);
 		
-	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL')
+	} else if(scopeSelected == 'STATE' || scopeSelected == 'DISTRICT' || scopeSelected == 'CONSTITUENCY' || scopeSelected == 'TEHSIL' || scopeSelected == 'BOOTH')
 	{
 		areaType = '';
-		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, null)
+		getLocationHierarchies(id, 'subRegionsInConstituency', module, elementId, addressType, null,null)
 	}
+}
+
+function getSubRegionsInTehsilOrLocalElecBody(id, module, addressType, areaType, constituencyField)
+{
+	var scopeSelectEl = document.getElementById("scopeLevel");
+	var scopeSelected;
+	var constituencyEl = document.getElementById(constituencyField);
+	var constituencyElVal = constituencyEl.options[constituencyEl.selectedIndex].value;
+	if(constituencyElVal == 0)
+	{
+		alert("Invalid Constituency Selection");
+		return;
+	}
+	if(module == 'cadreSearch')
+	{
+		var regionalRadioBtns = document.getElementsByName("region_type_radio");
+		for (i=0; i< regionalRadioBtns.length; i++)
+		{
+			if(regionalRadioBtns[i].checked == true)
+			{
+				scopeSelected = regionalRadioBtns[i].value.toUpperCase();
+			}
+		}		
+	} else {
+		scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
+	}
+	
+	if(scopeSelected == 'BOOTH')
+	{
+		getLocationHierarchies(id,'boothsInTehsilOrMunicipality','cadreReg','boothField_s','cadreLevel', null,constituencyElVal);
+	} else {
+		getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', null,null);
+	}
+	
 }
 
 function getConstNotInGivenAreaType(distId, module, elementId, addressType, areaType)
