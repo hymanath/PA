@@ -559,4 +559,19 @@ fieldset {
 	margin:5px;
 	padding:5px;
 	text-align:right;
+	background-color:#DEE8EF;
+}
+
+#influenceDetailData_zero_body
+{
+	max-height:300px;
+	height: expression( this.scrollHeight > 300 ? "300px" : "auto" );
+	overflow:auto;
+}
+
+#influenceDetailData_zero_body
+{
+	max-height:300px;
+	height: expression( this.scrollHeight > 300 ? "300px" : "auto" );
+	overflow:auto;
 }
