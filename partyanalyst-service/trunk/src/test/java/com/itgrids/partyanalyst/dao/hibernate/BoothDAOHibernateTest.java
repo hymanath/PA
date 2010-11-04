@@ -135,7 +135,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testFindBoothsInfoForALocalElectionBodyByConstituencyAndYear(){
+/*	public void testFindBoothsInfoForALocalElectionBodyByConstituencyAndYear(){
 		List list = boothDAO.findBoothsInfoForALocalElectionBodyByConstituencyAndYear(488l, 2009l, 232l);
 		System.out.println(list.size());
 	}*/

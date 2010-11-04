@@ -120,12 +120,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 	
 
-	public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
+	/*public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
 		Object[] params = {userID,cadreType};
 		List  results = getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, count(model.state.stateId)from Cadre model " +
 				"where model.registration.registrationId = ? group by model.state.stateId order by model.state.stateName", params); 
 		return results;
-	}
+	}*/
 	@SuppressWarnings("unchecked")
 	public List findDistCadresByState(Long stateID, Long userID, String cadreType){
 		Object[] params = {userID,stateID, cadreType};
@@ -554,6 +554,13 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID,wardId,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId=? and model.memberType = ?", params); 
+		return results;
+	}
+	
+	public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
+		Object[] params = {userID,cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.state.stateId, model.currentAddress.state.stateName, count(model.currentAddress.state.stateId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.state.stateId order by model.currentAddress.state.stateName", params); 
 		return results;
 	}
 		

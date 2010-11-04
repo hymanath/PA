@@ -30,7 +30,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		
 	}*/
 	
-	public void testFindByConstituencyId()
+	/*public void testFindByConstituencyId()
 	{
 		List result = assemblyLocalElectionBodyDAO.getLocalElectionBodyIdByConstituencyId(232L,IConstants.GREATER_ELECTION_TYPE);
 		System.out.println("Results Size:"+result.size());
@@ -40,7 +40,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 			System.out.println("id:"+Long.parseLong(obj[0].toString()));
 			System.out.println("name:"+obj[1].toString());	
 		}		
-	}
+	}*/
 	
 	/*@SuppressWarnings("unchecked")
 	@Test
@@ -54,4 +54,15 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 	}
 
 	*/
+	public void testGetLocalElectionBodyId()
+	{
+		List result = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(31L);
+		System.out.println("Results Size:"+result.size());
+		Object object = (Object)result.get(0);
+		Long id = (Long)object;
+		System.out.println("id:"+id);
+				
+		
+	}
+	
 }

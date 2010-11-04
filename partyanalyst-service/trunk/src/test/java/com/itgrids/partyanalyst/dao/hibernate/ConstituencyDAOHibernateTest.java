@@ -171,7 +171,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	
 	*/
 	
-	public void testFindByConstituencyNamePattern()
+	/*public void testFindByConstituencyNamePattern()
 	{
 		List<Constituency> list = constituencyDAO.findByConstituencyNamePattern("Assembly", "a");
 		System.out.println(list.size());
@@ -179,7 +179,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println("name:"+constituency.getName());			
 		}	
-	}
+	}*/
 	/*public void testGetConstituenciesByElectionTypeAndStateId()
 	{
 		List constituenciesList  = constituencyDAO.getConstituenciesBySearchString(new Long(2), new Long(1), "kav");
@@ -201,5 +201,15 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
+	
+	public void testFindByElectionScopeState()
+	{
+		List<Constituency> list = constituencyDAO.findByElectionScopeState(1l, 1l);
+		System.out.println("Size:"+list.size());
+		for(Constituency constituency:list)
+		{
+			System.out.println("name:"+constituency.getName());			
+		}	
+	}
 	
 }
