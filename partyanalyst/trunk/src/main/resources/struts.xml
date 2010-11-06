@@ -1134,6 +1134,8 @@
 		
 		<action name="deleteInfluencingPeopleAjaxAction" class="influencingPeopleAction" method="deleteInfluencingPeople" >
 		</action>
+		<action name="sessionCleaningForAModuleAction" class="SessionClearingAction" method="clearingSession" >
+		</action>
 		
 		<action name="getExternalPersonDetailsAjaxAction" class="politicalChangesAction" method="getExternalPersonDetails" >
 			<result type="json" name="success">
@@ -1644,6 +1646,7 @@
 			<result name="success">/jsp/userGroupsCandidatesPage.jsp</result> 	
 			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>	
 		</action>
+
 		
 		 <action name="subLevelInfluenceAction" class="constituencyManagementAction" method="getSubLevelInfluenceAction"> 
             <result type="json" name="success">
@@ -1654,8 +1657,8 @@
         <action name="influencingPeopleDataAction" class="constituencyManagementAction" method="getInfluencingPeopleData">
 			<result name="success">/jsp/influencePeoplePage.jsp</result>			
 		</action>
-        
-			
+	
+		
 		<action name="villageBoothMapperAction" class="villageBoothMapperAction">
            <result name="success">/jsp/villageBoothMapper.jsp</result>	
         </action>  
@@ -1665,6 +1668,6 @@
 				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
-		
+        			
 	</package>
 </struts>
