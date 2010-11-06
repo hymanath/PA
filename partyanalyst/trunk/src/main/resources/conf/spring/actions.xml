@@ -75,6 +75,9 @@
 	<bean id="uploadCSVAction" class="com.itgrids.partyanalyst.web.action.UploadCSVAction" singleton="false">
 	</bean>
 	
+	<bean id="sessionClearingAction" class="com.itgrids.partyanalyst.web.action.SessionClearingAction" singleton="false">
+	</bean>
+	
 	<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
 		<property name="loginService" ref="loginService" />
 	</bean>
