@@ -2,11 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -18,8 +16,9 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
-import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
 import com.itgrids.partyanalyst.model.Booth;
@@ -204,7 +203,14 @@ public class BoothMapperService implements IBoothMapperService{
 		return result;		
 	}
 	
-	public void setDataForVillageBoothRelation(Long districtId,Long electionYear){
+	/**
+	 * This method is used to save the villages that are covered under a booth.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @return ResultStatus
+	 */
+	public ResultStatus setDataForVillageBoothRelation(Long districtId,Long electionYear){
+		ResultStatus resultWithException = new ResultStatus();
 		try{	
 		List<Constituency> conList = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtId);
 			
@@ -220,7 +226,7 @@ public class BoothMapperService implements IBoothMapperService{
 						 
 						 List villageNames = boothVillageDAO.getVillagesForABoothInAConstituency(result.getName(),partNumber);
 						 
-						 List<String> villages = Arrays.asList(parms[1].toString().toLowerCase().split(","));
+						 List<String> villages = Arrays.asList(parms[1].toString().toUpperCase().split(","));
 						 Set<String> unDuplicateVillages = new HashSet<String>(villages);
 						 if(villageNames!=null && villageNames.size()!=0){
 							 for(int j=0;j<villageNames.size();j++){
@@ -228,7 +234,10 @@ public class BoothMapperService implements IBoothMapperService{
 								 if(data[0]!=null){
 									 String names = data[0].toString();
 									 if(!villages.contains(names)){									
-										 Set<String> villageSet =  new HashSet<String>(Arrays.asList(names.toLowerCase().split(",")));
+										 Set<String> villageSet =  new HashSet<String>(Arrays.asList(names.toUpperCase().split(",")));
+										 if(villageSet.contains(".")){
+											 villageSet.remove(".");
+										 }
 										 unDuplicateVillages.addAll(villageSet);
 									 }
 								 }
@@ -237,17 +246,21 @@ public class BoothMapperService implements IBoothMapperService{
 						
 						String uniqueNames = new String();
 				        for (Iterator iterator = unDuplicateVillages.iterator(); iterator.hasNext();) {
-				        	uniqueNames += iterator.next().toString();
+				        	uniqueNames += iterator.next().toString();				        	
 				        	uniqueNames +=",";			            
-				         }					
+				         }		
+				        uniqueNames =  new StringBuilder(uniqueNames).delete(uniqueNames.length()-1, uniqueNames.length()).toString();
 						 boothDAO.updateVillagesCoveredInfoInAConstituency(constituencyId,uniqueNames,partNumber.toString(),electionYear);
 					 }
 				 }
 			}
+			resultWithException.setResultCode(ResultCodeMapper.SUCCESS);
 		}catch(Exception e){
 			e.printStackTrace();
+			resultWithException.setResultCode(ResultCodeMapper.FAILURE);
+			resultWithException.setExceptionEncountered(e);
 		}
+		return resultWithException;
 	}
 
-	
 }
