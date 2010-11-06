@@ -282,6 +282,7 @@
 		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />
 		<property name="cadreLevelDAO" ref="cadreLevelDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
+		<property name="cadreChildrenInfoDAO" ref="cadreChildrenInfoDAO" />	
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />				   	  	
 	</bean>
 	
