@@ -50,9 +50,6 @@
 		{
 			
 		}
-		
-		
-				
 	}
 
 	
@@ -510,11 +507,72 @@
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';
 			if(row6El.style.display == 'none')
-				row6El.style.display = '';			
+				row6El.style.display = '';
+		}	 
+	}
+	
+	function showChildRows()
+	{
+		var firstChildRowEle  =  document.getElementById("firstChildRow");
+		var secondChildRowEle =  document.getElementById("secondChildRow");
+		var thirdChildRowEle  =  document.getElementById("thirdChildRow");
+
+		var firstChildNameFieldEle  = document.getElementById("firstChildNameField");
+		var secondChildNameFieldEle = document.getElementById("secondChildNameField"); 
+		var thirdChildNameField     = document.getElementById("thirdChildNameField"); 
+
+		var firstChildDOBTextEle      = document.getElementById("firstChildDOBText");
+		var secondChildDOBTextEle = document.getElementById("secondChildDOBText");
+		var thirdChildDOBTextEle  = document.getElementById("thirdChildDOBText");
+
+		firstChildRowEle.style.display = 'none';
+		secondChildRowEle.style.display = 'none';
+		thirdChildRowEle.style.display = 'none';
+		
+		var noOfChildrenEle = document.getElementById("noOfChildrenId");
+		var noOfChildren = noOfChildrenEle.options[noOfChildrenEle.selectedIndex].value;
+
+		if(noOfChildren <= 0 )
+		{	
+			firstChildNameFieldEle.value = '';
+			secondChildNameFieldEle.value = '';
+			thirdChildNameField.value = '';
+
+			firstChildDOBTextEle.value = '';
+			secondChildDOBTextEle.value = '';
+			thirdChildDOBTextEle.value = '';
+
+			return;
+		}
+
+		if(noOfChildren == 1)
+		{
+			firstChildRowEle.style.display = '';
+
+			secondChildNameFieldEle.value = '';
+			thirdChildNameField.value = '';
+			secondChildDOBTextEle.value = '';
+			thirdChildDOBTextEle.value = '';
+		}
+
+		if(noOfChildren == 2)
+		{
+			firstChildRowEle.style.display = '';
+			secondChildRowEle.style.display = '';
+
+			thirdChildNameField.value = '';
+			thirdChildDOBTextEle.value = '';
 		}
 		
-			 
-	}		
+		if(noOfChildren == 3)
+		{
+			firstChildRowEle.style.display = '';
+			secondChildRowEle.style.display = '';
+			thirdChildRowEle.style.display = '';
+		}
+
+	}
+
 </script>
 <style type="text/css">
 	
@@ -707,9 +765,88 @@
 								</span>
 							</td>						
 						</tr>
+						<tr>
+							<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="Children Details" /></u></th>
+						</tr>
+						
+						<tr>
+							<td width="200"><s:label for="noOfChildrenId" id="cadreLevelLabel"  value="No of Children" /><font class="requiredFont"> * </font>
+							</td>
+
+							<td align="left">	
+								<s:select id="noOfChildrenId" cssClass="regionSelect" name="noOfChildren" list="#{'0':'0','1':'1','2':'2','3':'3'}" value="-1"  headerKey="-1" headerValue="Select No of Childrens" onchange="showChildRows()"></s:select>
+							</td>
+						</tr>
+						
+						<tr id="firstChildRow" style="display:none;">
+						  <td width="200"><s:label for="firstChildNameField" id="firstChildNameLabel" value="Name" /><font class="requiredFont">  </font></td>
+						
+						  <td align="left" width="165px"><s:textfield id="firstChildNameField" name="firstChildName" maxlength="25" size="25" />  </td>
+
+						 <td width="200"><s:label for="firstChildDOBText" id="firstChildDOBLabel" value="Date Of Birth" /><font class="requiredFont">  </font></td>
+
+						  <td align="left">
+								<span id="dobSpan">
+									<table>
+									<tr>
+										<td>
+											<s:textfield id="firstChildDOBText" readonly="true" name="firstChildDOB" size="25"/>
+											<DIV class="yui-skin-sam"><DIV id="firstChildDOBText_div" style="position:absolute;"></DIV></DIV>
+										</td>
+										<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('firstChildDOBText_div','firstChildDOBText','1/1970')"/></td>
+									</tr>
+									</table>	
+								</span>
+							</td>		
+						</tr>
+
+						<tr id="secondChildRow" style="display:none;">
+						  <td width="200"><s:label for="secondChildNameField" id="secondChildNameLabel" value="Name" /><font class="requiredFont">   </font></td>
+						
+						  <td align="left" width="165px"><s:textfield id="secondChildNameField" name="secondChildName" maxlength="25" size="25" />  </td>
+
+						 <td width="200"><s:label for="secondChildDOBText" id="secondChildDOBLabel" value="Date Of Birth" /><font class="requiredFont">   </font></td>
+
+						  <td align="left">
+								<span id="dobSpan">
+									<table>
+									<tr>
+										<td>
+											<s:textfield id="secondChildDOBText" readonly="true" name="secondChildDOB" size="25"/>
+											<DIV class="yui-skin-sam"><DIV id="secondChildDOBText_div" style="position:absolute;"></DIV></DIV>
+										</td>
+										<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('secondChildDOBText_div','secondChildDOBText','1/1970')"/></td>
+     								</tr>
+									</table>	
+								</span>
+							</td>		
+						</tr>
+
+						<tr id="thirdChildRow" style="display:none;">
+						  <td width="200"><s:label for="thirdChildNameField" id="thirdChildNameLabel" value="Name" /><font class="requiredFont">   </font></td>
+						
+						  <td align="left" width="165px"><s:textfield id="thirdChildNameField" name="thirdChildName" maxlength="25" size="25" />  </td>
+
+						 <td width="200"><s:label for="thirdChildDOBText" id="thirdChildDOBLabel" value="Date Of Birth" /><font class="requiredFont">   </font></td>
+
+						  <td align="left">
+								<span id="dobSpan">
+									<table>
+									<tr>
+										<td>
+											<s:textfield id="thirdChildDOBText" readonly="true" name="thirdChildDOB" size="25"/>
+											<DIV class="yui-skin-sam"><DIV id="thirdChildDOBText_div" style="position:absolute;"></DIV></DIV>
+										</td>
+										<td><input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('thirdChildDOBText_div','thirdChildDOBText','1/1970')"/></td>
+									</tr>
+									</table>	
+								</span>
+							</td>		
+						</tr>
+
 					</table>
 				</td>			
-			</tr>					
+			</tr>		
 		</table>	
 	</FIELDSET>
 	<FIELDSET>
