@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,8 +32,14 @@ ServletContextAware, ServletResponseAware, ServletRequestAware{
 	org.json.JSONObject jObj;
 	
 	private IBoothMapperService boothMapperService;
+	private ResultStatus resultStatus;
 	
-	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public IBoothMapperService getBoothMapperService() {
 		return boothMapperService;
 	}
@@ -102,7 +109,7 @@ ServletContextAware, ServletResponseAware, ServletRequestAware{
 		
 		Long districtID = new Long(jObj.getString("districtId"));
 		Long electionYear =  new Long(jObj.getString("electionYear"));
-		boothMapperService.setDataForVillageBoothRelation(districtID,electionYear);
+		resultStatus = boothMapperService.setDataForVillageBoothRelation(districtID,electionYear);
 		return SUCCESS;
 	}
 }
