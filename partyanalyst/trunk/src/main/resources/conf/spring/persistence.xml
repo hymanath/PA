@@ -150,6 +150,7 @@
 				<value>com.itgrids.partyanalyst.model.StaticUserDesignation</value>
 				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.CadreChildrenInfo</value>
 				<value>com.itgrids.partyanalyst.model.BoothVillage</value>
 				</list>
 		</property>
