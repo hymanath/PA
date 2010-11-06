@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -83,6 +84,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IOccupationDAO occupationDAO;
 	private ISocialCategoryDAO socialCategoryDAO;
 	private IRegistrationDAO registrationDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
 	private TransactionTemplate transactionTemplate = null;
 	private InfluencingPeopleVO influencingPeopleVO;
@@ -228,6 +230,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
+	}
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 	public InfluencingPeopleBeanVO getInfluencingPeopleBeanVO() {
@@ -446,7 +457,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					
 					if (IConstants.URBAN_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
 					{
-						userAddress.setLocalElectionBody(localElectionBodyDAO.get(new Long(influencingPeopleBeanVO.getMandal().substring(1))));
+						List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(influencingPeopleBeanVO.getMandal().substring(1)));
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get((Long)(localElectionBodies.get(0))));
 						userAddress.setWard(constituencyDAO.get(new Long(influencingPeopleBeanVO.getWardOrHamlet().substring(1))));
 						userAddress.setTehsil(null);
 						userAddress.setHamlet(null);
