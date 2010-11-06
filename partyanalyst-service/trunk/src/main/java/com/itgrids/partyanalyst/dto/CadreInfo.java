@@ -97,6 +97,9 @@ public class CadreInfo implements Serializable{
 	private String cadreLevelConstituency;
 	private String cadreLevelMandal;
 	private String cadreLevelVillage;
+	private String noOfChildren;
+	private String firstChildName,secondChildName,thirdChildName;
+	private String firstChildDOB,secondChildDOB,thirdChildDOB;
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;
@@ -570,6 +573,48 @@ public class CadreInfo implements Serializable{
 	}
 	public void setCadreLevelVillage(String cadreLevelVillage) {
 		this.cadreLevelVillage = cadreLevelVillage;
+	}
+	public String getNoOfChildren() {
+		return noOfChildren;
+	}
+	public void setNoOfChildren(String noOfChildren) {
+		this.noOfChildren = noOfChildren;
+	}
+	public String getFirstChildName() {
+		return firstChildName;
+	}
+	public void setFirstChildName(String firstChildName) {
+		this.firstChildName = firstChildName;
+	}
+	public String getSecondChildName() {
+		return secondChildName;
+	}
+	public void setSecondChildName(String secondChildName) {
+		this.secondChildName = secondChildName;
+	}
+	public String getThirdChildName() {
+		return thirdChildName;
+	}
+	public void setThirdChildName(String thirdChildName) {
+		this.thirdChildName = thirdChildName;
+	}
+	public String getFirstChildDOB() {
+		return firstChildDOB;
+	}
+	public void setFirstChildDOB(String firstChildDOB) {
+		this.firstChildDOB = firstChildDOB;
+	}
+	public String getSecondChildDOB() {
+		return secondChildDOB;
+	}
+	public void setSecondChildDOB(String secondChildDOB) {
+		this.secondChildDOB = secondChildDOB;
+	}
+	public String getThirdChildDOB() {
+		return thirdChildDOB;
+	}
+	public void setThirdChildDOB(String thirdChildDOB) {
+		this.thirdChildDOB = thirdChildDOB;
 	}
 	
 	
