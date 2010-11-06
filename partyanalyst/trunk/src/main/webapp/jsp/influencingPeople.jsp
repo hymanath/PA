@@ -168,7 +168,8 @@ function callAjax(param,jsObj,url){
 					{
 						clearOptionsListForSelectElmtId("hamletField");
 						createOptionsForSelectElmtId("hamletField",myResults);
-					}				
+					}
+					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -345,6 +346,23 @@ function populateLocations(val,source)
 		}		
 	}	 
 }
+function sessionClean(module,accessType,windowTask)
+{
+
+	var jsObj=
+		{				
+			module: module,
+			accessType: accessType,
+			windowTask: windowTask,
+			task: "sessionCleaning"
+		};
+			
+
+	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "sessionCleaningForAModuleAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 
 </script>
@@ -541,6 +559,9 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 <div id="saveDiv" align="center">
 	<s:submit cssClass="button" value="Save Record" name="Save"></s:submit>
 </div>
+<%--<div id="exitDiv" align="center">
+	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input>
+</div> ---  --%>
 </s:form>
 
 </div>		
