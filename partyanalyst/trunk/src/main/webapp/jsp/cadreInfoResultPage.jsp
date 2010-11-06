@@ -199,7 +199,59 @@ function buildCadreInfo(jsObj,results)
 	str += '		</td>';
 	str += '	</tr>';
 	str += '	</table>';
+	
+	if(results.noOfChildren != 0)
+	{
+	str += '	<table width="100%" border="0" class="cadreProfileInfoTable" >';
+	str += '	<tr>';
+	str += '	<th style="width:125px" ><U>Children Details :</U></th>';
+	str += '	<td></td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<th style="width:125px" >No of Children :</th>';
+	str += '	<td>'+results.noOfChildren+'</td>';
+	str += '	</tr>';
+	}
+	
+	if(results.noOfChildren >= 1)
+	{
+	
+	str += '	<tr>';
+	str += '	<th style="width:125px" >1)&nbsp;&nbsp; Name :</th>';
+	str += '	<td>'+results.firstChildName+'</td>';
+	str += '	<th style="width:125px" > Date Of Birth:</th>';
+	str += '	<td>'+results.firstChildDOB+'</td>';
+	str += '	</tr>';
+	
+	}
+
+	if(results.noOfChildren >= 2)
+	{
+	str += '	<tr>';
+	str += '	<th style="width:125px" >2)&nbsp;&nbsp; Name :</th>';
+	str += '	<td>'+results.secondChildName+'</td>';
+	str += '	<th style="width:125px" > Date Of Birth:</th>';
+	str += '	<td>'+results.secondChildDOB+'</td>';
+	str += '	</tr>';
+	}
+
+	if(results.noOfChildren == 3)
+	{
+	str += '	<tr>';
+	str += '	<th style="width:125px" >3)&nbsp;&nbsp; Name :</th>';
+	str += '	<td>'+results.thirdChildName+'</td>';
+	str += '	<th style="width:125px" > Date Of Birth:</th>';
+	str += '	<td>'+results.thirdChildDOB+'</td>';
+	str += '	</tr>';
+	}
+	if(results.noOfChildren != 0)
+	{
+		str += '	</table>';
+	}
+
 	str += '	</fieldset>';
+
 	str += '	<fieldset>';
 	str += '	<legend>Contact Details</legend>';
 	str += '	<table width="100%" class="cadreProfileInfoTable" border="0">';
