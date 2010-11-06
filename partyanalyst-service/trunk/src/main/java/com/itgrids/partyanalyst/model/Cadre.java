@@ -68,6 +68,7 @@ public class Cadre extends BaseModel{
 	 private Date endingDate;
 	 private String fatherOrSpouseName;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
+	 private Set<CadreChildrenInfo> cadreChildrenInfo = new HashSet<CadreChildrenInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
 	 private String exactDateOfBirth;
@@ -402,6 +403,16 @@ public class Cadre extends BaseModel{
 
 	public void setExactDateOfBirth(String exactDateOfBirth) {
 		this.exactDateOfBirth = exactDateOfBirth;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreChildrenInfo> getCadreChildrenInfo() {
+		return cadreChildrenInfo;
+	}
+
+	public void setCadreChildrenInfo(Set<CadreChildrenInfo> cadreChildrenInfo) {
+		this.cadreChildrenInfo = cadreChildrenInfo;
 	}
 	
 	
