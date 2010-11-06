@@ -247,9 +247,9 @@ public class BoothMapperService implements IBoothMapperService{
 						String uniqueNames = new String();
 				        for (Iterator iterator = unDuplicateVillages.iterator(); iterator.hasNext();) {
 				        	uniqueNames += iterator.next().toString();				        	
-				        	uniqueNames +=",";			            
+				        	uniqueNames +=", ";					        		
 				         }		
-				        uniqueNames =  new StringBuilder(uniqueNames).delete(uniqueNames.length()-1, uniqueNames.length()).toString();
+				        uniqueNames =  new StringBuilder(uniqueNames).delete(uniqueNames.length()-2, uniqueNames.length()).toString();
 						 boothDAO.updateVillagesCoveredInfoInAConstituency(constituencyId,uniqueNames,partNumber.toString(),electionYear);
 					 }
 				 }
@@ -263,4 +263,19 @@ public class BoothMapperService implements IBoothMapperService{
 		return resultWithException;
 	}
 
+	/*public static void main(String[] args){
+		Set<String> unDuplicateVillages = new HashSet<String>();
+		unDuplicateVillages.add("a1");
+		unDuplicateVillages.add("a2");
+		unDuplicateVillages.add("a3");
+		unDuplicateVillages.add("a4");
+		
+		String uniqueNames = new String();
+		 for (Iterator iterator = unDuplicateVillages.iterator(); iterator.hasNext();) {
+	        	uniqueNames += iterator.next().toString();				        	
+	        	uniqueNames +=", ";					        		
+	      }
+		 uniqueNames =  new StringBuilder(uniqueNames).delete(uniqueNames.length()-2, uniqueNames.length()).toString();
+		 System.out.println(uniqueNames);
+	}*/
 }
