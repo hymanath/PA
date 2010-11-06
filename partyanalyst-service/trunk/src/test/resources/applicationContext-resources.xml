@@ -160,12 +160,17 @@
 				<value>com.itgrids.partyanalyst.model.StaticUserDesignation</value>
 				<value>com.itgrids.partyanalyst.model.LocalGroupRegion</value>
 				<value>com.itgrids.partyanalyst.model.LocalElectionBodyWard</value>
+				<value>com.itgrids.partyanalyst.model.CadreChildrenInfo</value>
 				<value>com.itgrids.partyanalyst.model.BoothVillage</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="cadreChildrenInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreChildrenInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="ananymousUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
