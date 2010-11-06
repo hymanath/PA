@@ -5,6 +5,10 @@
 
 <beans>
   
+  	<bean id="cadreChildrenInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreChildrenInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
   	<bean id="boothVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothVillageDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
