@@ -121,7 +121,7 @@ function callAjax(jsObj,url)
 								displayDistrictLocalBodies(myResults);
 							}		
 							else if(jsObj.task == "setDataForVillageBoothRelation"){
-								hideBarLoaderImage();
+								hideBarLoaderImage(myResults);
 							}					
 						}
 						catch(e)
@@ -219,14 +219,23 @@ function validateAndForwardToAction(elmt)
 		elmt.style.display = 'block';
 	
 	}
-	function hideBarLoaderImage()
+	function hideBarLoaderImage(myResults)
 	{
 		var elmt = document.getElementById("barloaderImage");
 		if(!elmt)
 			return;
 			
 		elmt.style.display = 'none';
-	
+		
+		var selectedElmt = document.getElementById("messageDiv");
+		var str='';
+		if(myResults.resultCode==0){
+			str+='Successfully updated';
+		}else{
+			str+='There was an error in processing in processing the request';
+		}		
+		selectedElmt.innerHTML = str;
+		
 	}
 </script>
 <style>
@@ -284,6 +293,11 @@ function validateAndForwardToAction(elmt)
 			<tr>
 				<th colspan="2" align="center">
 					<input id="viewReportButton" type="button" onClick="return validateAndForwardToAction(this)"  value="Submit"/>					
+				</th>
+	 		</tr>
+	 		<tr>
+				<th colspan="2" align="center">
+					<div id="messageDiv"></div>									
 				</th>
 	 		</tr>	
 		</table>
