@@ -36,6 +36,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 public class CadreRegisterAction extends ActionSupport implements
 		ServletRequestAware, ServletContextAware {
 
+	private static final long serialVersionUID = -4442134889468509932L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
@@ -92,6 +93,9 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String dobOption;
 	private String age;
 	private String windowTask;
+	private String noOfChildren;
+	private String firstChildName,secondChildName,thirdChildName;
+	private String firstChildDOB,secondChildDOB,thirdChildDOB;
 	private ResultStatus rs; 
 	private List<String> skills;
 	private List<String> trainingCamps;
@@ -736,12 +740,66 @@ public class CadreRegisterAction extends ActionSupport implements
 	public Long getDefaultCadreLevel()
 	{
 		return this.defaultCadreLevelId;
+	}	
+	
+	public String getNoOfChildren() {
+		return this.cadreInfo.getNoOfChildren();
+	}
+	
+	public void setNoOfChildren(String noOfChildren) {
+		this.cadreInfo.setNoOfChildren(noOfChildren);
+	}
+	
+	public String getFirstChildName() {
+		return this.cadreInfo.getFirstChildName();
 	}
 
+	public void setFirstChildName(String firstChildName) {
+		this.cadreInfo.setFirstChildName(firstChildName);
+	}
+
+	public String getSecondChildName() {
+		return this.cadreInfo.getSecondChildName();
+	}
+
+	public void setSecondChildName(String secondChildName) {
+		this.cadreInfo.setSecondChildName(secondChildName);
+	}
+
+	public String getThirdChildName() {
+		return this.cadreInfo.getThirdChildName();
+	}
+
+	public void setThirdChildName(String thirdChildName) {
+		this.cadreInfo.setThirdChildName(thirdChildName);
+	}
+
+	public String getFirstChildDOB() {
+		return this.cadreInfo.getFirstChildDOB();
+	}
+
+	public void setFirstChildDOB(String firstChildDOB) {
+		this.cadreInfo.setFirstChildDOB(firstChildDOB);
+	}
+
+	public String getSecondChildDOB() {
+		return this.cadreInfo.getSecondChildDOB();
+	}
+
+	public void setSecondChildDOB(String secondChildDOB) {
+		this.cadreInfo.setSecondChildDOB(secondChildDOB);
+	}
+
+	public String getThirdChildDOB() {
+		return this.cadreInfo.getThirdChildDOB();
+	}
+
+	public void setThirdChildDOB(String thirdChildDOB) {
+		this.cadreInfo.setThirdChildDOB(thirdChildDOB);
+	}
 	public Boolean getSameAsCAFlag() {
 		return sameAsCAFlag;
 	}
-
 	public void setSameAsCAFlag(Boolean sameAsCAFlag) {
 		this.sameAsCAFlag = sameAsCAFlag;
 	}
