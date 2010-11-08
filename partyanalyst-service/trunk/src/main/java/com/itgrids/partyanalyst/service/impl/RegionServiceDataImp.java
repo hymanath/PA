@@ -401,7 +401,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
-				localElectionBodiesList.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString().toUpperCase()+" "+ (obj[2])));
+				localElectionBodiesList.add(new SelectOptionVO((Long)obj[4],obj[1].toString().toUpperCase()+" "+ (obj[2])));
 			}
 		}catch(Exception e)
 		{
