@@ -328,7 +328,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleCountByInfluencingScope(Long userId) {
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.influencingScope from InfluencingPeople model where "+
-				"model.registration.registrationId = ? group by model.influencingScope",userId);
+				"model.registration.registrationId = ? group by model.influencingScope order by model.influencingScope",userId);
 	}
 
 	@SuppressWarnings("unchecked")
