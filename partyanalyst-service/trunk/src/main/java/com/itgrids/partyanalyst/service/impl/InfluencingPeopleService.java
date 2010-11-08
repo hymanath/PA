@@ -1429,7 +1429,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 						infPeopleDetailsVO1.getInfluencingPeopleDetails().add(influencingPeopleBeanVO);
 						influencePeopleMap.put(wardId, infPeopleDetailsVO1);
 					}
-				}else if(!scopeType.equalsIgnoreCase("")){
+				}else if(!scopeType.equalsIgnoreCase("") || subRegionType.equalsIgnoreCase("")){
 					if(influencePeopleMap.isEmpty()){
 						infPeopleDetailsVO.setRegionId(id);
                     	infPeopleDetailsVO.setRegionName(scopeRegion);
