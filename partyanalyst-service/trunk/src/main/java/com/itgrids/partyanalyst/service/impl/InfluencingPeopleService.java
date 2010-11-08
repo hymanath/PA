@@ -808,6 +808,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getInfluencingPeopleByInfluenceScope(Long userId){
 		
 		List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverviewVOList = null;
+		boolean stateFlag = false;
 		if(userId != null){
 			List scopeDetailsList = influencingPeopleDAO.getTotalInfluencingPeopleCountByInfluencingScope(userId);
 			if(scopeDetailsList != null && scopeDetailsList.size() > 0){
@@ -826,7 +827,18 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					List scopeRegionsList  = influencingPeopleDAO.getTotalInfluencingPeopleCountByInfluencingScope(userId, scope);
 					if(scopeRegionsList != null && scopeRegionsList.size() > 0)
 						influenceScopeOverviewVO.setInfluenceScopeDetails(getInfluencingScopeRegionDetails(scopeRegionsList,scope));
-					influenceScopeOverviewVOList.add(influenceScopeOverviewVO);
+					if(scope.equalsIgnoreCase(IConstants.STATE)){
+					    influenceScopeOverviewVOList.add(0,influenceScopeOverviewVO);
+					    stateFlag = true;
+					}
+					else {
+						if(stateFlag == true && scope.equalsIgnoreCase(IConstants.DISTRICT))
+							influenceScopeOverviewVOList.add(1,influenceScopeOverviewVO);
+						else if(stateFlag == false && scope.equalsIgnoreCase(IConstants.DISTRICT))
+						    influenceScopeOverviewVOList.add(0,influenceScopeOverviewVO);
+						else
+							influenceScopeOverviewVOList.add(influenceScopeOverviewVO);
+					}
 				}
 			}
 		}
