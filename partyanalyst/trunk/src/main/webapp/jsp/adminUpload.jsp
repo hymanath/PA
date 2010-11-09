@@ -91,6 +91,14 @@
 									</fieldset>
 								</td>
 							</tr>
+							<tr>
+								<td>
+									<fieldset class="f2">
+									<legend class="l2">Entitlements</legend>
+									<h4>Organise Entitlements:<a href="<s:url action="userEntitlementAction"/>">organise</a></h4>
+									</fieldset>
+								</td>								
+							</tr>
 						</table>
 				</fieldset>
 			</td>
