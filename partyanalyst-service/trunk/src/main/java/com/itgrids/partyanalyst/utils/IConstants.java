@@ -291,6 +291,9 @@ public interface IConstants {
     public static final String SCRAP = "SCRAP";
     public static final String LOGGED_USER = "LOGGED_USER";
     
+    public static final String INFLUENCING_PEOPLE = "INFLUENCING_PEOPLE";
+    public static final String LOCAL_USER_GROUPS = "LOCAL_USER_GROUPS";
+    public static final String LOCAL_POLITICAL_CHANGES = "LOCAL_POLITICAL_CHANGES";
     
     public static final String PARLIAMENT_CONSTITUENCY_LEVEL = "PARLIAMENT CONSTITUENCY";
     public static final String ASSEMBLY_CONSTITUENCY_LEVEL = "ASSEMBLY CONSTITUENCY";
