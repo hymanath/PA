@@ -704,6 +704,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(state.getStateName());
 			regionWiseOverview.setRegionTitle(categoryType);
+			regionWiseOverview.setRegionTitleId(categoryId);
 			
 			//district wise influencing people details
 			List<SelectOptionVO> districtsInState = staticDataService.getDistricts(stateId);
@@ -959,6 +960,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(district.getDistrictName());
 			regionWiseOverview.setRegionTitle(categoryType);
+			regionWiseOverview.setRegionTitleId(categoryId);
 			
 			
 			//constituencies wise influencing people details
@@ -1022,6 +1024,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(constituency.getName());
 			regionWiseOverview.setRegionTitle(categoryType);
+			regionWiseOverview.setRegionTitleId(categoryId);
 			
 			List<SelectOptionVO> subRegionsList = null;
             List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
@@ -1621,6 +1624,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(localBody.getName());
 			regionWiseOverview.setRegionTitle(categoryType);
+			regionWiseOverview.setRegionTitleId(categoryId);
 			
 			//Villages wise influencing people details
 			List<SelectOptionVO> wardsInLocalBody = regionServiceDataImp.getWardsInALocalElectionBody(localBodyId);
@@ -1686,6 +1690,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(tehsil.getTehsilName());
 			regionWiseOverview.setRegionTitle(categoryType);
+			regionWiseOverview.setRegionTitleId(categoryId);
 			
 			//Villages wise influencing people details
 			List<SelectOptionVO> villagesInMandal = regionServiceDataImp.getHamletsInATehsil(mandalId);
