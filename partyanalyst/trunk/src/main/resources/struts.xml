@@ -1668,6 +1668,16 @@
 				<param name="root">resultStatus</param>				
 			</result>		
 		</action>
-        			
+		
+		<action name="userEntitlementAction" class="userEntitlementAction">
+           <result name="success">/jsp/userEntitlement.jsp</result>	
+        </action> 
+        
+        <action name="entitlementUserAction" class="userEntitlementAction" method="entitlementsAction">
+			<result type="json" name="success">
+				<param name="root">entitlements</param>				
+			</result>		
+		</action>
+		
 	</package>
 </struts>

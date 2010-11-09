@@ -5,6 +5,16 @@
 
 <beans>
 	
+	<bean name="userEntitlementService" class="com.itgrids.partyanalyst.service.impl.UserEntitlementService" >
+		<property name="entitlementDAO" ref="entitlementDAO" />
+		<property name="groupEntitlementDAO" ref="groupEntitlementDAO" />
+		<property name="groupEntitlementRelationDAO" ref="groupEntitlementRelationDAO" />	
+		<property name="userGroupEntitlementDAO" ref="userGroupEntitlementDAO" />		
+		<property name="userGroupRelationDAO" ref="userGroupRelationDAO" />			
+		<property name="registrationDAO" ref="registrationDAO" />	
+		<property name="userGroupsDAO" ref="userGroupsDAO" />			
+	</bean>  
+	
 	<bean name="dateService" class="com.itgrids.partyanalyst.service.impl.DateService" >
 	</bean>  
 	
@@ -284,7 +294,7 @@
 		<property name="cadreLevelDAO" ref="cadreLevelDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
 		<property name="cadreChildrenInfoDAO" ref="cadreChildrenInfoDAO" />	
-		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />				   	  	
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />							
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
@@ -617,7 +627,7 @@
 	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	    <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 	    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
-    	<property name="boothVillageDAO" ref="boothVillageDAO"/>
+	    <property name="boothVillageDAO" ref="boothVillageDAO"/>
 	</bean>
 
 </beans>		

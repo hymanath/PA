@@ -5,6 +5,10 @@
 
 <beans>
   
+  	<bean id="groupEntitlementRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
   	<bean id="cadreChildrenInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreChildrenInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
