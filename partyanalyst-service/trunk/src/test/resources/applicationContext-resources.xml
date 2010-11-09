@@ -730,6 +730,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="groupEntitlementRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupEntitlementRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />

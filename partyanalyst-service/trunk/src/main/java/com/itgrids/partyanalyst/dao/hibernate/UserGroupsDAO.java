@@ -12,6 +12,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IUserGroupsDAO;
+import com.itgrids.partyanalyst.model.Entitlement;
 import com.itgrids.partyanalyst.model.UserGroups;
 
 public class UserGroupsDAO extends GenericDaoHibernate<UserGroups, Long> implements
@@ -24,6 +25,11 @@ public class UserGroupsDAO extends GenericDaoHibernate<UserGroups, Long> impleme
 	public List<UserGroups> findByNotes(String notes) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserGroups> getAllUserGroups(){		
+		return getHibernateTemplate().find(" select model.userGroupId,model.notes from UserGroups model order by model.notes asc");
 	}
 
 }

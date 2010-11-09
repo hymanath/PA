@@ -16,4 +16,6 @@ import com.itgrids.partyanalyst.model.UserGroups;
 public interface IUserGroupsDAO extends GenericDao<UserGroups, Long> {
 
 	public List<UserGroups> findByNotes(String notes);
+	
+	public List<UserGroups> getAllUserGroups();
 }

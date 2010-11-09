@@ -13,6 +13,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IEntitlementDAO;
 import com.itgrids.partyanalyst.model.Entitlement;
+import com.itgrids.partyanalyst.model.GroupEntitlement;
 
 public class EntitlementDAO extends GenericDaoHibernate<Entitlement, Long>
 		implements IEntitlementDAO {
@@ -26,5 +27,19 @@ public class EntitlementDAO extends GenericDaoHibernate<Entitlement, Long>
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Entitlement> getAllEntitlements() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.entitlementId,model.entitlementType from Entitlement model order by model.entitlementType asc");
+		return getHibernateTemplate().find(sb.toString());
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Entitlement> checkForEntitlementAvailability(String name){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.entitlementId,model.entitlementType from Entitlement model");
+		sb.append(" where model.entitlementType = ?");
+		return getHibernateTemplate().find(sb.toString(),name);
+		
+	}
 }
