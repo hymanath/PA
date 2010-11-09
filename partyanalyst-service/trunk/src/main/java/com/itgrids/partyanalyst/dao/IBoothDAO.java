@@ -6,7 +6,6 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Tehsil;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
