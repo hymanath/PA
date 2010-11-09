@@ -80,4 +80,8 @@ public class RegistrationDAO extends GenericDaoHibernate<Registration, Long> imp
 		return getHibernateTemplate().find(" from Registration model where model.registrationId = ?", registrationId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Registration> getAllRegisteredUsers() {
+		return getHibernateTemplate().find(" select model.registrationId,model.firstName,model.lastName from Registration model ");
+	}
 }

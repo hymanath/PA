@@ -19,6 +19,11 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name= "group_entitlement_relation")
 public class GroupEntitlementRelation extends BaseModel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5937418507411279467L;
+	
 	private Long groupEntitlementRelationId;
 	private GroupEntitlement groupEntitlement;
 	private Entitlement entitlement;

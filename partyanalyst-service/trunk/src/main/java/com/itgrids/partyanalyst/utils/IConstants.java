@@ -300,4 +300,8 @@ public interface IConstants {
     public static final String COMPLETE_DETAILS = "COMPLETE_DETAILS";
     public static final String PARTIAL_DETAILS = "PARTIAL_DETAILS";
     
+    public static final String AVAILABLE = "AVAILABLE";
+    public static final String NOT_AVAILABLE = "NOT_AVAILABLE";
+    
+    public static final String SUCCESSFULLY_SAVED = "SUCCESSFULLY_SAVED";
 }

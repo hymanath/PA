@@ -1,10 +1,18 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 
@@ -48,11 +56,17 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 	public void testGetDetails(){
 		List<Registration> regUser = registrationDAO.findByUserRegistrationId(3l);
 		Assert.assertEquals(1, regUser.size());
-	}*/
+	}
 	
 	public void testGetUserEntitlements(){
 		Set<UserGroupRelation> entitlements = registrationDAO.get(1l).getUserGroupRelations();
 		System.out.println(entitlements.size());
+	}*/
+	
+	public void testGetUserEntitlements(){		
+		List arr = registrationDAO.getAllRegisteredUsers();
+		Assert.assertEquals(1, arr.size());
 	}
+	
 	
 }

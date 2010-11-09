@@ -19,4 +19,7 @@ public interface IGroupEntitlementDAO extends
 
 	public List<GroupEntitlementRelation> getfindGroupEntitlementsByGroupName(String groupName);
 	
+	public List<GroupEntitlement> getAllGroups();
+	
+	public List<GroupEntitlement> checkForGroupNameAvailability(String name);
 }

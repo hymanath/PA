@@ -23,4 +23,9 @@ public class UserGroupRelationDAOHibernateTest extends BaseDaoTestCase{
 		List<UserGroupRelation> list = userGroupRelationDAO.getAll();
 		assertEquals(true, list.size() >= 0);
 	}
+	
+	public void testUserIdPresence(){
+		List  list = userGroupRelationDAO.checkTheRelationBetweenUserAndGroup(2l);
+		assertEquals(true, list.size() >= 0);
+	}
 }

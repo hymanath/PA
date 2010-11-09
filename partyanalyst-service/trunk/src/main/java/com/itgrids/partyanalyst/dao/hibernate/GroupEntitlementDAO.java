@@ -26,5 +26,19 @@ public class GroupEntitlementDAO extends GenericDaoHibernate<GroupEntitlement, L
 	public List<GroupEntitlementRelation> getfindGroupEntitlementsByGroupName(String groupName){
 		return getHibernateTemplate().find("select model.groupEntitlementRelations from GroupEntitlement model where model.description = ?", groupName);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GroupEntitlement> getAllGroups(){
+		return getHibernateTemplate().find("select model.groupEntitlementId,model.description from GroupEntitlement model order by model.description asc");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GroupEntitlement> checkForGroupNameAvailability(String name){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.groupEntitlementId,model.description from GroupEntitlement model ");
+		sb.append(" where model.description = ?");
+		return getHibernateTemplate().find(sb.toString(),name);
+		
+	}
 
 }

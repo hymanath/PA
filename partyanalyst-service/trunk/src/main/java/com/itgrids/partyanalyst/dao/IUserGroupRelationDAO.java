@@ -17,4 +17,6 @@ public interface IUserGroupRelationDAO extends
 		GenericDao<UserGroupRelation, Long> {
 
 	public List<UserGroupRelation> findByUserId(Long userId);
+	
+	public List checkTheRelationBetweenUserAndGroup(Long userId);
 }
