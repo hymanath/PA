@@ -24,15 +24,17 @@ public class ConstituencyManagementDataVO extends ResultStatus implements Serial
 	private String dataCategory;
 	private ConstituencyManagementRegionWiseOverviewVO regionWiseOverview;
 	private List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverview;
-	private List<ConstituencyManagementSubRegionWiseOverviewVO> categoryListOverview;
+	private List<ConstituencyManagementRegionWiseOverviewVO> categoryListOverview;
 	
-	public List<ConstituencyManagementSubRegionWiseOverviewVO> getCategoryListOverview() {
+	
+	public List<ConstituencyManagementRegionWiseOverviewVO> getCategoryListOverview() {
 		return categoryListOverview;
 	}
 	public void setCategoryListOverview(
-			List<ConstituencyManagementSubRegionWiseOverviewVO> categoryListOverview) {
+			List<ConstituencyManagementRegionWiseOverviewVO> categoryListOverview) {
 		this.categoryListOverview = categoryListOverview;
 	}
+	
 	public String getDataCategory() {
 		return dataCategory;
 	}
