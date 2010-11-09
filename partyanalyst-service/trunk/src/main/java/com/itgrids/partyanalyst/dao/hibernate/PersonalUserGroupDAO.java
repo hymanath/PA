@@ -151,7 +151,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	public List getTotalCountOfLocalGroupsInConstituencysByDistrict(
 			Long userId, Long districtId,Long categoryId) {
 		Object[] params = {userId, districtId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.constituency.constituencyId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.district is not null and model.localGroupRegion.district.districtId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency is not null "+
@@ -174,7 +175,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	public List getTotalCountOfLocalGroupsInDistrictsByState(Long userId,
 			Long stateId,Long categoryId) {
 		Object[] params = {userId, stateId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.district.districtId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.state is not null and model.localGroupRegion.state.stateId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.district is not null "+
@@ -197,7 +199,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	public List getTotalCountOfLocalGroupsInLocalBodysByConstituency(
 			Long userId, Long constituencyId,Long categoryId) {
 		Object[] params = {userId, constituencyId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.localBody.localElectionBodyId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.localBody is not null "+
@@ -232,7 +235,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 			Long constituencyId,Long categoryId) {
 
 		Object[] params = {userId, constituencyId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.tehsil.tehsilId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.tehsil is not null "+
@@ -256,7 +260,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 			Long tehsilId,Long categoryId) {
 
 		Object[] params = {userId, tehsilId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.hamlet.hamletId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.tehsil is not null and model.localGroupRegion.tehsil.tehsilId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.hamlet is not null "+
@@ -280,7 +285,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 			Long localBodyId,Long categoryId) {
 		
 		Object[] params = {userId, localBodyId,categoryId};
-		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.ward.constituencyId "+
+				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.localBody is not null and model.localGroupRegion.localBody.localElectionBodyId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.ward is not null "+
