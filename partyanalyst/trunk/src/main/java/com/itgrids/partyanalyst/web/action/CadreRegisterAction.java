@@ -746,6 +746,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getNoOfChildren();
 	}
 	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9]*$", message = "Invalid selection for No of Children")
 	public void setNoOfChildren(String noOfChildren) {
 		this.cadreInfo.setNoOfChildren(noOfChildren);
 	}
