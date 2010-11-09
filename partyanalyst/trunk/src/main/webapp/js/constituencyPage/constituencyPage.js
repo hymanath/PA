@@ -432,6 +432,8 @@ function buildConstituencyLayout()
 function buildCenterVotersCandidateInfoContent()
 {
 	var divElmt = document.getElementById("constituencyCenterContentOuter1");
+	if(divElmt == null)
+		return;
 	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
 	{
 		divElmt.style.display='none';
@@ -1223,6 +1225,8 @@ function hideMptcDiv(){
 function hideMptcZptcDiv()
 {
 	var divElmt = document.getElementById("zptcMptcCompleteData");
+	if(divElmt == null)
+		return;
 	divElmt.style.display = 'none';	
 }
 function buildZptcResults(results){
