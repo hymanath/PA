@@ -553,9 +553,15 @@ function getConstituencyElections(){
 	callAjax(jsObj, url);
 }
 
-function buildConstituencyElecResultsDataTable(value){	
-	if(constituencyResults == null)
+function buildConstituencyElecResultsDataTable(value){
+	
+	if(constituencyResults == null){
+		var mandalwiseVotingTrendzEL = document.getElementById("MandalwiseVotingTrendz");
+		if(mandalwiseVotingTrendzEL)
+			mandalwiseVotingTrendzEL.style.display = 'none';
 		return;
+	}
+	
 	if(constituencyResults.electionType == 'Assembly'){		
 		var parliamentButtonDiv = document.getElementById("parliamentResultsButtonDiv");
 		var str = '';
