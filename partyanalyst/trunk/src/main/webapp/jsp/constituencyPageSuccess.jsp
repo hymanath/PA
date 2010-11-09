@@ -975,7 +975,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 		
 		<tr>		
 		<td colspan="2">
-		<c:if test="${constituencyDetails.hasAnalize}">
+		<c:if test="${constituencyDetails.viewCompletePage}">
 			<div id="MandalwiseVotingTrendz" class="rounded" style="width: 910px;" >
 				<div class="corner topLeft"></div>
 				<div class="corner topRight"></div>
@@ -1001,7 +1001,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	<!-- Local Elections Info -->	
 		<tr>		
 			<td colspan="2">
-			<c:if test="${constituencyDetails.hasAnalize}">
+			<c:if test="${constituencyDetails.viewCompletePage}">
 				<div id="LocalElectionsDiv" class="rounded" style="width: 910px;">
 					<div class="corner topLeft"></div>
 					<div class="corner topRight"></div>
@@ -1082,7 +1082,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	<!-- Local Elections Info -->	
 		<tr>
 			<td colspan="2">
-			<c:if test="${constituencyDetails.hasAnalize}">
+			<c:if test="${constituencyDetails.viewCompletePage}">
 			<div class="rounded" id="zptcMptcCompleteData" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
