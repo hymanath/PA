@@ -498,7 +498,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
 		
-		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType);
+		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.INFLUENCING_PEOPLE,0L,"");
 		
 		return Action.SUCCESS;
 	}
