@@ -27,6 +27,7 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private List<SelectOptionVO> assembyConstituencies;
 	private List<String> uploadInfo;
 	private Boolean hasAnalize = false;
+	private Boolean viewCompletePage = false;
 	private String area_type;
 	private String reservation_zone;
 	
@@ -109,6 +110,12 @@ public class ConstituencyInfoVO extends ResultStatus{
 	}
 	public void setArea_type(String area_type) {
 		this.area_type = area_type;
+	}
+	public Boolean getViewCompletePage() {
+		return viewCompletePage;
+	}
+	public void setViewCompletePage(Boolean viewCompletePage) {
+		this.viewCompletePage = viewCompletePage;
 	}
 	
 	
