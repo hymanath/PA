@@ -24,10 +24,18 @@ public class ConstituencyManagementRegionWiseOverviewVO implements Serializable 
 	private Long regionId;
 	private String regionName;
 	private String regionType;
-	
+	private String regionTitle;
 	private Long countValue;
 	
 	private List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionWiseOverview;
+
+	public String getRegionTitle() {
+		return regionTitle;
+	}
+
+	public void setRegionTitle(String regionTitle) {
+		this.regionTitle = regionTitle;
+	}
 
 	public Long getRegionId() {
 		return regionId;

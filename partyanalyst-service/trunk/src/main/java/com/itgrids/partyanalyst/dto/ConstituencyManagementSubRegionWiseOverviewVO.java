@@ -24,8 +24,18 @@ public class ConstituencyManagementSubRegionWiseOverviewVO implements
 	private Long subRegionId;
 	private String subRegionName;
 	private String subRegionType;
-	
+	private String subRegionTitle;
 	private Long countValue;
+
+	
+
+	public String getSubRegionTitle() {
+		return subRegionTitle;
+	}
+
+	public void setSubRegionTitle(String subRegionTitle) {
+		this.subRegionTitle = subRegionTitle;
+	}
 
 	public Long getSubRegionId() {
 		return subRegionId;
