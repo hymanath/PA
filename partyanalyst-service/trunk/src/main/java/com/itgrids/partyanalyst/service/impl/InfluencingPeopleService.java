@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -92,6 +93,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IStaticDataService staticDataService;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IRegionServiceData regionServiceDataImp;
+	private IPersonalUserGroupDAO personalUserGroupDAO;
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -190,6 +192,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
+		return personalUserGroupDAO;
+	}
+
+	public void setPersonalUserGroupDAO(IPersonalUserGroupDAO personalUserGroupDAO) {
+		this.personalUserGroupDAO = personalUserGroupDAO;
 	}
 
 	public IRegionServiceData getRegionServiceDataImp() {
@@ -637,12 +647,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			//State Level Access User
 			if(user.getAccessType().equals(IConstants.STATE)){
 				Long stateId = new Long(accessValue);
-				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true);
+				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			//District Level Access User
 			else if(user.getAccessType().equals(IConstants.DISTRICT)){
 				Long districtId = new Long(accessValue);
-				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true);
+				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			//MP Access User
 			else if(user.getAccessType().equals(IConstants.MP)){
@@ -651,7 +661,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			//MLA Access User
 			else if(user.getAccessType().equals(IConstants.MLA)){
 				Long constituencyId = new Long(accessValue);
-				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true);
+				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			
 			
@@ -670,14 +680,20 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * Influencing People Details In Entire State and its consecutive sub regions
 	 */
 	@SuppressWarnings("unchecked")
-	public ConstituencyManagementDataVO getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long stateId,Boolean isScopeData){
+	public ConstituencyManagementDataVO getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long stateId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType){
 		
 		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
-		constituencyManagementDataVO.setDataCategory("INFLUENCING PEOPLE");
+		constituencyManagementDataVO.setDataCategory(moduleType);
 		Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap = null;
 		
 		//influencing people count in a entire state
-		List infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInState(userId, stateId);
+		List infPeopleCount = null;
+		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE)){
+		   infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInState(userId, stateId);
+		}else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS)){
+			infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInState(userId, stateId, categoryId);
+		}
+		
 		State state = stateDAO.get(stateId);
 		if(infPeopleCount != null && infPeopleCount.size() > 0){
 			ConstituencyManagementRegionWiseOverviewVO regionWiseOverview = new ConstituencyManagementRegionWiseOverviewVO();
@@ -687,6 +703,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setRegionType(IConstants.STATE);
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(state.getStateName());
+			regionWiseOverview.setRegionTitle(categoryType);
 			
 			//district wise influencing people details
 			List<SelectOptionVO> districtsInState = staticDataService.getDistricts(stateId);
@@ -694,7 +711,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(districtsInState,IConstants.DISTRICT);
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
 			
-				List subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInDistrictsByState(userId, stateId);
+			 List subRegionsInfPeopleCount = null;
+			if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE)){
+			    subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInDistrictsByState(userId, stateId);
+			}else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS)){
+				subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInDistrictsByState(userId, stateId, categoryId);
+			}
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
 				else
@@ -706,8 +728,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			constituencyManagementDataVO.setRegionWiseOverview(regionWiseOverview);
 			
 			//To get Influencing people details by scope
-			if(isScopeData)
-				constituencyManagementDataVO.setInfluenceScopeOverview(getInfluencingPeopleByInfluenceScope(userId));
+			if(isScopeData){
+				 constituencyManagementDataVO.setInfluenceScopeOverview(getInfluencingPeopleByInfluenceScope(userId));
+			}
 		}
 		
 	 return constituencyManagementDataVO;
@@ -810,7 +833,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverviewVOList = null;
 		boolean stateFlag = false;
 		if(userId != null){
+			
 			List scopeDetailsList = influencingPeopleDAO.getTotalInfluencingPeopleCountByInfluencingScope(userId);
+			
 			if(scopeDetailsList != null && scopeDetailsList.size() > 0){
 				influenceScopeOverviewVOList = new ArrayList<ConstituencyManagementInfluenceScopeOverviewVO>();
 				
@@ -910,14 +935,19 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public ConstituencyManagementDataVO getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(
-			Long userId, Long districtId, Boolean isScopeData) {
+			Long userId, Long districtId, Boolean isScopeData,String moduleType,Long categoryId,String categoryType) {
 		
 		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
-		constituencyManagementDataVO.setDataCategory("INFLUENCING PEOPLE");
+		constituencyManagementDataVO.setDataCategory(moduleType);
 		Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap = null;
 		
 		//influencing people count in a entire District
-		List infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInDistrict(userId, districtId);
+		List infPeopleCount = null;
+		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+		    infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInDistrict(userId, districtId);
+		else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+			infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInDistrict(userId, districtId, categoryId);
+		
 		District district = districtDAO.get(districtId);
 		
 		if(infPeopleCount != null && infPeopleCount.size() > 0){
@@ -928,6 +958,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setRegionType(IConstants.DISTRICT);
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(district.getDistrictName());
+			regionWiseOverview.setRegionTitle(categoryType);
 			
 			
 			//constituencies wise influencing people details
@@ -936,7 +967,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(constituenciesInDistrict,IConstants.CONSTITUENCY);
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
 			
-				List subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInConstituenciesByDistrict(userId, districtId);
+			List subRegionsInfPeopleCount = null;
+			    if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				    subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInConstituenciesByDistrict(userId, districtId);
+			    else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+			    	subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInConstituencysByDistrict(userId, districtId, categoryId);
+			    	
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
 				else
@@ -962,14 +998,19 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public ConstituencyManagementDataVO getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(
-			Long userId, Long constituencyId, Boolean isScopeData) {
+			Long userId, Long constituencyId, Boolean isScopeData,String moduleType,Long categoryId,String categoryType) {
 		
 		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
-		constituencyManagementDataVO.setDataCategory("INFLUENCING PEOPLE");
+		constituencyManagementDataVO.setDataCategory(moduleType);
 		Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap = null;
 		
 		//influencing people count in a entire Constituency
-		List infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInConstituency(userId, constituencyId);
+		List infPeopleCount = null;
+		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+		    infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInConstituency(userId, constituencyId);
+		else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+			infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInConstituency(userId, constituencyId, categoryId);
+		
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		
 		if(infPeopleCount != null && infPeopleCount.size() > 0){
@@ -980,6 +1021,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setRegionType(IConstants.CONSTITUENCY);
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(constituency.getName());
+			regionWiseOverview.setRegionTitle(categoryType);
 			
 			List<SelectOptionVO> subRegionsList = null;
             List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
@@ -991,7 +1033,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(subRegionsList != null && subRegionsList.size() > 0)
 					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.LOCAL_BODY_ELECTION);
 				
-				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(userId, constituencyId);
+				if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				    subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(userId, constituencyId);
+				else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+					subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInLocalBodysByConstituency(userId, constituencyId, categoryId);
 				
 			}//for rural constituency
 			else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)){
@@ -999,7 +1044,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(subRegionsList != null && subRegionsList.size() > 0)
 					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(subRegionsList,IConstants.TEHSIL);
 				
-				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsilsByConstituency(userId, constituencyId);
+				if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				    subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsilsByConstituency(userId, constituencyId);
+				else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+					subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInTehsilsByConstituency(userId, constituencyId, categoryId);
 				
 				
 			}//for urban rural constituency
@@ -1017,8 +1065,17 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(subRegionsDetailsMap1 != null && !subRegionsDetailsMap1.isEmpty())
 				 subRegionsDetailsMap.putAll(subRegionsDetailsMap1);
 				
-				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsilsByConstituency(userId, constituencyId);
-				List subRegionsInfPeopleCount1 = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(userId, constituencyId);
+				if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				    subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsilsByConstituency(userId, constituencyId);
+				else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+					subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInTehsilsByConstituency(userId, constituencyId, categoryId);
+				
+				List subRegionsInfPeopleCount1 = null;
+				if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				   subRegionsInfPeopleCount1 = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodysByConstituency(userId, constituencyId);
+				else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+				   subRegionsInfPeopleCount1 = personalUserGroupDAO.getTotalCountOfLocalGroupsInLocalBodysByConstituency(userId, constituencyId, categoryId);
+					
 				if(subRegionsInfPeopleCount1 != null && subRegionsInfPeopleCount1.size() > 0)
 				 subRegionsInfPeopleCount.addAll(subRegionsInfPeopleCount1);
 			}
@@ -1046,7 +1103,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(java.lang.Long, java.lang.Long, java.lang.String)
 	 */
 	public ConstituencyManagementRegionWiseCompleteDataVO getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(
-			Long userId, Long regionId, String regionType) {
+			Long userId, Long regionId, String regionType,String moduleType,Long categoryId,String categoryType) {
 
 		ConstituencyManagementRegionWiseCompleteDataVO constituencyManagementRegionWiseCompleteDataVO = new ConstituencyManagementRegionWiseCompleteDataVO();
 		List<ConstituencyManagementRegionWiseOverviewVO> constituencyManagementRegionWiseOverviewVOList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
@@ -1056,7 +1113,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			if(regionType.equalsIgnoreCase(IConstants.STATE)){
 				List<SelectOptionVO> districtsInState = staticDataService.getDistricts(regionId);
 			    for(SelectOptionVO district:districtsInState){
-			    	ConstituencyManagementDataVO constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,district.getId(),false);
+			    	ConstituencyManagementDataVO constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,district.getId(),false,moduleType,categoryId,categoryType);
 			    	if(constituencyManagementDataVO != null)
 			    		constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 			    }
@@ -1064,7 +1121,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
 				for(SelectOptionVO consti:constituenciesInDistrict){
-					ConstituencyManagementDataVO constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, consti.getId(), false);
+					ConstituencyManagementDataVO constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, consti.getId(), false,moduleType,categoryId,categoryType);
 					if(constituencyManagementDataVO != null)
 						constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 				}
@@ -1079,7 +1136,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					mandalsInConstituency = regionServiceDataImp.getTehsilsInAConstituency(regionId);
 					if(mandalsInConstituency != null){
 						for(SelectOptionVO subRegions:mandalsInConstituency){
-							ConstituencyManagementDataVO constituencyManagementDataVO = getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,subRegions.getId(),false);
+							ConstituencyManagementDataVO constituencyManagementDataVO = getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,subRegions.getId(),false,moduleType,categoryId,categoryType);
 							if(constituencyManagementDataVO != null)
 								constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 						}
@@ -1089,7 +1146,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					localBodysInConstituency = regionServiceDataImp.getLocalElectionBodiesInConstituency(regionId, IConstants.DELIMITATION_YEAR.toString());
 					if(localBodysInConstituency != null){
 						for(SelectOptionVO subRegions:localBodysInConstituency){
-							ConstituencyManagementDataVO constituencyManagementDataVO = getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,subRegions.getId(),false);
+							ConstituencyManagementDataVO constituencyManagementDataVO = getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,subRegions.getId(),false,moduleType,categoryId,categoryType);
 							if(constituencyManagementDataVO != null)
 								constituencyManagementRegionWiseOverviewVOList.add(constituencyManagementDataVO.getRegionWiseOverview());
 						}
@@ -1537,17 +1594,22 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public ConstituencyManagementDataVO getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(
-			Long userId, Long localBodyId, Boolean isScopeData) {
+			Long userId, Long localBodyId, Boolean isScopeData,String moduleType,Long categoryId,String categoryType) {
 
 		if(log.isDebugEnabled())
-        	log.debug("Getting Mandal And Sub Regions Influencing People Details ..");
+        	log.debug("Getting Mandal And Sub Regions Influencing People/Local Groups Details ..");
        
         ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
-		constituencyManagementDataVO.setDataCategory("INFLUENCING PEOPLE");
+		constituencyManagementDataVO.setDataCategory(moduleType);
 		Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap = null;
 		
 		//influencing people count in a entire District
-		List infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodys(userId, localBodyId);
+		List infPeopleCount = null;
+		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+		     infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodys(userId, localBodyId);
+		else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+			 infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInLocalBodys(userId, localBodyId, categoryId);
+			
 		LocalElectionBody localBody = localElectionBodyDAO.get(localBodyId);
 		
 		if(infPeopleCount != null && infPeopleCount.size() > 0){
@@ -1558,6 +1620,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setRegionType("MUNCIPALITY/CORPORATION");
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(localBody.getName());
+			regionWiseOverview.setRegionTitle(categoryType);
 			
 			//Villages wise influencing people details
 			List<SelectOptionVO> wardsInLocalBody = regionServiceDataImp.getWardsInALocalElectionBody(localBodyId);
@@ -1565,7 +1628,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(wardsInLocalBody,IConstants.WARD);
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
 			
-				List subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInWardsByLocalBody(userId, localBodyId);
+			List subRegionsInfPeopleCount = null;
+			if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInWardsByLocalBody(userId, localBodyId);
+			else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+				subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInWardsByLocalBodys(userId, localBodyId, categoryId);
+				
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
 				else
@@ -1591,17 +1659,22 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public ConstituencyManagementDataVO getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(
-			Long userId, Long mandalId, Boolean isScopeData) {
+			Long userId, Long mandalId, Boolean isScopeData,String moduleType,Long categoryId,String categoryType) {
 		
 		if(log.isDebugEnabled())
-        	log.debug("Getting Mandal And Sub Regions Influencing People Details ..");
+        	log.debug("Getting Mandal And Sub Regions Influencing People/Local Group Details ..");
        
         ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
-		constituencyManagementDataVO.setDataCategory("INFLUENCING PEOPLE");
+		constituencyManagementDataVO.setDataCategory(moduleType);
 		Map<Long,ConstituencyManagementSubRegionWiseOverviewVO> subRegionsDetailsMap = null;
 		
 		//influencing people count in a entire District
-		List infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsil(userId, mandalId);
+		List infPeopleCount = null;
+		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+		    infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInTehsil(userId, mandalId);
+		else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+			infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInTehsil(userId, mandalId, categoryId);
+		
 		Tehsil tehsil = tehsilDAO.get(mandalId);
 		
 		if(infPeopleCount != null && infPeopleCount.size() > 0){
@@ -1612,14 +1685,20 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			regionWiseOverview.setRegionType(IConstants.TEHSIL);
 			regionWiseOverview.setCountValue((Long)totalCount);
 			regionWiseOverview.setRegionName(tehsil.getTehsilName());
+			regionWiseOverview.setRegionTitle(categoryType);
 			
 			//Villages wise influencing people details
 			List<SelectOptionVO> villagesInMandal = regionServiceDataImp.getHamletsInATehsil(mandalId);
 			if(villagesInMandal != null && villagesInMandal.size() > 0)
 			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(villagesInMandal,IConstants.VILLAGE);
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
+			List subRegionsInfPeopleCount = null;
 			
-				List subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInVillagesByTehsil(userId, mandalId);
+			if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInVillagesByTehsil(userId, mandalId);
+			else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+				subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInVillagesByTehsil(userId, mandalId, categoryId);
+				
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
 				else
@@ -1637,7 +1716,100 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return constituencyManagementDataVO;
 	}
-	 
+
 	
+    /*
+     * (non-Javadoc)
+     * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getLocalUserGroupOverviewDetails(java.lang.Long)
+     * Local User Groups Regionwise and Scopewise Complete Overview Retrieval For A User
+     */
+	@SuppressWarnings("unchecked")
+	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId) {
+		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
+		List<ConstituencyManagementRegionWiseOverviewVO> localGroupsList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
+		if(log.isDebugEnabled())
+			log.debug(" Getting Complete Overview Details Of Influencing People Local User Groups ..");
+		
+		try{
+			Registration user = registrationDAO.get(userId);
+			String accessValue = user.getAccessValue();
+			List<SelectOptionVO> categorysList = getLocalGroupCategoriesForAUser(userId);
+			if(categorysList == null || categorysList.size() == 0)
+				return constituencyManagementDataVO;
+			
+				
+			//State Level Access User
+			if(user.getAccessType().equals(IConstants.STATE)){
+				Long stateId = new Long(accessValue);
+				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
+				for(int i=1;i<categorysList.size();i++){
+					localGroupsList.add(getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,false,IConstants.LOCAL_USER_GROUPS,categorysList.get(i).getId(),categorysList.get(i).getName()).getRegionWiseOverview());
+				}
+			}
+			//District Level Access User
+			else if(user.getAccessType().equals(IConstants.DISTRICT)){
+				Long districtId = new Long(accessValue);
+				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
+				for(int i=1;i<categorysList.size();i++){
+					localGroupsList.add(getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,false,IConstants.LOCAL_USER_GROUPS,categorysList.get(i).getId(),categorysList.get(i).getName()).getRegionWiseOverview());
+				}
+			}
+			//MP Access User
+			else if(user.getAccessType().equals(IConstants.MP)){
+				
+			}
+			//MLA Access User
+			else if(user.getAccessType().equals(IConstants.MLA)){
+				Long constituencyId = new Long(accessValue);
+				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
+				for(int i=1;i<categorysList.size();i++){
+					localGroupsList.add(getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, false,IConstants.LOCAL_USER_GROUPS,categorysList.get(i).getId(),categorysList.get(i).getName()).getRegionWiseOverview());
+				}
+			}
+			
+			//Add Other Category Results
+			constituencyManagementDataVO.setCategoryListOverview(localGroupsList);
+			
+			
+		}catch(Exception ex){
+			log.error("Exception Raised In Local User Groups Retrieval :" + ex);
+			ex.printStackTrace();
+			constituencyManagementDataVO.setExceptionEncountered(ex);
+			constituencyManagementDataVO.setResultCode(ResultCodeMapper.FAILURE);
+			constituencyManagementDataVO.setExceptionMsg(ex.getMessage());
+		}
+			
+	 return constituencyManagementDataVO;
+	}
+	 
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getLocalUserGroupByInfluenceScope(java.lang.Long)
+	 * Local User Groups Retrieval By Scope Wise
+	 */
+	public List<ConstituencyManagementInfluenceScopeOverviewVO> getLocalUserGroupByInfluenceScope(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getLocalGroupCategoriesForAUser(Long userId){
+		
+		List<SelectOptionVO> groupCategoriesList = null;
+		
+		List groupCategorys = personalUserGroupDAO.getDistinctLocalGroupCategorysForAUser(userId);
+		
+		if(groupCategorys != null && groupCategorys.size() > 0){
+			groupCategoriesList = new ArrayList<SelectOptionVO>();
+			Iterator lstItr = groupCategorys.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				SelectOptionVO option = new SelectOptionVO((Long)values[0],(String)values[1]);
+				
+				groupCategoriesList.add(option);
+			}
+		}
+	 return groupCategoriesList;
+	}
 }
 
