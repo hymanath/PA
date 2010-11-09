@@ -51,6 +51,9 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List getSubGroupsCompleteDetailsForMyGroup(Long groupId,Long userId);
 	
 	@SuppressWarnings("unchecked")
+	public List getCompleteUserGroupDetailsForAGroup(Long groupId);
+	
+	@SuppressWarnings("unchecked")
 	public List getGroupsByName(Long userId, String groupName);
 	
 	public List findAllGroupCategoriesInfoAndCountsOfLocationsByLocation(String countLocationInfo, Long userId, 
@@ -59,5 +62,58 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserIdByRegion(Long userId, Long categoryId, String regionInfo);
 	
 	public List<PersonalUserGroup> findGroupsInfoByCategoryAndUserId(Long userId, Long categoryId);
+	
+	// LOCAL USER GROUPS
+	
+	//for state
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInState(Long userId,Long stateId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInDistrictsByState(Long userId,Long stateId,Long categoryId);
+	
+	//for district
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInDistrict(Long userId,Long districtId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInConstituencysByDistrict(Long userId,Long districtId,Long categoryId);
+	
+	//for constituency
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInConstituency(Long userId,Long constituencyId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInTehsilsByConstituency(Long userId,Long constituencyId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInLocalBodysByConstituency(Long userId,Long constituencyId,Long categoryId);
+	
+	//for tehsil
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInTehsil(Long userId,Long tehsilId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInVillagesByTehsil(Long userId,Long tehsilId,Long categoryId);
+	
+	//for local bodys
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInLocalBodys(Long userId,Long localBodyId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInWardsByLocalBodys(Long userId,Long localBodyId,Long categoryId);
+	
+	//for village
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInVillage(Long userId,Long villageId,Long categoryId);
+		
+	//for ward
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInWard(Long userId,Long wardId,Long categoryId);
+	
+	//By Scope
+	@SuppressWarnings("unchecked")
+	public List getTotalLocalUserGroupsByScope(Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalLocalUserGroupsByScope(Long userId,String scope);
+	
+	@SuppressWarnings("unchecked")
+	public List getDistinctLocalGroupCategorysForAUser(Long userId);
+	
 	
 }
