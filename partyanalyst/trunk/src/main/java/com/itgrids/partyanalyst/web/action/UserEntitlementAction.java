@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.servlet.ServletContext;
@@ -13,7 +14,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import antlr.collections.List;
+
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IUserEntitlementService;
 import com.opensymphony.xwork2.Action;
@@ -40,7 +45,35 @@ ServletRequestAware, ServletContextAware{
 	private EntitlementVO allRegisteredUsersData;
 	private EntitlementVO entitlements;
 	private EntitlementVO allEntitlements;
-		
+	private EntitlementVO allGroups;
+	private EntitlementVO allUserGroups;
+	private NavigationVO navigationVO;
+	
+	
+	public NavigationVO getNavigationVO() {
+		return navigationVO;
+	}
+
+	public void setNavigationVO(NavigationVO navigationVO) {
+		this.navigationVO = navigationVO;
+	}
+
+	public EntitlementVO getAllUserGroups() {
+		return allUserGroups;
+	}
+
+	public void setAllUserGroups(EntitlementVO allUserGroups) {
+		this.allUserGroups = allUserGroups;
+	}
+
+	public EntitlementVO getAllGroups() {
+		return allGroups;
+	}
+
+	public void setAllGroups(EntitlementVO allGroups) {
+		this.allGroups = allGroups;
+	}
+
 	public EntitlementVO getAllEntitlements() {
 		return allEntitlements;
 	}
@@ -143,8 +176,10 @@ ServletRequestAware, ServletContextAware{
 
 	public String execute(){
 
-		allRegisteredUsersData = registrationService.getAllRegisterdUsers();	
+		allRegisteredUsersData = registrationService.getAllRegisterdUsers();
 		allEntitlements = userEntitlementService.getAllEntitlements();
+		allGroups = userEntitlementService.getAllGroups();
+		allUserGroups = userEntitlementService.getAllUserGroups();
 		return Action.SUCCESS;
 	}
 	
@@ -180,26 +215,50 @@ ServletRequestAware, ServletContextAware{
 		else if(jObj.getString("type").equalsIgnoreCase("getAllEntitlements")){
 			entitlements = userEntitlementService.getAllEntitlements();
 		}
-		
-		else if(jObj.getString("type").equalsIgnoreCase("getAllGroups")){
-			entitlements = userEntitlementService.getAllGroups();
-		}
-		
+				
 		else if(jObj.getString("type").equalsIgnoreCase("getAllUserGroups")){
 			entitlements = userEntitlementService.getAllUserGroups();
 		}
 		
-		else if(jObj.getString("type").equalsIgnoreCase("saveUserGroupsRelation")){
+		else if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementGroups")){
+			entitlements = userEntitlementService.getAllGroups();
+		}
 		
+		else if(jObj.getString("type").equalsIgnoreCase("saveUserGroupsRelation")){		
 			entitlements = userEntitlementService.saveUserGroupsRelation(jObj.getLong("userId"),jObj.getString("groupIds"));
 		}
 		
 		else if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementsForAUserGroup")){
-			entitlements = userEntitlementService.getAllEntitlementsForAUserGroup(jObj.getLong("userGroupId"));
+			entitlements = userEntitlementService.getAllEntitlementsForAUserGroup(jObj.getLong("userGroupId"),jObj.getString("name"));
 		}
 		
+		else if(jObj.getString("type").equalsIgnoreCase("saveRelationBetweenEntitlementGroupAndEntitlement")){		
+			entitlements = userEntitlementService.saveRelationBetweenEntitlementGroupAndEntitlement(jObj.getLong("groupId"),jObj.getString("entitlementIds"));
+		}
+		
+		else if(jObj.getString("type").equalsIgnoreCase("saveRelationBetweenEntitlementsGroupsAndUserGroupId")){
+			entitlements = userEntitlementService.saveRelationBetweenEntitlementsGroupsAndUserGroupId(jObj.getLong("userGroupId"),jObj.getString("entitlementGroupIds"));
+		}
 		return SUCCESS;
 	}
 	
-	
+	public String entitlementsUserAction(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	   if(jObj.getString("type").equalsIgnoreCase("getAllGroups")){		
+			navigationVO = userEntitlementService.getAllGroupsBasedOnUserId(new Long(jObj.getLong("selectedUserId")));
+		}
+	   else if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementsBasedOnEntitlementGroup")){		
+			navigationVO = userEntitlementService.getAllEntitlementsBasedOnEntitlementGroup(new Long(jObj.getLong("selectedEntitlementGroupId")));
+	   }
+	   if(jObj.getString("type").equalsIgnoreCase("getAllEntitlementGroupsBasedOnUserGroup")){		
+			navigationVO = userEntitlementService.getAllEntitlementsGroupsBasedOnUserGroupId(new Long(jObj.getLong("selectedUserGroupId")));
+		}
+	return SUCCESS;
+}
 }
