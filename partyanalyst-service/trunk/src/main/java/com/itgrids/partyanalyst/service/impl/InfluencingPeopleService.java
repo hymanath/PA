@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.StaticUserDesignation;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -1975,19 +1977,45 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				groupDetails.setGroupLocationId(locationDetails.getId());
 				groupDetails.setGroupLocation(locationDetails.getName());
 				
-				//Members count in a group
-				Long totMembersCount = 0L;
-				List memCount = staticUserGroupDAO.getGroupMembersCountForAGroup((Long)values[0]);
-				if(memCount != null){
-					Object count = (Object)memCount.get(0);
-					totMembersCount = (Long)count;
-				}
-				groupDetails.setGroupMembersCount(totMembersCount);
-				
+				List<UserGroupMembersVO> groupMemberDetails = getUserGroupMemberDetailsForAGroup((Long)values[0]);
+				groupDetails.setGroupMembersCount(new Long(groupMemberDetails.size()));
+				groupDetails.setGroupMemberDetails(groupMemberDetails);
+								
 				localUserGroupDetailsVO.add(groupDetails);
 				
 			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersVO> getUserGroupMemberDetailsForAGroup(Long groupId){
+		
+		//Members count in a group
+		List<UserGroupMembersVO> userGroupMembers = new ArrayList<UserGroupMembersVO>();
+		List memberDetails = staticUserGroupDAO.getMemberDetailsOfLocalUserGroup(groupId);
+		
+		if(memberDetails != null){
+			Iterator lstItr = memberDetails.listIterator();
+			while(lstItr.hasNext()){
+				
+				UserGroupMembersVO groupMember = new UserGroupMembersVO();
+				Object[] values = (Object[])lstItr.next();
+				
+				groupMember.setGroupMemberId((Long)values[0]);
+				groupMember.setName((String)values[1]);
+				groupMember.setMobileNumber((String)values[2]);
+				groupMember.setEmailId((String)values[3]);
+				groupMember.setAddress((String)values[4]);
+				groupMember.setLocation((String)values[5]);
+				
+				StaticUserDesignation userDesignation = (StaticUserDesignation)values[6];
+				if(userDesignation != null)
+					groupMember.setDesignation(userDesignation.getDesignationType());
+				
+				userGroupMembers.add(groupMember);
+			}
+		}
+	 return userGroupMembers;
 	}
 }
 
