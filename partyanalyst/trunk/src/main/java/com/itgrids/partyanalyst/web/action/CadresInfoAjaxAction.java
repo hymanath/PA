@@ -447,6 +447,13 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 				 if(keys.length()>0)
 					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToDistrictByDistrict(keys));
 					 //zeroCadresRegion1=cadreManagementService.getStateToDistrictByDistrict(keys);
+			}else if(region.equalsIgnoreCase("CONSTITUENCY"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreConstituencies();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToConstituencyByConstituency(keys));
+					 //zeroCadresRegion1=cadreManagementService.getStateToDistrictByDistrict(keys);
 			}else if(region.equalsIgnoreCase("MANDAL"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreMandals();
@@ -454,14 +461,35 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 				 if(keys.length()>0)
 					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToMandalByTehsil(keys));
 					 //zeroCadresRegion1=cadreManagementService.getStateToMandalByTehsil(keys);
-			}else if(region.equalsIgnoreCase("VILLAGE"))
+			}else if(region.equalsIgnoreCase("MUNICIPAL/CORP/GMC"))
 			{
-				 zeroLevelCadres=userCadresInfoVo.getZeroCadreVillages();
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreLocalElectionBodies();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToLocalElectionBodyByLEB(keys));
+					 //zeroCadresRegion1=cadreManagementService.getStateToMandalByTehsil(keys);
+			}else if(region.equalsIgnoreCase("WARDS"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreWards();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToWardByWard(keys));
+					 //zeroCadresRegion1=cadreManagementService.getStateToDistrictByDistrict(keys);
+			}
+			
+			else if(region.equalsIgnoreCase("VILLAGE"))
+			{
+				zeroLevelCadres=userCadresInfoVo.getZeroCadreHamlets();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToHamletByHamlets(keys));
+				
+				 /*zeroLevelCadres=userCadresInfoVo.getZeroCadreVillages();
 				 String keys = getIDs(zeroLevelCadres);
 				 if(keys.length()>0)
 					 cadreDetailsInfoVO.setZeroCadresRegion1(cadreManagementService.getStateToRevenueVillageByRV(keys));
 					 //zeroCadresRegion1=cadreManagementService.getStateToRevenueVillageByRV(keys);
-			}else if(region.equalsIgnoreCase("HAMLET"))
+*/			}else if(region.equalsIgnoreCase("HAMLET"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreHamlets();
 				 String keys = getIDs(zeroLevelCadres);
