@@ -7,6 +7,9 @@ public class StateToHamletVO extends ResultStatus{
 	private SelectOptionVO mandal;
 	private SelectOptionVO revenueVillage;
 	private SelectOptionVO hamlet;
+	private SelectOptionVO localElectionBody;
+	private SelectOptionVO ward;
+	
 	public SelectOptionVO getState() {
 		return state;
 	}
@@ -43,4 +46,18 @@ public class StateToHamletVO extends ResultStatus{
 	public void setHamlet(SelectOptionVO hamlet) {
 		this.hamlet = hamlet;
 	}
+	public SelectOptionVO getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(SelectOptionVO localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	public SelectOptionVO getWard() {
+		return ward;
+	}
+	public void setWard(SelectOptionVO ward) {
+		this.ward = ward;
+	}
+	
+	
 }
