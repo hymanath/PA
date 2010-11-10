@@ -118,4 +118,12 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 				"and model.personalUserGroup.staticLocalGroup.staticLocalGroupId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getMemberDetailsOfLocalUserGroup(Long localGroupId) {
+		
+		return getHibernateTemplate().find("select model.staticUser.staticUserId,model.staticUser.name,model.staticUser.mobileNumber,"+
+				"model.staticUser.emailId,model.staticUser.address,model.staticUser.location,model.staticUser.staticUserDesignation "+
+				"from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ?",localGroupId);
+	}
+
 }
