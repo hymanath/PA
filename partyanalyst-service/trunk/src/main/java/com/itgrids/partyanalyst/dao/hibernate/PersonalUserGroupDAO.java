@@ -324,92 +324,92 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 
 	@SuppressWarnings("unchecked")
 	public List getLocalGroupDetailsInConstituency(Long userId,
-			Long constituencyId) {
-		Object[] params = {userId,constituencyId};
+			Long constituencyId,Long categoryId) {
+		Object[] params = {userId,categoryId,constituencyId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.constituency.constituencyId,model.localGroupRegion.constituency.name from PersonalUserGroup "+
-				"model where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.constituency is not null and "+
+				"model where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.constituency is not null and "+
 				"model.localGroupRegion.constituency.constituencyId = ? order by model.localGroupRegion.district.districtId",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInDistrict(Long userId, Long districtId) {
+	public List getLocalGroupDetailsInDistrict(Long userId, Long districtId,Long categoryId) {
 		
-		Object[] params = {userId,districtId};
+		Object[] params = {userId,categoryId,districtId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.district.districtId,model.localGroupRegion.district.districtName from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.district is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.district is not null and "+
 				"model.localGroupRegion.district.districtId = ? order by model.localGroupRegion.state.stateId",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
 	public List getLocalGroupDetailsInLocalElectionBody(Long userId,
-			Long localBodyId) {
+			Long localBodyId,Long categoryId) {
 	
-		Object[] params = {userId,localBodyId};
+		Object[] params = {userId,categoryId,localBodyId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.localBody.localElectionBodyId,model.localGroupRegion.localBody.name from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.localBody is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.localBody is not null and "+
 				"model.localGroupRegion.localBody.localElectionBodyId = ? order by model.localGroupRegion.constituency.constituencyId",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInState(Long userId, Long stateId) {
+	public List getLocalGroupDetailsInState(Long userId, Long stateId,Long categoryId) {
 		
-		Object[] params = {userId,stateId};
+		Object[] params = {userId,categoryId,stateId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.state.stateId,model.localGroupRegion.state.stateName from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.state is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.state is not null and "+
 				"model.localGroupRegion.state.stateId = ?",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInTehsil(Long userId, Long tehsilId) {
+	public List getLocalGroupDetailsInTehsil(Long userId, Long tehsilId,Long categoryId) {
 		
-		Object[] params = {userId,tehsilId};
+		Object[] params = {userId,categoryId,tehsilId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.tehsil.tehsilId,model.localGroupRegion.tehsil.tehsilName from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.tehsil is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.tehsil is not null and "+
 				"model.localGroupRegion.tehsil.tehsilId = ? order by model.localGroupRegion.constituency.constituencyId",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInVillage(Long userId, Long hamletId) {
+	public List getLocalGroupDetailsInVillage(Long userId, Long hamletId,Long categoryId) {
 		
-		Object[] params = {userId,hamletId};
+		Object[] params = {userId,categoryId,hamletId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.hamlet.hamletId,model.localGroupRegion.hamlet.hamletName from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.hamlet is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.hamlet is not null and "+
 				"model.localGroupRegion.hamlet.hamletId = ? order by model.localGroupRegion.tehsil.tehsilId",params);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInWard(Long userId, Long wardId) {
+	public List getLocalGroupDetailsInWard(Long userId, Long wardId,Long categoryId) {
 		
-		Object[] params = {userId,wardId};
+		Object[] params = {userId,categoryId,wardId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
 				"model.localGroupRegion.ward.constituencyId,model.localGroupRegion.ward.name from PersonalUserGroup model "+
-				"where model.createdUserId.registrationId = ? and "+
-				"model.localGroupRegion is not null and model.localGroupRegion.ward is not null and "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.ward is not null and "+
 				"model.localGroupRegion.ward.constituencyId = ? order by model.localGroupRegion.localBody.localElectionBodyId",params);
 	}
 	
