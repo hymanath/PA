@@ -287,6 +287,7 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
 		<property name="constituencyManagementService" ref="constituencyManagementService" />
 		<property name="userGroupService" ref="userGroupService" />
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
 	</bean>
 	
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			
