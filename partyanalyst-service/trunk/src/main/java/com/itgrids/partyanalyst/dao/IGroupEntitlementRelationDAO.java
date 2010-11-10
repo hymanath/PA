@@ -12,4 +12,6 @@ public interface IGroupEntitlementRelationDAO extends GenericDao<GroupEntitlemen
 	public List<Entitlement> getAllEntitlementsForAGroupByGroupId(Long groupId);
 	
 	public List<Object> getAllEntitlementsBasedOnUserGroupId(Long groupId);
+	
+	public Integer deleteAllRelations(Long groupId);
 }

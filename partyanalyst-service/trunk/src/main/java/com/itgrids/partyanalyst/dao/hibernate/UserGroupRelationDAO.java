@@ -40,5 +40,17 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		return queryObject.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Integer deleteAllUser(Long userId) {
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" delete from UserGroupRelation model ");
+		query.append(" where model.user.registrationId = ? ");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, userId);
+		return queryObject.executeUpdate();
+		
+	}
 
 }

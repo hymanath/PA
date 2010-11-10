@@ -19,4 +19,6 @@ public interface IUserGroupRelationDAO extends
 	public List<UserGroupRelation> findByUserId(Long userId);
 	
 	public List checkTheRelationBetweenUserAndGroup(Long userId);
+	
+	public Integer deleteAllUser(Long userId);
 }

@@ -130,6 +130,12 @@ public class RegistrationService implements IRegistrationService{
 		List<SelectOptionVO> listOfUser;
 		try{
 			listOfUser = new ArrayList<SelectOptionVO>(0);
+			
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(0l);
+			selectOption.setName("select a user");
+			listOfUser.add(selectOption);
+			
 			List result =  registrationDAO.getAllRegisteredUsers();
 			for(int i=0;i<result.size();i++){
 				Object[] registration = (Object[])result.get(i); 

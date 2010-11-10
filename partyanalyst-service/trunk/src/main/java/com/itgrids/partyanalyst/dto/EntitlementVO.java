@@ -15,8 +15,18 @@ public class EntitlementVO implements Serializable {
 	private List<SelectOptionVO> listOfUsers;
 	private String message;
 	private String name;
+	private Long userId;
 	private List<SelectOptionVO> listOfEntitlements;
 	
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public String getName() {
 		return name;
 	}

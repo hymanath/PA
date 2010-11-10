@@ -17,12 +17,14 @@ import com.itgrids.partyanalyst.dao.IUserGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupsDAO;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Entitlement;
 import com.itgrids.partyanalyst.model.GroupEntitlement;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
+import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.service.IUserEntitlementService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -85,7 +87,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 	}
 	
 	/**
-	 * This method can be used to get all the groups.
+	 * This method can be used to get all the entitlement groups.
 	 * 
 	 * @author Ravi Kiran.Y
 	 * @serialData 04-11-10
@@ -96,7 +98,11 @@ public class UserEntitlementService implements IUserEntitlementService {
 		ResultStatus resultStatus = new ResultStatus();
 		List<SelectOptionVO> setOfGroups;
 		try{
-			setOfGroups = new ArrayList<SelectOptionVO>(0);			
+			setOfGroups = new ArrayList<SelectOptionVO>(0);	
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(0l);
+			selectOption.setName("select a user group");
+			setOfGroups.add(selectOption);
 			List result = groupEntitlementDAO.getAllGroups();
 			if(result!=null){
 				if(result.size()!=0){
@@ -357,7 +363,13 @@ public class UserEntitlementService implements IUserEntitlementService {
 		ResultStatus resultStatus = new ResultStatus();
 		List<SelectOptionVO> setOfGroups;
 		try{
-			setOfGroups = new ArrayList<SelectOptionVO>(0);			
+			setOfGroups = new ArrayList<SelectOptionVO>(0);	
+			
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(0l);
+			selectOption.setName("select a user group");
+			setOfGroups.add(selectOption);
+			
 			List result = userGroupsDAO.getAllUserGroups();
 			if(result!=null){
 				if(result.size()!=0){
@@ -400,6 +412,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 		List<String> elements = null;
 		Map<Long,Long> userIdsAndGroupIds = new HashMap<Long,Long>(0);
 		try{
+			userGroupRelationDAO.deleteAllUser(userId);
 			if(groupIds.length()!=0){
 				elements = new ArrayList<String>(new HashSet<String>(Arrays.asList(new String(groupIds).split(","))));	
 				List result = userGroupRelationDAO.checkTheRelationBetweenUserAndGroup(userId);
@@ -452,7 +465,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 	 * @param groupId
 	 * @return EntitlementVO 
 	 */
-	public EntitlementVO getAllEntitlementsForAUserGroup(Long userGroupId){
+	public EntitlementVO getAllEntitlementsForAUserGroup(Long userGroupId,String name){
 		EntitlementVO entitlementVO = new EntitlementVO();
 		ResultStatus resultStatus = new ResultStatus();
 		List<SelectOptionVO> seleList = new ArrayList<SelectOptionVO>(); 
@@ -471,6 +484,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			}else{
 				entitlementVO.setMessage("Data not available");
 			}
+			entitlementVO.setName(name);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.warn("There was an error in fetching EntitlementGroups data");
@@ -483,6 +497,288 @@ public class UserEntitlementService implements IUserEntitlementService {
 		return entitlementVO;
 	}
 	
+	/**
+	 * This method can be used to get all the groups and checks which user
+	 * is present in the user group.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @serialData 09-11-10
+	 * @return NavigationVO 
+	 */
+	public NavigationVO getAllGroupsBasedOnUserId(Long userId){
+		
+		NavigationVO navigationVO= new NavigationVO();		
+		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
+		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		ResultStatus resultStatus = new ResultStatus();
+	
+		try{			
+			List result = userGroupsDAO.getAllUserGroups();
+			if(result!=null){
+				if(result.size()!=0){
+					for(int i=0;i<result.size();i++){
+						Object[] parms = (Object[])result.get(i); 
+						EntitlementVO eVo = new EntitlementVO();
+						eVo.setUserId((Long)parms[0]);
+						eVo.setName((String)parms[1]);
+						eVo.setMessage(IConstants.NOT_AVAILABLE);
+						allGroups.put((Long)parms[0],eVo);						
+					}
+				}
+			}
+			
+			List list2 = userGroupRelationDAO.checkTheRelationBetweenUserAndGroup(userId);
+			if(list2!=null){
+				if(list2.size()!=0){
+					for(int i=0;i<list2.size();i++){
+						Object[] parms = (Object[])list2.get(i);
+						Long id = (Long)parms[0];
+						EntitlementVO eVo = new EntitlementVO();
+						if(allGroups.containsKey(id)){
+							eVo = allGroups.get(id);
+							allGroups.remove(id);						
+							eVo.setUserId(id);
+							eVo.setName(eVo.getName());
+							eVo.setMessage(IConstants.AVAILABLE);
+							allGroups.put(id,eVo);								
+						}						
+					}
+				}
+			}
+			
+			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
+				entitlementVO.add(res.getValue());
+			}
+			
+			navigationVO.setEntitlementVO(entitlementVO);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			navigationVO.setResultStatus(resultStatus);
+		}
+		return navigationVO;
+	}
+	
+
+	
+	/**
+	 * This method can be used to get all the entitlements based on the entitlement group.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @serialData 09-11-10
+	 * @return NavigationVO 
+	 */
+	public NavigationVO getAllEntitlementsBasedOnEntitlementGroup(Long groupId){
+		
+		NavigationVO navigationVO= new NavigationVO();		
+		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
+		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		ResultStatus resultStatus = new ResultStatus();
+	
+		try{			
+			List result = entitlementDAO.getAllEntitlements();
+			if(result!=null){
+				if(result.size()!=0){
+					for(int i=0;i<result.size();i++){
+						Object[] parms = (Object[])result.get(i); 
+						EntitlementVO eVo = new EntitlementVO();
+						eVo.setUserId((Long)parms[0]);
+						eVo.setName((String)parms[1]);
+						eVo.setMessage(IConstants.NOT_AVAILABLE);
+						allGroups.put((Long)parms[0],eVo);						
+					}
+				}
+			}
+			
+			List list2 = groupEntitlementRelationDAO.getAllEntitlementsForAGroupByGroupId(groupId);
+			if(list2!=null){
+				if(list2.size()!=0){
+					for(int i=0;i<list2.size();i++){
+						Object[] parms = (Object[])list2.get(i);
+						Long id = (Long)parms[0];
+						EntitlementVO eVo = new EntitlementVO();
+						if(allGroups.containsKey(id)){
+							eVo = allGroups.get(id);
+							allGroups.remove(id);						
+							eVo.setUserId(id);
+							eVo.setName(eVo.getName());
+							eVo.setMessage(IConstants.AVAILABLE);
+							allGroups.put(id,eVo);								
+						}						
+					}
+				}
+			}
+			
+			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
+				entitlementVO.add(res.getValue());
+			}
+			
+			navigationVO.setEntitlementVO(entitlementVO);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			navigationVO.setResultStatus(resultStatus);
+		}
+		return navigationVO;
+	}
+	
+	/**
+	 * This method can be used to save the relation between the user and the user group.
+	 * 	
+	 * @author Ravi Kiran.Y
+	 * @serialData 09-11-10
+	 * @param userId
+	 * @param groupId
+	 * @return EntitlementVO 
+	 */
+	public EntitlementVO saveRelationBetweenEntitlementGroupAndEntitlement(Long groupId,String entitlementIds){
+		EntitlementVO entitlementVO = new EntitlementVO();
+		ResultStatus resultStatus = new ResultStatus();
+		List<String> elements = null;		
+		try{
+			groupEntitlementRelationDAO.deleteAllRelations(groupId);
+			if(entitlementIds.length()!=0){
+				elements = new ArrayList<String>(new HashSet<String>(Arrays.asList(new String(entitlementIds).split(","))));	
+							    
+				for(int i=0;i<elements.size();i++){
+					Long id = new Long(elements.get(i));
+						GroupEntitlementRelation relation = new GroupEntitlementRelation();
+						relation.setEntitlement(entitlementDAO.get(id));
+						relation.setGroupEntitlement(groupEntitlementDAO.get(groupId));
+						relation = groupEntitlementRelationDAO.save(relation);	
+					}
+				}	
+		entitlementVO.setMessage(IConstants.SUCCESSFULLY_SAVED);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);			
+			entitlementVO.setResultStatus(resultStatus);
+		}finally{
+		entitlementIds = null;
+			groupId = null;
+			elements = null;
+			System.gc();
+		}
+		return entitlementVO;
+	}
 	
 	
+	/**
+	 * This method can be used to get all the entitlements based on the entitlement group.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @serialData 09-11-10
+	 * @return NavigationVO 
+	 */
+	public NavigationVO getAllEntitlementsGroupsBasedOnUserGroupId(Long userGroupId){
+		
+		NavigationVO navigationVO= new NavigationVO();		
+		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
+		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		ResultStatus resultStatus = new ResultStatus();
+	
+		try{			
+			List result = groupEntitlementDAO.getAllGroups();
+			if(result!=null){
+				if(result.size()!=0){
+					for(int i=0;i<result.size();i++){
+						Object[] parms = (Object[])result.get(i); 
+						EntitlementVO eVo = new EntitlementVO();
+						eVo.setUserId((Long)parms[0]);
+						eVo.setName((String)parms[1]);
+						eVo.setMessage(IConstants.NOT_AVAILABLE);
+						allGroups.put((Long)parms[0],eVo);						
+					}
+				}
+			}
+			
+			List list2 = userGroupEntitlementDAO.getAllEntitlementGroupsBasedOnUserGroupId(userGroupId);
+			if(list2!=null){
+				if(list2.size()!=0){
+					for(int i=0;i<list2.size();i++){
+						Object[] parms = (Object[])list2.get(i);
+						Long id = (Long)parms[0];
+						EntitlementVO eVo = new EntitlementVO();
+						if(allGroups.containsKey(id)){
+							eVo = allGroups.get(id);
+							allGroups.remove(id);						
+							eVo.setUserId(id);
+							eVo.setName(eVo.getName());
+							eVo.setMessage(IConstants.AVAILABLE);
+							allGroups.put(id,eVo);								
+						}						
+					}
+				}
+			}
+			
+			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
+				entitlementVO.add(res.getValue());
+			}
+			
+			navigationVO.setEntitlementVO(entitlementVO);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			navigationVO.setResultStatus(resultStatus);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			navigationVO.setResultStatus(resultStatus);
+		}
+		return navigationVO;
+	}
+	
+	
+
+	/**
+	 * This method can be used to save the relation between the user and the user group.
+	 * 	
+	 * @author Ravi Kiran.Y
+	 * @serialData 09-11-10
+	 * @param userId
+	 * @param groupId
+	 * @return EntitlementVO 
+	 */
+	public EntitlementVO saveRelationBetweenEntitlementsGroupsAndUserGroupId(Long userGroupId,String entitlementGroupIds){
+		EntitlementVO entitlementVO = new EntitlementVO();
+		ResultStatus resultStatus = new ResultStatus();
+		List<String> elements = null;		
+		try{
+			userGroupEntitlementDAO.deleteAllRelations(userGroupId);
+			if(entitlementGroupIds.length()!=0){
+				elements = new ArrayList<String>(new HashSet<String>(Arrays.asList(new String(entitlementGroupIds).split(","))));	
+							    
+				for(int i=0;i<elements.size();i++){
+					Long id = new Long(elements.get(i));
+					    UserGroupEntitlement relation = new UserGroupEntitlement();
+						relation.setGroupEntitlement(groupEntitlementDAO.get(id));
+						relation.setUserGroup(userGroupsDAO.get(userGroupId));
+						relation = userGroupEntitlementDAO.save(relation);	
+					}
+				}	
+		entitlementVO.setMessage(IConstants.SUCCESSFULLY_SAVED);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);			
+			entitlementVO.setResultStatus(resultStatus);
+		}finally{
+			userGroupId = null;
+			entitlementGroupIds = null;
+			elements = null;
+			System.gc();
+		}
+		return entitlementVO;
+	}
 }
