@@ -116,19 +116,19 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List getDistinctLocalGroupCategorysForAUser(Long userId);
 	
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInState(Long userId,Long stateId);
+	public List getLocalGroupDetailsInState(Long userId,Long stateId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInDistrict(Long userId,Long districtId);
+	public List getLocalGroupDetailsInDistrict(Long userId,Long districtId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInConstituency(Long userId,Long constituencyId);
+	public List getLocalGroupDetailsInConstituency(Long userId,Long constituencyId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInLocalElectionBody(Long userId,Long localBodyId);
+	public List getLocalGroupDetailsInLocalElectionBody(Long userId,Long localBodyId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInTehsil(Long userId,Long tehsilId);
+	public List getLocalGroupDetailsInTehsil(Long userId,Long tehsilId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInVillage(Long userId,Long hamletId);
+	public List getLocalGroupDetailsInVillage(Long userId,Long hamletId,Long categoryId);
 	@SuppressWarnings("unchecked")
-	public List getLocalGroupDetailsInWard(Long userId,Long wardId);
+	public List getLocalGroupDetailsInWard(Long userId,Long wardId,Long categoryId);
 	
 	
 	
