@@ -23,7 +23,7 @@
 			font-weight:bold;
 			padding-right:10px;
 		}	
-		#entitlementNameID
+		.headingID
 		{
 			font-weight:bold;		
 		}
@@ -83,10 +83,6 @@
 						{
 							showEntitlementResult(results);							
 						}	
-						else if(jsObj.task == "getAllUserGroups")
-						{
-							showAllGroups(results);							
-						}
 						else if(jsObj.task == "getAllEntitlementsForAUserGroup")
 						{
 							showCompleteResultsOfAGroup(results);					
@@ -95,6 +91,30 @@
 						{
 							showSaveUserGroupsRelation(results);					
 						}	
+						else if(jsObj.task == "getAllGroups")
+						{
+							showAllCommonGroups(results);						
+						}
+						else if(jsObj.task == "getAllUserGroups")
+						{						
+							showAllUserGroups(results);	
+						}
+						else if(jsObj.task == "getAllEntitlementGroups")
+						{						
+							showAllEntitlementGroups(results);	
+						}	
+						else if(jsObj.task == "getAllEntitlementGroupsBasedOnUserGroup")
+						{						
+							getAllEntitlementGroupsBasedOnUserGroup(results);	
+						}
+						else if(jsObj.task == "getAllEntitlementsBasedOnEntitlementGroup")
+						{						
+							getAllEntitlementsBasedOnEntitlementGroup(results);	
+						}
+						else if(jsObj.task == "getEntitlements")
+						{						
+							showEntitlements(results);	
+						}
 				}catch (e) {   		
 				   	alert("Invalid JSON result" + e);   
 				}  
@@ -129,7 +149,13 @@
 			var url = "<%=request.getContextPath()%>/entitlementUserAction.action?"+rparam;	
 			callAjax(jsObj,url);
 		}else{
-			alert("please enter group name");
+			var text = document.getElementById("groupAvailabilityID");
+			var str='';
+			text.innerHTML = str;
+			
+			var str2='';
+			str2+='<b style="color:red">please enter group name';
+			text.innerHTML = str2;
 		}		
 	}
 	
@@ -144,7 +170,7 @@
 		<td>		
 				<div id="managingGroupsMainDiv">
 				<fieldset class="f2">
-					<legend class="l2">Create Group</legend>
+					<legend class="l2">Create An Entitlement Group</legend>
 						<table>
 							<tr>
 								<td>
@@ -197,7 +223,7 @@
 		<td>
 			<div id="managingEntitlementMainDiv">
 			<fieldset class="f1">
-				<legend class="l2">Create Entitlement</legend>
+				<legend class="l2">Create An Entitlement</legend>
 					<table>
 						<tr>
 							<td>
@@ -207,7 +233,7 @@
 					</table>	
 					<table>
 						<tr>
-							<td id="entitlementNameID">
+							<td class="headingID">
 								Entitlement Name		
 							</td>
 							<td>
@@ -235,7 +261,7 @@
 	<td>
 				<div id="managingEntitlementMainDiv">
 				<fieldset class="f2">
-					<legend class="l2">Assign A Group to Users</legend>
+					<legend class="l2">Assign  UserGroups to User</legend>
 						<table>
 							<tr>
 								<td>
@@ -245,18 +271,18 @@
 						</table>	
 						<table>
 							<tr>
-								<td id="entitlementNameID">
+								<td class="headingID">
 									All Users		
 								</td>
 								<td>
-									<select id="usersId">
+									<select id="usersId" onchange="showGroupsForAUser()">
 										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
 									</select>
 								</td>
 								<td>
-									<input type="button" class="button" value="View All Groups" onclick="getAllGroups()"></input>			
+									<input type="button" class="button" value="Manage All Groups" onclick="getAllGroups()"></input>			
 								</td>						
 							</tr>		
 						</table>  
@@ -276,6 +302,97 @@
 				</div>			
 		</td>
 </c:if>
+
+<td>
+				<div id="userGroupEntitlemntGroupMainDiv">
+				<fieldset class="f2">
+					<legend class="l2">Assign EntitlementGroups to UserGroup</legend>
+						<table>
+							<tr>
+								<td>
+									<div id="userGroupEntitlemntGroupId""></div>									
+								</td>
+							</tr>
+						</table>	
+						<table>
+							<tr>
+								<td class="headingID">
+									All User Groups		
+								</td>
+								<td>
+									<select id="userGroupsId" onchange="showUserGroupsForAUser()">
+										<c:forEach var="allUsers" varStatus="stat" items="${allUserGroups.setOfGroups}">		
+											<option value="${allUsers.id}"> ${allUsers.name} </option>	
+										</c:forEach>
+									</select>
+								</td>
+								<td>
+									<input type="button" class="button" value="Manage All User Groups" onclick="getAllEntitlementGroups()"></input>			
+								</td>						
+							</tr>		
+						</table>  
+						<table id="userGroupsInfoDiv">
+								<tr>
+									<td>
+										<div id="allUserGroupsDiv"></div>
+									</td>										
+								</tr>								
+								<tr>
+									<td>
+										<div id="saveEntitlementUserGroupRelation"></div>
+									</td>										
+								</tr>
+						</table>
+				</fieldset>
+				</div>			
+		</td>
+</tr>
+
+
+<tr>
+<td>
+				<div id="entitlementGroupEntitlemntMainDiv">
+				<fieldset class="f2">
+					<legend class="l2">Assign Entitlements to EntitlementGroup</legend>
+						<table>
+							<tr>
+								<td>
+									<div id="entitlemntGroupId""></div>									
+								</td>
+							</tr>
+						</table>	
+						<table>
+							<tr>
+								<td class="headingID">
+									 Entitlement Groups		
+								</td>
+								<td>
+									<select id="entitlementGroupId" onchange="showEntitlementsForAEntitlementGroup()">
+										<c:forEach var="allUsers" varStatus="stat" items="${allGroups.setOfGroups}">		
+											<option value="${allUsers.id}"> ${allUsers.name} </option>	
+										</c:forEach>
+									</select>
+								</td>
+								<td>
+									<input type="button" class="button" value="Manage All Entitlement Groups" onclick="getAllEntitlements()"></input>			
+								</td>						
+							</tr>		
+						</table>  
+						<table id="entitlementsInfoDIV">
+								<tr>
+									<td>
+										<div id="allEntitlementsGroupsDIV"></div>
+									</td>										
+								</tr>								
+								<tr>
+									<td>
+										<div id="saveEntitlementAndEntitlementGroupRelation"></div>
+									</td>										
+								</tr>
+						</table>
+				</fieldset>
+				</div>			
+		</td>
 </tr>
 </table>
 </div>
