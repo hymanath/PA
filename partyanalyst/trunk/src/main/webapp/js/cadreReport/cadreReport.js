@@ -121,9 +121,16 @@ function buildZeroCadreTable(myResults, cadreData)
 	if(myResults.region=='MANDAL')
 		buildZeroCadreTableTehsil(myResults, cadreData);
 	if(myResults.region=='DISTRICT')
-		buildZeroCadreTableDistrictt(myResults, cadreData);
+		buildZeroCadreTableDistrict(myResults, cadreData);
+	if(myResults.region=='CONSTITUENCY')
+		buildZeroCadreTableConstituency(myResults, cadreData);	
 	if(myResults.region=='STATE')
 		buildZeroCadreTableState(myResults, cadreData);
+	if(myResults.region=='MUNICIPAL/CORP/GMC')
+		buildZeroCadreTableLocalElectionBodies(myResults, cadreData);	
+	if(myResults.region=='WARDS')
+		buildZeroCadreTableWards(myResults, cadreData);	
+	
 }
 
 function buildZeroCadreTableHamlet(myResults, cadreData)
@@ -164,6 +171,114 @@ function buildZeroCadreTableHamlet(myResults, cadreData)
 	getCadrePopup(myColumnDefs,myDataSource,configs);
 	
 }
+function buildZeroCadreTableLocalElectionBodies(myResults, cadreData)
+{
+	var localArr = new Array();
+	for(var i in cadreData)
+	{
+		var obj = {
+					state:cadreData[i].state.name,
+					district:cadreData[i].district.name,
+					localElectionBody:cadreData[i].localElectionBody.name
+				  };
+		localArr.push(obj);
+	}
+
+	
+	  var myColumnDefs = [
+			{key:"state",label:"State", sortable:true, resizeable:true},
+			{key:"district",label:"District", resizeable:true},
+			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true, resizeable:true}
+		];
+		
+		var configs = {
+							paginator: new YAHOO.widget.Paginator({ 
+							rowsPerPage    : 10			        
+							})
+					   };
+		var myDataSource = new YAHOO.util.DataSource(localArr);
+		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		myDataSource.responseSchema = {
+			fields: ["state","district","localElectionBody"]
+		};					
+
+
+
+	getCadrePopup(myColumnDefs,myDataSource,configs);
+}
+
+function buildZeroCadreTableWards(myResults, cadreData)
+{
+	var localArr = new Array();
+	for(var i in cadreData)
+	{
+		var obj = {
+					state:cadreData[i].state.name,
+					district:cadreData[i].district.name,
+					localElectionBody:cadreData[i].localElectionBody.name,
+					ward:cadreData[i].ward.name
+				  };
+		localArr.push(obj);
+	}
+
+	
+	  var myColumnDefs = [
+			{key:"state",label:"State", sortable:true, resizeable:true},
+			{key:"district",label:"District", resizeable:true},
+			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true, resizeable:true},
+			{key:"ward",label:"Ward",sortable:true, resizeable:true}
+		];
+		
+		var configs = {
+							paginator: new YAHOO.widget.Paginator({ 
+							rowsPerPage    : 10			        
+							})
+					   };
+		var myDataSource = new YAHOO.util.DataSource(localArr);
+		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		myDataSource.responseSchema = {
+			fields: ["state","district","localElectionBody","ward"]
+		};					
+
+
+
+	getCadrePopup(myColumnDefs,myDataSource,configs);
+}
+function buildZeroCadreTableConstituency(myResults, cadreData)
+{
+	var localArr = new Array();
+	for(var i in cadreData)
+	{
+		var obj = {
+					state:cadreData[i].state.name,
+					district:cadreData[i].district.name,
+					constituency:cadreData[i].constituency.name
+				  };
+		localArr.push(obj);
+	}
+
+	
+	  var myColumnDefs = [
+			{key:"state",label:"State", sortable:true, resizeable:true},
+			{key:"district",label:"District", resizeable:true},
+			{key:"constituency",label:"Constituency",sortable:true, resizeable:true}
+		];
+		
+		var configs = {
+							paginator: new YAHOO.widget.Paginator({ 
+							rowsPerPage    : 10			        
+							})
+					   };
+		var myDataSource = new YAHOO.util.DataSource(localArr);
+		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		myDataSource.responseSchema = {
+			fields: ["state","district","constituency"]
+		};					
+
+
+
+	getCadrePopup(myColumnDefs,myDataSource,configs);
+}
 function buildZeroCadreTableVillage(myResults, cadreData)
 {
 	var localArr = new Array();
@@ -184,7 +299,7 @@ function buildZeroCadreTableVillage(myResults, cadreData)
 		{key:"state",label:"State", sortable:true, resizeable:true},
 		{key:"district",label:"District", resizeable:true},
 		{key:"mandal",label:"Mandal",sortable:true, resizeable:true},
-		{key:"revenueVillage",label:"Revenue Village",sortable:true, resizeable:true}
+		{key:"revenueVillage",label:"Village",sortable:true, resizeable:true}
 	];
 	
 	var configs = {
