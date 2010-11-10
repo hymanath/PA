@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IInfluencingPeopleService {
@@ -46,4 +47,5 @@ public interface IInfluencingPeopleService {
 	//Local User Groups
 	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId);
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getLocalUserGroupByInfluenceScope(Long userId);
+	public List<LocalUserGroupDetailsVO> getLocalUserGroupDetails(Long userId,Long regionId,String regionType,Long categoryId,String categoryType);
 }
