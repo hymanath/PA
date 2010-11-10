@@ -53,7 +53,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}
 
-	*/
+	
 	public void testGetLocalElectionBodyId()
 	{
 		List result = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(31L);
@@ -63,6 +63,10 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println("id:"+id);
 				
 		
+	}*/
+	public void testGetAssemblyLocalElectionBodyId()
+	{
+		System.out.println(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(488L).get(0).toString());
+		
 	}
-	
 }
