@@ -695,7 +695,10 @@
 									<div class="corner topRight"></div>
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
-
+									<DIV class="yui-skin-sam" style="text-align:right;">
+										<div id="localPoliticalChangesRegistration"></DIV>
+										<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
+									</DIV>
 									<div id="influencePeopleChartDiv_main" class="contentDivClass">										
 									</div>	
 								</div>														
@@ -826,8 +829,15 @@
 							<div class="corner bottomLeft"></div>
 							<div class="corner bottomRight"></div> 
 
-							<div id="localPoliticalChanges_main" class="contentDivClass">
-								<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>	
+							<div id="localPoliticalChanges_main" class="contentDivClass yui-skin-sam" >
+								<DIV ><div id="localPoliticalChangesRegistration"></DIV>
+										<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
+								</div>
+								<div id="political_changes_data_head">
+									<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> gives glance of total changes that occur in that constituency and helps the user to analyze the changes and act accordingly.
+								</div>
+								<div id="political_changes_data_table"></div>
+								<div id="political_changes_data_body"></div>	
 							</div>	
 						</div>
 										
@@ -859,7 +869,7 @@
 				</div>
 			</div>	
 			<div>
-			<table width="100%" style="margin-right:10px;">
+			<!--<table width="100%" style="margin-right:10px;">
 			<tr>
 				<td style="vertical-align:top;align:left;" width="65%">
 					<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;">
@@ -907,8 +917,8 @@
 			</tr>
 			</table>
 			
-			
-			<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
+			-->
+			<!--<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
 				<div id="political_changes_head">
 					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
@@ -919,16 +929,9 @@
 					</table>	
 				</div>
 				<div id="political_changes_body" class="containerBodyDivClass">
-					<DIV class="yui-skin-sam"><div id="localPoliticalChangesRegistration"></DIV>
-							<input type="button"  onclick="redirectToNewWindowForEditingPoliticalChanges('new',0)" value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
-					</div>
-					<div id="political_changes_data_head">
-						<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> gives glance of total changes that occur in that constituency and helps the user to analyze the changes and act accordingly.
-					</div>
-					<div id="political_changes_data_table"></div>
-					<div id="political_changes_data_body"></div>
+					
 				</div>
-			</div>					
+			</div>	-->				
 							
 		</div>
 		</div>
