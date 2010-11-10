@@ -224,6 +224,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Constituency> findWardsAndIdsInMuncipality(Long localElectionBodyId) {
 		return getHibernateTemplate().find("from Constituency model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
 	}
+	
+	public List findWardsInLocalElectionBodies(String localElectionBodyIds) {
+		return getHibernateTemplate().find("select model.constituencyId, model.name from Constituency model where model.localElectionBody.localElectionBodyId in (" + localElectionBodyIds + ")");
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findConstituenciesForBiElectionInADistrict(String query) {
@@ -292,4 +296,20 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return queryObject.list();
 	}
 
+	public List getStateToConstituencyByConstituency(String constituencyIds) {
+		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, " +
+				"model.district.districtId, model.district.districtName, " +
+				"model.constituencyId, model.name " +
+				"from Constituency  model where model.constituencyId in("+constituencyIds+") ");
+		
+	}
+
+	public List getStateToWardByWard(String constituencyIds) {
+		return getHibernateTemplate().find("select model.localElectionBody.district.state.stateId, model.localElectionBody.district.state.stateName, " +
+				"model.localElectionBody.district.districtId, model.localElectionBody.district.districtName, " +
+				"model.localElectionBody.localElectionBodyId, model.localElectionBody.name, " +
+				"model.constituencyId, model.name " +
+				"from Constituency  model where model.constituencyId in("+constituencyIds+") ");
+		
+	}
 }

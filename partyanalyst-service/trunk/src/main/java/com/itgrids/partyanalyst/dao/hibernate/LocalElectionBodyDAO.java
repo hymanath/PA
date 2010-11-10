@@ -50,6 +50,14 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("localElectionBodyIds", localElectionBodyIds);
 		return queryObject.list();
+	}
+
+	public List getStateToLocalElectionBodyByLEB(String localElectionBodyIds) {
+		return getHibernateTemplate().find("select model.district.state.stateId, model.district.state.stateName, " +
+				"model.district.districtId, model.district.districtName, " +
+				"model.localElectionBodyId, model.name " +
+				"from LocalElectionBody  model where model.localElectionBodyId in("+localElectionBodyIds+") ");
+		
 	} 
 
 }
