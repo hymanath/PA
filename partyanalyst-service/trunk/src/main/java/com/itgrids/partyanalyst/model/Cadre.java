@@ -67,8 +67,10 @@ public class Cadre extends BaseModel{
 	 private Date effectiveDate;
 	 private Date endingDate;
 	 private String fatherOrSpouseName;
+	 private String noOfFamilyMembers;
+	 private String noOfVoters;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
-	 private Set<CadreChildrenInfo> cadreChildrenInfo = new HashSet<CadreChildrenInfo>();
+	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
 	 private String exactDateOfBirth;
@@ -407,41 +409,31 @@ public class Cadre extends BaseModel{
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<CadreChildrenInfo> getCadreChildrenInfo() {
-		return cadreChildrenInfo;
+	public Set<CadreFamilyMemberInfo> getCadreFamilyMemberInfo() {
+		return cadreFamilyMemberInfo;
 	}
 
-	public void setCadreChildrenInfo(Set<CadreChildrenInfo> cadreChildrenInfo) {
-		this.cadreChildrenInfo = cadreChildrenInfo;
+	public void setCadreFamilyMemberInfo(
+			Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo) {
+		this.cadreFamilyMemberInfo = cadreFamilyMemberInfo;
+	}
+
+	@Column(name = "no_of_family_members", length = 5)
+	public String getNoOfFamilyMembers() {
+		return noOfFamilyMembers;
+	}
+
+	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
+		this.noOfFamilyMembers = noOfFamilyMembers;
+	}
+
+	@Column(name = "no_of_voters", length = 5)
+	public String getNoOfVoters() {
+		return noOfVoters;
+	}
+
+	public void setNoOfVoters(String noOfVoters) {
+		this.noOfVoters = noOfVoters;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	 
-}
+ }

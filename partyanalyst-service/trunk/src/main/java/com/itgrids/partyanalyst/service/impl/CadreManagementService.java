@@ -21,9 +21,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.ICadreChildrenInfoDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
 import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserRelationDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
@@ -61,7 +62,7 @@ import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.CadreChildrenInfo;
+import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
@@ -71,6 +72,7 @@ import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.model.Language;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartyCadreSkills;
@@ -81,6 +83,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.UserRelation;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
@@ -105,7 +108,7 @@ public class CadreManagementService {
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
-	private ICadreChildrenInfoDAO cadreChildrenInfoDAO;
+	private IUserRelationDAO userRelationDAO;
 	private SmsCountrySmsService smsCountrySmsService;
 	private IHamletDAO hamletDAO;
 	private IPartyWorkingCommitteeDAO partyWorkingCommitteeDAO;
@@ -127,6 +130,7 @@ public class CadreManagementService {
 	private String windowTask;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -173,6 +177,14 @@ public class CadreManagementService {
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}
+
+	public IUserRelationDAO getUserRelationDAO() {
+		return userRelationDAO;
+	}
+
+	public void setUserRelationDAO(IUserRelationDAO userRelationDAO) {
+		this.userRelationDAO = userRelationDAO;
 	}
 
 	public IPartyWorkingCommitteeDAO getPartyWorkingCommitteeDAO() {
@@ -268,6 +280,15 @@ public class CadreManagementService {
 		this.languageDAO = languageDAO;
 	}
 
+	public ICadreFamilyMemberInfoDAO getCadreFamilyMemberInfoDAO() {
+		return cadreFamilyMemberInfoDAO;
+	}
+
+	public void setCadreFamilyMemberInfoDAO(
+			ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO) {
+		this.cadreFamilyMemberInfoDAO = cadreFamilyMemberInfoDAO;
+	}
+
 	public ICadreLanguageEfficiencyDAO getCadreLanguageEfficiencyDAO() {
 		return cadreLanguageEfficiencyDAO;
 	}
@@ -304,14 +325,6 @@ public class CadreManagementService {
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
-
-	public ICadreChildrenInfoDAO getCadreChildrenInfoDAO() {
-		return cadreChildrenInfoDAO;
-	}
-
-	public void setCadreChildrenInfoDAO(ICadreChildrenInfoDAO cadreChildrenInfoDAO) {
-		this.cadreChildrenInfoDAO = cadreChildrenInfoDAO;
-	}	
 
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
@@ -388,6 +401,8 @@ public class CadreManagementService {
 				cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
 				cadre.setConstituency(constituencyDAO.get(new Long(cadreInfo.getConstituencyID())));
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
+				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
+				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
 				
 				// setting address
 				currentAddress.setHouseNo(cadreInfo.getHouseNo());
@@ -551,42 +566,41 @@ public class CadreManagementService {
 					try
 					{
 						SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-						int noOfChildren = Integer.parseInt(cadreInfo.getNoOfChildren());
 					
-						if(noOfChildren >= 1)
+						if(cadreInfo.getFirstFamilyMemberName().trim() != null && cadreInfo.getFirstFamilyMemberName().trim().length() >0)
 						{
-							CadreChildrenInfo cadreChildrenInfo = new CadreChildrenInfo();
-							cadreChildrenInfo.setCadre(cadre);
-							cadreChildrenInfo.setName(cadreInfo.getFirstChildName().trim());
-							
-							if(cadreInfo.getFirstChildDOB() != null && cadreInfo.getFirstChildDOB().length() != 0)
-							cadreChildrenInfo.setDateOfBirth((format.parse(cadreInfo.getFirstChildDOB())));
-							
-							cadreChildrenInfoDAO.save(cadreChildrenInfo);
+							CadreFamilyMemberInfo cadreFamilyMemberInfo = new CadreFamilyMemberInfo();
+							cadreFamilyMemberInfo.setCadre(cadre);
+							cadreFamilyMemberInfo.setName(cadreInfo.getFirstFamilyMemberName().trim());
+							cadreFamilyMemberInfo.setUserRelation(userRelationDAO.get(new Long(cadreInfo.getFirstFamilyMemberRelationId())));
+																		
+							if(cadreInfo.getFirstFamilyMemberDOB() != null && cadreInfo.getFirstFamilyMemberDOB().length() != 0)
+							cadreFamilyMemberInfo.setDateOfBirth((format.parse(cadreInfo.getFirstFamilyMemberDOB())));
+							cadreFamilyMemberInfoDAO.save(cadreFamilyMemberInfo);
 						}
 						
-						if(noOfChildren >= 2)
+						if(cadreInfo.getSecondFamilyMemberName().trim() != null && cadreInfo.getSecondFamilyMemberName().trim().length() >0)
 						{
-							CadreChildrenInfo cadreChildrenInfo = new CadreChildrenInfo();
-							cadreChildrenInfo.setCadre(cadre);
-							cadreChildrenInfo.setName(cadreInfo.getSecondChildName().trim());
-							
-							if(cadreInfo.getSecondChildDOB() != null && cadreInfo.getSecondChildDOB().length() != 0)
-							cadreChildrenInfo.setDateOfBirth((format.parse(cadreInfo.getSecondChildDOB())));
-							
-							cadreChildrenInfoDAO.save(cadreChildrenInfo);
+							CadreFamilyMemberInfo cadreFamilyMemberInfo = new CadreFamilyMemberInfo();
+							cadreFamilyMemberInfo.setCadre(cadre);
+							cadreFamilyMemberInfo.setName(cadreInfo.getSecondFamilyMemberName().trim());
+							cadreFamilyMemberInfo.setUserRelation(userRelationDAO.get(new Long(cadreInfo.getSecondFamilyMemberRelationId())));
+																		
+							if(cadreInfo.getSecondFamilyMemberDOB() != null && cadreInfo.getSecondFamilyMemberDOB().length() != 0)
+							cadreFamilyMemberInfo.setDateOfBirth((format.parse(cadreInfo.getSecondFamilyMemberDOB())));
+							cadreFamilyMemberInfoDAO.save(cadreFamilyMemberInfo);
 						}
 						
-						if(noOfChildren == 3)
+						if(cadreInfo.getThirdFamilyMemberName().trim() != null && cadreInfo.getThirdFamilyMemberName().trim().length() >0)
 						{
-							CadreChildrenInfo cadreChildrenInfo = new CadreChildrenInfo();
-							cadreChildrenInfo.setCadre(cadre);
-							cadreChildrenInfo.setName(cadreInfo.getThirdChildName().trim());
-							
-							if(cadreInfo.getThirdChildDOB() != null && cadreInfo.getThirdChildDOB().length() != 0)
-							cadreChildrenInfo.setDateOfBirth((format.parse(cadreInfo.getThirdChildDOB())));
-							
-							cadreChildrenInfoDAO.save(cadreChildrenInfo);
+							CadreFamilyMemberInfo cadreFamilyMemberInfo = new CadreFamilyMemberInfo();
+							cadreFamilyMemberInfo.setCadre(cadre);
+							cadreFamilyMemberInfo.setName(cadreInfo.getThirdFamilyMemberName().trim());
+							cadreFamilyMemberInfo.setUserRelation(userRelationDAO.get(new Long(cadreInfo.getThirdFamilyMemberRelationId())));
+																		
+							if(cadreInfo.getThirdFamilyMemberDOB()!= null && cadreInfo.getThirdFamilyMemberDOB().length() != 0)
+							cadreFamilyMemberInfo.setDateOfBirth((format.parse(cadreInfo.getThirdFamilyMemberDOB())));
+							cadreFamilyMemberInfoDAO.save(cadreFamilyMemberInfo);
 						}
 					}
 					catch(Exception e)
@@ -1327,7 +1341,9 @@ public class CadreManagementService {
 		cadreInfo.setFirstName(cadre.getFirstName());
 		cadreInfo.setMiddleName(cadre.getMiddleName());
 		cadreInfo.setLastName(cadre.getLastName());
-		cadreInfo.setFatherOrSpouseName(cadre.getFatherOrSpouseName());
+		cadreInfo.setFatherOrSpouseName(cadre.getFatherOrSpouseName()!=null?cadre.getFatherOrSpouseName():"");
+		cadreInfo.setNoOfFamilyMembers(cadre.getNoOfFamilyMembers()!=null?cadre.getNoOfFamilyMembers():"");
+		cadreInfo.setNoOfVoters(cadre.getNoOfVoters());
 		Date dob = cadre.getDateOfBirth();
 		cadreInfo.setDateOfBirth(sdf.format(dob));
 		if(IConstants.TRUE.equals(cadre.getExactDateOfBirth()))
@@ -1368,7 +1384,7 @@ public class CadreManagementService {
 			cadreInfo.setVillage(hamletCA.getHamletId().toString());
 			cadreInfo.setVillageName(hamletCA.getHamletName());
 		}else if(localBodyCA != null){
-			cadreInfo.setMandal(localBodyCA.getLocalElectionBodyId().toString());
+			cadreInfo.setMandal(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localBodyCA.getLocalElectionBodyId()).get(0).toString());
 			cadreInfo.setMandalName(localBodyCA.getName());
 			cadreInfo.setVillage(wardCA.getConstituencyId().toString());
 			cadreInfo.setVillageName(wardCA.getName());
@@ -1401,7 +1417,7 @@ public class CadreManagementService {
 				cadreInfo.setPvillage(hamletCA.getHamletId().toString());
 				cadreInfo.setPvillageName(hamletCA.getHamletName());
 			}else if(localBodyCA != null){
-				cadreInfo.setPmandal(localBodyCA.getLocalElectionBodyId().toString());
+				cadreInfo.setPmandal(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localBodyCA.getLocalElectionBodyId()).get(0).toString());
 				cadreInfo.setPmandalName(localBodyCA.getName());
 				cadreInfo.setPvillage(wardCA.getConstituencyId().toString());
 				cadreInfo.setPvillageName(wardCA.getName());
@@ -1468,51 +1484,61 @@ public class CadreManagementService {
 					
 		}
 
-		List<Object[]> childResult = cadreChildrenInfoDAO.findByCadreId(cadre.getCadreId());
-		cadreInfo.setNoOfChildren(Integer.toString(childResult.size()));
-		if(childResult.size() >= 1)
+		List<Object[]> familyDetails = cadreFamilyMemberInfoDAO.findByCadreId(cadre.getCadreId());
+		
+		if(familyDetails.size() >= 1)
 		{
-			Object[] parms = (Object[])childResult.get(0);             
-			cadreInfo.setFirstChildName(parms[1]!=null?parms[1].toString():"");
-			if(parms[2] != null)
-			{
-				Date chdob = (Date) parms[2];
-				cadreInfo.setFirstChildDOB((sdf.format(chdob)));
-			}
-			else
-			{
-				cadreInfo.setFirstChildDOB("");
-			}
-		}
-		if(childResult.size() >= 2)
-		{
-			Object[] parms = (Object[])childResult.get(1);
-			cadreInfo.setSecondChildName(parms[1]!=null?parms[1].toString():"");
-			if(parms[2] != null)
-			{
-				Date chdob = (Date) parms[2];
-				cadreInfo.setSecondChildDOB((sdf.format(chdob)));
-			}
-			else
-			{
-				cadreInfo.setSecondChildDOB("");
-			}
-		}
-		if(childResult.size() == 3)
-		{
-			Object[] parms = (Object[])childResult.get(2);
-			cadreInfo.setThirdChildName(parms[1]!=null?parms[1].toString():"");
-			if(parms[2] != null)
-			{
-				Date chdob = (Date) parms[2];
-				cadreInfo.setThirdChildDOB((sdf.format(chdob)));
-			}
-			else
-			{
-				cadreInfo.setThirdChildDOB("");
-			}
-		}
+			Object[] parms = (Object[])familyDetails.get(0);
+			cadreInfo.setFirstFamilyMemberName(parms[1]!=null?parms[1].toString():"");
+			cadreInfo.setFirstFamilyMemberRelation(parms[3]!=null?parms[3].toString():"");
+			cadreInfo.setFirstFamilyMemberRelationId(parms[4]!=null?parms[4].toString():"");
 			
+			if(parms[2] != null && parms[2].toString().length() > 0)
+			{
+				Date fmdob = (Date) parms[2];
+				cadreInfo.setFirstFamilyMemberDOB(sdf.format(fmdob));
+			}
+			else
+			{
+				cadreInfo.setFirstFamilyMemberDOB("");
+			}
+		}
+		if(familyDetails.size() >= 2)
+		{
+			Object[] parms = (Object[])familyDetails.get(1);
+			cadreInfo.setSecondFamilyMemberName(parms[1]!=null?parms[1].toString():"");
+			cadreInfo.setSecondFamilyMemberRelation(parms[3]!=null?parms[3].toString():"");
+			cadreInfo.setSecondFamilyMemberRelationId(parms[4]!=null?parms[4].toString():"");
+			
+			if(parms[2] != null && parms[2].toString().length() > 0)
+			{
+				Date fmdob = (Date) parms[2];
+				cadreInfo.setSecondFamilyMemberDOB(sdf.format(fmdob));
+			}
+			else
+			{
+				cadreInfo.setSecondFamilyMemberDOB("");
+			}
+		}
+		
+		if(familyDetails.size() >= 3)
+		{
+			Object[] parms = (Object[])familyDetails.get(2);
+			cadreInfo.setThirdFamilyMemberName(parms[1]!=null?parms[1].toString():"");
+			cadreInfo.setThirdFamilyMemberRelation(parms[3]!=null?parms[3].toString():"");
+			cadreInfo.setThirdFamilyMemberRelationId(parms[4]!=null?parms[4].toString():"");
+			
+			if(parms[2] != null && parms[2].toString().length() > 0)
+			{
+				Date fmdob = (Date) parms[2];
+				cadreInfo.setThirdFamilyMemberDOB(sdf.format(fmdob));
+			}
+			else
+			{
+				cadreInfo.setThirdFamilyMemberDOB("");
+			}
+		}
+				
 		List<CadreLanguageEfficiency> cadreLanguageSkills = cadreLanguageEfficiencyDAO.findByCadreId(cadre.getCadreId());
 /*		String[] languageOptions_English = new String[3];
 		String[] languageOptions_Hindi = new String[3];
@@ -3118,6 +3144,29 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		return formattedData;
 		
+	}
+	
+	public List<SelectOptionVO> getAllRelationships(){
+		try{
+			List<SelectOptionVO> selectOptionVO = new ArrayList<SelectOptionVO>();
+			List<UserRelation>  result = userRelationDAO.getAll();
+			
+			/*SelectOptionVO selectOptionVo = new SelectOptionVO();
+			selectOptionVo.setId(0l);
+			selectOptionVo.setName("Select Relation");
+			selectOptionVO.add(selectOptionVo); */
+			
+			for(UserRelation userRelation : result){
+				SelectOptionVO selectOption = new SelectOptionVO();
+				selectOption.setId(userRelation.getUserRelationId());
+				selectOption.setName(userRelation.getRelationship());
+				selectOptionVO.add(selectOption);
+			}
+			return selectOptionVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

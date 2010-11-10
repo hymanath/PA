@@ -1,9 +1,9 @@
 /* 
- * Copyright (c) 2009 IT Grids.
+ * Copyright (c) 2010 IT Grids.
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
- * Created on November 03, 2010
+ * Created on November 09, 2010
  */
 package com.itgrids.partyanalyst.model;
 
@@ -24,45 +24,46 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
- * CadreLanguageEfficiency entity. 
+ * CadreFamilyMemberInfo entity. 
  * @author <a href="mailto:kamalakardandu@gmail.com">kamalakar</a>
  */
 @Entity
-@Table(name = "cadre_children_info")
-public class CadreChildrenInfo implements java.io.Serializable  {
+@Table(name = "cadre_family_member_info")
 
-	private static final long serialVersionUID = 1L;
+public class CadreFamilyMemberInfo implements java.io.Serializable  {
 	
-	private Long cadreChildrenInfoId;
+	private static final long serialVersionUID = 1L;
+	private Long cadreFamilyMemberInfoId;
 	private Cadre cadre;
+	private UserRelation userRelation;
 	private String name;
 	private Date dateOfBirth;
-
 	
-	public CadreChildrenInfo() {
+	public CadreFamilyMemberInfo() {
 		super();
-		
 	}
-
-	public CadreChildrenInfo(Cadre cadre,
-			String name,Date dateOfBirth) {
+	
+	public CadreFamilyMemberInfo(Cadre cadre,
+			UserRelation userRelation,String name,Date dateOfBirth) {
 		super();
 		this.cadre = cadre;
+		this.userRelation = userRelation;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 	}
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "cadre_children_info_id", nullable = false, unique = true)
-	public Long getCadreChildrenInfoId() {
-		return cadreChildrenInfoId;
+	@Column(name = "cadre_family_member_info_id", nullable = false, unique = true)
+	public Long getCadreFamilyMemberInfoId() {
+		return cadreFamilyMemberInfoId;
 	}
 
-	public void setCadreChildrenInfoId(Long cadreChildrenInfoId) {
-		this.cadreChildrenInfoId = cadreChildrenInfoId;
+	public void setCadreFamilyMemberInfoId(Long cadreFamilyMemberInfoId) {
+		this.cadreFamilyMemberInfoId = cadreFamilyMemberInfoId;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="cadre_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -73,6 +74,18 @@ public class CadreChildrenInfo implements java.io.Serializable  {
 
 	public void setCadre(Cadre cadre) {
 		this.cadre = cadre;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_relation_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserRelation getUserRelation() {
+		return userRelation;
+	}
+
+	public void setUserRelation(UserRelation userRelation) {
+		this.userRelation = userRelation;
 	}
 
 	@Column(name = "name", length = 50)
@@ -93,7 +106,6 @@ public class CadreChildrenInfo implements java.io.Serializable  {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	
+
 }
-
-
-

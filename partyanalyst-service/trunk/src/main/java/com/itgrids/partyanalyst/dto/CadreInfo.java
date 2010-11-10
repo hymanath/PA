@@ -97,9 +97,11 @@ public class CadreInfo implements Serializable{
 	private String cadreLevelConstituency;
 	private String cadreLevelMandal;
 	private String cadreLevelVillage;
-	private String noOfChildren;
-	private String firstChildName,secondChildName,thirdChildName;
-	private String firstChildDOB,secondChildDOB,thirdChildDOB;
+	private String noOfFamilyMembers,noOfVoters;
+	private String firstFamilyMemberName,secondFamilyMemberName,thirdFamilyMemberName;
+	private String firstFamilyMemberRelation,secondFamilyMemberRelation,thirdFamilyMemberRelation;
+	private String firstFamilyMemberRelationId,secondFamilyMemberRelationId,thirdFamilyMemberRelationId;
+	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;
@@ -574,86 +576,90 @@ public class CadreInfo implements Serializable{
 	public void setCadreLevelVillage(String cadreLevelVillage) {
 		this.cadreLevelVillage = cadreLevelVillage;
 	}
-	public String getNoOfChildren() {
-		return noOfChildren;
+	public String getNoOfFamilyMembers() {
+		return noOfFamilyMembers;
 	}
-	public void setNoOfChildren(String noOfChildren) {
-		this.noOfChildren = noOfChildren;
+	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
+		this.noOfFamilyMembers = noOfFamilyMembers;
 	}
-	public String getFirstChildName() {
-		return firstChildName;
+	public String getNoOfVoters() {
+		return noOfVoters;
 	}
-	public void setFirstChildName(String firstChildName) {
-		this.firstChildName = firstChildName;
+	public void setNoOfVoters(String noOfVoters) {
+		this.noOfVoters = noOfVoters;
 	}
-	public String getSecondChildName() {
-		return secondChildName;
+	public String getFirstFamilyMemberName() {
+		return firstFamilyMemberName;
 	}
-	public void setSecondChildName(String secondChildName) {
-		this.secondChildName = secondChildName;
+	public void setFirstFamilyMemberName(String firstFamilyMemberName) {
+		this.firstFamilyMemberName = firstFamilyMemberName;
 	}
-	public String getThirdChildName() {
-		return thirdChildName;
+	public String getSecondFamilyMemberName() {
+		return secondFamilyMemberName;
 	}
-	public void setThirdChildName(String thirdChildName) {
-		this.thirdChildName = thirdChildName;
+	public void setSecondFamilyMemberName(String secondFamilyMemberName) {
+		this.secondFamilyMemberName = secondFamilyMemberName;
 	}
-	public String getFirstChildDOB() {
-		return firstChildDOB;
+	public String getThirdFamilyMemberName() {
+		return thirdFamilyMemberName;
 	}
-	public void setFirstChildDOB(String firstChildDOB) {
-		this.firstChildDOB = firstChildDOB;
+	public void setThirdFamilyMemberName(String thirdFamilyMemberName) {
+		this.thirdFamilyMemberName = thirdFamilyMemberName;
 	}
-	public String getSecondChildDOB() {
-		return secondChildDOB;
+	public String getFirstFamilyMemberRelation() {
+		return firstFamilyMemberRelation;
 	}
-	public void setSecondChildDOB(String secondChildDOB) {
-		this.secondChildDOB = secondChildDOB;
+	public void setFirstFamilyMemberRelation(String firstFamilyMemberRelation) {
+		this.firstFamilyMemberRelation = firstFamilyMemberRelation;
 	}
-	public String getThirdChildDOB() {
-		return thirdChildDOB;
+	public String getSecondFamilyMemberRelation() {
+		return secondFamilyMemberRelation;
 	}
-	public void setThirdChildDOB(String thirdChildDOB) {
-		this.thirdChildDOB = thirdChildDOB;
+	public void setSecondFamilyMemberRelation(String secondFamilyMemberRelation) {
+		this.secondFamilyMemberRelation = secondFamilyMemberRelation;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String getThirdFamilyMemberRelation() {
+		return thirdFamilyMemberRelation;
+	}
+	public void setThirdFamilyMemberRelation(String thirdFamilyMemberRelation) {
+		this.thirdFamilyMemberRelation = thirdFamilyMemberRelation;
+	}
+	public String getFirstFamilyMemberDOB() {
+		return firstFamilyMemberDOB;
+	}
+	public void setFirstFamilyMemberDOB(String firstFamilyMemberDOB) {
+		this.firstFamilyMemberDOB = firstFamilyMemberDOB;
+	}
+	public String getSecondFamilyMemberDOB() {
+		return secondFamilyMemberDOB;
+	}
+	public void setSecondFamilyMemberDOB(String secondFamilyMemberDOB) {
+		this.secondFamilyMemberDOB = secondFamilyMemberDOB;
+	}
+	public String getThirdFamilyMemberDOB() {
+		return thirdFamilyMemberDOB;
+	}
+	public void setThirdFamilyMemberDOB(String thirdFamilyMemberDOB) {
+		this.thirdFamilyMemberDOB = thirdFamilyMemberDOB;
+	}
+	public String getFirstFamilyMemberRelationId() {
+		return firstFamilyMemberRelationId;
+	}
+	public void setFirstFamilyMemberRelationId(String firstFamilyMemberRelationId) {
+		this.firstFamilyMemberRelationId = firstFamilyMemberRelationId;
+	}
+	public String getSecondFamilyMemberRelationId() {
+		return secondFamilyMemberRelationId;
+	}
+	public void setSecondFamilyMemberRelationId(String secondFamilyMemberRelationId) {
+		this.secondFamilyMemberRelationId = secondFamilyMemberRelationId;
+	}
+	public String getThirdFamilyMemberRelationId() {
+		return thirdFamilyMemberRelationId;
+	}
+	public void setThirdFamilyMemberRelationId(String thirdFamilyMemberRelationId) {
+		this.thirdFamilyMemberRelationId = thirdFamilyMemberRelationId;
+	}
 	
 	
 	
