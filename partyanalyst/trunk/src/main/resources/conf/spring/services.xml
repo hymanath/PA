@@ -295,11 +295,10 @@
 		<property name="cadreLanguageEfficiencyDAO" ref="cadreLanguageEfficiencyDAO" />
 		<property name="cadreLevelDAO" ref="cadreLevelDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
-		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />	
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />	
-		<property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />	
-  	</bean>
-	
+		<property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />					   	  	
+	</bean>
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
