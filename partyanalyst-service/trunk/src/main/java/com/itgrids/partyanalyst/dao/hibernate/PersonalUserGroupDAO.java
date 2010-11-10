@@ -328,7 +328,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,constituencyId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.constituency.constituencyId,model.localGroupRegion.constituency.name from PersonalUserGroup "+
+				"model where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.constituency is not null and "+
 				"model.localGroupRegion.constituency.constituencyId = ? order by model.localGroupRegion.district.districtId",params);
 	}
