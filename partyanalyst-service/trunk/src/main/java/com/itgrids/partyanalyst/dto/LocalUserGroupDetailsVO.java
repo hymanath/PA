@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Sai Krishna
@@ -30,8 +31,9 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private String groupLocation;
 	private Long groupMembersCount;
 	
-	private ResultStatus resultStatus;
+	private List<UserGroupMembersVO> groupMemberDetails;
 	
+	private ResultStatus resultStatus;
 	
 	public Long getLocalUserGroupId() {
 		return localUserGroupId;
@@ -92,6 +94,12 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	public List<UserGroupMembersVO> getGroupMemberDetails() {
+		return groupMemberDetails;
+	}
+	public void setGroupMemberDetails(List<UserGroupMembersVO> groupMemberDetails) {
+		this.groupMemberDetails = groupMemberDetails;
 	}
 	
 
