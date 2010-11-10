@@ -192,6 +192,16 @@ function buildCadreInfo(jsObj,results)
 	str += '				<th>:</th>';
 	str += '				<td>'+results.dateOfBirth+'</td>';
 	str += '			</tr>';	
+	str += '			<tr>';
+	str += '				<th style="width:125px">No Of Family Members </th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.noOfFamilyMembers+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
+	str += '				<th style="width:125px">No Of Voters </th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.noOfVoters+'</td>';
+	str += '			</tr>';
 	str += '			</table>';
 	str += '		</td>';
 	str += '		<td width="50%" valign="top">';
@@ -199,53 +209,57 @@ function buildCadreInfo(jsObj,results)
 	str += '		</td>';
 	str += '	</tr>';
 	str += '	</table>';
-	
-	if(results.noOfChildren != 0)
+
+	var familyMemberTableFlag = results.firstFamilyMemberName != null || 														results.secondFamilyMemberName !=null ||
+								results.thirdFamilyMemberName != null;
+	if(familyMemberTableFlag)
 	{
 	str += '	<table width="100%" border="0" class="cadreProfileInfoTable" >';
 	str += '	<tr>';
-	str += '	<th style="width:125px" ><U>Children Details :</U></th>';
+	str += '	<th style="width:150px" ><U>Family Member Details :</U></th>';
 	str += '	<td></td>';
 	str += '	</tr>';
-
-	str += '	<tr>';
-	str += '	<th style="width:125px" >No of Children :</th>';
-	str += '	<td>'+results.noOfChildren+'</td>';
-	str += '	</tr>';
+	str += '	</table>';
+		
+	str += '	<table width="100%" border="0" class="cadreProfileInfoTable" >';
 	}
 	
-	if(results.noOfChildren >= 1)
-	{
-	
-	str += '	<tr>';
-	str += '	<th style="width:125px" >1)&nbsp;&nbsp; Name :</th>';
-	str += '	<td>'+results.firstChildName+'</td>';
-	str += '	<th style="width:125px" > Date Of Birth:</th>';
-	str += '	<td>'+results.firstChildDOB+'</td>';
-	str += '	</tr>';
-	
-	}
-
-	if(results.noOfChildren >= 2)
+	if(results.firstFamilyMemberName != null)
 	{
 	str += '	<tr>';
-	str += '	<th style="width:125px" >2)&nbsp;&nbsp; Name :</th>';
-	str += '	<td>'+results.secondChildName+'</td>';
-	str += '	<th style="width:125px" > Date Of Birth:</th>';
-	str += '	<td>'+results.secondChildDOB+'</td>';
+	str += '	<th style="width:60px" >1)&nbsp;&nbsp; Name :</th>';
+	str += '	<td style="width:80px">'+results.firstFamilyMemberName+'</td>';
+	str += '	<th style="width:80px" >Relationship :</th>';
+	str += '	<td style="width:60px">'+results.firstFamilyMemberRelation+'</td>';
+	str += '	<th style="width:80px" > Date Of Birth:</th>';
+	str += '	<td style="width:60px">'+results.firstFamilyMemberDOB+'</td>';
 	str += '	</tr>';
 	}
 
-	if(results.noOfChildren == 3)
+	if(results.secondFamilyMemberName !=null)
 	{
 	str += '	<tr>';
-	str += '	<th style="width:125px" >3)&nbsp;&nbsp; Name :</th>';
-	str += '	<td>'+results.thirdChildName+'</td>';
-	str += '	<th style="width:125px" > Date Of Birth:</th>';
-	str += '	<td>'+results.thirdChildDOB+'</td>';
+	str += '	<th style="width:60px" >2)&nbsp;&nbsp; Name :</th>';
+	str += '	<td style="width:80px">'+results.secondFamilyMemberName+'</td>';
+	str += '	<th style="width:80px" >Relationship :</th>';
+	str += '	<td style="width:60px">'+results.secondFamilyMemberRelation+'</td>';
+	str += '	<th style="width:80px" > Date Of Birth:</th>';
+	str += '	<td style="width:60px">'+results.secondFamilyMemberDOB+'</td>';
 	str += '	</tr>';
 	}
-	if(results.noOfChildren != 0)
+
+	if(results.thirdFamilyMemberName != null)
+	{
+	str += '	<tr>';
+	str += '	<th style="width:60px" >3)&nbsp;&nbsp; Name :</th>';
+	str += '	<td style="width:80px">'+results.thirdFamilyMemberName+'</td>';
+	str += '	<th style="width:80px" >Relationship :</th>';
+	str += '	<td style="width:60px">'+results.thirdFamilyMemberRelation+'</td>';
+	str += '	<th style="width:80px" > Date Of Birth:</th>';
+	str += '	<td style="width:60px">'+results.thirdFamilyMemberDOB+'</td>';
+	str += '	</tr>';
+	}
+	if(familyMemberTableFlag)
 	{
 		str += '	</table>';
 	}

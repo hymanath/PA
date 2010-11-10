@@ -42,6 +42,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> mandalList;
+	private List<SelectOptionVO> relationshipList;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> eduStatus = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> partyCommitteesList;
@@ -368,6 +369,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.sameAsCAFlag = sameAsCAFlag;
 	}
 
+	public List<SelectOptionVO> getRelationshipList() {
+		return relationshipList;
+	}
+
+	public void setRelationshipList(List<SelectOptionVO> relationshipList) {
+		this.relationshipList = relationshipList;
+	}
+
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("CadreRegisterPageAction.execute() start");
@@ -379,6 +388,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
+		relationshipList = cadreManagementService.getAllRelationships();
 		stateList_o = regionServiceDataImp.getStatesByCountry(1l);  
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
@@ -608,6 +618,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.PARTY_COMMITTEES_FLAG, partyCommittees_flag);
 		session.setAttribute(ISessionConstants.CADRE_SKILLS_FLAG, cadreSkills_flag);
 		session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS_FLAG, partyTrainingCamps_flag);
+		session.setAttribute("relationshipList",relationshipList);
 		session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
 		return Action.SUCCESS;
 	}
