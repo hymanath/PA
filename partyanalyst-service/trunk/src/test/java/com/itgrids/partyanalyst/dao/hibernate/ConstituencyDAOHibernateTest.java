@@ -202,7 +202,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFindByElectionScopeState()
+	/*public void testFindByElectionScopeState()
 	{
 		List<Constituency> list = constituencyDAO.findByElectionScopeState(1l, 1l);
 		System.out.println("Size:"+list.size());
@@ -210,6 +210,35 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println("name:"+constituency.getName());			
 		}	
-	}
+	}*/
 	
+	/*public void testFindWardsInLocalElectionBodies(){
+		List list = constituencyDAO.findWardsInLocalElectionBodies("488, 562");
+		System.out.println("size:"+list.size());
+		for(int i=0;i<list.size();i++)
+		{
+			Object[] obj = (Object[])list.get(i);
+			
+			System.out.println("id:"+Long.parseLong(obj[0].toString()));
+			System.out.println("name:"+obj[1].toString());				
+		}
+	}*/
+	public void testGetStateToWardByWard()
+	{
+		List list = constituencyDAO.getStateToWardByWard("7404,7405");
+		System.out.println("size:"+list.size());
+		for(int i=0;i<list.size();i++)
+		{
+			Object[] obj = (Object[])list.get(i);
+			
+			System.out.println("id:"+Long.parseLong(obj[0].toString()));
+			System.out.println("name:"+obj[1].toString());
+			System.out.println("id:"+Long.parseLong(obj[2].toString()));
+			System.out.println("name:"+obj[3].toString());
+			System.out.println("id:"+Long.parseLong(obj[4].toString()));
+			System.out.println("name:"+obj[5].toString());
+			System.out.println("id:"+Long.parseLong(obj[6].toString()));
+			System.out.println("name:"+obj[7].toString());
+		}
+	}
 }

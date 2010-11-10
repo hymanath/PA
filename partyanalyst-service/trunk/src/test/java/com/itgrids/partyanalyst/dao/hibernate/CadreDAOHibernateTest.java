@@ -141,7 +141,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFindStateCadresByCountry()
+	/*public void testFindStateCadresByCountry()
 	{
 		List result = cadreDAO.findStateCadresByCountry(1l,7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		System.out.println(result.size());
@@ -152,6 +152,77 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[2].toString());
 			
 		}
-	}
+	}*/
 	
+	/*public void testFindDistrictsByStateID()
+	{
+		List result = cadreDAO.findDistrictsByStateID("1");
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	/*public void testFindCadreSizeMandalWise()
+	{
+		List result = cadreDAO.findCadreSizeMandalWise(1l);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	
+	/*public void testFindCadreSizeConstituencywise()
+	{
+		List result = cadreDAO.findCadreSizeConstituencywise(1l);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	
+	/*public void testFindCadreSizeWardswise()
+	{
+		List result = cadreDAO.findCadreSizeWardswise(5l);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	
+	public void testFfindHamletsByTehsilIds()
+	{
+		List result = cadreDAO.findHamletsByTehsilIds("313");
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}
 }
