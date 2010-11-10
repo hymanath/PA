@@ -490,19 +490,40 @@
 			browser2.focus();
 		}
 		
-		function getSubLevelInfluenceData(regionId,regionName,regionType,status)
+		function getSubLevelInfluenceData(regionId,regionName,regionType,regionTitle,regionTitleId,status)
 		{
 			var jsObj= 
 			{	
 				regionId:regionId,
 				regionName:regionName,	
 				regionType:regionType,
+				regionTitle:regionTitle,
+				regionTitleId:regionTitleId,
 				status:status,
 				task: "getSubLevelInfluencePeople"						
 			};
 			
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/subLevelInfluenceAction.action?"+param;
+			
+			callAjax(param,jsObj,url);		
+		}
+
+		function getSubLevelLocalGroupData(regionId,regionName,regionType,regionTitle,regionTitleId,status)
+		{
+			var jsObj= 
+			{	
+				regionId:regionId,
+				regionName:regionName,	
+				regionType:regionType,
+				regionTitle:regionTitle,
+				regionTitleId:regionTitleId,
+				status:status,
+				task: "getSubLevelLocalUserGroupsPeople"						
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/subLevelLocalGroupsAction.action?"+param;
 			
 			callAjax(param,jsObj,url);		
 		}
@@ -560,6 +581,10 @@
 										if(jsObj.task == "getSubLevelInfluencePeople")
 										{
 											buildSubLevelInfluencePeople(jsObj,myResults);
+										}
+										if(jsObj.task == "getSubLevelLocalUserGroupsPeople")
+										{
+											buildSubLevelLocalGroupPeople(jsObj,myResults);
 										}
 									}
 								catch (e)
@@ -671,8 +696,7 @@
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
 
-									<div id="influencePeopleChartDiv_main" class="contentDivClass">
-										<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. </p>
+									<div id="influencePeopleChartDiv_main" class="contentDivClass">										
 									</div>	
 								</div>														
 							</td>
@@ -735,16 +759,64 @@
 						
 					</div>
 					<div id="tabs-2">
-						<div id="localUserGroups_Outer" class="rounded"> 						
-							<div class="corner topLeft"></div>
-							<div class="corner topRight"></div>
-							<div class="corner bottomLeft"></div>
-							<div class="corner bottomRight"></div> 
+						<table width="100%" cellpadding="0" cellspacing="5">
+						<tr>
+							<td colspan="2">
+								<div id="localGroupsChartDiv_Outer" class="rounded" style="margin:0px;"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
 
-							<div id="localUserGroups_main" class="contentDivClass">
-								<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed  Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
-							</div>	
-						</div>
+									<div id="localGroupsChartDiv_main" class="contentDivClass">										
+									</div>	
+								</div>														
+							</td>
+						</tr>
+						<tr>
+						<td width="30%" valign="top">
+							<div id="localGroupsRegionWisOverView_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+
+								<div id="localGroupsRegionWiseOverView_main" class="contentDivClass">
+									
+								</div>	
+							</div>
+
+						</td>
+						<td width="70%" valign="top">
+							<div id="localGroupsDetail_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+
+								<div id="localGroupsDetail_main" class="contentDivClass">
+									<div id="localGroupsDetail_head">
+									<table cellspacing="0" cellpadding="0" border="0" width="100%">
+									<tr>
+										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
+										<td>
+											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
+												<span id="localGroupsLabelSpan" class="regionsHead_center_label" style="top:10px;">Local Groups Detail Info</span>
+											</div>
+										</td>
+										<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>
+									</tr>
+									</table>
+									</div>
+									<div id="localGroupsDetail_body">
+										<div id="localGroupsRegionsList" class="influencePeopleRegionsList"></div>
+										<div id="localGroupsRegionsData_main"></div>
+									</div>
+								</div>	
+							</div>
+						</td>
+						</tr>
+						</table>
 					
 					</div>
 					<div id="tabs-3">
@@ -835,61 +907,7 @@
 			</tr>
 			</table>
 			
-			<!-- Local User groups (start)-->
-			<div id="local_user_group_main">
-				<div id="local_user_group_head">
-					<table cellspacing="0" cellpadding="0" width="100%">
-						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="politicalChanges_head_label" class="containerHeadLabelDivClass" style="width:892px;">Local User Groups </div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
-						</tr>
-					</table>	
-				</div>
-				<div id="local_user_group_body" class="containerBodyDivClass">					
-					<table cellspacing="5" cellpadding="0" width="100%">
-						<tr>
-							<td colspan="2">
-								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
-									<div class="corner topLeft"></div>
-									<div class="corner topRight"></div>
-									<div class="corner bottomLeft"></div>
-									<div class="corner bottomRight"></div> 
-										<div id="usergroupsNumberViewDiv" class="groupHeaders">
-											
-										</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td width="30%" valign="top">								
-								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
-									<div class="corner topLeft"></div>
-									<div class="corner topRight"></div>
-									<div class="corner bottomLeft"></div>
-									<div class="corner bottomRight"></div> 
-										<div id="usergroupsCategoryViewDiv_outer" class="yui-skin-sam"><div id="usergroupsCategoryViewDiv" ></div></div>
-
-								</div>
-							</td>
-							<td width="70%" valign="top">
-								<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px"> 						
-									<div class="corner topLeft"></div>
-									<div class="corner topRight"></div>
-									<div class="corner bottomLeft"></div>
-									<div class="corner bottomRight"></div> 
-										<div id="userGroupsDetailsViewDiv">
-									
-										</div>
-								</div>
-							</td>
-							
-						</tr>
-					</table>	
-				</div>
-			</div>			
-			<!-- Local User groups (end)-->
-
+			
 			<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
 				<div id="political_changes_head">
 					<table cellspacing="0" cellpadding="0" width="100%">

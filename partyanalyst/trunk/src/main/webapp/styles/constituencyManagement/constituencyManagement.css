@@ -562,16 +562,37 @@ fieldset {
 	background-color:#DEE8EF;
 }
 
-#influenceDetailData_zero_body
+#localGroupsDetail_main
 {
-	max-height:300px;
+	position:relative;
+}
+
+.regionScope_main
+{
+	position:relative;
+	margin-bottom:10px;
+}
+
+.zeroRegionsData_body
+{
+	max-height:250px;
 	height: expression( this.scrollHeight > 300 ? "300px" : "auto" );
 	overflow:auto;
 }
 
-#influenceDetailData_zero_body
+.regions_overview_data
 {
-	max-height:300px;
-	height: expression( this.scrollHeight > 300 ? "300px" : "auto" );
-	overflow:auto;
+	padding:5px;
+}
+
+.regions_overview_data table th
+{
+	font-size:11px;
+	color:#77471D;
+}
+
+.regions_overview_data table td
+{
+	color:#77471D;
+	font-size:10px;
 }
