@@ -115,6 +115,14 @@
 						{						
 							showEntitlements(results);	
 						}
+						else if(jsObj.task == "checkForUserGroupNameAvailability")
+						{						
+							showAvailabilityOfUserGroup(results);
+						}
+						else if(jsObj.task == "createAnUserGroup")
+						{						
+							showUserGroupResult(results);
+						}
 				}catch (e) {   		
 				   	alert("Invalid JSON result" + e);   
 				}  
@@ -257,6 +265,40 @@
 </tr>
  
 <tr>
+	<td>
+		<div id="managingUserGroupMainDiv">
+			<fieldset class="f1">
+				<legend class="l2">Create An User Group</legend>
+					<table>
+						<tr>
+							<td>
+								<div id="userGroupAvailabilityID""></div>									
+							</td>
+						</tr>
+					</table>	
+					<table>
+						<tr>
+							<td class="headingID">
+								User Group Name		
+							</td>
+							<td>
+								<input type="text" id="userGroupID"></input>			
+							</td>							
+						</tr>		
+					</table>  
+					<table>
+							<tr>	
+								<td>
+									<input type="button" class="button" value="Check Availability" onclick="checkForAvailabilityOfUserGroup()"></input>			
+								</td>							
+								<td>
+									<input type="button" class="button" value="Create User Group" onclick="createAnUserGroup()"></input>									
+								</td>
+							</tr>
+					</table>
+			</fieldset>
+			</div>			
+</td>
 <c:if test="${allEntitlements.listOfUsers != 'null'}">
 	<td>
 				<div id="managingEntitlementMainDiv">
@@ -302,7 +344,8 @@
 				</div>			
 		</td>
 </c:if>
-
+</tr>
+<tr>
 <td>
 				<div id="userGroupEntitlemntGroupMainDiv">
 				<fieldset class="f2">
@@ -346,10 +389,7 @@
 				</fieldset>
 				</div>			
 		</td>
-</tr>
 
-
-<tr>
 <td>
 				<div id="entitlementGroupEntitlemntMainDiv">
 				<fieldset class="f2">

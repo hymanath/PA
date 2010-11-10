@@ -200,8 +200,16 @@ ServletRequestAware, ServletContextAware{
 			entitlements = userEntitlementService.checkAvailabilityOfGroup(jObj.getString("name"));
 		}
 		
+		else if(jObj.getString("type").equalsIgnoreCase("checkForUserGroupNameAvailability")){
+			entitlements = userEntitlementService.checkForUserGroupNameAvailability(jObj.getString("name"));
+		}
+		
 		else if(jObj.getString("type").equalsIgnoreCase("createAGroup")){
 			entitlements = userEntitlementService.creatingAGroup(jObj.getString("name"),jObj.getString("selectedIds"));
+		}
+		
+		else if(jObj.getString("type").equalsIgnoreCase("createAnUserGroup")){
+			entitlements = userEntitlementService.creatingAUserGroup(jObj.getString("name"));
 		}
 		
 		else if(jObj.getString("type").equalsIgnoreCase("checkForAvailabilityOfAnEntitlement")){
