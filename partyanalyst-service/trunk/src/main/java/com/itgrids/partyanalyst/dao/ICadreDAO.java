@@ -18,10 +18,14 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findDistrictsByStateID(String stateID);
 	public List findMandalsByDistrictID(String districtID);
 	public List findVillagesByTehsilID(String tehsilID);
+	public List findHamletsByTehsilIds(String tehsilIds);
 	public List findCadreSizeStateWise(Long userID); //findTotalStateZeroSizeCadres
 	public List findCadreSizeDistrictWise(Long userID);//findTotalDistrictZeroSizeCadres
 	public List findCadreSizeMandalWise(Long userID);//findTotalMandalZeroSizeCadres
 	public List findCadreSizeVillageWise(Long userID);//findTotalVillageZeroSizeCadres
+	public List findCadreSizeLocalElectionBodywise(Long userId);
+	public List findCadreSizeConstituencywise(Long userId);
+	public List findCadreSizeWardswise(Long userId);
 	//Ajax call methods
 	public List findStateCadresByCountry(Long countryID, Long userID, String cardreType);
 	public List findDistCadresByState(Long stateID, Long userID, String cardreType);
