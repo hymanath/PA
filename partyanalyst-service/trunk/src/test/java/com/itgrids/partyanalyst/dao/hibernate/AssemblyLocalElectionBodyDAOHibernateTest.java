@@ -53,6 +53,8 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}
 
+	*/
+	/*public void testGetLocalElectionBodyId()
 	
 	public void testGetLocalElectionBodyId()
 	{
@@ -60,10 +62,22 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		System.out.println("Results Size:"+result.size());
 		Object object = (Object)result.get(0);
 		Long id = (Long)object;
-		System.out.println("id:"+id);
-				
-		
+		System.out.println("id:"+id);		
 	}*/
+	public void testFindByConstituencyIds()
+	{
+		List result = assemblyLocalElectionBodyDAO.findByConstituencyIds("836,844,860");
+		System.out.println("Results Size:"+result.size());
+		for(int i = 0;i<result.size();i++)
+		{
+			Object[] obj = (Object[])result.get(i);
+			System.out.println("id:"+Long.parseLong(obj[0].toString()));
+			System.out.println("name:"+obj[1].toString());	
+		}
+				
+
+		
+	}
 	public void testGetAssemblyLocalElectionBodyId()
 	{
 		System.out.println(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(488L).get(0).toString());
