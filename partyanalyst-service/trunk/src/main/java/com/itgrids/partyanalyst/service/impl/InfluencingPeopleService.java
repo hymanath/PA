@@ -1907,43 +1907,43 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			if(regionType.equalsIgnoreCase(IConstants.STATE)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInState(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInState(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.STATE);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInDistrict(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInDistrict(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.DISTRICT);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInConstituency(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInConstituency(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.CONSTITUENCY);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || regionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION")){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInLocalElectionBody(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInLocalElectionBody(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,"MUNCIPALITY/CORPORATION");
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.TEHSIL) || regionType.equalsIgnoreCase(IConstants.MANDAL)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInTehsil(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInTehsil(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.MANDAL);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.HAMLET) || regionType.equalsIgnoreCase(IConstants.VILLAGE)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInVillage(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInVillage(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.VILLAGE);
 				
 			}else if(regionType.equalsIgnoreCase(IConstants.WARD)){
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInWard(userId, regionId);
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInWard(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.WARD);
 			}
