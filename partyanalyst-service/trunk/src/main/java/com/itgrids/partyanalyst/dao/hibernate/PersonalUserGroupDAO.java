@@ -320,5 +320,90 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null order by "+
 				"model.staticLocalGroup.groupType",userId);
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInConstituency(Long userId,
+			Long constituencyId) {
+		Object[] params = {userId,constituencyId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.constituency is not null and "+
+				"model.localGroupRegion.constituency.constituencyId = ? order by model.localGroupRegion.district.districtId",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInDistrict(Long userId, Long districtId) {
+		
+		Object[] params = {userId,districtId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.district is not null and "+
+				"model.localGroupRegion.district.districtId = ? order by model.localGroupRegion.state.stateId",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInLocalElectionBody(Long userId,
+			Long localBodyId) {
+	
+		Object[] params = {userId,localBodyId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.localBody is not null and "+
+				"model.localGroupRegion.localBody.localElectionBodyId = ? order by model.localGroupRegion.constituency.constituencyId",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInState(Long userId, Long stateId) {
+		
+		Object[] params = {userId,stateId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.state is not null and "+
+				"model.localGroupRegion.state.stateId = ?",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInTehsil(Long userId, Long tehsilId) {
+		
+		Object[] params = {userId,tehsilId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.tehsil is not null and "+
+				"model.localGroupRegion.tehsil.tehsilId = ? order by model.localGroupRegion.constituency.constituencyId",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInVillage(Long userId, Long hamletId) {
+		
+		Object[] params = {userId,hamletId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.hamlet is not null and "+
+				"model.localGroupRegion.hamlet.hamletId = ? order by model.localGroupRegion.tehsil.tehsilId",params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInWard(Long userId, Long wardId) {
+		
+		Object[] params = {userId,wardId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion is not null and model.localGroupRegion.ward is not null and "+
+				"model.localGroupRegion.ward.constituencyId = ? order by model.localGroupRegion.localBody.localElectionBodyId",params);
+	}
 	
 }
