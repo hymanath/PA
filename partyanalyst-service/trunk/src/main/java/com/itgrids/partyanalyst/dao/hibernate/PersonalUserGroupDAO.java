@@ -340,7 +340,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.district.districtId,model.localGroupRegion.district.districtName from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.district is not null and "+
 				"model.localGroupRegion.district.districtId = ? order by model.localGroupRegion.state.stateId",params);
 	}
@@ -353,7 +354,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,localBodyId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.localBody.localElectionBodyId,model.localGroupRegion.localBody.name from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.localBody is not null and "+
 				"model.localGroupRegion.localBody.localElectionBodyId = ? order by model.localGroupRegion.constituency.constituencyId",params);
 	}
@@ -365,7 +367,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,stateId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.state.stateId,model.localGroupRegion.state.stateName from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.state is not null and "+
 				"model.localGroupRegion.state.stateId = ?",params);
 	}
@@ -377,7 +380,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,tehsilId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.tehsil.tehsilId,model.localGroupRegion.tehsil.tehsilName from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.tehsil is not null and "+
 				"model.localGroupRegion.tehsil.tehsilId = ? order by model.localGroupRegion.constituency.constituencyId",params);
 	}
@@ -389,7 +393,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,hamletId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.hamlet.hamletId,model.localGroupRegion.hamlet.hamletName from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.hamlet is not null and "+
 				"model.localGroupRegion.hamlet.hamletId = ? order by model.localGroupRegion.tehsil.tehsilId",params);
 	}
@@ -401,7 +406,8 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
 				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
-				"model.localGroupRegion from PersonalUserGroup model where model.createdUserId.registrationId = ? and "+
+				"model.localGroupRegion.ward.constituencyId,model.localGroupRegion.ward.name from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and "+
 				"model.localGroupRegion is not null and model.localGroupRegion.ward is not null and "+
 				"model.localGroupRegion.ward.constituencyId = ? order by model.localGroupRegion.localBody.localElectionBodyId",params);
 	}
