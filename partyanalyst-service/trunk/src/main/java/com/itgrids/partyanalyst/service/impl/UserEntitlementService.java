@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.model.GroupEntitlement;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
+import com.itgrids.partyanalyst.model.UserGroups;
 import com.itgrids.partyanalyst.service.IUserEntitlementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -101,7 +102,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			setOfGroups = new ArrayList<SelectOptionVO>(0);	
 			SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(0l);
-			selectOption.setName("select a user group");
+			selectOption.setName("select a entitlement group");
 			setOfGroups.add(selectOption);
 			List result = groupEntitlementDAO.getAllGroups();
 			if(result!=null){
@@ -123,6 +124,9 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
+		}finally{		
+			setOfGroups = null;
+			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -162,6 +166,9 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
+		}finally{		
+			listOfEntitlements = null;
+			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -213,6 +220,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setExceptionEncountered(e);
 			
 			entitlementVO.setResultStatus(resultStatus);
+		}finally{			
+			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -238,6 +247,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
+		}finally{			
+			System.gc();
 		}
 		return entitlementVO;		
 	}
@@ -264,6 +275,34 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
+		}finally{			
+			System.gc();
+		}
+		return entitlementVO;		
+	}
+	
+	
+	/**
+	 * This method can be used to check the availability to create a new user group.
+	 * @author Ravi Kiran.Y
+	 * @serialData 04-11-10
+	 */
+	public EntitlementVO checkForUserGroupNameAvailability(String name){
+		EntitlementVO entitlementVO = new EntitlementVO();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<Entitlement> result = userGroupsDAO.checkForUserAvailability(name);
+			if(result!= null){				
+				entitlementVO.setMessage(result.size()==0 ? IConstants.AVAILABLE : IConstants.NOT_AVAILABLE);
+			}
+			entitlementVO.setName(name);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+			entitlementVO.setResultStatus(resultStatus);
 		}
 		return entitlementVO;		
 	}
@@ -274,7 +313,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 	 * it creates the group.
 	 * 	
 	 * @author Ravi Kiran.Y
-	 * @serialData 04-11-10
+	 * @serialData 10-11-10
 	 * @param groupName
 	 * @return EntitlementVO 
 	 */
@@ -304,6 +343,47 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setExceptionEncountered(e);
 			
 			entitlementVO.setResultStatus(resultStatus);
+		}
+		return entitlementVO;
+	}
+	
+	/**
+	 * This method can be used to create a group.
+	 * This method internally checks whether the group is available or not if the group is available
+	 * it creates the group.
+	 * 	
+	 * @author Ravi Kiran.Y
+	 * @serialData 10-11-10
+	 * @param groupName
+	 * @return EntitlementVO 
+	 */
+	public EntitlementVO creatingAUserGroup(String name){
+		EntitlementVO entitlementVO = new EntitlementVO();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			EntitlementVO resultOfAvailability = checkForUserGroupNameAvailability(name);
+			if(resultOfAvailability.getResultStatus()!=null){
+				throw new Exception(resultOfAvailability.getResultStatus().getExceptionEncountered());
+			}else{				
+				if(resultOfAvailability.getMessage().equalsIgnoreCase(IConstants.NOT_AVAILABLE)){
+					entitlementVO.setMessage(IConstants.NOT_AVAILABLE);
+				}else{					
+					UserGroups userGroups = new UserGroups();
+					userGroups.setNotes(name);
+					userGroupsDAO.save(userGroups);
+					entitlementVO.setMessage(IConstants.AVAILABLE);
+				}
+				entitlementVO.setName(name);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);				
+			}			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.warn("There was an error in fetching EntitlementGroups data");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);			
+			entitlementVO.setResultStatus(resultStatus);
+		}finally{
+			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -781,4 +861,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 		}
 		return entitlementVO;
 	}
+	
+	
 }

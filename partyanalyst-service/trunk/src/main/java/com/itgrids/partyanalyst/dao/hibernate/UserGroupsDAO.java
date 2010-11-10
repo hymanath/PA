@@ -32,4 +32,12 @@ public class UserGroupsDAO extends GenericDaoHibernate<UserGroups, Long> impleme
 		return getHibernateTemplate().find(" select model.userGroupId,model.notes from UserGroups model order by model.notes asc");
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Entitlement> checkForUserAvailability(String name){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.userGroupId,model.notes from UserGroups model");
+		sb.append(" where model.notes = ?");
+		return getHibernateTemplate().find(sb.toString(),name);
+		
+	}
 }
