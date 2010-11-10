@@ -17,9 +17,18 @@ public class NavigationVO extends ResultStatus{
 	private List<SelectOptionVO> problemsCount;
 	private List<ProblemBeanVO> approvalProblems;
 	private List<SelectOptionVO> messageTypes;
-	
+	private List<EntitlementVO> entitlementVO;
 	private ResultStatus resultStatus;
 	
+	
+	public List<EntitlementVO> getEntitlementVO() {
+		return entitlementVO;
+	}
+
+	public void setEntitlementVO(List<EntitlementVO> entitlementVO) {
+		this.entitlementVO = entitlementVO;
+	}
+
 	public List<SelectOptionVO> getMessageTypes() {
 		return messageTypes;
 	}

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IGroupEntitlementRelationDAO;
 import com.itgrids.partyanalyst.model.Entitlement;
@@ -34,4 +35,15 @@ public class GroupEntitlementRelationDAO extends GenericDaoHibernate<GroupEntitl
 		
 		return getHibernateTemplate().find(sb.toString(),groupId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Integer deleteAllRelations(Long groupId) {		
+		StringBuilder query = new StringBuilder();
+		query.append(" delete from GroupEntitlementRelation model ");
+		query.append(" where model.groupEntitlement.groupEntitlementId = ? ");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, groupId);
+		return queryObject.executeUpdate();		
+	}
+
 }
