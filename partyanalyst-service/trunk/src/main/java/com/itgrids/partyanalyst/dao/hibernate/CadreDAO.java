@@ -77,6 +77,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 					"where model.tehsil.tehsilId in(" + tehsilIDs + ") order by model.townshipName");
 		return totalVillages;
 	}
+	@SuppressWarnings("unchecked")
+	public List findHamletsByTehsilIds(String tehsilIds) {
+		
+		return getHibernateTemplate().find("Select model.hamletId, model.hamletName from Hamlet model " +
+				"where model.township.tehsil.tehsilId in(" + tehsilIds + ")");
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List findCadreSizeStateWise(Long userID){
@@ -84,20 +90,55 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? group by model.currentAddress.state.stateId", userID); 
 		return results;
 	}
-	@SuppressWarnings("unchecked")
+	
+	/*@SuppressWarnings("unchecked")
 	public List findCadreSizeDistrictWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.district.districtId, count(model.district)from Cadre model " +
 				"where model.registration.registrationId = ? group by model.district", userID); 
 		return results;
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreSizeDistrictWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.currentAddress.district.districtId, count(model.currentAddress.district.districtId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.district.districtId is not null group by model.currentAddress.district.districtId", userID); 
+		return results;
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List findCadreSizeMandalWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, count(model.tehsil.tehsilId)from Cadre model " +
 				"where model.registration.registrationId = ? group by model.tehsil.tehsilId", userID); 
 		return results;
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreSizeMandalWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.currentAddress.tehsil.tehsilId, count(model.currentAddress.tehsil.tehsilId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.tehsil.tehsilId", userID); 
+		return results;
 	}
-
+	
+	public List findCadreSizeLocalElectionBodywise(Long userId) {
+		List  results = getHibernateTemplate().find("Select model.currentAddress.localElectionBody.localElectionBodyId, count(model.currentAddress.localElectionBody.localElectionBodyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.localElectionBody.localElectionBodyId", userId); 
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreSizeHamletWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, count(model.currentAddress.hamlet.hamletId)from Cadre model " +
+					"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId is not null group by model.currentAddress.hamlet.hamletId", userID); 
+		return results;
+		
+	}
+	
+	public List findCadreSizeConstituencywise(Long userId) {
+		List  results = getHibernateTemplate().find("Select model.currentAddress.constituency.constituencyId, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.constituency.constituencyId is not null group by model.currentAddress.constituency.constituencyId", userId); 
+		return results;
+	}
+	
 	/*@SuppressWarnings("unchecked")
 	public List findCadreSizeVillageWise1(String villageIDs, Long userID){
 		try{
@@ -119,6 +160,11 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 	}
 	
+	public List findCadreSizeWardswise(Long userId) {
+		List  results = getHibernateTemplate().find("Select model.currentAddress.ward.constituencyId, count(model.currentAddress.ward.constituencyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId", userId); 
+		return results;
+	}
 
 	/*public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
 		Object[] params = {userID,cadreType};
@@ -336,14 +382,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return totalHamlets;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List findCadreSizeHamletWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.hamlet.hamletId, count(model.hamlet.hamletId)from Cadre model " +
 					"where model.registration.registrationId = ? group by model.hamlet.hamletId", userID); 
 		return results;
 		
-	}
-
+	}*/	
+	
 	@SuppressWarnings("unchecked")
 	public List findCadreDetailsByLevelAndProperty(Long userId,
 			String propertyColumnOne, String propertyColumnTwo,
@@ -562,6 +608,5 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		List  results = getHibernateTemplate().find("Select model.currentAddress.state.stateId, model.currentAddress.state.stateName, count(model.currentAddress.state.stateId)from Cadre model " +
 				"where model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.state.stateId order by model.currentAddress.state.stateName", params); 
 		return results;
-	}
-		
+	}		
 }
