@@ -49,6 +49,7 @@
 		<pattern>/getInfluencingPersonInfoAction*</pattern>
 		<pattern>/influencingPeopleDataAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+		<pattern>/localGroupsPeopleDataAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

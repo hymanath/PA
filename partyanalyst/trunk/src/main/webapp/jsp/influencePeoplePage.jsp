@@ -52,7 +52,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
-<title>Influence People here</title>
+<title>Influence People Details</title>
 
 	<style type="text/css">
 
