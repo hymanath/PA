@@ -1908,31 +1908,47 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			if(regionType.equalsIgnoreCase(IConstants.STATE)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInState(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.STATE);
+				
 			}else if(regionType.equalsIgnoreCase(IConstants.DISTRICT)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInDistrict(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.DISTRICT);
+				
 			}else if(regionType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInConstituency(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.CONSTITUENCY);
+				
 			}else if(regionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) || regionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION")){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInLocalElectionBody(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,"MUNCIPALITY/CORPORATION");
+				
 			}else if(regionType.equalsIgnoreCase(IConstants.TEHSIL) || regionType.equalsIgnoreCase(IConstants.MANDAL)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInTehsil(userId, regionId);
-			}else if(regionType.equalsIgnoreCase(IConstants.TEHSIL) || regionType.equalsIgnoreCase(IConstants.MANDAL)){
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.MANDAL);
 				
-				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInTehsil(userId, regionId);
 			}else if(regionType.equalsIgnoreCase(IConstants.HAMLET) || regionType.equalsIgnoreCase(IConstants.VILLAGE)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInVillage(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.VILLAGE);
+				
 			}else if(regionType.equalsIgnoreCase(IConstants.WARD)){
 				
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInWard(userId, regionId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.WARD);
 			}
 			
-			if(localUserGroupsList != null && localUserGroupsList.size() > 0)
-				getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO);
+			
 			
 		}catch(Exception ex){
 			log.error("Exception Raised In Local User Group Details Retrieval :" + ex);
@@ -1953,7 +1969,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void getProcessedLocalUserGroupDetailsToVO(List localGroupsList,List<LocalUserGroupDetailsVO> localUserGroupDetailsVO){
+	public void getProcessedLocalUserGroupDetailsToVO(List localGroupsList,List<LocalUserGroupDetailsVO> localUserGroupDetailsVO,String type){
 		
 		if(localGroupsList != null && localGroupsList.size() > 0){
 			Iterator lstItr = localGroupsList.listIterator();
@@ -1973,10 +1989,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				groupDetails.setGroupCategoryId((Long)values[4]);
 				groupDetails.setGroupCategoryType((String)values[5]);
 				
-				LocalGroupRegion localGroupRegion = (LocalGroupRegion)values[7];
-				SelectOptionVO locationDetails = getLocalUserGroupLocationDetails(localGroupRegion);
-				groupDetails.setGroupLocationId(locationDetails.getId());
-				groupDetails.setGroupLocation(locationDetails.getName());
+				//LocalGroupRegion localGroupRegion = (LocalGroupRegion)values[7];
+				//SelectOptionVO locationDetails = getLocalUserGroupLocationDetails(localGroupRegion);
+				String locName = (String)values[8];
+				groupDetails.setGroupLocationId((Long)values[7]);
+				groupDetails.setGroupLocation(locName.concat(" (").concat(type).concat(")"));
 				
 				List<UserGroupMembersVO> groupMemberDetails = getUserGroupMemberDetailsForAGroup((Long)values[0]);
 				groupDetails.setGroupMembersCount(new Long(groupMemberDetails.size()));
