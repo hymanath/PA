@@ -18,6 +18,8 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	
 	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId);
 	
+	public List getLatestConstituenciesByDistrictIds(String districtIds);
+	
 	@SuppressWarnings("unchecked")
 	public List getLatestConstituenciesForADistrict(Long districtId);
 	
