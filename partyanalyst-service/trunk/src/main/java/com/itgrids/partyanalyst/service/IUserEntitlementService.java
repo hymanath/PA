@@ -36,4 +36,8 @@ public interface IUserEntitlementService {
 	public NavigationVO getAllEntitlementsGroupsBasedOnUserGroupId(Long userGroupId);
 	
 	public EntitlementVO saveRelationBetweenEntitlementsGroupsAndUserGroupId(Long userGroupId,String entitlementGroupIds);
+	
+	public EntitlementVO checkForUserGroupNameAvailability(String name);
+	
+	public EntitlementVO creatingAUserGroup(String name);
 }
