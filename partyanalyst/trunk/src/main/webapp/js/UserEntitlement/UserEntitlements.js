@@ -82,6 +82,23 @@
 			}		
 	  	entitlementAvailability.innerHTML = str;
 	  }
+	  
+	  function showAvailabilityOfUserGroup(results){
+			
+		  	var entitlementAvailability = document.getElementById("userGroupAvailabilityID");
+		  	
+		  	var str='';	
+		  	if(results.resultStatus==null){
+				    	if(results.message=="NOT_AVAILABLE"){
+				    		str+='<b style="color:red;">'+results.name+' Group is Not Available</b>';
+				        }else{
+				        	str+='<b style="color:green;"> '+results.name+' Group is available. </b>';
+				        }
+				}else{
+					str+='<b style="color:red;">There was an error in processing the request.</b>';
+				}		
+		  	entitlementAvailability.innerHTML = str;
+		  }
     
     function showAvailabilityOfGroups(results){
 
@@ -133,6 +150,24 @@
     	groupAvailability.innerHTML = str;
     }
     	
+    function showUserGroupResult(results){
+
+    	var groupAvailability = document.getElementById("userGroupAvailabilityID");
+    	var str='';
+    	
+    	if(results.resultStatus==null){
+		    	if(results.message=="NOT_AVAILABLE"){
+		    		str+='<b style="color:red;">'+results.name+' Entitlement is Not Available</b>';
+		        }else{
+		        	str+='<b style="color:green;">Successfuly created '+results.name+' Entitlement </b>';
+		        }
+		}else{
+			str+='<b style="color:red;">There was an error in processing the request.</b>';
+		}
+    	str+='';
+    	groupAvailability.innerHTML = str;
+    }
+    
 	function checkForAvailabilityOfGroupName()
 	{
 		var enteredText = document.getElementById("groupNameId").value;
@@ -160,7 +195,7 @@
 	
 	function createAEntitlement()
 	{
-		var enteredText = document.getElementById("entitlementId").value;
+		var enteredText = document.getElementById("entitlementId").value;		
 		if(enteredText!=""){					
 			var jsObj=
 			{	
@@ -172,7 +207,13 @@
 			var url = "entitlementUserAction.action?"+rparam;	
 			callAjax(jsObj,url);
 		}else{
-			alert("please enter entitlement name");
+			var text = document.getElementById("entitlementAvailabilityID");
+			var str='';
+			text.innerHTML = str;
+			
+			var str2='';
+			str2+='<b style="color:red">please enter group name';
+			text.innerHTML = str2;
 		}		
 	}
 	
@@ -191,10 +232,42 @@
 			var url = "entitlementUserAction.action?"+rparam;	
 			callAjax(jsObj,url);
 		}else{
-			alert("please enter entitlement");
+			var text = document.getElementById("entitlementAvailabilityID");
+			var str='';
+			text.innerHTML = str;
+			
+			var str2='';
+			str2+='<b style="color:red">please enter group name';
+			text.innerHTML = str2;
 		}		
 	}
 	
+	function checkForAvailabilityOfUserGroup()
+	{
+		var enteredText = document.getElementById("userGroupID").value;
+		if(enteredText!=""){	
+			var selectedCheckBoxes = '';						
+			var jsObj=
+			{		
+					name:enteredText,	
+					type:"checkForUserGroupNameAvailability",			
+					task:"checkForUserGroupNameAvailability"						
+			};				
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "entitlementUserAction.action?"+rparam;	
+			callAjax(jsObj,url);
+		}else{
+			var text = document.getElementById("userGroupAvailabilityID");
+			var str='';
+			text.innerHTML = str;
+			
+			var str2='';
+			str2+='<b style="color:red">please enter group name';
+			text.innerHTML = str2
+		}		
+	}
+	
+		
 	function viewAllEntitlements()
 	{
 		var text = document.getElementById("groupAvailabilityID");
@@ -233,9 +306,8 @@
 		};				
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "entitlementAction.action?"+rparam;	
-		callAjax(jsObj,url);
-		
-	}
+		callAjax(jsObj,url);		
+	}	
 	
 	function getAllEntitlementGroups()
 	{		
@@ -612,4 +684,28 @@
 		var url = "entitlementAction.action?"+rparam;	
 		callAjax(jsObj,url);
 		
+	}
+	
+	function createAnUserGroup()
+	{
+		var enteredText = document.getElementById("userGroupID").value;		
+		if(enteredText!=""){					
+			var jsObj=
+			{	
+					name:enteredText,	
+					type:"createAnUserGroup",			
+					task:"createAnUserGroup"						
+			};				
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "entitlementUserAction.action?"+rparam;	
+			callAjax(jsObj,url);
+		}else{
+			var text = document.getElementById("entitlementAvailabilityID");
+			var str='';
+			text.innerHTML = str;
+			
+			var str2='';
+			str2+='<b style="color:red">please enter group name';
+			text.innerHTML = str2;
+		}		
 	}
