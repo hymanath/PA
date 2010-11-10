@@ -9,6 +9,8 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -53,6 +56,8 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	private Constituency ward;
 	private Hamlet hamlet;
 	
+	private Set<PersonalUserGroup> personalUserGroup = new HashSet<PersonalUserGroup>(0);
+	
 	//Default Constructor
 	public LocalGroupRegion(){
 		
@@ -62,7 +67,8 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	public LocalGroupRegion(String description, Date updatedDate,
 			String groupRegionScope, State state, District district,
 			Constituency constituency, Tehsil tehsil, Township township,
-			LocalElectionBody localBody, Constituency ward, Hamlet hamlet) {
+			LocalElectionBody localBody, Constituency ward, Hamlet hamlet,
+			Set<PersonalUserGroup> personalUserGroup) {
 		super();
 		this.description = description;
 		this.updatedDate = updatedDate;
@@ -75,6 +81,7 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 		this.localBody = localBody;
 		this.ward = ward;
 		this.hamlet = hamlet;
+		this.personalUserGroup = personalUserGroup;
 	}
 
 	@Id
@@ -210,6 +217,15 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "localGroupRegion")
+	public Set<PersonalUserGroup> getPersonalUserGroup() {
+		return personalUserGroup;
+	}
+
+	public void setPersonalUserGroup(Set<PersonalUserGroup> personalUserGroup) {
+		this.personalUserGroup = personalUserGroup;
 	}
 
 }
