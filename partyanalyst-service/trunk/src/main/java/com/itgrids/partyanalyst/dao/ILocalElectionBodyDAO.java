@@ -21,5 +21,7 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public List<LocalElectionBody> findByLocalElectionBodyIds(List<Long> localElectionBodyIds);
 	
+	public List getStateToLocalElectionBodyByLEB(String localElectionBodyIds);
+	
 	
 }
