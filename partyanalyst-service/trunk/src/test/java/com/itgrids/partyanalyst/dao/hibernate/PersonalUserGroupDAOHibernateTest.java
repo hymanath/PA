@@ -109,11 +109,10 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 	@Test
 	public void testGetLocalUserGroupsOverview(){
 		
-		List results = personalUserGroupDAO.getTotalCountOfLocalGroupsInDistrict(1L, 19L, 1L);
+		List results = personalUserGroupDAO.getLocalGroupDetailsInConstituency(1L,232L,1L);
 		if(results != null){
 			System.out.println(" Results Size :" + results.size());
-			Object size = (Object)results.get(0);
-			System.out.println(" Total No Of Groups :" + (Long)size);
+			
 		}
 	}
 	
