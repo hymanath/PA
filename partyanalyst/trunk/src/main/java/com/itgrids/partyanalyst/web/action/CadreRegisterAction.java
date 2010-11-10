@@ -93,9 +93,11 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String dobOption;
 	private String age;
 	private String windowTask;
-	private String noOfChildren;
-	private String firstChildName,secondChildName,thirdChildName;
-	private String firstChildDOB,secondChildDOB,thirdChildDOB;
+	private String noOfFamilyMembers,noOfVoters;
+	private String firstFamilyMemberName,secondFamilyMemberName,thirdFamilyMemberName;
+	private String firstFamilyMemberRelation,secondFamilyMemberRelation,thirdFamilyMemberRelation;
+	private String firstFamilyMemberRelationId,secondFamilyMemberRelationId,thirdFamilyMemberRelationId;
+	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	private ResultStatus rs; 
 	private List<String> skills;
 	private List<String> trainingCamps;
@@ -539,6 +541,30 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setLanguageOptions_English(languageOptions_English);
 	}
 
+	public String getFirstFamilyMemberRelationId() {
+		return this.cadreInfo.getFirstFamilyMemberRelationId();
+	}
+
+	public void setFirstFamilyMemberRelationId(String firstFamilyMemberRelationId) {
+		this.cadreInfo.setFirstFamilyMemberRelationId(firstFamilyMemberRelationId);
+	}
+
+	public String getSecondFamilyMemberRelationId() {
+		return this.cadreInfo.getSecondFamilyMemberRelationId();
+	}
+
+	public void setSecondFamilyMemberRelationId(String secondFamilyMemberRelationId) {
+		this.cadreInfo.setSecondFamilyMemberRelationId(secondFamilyMemberRelationId);
+	}
+
+	public String getThirdFamilyMemberRelationId() {
+		return this.cadreInfo.getThirdFamilyMemberRelationId();
+	}
+
+	public void setThirdFamilyMemberRelationId(String thirdFamilyMemberRelationId) {
+		this.cadreInfo.setThirdFamilyMemberRelationId(thirdFamilyMemberRelationId);
+	}
+
 	public List<String> getLanguageOptions_Hindi() {
 		return cadreInfo.getLanguageOptions_Hindi();
 	}
@@ -742,67 +768,102 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.defaultCadreLevelId;
 	}	
 	
-	public String getNoOfChildren() {
-		return this.cadreInfo.getNoOfChildren();
-	}
-	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9]*$", message = "Invalid selection for No of Children")
-	public void setNoOfChildren(String noOfChildren) {
-		this.cadreInfo.setNoOfChildren(noOfChildren);
-	}
-	
-	public String getFirstChildName() {
-		return this.cadreInfo.getFirstChildName();
-	}
-
-	public void setFirstChildName(String firstChildName) {
-		this.cadreInfo.setFirstChildName(firstChildName);
-	}
-
-	public String getSecondChildName() {
-		return this.cadreInfo.getSecondChildName();
-	}
-
-	public void setSecondChildName(String secondChildName) {
-		this.cadreInfo.setSecondChildName(secondChildName);
-	}
-
-	public String getThirdChildName() {
-		return this.cadreInfo.getThirdChildName();
-	}
-
-	public void setThirdChildName(String thirdChildName) {
-		this.cadreInfo.setThirdChildName(thirdChildName);
-	}
-
-	public String getFirstChildDOB() {
-		return this.cadreInfo.getFirstChildDOB();
-	}
-
-	public void setFirstChildDOB(String firstChildDOB) {
-		this.cadreInfo.setFirstChildDOB(firstChildDOB);
-	}
-
-	public String getSecondChildDOB() {
-		return this.cadreInfo.getSecondChildDOB();
-	}
-
-	public void setSecondChildDOB(String secondChildDOB) {
-		this.cadreInfo.setSecondChildDOB(secondChildDOB);
-	}
-
-	public String getThirdChildDOB() {
-		return this.cadreInfo.getThirdChildDOB();
-	}
-
-	public void setThirdChildDOB(String thirdChildDOB) {
-		this.cadreInfo.setThirdChildDOB(thirdChildDOB);
-	}
 	public Boolean getSameAsCAFlag() {
 		return sameAsCAFlag;
 	}
 	public void setSameAsCAFlag(Boolean sameAsCAFlag) {
 		this.sameAsCAFlag = sameAsCAFlag;
+	}
+	
+	public String getNoOfFamilyMembers() {
+		return this.cadreInfo.getNoOfFamilyMembers();
+	}
+
+	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
+		this.cadreInfo.setNoOfFamilyMembers(noOfFamilyMembers);
+	}
+
+	public String getNoOfVoters() {
+		return this.cadreInfo.getNoOfVoters();
+	}
+
+	public void setNoOfVoters(String noOfVoters) {
+		this.cadreInfo.setNoOfVoters(noOfVoters);
+	}
+
+	public String getFirstFamilyMemberName() {
+		return this.cadreInfo.getFirstFamilyMemberName();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First Family Member Name should not contain special characters and numbers", shortCircuit = true)
+	public void setFirstFamilyMemberName(String firstFamilyMemberName) {
+		this.cadreInfo.setFirstFamilyMemberName(firstFamilyMemberName);
+	}
+
+	public String getSecondFamilyMemberName() {
+		return this.cadreInfo.getSecondFamilyMemberName();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "Second Family Member Name should not contain special characters and numbers", shortCircuit = true)
+	public void setSecondFamilyMemberName(String secondFamilyMemberName) {
+		this.cadreInfo.setSecondFamilyMemberName(secondFamilyMemberName);
+	}
+
+	public String getThirdFamilyMemberName() {
+		return this.cadreInfo.getThirdFamilyMemberName();
+	}
+
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "Third Family Member Name should not contain special characters and numbers", shortCircuit = true)
+	public void setThirdFamilyMemberName(String thirdFamilyMemberName) {
+		this.cadreInfo.setThirdFamilyMemberName(thirdFamilyMemberName);
+	}
+
+	public String getFirstFamilyMemberRelation() {
+		return this.cadreInfo.getFirstFamilyMemberRelation();
+	}
+
+	public void setFirstFamilyMemberRelation(String firstFamilyMemberRelation) {
+		this.cadreInfo.setFirstFamilyMemberRelation(firstFamilyMemberRelation);
+	}
+
+	public String getSecondFamilyMemberRelation() {
+		return this.cadreInfo.getSecondFamilyMemberRelation();
+	}
+
+	public void setSecondFamilyMemberRelation(String secondFamilyMemberRelation) {
+		this.cadreInfo.setSecondFamilyMemberRelation(secondFamilyMemberRelation);
+	}
+
+	public String getThirdFamilyMemberRelation() {
+		return this.cadreInfo.getThirdFamilyMemberRelation();
+	}
+
+	public void setThirdFamilyMemberRelation(String thirdFamilyMemberRelation) {
+		this.cadreInfo.setThirdFamilyMemberRelation(thirdFamilyMemberRelation);
+	}
+
+	public String getFirstFamilyMemberDOB() {
+		return this.cadreInfo.getFirstFamilyMemberDOB();
+	}
+
+	public void setFirstFamilyMemberDOB(String firstFamilyMemberDOB) {
+		this.cadreInfo.setFirstFamilyMemberDOB(firstFamilyMemberDOB);
+	}
+
+	public String getSecondFamilyMemberDOB() {
+		return this.cadreInfo.getSecondFamilyMemberDOB();
+	}
+
+	public void setSecondFamilyMemberDOB(String secondFamilyMemberDOB) {
+		this.cadreInfo.setSecondFamilyMemberDOB(secondFamilyMemberDOB);
+	}
+
+	public String getThirdFamilyMemberDOB() {
+		return this.cadreInfo.getThirdFamilyMemberDOB();
+	}
+
+	public void setThirdFamilyMemberDOB(String thirdFamilyMemberDOB) {
+		this.cadreInfo.setThirdFamilyMemberDOB(thirdFamilyMemberDOB);
 	}
 
 	public String execute() throws Exception {
