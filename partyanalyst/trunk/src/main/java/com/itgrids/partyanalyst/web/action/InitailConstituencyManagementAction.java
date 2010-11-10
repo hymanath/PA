@@ -12,6 +12,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementInfluenceScopeOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementRegionWiseOverviewVO;
+import com.itgrids.partyanalyst.dto.ConstituencyManagementSubRegionWiseOverviewVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupsInfoVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -21,6 +26,7 @@ import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersInfoVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
@@ -51,7 +57,27 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	private IConstituencyManagementService constituencyManagementService;
 	private IUserGroupService userGroupService;
 	private List<UserGroupMembersInfoVO> userGroupMembersInfoVO;
+	private ConstituencyManagementDataVO constituencyManagementDataVO;
+	private IInfluencingPeopleService influencingPeopleService;
 	
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
+	}
+
+	public ConstituencyManagementDataVO getConstituencyManagementDataVO() {
+		return constituencyManagementDataVO;
+	}
+
+	public void setConstituencyManagementDataVO(
+			ConstituencyManagementDataVO constituencyManagementDataVO) {
+		this.constituencyManagementDataVO = constituencyManagementDataVO;
+	}
+
 	public IUserGroupService getUserGroupService() {
 		return userGroupService;
 	}
@@ -237,56 +263,270 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		
 		if(user == null)
 			return ERROR;
+				
 		
-		localUserGroupsInfoVO = constituencyManagementService.getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(user.getRegistrationID(), user.getAccessType(), user.getAccessValue());
-		/*localUserGroupsInfoVO = new ArrayList<LocalUserGroupsInfoVO>();
-		
-		LocalUserGroupsInfoVO l1 = new LocalUserGroupsInfoVO();
-		l1.setCategoryId(new Long(1));
-		l1.setGroupCategoryName("Apartment");
-		l1.setGroupsCount(new Long(25));
-		
-		List<UserGroupBasicInfoVO> bList = new ArrayList<UserGroupBasicInfoVO>();
-		UserGroupBasicInfoVO b1 = new UserGroupBasicInfoVO();
-		b1.setAreaType("District");
-		b1.setGroupsCount(new Long(20));
-		b1.setLocationsCount(new Long(1));
-		
-		UserGroupBasicInfoVO b2 = new UserGroupBasicInfoVO();
-		b2.setAreaType("Constituency");
-		b2.setGroupsCount(new Long(5));
-		b2.setLocationsCount(new Long(4));
-		
-		bList.add(b1);
-		bList.add(b2);
-		
-		l1.setLocationsWiseGroupInfo(bList);
-		
-		LocalUserGroupsInfoVO l2 = new LocalUserGroupsInfoVO();
-		l2.setCategoryId(new Long(1));
-		l2.setGroupCategoryName("Mahila Savings Group");
-		l2.setGroupsCount(new Long(30));
-		
-		List<UserGroupBasicInfoVO> bMList = new ArrayList<UserGroupBasicInfoVO>();
-		UserGroupBasicInfoVO bm1 = new UserGroupBasicInfoVO();
-		bm1.setAreaType("District");
-		bm1.setGroupsCount(new Long(20));
-		bm1.setLocationsCount(new Long(1));
-		
-		UserGroupBasicInfoVO bm2 = new UserGroupBasicInfoVO();
-		bm2.setAreaType("Constituency");
-		bm2.setGroupsCount(new Long(10));
-		bm2.setLocationsCount(new Long(5));
-		
-		bMList.add(bm1);
-		bMList.add(bm2);
-		
-		l2.setLocationsWiseGroupInfo(bMList);
-		
-		localUserGroupsInfoVO.add(l1);
-		localUserGroupsInfoVO.add(l2);*/
-		
+		constituencyManagementDataVO = influencingPeopleService.getLocalUserGroupOverviewDetails(user.getRegistrationID());
+		//localUserGroupsInfoVO = constituencyManagementService.getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(user.getRegistrationID(), user.getAccessType(), user.getAccessValue());
 		return Action.SUCCESS;
+	}
+	
+	public ConstituencyManagementDataVO getLocalUserGroupsDummyData()
+	{
+		ConstituencyManagementDataVO userGroupMainVO = new ConstituencyManagementDataVO();
+		
+		ConstituencyManagementRegionWiseOverviewVO region = new ConstituencyManagementRegionWiseOverviewVO();
+		region.setRegionId(new Long(1));
+		region.setRegionTitle("Apartment");
+		region.setRegionName("Nellore");
+		region.setRegionType("District");
+		region.setCountValue(new Long(500));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub1 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub1.setSubRegionId(new Long(1));
+		sub1.setSubRegionName("Allur");
+		sub1.setSubRegionType("Mandal");
+		sub1.setCountValue(new Long(100));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub2 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub2.setSubRegionId(new Long(2));
+		sub2.setSubRegionName("Bogole");
+		sub2.setSubRegionType("Mandal");
+		sub2.setCountValue(new Long(200));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub3 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub3.setSubRegionId(new Long(3));
+		sub3.setSubRegionName("Kavali");
+		sub3.setSubRegionType("Municipality");
+		sub3.setCountValue(new Long(100));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub4 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub4.setSubRegionId(new Long(4));
+		sub4.setSubRegionName("Dagadarthi");
+		sub4.setSubRegionType("Mandal");
+		sub4.setCountValue(new Long(100));
+		
+		subRegions.add(sub1);
+		subRegions.add(sub2);
+		subRegions.add(sub3);
+		subRegions.add(sub4);
+		
+		region.setSubRegionWiseOverview(subRegions);
+		
+		List<ConstituencyManagementInfluenceScopeOverviewVO> scopeList = new ArrayList<ConstituencyManagementInfluenceScopeOverviewVO>();
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope1 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope1.setInfluenceScope("State");
+		scope1.setCountValue(new Long(50));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList1 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope11 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope11.setInfluenceScopeRegionId(new Long(1));
+		subScope11.setInfluenceScopeRegion("Andhra Pradesh");		
+		subScope11.setCountValue(new Long(50));
+		
+		subScopeList1.add(subScope11);
+		scope1.setInfluenceScopeDetails(subScopeList1);
+		//--
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope2 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope2.setInfluenceScope("District");
+		scope2.setCountValue(new Long(100));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList2 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope21 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope21.setInfluenceScopeRegionId(new Long(1));
+		subScope21.setInfluenceScopeRegion("Nellore");		
+		subScope21.setCountValue(new Long(50));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope22 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope22.setInfluenceScopeRegionId(new Long(2));
+		subScope22.setInfluenceScopeRegion("Prakasam");		
+		subScope22.setCountValue(new Long(20));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope23 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope23.setInfluenceScopeRegionId(new Long(3));
+		subScope23.setInfluenceScopeRegion("Chittor");		
+		subScope23.setCountValue(new Long(30));
+		
+		subScopeList2.add(subScope21);
+		subScopeList2.add(subScope22);
+		subScopeList2.add(subScope23);
+		
+		scope2.setInfluenceScopeDetails(subScopeList2);
+		//--
+		
+		//--
+		ConstituencyManagementInfluenceScopeOverviewVO scope3 = new ConstituencyManagementInfluenceScopeOverviewVO();
+		scope3.setInfluenceScope("Constituency");
+		scope3.setCountValue(new Long(250));
+		
+		List<ConstituencyManagementInfluenceScopeDetailsVO> subScopeList3 = new ArrayList<ConstituencyManagementInfluenceScopeDetailsVO>();
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope31 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope31.setInfluenceScopeRegionId(new Long(1));
+		subScope31.setInfluenceScopeRegion("Kavali");		
+		subScope31.setCountValue(new Long(50));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope32 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope32.setInfluenceScopeRegionId(new Long(2));
+		subScope32.setInfluenceScopeRegion("Gudur");		
+		subScope32.setCountValue(new Long(100));
+		
+		ConstituencyManagementInfluenceScopeDetailsVO subScope33 = new ConstituencyManagementInfluenceScopeDetailsVO();
+		subScope33.setInfluenceScopeRegionId(new Long(3));
+		subScope33.setInfluenceScopeRegion("Ongole");		
+		subScope33.setCountValue(new Long(100));
+		
+		subScopeList3.add(subScope31);
+		subScopeList3.add(subScope32);
+		subScopeList3.add(subScope33);
+		
+		scope3.setInfluenceScopeDetails(subScopeList3);
+		//--
+		
+		scopeList.add(scope1);
+		scopeList.add(scope2);
+		scopeList.add(scope3);
+		
+		userGroupMainVO.setRegionWiseOverview(region);
+		userGroupMainVO.setInfluenceScopeOverview(scopeList);
+		
+		
+		List<ConstituencyManagementRegionWiseOverviewVO> categoriesList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
+		
+		ConstituencyManagementRegionWiseOverviewVO region1 = new ConstituencyManagementRegionWiseOverviewVO();
+		region1.setRegionId(new Long(1));
+		region1.setRegionTitle("Mahila Group");
+		region1.setRegionName("Nellore");
+		region1.setRegionType("District");
+		region1.setCountValue(new Long(400));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions1 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub11 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub11.setSubRegionId(new Long(1));
+		sub11.setSubRegionName("Allur");
+		sub11.setSubRegionType("Mandal");
+		sub11.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub21 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub21.setSubRegionId(new Long(2));
+		sub21.setSubRegionName("Bogole");
+		sub21.setSubRegionType("Mandal");
+		sub21.setCountValue(new Long(250));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub31 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub31.setSubRegionId(new Long(3));
+		sub31.setSubRegionName("Kavali");
+		sub31.setSubRegionType("Municipality");
+		sub31.setCountValue(new Long(100));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub41 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub41.setSubRegionId(new Long(4));
+		sub41.setSubRegionName("Dagadarthi");
+		sub41.setSubRegionType("Mandal");
+		sub41.setCountValue(new Long(100));
+		
+		subRegions1.add(sub11);
+		subRegions1.add(sub21);
+		subRegions1.add(sub31);
+		subRegions1.add(sub41);
+		
+		region1.setSubRegionWiseOverview(subRegions1);
+		
+		ConstituencyManagementRegionWiseOverviewVO region2 = new ConstituencyManagementRegionWiseOverviewVO();
+		region2.setRegionId(new Long(1));
+		region2.setRegionTitle("Dwakara Group");
+		region2.setRegionName("Nellore");
+		region2.setRegionType("District");
+		region2.setCountValue(new Long(600));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions2 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub12 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub12.setSubRegionId(new Long(1));
+		sub12.setSubRegionName("Allur");
+		sub12.setSubRegionType("Mandal");
+		sub12.setCountValue(new Long(150));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub22 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub22.setSubRegionId(new Long(2));
+		sub22.setSubRegionName("Bogole");
+		sub22.setSubRegionType("Mandal");
+		sub22.setCountValue(new Long(150));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub32 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub32.setSubRegionId(new Long(3));
+		sub32.setSubRegionName("Kavali");
+		sub32.setSubRegionType("Municipality");
+		sub32.setCountValue(new Long(200));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub42 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub42.setSubRegionId(new Long(4));
+		sub42.setSubRegionName("Dagadarthi");
+		sub42.setSubRegionType("Mandal");
+		sub42.setCountValue(new Long(100));
+		
+		subRegions2.add(sub12);
+		subRegions2.add(sub21);
+		subRegions2.add(sub22);
+		subRegions2.add(sub42);
+		
+		region2.setSubRegionWiseOverview(subRegions2);
+		
+		ConstituencyManagementRegionWiseOverviewVO region3 = new ConstituencyManagementRegionWiseOverviewVO();
+		region3.setRegionId(new Long(1));
+		region3.setRegionTitle("Youth Group");
+		region3.setRegionName("Nellore");
+		region3.setRegionType("District");
+		region3.setCountValue(new Long(300));
+		
+		List<ConstituencyManagementSubRegionWiseOverviewVO> subRegions3 = new ArrayList<ConstituencyManagementSubRegionWiseOverviewVO>();
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub13 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub13.setSubRegionId(new Long(1));
+		sub13.setSubRegionName("Allur");
+		sub13.setSubRegionType("Mandal");
+		sub13.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub23 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub23.setSubRegionId(new Long(2));
+		sub23.setSubRegionName("Bogole");
+		sub23.setSubRegionType("Mandal");
+		sub23.setCountValue(new Long(150));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub33 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub33.setSubRegionId(new Long(3));
+		sub33.setSubRegionName("Kavali");
+		sub33.setSubRegionType("Municipality");
+		sub33.setCountValue(new Long(50));
+		
+		ConstituencyManagementSubRegionWiseOverviewVO sub43 = new ConstituencyManagementSubRegionWiseOverviewVO();
+		sub43.setSubRegionId(new Long(4));
+		sub43.setSubRegionName("Dagadarthi");
+		sub43.setSubRegionType("Mandal");
+		sub43.setCountValue(new Long(50));
+		
+		subRegions3.add(sub13);
+		subRegions3.add(sub23);
+		subRegions3.add(sub33);
+		subRegions3.add(sub43);
+		
+		region3.setSubRegionWiseOverview(subRegions3);
+		
+		categoriesList.add(region1);
+		categoriesList.add(region2);
+		categoriesList.add(region3);
+		
+		userGroupMainVO.setCategoryListOverview(categoriesList);
+		
+		return userGroupMainVO;
 	}
 	
 	public String getUserGroupsBasedOnCriteria()
