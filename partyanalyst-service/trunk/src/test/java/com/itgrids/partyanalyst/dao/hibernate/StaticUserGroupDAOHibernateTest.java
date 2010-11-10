@@ -39,13 +39,22 @@ public class StaticUserGroupDAOHibernateTest extends BaseDaoTestCase  {
 		System.out.println("List Size"+list.size());
 		System.out.println("Count"+Long.parseLong(list.get(0).toString()));
 		
-	}*/
+	}
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetCompleteUserGroupMemberDetailsForAGroup(){
 		List resultsList = staticUserGroupDAO.getCompleteUserGroupMemberDetailsForAGroupCatgory(10L,2L);
 		if(resultsList != null)
 			System.out.println(" Results Size :" + resultsList.size());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetLocalGroupMemberDetails(){
+		
+		List resultsList = staticUserGroupDAO.getMemberDetailsOfLocalUserGroup(5L);
+		if(resultsList != null)
+			System.out.println("Results List Size :" + resultsList.size());
 	}
 	
 }
