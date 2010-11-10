@@ -609,7 +609,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(userAddress.getLocalElectionBody() != null )
 				{
 					influencingPeopleBeanVO.setAreaType(IConstants.URBAN_TYPE);
-					influencingPeopleBeanVO.setMandal(IConstants.URBAN_TYPE+userAddress.getLocalElectionBody().getLocalElectionBodyId().toString());
+					Long MandalId = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+					influencingPeopleBeanVO.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(MandalId).get(0).toString());
 					influencingPeopleBeanVO.setMandalName(userAddress.getLocalElectionBody().getName().toString());
 					influencingPeopleBeanVO.setWardOrHamlet(userAddress.getWard().getConstituencyId().toString());
 					influencingPeopleBeanVO.setWardOrHamletName(userAddress.getWard().getName());
