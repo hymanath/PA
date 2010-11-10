@@ -120,6 +120,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
+		<property name="staticUserGroupDAO" ref="staticUserGroupDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
