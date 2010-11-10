@@ -40,16 +40,22 @@ public class UserCadresInfoVO implements Serializable{
 	 
 	private Map<Long, String> userAccessStates = null;
 	private Map<Long, String> userAccessDistricts = null;
+	private Map<Long, String> userAccessConstituencies = null;
 	private Map<Long, String> userAccessMandals = null;
 	private Map<Long, String> userAccessVillages = null;
 	private Map<Long, String> userAccessHamlets = null;
+	private Map<Long, String> userAccessLocalElectionBodies = null;
+	private Map<Long, String> userAccessWards = null;
+	
 	
 	private Map<Long, String> zeroCadreStates = null;
 	private Map<Long, String> zeroCadreDistricts = null;
+	private Map<Long, String> zeroCadreConstituencies = null;
 	private Map<Long, String> zeroCadreMandals = null;
 	private Map<Long, String> zeroCadreVillages = null;
 	private Map<Long, String> zeroCadreHamlets = null;
-	
+	private Map<Long, String> zeroCadreLocalElectionBodies = null;
+	private Map<Long, String> zeroCadreWards = null;
 	private ResultStatus resultStatus = null;
 	
 	
@@ -177,4 +183,48 @@ public class UserCadresInfoVO implements Serializable{
 	public void setZeroCadreHamlets(Map<Long, String> zeroCadreHamlets) {
 		this.zeroCadreHamlets = zeroCadreHamlets;
 	}
+	public Map<Long, String> getUserAccessLocalElectionBodies() {
+		return userAccessLocalElectionBodies;
+	}
+	public void setUserAccessLocalElectionBodies(
+			Map<Long, String> userAccessLocalElectionBodies) {
+		this.userAccessLocalElectionBodies = userAccessLocalElectionBodies;
+	}
+	public Map<Long, String> getZeroCadreLocalElectionBodies() {
+		return zeroCadreLocalElectionBodies;
+	}
+	public void setZeroCadreLocalElectionBodies(
+			Map<Long, String> zeroCadreLocalElectionBodies) {
+		this.zeroCadreLocalElectionBodies = zeroCadreLocalElectionBodies;
+	}
+	public Map<Long, String> getUserAccessWards() {
+		return userAccessWards;
+	}
+	public void setUserAccessWards(Map<Long, String> userAccessWards) {
+		this.userAccessWards = userAccessWards;
+	}
+	public Map<Long, String> getZeroCadreWards() {
+		return zeroCadreWards;
+	}
+	public void setZeroCadreWards(Map<Long, String> zeroCadreWards) {
+		this.zeroCadreWards = zeroCadreWards;
+	}
+	public Map<Long, String> getUserAccessConstituencies() {
+		return userAccessConstituencies;
+	}
+	public void setUserAccessConstituencies(
+			Map<Long, String> userAccessConstituencies) {
+		this.userAccessConstituencies = userAccessConstituencies;
+	}
+	public Map<Long, String> getZeroCadreConstituencies() {
+		return zeroCadreConstituencies;
+	}
+	public void setZeroCadreConstituencies(Map<Long, String> zeroCadreConstituencies) {
+		this.zeroCadreConstituencies = zeroCadreConstituencies;
+	}
+	
+	
+	
+	
+	
 }
