@@ -115,5 +115,21 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	@SuppressWarnings("unchecked")
 	public List getDistinctLocalGroupCategorysForAUser(Long userId);
 	
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInState(Long userId,Long stateId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInDistrict(Long userId,Long districtId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInLocalElectionBody(Long userId,Long localBodyId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInTehsil(Long userId,Long tehsilId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInVillage(Long userId,Long hamletId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInWard(Long userId,Long wardId);
+	
+	
 	
 }
