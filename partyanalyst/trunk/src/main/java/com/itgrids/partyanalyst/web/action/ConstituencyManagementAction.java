@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -77,8 +78,26 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private String regionName = null;
 	private String regionType = null;
 	private String scopeType = null;
-	private ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO;
+	private String regionTitle = null;
 	
+	private ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO;
+	private List<LocalUserGroupDetailsVO> localGroupsPeople;
+
+	public List<LocalUserGroupDetailsVO> getLocalGroupsPeople() {
+		return localGroupsPeople;
+	}
+
+	public void setLocalGroupsPeople(List<LocalUserGroupDetailsVO> localGroupsPeople) {
+		this.localGroupsPeople = localGroupsPeople;
+	}
+
+	public String getRegionTitle() {
+		return regionTitle;
+	}
+
+	public void setRegionTitle(String regionTitle) {
+		this.regionTitle = regionTitle;
+	}
 
 	public ConstituencyManagementRegionWiseCompleteDataVO getRegionWiseCompleteDataVO() {
 		return regionWiseCompleteDataVO;
@@ -497,8 +516,34 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		Long regionId = new Long(jObj.getString("regionId"));
 		String regionName = jObj.getString("regionName");
 		String regionType = jObj.getString("regionType");
+		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		String regionTitle = jObj.getString("regionTitle");
 		
 		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.INFLUENCING_PEOPLE,0L,"");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getSubLevelLocalGroupsAction()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		Long regionId = new Long(jObj.getString("regionId"));
+		String regionName = jObj.getString("regionName");
+		String regionType = jObj.getString("regionType");
+		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
+		String regionTitle = jObj.getString("regionTitle");
+		
+		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.LOCAL_USER_GROUPS,regionTitleId,regionTitle);
 		
 		return Action.SUCCESS;
 	}
@@ -520,6 +565,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByScope(userId,regionId,regionType);
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getlocalGroupsPeopleData()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		Long regionId = new Long(request.getParameter("regionId"));
+		regionName = request.getParameter("regionName");
+		regionType = request.getParameter("regionType");
+		Long regionTitleId = new Long(request.getParameter("regionTitleId"));
+		regionTitle = request.getParameter("regionTitle");
+		
+		localGroupsPeople = influencingPeopleService.getLocalUserGroupDetails(userId,regionId,regionType,regionTitleId,regionTitle);
+				
+		return Action.SUCCESS;
+		
 	}
 	
 	/*
