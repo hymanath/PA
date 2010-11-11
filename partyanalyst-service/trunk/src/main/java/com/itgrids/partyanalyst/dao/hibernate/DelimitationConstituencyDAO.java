@@ -83,5 +83,14 @@ IDelimitationConstituencyDAO {
 				"model.constituency.district.districtId in(" + districtIds + ") and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name"); 
 				
 	}
+
+	public List getLatestConstituenciesByElectionTypeInState(
+			Long electionTypeId, Long stateId) {
+		Object[] params = {electionTypeId, stateId};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				"model.constituency.electionScope.electionType.electionTypeId = ? and model.constituency.state.stateId = ? and model.year =(Select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name", params); 
+		
+		
+	}
 	
 }
