@@ -2133,7 +2133,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//To Track The SMS Sent Records
 				//smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
-				
+				if(module.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+				   smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
+				else if(module.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+				   smsCountrySmsService.saveSmsData(message, userId, "User Groups", phoneNos);
+					
 				smsResultVO.setStatus(0l);
 				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
 						.toString()));
@@ -2231,6 +2235,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				//To Track The SMS Sent Records
 				//smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
+				if(module.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
+					   smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
+				else if(module.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
+					   smsCountrySmsService.saveSmsData(message, userId, "User Groups", phoneNos);
 				
 				smsResultVO.setStatus(0l);
 				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
