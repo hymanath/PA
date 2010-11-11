@@ -2097,7 +2097,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 				
 				//To Track The SMS Sent Records
-				smsCountrySmsService.saveSmsData(message, userId, IConstants.INFLUENCING_PEOPLE, phoneNos);
+				smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
 				
 				smsResultVO.setStatus(0l);
 				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
@@ -2172,7 +2172,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 				
 				//To Track The SMS Sent Records
-				smsCountrySmsService.saveSmsData(message, userId, IConstants.INFLUENCING_PEOPLE, phoneNos);
+				smsCountrySmsService.saveSmsData(message, userId, "Influencing People", phoneNos);
 				
 				smsResultVO.setStatus(0l);
 				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
