@@ -148,7 +148,6 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
 		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
 	
-		System.out.println("RegionservicedataImpl.......... mandals.size()-----"+mandals.size());
 		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
 		
 		for(Tehsil tehsil : mandals){
@@ -158,8 +157,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			mandalNames.add(objVO);
 		}
 		
-		System.out.println("RegionservicedataImpl.......... mandalNames.size()-----"+mandalNames.size());
-		
+				
 		return mandalNames;
 	}
 	
