@@ -375,5 +375,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.registration.registrationId = ? and model.influencingScope = ? order by model.influencingScope",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPeopleNameAndMobileNOByIds(List<Long> infIds) {
+		Query queryObject = getSession().createQuery("select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model where model.influencingPeopleId in (:infIds)");
+		queryObject.setParameterList("infIds", infIds);
+		return queryObject.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPeopleNameAndMobileNOByIds(String infIds) {
+		return getHibernateTemplate().find("select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model where model.influencingPeopleId in ("+infIds+")");
+	}
+
 		
 }
