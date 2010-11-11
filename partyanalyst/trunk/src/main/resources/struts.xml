@@ -1667,7 +1667,13 @@
 		
 		<action name="localGroupsPeopleDataAction" class="constituencyManagementAction" method="getlocalGroupsPeopleData">
 			<result name="success">/jsp/localGroupsPeoplePage.jsp</result>			
-		</action>		
+		</action>	
+		
+		<action name="sendSMSToInfluencePeopleAction" class="constituencyManagementAction" method="sendSMSToInfluencePeople">
+			<result type="json" name="success">
+				<param name="root">smsResultVO</param>
+			</result>			
+		</action>	
 		
 		<action name="villageBoothMapperAction" class="villageBoothMapperAction">
            <result name="success">/jsp/villageBoothMapper.jsp</result>	

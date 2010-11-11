@@ -65,7 +65,7 @@
 			padding:0;
 		}
 
-		#influencePeopleData_body
+		#influencePeopleData_main
 		{
 			padding:40px;
 			text-align:left;
@@ -77,6 +77,47 @@
 			text-align:right;
 		}
 
+		#influencePeopleData_head
+		{
+			color:#764916;
+			font-size:17px;
+			font-weight:bold;
+			padding:5px;
+			text-decoration:underline;
+		}
+
+		.peopleDataMain
+		{
+			border:1px solid #DBD8D4;
+			margin-top:20px;
+		}
+
+		.selectButtonsDiv
+		{
+			text-align:right;
+		}
+		
+		#smsStatus
+		{
+			text-align:center;
+		}
+
+		#messageBox_mask
+		{
+			background-color:#A3B4BF;
+			opacity:0.5;
+			filter:alpha(opacity=50)
+		}
+
+		#messageBox_outer .yui-panel .bd, #messageBox_outer .yui-panel .ft 
+		{
+			background-color:#FFFFFF;
+		}
+
+		#messageBox_outer .yui-panel .hd 
+		{
+			padding:2px 2px 2px 10px;
+		}
 	</style>
 
 
@@ -89,7 +130,10 @@
 				.get("peopleDataTable_${status.index}"));
 				resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 				resultsDataSource.responseSchema = {
-					fields : [ {
+					fields : [
+					{
+						key : ""
+					},{
 						key : "firstName"
 					}, {
 						key : "lastName"
@@ -107,10 +151,17 @@
 						key : "districtName"
 					}, {
 						key : "stateName"
+					},{
+						key : "More Details"
 					} ]
 				};
 
-				var resultsColumnDefs = [ {
+				var resultsColumnDefs = [{
+					key : "",
+					label : "<input type='checkbox' name='regionHeaderCheckBox' onclick='selectAllPeopleInRegion(${region.regionId})'></input>",
+					sortable : false
+				},
+				{
 					key : "firstName",
 					label : "First Name",
 					sortable : true
@@ -147,6 +198,10 @@
 					key : "stateName",
 					label : "State",
 					sortable : true
+				},{
+					key : "More Details",
+					label : "More Details",
+					sortable : false
 				} ];
 
 				var myConfigs = {
@@ -162,41 +217,278 @@
 
 		}
 
+		function selectAllPeopleInRegion(id)
+		{
+			var name = "influencePeopleCheck_"+id;
+			var elmts = document.getElementsByName(name);
+
+			if(elmts.length == 0)
+				return;
+
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(!elmts[i].checked)
+					elmts[i].checked = true;
+				else
+					elmts[i].checked = false;
+			}	
+
+		}
+		
+		function selectAllPeople()
+		{
+			var elmts = document.getElementsByTagName('input');
+
+			if(elmts.length == 0)
+				return;
+
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && !elmts[i].checked)
+					elmts[i].checked = true;
+			}
+		}
+
+		function DeSelectAllPeople()
+		{
+			var elmts = document.getElementsByTagName('input');
+
+			if(elmts.length == 0)
+				return;
+
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && elmts[i].checked)
+					elmts[i].checked = false;
+			}
+		}
+		
+		function limitText(limitField, limitCount, limitNum)
+		{		
+			var limitFieldElmt = document.getElementById(limitField);
+			var limitCountElmt = document.getElementById(limitCount);
+
+			if (limitFieldElmt.value.length > limitNum) 
+			{
+				limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+			}
+			else
+			{			
+				limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+			}
+		}
+		
+		function sendSMSToSelectedPeople()
+		{
+				var str = '';	
+				str += '<table width="100%">';
+				str += '<tr>';
+				str += '<th>SMS Text :</th>';
+				str += '<td>';
+				str += '<textarea id="influencePeopleMsg" onkeyup="limitText(\'influencePeopleMsg\',\'maxcount\',200)" rows="3" cols="38"></textarea>';
+				str +='<div id="limitDiv">';
+				str +='<table style="width:100%;"><tr>';
+				str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+				str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
+				str +='</tr></table>';
+				str +='</div>';	
+				str += '</td>';
+				str += '</tr>';
+
+				str += '<tr>';
+				str += '<td></td>';
+				str += '<td><input id="smsIncludeUserName" type="checkbox" name="smsIncludeUserName"></input> Include User Name</td>';				
+				str += '</tr>';
+
+				str += '<tr>';
+				str += '<td></td>';
+				str += '<td><input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName"></input> Include Sender Name ';
+				str += '<input type="text" id="senderNameText" disabled="disabled" value="${sessionScope.UserName}" />';
+				str += '</td>';				
+				str += '</tr>';				
+				
+				str += '</table>';
+				str	+= '<div id="smsStatus"></div>';
+				
+				var connectPopupPanel = new YAHOO.widget.Dialog("messageBox", {      
+							 width:'500px',
+							 fixedcenter : true, 
+							 visible : true,
+							 constraintoviewport : true, 
+							 iframe :true,
+							 modal :true,
+							 hideaftersubmit:true,
+							 close:true,
+							 draggable:true,
+							 buttons: [ { text:"Send", handler:handleYes, isDefault:true }] 
+				   });	 
+				
+				connectPopupPanel.setHeader("Send Message");
+				connectPopupPanel.setBody(str);
+				connectPopupPanel.render();
+		}
+		
+		function enableSenderName()
+		{
+			var elmt = document.getElementById("senderNameText");
+			if(elmt.disabled == true)
+				elmt.disabled = false;
+			else
+				elmt.disabled = true;
+		}
+
+		function handleYes()
+		{
+			var messageElmt = document.getElementById("influencePeopleMsg");
+			var statusElmt = document.getElementById("smsStatus");
+			var includeElmt = document.getElementById("smsIncludeUserName");
+			var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
+			var senderNameTextElmt = document.getElementById("senderNameText");
+			
+			var message = messageElmt.value;
+			var includeName = false;
+			var senderName = '';
+
+			if(includeElmt.checked == true)
+				includeName = true;
+			
+			if(includeSenderElmtCheck.checked == true)
+				senderName = senderNameTextElmt.value;
+
+			if(message == "")
+			{
+				statusElmt.innerHTML = '<font color="red"> Message Content Is Empty .. </font>';
+				return;
+			}
+			else
+				statusElmt.innerHTML = '';
+
+		
+			var elmts = document.getElementsByTagName('input');
+			
+			var checkedIds = '';
+
+			if(elmts.length == 0)
+				return;
+			
+			for(var i=0; i<elmts.length; i++)
+			{
+				if(elmts[i].type == "checkbox" && elmts[i].name != "regionHeaderCheckBox" && elmts[i].name != "smsIncludeUserName" && elmts[i].checked)
+				{
+					checkedIds += elmts[i].value;
+					checkedIds += ',';
+				}
+			}
+
+			checkedIds = checkedIds.substring(0,checkedIds.length-1);
+			
+			if(checkedIds == '' || checkedIds == null)
+			{
+				statusElmt.innerHTML = '<font color="red"> No People Has Been Selected To Send Message .. </font>';
+				return;
+			}
+			else
+				statusElmt.innerHTML = '';
+			
+			var jsObj= 
+			{	
+				checkedIdString : checkedIds,
+				smsMessage : message,
+				includeName : includeName,
+				senderName : senderName,
+				task: "sendSMSToInfluencePeople"				
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "sendSMSToInfluencePeopleAction.action?"+param;
+			
+			callAjax(jsObj,url);	
+		}
+
+		function callAjax(jsObj,url)
+		{
+			var myResults;
+	 					
+	 		var callback = {			
+	 		               success : function( o ) 
+							  {
+								try {												
+										if(o.responseText)
+											myResults = YAHOO.lang.JSON.parse(o.responseText);
+											
+										if(jsObj.task == "sendSMSToInfluencePeople")
+										{
+											var statusElmt = document.getElementById("smsStatus");
+
+											if(myResults.resultStatus == null)
+												statusElmt.innerHTML = '<font color="green">SMS has been sent to '+myResults.totalSmsSent+' people successfully .. </font>';
+											else
+												statusElmt.innerHTML = '<font color="red">SMS cannot been sent to selected people due to some techniccal difficulty.. </font>';
+										}
+									}
+								catch (e)
+									{   
+									   	alert("Invalid JSON result" + e);   
+									}	  
+					              },
+					               scope : this,
+					               failure : function( o ) {
+					                			alert( "Failed to load result" + o.status + " " + o.statusText);
+					                         }
+					               };
+
+					YAHOO.util.Connect.asyncRequest('GET', url, callback);
+			}
+			
+			function getPersonDetails(id)
+			{
+				
+			}
+
 	</script>
 </head>
 <body>
-	<div id="influencePeopleData_main">
-
+	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
+	<div id="influencePeopleData_main">		
 		<div id="influencePeopleData_head">
-			
+			<center> Influencing People Details In ${regionName} ${regionType}</center>
 		</div>
-		<div id="influencePeopleData_body" class="yui-skin-sam">			
+		<div id="influencePeopleData_body" class="yui-skin-sam">		
+			<div id="selectButtonsDiv" class="selectButtonsDiv">
+				<input type="button" value="select All" onclick="selectAllPeople()"></input>
+				<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+				<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+			</div>
+
 			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
-				
-				<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head">
-					<table>
-						<tr>
-							<td><img src="images/icons/system_grps.png"></td>
-							<td>${region.regionName} ${region.regionType}</td>
-						</tr>
-					</table>
-				</div>
-				<div id="peopleRegion_body_ ${status.index}">
-					<table id="peopleDataTable_${status.index}">						
-						<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
+				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
+					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head">
+						<table>
 							<tr>
-								<td>${people.firstName}</td>
-								<td>${people.lastName}</td>
-								<td>${people.email}</td>
-								<td>${people.mobile}</td>
-								<td>${people.gender}</td>
-								<td>${people.cast}</td>
-								<td>${people.constituency}</td>
-								<td>${people.district}</td>
-								<td>${people.state}</td>
-							</tr>							
-						</c:forEach>
-					</table>
+								<td><img src="images/icons/system_grps.png"></td>
+								<td>${region.regionName} ${region.regionType}</td>
+							</tr>
+						</table>
+					</div>
+					<div id="peopleRegion_body_ ${status.index}">
+						<table id="peopleDataTable_${status.index}">						
+							<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
+								<tr>
+									<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>
+									<td>${people.firstName}</td>
+									<td>${people.lastName}</td>
+									<td>${people.email}</td>
+									<td>${people.mobile}</td>
+									<td>${people.gender}</td>
+									<td>${people.cast}</td>
+									<td>${people.constituency}</td>
+									<td>${people.district}</td>
+									<td>${people.state}</td>
+									<td><a href="javascript:{}" onclick="getPersonDetails(${region.regionId})">More Details</a></td>
+								</tr>							
+							</c:forEach>
+						</table>
+					</div>
 				</div>
 			</c:forEach>
 		</div>		
