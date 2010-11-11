@@ -121,8 +121,8 @@ public class PartyResultScopeAction {
 		{
 			Long countryID = 1L;// India
 			Long stateID = 1L;//AP
-			Long typeID = 2L;//Parliamentary
-			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,typeID);
+			Long typeID = 2L;// Assembly
+			List<SelectOptionVO> selectOptionList = regionServiceDataImp.getAllConstituenciesByElectionTypeInState(typeID,stateID);
 			
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
@@ -134,9 +134,9 @@ public class PartyResultScopeAction {
 		{
 			Long countryID = 1L;// India
 			Long stateID = 1L;//AP
-			Long typeID = 1L;//Assembly
-			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,typeID);
-			
+			Long typeID = 1L;// Parliamentary
+			List<SelectOptionVO> selectOptionList = regionServiceDataImp.getAllConstituenciesByElectionTypeInState(typeID,stateID);
+			System.out.println("selectOptionList.size in action"+selectOptionList.size());
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
 				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
