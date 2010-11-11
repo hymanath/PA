@@ -98,5 +98,10 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleDetailsByInfluencingScope(Long userId,String influencingScope);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressByInfluencingScope(Long userId,String influencingScope);
+	
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPeopleNameAndMobileNOByIds(List<Long> infIds);
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPeopleNameAndMobileNOByIds(String infIds);
 
 }
