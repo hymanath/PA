@@ -53,6 +53,7 @@
 			<result type="redirect" name="partyBoothResultAction">partyBoothResultAction.action</result>
 			<result type="redirect" name="adminUpload">adminUpload.action</result>
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
+			<result type="redirect" name="userEntitlementAction">userEntitlementAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 
 			 <!-- Problem Management Flow From Different Pages -->
@@ -1680,6 +1681,8 @@
 		
 		<action name="userEntitlementAction" class="userEntitlementAction">
            <result name="success">/jsp/userEntitlement.jsp</result>	
+           <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		   <result name="input">/jsp/loginForm.jsp?src=userEntitlementAction</result>
         </action> 
         
         <action name="entitlementUserAction" class="userEntitlementAction" method="entitlementsAction">

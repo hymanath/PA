@@ -86,11 +86,7 @@
 						else if(jsObj.task == "getAllEntitlementsForAUserGroup")
 						{
 							showCompleteResultsOfAGroup(results);					
-						}	
-						else if(jsObj.task == "saveUserGroupsRelation")
-						{
-							showSaveUserGroupsRelation(results);					
-						}	
+						}								
 						else if(jsObj.task == "getAllGroups")
 						{
 							showAllCommonGroups(results);						
@@ -122,6 +118,18 @@
 						else if(jsObj.task == "createAnUserGroup")
 						{						
 							showUserGroupResult(results);
+						}
+						else if(jsObj.task == "saveRelationBetweenEntitlementsGroupsAndUserGroupId")
+						{						
+							saveRelationBetweenEntitlementsGroupsAndUserGroupId(results);
+						}
+						else if(jsObj.task == "saveRelationBetweenEntitlementGroupAndEntitlement")
+						{						
+							saveRelationBetweenEntitlementGroupAndEntitlement(results);
+						}
+						else if(jsObj.task == "saveUserGroupsRelation")
+						{						
+							saveUserGroupsRelation(results);
 						}
 				}catch (e) {   		
 				   	alert("Invalid JSON result" + e);   

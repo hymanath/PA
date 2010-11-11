@@ -36,23 +36,56 @@
 		var url = "entitlementUserAction.action?"+rparam;	
 		callAjax(jsObj,url);
   	 } 
+  	 
+  	 function selectAll(id)
+  	 {
+  		var elements = document.getElementsByName(id);
+  		for (i = 0; i < elements.length; i++){
+			elements[i].checked = true;
+		}
+  	 }
+  	function deSelectAll(id)
+ 	 {
+  		var elements = document.getElementsByName(id);
+  		for (i = 0; i < elements.length; i++){
+			elements[i].checked = false;
+		}
+ 	 }
   	function showAllCommonGroups(results)
   	{  		
   		var allGroups = document.getElementById("allGroupsDiv");
-	  	var str='';	
-	  
+	  	var str='';		  
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
-		  		for(var i in results.entitlementVO)
-				{		  			
-		  			str+='	<tr>';
-		  			if(results.entitlementVO[i].message=="AVAILABLE"){
-		  				str+='		<td><input name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
-		  			}else{
-		  				str+='		<td><input name="entitlementsCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	
-		  			}
-		  			str+='	</tr>';
-				}	
+	  		str+='<table>'; 
+			str+='	<tr>';
+			str+='		<td style="font-weight:bold;"> All User Groups</td>';
+			str+='</tr>';			
+	  		for(var i in results.entitlementVO)
+			{		  			
+	  			str+='	<tr>';
+	  			if(results.entitlementVO[i].message=="AVAILABLE"){
+	  				str+='		<td><input name="groupsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+	  			}else{
+	  				str+='		<td><input name="groupsCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	  				
+	  			}
+	  			str+='	</tr>';
+			}	
+	  		if(results.count>0){
+	  			str+='	<tr>';	
+		  		str+='		<td>';
+		  		str+='			<table>';	  
+		  		str+='				<tr>';	
+		  		str+='					<td>';
+		  		str+='						<a onclick="selectAll(\'groupsCheckBox\')">Select All</a>';
+				str+='					</td>';	
+				str+='					<td>';
+			  	str+='						<a  onclick="deSelectAll(\'groupsCheckBox\')">De-Select All</a>';
+				str+='					</td>';	
+				str+='				</tr>';
+				str+='			</table>';	
+				str+='		</td>';	
+				str+='</tr>';
+	  		}	 					
 		  	str+='	<tr><td>';
 		  	str+='		<div id="completeDetailsOfAGroup"></div>';
 			str+='	</td></tr>';
@@ -288,12 +321,14 @@
 	{		
 		var usersId = document.getElementById("usersId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("assignEntitlementsId");
-			var str='';
+		var elemt = document.getElementById("assignEntitlementsId");
+		var str='';
+		if(userId==0){		
 			str+='<b style="color:red;"> Please select a user.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("groupsInfoDiv");
 
@@ -313,12 +348,14 @@
 	{		
 		var usersId = document.getElementById("userGroupsId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("userGroupEntitlemntGroupId");
-			var str='';
+		var elemt = document.getElementById("userGroupEntitlemntGroupId");
+		var str='';
+		if(userId==0){			
 			str+='<b style="color:red;"> Please select a user group.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("userGroupsInfoDiv");
 
@@ -340,7 +377,7 @@
 		var usersId = document.getElementById("usersId");
 		var value = usersId.options[usersId.selectedIndex].value;
 		var selectedGroup = "";
-		var elements = document.getElementsByName("entitlementsCheckBox");
+		var elements = document.getElementsByName("groupsCheckBox");
 		for (i = 0; i < elements.length; i++){
 			if(elements[i].checked == true){
 				selectedGroup+=elements[i].value;
@@ -365,7 +402,7 @@
 		var usersId = document.getElementById("userGroupsId");
 		var value = usersId.options[usersId.selectedIndex].value;
 		var selectedGroup = "";
-		var elements = document.getElementsByName("groupCheckBox");
+		var elements = document.getElementsByName("entitlementGroupCheckBox");
 		for (i = 0; i < elements.length; i++){
 			if(elements[i].checked == true){
 				selectedGroup+=elements[i].value;
@@ -384,49 +421,19 @@
 		callAjax(jsObj,url);	
 		
 	}
-	
-	
-	function saveGroupRelation()
-	{
-		var usersId = document.getElementById("userGroupsId");
-		var value = usersId.options[usersId.selectedIndex].value;
-		var selectedGroup = "";
-		var elements = document.getElementsByName("entitlementsCheckBox");
-		for (i = 0; i < elements.length; i++){
-			if(elements[i].checked == true){
-				selectedGroup+=elements[i].value;
-				selectedGroup+=",";
-			}
-		}
-		var jsObj=
-		{			
-				userId:value,
-				groupIds:selectedGroup,
-				type:"saveUserGroupsRelation",			
-				task:"saveUserGroupsRelation"						
-		};				
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "entitlementUserAction.action?"+rparam;			
-		callAjax(jsObj,url);	
 		
-	}
-	
-	
-	
-	function showSaveUserGroupsRelation(results)
-	{
-	}
-	
 	function showUserGroupsForAUser()
 	{
 		var usersId = document.getElementById("userGroupsId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("userGroupEntitlemntGroupId");
-			var str='';
+		var str='';
+		var elemt = document.getElementById("userGroupEntitlemntGroupId");		
+		if(userId==0){			
 			str+='<b style="color:red;"> Please select a user group.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("userGroupsInfoDiv");
 		
@@ -445,12 +452,14 @@
 	{
 		var usersId = document.getElementById("usersId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("assignEntitlementsId");
-			var str='';
+		var str='';
+		var elemt = document.getElementById("assignEntitlementsId");
+		if(userId==0){	
 			str+='<b style="color:red;"> Please select a user.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("groupsInfoDiv");
 
@@ -470,15 +479,19 @@
 	{
 		var allGroups = document.getElementById("allUserGroupsDiv");
 	  	var str='';	
-	  	var j=0;
+	  	var j=0;	  	
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
+		  		if(results.count!=0){
+		  			str+='	<tr>';
+		  			str+='		<td style="font-weight:bold;">All Entitlement Groups</td>';
+		  			str+='	</tr>';
+		  		}
 		  		for(var i in results.entitlementVO)
 				{		  			
 		  			str+='	<tr>';
 		  			if(results.entitlementVO[i].message=="AVAILABLE"){
 		  				j++;
-		  				str+='		<td><b name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+		  				str+='		<td><span name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</span></td>';
 		  			}
 		  			str+='	</tr>';
 				}	
@@ -500,13 +513,18 @@
 	  	var str='';	
 	  	var j=0;
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
+	  		str+='<table>';	
+		  		if(results.count!=0){
+		  			str+='	<tr>';
+		  			str+='		<td style="font-weight:bold;"> All User Groups </td>';
+		  			str+='	</tr>';
+		  		}		  		
 		  		for(var i in results.entitlementVO)
 				{		  			
 		  			str+='	<tr>';
 		  			if(results.entitlementVO[i].message=="AVAILABLE"){
 		  				j++;
-		  				str+='		<td><b name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+		  				str+='		<td><span name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</span></td>';
 		  			}
 		  			str+='	</tr>';
 				}	
@@ -528,17 +546,34 @@
 		var str='';	
 		  
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
-		  		for(var i in results.entitlementVO)
-				{		  			
-		  			str+='	<tr>';
-		  			if(results.entitlementVO[i].message=="AVAILABLE"){
-		  				str+='		<td><input name="groupCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
-		  			}else{
-		  				str+='		<td><input name="groupCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	
-		  			}
-		  			str+='	</tr>';
-				}	
+	  		str+='<table>';	
+	  		str+='	<tr>';	
+	  		str+='		<td style="font-weight:bold;"> All Entitlement Groups</td>';	
+			str+='	</tr>';
+	  		for(var i in results.entitlementVO)
+			{		  			
+	  			str+='	<tr>';
+	  			if(results.entitlementVO[i].message=="AVAILABLE"){
+	  				str+='		<td><input name="entitlementGroupCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+	  			}else{
+	  				str+='		<td><input name="entitlementGroupCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	
+	  			}
+	  			str+='	</tr>';
+			}
+	  		str+='	<tr>';	
+	  		str+='		<td>';
+	  		str+='			<table>';	  
+	  		str+='				<tr>';	
+	  		str+='					<td>';
+	  		str+='						<a onclick="selectAll(\'entitlementGroupCheckBox\')">Select All</a>';
+			str+='					</td>';	
+			str+='					<td>';
+		  	str+='						<a  onclick="deSelectAll(\'entitlementGroupCheckBox\')">De-Select All</a>';
+			str+='					</td>';	
+			str+='				</tr>';
+			str+='			</table>';	
+			str+='		</td>';	
+			str+='</tr>';
 		  	str+='	<tr><td>';
 		  	str+='		<div id="completeDetailsOfAGroup"></div>';
 			str+='	</td></tr>';
@@ -556,12 +591,14 @@
 	{
 		var usersId = document.getElementById("entitlementGroupId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("entitlemntGroupId");
-			var str='';
+		var str='';
+		var elemt = document.getElementById("entitlemntGroupId");	
+		if(userId==0){					
 			str+='<b style="color:red;"> Please select a entitlement.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("entitlementsInfoDIV");
 		
@@ -579,24 +616,27 @@
 	function getAllEntitlementsBasedOnEntitlementGroup(results)
 	{
 		var allGroups = document.getElementById("allEntitlementsGroupsDIV");
-	  	var str='';	
-	  	var j=0;
+	  	var str='';		  
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
-		  		for(var i in results.entitlementVO)
-				{		  			
-		  			str+='	<tr>';
-		  			if(results.entitlementVO[i].message=="AVAILABLE"){
-		  				j++;
-		  				str+='		<td><b name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
-		  			}
-		  			str+='	</tr>';
-				}	
-		  		if(j==0){
-		  			str+='	<tr>';
-		  			str+='		<td style="color:green;"> EntitlementGroup does not have any Entitlements. </td>';
-		  			str+='	</tr>';
-		  		}
+	  		str+='<table>';	
+	  		if(results.count>0){
+	  			str+='	<tr>';	
+		  		str+='		<td style="font-weight:bold;"> All Entitlements</td>';	
+				str+='	</tr>';	
+	  		}
+	  		for(var i in results.entitlementVO)
+			{		  			
+	  			str+='	<tr>';
+	  			if(results.entitlementVO[i].message=="AVAILABLE"){	  				
+	  				str+='<td><span name="entitlementsCheckBox" value="'+results.entitlementVO[i].userId+'" id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</span></td>';
+	  			}
+	  			str+='	</tr>';
+			}	
+	  		if(results.count==0){
+	  			str+='	<tr>';
+	  			str+='		<td style="color:green;"> EntitlementGroup does not have any Entitlements. </td>';
+	  			str+='	</tr>';
+	  		}
 	  		str+='</table>';
 		}else{
 			str+='<b style="color:red;">There was an error in processing the request.</b>';
@@ -611,17 +651,36 @@
 		var str='';	
 		  
 	  	if(results.resultStatus.resultCode==0){
-	  		str+='<table>';	  		
-		  		for(var i in results.entitlementVO)
-				{		  			
-		  			str+='	<tr>';
-		  			if(results.entitlementVO[i].message=="AVAILABLE"){
-		  				str+='		<td><input name="entitlementCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
-		  			}else{
-		  				str+='		<td><input name="entitlementCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	
-		  			}
-		  			str+='	</tr>';
-				}	
+	  		str+='<table>';	 
+	  		str+='	<tr>';
+	  		str+='		<td style="font-weight:bold;"> All Entitlements </td>';
+	  		str+='	</tr>';
+	  		for(var i in results.entitlementVO)
+			{		  			
+	  			str+='	<tr>';
+	  			if(results.entitlementVO[i].message=="AVAILABLE"){
+	  				str+='		<td><input name="entitlementCheckBox" value="'+results.entitlementVO[i].userId+'" type="checkbox" checked="checked"   id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';
+	  			}else{
+	  				str+='		<td><input name="entitlementCheckBox" type="checkbox"  value="'+results.entitlementVO[i].userId+'"  id=" '+results.entitlementVO[i].userId+' ">'+ results.entitlementVO[i].name +'</input></td>';	
+	  			}
+	  			str+='	</tr>';
+			}		  		
+	  		if(results.count==0){
+	  			str+='	<tr>';	
+		  		str+='		<td>';
+		  		str+='			<table>';	  
+		  		str+='				<tr>';	
+		  		str+='					<td>';
+		  		str+='						<a onclick="selectAll(\'entitlementCheckBox\')">Select All</a>';
+				str+='					</td>';	
+				str+='					<td>';
+			  	str+='						<a  onclick="deSelectAll(\'entitlementCheckBox\')">De-Select All</a>';
+				str+='					</td>';	
+				str+='				</tr>';
+				str+='			</table>';	
+				str+='		</td>';	
+				str+='</tr>';
+	  		}
 		  	str+='	<tr><td>';
 		  	str+='		<div id="completeDetailsOfAGroup"></div>';
 			str+='	</td></tr>';
@@ -640,7 +699,7 @@
 		var usersId = document.getElementById("entitlementGroupId");
 		var value = usersId.options[usersId.selectedIndex].value;
 		var selectedGroup = "";
-		var elements = document.getElementsByName("entitlementsCheckBox");
+		var elements = document.getElementsByName("entitlementCheckBox");
 		for (i = 0; i < elements.length; i++){
 			if(elements[i].checked == true){
 				selectedGroup+=elements[i].value;
@@ -664,12 +723,14 @@
 	{		
 		var usersId = document.getElementById("entitlementGroupId");
 		var userId = usersId.options[usersId.selectedIndex].value;
-		if(userId==0){
-			var elemt = document.getElementById("entitlemntGroupId");
-			var str='';
+		var elemt = document.getElementById("entitlemntGroupId");
+		var str='';
+		if(userId==0){			
 			str+='<b style="color:red;"> Please select a Entitlement group.</b>';
 			elemt.innerHTML = str;
 			return ;
+		}else{
+			elemt.innerHTML = str;
 		}
 		var groupsDiv = document.getElementById("entitlementsInfoDIV");
 
@@ -709,3 +770,40 @@
 			text.innerHTML = str2;
 		}		
 	}
+	
+	function saveRelationBetweenEntitlementsGroupsAndUserGroupId(results)
+	{
+		var entitlementAvailability = document.getElementById("userGroupEntitlemntGroupId");
+	  	var str='';	
+	  	if(results.resultStatus==null){
+			str+='<b style="color:green;"> Successfully Saved.</b>';
+		}else{
+			str+='<b style="color:red;">There was an error in processing the request.</b>';
+		}		
+	  	entitlementAvailability.innerHTML = str;
+	}
+	
+	function saveRelationBetweenEntitlementGroupAndEntitlement(results)
+	{
+		var entitlementAvailability = document.getElementById("entitlemntGroupId");
+	  	var str='';	
+	  	if(results.resultStatus==null){
+			str+='<b style="color:green;"> Successfully Saved.</b>';
+		}else{
+			str+='<b style="color:red;">There was an error in processing the request.</b>';
+		}		
+	  	entitlementAvailability.innerHTML = str;
+	}  
+	
+	function saveUserGroupsRelation(results)
+	{	
+		var entitlementAvailability = document.getElementById("assignEntitlementsId");
+		
+	  	var str='';	
+	  	if(results.resultStatus==null){
+			str+='<b style="color:green;"> Successfully Saved.</b>';
+		}else{
+			str+='<b style="color:red;">There was an error in processing the request.</b>';
+		}		
+	  	entitlementAvailability.innerHTML = str;
+	} 
