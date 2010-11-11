@@ -16,6 +16,17 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.StaticUsers;
 
 public interface IStaticUsersDAO extends GenericDao<StaticUsers, Long> {
-public List<StaticUsers> findByMobileNo(String mobileNumber);	
+
+	public List<StaticUsers> findByMobileNo(String mobileNumber);	
+	
+	@SuppressWarnings("unchecked")
+	public List findGroupMembersMobileNosByMemberIds(List<Long> memberIds);
+	@SuppressWarnings("unchecked")
+	public List findGroupMembersMobileNosByMemberIds(String memberIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findGroupMembersNameAndMobileNosByMemberIds(List<Long> memberIds);
+	@SuppressWarnings("unchecked")
+	public List findGroupMembersNameAndMobileNosByMemberIds(String memberIds);
 
 }
