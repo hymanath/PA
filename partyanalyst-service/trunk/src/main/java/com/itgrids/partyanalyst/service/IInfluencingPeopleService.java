@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 
 public interface IInfluencingPeopleService {
 	
@@ -48,4 +49,11 @@ public interface IInfluencingPeopleService {
 	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId);
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getLocalUserGroupByInfluenceScope(Long userId);
 	public List<LocalUserGroupDetailsVO> getLocalUserGroupDetails(Long userId,Long regionId,String regionType,Long categoryId,String categoryType);
+	
+	//SMS to influencing Persons
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,List<Long> influencingPersonIds,String message,Boolean includeName);
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName);
+	//SMS To Local User Group Members
+	public SmsResultVO sendSMSToLocalUserGroupMembers(Long userId,List<Long> groupMemberIds,Boolean includeName);
+	public SmsResultVO sendSMSToLocalUserGroupMembers(Long userId,String groupMemberIds,Boolean includeName);
 }
