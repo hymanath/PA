@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -101,6 +102,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IRegionServiceData regionServiceDataImp;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
 	private IStaticUserGroupDAO staticUserGroupDAO;
+	private SmsCountrySmsService smsCountrySmsService;
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -120,6 +122,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setInfluencingPeopleDAO(InfluencingPeopleDAO influencingPeopleDAO) {
 		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public SmsCountrySmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
 	}
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
@@ -2034,6 +2044,235 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}
 		}
 	 return userGroupMembers;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#sendSMSToInfluencingPersons(java.util.List)
+	 * Send SMS To Influencing Persons By InfluencingPersonIds as List<Long> ids
+	 */
+	@SuppressWarnings("unchecked")
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,
+			List<Long> influencingPersonIds,String message,Boolean includeName) {
+		
+		if(log.isDebugEnabled())
+			log.debug("Sending Message TO Influencing Persons ..");
+		SmsResultVO smsResultVO = new SmsResultVO();
+						
+		try{
+			Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId) - influencingPersonIds.size();
+						
+			if (remainingSMS < 0) {
+				smsResultVO.setStatus(1l);
+				smsResultVO.setTotalSmsSent(0l);
+				smsResultVO.setRemainingSmsCount(0l);
+			}else{
+				List inflencinfPeopleList = influencingPeopleDAO.getInfluencingPeopleNameAndMobileNOByIds(influencingPersonIds);
+				String[] phoneNos = new String[inflencinfPeopleList.size()];
+				int i = 0;
+				
+				//Without Person Name
+				if(!includeName){
+					String[] mobileNos = getInfPeopleMobileNos(inflencinfPeopleList);
+					if(mobileNos != null && mobileNos.length > 0)
+					smsCountrySmsService.sendSms(message, true, userId,
+							IConstants.INFLUENCING_PEOPLE, mobileNos);
+					
+					phoneNos = mobileNos;
+				}
+				//With Name
+				else if(includeName){
+					List<UserGroupMembersVO> influencingPeopleNos = getInfPeopleMobileNosAndNames(inflencinfPeopleList);
+					for(UserGroupMembersVO mobile:influencingPeopleNos){
+						
+						StringBuilder cadreMessage = new StringBuilder(
+								IConstants.SMS_DEAR);
+						cadreMessage.append(IConstants.SPACE).append(mobile.getName())
+								.append(IConstants.SPACE).append(message);
+						smsCountrySmsService.sendSms(cadreMessage.toString(), true,
+								userId, IConstants.Cadre_Management, mobile.getMobileNumber());
+						
+						phoneNos[i++] = mobile.getMobileNumber();
+					}
+				}
+				
+				//To Track The SMS Sent Records
+				smsCountrySmsService.saveSmsData(message, userId, IConstants.INFLUENCING_PEOPLE, phoneNos);
+				
+				smsResultVO.setStatus(0l);
+				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
+						.toString()));
+				smsResultVO.setRemainingSmsCount(remainingSMS);
+			}
+			
+			
+		}catch(Exception ex){
+			log.error("Exception Raised In Sending SMS TO Influencing People :" + ex);
+			ex.printStackTrace();
+			ResultStatus rs = new ResultStatus();
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setExceptionClass(ex.getClass().toString());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			smsResultVO.setResultStatus(rs);
+		}
+		
+	 return smsResultVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#sendSMSToInfluencingPersons(java.lang.String)
+	 * Send SMS To Influencing Persons By InfluencingPersonIds as String of ids
+	 */
+	@SuppressWarnings("unchecked")
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName) {
+		
+		if(log.isDebugEnabled())
+			log.debug("Sending Message TO Influencing Persons ..");
+		SmsResultVO smsResultVO = new SmsResultVO();
+						
+		try{
+			List inflencinfPeopleList = influencingPeopleDAO.getInfluencingPeopleNameAndMobileNOByIds(influencingPersonIds);
+			Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId) - inflencinfPeopleList.size();
+						
+			if (remainingSMS < 0) {
+				smsResultVO.setStatus(1l);
+				smsResultVO.setTotalSmsSent(0l);
+				smsResultVO.setRemainingSmsCount(0l);
+			}else{
+			
+				String[] phoneNos = new String[inflencinfPeopleList.size()];
+				int i = 0;
+				
+				//Without Person Name
+				if(!includeName){
+					String[] mobileNos = getInfPeopleMobileNos(inflencinfPeopleList);
+					if(mobileNos != null && mobileNos.length > 0)
+					smsCountrySmsService.sendSms(message, true, userId,
+							IConstants.INFLUENCING_PEOPLE, mobileNos);
+					
+					phoneNos = mobileNos;
+				}
+				//With Name
+				else if(includeName){
+					List<UserGroupMembersVO> influencingPeopleNos = getInfPeopleMobileNosAndNames(inflencinfPeopleList);
+					for(UserGroupMembersVO mobile:influencingPeopleNos){
+						
+						StringBuilder cadreMessage = new StringBuilder(
+								IConstants.SMS_DEAR);
+						cadreMessage.append(IConstants.SPACE).append(mobile.getName())
+								.append(IConstants.SPACE).append(message);
+						smsCountrySmsService.sendSms(cadreMessage.toString(), true,
+								userId, IConstants.Cadre_Management, mobile.getMobileNumber());
+						
+						phoneNos[i++] = mobile.getMobileNumber();
+					}
+				}
+				
+				//To Track The SMS Sent Records
+				smsCountrySmsService.saveSmsData(message, userId, IConstants.INFLUENCING_PEOPLE, phoneNos);
+				
+				smsResultVO.setStatus(0l);
+				smsResultVO.setTotalSmsSent(Long.parseLong(new Integer(inflencinfPeopleList.size())
+						.toString()));
+				smsResultVO.setRemainingSmsCount(remainingSMS);
+			}
+			
+			
+		}catch(Exception ex){
+			log.error("Exception Raised In Sending SMS TO Influencing People :" + ex);
+			ex.printStackTrace();
+			ResultStatus rs = new ResultStatus();
+			
+			smsResultVO.setStatus(1L);
+			smsResultVO.setTotalSmsSent(0L);
+			smsResultVO.setRemainingSmsCount(0L);
+			
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setExceptionClass(ex.getClass().toString());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			smsResultVO.setResultStatus(rs);
+		}
+		
+	 return smsResultVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#sendSMSToLocalUserGroupMembers(java.util.List)
+	 * Send SMS To Local User Group Members By memberIds as List<Long> ids
+	 */
+	public SmsResultVO sendSMSToLocalUserGroupMembers(Long userId,List<Long> groupMemberIds,Boolean includeName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#sendSMSToLocalUserGroupMembers(java.lang.String)
+	 * Send SMS To Local User Group Members By memberIds as String of ids
+	 */
+	public SmsResultVO sendSMSToLocalUserGroupMembers(Long userId,String groupMemberIds,Boolean includeName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String[] getInfPeopleMobileNos(List membersList){
+		
+		String[] mobileNos  = new String[membersList.size()];
+		if(membersList != null && membersList.size() > 0){
+			
+			int i=0;
+			Iterator lstItr = membersList.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				String mobileNO = (String)values[2];
+				
+				mobileNos[i++] = mobileNO;
+			}
+			
+		}
+	 return mobileNos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserGroupMembersVO> getInfPeopleMobileNosAndNames(List membersList){
+		
+		List<UserGroupMembersVO> membersVO = new ArrayList<UserGroupMembersVO>();
+        if(membersList != null && membersList.size() > 0){
+			
+			int i=0;
+			Iterator lstItr = membersList.listIterator();
+			while(lstItr.hasNext()){
+				UserGroupMembersVO member = new UserGroupMembersVO();
+				
+				String personName = "";
+				Object[] values = (Object[])lstItr.next();
+				
+				String fname = (String)values[0];
+				String lname = (String)values[1];
+				String mobileNO = (String)values[2];
+				
+				if(fname != null && lname != null)
+					personName = fname + " " + lname;
+				else if(fname != null)
+					personName = fname;
+				else 
+					personName = lname;
+				
+				member.setName(personName);
+				member.setMobileNumber(mobileNO);
+				
+				membersVO.add(member);
+			}
+			
+		}
+     return membersVO;
 	}
 }
 
