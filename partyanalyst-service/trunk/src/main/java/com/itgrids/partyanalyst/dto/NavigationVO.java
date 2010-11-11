@@ -19,8 +19,16 @@ public class NavigationVO extends ResultStatus{
 	private List<SelectOptionVO> messageTypes;
 	private List<EntitlementVO> entitlementVO;
 	private ResultStatus resultStatus;
+	private Long count;
 	
-	
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
 	public List<EntitlementVO> getEntitlementVO() {
 		return entitlementVO;
 	}
