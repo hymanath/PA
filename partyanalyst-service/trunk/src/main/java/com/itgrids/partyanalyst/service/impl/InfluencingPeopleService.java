@@ -2063,7 +2063,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public SmsResultVO sendSMSToInfluencingPersons(Long userId,
-			List<Long> influencingPersonIds,String message,Boolean includeName,String module) {
+			List<Long> influencingPersonIds,String message,Boolean includeName,String module,String senderName) {
 		
 		if(log.isDebugEnabled())
 			log.debug("Sending Message TO Influencing Persons ..");
@@ -2124,6 +2124,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 								IConstants.SMS_DEAR);
 						cadreMessage.append(IConstants.SPACE).append(mobile.getName())
 								.append(IConstants.SPACE).append(message);
+						if(!senderName.equalsIgnoreCase(""))
+							cadreMessage.append(" - ").append(senderName);
 						smsCountrySmsService.sendSms(cadreMessage.toString(), true,
 								userId, module, mobile.getMobileNumber());
 						
@@ -2166,7 +2168,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * Send SMS To Influencing Persons By InfluencingPersonIds as String of ids
 	 */
 	@SuppressWarnings("unchecked")
-	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName,String module) {
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName,String module,String senderName) {
 		
 		if(log.isDebugEnabled())
 			log.debug("Sending Message TO Influencing Persons ..");
@@ -2226,6 +2228,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 								IConstants.SMS_DEAR);
 						cadreMessage.append(IConstants.SPACE).append(mobile.getName())
 								.append(IConstants.SPACE).append(message);
+						if(!senderName.equalsIgnoreCase(""))
+							cadreMessage.append(" - ").append(senderName);
 						smsCountrySmsService.sendSms(cadreMessage.toString(), true,
 								userId, module, mobile.getMobileNumber());
 						
