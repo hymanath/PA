@@ -591,7 +591,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
 		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
 		ResultStatus resultStatus = new ResultStatus();
-	
+		Long availableCount=0l;
 		try{			
 			List result = userGroupsDAO.getAllUserGroups();
 			if(result!=null){
@@ -620,6 +620,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 							eVo.setUserId(id);
 							eVo.setName(eVo.getName());
 							eVo.setMessage(IConstants.AVAILABLE);
+							availableCount++;
 							allGroups.put(id,eVo);								
 						}						
 					}
@@ -629,7 +630,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
 				entitlementVO.add(res.getValue());
 			}
-			
+			navigationVO.setCount(availableCount);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
@@ -658,7 +659,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
 		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
 		ResultStatus resultStatus = new ResultStatus();
-	
+		Long availableCount=0l;
 		try{			
 			List result = entitlementDAO.getAllEntitlements();
 			if(result!=null){
@@ -687,6 +688,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 							eVo.setUserId(id);
 							eVo.setName(eVo.getName());
 							eVo.setMessage(IConstants.AVAILABLE);
+							availableCount++;
 							allGroups.put(id,eVo);								
 						}						
 					}
@@ -696,7 +698,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
 				entitlementVO.add(res.getValue());
 			}
-			
+			navigationVO.setCount(availableCount);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
@@ -766,7 +768,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
 		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
 		ResultStatus resultStatus = new ResultStatus();
-	
+		Long availableCount=0l;
 		try{			
 			List result = groupEntitlementDAO.getAllGroups();
 			if(result!=null){
@@ -795,6 +797,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 							eVo.setUserId(id);
 							eVo.setName(eVo.getName());
 							eVo.setMessage(IConstants.AVAILABLE);
+							availableCount++;
 							allGroups.put(id,eVo);								
 						}						
 					}
@@ -804,7 +807,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			for(Map.Entry<Long, EntitlementVO> res : allGroups.entrySet()){
 				entitlementVO.add(res.getValue());
 			}
-			
+			navigationVO.setCount(availableCount);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
