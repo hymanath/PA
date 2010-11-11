@@ -18,9 +18,12 @@ import antlr.collections.List;
 
 import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IUserEntitlementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -48,8 +51,17 @@ ServletRequestAware, ServletContextAware{
 	private EntitlementVO allGroups;
 	private EntitlementVO allUserGroups;
 	private NavigationVO navigationVO;
+	private EntitlementsHelper entitlementsHelper;
 	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public NavigationVO getNavigationVO() {
 		return navigationVO;
 	}
@@ -175,7 +187,14 @@ ServletRequestAware, ServletContextAware{
 	}
 
 	public String execute(){
-
+		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ENTITLEMENT_PAGE))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ENTITLEMENT_PAGE))
+			return ERROR;
+		
 		allRegisteredUsersData = registrationService.getAllRegisterdUsers();
 		allEntitlements = userEntitlementService.getAllEntitlements();
 		allGroups = userEntitlementService.getAllGroups();
