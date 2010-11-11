@@ -579,5 +579,21 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
+
+	public List<SelectOptionVO> getAllConstituenciesByElectionTypeInState(
+			Long electionTypeId, Long stateId) {
+		
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		List list =  delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInState(electionTypeId, stateId);
+		if(list.size()>0)
+		{
+			for(int j=0;j<list.size();j++)
+			{
+				Object[] obj = (Object[])list.get(j);
+				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString().toUpperCase()));
+			}
+		}
+		return regionsList;		
+	}
 	
 }
