@@ -51,7 +51,7 @@ public interface IInfluencingPeopleService {
 	public List<LocalUserGroupDetailsVO> getLocalUserGroupDetails(Long userId,Long regionId,String regionType,Long categoryId,String categoryType);
 	
 	//SMS to influencing Persons
-	public SmsResultVO sendSMSToInfluencingPersons(Long userId,List<Long> influencingPersonIds,String message,Boolean includeName,String module);
-	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName,String module);
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,List<Long> influencingPersonIds,String message,Boolean includeName,String module,String senderName);
+	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName,String module,String senderName);
 	
 }
