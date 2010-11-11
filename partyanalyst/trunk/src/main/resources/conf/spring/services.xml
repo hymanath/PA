@@ -121,6 +121,8 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
 		<property name="staticUserGroupDAO" ref="staticUserGroupDAO" />
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
