@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -82,6 +83,15 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	
 	private ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO;
 	private List<LocalUserGroupDetailsVO> localGroupsPeople;
+	private SmsResultVO smsResultVO;
+
+	public SmsResultVO getSmsResultVO() {
+		return smsResultVO;
+	}
+
+	public void setSmsResultVO(SmsResultVO smsResultVO) {
+		this.smsResultVO = smsResultVO;
+	}
 
 	public List<LocalUserGroupDetailsVO> getLocalGroupsPeople() {
 		return localGroupsPeople;
@@ -565,6 +575,39 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByScope(userId,regionId,regionType);
 		
 		return Action.SUCCESS;
+	}
+	
+	public String sendSMSToInfluencePeople()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		String infPeopleIds = jObj.getString("checkedIdString");
+		String message = jObj.getString("smsMessage");
+		Boolean includeName = jObj.getBoolean("includeName");
+		String taskType = jObj.getString("task");
+		String senderName = jObj.getString("senderName");
+		
+		String module = null;
+		
+		if(taskType.equalsIgnoreCase("sendSMSToInfluencePeople"))
+			module = IConstants.INFLUENCING_PEOPLE;
+		else if(taskType.equalsIgnoreCase("sendSMSToLocalGroupPeople"))
+			module = IConstants.LOCAL_USER_GROUPS;
+		
+		smsResultVO = influencingPeopleService.sendSMSToInfluencingPersons(userId, infPeopleIds, message, includeName, module, senderName);
+		
+		return Action.SUCCESS;
+		
 	}
 	
 	public String getlocalGroupsPeopleData()

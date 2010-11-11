@@ -103,6 +103,16 @@
 		padding:5px;
 		text-decoration:underline;
 	}
+	
+	.selectButtonsDiv
+	{
+		text-align:right;
+	}
+
+	#smsStatus
+	{
+		text-align:center;
+	}
 
 </style>
 
@@ -116,7 +126,9 @@
 				.get("peopleDataTable_${status.index}"));
 				resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 				resultsDataSource.responseSchema = {
-					fields : [ {
+					fields : [{
+						key : ""
+					}, {
 						key : "name"
 					}, {
 						key : "mobileNumber",parser:"number"
@@ -132,6 +144,10 @@
 				};
 
 				var resultsColumnDefs = [ {
+					key : "",
+					label : "<input type='checkbox' name='regionHeaderCheckBox' onclick='selectAllPeopleInRegion(${group.localUserGroupId})'></input>",
+					sortable : false
+				},{
 					key : "name",
 					label : "First Name",
 					sortable : true
@@ -168,8 +184,230 @@
 			var myDataTable = new YAHOO.widget.DataTable("peopleRegionData_ ${status.index}",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 			</c:forEach>
-
 		
+	}
+
+	function selectAllPeople()
+	{
+		var elmts = document.getElementsByTagName('input');
+
+		if(elmts.length == 0)
+			return;
+
+		for(var i=0; i<elmts.length; i++)
+		{
+			if(elmts[i].type == "checkbox" && !elmts[i].checked)
+				elmts[i].checked = true;
+		}
+	}
+
+	function DeSelectAllPeople()
+	{
+		var elmts = document.getElementsByTagName('input');
+
+		if(elmts.length == 0)
+			return;
+
+		for(var i=0; i<elmts.length; i++)
+		{
+			if(elmts[i].type == "checkbox" && elmts[i].checked)
+				elmts[i].checked = false;
+		}
+	}
+	
+	function limitText(limitField, limitCount, limitNum)
+	{		
+		var limitFieldElmt = document.getElementById(limitField);
+		var limitCountElmt = document.getElementById(limitCount);
+
+		if (limitFieldElmt.value.length > limitNum) 
+		{
+			limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+		}
+		else
+		{			
+			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+		}
+	}
+	
+	function sendSMSToSelectedPeople()
+	{
+			var str = '';	
+			str += '<table width="100%">';
+			str += '<tr>';
+			str += '<th>SMS Text :</th>';
+			str += '<td>';
+			str += '<textarea id="localGroupPeopleMsg" onkeyup="limitText(\'localGroupPeopleMsg\',\'maxcount\',200)" rows="3" cols="38"></textarea>';
+			str +='<div id="limitDiv">';
+			str +='<table style="width:100%;"><tr>';
+			str +='<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+			str +='<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
+			str +='</tr></table>';
+			str +='</div>';	
+			str += '</td>';
+			str += '</tr>';
+
+			str += '<tr>';
+			str += '<td></td>';
+			str += '<td><input id="smsIncludeUserName" type="checkbox" name="smsIncludeUserName"></input> Include User Name</td>';				
+			str += '</tr>';
+			
+			str += '<tr>';
+			str += '<td></td>';
+			str += '<td><input id="smsIncludeSenderName" type="checkbox" onclick="enableSenderName()" name="smsIncludeUserName"></input> Include Sender Name ';
+			str += '<input type="text" id="senderNameText" disabled="disabled" value="${sessionScope.UserName}" />';
+			str += '</td>';				
+			str += '</tr>';		
+
+			str += '</table>';
+			str	+= '<div id="smsStatus"></div>';
+			
+			var connectPopupPanel = new YAHOO.widget.Dialog("messageBox", {      
+						 width:'500px',
+						 fixedcenter : true, 
+						 visible : true,
+						 constraintoviewport : true, 
+						 iframe :true,
+						 modal :true,
+						 hideaftersubmit:true,
+						 close:true,
+						 draggable:true,
+						 buttons: [ { text:"Send", handler:handleYes, isDefault:true }] 
+			   });	 
+			
+			connectPopupPanel.setHeader("Send Message");
+			connectPopupPanel.setBody(str);
+			connectPopupPanel.render();
+	}
+
+	function enableSenderName()
+	{
+		var elmt = document.getElementById("senderNameText");
+		if(elmt.disabled == true)
+			elmt.disabled = false;
+		else
+			elmt.disabled = true;
+	}
+
+	function handleYes()
+	{
+		var messageElmt = document.getElementById("localGroupPeopleMsg");
+		var statusElmt = document.getElementById("smsStatus");
+		var includeElmt = document.getElementById("smsIncludeUserName");
+		var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
+		var senderNameTextElmt = document.getElementById("senderNameText");
+
+		var message = messageElmt.value;
+		var includeName = false;
+		var senderName = '';
+
+		if(includeElmt.checked == true)
+			includeName = true;
+
+		if(includeSenderElmtCheck.checked == true)
+			senderName = senderNameTextElmt.value;
+
+		if(message == "")
+		{
+			statusElmt.innerHTML = '<font color="red"> Message Content Is Empty .. </font>';
+			return;
+		}
+		else
+			statusElmt.innerHTML = '';
+
+	
+		var elmts = document.getElementsByTagName('input');
+		
+		var checkedIds = '';
+
+		if(elmts.length == 0)
+			return;
+		
+		for(var i=0; i<elmts.length; i++)
+		{
+			if(elmts[i].type == "checkbox" && elmts[i].name != "regionHeaderCheckBox" && elmts[i].name != "smsIncludeUserName" && elmts[i].checked)
+			{
+				checkedIds += elmts[i].value;
+				checkedIds += ',';
+			}
+		}
+
+		checkedIds = checkedIds.substring(0,checkedIds.length-1);
+		
+		if(checkedIds == '' || checkedIds == null)
+		{
+			statusElmt.innerHTML = '<font color="red"> No People Has Been Selected To Send Message .. </font>';
+			return;
+		}
+		else
+			statusElmt.innerHTML = '';
+		
+		var jsObj= 
+		{	
+			checkedIdString : checkedIds,
+			smsMessage : message,
+			includeName : includeName,
+			senderName : senderName,
+			task: "sendSMSToLocalGroupPeople"				
+		};
+		
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "sendSMSToInfluencePeopleAction.action?"+param;
+		
+		callAjax(jsObj,url);	
+	}
+
+	function callAjax(jsObj,url)
+	{
+		var myResults;
+					
+		var callback = {			
+					   success : function( o ) 
+						  {
+							try {												
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+										
+									if(jsObj.task == "sendSMSToLocalGroupPeople")
+									{
+										var statusElmt = document.getElementById("smsStatus");
+
+										if(myResults.resultStatus == null)
+											statusElmt.innerHTML = '<font color="green">SMS has been sent to '+myResults.totalSmsSent+' people successfully .. </font>';
+										else
+											statusElmt.innerHTML = '<font color="red">SMS cannot been sent to selected people due to some techniccal difficulty.. </font>';
+									}
+								}
+							catch (e)
+								{   
+									alert("Invalid JSON result" + e);   
+								}	  
+							  },
+							   scope : this,
+							   failure : function( o ) {
+											alert( "Failed to load result" + o.status + " " + o.statusText);
+										 }
+							   };
+
+				YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		}
+
+	function selectAllPeopleInRegion(id)
+	{
+		var name = "localGroupPeopleCheck_"+id;
+		var elmts = document.getElementsByName(name);
+
+		if(elmts.length == 0)
+			return;
+
+		for(var i=0; i<elmts.length; i++)
+		{
+			if(!elmts[i].checked)
+				elmts[i].checked = true;
+			else
+				elmts[i].checked = false;
+		}	
+
 	}
 
 </script>
@@ -177,12 +415,19 @@
 
 </head>
 <body>
-
+	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
 	<div id="localGroupsPeopleData_main">
 		<div id="localGroupsPeopleData_head">
 			<center>${regionTitle} Details In ${regionName} ${regionType}</center>
 		</div>
-		<div id="localGroupsPeopleData_body" class="yui-skin-sam">			
+		<div id="localGroupsPeopleData_body" class="yui-skin-sam">	
+		
+		<div id="selectButtonsDiv" class="selectButtonsDiv">
+			<input type="button" value="select All" onclick="selectAllPeople()"></input>
+			<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+			<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+		</div>
+
 			<c:forEach var="group" items="${localGroupsPeople}" varStatus ="status">
 				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
 					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head" style="padding:5px;">
@@ -214,6 +459,7 @@
 							<table id="peopleDataTable_${status.index}">						
 								<c:forEach var="people" items="${group.groupMemberDetails}" varStatus ="status">
 									<tr>
+										<td><input type="checkbox" name="localGroupPeopleCheck_${group.localUserGroupId}" value="${people.groupMemberId}"></input></td>
 										<td>${people.name}</td>
 										<td>${people.mobileNumber}</td>
 										<td>${people.address}</td>
