@@ -33,7 +33,7 @@ public interface IInfluencingPeopleService {
 	public Integer deleteInfluencingPeople(Long influencingPeopleId);
 	
 	//Influencing People
-	public ConstituencyManagementDataVO getInfluencingPeopleOverviewDetails(Long userId);
+	public ConstituencyManagementDataVO getInfluencingPeopleOverviewDetails(Long userId,String userAccessType,String userAccessValue);
 	public ConstituencyManagementRegionWiseCompleteDataVO getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(Long userId,Long regionId,String regionType,String moduleType,Long categoryId,String categoryType);
 	
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getInfluencingPeopleByInfluenceScope(Long userId);
@@ -47,7 +47,7 @@ public interface IInfluencingPeopleService {
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
 	
 	//Local User Groups
-	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId);
+	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId,String userAccessType,String userAccessValue);
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getLocalUserGroupByInfluenceScope(Long userId);
 	public List<LocalUserGroupDetailsVO> getLocalUserGroupDetails(Long userId,Long regionId,String regionType,Long categoryId,String categoryType);
 	
