@@ -265,7 +265,7 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 			return ERROR;
 				
 		
-		constituencyManagementDataVO = influencingPeopleService.getLocalUserGroupOverviewDetails(user.getRegistrationID());
+		constituencyManagementDataVO = influencingPeopleService.getLocalUserGroupOverviewDetails(user.getRegistrationID(),"","");
 		//localUserGroupsInfoVO = constituencyManagementService.getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(user.getRegistrationID(), user.getAccessType(), user.getAccessValue());
 		return Action.SUCCESS;
 	}
