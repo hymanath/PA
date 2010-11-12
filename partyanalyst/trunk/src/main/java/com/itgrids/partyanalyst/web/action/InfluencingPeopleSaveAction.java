@@ -351,46 +351,52 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		influencingPeopleBeanVO.setInfluencingPersonId(getInfluencingPersonId());
 		
 				
-		if("1".equalsIgnoreCase(getInfluencingRange()))
+		if("2".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.STATE_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
 		}
 		
-		else if("2".equalsIgnoreCase(getInfluencingRange()))
+		else if("3".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.DISTRICT_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
 		}
 		
-		else if("3".equalsIgnoreCase(getInfluencingRange()))
+		else if("4".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.CONSTITUENCY_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
 		}
 		
-		else if("4".equalsIgnoreCase(getInfluencingRange()))
+		else if("5".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
-		else if("5".equalsIgnoreCase(getInfluencingRange()))
+		else if("6".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.MANDAL_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
-		else if("6".equalsIgnoreCase(getInfluencingRange()))
+		else if("7".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.CENSUS_VILLAGE_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
-		else if("7".equalsIgnoreCase(getInfluencingRange()))
+		else if("8".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.WARD);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+		}
+		
+		else if("9".equalsIgnoreCase(getInfluencingRange()))
+		{
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.BOOTH);
+			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
 		}
 						
 		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
