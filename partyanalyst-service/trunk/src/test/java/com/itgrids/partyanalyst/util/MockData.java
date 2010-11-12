@@ -23,19 +23,22 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.GroupEntitlement;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
-import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
+import com.itgrids.partyanalyst.model.UserGroupEntitlement;
+import com.itgrids.partyanalyst.model.UserGroups;
 import com.itgrids.partyanalyst.model.UserImpDate;
 
 
@@ -96,6 +99,92 @@ public class MockData {
 	public static ElectionScope getElectionScope(){
 		return electionScope;
 	}
+	
+	public static List getAllGroups(){
+		List groupsInfo = new ArrayList();
+		
+		Object[] set1 = new Object[3];
+		Object[] set2 = new Object[3];
+		Object[] set3 = new Object[3];
+		
+		set1[0] = new Long(1);		
+		set1[1] = "PRIVILEGED_ENTITLEMENTS";
+		set2[0] = new Long(2);
+		set2[1] = "DEFAULT_ENTITLEMENTS";		
+		set3[0] = new Long(3);
+		set3[1] = "DISTRICT_PAGE";
+		
+		groupsInfo.add(set1);
+		groupsInfo.add(set2);
+		groupsInfo.add(set3);
+		
+		return groupsInfo;		
+	}
+	
+	public static List getAllEntitlements(){
+		List entitlementsInfo = new ArrayList();
+		
+		Object[] set1 = new Object[3];
+		Object[] set2 = new Object[3];
+		Object[] set3 = new Object[3];
+		Object[] set4 = new Object[3];
+		Object[] set5 = new Object[3];
+		
+		set1[0] = new Long(1);		
+		set1[1] = "CONSTITUENCY_PAGE";
+		set2[0] = new Long(2);
+		set2[1] = "PARTY_PERFORMANCE_REPORT";		
+		set3[0] = new Long(3);
+		set3[1] = "ELECTION_COMPARISION_REPORT";
+		set4[0] = new Long(4);
+		set4[1] = "PARTY_RESULTS_REPORT";		
+		set5[0] = new Long(5);
+		set5[1] = "PARTY_INFLUENCE_REPORT";
+		
+		entitlementsInfo.add(set1);
+		entitlementsInfo.add(set2);
+		entitlementsInfo.add(set3);
+		entitlementsInfo.add(set4);
+		entitlementsInfo.add(set5);
+		
+		return entitlementsInfo;		
+	}
+	
+	public static List getAllUserGroups(){
+		List groupsInfo = new ArrayList();
+		
+		Object[] set1 = new Object[3];
+		Object[] set2 = new Object[3];
+		
+		set1[0] = new Long(1);		
+		set1[1] = "NORMAL_USER";
+		set2[0] = new Long(2);
+		set2[1] = "BJP_PARTY";		
+		
+		
+		groupsInfo.add(set1);
+		groupsInfo.add(set2);
+		
+		return groupsInfo;		
+	}  
+	
+	public static List getAllEntitlementGroupsBasedOnUserGroupId(Long userId){
+		UserGroups userGroup1 = new UserGroups(new Long(1),"NORMAL_USER");	
+		UserGroups userGroup2 = new UserGroups(new Long(2),"BJP_PARTY");
+		
+		GroupEntitlement groupEntitlement1 = new GroupEntitlement(new Long(1),"PRIVILEGED_ENTITLEMENTS");
+		GroupEntitlement groupEntitlement2 = new GroupEntitlement(new Long(2),"DEFAULT_ENTITLEMENTS");
+		GroupEntitlement groupEntitlement3 = new GroupEntitlement(new Long(3),"DISTRICT_PAGE");
+		
+		UserGroupEntitlement electionType1 = new UserGroupEntitlement(27l,userGroup1,groupEntitlement1);
+		UserGroupEntitlement electionType2 = new UserGroupEntitlement(28l,userGroup1,groupEntitlement2);
+		UserGroupEntitlement electionType3 = new UserGroupEntitlement(28l,userGroup1,groupEntitlement3);
+		
+		ElectionScope electionScope = new ElectionScope(new Long(1),electionType,state,country,null,null);
+		List<ElectionScope> elecScopes = new ArrayList<ElectionScope>();
+		elecScopes.add(electionScope);
+		return elecScopes;
+	} 
 	
 	public static List<ElectionScope> getElectionScopes(Long electionTypeId){
 		ElectionType electionType = new ElectionType(electionTypeId,"Assembly","State", null);
