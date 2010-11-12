@@ -1826,6 +1826,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			//Add Other Category Results
 			constituencyManagementDataVO.setCategoryListOverview(localGroupsList);
+			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(user.getAccessType()));
 			
 			
 		}catch(Exception ex){
@@ -1837,6 +1838,34 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 			
 	 return constituencyManagementDataVO;
+	}
+	
+	public List<SelectOptionVO> getOverviewsListByUserAccessType(String accessType){
+		
+		List<SelectOptionVO> overviewsList = new ArrayList<SelectOptionVO>();
+		if(accessType.equalsIgnoreCase(IConstants.STATE)){
+			overviewsList.add(new SelectOptionVO(1L,IConstants.DISTRICT));
+			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
+			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
+			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+		}else if(accessType.equalsIgnoreCase(IConstants.DISTRICT)){
+			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
+			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
+			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+		}else if(accessType.equalsIgnoreCase(IConstants.MLA)){
+			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
+			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
+			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+		}else if(accessType.equalsIgnoreCase(IConstants.MP)){
+			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
+			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
+			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+		}
+		
+	 return overviewsList;
 	}
 	 
 	/*
