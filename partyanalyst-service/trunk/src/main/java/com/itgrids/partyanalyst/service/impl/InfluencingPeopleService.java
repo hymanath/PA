@@ -22,6 +22,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -103,6 +104,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IRegionServiceData regionServiceDataImp;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
 	private IStaticUserGroupDAO staticUserGroupDAO;
+	private IBoothDAO boothDAO;
 	private SmsCountrySmsService smsCountrySmsService;
 	private IStaticUsersDAO staticUsersDAO;
 
@@ -304,6 +306,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		this.influencingPeoplePositionDAO = influencingPeoplePositionDAO;
 	}
 
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 	public Long saveInfluencePeople(InfluencingPeopleVO infPeopleVO){
 		influencingPeopleVO = infPeopleVO;
 		try{
@@ -389,13 +399,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	public List<SelectOptionVO> getInfluenceRange(){
 		try{
 			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();			
-			selectOptionVOs.add(new SelectOptionVO(1l,IConstants.STATE_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.DISTRICT_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.CONSTITUENCY_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(4l,"MUNICIPAL-CORP-GMC"));
-			selectOptionVOs.add(new SelectOptionVO(5l,IConstants.MANDAL_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.CENSUS_VILLAGE_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(7l,IConstants.WARD));
+			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.STATE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.DISTRICT_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(4l,IConstants.CONSTITUENCY_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(5l,"MUNICIPAL-CORP-GMC"));
+			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.MANDAL_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(7l,IConstants.CENSUS_VILLAGE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(8l,IConstants.WARD));
+			selectOptionVOs.add(new SelectOptionVO(9l,IConstants.BOOTH));
 			return selectOptionVOs;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -592,38 +603,43 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setInfluencingRangeScope(influRange);
 				
 				if(influRange.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("1");
+					influencingPeopleBeanVO.setInfluencingRange("2");
 					influencingPeopleBeanVO.setInfluencingScopeValue((stateDAO.get(new Long(influScopeValue)).getStateName()));
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("2");
+					influencingPeopleBeanVO.setInfluencingRange("3");
 					influencingPeopleBeanVO.setInfluencingScopeValue(districtDAO.get(new Long(influScopeValue)).getDistrictName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("3");
+					influencingPeopleBeanVO.setInfluencingRange("4");
 					influencingPeopleBeanVO.setInfluencingScopeValue(constituencyDAO.get(new Long(influScopeValue)).getName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("4");
+					influencingPeopleBeanVO.setInfluencingRange("5");
 				    influencingPeopleBeanVO.setInfluencingScopeValue(localElectionBodyDAO.get(new Long(influScopeValue)).getName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.MANDAL_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("5");
+					influencingPeopleBeanVO.setInfluencingRange("6");
 					influencingPeopleBeanVO.setInfluencingScopeValue(tehsilDAO.get(new Long(influScopeValue)).getTehsilName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("6");
+					influencingPeopleBeanVO.setInfluencingRange("7");
 					influencingPeopleBeanVO.setInfluencingScopeValue(hamletDAO.get(new Long(influScopeValue)).getHamletName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.WARD)){
-					influencingPeopleBeanVO.setInfluencingRange("7");
+					influencingPeopleBeanVO.setInfluencingRange("8");
 					influencingPeopleBeanVO.setInfluencingScopeValue(constituencyDAO.get(new Long(influScopeValue)).getName());
+				}
+				
+				else if(influRange.equalsIgnoreCase(IConstants.BOOTH)){
+					influencingPeopleBeanVO.setInfluencingRange("9");
+					influencingPeopleBeanVO.setInfluencingScopeValue(boothDAO.get(new Long(influScopeValue)).getPartName());
 				}
 				
 				if(userAddress.getLocalElectionBody() != null )
