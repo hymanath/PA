@@ -46,6 +46,13 @@ public class GroupEntitlement extends BaseModel implements Serializable {
 	public GroupEntitlement(Long groupEntitlementId) {
 		this.groupEntitlementId = groupEntitlementId;
 	}
+	
+	/** Parameterized Constructor */
+	public GroupEntitlement(Long groupEntitlementId,String description) {
+		this.groupEntitlementId = groupEntitlementId;
+		this.description = description;
+	}
+	
 
 	/** Parameterized Constructor */
 	public GroupEntitlement(Long groupEntitlementId, Set<GroupEntitlementRelation> groupEntitlementRelations,

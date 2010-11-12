@@ -44,8 +44,7 @@ public class UserGroupEntitlement extends BaseModel implements Serializable {
 	
 	/** Parameterized Constructor */
 	public UserGroupEntitlement(Long userGroupEntilementId,
-			UserGroups userGroup, GroupEntitlement groupEntitlement,
-			String isAccessInfo) {
+			UserGroups userGroup, GroupEntitlement groupEntitlement) {
 		this.userGroupEntilementId = userGroupEntilementId;
 		this.userGroup = userGroup;
 		this.groupEntitlement = groupEntitlement;
