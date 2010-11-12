@@ -458,14 +458,14 @@ function buildRegionWiseOverViewData(data,divId)
 function openCandidatesPopup(regionId,regionName,regionType,scopeType)
 {
 	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
-	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=800,left=200,top=50");	
+	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }
 
 function openLocalGroupsCandidatesPopup(regionId,regionName,regionType,regionTitle,regionTitleId)
 {	
 	var urlStr = "localGroupsPeopleDataAction.action?windowTask=influencingPersonInfoPopup&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&regionTitle="+regionTitle+"&regionTitleId="+regionTitleId;
-	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=800,left=200,top=50");	
+	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }
 
@@ -1187,8 +1187,97 @@ function getLocalUserGroups()
 	callAjax(param,jsObj,url);	
 }
 
-function populateInfluencingPeople(results)
+function buildDifferentViewsRadio(info,divId,type)
 {
+	var data = info.differentOverviews;
+	var regionView = info.regionWiseOverview;
+
+	var radioDiv = document.getElementById(divId);
+	
+	if(data.length > 0 && radioDiv)
+	{
+		var str = '';
+		str += '<table>';
+		str += '<tr>';
+		str += '<th>Select scope to view its '+type+' </th>';
+		str += '<th style="font-size:11px">';
+		
+		for(var i=0; i<data.length; i++)
+		{
+			if(i == 0)
+				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value)" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
+			else
+				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value)" name="diffViews_'+type+'">'+data[i].name;
+		}
+		str += '</th>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th><div id="influencePeopleScopeSelectBoxLabel"></div></th>';
+		str += '<th><div id="influencePeopleScopeSelectBoxData"></div></th>';
+		str += '</tr>';
+		str += '</table>';
+		
+		radioDiv.innerHTML = str;
+	}
+}
+
+function getInfluencePeopleScope(regionId,regionName,regionType,selectType)
+{
+	var jsObj= 
+	{		
+		regionId:regionId,
+		regionName:regionName,
+		regionType:regionType,
+		selectType:selectType,		
+		task: "getInfluencePeopleScopeSelectBox"		
+	};
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getInfluencePeopleSelectScopeAjaxAction.action?"+param;
+	callAjax(param,jsObj,url);
+	
+}
+
+function buildInfluencePeopleScopeSelectBox(jsObj,results)
+{
+	var labelElmt = document.getElementById("influencePeopleScopeSelectBoxLabel");
+	var dataElmt = document.getElementById("influencePeopleScopeSelectBoxData");
+	
+	if(results.length == 0)
+	{
+		labelElmt.innerHTML = "";
+		dataElmt.innerHTML = "";	
+		getInfluencingPeopleInAConstituency();
+		return;
+	}
+	else
+	{
+		var lstr = 'Please select region';
+		var dstr = '';
+		dstr += '<table>';
+		dstr += '<tr>';
+		for(var i=0; i<results.length; i++)
+		{
+			dstr += '<th>'+results[i].label+'</th>';
+			dstr += '<td>';
+			dstr += '<select onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+			for(var j=0; j<results[i].optionsList.length; j++)
+			{
+				dstr += '<option value="'+results[i].optionsList[j].id+'">'+results[i].optionsList[j].name+'</option>';
+			}
+			dstr += '</select>';
+			dstr += '</td>';
+		}
+		dstr += '</tr>';
+		
+		labelElmt.innerHTML = lstr;
+		dataElmt.innerHTML = dstr;
+	}
+}
+
+function populateInfluencingPeople(results)
+{		
+	buildDifferentViewsRadio(results,"differentViewsRadioDiv_influencingPeople","influence people");
 	createCoulmnChart(results.regionWiseOverview,"influencePeopleChartDiv_main");
 	buildRegionWiseOverViewData(results.regionWiseOverview,"influencePeopleRegionWiseOverView_main");
 	buildScopeWiseOverViewData(results.influenceScopeOverview,"influencePeopleScopeWiseOverView_main");
@@ -1197,6 +1286,7 @@ function populateInfluencingPeople(results)
 
 function buildLocalUserGroupsCriteria(jsObj,results)
 {		
+	buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
 	createCoulmnChartForLocalUserGroups(results,"localGroupsChartDiv_main");
 	buildRegionWiseOverViewDataForLocalUserGroups(results,"localGroupsRegionWiseOverView_main");	
 	getSubLevelLocalGroupData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,results.regionWiseOverview.regionTitle,results.regionWiseOverview.regionTitleId,true);

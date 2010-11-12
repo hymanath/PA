@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
+import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
@@ -84,6 +85,16 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private ConstituencyManagementRegionWiseCompleteDataVO regionWiseCompleteDataVO;
 	private List<LocalUserGroupDetailsVO> localGroupsPeople;
 	private SmsResultVO smsResultVO;
+	private List<RegionSelectOptionVO> regionSelectOptionVO;
+
+	public List<RegionSelectOptionVO> getRegionSelectOptionVO() {
+		return regionSelectOptionVO;
+	}
+
+	public void setRegionSelectOptionVO(
+			List<RegionSelectOptionVO> regionSelectOptionVO) {
+		this.regionSelectOptionVO = regionSelectOptionVO;
+	}
 
 	public SmsResultVO getSmsResultVO() {
 		return smsResultVO;
@@ -499,13 +510,54 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 	
+	public String getInfluencePeopleSelectScope()
+	{
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		Long regionId = new Long(jObj.getString("regionId"));
+		String regionName = jObj.getString("regionName");
+		String regionType = jObj.getString("regionType");
+		String selectType = jObj.getString("selectType");
+		
+		regionSelectOptionVO = influencingPeopleService.getRegionsSelectOptionsForInput(regionId, regionType, selectType);
+		return Action.SUCCESS;
+	}
+	
 	public String getInfluencingPeopleByLocation()
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		constituencyManagementDataVO = influencingPeopleService.getInfluencingPeopleOverviewDetails(userId,"","");
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		String regionId = jObj.getString("regionId");
+		String regionType = jObj.getString("regionType");
+		String taskType = jObj.getString("task");
+		
+		String accessRegionId = "";
+		String accessRegionType = "";
+		
+		if(taskType.equalsIgnoreCase("reGetInfluencingPeopleInAConstituency"))
+		{
+			accessRegionId = regionId;
+			accessRegionType = regionType;
+		}
+		
+		constituencyManagementDataVO = influencingPeopleService.getInfluencingPeopleOverviewDetails(userId,accessRegionType,accessRegionId);
 		
 		return SUCCESS;		
 	}
