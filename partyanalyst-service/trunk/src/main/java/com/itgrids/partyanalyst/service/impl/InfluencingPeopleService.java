@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
+import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -1848,25 +1849,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			overviewsList.add(new SelectOptionVO(1L,IConstants.STATE));
 			overviewsList.add(new SelectOptionVO(1L,IConstants.DISTRICT));
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
-			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
-			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
-			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+		
 		}else if(accessType.equalsIgnoreCase(IConstants.DISTRICT)){
 			overviewsList.add(new SelectOptionVO(2L,IConstants.DISTRICT));
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
-			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
-			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
-			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
+			
 		}else if(accessType.equalsIgnoreCase(IConstants.MLA)){
 			overviewsList.add(new SelectOptionVO(3L,IConstants.CONSTITUENCY));
-			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
-			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
-			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
 		}else if(accessType.equalsIgnoreCase(IConstants.MP)){
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
-			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
-			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
-			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
 		}
 		
 	 return overviewsList;
@@ -2416,6 +2407,56 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 		}
      return membersVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getRegionsSelectOptionsForInput(java.lang.Long, java.lang.String, java.lang.String)
+	 * Method To Get Region Options Based On User Access And Input Selection
+	 */
+	public List<RegionSelectOptionVO> getRegionsSelectOptionsForInput(
+			Long regionId, String regionType, String selectedType) {
+		
+		List<RegionSelectOptionVO> regionSelectOption = new ArrayList<RegionSelectOptionVO>();
+		if(regionId != null && regionType != null && selectedType != null){
+			
+			if(regionType.equalsIgnoreCase(selectedType))
+				return regionSelectOption;
+			
+			if(regionType.equals(IConstants.STATE)){
+				
+				if(selectedType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					
+					List<SelectOptionVO> selectOption = new ArrayList<SelectOptionVO>();
+					selectOption.add(new SelectOptionVO(0L,"Select Constituency"));
+					RegionSelectOptionVO option = new RegionSelectOptionVO();
+					option.setLabel(IConstants.CONSTITUENCY);
+					option.setOptionsList(selectOption);
+					
+					regionSelectOption.add(option);
+				}
+				
+				RegionSelectOptionVO option = new RegionSelectOptionVO();
+				option.setLabel(IConstants.DISTRICT);
+				List<SelectOptionVO> districtsInState = staticDataService.getDistricts(regionId);
+				districtsInState.add(0, new SelectOptionVO(0L,"Select District"));
+				option.setOptionsList(districtsInState);
+				
+				regionSelectOption.add(0, option);
+			}else if(regionType.equals(IConstants.DISTRICT)){
+				
+				RegionSelectOptionVO option = new RegionSelectOptionVO();
+				option.setLabel(IConstants.CONSTITUENCY);
+				List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
+				constituenciesInDistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+				option.setOptionsList(constituenciesInDistrict);
+				
+				regionSelectOption.add(0, option);
+				
+			}
+		}
+		
+	 return regionSelectOption;
 	}
 }
 
