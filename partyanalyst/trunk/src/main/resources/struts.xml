@@ -272,7 +272,7 @@
         
         <action name="influencingPeopleSaveAction" class="influencingPeopleSaveAction" >
         	<result name="input">/jsp/influencingPeople.jsp</result>
-         	<result name="success">/jsp/influencingPeoplePageSuccess.jsp</result>
+         	<result name="success">/jsp/influencingPeople.jsp</result>
          	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
         </action>
  		
@@ -1131,7 +1131,7 @@
 		
 		<action name="deleteInfluencingPeopleAjaxAction" class="influencingPeopleAction" method="deleteInfluencingPeople" >
 		</action>
-		<action name="sessionCleaningForAModuleAction" class="SessionClearingAction" method="clearingSession" >
+		<action name="sessionCleaningForAModuleAction" class="sessionClearingAction" method="clearingSession" >
 		</action>
 		
 		<action name="getExternalPersonDetailsAjaxAction" class="politicalChangesAction" method="getExternalPersonDetails" >
