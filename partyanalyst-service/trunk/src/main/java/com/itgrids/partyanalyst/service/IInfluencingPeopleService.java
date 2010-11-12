@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleDetailsVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
+import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 
@@ -53,5 +54,7 @@ public interface IInfluencingPeopleService {
 	//SMS to influencing Persons
 	public SmsResultVO sendSMSToInfluencingPersons(Long userId,List<Long> influencingPersonIds,String message,Boolean includeName,String module,String senderName);
 	public SmsResultVO sendSMSToInfluencingPersons(Long userId,String influencingPersonIds,String message,Boolean includeName,String module,String senderName);
+	
+	public List<RegionSelectOptionVO> getRegionsSelectOptionsForInput(Long regionId,String regionType,String selectedType);
 	
 }
