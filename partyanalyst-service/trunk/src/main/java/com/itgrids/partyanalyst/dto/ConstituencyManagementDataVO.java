@@ -26,6 +26,8 @@ public class ConstituencyManagementDataVO extends ResultStatus implements Serial
 	private List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverview;
 	private List<ConstituencyManagementRegionWiseOverviewVO> categoryListOverview;
 	
+	private List<SelectOptionVO> differentOverviews;
+	
 	
 	public List<ConstituencyManagementRegionWiseOverviewVO> getCategoryListOverview() {
 		return categoryListOverview;
@@ -54,6 +56,12 @@ public class ConstituencyManagementDataVO extends ResultStatus implements Serial
 	public void setInfluenceScopeOverview(
 			List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverview) {
 		this.influenceScopeOverview = influenceScopeOverview;
+	}
+	public List<SelectOptionVO> getDifferentOverviews() {
+		return differentOverviews;
+	}
+	public void setDifferentOverviews(List<SelectOptionVO> differentOverviews) {
+		this.differentOverviews = differentOverviews;
 	}
 	
 
