@@ -290,7 +290,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			session.setAttribute(ISessionConstants.MANDALS,mandalList);	
 			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 			
-			setDefaultInfluenceRange(3l);
+			setDefaultInfluenceRange(4l);
 		}
 		else if("COUNTRY".equals(accessType))
 		{
@@ -319,7 +319,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
-			setDefaultInfluenceRange(1l);
+			setDefaultInfluenceRange(2l);
 			
 		}
 		else if("DISTRICT".equals(accessType))
@@ -338,7 +338,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 			
-			setDefaultInfluenceRange(2l);
+			setDefaultInfluenceRange(3l);
 		}
 				
 		session.setAttribute("staticParties", staticParties);
@@ -363,7 +363,8 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			e.printStackTrace();
 		}
 	}
-	public void saveInfluencePeopleData(){
+	
+	/*public void saveInfluencePeopleData(){
 		String param = null;
 		param = getTask();
 		try {
@@ -386,13 +387,9 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
-	}
+	} */
 
-	public Object getModel() {
-
-		return influencingPeopleBeanVO;
-	}
-
+	
 	public void prepare() throws Exception {
 		
 		influencingPersonId = request.getParameter("influencingPersonId");
@@ -409,7 +406,12 @@ public class InfluencingPeopleAction extends ActionSupport implements
         	 prepopulateLocations(influencingPeopleBeanVO);
         }
 	
-	}	
+	}
+	
+	public Object getModel() {
+
+		return influencingPeopleBeanVO;
+	}
 	
 	public void prepopulateLocations(InfluencingPeopleBeanVO  influencingPeopleBeanVO)
     {
