@@ -716,6 +716,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			
+			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(user.getAccessType()));
 			
 		}catch(Exception ex){
 			log.error("Exception Raised In Influencing People Retrieval :" + ex);
@@ -1844,17 +1845,20 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		List<SelectOptionVO> overviewsList = new ArrayList<SelectOptionVO>();
 		if(accessType.equalsIgnoreCase(IConstants.STATE)){
+			overviewsList.add(new SelectOptionVO(1L,IConstants.STATE));
 			overviewsList.add(new SelectOptionVO(1L,IConstants.DISTRICT));
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
 			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
 			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
 			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
 		}else if(accessType.equalsIgnoreCase(IConstants.DISTRICT)){
+			overviewsList.add(new SelectOptionVO(2L,IConstants.DISTRICT));
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
 			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
 			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
 			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
 		}else if(accessType.equalsIgnoreCase(IConstants.MLA)){
+			overviewsList.add(new SelectOptionVO(3L,IConstants.CONSTITUENCY));
 			overviewsList.add(new SelectOptionVO(3L,IConstants.MANDAL));
 			overviewsList.add(new SelectOptionVO(4L,"MUNCIPALITY/CORPORATION"));
 			overviewsList.add(new SelectOptionVO(3L,"BOOTH"));
