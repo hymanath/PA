@@ -481,6 +481,8 @@
 				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 				var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
 				callAjax(jsObj,url);
+				window.opener.document.location.reload(true);
+				window.location.reload(true);
 			  }	
 			
 			  else
