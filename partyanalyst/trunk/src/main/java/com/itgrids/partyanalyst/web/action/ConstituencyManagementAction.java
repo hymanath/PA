@@ -505,7 +505,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		constituencyManagementDataVO = influencingPeopleService.getInfluencingPeopleOverviewDetails(userId);
+		constituencyManagementDataVO = influencingPeopleService.getInfluencingPeopleOverviewDetails(userId,"","");
 		
 		return SUCCESS;		
 	}
