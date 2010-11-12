@@ -687,7 +687,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * Influencing People Regionwise and Influence Scopewise Complete Overview Retrieval For A User
 	 */
 	public ConstituencyManagementDataVO getInfluencingPeopleOverviewDetails(
-			Long userId) {
+			Long userId,String userAccessType,String userAccessValue) {
 		
 		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
 		if(log.isDebugEnabled())
@@ -695,29 +695,35 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		try{
 			Registration user = registrationDAO.get(userId);
+			String accessType = user.getAccessType();
 			String accessValue = user.getAccessValue();
 			
+			if(userAccessType != null && !userAccessType.equalsIgnoreCase(""))
+				accessType = userAccessType;
+			if(userAccessValue != null && !userAccessValue.equalsIgnoreCase(""))
+				accessValue = userAccessValue;
+			
 			//State Level Access User
-			if(user.getAccessType().equals(IConstants.STATE)){
+			if(accessType.equals(IConstants.STATE)){
 				Long stateId = new Long(accessValue);
 				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			//District Level Access User
-			else if(user.getAccessType().equals(IConstants.DISTRICT)){
+			else if(accessType.equals(IConstants.DISTRICT)){
 				Long districtId = new Long(accessValue);
 				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			//MP Access User
-			else if(user.getAccessType().equals(IConstants.MP)){
+			else if(accessType.equals(IConstants.MP)){
 				
 			}
 			//MLA Access User
-			else if(user.getAccessType().equals(IConstants.MLA)){
+			else if(accessType.equals(IConstants.MLA) || accessType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				Long constituencyId = new Long(accessValue);
 				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			
-			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(user.getAccessType()));
+			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(accessType));
 			
 		}catch(Exception ex){
 			log.error("Exception Raised In Influencing People Retrieval :" + ex);
@@ -1783,7 +1789,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
      * Local User Groups Regionwise and Scopewise Complete Overview Retrieval For A User
      */
 	@SuppressWarnings("unchecked")
-	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId) {
+	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId,String usrAccessType,String userAccessValue) {
 		ConstituencyManagementDataVO constituencyManagementDataVO = new ConstituencyManagementDataVO();
 		List<ConstituencyManagementRegionWiseOverviewVO> localGroupsList = new ArrayList<ConstituencyManagementRegionWiseOverviewVO>();
 		if(log.isDebugEnabled())
@@ -1791,14 +1797,22 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		try{
 			Registration user = registrationDAO.get(userId);
+			String userAccessType = user.getAccessType();
 			String accessValue = user.getAccessValue();
+			
+			//Check for explicit passing of user Access and Access Value
+			if(usrAccessType != null && !usrAccessType.equalsIgnoreCase(""))
+				userAccessType = usrAccessType;
+			if(userAccessValue != null && !userAccessValue.equalsIgnoreCase(""))
+				accessValue = userAccessValue;
+			
 			List<SelectOptionVO> categorysList = getLocalGroupCategoriesForAUser(userId);
 			if(categorysList == null || categorysList.size() == 0)
 				return constituencyManagementDataVO;
 			
 				
 			//State Level Access User
-			if(user.getAccessType().equals(IConstants.STATE)){
+			if(userAccessType.equals(IConstants.STATE)){
 				Long stateId = new Long(accessValue);
 				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
 				for(int i=1;i<categorysList.size();i++){
@@ -1806,7 +1820,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 			}
 			//District Level Access User
-			else if(user.getAccessType().equals(IConstants.DISTRICT)){
+			else if(userAccessType.equals(IConstants.DISTRICT)){
 				Long districtId = new Long(accessValue);
 				constituencyManagementDataVO = getDistrictRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,districtId,true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
 				for(int i=1;i<categorysList.size();i++){
@@ -1814,11 +1828,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 			}
 			//MP Access User
-			else if(user.getAccessType().equals(IConstants.MP)){
+			else if(userAccessType.equals(IConstants.MP)){
 				
 			}
 			//MLA Access User
-			else if(user.getAccessType().equals(IConstants.MLA)){
+			else if(userAccessType.equals(IConstants.MLA) || userAccessType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				Long constituencyId = new Long(accessValue);
 				constituencyManagementDataVO = getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId, constituencyId, true,IConstants.LOCAL_USER_GROUPS,categorysList.get(0).getId(),categorysList.get(0).getName());
 				for(int i=1;i<categorysList.size();i++){
@@ -1828,7 +1842,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			//Add Other Category Results
 			constituencyManagementDataVO.setCategoryListOverview(localGroupsList);
-			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(user.getAccessType()));
+			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(userAccessType));
 			
 			
 		}catch(Exception ex){
