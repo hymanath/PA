@@ -140,7 +140,13 @@
 						key : "designation"
 					} , {
 						key : "emailId"
-					} ]
+					},{
+						key : "moreDetails"
+					},{
+						key : "edit"
+					},{
+						key : "delete"
+					}  ]
 				};
 
 				var resultsColumnDefs = [ {
@@ -172,6 +178,18 @@
 					key : "emailId",
 					label : "Email",
 					sortable : true
+				},{
+					key : "moreDetails",
+					label : "More Details",
+					sortable : false
+				} ,{
+					key : "edit",
+					label : "Edit",
+					sortable : false
+				},{
+					key : "delete",
+					label : "Delete",
+					sortable : false
 				}];
 
 				var myConfigs = {
@@ -409,6 +427,21 @@
 		}	
 
 	}
+	
+	function getPersonDetails(id)
+	{
+		
+	}
+	
+	function editPersonDetails(id)
+	{
+		
+	}
+
+	function deletePersonDetails(id)
+	{
+		
+	}
 
 </script>
 
@@ -465,7 +498,18 @@
 										<td>${people.address}</td>
 										<td>${people.location}</td>
 										<td>${people.designation}</td>
-										<td>${people.emailId}</td>										
+										<td>${people.emailId}</td>		
+										<td><a href="javascript:{}" onclick="getPersonDetails(${people.groupMemberId})">More Details</a></td>
+										<td>
+											<a href="javascript:{}" onclick="editPersonDetails(${people.groupMemberId})">
+												<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">
+											</a>
+										</td>
+										<td>
+											<a href="javascript:{}" onclick="deletePersonDetails(${people.groupMemberId})">
+												<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">
+											</a>
+										</td>
 									</tr>							
 								</c:forEach>
 							</table>

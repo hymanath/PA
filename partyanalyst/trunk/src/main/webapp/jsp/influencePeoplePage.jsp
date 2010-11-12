@@ -152,13 +152,17 @@
 					}, {
 						key : "stateName"
 					},{
-						key : "More Details"
+						key : "moreDetails"
+					},{
+						key : "edit"
+					},{
+						key : "delete"
 					} ]
 				};
 
 				var resultsColumnDefs = [{
 					key : "",
-					label : "<input type='checkbox' name='regionHeaderCheckBox' onclick='selectAllPeopleInRegion(${region.regionId})'></input>",
+					label : "All <input type='checkbox' name='regionHeaderCheckBox' onclick='selectAllPeopleInRegion(${region.regionId})'></input>",
 					sortable : false
 				},
 				{
@@ -199,10 +203,18 @@
 					label : "State",
 					sortable : true
 				},{
-					key : "More Details",
+					key : "moreDetails",
 					label : "More Details",
 					sortable : false
-				} ];
+				} ,{
+					key : "edit",
+					label : "Edit",
+					sortable : false
+				},{
+					key : "delete",
+					label : "Delete",
+					sortable : false
+				}];
 
 				var myConfigs = {
 				paginator : new YAHOO.widget.Paginator({
@@ -444,6 +456,16 @@
 			{
 				
 			}
+			
+			function editPersonDetails(id)
+			{
+				
+			}
+
+			function deletePersonDetails(id)
+			{
+		
+			}
 
 	</script>
 </head>
@@ -484,7 +506,17 @@
 									<td>${people.constituency}</td>
 									<td>${people.district}</td>
 									<td>${people.state}</td>
-									<td><a href="javascript:{}" onclick="getPersonDetails(${region.regionId})">More Details</a></td>
+									<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>
+									<td>
+										<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">
+											<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">
+										</a>
+									</td>
+									<td>
+										<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">
+											<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">
+										</a>
+									</td>
 								</tr>							
 							</c:forEach>
 						</table>
