@@ -121,6 +121,7 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
 		<property name="staticUserGroupDAO" ref="staticUserGroupDAO" />
+		<property name="boothDAO" ref="boothDAO" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="staticUsersDAO" ref="staticUsersDAO" />
 	</bean>
