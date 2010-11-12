@@ -307,4 +307,5 @@ public interface IConstants {
     public static final String NOT_AVAILABLE = "NOT_AVAILABLE";
     
     public static final String SUCCESSFULLY_SAVED = "SUCCESSFULLY_SAVED";
+    public static final String BOOTH = "BOOTH";
 }
