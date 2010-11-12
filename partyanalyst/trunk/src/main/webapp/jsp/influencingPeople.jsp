@@ -344,8 +344,8 @@ function populateLocations(val,source)
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';
-			if(row5El.style.display == 'none')
-				row5El.style.display = '';			
+			  row5El.style.display == 'none'
+
 		} else if(value == 7)
 		{
 			if(row1El.style.display == 'none')
@@ -355,7 +355,10 @@ function populateLocations(val,source)
 			if(row3El.style.display == 'none')
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
-				row4El.style.display = '';				
+				row4El.style.display = '';	
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';
+
 		} else if(value == 8)
 		{
 			if(row1El.style.display == 'none')
