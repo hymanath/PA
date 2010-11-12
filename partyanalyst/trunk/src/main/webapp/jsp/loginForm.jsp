@@ -3,7 +3,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%
 String src = "";
-String type = "";
 //Problem Management
 String redirectLoc = "";
 String task = "";
@@ -21,10 +20,6 @@ if(request.getParameter("src")!=null){
 }
 		
 src = request.getParameter("src");
-
-if(request.getParameter("type")!=null){
-	type = request.getParameter("type");
-}
 
 if(request.getParameter("redirectLoc")!=null){
 	redirectLoc = request.getParameter("redirectLoc");
@@ -115,27 +110,23 @@ if(request.getParameter("constituencyName")!=null){
 		<input type="hidden" name="src" value="<%=src %>" />
 		<% } %>
 		<P>Registered User Sign In</P>
-		<%
-		if(type != ""){
-		%>
 		
-	     <input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Commercial User
-	     <input id="freeUserRadio" type="radio" name="userType" value="2"/>Free User
-		<BR>
-		<BR>
-			
-		 <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-		 <input type="hidden" name="task" value="<%=task %>" />
-		 <input type="hidden" name="name" value="<%=name %>" />
-		 <input type="hidden" name="stateId" value="<%=stateId %>" />
-		 <input type="hidden" name="districtId" value="<%=districtId %>" />
-		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
-		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
-		 <input type="hidden" name="districtName" value="<%=districtName %>" />
-		 <input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
-		   
-	    <% } %>
+		<c:if test='${! empty type }'>
+			<input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Commercial User
+			<input id="freeUserRadio" type="radio" name="userType" value="2"/>Free User
+			<BR>
+			<BR>
+			<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+			<input type="hidden" name="task" value="<%=task %>" />
+			<input type="hidden" name="name" value="<%=name %>" />
+			<input type="hidden" name="stateId" value="<%=stateId %>" />
+			<input type="hidden" name="districtId" value="<%=districtId %>" />
+			<input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
+			<input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
+			<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
+			<input type="hidden" name="districtName" value="<%=districtName %>" />
+			<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
+		</c:if>
             
 		<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 		<c:remove var="USER_REG_SUCCESS" scope="session" />
@@ -145,40 +136,35 @@ if(request.getParameter("constituencyName")!=null){
 			
 		</s:form>
 		
-		<%
-		if(type != ""){
-		%>
-		 <div>
-		  <s:form name="regForm" action="anonymousUserAction" method="POST" theme="simple" >
-
-		 <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
-		 <input type="hidden" name="task" value="<%=task %>" />
-		 <input type="hidden" name="name" value="<%=name %>" />
-		 <input type="hidden" name="stateId" value="<%=stateId %>" />
-		 <input type="hidden" name="districtId" value="<%=districtId %>" />
-		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
-		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
-		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />			 
-		 <input type="hidden" name="districtName" value="<%=districtName %>" />
-		 <input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
-
-		 <hr>
-		 <table>
-		 <tr>
-		 <td><IMG src="images/icons/b_arrow.gif"></td>
-		 <td>New User?</td>
-		 <td><s:submit value="Sign Up" cssStyle="btnStyle" align="center"/></td>
-		 </tr>	
-		 </table>
-			 
-
-         <!--<h3><a href="anonymousUserAction.action">Register</a></h3>-->
-		 </s:form>
-		 </div>
-        <% } %>
+		<c:if test='${! empty type }'>
+			<div>
+				<s:form name="regForm" action="anonymousUserAction" method="POST" theme="simple" >
+					<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
+					<input type="hidden" name="task" value="<%=task %>" />
+					<input type="hidden" name="name" value="<%=name %>" />
+					<input type="hidden" name="stateId" value="<%=stateId %>" />
+					<input type="hidden" name="districtId" value="<%=districtId %>" />
+					<input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
+					<input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
+					<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />			 
+					<input type="hidden" name="districtName" value="<%=districtName %>" />
+					<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
+					<hr>
+					<table>
+					<tr>
+					<td><IMG src="images/icons/b_arrow.gif"></td>
+					<td>New User?</td>
+					<td><s:submit value="Sign Up" cssStyle="btnStyle" align="center"/></td>
+					</tr>	
+					</table>
+					<!--<h3><a href="anonymousUserAction.action">Register</a></h3>-->
+				</s:form>
+			</div>
+		</c:if>
+		
         </div>
         <script type="text/javascript">
-        executeOnload();
+        	executeOnload();
         </script>
 	</body>
 </html>

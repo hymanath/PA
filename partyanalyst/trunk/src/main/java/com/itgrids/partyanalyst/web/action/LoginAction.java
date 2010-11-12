@@ -69,7 +69,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.src = src;
 	}
 
-	
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -225,7 +224,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 					session.setAttribute("UserType", "PartyAnalyst");
 					session.setAttribute("HiddenCount", hiden);
 					
-				    return IConstants.PARTY_ANALYST_USER;
+				    return src;
 				}
 				else if(userType.equalsIgnoreCase("2")){
 					userFullName = regVO.getFirstName() + " "; 
