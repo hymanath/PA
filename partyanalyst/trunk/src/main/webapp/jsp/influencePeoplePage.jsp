@@ -437,6 +437,9 @@
 											else
 												statusElmt.innerHTML = '<font color="red">SMS cannot been sent to selected people due to some techniccal difficulty.. </font>';
 										}
+										if(jsObj.task == "deleteInfluencingPerson"){
+											alert("Succesfully Deleted");
+										}
 									}
 								catch (e)
 									{   
@@ -459,12 +462,31 @@
 			
 			function editPersonDetails(id)
 			{
-				
+				var type='edit';
+				var browser2 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+			    browser2.focus();
 			}
 
 			function deletePersonDetails(id)
 			{
-		
+			  var ask = confirm("Do You want to delete");
+			  if (ask ==  true)
+			  {
+				var jsObj= 
+				{		
+					influencingPeopleId :id,		  			
+					task: "deleteInfluencingPerson"		
+				};
+				
+				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/deleteInfluencingPeopleAjaxAction.action?"+param;
+				callAjax(jsObj,url);
+			  }	
+			
+			  else
+			  {
+				return;	
+			  }	
 			}
 
 	</script>
