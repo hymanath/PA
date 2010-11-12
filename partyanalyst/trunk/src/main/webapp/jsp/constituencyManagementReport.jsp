@@ -363,8 +363,8 @@
 		{
 			var jsObj= 
 			{	
-				accessType:accessType,
-				accessValue:accessValue,						 			  			
+				regionId:"",
+				regionType:"",						 			  			
 				task: "getInfluencingPeopleInAConstituency"
 						
 			};
@@ -373,6 +373,22 @@
 			var url = "<%=request.getContextPath()%>/influencingPeopleInConstituencyAction.action?"+param;
 			
 			callAjax(param,jsObj,url);			
+		}
+		
+		function reGetInfluencingPeopleInAConstituency(regionType,regionId)
+		{
+			var jsObj= 
+			{	
+				regionId:regionId,
+				regionType:regionType,						 			  			
+				task: "reGetInfluencingPeopleInAConstituency"
+						
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/influencingPeopleInConstituencyAction.action?"+param;
+			
+			callAjax(param,jsObj,url);	
 		}
 
 		function smsRenewalMessage()
@@ -586,6 +602,14 @@
 										{
 											buildSubLevelLocalGroupPeople(jsObj,myResults);
 										}
+										if(jsObj.task == "getInfluencePeopleScopeSelectBox")
+										{
+											buildInfluencePeopleScopeSelectBox(jsObj,myResults);
+										}
+										if(jsObj.task == "reGetInfluencingPeopleInAConstituency")
+										{
+											populateInfluencingPeople(myResults);
+										}
 									}
 								catch (e)
 									{   
@@ -695,6 +719,8 @@
 									<div class="corner topRight"></div>
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
+
+									<div id="differentViewsRadioDiv_influencingPeople" class="differentViewsDivClass"></div>
 									<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
 										<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
@@ -771,8 +797,11 @@
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
 
-									<div id="localGroupsChartDiv_main" class="contentDivClass">										
-									</div>	
+										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass">										
+										</div>
+										<div id="localGroupsChartDiv_main" class="contentDivClass">										
+										</div>	
+
 								</div>														
 							</td>
 						</tr>

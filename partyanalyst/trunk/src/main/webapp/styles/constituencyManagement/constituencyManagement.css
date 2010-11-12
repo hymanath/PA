@@ -596,3 +596,22 @@ fieldset {
 	color:#77471D;
 	font-size:10px;
 }
+
+.differentViewsDivClass
+{
+	background-color:#F5EFEA;
+	padding:5px;
+	position:relative;
+}
+
+.differentViewsDivClass table th
+{
+	color:#77471D;
+	text-align:left;
+}
+
+.differentViewsDivClass table td
+{
+	color:#494237;
+	font-size:11px;
+}
