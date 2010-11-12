@@ -224,7 +224,10 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 					session.setAttribute("UserType", "PartyAnalyst");
 					session.setAttribute("HiddenCount", hiden);
 					
-				    return src;
+					if(src != null && !"null".equalsIgnoreCase(src))
+						return src;
+					else
+						return SUCCESS;
 				}
 				else if(userType.equalsIgnoreCase("2")){
 					userFullName = regVO.getFirstName() + " "; 
