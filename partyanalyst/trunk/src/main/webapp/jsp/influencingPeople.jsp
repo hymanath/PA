@@ -166,8 +166,8 @@ function callAjax(param,jsObj,url){
 					}
 					if(jsObj.task == "getVillages")
 					{
-						clearOptionsListForSelectElmtId("hamletField");
-						createOptionsForSelectElmtId("hamletField",myResults);
+						clearOptionsListForSelectElmtId("hamletField_s");
+						createOptionsForSelectElmtId("hamletField_s",myResults);
 					}
 					
 			}catch (e) {   		
@@ -204,7 +204,17 @@ function influenceRangeFunction(id,text){
 		specifyBox.value = text;
 }
 
-function setLocationValue(value) { if(value == '0') { alert("Please Select Valid Location"); return; }	var hiddenEl = document.getElementById("influenceRangeInputId"); hiddenEl.value = ''; hiddenEl.value = value; }
+function setLocationValue(value)
+{ 
+	if(value == '0')
+	{
+		alert("Please Select Valid Location"); 
+		return; 
+	}	
+		var hiddenEl = document.getElementById("influenceRangeInputId"); 
+		hiddenEl.value = '';
+		hiddenEl.value = value;
+}
 
 function executeOnload() 
 {
@@ -216,18 +226,6 @@ function executeOnload()
 		populateLocations(selectedeffectedRange, 'onLoad');	
 	
 
-}
-
-function doUnload()
-{
-	var jsObj=
-	{
-		task:"removeSessionVariablesForInfluencingPeople"					
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/removeSessionVariablesForInfluencingPeopleAjaxAction.action?"+rparam;	
-	callAjax(rparam,jsObj,url);
-	window.opener.document.location.reload(true);
 }
 
 function cleanOptionsList(string)
@@ -256,19 +254,21 @@ function cleanOptionsList(string)
 }
 function populateLocations(val,source)
 {	
+	
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
 	var row4El = document.getElementById("row4");
 	var row5El = document.getElementById("row5");
 	var row6El = document.getElementById("row6");
+
 	var hiddenEl = document.getElementById("influenceRangeInputId");
 	var stateFieldEl = document.getElementById("stateField");
 	var districtFieldEl = document.getElementById("districtField"); 
 	var constituencyFieldEl = document.getElementById("constituencyField");
 	var mandalFieldEl = document.getElementById("mandalField");
-	var hamletFieldEl = document.getElementById("hamletField");
-	var pConstituencyFieldEl = document.getElementById("pConstituencyField");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
 	
 	if(source == 'onChange')
 	{	
@@ -281,9 +281,10 @@ function populateLocations(val,source)
 		constituencyFieldEl.selectedIndex = '0';
 		mandalFieldEl.selectedIndex = '0';
 		hamletFieldEl.selectedIndex = '0';
+
+		if(boothFieldEl)
+			boothFieldEl.selectedIndex = '0';
 		
-		if(pConstituencyFieldEl)
-		pConstituencyFieldEl.selectedIndex = '0';
 	}	
 	
 	row1El.style.display = 'none';
@@ -300,52 +301,99 @@ function populateLocations(val,source)
 	
 	var value = val;
 	
-	if( (value>1) || (value==1) ){
-		if(row1El.style.display == 'none')
-		{	
-			row1El.style.display = '';			 
-		}		
-	}
-	if( (value>2) || (value==2) ){
-		if(row2El)
-		{	
+	if(value == 1)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			
+		} else if(value == 2)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+		} else if(value == 3)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
 			if(row2El.style.display == 'none')
-			{	
+				row2El.style.display = '';					
+		} else if(value == 4)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
 				row2El.style.display = '';
-			}
-		}	
-	}
-	if( (value>3) || (value==3) ){
-				
-		if(userAccess != 'MP' || source == 'onChange')
-		{	
 			if(row3El.style.display == 'none')
-			{	
+				row3El.style.display = '';			
+		} else if(value == 5)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
 				row3El.style.display = '';
-			}
-		} 
-		if(userAccess == 'MP')
-		{	
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';				
+		} else if(value == 6)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';			
+		} else if(value == 7)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';				
+		} else if(value == 8)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';			
+		} else if(value == 9)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
 			if(row6El.style.display == 'none')
-			{	
 				row6El.style.display = '';
-			}
-		}
-	}
-	if( (value>4) || (value==4) || (value>5) || (value==5)  ){
-		if(row4El.style.display == 'none')
-		{	
-			row4El.style.display = '';
-		}		
-	}
-	
-	if( (value>6) || (value==6) || (value>7) || (value==7) ){
-		if(row5El.style.display == 'none')
-		{	
-			row5El.style.display = '';
-		}		
-	}	 
+		}	 
 }
+function doUnload()
+{
+	var jsObj=
+	{
+		task:"removeSessionVariablesForInfluencingPeople"					
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/removeSessionVariablesForInfluencingPeopleAjaxAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+	window.opener.document.location.reload(true);
+}
+
 function sessionClean(module,accessType,windowTask)
 {
 
@@ -354,13 +402,13 @@ function sessionClean(module,accessType,windowTask)
 			module: module,
 			accessType: accessType,
 			windowTask: windowTask,
-			task: "sessionCleaning"
+			task:"sessionCleaning"
 		};
 			
 
-	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "sessionCleaningForAModuleAction.action?"+param;
-	callAjax(param,jsObj,url);
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/sessionCleaningForAModuleAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
 }
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
@@ -408,7 +456,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
 	</c:if>
 	
-	<s:form action="/influencingPeopleSaveAction.action" method="post" theme="simple" name="form">
+	<s:form action="influencingPeopleSaveAction" method="post" theme="simple" name="form">
 	<FIELDSET>
 	<LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
 
@@ -504,7 +552,6 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 				<s:select id="scopeLevel" list="#session.influenceRange" listKey="id" listValue="name" value="defaultInfluenceRange" name="influencingRange" cssClass="regionSelect" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"/> 
 			</td>			
 		</tr>	 								
-	<c:if test="${userAccess !=  'MP'}">
 		<tr id="row1" style="display:none;">
 			<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
 			<td>
@@ -517,22 +564,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 			</td>
 		</tr>
-	</c:if>
-	<c:if test="${userAccess ==  'MP'}">
-		<tr id="row1" style="display:none;">
-			<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
-			<td>
-				<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
-			</td>
-		</tr>
-		<TR id="row6" style="display:none;">	
-			<TD width="120px" class="tdstyle"><%=PCONSTITUENCY%></TD>
-			<TD>
-			<s:select id="pConstituencyField" cssClass="selectWidth" name="pstate" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
-			</TD>
-		</TR>
-	</c:if>
-	<tr id="row3" style="display:none;">
+		<tr id="row3" style="display:none;">
 		<td width="120px" class="tdstyle"><%=ACONSTITUENCY%><font class="required"> * </font></td>
 		<td>
 			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
@@ -541,29 +573,37 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<tr id="row4" style="display:none;">
 		<td width="120px" class="tdstyle"><%=MANDAL%><font class="required"> * </font></td>
 		<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','newProblemPost','hamletField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreReg','null','cadreLevel','constituencyField');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
 		<td width="120px" class="tdstyle"><%=wardOrHamlet%><font class="required"> * </font></td>
 		<td>
-			<s:select id="hamletField" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="hamletField_s" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
 		</td>
 	</tr>	
+	<tr id="row6" style="display:none;">
+			<td width="120px" class="tdstyle">Booth No</td>
+			<td>
+				<s:select id="boothField_s" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			</td>
+	</tr>
 	</TABLE>
 </FIELDSET>
 <div id="specifyInfluenceRange"></div>
 <s:hidden id="influenceRangeInputId" name="influencingScopeValue"/>
 <s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
+
 <div id="saveDiv" align="center">
 	<s:submit cssClass="button" value="Save Record" name="Save"></s:submit>
 </div>
 <%--<div id="exitDiv" align="center">
-	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input>
-</div> ---  --%>
+	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
+</div>  ---%>
 </s:form>
 
 </div>		
 </body>
 </html> 
+
