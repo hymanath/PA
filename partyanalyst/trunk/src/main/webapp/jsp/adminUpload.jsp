@@ -126,7 +126,7 @@
 								<td width="33%">
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Mapping(Upload Files)</legend>
-									<h4>Upload Booth Village Mapping Data<a href="<s:url action="villageBoothMapperAction"/>">Upload</a></h4>
+									<h4>Upload Booth Village Mapping Data<a href="<s:url action="villageBoothMapperUploadAction"/>">Upload</a></h4>
 									</fieldset>
 								</td>								
 							</tr>
