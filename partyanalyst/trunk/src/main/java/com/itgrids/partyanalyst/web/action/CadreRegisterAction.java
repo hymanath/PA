@@ -865,6 +865,17 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setThirdFamilyMemberDOB(String thirdFamilyMemberDOB) {
 		this.cadreInfo.setThirdFamilyMemberDOB(thirdFamilyMemberDOB);
 	}
+	
+	public void setServletRequest(HttpServletRequest req) {
+		request = req;
+		session = req.getSession();
+
+	}
+
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+
+	}
 
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
@@ -973,16 +984,16 @@ public class CadreRegisterAction extends ActionSupport implements
 			
 		return Action.SUCCESS;
 	}
-
-	public void setServletRequest(HttpServletRequest req) {
-		request = req;
-		session = req.getSession();
-
-	}
-
-	public void setServletContext(ServletContext context) {
-		this.context = context;
-
+	
+	public void validate() {
+		
+		int familyMembers = Integer.parseInt(cadreInfo.getNoOfFamilyMembers().trim().length()>0?cadreInfo.getNoOfFamilyMembers().trim():"0");
+		int voters = Integer.parseInt(cadreInfo.getNoOfVoters().trim().length()>0?cadreInfo.getNoOfVoters().trim():"0");
+		
+		if(voters > familyMembers)
+		{
+			addFieldError("noOfVoters","Please Give Correct value for No of Voters");
+		}
 	}
 
 }
