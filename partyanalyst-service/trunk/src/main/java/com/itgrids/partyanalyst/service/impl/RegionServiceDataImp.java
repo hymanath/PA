@@ -566,13 +566,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public List<SelectOptionVO> getboothsInWard(Long wardId, Long year,
 			Long constituencyId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
-		List boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(wardId, year, constituencyId);
+		String id = wardId.toString().substring(1);
+		List boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(new Long(id), year, constituencyId);
 		if(boothsList.size()>0)
 		{
 			for(int j=0;j<boothsList.size();j++)
 			{
 				Object[] obj = (Object[])boothsList.get(j);
-				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),obj[2].toString()));
+				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No" + obj[1]));
 			}
 		}
 		return regionsList;		
