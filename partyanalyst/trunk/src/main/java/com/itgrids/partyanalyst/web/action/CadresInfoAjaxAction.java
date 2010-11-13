@@ -331,9 +331,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		{		
 			log.debug("Inside if block level = "+region);
 			cadreRegionInfo = cadreManagementService.getDistrictAllConstCadres(new Long(regionId), userID);
-			//cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(new Long(regionId), userID);
-			//cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
+		}
+		else if(region.equalsIgnoreCase("MP"))
+		{		
+			log.debug("Inside if block level = "+region);
+			cadreRegionInfo = cadreManagementService.getParliamentAllConstCadres(new Long(regionId), userID);
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
@@ -353,8 +358,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 				if(subRegionRegionCadreInfo.size() != 0)
 					cadreRegionInfo.addAll(subRegionRegionCadreInfo);
 				
-			}	
-			
+			}			
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
