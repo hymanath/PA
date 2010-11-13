@@ -515,13 +515,23 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
-		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd')" headerKey="0" headerValue="Select Mandal"></s:select></td>
+		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>	
 	<tr>
  		<td class="tdstyle" width="100px"><s:label for="wardOrHamlet" id="wardOrHamletLabel"  value="%{getText('wardOrHamlet')}" /><font class="required"> * </font></td>
-		<td><s:select id="villageField_add" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"></s:select></td>
+		<td><s:select id="villageField_add" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
 		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="%{getText('pincode')}" /></td>
 		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="10"/></td>
+	</tr>
+	<tr>
+		<th colspan="4" width="15px" class="tdstyle" style="color:#0000AA;"><u>Booth details are not compulsory</u></th>
+	</tr>	
+	<tr>
+		<td class="tdstyle" width="100px"><s:label for="boothField" id="boothLabel"  value="%{getText('Booth')}" /></td>
+		<td align="left" width="165px">
+		<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+		</td>
+		<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details"/></td>
 	</tr>
 	</table>
 </FIELDSET>
