@@ -26,6 +26,8 @@ public class CadreInfo implements Serializable{
 	//current address ids
 	private String state;
 	private String district;
+	private String parliament;
+	private String parliamentName;
 	private Long constituencyID;
 	private String mandal;
 	private String village;
@@ -37,8 +39,12 @@ public class CadreInfo implements Serializable{
 	private String villageName;
 	private String hamletName;
 	private String booth;
+	private String boothName;
+	private String pBooth;
+	private String pBoothName;
 	private Long userID;
 	private String userType;
+	private String accessType;
 	private String userPartyName;
 	
 	// new fields
@@ -66,6 +72,8 @@ public class CadreInfo implements Serializable{
 	private String pstate;
 	private String pdistrict;
 	private Long pconstituencyID;
+	private String pParliament;
+	private String pParliamentName;
 	private String pmandal;
 	private String pvillage;
 	//permanant or official address location names
@@ -660,7 +668,52 @@ public class CadreInfo implements Serializable{
 	public void setThirdFamilyMemberRelationId(String thirdFamilyMemberRelationId) {
 		this.thirdFamilyMemberRelationId = thirdFamilyMemberRelationId;
 	}
-	
-	
-	
+	public String getParliament() {
+		return parliament;
+	}
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+	public String getPParliament() {
+		return pParliament;
+	}
+	public void setPParliament(String parliament) {
+		pParliament = parliament;
+	}
+	public String getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
+	public String getPParliamentName() {
+		return pParliamentName;
+	}
+	public void setPParliamentName(String parliamentName) {
+		pParliamentName = parliamentName;
+	}
+	public String getPBooth() {
+		return pBooth;
+	}
+	public void setPBooth(String booth) {
+		pBooth = booth;
+	}
+	public String getBoothName() {
+		return boothName;
+	}
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+	public String getPBoothName() {
+		return pBoothName;
+	}
+	public void setPBoothName(String boothName) {
+		pBoothName = boothName;
+	}	
 }
