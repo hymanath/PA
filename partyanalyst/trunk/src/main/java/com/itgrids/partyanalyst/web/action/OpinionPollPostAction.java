@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
@@ -52,6 +53,7 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	private OpinionPollVO opinionPollVO;
 	private String options;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	private int resultStatus;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -212,6 +214,16 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 		this.options = options;
 	}
 	
+	public int getResultStatus() {
+		return resultStatus;
+	}
+
+
+	public void setResultStatus(int resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+
 	public String execute()throws Exception 
 	{
 		session = request.getSession();
@@ -253,8 +265,16 @@ public class OpinionPollPostAction extends ActionSupport implements ServletReque
 	    
 	   	opinionPollVO2.setQuesitons(questionsOptionsVOs); 
 	   
-	   	opinionPollService.createPoll(opinionPollVO2,regVO.getRegistrationID()); 
-		
+	   	boolean result = opinionPollService.createPoll(opinionPollVO2,regVO.getRegistrationID()); 
+	   	
+	   	if(result == false){	
+	   		resultStatus = 1;
+			return ERROR;
+		}
+		else
+		{
+		  resultStatus = 0;
+		}
 		return SUCCESS;
 	}
 	
