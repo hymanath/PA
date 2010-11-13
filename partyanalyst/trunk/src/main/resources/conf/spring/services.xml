@@ -300,7 +300,10 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="userRelationDAO" ref="userRelationDAO" />	
-		<property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />					   	  	
+		<property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+							   	  	
 	</bean>
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
