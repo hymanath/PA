@@ -1759,4 +1759,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find(str);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getVotesInfoForAConstituency(String constituencyId,String electionYear,String electionType)	{
+		Object[] params = {electionYear,electionType};	
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select sum(model.candidateResult.votesEarned),");
+		sb.append(" model.constituencyElection.constituencyElectionResult.totalVotesPolled");
+		sb.append(" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +")");
+		sb.append(" and model.constituencyElection.election.electionYear = ?");
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			sb.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+		}else{
+			sb.append("and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
+		}		
+		return getHibernateTemplate().find(sb.toString(),params);		
+	}
 }
