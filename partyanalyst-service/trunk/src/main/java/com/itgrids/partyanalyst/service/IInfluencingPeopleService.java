@@ -24,11 +24,8 @@ public interface IInfluencingPeopleService {
 	
 	public List<SelectOptionVO> getInfluenceRange();
 	
-	public void readAndSaveInfluencePeopleDataIntoDB(File file);
+	public InfluencingPeopleBeanVO saveInfluencePeopleInfo(InfluencingPeopleBeanVO influencingPeopleBeanVO1);
 	
-	public InfluencingPeopleBeanVO saveInfluencePeopleInfo(
-			InfluencingPeopleBeanVO influencingPeopleBeanVO1,
-			Map<String, Long> influRangeAndValueMap1);
 	public InfluencingPeopleBeanVO getDetailsByInfluencingPersonId(Long influencingPersonId);
 	public Integer deleteInfluencingPeople(Long influencingPeopleId);
 	
