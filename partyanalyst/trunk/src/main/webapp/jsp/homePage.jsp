@@ -182,7 +182,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 									</c:if>		
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 										
-										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
+										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action" >Login</a> | 
 										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 									</c:if>		
                                 </th>
@@ -283,7 +283,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 										</td>
 									</tr>
 									<tr>
-										<td colspan="2">assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.</td>
+										<td colspan="2">Assembly/Parliament/ZPTC/MPTC/Local Election Bodies (Municipality/Corporation/Greater) in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.</td>
 									</tr>	
 								</table>
 								<div class="productFeature_button">
