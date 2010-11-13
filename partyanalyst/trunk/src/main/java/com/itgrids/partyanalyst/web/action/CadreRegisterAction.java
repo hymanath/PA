@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -130,6 +133,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Long defaultCadreLevelId;
 	private String booth;
 	private String pBooth;
+	private Long partyCommittee;
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	
@@ -783,6 +787,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getNoOfFamilyMembers();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9]+[0-9]*$", message = "Please Give Number Value for No of Family Members")
 	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
 		this.cadreInfo.setNoOfFamilyMembers(noOfFamilyMembers);
 	}
@@ -791,6 +796,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getNoOfVoters();
 	}
 
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9]+[0-9]*$", message = "Please Give Number Value for No of Voters")
 	public void setNoOfVoters(String noOfVoters) {
 		this.cadreInfo.setNoOfVoters(noOfVoters);
 	}
@@ -915,6 +921,14 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setPBooth(pBooth);
 	}
 
+	public Long getPartyCommittee() {
+		return cadreInfo.getPartyCommittee();
+	}
+
+	public void setPartyCommittee(Long partyCommittee) {
+		this.cadreInfo.setPartyCommittee(partyCommittee);
+	}
+
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
@@ -1024,6 +1038,9 @@ public class CadreRegisterAction extends ActionSupport implements
 	
 	public void validate() {
 		
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
 		int familyMembers = Integer.parseInt(cadreInfo.getNoOfFamilyMembers().trim().length()>0?cadreInfo.getNoOfFamilyMembers().trim():"0");
 		int voters = Integer.parseInt(cadreInfo.getNoOfVoters().trim().length()>0?cadreInfo.getNoOfVoters().trim():"0");
 		
@@ -1031,6 +1048,43 @@ public class CadreRegisterAction extends ActionSupport implements
 		{
 			addFieldError("noOfVoters","Please Give Correct value for No of Voters");
 		}
+		if("Party".equalsIgnoreCase(regVO.getUserType()) && cadreInfo.getMemberType().equalsIgnoreCase("Active"))
+		{
+			if(cadreInfo.getPartyCommittee() == 0)
+			{
+				addFieldError("partyCommittee","Please select Party Committee");
+			}
+			if(cadreInfo.getDesignation() == 0)
+			{
+				addFieldError("designation","Please select designation in Party Committee");
+			}
+			
+			if(cadreInfo.getEffectiveDate().length() ==0 )
+			{
+				addFieldError("effectiveDate","Effective Date is Mandatory");
+			}
+			
+			if(cadreInfo.getEndingDate().length() ==0 )
+			{
+				addFieldError("endingDate","EndingDate Date is Mandatory");
+			}
+			
+			if(cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0)
+			{
+			try
+			{
+				if(sdf.parse(cadreInfo.getEffectiveDate()).after(sdf.parse(cadreInfo.getEndingDate())))
+				{
+					addFieldError("effectiveDate","Please Select correct EffectiveDate and Ending Date");
+				}
+			}catch (ParseException e) {
+			
+				e.printStackTrace();
+			}
+		  }
+			
+		}
+		
 	}
 
 }
