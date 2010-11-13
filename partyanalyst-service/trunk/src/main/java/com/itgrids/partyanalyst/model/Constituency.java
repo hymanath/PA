@@ -62,6 +62,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<BoothConstituencyElection> boothConstituencyElections;
 	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
 	private Set<UserAddress> ward = new HashSet<UserAddress>(0);
+	private Set<UserAddress> parliamentConstituencies = new HashSet<UserAddress>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<LocalGroupRegion> localGroupWardRegion = new HashSet<LocalGroupRegion>(0);
 	
@@ -335,6 +336,19 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setLocalElectionBodyWard(LocalElectionBodyWard localElectionBodyWard) {
 		this.localElectionBodyWard = localElectionBodyWard;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parliamentConstituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserAddress> getParliamentConstituencies() {
+		return parliamentConstituencies;
+	}
+
+	public void setParliamentConstituencies(
+			Set<UserAddress> parliamentConstituencies) {
+		this.parliamentConstituencies = parliamentConstituencies;
+	}
+	
+	
 
 	
 
