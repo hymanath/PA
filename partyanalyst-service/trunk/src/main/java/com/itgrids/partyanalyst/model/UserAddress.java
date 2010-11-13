@@ -38,6 +38,7 @@ public class UserAddress implements java.io.Serializable {
 	private State state;
 	private District district;
 	private Constituency constituency;
+	private Constituency parliamentConstituency;
 	private Tehsil tehsil;
 	private Township township;
 	private Hamlet hamlet;
@@ -46,6 +47,7 @@ public class UserAddress implements java.io.Serializable {
 	private String pinCode;
 	private LocalElectionBody localElectionBody;
 	private Constituency ward;
+	private Booth booth;
 	private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
 	private InfluencingPeople influencingPeople;
@@ -230,6 +232,27 @@ public class UserAddress implements java.io.Serializable {
 	public void setInfluencingPeople(InfluencingPeople influencingPeople) {
 		this.influencingPeople = influencingPeople;
 	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "parliament_constituency_id")
+	public Constituency getParliamentConstituency() {
+		return parliamentConstituency;
+	}
+
+	public void setParliamentConstituency(Constituency parliamentConstituency) {
+		this.parliamentConstituency = parliamentConstituency;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "booth_id")	
+	public Booth getBooth() {
+		return booth;
+	}
+
+	public void setBooth(Booth booth) {
+		this.booth = booth;
+	}
+	
+	
 	
 	
 }
