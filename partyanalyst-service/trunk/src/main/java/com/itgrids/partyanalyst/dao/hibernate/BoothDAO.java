@@ -211,4 +211,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		
 		return queryObject.executeUpdate();
 	}
+
+	public List findBoothsInLocalElectionBodies(String localElectionBodyIds,
+			String constituencyIds, Long year) {
+		
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.constituency.constituencyId, model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId in ( " +constituencyIds+ " ) and " +
+					"model.localBody.localElectionBodyId in (" + localElectionBodyIds + ") and model.year = ? ", year);		
+	}
 }

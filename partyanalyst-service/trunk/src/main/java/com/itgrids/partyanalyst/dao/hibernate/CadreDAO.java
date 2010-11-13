@@ -165,6 +165,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? and model.currentAddress.ward.constituencyId is not null group by model.currentAddress.ward.constituencyId", userId); 
 		return results;
 	}
+	
+	public List findCadreSizeBoothwise(Long userId) {
+		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null group by model.currentAddress.booth.boothId", userId); 
+		return results;
+	}
 
 	/*public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
 		Object[] params = {userID,cadreType};
@@ -553,7 +559,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? and model.currentAddress.district.districtId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params); 
 		return results;
 	}
-
+	
+	public List findConstituencyCadresByParliamentConst(Long districtID, Long userID, String cadreType){
+		Object[] params = {userID,districtID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.constituency.constituencyId, model.currentAddress.constituency.name, count(model.currentAddress.constituency.constituencyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.parliamentConstituency.constituencyId=? and model.memberType = ? group by model.currentAddress.constituency.constituencyId order by model.currentAddress.constituency.name", params); 
+		return results;
+	}
+	
 	public List findLocalElectionBodiesCadresByConst(Long constituencyId,
 			Long userID, String cadreType) {
 		Object[] params = {constituencyId,userID, cadreType};
