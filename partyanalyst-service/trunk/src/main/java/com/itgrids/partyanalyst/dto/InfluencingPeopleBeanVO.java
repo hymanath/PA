@@ -6,12 +6,44 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
-	constituency,mandal,village,hamlet,party,position,influencingRange,middleName,
-	wardOrHamlet,fatherOrSpouseName,houseNo,streetName,pincode,ward,areaType,
-	windowTask,influencingPersonId,influencingScopeValue,influencingRangeScope,
-	stateName,districtName,constituencyName,mandalName,wardOrHamletName,
-	occupationType,partyName,castType,positionType,registrationId;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String mobile;
+	private String gender;
+	private String cast;
+	private String occupation;
+	private String state;
+	private String district;
+	private String constituency;
+	private String mandal;
+	private String village;
+	private String hamlet;
+	private String party;
+	private String position;
+	private String influencingRange;
+	private String middleName;
+	private String wardOrHamlet;
+	private String fatherOrSpouseName;
+	private String houseNo;
+	private String streetName;
+	private String pincode;
+	private String ward;
+	private String areaType;
+	private String windowTask;
+	private String influencingPersonId;
+	private String influencingScopeValue;
+	private String influencingRangeScope;
+	private String stateName;
+	private String districtName;
+	private String constituencyName;
+	private String mandalName;
+	private String wardOrHamletName;
+	private String occupationType;
+	private String partyName;
+	private String castType;
+	private String positionType;
+	private String registrationId;
 	
 	private ResultStatus resultStatus;
 	
