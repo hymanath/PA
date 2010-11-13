@@ -140,9 +140,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindBoothsInfoForALocalBodyWardByConstituencyAndYear(){
-		List list = boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(18386l, 2009l, 315l);
+	/*public void testFindBoothsInfoForALocalBodyWardByConstituencyAndYear(){
+		List list = boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(18381l, 2009l, 315l);
 		System.out.println(list.size());
-	}
+	}*/
 	
+	public void testFindBoothsInLocalElectionBodies(){
+		List list = boothDAO.findBoothsInLocalElectionBodies("458, 495, 488", "1,294, 232", 2009l );
+		System.out.println(list.size());
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println("id:"+values[0]+"\t"+"Part No:"+values[1]+"\t"+"const Id "+values[2]+"\t"+"local id:"+values[3]);
+	}
 }
