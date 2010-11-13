@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -41,6 +42,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> stateList_o;
 	private List<SelectOptionVO> districtList;
 	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> parliamentConstituencyList;
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> relationshipList;
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
@@ -375,6 +377,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setRelationshipList(List<SelectOptionVO> relationshipList) {
 		this.relationshipList = relationshipList;
+	}	
+
+	public List<SelectOptionVO> getParliamentConstituencyList() {
+		return parliamentConstituencyList;
+	}
+
+	public void setParliamentConstituencyList(
+			List<SelectOptionVO> parliamentConstituencyList) {
+		this.parliamentConstituencyList = parliamentConstituencyList;
 	}
 
 	public String execute(){
@@ -389,10 +400,12 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
 		relationshipList = cadreManagementService.getAllRelationships();
-		stateList_o = regionServiceDataImp.getStatesByCountry(1l);  
+		stateList_o = regionServiceDataImp.getStatesByCountry(1l);
+		stateList_o.add(0,new SelectOptionVO(0l,"Select State"));
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
+		parliamentConstituencyList  = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
 		stateList_c = new ArrayList<SelectOptionVO>();
 		districtList_c = new ArrayList<SelectOptionVO>();
@@ -536,17 +549,37 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				
 			} else if("MP".equals(accessType)){
 				log.debug("Access Type = MP ****");
-				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				/*stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
 				SelectOptionVO state = stateList.get(0);
 				Long stateID = state.getId();
-				Long year = regionServiceDataImp.getLatestParliamentElectionYear(stateID);
+				Long year = IConstants.DELIMITATION_YEAR;
 				log.debug("year:::::"+year);
 				log.debug("stateID:::::"+stateID);
-				if(year!=null){
-					constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
-				}	
-				log.debug("constituencyList.size():"+constituencyList.size());	
-				session.setAttribute("constituenciesList",constituencyList);			
+				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
+				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));*/
+				
+				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+				constituencyList = constituencyInfoVO.getAssembyConstituencies();
+				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
+				session.setAttribute(ISessionConstants.STATES, stateList);
+				session.setAttribute(ISessionConstants.P_CONSTITUENCIES,parliamentConstituencyList);
+				session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O,new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
+				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				
+				//session variables used to pre populate cadre level selecton for active cadre
+				session.setAttribute(ISessionConstants.STATES_C, stateList_o);
+				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(0l);
+
 			}
 			
 			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());

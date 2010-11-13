@@ -69,6 +69,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String pstate;
 	private String pdistrict;
 	private String pconstituencyID;
+	private String pParliament;
+	private String parliament;
 	private String pmandal;
 	private String pvillage;
 	private String phouseNo;
@@ -126,6 +128,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private Long defaultDistId;
 	private Long defaultConstId;
 	private Long defaultCadreLevelId;
+	private String booth;
+	private String pBooth;
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	
@@ -866,6 +870,24 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setThirdFamilyMemberDOB(thirdFamilyMemberDOB);
 	}
 	
+	
+
+	public String getPParliament() {
+		return this.cadreInfo.getPParliament();
+	}
+
+	public void setPParliament(String parliament) {
+		this.cadreInfo.setPParliament(parliament);
+	}
+
+	public String getParliament() {
+		return this.cadreInfo.getParliament();
+	}
+
+	public void setParliament(String parliament) {
+		this.cadreInfo.setParliament(parliament);
+	}
+	
 	public void setServletRequest(HttpServletRequest req) {
 		request = req;
 		session = req.getSession();
@@ -875,6 +897,22 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 
+	}
+
+	public String getBooth() {
+		return this.cadreInfo.getBooth();
+	}
+
+	public void setBooth(String booth) {
+		this.cadreInfo.setBooth(booth);
+	}
+
+	public String getPBooth() {
+		return this.cadreInfo.getPBooth();
+	}
+
+	public void setPBooth(String booth) {
+		this.cadreInfo.setPBooth(pBooth);
 	}
 
 	public String execute() throws Exception {
@@ -888,10 +926,9 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setUserID(regVO.getRegistrationID());
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
-		log.error("languages size:"+cadreInfo.getLanguageOptions_English());
-		log.error("skills in execute:"+cadreInfo.getSkills());
-		log.error("training camps execute :"+cadreInfo.getTrainingCamps());
+		cadreInfo.setAccessType(regVO.getAccessType());
 		
+		/*
 		if ("MP".equals(regVO.getAccessType())) {
 			Long constituencyID = cadreInfo.getConstituencyID();
 			Long pConstituencyID = cadreInfo.getPconstituencyID();
@@ -909,8 +946,8 @@ public class CadreRegisterAction extends ActionSupport implements
 				cadreInfo.setPconstituencyID(obj.getId().longValue());
 			}
 			
-		}
-		
+		}*/
+		System.out.println(cadreInfo.getMobile());
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
 		if (rs.getExceptionEncountered() == null)
 		{
