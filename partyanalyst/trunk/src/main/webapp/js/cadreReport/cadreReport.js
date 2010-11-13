@@ -130,9 +130,88 @@ function buildZeroCadreTable(myResults, cadreData)
 		buildZeroCadreTableLocalElectionBodies(myResults, cadreData);	
 	if(myResults.region=='WARDS')
 		buildZeroCadreTableWards(myResults, cadreData);	
+	if(myResults.region=='BOOTHS IN MANDALS')
+		buildZeroCadreTableBoothsInMandals(myResults, cadreData);	
+	if(myResults.region=='BOOTHS In Municipal/Corp/GMC')
+		buildZeroCadreTableBoothsInLEB(myResults, cadreData);	
 	
 }
 
+function buildZeroCadreTableBoothsInMandals(myResults, cadreData)
+{
+var localArr = new Array();
+	
+	for(var i in cadreData)
+	{
+		var obj = {				
+					mandal : cadreData[i].mandal.name,
+					partNo: cadreData[i].booth.id,
+					booth : cadreData[i].booth.name						
+				  }
+		localArr.push(obj);
+	}
+
+	var myColumnDefs = [
+	
+	{key:"mandal",label:"Mandal",sortable:true, resizeable:true},
+	{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+	{key:"booth",label:"Booth Location", resizeable:true}
+	];
+	
+	var configs = {
+						paginator: new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 10			        
+						})
+				   };
+	var myDataSource = new YAHOO.util.DataSource(localArr);
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	myDataSource.responseSchema = {
+		fields: ["mandal","partNo","booth"]
+	};					
+
+	getCadrePopup(myColumnDefs,myDataSource,configs);
+
+	
+}
+
+function buildZeroCadreTableBoothsInLEB(myResults, cadreData)
+{
+var localArr = new Array();
+	
+	for(var i in cadreData)
+	{
+		var obj = {	
+					localBody: cadreData[i].localElectionBody.name,
+					partNo: cadreData[i].booth.id,
+					booth : cadreData[i].booth.name
+						
+				  }
+		localArr.push(obj);
+	}
+
+	var myColumnDefs = [
+	
+	{key:"localBody",label:"Municipal/Corp/GMC",sortable:true, resizeable:true},
+	{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+	{key:"booth",label:"Booth Location", resizeable:true}
+	
+	];
+	
+	var configs = {
+						paginator: new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 10			        
+						})
+				   };
+	var myDataSource = new YAHOO.util.DataSource(localArr);
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	myDataSource.responseSchema = {
+		fields: ["localBody","partNo","booth"]
+	};					
+
+	getCadrePopup(myColumnDefs,myDataSource,configs);
+
+	
+}
 function buildZeroCadreTableHamlet(myResults, cadreData)
 {
 	var localArr = new Array();
