@@ -266,10 +266,7 @@
 		<!-- <action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
 			<result type="json" name="success"/>
 		</action>-->
-				
-		 <action name="influencePeopleAjaxAction" class="influencingPeopleAction" method="saveInfluencePeopleData">
-        </action>
-        
+		
         <action name="influencingPeopleSaveAction" class="influencingPeopleSaveAction" >
         	<result name="input">/jsp/influencingPeople.jsp</result>
          	<result name="success">/jsp/influencingPeople.jsp</result>
