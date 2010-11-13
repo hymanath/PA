@@ -707,6 +707,18 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         return SUCCESS;
 	}
 	
+	/**
+	 * This method can be used to get a all election types(viz., Assembly,Parliament,..) along with their
+	 * election ids. 
+	 * @author <a href="r.sivakumar@itgrids.com">r.sivakumar@itgrids.com</a>
+	 * @return DistrictWisePartyResultVO
+	 * @see getPartyElectionResultsForAPartyDistrictLevel(Long electionId, Long partyId, Long districtId)
+	 * 
+	 * Reworked by <a href="y.ravi@itgrids.com">y.ravi@itgrids.com</a>
+	 * for entitlements assigining.
+	 * @serialData 13-11-10 
+	 * @version 1.2
+	 */
 	public String getElectionScopesOfDistrict(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -715,22 +727,24 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
-		Long districtID = new Long(jObj.getString("distId"));
-		
-		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		Long districtID = new Long(jObj.getString("distId"));		
+		session = request.getSession();		
+		if(session.getAttribute(IConstants.USER) == null || 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-			electionsInDistrict = new ArrayList<SelectOptionVO>();
-			electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
-			electionsInDistrict.add(1, new SelectOptionVO(1l, "Assembly"));	
+			electionsInDistrict = new ArrayList<SelectOptionVO>();	
+			Long assemblyScopeId=0l;
+			for(SelectOptionVO selectOptionVO : staticDataService.getAllElectionScopes(districtID)){
+				if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+					assemblyScopeId = selectOptionVO.getId();
+				}
+			}
+			electionsInDistrict.add(0, new SelectOptionVO(assemblyScopeId, IConstants.ASSEMBLY_ELECTION_TYPE));	
 		}else if(session.getAttribute(IConstants.USER) != null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
 				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
 			}
-		}
-		
+		}		
 		return SUCCESS;
 	}
 	
