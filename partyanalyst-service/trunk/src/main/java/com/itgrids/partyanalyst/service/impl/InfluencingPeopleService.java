@@ -456,6 +456,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					userAddress.setHouseNo(influencingPeopleBeanVO.getHouseNo());
 					userAddress.setStreet(influencingPeopleBeanVO.getStreetName());
 					userAddress.setPinCode(influencingPeopleBeanVO.getPincode());
+					
+					if((!influencingPeopleBeanVO.getBooth().equals("0")) && influencingPeopleBeanVO.getBooth() != null)
+					{
+						userAddress.setBooth(boothDAO.get(new Long(influencingPeopleBeanVO.getBooth())));
+					}
 										
 					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
 					influencingPeople.setInfluencingScopeValue(influencingPeopleBeanVO.getInfluencingScopeValue());
@@ -608,6 +613,16 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeopleBeanVO.setMandalName(userAddress.getTehsil().getTehsilName().toString());
 					influencingPeopleBeanVO.setWardOrHamlet(IConstants.RURAL_TYPE+userAddress.getHamlet().getHamletCode().toString());
 					influencingPeopleBeanVO.setWardOrHamletName(userAddress.getHamlet().getHamletName().toString());
+				}
+				
+				if(userAddress.getBooth() != null)
+				{
+					influencingPeopleBeanVO.setBooth(userAddress.getBooth().getBoothId().toString());
+					influencingPeopleBeanVO.setBoothName(userAddress.getBooth().getPartNo());
+				}
+				else
+				{
+					influencingPeopleBeanVO.setBoothName("");
 				}
 										
 			}
