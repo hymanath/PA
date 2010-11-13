@@ -227,7 +227,7 @@
 					<table width="100%" style="width:100%">
 						<tr>
 							<th id="loginarea">
-								<c:if test="${sessionScope.loginStatus == 'out'}">        		
+								<c:if test="${! empty sessionScope.USER.registrationID}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
 									<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
@@ -240,7 +240,7 @@
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action?url=${pageContext.request.servletPath}?&${pageContext.request.queryString}" >Login</a> | 
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 								</c:if>		
 							</th>

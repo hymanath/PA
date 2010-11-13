@@ -30,12 +30,13 @@
 		<action name="homePage" class="homePageAction">
 			<result>/jsp/homePage.jsp</result>
 		</action>
-		
+		<action name="loginInputAction"><result>/jsp/loginForm.jsp</result></action>
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
-			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>
-			<result type="redirect" name="PARTY_ANALYST_USER">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">index.action</result>
+			<result type="redirect" name="FREE_USER">homePage.action</result>
+			<result type="redirect" name="constituencyProblemManagement">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
 			<result type="redirect" name="initailConstituencyManagementAction">initailConstituencyManagementAction.action</result>
@@ -54,6 +55,8 @@
 			<result type="redirect" name="adminUpload">adminUpload.action</result>
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result type="redirect" name="userEntitlementAction">userEntitlementAction.action</result>
+			<result type="chain" name="redirectUrl">${url}</result>
+			
 			<result>/jsp/loginsuccess.jsp</result>
 
 			 <!-- Problem Management Flow From Different Pages -->
@@ -62,7 +65,7 @@
 			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
 			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
 			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
-			 <result name="connectPeoplePageRedirect" type="chain">connectPeopleAction</result>
+			 <result name="connectPeoplePageRedirect" type="chain">connectPeopleAction</result>			 
         </action>
 		
 		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
@@ -1413,7 +1416,7 @@
          <action name="problemPostControlAction" class="problemPostControlAction">
 			
 			<result name="success">/jsp/homePage.jsp</result>
-    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=PARTY_ANALYST_USER</result>
+    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=constituencyProblemManagement</result>
 			<result type="redirect" name="PARTY_ANALYST_USER">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 
             <!-- Problem Management Flow From Different Pages -->

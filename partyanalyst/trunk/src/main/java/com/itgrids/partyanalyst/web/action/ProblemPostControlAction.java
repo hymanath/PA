@@ -46,7 +46,6 @@ public class ProblemPostControlAction extends ActionSupport implements
     private String redirectLoc;
     
     private String task;
-    private String type;
     private String name;
     private Long stateId;
     private Long districtId;
@@ -126,14 +125,6 @@ public class ProblemPostControlAction extends ActionSupport implements
 		this.constituencyId = constituencyId;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax.servlet.http.HttpServletRequest)
 	 */
@@ -179,7 +170,6 @@ public class ProblemPostControlAction extends ActionSupport implements
 		if(regVO == null){
 			log.error(" No User Log In .....");
 			userStatus = IConstants.PROBLEM_MANAGEMENT_LOGIN;
-			type = "pm_login";
 			return IConstants.NOT_LOGGED_IN;
 		}
 		

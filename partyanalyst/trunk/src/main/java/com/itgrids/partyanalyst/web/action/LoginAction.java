@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -11,7 +12,6 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
@@ -43,6 +43,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String districtName;	
 	private String constituencyName;
 	
+	private String url;
 	public String getDistrictName() {
 		return districtName;
 	}
@@ -179,80 +180,68 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		password = value;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String execute(){
 
 		session = request.getSession();
 		RegistrationVO regVO = null;
 		
-		//Free User
-		if(userType != null && userType.equalsIgnoreCase("2")){
-			regVO = loginService.checkForValidNormalUser(userName, password);
-		}
-		//Party Analyst Commercial User
-		else{
-		    regVO = loginService.checkForValidUser(userName, password);
-		    
-		    //Free user Check in other situations
-		    if (regVO.getRegistrationID() == null){
-		    	regVO = loginService.checkForValidNormalUser(userName, password);
-		    	if(regVO.getRegistrationID() != null){
-		    		userType = "2";
-		    	}
-		    }else if(regVO.getRegistrationID() != null){
-		    	userType = "1";
-		    }
-		}
+		if("2".equalsIgnoreCase(userType))
+			regVO = loginService.checkForValidNormalUser(userName, password);//Free User
+		else
+			regVO = loginService.checkForValidUser(userName, password);//Party Analyst Commercial User
 		
+	
 		//Check User Availability
 		if (regVO.getRegistrationID() == null) {
 			session.setAttribute("loginStatus", "in");
-			addActionError("Invalid user name or password! Please try again!");
-			//if(userType != null && userType.equalsIgnoreCase("2"))
-				return IConstants.NOT_LOGGED_IN;
-			/*else
-			    return ERROR;	*/		
-		} else {
-			
-			int hiden = 0;
-			if(userType != null){
-				if(userType.equalsIgnoreCase("1")){
-					regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
-					userFullName = regVO.getFirstName() + " " + regVO.getLastName();
-					session.setAttribute(IConstants.USER,regVO);
-					session.setAttribute("UserName", userFullName);
-					session.setAttribute("loginStatus", "out");
-					session.setAttribute("UserType", "PartyAnalyst");
-					session.setAttribute("HiddenCount", hiden);
-					
-					if(src != null && !"null".equalsIgnoreCase(src))
-						return src;
-					else
-						return SUCCESS;
-				}
-				else if(userType.equalsIgnoreCase("2")){
-					userFullName = regVO.getFirstName() + " "; 
-					regVO.setUserStatus(IConstants.FREE_USER);
-					session.setAttribute(IConstants.USER,regVO);
-					session.setAttribute("UserName", userFullName);
-					session.setAttribute("UserType", "FreeUser");
-					session.setAttribute("loginStatus", "out");
-					session.setAttribute("HiddenCount", hiden);
-					
-					//task = "pm_redirect";
-					return getRedirectPageDetails();
-				}
-			}
-			else{
-				if(src != null && !"null".equalsIgnoreCase(src))
-					return src;
-				else
-					return SUCCESS;			
-			}
+			addActionError("Invalid username or password! Please try again!");
+			return INPUT;
+		}	
+		
+		int hiden = 0;
+
+		userFullName = regVO.getFirstName() + " " + regVO.getLastName();
+		session.setAttribute(IConstants.USER,regVO);
+		session.setAttribute("loginStatus", "out");
+		session.setAttribute("HiddenCount", hiden);
+		
+		if("1".equalsIgnoreCase(userType)){
+			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+			session.setAttribute("UserName", userFullName);
+			session.setAttribute("UserType", "PartyAnalyst");
+		}else{
+			userFullName = regVO.getFirstName() + " "; 
+			regVO.setUserStatus(IConstants.FREE_USER);
+			session.setAttribute("UserName", userFullName);
+			session.setAttribute("UserType", "FreeUser");
+			return getRedirectPageDetails();	
 		}
-	 return Action.ERROR;
+		
+		return finalResultString();
+		
 	}
 	
-     public String getRedirectPageDetails(){
+     private String finalResultString() {
+    	if(src != null && !"null".equalsIgnoreCase(src))
+ 			return src;
+ 		else if(url != null && url.length() > 0 && url.contains(".action") && !url.contains("loginAction")){
+ 			url = StringUtils.split(url,".")[0].substring(1);
+ 			return "redirectUrl";
+ 		}else if("1".equalsIgnoreCase(userType))
+ 			return IConstants.PARTY_ANALYST_USER;
+ 		
+ 		return IConstants.FREE_USER;
+	}
+
+	public String getRedirectPageDetails(){
 		
 		if(redirectLoc != null){
 			if(redirectLoc.equalsIgnoreCase(IConstants.STATE)){
@@ -267,7 +256,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 				return "connectPeoplePageRedirect";
 			}
 		}
-		
-		return Action.SUCCESS;
+		return finalResultString();
 	}
 }
