@@ -202,7 +202,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	/*public void testFindByElectionScopeState()
+	public void testFindByElectionScopeState()
 	{
 		List<Constituency> list = constituencyDAO.findByElectionScopeState(1l, 1l);
 		System.out.println("Size:"+list.size());
@@ -210,7 +210,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println("name:"+constituency.getName());			
 		}	
-	}*/
+	}
 	
 	/*public void testFindWardsInLocalElectionBodies(){
 		List list = constituencyDAO.findWardsInLocalElectionBodies("488, 562");
@@ -223,7 +223,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("name:"+obj[1].toString());				
 		}
 	}*/
-	public void testGetStateToWardByWard()
+	/*public void testGetStateToWardByWard()
 	{
 		List list = constituencyDAO.getStateToWardByWard("7404,7405");
 		System.out.println("size:"+list.size());
@@ -240,5 +240,5 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("id:"+Long.parseLong(obj[6].toString()));
 			System.out.println("name:"+obj[7].toString());
 		}
-	}
+	}*/
 }

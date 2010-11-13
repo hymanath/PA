@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -22,11 +23,17 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
-	
-	/*public void testDelimitationConstituencies(){
+	/*
+	public void testDelimitationConstituencies(){
 		List<DelimitationConstituency> list = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(new Long(1), new Long(1), new Long(2009));
-		assertEquals(42,list.size());
-	}*/ 
+		System.out.println(list.size());
+		for(DelimitationConstituency constituency:list)
+		{
+			System.out.println("name:"+constituency.getConstituency().getName());
+			System.out.println("name:"+constituency.getConstituency().getConstituencyId());
+			
+		}
+	} */
 	
 	/*@SuppressWarnings("unchecked")
 	public void testGetDelimitationConstituenciesByDistrictID(){
@@ -63,7 +70,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetLatestConstituenciesByDistrictIds(){
+	/*public void testGetLatestConstituenciesByDistrictIds(){
 		List list = delimitationConstituencyDAO.getLatestConstituenciesByDistrictIds("7,8");
 		System.out.println(list.size());
 		for(int i = 0; i<list.size();i++)
@@ -73,5 +80,18 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println("name:"+obj[1]);
 		
 		}
+	}*/
+	
+	public void testGetLatestConstituenciesByElectionTypeInState()
+	{
+		List list = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInState(1l,1l);
+		System.out.println(list.size());
+		/*for(int i = 0; i<list.size();i++)
+		{
+			Object[] obj = (Object[])list.get(i);
+		System.out.println("id:"+obj[0]);
+		System.out.println("name:"+obj[1]);
+		
+		}*/
 	}
 }

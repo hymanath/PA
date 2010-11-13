@@ -89,6 +89,19 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
+	/*public void testFindConstituencyCadresByParliamentConst()
+	{
+		List result = cadreDAO.findConstituencyCadresByParliamentConst(404l, 12l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			
+		}
+		
+	}*/
+	
 	/*public void testFindLocalElectionBodiesCadresByConst()
 	{
 		List result = cadreDAO.findLocalElectionBodiesCadresByConst(340l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -211,9 +224,24 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFfindHamletsByTehsilIds()
+	/*public void testFfindHamletsByTehsilIds()
 	{
 		List result = cadreDAO.findHamletsByTehsilIds("313");
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	
+	public void testFindCadreSizeBoothwise()
+	{
+		List result = cadreDAO.findCadreSizeBoothwise(1l);
 		System.out.println(result.size());
 		for(int i=0;i<result.size();i++){
 			System.out.print("if");
