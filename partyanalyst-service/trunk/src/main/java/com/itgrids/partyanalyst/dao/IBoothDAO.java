@@ -66,4 +66,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public int updateVillagesCoveredInfoInAConstituency(Long constituencyId, String villagesCovered,String partNo,Long electionYear);
 	
+	public List findBoothsInLocalElectionBodies(String localElectionBodyIds, String  constituencyIds, Long year);
+	
 }
