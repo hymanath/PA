@@ -247,49 +247,6 @@ function showDateCalendar(eleId) {
 		dateCalendar1.show();		
 	}
 
-	/*	function showMoreOptions()
-	{
-		alert("kamal");
-		var divEle = document.getElementById("moreOptionsId");
-		alert("kamal");
-
-		divEle.innerHTML="";
-
-	   strMore=strMore+'<tr>'+
-		'<th align="left" class="th"><%=option%> </th>'+
-		'<td><input class="fieldBoxesWidth" name="option" type="text" width="300px"></input></td>'+
-		'</tr><br>';
-
-		divEle.innerHTML=strMore;
-		
-		
-		var optionsRow3Ele = document.getElementById("optionsRow3");
-		var optionsRow4Ele = document.getElementById("optionsRow4");
-		var optionsRow5Ele = document.getElementById("optionsRow5");
-		var optionsRow6Ele = document.getElementById("optionsRow6");
-
-		if(optionsRow3Ele.style.display == "none")
-		{
-			optionsRow3Ele.style.display = "";
-		}
-		else if(optionsRow4Ele.style.display == "none")
-		{
-			optionsRow4Ele.style.display = "";
-		}
-
-		else if(optionsRow5Ele.style.display == "none")
-		{
-			optionsRow5Ele.style.display = "";
-		}
-		else
-		{
-			optionsRow6Ele.style.display = "";
-			var buttonidEle = document.getElementById("buttonid");
-			buttonidEle.style.display = "none";
-
-		}
-	}*/
-
 	function validateAndForwardToAction()
 		{			
 			var errorFlag=0;
@@ -387,6 +344,12 @@ function showDateCalendar(eleId) {
 </div>		
 <div class="required">*<%=mandatoryFields%></div>
 <div id="successMsg" class="required" style="color:green"></div>
+	<c:if  test="${resultStatus == '0'}">
+	<div id="successMsg" style="color:green;" >Opinion Poll Added Successfully!</div>
+	</c:if>	
+	<c:if  test="${resultStatus == '1'}">
+	<div id="successMsg" style="color:red;">Error Raised while saving data please check log for details</div>
+	</c:if>
 <s:form action="opinionPollPostAction" method="POST" theme="simple" name="form">			
 	<div id="mainPollDiv" align="center">
 		<table style="margin-top:15px;" width="415">				
