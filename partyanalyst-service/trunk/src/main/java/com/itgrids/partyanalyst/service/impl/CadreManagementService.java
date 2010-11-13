@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
@@ -1081,6 +1082,7 @@ public class CadreManagementService {
 		Map<Long, String> userAccessMandals = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessLocalElectionBodies = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessBooths = new LinkedHashMap<Long, String>();
+		Map<Long, String> userAccessBoothsInMandal = new LinkedHashMap<Long, String>(); 
 		Map<Long, String> userAccessVillages = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessHamlets = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessWards = new LinkedHashMap<Long, String>();
@@ -1094,6 +1096,7 @@ public class CadreManagementService {
 		Map<Long, String> zeroCadreHamlets = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreWards = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreBooths = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreBoothsInMandal = new LinkedHashMap<Long, String>();
 
 		String userAccessType = userCadreInfo.getUserAccessType();
 		String accessID = userCadreInfo.getUserAccessValue();
@@ -1227,6 +1230,25 @@ public class CadreManagementService {
 				if (localElectionBodyLevelZeroCadres > 0)
 					regionLevelZeroCadres.add(voObject);
 			}			
+		} 
+		if ((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType)	|| "STATE".equals(userAccessType) || "DISTRICT".equals(userAccessType) || "MLA".equals(userAccessType)) || "MP".equals(userAccessType)) {
+			if (log.isDebugEnabled()) {
+				log.debug("CadreManagementService.getUserAccessRegions() if DISTRICT started");
+			}
+			 
+			
+			List boothsInTehsils = boothDAO.findBoothsInTehsils(accessID, constituencyIds, IConstants.DELIMITATION_YEAR);
+			List cadreSizeBoothwiseInMandal = cadreDAO.findCadreSizeBoothwiseInMandal(userCadreInfo.getUserID());
+			long boothwiseZeroCadresInMandal = boothsInTehsils.size()	- cadreSizeBoothwiseInMandal.size();// getZeroSize(cadreSizeZero4Mandal);
+				StringBuilder sbLocalElectionBodies = getFormatedData(boothsInTehsils, userAccessBoothsInMandal, cadreSizeBoothwiseInMandal, zeroCadreBoothsInMandal);
+				userCadreInfo.setUserAccessBoothsInMandal(userAccessBoothsInMandal);
+				userCadreInfo.setZeroCadreBoothsInMandal(zeroCadreBoothsInMandal);
+				
+				
+				SelectOptionVO voObject = new SelectOptionVO(boothwiseZeroCadresInMandal, "BOOTHS IN MANDALS");
+				if (boothwiseZeroCadresInMandal > 0)
+					regionLevelZeroCadres.add(voObject);
+
 		}
 		if((localElectionBodyCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)	|| "DISTRICT".equals(userAccessType) || "MLA".equals(userAccessType) || "MP".equals(userAccessType)))
 		{
@@ -1253,13 +1275,13 @@ public class CadreManagementService {
 			
 			List cadreSizeBoothwise = cadreDAO.findCadreSizeBoothwise(userCadreInfo.getUserID());
 			long wardLevelBoothCadres = booths.size()	- cadreSizeBoothwise.size();
-			//StringBuilder sbbooths = getFormatedData(booths, userAccessBooths, cadreSizeBoothwise,zeroCadreBooths);
+			StringBuilder sbbooths = getFormatedData(booths, userAccessBooths, cadreSizeBoothwise,zeroCadreBooths);
 			userCadreInfo.setUserAccessBooths(userAccessBooths);
 			userCadreInfo.setZeroCadreBooths(zeroCadreBooths);
 			/*if (sbbooths != null && sbbooths.length() > 0)
 					localElectionBodyIds = sbwards.substring(0, sbwards.length() - 1);
-*/
-			SelectOptionVO voObject = new SelectOptionVO(wardLevelBoothCadres, "BOOTHS");
+				*/
+			SelectOptionVO voObject = new SelectOptionVO(wardLevelBoothCadres, "BOOTHS In Municipal/Corp/GMC");
 			if (wardLevelBoothCadres > 0)
 				regionLevelZeroCadres.add(voObject);
 			
@@ -2297,6 +2319,39 @@ public class CadreManagementService {
 		}
 		return result;
 	}
+	
+	public List<StateToHamletVO> getVillageToBoothByBooths(String boothIds) {
+		// 0-tehsilId, 1-tehsilName, 2-boothId, 3 -partNo, 4-location
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = boothDAO.getVillageToBoothByBooths(boothIds);
+		for (int i = 0; i < list.size(); i++) {
+			Object[] obj = (Object[]) list.get(i);
+			SelectOptionVO mandal = new SelectOptionVO((Long) obj[0], obj[1].toString());
+			SelectOptionVO booth = new SelectOptionVO(Long.parseLong(obj[3].toString()) , obj[4].toString());
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setMandal(mandal);
+			vo.setBooth(booth);
+			result.add(vo);
+		}
+		return result;
+	}
+	
+	public List<StateToHamletVO> getLocalElectionBodyToBoothByBooths(String ids) {
+		// 0-localBodyId, 1-localBodyName, 2-boothId, 3 -partNo, 4-location
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = boothDAO.getLocalElectionBodyToBoothByBooths(ids);
+		for (int i = 0; i < list.size(); i++) {
+			Object[] obj = (Object[]) list.get(i);
+			SelectOptionVO localElectionBody = new SelectOptionVO((Long) obj[0], obj[1].toString());
+			SelectOptionVO booth = new SelectOptionVO(Long.parseLong(obj[3].toString()), obj[4].toString());
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setLocalElectionBody(localElectionBody);
+			vo.setBooth(booth);
+			result.add(vo);
+		}
+		return result;
+	}
+
 
 	public List<StateToHamletVO> getStateToRevenueVillageByRV(String rvIDs) {
 		// 0-stateId, 1-stateName, 2-districtId, 3-districtName, 4-tehsilId,

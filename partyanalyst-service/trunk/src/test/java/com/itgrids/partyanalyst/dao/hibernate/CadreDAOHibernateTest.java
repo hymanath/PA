@@ -239,9 +239,24 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFindCadreSizeBoothwise()
+	/*public void testFindCadreSizeBoothwise()
 	{
 		List result = cadreDAO.findCadreSizeBoothwise(1l);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			System.out.print("if");
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0]);
+			
+			System.out.println(parms[1]);
+			//System.out.println(parms[2].toString());
+			
+		}
+	}*/
+	
+	public void testFindCadreSizeBoothwiseInMandal()
+	{
+		List result = cadreDAO.findCadreSizeBoothwiseInMandal(1l);
 		System.out.println(result.size());
 		for(int i=0;i<result.size();i++){
 			System.out.print("if");

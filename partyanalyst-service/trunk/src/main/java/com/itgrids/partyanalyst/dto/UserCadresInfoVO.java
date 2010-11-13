@@ -47,6 +47,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> userAccessLocalElectionBodies = null;
 	private Map<Long, String> userAccessWards = null;
 	private Map<Long, String> userAccessBooths = null;
+	private Map<Long, String> userAccessBoothsInMandal = null;
 	
 	
 	private Map<Long, String> zeroCadreStates = null;
@@ -59,7 +60,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> zeroCadreWards = null;
 	private ResultStatus resultStatus = null;
 	private Map<Long, String> zeroCadreBooths = null;
-	
+	private Map<Long, String> zeroCadreBoothsInMandal = null;
 
 	public Long getUserID() {
 		return userID;
@@ -235,6 +236,21 @@ public class UserCadresInfoVO implements Serializable{
 	public void setZeroCadreBooths(Map<Long, String> zeroCadreBooths) {
 		this.zeroCadreBooths = zeroCadreBooths;
 	}
+	public Map<Long, String> getUserAccessBoothsInMandal() {
+		return userAccessBoothsInMandal;
+	}
+	public void setUserAccessBoothsInMandal(
+			Map<Long, String> userAccessBoothsInMandal) {
+		this.userAccessBoothsInMandal = userAccessBoothsInMandal;
+	}
+	public Map<Long, String> getZeroCadreBoothsInMandal() {
+		return zeroCadreBoothsInMandal;
+	}
+	public void setZeroCadreBoothsInMandal(Map<Long, String> zeroCadreBoothsInMandal) {
+		this.zeroCadreBoothsInMandal = zeroCadreBoothsInMandal;
+	}
+	
+	
 	
 	
 	

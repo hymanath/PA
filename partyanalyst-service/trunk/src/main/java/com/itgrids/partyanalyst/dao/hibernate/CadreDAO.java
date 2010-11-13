@@ -168,7 +168,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 	public List findCadreSizeBoothwise(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null group by model.currentAddress.booth.boothId", userId); 
+				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId", userId); 
 		return results;
 	}
 
@@ -620,6 +620,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID,cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.state.stateId, model.currentAddress.state.stateName, count(model.currentAddress.state.stateId)from Cadre model " +
 				"where model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.state.stateId order by model.currentAddress.state.stateName", params); 
+		return results;
+	}
+
+	public List findCadreSizeBoothwiseInMandal(Long userId) {
+		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", userId); 
 		return results;
 	}		
 }

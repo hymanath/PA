@@ -218,4 +218,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find("select model.boothId, model.partNo, model.constituency.constituencyId, model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId in ( " +constituencyIds+ " ) and " +
 					"model.localBody.localElectionBodyId in (" + localElectionBodyIds + ") and model.year = ? ", year);		
 	}
+
+	public List findBoothsInTehsils(String tehsilIds, String constituencyIds,
+			Long year) {
+		return getHibernateTemplate().find("select model.boothId, model.partNo, model.constituency.constituencyId, model.tehsil.tehsilId from Booth model where model.constituency.constituencyId in ( " +constituencyIds+ " ) and " +
+				"model.tehsil.tehsilId in (" + tehsilIds + ") and model.year = ? ", year);
+	}
+
+	public List getVillageToBoothByBooths(String boothIds) {
+		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.boothId, model.partNo, model.location" +
+				" from Booth model where model.boothId in("+boothIds+") ");
+	}
+	
+	public List getLocalElectionBodyToBoothByBooths(String localElectionBodyIds) {
+		return getHibernateTemplate().find("select model.localBody.localElectionBodyId, model.localBody.name, model.boothId, model.partNo, model.location" +
+				" from Booth model where model.boothId in("+localElectionBodyIds+") ");
+	}
 }

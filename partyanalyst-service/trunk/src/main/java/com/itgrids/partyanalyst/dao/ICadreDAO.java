@@ -27,6 +27,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findCadreSizeConstituencywise(Long userId);
 	public List findCadreSizeWardswise(Long userId);
 	public List findCadreSizeBoothwise(Long userId);
+	public List findCadreSizeBoothwiseInMandal(Long userId);
 	//Ajax call methods
 	public List findStateCadresByCountry(Long countryID, Long userID, String cardreType);
 	public List findDistCadresByState(Long stateID, Long userID, String cardreType);
