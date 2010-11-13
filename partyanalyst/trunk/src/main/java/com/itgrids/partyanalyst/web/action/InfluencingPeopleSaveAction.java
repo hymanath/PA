@@ -399,19 +399,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
 		}
 						
-		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
-		try{
-			influRangeAndValueMap.put(IConstants.STATE_LEVEL, new Long(state));
-			influRangeAndValueMap.put(IConstants.DISTRICT_LEVEL, new Long(district));
-			influRangeAndValueMap.put(IConstants.CONSTITUENCY_LEVEL, new Long(constituency));
-			influRangeAndValueMap.put(IConstants.TEHSIL_LEVEL, new Long(mandal));
-			influRangeAndValueMap.put(IConstants.HAMLET_LEVEL,new Long(wardOrHamlet));	
-		}catch(Exception ex){
-			ex.printStackTrace();
-			return ERROR;
-		}
-		
-		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO, influRangeAndValueMap);
+		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO);
 		
 		if(result.getExceptionEncountered() != null){			
 			return ERROR;
