@@ -218,6 +218,11 @@ var influencingPersonId = '${influencingPersonId}';
 			<th>:</th>
 			<td>${influencingPeopleBeanVO.pincode}</td>
 		</tr>
+		<tr>
+			<th style="width:125px">Booth</th>
+			<th>:</th>
+			<td>${influencingPeopleBeanVO.boothName}</td>
+		</tr>
 	</table>
 	</fieldset>
 
