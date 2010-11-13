@@ -15,12 +15,14 @@ public interface ISessionConstants {
 	public static final String STATES_O = "statesList_o";
 	public static final String DISTRICTS_O = "districtsList_o";
 	public static final String CONSTITUENCIES_O = "constituenciesList_o";
+	public static final String P_CONSTITUENCIES_O = "p_constituencies_o";
 	public static final String MANDALS_O = "mandalsList_o";
 	public static final String VILLAGES_O = "villagesList_o";
 	// cadre levle variables
 	public static final String CADRE_LEVELS_LIST = "cadreLevelsList";
 	public static final String DISTRICTS_C = "districtsList_c";
 	public static final String STATES_C = "statesList_c";
+	public static final String P_CONSTITUENCIES_C = "p_constituencies_c";
 	public static final String CONSTITUENCIES_C = "constituenciesList_c";
 	public static final String MANDALS_C = "mandalsList_c";
 	public static final String VILLAGES_C = "villagesList_c";
