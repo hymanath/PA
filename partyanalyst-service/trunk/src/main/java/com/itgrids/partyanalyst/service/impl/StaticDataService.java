@@ -2449,11 +2449,13 @@ public class StaticDataService implements IStaticDataService {
 				 for(CandidateElectionCompleteResultsVO completeRes:constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResultsList()){
 					 if(completeRes.getRank().equals(new Long(2))){
 						 Long votesMarginVal = constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getCandidateVotesEarned() - completeRes.getCandidateVotesEarned();
-						 Double votesMarginPercent = new Double(constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getVotesPercentAsString()) - new Double(completeRes.getVotesPercentAsString());
+						//Original written Double votesMarginPercent = new Double(constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getVotesPercentAsString()) - new Double(completeRes.getVotesPercentAsString());
 						 
 						// System.out.println(" ........................ Votes Margin Gained :" + votesMarginVal);
-						// System.out.println(" ........................ Votes Margin % Gained :" + votesMarginPercent);
-						 
+						// System.out.println(" ........................ Votes Margin % Gained :" + votesMarginPercent);						 
+						// System.out.print(constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getCandidateVotesEarned()+" - \t"+completeRes.getCandidateVotesEarned()+" = \t"+votesMarginVal);
+						 Double votesMarginPercent = (votesMarginVal.doubleValue()/constituencyElectionCompleteResults.getTotalVotesPolled()*100);
+						// System.out.println("\t"+votesMarginPercent);
 						 constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().setMarginVotesEarned(votesMarginVal);
 						 constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().setMarginVotesPercentAsString(new BigDecimal(votesMarginPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					 }
@@ -2477,7 +2479,7 @@ public class StaticDataService implements IStaticDataService {
 		return constituencyResultsInElection;
 		}catch(Exception e){
 			log.error("Exception raised please check the log for details"+e);
-		//	e.printStackTrace();
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -3493,7 +3495,8 @@ public class StaticDataService implements IStaticDataService {
 					candidateDetailsVo.setPartyFlag("no_Image.png");
 				}			
 				candidateDetailsVo.setPartyName(parms[7].toString());
-				candidateDetailsVo.setConstituencyId(new Long(parms[9].toString()));
+				Long constituencyID = new Long(parms[9].toString());
+				candidateDetailsVo.setConstituencyId(constituencyID);
 				candidateDetailsVo.setConstituencyName(parms[10].toString());
 				candidateDetailsVo.setElectionYear(parms[11].toString());
 				candidateDetailsVo.setElectionType(parms[12].toString());	
@@ -3504,12 +3507,29 @@ public class StaticDataService implements IStaticDataService {
 				if(successor.containsKey(constituencyId)){
 					differenceVotes = (Float.parseFloat(parms[2].toString())-successor.get(constituencyId));
 					if(Float.parseFloat(parms[2].toString())!=0f){
-						votesPercentage =  differenceVotes/(Float.parseFloat(parms[2].toString()))*100;
+						List list = nominationDAO.getVotesInfoForAConstituency(parms[9].toString(),parms[11].toString(),parms[12].toString());
+						Double allCandidateVotes=0d;
+						Double constituencyValidVotes=0d;
+						for(int k=0; k<list.size(); k++){
+							Object[] parm = (Object[])list.get(k);
+							if(parm[0]!=null){
+								allCandidateVotes = new Double(parm[0].toString());
+							}
+							if(parm[1]!=null){
+								constituencyValidVotes = new Double(parm[1].toString());
+							}
+						}
+						if(constituencyValidVotes!=0){							
+							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/constituencyValidVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}else{
+							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/allCandidateVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());							
+						}
 					}else{
-						votesPercentage = 0f;
+						candidateDetailsVo.setMarginVotesPercentage("0.00");						 
 					}		
 					candidateDetailsVo.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
-					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());		
+					
+							
 				}else{
 					differenceVotes = 0f;
 					votesPercentage = 0f;
@@ -3760,6 +3780,18 @@ public class StaticDataService implements IStaticDataService {
 		return selectOptionVO;	
 	}
 	
+	/**
+	 * This method can be used to get a report of different elections that 
+	 * are happened in a particular district.
+	 * 
+	 * @author <a href="r.sivakumar@itgrids.com">r.sivakumar@itgrids.com</a>
+	 * @return DistrictWisePartyResultVO
+	 * @see getPartyElectionResultsForAPartyDistrictLevel(Long electionId, Long partyId, Long districtId)
+	 * 
+	 * Reworked by <a href="y.ravi@itgrids.com">y.ravi@itgrids.com</a>
+	 * @serialData 13-11-10 
+	 * @version 1.2
+	 */
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long electionScopeId, Long districtId){
 		DistrictWisePartyResultVO districtWisePartyResultVO = new DistrictWisePartyResultVO();
 		try{
