@@ -224,3 +224,46 @@ var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
 callAjaxForLocations(jsObj,url);
 }
+
+function getBooths(address, constituencyField, boothField, id,name, taskType,task )
+{
+	var constituencyEl = document.getElementById(constituencyField);
+	var constiId = constituencyEl.options[constituencyEl.selectedIndex].value;
+	if(constiId == 0)
+	{
+		alert("Invalid Constituency Selection");
+		return;
+	}
+	var flag = name.search("Greater Municipal Corp");
+	
+	if(flag == '-1')
+	{
+		getLocationHierarchies(id,task,taskType,boothField,address, null,constiId);
+	} else 
+	{	
+		clearOptionsListForSelectElmtId(boothField);
+		return;
+	}	
+}
+
+function getBoothsInWard(address, constituencyField, boothField, id, module, municipalField )
+{
+	var constituencyEl = document.getElementById(constituencyField);
+	var constiId = constituencyEl.options[constituencyEl.selectedIndex].value;
+	var municipalEl = document.getElementById(municipalField);
+	var municipalName = municipalEl.options[municipalEl.selectedIndex].text;
+	
+	if(constiId == 0)
+	{
+		alert("Invalid Constituency Selection");
+		return;
+	}
+	var flag = municipalName.search("Greater Municipal Corp");
+	
+	if(flag == '-1')
+	{
+		return;
+	} else {
+		getLocationHierarchies(id,'boothsInWard',module,boothField,address, null,constiId);
+	}	
+}
