@@ -44,6 +44,8 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private String castType;
 	private String positionType;
 	private String registrationId;
+	private String booth;
+	private String boothName;
 	
 	private ResultStatus resultStatus;
 	
@@ -358,6 +360,22 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 
 	public void setRegistrationId(String registrationId) {
 		this.registrationId = registrationId;
+	}
+
+	public String getBooth() {
+		return booth;
+	}
+
+	public void setBooth(String booth) {
+		this.booth = booth;
+	}
+
+	public String getBoothName() {
+		return boothName;
+	}
+
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
 	}
 	
 	
