@@ -22,6 +22,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
 import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
@@ -134,8 +136,8 @@ public class CadreManagementService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	
 	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
+	private IBoothDAO boothDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -344,6 +346,13 @@ public class CadreManagementService {
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
 
 	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<String> skills, String task) {
 		
@@ -411,9 +420,9 @@ public class CadreManagementService {
 				cadre.setMiddleName(cadreInfo.getMiddleName());
 				cadre.setLastName(cadreInfo.getLastName());
 				cadre.setGender(cadreInfo.getGender());
-				cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
-				cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
-				cadre.setConstituency(constituencyDAO.get(new Long(cadreInfo.getConstituencyID())));
+				//cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
+				//cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+				//cadre.setConstituency(constituencyDAO.get(new Long(cadreInfo.getConstituencyID())));
 				cadre.setFatherOrSpouseName(cadreInfo.getFatherOrSpouseName());
 				cadre.setNoOfFamilyMembers(cadreInfo.getNoOfFamilyMembers());
 				cadre.setNoOfVoters(cadreInfo.getNoOfVoters());
@@ -423,7 +432,15 @@ public class CadreManagementService {
 				currentAddress.setStreet(cadreInfo.getStreet());
 				currentAddress.setPinCode(cadreInfo.getPinCode());
 				currentAddress.setState(stateDAO.get(new Long(cadreInfo.getState())));
-				currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+				if("MP".equals(cadreInfo.getAccessType()))
+				{
+					currentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getParliament())));
+					currentAddress.setDistrict(null);					
+				} else {
+					currentAddress.setParliamentConstituency(null);
+					currentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+				}
+				
 				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
 				
 				if (IConstants.URBAN_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
@@ -436,7 +453,7 @@ public class CadreManagementService {
 					currentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getVillage().substring(1))));
 					currentAddress.setTehsil(null);
 					currentAddress.setHamlet(null);
-					cadre.setTehsil(null);
+					//cadre.setTehsil(null);
 				}
 				
 				if (IConstants.RURAL_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
@@ -445,7 +462,11 @@ public class CadreManagementService {
 					currentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getVillage().substring(1))));
 					currentAddress.setLocalElectionBody(null);
 					currentAddress.setWard(null);
-					cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+					//cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+				}
+				if(!cadreInfo.getBooth().equals("0"))
+				{
+					currentAddress.setBooth(boothDAO.get(new Long(cadreInfo.getBooth())));
 				}
 			
 				/*currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
@@ -470,7 +491,14 @@ public class CadreManagementService {
 					permanentAddress.setStreet(cadreInfo.getPstreet());
 					permanentAddress.setPinCode(cadreInfo.getPpinCode());
 					permanentAddress.setState(stateDAO.get(new Long(cadreInfo.getPstate())));
-					permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
+					if("MP".equals(cadreInfo.getAccessType()))
+					{
+						permanentAddress.setParliamentConstituency(constituencyDAO.get(new Long(cadreInfo.getPParliament())));
+						permanentAddress.setDistrict(null);					
+					} else {
+						permanentAddress.setParliamentConstituency(null);
+						permanentAddress.setDistrict(districtDAO.get(new Long(cadreInfo.getPdistrict())));
+					}					
 					permanentAddress.setConstituency(constituencyDAO.get(cadreInfo.getPconstituencyID()));
 					
 					if (IConstants.URBAN_TYPE.equals(cadreInfo.getPmandal().substring(0,1)))
@@ -492,10 +520,10 @@ public class CadreManagementService {
 						permanentAddress.setLocalElectionBody(null);
 						permanentAddress.setWard(null);
 					}
-					
-					
-					/*permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal())));
-					processAddressValues(villageFlag, id, cadre, permanentAddress);*/
+					if(!cadreInfo.getPBooth().equals("0"))
+					{
+						permanentAddress.setBooth(boothDAO.get(new Long(cadreInfo.getPBooth())));
+					}					
 				} 
 				cadre.setCurrentAddress(currentAddress);
 				cadre.setPermanentAddress(permanentAddress);
@@ -787,23 +815,19 @@ public class CadreManagementService {
 			}
 
 	public Integer deleteCadre(Long cadreId, RegistrationVO user) {
-		System.out.println("inside delete method");
+		
 		Cadre cadre = cadreDAO.get(cadreId);
 		if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadre.getMemberType()) && IConstants.USER_TYPE_PARTY.equals(user.getUserType()) && IConstants.BJP.equals(user.getPartyShortName()))
 		{	
 			List<CadreSkills> cadreSkills = cadreSkillsDAO.findByCadreId(cadreId);
 			if(cadreSkills != null && cadreSkills.size()>0)
 			{
-				System.out.println("existing skills for this cadre:"+cadreSkills.size());
-				Integer rows = cadreSkillsDAO.deleteSkillsByCadreId(cadreId);	
-				System.out.println("No of rows deleted:"+rows);
+				Integer rows = cadreSkillsDAO.deleteSkillsByCadreId(cadreId);				
 			}
 			List<CadreParticipatedTrainingCamps> trainingCampsList = cadreParticipatedTrainingCampsDAO.findByCadreId(cadreId);
 			if(trainingCampsList != null && trainingCampsList.size()>0)
 			{
-				System.out.println("existing camps for this cadre:"+trainingCampsList.size());
 				Integer rows = cadreParticipatedTrainingCampsDAO.deleteCadreTrainingCamps(cadreId);	
-				System.out.println("No of rows deleted:"+rows);
 			}
 		}
 		List<CadreLanguageEfficiency> engLanguagesEff = cadreLanguageEfficiencyDAO.findByCadreIdandLanguage(cadreId, IConstants.LANGUAGE_ENGLISH);
@@ -814,15 +838,11 @@ public class CadreManagementService {
 		Language hinLanguageObj = hinLanguages.get(0);
 		if(engLanguagesEff != null && engLanguages.size() == 1)
 		{	
-			System.out.println("languages size:"+engLanguages.size());
-			Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreId, engLanguageObj.getLanguageId());
-			System.out.println("Rows Affected:"+rows);
+			Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreId, engLanguageObj.getLanguageId());			
 		}
 		if(hinLanguagesEff != null && hinLanguages.size() == 1)
 		{	
-			System.out.println("languages size:"+hinLanguages.size());
-			Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreId, hinLanguageObj.getLanguageId());
-			System.out.println("Rows Affected:"+rows);
+			Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreId, hinLanguageObj.getLanguageId());			
 		}
 		Integer deletedRow = cadreDAO.deleteByCadreId(cadreId);
 		return deletedRow;
@@ -1060,10 +1080,11 @@ public class CadreManagementService {
 		Map<Long, String> userAccessConstituencies = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessMandals = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessLocalElectionBodies = new LinkedHashMap<Long, String>();
+		Map<Long, String> userAccessBooths = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessVillages = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessHamlets = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessWards = new LinkedHashMap<Long, String>();
-
+		
 		Map<Long, String> zeroCadreStates = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreDistricts = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreConstituencies = new LinkedHashMap<Long, String>();
@@ -1072,11 +1093,13 @@ public class CadreManagementService {
 		Map<Long, String> zeroCadreVillages = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreHamlets = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreWards = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreBooths = new LinkedHashMap<Long, String>();
 
 		String userAccessType = userCadreInfo.getUserAccessType();
 		String accessID = userCadreInfo.getUserAccessValue();
 		String localElectionBodyIds = null;
 		String constituencyIds = null;
+		String wardIds = null;
 		
 		List<SelectOptionVO> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres();
 
@@ -1216,12 +1239,30 @@ public class CadreManagementService {
 				userCadreInfo.setUserAccessWards(userAccessWards);
 				userCadreInfo.setZeroCadreWards(zeroCadreWards);
 				if (sbwards != null && sbwards.length() > 0)
-					localElectionBodyIds = sbwards.substring(0, sbwards.length() - 1);
+					wardIds = sbwards.substring(0, sbwards.length() - 1);
 
 				SelectOptionVO voObject = new SelectOptionVO(wardLevelZeroCadres, "WARDS");
 				if (wardLevelZeroCadres > 0)
 					regionLevelZeroCadres.add(voObject);
 			}
+		}
+		if((localElectionBodyCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)	|| "DISTRICT".equals(userAccessType) || "MLA".equals(userAccessType) || "MP".equals(userAccessType)))
+		{
+			List booths = boothDAO.findBoothsInLocalElectionBodies(localElectionBodyIds, constituencyIds, new Long(IConstants.DELIMITATION_YEAR));
+			//List wards = constituencyDAO.findWardsInLocalElectionBodies(localElectionBodyIds);
+			
+			List cadreSizeBoothwise = cadreDAO.findCadreSizeBoothwise(userCadreInfo.getUserID());
+			long wardLevelBoothCadres = booths.size()	- cadreSizeBoothwise.size();
+			//StringBuilder sbbooths = getFormatedData(booths, userAccessBooths, cadreSizeBoothwise,zeroCadreBooths);
+			userCadreInfo.setUserAccessBooths(userAccessBooths);
+			userCadreInfo.setZeroCadreBooths(zeroCadreBooths);
+			/*if (sbbooths != null && sbbooths.length() > 0)
+					localElectionBodyIds = sbwards.substring(0, sbwards.length() - 1);
+*/
+			SelectOptionVO voObject = new SelectOptionVO(wardLevelBoothCadres, "BOOTHS");
+			if (wardLevelBoothCadres > 0)
+				regionLevelZeroCadres.add(voObject);
+			
 		}
 		if ((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType) || "DISTRICT".equals(userAccessType) || "MLA".equals(userAccessType) || "MP".equals(userAccessType))) {
 			if (log.isDebugEnabled()) {
@@ -1586,7 +1627,8 @@ public class CadreManagementService {
 		State stateCA = currentAddress.getState();
 		District districtCA = currentAddress.getDistrict();
 		Constituency constituencyCA = currentAddress.getConstituency();
-		
+		Constituency parlConstituencyCA = currentAddress.getParliamentConstituency();
+		Booth boothCA = currentAddress.getBooth();
 		Tehsil tehsilCA = currentAddress.getTehsil();
 		//Township townshipCA = currentAddress.getTownship();
 		Hamlet hamletCA = currentAddress.getHamlet();
@@ -1595,8 +1637,16 @@ public class CadreManagementService {
 		
 		cadreInfo.setState(stateCA.getStateId().toString());
 		cadreInfo.setStateName(stateCA.getStateName());
-		cadreInfo.setDistrict(districtCA.getDistrictId().toString());
-		cadreInfo.setDistrictName(districtCA.getDistrictName());
+		if(districtCA != null)
+		{
+			cadreInfo.setDistrict(districtCA.getDistrictId().toString());
+			cadreInfo.setDistrictName(districtCA.getDistrictName());
+		}
+		if(parlConstituencyCA != null)
+		{
+			cadreInfo.setParliament(parlConstituencyCA.getConstituencyId().toString());
+			cadreInfo.setParliamentName(parlConstituencyCA.getName());			
+		}
 		cadreInfo.setConstituencyID(constituencyCA.getConstituencyId());
 		cadreInfo.setConstituencyName(constituencyCA.getName());
 		
@@ -1612,16 +1662,11 @@ public class CadreManagementService {
 			cadreInfo.setVillageName(wardCA.getName());
 		}
 		
-		//Urban Rural Scenario
-		/*if(hamletCA == null)
+		if(boothCA != null)
 		{
-			cadreInfo.setVillage(IConstants.TOWNSHIP_TYPE+townshipCA.getTownshipId().toString());
-			cadreInfo.setVillageName(townshipCA.getTownshipName());
-		} else if(hamletCA != null)
-		{
-			cadreInfo.setVillage(IConstants.HAMLET_TYPE+townshipCA.getTownshipId().toString());
-			cadreInfo.setVillageName(hamletCA.getHamletName());
-		}*/
+			cadreInfo.setBooth(boothCA.getBoothId().toString());
+			cadreInfo.setBoothName(boothCA.getPartNo());
+		}
 		
 		if (currentAddress.equals(officialAddress)) {
 			cadreInfo.setSameAsCA(true);
@@ -1630,9 +1675,20 @@ public class CadreManagementService {
 			cadreInfo.setPpinCode(currentAddress.getPinCode());
 			
 			cadreInfo.setPstate(stateCA.getStateId().toString());
-			cadreInfo.setPdistrict(districtCA.getDistrictId().toString());
-			cadreInfo.setPconstituencyID(constituencyCA.getConstituencyId());
+			if(districtCA != null)
+			{
+				cadreInfo.setPdistrict(districtCA.getDistrictId().toString());
+				cadreInfo.setPdistrictName(districtCA.getDistrictName());
+				
+			}
 			
+			if(parlConstituencyCA != null)
+			{
+				cadreInfo.setPParliament(parlConstituencyCA.getConstituencyId().toString());
+				cadreInfo.setPParliamentName(parlConstituencyCA.getName());			
+			}
+			cadreInfo.setPconstituencyID(constituencyCA.getConstituencyId());
+			cadreInfo.setPconstituencyName(constituencyCA.getName());
 			if(tehsilCA != null){
 				cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
 				cadreInfo.setPmandalName(tehsilCA.getTehsilName());
@@ -1643,19 +1699,7 @@ public class CadreManagementService {
 				cadreInfo.setPmandalName(localBodyCA.getName());
 				cadreInfo.setPvillage(wardCA.getConstituencyId().toString());
 				cadreInfo.setPvillageName(wardCA.getName());
-			}
-			
-			/*
-			cadreInfo.setPmandal(tehsilCA.getTehsilId().toString());
-			if(hamletCA == null)
-			{
-				cadreInfo.setPvillage(IConstants.TOWNSHIP_TYPE+townshipCA.getTownshipId().toString());
-				cadreInfo.setPvillageName(townshipCA.getTownshipName());
-			} else if(hamletCA != null)
-			{
-				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletCA.getHamletId().toString());
-				cadreInfo.setPvillageName(hamletCA.getHamletName());
-			}		*/	
+			}				
 			
 		} else {
 			cadreInfo.setSameAsCA(false);
@@ -1666,16 +1710,26 @@ public class CadreManagementService {
 			State stateOA = officialAddress.getState();
 			District districtOA = officialAddress.getDistrict();
 			Constituency constituencyOA = officialAddress.getConstituency();
+			Constituency parlConstituencyOA = officialAddress.getParliamentConstituency();
 			Tehsil tehsilOA = officialAddress.getTehsil();
 			//Township townshipOA = officialAddress.getTownship();
 			Hamlet hamletOA = officialAddress.getHamlet();
 			LocalElectionBody localBodyOA = officialAddress.getLocalElectionBody();
 			Constituency wardOA = officialAddress.getWard();
-			
+			Booth boothOA = officialAddress.getBooth();
 			cadreInfo.setPstate(stateOA.getStateId().toString());
 			cadreInfo.setPstateName(stateOA.getStateName());
-			cadreInfo.setPdistrict(districtOA.getDistrictId().toString());
-			cadreInfo.setPdistrictName(districtOA.getDistrictName());
+			if(districtOA != null)
+			{			
+				cadreInfo.setPdistrict(districtOA.getDistrictId().toString());
+				cadreInfo.setPdistrictName(districtOA.getDistrictName());
+			}
+			
+			if(parlConstituencyOA != null)
+			{
+				cadreInfo.setPParliament(parlConstituencyOA.getConstituencyId().toString());
+				cadreInfo.setPParliamentName(parlConstituencyOA.getName());			
+			}
 			cadreInfo.setPconstituencyID(constituencyOA.getConstituencyId());
 			cadreInfo.setPconstituencyName(constituencyOA.getName());
 			
@@ -1690,20 +1744,11 @@ public class CadreManagementService {
 				cadreInfo.setPvillage(wardOA.getConstituencyId().toString());
 				cadreInfo.setPvillageName(wardOA.getName());
 			}
-			/*
-			cadreInfo.setPmandal(tehsilOA.getTehsilId().toString());
-			cadreInfo.setPmandalName(tehsilOA.getTehsilName());
-			if(hamletOA == null)
+			if(boothOA != null)
 			{
-				cadreInfo.setPvillage(IConstants.TOWNSHIP_TYPE+townshipOA.getTownshipId().toString());
-				cadreInfo.setPvillageName(townshipOA.getTownshipName());
-			} else if(hamletCA != null)
-			{
-				cadreInfo.setPvillage(IConstants.HAMLET_TYPE+hamletOA.getHamletId().toString());
-				cadreInfo.setPhamletName(hamletOA.getHamletName());
-				cadreInfo.setPvillageName(hamletOA.getHamletName());
-			}*/
-					
+				cadreInfo.setPBooth(boothOA.getBoothId().toString());
+				cadreInfo.setPBoothName(boothOA.getPartName());
+			}
 		}
 
 		List<Object[]> familyDetails = cadreFamilyMemberInfoDAO.findByCadreId(cadre.getCadreId());
@@ -1762,39 +1807,6 @@ public class CadreManagementService {
 		}
 				
 		List<CadreLanguageEfficiency> cadreLanguageSkills = cadreLanguageEfficiencyDAO.findByCadreId(cadre.getCadreId());
-/*		String[] languageOptions_English = new String[3];
-		String[] languageOptions_Hindi = new String[3];
-		if (cadreLanguageSkills != null && cadreLanguageSkills.size() > 0) {
-
-			for (CadreLanguageEfficiency obj : cadreLanguageSkills) {
-				int i = -1;
-
-				if (IConstants.LANGUAGE_ENGLISH.equals(obj.getLanguage()
-						.getLanguage())) {
-					if (obj.getIsAbleToRead()!= null && obj.getIsAbleToRead().equals("true"))
-						languageOptions_English[++i] = "read";
-					if (obj.getIsAbleToSpeak() != null && obj.getIsAbleToSpeak().equals("true"))
-						languageOptions_English[++i] = "speak";
-					if (obj.getIsAbleToWrite() != null && obj.getIsAbleToWrite().equals("true"))
-						languageOptions_English[++i] = "write";
-
-				}
-				if (IConstants.LANGUAGE_HINDI.equals(obj.getLanguage()
-						.getLanguage())) {
-					if (obj.getIsAbleToRead() != null && obj.getIsAbleToRead().equals("true"))
-						languageOptions_Hindi[++i] = "read";
-					if (obj.getIsAbleToSpeak() != null && obj.getIsAbleToSpeak().equals("true"))
-						languageOptions_Hindi[++i] = "speak";
-					if (obj.getIsAbleToWrite() != null && obj.getIsAbleToWrite().equals("true"))
-						languageOptions_Hindi[++i] = "write";
-
-				}
-
-			}
-			cadreInfo.setLanguageOptions_English(languageOptions_English);
-			cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);
-
-		}*/
 		List<String> languageOptions_English = new ArrayList<String>();
 		List<String> languageOptions_Hindi = new ArrayList<String>();
 		if (cadreLanguageSkills != null && cadreLanguageSkills.size() > 0) {
@@ -1848,7 +1860,7 @@ public class CadreManagementService {
 				levelValue = getStateName(new Long(levelValueID));
 			} else if ("DISTRICT".equals(level)) {
 				levelValue = getDistrictName(new Long(levelValueID));
-			} else if ("CONSTITUENCY".equals(level)) {
+			} else if ("CONSTITUENCY".equals(level) || "WARD".equals(level) ) {
 				levelValue = getConstituencyName(new Long(levelValueID));
 			} else if ("MANDAL".equals(level)) {
 				levelValue = getMandalName(new Long(levelValueID));
@@ -1862,6 +1874,10 @@ public class CadreManagementService {
 					levelValue = getTownshipName(id);
 				}
 				log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+ levelValueID);
+			} else if ("MUNICIPAL-CORP-GMC".equals(level)) {
+				levelValue = getLocalElectionBodyName(new Long(levelValueID));
+			}  else if ("BOOTH".equals(level)) {
+				levelValue = getBoothDetailsByBoothId(new Long(levelValueID));
 			}
 			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 			cadreInfo.setStrCadreLevelValue(levelValue);
@@ -1921,6 +1937,19 @@ public class CadreManagementService {
 	private String getTownshipName(Long townshipId) {
 		Township township = townshipDAO.get(townshipId);
 		return township.getTownshipName();
+	}
+	
+	private String getLocalElectionBodyName(Long localElectionBodyId)
+	{
+		LocalElectionBody localElectionBody = localElectionBodyDAO.get(localElectionBodyId);
+		return localElectionBody.getName();
+	}
+	
+	private String getBoothDetailsByBoothId(Long boothId)
+	{
+		Booth booth = boothDAO.get(boothId);
+		String boothDetails = "Booth No "+booth.getPartNo()+booth.getLocation(); 
+		return boothDetails;
 	}
 
 	public List<SelectOptionVO> getStateDistConstituencyMandalByMandalID(
@@ -2204,7 +2233,7 @@ public class CadreManagementService {
 	}
 
 	public List<CadreInfo> getCadresByHamlet(String id, Long userID) {
-		System.out.println("inside getCadresByHamlet");
+		
 		List<CadreInfo> formattedData = new ArrayList<CadreInfo>();
 		List<Cadre> cadresList = new ArrayList<Cadre>();
 		
@@ -3349,6 +3378,22 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			levels.add(selectOptionVO);
 		}
 		return levels;
+	}
+	
+	public List<CadreRegionInfoVO> getParliamentAllConstCadres(Long parliamentId, Long userId)
+	{
+		List constCadres = cadreDAO.findConstituencyCadresByParliamentConst(parliamentId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = constCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) constCadres.get(i);
+			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CONSTITUENCY");
+			regionInfoVo.setRegionId(new Long(voObject[0].toString()));
+			regionInfoVo.setRegionName(voObject[1].toString());
+			regionInfoVo.setCadreCount(new Long(voObject[2].toString()));
+			formattedData.add(regionInfoVo);
+		}
+		return formattedData;
 	}
 	
 	public List<CadreRegionInfoVO> getDistrictAllConstCadres(Long districtID, Long userID)
