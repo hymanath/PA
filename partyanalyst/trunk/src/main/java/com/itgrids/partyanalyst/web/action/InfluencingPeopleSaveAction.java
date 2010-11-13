@@ -30,6 +30,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private String firstName,lastName,middleName,fatherOrSpouseName,email,mobile,gender,houseNo,streetName,pincode,cast,occupation,state,district,
 						constituency,mandal,village,hamlet,party,position,influencingRange,wardOrHamlet,windowTask,influencingPersonId,
 						influencingScopeValue,registrationId;
+	private String booth;
 	private int resultStatus = 3;
 	private HttpSession session;
 	
@@ -319,6 +320,14 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.registrationId = registrationId;
 	}
 
+	public String getBooth() {
+		return booth;
+	}
+
+	public void setBooth(String booth) {
+		this.booth = booth;
+	}
+
 	public String execute() throws Exception{
 		
 		session = request.getSession();
@@ -341,6 +350,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		influencingPeopleBeanVO.setConstituency(getConstituency());
 		influencingPeopleBeanVO.setMandal(getMandal());
 		influencingPeopleBeanVO.setWardOrHamlet(getWardOrHamlet());
+		influencingPeopleBeanVO.setBooth(getBooth());
 		influencingPeopleBeanVO.setPincode(getPincode().trim());
 		influencingPeopleBeanVO.setOccupation(getOccupation());
 		influencingPeopleBeanVO.setParty(getParty());
