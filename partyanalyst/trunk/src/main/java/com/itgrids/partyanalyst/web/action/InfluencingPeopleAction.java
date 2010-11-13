@@ -249,9 +249,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
-		   
-		
-		//stateList = cadreManagementService.findStatesByCountryID("1");
 		
 		if(gender.size() == 0){
 			gender.add("Male");
@@ -263,15 +260,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
-		
-		/*if(windowTask.equals(IConstants.CREATE_NEW))
-		{	
-			session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
-			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
-					 
-		}*/
 		
 		if("MLA".equals(accessType))
 		{
@@ -363,32 +351,6 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			e.printStackTrace();
 		}
 	}
-	
-	/*public void saveInfluencePeopleData(){
-		String param = null;
-		param = getTask();
-		try {
-			jObj = new JSONObject(param);
-			System.out.println(jObj);
-			InfluencingPeopleVO influencingPeople = new InfluencingPeopleVO();
-			influencingPeople.setPersonName(jObj.getString("firstName"));		
-			influencingPeople.setLastName(jObj.getString("lastName"));
-			influencingPeople.setEmail(jObj.getString("email"));
-			influencingPeople.setContactNumber(jObj.getString("mobileNumber"));
-			influencingPeople.setGender(jObj.getString("gender"));
-			influencingPeople.setCast(jObj.getString("cast"));
-			influencingPeople.setHamletId(jObj.getLong("hamletId"));
-			influencingPeople.setOccupation(jObj.getString("occupation"));
-			influencingPeople.setPartyId(jObj.getLong("partyId"));
-			influencingPeople.setPosition(jObj.getString("position"));
-			influencingPeople.setInfluencingRange(jObj.getString("range"));	
-			Long id;
-			id = influencingPeopleService.saveInfluencePeople(influencingPeople);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
-	} */
-
 	
 	public void prepare() throws Exception {
 		
