@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+
 public class StateToHamletVO extends ResultStatus{
 	private SelectOptionVO state;
 	private SelectOptionVO district;
@@ -9,7 +11,8 @@ public class StateToHamletVO extends ResultStatus{
 	private SelectOptionVO hamlet;
 	private SelectOptionVO localElectionBody;
 	private SelectOptionVO ward;
-	
+	private SelectOptionVO booth;
+		
 	public SelectOptionVO getState() {
 		return state;
 	}
@@ -58,6 +61,14 @@ public class StateToHamletVO extends ResultStatus{
 	public void setWard(SelectOptionVO ward) {
 		this.ward = ward;
 	}
+	public SelectOptionVO getBooth() {
+		return booth;
+	}
+	public void setBooth(SelectOptionVO booth) {
+		this.booth = booth;
+	}
+	
+		
 	
 	
 }
