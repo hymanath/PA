@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -49,7 +50,18 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IMessageTypeDAO messageTypeDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	//Service
 	private IDateService dateService;
 	
@@ -261,7 +273,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 		List<Object> result = new ArrayList<Object>();		
 		
 		try{
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
+			
+			if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(locationIds);
+				if(list!=null && list.size()!=0){
+					for(int i=0; i<list.size(); i++){					
+						locationIds.add((Long)list.get(i));
+					}
+				}
+				
+			}
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);	
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			resultStatus.setResultPartial(false);
@@ -693,13 +715,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 		List<Long> unKnownPeople = new ArrayList<Long>();
 		try{
 			for(int i=0;i<levels;i++){
-				tempIds =  getUserIds(newList,originalList);
-				if(i!=1){
-					unKnownPeople.addAll(tempIds);
-				}
-				newList.clear();
-				newList.addAll(tempIds);	
-				originalList.addAll(tempIds);			
+				if(newList.size()!=0 && originalList.size()!=0){
+					tempIds =  getUserIds(newList,originalList);
+					if(i!=1){
+						unKnownPeople.addAll(tempIds);
+					}
+					newList.clear();
+					newList.addAll(tempIds);	
+					originalList.addAll(tempIds);	
+				}			
 			}
 			//unKnownPeople list gives the list of id's of all the people to the level
 			//i.e., if we want all unknown people up to third level 
@@ -711,16 +735,20 @@ public class AnanymousUserService implements IAnanymousUserService {
 				resultVO = setUserProfileData(result,informationStatus);	
 			}
 			
-			if(resultVO==null || resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
-				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				resultStatus.setResultPartial(false);
-				dataTransferVO.setResultStatus(resultStatus);
+			if(resultVO.getResultStatus()!=null){
+				
 			}else{
-				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
-				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				resultStatus.setResultPartial(false);
-				dataTransferVO.setResultStatus(resultStatus);
+				if(resultVO==null && resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+					dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					resultStatus.setResultPartial(false);
+					dataTransferVO.setResultStatus(resultStatus);
+				}else{
+					dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					resultStatus.setResultPartial(false);
+					dataTransferVO.setResultStatus(resultStatus);
+				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
