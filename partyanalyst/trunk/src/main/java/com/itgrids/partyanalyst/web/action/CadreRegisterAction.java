@@ -787,7 +787,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getNoOfFamilyMembers();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9]+[0-9]*$", message = "Please Give Number Value for No of Family Members")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Please Give Number Value for No of Family Members")
 	public void setNoOfFamilyMembers(String noOfFamilyMembers) {
 		this.cadreInfo.setNoOfFamilyMembers(noOfFamilyMembers);
 	}
@@ -796,7 +796,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getNoOfVoters();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[0-9]+[0-9]*$", message = "Please Give Number Value for No of Voters")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Please Give Number Value for No of Voters")
 	public void setNoOfVoters(String noOfVoters) {
 		this.cadreInfo.setNoOfVoters(noOfVoters);
 	}
