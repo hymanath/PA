@@ -25,5 +25,16 @@ public class StaticLocalGroupDAO extends GenericDaoHibernate<StaticLocalGroup, L
 		super(StaticLocalGroup.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getAllStaticLocalGroups() {
+		return getHibernateTemplate().find("select model.staticLocalGroupId,model.groupType,model.description from StaticLocalGroup model");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getStaticLocalGroupsForAUser(Long userId) {
+		return getHibernateTemplate().find("select model.staticLocalGroupId,model.groupType,model.description from StaticLocalGroup model "+
+				"where model.user.registrationId = ?",userId);
+	}
+
 	
 }
