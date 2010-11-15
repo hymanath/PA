@@ -1191,7 +1191,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					localBodysInConstituency = regionServiceDataImp.getLocalElectionBodiesInConstituency(regionId, IConstants.DELIMITATION_YEAR.toString());
 					String area = "";
 					if(areaType.equalsIgnoreCase("VILLAGE/WARD"))
-						area = IConstants.VILLAGE;
+						area = IConstants.WARD;
 					else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
 						area = IConstants.BOOTH;
 					
