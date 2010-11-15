@@ -391,6 +391,22 @@
 			callAjax(param,jsObj,url);	
 		}
 
+		function reGetLocalGroupsInAConstituency(regionType,regionId)
+		{
+			var jsObj= 
+			{	
+				regionId:regionId,
+				regionType:regionType,						 			  			
+				task: "reGetLocalGroupsInAConstituency"
+						
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getLocalUserGroupsAction.action?"+param;
+			
+			callAjax(param,jsObj,url);	
+		}
+
 		function smsRenewalMessage()
 		{
 			var elmt = document.getElementById('smsErrorPopupDiv');
@@ -506,7 +522,7 @@
 			browser2.focus();
 		}
 		
-		function getSubLevelInfluenceData(regionId,regionName,regionType,regionTitle,regionTitleId,status)
+		function getSubLevelInfluenceData(regionId,regionName,regionType,areaType,regionTitle,regionTitleId,status)
 		{
 			var jsObj= 
 			{	
@@ -515,6 +531,7 @@
 				regionType:regionType,
 				regionTitle:regionTitle,
 				regionTitleId:regionTitleId,
+				areaType:areaType,
 				status:status,
 				task: "getSubLevelInfluencePeople"						
 			};
@@ -525,7 +542,7 @@
 			callAjax(param,jsObj,url);		
 		}
 
-		function getSubLevelLocalGroupData(regionId,regionName,regionType,regionTitle,regionTitleId,status)
+		function getSubLevelLocalGroupData(regionId,regionName,regionType,areaType,regionTitle,regionTitleId,status)
 		{
 			var jsObj= 
 			{	
@@ -534,6 +551,7 @@
 				regionType:regionType,
 				regionTitle:regionTitle,
 				regionTitleId:regionTitleId,
+				areaType:areaType,
 				status:status,
 				task: "getSubLevelLocalUserGroupsPeople"						
 			};
@@ -586,7 +604,7 @@
 											alert("Succesfully Deleted");
 											getInfluencingPeopleInAConstituency();	
 										}	
-										if(jsObj.task == "getLocalUserGroups")
+										if(jsObj.task == "getLocalUserGroups" || jsObj.task == "reGetLocalGroupsInAConstituency")
 										{
 											buildLocalUserGroupsCriteria(jsObj,myResults);
 										}
@@ -610,6 +628,7 @@
 										{
 											populateInfluencingPeople(myResults);
 										}
+
 									}
 								catch (e)
 									{   
@@ -786,6 +805,7 @@
 									</div>
 									<div id="influencePeopleDetail_body">
 										<div id="influencePeopleRegionsList" class="influencePeopleRegionsList"></div>
+										<div id="influencePeopleRegionsTypeRadio" class="influencePeopleRegionsList"></div>
 										<div id="influencePeopleRegionsData_main"></div>
 									</div>
 								</div>	
@@ -853,6 +873,7 @@
 									</div>
 									<div id="localGroupsDetail_body">
 										<div id="localGroupsRegionsList" class="influencePeopleRegionsList"></div>
+										<div id="localGroupsRegionsTypeRadio" class="influencePeopleRegionsList"></div>
 										<div id="localGroupsRegionsData_main"></div>
 									</div>
 								</div>	
