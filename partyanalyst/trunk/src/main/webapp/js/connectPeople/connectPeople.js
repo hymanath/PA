@@ -176,7 +176,7 @@ function buildConnectionsContentForUser()
 		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
 		str += '</tr>';	
 		str += '<tr>';		
-		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Message</a></td>';
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
 		str += '</tr>';	
 		str += '</table>';
 		str += '</div>';
