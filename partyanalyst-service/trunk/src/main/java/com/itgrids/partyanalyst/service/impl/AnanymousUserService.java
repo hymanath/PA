@@ -561,13 +561,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
 			}else{
-				resultVO = dataVo.getCandidateVO();
-				if(resultVO!=null && resultVO.size()!=0){
-					resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.SUCCESS);
-					dataTransferVO.setConnectedPeople(resultVO);				
-				}else{
-					resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
-				}
+				resultVO = dataVo.getCandidateVO();				
+				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.SUCCESS);
+				dataTransferVO.setConnectedPeople(resultVO);
 			}
 			dataTransferVO.setResultStatusForConnectedPeople(resultStatusForConnectedPeople);
 			
@@ -589,13 +585,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 			if(peopleYouMayKnow.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 				resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
 			}else{
-				resultVO = peopleYouMayKnow.getCandidateVO();
-				if(resultVO!=null && resultVO.size()!=0){
-					resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.SUCCESS);
-					dataTransferVO.setPeopleYouMayKnow(resultVO);				
-				}else{
-					resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.FAILURE);
-				}
+				resultVO = peopleYouMayKnow.getCandidateVO();				
+				resultStatusForPeopleYouMayKnow.setResultCode(ResultCodeMapper.SUCCESS);
+				dataTransferVO.setPeopleYouMayKnow(resultVO);
 			} 
 			dataTransferVO.setResultStatusForPeopleYouMayKnow(resultStatusForPeopleYouMayKnow);
 			
@@ -726,17 +718,28 @@ public class AnanymousUserService implements IAnanymousUserService {
 					originalList.addAll(tempIds);	
 				}			
 			}
+			
 			//unKnownPeople list gives the list of id's of all the people to the level
 			//i.e., if we want all unknown people up to third level 
 			
 			//newList list contains id's of all the people of that particular level
 			
-			if(unKnownPeople!=null && unKnownPeople.size()!=0){
-				List<AnanymousUser> result = ananymousUserDAO.getDetailsForUsers(unKnownPeople);
+			if(levels>1){
+				List<CustomMessage> customMessageresult = customMessageDAO.checkForRelationBetweenUsers(userId,newList);
+				for(CustomMessage users : customMessageresult){
+					Long id = users.getRecepientId().getUserId();
+					if(newList.contains(id)){
+						newList.remove(id);
+					}
+				}	
+				customMessageresult = null;
+			}
+			if(newList!=null && newList.size()!=0){				
+				List<AnanymousUser> result = ananymousUserDAO.getDetailsForUsers(newList);
 				resultVO = setUserProfileData(result,informationStatus);	
 			}
 			
-			if(resultVO.getResultStatus()!=null){
+			if(resultVO.getResultStatus()==null){
 				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				resultStatus.setResultPartial(false);
@@ -760,6 +763,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
 			dataTransferVO.setResultStatus(resultStatus);
+		}finally{			
+			originalList = null;
+			tempIds = null;
+			unKnownPeople = null;
+			System.gc();
 		}
 		return dataTransferVO;
 	}
