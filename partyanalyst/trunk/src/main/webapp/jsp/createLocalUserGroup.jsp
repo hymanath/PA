@@ -152,7 +152,7 @@ function limitText(limitField, limitCount, limitNum)
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <s:select id="categorysId" name="categorys" cssStyle="width:150px;" list="{}" listKey="id" listValue="name"></s:select>
+		  <s:select id="categorysId" name="categorys" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name"></s:select>
 		</td>
 	  </tr>
 	  <tr>
@@ -214,7 +214,7 @@ function limitText(limitField, limitCount, limitNum)
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <s:select id="groupScopeId" name="groupScope" cssStyle="width:150px;" list="{}" listKey="id" listValue="name"></s:select>
+		  <s:select id="groupScopeId" name="groupScope" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name"></s:select>
 		</td>
 	  </tr>
 
