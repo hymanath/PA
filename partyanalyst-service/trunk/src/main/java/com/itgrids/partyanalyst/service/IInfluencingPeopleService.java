@@ -54,4 +54,6 @@ public interface IInfluencingPeopleService {
 	
 	public List<RegionSelectOptionVO> getRegionsSelectOptionsForInput(Long regionId,String regionType,String selectedType);
 	
+	public List<SelectOptionVO> getLocalGroupCategoriesList(Long userId);
+	
 }
