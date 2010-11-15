@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStaticLocalGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -100,6 +101,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private IBoothDAO boothDAO;
 	private SmsCountrySmsService smsCountrySmsService;
 	private IStaticUsersDAO staticUsersDAO;
+	private IStaticLocalGroupDAO staticLocalGroupDAO;
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -173,6 +175,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IStaticLocalGroupDAO getStaticLocalGroupDAO() {
+		return staticLocalGroupDAO;
+	}
+
+	public void setStaticLocalGroupDAO(IStaticLocalGroupDAO staticLocalGroupDAO) {
+		this.staticLocalGroupDAO = staticLocalGroupDAO;
 	}
 
 	public IStaticDataService getStaticDataService() {
@@ -2434,6 +2444,48 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 		
 	 return regionSelectOption;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getLocalGroupCategoriesList(Long userId) {
+		
+		List<SelectOptionVO> categoriesList = new ArrayList<SelectOptionVO>();
+		
+		//To Get All Group Categories Common to all users
+		List allStaticLocalGroups = staticLocalGroupDAO.getAllStaticLocalGroups();
+		if(allStaticLocalGroups != null && allStaticLocalGroups.size() > 0){
+			Iterator lstItr = allStaticLocalGroups.listIterator();
+			while(lstItr.hasNext()){
+				
+				SelectOptionVO option = new SelectOptionVO();
+				Object[] values = (Object[])lstItr.next();
+				
+				option.setId((Long)values[0]);
+				option.setName((String)values[1]);
+				
+				categoriesList.add(option);
+				
+			}
+		}
+		
+		//To Get Group Categories Specific To User
+		List userSpecificGroupCategr = staticLocalGroupDAO.getStaticLocalGroupsForAUser(userId);
+		if(userSpecificGroupCategr != null && userSpecificGroupCategr.size() > 0){
+			Iterator lstItr = userSpecificGroupCategr.listIterator();
+			while(lstItr.hasNext()){
+				
+				SelectOptionVO option = new SelectOptionVO();
+				Object[] values = (Object[])lstItr.next();
+				
+				option.setId((Long)values[0]);
+				option.setName((String)values[1]);
+				
+				categoriesList.add(option);
+				
+			}
+		}
+		
+	 return categoriesList;
 	}
 }
 
