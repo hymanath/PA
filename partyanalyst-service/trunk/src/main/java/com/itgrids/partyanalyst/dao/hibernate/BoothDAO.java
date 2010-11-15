@@ -226,12 +226,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 
 	public List getVillageToBoothByBooths(String boothIds) {
-		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.boothId, model.partNo, model.location" +
+		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.boothId, model.partNo, model.location, model.villagesCovered" +
 				" from Booth model where model.boothId in("+boothIds+") ");
 	}
 	
 	public List getLocalElectionBodyToBoothByBooths(String localElectionBodyIds) {
-		return getHibernateTemplate().find("select model.localBody.localElectionBodyId, model.localBody.name, model.boothId, model.partNo, model.location" +
+		return getHibernateTemplate().find("select model.localBody.localElectionBodyId, model.localBody.name, model.boothId, model.partNo, model.location, model.villagesCovered" +
 				" from Booth model where model.boothId in("+localElectionBodyIds+") ");
 	}
 }
