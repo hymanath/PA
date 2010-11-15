@@ -580,12 +580,13 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		String regionType = jObj.getString("regionType");
 		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
+		String areaType = jObj.getString("areaType");
 		
-		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.INFLUENCING_PEOPLE,0L,"","VILLAGE/WARD");
+		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.INFLUENCING_PEOPLE,0L,"",areaType);
 		
 		return Action.SUCCESS;
 	}
-	
+		
 	public String getSubLevelLocalGroupsAction()
 	{
 		session = request.getSession();
@@ -604,6 +605,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		String regionType = jObj.getString("regionType");
 		Long regionTitleId = new Long(jObj.getString("regionTitleId"));
 		String regionTitle = jObj.getString("regionTitle");
+		String areaType = jObj.getString("areaType");
 		
 		regionWiseCompleteDataVO = influencingPeopleService.getRegionsAndSubRegionsInfluencePeopleDetailsByRegionType(userId,regionId,regionType,IConstants.LOCAL_USER_GROUPS,regionTitleId,regionTitle,"VILLAGE/WARD");
 		

@@ -612,9 +612,10 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 
 	var lelmt = document.getElementById("localGroupsLabelSpan");
 	var relmt = document.getElementById("localGroupsRegionsList");
+	var radioelmt = document.getElementById("localGroupsRegionsTypeRadio");
 	var elmt = document.getElementById("localGroupsRegionsData_main");
 	
-	if(!lelmt || !relmt || !elmt)
+	if(!lelmt || !relmt || !elmt || !radioelmt)
 		return;
 
 	lelmt.innerHTML = jsObj.regionTitle+' Detail Info';
@@ -622,8 +623,33 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 	var img = document.getElementById("influenceBusyCursor");
 	if(img)
 		img.style.display = "none";
+	
+	var aStr = '';
+	if(jsObj.status && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
+	{
+		aStr += '<table>';
+		aStr += '<tr>';
+		aStr += '<th>Please select report level to view its influence people</th>';
+		aStr += '<td>'
+		for(var radio = 0; radio<data.areaTypeRadioOptions.length; radio++)
+		{
+			if(radio == 0)
+				aStr += '<input type="radio" checked="checked" onclick="showLocalGroupPeopleByArea(this.value,\''+jsObj.regionTitle+'\',\''+jsObj.regionTitleId+'\')" name="areaTypeRadio_influencePeople" value="'+data.areaTypeRadioOptions[radio].name+'">'+data.areaTypeRadioOptions[radio].name;
+			else
+				aStr += '<input type="radio" name="areaTypeRadio_influencePeople" onclick="showLocalGroupPeopleByArea(this.value,\''+jsObj.regionTitle+'\',\''+jsObj.regionTitleId+'\')" value="'+data.areaTypeRadioOptions[radio].name+'">'+data.areaTypeRadioOptions[radio].name;
+		}
+		aStr += '</td>'
+		aStr += '</tr>';
+		aStr += '</table>';
 
-	var rStr = '';	
+		radioelmt.innerHTML = aStr;
+	}	
+	else if(data.areaTypeRadioOptions == null || data.areaTypeRadioOptions.length == 0)
+	{
+		radioelmt.innerHTML = '';
+	}
+
+	/*var rStr = '';	
 	
 	if(jsObj.status && data.regionsList.length > 0)
 	{
@@ -644,7 +670,7 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 		rStr += '</table>';
 		
 		relmt.innerHTML = rStr;
-	}
+	}*/
 	
 	var display = true;
 
@@ -745,22 +771,69 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 	buildSubRegionsPieChart(results,"localGroups");
 }
 
+function showLocalGroupPeopleByArea(value,regionTitle,regionTitleId)
+{
+	var regionId = localGroupsLoginUserRegionId;
+	var regionName = localGroupsLoginUserRegionName;
+	var regionType = localGroupsLoginUserRegionType;
+	var regionTitle = regionTitle;
+	var regionTitleId = regionTitleId;
+	var areaType = value;
+	
+	getSubLevelLocalGroupData(regionId,regionName,regionType,areaType,regionTitle,regionTitleId,false)
+}
+
+function showInfluencePeopleByArea(value)
+{
+	var regionId = loginUserRegionId;
+	var regionName = loginUserRegionName;
+	var regionType = loginUserRegionType;
+	var areaType = value;
+	
+
+	getSubLevelInfluenceData(regionId,regionName,regionType,areaType,"",0,false);
+}
 
 function buildSubLevelInfluencePeople(jsObj,data)
 {
 	var results = data.regionWiseOverview;
 	var relmt = document.getElementById("influencePeopleRegionsList");
+	var radioelmt = document.getElementById("influencePeopleRegionsTypeRadio");
 	var elmt = document.getElementById("influencePeopleRegionsData_main");
 	
-	if(!relmt || !elmt)
+	if(!relmt || !elmt || !radioelmt)
 		return;
 	
 	var img = document.getElementById("influenceBusyCursor");
 	if(img)
 		img.style.display = "none";
-
-	var rStr = '';	
 	
+	var aStr = '';
+	if(jsObj.status && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
+	{
+		aStr += '<table>';
+		aStr += '<tr>';
+		aStr += '<th>Please select report level to view its influence people</th>';
+		aStr += '<td>'
+		for(var radio = 0; radio<data.areaTypeRadioOptions.length; radio++)
+		{
+			if(radio == 0)
+				aStr += '<input type="radio" checked="checked" onclick="showInfluencePeopleByArea(this.value)" name="areaTypeRadio_influencePeople" value="'+data.areaTypeRadioOptions[radio].name+'">'+data.areaTypeRadioOptions[radio].name;
+			else
+				aStr += '<input type="radio" name="areaTypeRadio_influencePeople" onclick="showInfluencePeopleByArea(this.value)" value="'+data.areaTypeRadioOptions[radio].name+'">'+data.areaTypeRadioOptions[radio].name;
+		}
+		aStr += '</td>'
+		aStr += '</tr>';
+		aStr += '</table>';
+
+		radioelmt.innerHTML = aStr;
+	}	
+	else if(data.areaTypeRadioOptions == null || data.areaTypeRadioOptions.length == 0)
+	{
+		radioelmt.innerHTML = '';
+	}
+
+	/*var rStr = '';	
 	if(jsObj.status && data.regionsList.length > 0)
 	{
 		rStr += '<table width="100%">';
@@ -779,8 +852,8 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		rStr += '</tr>';
 		rStr += '</table>';
 		
-		relmt.innerHTML = rStr;
-	}
+		//relmt.innerHTML = rStr;
+	}*/
 	
 	var display = true;
 	var str = '';
@@ -792,13 +865,18 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		availableLength++;
 		var availableRegions = new Array();
 		var zeroRegions = new Array();
-			
-		for(var k=0; k<results[i].subRegionWiseOverview.length; k++)
+
+		if(results[i].subRegionWiseOverview != null)
 		{
-			if(results[i].subRegionWiseOverview[k].countValue == 0)
-				zeroRegions.push(results[i].subRegionWiseOverview[k]);
-			else 
-				availableRegions.push(results[i].subRegionWiseOverview[k]);
+			
+			for(var k=0; k<results[i].subRegionWiseOverview.length; k++)
+			{
+				if(results[i].subRegionWiseOverview[k].countValue == 0)
+					zeroRegions.push(results[i].subRegionWiseOverview[k]);
+				else 
+					availableRegions.push(results[i].subRegionWiseOverview[k]);
+			}
+
 		}
 
 		str += '<div id="influenceDetailData_'+i+'_main" class="influenceDetailData_main">';
@@ -1177,7 +1255,9 @@ function createCoulmnChart(regionData,divId)
 function getLocalUserGroups()
 {
 	var jsObj= 
-	{			 			  			
+	{		
+		regionId:"",
+		regionType:"",
 		task: "getLocalUserGroups"				
 	};
 	
@@ -1205,15 +1285,15 @@ function buildDifferentViewsRadio(info,divId,type)
 		for(var i=0; i<data.length; i++)
 		{
 			if(i == 0)
-				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value)" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
+				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" checked="checked" value="'+data[i].name+'" name="diffViews_'+type+'">'+data[i].name;
 			else
-				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value)" name="diffViews_'+type+'">'+data[i].name;
+				str += '<input type="radio" onclick="getInfluencePeopleScope(\''+regionView.regionId+'\',\''+regionView.regionName+'\',\''+regionView.regionType+'\',this.value,\''+type+'\')" name="diffViews_'+type+'">'+data[i].name;
 		}
 		str += '</th>';
 		str += '</tr>';
 		str += '<tr>';
-		str += '<th><div id="influencePeopleScopeSelectBoxLabel"></div></th>';
-		str += '<th><div id="influencePeopleScopeSelectBoxData"></div></th>';
+		str += '<th><div id="scopeSelectBoxLabel_'+type+'"></div></th>';
+		str += '<th><div id="scopeSelectBoxData_'+type+'"></div></th>';
 		str += '</tr>';
 		str += '</table>';
 		
@@ -1221,7 +1301,7 @@ function buildDifferentViewsRadio(info,divId,type)
 	}
 }
 
-function getInfluencePeopleScope(regionId,regionName,regionType,selectType)
+function getInfluencePeopleScope(regionId,regionName,regionType,selectType,type)
 {
 	var jsObj= 
 	{		
@@ -1229,6 +1309,7 @@ function getInfluencePeopleScope(regionId,regionName,regionType,selectType)
 		regionName:regionName,
 		regionType:regionType,
 		selectType:selectType,		
+		taskType:type,
 		task: "getInfluencePeopleScopeSelectBox"		
 	};
 	
@@ -1240,14 +1321,19 @@ function getInfluencePeopleScope(regionId,regionName,regionType,selectType)
 
 function buildInfluencePeopleScopeSelectBox(jsObj,results)
 {
-	var labelElmt = document.getElementById("influencePeopleScopeSelectBoxLabel");
-	var dataElmt = document.getElementById("influencePeopleScopeSelectBoxData");
+	var labelElmt = document.getElementById("scopeSelectBoxLabel_"+jsObj.taskType);
+	var dataElmt = document.getElementById("scopeSelectBoxData_"+jsObj.taskType);
 	
 	if(results.length == 0)
 	{
 		labelElmt.innerHTML = "";
 		dataElmt.innerHTML = "";	
-		getInfluencingPeopleInAConstituency();
+		
+		if(jsObj.taskType == "influence people")
+			getInfluencingPeopleInAConstituency();
+		else if(jsObj.taskType == "local groups")
+			getLocalUserGroups();
+
 		return;
 	}
 	else
@@ -1260,7 +1346,12 @@ function buildInfluencePeopleScopeSelectBox(jsObj,results)
 		{
 			dstr += '<th>'+results[i].label+'</th>';
 			dstr += '<td>';
-			dstr += '<select onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+
+			if(jsObj.taskType == "influence people")
+				dstr += '<select onchange="reGetInfluencingPeopleInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+			else if(jsObj.taskType == "local groups")
+				dstr += '<select onchange="reGetLocalGroupsInAConstituency(\''+results[i].label+'\',this.options[this.selectedIndex].value)">';
+
 			for(var j=0; j<results[i].optionsList.length; j++)
 			{
 				dstr += '<option value="'+results[i].optionsList[j].id+'">'+results[i].optionsList[j].name+'</option>';
@@ -1281,7 +1372,7 @@ function populateInfluencingPeople(results)
 	createCoulmnChart(results.regionWiseOverview,"influencePeopleChartDiv_main");
 	buildRegionWiseOverViewData(results.regionWiseOverview,"influencePeopleRegionWiseOverView_main");
 	buildScopeWiseOverViewData(results.influenceScopeOverview,"influencePeopleScopeWiseOverView_main");
-	getSubLevelInfluenceData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,"",0,true);
+	getSubLevelInfluenceData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,"VILLAGE/WARD","",0,true);
 }
 
 function buildLocalUserGroupsCriteria(jsObj,results)
@@ -1289,7 +1380,7 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 	buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
 	createCoulmnChartForLocalUserGroups(results,"localGroupsChartDiv_main");
 	buildRegionWiseOverViewDataForLocalUserGroups(results,"localGroupsRegionWiseOverView_main");	
-	getSubLevelLocalGroupData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,results.regionWiseOverview.regionTitle,results.regionWiseOverview.regionTitleId,true);
+	getSubLevelLocalGroupData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,"VILLAGE/WARD",results.regionWiseOverview.regionTitle,results.regionWiseOverview.regionTitleId,true);
 }
 
 function buildRegionWiseOverViewDataForLocalUserGroups(info,divId)
@@ -1327,7 +1418,7 @@ function showGroupDetails(id,regionId,regionName,regionType,regionTitle,regionTi
 
 	$("#"+bodyId).slideDown("slow");	
 
-	getSubLevelLocalGroupData(regionId,regionName,regionType,regionTitle,regionTitleId,true);
+	getSubLevelLocalGroupData(regionId,regionName,regionType,"VILLAGE/WARD",regionTitle,regionTitleId,true);
 }
 
 function getRegionWiseOverviewString(data,type)

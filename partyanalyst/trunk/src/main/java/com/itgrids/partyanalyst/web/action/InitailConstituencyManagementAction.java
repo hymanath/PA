@@ -263,9 +263,29 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		
 		if(user == null)
 			return ERROR;
-				
+					
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 		
-		constituencyManagementDataVO = influencingPeopleService.getLocalUserGroupOverviewDetails(user.getRegistrationID(),"","");
+		String regionId = jObj.getString("regionId");
+		String regionType = jObj.getString("regionType");
+		String taskType = jObj.getString("task");
+		
+		String accessRegionId = "";
+		String accessRegionType = "";
+		
+		if(taskType.equalsIgnoreCase("reGetLocalGroupsInAConstituency"))
+		{
+			accessRegionId = regionId;
+			accessRegionType = regionType;
+		}
+		
+		constituencyManagementDataVO = influencingPeopleService.getLocalUserGroupOverviewDetails(user.getRegistrationID(),accessRegionType,accessRegionId);
 		//localUserGroupsInfoVO = constituencyManagementService.getLocalUserGroupsCandidatesByAccesstypeAndAccessValues(user.getRegistrationID(), user.getAccessType(), user.getAccessValue());
 		return Action.SUCCESS;
 	}
