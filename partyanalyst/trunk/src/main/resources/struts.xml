@@ -1706,6 +1706,8 @@
 		</action>
 		
 		<action name="createLocalGroupAction" class="createLocalGroupAction">
+		   <result name="input">/jsp/createLocalUserGroup.jsp</result>
+		   <result name="error">/jsp/createLocalUserGroup.jsp</result>
            <result name="success">/jsp/createLocalUserGroup.jsp</result>	
         </action>
 		
