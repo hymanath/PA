@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
@@ -958,6 +959,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}else if(infScope.equalsIgnoreCase(IConstants.WARD)){
 			Constituency constituency = constituencyDAO.get(new Long(regionId));
 			return constituency.getName();
+		}else if(infScope.equalsIgnoreCase(IConstants.BOOTH)){
+			Booth booth = boothDAO.get(new Long(regionId));
+			return booth.getPartNo().toString()+" Booth";
 		}
 	 return null;
 	}
@@ -1687,8 +1691,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
 				wardsInLocalBody = regionServiceDataImp.getBoothsInLocalBodysByConstituency(localBodyId, IConstants.DELIMITATION_YEAR, constituencyId);
 				
-			if(wardsInLocalBody != null && wardsInLocalBody.size() > 0)
-			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(wardsInLocalBody,IConstants.WARD);
+			if(wardsInLocalBody != null && wardsInLocalBody.size() > 0){
+				if(areaType.equalsIgnoreCase(IConstants.WARD))
+			       subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(wardsInLocalBody,IConstants.WARD);
+				else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
+					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(wardsInLocalBody,IConstants.BOOTH);
+			}
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
 			
 			List subRegionsInfPeopleCount = null;
@@ -1706,8 +1714,13 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
-				else
-				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.WARD);	
+				else{
+					if(areaType.equalsIgnoreCase(IConstants.WARD))
+				       subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.WARD);
+					else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
+						 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.BOOTH);
+					
+				}
 				
 				if(subRegionsInfPeopleList != null && subRegionsInfPeopleList.size() > 0)
 				 regionWiseOverview.setSubRegionWiseOverview(subRegionsInfPeopleList);
@@ -1766,7 +1779,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				villagesInMandal = regionServiceDataImp.getBoothsInTehsilByConstituency(mandalId, IConstants.DELIMITATION_YEAR, constituencyId);
 			
 			if(villagesInMandal != null && villagesInMandal.size() > 0)
-			subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(villagesInMandal,IConstants.VILLAGE);
+			{
+				if(areaType.equalsIgnoreCase(IConstants.VILLAGE))
+			        subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(villagesInMandal,IConstants.VILLAGE);
+				else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
+					subRegionsDetailsMap = getRegionsDataInitializedMapWithInfluencingPeopleCount(villagesInMandal,IConstants.BOOTH);
+			}
 			List<ConstituencyManagementSubRegionWiseOverviewVO> subRegionsInfPeopleList = null;
 			List subRegionsInfPeopleCount = null;
 			
@@ -1782,8 +1800,12 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
 				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,subRegionsDetailsMap);
-				else
-				 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.VILLAGE);	
+				else{
+					if(areaType.equalsIgnoreCase(IConstants.VILLAGE))
+				         subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.VILLAGE);	
+					else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
+						 subRegionsInfPeopleList = getSubRegionsProcessedDetailsToVO(subRegionsInfPeopleCount,IConstants.BOOTH);	
+				}
 				
 				if(subRegionsInfPeopleList != null && subRegionsInfPeopleList.size() > 0)
 				 regionWiseOverview.setSubRegionWiseOverview(subRegionsInfPeopleList);
