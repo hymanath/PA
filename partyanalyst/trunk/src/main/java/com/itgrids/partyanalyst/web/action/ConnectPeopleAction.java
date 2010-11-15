@@ -428,7 +428,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		Long loginUserId = new Long(jObj.getString("loginUserId"));		
 		Long recipientId = new Long(jObj.getString("recipientId"));
-		String message = jObj.getString("meassage");		
+		String message = jObj.getString("message");		
 		
 		List<Long> senderIds = new ArrayList<Long>();
 		senderIds.add(loginUserId);
@@ -436,7 +436,12 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> recipientIds = new ArrayList<Long>();
 		recipientIds.add(recipientId);
 		
-		resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds, IConstants.COMMENTS,message);
+		if(jObj.getString("type").equalsIgnoreCase("Message")){
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds, IConstants.COMMENTS,message);
+		}else if(jObj.getString("type").equalsIgnoreCase("Connect")){
+			resultStatus = ananymousUserService.saveCommunicationDataBetweenUsers(senderIds, recipientIds,IConstants.FRIEND_REQUEST,message);
+		}
+	
 		
 		return Action.SUCCESS;
 	}
