@@ -797,10 +797,13 @@ function getMptcPartyDetails(elecYear){
 }
 function buildElectionsSelectBox(myResults){
 	var selectDiv = document.getElementById("electionIdsSelectDiv");
-	var electionYearSelect = '';
+	var electionYearSelect = '';	
 	var selectDivEl = document.getElementById("MandalwiseVotingTrendz");
 	if(myResults.length == 0){
-		selectDivEl.style.display = 'none';
+		if(selectDivEl){
+			selectDivEl.style.display = 'none';
+		}
+			
 		//electionYearSelect +='<b>Sorry, Constituency/Mandal Data Not Available For This Constituency</b>';
 		//var resultDiv = document.getElementById("mandalOrConstiElecResultDiv");
 		//resultDiv.style.display = "none";
