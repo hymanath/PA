@@ -1710,6 +1710,12 @@
 		   <result name="error">/jsp/createLocalUserGroup.jsp</result>
            <result name="success">/jsp/createLocalUserGroup.jsp</result>	
         </action>
+        
+        <action name="getBoothsCompleteDetailsAction" class="locationsHierarchyAction" method="getBoothCompleteDetails">
+           <result type="json" name="success">
+				<param name="root">boothsCompleteDetails</param>				
+			</result>	
+        </action>
 		
 	</package>
 </struts>
