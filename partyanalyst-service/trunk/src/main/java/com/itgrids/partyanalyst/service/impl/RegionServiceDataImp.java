@@ -594,5 +594,60 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IRegionServiceData#getBoothsInLocalBodysByConstituency(java.lang.Long, java.lang.Long, java.lang.Long)
+	 * Method that retrieves Booths in Local Body Election
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getBoothsInLocalBodysByConstituency(
+			Long localBodyId, Long year, Long constituencyId) {
+		
+		List<SelectOptionVO> boothDataList = new ArrayList<SelectOptionVO>();
+		if(localBodyId != null && constituencyId != null && year != null){
+			
+			List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(localBodyId);
+			Object object = (Object)localElectionBodies.get(0);
+			Long localElectionBodyId = (Long)object; 
+			List boothsList = boothDAO.findBoothsInfoForALocalElectionBodyByConstituencyAndYear(localElectionBodyId, year, constituencyId);
+			 if(boothsList.size()>0)
+				{
+					for(int i=0;i<boothsList.size();i++)
+					{
+						Object[] obj = (Object[])boothsList.get(i);
+						boothDataList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
+					}
+				}
+		}
+		
+	 return boothDataList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IRegionServiceData#getBoothsInTehsilByConstituency(java.lang.Long, java.lang.Long, java.lang.Long)
+	 * Method that retrieves Booths in Tehsil
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getBoothsInTehsilByConstituency(Long tehsilId,
+			Long year, Long constituencyId) {
+		
+		List<SelectOptionVO> boothDataList = new ArrayList<SelectOptionVO>();
+		if(tehsilId != null && year != null && constituencyId != null){
+			
+			List boothsList =  boothDAO.findBoothsInfoForAMandalByConstituencyAndYear(tehsilId, year, constituencyId);
+			if(boothsList.size()>0)
+			{
+				for(int j=0;j<boothsList.size();j++)
+				{
+					Object[] obj = (Object[])boothsList.get(j);
+					boothDataList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+obj[1]));
+				}
+			}
+		}
+		
+	 return boothDataList;
+	}
 	
 }
