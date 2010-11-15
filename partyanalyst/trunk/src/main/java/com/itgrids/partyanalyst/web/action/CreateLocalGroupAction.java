@@ -7,16 +7,23 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,12 +38,16 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger log = Logger.getLogger(CreateLocalGroupAction.class);
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
 	
 	private IInfluencingPeopleService influencingPeopleService;
+	private List<SelectOptionVO> groupScopes = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> groupCategories;
 	
 	
 	public IInfluencingPeopleService getInfluencingPeopleService() {
@@ -45,6 +56,18 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	public void setInfluencingPeopleService(
 			IInfluencingPeopleService influencingPeopleService) {
 		this.influencingPeopleService = influencingPeopleService;
+	}
+	public List<SelectOptionVO> getGroupScopes() {
+		return groupScopes;
+	}
+	public void setGroupScopes(List<SelectOptionVO> groupScopes) {
+		this.groupScopes = groupScopes;
+	}
+	public List<SelectOptionVO> getGroupCategories() {
+		return groupCategories;
+	}
+	public void setGroupCategories(List<SelectOptionVO> groupCategories) {
+		this.groupCategories = groupCategories;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
@@ -73,9 +96,36 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	
 	public String execute(){
 		
+		if(log.isDebugEnabled())
+			log.debug("Create A Local Group Action ..");
 		
+		session = request.getSession();
+		
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO==null)
+			return ERROR;
+		
+		//Get Group Categories
+		groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID());
+		session.setAttribute(ISessionConstants.USER_GROUP_CATEGORIES,groupCategories);
+		
+		//Get Scopes Data
+		setGroupScopesData();
 		
 		return Action.SUCCESS;
+	}
+	
+	public void setGroupScopesData(){
+		
+		groupScopes.add(new SelectOptionVO(2l,"STATE"));
+		groupScopes.add(new SelectOptionVO(3l,"DISTRICT"));
+		groupScopes.add(new SelectOptionVO(4l,"CONSTITUENCY"));
+		groupScopes.add(new SelectOptionVO(5l,"MANDAL"));
+		groupScopes.add(new SelectOptionVO(6l,"VILLAGE"));
+		groupScopes.add(new SelectOptionVO(7l,"MUNICIPAL-CORP-GMC"));
+		groupScopes.add(new SelectOptionVO(8l,"WARD"));
+		groupScopes.add(new SelectOptionVO(9l,"BOOTH"));
+		session.setAttribute(ISessionConstants.USER_GROUP_SCOPES,groupScopes);
 	}
 
 }
