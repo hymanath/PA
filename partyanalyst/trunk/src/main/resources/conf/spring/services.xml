@@ -124,6 +124,7 @@
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="staticUsersDAO" ref="staticUsersDAO" />
+		<property name="staticLocalGroupDAO" ref="staticLocalGroupDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
