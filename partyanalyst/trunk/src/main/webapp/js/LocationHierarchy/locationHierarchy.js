@@ -179,22 +179,26 @@ function getSubRegionsInConstituency(id, module, elementId, addressType)
 	}
 }
 
-function getSubRegionsInTehsilOrLocalElecBody(id, module, addressType, areaType, constituencyField)
+function getSubRegionsInTehsilOrLocalElecBody(id,name,  module, addressType, areaType, constituencyField, rowId1, rowId2)
 {
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	var scopeSelected;
 	var constituencyEl = document.getElementById(constituencyField);
+	var row5El = document.getElementById(rowId2);
+	var row6El = document.getElementById(rowId1);
 	var constituencyElVal = constituencyEl.options[constituencyEl.selectedIndex].value;
 	if(constituencyElVal == 0)
 	{
 		alert("Invalid Constituency Selection");
 		return;
 	}
+	var flag = name.search("Greater Municipal Corp");
+	
 	if(module == 'cadreSearch')
 	{
 		var regionalRadioBtns = document.getElementsByName("region_type_radio");
 		for (i=0; i< regionalRadioBtns.length; i++)
-		{
+		{			
 			if(regionalRadioBtns[i].checked == true)
 			{
 				scopeSelected = regionalRadioBtns[i].value.toUpperCase();
@@ -204,12 +208,31 @@ function getSubRegionsInTehsilOrLocalElecBody(id, module, addressType, areaType,
 		scopeSelected = scopeSelectEl.options[scopeSelectEl.selectedIndex].text;
 	}
 	
+	
+	//getLocationHierarchies(id,task,taskType,boothField,address, null,constiId);
+
 	if(scopeSelected == 'BOOTH')
 	{
-		getLocationHierarchies(id,'boothsInTehsilOrMunicipality','cadreReg','boothField_s','cadreLevel', null,constituencyElVal);
-	} else {
+		if(flag == '-1')
+		{
+			if(row6El.style.display == 'none')
+				row6El.style.display = '';
+			getLocationHierarchies(id,'boothsInTehsilOrMunicipality','cadreReg','boothField_s','cadreLevel', null,constituencyElVal);
+		} else {
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';
+			if(row6El.style.display == 'none')
+				row6El.style.display = '';
+			clearOptionsListForSelectElmtId('boothField_s');
+			getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', null,null);
+		}	
+	}
+	
+	else if(scopeSelected == 'WARD' || scopeSelected == 'VILLAGE' ) {
 		getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', null,null);
 	}
+	
+	
 	
 }
 
@@ -272,7 +295,7 @@ function getBoothsInWard(address, constituencyField, boothField, id, module, mun
 		getLocationHierarchies(id,'boothsInWard',module,boothField,address, null,constiId);
 	}	
 }
-/**
+/*
  * this method retrieves the booths complete info by providing the booth ids. 
  */
 function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)

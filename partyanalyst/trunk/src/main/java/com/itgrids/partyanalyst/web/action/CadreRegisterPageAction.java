@@ -577,8 +577,14 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				//default state element to be selected in cadre level selection for active cadre
+				//setDefaultStateId(list.get(0).getId());
+				//default district element to be selected in cadre level selection for active cadre
+				//setDefaultDistId(list.get(1).getId());
 				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(0l);
+				
+				//default cadre level element to be selected in cadre level selection for active cadre
+				setDefaultCadreLevelId(3l);
 
 			}
 			
