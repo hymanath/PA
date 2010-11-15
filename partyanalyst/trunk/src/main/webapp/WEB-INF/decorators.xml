@@ -50,6 +50,7 @@
 		<pattern>/influencingPeopleDataAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
 		<pattern>/localGroupsPeopleDataAction*</pattern>
+		<pattern>/createLocalGroupAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
