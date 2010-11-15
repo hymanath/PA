@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -38,6 +39,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	JSONObject jObj = null;
 	private String task = null;
 	private List<SelectOptionVO> regionsList;
+	private List<BoothInfo> boothsCompleteDetails;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -101,6 +103,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+
+	public List<BoothInfo> getBoothsCompleteDetails() {
+		return boothsCompleteDetails;
+	}
+
+	public void setBoothsCompleteDetails(List<BoothInfo> boothsCompleteDetails) {
+		this.boothsCompleteDetails = boothsCompleteDetails;
 	}
 
 	public String execute() throws Exception {
@@ -264,11 +274,29 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			booths.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(booths);
-		} 
-		
+		} 	
 		
 		return Action.SUCCESS;
 	
 	}
-
+	
+	public String getBoothCompleteDetails()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		String boothIds = jObj.getString("boothIds");
+		String areaType = jObj.getString("areaType");
+		
+		boothsCompleteDetails = getRegionServiceDataImp().getBoothCompleteDetails(areaType, boothIds);
+		return Action.SUCCESS;	
+	}
 }
