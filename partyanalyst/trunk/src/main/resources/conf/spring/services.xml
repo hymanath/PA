@@ -28,6 +28,7 @@
 		<property name="messageTypeDAO" ref="messageTypeDAO"/>
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
 		<property name="dateService" ref="dateService"/> 
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/> 
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
