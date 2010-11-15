@@ -641,17 +641,19 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		if(localBodyId != null && constituencyId != null && year != null){
 			
 			List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(localBodyId);
-			Object object = (Object)localElectionBodies.get(0);
-			Long localElectionBodyId = (Long)object; 
-			List boothsList = boothDAO.findBoothsInfoForALocalElectionBodyByConstituencyAndYear(localElectionBodyId, year, constituencyId);
-			 if(boothsList.size()>0)
-				{
-					for(int i=0;i<boothsList.size();i++)
+			if(localElectionBodies != null && localElectionBodies.size() > 0){
+				Object object = (Object)localElectionBodies.get(0);
+				Long localElectionBodyId = (Long)object; 
+				List boothsList = boothDAO.findBoothsInfoForALocalElectionBodyByConstituencyAndYear(localElectionBodyId, year, constituencyId);
+				 if(boothsList.size()>0)
 					{
-						Object[] obj = (Object[])boothsList.get(i);
-						boothDataList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
+						for(int i=0;i<boothsList.size();i++)
+						{
+							Object[] obj = (Object[])boothsList.get(i);
+							boothDataList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
+						}
 					}
-				}
+			}
 		}
 		
 	 return boothDataList;
