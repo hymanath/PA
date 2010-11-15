@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
@@ -594,6 +595,38 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
+	/**
+	 * This method takes the booth ids in string form and retrieves complete details for each booth.
+	 */
+	public List<BoothInfo> getBoothCompleteDetails(String areaType,
+			String boothIds) {
+		List resultsList = null;
+		List<BoothInfo> boothsInfo = new ArrayList<BoothInfo>();
+		if(IConstants.URBAN_TYPE.equals(areaType))
+		{
+			// 0-localBodyId, 1-localBodyName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
+			resultsList = boothDAO.getLocalElectionBodyToBoothByBooths(boothIds);
+			
+		} else if(IConstants.RURAL_TYPE.equals(areaType))
+		{
+			// 0-tehsilId, 1-tehsilName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
+			resultsList = boothDAO.getVillageToBoothByBooths(boothIds);
+		}
+		
+		if(resultsList != null && resultsList.size() > 0)
+		{
+			for (int i = 0; i < resultsList.size(); i++) {
+				Object[] obj = (Object[]) resultsList.get(i);
+				BoothInfo boothInfo = new BoothInfo();
+				boothInfo.setPartNo(obj[3].toString());
+				boothInfo.setLocation(obj[4].toString());
+				boothInfo.setVillagesCovered(obj[4].toString());
+				boothInfo.setMandalName(obj[1].toString());
+				boothsInfo.add(boothInfo);			
+			}		
+		}
+		return boothsInfo;
+		}
 
 	/*
 	 * (non-Javadoc)

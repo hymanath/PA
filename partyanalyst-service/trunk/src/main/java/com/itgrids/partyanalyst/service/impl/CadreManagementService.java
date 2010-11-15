@@ -2321,7 +2321,7 @@ public class CadreManagementService {
 	}
 	
 	public List<StateToHamletVO> getVillageToBoothByBooths(String boothIds) {
-		// 0-tehsilId, 1-tehsilName, 2-boothId, 3 -partNo, 4-location
+		// 0-tehsilId, 1-tehsilName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
 		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
 		List list = boothDAO.getVillageToBoothByBooths(boothIds);
 		for (int i = 0; i < list.size(); i++) {
@@ -2337,7 +2337,7 @@ public class CadreManagementService {
 	}
 	
 	public List<StateToHamletVO> getLocalElectionBodyToBoothByBooths(String ids) {
-		// 0-localBodyId, 1-localBodyName, 2-boothId, 3 -partNo, 4-location
+		// 0-localBodyId, 1-localBodyName, 2-boothId, 3 -partNo, 4-location, 5-village_covered
 		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
 		List list = boothDAO.getLocalElectionBodyToBoothByBooths(ids);
 		for (int i = 0; i < list.size(); i++) {
