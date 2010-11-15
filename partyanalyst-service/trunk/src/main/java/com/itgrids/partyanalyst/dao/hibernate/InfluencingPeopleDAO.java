@@ -159,6 +159,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.registration.registrationId = ? and model.userAddress.tehsil.tehsilId = ? and "+
 				"model.userAddress.hamlet is not null group by model.userAddress.hamlet.hamletId",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInBoothsByTehsil(Long userId,
+			Long tehsilId) {
+		Object[] params = {userId,tehsilId};
+		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.hamlet.hamletId from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.tehsil.tehsilId = ? and "+
+				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,
@@ -167,6 +176,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.ward.constituencyId from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
 				"model.userAddress.ward is not null group by model.userAddress.ward.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInBoothsByLocalBody(Long userId,
+			Long localBodyId) {
+		Object[] params = {userId,localBodyId};
+		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.ward.constituencyId from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
+				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
 	}
 
 	@SuppressWarnings("unchecked")
