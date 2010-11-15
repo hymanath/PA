@@ -62,4 +62,7 @@ public interface ISessionConstants {
 	//list of impacted regions for local policitcal changes, influencing people, problem management 
 	public static final String IMPACTED_REGIONS = "impactedRegionsList";
 	
+	
+	public static final String USER_GROUP_CATEGORIES = "USER_GROUP_CATEGORIES";
+	public static final String USER_GROUP_SCOPES = "USER_GROUP_SCOPES";
 }
