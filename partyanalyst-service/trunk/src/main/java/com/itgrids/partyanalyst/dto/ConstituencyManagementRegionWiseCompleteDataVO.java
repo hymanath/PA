@@ -24,6 +24,7 @@ public class ConstituencyManagementRegionWiseCompleteDataVO implements
 	
 	private List<ConstituencyManagementSubRegionWiseOverviewVO> regionsList;
 	private List<ConstituencyManagementRegionWiseOverviewVO> regionWiseOverview;
+	private List<SelectOptionVO> areaTypeRadioOptions;
 	
 	public List<ConstituencyManagementSubRegionWiseOverviewVO> getRegionsList() {
 		return regionsList;
@@ -37,6 +38,12 @@ public class ConstituencyManagementRegionWiseCompleteDataVO implements
 	public void setRegionWiseOverview(
 			List<ConstituencyManagementRegionWiseOverviewVO> regionWiseOverview) {
 		this.regionWiseOverview = regionWiseOverview;
+	}
+	public List<SelectOptionVO> getAreaTypeRadioOptions() {
+		return areaTypeRadioOptions;
+	}
+	public void setAreaTypeRadioOptions(List<SelectOptionVO> areaTypeRadioOptions) {
+		this.areaTypeRadioOptions = areaTypeRadioOptions;
 	}
 
 }
