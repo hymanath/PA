@@ -1441,8 +1441,10 @@ public class ProblemManagementReportService implements
 			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);			
 			if(teshilResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
-				List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
-				teshilResult.addAll(hamletResult);
+				if(listOfHamlets!=null && listOfHamlets.size()!=0){
+					List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
+					teshilResult.addAll(hamletResult);	
+				}				
 			}			
 			return teshilResult;
 		}
@@ -1461,8 +1463,10 @@ public class ProblemManagementReportService implements
 			List<Object> localElectionBodyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			if(localElectionBodyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
 				List<Long> listOfwards = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIds);
-				List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
-				localElectionBodyResult.addAll(hamletResult);
+				if(listOfwards!=null && listOfwards.size()!=0){
+					List<Object> hamletResult = getAllAcceptedProblemsInAWard(listOfwards,IConstants.CENSUS_WARD_LEVEL);
+					localElectionBodyResult.addAll(hamletResult);	
+				}
 			}			
 			return localElectionBodyResult;
 		}
