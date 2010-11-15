@@ -677,6 +677,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			resultStatus.setResultPartial(false);
 			dataTransferVO.setResultStatus(resultStatus);
 		}catch(Exception e){
+			e.printStackTrace();
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
@@ -736,7 +737,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 			}
 			
 			if(resultVO.getResultStatus()!=null){
-				
+				dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				resultStatus.setResultPartial(false);
+				dataTransferVO.setResultStatus(resultStatus);
 			}else{
 				if(resultVO==null && resultVO.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 					dataTransferVO.setCandidateVO(resultVO.getCandidateVO());
