@@ -27,6 +27,7 @@
 	var currentTask = '${windowTask}';
 	var successFlag = '${rs.resultCode}';
 	var accessValue = '${sessionScope.USER.accessValue}';
+	var accessType = '${sessionScope.USER.accessType}';
 	
 	function setCadreValue(value, source){
 		var scopeLevelEl = document.getElementById("scopeLevel");
@@ -394,7 +395,7 @@
 		}
 		manageDOBOptions('onLoad');		 
 	}
-		function populateLocations(val,source)
+	function populateLocations(val,source)
 	{	
 		var row1El = document.getElementById("row1");
 		var row2El = document.getElementById("row2");
@@ -405,18 +406,44 @@
 		//var boothNoTextEl = document.getElementById("boothNoText");
 		var hiddenEl = document.getElementById("cadreLevelValue");
 		var stateFieldEl = document.getElementById("stateField_s");
-		var districtFieldEl = document.getElementById("districtField_s"); 
+		var districtFieldEl = document.getElementById("districtField_s");
+		var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
 		var constituencyFieldEl = document.getElementById("constituencyField_s");
 		var mandalFieldEl = document.getElementById("mandalField_s");
 		var hamletFieldEl = document.getElementById("hamletField_s");		
 		if(source == 'onChange')
 		{	
 			hiddenEl.value='';
+			if(accessType == 'COUNTRY')
+			{
+				stateFieldEl.selectedIndex = '0';
+				districtFieldEl.selectedIndex = '0';
+				constituencyFieldEl.selectedIndex = '0';
+				mandalFieldEl.selectedIndex = '0';
+				hamletFieldEl.selectedIndex = '0';
+			} else if(accessType == 'STATE')
+			{
+				districtFieldEl.selectedIndex = '0';
+				constituencyFieldEl.selectedIndex = '0';
+				mandalFieldEl.selectedIndex = '0';
+				hamletFieldEl.selectedIndex = '0';
+			} else if(accessType == 'DISTRICT' || accessType == 'MP')
+			{
+				constituencyFieldEl.selectedIndex = '0';
+				mandalFieldEl.selectedIndex = '0';
+				hamletFieldEl.selectedIndex = '0';
+				getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel')
+			} else if(accessType == 'MLA')
+			{
+				mandalFieldEl.selectedIndex = '0';
+				hamletFieldEl.selectedIndex = '0';
+			}  
+			/*   
 			stateFieldEl.selectedIndex = '0';
 			districtFieldEl.selectedIndex = '0';
 			constituencyFieldEl.selectedIndex = '0';
 			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';			
+			hamletFieldEl.selectedIndex = '0';*/			
 		} else 
 			if(source == "onLoad")
 			{
@@ -506,8 +533,9 @@
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';
+			/*
 			if(row6El.style.display == 'none')
-				row6El.style.display = '';
+				row6El.style.display = '';*/
 		}	 
 	}
 	
@@ -1018,22 +1046,25 @@
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreReg','null','cadreLevel','constituencyField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
 			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /></td>
 			<td>
-				<s:select id="hamletField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="hamletField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row6" style="display:none;">
 			<td width="200">Booth No</td>
 			<td>
 				<s:select id="boothField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
-				<!--<s:textfield id="boothNoText" size="25" onKeyUp = "setCadreValue('null','onKeyUp')"/>
-			--></td>
+			</td>
+			<td>
+				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/>
+			</td>
 		</tr>
+		
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
 			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
