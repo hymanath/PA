@@ -394,7 +394,7 @@
 		}
 		manageDOBOptions('onLoad');		 
 	}
-	function populateLocations(val,source)
+		function populateLocations(val,source)
 	{	
 		var row1El = document.getElementById("row1");
 		var row2El = document.getElementById("row2");
@@ -871,8 +871,7 @@
 				<td align="left" width="165px">
 					<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 				</td>
-				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details"/></td>
-				</td>
+				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField', 'mandalField')"/></td>				
 			</tr>
 		</table>			
 		<table class="cadreDetailsTable" width="100%">				
@@ -949,8 +948,7 @@
 				<td align="left" width="165px">
 					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 				</td>
-				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details"/></td>
-				</td>
+				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('pboothField', 'pmandalField')"/></td>				
 			</tr>				
 		</table>
 	</FIELDSET>			
@@ -1116,7 +1114,8 @@
 		<input type="hidden" name="defaultStateId" value="${defaultStateId}">
 		<input type="hidden" name="defaultDistId" value="${defaultDistId}">
 		<input type="hidden" name="defaultConstId" value="${defaultConstId}">
-		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">		 		
+		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">	
+		<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>	 		
 	</div>
 	</s:form>
 <script type="text/javascript">
