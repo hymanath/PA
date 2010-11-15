@@ -651,7 +651,15 @@
 		  {
 		  		return;	
 		  }	
-		}												
+		}		
+		
+		function redirectToNewLocalGroupCreation()
+		{
+
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");
+										 
+		    createGroupBrowser.focus();
+		}
 		
 	</script>
 
@@ -797,8 +805,11 @@
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
 
-										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass">										
-										</div>
+										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass">	</div>
+										<DIV class="yui-skin-sam" style="text-align:right;">
+										<div id="localPoliticalChangesRegistration"></DIV>
+											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupCreation()" value="Create A Group" class="linkButton" />
+								        </DIV>
 										<div id="localGroupsChartDiv_main" class="contentDivClass">										
 										</div>	
 
@@ -814,7 +825,7 @@
 								<div class="corner bottomRight"></div> 
 
 								<div id="localGroupsRegionWiseOverView_main" class="contentDivClass">
-									
+																	
 								</div>	
 							</div>
 
