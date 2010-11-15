@@ -1705,5 +1705,9 @@
 			</result>		
 		</action>
 		
+		<action name="createLocalGroupAction" class="createLocalGroupAction">
+           <result name="success">/jsp/createLocalUserGroup.jsp</result>	
+        </action>
+		
 	</package>
 </struts>
