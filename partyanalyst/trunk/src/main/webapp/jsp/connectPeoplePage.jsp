@@ -139,6 +139,23 @@
 						};
 			connectedPeopleInfo.connectPeople.push(obj);
 		</c:forEach>
+
+		connectedPeopleInfo.connectPeopleStatus.resultCode = '${dataTransferVO.resultStatusForPeopleYouMayKnow.resultCode}';	
+		connectedPeopleInfo.connectPeopleStatus.exceptionMsg = '${dataTransferVO.resultStatusForPeopleYouMayKnow.exceptionMsg}';
+		connectedPeopleInfo.connectPeopleStatus.isResultPartial = '${dataTransferVO.resultStatusForPeopleYouMayKnow.isResultPartial}';
+		connectedPeopleInfo.connectPeopleStatus.exceptionClass = '${dataTransferVO.resultStatusForPeopleYouMayKnow.exceptionClass}';
+
+		<c:forEach var="unKnownPeople" varStatus="stat" items="${dataTransferVO.peopleYouMayKnow}">
+			var obj =	{
+							id:'${unKnownPeople.id}',
+							candidateName:'${unKnownPeople.candidateName}',
+							constituencyName:'${unKnownPeople.constituencyName}',
+							district:'${unKnownPeople.district}',
+							state:'${unKnownPeople.state}',
+							status:'${unKnownPeople.status}',
+						};
+			peopleYouMayKnowInfo.peopleYouMayKnow.push(obj);
+		</c:forEach>
 		
 		
 		commentsInfo.connectPeopleStatus.resultCode = '${dataTransferVO.resultStatusForConnectedPeople.resultCode}';	

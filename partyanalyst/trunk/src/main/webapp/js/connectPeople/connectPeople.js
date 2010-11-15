@@ -10,6 +10,16 @@ var connectedPeopleInfo = {
 							connectPeople:[]
 						  };
 
+var peopleYouMayKnowInfo = {
+							connectPeopleStatus:{
+													resultCode:'',													
+													exceptionMsg:'',
+													isResultPartial:'',
+													exceptionClass:''
+												},
+							peopleYouMayKnow:[]
+						  };
+
 var commentsInfo = {
 							connectPeopleStatus:{
 													resultCode:'',													
@@ -166,7 +176,7 @@ function buildConnectionsContentForUser()
 		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
 		str += '</tr>';	
 		str += '<tr>';		
-		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\')">mail</a></td>';
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Message</a></td>';
 		str += '</tr>';	
 		str += '</table>';
 		str += '</div>';
@@ -181,7 +191,7 @@ function buildConnectionsContentForUser()
 	elmt.innerHTML = str;
 }
 
-function showMailPopup(id,name)
+function showMailPopup(id,name,type)
 {
 	var str = '';	
 	str += '<table width="100%">';
@@ -190,7 +200,7 @@ function showMailPopup(id,name)
 	str += '<td><textarea id="connectMessageText" cols="50" rows="4"></textarea></td>';
 	str += '</tr>';
 	str += '<tr>';	
-	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\')"></td>';
+	str += '<td colspan="2"><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
 	str += '</tr>';
 	str += '</table>';
 	str	+= '<div id="connectStatus"></div>';
@@ -213,14 +223,15 @@ function showMailPopup(id,name)
     connectPopupPanel.render();
 }
 
-function sendMessageToConnectedUser(userId)
+function sendMessageToConnectedUser(userId,type)
 {	
 	var connectTextAreaElmt = document.getElementById("connectMessageText");
 	var connectMsg = connectTextAreaElmt.value;
 	var jsObj ={
 				loginUserId:loginUserId,
-				meassage:connectMsg,				
+				message:connectMsg,				
 				recipientId:userId,
+				type:type,
 				task:"sendMessageToConnectUser"
 			 };
 
@@ -284,8 +295,13 @@ function callAjax(param,jsObj,url){
 					}
 					else if(jsObj.task == "sendMessageToConnectUser")
 					{
-						showMessageSentConfirmation(results);
+						if(jsObj.type=="Connect"){
+							location.reload(true);//For refreshing the page...
+						}else{
+							showMessageSentConfirmation(results);
+						}
 					}
+					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -432,71 +448,46 @@ function buildPeopleYouMayKnowContent()
 	str += '<div id="peopleMayKnow_body">';
 	str += '	<div class="peopleMayKnow_data">';
 	str += '	<table width="100%" class="peopleMayKnow_data_table">';
-	str += '	<tr>';
-	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-	str += '	<td colspan="2" style="font-weight:bold;">Sai Krishna</td>';
-	str += '	</tr>';
-	str += '	<tr>';	
-	str += '	<td colspan="2">Kavali, Nellore</td>';
-	str += '	</tr>';	
-	str += '	<tr>';	
-	str += '	<td>Andhra Pradesh</td>';
-	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
-	str += '	</tr>';
+	
+	var arrData = peopleYouMayKnowInfo.peopleYouMayKnow;
+	for(var i=0; i<arrData.length; i++)
+	{
+		str += '	<tr>';
+		str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '	<td colspan="2" style="font-weight:bold;">'+arrData[i].candidateName+'</td>';
+		str += '	</tr>';
+		str += '	<tr>';	
+		str += '	<td colspan="2">'+arrData[i].constituencyName+'</td>';
+		str += '	</tr>';	
+		str += '	<tr>';	
+		str += '	<td>'+arrData[i].state+'</td>';
+		str += '	<td>';
+		str += '		<table>';
+		str += '				<tr>';
+		str += '					<td>';
+		str += '						<img height="15" width="15" src="images/icons/plusNew.png">';
+		str += '					</td>';
+		str += '					<td align="right">';
+		str += '<a class="peopleConnectAnc"  href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Connect\')">Connect</a>';		
+		str += '					</td>';
+		str += '				</tr>';
+		str += '		</table>';
+		str += '	</td>';
+		str += '	</tr>';		
+	}
+	
 	str += '	</table>';
 	str += '	</div>';
-
-	str += '	<div class="peopleMayKnow_data">';
-	str += '	<table width="100%" class="peopleMayKnow_data_table">';
-	str += '	<tr>';
-	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-	str += '	<td colspan="2" style="font-weight:bold;">Siva Reddivari</td>';
-	str += '	</tr>';
-	str += '	<tr>';	
-	str += '	<td colspan="2">Atmakur, Nellore</td>';
-	str += '	</tr>';	
-	str += '	<tr>';	
-	str += '	<td>Andhra Pradesh</td>';
-	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
-	str += '	</tr>';
-	str += '	</table>';
-	str += '	</div>';
-
-	str += '	<div class="peopleMayKnow_data">';
-	str += '	<table width="100%" class="peopleMayKnow_data_table">';
-	str += '	<tr>';
-	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-	str += '	<td colspan="2" style="font-weight:bold;">Raghu</td>';
-	str += '	</tr>';
-	str += '	<tr>';	
-	str += '	<td colspan="2">Kavali, Nellore</td>';
-	str += '	</tr>';	
-	str += '	<tr>';	
-	str += '	<td>Andhra Pradesh</td>';
-	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
-	str += '	</tr>';
-	str += '	</table>';
-	str += '	</div>';
-
-	str += '	<div class="peopleMayKnow_data">';
-	str += '	<table width="100%" class="peopleMayKnow_data_table">';
-	str += '	<tr>';
-	str += '	<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-	str += '	<td colspan="2" style="font-weight:bold;">Ravi Kiran</td>';
-	str += '	</tr>';
-	str += '	<tr>';	
-	str += '	<td colspan="2">Allur, Nellore</td>';
-	str += '	</tr>';	
-	str += '	<tr>';	
-	str += '	<td>Andhra Pradesh</td>';
-	str += '	<td><table><tr><td><img height="15" width="15" src="images/icons/plusNew.png"></td><td align="right"><a class="peopleConnectAnc" href="javascript:{}">Connect</a></td></tr></table></td>';
-	str += '	</tr>';
-	str += '	</table>';
-	str += '	</div>';
-
-	str += '	<div id="peopleMayKnow_buttonDiv">';
-	str += '	<a href="javascript:{}"> View All </a>';
-	str += '	</div>';
+	if(arrData.length!=0){
+		str += '	<div id="peopleMayKnow_buttonDiv">';
+		str += '	<a href="javascript:{}"> View All </a>';
+		str += '	</div>';	
+	}else{
+		str += '	<div style="text-align:left;padding:5px 20px 5px 5px;">';
+		str += '	Right now there are no friend suggestion for ';
+		str += '	we will get back with more suggesstions as soon as possible.. ';
+		str += '	</div>';	
+	}	
 	str += '</div>';
 	str += '</div>';
 
