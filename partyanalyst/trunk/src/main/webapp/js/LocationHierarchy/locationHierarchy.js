@@ -40,9 +40,14 @@ function callAjaxForLocations(jsObj,url)
 						try
 						{
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
-							clearOptionsListForSelectElmtId(jsObj.selectElementId);
-							fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
-							
+							if(jsObj.task == "getBoothsCompleteDetails")	
+							{
+								buildBoothsTable(myResults);
+								//buildBoothCompleteDetailsPanel(myResults);
+							} else {
+								clearOptionsListForSelectElmtId(jsObj.selectElementId);
+								fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -267,3 +272,119 @@ function getBoothsInWard(address, constituencyField, boothField, id, module, mun
 		getLocationHierarchies(id,'boothsInWard',module,boothField,address, null,constiId);
 	}	
 }
+/**
+ * this method retrieves the booths complete info by providing the booth ids. 
+ */
+function showBoothsCompleteDetails(boothSelectEl, mdlSelectEl)
+{  
+	var boothsSelectEl = document.getElementById(boothSelectEl);
+	var boothsSelectElOptions = boothsSelectEl.options; 
+	var boothIdsStr = '';	
+	var mdlsSelectEl = document.getElementById(mdlSelectEl);
+	var mdlsSelectElSelected;
+	if(mdlsSelectEl.options.length == 0 || boothsSelectElOptions.length == 0)
+		return;
+	mdlsSelectElSelected = mdlsSelectEl.options[mdlsSelectEl.selectedIndex].value;
+	
+	var areaType; 
+	if(mdlsSelectElSelected != 0 && mdlsSelectElSelected.substring(0,1) == '1')
+	{
+		areaType = '1';// for URBAN_TYPE
+	} else if(mdlsSelectElSelected != 0 && mdlsSelectElSelected.substring(0,1) == '2')
+	{
+		areaType = '2';//// for RURAL_TYPE
+	}  
+	if(boothsSelectElOptions.length > 0)
+	{
+		for(var i = 0; i < boothsSelectElOptions.length; i++)
+		{
+			if(boothsSelectElOptions[i].value != 0)
+			{		
+				boothIdsStr += boothsSelectElOptions[i].value;
+				boothIdsStr += ',';
+			}	
+		}
+		
+		boothIdsStr = boothIdsStr.substring(0,boothIdsStr.length-1);
+	}
+	
+	if(boothIdsStr.length > 0 && boothIdsStr != '')
+	{
+		var jsObj=
+		{				
+			boothIds: boothIdsStr,
+			task: 'getBoothsCompleteDetails',
+			areaType: areaType 
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getBoothsCompleteDetailsAction.action?"+rparam;						
+	callAjaxForLocations(jsObj,url);
+	}
+	
+}
+	
+	function buildBoothsTable(results)
+	{
+		var localArr = new Array();
+		
+		for(var i in myResults)
+		{
+			var obj = {				
+						mandal : results[i].mandalName,
+						partNo: results[i].partNo,
+						location: results[i].location,
+						villagesCovered: results[i].villagesCovered						
+					  }
+			localArr.push(obj);
+		}
+
+		var myColumnDefs = [
+		
+		{key:"partNo",label:"Booth Part No",sortable:true, resizeable:true},	
+		{key:"location",label:"Booth Location", resizeable:true},
+		{key:"villagesCovered",label:"Villages Covered", resizeable:true},
+		{key:"mandal",label:"Mandal/Municipal/Corp/GMC",sortable:true, resizeable:true},
+		];
+		
+		var configs = {
+							paginator: new YAHOO.widget.Paginator({ 
+							rowsPerPage    : 10			        
+							})
+					   };
+		var myDataSource = new YAHOO.util.DataSource(localArr);
+		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		myDataSource.responseSchema = {
+			fields: ["mandal","partNo","location", "villagesCovered"]
+		};					
+
+		buildBoothCompleteDetailsPanel(myColumnDefs,myDataSource,configs);
+
+		
+	}
+	
+	
+	 function buildBoothCompleteDetailsPanel(myColumnDefs,myDataSource,configs)
+	 {
+		  	var contentStr = '';
+		 	contentStr +='<div class="yui-skin-sam"><div id="boothsDetailsDiv"></div></div>';
+		 	 var myPanel = new YAHOO.widget.Dialog("boothDetailsPopup", {             
+		    
+		 		 fixedcenter : true, 
+		 		 visible : true,  
+		 		 constraintoviewport : true, 
+		 		 iframe :true,
+		 		 modal :true,
+		 		 hideaftersubmit:true,
+		 		 close:true
+		 	   });
+		 	   myPanel.setHeader("Booth Complete Details");
+		 	   myPanel.setBody(contentStr);
+		 	   myPanel.render();
+
+		 	   var myDataTable = new YAHOO.widget.DataTable("boothsDetailsDiv",
+		 				myColumnDefs, myDataSource,configs);
+		 
+	 }
+
