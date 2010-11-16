@@ -505,6 +505,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return localBodies;		
 	}
 	
+	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId){
+		
+		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
+		List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
+		for(Constituency ward:wardObjs)
+			wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
+		
+	 return wards;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId,Long constituencyId,String year){
 		
