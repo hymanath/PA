@@ -505,12 +505,33 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return localBodies;		
 	}
 	
-	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId){
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId,Long constituencyId,String year){
+		
 		List<SelectOptionVO> wards = new ArrayList<SelectOptionVO>();
-		List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
-		for(Constituency ward:wardObjs)
-			wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
-		return wards;
+		List wardsList = null;
+		
+		List assemblyLocalElecBodyId = assemblyLocalElectionBodyDAO.findAssemblyLocalElectionBodyByLocalBodyAndConstituency(localElectionBodyId, constituencyId);
+		if(assemblyLocalElecBodyId != null && assemblyLocalElecBodyId.size() > 0){
+			Object values = (Object)assemblyLocalElecBodyId.get(0);
+			Long asmblyLocalBodyId = (Long)values;
+			
+			wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(asmblyLocalBodyId, year);
+			for(int j=0;j<wardsList.size();j++)
+			{
+				Object[] obj = (Object[])wardsList.get(j);
+				wards.add(new SelectOptionVO((Long)obj[0],obj[2].toString().concat("( ").concat(obj[1].toString().toUpperCase()).concat(" )")));
+			}
+			
+		}
+		
+		if(wardsList == null || wardsList.size() == 0){
+			List<Constituency> wardObjs = constituencyDAO.findWardsAndIdsInMuncipality(localElectionBodyId);
+			for(Constituency ward:wardObjs)
+				wards.add(new SelectOptionVO(ward.getConstituencyId(), ward.getName()));
+		}
+		
+	 return wards;
 	}
 	/**
 	 * This method fetches constituencies from delimitation constituency table.
