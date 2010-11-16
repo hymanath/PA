@@ -397,6 +397,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					{
 						showAllConnectedUsersInPanelByFilterView(jsObj,results);
 					}
+					else if(jsObj.task == "sendMessageToConnectUser")
+					{						
+						showMessageConfirmation(results);
+					}
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
