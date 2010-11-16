@@ -93,9 +93,9 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	
 	//for local bodys
 	@SuppressWarnings("unchecked")
-	public List getTotalCountOfLocalGroupsInLocalBodys(Long userId,Long localBodyId,Long categoryId);
+	public List getTotalCountOfLocalGroupsInLocalBodys(Long userId,Long localBodyId,Long categoryId,Long constituencyId);
 	@SuppressWarnings("unchecked")
-	public List getTotalCountOfLocalGroupsInWardsByLocalBodys(Long userId,Long localBodyId,Long categoryId);
+	public List getTotalCountOfLocalGroupsInWardsByLocalBodys(Long userId,Long localBodyId,Long categoryId,Long constituencyId);
 	
 	//for village
 	@SuppressWarnings("unchecked")
