@@ -39,6 +39,7 @@ public interface IInfluencingPeopleService {
 	public ConstituencyManagementDataVO getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long constituencyId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType);
 	public ConstituencyManagementDataVO getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long mandalId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long constituencyId);
 	public ConstituencyManagementDataVO getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long localBodyId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long regionId);
+	public ConstituencyManagementDataVO getWardRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long wardId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,Long constituencyId);
 	
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType,Long parentRegionId);
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
