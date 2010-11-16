@@ -52,13 +52,13 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalInfluencingPeopleAddressInConstituencyByLocalBody(Long userId,Long constituencyId);
 	
 	@SuppressWarnings("unchecked")
-	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,Long localBodyId);
+	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,Long localBodyId,Long constituencyId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInLocalBodys(Long userId,Long localBodyId);
 	@SuppressWarnings("unchecked")
-	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,Long localBodyId);
+	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,Long localBodyId,Long constituencyId);
 	@SuppressWarnings("unchecked")
-	public List getTotalCountOfInfluencingPeopleInBoothsByLocalBody(Long userId,Long localBodyId);
+	public List getTotalCountOfInfluencingPeopleInBoothsByLocalBody(Long userId,Long localBodyId,Long constituencyId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInLocalBodys(Long userId,Long localBodyId);
 	
