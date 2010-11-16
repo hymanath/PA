@@ -40,7 +40,7 @@ public interface IInfluencingPeopleService {
 	public ConstituencyManagementDataVO getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long mandalId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long constituencyId);
 	public ConstituencyManagementDataVO getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long localBodyId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long regionId);
 	
-	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType);
+	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType,Long parentRegionId);
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
 	
 	//Local User Groups
