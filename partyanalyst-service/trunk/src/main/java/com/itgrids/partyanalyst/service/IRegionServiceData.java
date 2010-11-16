@@ -16,6 +16,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope);
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year);
 	public List<SelectOptionVO> getLocalElectionBodiesOfADistrict(Long districtId);	
+	public String getLocalBodyElectionTypeInConstituency(Long constituencyId);
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId);
 	public List<SelectOptionVO> getWardsInALocalElectionBody(Long localElectionBodyId,Long constituencyId,String year);	
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long LocationId);
@@ -32,7 +33,8 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getAllParliamentConstituencies(Long electionScopeId, Long countryId);
 	public List<SelectOptionVO> getAllConstituenciesByElectionTypeInState(Long electionTypeId, Long stateId);
 	public List<SelectOptionVO> getBoothsInTehsilOrMunicipality(Long tehsilId, Long year, Long constituencyId);
-	public List<SelectOptionVO> getboothsInWard(Long tehsilId, Long year, Long constituencyId);
+	public List<SelectOptionVO> getboothsInWard(Long wardId, Long year, Long constituencyId);
+	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,Long constituencyId);
 	
 	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId);
 	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year);
