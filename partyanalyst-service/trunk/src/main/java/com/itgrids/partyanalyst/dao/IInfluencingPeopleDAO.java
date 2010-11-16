@@ -84,6 +84,17 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List getTotalCountOfInfluencingPeopleInWard(Long userId,Long wardId);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInWard(Long userId,Long wardId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInBooth(Long userId, Long boothId);
+	
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInBooth(Long userId, Long boothId);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInBoothsByWard(Long userId,Long wardId);
+	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInWard(Long userId, Long wardId);
 	
