@@ -420,6 +420,7 @@ fieldset {
 {
 	left:7px;
 	position:relative;
+	display:block;
 	top:7px;
 }
 

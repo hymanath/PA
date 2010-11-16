@@ -618,13 +618,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
+		Long parentRegionId = new Long(request.getParameter("parentRegionId"));
 		Long regionId = new Long(request.getParameter("regionId"));
 		regionName = request.getParameter("regionName");
 		regionType = request.getParameter("regionType");
 		scopeType = request.getParameter("scopeType");
 		
 		if(scopeType.equalsIgnoreCase("region"))
-			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByRegion(userId,regionId,regionType);
+			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByRegion(userId,regionId,regionType,parentRegionId);
 		else if(scopeType.equalsIgnoreCase("scope"))
 			influencingPeopleDetailsVO = influencingPeopleService.getInfluencingPeopleDetailsByScope(userId,regionId,regionType);
 		
