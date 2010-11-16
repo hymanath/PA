@@ -63,6 +63,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">	
 
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
+	<script type="text/javascript" src="js/constituencyManagement/influencingPeople.js"></script>
+	<script type="text/javascript" src="js/constituencyManagement/localUserGroups.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
 	<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
