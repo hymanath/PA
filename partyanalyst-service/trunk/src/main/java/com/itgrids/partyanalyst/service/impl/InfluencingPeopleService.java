@@ -1190,7 +1190,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 						
 					}
 					regionsList.addAll(getRegionsListData(mandalsInConstituency,IConstants.TEHSIL));
-				}if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
+				}
+				if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN)){
 					
 					localBodysInConstituency = regionServiceDataImp.getLocalElectionBodiesInConstituency(regionId, IConstants.DELIMITATION_YEAR.toString());
 					String area = "";
@@ -1323,6 +1324,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}else if(regionType.equalsIgnoreCase("MUNCIPALITY/CORPORATION") || regionType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION)){
 				
 				LocalElectionBody localBody = localElectionBodyDAO.get(new Long(regionId));
+				
+				
 				String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
 				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInLocalBodys(userId, localBody.getLocalElectionBodyId());
 				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInLocalBodys(userId, localBody.getLocalElectionBodyId());
@@ -1666,9 +1669,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		//influencing people count in a entire District
 		List infPeopleCount = null;
 		if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE))
-		     infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodys(userId, localBodyId);
+		     infPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInLocalBodys(userId, localBodyId,constituencyId);
 		else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS))
-			 infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInLocalBodys(userId, localBodyId, categoryId);
+			 infPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInLocalBodys(userId, localBodyId, categoryId,constituencyId);
 			
 		LocalElectionBody localBody = localElectionBodyDAO.get(localBodyId);
 		
@@ -1687,7 +1690,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			List<SelectOptionVO> wardsInLocalBody = null;
 			
 			if(areaType.equalsIgnoreCase(IConstants.WARD))
-			   wardsInLocalBody = regionServiceDataImp.getWardsInALocalElectionBody(localBodyId);
+			   wardsInLocalBody = regionServiceDataImp.getWardsInALocalElectionBody(localBodyId,constituencyId,IConstants.DELIMITATION_YEAR.toString());
 			else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
 				wardsInLocalBody = regionServiceDataImp.getBoothsInLocalBodysByConstituency(localBodyId, IConstants.DELIMITATION_YEAR, constituencyId);
 				
@@ -1703,13 +1706,13 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			if(moduleType.equalsIgnoreCase(IConstants.INFLUENCING_PEOPLE)){
 				
 				if(areaType.equalsIgnoreCase(IConstants.WARD))
-				   subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInWardsByLocalBody(userId, localBodyId);
+				   subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInWardsByLocalBody(userId, localBodyId,constituencyId);
 				else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
-					subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInBoothsByLocalBody(userId, localBodyId);
+					subRegionsInfPeopleCount = influencingPeopleDAO.getTotalCountOfInfluencingPeopleInBoothsByLocalBody(userId, localBodyId,constituencyId);
 				
 			}
 			else if(moduleType.equalsIgnoreCase(IConstants.LOCAL_USER_GROUPS)){
-				subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInWardsByLocalBodys(userId, localBodyId, categoryId);
+				subRegionsInfPeopleCount = personalUserGroupDAO.getTotalCountOfLocalGroupsInWardsByLocalBodys(userId, localBodyId, categoryId,constituencyId);
 			}
 				
 				if(subRegionsDetailsMap != null && !subRegionsDetailsMap.isEmpty())
