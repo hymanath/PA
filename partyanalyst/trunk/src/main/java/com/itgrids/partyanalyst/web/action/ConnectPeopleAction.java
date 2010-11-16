@@ -46,7 +46,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private DataTransferVO userDetails;
 	private DataTransferVO dataTransferVO;
 	private Long loginUserId;
-	
+	private String message;
 	
 	public Long getLoginUserId() {
 		return loginUserId;
@@ -444,6 +444,29 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	
 		
 		return Action.SUCCESS;
+	}
+	
+	public String updateReadMessageStatusInDB(){
+		String param;
+		param = getTask();
+
+		try {
+			jObj = new JSONObject(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Long loginUserId = new Long(jObj.getString("customMasgId"));
+		message = ananymousUserService.displayMessageAndUpdateUnread(loginUserId);
+		return SUCCESS;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }

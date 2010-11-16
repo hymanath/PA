@@ -1716,6 +1716,12 @@
 				<param name="root">boothsCompleteDetails</param>				
 			</result>	
         </action>
+        
+        <action name="updateReadMessageInDBAction" class="connectPeopleAction" method="updateReadMessageStatusInDB">
+        	<result type="json" name="success">
+				<param name="root">message</param>				
+			</result>
+        </action>
 		
 	</package>
 </struts>

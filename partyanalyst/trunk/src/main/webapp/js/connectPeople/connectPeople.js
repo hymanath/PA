@@ -27,11 +27,14 @@ var commentsInfo = {
 													isResultPartial:'',
 													exceptionClass:''
 												},
-							comments:[]
+							comments:[],
+							totalMsgCount:'',
+							unreadMsgCount:''
 						  };
 
 var loginUserId = '';
 
+var selectedmessage = null;
 
 function initializeTabView()
 {
@@ -48,9 +51,13 @@ function initializeTabView()
 		content: str,
 		active: true
 	}));
-	 
+	
+	var tabLable = 'Inbox';
+	if(commentsInfo.unreadMsgCount > 0)
+		tabLable = tabLable+' ('+commentsInfo.unreadMsgCount+')';
+	
 	myTabs.addTab( new YAHOO.widget.Tab({
-		label: 'Inbox',
+		label: tabLable,
 		content: '<div id="inboxMessages_main"></div>'
 	}));
  
@@ -103,24 +110,86 @@ function buildInboxMessagesForUser()
 	str += '<div id="messagesCountMessage">';
 	str += '<table><tr>';
 	str += '<td width="35px"><img height="25" width="25" src="images/icons/candidatePage/contact.png"></td>';
-	str += '<td>There are '+arrData.length+' messages</td>';
+	str += '<td>Unread: '+commentsInfo.unreadMsgCount+'</TD><TD> Total Messages:'+commentsInfo.totalMsgCount+'</td>';
 	str += '</tr></table>';
 	str += '</div>';
 	str += '<div id="messagesContent">';
-	str += '<table width="100%" id="messagesContentTable" cellpadding="0" cellspacing="0">';
+	
 	for(var i=0;i<arrData.length;i++)
 	{
+		str += '<div class="msgDiv_main">';
+		if(arrData[i].status == "UNREAD")
+			str += '<div id="msgDivHead_'+i+'" onclick="getMessageContent(\''+i+'\',\''+arrData[i].status+'\',\''+arrData[i].customMsgId+'\')" style="font-weight:bold;" class="msgDiv_head">';
+		else
+			str += '<div id="msgDivHead_'+i+'" onclick="getMessageContent(\''+i+'\',\''+arrData[i].status+'\',\''+arrData[i].customMsgId+'\')" class="msgDiv_head">';
+		
+		str += '<table width="100%" id="messagesContentTable" cellpadding="0" cellspacing="0">';
 		str += '<tr>';
-		str += '<th width="25%" align="left">'+arrData[i].candidateName+'</th>';	
+		str += '<td width="25%" align="left">'+arrData[i].candidateName+'</td>';	
 		str += '<td width="75%" align="left">'+arrData[i].data+'</td>';
+		str += '<td width="25%" align="left">'+arrData[i].postedDate+'</td>';
 		str += '</tr>';
-	}	
-	str += '</table>';
-	str += '</div>';	
+		str += '</table>';
+		str += '</div>';
+		str += '<div id="msgDivBody_'+i+'" class="msgDiv_body" style="display:none;">';
+		str += '<div>'+arrData[i].msg+'</div>';
+		str += '<div style="text-align:right;" id="replyDiv_'+i+'"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].recepientId+'\',\''+arrData[i].candidateName+'\',\'Message\')">Reply</a></div>';
+		str += '</div>';
+		str += '</div>';
+	}
+	
+	str += '</div>';
 
 	elmt.innerHTML = str;
 }
 
+function buildReplyPanel(id, index){
+	var str = '';
+	str += '<textarea>';
+	str += '</textarea>';
+	var divEle = document.getElementById("replyDiv_"+index);
+	divEle.innerHTML = str;
+}
+
+function getMessageContent(index,status,msgId)
+{	
+	var headElmt = document.getElementById("msgDivHead_"+index);
+	var bodyElmt = document.getElementById("msgDivBody_"+index);
+	
+	if(selectedmessage != null && selectedmessage != "msgDivBody_"+index)
+	{
+		var displayElmt = document.getElementById(selectedmessage);	
+		if(displayElmt && displayElmt.style.display == "block")
+			displayElmt.style.display = "none";
+	}
+	
+	selectedmessage = "msgDivBody_"+index;
+	
+	if(headElmt.style.fontWeight == 'bold')
+		headElmt.style.fontWeight = 'normal';
+
+	
+	if(bodyElmt.style.display == "none")	
+		$("#msgDivBody_"+index).slideDown();	
+	else if(bodyElmt.style.display == "block")
+		$("#msgDivBody_"+index).slideUp();
+	
+	if(status == "UNREAD")
+		markMessageAsRead(msgId);
+}
+
+function markMessageAsRead(msgId)
+{
+	var jsObj=
+	{		
+			customMasgId:msgId,
+			task:"updateReadMessageInDB"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateReadMessageInDBAction.action?"+rparam;					
+	callAjax(rparam,jsObj,url);
+}
 
 function buildConnectionsContentForUser()
 {
@@ -300,6 +369,8 @@ function callAjax(param,jsObj,url){
 						}else{
 							showMessageSentConfirmation(results);
 						}
+					}else if(jsObj.task == "updateReadMessageInDB"){
+						updatedInfo(results);
 					}
 					
 			}catch (e) {   		
@@ -313,6 +384,10 @@ function callAjax(param,jsObj,url){
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function updatedInfo(results){
+	return;
 }
 
 function showStatus(results)
