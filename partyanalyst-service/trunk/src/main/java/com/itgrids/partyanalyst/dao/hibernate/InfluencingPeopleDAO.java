@@ -78,10 +78,11 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInLocalBodys(Long userId,
-			Long localBodyId) {
-		Object[] params = {userId,localBodyId};
+			Long localBodyId,Long constituencyId) {
+		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
-				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ?",params);
+				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? "+
+				"and model.userAddress.constituency.constituencyId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -171,20 +172,20 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInWardsByLocalBody(Long userId,
-			Long localBodyId) {
-		Object[] params = {userId,localBodyId};
+			Long localBodyId,Long constituencyId) {
+		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.ward.constituencyId from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
-				"model.userAddress.ward is not null group by model.userAddress.ward.constituencyId",params);
+				"model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? group by model.userAddress.ward.constituencyId",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInBoothsByLocalBody(Long userId,
-			Long localBodyId) {
-		Object[] params = {userId,localBodyId};
+			Long localBodyId,Long constituencyId) {
+		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.booth.boothId from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody.localElectionBodyId = ? and "+
-				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
+				"model.userAddress.booth is not null and model.userAddress.constituency.constituencyId = ? group by model.userAddress.booth.boothId",params);
 	}
 
 	@SuppressWarnings("unchecked")

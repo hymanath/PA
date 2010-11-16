@@ -186,12 +186,12 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInLocalBodys(Long userId,
-			Long localBodyId,Long categoryId) {
-		Object[] params = {userId, localBodyId,categoryId};
+			Long localBodyId,Long categoryId,Long constituencyId) {
+		Object[] params = {userId, localBodyId,categoryId,constituencyId};
 		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.localBody is not null and model.localGroupRegion.localBody.localElectionBodyId = ? "+
-				"and model.staticLocalGroup.staticLocalGroupId = ?",params);
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency.constituencyId = ?",params);
 	}
 
 
@@ -282,14 +282,14 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInWardsByLocalBodys(Long userId,
-			Long localBodyId,Long categoryId) {
+			Long localBodyId,Long categoryId,Long constituencyId) {
 		
 		Object[] params = {userId, localBodyId,categoryId};
 		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.ward.constituencyId "+
 				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
 				"is not null and model.localGroupRegion.localBody is not null and model.localGroupRegion.localBody.localElectionBodyId = ? "+
-				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.ward is not null "+
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.ward is not null and model.localGroupRegion.constituency.constituencyId = ? "+
 				"group by model.localGroupRegion.ward.constituencyId",params);
 	}
 
