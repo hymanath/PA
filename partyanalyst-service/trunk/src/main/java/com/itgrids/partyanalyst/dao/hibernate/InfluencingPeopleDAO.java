@@ -250,22 +250,22 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInLocalBodys(Long userId,
-			Long localBodyId) {
-		Object[] params = {userId,localBodyId};
+			Long localBodyId,Long constituencyId) {
+		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
 				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
 				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
-				"and model.userAddress.ward is not null order by model.userAddress.ward.constituencyId",params);
+				"and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? order by model.userAddress.ward.constituencyId",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInLocalBodys(Long userId,
-			Long localBodyId) {
-		Object[] params = {userId,localBodyId};
+			Long localBodyId,Long constituencyId) {
+		Object[] params = {userId,localBodyId,constituencyId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId = ? "+
-				"and model.userAddress.ward is not null order by model.userAddress.ward.constituencyId",params);
+				"and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = ? order by model.userAddress.ward.constituencyId",params);
 	}
 
 	@SuppressWarnings("unchecked")
