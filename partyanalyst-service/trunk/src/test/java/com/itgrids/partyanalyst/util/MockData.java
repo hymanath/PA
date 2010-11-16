@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.GroupEntitlement;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InformationSource;
+import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
@@ -99,6 +100,95 @@ public class MockData {
 	public static ElectionScope getElectionScope(){
 		return electionScope;
 	}
+	
+	public static List<MessageType> getAllMessageTypes(){
+		List<MessageType> groupsInfo = new ArrayList<MessageType>();
+		
+		MessageType set1 = new MessageType();
+		MessageType set2 = new MessageType();
+		MessageType set3 = new MessageType();
+		MessageType set4 = new MessageType();
+		MessageType set5 = new MessageType();
+		MessageType set6 = new MessageType();
+		MessageType set7 = new MessageType();
+		MessageType set8 = new MessageType();
+		MessageType set9 = new MessageType();
+				
+		set1.setMessageTypeId(new Long(1));		
+		set1.setMessageType("CONNECTED");
+		set1.setDescription("connected");
+		
+		set2.setMessageTypeId( new Long(2));
+		set2.setMessageType("DISCONNECTED");
+		set2.setDescription("dis connected");
+		
+		set3.setMessageTypeId(new Long(3));
+		set3.setMessageType("PENDING");
+		set3.setDescription("pending of request");
+		
+		set4.setMessageTypeId(new Long(4));
+		set4.setMessageType("FRIEND REQUEST");
+		set4.setDescription("friend request acceptance");
+		
+		set5.setMessageTypeId(new Long(5));
+		set5.setMessageType("COMMENTS");
+		set5.setDescription("posting comments");
+		
+		set6.setMessageTypeId(new Long(6));
+		set6.setMessageType("SCRAP");
+		set6.setDescription("posting a scrap");
+		
+		set7.setMessageTypeId(new Long(7));
+		set7.setMessageType("BLOCK");
+		set7.setDescription("BLOCK");
+		
+		set8.setMessageTypeId(new Long(8));
+		set8.setMessageType("UNBLOCK");
+		set8.setDescription("UNBLOCK");
+		
+		set9.setMessageTypeId(new Long(9));
+		set9.setMessageType("NOT CONNECTED");
+		set9.setDescription("not connected");
+		
+		groupsInfo.add(set1);
+		groupsInfo.add(set2);
+		groupsInfo.add(set3);
+		groupsInfo.add(set4);
+		groupsInfo.add(set5);
+		groupsInfo.add(set6);
+		groupsInfo.add(set7);
+		groupsInfo.add(set8);
+		groupsInfo.add(set9);
+		
+		return groupsInfo;		
+	}
+	
+	public static List getAnanymousUserIds(){
+		List userIds = new ArrayList();
+		
+		Object[] set1 = new Object[3];
+		Object[] set2 = new Object[3];
+		Object[] set3 = new Object[3];
+		
+		set1[0] = new Long(1);		
+		set1[1] = "1";
+		set1[2] = "2";
+		
+		set2[0] = new Long(2);
+		set2[1] = "1";
+		set2[2] = "3";
+		
+		set3[0] = new Long(3);
+		set3[1] = "4";
+		set3[2] = "1";
+		
+		userIds.add(set1);
+		userIds.add(set2);
+		userIds.add(set3);
+		
+		return userIds;		
+	}
+	
 	
 	public static List getAllGroups(){
 		List groupsInfo = new ArrayList();
