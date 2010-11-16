@@ -1252,7 +1252,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,
-			Long regionId, String regionType) {
+			Long regionId, String regionType,Long parentRegionId) {
 		
 		log.debug("Getting influencing People Details Region Wise ...");
 		List<InfluencingPeopleDetailsVO> influencingPeopleDetailsList = new ArrayList<InfluencingPeopleDetailsVO>();
@@ -1327,8 +1327,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				
 				String localBodyName = localBody.getName() + " (" + localBody.getElectionType().getElectionType() + " )";
-				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInLocalBodys(userId, localBody.getLocalElectionBodyId());
-				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInLocalBodys(userId, localBody.getLocalElectionBodyId());
+				influencingPeopleList = influencingPeopleDAO.getTotalInfluencingPeopleDetailsInLocalBodys(userId, localBody.getLocalElectionBodyId(),parentRegionId);
+				influencingPeopleAddress = influencingPeopleDAO.getTotalInfluencingPeopleAddressInLocalBodys(userId, localBody.getLocalElectionBodyId(),parentRegionId);
 				
 				//Process and set details to VO
 				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
