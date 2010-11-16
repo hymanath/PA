@@ -135,7 +135,7 @@
 							constituencyName:'${connect.constituencyName}',
 							district:'${connect.district}',
 							state:'${connect.state}',
-							status:'${connect.status}',
+							status:'${connect.status}'
 						};
 			connectedPeopleInfo.connectPeople.push(obj);
 		</c:forEach>
@@ -162,7 +162,8 @@
 		commentsInfo.connectPeopleStatus.exceptionMsg = '${dataTransferVO.resultStatusForConnectedPeople.exceptionMsg}';
 		commentsInfo.connectPeopleStatus.isResultPartial = '${dataTransferVO.resultStatusForConnectedPeople.isResultPartial}';
 		commentsInfo.connectPeopleStatus.exceptionClass = '${dataTransferVO.resultStatusForConnectedPeople.exceptionClass}';
-
+		commentsInfo.totalMsgCount = '${dataTransferVO.totalMsgCount}';
+		commentsInfo.unreadMsgCount = '${dataTransferVO.unreadMsgCount}';
 		<c:forEach var="connect" varStatus="stat" items="${dataTransferVO.comments}">
 			var obj =	{
 							id:'${connect.id}',
@@ -171,7 +172,11 @@
 							district:'${connect.district}',
 							state:'${connect.state}',
 							status:'${connect.status}',
-							data : '${connect.data}'
+							postedDate:'${connect.postedDate}',
+							data : '${connect.data}',
+							msg: '${connect.message}',
+							customMsgId:'${connect.costumMessageId}',
+							recepientId:'${connect.recepientId}'
 						};
 			commentsInfo.comments.push(obj);
 		</c:forEach>

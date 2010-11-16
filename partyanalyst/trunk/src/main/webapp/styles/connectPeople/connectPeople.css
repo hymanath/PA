@@ -248,3 +248,14 @@
 	font-weight:bold;
 	margin-top:10px;
 }
+.msgDiv_head
+{
+	cursor:pointer;
+}
+
+.msgDiv_body
+{
+	background-color:#DFDFDF;	
+	margin:0 5px;
+	padding:10px;
+}
