@@ -346,7 +346,13 @@ function buildAllConnectUserString(users)
 		str += '<table width="100%">';
 		str += '<tr>';
 		str += '<td width="50%" align="left"><span class="connectPeople_body_constituency">'+users[i].constituencyName+'</span></td>';
-		str += '<td width="50%" align="right"><span class="connectPeople_body_status">'+users[i].status+'</span></td>';
+		if(users[i].status == "NOT CONNECTED" || users[i].status == "PENDING" || users[i].status == "LOGGED_USER")
+		{
+			str += '<td width="50%" align="right"><span class="connectPeople_body_status">'+users[i].status+'</span></td>';
+		}else
+		{
+			str += '<td width="50%" align="right"><span class="connectPeople_body_status"> <a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">Send a Message</a> CONNECTED </span> <div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div></td>';
+		}
 		str += '</tr>';
 		str += '</table>';
 		str += '</td>';
@@ -358,6 +364,67 @@ function buildAllConnectUserString(users)
 	return str;
 }
 
+function showMailPopup(id,name,type)
+{
+	var str = '';	
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th>Message</th>';
+	str += '<td><textarea id="connectMessageText" cols="50" rows="4"></textarea></td>';
+	str += '</tr>';
+	str += '<tr>';	
+	str += '<td><input type="button" name="connectButton" value="Send" onclick="sendMessageToConnectedUser(\''+id+'\',\''+type+'\')"></td>';
+	str += '</tr>';	
+	str += '</table>';
+	str += '<table style="text-align:center;width:100%;"><tr><td><div id="confirmationMsg"></div></td></tr></table>';
+	str	+= '<div id="connectStatus"></div>';
+	str	+= '</div>';
+	
+	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
+				 width:'400px',
+                 fixedcenter : true, 
+                 visible : true,
+                 constraintoviewport : true, 
+        		 iframe :false,
+        		 modal :false,
+        		 hideaftersubmit:true,
+        		 close:true,
+				 draggable:true
+       });	 
+	
+	connectPopupPanel.setHeader("Send Message To "+name);
+    connectPopupPanel.setBody(str);
+    connectPopupPanel.render();
+}
+
+function sendMessageToConnectedUser(userId,type)
+{	
+	var connectTextAreaElmt = document.getElementById("connectMessageText");
+	var connectMsg = connectTextAreaElmt.value;
+	
+	var jsObj ={
+				loginUserId:userId,
+				message:connectMsg,				
+				recipientId:userId,
+				type:type,
+				task:"sendMessageToConnectUser"
+			 };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "messageToConnectedUser.action?"+rparam;					
+	callAjax(jsObj,url);
+}
+
+function showMessageConfirmation(results)
+{
+	var elmt = document.getElementById("confirmationMsg");
+	var str = '';
+	if(results.resultCode == 0){
+		str+='<div style="color:green;">Successfully Sent</div>';
+	}else{
+		str+='<div style="color:red;">There was an error in processing your request</div>';
+	}
+	elmt.innerHTML = str;
+}
 function connectUserSetPeople()
 {
 	var elements = document.getElementsByName("connectUserCheck");
