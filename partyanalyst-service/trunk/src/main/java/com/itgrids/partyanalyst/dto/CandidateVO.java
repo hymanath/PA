@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.Date;
 import java.util.List;
 
 public class CandidateVO {
@@ -11,12 +12,16 @@ public class CandidateVO {
 	private String year;
 	private String party;
 	private String status;
+	private String message;
 	private Long constituencyId;
 	private String constituencyName;
 	private ResultStatus resultStatus;
 	private List<CandidateElectionVO> candidateElectionVOs;
 	private String state;
 	private String district;
+	private String postedDate;
+	private Long costumMessageId;
+	private Long recepientId;
 	
 	public CandidateVO(){
 		
@@ -136,5 +141,38 @@ public class CandidateVO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPostedDate() {
+		return postedDate;
+	}
+
+	public void setPostedDate(String postedDate) {
+		this.postedDate = postedDate;
+	}
+
+	public Long getCostumMessageId() {
+		return costumMessageId;
+	}
+
+	public void setCostumMessageId(Long costumMessageId) {
+		this.costumMessageId = costumMessageId;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Long getRecepientId() {
+		return recepientId;
+	}
+
+	public void setRecepientId(Long recepientId) {
+		this.recepientId = recepientId;
 	}	
+	
 }

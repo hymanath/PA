@@ -76,14 +76,10 @@ public class CustomMessageDAO extends GenericDaoHibernate<CustomMessage, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllMessagesForUser(List<Long> senderId,String messageType){
 		StringBuilder query = new StringBuilder();				
-		query.append(" select model.subject,model.senderId.userId,model.senderId.name,model.senderId.lastName,");
-		query.append(" model.senderId.state.stateName,model.senderId.district.districtName,model.senderId.constituency.name from CustomMessage ");
-		query.append(" model where model.messageType.messageType = ? and");
-		if(messageType.equalsIgnoreCase(IConstants.PENDING)){
-			query.append(" model.recepientId.userId in (:senderId) order by customMessageId desc ");
-		}else{
-			query.append(" model.recepientId.userId in (:senderId) order by customMessageId desc ");
-		}	
+		query.append(" select model.subject, model.senderId.userId, model.senderId.name, model.senderId.lastName, ");
+		query.append(" model.senderId.state.stateName, model.senderId.district.districtName, model.senderId.constituency.name, " +
+				"model.customMessageId, model.status, model.sentDate, model.recepientId.userId from CustomMessage");//7,8,9
+		query.append(" model where model.messageType.messageType = ? and model.recepientId.userId in (:senderId) order by customMessageId desc ");
 				
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setString(0,messageType);

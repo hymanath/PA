@@ -28,7 +28,7 @@ public class CustomMessage extends BaseModel implements Serializable {
 	
 	private Long customMessageId;
 	private String subject;
-	private String message;
+	private String status;
 	private Date sentDate;
 	private AnanymousUser senderId;
 	private AnanymousUser recepientId;
@@ -44,9 +44,9 @@ public class CustomMessage extends BaseModel implements Serializable {
 	}
 	
 	//Full Constructor
-	public CustomMessage(String subject,String message,Date sentDate,AnanymousUser senderId,AnanymousUser recepientId){
+	public CustomMessage(String subject,String status,Date sentDate,AnanymousUser senderId,AnanymousUser recepientId){
 		this.subject = subject;
-		this.message = message;
+		this.status = status;
 		this.sentDate = sentDate;
 		this.senderId = senderId;
 		this.recepientId = recepientId;
@@ -63,7 +63,7 @@ public class CustomMessage extends BaseModel implements Serializable {
 		this.customMessageId = customMessageId;
 	}
 
-	@Column(name="subject",length=70)
+	@Column(name="subject",length=300)
 	public String getSubject() {
 		return subject;
 	}
@@ -72,24 +72,23 @@ public class CustomMessage extends BaseModel implements Serializable {
 		this.subject = subject;
 	}
 
-	@Column(name="message",length=70)
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	@Column(name="sent_date",length=70)
 	public Date getSentDate() {
 		return sentDate;
 	}
-
+	
 	public void setSentDate(Date sentDate) {
 		this.sentDate = sentDate;
 	}
 
+	@Column(name="status")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="sender_id")

@@ -31,7 +31,6 @@ import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IPartyInfluenceService;
@@ -347,12 +346,12 @@ public class PartyInfluenceService implements IPartyInfluenceService {
         if(logger.isDebugEnabled())
         	logger.debug("PartyIds at beginning -->" + partyIds);
 		try{
-		   if(includeAlliance.equals(true)){
+		   if(includeAlliance){
 			partyIds = getHasAllianceParties(electionYear,electionTypeId,partyId);
 			if(logger.isDebugEnabled())
 	        	logger.debug("PartyIds if alliance is true -->" + partyIds);
 		   }
-		   else if(includeAlliance.equals(false)){
+		   else{
 			partyIds = new ArrayList<Long>();
 			partyIds.add(partyId);
 			if(logger.isDebugEnabled())

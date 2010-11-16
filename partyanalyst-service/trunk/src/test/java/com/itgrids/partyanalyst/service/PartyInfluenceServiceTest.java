@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.appfuse.dao.BaseDaoTestCase;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,9 +24,9 @@ import com.itgrids.partyanalyst.service.impl.PartyInfluenceService;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.util.MockDataForPartyInfluence;
 
-public class PartyInfluenceServiceTest {
+public class PartyInfluenceServiceTest extends BaseDaoTestCase{
 
-	private IElectionDAO electionDAO;
+	/*private IElectionDAO electionDAO;
 	private INominationDAO nominationDAO;
 	private IElectionScopeDAO electionScopeDAO;
 	private IStaticDataService staticDataService;
@@ -80,6 +81,24 @@ public class PartyInfluenceServiceTest {
 				 }
 			 }
 		 }
+	}*/
+
+	private IPartyInfluenceService partyInfluenceService;
+
+	public IPartyInfluenceService getPartyInfluenceService() {
+		return partyInfluenceService;
+	}
+
+	public void setPartyInfluenceService(
+			IPartyInfluenceService partyInfluenceService) {
+		this.partyInfluenceService = partyInfluenceService;
+	}
+	
+	public void testInfluenceReport(){
+		Long start = System.currentTimeMillis();
+		partyInfluenceService.getPartyInfluenceReportResults(2l, 361l, 661l, "2009", true, 1l);
+		Long end = System.currentTimeMillis();
+		System.out.println("============= Total Time Taken For Party Influence Report::"+(end-start)/1000);
 	}
 	
 }
