@@ -21,7 +21,6 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CustomMessageDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -502,6 +501,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
 								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessage.setStatus(IConstants.MSG_UNREAD);
 								customMessageDAO.save(customMessage);
 							}							
 						}
@@ -653,7 +653,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			
 			DataTransferVO statusForComments = getAllMessagesForUser(userId,IConstants.COMMENTS);			
 			ResultStatus resultStatusForComments = new ResultStatus(); 
-			if(statusForComments.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+			if(statusForComments.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE){
 				resultStatusForComments.setResultCode(ResultCodeMapper.FAILURE);
 			}else{			
 				resultVO = statusForComments.getCandidateVO();
@@ -666,7 +666,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 			} 
 			dataTransferVO.setResultStatusForComments(resultStatusForComments);
 			
-			
+			dataTransferVO.setTotalMsgCount(statusForComments.getTotalMsgCount());
+			dataTransferVO.setUnreadMsgCount(statusForComments.getUnreadMsgCount());
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			resultStatus.setResultPartial(false);
 			dataTransferVO.setResultStatus(resultStatus);
@@ -726,7 +727,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			
 			//newList list contains id's of all the people of that particular level
 			
-			if(levels>1){
+			if(levels>1 && newList.size()!=0){
 				List<CustomMessage> customMessageresult = customMessageDAO.checkForRelationBetweenUsers(userId,newList);
 				for(CustomMessage users : customMessageresult){
 					Long id = users.getRecepientId().getUserId();
@@ -881,7 +882,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return listOfUserIds;
 	}
 	
-	
+	public String displayMessageAndUpdateUnread(Long customMessageId){
+		CustomMessage customMessage = customMessageDAO.get(customMessageId);
+		customMessage.setStatus(IConstants.MSG_READ);
+		customMessageDAO.save(customMessage);
+		return customMessage.getSubject();
+	}
 	
 	/**
 	 * This method is used to get all the comments or scraps that are being received by the user.
@@ -895,28 +901,46 @@ public class AnanymousUserService implements IAnanymousUserService {
 		ResultStatus resultStatus = new ResultStatus();
 		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
 		DataTransferVO dataTransferVO = new DataTransferVO();
+		Long totalMsgCount = 0l;
+		Long unreadMsgCount= 0l;
 		try{
 			List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
 			if(result!=null && result.size()!=0){
+				totalMsgCount = new Long(result.size());
 				for(int i=0;i<result.size();i++){
 					Object[] parms = (Object[])result.get(i);
 					CandidateVO candidateResults = new CandidateVO();
-					candidateResults.setData(parms[0].toString());
+					if(parms[0].toString().length() < 20)
+						candidateResults.setData(parms[0].toString());
+					else
+						candidateResults.setData(parms[0].toString().substring(0, 19));
+					candidateResults.setMessage(parms[0].toString());
 					candidateResults.setId(new Long(parms[1].toString()));
 					String candidateName="";
-					if(parms[2]!=null){
+					
+					if(parms[2]!=null)
 						candidateName+=parms[2].toString().concat("  ").concat("  ");
-					}
-					if(parms[3]!=null){
+					
+					if(parms[3]!=null)
 						candidateName+=parms[3].toString();
-					}				
+
 					candidateResults.setState(parms[4].toString());
 					candidateResults.setDistrict(parms[5].toString());					
 					candidateResults.setConstituencyName(parms[6].toString());
 					candidateResults.setCandidateName(candidateName);
+					String status = (parms[8]!=null)?parms[8].toString():"";
+					candidateResults.setStatus(status);
+					if(IConstants.MSG_UNREAD.equalsIgnoreCase(status))
+						unreadMsgCount++;
+					
+					candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
+					candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversionWithoutTime(parms[9].toString()):"");
+					candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
 					candiateVO.add(candidateResults);
 				}
 			}
+			dataTransferVO.setTotalMsgCount(totalMsgCount);
+			dataTransferVO.setUnreadMsgCount(unreadMsgCount);
 			dataTransferVO.setCandidateVO(candiateVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			resultStatus.setResultPartial(false);

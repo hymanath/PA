@@ -8,6 +8,8 @@ public class DataTransferVO extends ResultStatus{
 	private Object presentYearChart;
 	private Object previousYearChart;
 	private Object latestYearChart;
+	private Long unreadMsgCount;
+	private Long totalMsgCount;
 	private List<CandidateVO> candidateVO;
 	private List<CandidateVO> connectedPeople;
 	private List<CandidateVO> pendingRequests;
@@ -25,7 +27,7 @@ public class DataTransferVO extends ResultStatus{
 	private ResultStatus resultStatusForBlockRequest;
 	private ResultStatus resultStatusForUnBlockRequest;
 	private String loginStatus;
-	private Long userId; 
+	private Long userId;
 	
 	
 	public ResultStatus getResultStatusForBlockRequest() {
@@ -202,6 +204,22 @@ public class DataTransferVO extends ResultStatus{
 
 	public void setLatestYearChart(Object latestYearChart) {
 		this.latestYearChart = latestYearChart;
+	}
+
+	public Long getUnreadMsgCount() {
+		return unreadMsgCount;
+	}
+
+	public void setUnreadMsgCount(Long unreadMsgCount) {
+		this.unreadMsgCount = unreadMsgCount;
+	}
+
+	public Long getTotalMsgCount() {
+		return totalMsgCount;
+	}
+
+	public void setTotalMsgCount(Long totalMsgCount) {
+		this.totalMsgCount = totalMsgCount;
 	}
 
 

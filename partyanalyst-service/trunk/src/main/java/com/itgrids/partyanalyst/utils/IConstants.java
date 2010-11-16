@@ -290,6 +290,8 @@ public interface IConstants {
     public static final String UNBLOCK = "UNBLOCK";
     public static final String SCRAP = "SCRAP";
     public static final String LOGGED_USER = "LOGGED_USER";
+    public static final String MSG_READ = "READ";
+    public static final String MSG_UNREAD = "UNREAD";
     
     public static final String INFLUENCING_PEOPLE = "INFLUENCING_PEOPLE";
     public static final String LOCAL_USER_GROUPS = "LOCAL_USER_GROUPS";

@@ -92,6 +92,26 @@ public class DateService implements IDateService {
 	}
 	
 	/*
+	 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
+	 */
+	public static String timeStampConversionWithoutTime(String idate){
+		String convertedDated=null;
+		SimpleDateFormat sdfInput =  
+	        new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss") ;  
+	     SimpleDateFormat sdfOutput =  
+	        new SimpleDateFormat  ("dd-MM-yyyy") ;  		  
+	  
+	     Date date;
+		try {
+			date = sdfInput.parse (idate);
+			convertedDated = sdfOutput.format(date).toString();
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+		return convertedDated;	
+	}
+	
+	/*
 	 * To convert timestamp which is in yyyy-MM-dd format to dd-MM-yyyy format.
 	 */
 	public String timeStampConversionToDDMMYY(String idate){

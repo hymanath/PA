@@ -667,14 +667,6 @@
     	<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	</bean>
 	
-	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService">
-		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
-		<property name="constituencyPageService" ref="constituencyPageService" />
-		<property name="electionDAO" ref="electionDAO" />
-    	<property name="allianceGroupDAO" ref="allianceGroupDAO" />
-    	<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
-	</bean>
-	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService">
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
@@ -746,6 +738,51 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+	</bean>
+	
+	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
+	    <property name="electionDAO" ref="electionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	
+	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
+		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="boothResultDAO" ref="boothResultDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />		
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="socialCategoryDAO" ref="socialCategoryDAO" />
+		<property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
+		<property name="occupationDAO" ref="occupationDAO" />
+		<property name="languageDAO" ref="languageDAO" />	
+		<property name="partyElectionStateResultWithAllianceDAO" ref="partyElectionStateResultWithAllianceDAO" />	
+		<property name="partyElectionDistrictResultWithAllianceDAO" ref="partyElectionDistrictResultWithAllianceDAO" />	
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="informationSourceDAO" ref="informationSourceDAO" />
 	</bean>
 	
 </beans>

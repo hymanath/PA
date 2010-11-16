@@ -25,4 +25,7 @@ public interface IAnanymousUserService {
 			List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject);
 	
 	public NavigationVO getAllMessageTypes();
+	
+	public String displayMessageAndUpdateUnread(Long customMessageId);
+	
 }
