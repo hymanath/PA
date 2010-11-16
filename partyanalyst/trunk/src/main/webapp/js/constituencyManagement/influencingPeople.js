@@ -197,7 +197,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		img.style.display = "none";
 	
 	var aStr = '';
-	if(jsObj.status && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
+	if(jsObj.status && (data.isAreaTypeRadio || data.isAreaTypeRadio == null)  && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
 	{
 		aStr += '<table>';
 		aStr += '<tr>';
@@ -216,7 +216,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 
 		radioelmt.innerHTML = aStr;
 	}	
-	else if(data.areaTypeRadioOptions == null || data.areaTypeRadioOptions.length == 0)
+	else if(!data.isAreaTypeRadio || data.areaTypeRadioOptions == null || data.areaTypeRadioOptions.length == 0)
 	{
 		radioelmt.innerHTML = '';
 	}
