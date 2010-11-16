@@ -395,10 +395,13 @@ function buildRegionWiseOverViewData(data,divId)
 	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
 	str += '	<tr>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label">';
+	str += '		<td align="left"><div class="regionsHead_center" style="height:30px;padding:0px;">';
+	str += '			<span class="regionsHead_center_label">';	
 	str +=				data.regionName+' ( '+data.regionType+') -';
-	str += '			<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openCandidatesPopup(\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\'region\')">'+data.countValue+' </a></span></div></td>';
-	str += '		<td><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+	str += '				<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\'region\')">'+data.countValue+' </a>';
+	str += '			</span>';
+	str += '		</div></td>';
+	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
 	str += '	</tr>';
 	str += '</table>';
 	
@@ -415,13 +418,13 @@ function buildRegionWiseOverViewData(data,divId)
 	}
 	else
 	{
-		str += '<table class="region_available_head">';
+		str += '<table width="100%" class="region_available_head">';
 		for(var j=0; j<availablePeople.length; j++)
 		{				
 			str += '<tr>';
-			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+availablePeople[j].subRegionName+' ( '+availablePeople[j].subRegionType+' )</td>';
-			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\''+availablePeople[j].subRegionId+'\',\''+availablePeople[j].subRegionName+'\',\''+availablePeople[j].subRegionType+'\',\'region\')">'+availablePeople[j].countValue+'</a></td>';
+			str += '<td width="10px"><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td align="left">'+availablePeople[j].subRegionName+'</td>';
+			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\''+data.regionId+'\',\''+availablePeople[j].subRegionId+'\',\''+availablePeople[j].subRegionName+'\',\''+availablePeople[j].subRegionType+'\',\'region\')">'+availablePeople[j].countValue+'</a></td>';
 			str += '</tr>';
 		}
 		str += '</table>';		
@@ -436,12 +439,12 @@ function buildRegionWiseOverViewData(data,divId)
 	}
 	else
 	{
-		str += '<table class="region_available_head">';
+		str += '<table width="100%" class="region_available_head">';
 		for(var j=0; j<zeroPeople.length; j++)
 		{				
 			str += '<tr>';
-			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+zeroPeople[j].subRegionName+' ( '+zeroPeople[j].subRegionType+' )</td>';
+			str += '<td width="10px"><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td align="left">'+zeroPeople[j].subRegionName+'</td>';
 			//str += '<td>'+zeroPeople[j].countValue+'</td>';
 			str += '</tr>';
 		}
@@ -455,9 +458,9 @@ function buildRegionWiseOverViewData(data,divId)
 
 }
 
-function openCandidatesPopup(regionId,regionName,regionType,scopeType)
+function openCandidatesPopup(parentRegionId,regionId,regionName,regionType,scopeType)
 {
-	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
+	var urlStr = "influencingPeopleDataAction.action?windowTask=influencingPersonInfoPopup&parentRegionId="+parentRegionId+"&regionId="+regionId+"&regionName="+regionName+"&regionType="+regionType+"&scopeType="+scopeType;
 	var browser2 = window.open(urlStr,"influencingPersonInfoPopup","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }
@@ -481,8 +484,8 @@ function buildScopeWiseOverViewData(data,divId)
 	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
 	str += '	<tr>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label"> Based On Influence Scope </span></div></td>';
-	str += '		<td><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+	str += '		<td align="left"><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label"> Based On Influence Scope </span></div></td>';
+	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
 	str += '	</tr>';
 	str += '</table>';
 	str += '</div>';
@@ -493,21 +496,21 @@ function buildScopeWiseOverViewData(data,divId)
 	{
 		str += '<div class="scopeWise_data_main">';
 		str += '<div class="scopeWise_head">';
-		str += '<table class="scopeWise_head_table">';
+		str += '<table width="100%" class="scopeWise_head_table">';
 		str += '<tr>';
 		str += '<td><img src="images/icons/system_grps.png"></td>';
-		str += '<td>'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
+		str += '<td align="left">'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
 		str += '<div class="scopeWise_body">';
-		str += '<table class="region_available_head">';		
+		str += '<table class="region_available_head" width="100%">';		
 		for(var j=0 ; j<data[i].influenceScopeDetails.length; j++)
 		{
 			str += '<tr>';
 			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+data[i].influenceScopeDetails[j].influenceScopeRegion+'</td>';
-			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
+			str += '<td align="left">'+data[i].influenceScopeDetails[j].influenceScopeRegion+'</td>';
+			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
 			str += '</tr>';
 		}
 		str += '</table>';
@@ -885,7 +888,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		str += '<table><tr>';
 		str += '<td><img src="images/icons/system_grps.png"></td>';
 		str += '<td>'+results[i].regionName+' ( '+results[i].regionType+' ) - ';
-		str += '<a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].regionId+'\',\''+results[i].regionName+'\',\''+results[i].regionType+'\',\'region\')">'+results[i].countValue+'</a></td>';
+		str += '<a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+jsObj.regionId+'\',\''+results[i].regionId+'\',\''+results[i].regionName+'\',\''+results[i].regionType+'\',\'region\')">'+results[i].countValue+'</a></td>';
 		str += '</tr></table>';
 		str += '</div>';
 		str += '</div>';
@@ -917,7 +920,7 @@ function buildSubLevelInfluencePeople(jsObj,data)
 				str += '			<tr>';
 				str += '			<td><img width="8" height="8" src="images/icons/constituencyPage/bullet_blue.png"></td>';
 				str += '			<th width="80%" align="left">'+availableRegions[j].subRegionName+'</th>';
-				str += '			<td width="15%" align="left"><a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+availableRegions[j].subRegionId+'\',\''+availableRegions[j].subRegionName+'\',\''+availableRegions[j].subRegionType+'\',\'region\')">'+availableRegions[j].countValue+'</a></td>';
+				str += '			<td width="15%" align="left"><a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\''+results[i].regionId+'\',\''+availableRegions[j].subRegionId+'\',\''+availableRegions[j].subRegionName+'\',\''+availableRegions[j].subRegionType+'\',\'region\')">'+availableRegions[j].countValue+'</a></td>';
 				str += '			</tr>';
 			}
 			str += '			</table>';
