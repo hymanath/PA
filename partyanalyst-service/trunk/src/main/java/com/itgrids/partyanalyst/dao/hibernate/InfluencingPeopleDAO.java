@@ -338,10 +338,26 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInBooth(Long userId, Long boothId) {
+		Object[] params = {userId,boothId};
+		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
+				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInWard(Long userId, Long wardId) {
 		Object[] params = {userId,wardId};
 		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.ward is not null and model.userAddress.ward.constituencyId = ? ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInBooth(Long userId, Long boothId) {
+		Object[] params = {userId,boothId};
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.booth is not null and model.userAddress.booth.boothId = ? ",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -404,6 +420,15 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	@SuppressWarnings("unchecked")
 	public List getInfluencingPeopleNameAndMobileNOByIds(String infIds) {
 		return getHibernateTemplate().find("select model.firstName,model.lastName,model.phoneNo from InfluencingPeople model where model.influencingPeopleId in ("+infIds+")");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInBoothsByWard(Long userId,
+			Long wardId) {
+		Object[] params = {userId,wardId};
+		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.booth.boothId from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.ward.constituencyId = ? and "+
+				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
 	}
 
 		
