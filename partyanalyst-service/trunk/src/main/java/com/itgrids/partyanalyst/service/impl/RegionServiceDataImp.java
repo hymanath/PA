@@ -411,6 +411,27 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return localElectionBodiesList;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String getLocalBodyElectionTypeInConstituency(Long constituencyId){
+		
+		String type = "";
+		try
+		{
+			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
+			if(result != null && result.size() > 0){
+				Object[] obj = (Object[]) result.get(0);
+				type = (String)obj[2];
+			}
+				
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			log.debug("Exception arised while retrieving local election bodies");
+		}
+	 
+	 return type;	
+	}
+	
 	private List<SelectOptionVO> getTehsilsInConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> list = getMandalsByConstituencyID(constituencyId);
@@ -595,6 +616,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return regionsList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getboothsInWard(Long wardId, Long year,
 			Long constituencyId) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
@@ -610,7 +632,23 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return regionsList;		
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,
+			Long constituencyId) {
+		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
+		List boothsList =  boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(wardId, year, constituencyId);
+		if(boothsList.size()>0)
+		{
+			for(int j=0;j<boothsList.size();j++)
+			{
+				Object[] obj = (Object[])boothsList.get(j);
+				regionsList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No" + obj[1]));
+			}
+		}
+		return regionsList;		
+	}
+	
 	public List<SelectOptionVO> getAllConstituenciesByElectionTypeInState(
 			Long electionTypeId, Long stateId) {
 		
