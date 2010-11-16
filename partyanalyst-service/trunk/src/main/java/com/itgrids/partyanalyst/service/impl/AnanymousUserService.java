@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
@@ -46,7 +47,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
-	private CustomMessageDAO customMessageDAO;
+	private ICustomMessageDAO customMessageDAO;
 	private IMessageTypeDAO messageTypeDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
@@ -88,14 +89,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public void setDateService(IDateService dateService) {
 		this.dateService = dateService;
 	}
-
-	public CustomMessageDAO getCustomMessageDAO() {
+	
+	public ICustomMessageDAO getCustomMessageDAO() {
 		return customMessageDAO;
 	}
 
-	public void setCustomMessageDAO(CustomMessageDAO customMessageDAO) {
+	public void setCustomMessageDAO(ICustomMessageDAO customMessageDAO) {
 		this.customMessageDAO = customMessageDAO;
 	}
+
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -857,15 +859,25 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public List<Long> getUserIds(List<Long> userId,List<Long> ids){		
 		Set<Long> setOfUserIds = new HashSet<Long>(0);
 		List<Long> listOfUserIds = new ArrayList<Long>(0);
-		List<Object> connectedPeopleIds = userConnectedtoDAO.getAllConnectedPeopleForUser(userId);
-		for(int i=0;i<connectedPeopleIds.size();i++){
-			Object[] parms = (Object[])connectedPeopleIds.get(i);
-			setOfUserIds.add(new Long(parms[0].toString()));
-			setOfUserIds.add(new Long(parms[1].toString()));
+		try{
+			List<Object> connectedPeopleIds = userConnectedtoDAO.getAllConnectedPeopleForUser(userId);
+			for(int i=0;i<connectedPeopleIds.size();i++){
+				Object[] parms = (Object[])connectedPeopleIds.get(i);
+				setOfUserIds.add(new Long(parms[0].toString()));
+				setOfUserIds.add(new Long(parms[1].toString()));
+			}
+			setOfUserIds.removeAll(userId);
+			setOfUserIds.removeAll(ids);
+			listOfUserIds.addAll(setOfUserIds);	
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			ids = null;
+			setOfUserIds = null;
+			userId= null;
+			System.gc();
 		}
-		setOfUserIds.removeAll(userId);
-		setOfUserIds.removeAll(ids);
-		listOfUserIds.addAll(setOfUserIds);
+		
 		return listOfUserIds;
 	}
 	
