@@ -103,33 +103,32 @@ var Localization = { <%
 var errotMsg = '<%=errorMsg%>';
 localBodyString = '<%=localBody%>';
 
-<c:forEach var="state" items="${statesList}" >
-			
-	var obj={
-				id:"${state.id}",
-				name:"${state.name}"				
-			};
-	statesInCountryObj.push(obj);	
-</c:forEach>
+	<c:forEach var="state" items="${statesList}" >
+		var obj={
+					id:"${state.id}",
+					name:"${state.name}"				
+				};
+		statesInCountryObj.push(obj);	
+	</c:forEach>
 
-
-
-
-
-YAHOO.util.Event.onContentReady("navigationHead", function () { 	 
+	YAHOO.util.Event.onContentReady("navigationHead", function () { 	 
 	    
 	    var oMenuBar = new YAHOO.widget.MenuBar("navigationHead", {  
 	                                                autosubmenudisplay: true,  
 	                                                hidedelay: 100,  
 	                                                lazyload: true }); 
-
+	
 		 
 		oMenuBar.subscribe("beforeRender", function () { 
 	 
 	    if (this.getRoot() == this) { 	 
-		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
-		this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
-		this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
+			this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
+			this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
+			this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
+			this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
+			this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
+			this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]);
+			this.getItem(6).cfg.setProperty("submenu", aSubmenuData[6]);
 	    } 
 	 
 	}); 
@@ -137,12 +136,48 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 	oMenuBar.render();  
 	 
 	}); 
-
-	var aSubmenuData = [ 
+	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}"> 	
+		var aSubmenuData = [ 
 		{
 			 id: "home", 
-	        itemdata: [] 
+	        itemdata: [ 				
+	   	          
+	
+	        ] 
 		},	 
+	    { 
+	        id: "partyanalysis",  
+	        itemdata: [  
+	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
+	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
+	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
+	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"}	                       
+	        ] 
+	    }, 
+	    { 
+	        id: "cadreManagement", 
+	        itemdata: [ 				
+	   	          
+	
+	        ] 
+	    },  
+		{ 
+	        id: "constituenceyManagement",
+	        itemdata: [
+		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
+		    { text: "User Groups", url: "userGroupAction.action" },
+		    { text: "Constituency Election Report", url: "constituencyElectionReportAction.action" }
+	        ] 
+	    },   
+	    { 
+	        id: "politicianAnalysis",  
+	        itemdata: [ 
+		    { text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
+		    { text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
+	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
+	        ]  
+	    },	 
 	    { 
 	        id: "staticData",  
 	        itemdata: [ 
@@ -151,12 +186,48 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
 				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
 	        ]     
-	    },
-		{
-			 id: "clientLogin", 
-	        itemdata: [] 
-		},
-	]; 
+	    }, 
+	    { 
+	        id: "search", 
+	        itemdata: [
+	        ] 
+	    }  
+	     
+	     
+		]; 
+	</c:if>
+	<c:if test="${(sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser') || (sessionScope.loginStatus == null || sessionScope.loginStatus == 'in')}">
+		var aSubmenuData = [ 
+					{
+						 id: "home", 
+						itemdata: [ 				
+							  
+	
+						] 
+					},
+					{ 
+						id: "partyanalysis",  
+				        itemdata: [	            
+				            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
+				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" }	                       
+				        ]    
+					},
+					{ 
+						id: "staticData",  
+						itemdata: [ 
+							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+						]     
+					}, 
+					{ 
+						id: "search", 
+						itemdata: [
+						] 
+					}  					 
+				]; 
+	</c:if>
 </script>
 </head>
 <body>
@@ -193,29 +264,53 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
             </table>		
         </div>	
         <div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
-		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
-					<div class="bd"> 
-						<ul class="first-of-type"> 
+			<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
+				<div class="bd"> 
+					<ul class="first-of-type"> 
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
+								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+								HOME
+							</a> 
+						</li>
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
-									<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
-									HOME
-								</a> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 							</li> 
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
+								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 							</li> 
-							<c:if test="${sessionScope.loginStatus == 'out'}">  
-								<li class="yuimenubaritem" > 
-									<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
-										<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
-											DASH BOARD
-										</a>  
-									</c:if>	
-								</li> 
-							</c:if>
-						</ul> 
-					</div> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
+							</li> 
+						</c:if>
+						
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
+						</li>
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
+						</li>
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH</a> 
+						</li> 
+						
+						<c:if test="${sessionScope.loginStatus == 'out'}">  
+							<li class="yuimenubaritem"> 
+								<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
+									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+										DASH BOARD
+									</a> 
+								</c:if>
+								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+										DASH BOARD
+									</a>  
+								</c:if>	
+							</li> 
+						</c:if>
+					</ul> 
+				</div> 
 			</div> 
 		</div>
 
