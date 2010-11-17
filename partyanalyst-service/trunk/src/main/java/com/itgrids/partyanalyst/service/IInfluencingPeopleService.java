@@ -59,4 +59,6 @@ public interface IInfluencingPeopleService {
 	
 	public List<SelectOptionVO> getLocalGroupCategoriesList(Long userId);
 	
+	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(LocalUserGroupDetailsVO localGroupDetails); 
+	
 }
