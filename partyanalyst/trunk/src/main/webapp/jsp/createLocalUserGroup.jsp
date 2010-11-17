@@ -11,6 +11,7 @@
 <SCRIPT type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 <LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
+ <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -28,6 +29,10 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	
 
 	<!-- YUI Skin Sam -->
@@ -54,6 +59,25 @@
 	  margin:5px 0 8px;
 	  width:50px;
   }
+  .required
+{
+	color :red;
+}
+
+.tdstyle{
+	color:#926682;
+	font-family:verdana;
+	font-weight:bold;
+	text-align:left;
+}
+
+.regionSelect
+{
+width:146px;
+}
+.selectWidth {
+width:150px;
+}
 
 </style>
 <script type="text/javascript">
@@ -102,14 +126,172 @@ function limitText(limitField, limitCount, limitNum)
 	{			
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
 	}
-}	
+}
+
+function populateLocations(val,source)
+{	
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+
+	var hiddenEl = document.getElementById("groupScopeValueId");
+	var stateFieldEl = document.getElementById("stateField");
+	var districtFieldEl = document.getElementById("districtField"); 
+	var constituencyFieldEl = document.getElementById("constituencyField");
+	var mandalFieldEl = document.getElementById("mandalField");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
+	
+	if(source == 'onChange')
+	{	
+		hiddenEl.value='';
+		stateFieldEl.selectedIndex = '0';
+		
+		if(districtFieldEl)
+			districtFieldEl.selectedIndex = '0';
+		
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+
+		if(boothFieldEl)
+			boothFieldEl.selectedIndex = '0';
+		
+	}	
+	
+	row1El.style.display = 'none';
+	
+	if(row2El)
+		row2El.style.display = 'none';
+	
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+
+	if(row6El)
+		row6El.style.display = 'none';
+	
+	var value = val;
+	
+	if(value == 1)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			
+		} else if(value == 2)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+		} else if(value == 3)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';					
+		} else if(value == 4)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';			
+		} else if(value == 5)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';				
+		} else if(value == 6)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';		
+
+		} else if(value == 7)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';	
+			 row5El.style.display == 'none'
+
+		} else if(value == 8)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			 
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';			
+		} else if(value == 9)
+		{
+			if(row1El.style.display == 'none')
+				row1El.style.display = '';			
+			if(row2El.style.display == 'none')
+				row2El.style.display = '';
+			if(row3El.style.display == 'none')
+				row3El.style.display = '';
+			if(row4El.style.display == 'none')
+				row4El.style.display = '';
+			/*if(row6El.style.display == 'none')
+				row6El.style.display = '';*/
+		}	 
+}
+
+function setLocationValue(value,source)
+{ 
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].text;
+	
+	if(value == '0')
+	{
+		alert("Please Select Valid Location"); 
+		return; 
+	}	
+	var boothIdTextEl = document.getElementById("boothNoText");
+	var hiddenEl = document.getElementById("groupScopeValueId"); 
+	hiddenEl.value = '';
+	if(source == 'onKeyUp')
+	{
+		hiddenEl.value = boothIdTextEl.value;	
+	}
+	else
+	{
+		hiddenEl.value = value;
+	}
+	if(scopeLevelElVal == 'BOOTH')
+	{
+		
+	}
+}
 </script>
 </head>
 
 <body onload="" class="bodyStyle">
-
-<s:form action="" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
-
+<s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
  <div id="wrapper" style="width:550px;">
    <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
     <tbody>
@@ -135,11 +317,23 @@ function limitText(limitField, limitCount, limitNum)
 	 </tr>
 
     </tbody>
-   </table>
 
+   </table>
+   <div id="loginDetailsDivBody" align="center" class="accessDivBody">
+	<div id="errorMsgDiv">
+		<table class="registrationTable" >
+			<tr>
+				<td colspan="2">
+					<div style="color: red;">
+						<s:actionerror />
+						<s:fielderror />
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>	
    <table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0" align="center" width="660">
     <tbody>
-
 	  <tr>
 	    <td class="labelStyle" colspan="5">Create a Group</td>
 	  </tr>
@@ -147,16 +341,16 @@ function limitText(limitField, limitCount, limitNum)
 	    <td height="17"></td>
 	  </tr>
 	  <tr>
-	    <td width="100">Select Group Category</td>
+	    <td width="100px">Select Group Category<font class="required">*</font></td>
 		<td width="14">
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <s:select id="categorysId" name="categorys" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name"></s:select>
+		  <s:select id="categorysId" name="groupCategoryId" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" onchange=""></s:select>
 		</td>
 	  </tr>
 	  <tr>
-	    <td width="100"></td>
+	    <td width="100px"></td>
 		<td width="14">
 		  <b> </b>
 		</td>
@@ -165,7 +359,7 @@ function limitText(limitField, limitCount, limitNum)
 		</td>
 	  </tr>
 	  <tr id="catgrNameRow" style="display:none;">
-	    <td width="100"></td>
+	    <td width="100px"></td>
 		<td width="14">
 		  <b> </b>
 		</td>
@@ -174,7 +368,7 @@ function limitText(limitField, limitCount, limitNum)
 		</td>
 	  </tr>
 	  <tr id="catgrDescRow" style="display:none;">
-	    <td width="100"></td>
+	    <td width="100px"></td>
 		<td width="14">
 		  <b> </b>
 		</td>
@@ -186,7 +380,7 @@ function limitText(limitField, limitCount, limitNum)
 	  </tr>
 
 	  <tr>
-	    <td width="100">Enter Group Name</td>
+	    <td width="100px">Enter Group Name<font class="required">*</font></td>
 		<td width="14">
 		  <b> : </b>
 		</td>
@@ -197,35 +391,96 @@ function limitText(limitField, limitCount, limitNum)
 
       <tr><td>&nbsp;</td></tr>
 	   <tr>
-	    <td width="100">Enter Group Description</td>
+	    <td width="100px">Enter Group Description</td>
 		<td width="14">
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <textarea id="localGroupDesc" cols="10" rows="5" style="width:150px;" name="localGroupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
+		  <textarea id="." cols="10" rows="5" style="width:150px;" name="localGroupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
 		  </textarea>
 		</td>
 	  </tr>
 
       <tr><td>&nbsp;</td></tr>
 	  <tr>
-	    <td width="100">Select Group Scope</td>
+	    <td width="100">Select Group Scope<font class="required">*</font></td>
 		<td width="14">
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <s:select id="groupScopeId" name="groupScope" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name"></s:select>
+		  <s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		</td>
 	  </tr>
-
-	</tbody>
+	  </tbody>
    </table>
+   <table class="formTableStyle" width="100%">	
+	  <tr id="row1" width="100px" style="display:none;">
+			<td width="214px" >State<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			</td>
+		</tr>
+		 <tr id="row2" width="100px" style="display:none;">
+			<td width="214px" >District<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			</td>
+		</tr>
+		 <tr id="row3" width="100px" style="display:none;" >
+			<td width="214px" >Constituency<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+		  </td>
+	    </tr>
+		 <tr id="row4" width="100px" style="display:none;" >
+			<td width="214px" >Tehsil/Municipality/Corporation<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+		  </td>
+	    </tr>
+		 <tr id="row5" width="100px" style="display:none;" >
+			<td width="214px" >Village/Ward<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="hamletField_s" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+		  </td>
+	     </tr>
+		 <tr id="row6" width="100px" style="display:none;">
+			<td width="214px" >Booth<font class="required">*</font></td>
+			<td width="27px">
+			<b> : </b></td>
+			<td>
+			<s:select id="boothField_s" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			</td>
+	</tr>
+	</table>
+	
  </div>
+ <s:hidden id="groupScopeValueId" name="groupScopeValueId"/>
+ 
+  <table class="formTableStyle" width="100%">	
+  <tr>
+	    <td height="20px"></td>
+  </tr>
+	<tr>
+		<td width="150px"></td><td width="90px"></td>
+		 <td><div align="right">
+			<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
+			</div>
+		</td>
+	</tr>
+	</table>
 </s:form>
-
 <script type="text/javascript">
-
 </script>
-
 </body>
 </html>

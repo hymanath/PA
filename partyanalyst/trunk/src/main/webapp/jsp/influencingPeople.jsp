@@ -204,17 +204,32 @@ function influenceRangeFunction(id,text){
 		specifyBox.value = text;
 }
 
-function setLocationValue(value)
+function setLocationValue(value,source)
 { 
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].text;
+
 	if(value == '0')
 	{
 		alert("Please Select Valid Location"); 
 		return; 
 	}	
+		var boothIdTextEl = document.getElementById("boothNoText");
 		var hiddenEl = document.getElementById("influenceRangeInputId"); 
 		hiddenEl.value = '';
-		hiddenEl.value = value;
-}
+
+		if(source == 'onKeyUp')
+		{
+			hiddenEl.value = boothIdTextEl.value;	
+		} else
+		{
+			hiddenEl.value = value;
+		}
+		if(scopeLevelElVal == 'BOOTH')
+		{
+			
+		}
+	}
 
 function executeOnload() 
 {
@@ -344,7 +359,8 @@ function populateLocations(val,source)
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';
-			  row5El.style.display == 'none'
+			if(row5El.style.display == 'none')
+				row5El.style.display = '';	
 
 		} else if(value == 7)
 		{
@@ -356,9 +372,7 @@ function populateLocations(val,source)
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';	
-			if(row5El.style.display == 'none')
-				row5El.style.display = '';
-
+			
 		} else if(value == 8)
 		{
 			if(row1El.style.display == 'none')
@@ -381,8 +395,8 @@ function populateLocations(val,source)
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
 				row4El.style.display = '';
-			if(row6El.style.display == 'none')
-				row6El.style.display = '';
+		  /*	if(row6El.style.display == 'none')
+				row6El.style.display = ''; */
 		}	 
 }
 function doUnload()
@@ -514,6 +528,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
+
 		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="%{getText('TehsilOrMuncipality')}"/><font class="required"> * </font></td>
 		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>	
@@ -531,7 +546,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td align="left" width="165px">
 		<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 		</td>
-		<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details"/></td>
+		<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField','mandalField_add')"/></td>
 	</tr>
 	</table>
 </FIELDSET>
@@ -568,37 +583,40 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<tr id="row1" style="display:none;">
 			<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
 			<td>
-			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
 			<td width="120px" class="tdstyle"><%=DISTRICT%><font class="required"> * </font></td>
 			<td>
-			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
 		<td width="120px" class="tdstyle"><%=ACONSTITUENCY%><font class="required"> * </font></td>
 		<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		</td>
 	</tr>								
 	<tr id="row4" style="display:none;">
 		<td width="120px" class="tdstyle"><%=MANDAL%><font class="required"> * </font></td>
 		<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreReg','null','cadreLevel','constituencyField');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
 		<td width="120px" class="tdstyle"><%=wardOrHamlet%><font class="required"> * </font></td>
 		<td>
-			<s:select id="hamletField_s" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<s:select id="hamletField_s" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		</td>
 	</tr>	
 	<tr id="row6" style="display:none;">
 			<td width="120px" class="tdstyle">Booth No</td>
 			<td>
-				<s:select id="boothField_s" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+				<s:select id="boothField_s" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			</td>
+			<td>
+				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField')"/>
 			</td>
 	</tr>
 	</TABLE>
@@ -614,6 +632,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 <%--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
 </div>  ---%>
+<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
 </s:form>
 
 </div>		
