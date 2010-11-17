@@ -35,6 +35,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getBoothsInTehsilOrMunicipality(Long tehsilId, Long year, Long constituencyId);
 	public List<SelectOptionVO> getboothsInWard(Long wardId, Long year, Long constituencyId);
 	public List<SelectOptionVO> getboothDetailsInWard(Long wardId, Long year,Long constituencyId);
+	public List<SelectOptionVO> getBoothsInLocalBodysByConstituencyId(Long localBodyId, Long year, Long constituencyId);
 	
 	public List<SelectOptionVO> getTehsilsInAConstituency(Long constituencyId);
 	public List<SelectOptionVO> getLocalElectionBodiesInConstituency(Long constituencyId, String year);

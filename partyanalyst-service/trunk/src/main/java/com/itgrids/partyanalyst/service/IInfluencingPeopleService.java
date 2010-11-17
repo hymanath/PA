@@ -44,6 +44,8 @@ public interface IInfluencingPeopleService {
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType,Long parentRegionId);
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
 	
+	public InfluencingPeopleBeanVO getMoreResultsForInfluencingPeopleById(Long influencingPersonId);
+	
 	//Local User Groups
 	public ConstituencyManagementDataVO getLocalUserGroupOverviewDetails(Long userId,String userAccessType,String userAccessValue);
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getLocalUserGroupByInfluenceScope(Long userId);
