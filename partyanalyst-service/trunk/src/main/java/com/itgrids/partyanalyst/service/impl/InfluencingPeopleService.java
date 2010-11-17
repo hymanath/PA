@@ -2753,8 +2753,19 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				influencingPeopleBeanVO.setMiddleName((String)values[2]);
 				influencingPeopleBeanVO.setLastName((String)values[3]);
 				influencingPeopleBeanVO.setParty((String)values[4]);
-				influencingPeopleBeanVO.setCast((String)values[5]);
-				influencingPeopleBeanVO.setOccupation((String)values[6]);
+				
+				String caste = (String)values[5];
+				if(caste != null){
+					SocialCategory casteDetails = socialCategoryDAO.get(new Long(caste));
+					influencingPeopleBeanVO.setCast(casteDetails.getCategory());
+				}
+				
+				String occupation = (String)values[6];
+				if(occupation != null){
+					Occupation occupatn = occupationDAO.get(new Long(occupation));
+				    influencingPeopleBeanVO.setOccupation(occupatn.getOccupation());
+				}
+				
 				influencingPeopleBeanVO.setMobile((String)values[7]);
 				influencingPeopleBeanVO.setGender((String)values[8]);
 				influencingPeopleBeanVO.setEmail((String)values[9]);
@@ -2800,6 +2811,19 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			influencingPeopleBeanVO.setBooth(boothName = booth != null ? booth.getPartNo().concat(" BOOTH") : "");
 				
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#saveLocalUserGroupDetailsTODB(com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO)
+	 * Save Local Group Details To DataBase
+	 */
+	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(
+			LocalUserGroupDetailsVO localGroupDetails) {
+		
+		
+		
+	 return localGroupDetails;
 	}
 }
 
