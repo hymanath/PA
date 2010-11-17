@@ -530,6 +530,8 @@
 	<bean id="createLocalGroupAction" class="com.itgrids.partyanalyst.web.action.CreateLocalGroupAction" singleton="false">
 	    <property name="influencingPeopleService" ref="influencingPeopleService" />
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	    <property name="cadreManagementService" ref="cadreManagementService" />
+	    <property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 </beans>		
