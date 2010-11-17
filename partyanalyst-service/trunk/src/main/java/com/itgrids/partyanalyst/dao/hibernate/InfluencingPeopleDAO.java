@@ -433,7 +433,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 
 	@SuppressWarnings("unchecked")
 	public List getInfluencingPersonDetailsById(Long influencingPersonId) {
-		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.middleName,model.lastName,model.party,"+
+		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.middleName,model.lastName,model.party.shortName,"+
 				"model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,model.influencingPeoplePosition."+
 				"position,model.influencingScope,model.influencingScopeValue from InfluencingPeople model where model.influencingPeopleId = ?",influencingPersonId);
 				
