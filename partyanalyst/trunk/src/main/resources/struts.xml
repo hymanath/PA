@@ -1670,6 +1670,10 @@
 			<result name="success">/jsp/localGroupsPeoplePage.jsp</result>			
 		</action>	
 		
+		<action name="getInfluencingPersonDetailsAction" class="constituencyManagementAction" method="getInfluencingPersonDetails">
+			<result name="success">/jsp/influencePersonPage.jsp</result>			
+		</action>
+		
 		<action name="sendSMSToInfluencePeopleAction" class="constituencyManagementAction" method="sendSMSToInfluencePeople">
 			<result type="json" name="success">
 				<param name="root">smsResultVO</param>

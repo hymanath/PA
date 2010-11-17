@@ -464,6 +464,7 @@ fieldset {
 	color:#77471D;
 	font-weight:bold;
 	padding:3px;
+	text-align:left;
 }
 
 .scopeWise_data_main
@@ -603,6 +604,7 @@ fieldset {
 	background-color:#F5EFEA;
 	padding:5px;
 	position:relative;
+	text-align:left;
 }
 
 .differentViewsDivClass table th

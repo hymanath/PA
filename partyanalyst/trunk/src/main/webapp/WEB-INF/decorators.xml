@@ -52,6 +52,7 @@
 		<pattern>/localGroupsPeopleDataAction*</pattern>
 		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
 		<pattern>/createLocalGroupAction*</pattern>
+		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
 		<pattern>/saveLocalGroupAction*</pattern>
 	</excludes>  
 

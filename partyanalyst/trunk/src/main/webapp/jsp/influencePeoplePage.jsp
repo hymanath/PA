@@ -457,7 +457,9 @@
 			
 			function getPersonDetails(id)
 			{
-				
+				var urlStr = "getInfluencingPersonDetailsAction.action?windowTask=getInfluencingPersonDetailsPopup&personId="+id;
+				var browser2 = window.open(urlStr,"influencingPersonDetailPopup","scrollbars=yes,height=570,width=600,left=200,top=50");	
+				browser2.focus();
 			}
 			
 			function editPersonDetails(id)

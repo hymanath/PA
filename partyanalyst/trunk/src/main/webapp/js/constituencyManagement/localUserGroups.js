@@ -103,7 +103,7 @@ function getRegionWiseOverviewString(data,type)
 	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label">';
 	str +=				data.regionTitle +' - ';
 	str += '			<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openLocalGroupsCandidatesPopup(\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\''+data.regionTitle+'\',\''+data.regionTitleId+'\')">'+data.countValue+' </a></span></div></td>';
-	str += '		<td><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
 	str += '	</tr>';
 	str += '</table>';
 	str += '</div>';

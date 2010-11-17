@@ -141,8 +141,6 @@
 					} , {
 						key : "emailId"
 					},{
-						key : "moreDetails"
-					},{
 						key : "edit"
 					},{
 						key : "delete"
@@ -179,10 +177,6 @@
 					label : "Email",
 					sortable : true
 				},{
-					key : "moreDetails",
-					label : "More Details",
-					sortable : false
-				} ,{
 					key : "edit",
 					label : "Edit",
 					sortable : false
@@ -498,8 +492,7 @@
 										<td>${people.address}</td>
 										<td>${people.location}</td>
 										<td>${people.designation}</td>
-										<td>${people.emailId}</td>		
-										<td><a href="javascript:{}" onclick="getPersonDetails(${people.groupMemberId})">More Details</a></td>
+										<td>${people.emailId}</td>												
 										<td>
 											<a href="javascript:{}" onclick="editPersonDetails(${people.groupMemberId})">
 												<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">
