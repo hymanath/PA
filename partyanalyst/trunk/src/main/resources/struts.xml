@@ -275,6 +275,11 @@
          	<result name="success">/jsp/influencingPeople.jsp</result>
          	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
         </action>
+        <action name="saveLocalGroupAction" class="saveLocalGroupAction" >
+        	<result name="input">/jsp/createLocalUserGroup.jsp</result>
+         	<result name="success">/jsp/createLocalUserGroup.jsp</result>
+         	<result name="error">/jsp/createLocalUserGroup.jsp</result>
+        </action>
  		
 		<!-- End Party Performance Actions -->
 		
@@ -1710,8 +1715,8 @@
 		   <result name="error">/jsp/createLocalUserGroup.jsp</result>
            <result name="success">/jsp/createLocalUserGroup.jsp</result>	
         </action>
-        
-        <action name="getBoothsCompleteDetailsAction" class="locationsHierarchyAction" method="getBoothCompleteDetails">
+		
+		 <action name="getBoothsCompleteDetailsAction" class="locationsHierarchyAction" method="getBoothCompleteDetails">
            <result type="json" name="success">
 				<param name="root">boothsCompleteDetails</param>				
 			</result>	
@@ -1722,6 +1727,5 @@
 				<param name="root">message</param>				
 			</result>
         </action>
-		
 	</package>
 </struts>
