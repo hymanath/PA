@@ -126,7 +126,7 @@ function buildInboxMessagesForUser()
 		str += '<table width="100%" id="messagesContentTable" cellpadding="0" cellspacing="0">';
 		str += '<tr>';
 		str += '<td width="25%" align="left">'+arrData[i].candidateName+'</td>';	
-		str += '<td width="75%" align="left">'+arrData[i].data+'</td>';
+		str += '<td width="50%" align="left">'+arrData[i].data+'</td>';
 		str += '<td width="25%" align="left">'+arrData[i].postedDate+'</td>';
 		str += '</tr>';
 		str += '</table>';
