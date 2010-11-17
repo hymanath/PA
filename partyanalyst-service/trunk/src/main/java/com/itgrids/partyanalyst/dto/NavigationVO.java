@@ -20,7 +20,17 @@ public class NavigationVO extends ResultStatus{
 	private List<EntitlementVO> entitlementVO;
 	private ResultStatus resultStatus;
 	private Long count;
+	private String checkPermission;
 	
+	
+	public String getCheckPermission() {
+		return checkPermission;
+	}
+
+	public void setCheckPermission(String checkPermission) {
+		this.checkPermission = checkPermission;
+	}
+
 	public Long getCount() {
 		return count;
 	}

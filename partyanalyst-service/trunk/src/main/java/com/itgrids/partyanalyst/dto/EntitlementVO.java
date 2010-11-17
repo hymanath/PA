@@ -17,8 +17,17 @@ public class EntitlementVO implements Serializable {
 	private String name;
 	private Long userId;
 	private List<SelectOptionVO> listOfEntitlements;
+	private String checkPermission;
 	
 	
+	public String getCheckPermission() {
+		return checkPermission;
+	}
+
+	public void setCheckPermission(String checkPermission) {
+		this.checkPermission = checkPermission;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
