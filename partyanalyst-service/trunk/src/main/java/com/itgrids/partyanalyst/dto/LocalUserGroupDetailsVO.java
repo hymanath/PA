@@ -30,6 +30,9 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private Long groupLocationId;
 	private String groupLocation;
 	private Long groupMembersCount;
+	private String registrationId;
+	private String groupScopeId;
+	private String groupScopeValueId;
 	
 	private List<UserGroupMembersVO> groupMemberDetails;
 	
@@ -100,6 +103,24 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	}
 	public void setGroupMemberDetails(List<UserGroupMembersVO> groupMemberDetails) {
 		this.groupMemberDetails = groupMemberDetails;
+	}
+	public String getRegistrationId() {
+		return registrationId;
+	}
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
+	}
+	public String getGroupScopeId() {
+		return groupScopeId;
+	}
+	public void setGroupScopeId(String groupScopeId) {
+		this.groupScopeId = groupScopeId;
+	}
+	public String getGroupScopeValueId() {
+		return groupScopeValueId;
+	}
+	public void setGroupScopeValueId(String groupScopeValueId) {
+		this.groupScopeValueId = groupScopeValueId;
 	}
 	
 
