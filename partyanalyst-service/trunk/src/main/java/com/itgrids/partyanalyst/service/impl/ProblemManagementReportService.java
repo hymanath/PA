@@ -609,7 +609,7 @@ public class ProblemManagementReportService implements
 				else{
 					problemHistoryVO.setComments("--");
 				}
-				problemHistoryVO.setMovedDate(dateService.timeStampConversion(problemData[2].toString()));
+				problemHistoryVO.setMovedDate(DateService.timeStampConversion(problemData[2].toString()));
 				if(!(problemData[3] == null)){
 					problemHistoryVO.setIsDelete(problemData[3].toString());
 				}
@@ -693,7 +693,7 @@ public class ProblemManagementReportService implements
 				else{
 					problemHistoryVO.setComments("--");
 				}
-				problemHistoryVO.setMovedDate(dateService.timeStampConversion(problemData[2].toString()));
+				problemHistoryVO.setMovedDate(DateService.timeStampConversion(problemData[2].toString()));
 				if(!(problemData[3] == null)){
 					problemHistoryVO.setIsDelete(problemData[3].toString());
 				}

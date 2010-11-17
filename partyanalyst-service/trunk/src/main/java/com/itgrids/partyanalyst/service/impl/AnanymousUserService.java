@@ -489,7 +489,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
 							for(CustomMessage users : result){
 								users.setMessageType(messageTypeDAO.get(messageTypeId));
-								users.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));
+								users.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));
 								customMessageDAO.save(users);
 							}
 						}
@@ -500,7 +500,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 								customMessage.setRecepientId(ananymousUserDAO.get(recipeintId.get(i)));
 								customMessage.setSenderId(ananymousUserDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
-								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));					
+								customMessage.setSentDate(dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_TIME_PATTERN,0,IConstants.PRESENT_DAY));					
 								customMessage.setStatus(IConstants.MSG_UNREAD);
 								customMessageDAO.save(customMessage);
 							}							
@@ -934,7 +934,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						unreadMsgCount++;
 					
 					candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
-					candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversionWithoutTime(parms[9].toString()):"");
+					candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
 					candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
 					candiateVO.add(candidateResults);
 				}
