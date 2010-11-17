@@ -406,9 +406,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.STATE_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.DISTRICT_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(4l,IConstants.CONSTITUENCY_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(5l,"MUNICIPAL-CORP-GMC"));
-			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.MANDAL_LEVEL));
-			selectOptionVOs.add(new SelectOptionVO(7l,IConstants.CENSUS_VILLAGE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(5l,IConstants.MANDAL_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.CENSUS_VILLAGE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(7l,"MUNICIPAL-CORP-GMC"));
 			selectOptionVOs.add(new SelectOptionVO(8l,IConstants.WARD));
 			selectOptionVOs.add(new SelectOptionVO(9l,IConstants.BOOTH));
 			return selectOptionVOs;
@@ -474,7 +474,16 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					}
 										
 					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
-					influencingPeople.setInfluencingScopeValue(influencingPeopleBeanVO.getInfluencingScopeValue());
+					
+					if(influencingPeopleBeanVO.getInfluencingRange().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
+					{
+						List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(influencingPeopleBeanVO.getInfluencingScopeValue()));
+						influencingPeople.setInfluencingScopeValue(localElectionBodyDAO.get((Long)(localElectionBodies.get(0))).getLocalElectionBodyId().toString());
+					}
+					else
+					{
+						influencingPeople.setInfluencingScopeValue(influencingPeopleBeanVO.getInfluencingScopeValue());
+					}
 					
 					if (IConstants.URBAN_TYPE.equals(influencingPeopleBeanVO.getMandal().substring(0,1)))
 					{
@@ -565,46 +574,54 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				String influRange = (parms[11]!=null?parms[11].toString():"");
 				String influScopeValue = (parms[12]!=null?parms[12].toString():"");
 				
-				influencingPeopleBeanVO.setInfluencingRangeScope(influRange);
+				influencingPeopleBeanVO.setInfluencingRangeName(influRange);
 				
 				if(influRange.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 					influencingPeopleBeanVO.setInfluencingRange("2");
-					influencingPeopleBeanVO.setInfluencingScopeValue((stateDAO.get(new Long(influScopeValue)).getStateName()));
+					influencingPeopleBeanVO.setInfluencingScopeValue(stateDAO.get(new Long(influScopeValue)).getStateId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(stateDAO.get(new Long(influScopeValue)).getStateName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 					influencingPeopleBeanVO.setInfluencingRange("3");
-					influencingPeopleBeanVO.setInfluencingScopeValue(districtDAO.get(new Long(influScopeValue)).getDistrictName());
+					influencingPeopleBeanVO.setInfluencingScopeValue(districtDAO.get(new Long(influScopeValue)).getDistrictId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(districtDAO.get(new Long(influScopeValue)).getDistrictName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
 					influencingPeopleBeanVO.setInfluencingRange("4");
-					influencingPeopleBeanVO.setInfluencingScopeValue(constituencyDAO.get(new Long(influScopeValue)).getName());
+					influencingPeopleBeanVO.setInfluencingScopeValue(constituencyDAO.get(new Long(influScopeValue)).getConstituencyId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(constituencyDAO.get(new Long(influScopeValue)).getName());
 				}
-				
-				else if(influRange.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("5");
-				    influencingPeopleBeanVO.setInfluencingScopeValue(localElectionBodyDAO.get(new Long(influScopeValue)).getName());
-				}
-				
+								
 				else if(influRange.equalsIgnoreCase(IConstants.MANDAL_LEVEL)){
-					influencingPeopleBeanVO.setInfluencingRange("6");
-					influencingPeopleBeanVO.setInfluencingScopeValue(tehsilDAO.get(new Long(influScopeValue)).getTehsilName());
+					influencingPeopleBeanVO.setInfluencingRange("5");
+					influencingPeopleBeanVO.setInfluencingScopeValue(IConstants.RURAL_TYPE+tehsilDAO.get(new Long(influScopeValue)).getTehsilId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(tehsilDAO.get(new Long(influScopeValue)).getTehsilName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL)){
+					influencingPeopleBeanVO.setInfluencingRange("6");
+					influencingPeopleBeanVO.setInfluencingScopeValue(IConstants.RURAL_TYPE+hamletDAO.get(new Long(influScopeValue)).getHamletId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(hamletDAO.get(new Long(influScopeValue)).getHamletName());
+				}
+				
+				else if(influRange.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 					influencingPeopleBeanVO.setInfluencingRange("7");
-					influencingPeopleBeanVO.setInfluencingScopeValue(hamletDAO.get(new Long(influScopeValue)).getHamletName());
+					influencingPeopleBeanVO.setInfluencingScopeValue(IConstants.URBAN_TYPE+assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(new Long(influScopeValue)).toString());
+				    influencingPeopleBeanVO.setInfluencingRangeScope(localElectionBodyDAO.get(new Long(influScopeValue)).getName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.WARD)){
 					influencingPeopleBeanVO.setInfluencingRange("8");
-					influencingPeopleBeanVO.setInfluencingScopeValue(constituencyDAO.get(new Long(influScopeValue)).getName());
+					influencingPeopleBeanVO.setInfluencingScopeValue(IConstants.URBAN_TYPE+constituencyDAO.get(new Long(influScopeValue)).getConstituencyId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(constituencyDAO.get(new Long(influScopeValue)).getName());
 				}
 				
 				else if(influRange.equalsIgnoreCase(IConstants.BOOTH)){
 					influencingPeopleBeanVO.setInfluencingRange("9");
-					influencingPeopleBeanVO.setInfluencingScopeValue(boothDAO.get(new Long(influScopeValue)).getPartName());
+					influencingPeopleBeanVO.setInfluencingScopeValue(boothDAO.get(new Long(influScopeValue)).getBoothId().toString());
+					influencingPeopleBeanVO.setInfluencingRangeScope(boothDAO.get(new Long(influScopeValue)).getPartName());
 				}
 				
 				if(userAddress.getLocalElectionBody() != null )
@@ -613,7 +630,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					Long MandalId = userAddress.getLocalElectionBody().getLocalElectionBodyId();
 					influencingPeopleBeanVO.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(MandalId).get(0).toString());
 					influencingPeopleBeanVO.setMandalName(userAddress.getLocalElectionBody().getName().toString());
-					influencingPeopleBeanVO.setWardOrHamlet(userAddress.getWard().getConstituencyId().toString());
+					influencingPeopleBeanVO.setWardOrHamlet(IConstants.URBAN_TYPE+userAddress.getWard().getConstituencyId().toString());
 					influencingPeopleBeanVO.setWardOrHamletName(userAddress.getWard().getName());
 				}
 				
