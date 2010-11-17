@@ -260,7 +260,7 @@
 				<div class="bd"> 
 					<ul class="first-of-type"> 
 						<c:if test="${sessionScope.loginStatus == 'out'}">  
-						<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+						<li class="yuimenubaritem"> 
 							<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
 								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
 								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
@@ -277,7 +277,7 @@
 						</li> 
 						</c:if>
 						<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+							<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
 								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
 								HOME
@@ -311,7 +311,7 @@
 							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH</a> 
 						</li> 
 						<c:if test="${sessionScope.loginStatus == 'out'}">  
-							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+							<li class="yuimenubaritem" > 
 								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
 									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
 										DASH BOARD
