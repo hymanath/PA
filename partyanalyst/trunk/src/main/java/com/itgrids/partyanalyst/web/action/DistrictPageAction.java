@@ -729,20 +729,33 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 		Long districtID = new Long(jObj.getString("distId"));		
 		session = request.getSession();		
-		if(session.getAttribute(IConstants.USER) == null || 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-			electionsInDistrict = new ArrayList<SelectOptionVO>();	
-			Long assemblyScopeId=0l;
-			for(SelectOptionVO selectOptionVO : staticDataService.getAllElectionScopes(districtID)){
-				if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
-					assemblyScopeId = selectOptionVO.getId();
+		if(session.getAttribute(IConstants.USER) == null ){
+			if(entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
+				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			}else{
+				electionsInDistrict = new ArrayList<SelectOptionVO>();	
+				Long assemblyScopeId=0l;
+				for(SelectOptionVO selectOptionVO : staticDataService.getAllElectionScopes(districtID)){
+					if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+						assemblyScopeId = selectOptionVO.getId();
+					}
 				}
+				electionsInDistrict.add(0, new SelectOptionVO(assemblyScopeId, IConstants.ASSEMBLY_ELECTION_TYPE));	
 			}
-			electionsInDistrict.add(0, new SelectOptionVO(assemblyScopeId, IConstants.ASSEMBLY_ELECTION_TYPE));	
 		}else if(session.getAttribute(IConstants.USER) != null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
 				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			}else{
+				electionsInDistrict = new ArrayList<SelectOptionVO>();	
+				Long assemblyScopeId=0l;
+				for(SelectOptionVO selectOptionVO : staticDataService.getAllElectionScopes(districtID)){
+					if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+						assemblyScopeId = selectOptionVO.getId();
+					}
+				}
+				electionsInDistrict.add(0, new SelectOptionVO(assemblyScopeId, IConstants.ASSEMBLY_ELECTION_TYPE));	
 			}
 		}		
 		return SUCCESS;
