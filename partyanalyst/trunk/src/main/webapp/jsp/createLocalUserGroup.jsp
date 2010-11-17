@@ -408,7 +408,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td width="185">
-		  <s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
+		  <s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" value="defaultGroupScope" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		</td>
 	  </tr>
 	  </tbody>
