@@ -196,7 +196,7 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 					<div class="bd"> 
 						<ul class="first-of-type"> 
-							<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
 									<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
 									HOME
@@ -205,9 +205,15 @@ YAHOO.util.Event.onContentReady("navigationHead", function () {
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 							</li> 
-							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="javascript:{}" onclick="buildLoginPopup()">CLIENT LOGIN</a> 
-							</li>
+							<c:if test="${sessionScope.loginStatus == 'out'}">  
+								<li class="yuimenubaritem" > 
+									<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
+										<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
+											DASH BOARD
+										</a>  
+									</c:if>	
+								</li> 
+							</c:if>
 						</ul> 
 					</div> 
 			</div> 
