@@ -23,7 +23,10 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -45,14 +48,23 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
+	private ServletContext context;
 	
 	private IInfluencingPeopleService influencingPeopleService;
+	private CadreManagementService cadreManagementService;
+	private IStaticDataService staticDataService;
 	private List<SelectOptionVO> groupScopes = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> groupCategories;
 	private RegionServiceDataImp regionServiceDataImp;
 	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> districtsList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	
-	
+	String accessType = "";
+	Long accessValue = 0L;
+	Long defaultGroupScope = 0L;
+		
 	public RegionServiceDataImp getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -92,9 +104,8 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		this.response = response;
 	}
 
-	public void setServletContext(ServletContext arg0) {
-		// TODO Auto-generated method stub
-
+	public void setServletContext(ServletContext context) {
+		this.context = context;
 	}
 	public HttpSession getSession() {
 		return session;
@@ -108,6 +119,37 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setStatesList(List<SelectOptionVO> statesList) {
 		this.statesList = statesList;
+	}
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	public String getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	public Long getAccessValue() {
+		return accessValue;
+	}
+	public void setAccessValue(Long accessValue) {
+		this.accessValue = accessValue;
+	}
+	public Long getDefaultGroupScope() {
+		return defaultGroupScope;
+	}
+	public void setDefaultGroupScope(Long defaultGroupScope) {
+		this.defaultGroupScope = defaultGroupScope;
 	}
 	public String execute(){
 		
@@ -127,18 +169,54 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		//Get Scopes Data
 		setGroupScopesData();
 		
-		String accessType =regVO.getAccessType();
-		Long accessValue= new Long(regVO.getAccessValue());
+		 accessType =regVO.getAccessType();
+		 accessValue = new Long(regVO.getAccessValue());
 		
-		List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
-		
-		statesList.add(list.get(0));	
-		
-		session.setAttribute("statesList",statesList);
-		session.setAttribute("districtsList",new ArrayList<SelectOptionVO>());
-		session.setAttribute("constituenciesList",new ArrayList<SelectOptionVO>());
-		session.setAttribute("mandalsList",new ArrayList<SelectOptionVO>());
-		
+		if("MLA".equals(accessType))
+		{
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+			statesList.add(list.get(0));			
+			districtsList.add(list.get(1));
+			constituenciesList.add(list.get(2));
+			
+			mandalsList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
+			mandalsList.add(0,new SelectOptionVO(0l,"Select Location"));
+			
+			setDefaultGroupScope(5L);
+		}
+		else if("COUNTRY".equals(accessType))
+		{
+			statesList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+			statesList.add(0,new SelectOptionVO(0l,"Select State"));
+			setDefaultGroupScope(2L);
+		}
+		else if("STATE".equals(accessType))
+		{
+			String name = cadreManagementService.getStateName(accessValue);
+			SelectOptionVO obj2 = new SelectOptionVO();
+			obj2.setId(accessValue);
+			obj2.setName(name);
+			
+			statesList.add(obj2);
+			districtsList = staticDataService.getDistricts(accessValue);
+			districtsList.add(0,new SelectOptionVO(0l,"Select District"));
+			setDefaultGroupScope(3L);
+		}
+		else if("DISTRICT".equals(accessType))
+		{
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+			
+			statesList.add(list.get(0));
+			districtsList.add(list.get(1));
+			
+			constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
+			constituenciesList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			setDefaultGroupScope(4L);
+		}
+		session.setAttribute(ISessionConstants.STATES, statesList);
+		session.setAttribute(ISessionConstants.DISTRICTS,districtsList);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES,constituenciesList);
+		session.setAttribute(ISessionConstants.MANDALS,mandalsList);	
 		return Action.SUCCESS;
 	}
 	
