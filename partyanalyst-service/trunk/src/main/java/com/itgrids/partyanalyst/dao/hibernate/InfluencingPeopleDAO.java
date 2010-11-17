@@ -431,5 +431,18 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 				"model.userAddress.booth is not null group by model.userAddress.booth.boothId",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPersonDetailsById(Long influencingPersonId) {
+		return getHibernateTemplate().find("select model.influencingPeopleId,model.firstName,model.middleName,model.lastName,model.party,"+
+				"model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,model.influencingPeoplePosition."+
+				"position,model.influencingScope,model.influencingScopeValue from InfluencingPeople model where model.influencingPeopleId = ?",influencingPersonId);
+				
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getInfluencingPersonLocationDetailsById(Long influencingPersonId) {
+		return getHibernateTemplate().find("select model.userAddress from InfluencingPeople model where model.influencingPeopleId = ?",influencingPersonId);
+	}
+
 		
 }
