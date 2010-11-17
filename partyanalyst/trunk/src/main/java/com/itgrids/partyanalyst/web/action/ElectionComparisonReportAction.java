@@ -261,6 +261,8 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		if(electionId1==null ||  electionId2==null){
 			List result = staticDataService.getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(electionType,electionYears2,electionYears1,state,IConstants.ELECTION_SUBTYPE_MAIN);
+			if(result.size() == 0)
+				return "dashBoard";
 			for(int i=0;i<result.size();i++){
 				if(i==0){
 					electionId1	= result.get(i).toString();

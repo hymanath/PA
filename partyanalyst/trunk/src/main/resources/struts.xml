@@ -167,6 +167,7 @@
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
+			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 		</action>
 		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
@@ -199,7 +200,8 @@
 		</action>
 		
 		<action name="partyResultsAction" class="partyResultsAction">
-			<result name="success">/jsp/partyResultsPage.jsp</result>							
+			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
+			<result name="success">/jsp/partyResultsPage.jsp</result>						
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">

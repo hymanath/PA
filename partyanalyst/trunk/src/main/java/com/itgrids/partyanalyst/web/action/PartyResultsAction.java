@@ -2,10 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYSeriesCollection;
 
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
@@ -163,9 +159,11 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		
 		ElectionScopeLevelEnum level = ElectionScopeLevelEnum.CONSTITUENCY_LEVEL;
 
-		
-		Long partyId = new Long(getPartySelectName());
-		Long electionId = new Long(getElectionType());
+		if(partySelectName == null || electionType == null)
+			return "dashBoard";
+			
+		Long partyId = new Long(partySelectName);
+		Long electionId = new Long(electionType);
 		Long countryId = new Long(1);
 
 		Long stateId = null;		
