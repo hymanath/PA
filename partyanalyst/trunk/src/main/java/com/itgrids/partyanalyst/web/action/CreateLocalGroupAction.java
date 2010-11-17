@@ -23,6 +23,7 @@ import org.apache.struts2.util.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -48,8 +49,16 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private IInfluencingPeopleService influencingPeopleService;
 	private List<SelectOptionVO> groupScopes = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> groupCategories;
+	private RegionServiceDataImp regionServiceDataImp;
+	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 	
 	
+	public RegionServiceDataImp getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
 	public IInfluencingPeopleService getInfluencingPeopleService() {
 		return influencingPeopleService;
 	}
@@ -94,6 +103,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		this.session = session;
 	}
 	
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
 	public String execute(){
 		
 		if(log.isDebugEnabled())
@@ -111,6 +126,18 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		//Get Scopes Data
 		setGroupScopesData();
+		
+		String accessType =regVO.getAccessType();
+		Long accessValue= new Long(regVO.getAccessValue());
+		
+		List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+		
+		statesList.add(list.get(0));	
+		
+		session.setAttribute("statesList",statesList);
+		session.setAttribute("districtsList",new ArrayList<SelectOptionVO>());
+		session.setAttribute("constituenciesList",new ArrayList<SelectOptionVO>());
+		session.setAttribute("mandalsList",new ArrayList<SelectOptionVO>());
 		
 		return Action.SUCCESS;
 	}
