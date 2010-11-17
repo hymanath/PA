@@ -287,10 +287,10 @@ function setLocationValue(value,source)
 		
 	}
 }
+
 </script>
 </head>
-
-<body onload="" class="bodyStyle">
+<body onload="populateLocations(${defaultGroupScope},'onChange')" class="bodyStyle">
 <s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
  <div id="wrapper" style="width:550px;">
    <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
@@ -419,7 +419,7 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		 <tr id="row2" width="100px" style="display:none;">
@@ -427,7 +427,7 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		 <tr id="row3" width="100px" style="display:none;" >
@@ -435,7 +435,7 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		  </td>
 	    </tr>
 		 <tr id="row4" width="100px" style="display:none;" >
@@ -443,7 +443,7 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 		  </td>
 	    </tr>
 		 <tr id="row5" width="100px" style="display:none;" >
