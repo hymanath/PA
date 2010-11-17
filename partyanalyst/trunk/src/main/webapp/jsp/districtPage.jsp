@@ -649,9 +649,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var selectLabel = document.getElementById("graphElectionTypeLabel");
 		var selectData = document.getElementById("graphElectionTypeSelect");
 
-		var labelStr = '';				
-		labelStr += 'To view all parties performance in a specific election, please select an Election Type';
-
+		var labelStr = '';			
+		
+		if(result[0].name != 'Assembly'){
+			labelStr += 'To view all parties performance in a specific election, please select an Election Type';
+		}
 		if(selectLabel)
 			selectLabel.innerHTML = labelStr;
 
@@ -667,9 +669,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
             dataStr += '<option value="'+result[i].id+'"> '+result[i].name+' </option>';
 		}
 		dataStr += '</select>';		
-		
-		if(selectData)
-			selectData.innerHTML = 	dataStr;	
+		if(result[0].name != 'Assembly')
+			if(selectData)
+				selectData.innerHTML = 	dataStr;	
 		
 		getAllElections(result[0].id, result[0].name);
 	}
@@ -1362,7 +1364,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</c:forEach>	
 			</div>			
 		</div>
-
+		<div id="districtDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>
 		<div id="problemViewingDiv" style="margin-top:10px;">
 			<div id="problemViewingDiv_Head"></div>
 			<div id="problemViewingDiv_Body"></div>
@@ -1692,6 +1694,7 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						village:'${problem.village}',
 						hamlet:'${problem.hamlet}',
 						reportedDate:'${problem.reportedDate}',
+						postedDate:'${problem.postedDate}',
 						existingFrom:'${problem.existingFrom}',
 						name:'${problem.name}',
 						postedPersonName:'${problem.postedPersonName}',
