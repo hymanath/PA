@@ -6,6 +6,9 @@
 <beans>
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
+	<bean id="saveLocalGroupAction" class="com.itgrids.partyanalyst.web.action.SaveLocalGroupAction" singleton="false">
+	</bean>
+	
 	<bean id="userEntitlementAction" class="com.itgrids.partyanalyst.web.action.UserEntitlementAction" singleton="false">
 		<property name="userEntitlementService" ref="userEntitlementService" />
 		<property name="registrationService" ref="registrationService" />
@@ -526,6 +529,7 @@
 	</bean>
 	<bean id="createLocalGroupAction" class="com.itgrids.partyanalyst.web.action.CreateLocalGroupAction" singleton="false">
 	    <property name="influencingPeopleService" ref="influencingPeopleService" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	
 </beans>		
