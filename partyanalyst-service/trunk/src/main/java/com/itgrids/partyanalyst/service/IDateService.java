@@ -26,5 +26,4 @@ public interface IDateService {
 	
 	public String timeStampConversionToDDMMYY(String idate);
 	
-	public String timeStampConversion(String idate);
 }

@@ -74,7 +74,7 @@ public class DateService implements IDateService {
 	/*
 	 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
 	 */
-	public String timeStampConversion(String idate){
+	public static String timeStampConversion(String idate){
 		String convertedDated=null;
 		SimpleDateFormat sdfInput =  
 	        new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss") ;  
