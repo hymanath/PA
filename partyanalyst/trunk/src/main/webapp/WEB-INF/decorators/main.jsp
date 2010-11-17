@@ -227,15 +227,10 @@
 					<table width="100%" style="width:100%">
 						<tr>
 							<th id="loginarea">
-								<c:if test="${! empty sessionScope.USER.registrationID}">        		
+								<c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
-									<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
-										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
-									</c:if>	
-									<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
-										<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >Home</a> | 
-									</c:if>	
+									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >Home</a> | 
 									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
@@ -259,59 +254,41 @@
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
 					<ul class="first-of-type"> 
-						<c:if test="${sessionScope.loginStatus == 'out'}">  
 						<li class="yuimenubaritem"> 
-							<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
-								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
-								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
-								HOME
-							</a> 
-							</c:if>	
-							<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
-								<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
-									<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
-									HOME
-								</a>  
-							</c:if>	
-							
-						</li> 
-						</c:if>
-						<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-							<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
 								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
 								HOME
 							</a> 
-						</li> 
-						</c:if>
-
+						</li>
 						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
-						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
-						</li> 
-						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
-						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
-						</li> 
-						</c:if>
-						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">
-						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
-						</li> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
+							</li> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
+							</li> 
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
+							</li> 
 						</c:if>
 						
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
-						</li> 
+						</li>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="searchPartyAnalystAction.action">SEARCH</a> 
 						</li> 
+						
 						<c:if test="${sessionScope.loginStatus == 'out'}">  
-							<li class="yuimenubaritem" > 
+							<li class="yuimenubaritem"> 
+								<c:if test="${sessionScope.UserType == 'PartyAnalyst'}"> 
+									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+										DASH BOARD
+									</a> 
+								</c:if>
 								<c:if test="${sessionScope.UserType == 'FreeUser'}"> 
 									<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/connectPeopleAction.action" >												
 										DASH BOARD
