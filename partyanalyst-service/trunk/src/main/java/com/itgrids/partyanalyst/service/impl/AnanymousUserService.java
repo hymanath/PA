@@ -927,7 +927,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					candidateResults.setState(parms[4].toString());
 					candidateResults.setDistrict(parms[5].toString());					
 					candidateResults.setConstituencyName(parms[6].toString());
-					candidateResults.setCandidateName(candidateName);
+					candidateResults.setCandidateName(candidateName.toUpperCase());
 					String status = (parms[8]!=null)?parms[8].toString():"";
 					candidateResults.setStatus(status);
 					if(IConstants.MSG_UNREAD.equalsIgnoreCase(status))
