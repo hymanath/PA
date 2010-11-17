@@ -2809,6 +2809,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			influencingPeopleBeanVO.setWardOrHamlet(hamletName = hamlet != null ? hamlet.getHamletName() : "");
 			influencingPeopleBeanVO.setWardOrHamlet(wardName = ward != null ? ward.getName() : "");
 			influencingPeopleBeanVO.setBooth(boothName = booth != null ? booth.getPartNo().concat(" BOOTH") : "");
+			
+			influencingPeopleBeanVO.setHouseNo(userAddress.getHouseNo());
+			influencingPeopleBeanVO.setStreetName(userAddress.getStreet());
+			influencingPeopleBeanVO.setPincode(userAddress.getPinCode());
 				
 		}
 	}
