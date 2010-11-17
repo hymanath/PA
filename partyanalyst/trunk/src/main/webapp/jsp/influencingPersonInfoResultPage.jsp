@@ -250,11 +250,11 @@ var influencingPersonId = '${influencingPersonId}';
 		<tr>
 			<th style="width:125px">Influence Range</th>
 			<th>:</th>
-			<td>${influencingPeopleBeanVO.influencingRangeScope}</td>
+			<td>${influencingPeopleBeanVO.influencingRangeName}</td>
 			
 			<th style="width:125px">Influencing Location</th>
 			<th>:</th>
-			<td>${influencingPeopleBeanVO.influencingScopeValue}</td>
+			<td>${influencingPeopleBeanVO.influencingRangeScope}</td>
 		</tr>
 		</table>
 	</fieldset>
