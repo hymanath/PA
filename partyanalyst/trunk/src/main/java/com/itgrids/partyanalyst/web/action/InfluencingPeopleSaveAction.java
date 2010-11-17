@@ -381,19 +381,19 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		
 		else if("5".equalsIgnoreCase(getInfluencingRange()))
 		{
-			influencingPeopleBeanVO.setInfluencingRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.MANDAL_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
 		else if("6".equalsIgnoreCase(getInfluencingRange()))
 		{
-			influencingPeopleBeanVO.setInfluencingRange(IConstants.MANDAL_LEVEL);
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.CENSUS_VILLAGE_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
 		else if("7".equalsIgnoreCase(getInfluencingRange()))
 		{
-			influencingPeopleBeanVO.setInfluencingRange(IConstants.CENSUS_VILLAGE_LEVEL);
+			influencingPeopleBeanVO.setInfluencingRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
 			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
 		}
 		
