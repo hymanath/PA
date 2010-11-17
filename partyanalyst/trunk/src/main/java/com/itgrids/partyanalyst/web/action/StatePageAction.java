@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -48,8 +49,17 @@ public class StatePageAction extends ActionSupport implements
 	private IRegionServiceData regionServiceDataImp;	
 	private List<SelectOptionVO> districtData;
 	private int districtNumber;
+	private String stateMapName;
 	
 	  
+	public String getStateMapName() {
+		return stateMapName;
+	}
+
+	public void setStateMapName(String stateMapName) {
+		this.stateMapName = stateMapName;
+	}
+
 	public String getStateId() {
 		return stateId;
 	}
@@ -127,6 +137,9 @@ public class StatePageAction extends ActionSupport implements
 	public String execute() throws Exception{    	
     	
     	statePage = statePageService.getStateDetails(Long.parseLong(stateId)); 
+    	
+    	String statename = statePage.getStateName();
+    	stateMapName = StringUtils.replaceOnce(statename, " ", "_");
     	
     	districtData = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(stateId));
      	   	

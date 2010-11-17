@@ -86,6 +86,15 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<LocalUserGroupDetailsVO> localGroupsPeople;
 	private SmsResultVO smsResultVO;
 	private List<RegionSelectOptionVO> regionSelectOptionVO;
+	private InfluencingPeopleBeanVO influencingPersonVO;
+
+	public InfluencingPeopleBeanVO getInfluencingPersonVO() {
+		return influencingPersonVO;
+	}
+
+	public void setInfluencingPersonVO(InfluencingPeopleBeanVO influencingPersonVO) {
+		this.influencingPersonVO = influencingPersonVO;
+	}
 
 	public List<RegionSelectOptionVO> getRegionSelectOptionVO() {
 		return regionSelectOptionVO;
@@ -663,6 +672,41 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getInfluencingPersonDetails()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		Long personId = new Long(request.getParameter("personId"));
+		
+		influencingPersonVO = influencingPeopleService.getMoreResultsForInfluencingPeopleById(personId);
+		
+		/*influencingPersonVO.setFirstName("Ravi");
+		influencingPersonVO.setLastName("P");
+		influencingPersonVO.setEmail("ravi@gmail.com");
+		influencingPersonVO.setMobile("9989876597");
+		influencingPersonVO.setGender("Male");		
+		influencingPersonVO.setCast("General");
+		influencingPersonVO.setFatherOrSpouseName("Prasad");
+		influencingPersonVO.setHouseNo("No 22");
+		influencingPersonVO.setStreetName("Bank Street");
+		influencingPersonVO.setMandal("Allur");
+		influencingPersonVO.setVillage("Allur");
+		influencingPersonVO.setConstituency("Kavali");
+		influencingPersonVO.setDistrict("Nellore");
+		influencingPersonVO.setState("Andhra Pradesh");
+		influencingPersonVO.setOccupation("Engineer");
+		influencingPersonVO.setParty("INC");
+		influencingPersonVO.setPosition("Youth Worker");
+		influencingPersonVO.setInfluencingRange("District");
+		influencingPersonVO.setInfluencingScopeValue("Nellore");*/
+		
+		
+		
+		return Action.SUCCESS;
 	}
 	
 	public String getlocalGroupsPeopleData()
