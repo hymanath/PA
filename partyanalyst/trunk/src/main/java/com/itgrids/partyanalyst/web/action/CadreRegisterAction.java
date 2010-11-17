@@ -1041,13 +1041,13 @@ public class CadreRegisterAction extends ActionSupport implements
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		
-		int familyMembers = Integer.parseInt(cadreInfo.getNoOfFamilyMembers().trim().length()>0?cadreInfo.getNoOfFamilyMembers().trim():"0");
+		/*int familyMembers = Integer.parseInt(cadreInfo.getNoOfFamilyMembers().trim().length()>0?cadreInfo.getNoOfFamilyMembers().trim():"0");
 		int voters = Integer.parseInt(cadreInfo.getNoOfVoters().trim().length()>0?cadreInfo.getNoOfVoters().trim():"0");
 		
 		if(voters > familyMembers)
 		{
 			addFieldError("noOfVoters","Please Give Correct value for No of Voters");
-		}
+		} */
 		if("Party".equalsIgnoreCase(regVO.getUserType()) && cadreInfo.getMemberType().equalsIgnoreCase("Active"))
 		{
 			if(cadreInfo.getPartyCommittee() == 0)
