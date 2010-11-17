@@ -1761,7 +1761,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			if(areaType.equalsIgnoreCase(IConstants.WARD))
 			   wardsInLocalBody = regionServiceDataImp.getWardsInALocalElectionBody(localBodyId,constituencyId,IConstants.DELIMITATION_YEAR.toString());
 			else if(areaType.equalsIgnoreCase(IConstants.BOOTH))
-				wardsInLocalBody = regionServiceDataImp.getBoothsInLocalBodysByConstituency(localBodyId, IConstants.DELIMITATION_YEAR, constituencyId);
+				wardsInLocalBody = regionServiceDataImp.getBoothsInLocalBodysByConstituencyId(localBodyId, IConstants.DELIMITATION_YEAR, constituencyId);
 				
 			if(wardsInLocalBody != null && wardsInLocalBody.size() > 0){
 				if(areaType.equalsIgnoreCase(IConstants.WARD))
@@ -2698,6 +2698,108 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		}
 		
 	 return constituencyManagementDataVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getMoreResultsForInfluencingPeopleById(java.lang.Long)
+	 * Method to get complete details of a Influencing person
+	 */
+	@SuppressWarnings("unchecked")
+	public InfluencingPeopleBeanVO getMoreResultsForInfluencingPeopleById(
+			Long influencingPersonId) {
+		
+		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+		if(log.isDebugEnabled())
+			log.debug(" Getting Details For Influencing Person ..");
+		
+		try{
+			
+			if(influencingPersonId != null){
+				
+				List infPersonDetails = influencingPeopleDAO.getInfluencingPersonDetailsById(influencingPersonId);
+				if(infPersonDetails != null && infPersonDetails.size() > 0)
+					setInfluencingPeopleBasicDetailsToVO(infPersonDetails,influencingPeopleBeanVO);
+				
+				List infPeopleLocationDetails = influencingPeopleDAO.getInfluencingPersonLocationDetailsById(influencingPersonId);
+				if(infPeopleLocationDetails != null && infPeopleLocationDetails.size() > 0)
+					setInfluencingPeopleLocationDetailsToVO(infPeopleLocationDetails,influencingPeopleBeanVO);
+			}
+			
+		}catch(Exception ex){
+			log.error("Exception Raised In Getting Influencing People More Results :" + ex);
+			ex.printStackTrace();
+			influencingPeopleBeanVO.setExceptionEncountered(ex);
+			influencingPeopleBeanVO.setExceptionMsg(ex.getMessage());
+			influencingPeopleBeanVO.setResultCode(ResultCodeMapper.FAILURE);
+			influencingPeopleBeanVO.setResultPartial(true);
+		}
+	 
+	 return influencingPeopleBeanVO;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setInfluencingPeopleBasicDetailsToVO(List infPersonDetails,InfluencingPeopleBeanVO influencingPeopleBeanVO){
+		
+		if(infPersonDetails != null){
+			Iterator lstItr = infPersonDetails.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				
+				Long infPersonId = (Long)values[0];
+				
+				influencingPeopleBeanVO.setInfluencingPersonId(infPersonId.toString());
+				influencingPeopleBeanVO.setFirstName((String)values[1]);
+				influencingPeopleBeanVO.setMiddleName((String)values[2]);
+				influencingPeopleBeanVO.setLastName((String)values[3]);
+				influencingPeopleBeanVO.setParty((String)values[4]);
+				influencingPeopleBeanVO.setCast((String)values[5]);
+				influencingPeopleBeanVO.setOccupation((String)values[6]);
+				influencingPeopleBeanVO.setMobile((String)values[7]);
+				influencingPeopleBeanVO.setGender((String)values[8]);
+				influencingPeopleBeanVO.setEmail((String)values[9]);
+				influencingPeopleBeanVO.setFatherOrSpouseName((String)values[10]);
+				influencingPeopleBeanVO.setPosition((String)values[11]);
+				influencingPeopleBeanVO.setInfluencingRangeScope((String)values[12]);
+				
+				String infScope = (String)values[12];
+				String infScopeValue = (String)values[13];
+				influencingPeopleBeanVO.setInfluencingScopeValue(getRegionNameBasedOnScope(infScope,infScopeValue));
+				
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setInfluencingPeopleLocationDetailsToVO(List infPeopleLocationDetails,InfluencingPeopleBeanVO influencingPeopleBeanVO){
+		
+		if(infPeopleLocationDetails != null && infPeopleLocationDetails.size() > 0){
+			
+			String stateName,districtName,constituencyName,localBodyName,mandalName,hamletName,wardName,boothName = "";
+					
+			Object userAddr = (Object)infPeopleLocationDetails.get(0);
+			
+			UserAddress userAddress = (UserAddress)userAddr;
+			
+			State state                 = userAddress.getState();
+			District district           = userAddress.getDistrict();
+			Constituency constituency   = userAddress.getConstituency();
+			LocalElectionBody localBody = userAddress.getLocalElectionBody();
+			Tehsil tehsil               = userAddress.getTehsil();
+			Hamlet hamlet               = userAddress.getHamlet();
+			Constituency ward           = userAddress.getWard();
+			Booth booth                 = userAddress.getBooth();
+			
+			influencingPeopleBeanVO.setState(stateName = state != null ? state.getStateName() : "");
+			influencingPeopleBeanVO.setDistrict(districtName = district != null ? district.getDistrictName() : "");
+			influencingPeopleBeanVO.setConstituency(constituencyName = constituency != null ? constituency.getName() : "");
+			influencingPeopleBeanVO.setMandal(localBodyName = localBody != null ? localBody.getName().concat(" (").concat(localBody.getElectionType().getElectionType()).concat(")") : "");
+			influencingPeopleBeanVO.setMandal(mandalName = tehsil != null ? tehsil.getTehsilName().concat(" (").concat("TEHSIL").concat(")") : "");
+			influencingPeopleBeanVO.setWardOrHamlet(hamletName = hamlet != null ? hamlet.getHamletName() : "");
+			influencingPeopleBeanVO.setWardOrHamlet(wardName = ward != null ? ward.getName() : "");
+			influencingPeopleBeanVO.setBooth(boothName = booth != null ? booth.getPartNo().concat(" BOOTH") : "");
+				
+		}
 	}
 }
 
