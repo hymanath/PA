@@ -110,7 +110,7 @@
 		callAjax(jsObj,url);
 	}
 
-	function getDesigantiosByGroupName()
+	function getDesignationsByCategoryName()
 	{
 		var groupId = elmt.options[elmt.selectedIndex].value;
 
@@ -120,7 +120,7 @@
 					};
 
 		var param = "task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getDesigantiosByGroupNameAction.action"+param;
+		var url = "getDesignationsByCategoryAction.action"+param;
 
 		callAjax(jsObj,url);
 	}
@@ -130,7 +130,8 @@
 </head>
 <body>
 		
-<s:form action="createLocalGroupMemberAction" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
+<s:form action="createLocalGroupMemberAction.action" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
+	<div id="local">
 	<table>
 		<tr>
 			<th>Name</th>
@@ -165,7 +166,7 @@
 
 		<tr>
 			<th>Select Group</th>
-			<td colspan="2"><s:select id="groupName" name="groupName" onchange="getDesigantiosByGroupName(this)" cssStyle="width:150px;" list="groupNames" listKey="id" listValue="name"></s:select></td>
+			<td colspan="2"><s:select id="groupName" name="groupName" onchange="getDesignationsByCategoryName(this)" cssStyle="width:150px;" list="groupNames" listKey="id" listValue="name"></s:select></td>
 		</tr>
 
 
