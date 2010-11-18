@@ -650,7 +650,7 @@
 </style>
 </head>
 <body class="bodyStyle" onunload="loadOnUnload()">
-<s:form action="cadreRegisterAction" method="GET" theme="simple">
+<s:form action="cadreRegisterAction" method="POST" theme="simple">
 	<CENTER>
 		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
