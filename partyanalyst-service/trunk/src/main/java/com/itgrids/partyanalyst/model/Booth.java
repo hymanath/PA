@@ -42,6 +42,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
 	private Set<UserAddress> userAddressBooths = new HashSet<UserAddress>(0);
+	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	
 	/** default constructor */
 	public Booth() {
 	}
@@ -56,7 +58,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 			String villagesCovered, Tehsil tehsil, Long maleVoters, Long femaleVoters,
 			Long totalVoters, Constituency constituency, Long year, LocalElectionBody localBody,
 			Set<BoothConstituencyElection> boothConstituencyElections,
-			Set<BoothVillageCensus> boothVillageCensuses) {
+			Set<BoothVillageCensus> boothVillageCensuses,Set<LocalGroupRegion> localGroupRegion) {
 		this.partNo = partNo;
 		this.partName = partName;
 		this.location = location;
@@ -70,6 +72,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.constituency = constituency;
 		this.year = year;
 		this.localBody = localBody;
+		this.localGroupRegion = localGroupRegion;
 	}
 
 	@Id
@@ -227,6 +230,16 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setUserAddressBooths(Set<UserAddress> userAddressBooths) {
 		this.userAddressBooths = userAddressBooths;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<LocalGroupRegion> getLocalGroupRegion() {
+		return localGroupRegion;
+	}
+
+	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
+		this.localGroupRegion = localGroupRegion;
 	}
 	
 	
