@@ -264,7 +264,7 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 		this.houseNo = houseNo;
 	}
 
-	@Column(name = "pincode", length = 50)
+	@Column(name = "street_name", length = 50)
 	public String getStreetName() {
 		return streetName;
 	}
