@@ -132,7 +132,7 @@ function getStates()
 		<table class="registrationTable">
 			<tr>
 				<td colspan="2">
-					<div style="color: red;">
+					<div style="color: red;font-weight:bold;">
 						<s:actionerror />
 						<s:fielderror />
 						<s:actionmessage/>						
