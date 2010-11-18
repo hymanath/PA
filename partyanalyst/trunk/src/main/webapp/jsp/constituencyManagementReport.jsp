@@ -647,7 +647,7 @@
 			}
 		function openAddNewProblemWindow()
 		{	
-		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=100");
 							 
 			 browser1.focus();
 		}	
@@ -677,7 +677,7 @@
 		function redirectToNewLocalGroupCreation()
 		{
 
-			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=625,left=200,top=10");										 
 		    createGroupBrowser.focus();
 		}
 
