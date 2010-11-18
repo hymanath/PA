@@ -677,9 +677,14 @@
 		function redirectToNewLocalGroupCreation()
 		{
 
-			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");
-										 
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
 		    createGroupBrowser.focus();
+		}
+
+		function redirectToNewLocalGroupMember()
+		{
+			var createGroupMemberBrowser = window.open("<s:url action="createLocalGroupMemberAction.action"/>","createLocalGroupMember","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+		    createGroupMemberBrowser.focus();
 		}
 		
 	</script>
@@ -831,6 +836,7 @@
 										<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
 											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupCreation()" value="Create A Group" class="linkButton" />
+											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupMember()" value="Create A Group Member" class="linkButton" />
 								        </DIV>
 										<div id="localGroupsChartDiv_main" class="contentDivClass">										
 										</div>	

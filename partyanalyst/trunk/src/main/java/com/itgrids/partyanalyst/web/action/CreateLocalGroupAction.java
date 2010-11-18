@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -55,12 +56,35 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private IStaticDataService staticDataService;
 	private List<SelectOptionVO> groupScopes = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> groupCategories;
+	private List<SelectOptionVO> groupNames;
+	private List<SelectOptionVO> designations;
+	JSONObject jObj =null;
+	private String task = null;
 	private RegionServiceDataImp regionServiceDataImp;
 	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> districtsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	
+	
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public List<SelectOptionVO> getGroupNames() {
+		return groupNames;
+	}
+	public void setGroupNames(List<SelectOptionVO> groupNames) {
+		this.groupNames = groupNames;
+	}
+	public List<SelectOptionVO> getDesignations() {
+		return designations;
+	}
+	public void setDesignations(List<SelectOptionVO> designations) {
+		this.designations = designations;
+	}
 	String accessType = "";
 	Long accessValue = 0L;
 	Long defaultGroupScope = 0L;
@@ -232,5 +256,80 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		groupScopes.add(new SelectOptionVO(9l,"BOOTH"));
 		session.setAttribute(ISessionConstants.USER_GROUP_SCOPES,groupScopes);
 	}
-
+	
+	public String createLocalGroupMember()
+	{
+		groupCategories = new ArrayList<SelectOptionVO>();		
+		groupCategories.add(new SelectOptionVO(1l,"Apartment"));
+		groupCategories.add(new SelectOptionVO(2l,"Youth Group"));
+		
+		groupNames = new ArrayList<SelectOptionVO>();
+		groupNames.add(new SelectOptionVO(0l,"Select Group"));
+		
+		designations = new ArrayList<SelectOptionVO>();
+		designations.add(new SelectOptionVO(0l,"Select Designations"));		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String addNewDesignation()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		String desigName = jObj.getString("desigName");
+		String desigDesc = jObj.getString("desigDesc");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getGroupNamesByCategory()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		String categoryId = jObj.getString("categoryId");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getDesignatiosByGroupName()
+	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		String groupId = jObj.getString("groupId");
+		
+		return Action.SUCCESS;
+	}
 }

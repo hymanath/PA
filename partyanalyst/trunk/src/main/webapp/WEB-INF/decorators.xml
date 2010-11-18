@@ -54,6 +54,8 @@
 		<pattern>/createLocalGroupAction*</pattern>
 		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
 		<pattern>/saveLocalGroupAction*</pattern>
+		<pattern>/createLocalGroupMemberAction*</pattern>
+		
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
