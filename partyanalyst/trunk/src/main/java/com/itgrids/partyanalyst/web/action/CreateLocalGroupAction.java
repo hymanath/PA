@@ -329,9 +329,15 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			
 			groupNames = new ArrayList<SelectOptionVO>();
 			groupNames.add(new SelectOptionVO(0l,"Select Group"));
+			if(groupCategories != null && groupCategories.size() > 0)
+			groupNames.addAll(influencingPeopleService.getLocalGroupsByCategoryAndUser(groupCategories.get(0).getId(), userId));
+			
 			
 			designations = new ArrayList<SelectOptionVO>();
 			designations.add(new SelectOptionVO(0l,"Select Designations"));
+			if(groupCategories != null && groupCategories.size() > 0)
+			designations.addAll(influencingPeopleService.getDesignationsByCategoryAndUser(groupCategories.get(0).getId(), userId));
+			
 		}else{
 			
 			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(groupCategoryId));
