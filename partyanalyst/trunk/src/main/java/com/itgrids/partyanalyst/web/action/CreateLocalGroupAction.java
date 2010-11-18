@@ -324,15 +324,20 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		String groupCategoryId = request.getParameter("groupCategoryId");
 		
-		groupCategories = new ArrayList<SelectOptionVO>();		
-		groupCategories.add(new SelectOptionVO(1l,"Apartment"));
-		groupCategories.add(new SelectOptionVO(2l,"Youth Group"));
-		
-		groupNames = new ArrayList<SelectOptionVO>();
-		groupNames.add(new SelectOptionVO(0l,"Select Group"));
-		
-		designations = new ArrayList<SelectOptionVO>();
-		designations.add(new SelectOptionVO(0l,"Select Designations"));		
+		if(groupCategoryId.equalsIgnoreCase("0") || groupCategoryId == null){
+			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(userId);
+			
+			groupNames = new ArrayList<SelectOptionVO>();
+			groupNames.add(new SelectOptionVO(0l,"Select Group"));
+			
+			designations = new ArrayList<SelectOptionVO>();
+			designations.add(new SelectOptionVO(0l,"Select Designations"));
+		}else{
+			
+			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(groupCategoryId));
+			groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
+			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(groupCategoryId), userId);
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -354,6 +359,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		String desigName = jObj.getString("desigName");
 		String desigDesc = jObj.getString("desigDesc");
+		designations = influencingPeopleService.saveNewDesignationForACategory(0L, userId, desigName, desigDesc);
 		
 		return Action.SUCCESS;
 	}
@@ -374,6 +380,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		}
 		
 		String categoryId = jObj.getString("categoryId");
+		groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(categoryId), userId);
 		
 		return Action.SUCCESS;
 	}
@@ -394,6 +401,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		}
 		
 		String categoryId = jObj.getString("categoryId");
+		designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(categoryId), userId);
 		
 		return Action.SUCCESS;
 	}
