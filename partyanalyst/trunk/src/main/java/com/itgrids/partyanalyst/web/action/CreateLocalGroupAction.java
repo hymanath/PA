@@ -337,6 +337,10 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(groupCategoryId));
 			groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
 			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(groupCategoryId), userId);
+			
+			session.setAttribute("groupCategories", groupCategories);
+			session.setAttribute("groupNames", groupNames);
+			session.setAttribute("designations", designations);
 		}
 		
 		return Action.SUCCESS;
@@ -360,6 +364,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		String desigName = jObj.getString("desigName");
 		String desigDesc = jObj.getString("desigDesc");
 		designations = influencingPeopleService.saveNewDesignationForACategory(0L, userId, desigName, desigDesc);
+		session.setAttribute("designations", designations);
 		
 		return Action.SUCCESS;
 	}
@@ -381,6 +386,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		String categoryId = jObj.getString("categoryId");
 		groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(categoryId), userId);
+		session.setAttribute("groupNames", groupNames);
 		
 		return Action.SUCCESS;
 	}
@@ -402,6 +408,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		String categoryId = jObj.getString("categoryId");
 		designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(categoryId), userId);
+		session.setAttribute("designations", designations);
 		
 		return Action.SUCCESS;
 	}
