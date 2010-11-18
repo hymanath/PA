@@ -170,7 +170,7 @@
 	
 	<bean name="statePageService" class="com.itgrids.partyanalyst.service.impl.StatePageService" >
 		<property name="stateDAO" ref="stateDAO" />		
-		<property name="electionObjectsDAO" ref="electionObjectsDAO" />	
+		<property name="electionDAO" ref="electionDAO" />	
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="censusDAO" ref="censusDAO" />
 	</bean>
@@ -361,7 +361,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
-		<property name="electionObjectsDAO" ref="electionObjectsDAO"/>
+		<property name="electionDAO" ref="electionDAO"/>
 		<property name="hamletDAO" ref="hamletDAO"/>
 		<property name="townshipDAO" ref="townshipDAO"/>
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>

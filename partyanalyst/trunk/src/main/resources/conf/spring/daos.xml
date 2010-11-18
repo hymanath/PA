@@ -150,9 +150,6 @@
 	<bean name="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean name="electionObjectsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionObjectsDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	<bean name="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
