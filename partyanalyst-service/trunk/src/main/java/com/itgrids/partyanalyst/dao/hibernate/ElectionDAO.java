@@ -312,7 +312,57 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 			String electionType,Long stateId) {
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = (select max(model.electionYear) from Election model)", electionType);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List findElectionsByState(Long stateId) {
+		Object[] params = {stateId, stateId};
+		return getHibernateTemplate().find("select model.electionId, model.electionScope.electionType.electionTypeId, " +
+				"model.electionScope.electionType.electionType, model.elecSubtype, model.electionYear from Election model " +
+				"where model.electionScope.state.stateId = ? or (model.electionScope.country.countryId = (select model.country.countryId " +
+				"from State model where model.stateId= ?) and model.electionScope.state is null)", params);
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Election> findElections(Long electionType_id, Long country_id,
+			Long state_id) {
+		
+		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.electionScopeId  in ( select electionScopeId from ElectionScope as newmodel where newmodel.electionType.electionTypeId = ? and newmodel.country.countryId = ? and newmodel.state.stateId = ?)");
+		 queryObject.setParameter(0, electionType_id);
+		 queryObject.setParameter(1, country_id);
+		 queryObject.setParameter(2, state_id);
+		 
+		return queryObject.list(); 
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List<Election> findElections(Long electionType_id, Long country_id) {
+		
+		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.electionScopeId  in ( select electionScopeId from ElectionScope as newmodel where newmodel.electionType.electionTypeId = ? and newmodel.country.countryId = ? and newmodel.state.stateId = ?)");
+		 queryObject.setParameter(0, electionType_id);
+		 queryObject.setParameter(1, country_id);
+		 queryObject.setParameter(2, null);
+		 
+		return queryObject.list(); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Election> findElections(Long state_id) {
+		
+		Query queryObject = getSession().createQuery("from Election as model where model.electionScope.state.stateId = ?");
+		  queryObject.setParameter(0, state_id);
+		 		 
+		return queryObject.list();
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestParliamentaryElectionYear(Long state_id) {
+		
+		Query queryObject = getSession().createQuery("select max(model.electionYear) from Election as model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType='Parliament'");
+		  queryObject.setParameter(0, state_id);
+		 		 
+		return queryObject.list();
+	}	
 		
 
 }

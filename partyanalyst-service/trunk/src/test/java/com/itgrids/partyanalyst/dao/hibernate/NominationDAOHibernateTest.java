@@ -629,13 +629,13 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
 	}
 	
-	public void testGetLocalBodyData(){
+	/*public void testGetLocalBodyData(){
 		List list = nominationDAO.getCandidatesInfoForTheGivenMuncipalityOrCorporationConstituency("18420","2009","Greater Municipal Corp");
 		for(int i=0; i<list.size(); i++){
 			Object[] parms = (Object[])list.get(i);
 		//	System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]+"\t"+parms[4]+"\t"+parms[5]+"\t"+parms[6]+"\t"+parms[7]+"\t"+parms[8]+"\t"+parms[9]+"\t"+parms[10]+"\t"+parms[11]+"\t"+parms[12]+"\t"+parms[13]+"\t"+parms[14]+"\t");
 		}
 	
-	}
+	}*/
 }
 	

@@ -1,15 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -140,14 +139,36 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGet(){
+	/*public void testGet(){
 		List elections = electionDAO.findLatestElectionYearForGHMC(IConstants.GREATER_ELECTION_TYPE);
 		for(int i=0;i<elections.size();i++){
 			Object[] params = (Object[])elections.get(i);
 			System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
 		}
+	}*/
+	
+	@Test
+	public void testFindElectionObjects(){
+		List<Election> elections =  electionDAO.findElections(new Long(1));
+		if(elections!=null){
+			for(Election election:elections){
+				if(election.getElectionId().equals(new Long(1)))
+					Assert.assertEquals("2004",election.getElectionYear());
+				else if(election.getElectionId().equals(new Long(2)))
+					Assert.assertEquals("2009", election.getElectionYear());
+				else if(election.getElectionId().equals(new Long(3)))
+					Assert.assertEquals("2004",election.getElectionYear());
+				else if(election.getElectionId().equals(new Long(4)))
+					Assert.assertEquals("2009", election.getElectionYear());
+				
+			}
+			
+		}
 	}
 	
-	
+	public void testFindElectionsByState() {
+		List list = electionDAO.findElectionsByState(1l);
+		System.out.println(list.size());
+	}
 }
 

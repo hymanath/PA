@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.ICensusDAO;
-import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.CensusVO;
@@ -28,22 +28,25 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StatePageService implements IStatePageService {
 
 	
 	private IStateDAO stateDAO;
-	private IElectionObjectsDAO electionObjectsDAO;
+	private IElectionDAO electionDAO;
 	private ICensusDAO censusDAO;
-	private INominationDAO nominationDAO;		
+	private INominationDAO nominationDAO;
 	
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
 	
-	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
-		this.electionObjectsDAO = electionObjectsDAO;
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
 	}
 
 	public void setCensusDAO(ICensusDAO censusDAO) {
@@ -61,29 +64,26 @@ public class StatePageService implements IStatePageService {
 	//method that returns election years and election type for a particular state
 	public List<StateElectionsVO> getStateElections(Long stateId) {
 		
-		List<Election> elections = new ArrayList<Election>();
     	List<Long> electionTypeArrayList = new ArrayList<Long>(0);
     	List<StateElectionsVO> stateElectionsList = new ArrayList<StateElectionsVO>(0);
-    	List<StateElectionsVO> stateElectionsSortedList = new ArrayList<StateElectionsVO>(0);
-  	  	ElectionType electionType = null;    	    	
-    	elections = nominationDAO.getElectionsInState(stateId);
+    	List<StateElectionsVO> stateElectionsSortedList = new ArrayList<StateElectionsVO>(0);  	
+  	  	List elections = electionDAO.findElectionsByState(stateId);
     	    	    		
        	   if(elections.size()<1 || elections == null)
     		   return null;
     	   
        	   else{
-    	        for(Election election:elections){
+    	        for(Object[] values:(List<Object[]>)elections){
     	      
     	    	  StateElectionsVO stateElections = new StateElectionsVO();
-    	    	  electionType = election.getElectionScope().getElectionType();
+
+    	    	  stateElections.setElectionId((Long)values[0]);
+    	    	  stateElections.setElectionTypeId((Long)values[1]);
+    	    	  stateElections.setElectionType(values[2].toString());
+    	    	  stateElections.setElectionSubtype(values[3].toString());
+    	    	  stateElections.setYear(values[4].toString());
     	    	  
-    	    	  stateElections.setElectionId(election.getElectionId());
-    	    	  stateElections.setElectionTypeId(electionType.getElectionTypeId());
-    	    	  stateElections.setElectionType(electionType.getElectionType());
-    	    	  stateElections.setElectionSubtype(election.getElecSubtype());
-    	    	  stateElections.setYear(election.getElectionYear());
-    	    	  
-    	    	  StateElectionResultsVO stateElecResults = getStateElectionResults(election.getElectionId());
+    	    	  StateElectionResultsVO stateElecResults = getStateElectionResults((Long)values[0]);
     	    	  if(stateElecResults != null)
     	    	  stateElections.setPartyResultsVO(stateElecResults.getPartyResultsVO());     	    	
     	    	  stateElectionsList.add(stateElections);
