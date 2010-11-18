@@ -47,6 +47,7 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	private String description;
 	private Date updatedDate;
 	private String groupRegionScope;
+	private String groupRegionScopeValue;
 	private State state;
 	private District district;
 	private Constituency constituency;
@@ -55,6 +56,11 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	private LocalElectionBody localBody;
 	private Constituency ward;
 	private Hamlet hamlet;
+	private Booth booth;
+	
+	private String houseNo;
+	private String streetName;
+	private String pincode;
 	
 	private Set<PersonalUserGroup> personalUserGroup = new HashSet<PersonalUserGroup>(0);
 	
@@ -121,6 +127,15 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 
 	public void setGroupRegionScope(String groupRegionScope) {
 		this.groupRegionScope = groupRegionScope;
+	}
+
+	@Column(name = "group_region_scope_value", length = 25)
+	public String getGroupRegionScopeValue() {
+		return groupRegionScopeValue;
+	}
+
+	public void setGroupRegionScopeValue(String groupRegionScopeValue) {
+		this.groupRegionScopeValue = groupRegionScopeValue;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -218,6 +233,18 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="booth_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Booth getBooth() {
+		return booth;
+	}
+
+	public void setBooth(Booth booth) {
+		this.booth = booth;
+	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "localGroupRegion")
 	public Set<PersonalUserGroup> getPersonalUserGroup() {
@@ -227,5 +254,34 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	public void setPersonalUserGroup(Set<PersonalUserGroup> personalUserGroup) {
 		this.personalUserGroup = personalUserGroup;
 	}
+
+	@Column(name = "house_no", length = 25)
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	@Column(name = "pincode", length = 50)
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	@Column(name = "pincode", length = 25)
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	
 
 }
