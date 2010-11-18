@@ -51,11 +51,11 @@ public class DummyNominations {
 	
 	public static List<Nomination> getNominationsWithBoothResults(){
 		List <Nomination> nominations = new ArrayList<Nomination>();
-		Booth booth1 = new Booth("1", null , "Nimmanapalli Road","Basinikonda, Ramacharlapalli", null, null,null,new Long(1000),null,null,null,null,null);
-		Booth booth2 = new Booth("2", null , "Nimmanapalli Road1","Basinikonda, Ramacharlapalli1", null, null,null,new Long(1500),null,null,null,null,null);
-		Booth booth3= new Booth("3", null , "Nimmanapalli Road2","Basinikonda, Ramacharlapalli2", null, null,null,new Long(1400),null,null,null,null,null);
-		Booth booth4 = new Booth("4", null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Long(900),null,null,null,null,null);
-		Booth booth5 = new Booth("5", null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Long(1220),null,null,null,null,null);
+		Booth booth1 = new Booth("1", null , "Nimmanapalli Road","Basinikonda, Ramacharlapalli", null, null,null,new Long(1000),null,null,null,null,null,null);
+		Booth booth2 = new Booth("2", null , "Nimmanapalli Road1","Basinikonda, Ramacharlapalli1", null, null,null,new Long(1500),null,null,null,null,null,null);
+		Booth booth3= new Booth("3", null , "Nimmanapalli Road2","Basinikonda, Ramacharlapalli2", null, null,null,new Long(1400),null,null,null,null,null,null);
+		Booth booth4 = new Booth("4", null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Long(900),null,null,null,null,null,null);
+		Booth booth5 = new Booth("5", null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Long(1220),null,null,null,null,null,null);
 		
 		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null,null,null);
 		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null,null,null);
