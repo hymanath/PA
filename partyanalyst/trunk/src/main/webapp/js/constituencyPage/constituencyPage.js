@@ -262,7 +262,7 @@ function buildConstituencyInfo()
 		str+='<tr>';
 		str+='<th> Reservation Zone </th>';
 		str+='<th> : </th>';
-		str+='<td> '+constituencyPageMainObj.constituencyInfo.reservation_zone+' </td>';
+		str+='<td style="color:#000000;font-weight:bold;"> '+constituencyPageMainObj.constituencyInfo.reservation_zone+' </td>';
 		str+='</tr>';
 	}
 	if(divElmtBody)
