@@ -126,6 +126,9 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="staticUsersDAO" ref="staticUsersDAO" />
 		<property name="staticLocalGroupDAO" ref="staticLocalGroupDAO" />
+		<property name="localGroupRegionDAO" ref="localGroupRegionDAO" />
+		<property name="staticUserDesignationDAO" ref="staticUserDesignationDAO" />
+		
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
