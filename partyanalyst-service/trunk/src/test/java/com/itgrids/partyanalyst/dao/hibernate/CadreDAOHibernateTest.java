@@ -253,7 +253,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}*/
-	
+	/*
 	public void testFindCadreSizeBoothwiseInMandal()
 	{
 		List result = cadreDAO.findCadreSizeBoothwiseInMandal(1l);
@@ -267,5 +267,77 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			//System.out.println(parms[2].toString());
 			
 		}
+	}*/
+	/*public void testFindBoothCadresByMandal()
+	{
+		List result = cadreDAO.findBoothCadresByMandal(844l, 1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.print(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());			
+		}		
+	}*/
+	
+/*	public void testFindBoothCadresByLocalElectionBody()
+	{
+		List result = cadreDAO.findBoothCadresByLocalElectionBody(566l, 11l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.print(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());			
+		}		
+	}*/
+	
+	/*public void testFindCadresByBooth()
+	{
+		List<Cadre> result = cadreDAO.findCadresByBooth(67026l, 1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.print(result.size());
+		for(Cadre cadre:result){
+			System.out.println(cadre.getFirstName());			
+		}		
+	}*/
+	/*public void testFindCadresNotAssignedToBooth()
+	{
+		List result = cadreDAO.findCadresNotAssignedToBooth(1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.print("Size"+result.size());
+		//System.out.print(result.get(0));
+		Long count  = Long.parseLong(result.get(0).toString());
+			System.out.print("count"+count);		
+				
+	}*/
+	
+	/*public void testFindCadreDetailsNotAssignedToBooth()
+	{
+		List<Cadre> result = cadreDAO.findCadreDetailsNotAssignedToBooth(1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		System.out.print(result.size());
+		for(Cadre cadre:result){
+			System.out.println(cadre.getFirstName());			
+		}		
+	}*/
+	/*@SuppressWarnings("unchecked")
+	public void testFindVillageLevelCadresContByMandal()
+	{
+		List result = cadreDAO.findVillageLevelCadresContByMandal(844l, 1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		Long count  = Long.parseLong(result.get(0).toString());
+		System.out.print("count"+result);			
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testFindCadresByBoothInWard()
+	{
+		List result = cadreDAO.findCadresByBoothInWard(7713l, 1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			System.out.println(parms[3].toString());
+		}			
 	}
 }
+	
+

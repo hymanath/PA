@@ -20,6 +20,9 @@ public class UserCadresInfoVO implements Serializable{
 	private String userAccesDisplayValue = null;
 	private Long totalCadres = null;
 	private Long partyID = null;
+	private Long totalNormalCadres = null;
+	private Long totalNonAssignedToBoothActiveCadres = null;
+	private Long totalNonAssignedToBoothNormalCadres = null;
 
 	/**
 	 *  regionLevel No Cadres contains like following
@@ -249,13 +252,24 @@ public class UserCadresInfoVO implements Serializable{
 	public void setZeroCadreBoothsInMandal(Map<Long, String> zeroCadreBoothsInMandal) {
 		this.zeroCadreBoothsInMandal = zeroCadreBoothsInMandal;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public Long getTotalNormalCadres() {
+		return totalNormalCadres;
+	}
+	public void setTotalNormalCadres(Long totalNormalCadres) {
+		this.totalNormalCadres = totalNormalCadres;
+	}
+	public Long getTotalNonAssignedToBoothActiveCadres() {
+		return totalNonAssignedToBoothActiveCadres;
+	}
+	public void setTotalNonAssignedToBoothActiveCadres(
+			Long totalNonAssignedToBoothActiveCadres) {
+		this.totalNonAssignedToBoothActiveCadres = totalNonAssignedToBoothActiveCadres;
+	}
+	public Long getTotalNonAssignedToBoothNormalCadres() {
+		return totalNonAssignedToBoothNormalCadres;
+	}
+	public void setTotalNonAssignedToBoothNormalCadres(
+			Long totalNonAssignedToBoothNormalCadres) {
+		this.totalNonAssignedToBoothNormalCadres = totalNonAssignedToBoothNormalCadres;
+	}	
 }

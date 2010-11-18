@@ -600,6 +600,15 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.currentAddress.localElectionBody.localElectionBodyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.ward.constituencyId order by model.currentAddress.ward.name", params); 
 		return results;
 	}
+	
+	public List findCadresByBoothInWard(Long wardId, Long userId,
+			String cadreType) {
+		Object[] params = {wardId,userId, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, model.currentAddress.booth.partNo, model.currentAddress.booth.location,  count(model.currentAddress.booth.boothId) from Cadre model " +
+				"where model.currentAddress.ward.constituencyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.booth.boothId", params); 
+		return results;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID, String cadreType){
 		Object[] params = {userID,hamletID,cadreType};
@@ -616,6 +625,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List findStateCadresByCountry(Long countryID, Long userID, String cadreType){
 		Object[] params = {userID,cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.state.stateId, model.currentAddress.state.stateName, count(model.currentAddress.state.stateId)from Cadre model " +
@@ -623,9 +633,86 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findCadreSizeBoothwiseInMandal(Long userId) {
 		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, count(model.currentAddress.booth.boothId)from Cadre model " +
 				"where model.registration.registrationId = ? and model.currentAddress.booth.boothId is not null and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", userId); 
 		return results;
-	}		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findBoothCadresByLocalElectionBody(Long localElectionBodyId,
+			Long userID, String cadreType) {
+		Object[] params = {localElectionBodyId,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, model.currentAddress.booth.partNo, model.currentAddress.booth.location, count(model.currentAddress.booth.boothId) from Cadre model " +
+				"where model.currentAddress.localElectionBody.localElectionBodyId=? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.localElectionBody.localElectionBodyId is not null group by model.currentAddress.booth.boothId", params); 
+		return results;
+			}
+
+	public List findBoothCadresByMandal(Long mandalID, Long userID,
+			String cadreType) {
+		Object[] params = {mandalID,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.booth.boothId, model.currentAddress.booth.partNo, model.currentAddress.booth.location, count(model.currentAddress.booth.boothId) from Cadre model " +
+				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null group by model.currentAddress.booth.boothId", params); 
+		return results;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByBooth(Long boothId, Long userID,
+			String cadreType) {
+		Object[] params = {boothId,userID,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.currentAddress.booth.boothId=? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.booth.boothId is not null", params); 
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long userId, String cadreType) {
+		Object[] params = {userId,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.booth.boothId is null", params); 
+		return results;
+	}
+
+	public List findCadresNotAssignedToBooth(Long userId, String cadreType) {
+		Object[] params = {userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
+				" and model.registration.registrationId = ? and model.memberType = ?", params);
+	}
+
+	public List findVillageLevelCadresContByMandal(Long mandalId, Long userId,
+			String cadreType) {
+		Object[] params = {mandalId,userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.tehsil.tehsilId is not null" +
+				" and model.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ?", params);
+	}
+
+	public List findLocalBodyLevelCadresContByMandal(Long localBodyId,
+			Long userId, String cadreType) {
+		Object[] params = {localBodyId,userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.localElectionBody.localElectionBodyId is not null" +
+				" and model.localElectionBody.localElectionBodyId = ? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.localElectionBody.localElectionBodyId", params);
+	}
+
+	public List findCadresNotAssignedToBoothByTehsil(Long tehsilId,
+			Long userId, String cadreType) {
+		Object[] params = {tehsilId,userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
+				" and model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.tehsil.tehsilId is not null", params);
+	}
+
+	public List findCadresNotAssignedToBoothLocalElectionBody(Long localBodyId,
+			Long userId, String cadreType) {
+		Object[] params = {localBodyId, userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
+				" and model.currentAddress.localElectionBody.localElectionBodyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.localElectionBody.localElectionBodyId is not null", params);
+	}
+
+	public List findCadresNotAssignedToBoothInWard(Long wardId, Long userId,
+			String cadreType) {
+		Object[] params = {wardId, userId,cadreType};
+		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
+				" and model.currentAddress.ward.constituencyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.ward.constituencyId is not null", params);
+	}			
 }
