@@ -61,4 +61,11 @@ public interface IInfluencingPeopleService {
 	
 	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(LocalUserGroupDetailsVO localGroupDetails); 
 	
+	public List<SelectOptionVO> getLocalGroupsByCategoryAndUser(Long categoryId,Long userId);
+	public List<SelectOptionVO> getDesignationsByCategoryAndUser(Long categoryId,Long userId);
+	
+	public List<SelectOptionVO> getGroupCategoryByCategoryId(Long categoryId);
+	
+	public List<SelectOptionVO> saveNewDesignationForACategory(Long categoryId,Long userId,String desigType,String desigDesc);
+	
 }
