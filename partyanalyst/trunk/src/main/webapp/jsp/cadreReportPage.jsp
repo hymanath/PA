@@ -226,7 +226,7 @@
 
 			
 			function buildHtmlNode(results,node)
-			{console.log(node);
+			{
 				var cadreData = results.cadreInfo;
 				var cadreRegionInfo = results.cadreRegionInfo; 
 				var obj={
