@@ -32,6 +32,7 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private Long groupMembersCount;
 	private String registrationId;
 	private String groupScopeId;
+	private String groupScopeRange;
 	private String groupScopeValueId;
 	
 	//group location details
@@ -48,7 +49,12 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private String booth;
 	private String boothName;
 	
+	private String houseNo;
+	private String streetName;
+	private String pincode;
+	
 	private List<UserGroupMembersVO> groupMemberDetails;
+	private String windowTask;
 	
 	private ResultStatus resultStatus;
 	
@@ -207,6 +213,36 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	}
 	public void setBoothName(String boothName) {
 		this.boothName = boothName;
+	}
+	public String getWindowTask() {
+		return windowTask;
+	}
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+	public String getGroupScopeRange() {
+		return groupScopeRange;
+	}
+	public void setGroupScopeRange(String groupScopeRange) {
+		this.groupScopeRange = groupScopeRange;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public String getStreetName() {
+		return streetName;
+	}
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+	public String getPincode() {
+		return pincode;
+	}
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}
 	
 
