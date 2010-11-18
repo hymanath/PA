@@ -362,59 +362,163 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
-		else if(region.equalsIgnoreCase("Mandal") || region.equalsIgnoreCase("MUNCIPALITY") || region.equalsIgnoreCase("CORPORATION") || region.equalsIgnoreCase("GMC"))
+		else if(region.equalsIgnoreCase("Mandal") || region.equalsIgnoreCase("MUNCIPALITY") || region.equalsIgnoreCase("CORPORATION") || region.equalsIgnoreCase("GMC") || region.equalsIgnoreCase("Greater Municipal Corp"))
 		{
-			log.debug("Inside if block level = "+region);
-
-			//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
+			//contains booth level cadre if a booth details exists for cadre
+			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			
 			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
 			{
-			cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWardsCount(new Long(regionId.substring(1)), userID);
+				if(!"Greater Municipal Corp".equalsIgnoreCase(region))
+					cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
+				if(cadreBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(cadreBoothRegionInfo);
+				
 			}
 			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
 			{
-				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(new Long(regionId.substring(1)), userID);
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadresCount(new Long(regionId.substring(1)), userID);
+				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
+				if(cadreBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(cadreBoothRegionInfo);
 			}
 			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
+			
+			/*log.debug("Inside if block level = "+region);
+			//contains booth level cadre if a booth details exists for cadre
+			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			//contains cadre booth details does not exists for cadre
+			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			//cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
+			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
+			{
+			cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(new Long(regionId.substring(1)), userID);
+			cadreBoothRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(new Long(regionId.substring(1)), userID);
+			//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
+			if(cadreBoothRegionInfo.size()>0)
+				cadreRegionInfo.addAll(cadreBoothRegionInfo);
+			if(nonBoothRegionInfo.size()>0)
+				cadreRegionInfo.addAll(nonBoothRegionInfo);			
+				
+			}
+			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
+			{
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(new Long(regionId.substring(1)), userID);
+				cadreBoothRegionInfo = cadreManagementService.getMandalAllBoothsCadres(new Long(regionId.substring(1)), userID);
+				//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
+				if(cadreBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(cadreBoothRegionInfo);
+				if(nonBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(nonBoothRegionInfo);			
+				
+			}
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+		*/	
 		}
-		/*else if(region.equalsIgnoreCase("Village"))
-		{
-			
-			cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
-			
-			this.setCadreInfo(cadreInfo);
-		}*/
-		/*else if(region.equalsIgnoreCase("T"))
-		{
-			log.debug("region:"+region);
-			cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
-			
-			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
-		}
-		else if(region.equalsIgnoreCase("V"))
-		{
-			log.debug("region:"+region);
-			cadreRegionInfo = cadreManagementService.getCadreSizeByHamlet(new Long(regionId), userID);
-			
-			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
-		}*/
-		/*else if(region.equalsIgnoreCase("HAMLET"))
-		{
-			log.debug("region:"+region);
-			cadreInfo = cadreManagementService.getCadresByHamlet(new Long(regionId), userID);
-			
-			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
-		}*/
-		else if(region.equalsIgnoreCase("WARD") || region.equalsIgnoreCase("VILLAGE"))
+		//previous working method
+		/*else if(region.equalsIgnoreCase("WARD") || region.equalsIgnoreCase("VILLAGE"))
 		{
 			log.debug("region:"+region);
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+		}*/
+		
+		else if(region.equalsIgnoreCase("CADRES BY VILLAGES"))
+		{
+			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
+			{
+				cadreRegionInfo = cadreManagementService.getMandalAllHamletsCadres(new Long(regionId.substring(1)), userID);				
+				//nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadres(userID);
+				
+			}
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+			/*log.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
 		}
 		
+		else if(region.equalsIgnoreCase("WARD") || region.equalsIgnoreCase("VILLAGE"))
+		{
+			log.debug("region:"+region);
+			//contains booth level cadre if a booth details exists for cadre
+			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			//contains cadre booth details does not exists for cadre
+			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			
+			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
+			Boolean flag = cadreManagementService.getLocalBodyElectionType(new Long(regionId.substring(1)));
+			if(flag == true)
+			{
+				cadreRegionInfo = cadreManagementService.getWardAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByWard(new Long(regionId.substring(1)), userID);
+				if(nonBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(nonBoothRegionInfo);					
+			}
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+		}
+		
+		else if(region.equalsIgnoreCase("CADRES BY WARDS"))
+		{
+			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
+			{
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyCadresByWards(new Long(regionId.substring(1)), userID);
+				
+			}			
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+			
+			/*log.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
+		}
+		else if(region.equalsIgnoreCase("CADRES BY BOOTHS"))
+		{
+			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
+			if (IConstants.URBAN_TYPE.equals(regionId.substring(0,1)))
+			{
+				cadreRegionInfo = cadreManagementService.getLocalElectionBodyAllBoothsCadres(new Long(regionId.substring(1)), userID);
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByLocalBody(new Long(regionId.substring(1)),userID);
+				if(nonBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(nonBoothRegionInfo);
+			}
+			if (IConstants.RURAL_TYPE.equals(regionId.substring(0,1)))
+			{
+				cadreRegionInfo = cadreManagementService.getMandalAllBoothsCadres(new Long(regionId.substring(1)), userID);	
+				nonBoothRegionInfo = cadreManagementService.getAllNonAssignedBoothCadresByTehsil(new Long(regionId.substring(1)),userID);
+				if(nonBoothRegionInfo.size()>0)
+					cadreRegionInfo.addAll(nonBoothRegionInfo);
+			}			
+			cadreDetailsInfoVO.setCadreRegionInfo(cadreRegionInfo);
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+			
+			/*log.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);*/
+		}
+		else if(region.equalsIgnoreCase("BOOTH"))
+		{
+			log.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresByBooth(regionId.toString(), userID.toString());
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+		}
+		else if(region.equalsIgnoreCase("Not Assigned To Any Booth"))
+		{
+			log.debug("region:"+region);
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBooth(userID.toString());
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
+		}
 	 return Action.SUCCESS;
 	}
 	

@@ -161,7 +161,7 @@
 											myResults = YAHOO.lang.JSON.parse(o.responseText);						
 											
 											if(myResults.cadreInfo[0])											
-												buildHtmlNode(myResults.cadreInfo,node);																					
+												buildHtmlNode(myResults,node);																					
 											else
 												buildTextNode(myResults,node);																			
 											
@@ -199,11 +199,16 @@
 			{
 				//'${userCadresInfoVO.userAccessType}'
 				region = '${userCadresInfoVO.userAccessType}';
-				
+				var myLabel;
 					if(region=='MLA' || region=='MP')
 						region ='CONSTITUENCY';
-				var myLabel='${userCadresInfoVO.userAccessDisplayValue}('+ region+')-${userCadresInfoVO.totalCadres}';
-				
+				if(region == 'VILLAGE COUNT' || region == 'WARD COUNT')
+				{			
+				 	myLabel='${userCadresInfoVO.userAccessDisplayValue}-${userCadresInfoVO.totalCadres}';
+				} else
+				{
+					myLabel='${userCadresInfoVO.userAccessDisplayValue}('+ region+')-${userCadresInfoVO.totalCadres}';
+				}
 				var tree;
 				var myobj;
 				
@@ -220,16 +225,26 @@
 			}
 
 			
-			function buildHtmlNode(cadreData,node)
+			function buildHtmlNode(results,node)
 			{
+				var cadreData = results.cadreInfo;
+				var cadreRegionInfo = results.cadreRegionInfo; 
 				var obj={
 							"label":node.label,
 							"obj":cadreData
 						};
 				
 				cadreDetailsArr.push(obj);
-				
-				var tempNode = new YAHOO.widget.HTMLNode('<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>', node, false); 
+				var str = '';
+				str+='<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>';
+				if(cadreRegionInfo != null && cadreRegionInfo.length >0)
+				{
+					str+='<div>';
+					str+='<span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'cadreRegionInfo[0].cadreCount'</span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
+					str+='</div>';
+				}	
+					
+				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
 				tempNode.isLeaf = true;
 			}
 
