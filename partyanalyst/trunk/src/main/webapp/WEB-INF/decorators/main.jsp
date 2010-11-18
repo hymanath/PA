@@ -294,7 +294,7 @@
 										DASH BOARD
 									</a>  
 								</c:if>	
-							</li> 
+							</li>
 						</c:if>
 					</ul> 
 				</div> 
