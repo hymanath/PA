@@ -344,10 +344,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
 			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(groupCategoryId), userId);
 			
-			session.setAttribute("groupCategories", groupCategories);
-			session.setAttribute("groupNames", groupNames);
-			session.setAttribute("designations", designations);
+			
 		}
+		
+		session.setAttribute("groupCategories", groupCategories);
+		session.setAttribute("groupNames", groupNames);
+		session.setAttribute("designations", designations);
 		
 		return Action.SUCCESS;
 	}
