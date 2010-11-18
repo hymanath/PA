@@ -451,9 +451,10 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			List<CadreRegionInfoVO> cadreBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
 			//contains cadre booth details does not exists for cadre
 			List<CadreRegionInfoVO> nonBoothRegionInfo = new ArrayList<CadreRegionInfoVO>(0);
-			
+			Boolean flag = false;
 			cadreInfo = cadreManagementService.getCadresByHamlet(regionId.toString(), userID);
-			Boolean flag = cadreManagementService.getLocalBodyElectionType(new Long(regionId.substring(1)));
+			if(region.equalsIgnoreCase("WARD"))
+				flag = cadreManagementService.getLocalBodyElectionType(new Long(regionId.substring(1)));					
 			if(flag == true)
 			{
 				cadreRegionInfo = cadreManagementService.getWardAllBoothsCadresCount(new Long(regionId.substring(1)), userID);
@@ -515,7 +516,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		else if(region.equalsIgnoreCase("Not Assigned To Any Booth"))
 		{
 			log.debug("region:"+region);
-			cadreInfo = cadreManagementService.getCadresNotAssignedWithBooth(userID.toString());
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBooth(new Long(regionId.toString()),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 		}
