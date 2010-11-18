@@ -226,7 +226,7 @@
 
 			
 			function buildHtmlNode(results,node)
-			{
+			{console.log(node);
 				var cadreData = results.cadreInfo;
 				var cadreRegionInfo = results.cadreRegionInfo; 
 				var obj={
@@ -239,9 +239,10 @@
 				str+='<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>';
 				if(cadreRegionInfo != null && cadreRegionInfo.length >0)
 				{
-					str+='<div>';
-					str+='<span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'cadreRegionInfo[0].cadreCount'</span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
-					str+='</div>';
+					
+					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
+					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
+					
 				}	
 					
 				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
