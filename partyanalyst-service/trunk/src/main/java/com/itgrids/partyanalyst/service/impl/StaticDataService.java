@@ -941,9 +941,10 @@ public class StaticDataService implements IStaticDataService {
 			}
 			
 			constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
-			
+			StringBuilder parliamentIDs = new StringBuilder();
 			for(Map.Entry<Long,Long> result : constituencyIdsAndYears.entrySet()){
 				List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
+				
 				for(int i=0;i<candidates.size();i++){				
 				ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
 				Object[] obj = (Object[]) candidates.get(i);
@@ -951,11 +952,14 @@ public class StaticDataService implements IStaticDataService {
 				constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
 				constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
 				constituencyWinnerInfoVO.setConstituencyId(obj[3].toString());
+				constituencyWinnerInfoVO.setReservationZone(obj[6].toString());
 				List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(Long.parseLong(obj[3].toString()));
 				for(int j=0; j<list.size(); j++){
 					Object[] params = (Object[])list.get(j);
-					constituencyWinnerInfoVO.setParliamentConstituencyId(Long.parseLong(params[0].toString()));
+					Long id = Long.parseLong(params[0].toString());
+					constituencyWinnerInfoVO.setParliamentConstituencyId(id);
 					constituencyWinnerInfoVO.setParliamentConstituencyName(params[1].toString());
+					parliamentIDs.append(",").append(params[0].toString());
 					parliamentConstituencies.add(Long.parseLong(params[0].toString()));
 				}
 				constituencyWinnerInfoVO.setPartyName(obj[2].toString());
@@ -965,6 +969,15 @@ public class StaticDataService implements IStaticDataService {
 				constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 				}
 			}	
+			List parliamentCandidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(parliamentIDs.substring(1),electionYear.toString());
+			for(int k=0;k<constituencyWinnerInfoVOList.size();k++){	
+				for(int l=0;l<parliamentCandidates.size();l++){	
+					Object[] parliamentCandidatesObj = (Object[]) parliamentCandidates.get(l);
+					if(constituencyWinnerInfoVOList.get(k).getParliamentConstituencyId().equals(new Long(parliamentCandidatesObj[3].toString()))){
+						constituencyWinnerInfoVOList.get(k).setParliamentReservationZone(parliamentCandidatesObj[6].toString());	
+					} 
+				}
+			}
 			constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 			constituenciesStatusVO.setDelimitationYear(electionYear);
 			constituenciesStatusVO.setElectionType(electionYear.toString());
