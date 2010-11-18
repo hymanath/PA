@@ -13,7 +13,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -40,7 +40,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
-	private IElectionObjectsDAO electionObjectsDAO;
+	private IElectionDAO electionDAO;
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
@@ -48,8 +48,12 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	
-	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
-		this.electionObjectsDAO = electionObjectsDAO;
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
 	}
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
@@ -274,7 +278,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 	@SuppressWarnings("unchecked")
 	public Long getLatestParliamentElectionYear(Long stateID){
-		List list = electionObjectsDAO.findLatestParliamentaryElectionYear(stateID);
+		List list = electionDAO.findLatestParliamentaryElectionYear(stateID);
 		Long year = null;
 		if(list!=null && list.size()==1)
 			year = new Long(list.get(0).toString());
