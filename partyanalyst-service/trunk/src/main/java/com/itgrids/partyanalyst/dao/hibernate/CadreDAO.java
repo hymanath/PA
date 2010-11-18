@@ -668,13 +668,24 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long userId, String cadreType) {
-		Object[] params = {userId,cadreType};
+	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long tehsilId,Long userId, String cadreType) {
+		Object[] params = {tehsilId,userId,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.booth.boothId is null", params); 
+				"where model.currentAddress.tehsil.tehsilId = ? and model.registration.registrationId = ? and model.memberType = ? " +
+				"and model.currentAddress.booth.boothId is null and model.currentAddress.tehsil.tehsilId is not null", params); 
 		return results;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadreDetailsNotAssignedToBoothInLocalBody(
+			Long localBodyId, Long userId, String cadreType) {
+		Object[] params = {localBodyId,userId,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.currentAddress.localElectionBody.localElectionBodyId = ? and model.registration.registrationId = ? and model.memberType = ? " +
+				"and model.currentAddress.booth.boothId is null and model.currentAddress.localElectionBody.localElectionBodyId is not null", params); 
+		return results;
+	}
+	
 	public List findCadresNotAssignedToBooth(Long userId, String cadreType) {
 		Object[] params = {userId,cadreType};
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
@@ -714,5 +725,5 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {wardId, userId,cadreType};
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
 				" and model.currentAddress.ward.constituencyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.ward.constituencyId is not null", params);
-	}			
+	}				
 }

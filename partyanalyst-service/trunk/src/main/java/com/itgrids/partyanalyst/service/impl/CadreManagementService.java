@@ -3827,13 +3827,19 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	 * @param userID
 	 * @return
 	 */
-	public List<CadreInfo> getCadresNotAssignedWithBooth(String userID)
+	public List<CadreInfo> getCadresNotAssignedWithBooth(Long id, String userID)
 	{
 		List<CadreInfo> formattedData = new ArrayList<CadreInfo>(0);
 		List<Cadre> cadresList = new ArrayList<Cadre>(0);	
 		try{
-			cadresList = cadreDAO.findCadreDetailsNotAssignedToBooth(new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-			
+			if (IConstants.URBAN_TYPE.equals(id.toString().substring(0,1)))
+			{
+				cadresList = cadreDAO.findCadreDetailsNotAssignedToBoothInLocalBody(new Long(id.toString().substring(1)),new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			}
+			if (IConstants.RURAL_TYPE.equals(id.toString().substring(0,1)))
+			{
+				cadresList = cadreDAO.findCadreDetailsNotAssignedToBooth(new Long(id.toString().substring(1)),new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			}
 			for (Cadre cadre : cadresList) {
 				CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 				formattedData.add(cadreInfo);
