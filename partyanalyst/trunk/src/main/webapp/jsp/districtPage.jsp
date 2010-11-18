@@ -118,6 +118,9 @@ var totalMuncipalities = "<%=totalMuncipalities%>";
 var totalCorporations = "<%=totalCorporations%>";
 var muncipalDataAvailability = "<%=muncipalDataAvailability%>";
 var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
+
+
+
 	function initializeResultsTable() {
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("mlaDataSortingTable"));
@@ -125,12 +128,16 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "constituencyName",formatter:YAHOO.widget.DataTable.formatLink
+		},{
+			key : "reservationZone"
 		}, {
 			key : "candidateName",formatter:YAHOO.widget.DataTable.formatLink
 		}, {
 			key : "partyFlag"
 		}, {
 			key : "parliamentConstituencyName"
+		},{
+			key : "parliamentReservationZone"
 		}, {
 			key : ""
 		}]
@@ -140,6 +147,10 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 		key : "constituencyName",
 		label : "Constituency Name",
 		sortable : true
+	},{
+		key : "reservationZone",
+		label : "ARZ*",
+		sortable : true
 	}, {
 		key : "candidateName",
 		label : "Candidate Name",
@@ -147,6 +158,10 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 	}, {
 		key : "parliamentConstituencyName",
 		label : "Parliament Constituency",
+		sortable : true	
+	}, {
+		key : "parliamentReservationZone",
+		label : "PRZ*",
 		sortable : true	
 	}, {
 		key : "partyFlag",
@@ -1529,7 +1544,18 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>
 			</div>
+			
 			<div id="mla_body" class="yui-skin-sam">
+				<div>
+					<table width="90%" style="text-align: right;">
+							<tbody><tr>
+								<td style="padding-top: 14px; padding-bottom: 14px;"><span style="color: red; font-weight: bold;">ARZ* </span> Assembly Reservation Zone</td>
+							</tr>
+							<tr>
+								<td ><span style="color: red; font-weight: bold;">PRZ* </span> Parliament Reservation Zone</td>
+							</tr>
+					</tbody></table>
+				</div>
 				<div id="mlaInfoDivBody">
 					<table  id="mlaDataSortingTable">						
 						<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
@@ -1541,6 +1567,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 									</span>
 								</td>
 								<td>
+									<span id="districtAncSpan">
+											${candidate.reservationZone} 
+									</span>
+								</td>			
+								<td>
 								<span id="districtAncSpan">
 										<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
 										</a>
@@ -1551,10 +1582,15 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 								<td>
 									<span id="districtAncSpan">
-										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.parliamentConstituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.parliamentConstituencyName}
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.parliamentConstituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.parliamentConstituencyName}										 		
 										</a>
 									</span>
 								</td>
+								<td>
+									<span id="districtAncSpan">
+											${candidate.parliamentReservationZone} 
+									</span>
+								</td>	
 								<td>
 								<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
 							</td>
