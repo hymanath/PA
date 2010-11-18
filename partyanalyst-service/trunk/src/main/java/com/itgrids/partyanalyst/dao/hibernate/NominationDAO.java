@@ -148,8 +148,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	@SuppressWarnings("unchecked")
 	public List findCandidateNamePartyByConstituencyAndElection(String constituencyIds, String electionYear) {
-		return getHibernateTemplate().find( "select upper(model.constituencyElection.constituency.name), upper(model.candidate.lastname), upper(model.party.shortName), " +
-				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId , model.party.partyFlag from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyIds +
+		return getHibernateTemplate().find( "select upper(model.constituencyElection.constituency.name)," +
+				" upper(model.candidate.lastname), upper(model.party.shortName), " +
+				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId ," +
+				" model.party.partyFlag,model.constituencyElection.reservationZone from Nomination model " +
+				" where model.constituencyElection.constituency.constituencyId in (  " + constituencyIds +
 				") and model.constituencyElection.election.electionYear = ? " +
 				" and model.candidateResult.rank = 1", electionYear);
 	}

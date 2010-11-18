@@ -16,7 +16,22 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	private String partyFlag;
 	private Long parliamentConstituencyId;
 	private String parliamentConstituencyName;
+	private String reservationZone;
+	private String parliamentReservationZone;
 
+	
+	public String getParliamentReservationZone() {
+		return parliamentReservationZone;
+	}
+	public void setParliamentReservationZone(String parliamentReservationZone) {
+		this.parliamentReservationZone = parliamentReservationZone;
+	}
+	public String getReservationZone() {
+		return reservationZone;
+	}
+	public void setReservationZone(String reservationZone) {
+		this.reservationZone = reservationZone;
+	}
 	public Long getParliamentConstituencyId() {
 		return parliamentConstituencyId;
 	}
