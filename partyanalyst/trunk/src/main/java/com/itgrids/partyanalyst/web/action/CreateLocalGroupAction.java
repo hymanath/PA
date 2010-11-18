@@ -54,17 +54,20 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private IInfluencingPeopleService influencingPeopleService;
 	private CadreManagementService cadreManagementService;
 	private IStaticDataService staticDataService;
+	private RegionServiceDataImp regionServiceDataImp;
+	
 	private List<SelectOptionVO> groupScopes = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> groupCategories;
+
 	private List<SelectOptionVO> groupNames;
 	private List<SelectOptionVO> designations;
 	JSONObject jObj =null;
 	private String task = null;
-	private RegionServiceDataImp regionServiceDataImp;
 	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> districtsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
 	
 	private String name;
 	private String mobile;
@@ -300,6 +303,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.DISTRICTS,districtsList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES,constituenciesList);
 		session.setAttribute(ISessionConstants.MANDALS,mandalsList);	
+		session.setAttribute(ISessionConstants.VILLAGES,villagesList);
 		return Action.SUCCESS;
 	}
 	
@@ -331,6 +335,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			groupNames.add(new SelectOptionVO(0l,"Select Group"));
 			if(groupCategories != null && groupCategories.size() > 0)
 			groupNames.addAll(influencingPeopleService.getLocalGroupsByCategoryAndUser(groupCategories.get(0).getId(), userId));
+			
 			
 			
 			designations = new ArrayList<SelectOptionVO>();

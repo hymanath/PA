@@ -29,6 +29,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 /**
@@ -51,6 +52,19 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	private String localGroupDesc;
 	private String groupScopeId;
 	private String groupScopeValueId;
+	
+	private String state;
+	
+	private String district;
+	private String constituency;
+	private String mandal;
+	private String villageOrWard;
+	private String booth;
+	
+	private String houseNo;
+	private String streetName;
+	private String pincode;
+	
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
 	
 		
@@ -138,12 +152,84 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		this.context =	context;
 	}
 	
+	public String getState() {
+		return this.localUserGroupDetailsVO.getState();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection")
+	public void setState(String state) {
+		this.localUserGroupDetailsVO.setState(state);
+	}
+	
+	public String getDistrict() {
+		return localUserGroupDetailsVO.getDistrict();
+	}
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection")
+	public void setDistrict(String district) {
+		this.localUserGroupDetailsVO.setDistrict(district);
+	}
+	
+	public String getConstituency() {
+		return localUserGroupDetailsVO.getConstituency();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection")
+	public void setConstituency(String constituency) {
+		this.localUserGroupDetailsVO.setConstituency(constituency);
+	}
+	
+	public String getMandal() {
+		return localUserGroupDetailsVO.getMandal();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Tehsil/Muncipality Selection")
+	public void setMandal(String mandal) {
+		this.localUserGroupDetailsVO.setMandal(mandal);
+	}
+	
+	public String getVillageOrWard() {
+		return localUserGroupDetailsVO.getVillageOrWard();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid ward or hamlet selection")
+	public void setVillageOrWard(String villageOrWard) {
+		this.localUserGroupDetailsVO.setVillageOrWard(villageOrWard);
+	}
+	
+	public String getBooth() {
+		return localUserGroupDetailsVO.getBooth();
+	}
+	public void setBooth(String booth) {
+		this.localUserGroupDetailsVO.setBooth(booth);
+	}
+	
+	public String getHouseNo() {
+		return localUserGroupDetailsVO.getHouseNo();
+	}
+	public void setHouseNo(String houseNo) {
+		this.localUserGroupDetailsVO.setHouseNo(houseNo);
+	}
+	public String getStreetName() {
+		return localUserGroupDetailsVO.getStreetName();
+	}
+	public void setStreetName(String streetName) {
+		this.localUserGroupDetailsVO.setStreetName(streetName);
+	}
+	public String getPincode() {
+		return localUserGroupDetailsVO.getPincode();
+	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "[0-9][0-9][0-9][0-9][0-9][0-9]", message = "Pin Code should contain digits ", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Pincode length should be 6 digits only", minLength = "6", maxLength = "6")
+	public void setPincode(String pincode) {
+		this.localUserGroupDetailsVO.setPincode(pincode);
+	}
 	public String execute() throws Exception{
 		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		localUserGroupDetailsVO.setRegistrationId(regVO.getRegistrationID().toString());
-					
+						
 		return Action.SUCCESS;
 	}
 }
