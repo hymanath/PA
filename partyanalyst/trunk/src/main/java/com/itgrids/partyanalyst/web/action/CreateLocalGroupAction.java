@@ -322,6 +322,8 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
+		String groupCategoryId = request.getParameter("groupCategoryId");
+		
 		groupCategories = new ArrayList<SelectOptionVO>();		
 		groupCategories.add(new SelectOptionVO(1l,"Apartment"));
 		groupCategories.add(new SelectOptionVO(2l,"Youth Group"));
