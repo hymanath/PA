@@ -1722,7 +1722,31 @@
 		   <result name="error">/jsp/createLocalUserGroup.jsp</result>
            <result name="success">/jsp/createLocalUserGroup.jsp</result>	
         </action>
+        
+        <action name="createLocalGroupMemberAction" class="createLocalGroupAction" method="createLocalGroupMember">
+		   <result name="input">/jsp/localUserGroupMemberPage.jsp</result>
+		   <result name="error">/jsp/localUserGroupMemberPage.jsp</result>
+           <result name="success">/jsp/localUserGroupMemberPage.jsp</result>	
+        </action>
 		
+		<action name="addNewDesignationAction" class="createLocalGroupAction" method="addNewDesignation">
+           <result type="json" name="success">
+				<param name="root">boothsCompleteDetails</param>				
+			</result>	
+        </action>
+        
+        <action name="getGroupNamesByCategoryAction" class="createLocalGroupAction" method="getGroupNamesByCategory">
+           <result type="json" name="success">
+				<param name="root">boothsCompleteDetails</param>				
+			</result>	
+        </action>
+        
+        <action name="getDesigantiosByGroupNameAction" class="createLocalGroupAction" method="getDesigantiosByGroupName">
+           <result type="json" name="success">
+				<param name="root">boothsCompleteDetails</param>				
+			</result>	
+        </action>                
+        		
 		 <action name="getBoothsCompleteDetailsAction" class="locationsHierarchyAction" method="getBoothCompleteDetails">
            <result type="json" name="success">
 				<param name="root">boothsCompleteDetails</param>				
