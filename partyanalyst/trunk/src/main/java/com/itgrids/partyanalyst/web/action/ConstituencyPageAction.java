@@ -752,6 +752,12 @@ public class ConstituencyPageAction extends ActionSupport implements
    		localBodyId = localBodyElectionService.getLocalBodyElectionIdsForAConstituency(constituencyId,IConstants.GREATER_ELECTION_TYPE).getMessageTypes();
    		if(localBodyId!=null && localBodyId.size()!=0){
    			greaterInfo = localBodyElectionService.findConstituencywiseGreaterElectionResults(allLocalBodyIds.get(0).getId(),constituencyId,0l,0l);
+   			if(greaterInfo.getListOfParties()==null){
+   				greaterInfo.setListOfParties(getSelectOptionData());
+   			}
+   			if(greaterInfo.getListOfWards()==null){
+   				greaterInfo.setListOfWards(getSelectOptionData());
+   			}
    		}else{  
    			greaterInfo = new ConstituencyVO();
    			greaterInfo.setListOfParties(getSelectOptionData());
