@@ -66,6 +66,65 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	
+	private String name;
+	private String mobile;
+	private String email;
+	private String address;
+	private String city;
+	private String groupCategory;
+	private String groupName;
+	private String designation;	
+	
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getGroupCategory() {
+		return groupCategory;
+	}
+	public void setGroupCategory(String groupCategory) {
+		this.groupCategory = groupCategory;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 	
 	public String getTask() {
 		return task;
@@ -257,8 +316,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.USER_GROUP_SCOPES,groupScopes);
 	}
 	
-	public String createLocalGroupMember()
+	public String createLocalGroupMemberPopup()
 	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		Long userId = regVO.getRegistrationID();
+		
 		groupCategories = new ArrayList<SelectOptionVO>();		
 		groupCategories.add(new SelectOptionVO(1l,"Apartment"));
 		groupCategories.add(new SelectOptionVO(2l,"Youth Group"));
@@ -313,7 +376,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	public String getDesignatiosByGroupName()
+	public String getDesignationsByCategory()
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
@@ -328,7 +391,13 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			}
 		}
 		
-		String groupId = jObj.getString("groupId");
+		String categoryId = jObj.getString("categoryId");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String createLocalGroupMember()
+	{
 		
 		return Action.SUCCESS;
 	}
