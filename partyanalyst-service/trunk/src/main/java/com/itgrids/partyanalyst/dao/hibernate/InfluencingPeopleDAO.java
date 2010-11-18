@@ -59,7 +59,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return queryObject.executeUpdate();
 		
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInConstituency(Long userId,
 			Long constituencyId) {
