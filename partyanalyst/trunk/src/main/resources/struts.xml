@@ -202,6 +202,7 @@
 		<action name="partyResultsAction" class="partyResultsAction">
 			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 			<result name="success">/jsp/partyResultsPage.jsp</result>						
+			<result name="input">/jsp/partyResultsPage.jsp</result>				
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
