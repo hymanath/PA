@@ -233,7 +233,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 				}
 					
 				booth = new Booth(partNo,partName,location,villagesCovered,tehsil,maleVoters,femaleVoters,
-						totalVoters, constituency, year, null,null, null);
+						totalVoters, constituency, year, null,null, null,null);
 				booth = boothDAO.save(booth);
 				checkAndInsertBoothVillageCensus(booth, censusCode);
 			}else{
