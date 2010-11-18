@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalGroupRegionDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStaticLocalGroupDAO;
+import com.itgrids.partyanalyst.dao.IStaticUserDesignationDAO;
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -62,9 +64,11 @@ import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.LocalGroupRegion;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.StaticLocalGroup;
 import com.itgrids.partyanalyst.model.StaticUserDesignation;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -103,6 +107,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private SmsCountrySmsService smsCountrySmsService;
 	private IStaticUsersDAO staticUsersDAO;
 	private IStaticLocalGroupDAO staticLocalGroupDAO;
+	private ILocalGroupRegionDAO localGroupRegionDAO;
+	private IStaticUserDesignationDAO staticUserDesignationDAO;
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -138,6 +144,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setStaticUsersDAO(IStaticUsersDAO staticUsersDAO) {
 		this.staticUsersDAO = staticUsersDAO;
+	}
+
+	public IStaticUserDesignationDAO getStaticUserDesignationDAO() {
+		return staticUserDesignationDAO;
+	}
+
+	public void setStaticUserDesignationDAO(
+			IStaticUserDesignationDAO staticUserDesignationDAO) {
+		this.staticUserDesignationDAO = staticUserDesignationDAO;
 	}
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
@@ -200,6 +215,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 
 	public void setStaticUserGroupDAO(IStaticUserGroupDAO staticUserGroupDAO) {
 		this.staticUserGroupDAO = staticUserGroupDAO;
+	}
+
+	public ILocalGroupRegionDAO getLocalGroupRegionDAO() {
+		return localGroupRegionDAO;
+	}
+
+	public void setLocalGroupRegionDAO(ILocalGroupRegionDAO localGroupRegionDAO) {
+		this.localGroupRegionDAO = localGroupRegionDAO;
 	}
 
 	public ITehsilDAO getTehsilDAO() {
@@ -2820,14 +2843,223 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#saveLocalUserGroupDetailsTODB(com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO)
-	 * Save Local Group Details To DataBase
+	 * SAVE/EDIT Local Group Details To DataBase
 	 */
-	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(
-			LocalUserGroupDetailsVO localGroupDetails) {
+	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(final LocalUserGroupDetailsVO localGroupDetails) {
 		
 		
+		LocalUserGroupDetailsVO localUserGroupDetailsVO = (LocalUserGroupDetailsVO)transactionTemplate.execute(new TransactionCallback() {
+
+			@SuppressWarnings("unchecked")
+			public Object doInTransaction(TransactionStatus status) {
+				
+				LocalUserGroupDetailsVO localGroupDetailsSaved = new LocalUserGroupDetailsVO();
+				PersonalUserGroup personalUserGroup;
+				LocalGroupRegion localGroupRegion;
+				
+				ResultStatus rs = new ResultStatus();
+				
+				try{
+					
+					if(localGroupDetails.getWindowTask().equalsIgnoreCase("edit")){
+						personalUserGroup = personalUserGroupDAO.get(localGroupDetails.getLocalUserGroupId());
+						localGroupRegion  = localGroupRegionDAO.get(personalUserGroup.getLocalGroupRegion().getLocalGroupRegionId());
+						
+					}else{
+						personalUserGroup = new PersonalUserGroup();
+						localGroupRegion = new LocalGroupRegion();
+					}
+					
+					//set data
+					
+					  // Group Details
+					personalUserGroup.setGroupName(localGroupDetails.getLocalUserGroupName());
+					personalUserGroup.setDescription(localGroupDetails.getGroupDesc());
+					personalUserGroup.setCreatedUserId(registrationDAO.get(new Long(localGroupDetails.getRegistrationId())));
+					personalUserGroup.setStaticLocalGroup(staticLocalGroupDAO.get(localGroupDetails.getGroupCategoryId()));
+					
+					 //Scope Details
+					localGroupRegion.setGroupRegionScope(localGroupDetails.getGroupScopeRange());
+					if(localGroupDetails.getGroupScopeRange().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
+					{
+						List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(localGroupDetails.getGroupScopeValueId()));
+						localGroupRegion.setGroupRegionScopeValue(localElectionBodyDAO.get((Long)(localElectionBodies.get(0))).getLocalElectionBodyId().toString());
+					}
+					else
+					{
+						localGroupRegion.setGroupRegionScopeValue(localGroupDetails.getGroupScopeValueId());
+					}
+					
+					
+					 // Location & Scope Details
+					
+					localGroupRegion.setHouseNo(localGroupDetails.getHouseNo());
+					localGroupRegion.setPincode(localGroupDetails.getPincode());
+					localGroupRegion.setStreetName(localGroupDetails.getStreetName());
+					localGroupRegion.setState(stateDAO.get(new Long(localGroupDetails.getState())));
+					localGroupRegion.setDistrict(districtDAO.get(new Long(localGroupDetails.getDistrict())));
+					localGroupRegion.setConstituency(constituencyDAO.get(new Long(localGroupDetails.getConstituency())));
+					
+					if (IConstants.URBAN_TYPE.equals(localGroupDetails.getMandal().substring(0,1)))
+					{
+						List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.parseLong(localGroupDetails.getMandal().substring(1)));
+						localGroupRegion.setLocalBody(localElectionBodyDAO.get((Long)(localElectionBodies.get(0))));
+						localGroupRegion.setWard(constituencyDAO.get(new Long(localGroupDetails.getVillageOrWard().substring(1))));
+						localGroupRegion.setTehsil(null);
+						localGroupRegion.setHamlet(null);
+					}
+					
+					if (IConstants.RURAL_TYPE.equals(localGroupDetails.getMandal().substring(0,1)))
+					{
+						localGroupRegion.setTehsil(tehsilDAO.get(new Long(localGroupDetails.getMandal().substring(1))));
+						localGroupRegion.setHamlet(hamletDAO.get(new Long(localGroupDetails.getVillageOrWard().substring(1))));
+						localGroupRegion.setLocalBody(null);
+						localGroupRegion.setWard(null);
+					}
+					
+					//check and save booth details
+					if((!localGroupDetails.getBooth().equals("0")) && localGroupDetails.getBooth() != null)
+					{
+						localGroupRegion.setBooth(boothDAO.get(new Long(localGroupDetails.getBooth())));
+					}
+					
+					personalUserGroup.setLocalGroupRegion(localGroupRegion);
+					personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
+					
+					
+					localGroupDetailsSaved.setLocalUserGroupId(personalUserGroup.getPersonalUserGroupId());
+					localGroupDetailsSaved.setLocalUserGroupName(personalUserGroup.getGroupName());
+					
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+					rs.setResultPartial(false);
+					localGroupDetailsSaved.setResultStatus(rs);
+					
+				}catch(Exception ex){
+					log.error("Exception Raised While Saving Local User Groups :" + ex);
+					ex.printStackTrace();
+					rs.setExceptionEncountered(ex);
+					rs.setExceptionMsg(ex.getMessage());
+					rs.setResultCode(ResultCodeMapper.FAILURE);
+					rs.setResultPartial(true);
+					
+					localGroupDetailsSaved.setResultStatus(rs);
+					status.setRollbackOnly();
+				}
+				
+			 return localGroupDetailsSaved;
+			}
+		});
 		
-	 return localGroupDetails;
+	 return localUserGroupDetailsVO;
+	}
+	
+	/*
+	 * To Delete a Local User Group
+	 */
+    public Integer deleteLocalUserGroup(Long groupId){
+		
+		Integer deletedRows = personalUserGroupDAO.deleteLocalUserGroupById(groupId);
+		
+	 return deletedRows;
+	}
+
+    /*
+     * (non-Javadoc)
+     * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getDesignationsByCategoryAndUser(java.lang.Long, java.lang.Long)
+     * Method To Get Designations For Members Of Local Groups For A Group Category
+     */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getDesignationsByCategoryAndUser(
+			Long categoryId, Long userId) {
+		
+		List<SelectOptionVO> designations = new ArrayList<SelectOptionVO>();
+		designations.add(new SelectOptionVO(0L,"Select Designation"));
+		
+		List designationsList = staticUserDesignationDAO.getDesignationsByStaticLocalGroupId(categoryId);
+		if(designationsList != null && designationsList.size() > 0){
+			Iterator lstItr = designationsList.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				designations.add(new SelectOptionVO((Long)values[0],(String)values[1]));
+			}
+		}
+		
+	 return designations;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getLocalGroupsByCategoryAndUser(java.lang.Long, java.lang.Long)
+	 * Method To Get Groups By Group Category
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getLocalGroupsByCategoryAndUser(
+			Long categoryId, Long userId) {
+		
+		List<SelectOptionVO> localGroups = new ArrayList<SelectOptionVO>();
+		localGroups.add(new SelectOptionVO(0L,"Select Group"));
+		
+		List groupsList = personalUserGroupDAO.getGroupsForAUserInAGroupCategory(categoryId, userId);
+		if(groupsList != null && groupsList.size() > 0){
+			Iterator lstItr = groupsList.listIterator();
+			while(lstItr.hasNext()){
+				Object[] values = (Object[])lstItr.next();
+				localGroups.add(new SelectOptionVO((Long)values[0],(String)values[1]));
+			}
+		}
+		
+	 return localGroups;
+	}
+
+	public List<SelectOptionVO> getGroupCategoryByCategoryId(Long categoryId) {
+		
+		List<SelectOptionVO> category = new ArrayList<SelectOptionVO>();
+		
+		StaticLocalGroup staticGroupCategory = staticLocalGroupDAO.get(categoryId);
+		category.add(new SelectOptionVO(staticGroupCategory.getStaticLocalGroupId(),staticGroupCategory.getGroupType()));
+		
+	 return category;
+	}
+
+	public List<SelectOptionVO> saveNewDesignationForACategory(final Long categoryId,
+			final Long userId,final String desigType,final String desigDesc) {
+		
+		List<SelectOptionVO> designationsList = new ArrayList<SelectOptionVO>();
+		
+		StaticUserDesignation staticUserDesignation = (StaticUserDesignation)transactionTemplate.execute(new TransactionCallback() {
+
+			public Object doInTransaction(TransactionStatus status) {
+				
+				StaticUserDesignation designation = new StaticUserDesignation();
+				
+				try{
+					
+					designation.setDesignationType(desigType);
+					designation.setDescription(desigDesc);
+					
+					StaticLocalGroup localGroup = staticLocalGroupDAO.get(categoryId);
+					designation.setStaticLocalGroup(localGroup);
+					
+					
+					designation = staticUserDesignationDAO.save(designation);
+					
+				}catch(Exception ex){
+					log.error("Exception Raised In New Designation Adding :" + ex);
+					ex.printStackTrace();
+					status.setRollbackOnly();
+				}
+				
+			 return designation;
+			}
+			
+		});
+		
+		
+		//get updated designations list
+		designationsList = getDesignationsByCategoryAndUser(categoryId, userId);
+		
+		
+	 return designationsList;
 	}
 }
 
