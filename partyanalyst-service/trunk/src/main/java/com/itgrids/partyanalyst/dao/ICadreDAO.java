@@ -126,10 +126,23 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List findLocalElectionBodiesCadresByConst(Long constituencyId, Long userID, String cadreType);
 	
 	public List findHamletCadresByMandal(Long mandalID, Long userID, String cadreType);
+	public List findBoothCadresByMandal(Long mandalID, Long userID, String cadreType);
+	public List findBoothCadresByLocalElectionBody(Long localElectionBodyId, Long userID, String cadreType);
 	
 	public List findCadresByWard(Long localElectionBodyId, Long userID, String cadreType);
 	
 	public List<Cadre> getCadresByWard(Long wardId, Long userID, String cadreType);
+	public List<Cadre> findCadresByBooth(Long boothId, Long userID, String cadreType);
+	public List findCadresNotAssignedToBooth(Long userId, String cadreType);
+	public List findCadresNotAssignedToBoothByTehsil(Long tehsilId, Long userId, String cadreType);
+	public List findCadresNotAssignedToBoothLocalElectionBody(Long localBodyId,Long userId, String cadreType);
+	public List findCadresNotAssignedToBoothInWard(Long wardId,Long userId, String cadreType);
+	public List findVillageLevelCadresContByMandal(Long mandalId, Long userId, String cadreType);
+	public List findLocalBodyLevelCadresContByMandal(Long localBodyId, Long userId, String cadreType);
+	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long userId, String cadreType);
+	public List findCadresByBoothInWard(Long wardId, Long userId, String cadreType);
+	
+	
 	
 	
 	

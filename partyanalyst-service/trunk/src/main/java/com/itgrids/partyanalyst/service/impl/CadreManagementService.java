@@ -857,8 +857,13 @@ public class CadreManagementService {
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		try {
 			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-			
+			Long totalNormalCadres = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_NORMAL);
+			//Long nonAssignedToBoothActiveCadres = getAllNonAssignedBoothCadres(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			//Long nonAssignedToBoothNormalCadres = getAllNonAssignedBoothCadres(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_NORMAL);
 			userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
+			userCadreInfo.setTotalNormalCadres(totalNormalCadres);
+			//userCadreInfo.setTotalNonAssignedToBoothActiveCadres(nonAssignedToBoothActiveCadres);
+			//userCadreInfo.setTotalNonAssignedToBoothNormalCadres(nonAssignedToBoothNormalCadres);
 			userCadreInfo = getUserAccessRegions(userCadreInfo);
 			
 			Map<String, Long> cadresByCadreLevel = getCadreLevelCadresCount(userCadreInfo.getUserID());
@@ -1501,7 +1506,7 @@ public class CadreManagementService {
 		}
 		return formattedData;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getMandalAllVillagesCadres(Long mandalID,
 			Long userID) {
@@ -3488,6 +3493,189 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		return formattedData;
 	}
+	
+	/**
+	 * To retrieve all cadres by booth level in a mandal
+	 * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getMandalAllBoothsCadres(Long mandalId, Long userId)
+	{
+		List boothCadres = cadreDAO.findBoothCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = boothCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) boothCadres.get(i);
+			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("BOOTH");
+			regionInfoVo.setRegionId(new Long(voObject[0].toString()));
+			regionInfoVo.setRegionName("Booth No" + voObject[1]+"("+ voObject[2] + ")");
+			regionInfoVo.setCadreCount(new Long(voObject[3].toString()));
+			formattedData.add(regionInfoVo);
+		}
+		return formattedData;
+	}
+	/**
+	 * To retrieve all cadres by booth level in a mandal count
+	 * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getMandalAllBoothsCadresCount(Long mandalId, Long userId)
+	{
+		List boothCadres = cadreDAO.findHamletCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = boothCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		Long count = 0l;		
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) boothCadres.get(i);
+			count += Long.parseLong(voObject[2].toString());
+			
+		}
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY BOOTHS");
+		regionInfoVo.setRegionId(new Long(IConstants.RURAL_TYPE+mandalId));
+		regionInfoVo.setRegionName("Boothwise");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
+	/**
+	 * To retrieve all cadres by booth level in a local election body
+	 * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getLocalElectionBodyAllBoothsCadres(Long localElectionBodyId, Long userId)
+	{
+		List boothCadres = cadreDAO.findBoothCadresByLocalElectionBody(localElectionBodyId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = boothCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) boothCadres.get(i);
+			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("BOOTH");
+			regionInfoVo.setRegionId(new Long(voObject[0].toString()));
+			regionInfoVo.setRegionName("Booth No"+voObject[1]+" ( " + voObject[2] + " ) ");
+			regionInfoVo.setCadreCount(new Long(voObject[3].toString()));
+			formattedData.add(regionInfoVo);
+		}
+		return formattedData;
+	}
+	
+	/**
+	 * To retrieve all cadres by booth level in a local election body count
+	 * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getLocalElectionBodyAllBoothsCadresCount(Long localElectionBodyId, Long userId)
+	{
+		List boothCadres = cadreDAO.findCadresByWard(localElectionBodyId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = boothCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		Long count = 0l;
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) boothCadres.get(i);
+			count += Long.parseLong(voObject[2].toString());
+		}
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY BOOTHS");
+		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+localElectionBodyId));
+		regionInfoVo.setRegionName("Boothwise");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
+	
+	/**
+	 * To retrieve all cadres by booth level in a ward count
+	 * @param mandalId
+	 * @param userId
+	 * @return-working
+	 */
+	public List<CadreRegionInfoVO> getWardAllBoothsCadresCount(Long wardId, Long userId)
+	{
+		List boothCadres = cadreDAO.findCadresByBoothInWard(wardId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = boothCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		Long count = 0l;
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) boothCadres.get(i);
+			count += Long.parseLong(voObject[3].toString());
+		}
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY BOOTHS IN WARD");
+		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+wardId));
+		regionInfoVo.setRegionName("Boothwise");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
+	
+	/**
+	 * To retrieve all cadres not attached with any booth in their current address based on cadre type and user id 
+	 * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getAllNonAssignedBoothCadres(Long userId, String memberType)
+	{
+		List cadres = cadreDAO.findCadresNotAssignedToBooth(userId, memberType);
+		Long count = Long.parseLong(cadres.get(0).toString());
+		return null;
+	}
+	/**
+	 * This method retrieves cadres which are not having booth details in their current address based on tehsil.
+	 * @param tehsilId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getAllNonAssignedBoothCadresByTehsil(Long tehsilId, Long userId){
+		List cadres = cadreDAO.findCadresNotAssignedToBoothByTehsil(tehsilId,userId, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		Long count = Long.parseLong(cadres.get(0).toString());
+		
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("Not Assigned To Any Booth");
+		regionInfoVo.setRegionId(new Long(IConstants.RURAL_TYPE+tehsilId));
+		regionInfoVo.setRegionName("Cadres with no booth Details");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
+	/**
+	 * This method retrieves cadres which are not having booth details in their current address based on localbody. 
+	 * @param localBodyId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getAllNonAssignedBoothCadresByLocalBody(Long localBodyId, Long userId){
+		List cadres = cadreDAO.findCadresNotAssignedToBoothLocalElectionBody(localBodyId,userId, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		Long count = Long.parseLong(cadres.get(0).toString());
+		
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("Not Assigned To Any Booth");
+		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+localBodyId));
+		regionInfoVo.setRegionName("Cadres with no booth Details");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
+	/**
+	 * This method retrieves cadres which are not having booth details in their current address based on ward id. 
+	 * @param wardId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getAllNonAssignedBoothCadresByWard(Long wardId, Long userId){
+		List cadres = cadreDAO.findCadresNotAssignedToBoothInWard(wardId,userId, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		Long count = Long.parseLong(cadres.get(0).toString());
+		
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("Not Assigned To Any Booth");
+		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+wardId));
+		regionInfoVo.setRegionName("Cadres with no booth Details");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;
+	}
 	/**
 	 * To retrieve all cadres in sub regions of a urban/ rural-urban constituencies
 	 * @param constituencyId
@@ -3510,7 +3698,60 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return formattedData;
 		
 	}
+	/**
+	 * This method returns the consolidated list(count) of cadres based on local body in the current address
+	 * @param localElectionBodyId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getLocalElectionBodyCadresByWardsCount(Long localElectionBodyId, Long userId)
+	{
+		List cadresInWards = cadreDAO.findCadresByWard(localElectionBodyId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = cadresInWards.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		Long count = 0l;
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) cadresInWards.get(i);
+			count += Long.parseLong(voObject[2].toString());			
+		}
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY WARDS");
+		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+localElectionBodyId));
+		regionInfoVo.setRegionName("Wardswise");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;		
+	}
 	
+	/**
+	 * This method retrieves the consolidated list(count) of all the cadres based on village in their current address in a mandal
+	 * * @param mandalId
+	 * @param userId
+	 * @return
+	 */
+	public List<CadreRegionInfoVO> getMandalAllHamletsCadresCount(Long mandalId, Long userId)
+	{
+		
+		List hamletCadres = cadreDAO.findHamletCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		int size = hamletCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		Long count = 0l;
+		for (int i = 0; i < size; i++) {
+			Object[] voObject = (Object[]) hamletCadres.get(i);
+			count += Long.parseLong(voObject[2].toString());
+		}
+		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY VILLAGES");
+		regionInfoVo.setRegionId(new Long(IConstants.RURAL_TYPE+mandalId));
+		regionInfoVo.setRegionName("Villagewise");
+		regionInfoVo.setCadreCount(count);
+		formattedData.add(regionInfoVo);
+		return formattedData;			
+	}
+	/**
+	 * This method retrieves all the cadres by wards in a localbody.
+	 * @param localElectionBodyId
+	 * @param userId
+	 * @return
+	 */
 	public List<CadreRegionInfoVO> getLocalElectionBodyCadresByWards(Long localElectionBodyId, Long userId)
 	{
 		List cadresInWards = cadreDAO.findCadresByWard(localElectionBodyId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -3550,5 +3791,80 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			return null;
 		}
 	}
-
+	
+	/**
+	 * This method retrieves cadres which contains a booth details in their current address 
+	 * @param id
+	 * @param userID
+	 * @return
+	 */
+	public List<CadreInfo> getCadresByBooth(String id, String userID)
+	{
+		List<CadreInfo> formattedData = new ArrayList<CadreInfo>(0);
+		List<Cadre> cadresList = new ArrayList<Cadre>(0);	
+		try{
+			cadresList = cadreDAO.findCadresByBooth(new Long(id), new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			
+			for (Cadre cadre : cadresList) {
+				CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
+				formattedData.add(cadreInfo);
+			}
+			return formattedData;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			cadresList = null;
+			userID = null;
+			id = null;
+			System.gc();
+		}
+	}
+	
+	/**
+	 * This method retrieves cadre details which does not contain booth details in theire current address. 
+	 * @param id
+	 * @param userID
+	 * @return
+	 */
+	public List<CadreInfo> getCadresNotAssignedWithBooth(String userID)
+	{
+		List<CadreInfo> formattedData = new ArrayList<CadreInfo>(0);
+		List<Cadre> cadresList = new ArrayList<Cadre>(0);	
+		try{
+			cadresList = cadreDAO.findCadreDetailsNotAssignedToBooth(new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			
+			for (Cadre cadre : cadresList) {
+				CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
+				formattedData.add(cadreInfo);
+			}
+			return formattedData;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			cadresList = null;
+			userID = null;			
+			System.gc();
+		}
+	}
+	
+	/**
+	 * This mehtod is used to verify whether a local body election type is GMC or not.
+	 * @param localBodyId
+	 * @return
+	 */
+	public Boolean getLocalBodyElectionType(Long wardId)
+	{
+		Boolean flag = false;
+		Constituency ward = constituencyDAO.get(wardId);
+		Long localBodyId = ward.getLocalElectionBody().getLocalElectionBodyId();
+		LocalElectionBody localBody = localElectionBodyDAO.get(localBodyId); 
+		if(IConstants.GREATER_ELECTION_TYPE.equals(localBody.getElectionType().getElectionType()))
+		{
+			flag = true;
+		}
+		return flag;
+	}
+	
 }
