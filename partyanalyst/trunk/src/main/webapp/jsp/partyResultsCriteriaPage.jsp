@@ -93,7 +93,14 @@
 			
 			var row1Elmt=document.getElementById("row1");
 			row1Elmt.style.display = "";
-									
+
+			var row2Elmt=document.getElementById("row2");
+			row2Elmt.style.display = "none";
+			var row3Elmt=document.getElementById("row3");
+			row3Elmt.style.display = "none";			
+			var row4Elmt=document.getElementById("row4");
+			row4Elmt.style.display = "none";
+			
 			ELECTIONTYPE=value;
 			
 			var labelElmt=document.getElementById("reportLevelLabel");
@@ -136,17 +143,20 @@
 		
 		
 	function displaySelectOptions(value, elecType)
-	{
-		
+	{		
 		var row2Elmt=document.getElementById("row2");
 		row2Elmt.style.display = "";
+
+		var row3Elmt=document.getElementById("row3");
+		row3Elmt.style.display = "none";
+		var row4Elmt=document.getElementById("row4");
+		row4Elmt.style.display = "none";
 		
 		REPORTLEVEL=value;	
 
 		var labelDivElmt=document.getElementById("selectLabel");
 		var stateSelectDivElmt=document.getElementById("tdStateDataDiv");
 		var distNConstSelectDivElmt=document.getElementById("tdDistNConstDataDiv");		
-		var buttonDivElmt=document.getElementById("resultsPageButtonDiv");
 		
 		if(!labelDivElmt)
 			return;			
@@ -154,9 +164,7 @@
 			return;			
 		if(!distNConstSelectDivElmt)			
 			return;			
-		if(!buttonDivElmt)		
-			return;	
-
+		
 		if(REPORTLEVEL=="State")
 		{				
 			labelDivElmt.innerHTML="";			
@@ -252,7 +260,6 @@
 			
 	function getAllConstsForState(id,element, electionTypeId)
 	{
-	
 		var jsObj=
 		{				
 				task: "getConstituenciesByElectionScope",
@@ -260,12 +267,9 @@
 				stateId:id,
 				electionType: electionTypeId				 	
 		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	//if()	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getConstituenciesByElectionScope.action?"+rparam;
-							
-	callAjax1(rparam,jsObj,url);
+		callAjax1(rparam,jsObj,url);
 	}
 
 	function getPartiesForAState(id)
@@ -273,7 +277,6 @@
 		if(id == 0)
 			return;
 		var row3Elmt=document.getElementById("row3");
-		var buttonDivElmt=document.getElementById("resultsPageButtonDiv");
 		row3Elmt.style.display = "";
 		var jsObj= 
 		{		
@@ -284,12 +287,7 @@
 		var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
 		callAjax1(param,jsObj,url);
 		var row4Elmt=document.getElementById("row4");
-		row4Elmt.style.display = "";
-		
-		var bstr='';		
-		bstr+='<input type="submit" name="submitButton" value="Submit"/>';		
-		buttonDivElmt.innerHTML=bstr;
-		
+		row4Elmt.style.display = "none";
 	}
 		
 		/*	Function to display the selectbox with values(State/District/Constituency) based on
@@ -305,7 +303,7 @@
 			var labelDivElmt=document.getElementById("selectLabel");
 			var stateSelectDivElmt=document.getElementById("tdStateDataDiv");
 			var distNConstSelectDivElmt=document.getElementById("tdDistNConstDataDiv");		
-			var buttonDivElmt=document.getElementById("resultsPageButtonDiv");
+			
 			
 			if(!labelDivElmt)
 				return;			
@@ -313,17 +311,8 @@
 				return;			
 			if(!distNConstSelectDivElmt)			
 				return;			
-			if(!buttonDivElmt)		
-				return;		
 			
-			if(REPORTLEVEL=="Country")
-			{				
-				var bstr='';
-				bstr+='<input type="submit" name="submitButton" value="Submit"/>';			
-				buttonDivElmt.innerHTML=bstr;
-				return;
-			}
-						
+					
 			if(REPORTLEVEL=="State")
 			{				
 				labelDivElmt.innerHTML="";			
@@ -400,9 +389,7 @@
 				str+='</select>';
 				distNConstSelectDivElmt.innerHTML=str;
 			}
-			var bstr='';		
-			bstr+='<input type="submit" name="submitButton" value="Submit"/>';		
-			buttonDivElmt.innerHTML=bstr;
+			
 		}
 		
 		function getParticipatedStatesForAnElection(value, element)
@@ -460,43 +447,56 @@
 		
 		function validateData()
 		{
-			/*if(REPORTLEVEL=="Country")
-				return true;*/
 			var errorDivElmt=document.getElementById("resultsPageErrorDiv");
 			var stateSelectElmt=document.getElementById("stateNameSelect");
 			var stateVal=stateSelectElmt.options[stateSelectElmt.selectedIndex].text;
-
-			errorDivElmt.innerHTML="";
-
+			var partySelectElmt= document.getElementById("partyList");
+			var partySelectNameVal=partySelectElmt.options[partySelectElmt.selectedIndex].text;
+			var str = '';
+			var errorFlag=0;
+			if(partySelectNameVal=="Select Party" || partySelectNameVal=="")
+			{
+				str+='<b style="color:bold;">Please Select a Party</b>'
+				errorFlag=1;
+			}
 			if(stateVal=="Select State" || stateVal=="")
 			{
-				errorDivElmt.innerHTML='<%=selectStateMsg %>';
-				return false;
+				str+='<b style="color:bold;">Please Select a State</b>';				
+				errorFlag=1;	
 			}
-			else
+			if(REPORTLEVEL=="State"){
+				var stateSelectElmt=document.getElementById("stateNameSelect");
+				var stateVal=stateSelectElmt.options[stateSelectElmt.selectedIndex].text;
+				if(stateVal=="Select State" || districtVal=="")
+				{
+					errorDivElmt.innerHTML="*Select State";
+					errorFlag=1;
+				}		
+			}else if(REPORTLEVEL=="District")
 			{
+				var districtSelectElmt=document.getElementById("DistrictNameSelect");			
+				var districtVal=districtSelectElmt.options[districtSelectElmt.selectedIndex].text;
+				if(districtVal=="Select District" || districtVal=="")
+				{
+					errorDivElmt.innerHTML="*Select District";
+					errorFlag=1;
+				}										
+			}else if(REPORTLEVEL=="Constituency")
+			{
+				var constituencySelectElmt=document.getElementById("ConstituencyNameSelect");
+				var constituencyVal=constituencySelectElmt.options[constituencySelectElmt.selectedIndex].text;
+					if(constituencyVal=="Select Constituency" || constituencyVal=="")
+					{
+						errorDivElmt.innerHTML="*Select Constituency";
+						errorFlag=1;
+					}					
+			}
+		   if(errorFlag==1){
+				document.getElementById("errorMessage").innerHTML = message;
+				return false;
+			}else{
 				ShowImage();
-
-				if(REPORTLEVEL=="District")
-				{
-					var districtSelectElmt=document.getElementById("districtNameSelect");
-					var districtVal=districtSelectElmt.options[districtSelectElmt.selectedIndex].text;
-						if(districtVal=="Select District" || districtVal=="")
-						{
-							errorDivElmt.innerHTML="*Select District";
-							return false;
-						}											
-				}
-				else if(REPORTLEVEL=="Constituency")
-				{
-					var constituencySelectElmt=document.getElementById("constituencyNameSelect");
-					var constituencyVal=constituencySelectElmt.options[constituencySelectElmt.selectedIndex].text;
-						if(constituencyVal=="Select Constituency" || constituencyVal=="")
-						{
-							errorDivElmt.innerHTML="*Select Constituency";
-							return false;
-						}					
-				}
+				return true;
 			}
 		}		
 
@@ -504,22 +504,30 @@
 			var selectObj = document.getElementById(id);
 			val = selectObj.options[selectObj.selectedIndex].text;
 			document.getElementById("selectedLocationName").value=val;
-			return true;
 		}
 		
 		function setPartyName(id, name){
-		var selObj = document.getElementById("partyList");
-		var val = selObj.options[selObj.selectedIndex].text;
-		document.getElementById("selectedPartyShortName").value=val;
-		var id = selObj.options[selObj.selectedIndex].value;
-		document.getElementById("selectedPartyId").value = id;
-		return true;
+			var selObj = document.getElementById("partyList");
+			var val = selObj.options[selObj.selectedIndex].text;
+			document.getElementById("selectedPartyShortName").value=val;
+			var id = selObj.options[selObj.selectedIndex].value;
+			document.getElementById("selectedPartyId").value = id;
+			var row4DivElmt=document.getElementById("row4");
+			var buttonDivElmt=document.getElementById("resultsPageButtonDiv");
+			var bstr='';	
+			if(val!="Select Party"){		
+				row4DivElmt.style.display="block";
+				buttonDivElmt.style.display="block";			
+				bstr+='<input type="submit" name="submitButton" onclick="return validateData()" value="Submit"/>';		
+				buttonDivElmt.innerHTML=bstr;			
+			}else{
+				row4DivElmt.style.display="none";
+				buttonDivElmt.style.display="none";
+			}
 		}
 
 		function setElectionType(electionType){
-			document.getElementById("selectedElectionTypeName").value=electionType;			
-			
-			return true;
+			document.getElementById("selectedElectionTypeName").value=electionType;	
 		}
   </script>
    </HEAD>
@@ -528,8 +536,18 @@
 <H3 style="color:#444444;"><U>Party Results Report</U></H3>
 <div id="resultsPageErrorDiv"></div>
 <div id="partyResultsMainDiv">
-
-<s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
+		<table class="errorDIV">
+			<tr>
+				<td colspan="2">
+					<div style="color: red;">
+						<s:actionerror />
+						<s:fielderror />
+						<s:actionmessage/>						
+					</div>
+				</td>
+			</tr>
+		</table>
+<s:form name="partyResultsForm" action="partyResultsAction" method="post">
 <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
 <input type="hidden" id="selectedPartyId" name="selectedPartyId">
 <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
@@ -598,21 +616,32 @@
 			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
 		</td>
 	</tr>
- <tr id="row4" style="display:none;">
-	<td colspan="3" align="center">
-		<div id="resultsPageButtonDiv"></div>
-	</td>
- </tr>
-
  </table>
+
+<center> 
+ <table>
+	 <tr id="row4" style="display:none;">
+		<td colspan="3" align="center">
+			<div id="resultsPageButtonDiv"></div>
+		</td>
+	 </tr>
+ </table>
+</center>
+
  </s:form>
+ <table>
+	<tr>
+ 		<td align="left">
+	 		<div id="errorMessage"></div>
+		</td>
+	</tr>
+ </table>
 </div>
 
 <div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
 	<span><b>Processing Request ...</b> </span>
 	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 </div>
-
 
 </BODY>
 </HTML>
