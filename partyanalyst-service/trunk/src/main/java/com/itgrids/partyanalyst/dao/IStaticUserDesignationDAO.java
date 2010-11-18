@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.StaticUserDesignation;
@@ -17,4 +19,6 @@ import com.itgrids.partyanalyst.model.StaticUserDesignation;
  */
 public interface IStaticUserDesignationDAO extends GenericDao<StaticUserDesignation, Long> {
 
+	@SuppressWarnings("unchecked")
+	public List getDesignationsByStaticLocalGroupId(Long staticLocalGroupId);
 }
