@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IStaticUserDesignationDAO;
@@ -21,6 +23,13 @@ public class StaticUserDesignationDAO extends GenericDaoHibernate<StaticUserDesi
 
 	public StaticUserDesignationDAO() {
 		super(StaticUserDesignation.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getDesignationsByStaticLocalGroupId(Long staticLocalGroupId) {
+		
+		return getHibernateTemplate().find("select model.staticUserDesignationId,model.designationType from "+
+				"StaticUserDesignation model where model.staticLocalGroup.staticLocalGroupId = ?",staticLocalGroupId);
 	}
 
 }

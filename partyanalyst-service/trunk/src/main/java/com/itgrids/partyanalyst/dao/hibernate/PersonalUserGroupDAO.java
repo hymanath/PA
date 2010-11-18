@@ -12,6 +12,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.model.MyGroup;
@@ -418,6 +419,23 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 			Long wardId, Long categoryId, Long constituencyId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public Integer deleteLocalUserGroupById(Long groupId) {
+		
+		Query queryObject = getSession().createQuery("delete from PersonalUserGroup model where model.personalUserGroupId = ?");
+		queryObject.setParameter(0, groupId);
+		return queryObject.executeUpdate();
+	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getGroupsForAUserInAGroupCategory(Long categoryId, Long userId) {
+
+		Object[] params = {userId,categoryId};
+		return getHibernateTemplate().find("select distinct model.personalUserGroupId,model.groupName from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup.staticLocalGroupId = ?",params);
 	}
 	
 }
