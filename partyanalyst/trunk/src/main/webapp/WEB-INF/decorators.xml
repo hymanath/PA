@@ -56,7 +56,7 @@
 		<pattern>/saveLocalGroupAction*</pattern>
 		<pattern>/createLocalGroupMemberAction*</pattern>
 		<pattern>/createLocalGroupMemberPopupAction*</pattern>
-		
+		<pattern>/saveLocalGroupMembersAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
