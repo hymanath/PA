@@ -51,10 +51,17 @@ public class CandidateDetailsVO implements Serializable{
 	private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	private Long currentRowNo;
 	private String localBodyElectionsConstituencyName;
-	
+	private String reservationZone;
 	//getters and setters
+	
 	public Long getConstituencyId() {
 		return constituencyId;
+	}
+	public String getReservationZone() {
+		return reservationZone;
+	}
+	public void setReservationZone(String reservationZone) {
+		this.reservationZone = reservationZone;
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
