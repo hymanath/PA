@@ -538,6 +538,12 @@
 									<td>${group.boothName}</td>									
 								</tr>
 								<tr>
+									<th>Group Scope</th>
+									<td>${group.groupScopeId}</td>
+									<th>Group Scope Location</th>
+									<td colspan="3" align="left">${group.groupScopeRange}</td>
+								</tr>
+								<tr>
 									<th valign="top">Description</th>
 									<td valign="top" colspan="5" align="left">${group.groupDesc}</td>
 								</tr>
