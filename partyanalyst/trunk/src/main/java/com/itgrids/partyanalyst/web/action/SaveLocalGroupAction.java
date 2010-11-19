@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -65,7 +66,11 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	private String streetName;
 	private String pincode;
 	
+	private  String resultStatus;
+	
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
+	
+	private IInfluencingPeopleService influencingPeopleService;
 	
 		
 	public HttpServletRequest getRequest() {
@@ -136,6 +141,19 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	public void setLocalUserGroupDetailsVO(
 			LocalUserGroupDetailsVO localUserGroupDetailsVO) {
 		this.localUserGroupDetailsVO = localUserGroupDetailsVO;
+	}
+	public String getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(String resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
 	}
 	public ServletContext getContext() {
 		return context;
@@ -229,7 +247,62 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		localUserGroupDetailsVO.setRegistrationId(regVO.getRegistrationID().toString());
-						
+		localUserGroupDetailsVO.setWindowTask("save");
+		
+		if("2".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.STATE_LEVEL);
+		}
+		
+		else if("3".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.DISTRICT_LEVEL);
+		}
+		
+		else if("4".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.CONSTITUENCY_LEVEL);
+		}
+		
+		else if("5".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.MANDAL_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+		}
+		
+		else if("6".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.CENSUS_VILLAGE_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+		}
+		
+		else if("7".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+		}
+		
+		else if("8".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.WARD);
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+		}
+		
+		else if("9".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
+		{
+			localUserGroupDetailsVO.setGroupScopeRange(IConstants.BOOTH);
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+		}
+		
+		localUserGroupDetailsVO = influencingPeopleService.saveLocalUserGroupDetailsTODB(localUserGroupDetailsVO);
+		
+		if(localUserGroupDetailsVO.getResultStatus().getExceptionEncountered() != null){
+			
+			resultStatus = "failure";
+			return Action.ERROR;
+		}
+			
+		resultStatus = "success";
 		return Action.SUCCESS;
 	}
 }
