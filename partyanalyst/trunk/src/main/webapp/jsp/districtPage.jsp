@@ -1471,7 +1471,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="mp_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-					<td><div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
+					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
 							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:528px;">
