@@ -190,6 +190,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			fields : [  {
 				key : "constituencyName"
 			},{
+				key : "reservationZone"
+			},{
 				key : "candidateName"
 			}, {
 				key : "partyFlag"
@@ -201,6 +203,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var resultsColumnDefsForTehsil = [  {
 			key : "constituencyName",
 			label : "Constituency",
+			sortable : true
+		},{
+			key : "reservationZone",
+			label : "Reservation Zone",
 			sortable : true
 		},{
 			key : "candidateName",
@@ -1289,64 +1295,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			</div>						
 		</div>
 
-	   <c:if test="${stateDetails.name == 'Andhra Pradesh'}">
-		<div id="newConstDiv_main">
-			<div id="newConstDiv_head">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="districtPageRoundedHeaders_center"><span>New Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>
-				</table>
-			</div>
-			<div id="newConstDiv_body">				
-				<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">
-					<div id="newConstAncSpan" class="mandalNamesDiv">		
-					<table>
-						<tr>
-						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
-						<td><span class="mandalNameSpan">
-							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> ${result.name}
-							</a></span>
-						</td>
-						</tr>
-					</table>
-				</div>	
-				</c:forEach>						
-			</div>
-		</div>
-        
 
-		
-		<div id="delimitMandalsDiv_main">
-			<div id="delimitMandalsDiv_head">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="districtPageRoundedHeaders_center"><span>Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>
-				</table>
-			</div>
-			<div id="delimitMandalsDiv_body">
-				<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
-				<div id="mandalAncSpan" class="mandalNamesDiv">							
-					<table>
-						<tr>
-						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
-						<td><span class="mandalNameSpan">
-							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
-							</a></span>
-						</td>
-						</tr>
-					</table>
-				</div>			
-				</c:forEach>			
-			</div>
-		</div>
-		
-		</c:if>
 		<div id="mandalsDiv_main">
 			<div id="mandalsDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1378,7 +1327,26 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="problemViewingDiv_Head"></div>
 			<div id="problemViewingDiv_Body"></div>
 		</div>
-
+		<div id="problemPostingDiv">
+			<div id="problemPostingDiv_Head"></div>
+			<div id="problemPostingDiv_Body"></div>
+		</div>
+		<div id="districtPeopleConnect_main">
+			<div id="districtPeopleConnect_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td>	
+							<div class="districtPageRoundedHeaders_center" style="width:253px;">
+								<span>Connect To Your District People</span>
+							</div>
+						</td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>	
+			</div>
+			<div id="districtPeopleConnect_body"></div>
+		</div>
 	</div>
 
 	<!--District Page Center Layout-->
@@ -1432,6 +1400,70 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</c:if>
 			</div>
 		</div>
+		
+		<c:if test="${stateDetails.name == 'Andhra Pradesh'}">
+		<table>
+			<tr>
+				<td style="padding-left:6px;padding-right:20px;">
+					<div id="newConstDiv_main">
+						<div id="newConstDiv_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="districtPageRoundedHeaders_center"><span>New AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="newConstDiv_body">				
+							<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">
+								<div id="newConstAncSpan" class="mandalNamesDiv">		
+								<table>
+									<tr>
+									<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+									<td><span class="mandalNameSpan">
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> ${result.name}
+										</a></span>
+									</td>
+									</tr>
+								</table>
+							</div>	
+							</c:forEach>						
+						</div>
+					</div>
+        </td>
+        <td>
+				<div id="delimitMandalsDiv_main">
+					<div id="delimitMandalsDiv_head">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+							<tr>
+								<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+								<td><div class="districtPageRoundedHeaders_center"><span>Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
+								<td><img src="images/icons/districtPage/header_right.gif"/></td>
+							</tr>
+						</table>
+					</div>
+					<div id="delimitMandalsDiv_body">
+						<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
+						<div id="mandalAncSpan" class="mandalNamesDiv">							
+							<table>
+								<tr>
+								<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+								<td><span class="mandalNameSpan">
+									<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
+									</a></span>
+								</td>
+								</tr>
+							</table>
+						</div>			
+						</c:forEach>			
+					</div>
+				</div>
+        </td>
+        </tr>
+		</table>
+		</c:if>
+		
 		<div id="partiesPerformanceGraphDistrict">
 			<div id="alliancePartiesCarousel" class="yui-skin-sam">
 				<ul>
@@ -1460,7 +1492,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<div id="mpMla_main">
 	<table width="100%">
 	<tr>
-		<td width="75%" valign="top">
+		<td valign="top">
 		<div id="mp_main_div" style="width:auto">
 			<div id="mp_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1468,7 +1500,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
-							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:528px;">
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:847px;">
 								<span>Member of Parliament (MP) in the District</span>
 							</div>
 						</td>
@@ -1476,7 +1508,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>
 			</div>
-			<div id="mp_body" class="yui-skin-sam" style="height:220px;">
+			<div id="mp_body" class="yui-skin-sam" style="height:155px;">
 				<div id="mpsInfoDivBody">
 					<table id="mpsDataSortingTable">			
 						<c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">			
@@ -1485,6 +1517,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 								<span id="districtAncSpan">
 												<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
 										</a>
+									</span>
+								</td>
+								<td>
+									<span id="districtAncSpan">
+											${mpsDetails.reservationZone} 
 									</span>
 								</td>
 								<td>
@@ -1505,24 +1542,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			</div>
 		</div>
 		</td>
-		<td width="25%" valign="top">
-			<div id="districtPeopleConnect_main">
-				<div id="districtPeopleConnect_head">
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-						<tr>
-							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-							<td>	
-								<div class="districtPageRoundedHeaders_center" style="width:253px;">
-									<span>Connect To Your District People</span>
-								</div>
-							</td>
-							<td><img src="images/icons/districtPage/header_right.gif"/></td>
-						</tr>
-					</table>	
-				</div>
-				<div id="districtPeopleConnect_body"></div>
-			</div>			
-		</td>
+		
 		</table>
 		<div id="mla_main_div">
 			<div id="mla_head">
@@ -1530,7 +1550,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					<tr>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
-							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:848px;">
 								<span>Member of Legislative Assembly (MLA) in the District</span>
 							</div>
 						</td>
@@ -1764,7 +1784,7 @@ getElectionTypesAndYears();
 
 getMuncipalPartyDetails();
 getCorporationPartyDetails();
- 
+buildProblemPostingWindowForDistrict();
 </script>
 </body>
 </html>

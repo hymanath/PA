@@ -18,7 +18,7 @@ var userId = '';
 function buildDistrictPageLayout()
 {
 	var cadreReportPageLayout = new YAHOO.widget.Layout('districtPageLayout_main', { 
-	height:1000,
+	height:1150,
 	units: [
 			{ 
 				position: 'right', 
@@ -221,7 +221,26 @@ function handleCancel()
 {
 	this.cancel();
 }
+function buildProblemPostingWindowForDistrict()
+{
+	var headElmt = document.getElementById('problemPostingDiv_Head');
+	var bodyElmt = document.getElementById('problemPostingDiv_Body');
+	var str='';
+	str+='<fieldset id="ProblemPostingFieldSet">';
+	str+='<legend> Post Your constituency Problem</legend>';
+	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
+	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
+	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'">POST</a></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
 
+	/*var postButton = new YAHOO.widget.Button("postButton");
+	postButton.on("click", openAddNewProblemWindow); */
+}
 function buildDistrictConnectPeopleWindow()
 {	
 	var bodyElmt = document.getElementById('districtPeopleConnect_body');
@@ -254,6 +273,7 @@ function buildDistrictConnectPeopleWindow()
 
 function initializeDistrictPage()
 {
+	//buildProblemPostingWindowForDistrict();
 	buildDistrictPageLayout();
 	buildDistrictLatestNews();
 	buildDistrictLevelProblemWindow();

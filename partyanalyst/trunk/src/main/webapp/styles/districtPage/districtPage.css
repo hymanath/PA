@@ -125,12 +125,17 @@
 
 }
 
-#mandalsDiv_main,#delimitMandalsDiv_main,#newConstDiv_main
+#mandalsDiv_main,#delimitMandalsDiv_main
 {
 	text-align:left;
-	width:315px;
+	width:272px;
 }
 
+#newConstDiv_main
+{
+	text-align:left;
+	width:276px;
+}
 #mandalsDiv_body
 {
 	border-left:1px solid #E0E0D6;
@@ -170,7 +175,7 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:312px;
+	width:268px;
 	overflow:auto;
 	height:100px;
 }
@@ -180,7 +185,7 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:312px;
+	width:272px
 	overflow:auto;
 	height:100px;
 }
@@ -226,11 +231,12 @@
 	margin-bottom:30px;
 	padding-left:25px;
 	text-align:left;
+	padding-right:25px;
 }
 
 #mp_main_div,#mla_main_div
 {
-	width:850px;
+	width:903px;
 	margin-bottom:30px;
 }
 
@@ -502,4 +508,9 @@
 	position:relative;
 	top:3px;
 	cursor:pointer;
+}
+
+#problemPostingDiv
+{
+	width:320px;
 }
