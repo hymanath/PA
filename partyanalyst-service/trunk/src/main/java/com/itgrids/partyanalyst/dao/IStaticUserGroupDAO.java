@@ -39,4 +39,6 @@ public interface IStaticUserGroupDAO extends GenericDao<StaticUserGroup ,Long> {
 	
 	@SuppressWarnings("unchecked")
 	public List getMemberDetailsOfLocalUserGroup(Long localGroupId);
+	
+	public List<StaticUserGroup> getStaticUserGroupByStaticUserAndGroup(Long staticUserId,Long groupId);
 }
