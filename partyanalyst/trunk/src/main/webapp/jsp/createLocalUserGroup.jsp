@@ -453,7 +453,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <textarea id="" cols="10" rows="3" style="width:150px;" name="localGroupDesc">
+		  <textarea id="" cols="10" rows="3" style="width:150px;" name="localGroupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
 		  </textarea>
 		</td>
 	  </tr>
