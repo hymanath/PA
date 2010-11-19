@@ -10,6 +10,10 @@
 	    <property name="influencingPeopleService" ref="influencingPeopleService" />
 	</bean>
 	
+	<bean id="saveLocalGroupMembersAction" class="com.itgrids.partyanalyst.web.action.SaveLocalGroupMembersAction" singleton="false">
+	    <property name="influencingPeopleService" ref="influencingPeopleService" />
+	</bean>
+	
 	<bean id="userEntitlementAction" class="com.itgrids.partyanalyst.web.action.UserEntitlementAction" singleton="false">
 		<property name="userEntitlementService" ref="userEntitlementService" />
 		<property name="registrationService" ref="registrationService" />
