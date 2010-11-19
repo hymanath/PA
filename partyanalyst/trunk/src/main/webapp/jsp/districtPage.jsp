@@ -136,8 +136,6 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 			key : "partyFlag"
 		}, {
 			key : "parliamentConstituencyName"
-		},{
-			key : "parliamentReservationZone"
 		}, {
 			key : ""
 		}]
@@ -149,7 +147,7 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 		sortable : true
 	},{
 		key : "reservationZone",
-		label : "ARZ*",
+		label : "Reservation Zone",
 		sortable : true
 	}, {
 		key : "candidateName",
@@ -158,10 +156,6 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 	}, {
 		key : "parliamentConstituencyName",
 		label : "Parliament Constituency",
-		sortable : true	
-	}, {
-		key : "parliamentReservationZone",
-		label : "PRZ*",
 		sortable : true	
 	}, {
 		key : "partyFlag",
@@ -1545,17 +1539,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</table>
 			</div>
 			
-			<div id="mla_body" class="yui-skin-sam">
-				<div>
-					<table width="90%" style="text-align: right;">
-							<tbody><tr>
-								<td style="padding-top: 14px; padding-bottom: 14px;"><span style="color: red; font-weight: bold;">ARZ* </span> Assembly Reservation Zone</td>
-							</tr>
-							<tr>
-								<td ><span style="color: red; font-weight: bold;">PRZ* </span> Parliament Reservation Zone</td>
-							</tr>
-					</tbody></table>
-				</div>
+			<div id="mla_body" class="yui-skin-sam">				
 				<div id="mlaInfoDivBody">
 					<table  id="mlaDataSortingTable">						
 						<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
@@ -1585,12 +1569,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.parliamentConstituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.parliamentConstituencyName}										 		
 										</a>
 									</span>
-								</td>
-								<td>
-									<span id="districtAncSpan">
-											${candidate.parliamentReservationZone} 
-									</span>
-								</td>	
+								</td>									
 								<td>
 								<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
 							</td>
