@@ -17,12 +17,15 @@ public class UserGroupMembersVO implements Serializable {
 	private Long groupId;
 	private String groupName;
 	private String groupDesc;
+	private Long designationId;
 	private String designation;
 	private Long groupMemberId;
 	private String createdDate;
 	private String emailId;
 	private ResultStatus rs;
 	private Boolean confirmation;
+	
+	private String windowTask;
 	
 	
 	
@@ -115,6 +118,18 @@ public class UserGroupMembersVO implements Serializable {
 	}
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
+	}
+	public String getWindowTask() {
+		return windowTask;
+	}
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
 	}
 
 
