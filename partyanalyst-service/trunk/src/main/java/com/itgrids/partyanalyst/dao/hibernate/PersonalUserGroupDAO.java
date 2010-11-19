@@ -268,6 +268,19 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.hamlet is not null "+
 				"group by model.localGroupRegion.hamlet.hamletId",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInBoothsByTehsil(Long userId,
+			Long tehsilId,Long categoryId) {
+
+		Object[] params = {userId, tehsilId,categoryId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.booth.boothId "+
+				"from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
+				"is not null and model.localGroupRegion.tehsil is not null and model.localGroupRegion.tehsil.tehsilId = ? "+
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.booth is not null "+
+				"group by model.localGroupRegion.booth.boothId",params);
+	}
 
 
 	@SuppressWarnings("unchecked")
@@ -292,6 +305,19 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"is not null and model.localGroupRegion.localBody is not null and model.localGroupRegion.localBody.localElectionBodyId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.ward is not null and model.localGroupRegion.constituency.constituencyId = ? "+
 				"group by model.localGroupRegion.ward.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInBoothsByLocalBodys(Long userId,
+			Long localBodyId,Long categoryId,Long constituencyId) {
+		
+		Object[] params = {userId, localBodyId,categoryId,constituencyId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.booth.boothId "+
+				"from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
+				"is not null and model.localGroupRegion.localBody is not null and model.localGroupRegion.localBody.localElectionBodyId = ? "+
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.booth is not null and model.localGroupRegion.constituency.constituencyId = ? "+
+				"group by model.localGroupRegion.booth.boothId",params);
 	}
 
 
@@ -415,10 +441,17 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInBoothsByWard(Long userId,
 			Long wardId, Long categoryId, Long constituencyId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Object[] params = {userId, wardId,categoryId,constituencyId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId),model.localGroupRegion.booth.boothId "+
+				"from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
+				"is not null and model.localGroupRegion.ward is not null and model.localGroupRegion.ward.constituencyId = ? "+
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.booth is not null and model.localGroupRegion.constituency.constituencyId = ? "+
+				"group by model.localGroupRegion.booth.boothId",params);
 	}
 
 
