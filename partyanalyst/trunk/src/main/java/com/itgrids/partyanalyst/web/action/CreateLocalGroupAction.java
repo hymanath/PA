@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -69,66 +70,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
 	
-	private String name;
-	private String mobile;
-	private String email;
-	private String address;
-	private String city;
-	private String groupCategory;
-	private String groupName;
-	private String designation;	
-	
-	
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getGroupCategory() {
-		return groupCategory;
-	}
-	public void setGroupCategory(String groupCategory) {
-		this.groupCategory = groupCategory;
-	}
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-	public String getDesignation() {
-		return designation;
-	}
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
-	
+			
 	public String getTask() {
 		return task;
 	}
@@ -376,7 +318,9 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		String desigName = jObj.getString("desigName");
 		String desigDesc = jObj.getString("desigDesc");
-		designations = influencingPeopleService.saveNewDesignationForACategory(0L, userId, desigName, desigDesc);
+		String categoryId = jObj.getString("categoryId");
+		
+		designations = influencingPeopleService.saveNewDesignationForACategory(new Long(categoryId), userId, desigName, desigDesc);
 		session.setAttribute("designations", designations);
 		
 		return Action.SUCCESS;
@@ -426,9 +370,5 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	public String createLocalGroupMember()
-	{
-		
-		return Action.SUCCESS;
-	}
+	
 }
