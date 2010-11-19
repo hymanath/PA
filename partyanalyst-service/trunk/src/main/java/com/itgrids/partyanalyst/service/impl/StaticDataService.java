@@ -904,12 +904,9 @@ public class StaticDataService implements IStaticDataService {
 			if(count > 0L)
 				electionYear = Long.parseLong(election.getElectionYear());
 			else{*/
-			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, stateId,"MAIN")
+			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, stateId,IConstants.ELECTION_SUBTYPE_MAIN)
 					.get(0).toString()) ;
 			
-			
-			Long rank = 1l;
-			getAllParliamentWinningCandidatesForADistrict(districtId, parliamentConstituencies);
 			log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
 			ConstituenciesStatusVO constituenciesStatusVO = getConstituenciesForDistrict(districtId, electionYear, IConstants.ASSEMBLY_ELECTION_TYPE);
 			List<SelectOptionVO> constituencies = (constituenciesStatusVO.getExistConstituencies());
@@ -942,9 +939,12 @@ public class StaticDataService implements IStaticDataService {
 			
 			constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
 			StringBuilder parliamentIDs = new StringBuilder();
+			
+			
+			//
+			
 			for(Map.Entry<Long,Long> result : constituencyIdsAndYears.entrySet()){
 				List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
-				
 				for(int i=0;i<candidates.size();i++){				
 				ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
 				Object[] obj = (Object[]) candidates.get(i);
@@ -969,7 +969,7 @@ public class StaticDataService implements IStaticDataService {
 				constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 				}
 			}	
-			List parliamentCandidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(parliamentIDs.substring(1),electionYear.toString());
+			/*List parliamentCandidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(parliamentIDs.substring(1),electionYear.toString());
 			for(int k=0;k<constituencyWinnerInfoVOList.size();k++){	
 				for(int l=0;l<parliamentCandidates.size();l++){	
 					Object[] parliamentCandidatesObj = (Object[]) parliamentCandidates.get(l);
@@ -977,7 +977,7 @@ public class StaticDataService implements IStaticDataService {
 						constituencyWinnerInfoVOList.get(k).setParliamentReservationZone(parliamentCandidatesObj[6].toString());	
 					} 
 				}
-			}
+			}*/
 			constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 			constituenciesStatusVO.setDelimitationYear(electionYear);
 			constituenciesStatusVO.setElectionType(electionYear.toString());
@@ -2109,10 +2109,10 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	/**
-	 * @param districtId
-	 * @return List<CandidateDetailsVO>
-	 * 
 	 * This method retrieves all the MP's present in the district for the latest election year.
+	 * @author Y.Ravi Kiran.
+	 * @param districtId
+	 * @return CandidateDetailsVO
 	 */
 	@SuppressWarnings("unchecked")
 	public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId,
@@ -2136,8 +2136,9 @@ public class StaticDataService implements IStaticDataService {
 				 }		
 				 else{
 					 candidateDetailsVO.setPartyFlag("no_Image.png");
-					}
+				  }
 				 candidateDetailsVO.setPartyName(parms[7].toString()); 
+				 candidateDetailsVO.setReservationZone(parms[12].toString());
 				 candidateDetailsVo.add(candidateDetailsVO);
 			}
 		}		
