@@ -40,7 +40,7 @@ public interface IInfluencingPeopleService {
 	public ConstituencyManagementDataVO getConstituencyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long constituencyId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType);
 	public ConstituencyManagementDataVO getMandalRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long mandalId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long constituencyId);
 	public ConstituencyManagementDataVO getLocalELectionBodyRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long localBodyId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long regionId);
-	public ConstituencyManagementDataVO getWardRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long wardId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,Long constituencyId);
+	public ConstituencyManagementDataVO getWardRegionAndSubRegionsInfluencingPeopleByUserAndLocation(Long userId,Long wardId,Boolean isScopeData,String moduleType,Long categoryId,String categoryType,String areaType,Long constituencyId);
 	
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByRegion(Long userId,Long regionId,String regionType,Long parentRegionId);
 	public List<InfluencingPeopleDetailsVO> getInfluencingPeopleDetailsByScope(Long userId,Long regionId,String regionType);
@@ -59,10 +59,12 @@ public interface IInfluencingPeopleService {
 	public List<RegionSelectOptionVO> getRegionsSelectOptionsForInput(Long regionId,String regionType,String selectedType);
 	
 	public List<SelectOptionVO> getLocalGroupCategoriesList(Long userId);
+	public List<SelectOptionVO> getLocalGroupCategoriesList(Long userId,Long groupCategoryId);
 	
 	public LocalUserGroupDetailsVO saveLocalUserGroupDetailsTODB(LocalUserGroupDetailsVO localGroupDetails); 
 	
 	public List<SelectOptionVO> getLocalGroupsByCategoryAndUser(Long categoryId,Long userId);
+	public List<SelectOptionVO> getLocalGroupDetailsByGroupId(Long groupId);
 	public List<SelectOptionVO> getDesignationsByCategoryAndUser(Long categoryId,Long userId);
 	
 	public List<SelectOptionVO> getGroupCategoryByCategoryId(Long categoryId);
