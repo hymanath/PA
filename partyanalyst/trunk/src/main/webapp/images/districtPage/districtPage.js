@@ -122,9 +122,10 @@ function buildDistrictLevelProblemWindow()
 	str+='<legend> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+
 	if(problemsInfo.length == 0)
 	{
-		str+='<div class="problemDataDivClass">';
+		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
 		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
 		str+='<span> No problems has been posted </span>';
 		str+='</div>';
@@ -137,7 +138,8 @@ function buildDistrictLevelProblemWindow()
 			str+='<div class="problemDataDivClass" onclick="showProblemCompleteDetails('+data.problemId+')">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='<span> '+data.problem+' </span>';
-			str+='</div>';			
+			str+='</div>';
+			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
 		}
 	}
 	
@@ -152,59 +154,63 @@ function buildDistrictLevelProblemWindow()
 function  showProblemCompleteDetails(selectedProblemId)
 {
 	for(var i in problemsInfo)
-	{
-		var data = problemsInfo[i];			
-		if(data.problemId==selectedProblemId){
-					var elmt = document.getElementById('districtDiv');
-					var divChild = document.createElement('div');
-					divChild.setAttribute('id','createDiv');
-					var problemName = data.problem;
-					data.problem.name = problemName[0].toUpperCase();
-					elmt.appendChild(divChild);	
+		{
+			var data = problemsInfo[i];			
+			if(data.problemId==selectedProblemId){
+						var elmt = document.getElementById('districtProblemsMgmtBodyDiv');
+						var divChild = document.createElement('div');
+						divChild.setAttribute('id','createDiv');
+						var problemName = data.problem;
+						data.problem.name = problemName[0].toUpperCase();
+						elmt.appendChild(divChild);	
 
-					var showProblemData='';		
-					showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
-					showProblemData+='<fieldset>';  		
-					showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
-					showProblemData+='<table id="probDetailsTable">';
-					showProblemData+='<tr><th>Problem</th>';		
-					showProblemData+='<th>Description</th>';
-					showProblemData+='<th>IdentifiedDate</th></tr>';
-					showProblemData+='<tr><td>'+data.problem+'</td>';
-					showProblemData+='<td>'+data.description+'</td>';
-					showProblemData+='<td>'+data.postedDate+'</td></tr></table>';
-					showProblemData+='</fieldset>';
+						var showProblemData='';		
+						showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
+						showProblemData+='<fieldset>';  		
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
+						showProblemData+='<table id="probDetailsTable">';
+						showProblemData+='<tr><th>Problem</th>';		
+						showProblemData+='<th>Description</th>';
+						showProblemData+='<th>IdentifiedDate</th></tr>';
+						showProblemData+='<tr><td>'+data.problem+'</td>';
+						showProblemData+='<td>'+data.description+'</td>';
+						showProblemData+='<td>'+data.postedDate+'</td></tr></table>';
+						showProblemData+='</fieldset>';
 
-					showProblemData+='<fieldset>';
-					showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
-					showProblemData+='<table id="postedPersonTable">';
-					showProblemData+='<tr><th>Name</th>';								
-					showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
-					showProblemData+='</fieldset>';
+						showProblemData+='<fieldset>';
+						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
+						showProblemData+='<table id="postedPersonTable">';
+						showProblemData+='<tr><th>Name</th>';								
+						showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
+						showProblemData+='</fieldset>';
+						
+						showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
+
+						if(createGroupDialog)
+							createGroupDialog.destroy();
+						createGroupDialog = new YAHOO.widget.Dialog("createDiv",
+								{ width : "600px", 		
+								  fixedcenter : false, 
+								  visible : true,  
+								  constraintoviewport : true, 
+								  iframe :false,
+								  modal :false,
+								  hideaftersubmit:true,
+								  close:true,
+								  x:400,
+								  y:300,				  
+								  buttons : [ { text:"Ok", handler: handleSubmit, isDefault:true}, 
+											  { text:"Cancel", handler: handleCancel}]
+								 } );
+
+
 					
-					showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
-
-					if(createGroupDialog)
-						createGroupDialog.destroy();
-					createGroupDialog = new YAHOO.widget.Dialog("createDiv",
-							{ width : "600px", 		
-							  fixedcenter : false, 
-							  visible : true,  
-							  constraintoviewport : true, 
-							  iframe :false,
-							  modal :false,
-							  hideaftersubmit:true,
-							  close:true,
-							  x:400,
-							  y:300,				  
-							  buttons : [ { text:"Ok", handler: handleSubmit, isDefault:true}, 
-										  { text:"Cancel", handler: handleCancel}]
-							 } );
-					createGroupDialog.setBody(showProblemData);
-					
-					createGroupDialog.render();
+						
+						createGroupDialog.setBody(showProblemData);
+						
+						createGroupDialog.render();
+			}
 		}
-	}
 }
 function handleSubmit()
 {
@@ -215,6 +221,7 @@ function handleCancel()
 {
 	this.cancel();
 }
+
 function buildDistrictConnectPeopleWindow()
 {	
 	var bodyElmt = document.getElementById('districtPeopleConnect_body');
