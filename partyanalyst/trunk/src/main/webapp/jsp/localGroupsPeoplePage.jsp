@@ -106,7 +106,7 @@
 	
 	.selectButtonsDiv
 	{
-		text-align:right;
+		/*text-align:right;*/
 	}
 
 	#smsStatus
@@ -436,6 +436,19 @@
 	{
 		
 	}
+	
+	function redirectToNewLocalGroupCreation()
+	{		
+		var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?groupCategoryId="+${localGroupsPeople[0].groupCategoryId},"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+		createGroupBrowser.focus();
+	}
+
+	function redirectToNewLocalGroupMember(categoryId,groupId)
+	{
+
+		var createGroupMemberBrowser = window.open("<s:url action="createLocalGroupMemberPopupAction.action"/>?groupCategoryId="+categoryId+"&groupId="+groupId,"createLocalGroupMember","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+		createGroupMemberBrowser.focus();
+	}
 
 </script>
 
@@ -450,9 +463,20 @@
 		<div id="localGroupsPeopleData_body" class="yui-skin-sam">	
 		
 		<div id="selectButtonsDiv" class="selectButtonsDiv">
-			<input type="button" value="select All" onclick="selectAllPeople()"></input>
-			<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
-			<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+			<table width="100%">
+				<tr>
+					<td align="left">
+						<input type="button" value="Create New ${regionTitle} Group" onclick="redirectToNewLocalGroupCreation()"></input>
+					</td>
+					<td align="right">
+						<input type="button" value="select All" onclick="selectAllPeople()"></input>
+						<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+						<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+					</td>
+				</tr>
+			</table>
+			
+			
 		</div>
 
 			<c:forEach var="group" items="${localGroupsPeople}" varStatus ="status">
@@ -462,6 +486,10 @@
 							<tr>
 								<td><img src="images/icons/system_grps.png"></td>
 								<td>${group.localUserGroupName} - ${group.groupMembersCount}</td>
+								<td>
+									<a href="javascript:{}" onclick="redirectToNewLocalGroupMember(${group.groupCategoryId},${group.localUserGroupId})">Add Members To ${group.localUserGroupName}</a>
+									<a href="javascript:{}">Delete ${group.localUserGroupName}</a>
+								</td>
 							</tr>
 						</table>
 					</div>
