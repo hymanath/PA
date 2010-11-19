@@ -1064,12 +1064,9 @@ public class CadreRegisterAction extends ActionSupport implements
 				addFieldError("effectiveDate","Effective Date is Mandatory");
 			}
 			
-			if(cadreInfo.getEndingDate().length() ==0 )
-			{
-				addFieldError("endingDate","EndingDate Date is Mandatory");
-			}
-			
-			if(cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0)
+						
+			if(cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0
+					&& cadreInfo.getEndingDate() != null)
 			{
 			try
 			{
