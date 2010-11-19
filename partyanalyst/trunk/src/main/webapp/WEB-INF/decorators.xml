@@ -55,6 +55,7 @@
 		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
 		<pattern>/saveLocalGroupAction*</pattern>
 		<pattern>/createLocalGroupMemberAction*</pattern>
+		<pattern>/createLocalGroupMemberPopupAction*</pattern>
 		
 	</excludes>  
 
