@@ -139,7 +139,7 @@ function getRegionWiseOverviewString(data,type)
 		{				
 			str += '<tr>';
 			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+availablePeople[j].subRegionName+' ( '+availablePeople[j].subRegionType+' )</td>';
+			str += '<td>'+availablePeople[j].subRegionName+'</td>';
 			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openLocalGroupsCandidatesPopup(\''+availablePeople[j].subRegionId+'\',\''+availablePeople[j].subRegionName+'\',\''+availablePeople[j].subRegionType+'\',\''+data.regionTitle+'\',\''+data.regionTitleId+'\')">'+availablePeople[j].countValue+'</a></td>';
 			str += '</tr>';
 		}
@@ -160,7 +160,7 @@ function getRegionWiseOverviewString(data,type)
 		{				
 			str += '<tr>';
 			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+zeroPeople[j].subRegionName+' ( '+zeroPeople[j].subRegionType+' )</td>';
+			str += '<td>'+zeroPeople[j].subRegionName+' </td>';
 			//str += '<td>'+zeroPeople[j].countValue+'</td>';
 			str += '</tr>';
 		}
@@ -193,7 +193,7 @@ function buildSubLevelLocalGroupPeople(jsObj,data)
 		img.style.display = "none";
 	
 	var aStr = '';
-	if(jsObj.status && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
+	if(jsObj.status && (data.isAreaTypeRadio || data.isAreaTypeRadio == null) && data.areaTypeRadioOptions != null && data.areaTypeRadioOptions.length > 0)
 	{
 		aStr += '<table>';
 		aStr += '<tr>';
