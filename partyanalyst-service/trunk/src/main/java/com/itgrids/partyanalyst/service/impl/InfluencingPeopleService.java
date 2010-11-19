@@ -2165,6 +2165,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInWard(userId, regionId,categoryId);
 				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
 					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.WARD);
+			}else if(regionType.equalsIgnoreCase(IConstants.BOOTH)){
+				localUserGroupsList = personalUserGroupDAO.getLocalGroupDetailsInBooth(userId, regionId,categoryId);
+				if(localUserGroupsList != null && localUserGroupsList.size() > 0)
+					getProcessedLocalUserGroupDetailsToVO(localUserGroupsList,localUserGroupDetailsVO,IConstants.BOOTH);
 			}
 			
 			
@@ -2213,6 +2217,33 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				String locName = (String)values[8];
 				groupDetails.setGroupLocationId((Long)values[7]);
 				groupDetails.setGroupLocation(locName.concat(" (").concat(type).concat(")"));
+				
+				LocalGroupRegion localGroupRegion = (LocalGroupRegion)values[9];
+				if(localGroupRegion.getState() != null)
+					groupDetails.setStateName(localGroupRegion.getState().getStateName());
+				if(localGroupRegion.getDistrict() != null)
+					groupDetails.setDistrictName(localGroupRegion.getDistrict().getDistrictName());
+				if(localGroupRegion.getConstituency() != null)
+					groupDetails.setConstituencyName(localGroupRegion.getConstituency().getName());
+				if(localGroupRegion.getTehsil() != null){
+					groupDetails.setMandalName(localGroupRegion.getTehsil().getTehsilName());
+					groupDetails.setVillageOrWardName(localGroupRegion.getHamlet().getHamletName());
+				}
+				if(localGroupRegion.getLocalBody() != null){
+					groupDetails.setMandalName(localGroupRegion.getLocalBody().getName().concat(" (").concat(localGroupRegion.getLocalBody().getElectionType().getElectionType()).concat(" )"));
+					groupDetails.setVillageOrWardName(localGroupRegion.getWard().getName());
+				}
+				if(localGroupRegion.getBooth() != null){
+					groupDetails.setBoothName(localGroupRegion.getBooth().getPartNo().concat(" Booth"));
+				}else{
+					groupDetails.setBoothName("N/A");
+				}
+				
+				String groupRegionScope = localGroupRegion.getGroupRegionScope();
+				String regionScopeValue = localGroupRegion.getGroupRegionScopeValue();
+				
+				groupDetails.setGroupScopeId(groupRegionScope);
+				groupDetails.setGroupScopeRange(getRegionNameBasedOnScope(groupRegionScope,regionScopeValue));
 				
 				List<UserGroupMembersVO> groupMemberDetails = getUserGroupMemberDetailsForAGroup((Long)values[0]);
 				groupDetails.setGroupMembersCount(new Long(groupMemberDetails.size()));
