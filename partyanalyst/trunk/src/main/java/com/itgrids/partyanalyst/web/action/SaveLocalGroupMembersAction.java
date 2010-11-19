@@ -27,6 +27,10 @@ import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 /**
  * @author Sai Krishna
@@ -70,11 +74,13 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	public void setTask(String task) {
 		this.task = task;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Name Field is Mandatory",  shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "Name should not contain special characters and numbers", shortCircuit = true)
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -82,7 +88,10 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	public String getMobile() {
 		return mobile;
 	}
-
+	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -114,7 +123,8 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	public String getGroupCategory() {
 		return groupCategory;
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Category Selection")
 	public void setGroupCategory(String groupCategory) {
 		this.groupCategory = groupCategory;
 	}
@@ -122,7 +132,8 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	public String getGroupName() {
 		return groupName;
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Group Selection")
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
@@ -130,7 +141,8 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	public String getDesignations() {
 		return designations;
 	}
-
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Designation Selection")
 	public void setDesignations(String designations) {
 		this.designations = designations;
 	}

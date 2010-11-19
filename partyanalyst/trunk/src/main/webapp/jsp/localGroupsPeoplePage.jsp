@@ -113,7 +113,18 @@
 	{
 		text-align:center;
 	}
-
+	
+	.groupHeadingAnc
+	{
+		color:#77471D;
+		margin:0px 10px 0px 5px;
+		text-decoration:none;
+	}
+	
+	.groupHeadingAnc:hover
+	{
+		text-decoration:underline;
+	}
 </style>
 
 <script type="text/javascript">
@@ -482,14 +493,20 @@
 			<c:forEach var="group" items="${localGroupsPeople}" varStatus ="status">
 				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
 					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head" style="padding:5px;">
-						<table>
+						<table width="100%">
 							<tr>
-								<td><img src="images/icons/system_grps.png"></td>
-								<td>${group.localUserGroupName} - ${group.groupMembersCount}</td>
+								<td width="2%" align="left"><img src="images/icons/system_grps.png"></td>
+								<td width="55%" align="left">${group.localUserGroupName} - ${group.groupMembersCount}</td>
+
+								<td width="2%"><img height="18" height="18" src="images/icons/cadreReport/addCadre.png"></td>
 								<td>
-									<a href="javascript:{}" onclick="redirectToNewLocalGroupMember(${group.groupCategoryId},${group.localUserGroupId})">Add Members To ${group.localUserGroupName}</a>
-									<a href="javascript:{}">Delete ${group.localUserGroupName}</a>
+									<a class="groupHeadingAnc" href="javascript:{}" onclick="redirectToNewLocalGroupMember(${group.groupCategoryId},${group.localUserGroupId})">Add Members To ${group.localUserGroupName}</a>
 								</td>
+
+								<td width="2%"><img src="images/icons/delete.png" style="text-decoration: none; border: 0px none;"></td>
+								<td>
+									<a class="groupHeadingAnc" href="javascript:{}">Delete ${group.localUserGroupName}</a>
+								</td>								
 							</tr>
 						</table>
 					</div>
