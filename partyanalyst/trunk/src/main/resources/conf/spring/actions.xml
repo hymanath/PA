@@ -7,6 +7,7 @@
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
 	<bean id="saveLocalGroupAction" class="com.itgrids.partyanalyst.web.action.SaveLocalGroupAction" singleton="false">
+	    <property name="influencingPeopleService" ref="influencingPeopleService" />
 	</bean>
 	
 	<bean id="userEntitlementAction" class="com.itgrids.partyanalyst.web.action.UserEntitlementAction" singleton="false">
