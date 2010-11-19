@@ -466,7 +466,7 @@
 			<table width="100%">
 				<tr>
 					<td align="left">
-						<input type="button" value="Create New ${regionTitle} Group" onclick="redirectToNewLocalGroupCreation()"></input>
+						<input type="button" value="Create New ${regionTitle}" onclick="redirectToNewLocalGroupCreation()"></input>
 					</td>
 					<td align="right">
 						<input type="button" value="select All" onclick="selectAllPeople()"></input>
