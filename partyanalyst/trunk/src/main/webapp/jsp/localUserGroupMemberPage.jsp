@@ -263,28 +263,46 @@
 					<td colspan="3"><font style="font-size:10px;text-decoration:underline;"> Fields marked with * are complusory</font></td>
 				</tr>
 				<tr>
+					<td colspan="2">
+						<div style="color: red;">
+							<s:actionerror />
+							<s:fielderror />
+						</div>
+					</td>
+				</tr>
+				<tr>
 					<th><font color="red"> * </font> Name</th>
-					<td colspan="2"><input type="text" name="name"></input></td>
+					<td colspan="2">						
+						<s:textfield id="name" name="name" size="25"/>
+					</td>
 				</tr>
 
 				<tr>
 					<th><font color="red"> * </font> Mobile</th>
-					<td colspan="2"><input type="text" name="mobile"></input></td>
+					<td colspan="2">
+						<s:textfield id="mobile" name="mobile" size="25"/>
+					</td>
 				</tr>
 
 				<tr>
 					<th>Email</th>
-					<td colspan="2"><input type="text" name="email"></input></td>
+					<td colspan="2">
+						<s:textfield id="email" name="email" size="25"/>
+					</td>
 				</tr>
 
 				<tr>
 					<th>Address</th>
-					<td colspan="2"><input type="text" name="address"></input></td>
+					<td colspan="2">
+						<s:textfield id="address" name="address" size="25"/>
+					</td>
 				</tr>
 
 				<tr>
 					<th>City</th>
-					<td colspan="2"><input type="text" name="city"></input></td>
+					<td colspan="2">
+						<s:textfield id="city" name="city" size="25"/>
+					</td>
 				</tr>
 
 				<tr>
