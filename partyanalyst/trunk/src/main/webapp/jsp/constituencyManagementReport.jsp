@@ -647,7 +647,7 @@
 			}
 		function openAddNewProblemWindow()
 		{	
-		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=100");
+		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
 							 
 			 browser1.focus();
 		}	
@@ -677,13 +677,14 @@
 		function redirectToNewLocalGroupCreation()
 		{
 
-			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=625,left=200,top=10");										 
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>","createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
 		    createGroupBrowser.focus();
 		}
 
 		function redirectToNewLocalGroupMember(id)
 		{
-			var createGroupMemberBrowser = window.open("<s:url action="createLocalGroupMemberPopupAction.action?groupCategoryId=id"/>","createLocalGroupMember","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+
+			var createGroupMemberBrowser = window.open("<s:url action="createLocalGroupMemberPopupAction.action"/>?groupCategoryId="+id,"createLocalGroupMember","scrollbars=yes,height=600,width=600,left=200,top=200");										 
 		    createGroupMemberBrowser.focus();
 		}
 		
