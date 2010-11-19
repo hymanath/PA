@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegionSelectOptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
+import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 
 public interface IInfluencingPeopleService {
 	
@@ -67,5 +68,7 @@ public interface IInfluencingPeopleService {
 	public List<SelectOptionVO> getGroupCategoryByCategoryId(Long categoryId);
 	
 	public List<SelectOptionVO> saveNewDesignationForACategory(Long categoryId,Long userId,String desigType,String desigDesc);
+	
+	public UserGroupMembersVO saveUserGroupMemberDetails(UserGroupMembersVO userGroupMemberVO);
 	
 }
