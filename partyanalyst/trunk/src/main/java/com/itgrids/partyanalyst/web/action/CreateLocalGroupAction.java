@@ -191,7 +191,13 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			return ERROR;
 		
 		//Get Group Categories
-		groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID());
+        String groupCategoryId = request.getParameter("groupCategoryId");
+		
+		if(groupCategoryId.equalsIgnoreCase("0") || groupCategoryId == null)
+		    groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID());
+		else
+			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID(),new Long(groupCategoryId));
+		
 		session.setAttribute(ISessionConstants.USER_GROUP_CATEGORIES,groupCategories);
 		
 		//Get Scopes Data
@@ -269,26 +275,30 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		Long userId = regVO.getRegistrationID();
 		
 		String groupCategoryId = request.getParameter("groupCategoryId");
+		String groupId = request.getParameter("groupId");
 		
 		if(groupCategoryId.equalsIgnoreCase("0") || groupCategoryId == null){
 			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(userId);
 			
 			groupNames = new ArrayList<SelectOptionVO>();
-			groupNames.add(new SelectOptionVO(0l,"Select Group"));
+					
 			if(groupCategories != null && groupCategories.size() > 0)
-			groupNames.addAll(influencingPeopleService.getLocalGroupsByCategoryAndUser(groupCategories.get(0).getId(), userId));
-			
-			
-			
+				  groupNames.addAll(influencingPeopleService.getLocalGroupsByCategoryAndUser(groupCategories.get(0).getId(), userId));
+					
 			designations = new ArrayList<SelectOptionVO>();
-			designations.add(new SelectOptionVO(0l,"Select Designations"));
+			
 			if(groupCategories != null && groupCategories.size() > 0)
 			designations.addAll(influencingPeopleService.getDesignationsByCategoryAndUser(groupCategories.get(0).getId(), userId));
 			
 		}else{
 			
 			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(groupCategoryId));
-			groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
+			
+			if(groupId.equalsIgnoreCase("0") || groupId == null)
+			    groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
+			else
+				groupNames = influencingPeopleService.getLocalGroupDetailsByGroupId(new Long(groupId));
+			
 			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(groupCategoryId), userId);
 			
 			
