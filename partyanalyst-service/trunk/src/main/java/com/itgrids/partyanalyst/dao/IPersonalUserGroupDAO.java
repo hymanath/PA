@@ -133,6 +133,11 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	@SuppressWarnings("unchecked")
 	public List getLocalGroupDetailsInWard(Long userId,Long wardId,Long categoryId);
 	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInBoothsByLocalBodys(Long userId,Long localBodyId,Long categoryId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInBoothsByTehsil(Long userId,	Long tehsilId,Long categoryId);
+	
 	public Integer deleteLocalUserGroupById(Long groupId);
 	
 	@SuppressWarnings("unchecked")
