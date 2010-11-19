@@ -70,6 +70,8 @@ import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.StaticLocalGroup;
 import com.itgrids.partyanalyst.model.StaticUserDesignation;
+import com.itgrids.partyanalyst.model.StaticUserGroup;
+import com.itgrids.partyanalyst.model.StaticUsers;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -3060,6 +3062,80 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		
 	 return designationsList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#saveUserGroupMemberDetails(com.itgrids.partyanalyst.dto.UserGroupMembersVO)
+	 * Method To Save Local User Group Member Details to DB
+	 */
+	public UserGroupMembersVO saveUserGroupMemberDetails(final UserGroupMembersVO userGroupMemberVO) {
+		
+		UserGroupMembersVO memberDetailsVO = (UserGroupMembersVO)transactionTemplate.execute(new TransactionCallback() {
+
+			public Object doInTransaction(TransactionStatus status) {
+				
+				UserGroupMembersVO memberVO = new UserGroupMembersVO();
+				StaticUsers staticUsers;
+				StaticUserGroup staticUserGroup;
+				ResultStatus rs = new ResultStatus();
+				
+				try{
+					
+					if(userGroupMemberVO.getWindowTask().equalsIgnoreCase("edit")){
+						
+						staticUsers = staticUsersDAO.get(userGroupMemberVO.getGroupMemberId());
+						List<StaticUserGroup> staticUsrGroup = staticUserGroupDAO.getStaticUserGroupByStaticUserAndGroup(staticUsers.getStaticUserId(), userGroupMemberVO.getGroupId());
+						staticUserGroup = staticUsrGroup.get(0);
+						
+					}else{
+						
+						staticUsers = new StaticUsers();
+						staticUserGroup = new StaticUserGroup();
+					}
+					
+					staticUsers.setName(userGroupMemberVO.getName());
+					staticUsers.setMobileNumber(userGroupMemberVO.getMobileNumber());
+					staticUsers.setEmailId(userGroupMemberVO.getEmailId());
+					staticUsers.setAddress(userGroupMemberVO.getAddress());
+					staticUsers.setLocation(userGroupMemberVO.getLocation());
+					
+					StaticUserDesignation userDesignation = staticUserDesignationDAO.get(userGroupMemberVO.getDesignationId());
+					PersonalUserGroup personalUserGroup = personalUserGroupDAO.get(userGroupMemberVO.getGroupId());
+					staticUsers.setStaticUserDesignation(userDesignation);
+					
+					staticUsers = staticUsersDAO.save(staticUsers);
+					
+					staticUserGroup.setStaticUser(staticUsers);
+					staticUserGroup.setPersonalUserGroup(personalUserGroup);
+					staticUserGroup = staticUserGroupDAO.save(staticUserGroup);
+					
+					memberVO.setGroupMemberId(staticUsers.getStaticUserId());
+					memberVO.setName(staticUsers.getName());
+					memberVO.setConfirmation(true);
+					
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+					rs.setResultPartial(false);
+					memberVO.setRs(rs);
+					
+				}catch(Exception ex){
+					log.error("Exception Raised In Saving Group Member :" + ex);
+					ex.printStackTrace();
+					rs.setExceptionEncountered(ex);
+					rs.setExceptionMsg(ex.getMessage());
+					rs.setResultCode(ResultCodeMapper.FAILURE);
+					rs.setResultPartial(true);
+					
+					memberVO.setRs(rs);
+					memberVO.setConfirmation(false);
+				}
+				
+			 return memberVO;
+			}
+			
+		});
+		
+	 return memberDetailsVO;
 	}
 }
 
