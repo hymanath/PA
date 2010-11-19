@@ -196,6 +196,7 @@ function validateAndForwardToAction(elmt)
 		return false;
 	}else{
 		document.getElementById("errorMessage").innerHTML = "";
+		document.getElementById("messageDiv").innerHTML = "";
 		showBarLoaderImage();		
 		var jsObj=
 		{
