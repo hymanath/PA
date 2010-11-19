@@ -522,6 +522,22 @@
 									<td>${group.groupMembersCount}</td>									
 								</tr>
 								<tr>
+									<th>State</th>
+									<td>${group.stateName}</td>
+									<th>District</th>
+									<td>${group.districtName}</td>
+									<th>Constituency</th>
+									<td>${group.constituencyName}</td>									
+								</tr>
+								<tr>
+									<th>Mandal/Muncipal/Corp</th>
+									<td>${group.mandalName}</td>
+									<th>Village/Ward</th>
+									<td>${group.villageOrWardName}</td>
+									<th>Booth</th>
+									<td>${group.boothName}</td>									
+								</tr>
+								<tr>
 									<th valign="top">Description</th>
 									<td valign="top" colspan="5" align="left">${group.groupDesc}</td>
 								</tr>
