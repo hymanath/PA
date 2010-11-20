@@ -68,6 +68,8 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	
 	private  String resultStatus;
 	
+	private String savedStatusMsg = "";
+	
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
 	
 	private IInfluencingPeopleService influencingPeopleService;
@@ -141,6 +143,12 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	public void setLocalUserGroupDetailsVO(
 			LocalUserGroupDetailsVO localUserGroupDetailsVO) {
 		this.localUserGroupDetailsVO = localUserGroupDetailsVO;
+	}
+	public String getSavedStatusMsg() {
+		return savedStatusMsg;
+	}
+	public void setSavedStatusMsg(String savedStatusMsg) {
+		this.savedStatusMsg = savedStatusMsg;
 	}
 	public String getResultStatus() {
 		return resultStatus;
@@ -297,12 +305,13 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		localUserGroupDetailsVO = influencingPeopleService.saveLocalUserGroupDetailsTODB(localUserGroupDetailsVO);
 		
 		if(localUserGroupDetailsVO.getResultStatus().getExceptionEncountered() != null){
-			
 			resultStatus = "failure";
-			return Action.ERROR;
+			savedStatusMsg = "Failed To ADD Group ..";
+		}else{
+			resultStatus = "success";
+			savedStatusMsg = "Successfully Added ".concat(localUserGroupDetailsVO.getLocalUserGroupName()).concat(" ..");
 		}
-			
-		resultStatus = "success";
+		
 		return Action.SUCCESS;
 	}
 }
