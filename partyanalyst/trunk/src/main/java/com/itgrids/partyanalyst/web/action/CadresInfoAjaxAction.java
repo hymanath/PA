@@ -569,14 +569,18 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		if("CADRES BY BOOTHS IN WARD".equalsIgnoreCase(taskType))
 		{
-			cadreInfo = cadreManagementService.getCadresAssignedWithBoothInWard(regionId,userID.toString());
+			String regionStr = regionId.toString();
+			String subStr = regionStr.substring(1);
+			cadreInfo = cadreManagementService.getCadresAssignedWithBoothInWard(new Long(subStr),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
 			
 		} else if("Not Assigned To Any Booth".equalsIgnoreCase(taskType))
 		{
-			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(regionId,userID.toString());
+			String regionStr = regionId.toString();
+			String subStr = regionStr.substring(1);
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(new Long(subStr),userID.toString());
 			
 			cadreDetailsInfoVO.setCadreInfo(cadreInfo);			
 		}
