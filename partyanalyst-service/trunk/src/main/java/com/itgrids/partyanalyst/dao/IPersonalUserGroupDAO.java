@@ -76,10 +76,14 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List getTotalCountOfLocalGroupsInDistrict(Long userId,Long districtId,Long categoryId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInConstituencysByDistrict(Long userId,Long districtId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInAssemblyConstituencysGroupByConstituency(Long userId,List<Long> constituencyIds,Long categoryId);
 	
 	//for constituency
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInConstituency(Long userId,Long constituencyId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInAssemblyConstituencies(Long userId,List<Long> constituencyIds,Long categoryId);
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfLocalGroupsInTehsilsByConstituency(Long userId,Long constituencyId,Long categoryId);
 	@SuppressWarnings("unchecked")
@@ -122,6 +126,8 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List getLocalGroupDetailsInState(Long userId,Long stateId,Long categoryId);
 	@SuppressWarnings("unchecked")
 	public List getLocalGroupDetailsInDistrict(Long userId,Long districtId,Long categoryId);
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInAssemblyConstituencies(Long userId,List<Long> assemblyConstiIds,Long categoryId);
 	@SuppressWarnings("unchecked")
 	public List getLocalGroupDetailsInConstituency(Long userId,Long constituencyId,Long categoryId);
 	@SuppressWarnings("unchecked")

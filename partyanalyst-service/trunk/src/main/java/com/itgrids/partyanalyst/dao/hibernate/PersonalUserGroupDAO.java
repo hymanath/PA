@@ -146,6 +146,19 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInAssemblyConstituencies(Long userId,List<Long> constituencyIds,Long categoryId){
+		
+		Query queryObject = getSession().createQuery("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
+				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId in (:constituencyIds) "+
+				"and model.staticLocalGroup.staticLocalGroupId = ?");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		queryObject.setParameter(2,categoryId);
+	 return queryObject.list();
+    }
 
 
 	@SuppressWarnings("unchecked")
@@ -158,6 +171,22 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"is not null and model.localGroupRegion.district is not null and model.localGroupRegion.district.districtId = ? "+
 				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency is not null "+
 				"group by model.localGroupRegion.constituency.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfLocalGroupsInAssemblyConstituencysGroupByConstituency(Long userId,List<Long> constituencyIds,Long categoryId){
+		
+		Query queryObject = getSession().createQuery("select count(model.personalUserGroupId),model.localGroupRegion.constituency.constituencyId "+
+				"from PersonalUserGroup model where "+
+				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
+				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId in (:constituencyIds) "+
+				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency is not null "+
+				"group by model.localGroupRegion.constituency.constituencyId");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		queryObject.setParameter(2,categoryId);
+		
+	 return queryObject.list();
 	}
 
 
@@ -372,6 +401,22 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
 				"and model.localGroupRegion is not null and model.localGroupRegion.district is not null and "+
 				"model.localGroupRegion.district.districtId = ? order by model.localGroupRegion.state.stateId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getLocalGroupDetailsInAssemblyConstituencies(Long userId,List<Long> assemblyConstiIds,Long categoryId){
+		
+		Query queryObject = getSession().createQuery("select model.personalUserGroupId,model.groupName,model.description,model.createdDate,"+
+				"model.staticLocalGroup.staticLocalGroupId,model.staticLocalGroup.groupType,model.staticLocalGroup.description,"+
+				"model.localGroupRegion.district.districtId,model.localGroupRegion.district.districtName,model.localGroupRegion from PersonalUserGroup model "+
+				"where model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.staticLocalGroup.staticLocalGroupId = ? "+
+				"and model.localGroupRegion is not null and model.localGroupRegion.constituency is not null and "+
+				"model.localGroupRegion.constituency.constituencyId in (:constituencyIds) order by model.localGroupRegion.state.stateId");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameter(1,categoryId);
+		queryObject.setParameterList("constituencyIds", assemblyConstiIds);
+		
+	 return queryObject.list();
 	}
 
 

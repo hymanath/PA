@@ -31,13 +31,21 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInDistrict(Long userId,Long districtId);
 	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInAssemblyConstituencies(Long userId,List<Long> contituencyIds);
+	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInConstituenciesByDistrict(Long userId,Long districtId);
 	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInAssemblyConstituenciesGroupByConstituency(Long userId,List<Long> constituencyIds);
+	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInDistrict(Long userId,Long districtId);
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInAssemblyConstituencies(Long userId,List<Long> constituencyIds);
 	
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInConstituency(Long userId,Long constituencyId);
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInAssemblyConstituencies(Long userId,List<Long> constituencyIds);
 	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleDetailsInConstituency(Long userId,Long constituencyId);
 	@SuppressWarnings("unchecked")
