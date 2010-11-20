@@ -231,7 +231,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			boothPageInfo.setFemaleVoters(booth.getFemaleVoters());
 			boothPageInfo.setTotalVoters(booth.getTotalVoters());
 			boothPageInfo.setVillagesCovered(booth.getVillagesCovered());
-			boothPageInfo.setMandal(booth.getTehsil().getTehsilName());
+			boothPageInfo.setMandal(booth.getLocalBody() != null?(booth.getLocalBody().getName()+" "+booth.getLocalBody().
+					getElectionType().getElectionType()).toUpperCase():(booth.getTehsil().getTehsilName() +" "+IConstants.TEHSIL).toUpperCase());
 			
 			String partyName = "";
 			Long candidateId = null;
