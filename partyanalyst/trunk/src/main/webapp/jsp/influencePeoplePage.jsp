@@ -126,8 +126,17 @@
 		function buildDataTable()
 		{
 			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
+
+				buildYUIDTTable("peopleDataTable_${status.index}","peopleRegion_body_ ${status.index}");				
+
+			</c:forEach>
+
+		}
+
+		function buildYUIDTTable(tableId,divId)
+		{
 				var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get("peopleDataTable_${status.index}"));
+				.get(tableId));
 				resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 				resultsDataSource.responseSchema = {
 					fields : [
@@ -223,10 +232,7 @@
 			};
 
 
-			var myDataTable = new YAHOO.widget.DataTable("peopleRegion_body_ ${status.index}",resultsColumnDefs, resultsDataSource,myConfigs);  
-
-			</c:forEach>
-
+			var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs); 
 		}
 
 		function selectAllPeopleInRegion(id)
@@ -492,7 +498,45 @@
 				return;	
 			  }	
 			}
+			
+			function showAllPeopleRecords()
+			{
+				var elmt = document.getElementById("influencePeopleMainDataDiv");
+				var str = '';
+				str += '<table id="allPeopleDataTable">';	
+				<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
+					<c:forEach var="people" items="${region.influencingPeopleDetails}" varStatus ="status">
+						str += '<tr>';
+						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>';
+						str += '	<td>${people.firstName}</td>';
+						str += '	<td>${people.lastName}</td>';
+						str += '	<td>${people.email}</td>';
+						str += '	<td>${people.mobile}</td>';
+						str += '	<td>${people.gender}</td>';
+						str += '	<td>${people.cast}</td>';
+						str += '	<td>${people.constituency}</td>';
+						str += '	<td>${people.district}</td>';
+						str += '	<td>${people.state}</td>';
+						str += '	<td><a href="javascript:{}" onclick="getPersonDetails(${people.influencingPersonId})">More Details</a></td>';
+						str += '	<td>';
+						str += '		<a href="javascript:{}" onclick="editPersonDetails(${people.influencingPersonId})">';
+						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/edit.png">';
+						str += '		</a>';
+						str += '	</td>';
+						str += '	<td>';
+						str += '		<a href="javascript:{}" onclick="deletePersonDetails(${people.influencingPersonId})">';
+						str += '			<img style="text-decoration: none; border: 0px none;" src="images/icons/delete.png">';
+						str += '		</a>';
+						str += '	</td>';
+						str += '</tr>';							
+					</c:forEach>
+				</c:forEach>
+				str += '</table>';
 
+				elmt.innerHTML = str;
+
+				buildYUIDTTable("allPeopleDataTable","influencePeopleMainDataDiv");
+			}
 	</script>
 </head>
 <body>
@@ -503,11 +547,23 @@
 		</div>
 		<div id="influencePeopleData_body" class="yui-skin-sam">		
 			<div id="selectButtonsDiv" class="selectButtonsDiv">
-				<input type="button" value="select All" onclick="selectAllPeople()"></input>
-				<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
-				<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+				<table width="100%">
+					<tr>
+						<td align="left">
+							<input type="button" value="View Results By Regions" onclick="javascript:{window.location.reload();}"></input>
+							<input type="button" value="Show All Results" onclick="showAllPeopleRecords()"></input>
+						</td>
+						<td align="right">
+							<input type="button" value="select All" onclick="selectAllPeople()"></input>
+							<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+							<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+						</td>
+					</tr>
+				</table>
+				
 			</div>
-
+			
+			<div id="influencePeopleMainDataDiv">
 			<c:forEach var="region" items="${influencingPeopleDetailsVO}" varStatus ="status">
 				<div id="peopleRegion_main_ ${status.index}" class="peopleDataMain">
 					<div id="peopleRegion_head_ ${status.index}" class="scopeWise_head">
@@ -549,6 +605,7 @@
 					</div>
 				</div>
 			</c:forEach>
+			</div>
 		</div>		
 	</div>
 		
