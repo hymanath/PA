@@ -71,6 +71,8 @@ public interface IInfluencingPeopleService {
 	
 	public List<SelectOptionVO> saveNewDesignationForACategory(Long categoryId,Long userId,String desigType,String desigDesc);
 	
+	public LocalUserGroupDetailsVO getLocalUserGroupDetailsById(Long localUserGroupId);
+	
 	public UserGroupMembersVO saveUserGroupMemberDetails(UserGroupMembersVO userGroupMemberVO);
 	
 }
