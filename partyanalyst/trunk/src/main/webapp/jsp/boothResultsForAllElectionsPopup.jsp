@@ -118,7 +118,12 @@ legend
 		<TD>${boothPanelVO.totalVoters}</TD></TR>
 		
 		<TR><TH>Mandal/Local Body:</TH>
-		<TD>${boothPanelVO.mandal}</TD></TR>
+			<TD>${boothPanelVO.mandal}</TD>
+			<c:if test="${! empty boothPanelVO.wardInfo}">
+				<TH>Ward:</TH>
+				<TD>${boothPanelVO.wardInfo}</TD>
+			</c:if>
+		</TR>
 		</TABLE>
 	</DIV>
 	<DIV style="margin-top:10px;" class="yui-skin-sam">
