@@ -67,6 +67,16 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select count(model.influencingPeopleId) from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInAssemblyConstituencies(Long userId,List<Long> constituencyIds){
+		
+		Query queryObject = getSession().createQuery("select count(model.influencingPeopleId) from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds)");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+	 return queryObject.list();
+	}
 
 	@SuppressWarnings("unchecked")
 	public List getTotalCountOfInfluencingPeopleInDistrict(Long userId,
@@ -123,6 +133,17 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("select count(model.influencingPeopleId),model.userAddress.constituency.constituencyId from InfluencingPeople model where "+
 				"model.registration.registrationId = ? and model.userAddress.district.districtId = ? and "+
 				"model.userAddress.constituency is not null group by model.userAddress.constituency.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalCountOfInfluencingPeopleInAssemblyConstituenciesGroupByConstituency(Long userId,List<Long> constituencyIds){
+		
+		Query queryObject = getSession().createQuery("select count(model.influencingPeopleId),model.userAddress.constituency.constituencyId from InfluencingPeople model where "+
+				"model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) and "+
+				"model.userAddress.constituency is not null group by model.userAddress.constituency.constituencyId");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+	 return queryObject.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -240,12 +261,38 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleDetailsInAssemblyConstituencies(Long userId,List<Long> constituencyIds){
+		
+		Query queryObject = getSession().createQuery("select model.influencingPeopleId,model.firstName,model.lastName,model.middleName,model.influencingScope,"+
+				"model.influencingScopeValue,model.party.partyId,model.party.shortName,model.caste,model.occupation,model.phoneNo,model.gender,model.email,model.fatherOrSpouseName,"+
+				"model.influencingPeoplePosition.influencingPeoplePositionId,model.influencingPeoplePosition.position "+
+				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
+				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+	 return queryObject.list();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
 	public List getTotalInfluencingPeopleAddressInDistrict(Long userId,
 			Long districtId) {
 		Object[] params = {userId,districtId};
 		return getHibernateTemplate().find("select model.userAddress "+
 				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.district.districtId = ? "+
 				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalInfluencingPeopleAddressInAssemblyConstituencies(Long userId,List<Long> constituencyIds){
+		
+		Query queryObject = getSession().createQuery("select model.userAddress "+
+				"from InfluencingPeople model where model.registration.registrationId = ? and model.userAddress.constituency.constituencyId in (:constituencyIds) "+
+				"and model.userAddress.constituency is not null order by model.userAddress.constituency.constituencyId");
+		queryObject.setParameter(0,userId);
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+	 return queryObject.list();
 	}
 
 	@SuppressWarnings("unchecked")
