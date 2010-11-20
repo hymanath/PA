@@ -362,7 +362,7 @@
 		var samsAsCaEl = document.getElementById("sameAsCA");
 		var permanantAddrEl = document.getElementById("permanantAddr");
 		var cuurrentAddTableEl = document.getElementById("cuurrentAddTable");
-		var memberTypeRadioEl = document.getElementById("memberTypeActive");
+		var memberTypeRadioEls = document.getElementsByName("memberType");
 		var cadreLevelTableEl = document.getElementById("cadreLevelTable"); 
 		
 		var stateElmt = document.getElementById("cadreLevelState");
@@ -378,25 +378,30 @@
 		}
 		if(samsAsCaEl.checked == true)				
 		{
-			permanantAddrEl.style.display = 'none';
-				
+			permanantAddrEl.style.display = 'none';				
 		}
-		if(memberTypeRadioEl.checked == true)
+		
+		for(var i =0; i < memberTypeRadioEls.length; i++)
 		{
-			if(cadreLevelTableEl.style.display == 'none')
-			{	
-				cadreLevelTableEl.style.display = 'block';
-			}
-			var effectedRangeEl = document.getElementById("scopeLevel");
-			var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
 			
-			if(selectedeffectedRange != '0')
-				populateLocations(selectedeffectedRange, 'onLoad');	
+			if(memberTypeRadioEls[i].checked == true && memberTypeRadioEls[i].value == 'Active')
+			{
+				if(cadreLevelTableEl.style.display == 'none')
+				{	
+					cadreLevelTableEl.style.display = 'block';
+				}
+				var effectedRangeEl = document.getElementById("scopeLevel");
+				var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
+				
+				if(selectedeffectedRange != '0')
+					populateLocations(selectedeffectedRange, 'onLoad');	
+			}	
 		}
+		
 		manageDOBOptions('onLoad');		 
 	}
 	function populateLocations(val,source)
-	{	
+	{	alert("val"+val);
 		var row1El = document.getElementById("row1");
 		var row2El = document.getElementById("row2");
 		var row3El = document.getElementById("row3");
