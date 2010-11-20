@@ -491,5 +491,11 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		return getHibernateTemplate().find("select distinct model.personalUserGroupId,model.groupName from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup.staticLocalGroupId = ?",params);
 	}
-	
+
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalUserGroupDetailsById(Long localUserGroupId){
+		return getHibernateTemplate().find("select model.groupName, model.description,model.staticLocalGroup.staticLocalGroupId,"+
+			"model.localGroupRegion.localGroupRegionId from PersonalUserGroup model where model.personalUserGroupId = ?", localUserGroupId);
+	}
 }
