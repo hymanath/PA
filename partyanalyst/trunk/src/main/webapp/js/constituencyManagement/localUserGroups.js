@@ -2,7 +2,9 @@
 
 function buildLocalUserGroupsCriteria(jsObj,results)
 {	
-	buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
+	if(jsObj.task != "reGetLocalGroupsInAConstituency")
+		buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
+
 	createCoulmnChartForLocalUserGroups(results,"localGroupsChartDiv_main");
 	buildRegionWiseOverViewDataForLocalUserGroups(results,"localGroupsRegionWiseOverView_main");	
 
