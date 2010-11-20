@@ -128,8 +128,6 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "constituencyName",formatter:YAHOO.widget.DataTable.formatLink
-		},{
-			key : "reservationZone"
 		}, {
 			key : "candidateName",formatter:YAHOO.widget.DataTable.formatLink
 		}, {
@@ -144,10 +142,6 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 	var resultsColumnDefs = [ {
 		key : "constituencyName",
 		label : "Constituency Name",
-		sortable : true
-	},{
-		key : "reservationZone",
-		label : "Reservation Zone",
 		sortable : true
 	}, {
 		key : "candidateName",
@@ -190,8 +184,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			fields : [  {
 				key : "constituencyName"
 			},{
-				key : "reservationZone"
-			},{
 				key : "candidateName"
 			}, {
 				key : "partyFlag"
@@ -203,10 +195,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var resultsColumnDefsForTehsil = [  {
 			key : "constituencyName",
 			label : "Constituency",
-			sortable : true
-		},{
-			key : "reservationZone",
-			label : "Reservation Zone",
 			sortable : true
 		},{
 			key : "candidateName",
@@ -1301,7 +1289,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="districtPageRoundedHeaders_center" style="width:258px;"><span>Mandals / Tehsils</span></div></td>
+						<td><div class="districtPageRoundedHeaders_center" style="width:258px;"><span>Know Your Mandals / Tehsils</span></div></td>
 						<td><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
@@ -1515,15 +1503,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							<tr>
 								<td>
 								<span id="districtAncSpan">
-												<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}										
+											<c:if test="${mpsDetails.reservationZone != ''}">
+													<b style="color:green;">( ${mpsDetails.reservationZone} )</b>
+											</c:if>	
 										</a>
 									</span>
-								</td>
-								<td>
-									<span id="districtAncSpan">
-											${mpsDetails.reservationZone} 
-									</span>
-								</td>
+								</td>								
 								<td>
 									<span id="districtAncSpan">
 											<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
@@ -1566,15 +1552,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							<tr>
 								<td>
 									<span id="districtAncSpan">
-										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.constituencyName}
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.constituencyName} 
+											<c:if test="${candidate.reservationZone != ''}">
+												<b style="color:green;"> ( ${candidate.reservationZone} )</b>
+											</c:if>	
 										</a>
 									</span>
 								</td>
-								<td>
-									<span id="districtAncSpan">
-											${candidate.reservationZone} 
-									</span>
-								</td>			
 								<td>
 								<span id="districtAncSpan">
 										<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
