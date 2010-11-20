@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -44,6 +43,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -450,6 +450,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
 		corporationElectionType = IConstants.CORPORATION_ELECTION_TYPE;
+		
+		//
 		electionTypes = staticDataService.getAllElectionTypes();
 		for(SelectOptionVO eleTypes : electionTypes){
 			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
@@ -513,94 +515,65 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			try {
 				jObj = new JSONObject(getTask());
 				System.out.println(jObj);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}	
+				
 			log.debug("Task::"+jObj.getString("task"));
 		
 			if(jObj.getString("task").equalsIgnoreCase("getAllElectionYears"))
 			{
-			try{
+		
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));		
-			}catch(Exception e){
-				log.debug("No data is available...");
-			}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcElectionYears"))
 			{
-				try{
+		
 				mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
-			}catch(Exception e){
-				log.debug("No data is available...");
-			}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPartyDetails"))
 			{
-				try{
 				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
-				}catch(Exception e){
-					log.debug("No data is available...");
-				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getMptcPartyDetails"))
 			{
-				try{
 					getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
-				}catch(Exception e){
-					log.debug("No data is available...");
-				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllZptcParties"))
 			{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
-				try{
 					partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
-				}catch(Exception e){
-					log.debug("No data is available...");
-				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcParties"))
 			{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
-				try{
+		
 					getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
-				}catch(Exception e){
-					log.debug("No data is available...");															
-				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMuncipalElectionYears"))
 			{
-				try{
 				muncipalElectionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
-			}catch(Exception e){
-				log.debug("No data is available...");
-			}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getmuncipalPartyDetails"))
 			{
-				try{
+		
 					getmuncipalPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),new Long(jObj.getString("districtId")));
 					if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 						muncipalityErrorMsg = "Data is Not Available.";
 					}else if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.DATA_NOT_FOUND){
 						muncipalityErrorMsg = "Failed to retrive data.";
 					}
-				}catch(Exception e){
-					log.debug("No data is available...");
-				}		
 			}	
 			else if(jObj.getString("task").equalsIgnoreCase("getCorporationPartyDetails"))
 			{
-				try{
 					getCorporationPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),new Long(jObj.getString("districtId")));
 					if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
 						muncipalityErrorMsg = "Data is Not Available.";
 					}else if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.DATA_NOT_FOUND){
 						muncipalityErrorMsg = "Failed to retrive data.";
 					}
-				}catch(Exception e){
-					log.debug("No data is available...");
-				}	
+			}
+			
+			
+			}catch(Exception e){
+				//Do proper exception handling and pass the message to fron end.
 			}
 		}		
 		return SUCCESS;  
@@ -731,7 +704,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		session = request.getSession();		
 		if(session.getAttribute(IConstants.USER) == null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
+				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict = getAllElectionTypes(allElections);
+				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());				
+				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
 			}else{
 				electionsInDistrict = new ArrayList<SelectOptionVO>();	
@@ -745,7 +721,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			}
 		}else if(session.getAttribute(IConstants.USER) != null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-				electionsInDistrict = staticDataService.getAllElectionScopes(districtID);
+				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict = getAllElectionTypes(allElections);
+				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());				
+				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
 			}else{
 				electionsInDistrict = new ArrayList<SelectOptionVO>();	
@@ -761,6 +740,31 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		return SUCCESS;
 	}
 	
+	public List<SelectOptionVO> getAllElectionTypes(List<SelectOptionVO> result){
+		List<SelectOptionVO> electionTypes = new ArrayList<SelectOptionVO>();
+		
+		for(SelectOptionVO selectOptionVO : result){
+			SelectOptionVO selectOption = new SelectOptionVO();
+			if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+				selectOption.setId(selectOptionVO.getId());
+				selectOption.setName(selectOptionVO.getName().toUpperCase());
+				electionTypes.add(selectOption);
+			}else if(selectOptionVO.getName().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+				selectOption.setId(selectOptionVO.getId());
+				selectOption.setName(selectOptionVO.getName().toUpperCase());
+				electionTypes.add(selectOption);
+			}else if(selectOptionVO.getName().equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
+				selectOption.setId(selectOptionVO.getId());
+				selectOption.setName(selectOptionVO.getName().toUpperCase());
+				electionTypes.add(selectOption);
+			}else if(selectOptionVO.getName().equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+				selectOption.setId(selectOptionVO.getId());
+				selectOption.setName(selectOptionVO.getName().toUpperCase());
+				electionTypes.add(selectOption);
+			}
+		}
+		return electionTypes;
+	}
 	private ChartColorsAndDataSetVO createDataset(List<PartyResultVO> allElectionResults) {
 		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
 		Set<Color> colorsSet = new LinkedHashSet<Color>();
