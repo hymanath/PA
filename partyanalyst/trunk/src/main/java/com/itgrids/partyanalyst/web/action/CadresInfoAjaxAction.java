@@ -567,12 +567,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		log.debug("region::"+region);
 		
 		
-		if("CADRES BY BOOTHS IN WARD".equalsIgnoreCase("taskType"))
+		if("CADRES BY BOOTHS IN WARD".equalsIgnoreCase(taskType))
 		{
+			cadreInfo = cadreManagementService.getCadresAssignedWithBoothInWard(regionId,userID.toString());
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			
 			
-			
-		} else if("Not Assigned To Any Booth".equalsIgnoreCase("Type"))
+		} else if("Not Assigned To Any Booth".equalsIgnoreCase(taskType))
 		{
 			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(regionId,userID.toString());
 			
