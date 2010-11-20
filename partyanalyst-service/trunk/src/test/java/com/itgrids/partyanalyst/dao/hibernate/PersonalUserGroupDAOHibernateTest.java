@@ -103,7 +103,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		//Long.parseLong(accessValue), compareLocationInfo)
 		List list = personalUserGroupDAO.findGroupsInfoByCategoryAndUserIdByRegion(1l, 1l, "model.localGroupRegion.state.stateId");
 		System.out.println(list.size());
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
@@ -113,6 +113,22 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		if(results != null){
 			System.out.println(" Results Size :" + results.size());
 			
+		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetLocalUserGroupDetailsById(){
+		List<Object[]>results = personalUserGroupDAO.getLocalUserGroupDetailsById(15L);
+		
+		System.out.println(" Results Size :" + results.size());
+		for(int i=0;i<results.size();i++){
+			Object[] parms = (Object[])results.get(i);
+			System.out.println(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			System.out.println(parms[3].toString());
+			System.out.println(parms[4].toString());
 		}
 	}
 	

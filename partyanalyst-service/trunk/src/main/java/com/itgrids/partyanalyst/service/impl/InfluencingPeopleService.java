@@ -2702,7 +2702,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return categoriesList;
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getWardRegionAndSubRegionsInfluencingPeopleByUserAndLocation(java.lang.Long, java.lang.Long, java.lang.Boolean, java.lang.String, java.lang.Long, java.lang.String, java.lang.String, java.lang.Long)
@@ -3115,7 +3114,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return designationsList;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#saveUserGroupMemberDetails(com.itgrids.partyanalyst.dto.UserGroupMembersVO)
@@ -3189,7 +3188,141 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 	 return memberDetailsVO;
 	}
-
+	
+	/**
+	 * This method give all Details about Local User Groups when we send ID
+	 * This method is used for display details about Local User Groups
+	 *      and To Edit Local User Groups
+	 *      
+	 * @author kamalakar Dandu
+	 * @param Long Local User Group Id
+	 * @return LocalUserGroupDetailsVO
+	 *  
+	 */
+	
+	public LocalUserGroupDetailsVO getLocalUserGroupDetailsById(Long localUserGroupId)
+	{
+		try{
+			LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
+			
+			List<Object[]> result = personalUserGroupDAO.getLocalUserGroupDetailsById(localUserGroupId);
+			
+			Object[] parms = (Object[])result.get(0);
+				
+			localUserGroupDetailsVO.setLocalUserGroupName(parms[0]!=null?parms[0].toString():"");
+			localUserGroupDetailsVO.setGroupDesc(parms[1]!=null?parms[1].toString():"");
+			
+			StaticLocalGroup staticLocalGroup = staticLocalGroupDAO.get(new Long(parms[2].toString()));
+			LocalGroupRegion localGroupRegion = localGroupRegionDAO.get(new Long(parms[3].toString()));
+			
+			localUserGroupDetailsVO.setGroupCategoryId(staticLocalGroup.getStaticLocalGroupId());
+			localUserGroupDetailsVO.setGroupCategoryType(staticLocalGroup.getGroupType());
+			
+			localUserGroupDetailsVO.setHouseNo(localGroupRegion.getHouseNo());
+			localUserGroupDetailsVO.setStreetName(localGroupRegion.getStreetName());
+			localUserGroupDetailsVO.setState(localGroupRegion.getState().getStateId().toString());
+			localUserGroupDetailsVO.setStateName(localGroupRegion.getState().getStateName());
+			localUserGroupDetailsVO.setDistrict(localGroupRegion.getDistrict().getDistrictId().toString());
+			localUserGroupDetailsVO.setDistrictName(localGroupRegion.getDistrict().getDistrictName());
+			localUserGroupDetailsVO.setConstituency(localGroupRegion.getConstituency().getConstituencyId().toString());
+			localUserGroupDetailsVO.setConstituencyName(localGroupRegion.getConstituency().getName());
+			localUserGroupDetailsVO.setPincode(localGroupRegion.getPincode());
+			
+			String scopeValue = localGroupRegion.getGroupRegionScopeValue();
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeValue);
+			
+			
+			if(localGroupRegion.getTehsil() != null)
+			{
+				localUserGroupDetailsVO.setMandal(IConstants.RURAL_TYPE+localGroupRegion.getTehsil().getTehsilId().toString());
+				localUserGroupDetailsVO.setMandalName(localGroupRegion.getTehsil().getTehsilName());
+				localUserGroupDetailsVO.setVillageOrWard(IConstants.RURAL_TYPE+localGroupRegion.getHamlet().getHamletId().toString());
+				localUserGroupDetailsVO.setVillageOrWardName(localGroupRegion.getHamlet().getHamletName());
+			}
+			
+			if(localGroupRegion.getLocalBody() != null)
+			{
+				Long MandalId = localGroupRegion.getLocalBody().getLocalElectionBodyId();
+				localUserGroupDetailsVO.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(MandalId).get(0).toString());
+				localUserGroupDetailsVO.setMandalName(localGroupRegion.getLocalBody().getName());
+				localUserGroupDetailsVO.setVillageOrWard(IConstants.URBAN_TYPE+localGroupRegion.getWard().getConstituencyId().toString());
+				localUserGroupDetailsVO.setVillageOrWardName(localGroupRegion.getWard().getName());
+			}
+			
+			if(localGroupRegion.getBooth() != null)
+			{
+				localUserGroupDetailsVO.setBooth(localGroupRegion.getBooth().getBoothId().toString());
+				localUserGroupDetailsVO.setBoothName(localGroupRegion.getBooth().getPartName());
+			}
+			else
+			{
+				localUserGroupDetailsVO.setBoothName("");
+				
+			}
+			
+			String groupScope = localGroupRegion.getGroupRegionScope();
+			
+			if(groupScope.equalsIgnoreCase(IConstants.STATE_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("2");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(stateDAO.get(new Long(scopeValue)).getStateName());
+				
+			}
+			
+			if(groupScope.equalsIgnoreCase(IConstants.DISTRICT_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("3");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(districtDAO.get(new Long(scopeValue)).getDistrictName());
+			}
+			
+			if(groupScope.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("4");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(constituencyDAO.get(new Long(scopeValue)).getName());
+			}
+			
+			if(groupScope.equalsIgnoreCase(IConstants.MANDAL_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("5");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(tehsilDAO.get(new Long(scopeValue)).getTehsilName());
+			}
+			if(groupScope.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("6");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(hamletDAO.get(new Long(scopeValue)).getHamletName());
+			}
+			if(groupScope.equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("7");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(localElectionBodyDAO.get(new Long(scopeValue)).getName());
+			}
+			if(groupScope.equalsIgnoreCase(IConstants.WARD))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("8");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(constituencyDAO.get(new Long(scopeValue)).getName());
+			}
+			if(groupScope.equalsIgnoreCase(IConstants.BOOTH))
+			{
+				localUserGroupDetailsVO.setGroupScopeRange(groupScope);
+				localUserGroupDetailsVO.setGroupScopeId("9");
+				localUserGroupDetailsVO.setGroupScopeRangePlace(boothDAO.get(new Long(scopeValue)).getPartName());
+			}
+			
+			return localUserGroupDetailsVO;
+	   }
+		catch(Exception e)
+		{
+		  return null;
+		}
+		
+	}
 	public List<SelectOptionVO> getLocalGroupDetailsByGroupId(Long groupId) {
 		
 		List<SelectOptionVO> localGroups = new ArrayList<SelectOptionVO>();
