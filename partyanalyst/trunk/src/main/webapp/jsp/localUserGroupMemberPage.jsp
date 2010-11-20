@@ -207,6 +207,18 @@
 		callAjax(jsObj,url);
 	}
 
+	function checkSavedStatus()
+	{
+		var elmt = document.getElementById("statusMessageDiv"); 
+		if(!elmt)
+			return;
+		<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
+			elmt.innerHTML = "${savedStatusMsg}";
+			window.opener.location.reload();			
+			window.close();
+		</c:if>		
+	}
+
 </script>
 
 <style type="text/css">
@@ -252,7 +264,7 @@
 </style>
 
 </head>
-<body>
+<body onload="checkSavedStatus()">
 		
 <s:form action="saveLocalGroupMembersAction" method="GET" theme="simple" name="form">
 	<div id="localGroupMember_main">
@@ -268,6 +280,13 @@
 							<s:actionerror />
 							<s:fielderror />
 						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
+							<DIV id="statusMessageDiv" style="color:green;font-weight:bold"></DIV>			
+						</c:if>						
 					</td>
 				</tr>
 				<tr>
