@@ -3873,4 +3873,33 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return flag;
 	}
 	
+	/**
+	 * This method retrieves cadre details which does not contain booth details in theire current address. 
+	 * @param id
+	 * @param userID
+	 * @return
+	 */
+	public List<CadreInfo> getCadresNotAssignedWithBoothInWard(Long wardId, String userID)
+	{
+		List<CadreInfo> formattedData = new ArrayList<CadreInfo>(0);
+		List<Cadre> cadresList = new ArrayList<Cadre>(0);	
+		try{
+			 
+		cadresList = cadreDAO.findCadreDetailsNotAssignedToBoothInWard(wardId,new Long(userID),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		
+		for (Cadre cadre : cadresList) {
+			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
+			formattedData.add(cadreInfo);
+		}
+		return formattedData;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			cadresList = null;
+			userID = null;			
+			System.gc();
+		}
+	}
+	
 }
