@@ -310,4 +310,7 @@ public interface IConstants {
     
     public static final String SUCCESSFULLY_SAVED = "SUCCESSFULLY_SAVED";
     public static final String BOOTH = "BOOTH";
+    public static final String MP_CONSTITUENCY = "MP CONSTITUENCY";
+    
+    
 }
