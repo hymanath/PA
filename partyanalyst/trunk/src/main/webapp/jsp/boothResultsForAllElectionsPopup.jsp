@@ -117,7 +117,7 @@ legend
 		<TH>Total Voters:</TH>
 		<TD>${boothPanelVO.totalVoters}</TD></TR>
 		
-		<TR><TH>Mandal:</TH>
+		<TR><TH>Mandal/Local Body:</TH>
 		<TD>${boothPanelVO.mandal}</TD></TR>
 		</TABLE>
 	</DIV>
