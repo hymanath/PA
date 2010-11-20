@@ -71,6 +71,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
 	
 	private String savedStatusMsg = "";
+	private Boolean savedStatus = false;
 	
 			
 	public String getTask() {
@@ -125,6 +126,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setSavedStatusMsg(String savedStatusMsg) {
 		this.savedStatusMsg = savedStatusMsg;
+	}
+	public Boolean getSavedStatus() {
+		return savedStatus;
+	}
+	public void setSavedStatus(Boolean savedStatus) {
+		this.savedStatus = savedStatus;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
