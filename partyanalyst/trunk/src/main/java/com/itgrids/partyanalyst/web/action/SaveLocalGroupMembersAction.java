@@ -66,6 +66,7 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	private UserGroupMembersVO userGroupMemberVO;
 	
 	private String savedStatusMsg = "";
+	private Boolean savedStatus = false;
 	
 	private IInfluencingPeopleService influencingPeopleService;
 
@@ -175,6 +176,14 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 		this.savedStatusMsg = savedStatusMsg;
 	}
 
+	public Boolean getSavedStatus() {
+		return savedStatus;
+	}
+
+	public void setSavedStatus(Boolean savedStatus) {
+		this.savedStatus = savedStatus;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax.servlet.http.HttpServletRequest)
 	 */
@@ -237,10 +246,14 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 				
 		userGroupMemberVO = influencingPeopleService.saveUserGroupMemberDetails(userGroupMemberVO);
 		
-		if(userGroupMemberVO.getRs().getExceptionEncountered() != null && userGroupMemberVO.getRs().getResultCode() == ResultCodeMapper.FAILURE)
+		if(userGroupMemberVO.getRs().getExceptionEncountered() != null && userGroupMemberVO.getRs().getResultCode() == ResultCodeMapper.FAILURE){
 			savedStatusMsg = "Failed To ADD Member Details ..";
-		else
+			savedStatus = false;
+		}
+		else{
 			savedStatusMsg = "Successfully Added ".concat(userGroupMemberVO.getName()).concat(" Details ..");
+			savedStatus = true;
+		}
 				
 	 return Action.SUCCESS;
 	}
