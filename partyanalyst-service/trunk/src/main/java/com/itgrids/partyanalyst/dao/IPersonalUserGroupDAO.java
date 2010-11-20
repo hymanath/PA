@@ -144,6 +144,9 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List getGroupsForAUserInAGroupCategory(Long categoryId,Long userId);
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalUserGroupDetailsById(Long localUserGroupId);
+	
+	@SuppressWarnings("unchecked")
 	public List getLocalGroupLocationDetailsInState(Long userId, Long stateId,Long categoryId);
 	
 	@SuppressWarnings("unchecked")
