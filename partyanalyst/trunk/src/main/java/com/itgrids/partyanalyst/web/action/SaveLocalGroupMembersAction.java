@@ -22,6 +22,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -62,7 +63,9 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 	private String groupName;
 	private String designations;
 	
-	UserGroupMembersVO userGroupMemberVO;
+	private UserGroupMembersVO userGroupMemberVO;
+	
+	private String savedStatusMsg = "";
 	
 	private IInfluencingPeopleService influencingPeopleService;
 
@@ -164,6 +167,14 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 		this.influencingPeopleService = influencingPeopleService;
 	}
 
+	public String getSavedStatusMsg() {
+		return savedStatusMsg;
+	}
+
+	public void setSavedStatusMsg(String savedStatusMsg) {
+		this.savedStatusMsg = savedStatusMsg;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax.servlet.http.HttpServletRequest)
 	 */
@@ -226,6 +237,10 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 				
 		userGroupMemberVO = influencingPeopleService.saveUserGroupMemberDetails(userGroupMemberVO);
 		
+		if(userGroupMemberVO.getRs().getExceptionEncountered() != null && userGroupMemberVO.getRs().getResultCode() == ResultCodeMapper.FAILURE)
+			savedStatusMsg = "Failed To ADD Member Details ..";
+		else
+			savedStatusMsg = "Successfully Added ".concat(userGroupMemberVO.getName()).concat(" Details ..");
 				
 	 return Action.SUCCESS;
 	}
