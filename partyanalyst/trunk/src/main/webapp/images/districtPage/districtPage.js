@@ -119,7 +119,7 @@ function buildDistrictLevelProblemWindow()
 
 	var str='';
 	str+='<fieldset id="problemViewingFieldSet" style="width:292px">';
-	str+='<legend> View Your District Problems</legend>';
+	str+='<legend style="font-weight:bold;"> View Your District Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
@@ -227,9 +227,9 @@ function buildProblemPostingWindowForDistrict()
 	var bodyElmt = document.getElementById('problemPostingDiv_Body');
 	var str='';
 	str+='<fieldset id="ProblemPostingFieldSet">';
-	str+='<legend> Post Your constituency Problem</legend>';
+	str+='<legend style="font-weight:bold;"> Post Your District Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
-	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
+	str+='<div>Post your district problem and bring it to the all people notice.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
 	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'">POST</a></div>';
 	str+='</div>';

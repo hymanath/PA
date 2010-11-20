@@ -1088,11 +1088,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			graphDivStr += '<td>';
 			graphDivStr += '<div ><input type="button" class="button" onclick="showDetailedChart(\''+results.detailedChartPath+'\')" value="Detailed Chart"></div>';
 			graphDivStr += '</td>';
-			graphDivStr += '<tr>';
+			graphDivStr += '</tr>';
 			graphDivStr += '</table>';
 			graphDivStr += '</div>';
 		}
-			 allElecDiv.innerHTML = graphDivStr;	 
+		allElecDiv.innerHTML = graphDivStr;	 
 		
 	}
 
@@ -1404,7 +1404,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		<c:if test="${stateDetails.name == 'Andhra Pradesh'}">
 		<table>
 			<tr>
-				<td style="padding-left:6px;padding-right:20px;">
+				<td>
 					<div id="newConstDiv_main">
 						<div id="newConstDiv_head">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1435,10 +1435,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
         <td>
 				<div id="delimitMandalsDiv_main">
 					<div id="delimitMandalsDiv_head">
-						<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-								<td><div class="districtPageRoundedHeaders_center"><span>Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
+								<td><div class="districtPageRoundedHeaders_center" style="width:225px;height:14px;"><span>Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
 								<td><img src="images/icons/districtPage/header_right.gif"/></td>
 							</tr>
 						</table>
