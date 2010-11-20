@@ -192,8 +192,49 @@
  				YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
 
-	
-			
+	function showDetails(id, region)
+	{
+		var jsObj = {
+				
+			cadreId: id,
+			cadreRegion: region,
+			cadreType: 'TotalCadre'
+		}	
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "boothwiseCadreInfoAjaxAction.action?"+rparam;						
+	callAjaxForShowDetails(jsObj,url);
+	}
+	function callAjaxForShowDetails(jsObj,url)
+	{
+		var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							if(jsObj.task == "getBoothsCompleteDetails")	
+							{
+								buildBoothsTable(myResults);
+								//buildBoothCompleteDetailsPanel(myResults);
+							} else {
+								clearOptionsListForSelectElmtId(jsObj.selectElementId);
+								fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
+							}
+						}
+						catch(e)
+						{   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		
+	} 		
 			
 			function showTree(cType)
 			{
@@ -239,9 +280,10 @@
 				str+='<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>';
 				if(cadreRegionInfo != null && cadreRegionInfo.length >0)
 				{
-					
-					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
-					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span><a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a></div>';
+					//var id = cadreRegionInfo[0].regionId;
+					//var re
+					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span><a href="javascript:{}" id="anchor1" onclick="showDetails('+cadreRegionInfo[0].regionId+',\''+cadreRegionInfo[0].region+'\')"/>view Details</a></div>';
+					str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span><a href="javascript:{}" id="anchor2" onclick="showDetails('+cadreRegionInfo[1].regionId+',\''+cadreRegionInfo[1].region+'\')"/>view Details</a></div>';
 					
 				}	
 					
