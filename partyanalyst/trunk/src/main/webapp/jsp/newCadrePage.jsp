@@ -401,7 +401,7 @@
 		manageDOBOptions('onLoad');		 
 	}
 	function populateLocations(val,source)
-	{	alert("val"+val);
+	{	
 		var row1El = document.getElementById("row1");
 		var row2El = document.getElementById("row2");
 		var row3El = document.getElementById("row3");
