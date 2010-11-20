@@ -63,7 +63,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String constituencyID;
 	private String mandal;
 	private String village;
-	private String cadreLevel;
+	private Long cadreLevel;
 	private String cadreLevelValue;
 	private String mobile;
 	private String email;
@@ -372,18 +372,18 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setVillage(village);
 	}
 
-	public String getCadreLevel() {
-		return cadreInfo.getCadreLevel().toString();
+	public Long getCadreLevel() {
+		return cadreInfo.getCadreLevel();
 	}
 
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level")
-	public void setCadreLevel(String cadreLevel) {
-		this.cadreInfo.setCadreLevel(new Long(cadreLevel));
+	public void setCadreLevel(Long cadreLevel) {
+		this.cadreInfo.setCadreLevel(cadreLevel);
 	}
 
 	public String getCadreLevelValue() {
 		return cadreInfo.getStrCadreLevelValue();
-	}
+	}	
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Cadre Level Value is Mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Cadre Level Value")
@@ -763,6 +763,8 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
 		this.defaultCadreLevelId = defaultCadreLevelId;
+		
+			
 	}
 	
 	// to make the active or normal cadre type radio button to pre select active radio button
@@ -773,6 +775,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	// to pre select cadre level  based on user access type
 	public Long getDefaultCadreLevel()
 	{
+		if(this.defaultCadreLevelId == null)
+			this.defaultCadreLevelId = cadreInfo.getCadreLevel();
 		return this.defaultCadreLevelId;
 	}	
 	
@@ -963,6 +967,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		}*/
 		System.out.println(cadreInfo.getMobile());
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
+		//setDefaultCadreLevelId(getCadreLevel());
 		if (rs.getExceptionEncountered() == null)
 		{
 			cadreInfo = new CadreInfo();
