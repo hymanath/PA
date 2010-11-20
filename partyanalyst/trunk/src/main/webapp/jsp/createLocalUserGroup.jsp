@@ -367,16 +367,18 @@ function setLocationValue(value,source)
 <TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
-					<%--<c:if test="${windowTask == 'edit'}">
+					<c:if test="${windowTask == 'edit'}">
 						<TD>
 						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Edit a Group </span></div>
 						</TD>
+						<s:hidden id="windowTaskId" name="windowTask" value="edit"/>
 					</c:if>
-					<c:if test="${windowTask != 'edit'}">  --%>
+					<c:if test="${windowTask != 'edit'}"> 
 						<TD>
 						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Create a Group </span></div>
 						</TD>
-					<%--</c:if>--%>
+						<s:hidden id="windowTaskId" name="windowTask" value="new"/>
+					</c:if>
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
 			</TR>
 	</TABLE>
@@ -443,7 +445,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <input id="localGroupName" type="text" maxlength="61" style="width:150px;" value="" name="localGroupName">
+		  <input id="localGroupName" type="text" maxlength="61" style="width:150px;" value="" name="localUserGroupName">
 		</td>
 	  </tr>
 	   
@@ -453,7 +455,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <textarea id="" cols="10" rows="3" style="width:150px;" name="localGroupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
+		  <textarea id="" cols="10" rows="3" style="width:150px;" name="groupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
 		  </textarea>
 		</td>
 	  </tr>
@@ -567,6 +569,7 @@ function setLocationValue(value,source)
 	
  </div>
  <s:hidden id="groupScopeValueId" name="groupScopeValueId"/>
+
  <table class="formTableStyle" width="100%">	
 	<tr>
 	<td width="150px"></td><td width="90px"></td>
