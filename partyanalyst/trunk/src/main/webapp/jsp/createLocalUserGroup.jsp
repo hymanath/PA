@@ -202,6 +202,15 @@ function limitText(limitField, limitCount, limitNum)
 
 function populateLocations(val,source)
 {	
+	var elmt = document.getElementById("statusMessageDiv"); 
+	if(!elmt)
+		return;
+	<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
+		elmt.innerHTML = "${savedStatusMsg}";
+		window.opener.location.reload();			
+		window.close();
+	</c:if>		
+
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -398,6 +407,11 @@ function setLocationValue(value,source)
 			</tr>
 		</table>
 	</div>	
+
+	<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
+		<DIV id="statusMessageDiv" style="color:green;font-weight:bold"></DIV>			
+	</c:if>						
+	
   <FIELDSET class="fieldsetEle">
 	<LEGEND style="font-size:12px;"><strong>Local Group Details</strong></LEGEND>
 	

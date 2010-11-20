@@ -618,3 +618,18 @@ fieldset {
 	color:#494237;
 	font-size:11px;
 }
+
+#localGroupsChartDiv_Outer,#influencePeopleChartDiv_Outer
+{
+	width:893px;
+}
+
+#influencePeopleRegionWisOverView_Outer,#influencePeopleScopeWiseOverView_Outer,#localGroupsRegionWisOverView_Outer
+{
+	width:250px;
+}
+
+#influencePeopleDetail_Outer,#localGroupsDetail_Outer
+{
+	width:615px;
+}
