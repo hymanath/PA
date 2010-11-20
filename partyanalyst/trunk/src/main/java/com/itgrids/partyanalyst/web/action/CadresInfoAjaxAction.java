@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -33,7 +35,6 @@ import com.itgrids.partyanalyst.utils.IConstants;
 @SuppressWarnings("serial")
 public class CadresInfoAjaxAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 	
-	
 	private String region;
 	private String regionId;	
 	private String cadreType;
@@ -45,7 +46,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	private List<StateToHamletVO> zeroCadresRegion1;	
 	private CadreDetailsInfoVO cadreDetailsInfoVO;
 	private static final Logger log = Logger.getLogger(CadresInfoAjaxAction.class);
-	
+	JSONObject jObj = null;
+	private String task = null;
 	private CadreManagementService cadreManagementService;
 	private IConstituencyPageService constituencyPageService;
 	
@@ -127,6 +129,21 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	public void setConstituencyPageService(
 			IConstituencyPageService constituencyPageService) {
 		this.constituencyPageService = constituencyPageService;
+	}
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
 	}
 
 	public String execute() throws Exception{
@@ -522,6 +539,52 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		}
 	 return Action.SUCCESS;
 	}
+	
+	public String getBoothwiseCadreInfo(){
+	
+		cadreDetailsInfoVO = new CadreDetailsInfoVO();
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userID = user.getRegistrationID();
+		
+		
+		String param = getTask();
+				
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		
+		String taskType = jObj.getString("cadreRegion");
+		Long regionId = jObj.getLong("cadreId");
+		String cadreType = jObj.getString("cadreType");
+		
+		cadreInfo = new ArrayList<CadreInfo>();
+		log.debug("region::"+region);
+		
+		
+		if("CADRES BY BOOTHS IN WARD".equalsIgnoreCase("taskType"))
+		{
+			
+			
+			
+		} else if("Not Assigned To Any Booth".equalsIgnoreCase("Type"))
+		{
+			cadreInfo = cadreManagementService.getCadresNotAssignedWithBoothInWard(regionId,userID.toString());
+			
+			cadreDetailsInfoVO.setCadreInfo(cadreInfo);			
+		}
+		
+		
+		
+		
+		return Action.SUCCESS;
+	}
+	
 	
 	public String getZeroLevelCadre()
 	{
