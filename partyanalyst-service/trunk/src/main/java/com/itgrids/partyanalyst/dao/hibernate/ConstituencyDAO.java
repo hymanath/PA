@@ -310,6 +310,19 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				"model.localElectionBody.localElectionBodyId, model.localElectionBody.name, " +
 				"model.constituencyId, model.name " +
 				"from Constituency  model where model.constituencyId in("+constituencyIds+") ");
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findConstituenciesByNameScopeAndStateId(String constituencyName, Long electionScopeId, Long stateId){
+		Object[] params = {constituencyName, electionScopeId, stateId};
+		return getHibernateTemplate().find("from Constituency  model where model.name = ? and model.electionScope.electionScopeId = ? and " +
+				"model.state.stateId = ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findConstituenciesByNameScopeAndCountryId(String constituencyName, Long electionScopeId, Long countryId){
+		Object[] params = {constituencyName, electionScopeId, countryId};
+		return getHibernateTemplate().find("from Constituency  model where model.name = ? and model.electionScope.electionScopeId = ? and " +
+				"model.state.country.countryId = ?", params);
 	}
 }

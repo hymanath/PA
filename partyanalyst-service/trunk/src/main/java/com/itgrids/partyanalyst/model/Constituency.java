@@ -223,7 +223,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<ConstituencyElection> getConstituencyElections() {
-	return this.constituencyElections;
+		return this.constituencyElections;
 	}
 
 

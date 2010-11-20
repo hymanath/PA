@@ -62,7 +62,7 @@ public class ExcelToDBService implements IExcelToDBService {
 	private ICandidateResultDAO candidateResultDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO; 
 	private TransactionTemplate transactionTemplate;
-	//public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception{
+	
 	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws Exception{
  
 		try{
@@ -99,7 +99,6 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 		if(logger.isDebugEnabled())
 		logger.debug("1");
 		ElectionType electionTypeObj= electionTypes.get(0);
-		Long electionTypeId=electionTypeObj.getElectionTypeId();
 		//Checking for the existance of state if insert state and get the stateID
 		List<Country> countries= countryDAO.findByCountryName(uploadFormVo.getCountry());
 		if(logger.isDebugEnabled())
@@ -114,19 +113,22 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 			districtObj=districts.get(0);
 			if(logger.isDebugEnabled())
 			logger.debug("4");
-			ElectionScope electionScopeObj=checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj,uploadFormVo.getElectionYear());
+			ElectionScope electionScopeObj = checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj);
 			Election electionObj=checkAndInsertElection(electionScopeObj,uploadFormVo);
 			try {
 				int constituencyNo=0;
 				if(logger.isDebugEnabled())
 				logger.debug("4.1");
 				List<Party> parties=partyDAO.getAll();
-				List<Constituency> constituencies= constituencyDAO.getAll();
+				//List<Constituency> constituencies= constituencyDAO.getAll();
 				//ProcessBatchCallback pbc= new ProcessBatchCallback(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
+				Long countryId = countryObj.getCountryId();
+				String electionType = electionScopeObj.getElectionType().getElectionType();
 				
-				for (ConstituencyBlock constituencyBlock: constituencyBlocks) {
-				processBatch(parties, constituencies, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
-				}
+				for (ConstituencyBlock constituencyBlock: constituencyBlocks)
+					processBatch(parties, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, 
+							electionScopeObj, countryId, electionType);
+				
 				//this.transactionTemplate.execute(pbc);
 
 			} catch (Exception e) {
@@ -188,7 +190,9 @@ private Candidate checkAndInsertCandidate(String candidateName) throws Exception
 	}*/
 
 
-public int processBatch(List<Party> parties,List<Constituency> constituencies,ConstituencyBlock constituecBlock, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
+public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock, 
+		State stateObj,District districtObj,Election electionObj, int constituencyNo,
+		Country countryObj,ElectionScope electionScopeObj, Long countryId, String electionType){
 	
 		try {
 			long currentTime=System.currentTimeMillis();
@@ -196,17 +200,21 @@ public int processBatch(List<Party> parties,List<Constituency> constituencies,Co
 			logger.debug("4.2");
 			logger.debug("Constituency No =="+(++constituencyNo));
 			}
+			Long constiCount = 0l;
 			Constituency constituencyObj;
 			//modified by sai
 			if(constituecBlock.getDistrictId() != null && constituecBlock.getDistrictId().longValue() != 0){
 				if(electionObj.getElectionScope().getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-				    constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null,constituecBlock.getDistrictId());
+				    constituencyObj = checkAndInsertConstituency(constituecBlock.getConstituencyName(), countryId, stateObj, districtObj, 
+				    		electionScopeObj, electionType, null, constituecBlock.getDistrictId(), constiCount);
 				else
-					constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,constituecBlock.getDistrictId(),null);
+					constituencyObj = checkAndInsertConstituency(constituecBlock.getConstituencyName(), countryId, stateObj, districtObj, 
+				    		electionScopeObj, electionType, constituecBlock.getDistrictId(), null, constiCount);
 			}
 			//end
 			else
-				constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null,null);
+				constituencyObj=checkAndInsertConstituency(constituecBlock.getConstituencyName(), countryId, stateObj, districtObj, 
+			    		electionScopeObj, electionType, null, null, constiCount);
 			
 			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
 			constituencyElectionObj.setConstituency(constituencyObj);
@@ -262,81 +270,45 @@ public int processBatch(List<Party> parties,List<Constituency> constituencies,Co
 		}
 	return constituencyNo;
 }
-private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope,Long districtId,Long stateId){
-	boolean constituencyFlag = true;
-	Constituency lconstituencyObj= null;
-	if(constituencis!=null && constituencis.size()>0){
-		for(Constituency con: constituencis){
-			
-			//Parliament Election Type
-			if(electionScope.getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-				if(stateId == null){
-					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
-						lconstituencyObj = con;
-						constituencyFlag = false;
-						break;
-					 }
-				}else if(stateId != null){
-					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && stateId.equals(con.getState().getStateId()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
-						 lconstituencyObj = con;
-						 constituencyFlag = false;
-						 break;
-					}
-				}
-			}
-			//Assembly Election Type
-			else{
-				if(districtId == null){
-				 if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
-					lconstituencyObj = con;
-					constituencyFlag = false;
-					break;
-				 }
-				}
-				else if(districtId != null){
-					if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId()) && districtId.equals(con.getDistrict().getDistrictId())){
-					 lconstituencyObj = con;
-					 constituencyFlag = false;
-					 break;
-					 }
-				}
-			}
-		}
+
+public Constituency checkAndInsertConstituency(String constituencyName, 
+		Long countryId, State state, District district, ElectionScope electionScope, 
+		String electionType, Long districtId, Long stateId, Long constiCount){
+	Constituency constituency = null;
+	List<Constituency> constituencies = null;
+
+	if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+		if(districtId != null)
+			constituencies = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(constituencyName, 
+					districtId, electionScope.getElectionScopeId());
+		else
+			constituencies = constituencyDAO.findConstituenciesByNameScopeAndStateId(constituencyName, 
+					electionScope.getElectionScopeId(), state.getStateId());
+	}else{
+		if(stateId != null)
+			constituencies = constituencyDAO.findConstituenciesByNameScopeAndStateId(constituencyName, electionScope.getElectionScopeId(), stateId);
+		else
+			constituencies = constituencyDAO.findConstituenciesByNameScopeAndCountryId(constituencyName, electionScope.getElectionScopeId(), countryId);
 	}
-	if(constituencyFlag){
-		lconstituencyObj= new Constituency();
-		lconstituencyObj.setName(constituencyName);
-		lconstituencyObj.setCountryId(countryId);
-		lconstituencyObj.setState(state);
-		lconstituencyObj.setDistrict(district);
-		lconstituencyObj.setElectionScope(electionScope);
-		lconstituencyObj=constituencyDAO.save(lconstituencyObj);
-		constituencis.add(lconstituencyObj);
-		if(logger.isDebugEnabled())
-		logger.debug("New Constituency has been created");
+	
+	if(constituencies.size() == 0){
+		constituency = new Constituency();
+		constituency.setName(constituencyName);
+		constituency.setCountryId(countryId);
+		constituency.setState(state);
+		constituency.setDistrict(district);
+		constituency.setElectionScope(electionScope);
+		constituency = constituencyDAO.save(constituency);
+		logger.debug(">> "+(++constiCount)+" New Constituency Created With Name: "+constituencyName+" Of Type: "+electionType);
+		return constituency;
 	}
-	return lconstituencyObj;
+	
+	if(constituencies.size() > 1)
+		logger.debug(">> Error "+constituencies.size()+" No.of Constituencies Exisits with Name: "+constituencyName+" and Type: "+electionType);
+	
+	return constituencies.get(0);
+	
 }
-/*private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candidateName){
-	boolean candidateFlag = true;
-	Candidate lcandidateObj = null;
-	if(candidats!=null && candidats.size()>0){
-		for(Candidate can: candidats){
-			if(candidateName.equalsIgnoreCase(can.getLastname().trim())){
-				lcandidateObj = can;
-				candidateFlag = false;
-				break;
-			}
-		}
-	}
-	if(candidateFlag){
-		lcandidateObj = new Candidate();
-		lcandidateObj.setLastname(candidateName);
-		lcandidateObj=candidateDAO.save(lcandidateObj);
-		candidats.add(lcandidateObj);
-	}
-	return lcandidateObj;
-}*/
 
 private Party checkAndInsertParty(List<Party> partis,String partyName){
 	boolean partyFlag = true;
@@ -364,7 +336,7 @@ private Party checkAndInsertParty(List<Party> partis,String partyName){
 	return lpartyObj;
 }
 
-private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Country country,State state,String eleYear) throws CsvException{
+private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Country country,State state) throws CsvException{
 	ElectionScope electionScope=null;
 	try{
 		if(electionType.getElectionTypeId().longValue()==1){
@@ -395,12 +367,12 @@ private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Coun
 }
 
 private Election checkAndInsertElection(ElectionScope electionScope,UploadFormVo uploadFormVo) throws CsvException{
-	Election lelectionObj;
-	lelectionObj= electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(),uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
+	Election lelectionObj = electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(), 
+			uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
 	if(lelectionObj!=null){
 		throw new CsvException("These Election Results have already been uploaded.");
 	}else{
-		lelectionObj= new Election();
+		lelectionObj = new Election();
 		lelectionObj.setElectionScope(electionScope);
 		lelectionObj.setElecSubtype(uploadFormVo.getElecSubtype());
 		lelectionObj.setElectionYear(uploadFormVo.getElectionYear());
