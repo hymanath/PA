@@ -70,6 +70,8 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
 	
+	private String savedStatusMsg = "";
+	
 			
 	public String getTask() {
 		return task;
@@ -117,6 +119,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setGroupCategories(List<SelectOptionVO> groupCategories) {
 		this.groupCategories = groupCategories;
+	}
+	public String getSavedStatusMsg() {
+		return savedStatusMsg;
+	}
+	public void setSavedStatusMsg(String savedStatusMsg) {
+		this.savedStatusMsg = savedStatusMsg;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
