@@ -7,25 +7,17 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
@@ -48,31 +40,11 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	private ServletContext context;
 	
 	private String registrationId;
-	private String groupCategoryId;
-	private String localGroupName;
-	private String localGroupDesc;
-	private String groupScopeId;
-	private String groupScopeValueId;
-	
-	private String state;
-	
-	private String district;
-	private String constituency;
-	private String mandal;
-	private String villageOrWard;
-	private String booth;
-	
-	private String houseNo;
-	private String streetName;
-	private String pincode;
-	
-	private  String resultStatus;
+	private String resultStatus;
 	
 	private String savedStatusMsg = "";
 	private Boolean savedStatus = false;
-	
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
-	
 	private IInfluencingPeopleService influencingPeopleService;
 	
 		
@@ -103,21 +75,21 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		this.localUserGroupDetailsVO.setGroupCategoryId(new Long(groupCategoryId));
 	}
 	
-	public String getLocalGroupName() {
+	public String getLocalUserGroupName() {
 		return this.localUserGroupDetailsVO.getLocalUserGroupName();
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Group Name is Mandatory")
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Group Name should not contain special characters and numbers", shortCircuit = true)
-	public void setLocalGroupName(String localGroupName) {
-		this.localUserGroupDetailsVO.setLocalUserGroupName(localGroupName);
+	public void setLocalUserGroupName(String localGroupName) {
+		this.localUserGroupDetailsVO.setLocalUserGroupName(localGroupName.trim());
 	}
 	
-	public String getLocalGroupDesc() {
+	public String getGroupDesc() {
 		return this.localUserGroupDetailsVO.getGroupDesc();
 	}
-	public void setLocalGroupDesc(String localGroupDesc) {
-		this.localUserGroupDetailsVO.setGroupDesc(localGroupDesc);
+	public void setGroupDesc(String localGroupDesc) {
+		this.localUserGroupDetailsVO.setGroupDesc(localGroupDesc.trim());
 	}
 	public String getGroupScopeId() {
 		return this.localUserGroupDetailsVO.getGroupScopeId();
@@ -240,13 +212,13 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		return localUserGroupDetailsVO.getHouseNo();
 	}
 	public void setHouseNo(String houseNo) {
-		this.localUserGroupDetailsVO.setHouseNo(houseNo);
+		this.localUserGroupDetailsVO.setHouseNo(houseNo.trim());
 	}
 	public String getStreetName() {
 		return localUserGroupDetailsVO.getStreetName();
 	}
 	public void setStreetName(String streetName) {
-		this.localUserGroupDetailsVO.setStreetName(streetName);
+		this.localUserGroupDetailsVO.setStreetName(streetName.trim());
 	}
 	public String getPincode() {
 		return localUserGroupDetailsVO.getPincode();
@@ -257,13 +229,18 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	public void setPincode(String pincode) {
 		this.localUserGroupDetailsVO.setPincode(pincode);
 	}
+	public String getWindowTask() {
+		return localUserGroupDetailsVO.getWindowTask();
+	}
+	public void setWindowTask(String windowTask) {
+		this.localUserGroupDetailsVO.setWindowTask(windowTask);
+	}
 	public String execute() throws Exception{
 		
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		localUserGroupDetailsVO.setRegistrationId(regVO.getRegistrationID().toString());
-		localUserGroupDetailsVO.setWindowTask("save");
-		
+			
 		if("2".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.STATE_LEVEL);
@@ -306,7 +283,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		else if("9".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.BOOTH);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId());
 		}
 		
 		localUserGroupDetailsVO = influencingPeopleService.saveLocalUserGroupDetailsTODB(localUserGroupDetailsVO);
