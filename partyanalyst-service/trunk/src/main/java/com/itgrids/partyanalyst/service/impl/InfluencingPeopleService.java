@@ -2119,17 +2119,18 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		List<SelectOptionVO> overviewsList = new ArrayList<SelectOptionVO>();
 		if(accessType.equalsIgnoreCase(IConstants.STATE)){
 			overviewsList.add(new SelectOptionVO(1L,IConstants.STATE));
-			overviewsList.add(new SelectOptionVO(1L,IConstants.DISTRICT));
-			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(2L,IConstants.DISTRICT));
+			overviewsList.add(new SelectOptionVO(3L,IConstants.CONSTITUENCY));
 		
 		}else if(accessType.equalsIgnoreCase(IConstants.DISTRICT)){
-			overviewsList.add(new SelectOptionVO(2L,IConstants.DISTRICT));
+			overviewsList.add(new SelectOptionVO(1L,IConstants.DISTRICT));
 			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
 			
 		}else if(accessType.equalsIgnoreCase(IConstants.MLA)){
-			overviewsList.add(new SelectOptionVO(3L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(1L,IConstants.CONSTITUENCY));
 		}else if(accessType.equalsIgnoreCase(IConstants.MP)){
-			overviewsList.add(new SelectOptionVO(2L,IConstants.CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(1L,IConstants.MP_CONSTITUENCY));
+			overviewsList.add(new SelectOptionVO(1L,IConstants.CONSTITUENCY));
 		}
 		
 	 return overviewsList;
@@ -2737,17 +2738,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			if(regionType.equals(IConstants.STATE)){
 				
-				if(selectedType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-					
-					List<SelectOptionVO> selectOption = new ArrayList<SelectOptionVO>();
-					selectOption.add(new SelectOptionVO(0L,"Select Constituency"));
-					RegionSelectOptionVO option = new RegionSelectOptionVO();
-					option.setLabel(IConstants.CONSTITUENCY);
-					option.setOptionsList(selectOption);
-					
-					regionSelectOption.add(option);
-				}
-				
 				RegionSelectOptionVO option = new RegionSelectOptionVO();
 				option.setLabel(IConstants.DISTRICT);
 				List<SelectOptionVO> districtsInState = staticDataService.getDistricts(regionId);
@@ -2755,11 +2745,35 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				option.setOptionsList(districtsInState);
 				
 				regionSelectOption.add(0, option);
+				
+				if(selectedType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					
+					List<SelectOptionVO> selectOption = new ArrayList<SelectOptionVO>();
+					selectOption.add(new SelectOptionVO(0L,"Select Constituency"));
+					RegionSelectOptionVO option1 = new RegionSelectOptionVO();
+					option1.setLabel(IConstants.CONSTITUENCY);
+					option.setOptionsList(selectOption);
+					
+					regionSelectOption.add(option1);
+				}
+				
+				
 			}else if(regionType.equals(IConstants.DISTRICT)){
 				
 				RegionSelectOptionVO option = new RegionSelectOptionVO();
 				option.setLabel(IConstants.CONSTITUENCY);
 				List<SelectOptionVO> constituenciesInDistrict = staticDataService.getLatestAssemblyConstituenciesInDistrict(regionId);
+				constituenciesInDistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+				option.setOptionsList(constituenciesInDistrict);
+				
+				regionSelectOption.add(0, option);
+				
+			}else if(regionType.equals(IConstants.MP_CONSTITUENCY)){
+				
+				RegionSelectOptionVO option = new RegionSelectOptionVO();
+				option.setLabel(IConstants.CONSTITUENCY);
+				ConstituencyInfoVO constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(regionId);
+				List<SelectOptionVO> constituenciesInDistrict = constituencyInfoVO.getAssembyConstituencies();
 				constituenciesInDistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
 				option.setOptionsList(constituenciesInDistrict);
 				
