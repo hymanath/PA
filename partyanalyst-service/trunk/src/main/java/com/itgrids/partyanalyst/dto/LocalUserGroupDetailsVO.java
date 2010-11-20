@@ -33,6 +33,7 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private String registrationId;
 	private String groupScopeId;
 	private String groupScopeRange;
+	private String groupScopeRangePlace;
 	private String groupScopeValueId;
 	
 	//group location details
@@ -243,6 +244,12 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	}
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+	public String getGroupScopeRangePlace() {
+		return groupScopeRangePlace;
+	}
+	public void setGroupScopeRangePlace(String groupScopeRangePlace) {
+		this.groupScopeRangePlace = groupScopeRangePlace;
 	}
 	
 
