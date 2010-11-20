@@ -142,6 +142,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadreDetailsNotAssignedToBooth(Long tehsilId,Long userId, String cadreType);
 	public List<Cadre> findCadreDetailsNotAssignedToBoothInLocalBody(Long localBodyId,Long userId, String cadreType);
 	public List<Cadre> findCadreDetailsNotAssignedToBoothInWard(Long wardId,Long userId, String cadreType);
+	public List<Cadre> findCadreDetailsAssignedToBoothInWard(Long wardId, Long userId, String cadreType);
 	public List findCadresByBoothInWard(Long wardId, Long userId, String cadreType);
 	
 	
