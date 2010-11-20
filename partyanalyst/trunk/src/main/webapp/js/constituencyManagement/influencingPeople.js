@@ -135,7 +135,6 @@ function buildRegionWiseOverViewData(data,divId)
 function buildScopeWiseOverViewData(data,divId)
 {
 	var elmt = document.getElementById(divId);
-
 	if(!elmt)
 		return;
 	
@@ -150,32 +149,38 @@ function buildScopeWiseOverViewData(data,divId)
 	str += '</table>';
 	str += '</div>';
 
-	str += '<div id="influencePeopleScopeWiseOverView_body">';
-
-	for(var i=0; i<data.length; i++)
+	str += '<div id="influencePeopleScopeWiseOverView_body">';	
+	if( data == null || data.length == 0)
 	{
-		str += '<div class="scopeWise_data_main">';
-		str += '<div class="scopeWise_head">';
-		str += '<table width="100%" class="scopeWise_head_table">';
-		str += '<tr>';
-		str += '<td><img src="images/icons/system_grps.png"></td>';
-		str += '<td align="left">'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
-		str += '</tr>';
-		str += '</table>';
-		str += '</div>';
-		str += '<div class="scopeWise_body">';
-		str += '<table class="region_available_head" width="100%">';		
-		for(var j=0 ; j<data[i].influenceScopeDetails.length; j++)
+		str += '<p class="zeroPeoplePara"> No regions are having influence People.</p>';
+	}
+	else
+	{
+		for(var i=0; i<data.length; i++)
 		{
+			str += '<div class="scopeWise_data_main">';
+			str += '<div class="scopeWise_head">';
+			str += '<table width="100%" class="scopeWise_head_table">';
 			str += '<tr>';
-			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td align="left">'+data[i].influenceScopeDetails[j].influenceScopeRegion+'</td>';
-			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
+			str += '<td><img src="images/icons/system_grps.png"></td>';
+			str += '<td align="left">'+data[i].influenceScope+' level scope - <a href="javascript:{}" style="color:#77471D" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\'0\',\'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].countValue+'</a></td>';
 			str += '</tr>';
+			str += '</table>';
+			str += '</div>';
+			str += '<div class="scopeWise_body">';
+			str += '<table class="region_available_head" width="100%">';		
+			for(var j=0 ; j<data[i].influenceScopeDetails.length; j++)
+			{
+				str += '<tr>';
+				str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+				str += '<td align="left">'+data[i].influenceScopeDetails[j].influenceScopeRegion+'</td>';
+				str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openCandidatesPopup(\'0\',\''+data[i].influenceScopeDetails[j].influenceScopeRegionId+'\',\''+data[i].influenceScopeDetails[j].influenceScopeRegion+'\',\''+data[i].influenceScope+'\',\'scope\')">'+data[i].influenceScopeDetails[j].countValue+'</a></td>';			
+				str += '</tr>';
+			}
+			str += '</table>';
+			str += '</div>';
+			str += '</div>';
 		}
-		str += '</table>';
-		str += '</div>';
-		str += '</div>';
 	}
 	str += '</div>';
 	
@@ -340,6 +345,11 @@ function buildSubLevelInfluencePeople(jsObj,data)
 		str += '</div>';
 	}
 	
+	if(availableLength == 0)
+	{
+		str = '<p class="zeroPeoplePara"> No regions are having influence people.</p>';
+	}
+
 	elmt.innerHTML = str;
 	
 	buildSubRegionsPieChart(results,"influencePeople");
