@@ -21,6 +21,8 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
+import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
@@ -32,13 +34,15 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
 
 /**
  * @author Sai Krishna
  *
  */
 public class CreateLocalGroupAction extends ActionSupport implements
-		ServletRequestAware, ServletResponseAware, ServletContextAware {
+		ServletRequestAware, ServletResponseAware, ServletContextAware,ModelDriven, Preparable{
 
 	/**
 	 * 
@@ -69,11 +73,71 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
-	
 	private String savedStatusMsg = "";
-	private Boolean savedStatus = false;
+	private String name;
+	private String mobile;
+	private String email;
+	private String address;
+	private String city;
+	private String groupCategory;
+	private String groupName;
+	private String designation;	
 	
-			
+	private String localUserGroupId;
+	private String windowTask;
+	private LocalUserGroupDetailsVO localUserGroupDetailsVO;
+	
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getGroupCategory() {
+		return groupCategory;
+	}
+	public void setGroupCategory(String groupCategory) {
+		this.groupCategory = groupCategory;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	
 	public String getTask() {
 		return task;
 	}
@@ -126,12 +190,6 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setSavedStatusMsg(String savedStatusMsg) {
 		this.savedStatusMsg = savedStatusMsg;
-	}
-	public Boolean getSavedStatus() {
-		return savedStatus;
-	}
-	public void setSavedStatus(Boolean savedStatus) {
-		this.savedStatus = savedStatus;
 	}
 	public HttpServletRequest getRequest() {
 		return request;
@@ -193,6 +251,25 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	}
 	public void setDefaultGroupScope(Long defaultGroupScope) {
 		this.defaultGroupScope = defaultGroupScope;
+	}
+	public String getLocalUserGroupId() {
+		return localUserGroupId;
+	}
+	public void setLocalUserGroupId(String localUserGroupId) {
+		this.localUserGroupId = localUserGroupId;
+	}
+	public String getWindowTask() {
+		return windowTask;
+	}
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+	public LocalUserGroupDetailsVO getLocalUserGroupDetailsVO() {
+		return localUserGroupDetailsVO;
+	}
+	public void setLocalUserGroupDetailsVO(
+			LocalUserGroupDetailsVO localUserGroupDetailsVO) {
+		this.localUserGroupDetailsVO = localUserGroupDetailsVO;
 	}
 	public String execute(){
 		
@@ -395,5 +472,33 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
+	public String createLocalGroupMember()
+	{
+		
+		return Action.SUCCESS;
+	}
+
+	public Object getModel() {
+		
+		return localUserGroupDetailsVO;
+	}
 	
+	public void prepare() throws Exception {
+		
+		localUserGroupId = request.getParameter("localUserGroupId");
+		windowTask = request.getParameter("windowTask");
+						
+        if( "0".equals(localUserGroupId)) {
+        	
+        	localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
+        	
+          } 
+        else if(localUserGroupId != null) 
+        {	
+        	localUserGroupDetailsVO = influencingPeopleService.getLocalUserGroupDetailsById(new Long(getLocalUserGroupId()));
+        	 //prepopulateLocations(influencingPeopleBeanVO);
+        	        	
+        }
+		
+	}
 }
