@@ -645,6 +645,12 @@ function buildDifferentViewsRadio(info,divId,type)
 
 	var radioDiv = document.getElementById(divId);
 	
+	if((data == null || data.length == 0) && radioDiv)
+	{
+		radioDiv.innerHTML = '';
+		return;
+	}
+
 	if(data.length > 0 && radioDiv)
 	{
 		var str = '';

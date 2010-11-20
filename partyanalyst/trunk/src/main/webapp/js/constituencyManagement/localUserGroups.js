@@ -5,15 +5,35 @@ function buildLocalUserGroupsCriteria(jsObj,results)
 	buildDifferentViewsRadio(results,"differentViewsRadioDiv_localGroups","local groups");
 	createCoulmnChartForLocalUserGroups(results,"localGroupsChartDiv_main");
 	buildRegionWiseOverViewDataForLocalUserGroups(results,"localGroupsRegionWiseOverView_main");	
-	getSubLevelLocalGroupData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,"VILLAGE/WARD",results.regionWiseOverview.regionTitle,results.regionWiseOverview.regionTitleId,true);
+
+	if(results.regionWiseOverview != null)
+		getSubLevelLocalGroupData(results.regionWiseOverview.regionId,results.regionWiseOverview.regionName,results.regionWiseOverview.regionType,"VILLAGE/WARD",results.regionWiseOverview.regionTitle,results.regionWiseOverview.regionTitleId,true);
+	else
+	{
+		var elmt = document.getElementById("localGroupsRegionsData_main");
+		if(elmt)
+			elmt.innerHTML = '<p class="zeroPeoplePara"> No groups to display.</p>';
+	}
 }
 
 function createCoulmnChartForLocalUserGroups(data,divId)
 {
 	var categories = data.categoryListOverview;
 	var regionData = data.regionWiseOverview;
-	var subRegions = regionData.subRegionWiseOverview;
 	
+	if(categories == null || regionData == null)
+	{
+		var elmt = document.getElementById(divId);
+
+		if(elmt)
+			elmt.innerHTML = '<p class="zeroPeoplePara"> No groups to build a graph.</p>';
+
+		return;
+	}
+
+	
+	var subRegions = regionData.subRegionWiseOverview;
+
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'Region');
 	data.addColumn('number', ''+regionData.regionTitle);
@@ -51,18 +71,27 @@ function buildRegionWiseOverViewDataForLocalUserGroups(info,divId)
 	
 	if(!elmt)
 		return;
-
+	
 	var data = info.regionWiseOverview;
 	
+	if(data == null)
+	{
+		elmt.innerHTML = '<p class="zeroPeoplePara"> No groups to display.</p>';
+		return;
+	}
+
 	localGroupsLoginUserRegionId = data.regionId;
 	localGroupsLoginUserRegionName = data.regionName;
 	localGroupsLoginUserRegionType = data.regionType;
 
 	var str = '';
 	str += getRegionWiseOverviewString(data,"show");
-
-	for(var i=0; i<info.categoryListOverview.length; i++)
-		str += getRegionWiseOverviewString(info.categoryListOverview[i],"hide");
+	
+	if(info != null && info.length !=0)
+	{
+		for(var i=0; i<info.categoryListOverview.length; i++)
+			str += getRegionWiseOverviewString(info.categoryListOverview[i],"hide");
+	}
 
 	elmt.innerHTML = str;
 }
