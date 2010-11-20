@@ -693,7 +693,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 				BoothInfo boothInfo = new BoothInfo();
 				boothInfo.setPartNo(obj[3].toString());
 				boothInfo.setLocation(obj[4].toString());
-				boothInfo.setVillagesCovered(obj[4].toString());
+				boothInfo.setVillagesCovered(obj[5].toString());
 				boothInfo.setMandalName(obj[1].toString());
 				boothsInfo.add(boothInfo);			
 			}		
