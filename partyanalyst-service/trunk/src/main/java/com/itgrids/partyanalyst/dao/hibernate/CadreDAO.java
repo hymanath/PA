@@ -703,6 +703,15 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadreDetailsAssignedToBoothInWard(Long wardId, Long userId, String cadreType) {
+		Object[] params = {wardId,userId,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.currentAddress.ward.constituencyId = ? and model.registration.registrationId = ? and model.memberType = ? " +
+				"and model.currentAddress.booth is not null and model.currentAddress.ward.constituencyId is not null", params); 
+		return results;
+	}
+	
 	public List findCadresNotAssignedToBooth(Long userId, String cadreType) {
 		Object[] params = {userId,cadreType};
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
@@ -737,10 +746,13 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				" and model.currentAddress.localElectionBody.localElectionBodyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.localElectionBody.localElectionBodyId is not null", params);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findCadresNotAssignedToBoothInWard(Long wardId, Long userId,
 			String cadreType) {
 		Object[] params = {wardId, userId,cadreType};
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
 				" and model.currentAddress.ward.constituencyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.ward.constituencyId is not null", params);
-	}				
+	}
+
+			
 }
