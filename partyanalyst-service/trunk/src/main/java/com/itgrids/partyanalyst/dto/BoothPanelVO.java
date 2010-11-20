@@ -11,6 +11,7 @@ public class BoothPanelVO extends ResultStatus {
 	private Long femaleVoters;
 	private Long totalVoters;
 	private String mandal;
+	private String wardInfo;
 	private List<CastVO> castInfo;
 	private List<ElectionInfoVO> elections; 
 	
@@ -84,6 +85,14 @@ public class BoothPanelVO extends ResultStatus {
 
 	public void setMandal(String mandal) {
 		this.mandal = mandal;
+	}
+
+	public String getWardInfo() {
+		return wardInfo;
+	}
+
+	public void setWardInfo(String wardInfo) {
+		this.wardInfo = wardInfo;
 	}
 	
 	
