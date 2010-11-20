@@ -582,7 +582,7 @@
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
 										{												
-											populateInfluencingPeople(myResults);
+											populateInfluencingPeople(jsObj,myResults);
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
 											buildProblemsByStatusDialog(myResults,jsObj);
@@ -628,7 +628,7 @@
 										}
 										if(jsObj.task == "reGetInfluencingPeopleInAConstituency")
 										{
-											populateInfluencingPeople(myResults);
+											populateInfluencingPeople(jsObj,myResults);
 										}
 
 									}

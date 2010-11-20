@@ -1,8 +1,10 @@
 
 
-function populateInfluencingPeople(results)
+function populateInfluencingPeople(jsObj,results)
 {		
-	buildDifferentViewsRadio(results,"differentViewsRadioDiv_influencingPeople","influence people");
+	if(jsObj.task != "reGetInfluencingPeopleInAConstituency")
+		buildDifferentViewsRadio(results,"differentViewsRadioDiv_influencingPeople","influence people");
+
 	createCoulmnChart(results.regionWiseOverview,"influencePeopleChartDiv_main");
 	buildRegionWiseOverViewData(results.regionWiseOverview,"influencePeopleRegionWiseOverView_main");
 	buildScopeWiseOverViewData(results.influenceScopeOverview,"influencePeopleScopeWiseOverView_main");
@@ -35,7 +37,7 @@ function createCoulmnChart(regionData,divId)
 
 	var chart = new google.visualization.ColumnChart(document.getElementById(divId));
 		chart.draw(data, {width: 850, height: 280,legend:'right',legendTextStyle:{fontSize:10}, title: 'Influence People',
-				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:25, titleTextStyle: {color: 'red'}}
+				  hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 				 });
 
 }
