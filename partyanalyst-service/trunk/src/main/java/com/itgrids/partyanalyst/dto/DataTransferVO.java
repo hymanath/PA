@@ -28,8 +28,16 @@ public class DataTransferVO extends ResultStatus{
 	private ResultStatus resultStatusForUnBlockRequest;
 	private String loginStatus;
 	private Long userId;
-	
-	
+	private List<SelectOptionVO> seleList;
+		
+	public List<SelectOptionVO> getSeleList() {
+		return seleList;
+	}
+
+	public void setSeleList(List<SelectOptionVO> seleList) {
+		this.seleList = seleList;
+	}
+
 	public ResultStatus getResultStatusForBlockRequest() {
 		return resultStatusForBlockRequest;
 	}

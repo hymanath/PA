@@ -3817,7 +3817,6 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			cadresList = null;
 			userID = null;
 			id = null;
-			System.gc();
 		}
 	}
 	
@@ -3850,8 +3849,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			return null;
 		}finally{
 			cadresList = null;
-			userID = null;			
-			System.gc();
+			userID = null;		
 		}
 	}
 	
