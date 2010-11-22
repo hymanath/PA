@@ -1022,7 +1022,7 @@
         
         <action name="getAllElectionsSelectInDistrictAction" class="districtPageAction" method="getAllElectionsInDistrict">
               <result type="json" name="success">
-           		<param name="root">electionsInDistrict</param>
+           		<param name="root">yearsList</param>
         	</result>		
         </action>
         

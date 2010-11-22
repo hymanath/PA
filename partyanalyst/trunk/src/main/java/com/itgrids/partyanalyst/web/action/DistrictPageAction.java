@@ -93,8 +93,15 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String userType = null;	
 	private NavigationVO messageTypes;
 	private EntitlementsHelper entitlementsHelper;
-	
+	private List yearsList;
 		
+	
+	public List getYearsList() {
+		return yearsList;
+	}
+	public void setYearsList(List yearsList) {
+		this.yearsList = yearsList;
+	}
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -705,8 +712,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(session.getAttribute(IConstants.USER) == null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
 				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
-				electionsInDistrict = getAllElectionTypes(allElections);
-				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());				
+				electionsInDistrict = getAllElectionTypes(allElections);		
 				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
 			}else{
@@ -722,8 +728,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}else if(session.getAttribute(IConstants.USER) != null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
 				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
-				electionsInDistrict = getAllElectionTypes(allElections);
-				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());				
+				electionsInDistrict = getAllElectionTypes(allElections);		
 				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
 				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
 			}else{
@@ -847,7 +852,23 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		electionsInDistrict = staticDataService.getAllElectionsInDistrict(jObj.getLong("districtId"));
+		Long districtID = jObj.getLong("districtId");
+		session = request.getSession();		
+		if(session.getAttribute(IConstants.USER) == null ){
+			if(entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
+				yearsList = staticDataService.getAllElectionsInDistrict(districtID);				
+				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());	
+			}else{
+				yearsList =  staticDataService.getAllAssemblyElectionsInDistrict(districtID,IConstants.ASSEMBLY_ELECTION_TYPE);	
+			}
+		}else if(session.getAttribute(IConstants.USER) != null ){
+			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
+				yearsList = staticDataService.getAllElectionsInDistrict(districtID);							
+				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());				
+			}else{
+				yearsList =  staticDataService.getAllAssemblyElectionsInDistrict(districtID,IConstants.ASSEMBLY_ELECTION_TYPE);	
+			}
+		}
 		return SUCCESS;
 	}
 	
@@ -861,6 +882,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		//Set<Color> colorsSet = new LinkedHashSet<Color>();
 	
 		allPartiesPositionsInElection = staticDataService.getAllPartiesPositionsInDistrictElection(jObj.getLong("electionId"), jObj.getLong("districtId"));
+		
 		List<PartyPositionsVO> partyPositions = allPartiesPositionsInElection.getPartiesPositionsInElection();
 		String chartName = "allPartiesDistrictWisePositionsInElection_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
