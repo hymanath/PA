@@ -125,8 +125,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
 		}finally{		
-			setOfGroups = null;
-			System.gc();
+			setOfGroups = null;			
 		}
 		return entitlementVO;
 	}
@@ -167,8 +166,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
 		}finally{		
-			listOfEntitlements = null;
-			System.gc();
+			listOfEntitlements = null;			
 		}
 		return entitlementVO;
 	}
@@ -217,11 +215,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 			e.printStackTrace();
 			log.warn("There was an error in fetching EntitlementGroups data");
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			resultStatus.setExceptionEncountered(e);
-			
+			resultStatus.setExceptionEncountered(e);			
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{			
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -247,8 +242,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{			
-			System.gc();
 		}
 		return entitlementVO;		
 	}
@@ -275,8 +268,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{			
-			System.gc();
 		}
 		return entitlementVO;		
 	}
@@ -382,8 +373,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);			
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -423,8 +412,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -470,8 +457,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -531,7 +516,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			userId = null;
 			groupIds = null;
 			elements = null;
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -571,8 +555,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setExceptionEncountered(e);			
 			entitlementVO.setResultStatus(resultStatus);
-		}finally{
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -746,10 +728,9 @@ public class UserEntitlementService implements IUserEntitlementService {
 			resultStatus.setExceptionEncountered(e);			
 			entitlementVO.setResultStatus(resultStatus);
 		}finally{
-		entitlementIds = null;
+			entitlementIds = null;
 			groupId = null;
 			elements = null;
-			System.gc();
 		}
 		return entitlementVO;
 	}
@@ -860,7 +841,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 			userGroupId = null;
 			entitlementGroupIds = null;
 			elements = null;
-			System.gc();
 		}
 		return entitlementVO;
 	}

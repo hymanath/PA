@@ -382,13 +382,36 @@ public class AnanymousUserService implements IAnanymousUserService {
 					if(originalStatus.equalsIgnoreCase(IConstants.NOTCONNECTED)){
 						status = IConstants.ALL;
 					}
-					List<Object> detailsList = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
-					for(int i=0;i<detailsList.size();i++){
-						Object[] parms = (Object[])detailsList.get(i);				
+					
+					if(originalStatus.equalsIgnoreCase(IConstants.NOTCONNECTED)){
+						status = IConstants.ALL;
+					}
+					List<Object> details = customMessageDAO.getRelationShipBetweenTheUsers(candidates,loginId,status);	
+					for(int i=0;i<details.size();i++){
+						Object[] parms = (Object[])details.get(i);				
 						Long userId = new Long(parms[0].toString());			
 						if(userIdAndRelationShipWithLogedUser.get(userId)!=null){
 							userIdAndRelationShipWithLogedUser.get(userId).setStatus(parms[1].toString());	
 						}				
+					}
+					if(userIdAndRelationShipWithLogedUser.get(loginId)!=null){
+						userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
+					}
+					
+					List<Long> userID = new ArrayList<Long>(0);
+					userID.add(loginId);
+					List<UserConnectedto> detailsList = userConnectedtoDAO.checkForRelationBetweenUsers(candidates,userID);	
+					Set<Long> userIds = new HashSet<Long>();
+					if(detailsList!=null && detailsList.size()!=0){
+						for(UserConnectedto userConnectedto : detailsList){
+							userIds.add(userConnectedto.getSenderId().getUserId());
+							userIds.add(userConnectedto.getRecepientId().getUserId());
+						}
+						userIds.remove(loginId);
+					}	
+					List<Long> ids = new ArrayList<Long>(userIds);
+					for(int i=0;i<ids.size();i++){	
+						userIdAndRelationShipWithLogedUser.get(ids.get(i)).setStatus(IConstants.CONNECTED);
 					}
 					if(userIdAndRelationShipWithLogedUser.get(loginId)!=null){
 						userIdAndRelationShipWithLogedUser.get(loginId).setStatus(IConstants.LOGGED_USER);
@@ -407,9 +430,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 									candidateDetails.add(data.getValue());
 								}
 							}
-						}
-						
-																		
+						}										
 					}
 				}
 				dataTransferVO.setCandidateVO(candidateDetails);
@@ -770,7 +791,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 			originalList = null;
 			tempIds = null;
 			unKnownPeople = null;
-			System.gc();
 		}
 		return dataTransferVO;
 	}
@@ -876,7 +896,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 			ids = null;
 			setOfUserIds = null;
 			userId= null;
-			System.gc();
 		}
 		
 		return listOfUserIds;
