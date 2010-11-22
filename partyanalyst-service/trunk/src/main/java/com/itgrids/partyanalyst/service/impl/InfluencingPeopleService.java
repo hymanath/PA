@@ -2789,7 +2789,10 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		
 		List<SelectOptionVO> categoriesList = new ArrayList<SelectOptionVO>();
 		
-		if(groupCategoryId != null && !groupCategoryId.equals(0L)){
+		if(groupCategoryId.equals(0L))
+			categoriesList = getLocalGroupCategoriesList(userId);
+		
+		else if(groupCategoryId != null && !groupCategoryId.equals(0L)){
 			StaticLocalGroup groupCategory = staticLocalGroupDAO.get(groupCategoryId);
 			categoriesList.add(new SelectOptionVO(groupCategory.getStaticLocalGroupId(),groupCategory.getGroupType()));
 		}
