@@ -126,12 +126,12 @@ function getRegionWiseOverviewString(data,type)
 	}
 
 	var str = '';
-	str += '<div id="'+id+'_main" class="regionScope_main">';
+	str += '<div id="'+id+'_main" class="regionScope_main" style="cursor:pointer;">';
 	str += '<div id="'+id+'_head" onclick="showGroupDetails(this.id,\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\''+data.regionTitle+'\',\''+data.regionTitleId+'\')">';
 	str += '<table cellspacing="0" cellpadding="0" border="0" width="100%" style="width: 100%;">';
 	str += '	<tr>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>';
-	str += '		<td><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label">';
+	str += '		<td align="left"><div class="regionsHead_center" style="height:30px;padding:0px;"><span class="regionsHead_center_label">';
 	str +=				data.regionTitle +' - ';
 	str += '			<a href="javascript:{}" style="color:#4B74C6" class="regionCountAnc" onclick="openLocalGroupsCandidatesPopup(\''+data.regionId+'\',\''+data.regionName+'\',\''+data.regionType+'\',\''+data.regionTitle+'\',\''+data.regionTitleId+'\')">'+data.countValue+' </a></span></div></td>';
 	str += '		<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
@@ -145,9 +145,9 @@ function getRegionWiseOverviewString(data,type)
 		str += '<div id="'+id+'_body" style="display:none;">';
 	
 	str += '<div class="regions_overview_data">';
-	str += '<table><tr>';
-	str += '<th>Region : </th>';
-	str += '<td>'+data.regionName+' ( '+data.regionType+' )</td>';
+	str += '<table width="100%"><tr>';
+	str += '<th align="left">Region : </th>';
+	str += '<td align="left">'+data.regionName+' ( '+data.regionType+' )</td>';
 	str += '</tr></table>';
 	str += '</div>';
 
@@ -165,12 +165,12 @@ function getRegionWiseOverviewString(data,type)
 	}
 	else
 	{
-		str += '<table class="region_available_head">';
+		str += '<table class="region_available_head" width="100%">';
 		for(var j=0; j<availablePeople.length; j++)
 		{				
 			str += '<tr>';
-			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+availablePeople[j].subRegionName+'</td>';
+			str += '<td align="left" width="10px"><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td align="left">'+availablePeople[j].subRegionName+'</td>';
 			str += '<td><a href="javascript:{}" style="color:#494237" class="regionCountAnc" onclick="openLocalGroupsCandidatesPopup(\''+availablePeople[j].subRegionId+'\',\''+availablePeople[j].subRegionName+'\',\''+availablePeople[j].subRegionType+'\',\''+data.regionTitle+'\',\''+data.regionTitleId+'\')">'+availablePeople[j].countValue+'</a></td>';
 			str += '</tr>';
 		}
@@ -186,12 +186,12 @@ function getRegionWiseOverviewString(data,type)
 	}
 	else
 	{
-		str += '<table class="region_available_head">';
+		str += '<table class="region_available_head" width="100%">';
 		for(var j=0; j<zeroPeople.length; j++)
 		{				
 			str += '<tr>';
-			str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
-			str += '<td>'+zeroPeople[j].subRegionName+' </td>';
+			str += '<td align="left" width="10px"><img src="images/icons/districtPage/listIcon.png"></td>';
+			str += '<td align="left">'+zeroPeople[j].subRegionName+' </td>';
 			//str += '<td>'+zeroPeople[j].countValue+'</td>';
 			str += '</tr>';
 		}

@@ -802,7 +802,7 @@
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
 										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
-										<td>
+										<td align="left">
 											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
 												<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
 											</div>
@@ -871,7 +871,7 @@
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
 										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
-										<td>
+										<td align="left">
 											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
 												<span id="localGroupsLabelSpan" class="regionsHead_center_label" style="top:10px;">Local Groups Detail Info</span>
 											</div>
