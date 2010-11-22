@@ -418,10 +418,9 @@ fieldset {
 
 .regionsHead_center_label
 {
-	left:7px;
-	position:relative;
-	display:block;
-	top:7px;
+	padding-left:5px;
+	padding-top:6px;	
+	display:block;	
 }
 
 #region_unavailable
