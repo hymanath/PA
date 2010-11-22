@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -43,7 +44,9 @@ public interface IStaticDataService {
 			
 		public List<SelectOptionVO> getAllElectionScopes();
 		
-		public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId);
+		public List getAllElectionsInDistrict(Long districtId);
+		
+		public List getAllAssemblyElectionsInDistrict(Long districtId,String type);
 	
 		public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(Long constituencyId);
 	
