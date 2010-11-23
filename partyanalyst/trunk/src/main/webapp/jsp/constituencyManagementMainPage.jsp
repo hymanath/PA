@@ -534,8 +534,8 @@
 	{
 		var jsObj= 
 		{	
-			accessType:accessType,
-			accessValue:accessValue,
+			regionType:accessType,
+			regionId:accessValue,
 			hamletId: value,
 			flag: "HAMLET", 			  			
 			task: "getInfluencingPeopleInAConstituency"
@@ -655,6 +655,8 @@
 		removeSelectElements(phamletFieldEl);
 		for(var i in results)
 		{
+			if(results[i] == null)
+				continue;
 			var opElmt=document.createElement('option');
 			opElmt.value=results[i].id;
 			opElmt.text=results[i].name;
@@ -700,6 +702,10 @@
 		var assignToLocalLeaders = new Array();
 		for(var i in results)
 		{
+
+			if(results[i] == null)
+				continue;
+			
 			var localLeadersDetails = {
 
 					personName: results[i].personName,
@@ -979,7 +985,9 @@
 		var localProbCount = 0;
 		var elmt = document.getElementById("alertMessage");
 		var totalLeadersCount = 0;
-		var electedLeadersCount = 0;		
+		var electedLeadersCount = 0;	
+
+		if(voters)	
 		for(var i in voters)
 		{
 			count = count + 1;
@@ -1104,7 +1112,7 @@
 			} if(politicalChanges.length == 0)
 			{
 				constMgmtMainObj.localPoliticalChangesArray = emptyArr;				
-			} if (voters.length == 0)
+			} if (voters && voters.length == 0)
 			{	
 				constMgmtMainObj.votersArray = emptyArr;				
 			} if(votersByHouseNo.length == 0)
@@ -1357,9 +1365,12 @@
 		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
 	}
-	
+
+	var hamletId ;
 	function getVotersForHamlet(name,value)
 	{
+		hamletId = value;
+
 		var locationAlertEl =  document.getElementById("locationAlertMsg");
 		locationAlertEl.innerHTML = '';
 		if(value=='0')
@@ -3617,38 +3628,50 @@
 	function buildVotersByLocBoothDataTable()
 	{
 		var votersByLocBoothColumnDefs = [ 
-		    	            {key:"sNo", label: "<%=sNo%>",sortable:true}, 
-		    	            {key:"name", label: "<%=name%>", sortable: true}, 
+		    	            {key:"voterId", label: "<%=sNo%>"}, 
+		    	            {key:"firstName", label: "<%=name%>", sortable: true}, 
 		    	            {key:"gender", label: "<%=gender%>", sortable: true},
 		    				{key:"age", label: "<%=age%>", sortable:true},
-		    				{key:"hNo", label: "<%=hNo%>", sortable:true},
-		    				{key:"guardianName", label: "<%=guardName%>", sortable:true},
-		    				{key:"relationship", label: "<%=relationship%>", sortable:true},	
+		    				{key:"houseNo", label: "<%=hNo%>", sortable:true},
+		    				{key:"relativeFirstName", label: "<%=guardName%>", sortable:true},
+		    				{key:"relationshipType", label: "<%=relationship%>", sortable:true},	
 		    				{key:"cast", label: "<%=cast%>", sortable:true},
-		    				{key:"castCategory", label: "<%=castCategory%>", sortable:true}		
+		    				{key:"castCatagery", label: "<%=castCategory%>", sortable:true}		
 		    	        ]; 
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource(constMgmtMainObj.votersArray); 
-		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("testVoterAction.action?hamletId="+hamletId+"&isVoter=true&"); 
+		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
 		votersByLocBoothDataSource.responseSchema = { 
+			resultsList: "voterDetails", 
             fields: [
-                     {key:"sNo", parser:"number"}, 
-                     "name", "gender", "age", "hNo","guardianName","relationship","cast","castCategory"] 
+                     {key:"voterId", parser:"number"}, 
+                     "firstName", "gender", "age", "houseNo","relativeFirstName","relationshipType","cast","castCatagery"],
+            metaFields: {
+	            totalRecords: "voterDetailsCount" // Access to value in the server response
+	        }         
         };
 
-        
-		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    }) 
-				};
-
-		var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", votersByLocBoothColumnDefs,votersByLocBoothDataSource, myConfigs);
+		var myConfigs = {
+			        initialRequest: "sort=voterId&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+			        dynamicData: true, // Enables dynamic server-driven data
+			        sortedBy : {key:"voterId", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+		};
+		
+		var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", 
+				votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+		
+		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
+		        oPayload.totalRecords = oResponse.meta.totalRecords;
+		        return oPayload;
+		}
+		
 		constMgmtTabs.getTab(4).addListener("click", function() {votersByLocBoothDataTable.onShow()});
 
-			return {
-				oDS: votersByLocBoothDataSource,
-				oDT: votersByLocBoothDataTable
-			};
+		return {
+			oDS: votersByLocBoothDataSource,
+			oDT: votersByLocBoothDataTable
+		};
 	}
 
 	function buildImportantVotersDataTable()
@@ -3656,12 +3679,10 @@
 		var myColumnDefs = [ 
 		    	            {key:"sNo", label:"<%=sNo%>", formatter:"number", sortable:true}, 
 		    	            {key:"houseNo", label:"<%=hNo%>", sortable: true}, 
-		    	            {key:"membersInFamily", label:"<%=mbrsInFamily%>", sortable: true},
+		    	            {key:"membersInFamily", label:"<%=mbrsInFamily%>", sortable:true},
 		    				{key:"eldestPersonName", label:"<%=eldstPersonName%>", sortable:true},
 		    				{key:"youngestPersonName", label:"<%=ygstPersonName%>", sortable:true},
 		    				{key:"cast", label:"<%=cast%>", sortable:true}
-		    				//{key:"Mobile"}
-		    				  					    			    				
 		    	        ]; 
 		var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.votersByHouseNoArray); 
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 

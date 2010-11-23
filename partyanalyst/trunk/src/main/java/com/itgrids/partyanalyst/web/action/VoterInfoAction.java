@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,6 +40,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	private List<HamletProblemVO> hamletProblems;
 	private ProblemManagementDataVO problemManagementDataVO;
 	private IProblemManagementService problemManagementService;
+	
 	JSONObject jObj = null;
 	private String task = null;
 	
@@ -147,8 +149,8 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		{
 			String hamletId = jObj.getString("selected");
 			constituencyManagementVO = new ConstituencyManagementVO();
-			constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009", 0l, 20000, false));
-			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009", 0l, 20000, false));
+			//constituencyManagementVO.setVoterDetails(constituencyManagementService.getVoterInfo(new Long(hamletId), "2009", 0l, 20000, false));
+			constituencyManagementVO.setVotersByHouseNos(constituencyManagementService.getVoterHouseDetails(new Long(hamletId), "2009"));
 			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
 			constituencyManagementVO.setVoterCastInfodetails(votersByCast);								
 			
@@ -190,6 +192,37 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	
 	public String execute() throws Exception{
 		
+		
+		return SUCCESS;
+	}
+
+	public String displayPerameters(){
+		Long hamletId = Long.parseLong(request.getParameter("hamletId"));
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer results = Integer.parseInt(request.getParameter("results"));
+		String order = request.getParameter("dir");
+		String columnName = request.getParameter("sort");
+		Boolean isVoter = Boolean.parseBoolean(request.getParameter("isVoter"));
+		List<VoterVO> voters = null;
+		List<VoterHouseInfoVO> voterHouses = null;
+		
+		constituencyManagementVO = new ConstituencyManagementVO();
+		
+		if(isVoter)
+			voters = constituencyManagementService.getVoterInfo(hamletId, "2009", startIndex, results, order, columnName);
+		/*else
+			voterHouses = constituencyManagementService.getVoterHouseDetails(hamletId, "2009", startIndex, results, order, columnName);
+		*/	
+		constituencyManagementVO.setVotersByHouseNos(voterHouses);
+		constituencyManagementVO.setVoterDetails(voters);
+		
+		Long totalVoters = 0l;
+		if(voters != null && voters.size() > 0)
+			totalVoters = voters.get(0).getTotalVoters();
+		if(voterHouses != null && voterHouses.size() > 0)
+			totalVoters = voterHouses.get(0).getTotalHousesCount();
+		
+		constituencyManagementVO.setVoterDetailsCount(totalVoters);
 		
 		return SUCCESS;
 	}
