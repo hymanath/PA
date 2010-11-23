@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
@@ -37,6 +38,39 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 		Object[] params = {localElectionBodyId,year};
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
 				"where model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
+	}
+
+	public Integer deleteByWardsAndConstituency(List<Long> assemblyLocalElectionBodyWardIds) {
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" delete from AssemblyLocalElectionBodyWard model ");
+		query.append("where model.assemblyLocalElectionBodyWardId in (:assemblyLocalElectionBodyWardIds)");
+				
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("assemblyLocalElectionBodyWardIds", assemblyLocalElectionBodyWardIds);
+		
+		return queryObject.executeUpdate();
+		
+	}
+
+	public List getAssemblyLocalElectionBodyWardIds(Long constituencyId,
+			List<Long> wardIds) {
+		StringBuilder query = new StringBuilder();
+		query.append("select model.assemblyLocalElectionBodyWardId from AssemblyLocalElectionBodyWard model ");
+		query.append("where model.assemblyLocalElectionBody.constituency.constituencyId = ?");
+		query.append(" and model.constituency.constituencyId in (:wardIds)");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, constituencyId);
+		queryObject.setParameterList("wardIds", wardIds);
+		
+		return queryObject.list();
+		
+		
+		
+		/*Object[] params = {constituencyId};
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyWardId from AssemblyLocalElectionBodyWard model " +
+				"where model.assemblyLocalElectionBody.constituency.constituencyId = ? and model.constituency.constituencyId in (:wardIds)", params);*/
 	}	
 	
 	/*public List findByLocalElectionBody(Long localElectionBodyId, String year, Long constituencyId) {

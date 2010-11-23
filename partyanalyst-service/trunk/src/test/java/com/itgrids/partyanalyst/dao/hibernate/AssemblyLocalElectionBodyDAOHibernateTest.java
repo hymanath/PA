@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -64,7 +65,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		Long id = (Long)object;
 		System.out.println("id:"+id);		
 	}*/
-	public void testFindByConstituencyIds()
+/*	public void testFindByConstituencyIds()
 	{
 		List result = assemblyLocalElectionBodyDAO.findByConstituencyIds("836,844,860");
 		System.out.println("Results Size:"+result.size());
@@ -82,5 +83,14 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 	{
 		System.out.println(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(488L).get(0).toString());
 		
+	}*/
+	
+	public void testDeleteByLocalElectionBodyAndConstituency()
+	{
+		List<Long> ids = new ArrayList<Long>(); 
+		ids.add(566l);
+		int result=assemblyLocalElectionBodyDAO.deleteByLocalElectionBodyAndConstituency(ids,318l);
+		System.out.println("No of records deleted:"+result);
+		setComplete();
 	}
 }

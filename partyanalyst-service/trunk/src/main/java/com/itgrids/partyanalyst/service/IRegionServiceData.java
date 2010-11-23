@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 
 import java.util.List;
+import java.util.Set;
 /**
  * 
  * @author Narender Akula
@@ -43,4 +46,8 @@ public interface IRegionServiceData {
 	public List<BoothInfo> getBoothCompleteDetails(String areaType, String boothIds);
 	public List<SelectOptionVO> getBoothsInTehsilByConstituency(Long tehsilId,Long year, Long constituencyId);
 	public List<SelectOptionVO> getBoothsInLocalBodysByConstituency(Long localBodyId,Long year, Long constituencyId);
+	public Set<RegionalMappingInfoVO> getLocalBodiesInDistAndConst(Long districtId, Long constituencyId, String year);
+	public Set<RegionalMappingInfoVO> getWardsInLocalBodyAndConst(Long localBodyId, Long constituencyId, String year);
+	public Set<RegionalMappingInfoVO> getboothsInLocalBodiesAndConst(Long localBodyId, Long constituencyId, String year);
+	
 }

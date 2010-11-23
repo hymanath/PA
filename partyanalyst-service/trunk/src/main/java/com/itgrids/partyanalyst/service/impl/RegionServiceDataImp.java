@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +21,8 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -27,6 +32,7 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.service.IBoothMapperService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -47,6 +53,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;  
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
+	private IBoothMapperService boothMapperService;
 	
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -125,6 +132,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
+	}	
+
+	public IBoothMapperService getBoothMapperService() {
+		return boothMapperService;
+	}
+
+	public void setBoothMapperService(IBoothMapperService boothMapperService) {
+		this.boothMapperService = boothMapperService;
 	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
@@ -778,6 +793,152 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		
 	 return boothDataList;
+	}
+	
+
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the local
+	 * bodies exists in dist and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the local bodies to a constituency level.
+	 * @return
+	 */
+	public Set<RegionalMappingInfoVO> getLocalBodiesInDistAndConst(Long districtId,
+			Long constituencyId, String year) {
+		String areaType = null;
+		List<SelectOptionVO> localBodiesMappedInConst = null;
+		// fetch all existing local bodies in a district
+		List<SelectOptionVO> allLocalElectionBodies = getLocalElectionBodiesOfADistrict(districtId);
+		// fetch mapped local bodies in a constituency
+		Constituency constituency = constituencyDAO.get(constituencyId);
+		areaType = constituency.getAreaType();
+		RegionalMappingInfoVO regionalMappingInfoVO = null;
+		Set<RegionalMappingInfoVO> finalList = new LinkedHashSet<RegionalMappingInfoVO>();
+		 Set<RegionalMappingInfoVO> list = null;
+		 if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+			 localBodiesMappedInConst = getLocalElectionBodiesInConstituency(constituencyId, year);
+		 if(localBodiesMappedInConst != null && localBodiesMappedInConst.size()>0)
+			for(SelectOptionVO selectOption:localBodiesMappedInConst)
+			 {
+				regionalMappingInfoVO = new RegionalMappingInfoVO();
+				regionalMappingInfoVO.setRegionId(selectOption.getId());
+				regionalMappingInfoVO.setRegionName(selectOption.getName());
+				regionalMappingInfoVO.setFlag(true);
+				finalList.add(regionalMappingInfoVO);
+			 }
+
+		 if(allLocalElectionBodies != null && allLocalElectionBodies.size()>0)
+		 {	
+			list = new HashSet<RegionalMappingInfoVO>();
+			for(SelectOptionVO selectOptionVO:allLocalElectionBodies)
+			 {
+				regionalMappingInfoVO = new RegionalMappingInfoVO();
+				regionalMappingInfoVO.setRegionId(selectOptionVO.getId());
+				regionalMappingInfoVO.setRegionName(selectOptionVO.getName());
+				regionalMappingInfoVO.setFlag(false);
+				list.add(regionalMappingInfoVO);
+			 }
+		 }
+		 if(list != null && list.size()>0)
+			 finalList.addAll(list);		
+			
+		return finalList;
+	}
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the wards exists in local
+	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the wards in local bodies to a constituency level.
+	 * @return
+	 */
+	public Set<RegionalMappingInfoVO> getWardsInLocalBodyAndConst(
+			Long localBodyId, Long constituencyId, String year) {
+		
+		RegionalMappingInfoVO regionalMappingInfoVO = null;
+		Set<RegionalMappingInfoVO> finalList = new LinkedHashSet<RegionalMappingInfoVO>();
+		
+		//get All wards in Local Body
+		List<SelectOptionVO> allWardsInLocalBody =  getWardsInALocalElectionBody(localBodyId);
+		// get All wards in a constituency
+		//List<SelectOptionVO> allWardsInConstituency = getWardsInALocalElectionBody(localBodyId, constituencyId,year); 
+		List<SelectOptionVO> allWardsInConstituency = new ArrayList<SelectOptionVO>(0);		
+		List wardsList = null;
+		
+		List assemblyLocalElecBodyId = assemblyLocalElectionBodyDAO.findAssemblyLocalElectionBodyByLocalBodyAndConstituency(localBodyId, constituencyId);
+		if(assemblyLocalElecBodyId != null && assemblyLocalElecBodyId.size() > 0){
+			Object values = (Object)assemblyLocalElecBodyId.get(0);
+			Long asmblyLocalBodyId = (Long)values;
+			
+			wardsList = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(asmblyLocalBodyId, year);
+			for(int j=0;j<wardsList.size();j++)
+			{
+				Object[] obj = (Object[])wardsList.get(j);
+				allWardsInConstituency.add(new SelectOptionVO((Long)obj[0],obj[2].toString().concat("( ").concat(obj[1].toString().toUpperCase()).concat(" )")));
+			}
+			
+		}
+		
+		if(allWardsInConstituency != null && allWardsInConstituency.size()>0)
+			for(SelectOptionVO selectOption:allWardsInConstituency)
+			 {
+				regionalMappingInfoVO = new RegionalMappingInfoVO();
+				regionalMappingInfoVO.setRegionId(selectOption.getId());
+				regionalMappingInfoVO.setRegionName(selectOption.getName());
+				regionalMappingInfoVO.setFlag(true);
+				finalList.add(regionalMappingInfoVO);
+			 }
+
+		 if(allWardsInLocalBody != null && allWardsInLocalBody.size()>0)
+		 {			
+			for(SelectOptionVO selectOptionVO:allWardsInLocalBody)
+			 {
+				regionalMappingInfoVO = new RegionalMappingInfoVO();
+				regionalMappingInfoVO.setRegionId(selectOptionVO.getId());
+				regionalMappingInfoVO.setRegionName(selectOptionVO.getName());
+				regionalMappingInfoVO.setFlag(false);
+				finalList.add(regionalMappingInfoVO);
+			 }
+		 }
+
+		return finalList;
+	}
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the booths exists in local
+	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the booths in local bodies to a constituency level.
+	 * @return
+	 */
+	public Set<RegionalMappingInfoVO> getboothsInLocalBodiesAndConst(
+			Long localBodyId, Long constituencyId, String year) {
+		Set<RegionalMappingInfoVO> finalList = new LinkedHashSet<RegionalMappingInfoVO>(0);
+		RegionalMappingInfoVO regionalMappingInfoVO = null;
+		
+		// fetch booths in local election body
+		List boothsList = boothDAO.findBoothsInfoForALocalElectionBodyByConstituencyAndYear(localBodyId, new Long(year), constituencyId);
+		 if(boothsList.size()>0)
+			{
+				for(int i=0;i<boothsList.size();i++)
+				{
+					regionalMappingInfoVO = new RegionalMappingInfoVO();
+					Object[] obj = (Object[])boothsList.get(i);
+					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
+					regionalMappingInfoVO.setRegionName(obj[1].toString());
+					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
+					regionalMappingInfoVO.setFlag(true);
+					finalList.add(regionalMappingInfoVO);
+				}
+			}
+		 
+		//fetch booths in constituency
+		List rawBoothData = boothDAO.findBoothInfoByConstituencyIdAndYear(constituencyId, new Long(year));
+			if(rawBoothData.size()>0)
+				for(Object[] values:(List<Object[]>)rawBoothData){
+					regionalMappingInfoVO = new RegionalMappingInfoVO();
+					regionalMappingInfoVO.setRegionId(Long.parseLong(values[0].toString()));
+					regionalMappingInfoVO.setRegionName(values[1].toString());
+					regionalMappingInfoVO.setVillagesCovered(values[2].toString());
+					regionalMappingInfoVO.setFlag(false);
+					finalList.add(regionalMappingInfoVO);
+				}		 
+		return finalList;
 	}
 	
 }

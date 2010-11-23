@@ -120,22 +120,27 @@ public class BoothMapperService implements IBoothMapperService{
 		return booths;
 	}
 	
-	public ResultWithExceptionVO saveBoothLocalElectionBodyMappingInfo(List<Long> boothIds, Long locationId, Boolean isWard){
+	public ResultWithExceptionVO saveBoothLocalElectionBodyMappingInfo(List<Long> boothIds,List<Long> boothIdsToModify, Long locationId, Boolean isWard){
 		int i = 0;
 		ResultWithExceptionVO result = new ResultWithExceptionVO(); 
 		try{
 			Long localBodyId = 0l;
 			Constituency localBodyWard = null;
 			if(isWard){
+				if(boothIdsToModify.size()>0)
+					boothLocalBodyWardDAO.deleteRecords(boothIdsToModify,locationId);
+				
 				localBodyWard = constituencyDAO.get(locationId);
 				localBodyId = localBodyWard.getLocalElectionBody().getLocalElectionBodyId();
 				List<Booth> booths = boothDAO.findByBoothIds(boothIds);
 				for(Booth booth:booths)
 					boothLocalBodyWardDAO.save(new BoothLocalBodyWard(booth, localBodyWard));
 			}else
+				if(boothIdsToModify.size()>0)
+					boothDAO.removeMappingToLocalBody(boothIdsToModify);
 				localBodyId = locationId;
-			
-			i = boothDAO.updateLocalBodyInfoByBoothIdsAndWardId(localBodyId, boothIds);
+			if(boothIds.size()>0)
+				i = boothDAO.updateLocalBodyInfoByBoothIdsAndWardId(localBodyId, boothIds);
 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -145,7 +150,7 @@ public class BoothMapperService implements IBoothMapperService{
 		return result;
 	}
 	
-	public ResultWithExceptionVO saveAssemblyLocalBodyMappingInfo(Long localBodyId, List<Long> localBodyOrWardIds, 
+	public ResultWithExceptionVO saveAssemblyLocalBodyMappingInfo(Long localBodyId, List<Long> localBodyOrWardIds, List<Long> localBodyOrWardIdsToModify, 
 			Long assemblyId, String year, Boolean isWard){
 		ResultWithExceptionVO result = new ResultWithExceptionVO();
 		Constituency constituency = constituencyDAO.get(assemblyId);
@@ -156,6 +161,20 @@ public class BoothMapperService implements IBoothMapperService{
 		List rawData = null;
 		try {
 			if(isWard){
+				if(localBodyOrWardIdsToModify.size()>0)
+				{
+					//get assemblyLocalElectionBodyWard ids to delete records based on these ids
+					List resultList = assemblyLocalElectionBodyWardDAO.getAssemblyLocalElectionBodyWardIds(assemblyId, localBodyOrWardIdsToModify);
+					List<Long> idsList = new ArrayList<Long>();
+					if(resultList.size()>0)
+						for(int i = 0;i<resultList.size();i++)
+						{
+							idsList.add(Long.parseLong(resultList.get(i).toString()));							
+						}
+					
+					assemblyLocalElectionBodyWardDAO.deleteByWardsAndConstituency(idsList);
+				}
+					
 				assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(localBodyId, 
 						assemblyId, year);
 				if(assemblyLocalBodies.size() == 1)
@@ -169,19 +188,25 @@ public class BoothMapperService implements IBoothMapperService{
 					assemblyLocalElectionBody.setIsPartial("1");
 					assemblyLocalElectionBody = assemblyLocalElectionBodyDAO.save(assemblyLocalElectionBody);
 				}
-				List<Constituency> wards = constituencyDAO.getAllWardsObjsByLocalElectionBodyWardIds(localBodyOrWardIds);
-				for(Constituency ward:wards){
-					rawData = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(assemblyLocalElectionBody.getAssemblyLocalElectionBodyId(),
-							ward.getConstituencyId(), year);
-					if(rawData.size() > 0)
-						continue;
-					assemblyLocalElectionBodyWard = new AssemblyLocalElectionBodyWard();
-					assemblyLocalElectionBodyWard.setAssemblyLocalElectionBody(assemblyLocalElectionBody);
-					assemblyLocalElectionBodyWard.setConstituency(ward);
-					assemblyLocalElectionBodyWard.setYear(year);
-					assemblyLocalElectionBodyWardDAO.save(assemblyLocalElectionBodyWard);	
+				if(localBodyOrWardIds.size()>0)
+				{	
+					List<Constituency> wards = constituencyDAO.getAllWardsObjsByLocalElectionBodyWardIds(localBodyOrWardIds);
+						for(Constituency ward:wards){
+						rawData = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBodyWardAndYear(assemblyLocalElectionBody.getAssemblyLocalElectionBodyId(),
+								ward.getConstituencyId(), year);
+						if(rawData.size() > 0)
+							continue;
+						assemblyLocalElectionBodyWard = new AssemblyLocalElectionBodyWard();
+						assemblyLocalElectionBodyWard.setAssemblyLocalElectionBody(assemblyLocalElectionBody);
+						assemblyLocalElectionBodyWard.setConstituency(ward);
+						assemblyLocalElectionBodyWard.setYear(year);
+						assemblyLocalElectionBodyWardDAO.save(assemblyLocalElectionBodyWard);	
+						}		
 				}
 			}else{
+				//delete existing mappings if they were unchecked in mapper ui
+				if(localBodyOrWardIdsToModify.size()>0)
+					assemblyLocalElectionBodyDAO.deleteByLocalElectionBodyAndConstituency(localBodyOrWardIdsToModify, assemblyId);
 				List<LocalElectionBody> localBodies = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
 				for(LocalElectionBody electionBody:localBodies){
 					assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(electionBody.getLocalElectionBodyId(), 
@@ -262,20 +287,5 @@ public class BoothMapperService implements IBoothMapperService{
 		}
 		return resultWithException;
 	}
-
-	/*public static void main(String[] args){
-		Set<String> unDuplicateVillages = new HashSet<String>();
-		unDuplicateVillages.add("a1");
-		unDuplicateVillages.add("a2");
-		unDuplicateVillages.add("a3");
-		unDuplicateVillages.add("a4");
-		
-		String uniqueNames = new String();
-		 for (Iterator iterator = unDuplicateVillages.iterator(); iterator.hasNext();) {
-	        	uniqueNames += iterator.next().toString();				        	
-	        	uniqueNames +=", ";					        		
-	      }
-		 uniqueNames =  new StringBuilder(uniqueNames).delete(uniqueNames.length()-2, uniqueNames.length()).toString();
-		 System.out.println(uniqueNames);
-	}*/
+	
 }

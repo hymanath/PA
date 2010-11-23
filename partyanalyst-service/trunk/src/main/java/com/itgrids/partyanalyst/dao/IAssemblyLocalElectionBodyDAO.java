@@ -31,4 +31,6 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	@SuppressWarnings("unchecked")
 	public List findAssemblyLocalElectionBodyByLocalBodyAndConstituency(Long localBodyId,Long constituencyId);
 	
+	public Integer deleteByLocalElectionBodyAndConstituency(List<Long> localBodyIds, Long constituencyId);
+	
 }
