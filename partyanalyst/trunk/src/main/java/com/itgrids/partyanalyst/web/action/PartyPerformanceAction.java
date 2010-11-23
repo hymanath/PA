@@ -456,6 +456,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			log.debug("Report Level -->" + reportLevelLiteral);
 		}
 		
+		//Check for report success or failure
+		Boolean reportStatus = reportVO.getReportSuccessOrFailure();
+		if(reportStatus == false)
+			return "failure";
+		
 	/*	if("2".equals(reportLevel))
 			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + district;
 		else
