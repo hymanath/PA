@@ -110,6 +110,7 @@
 		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
 			<result name="success">/jsp/partyPerformanceReport.jsp</result>
 			<result name="input">/jsp/partyPerformanceReport.jsp</result>
+			<result name="failure">/jsp/reportsErrorPage.jsp</result>
 		</action>
 		
 		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
