@@ -1768,6 +1768,24 @@
 			</result>
         </action>
         
+        <action name="localBodiesInDistAndConstAction" class="locationsHierarchyAction" method="getLocalBodiesInDistAndConst">
+        	<result type="json" name="success">
+				<param name="root">regions</param>				
+			</result>
+        </action>
+        <action name="wardsInLocalBodiesAndConstAction" class="locationsHierarchyAction" method="getWardsInLocalBodiesAndConst">
+        	<result type="json" name="success">
+				<param name="root">regions</param>				
+			</result>
+        </action>
+        <action name="boothsInLocalBodiesAndConstAction" class="locationsHierarchyAction" method="getboothsInLocalBodiesAndConst">
+        	<result type="json" name="success">
+				<param name="root">regions</param>				
+			</result>
+        </action>
+        
+        
+        
         <action name="testVoterAction" class="voterInfoAction" method="displayPerameters">
         	<result type="json" name="success">
 				<param name="root">constituencyManagementVO</param>				

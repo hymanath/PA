@@ -367,7 +367,9 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
-		<property name="boothDAO" ref="boothDAO" />	
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="boothMapperService" ref="boothMapperService" />	
+		
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />

@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -40,6 +42,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private String task = null;
 	private List<SelectOptionVO> regionsList;
 	private List<BoothInfo> boothsCompleteDetails;
+	private Set<RegionalMappingInfoVO> regions;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -111,6 +114,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 
 	public void setBoothsCompleteDetails(List<BoothInfo> boothsCompleteDetails) {
 		this.boothsCompleteDetails = boothsCompleteDetails;
+	}	
+
+	public Set<RegionalMappingInfoVO> getRegions() {
+		return regions;
+	}
+
+	public void setRegions(Set<RegionalMappingInfoVO> regions) {
+		this.regions = regions;
 	}
 
 	public String execute() throws Exception {
@@ -299,4 +310,83 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		boothsCompleteDetails = getRegionServiceDataImp().getBoothCompleteDetails(areaType, boothIds);
 		return Action.SUCCESS;	
 	}
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the local
+	 * bodies exists in dist and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the local bodies to a constituency level.
+	 * @return
+	 */
+	public String getLocalBodiesInDistAndConst()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		Long distId = jObj.getLong("districtId");
+		Long constId = jObj.getLong("constituencyId");
+		String year = jObj.getString("year");
+		regions = getRegionServiceDataImp().getLocalBodiesInDistAndConst(distId, constId, year);
+		
+	 return Action.SUCCESS;	
+	}
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the wards exists in local
+	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the wards in local bodies to a constituency level.
+	 * @return
+	 */
+	public String getWardsInLocalBodiesAndConst()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		Long localBodyId = jObj.getLong("localBodyId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		String year = jObj.getString("year");
+		regions = getRegionServiceDataImp().getWardsInLocalBodyAndConst(localBodyId, constituencyId, year);
+		 return Action.SUCCESS;
+	}
+	
+	/**
+	 * This method is used in boothLocalBody mapper admin interface, which is intended to fetch all the booths exists in local
+	 * bodies and if any one of them are mapped to a constituency level, then they are also fetched.
+	 * This id to provide a user to map or unmap the booths in local bodies to a constituency level.
+	 * @return
+	 */
+	public String getboothsInLocalBodiesAndConst()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		Long localBodyId = jObj.getLong("localBodyId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		String year = jObj.getString("year");
+		regions = getRegionServiceDataImp().getboothsInLocalBodiesAndConst(localBodyId, constituencyId, year);
+		 return Action.SUCCESS;
+	}
+	
+	
 }

@@ -525,6 +525,7 @@
 	
 	<bean id="municipalWardsAssemblyBoothsMapperAction" class="com.itgrids.partyanalyst.web.action.MunicipalWardsAssemblyBoothsMapperAction" singleton="false">
 		<property name="boothMapperService" ref="boothMapperService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	<bean id="searchPartyAnalystAction" class="com.itgrids.partyanalyst.web.action.SearchPartyAnalystAction" singleton="false">		
 	</bean>	

@@ -16,7 +16,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -36,6 +38,13 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 	private List<ConstituencyBoothInfoVO> boothsInAssembly;
 	private IBoothMapperService boothMapperService;
 	private ResultWithExceptionVO resultWithExceptionVO; 
+	private String windowTask;
+	private Long constituencyId;
+	private List<SelectOptionVO> stateList;
+	private List<SelectOptionVO> districtList;
+	private List<SelectOptionVO> constituencyList;
+	private IRegionServiceData regionServiceDataImp;
+	
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -93,10 +102,69 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 
 	public void setResultWithExceptionVO(ResultWithExceptionVO resultWithExceptionVO) {
 		this.resultWithExceptionVO = resultWithExceptionVO;
+	}	
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}	
+
+	public List<SelectOptionVO> getStateList() {
+		return stateList;
+	}
+
+	public void setStateList(List<SelectOptionVO> stateList) {
+		this.stateList = stateList;
+	}
+
+	public List<SelectOptionVO> getDistrictList() {
+		return districtList;
+	}
+
+	public void setDistrictList(List<SelectOptionVO> districtList) {
+		this.districtList = districtList;
+	}
+
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}	
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
 	public String execute() throws Exception {
+		stateList = new ArrayList<SelectOptionVO>(0);
+		districtList = new ArrayList<SelectOptionVO>(0);
+		constituencyList = new ArrayList<SelectOptionVO>(0);
 		
+		if("update".equals(windowTask) && constituencyId != 0l)
+		{
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(constituencyId);
+			
+			stateList.add(list.get(0));			
+			districtList.add(list.get(1));
+			constituencyList.add(list.get(2));
+		}
 		return Action.SUCCESS;		
 	}
 	
@@ -134,20 +202,26 @@ public class MunicipalWardsAssemblyBoothsMapperAction extends ActionSupport impl
 		
 		Long mappedlocationId = jObj.getLong("mappedlocationId");
 		JSONArray boothsOrWardsOrLEBIds = jObj.getJSONArray("listOfIds");
+		JSONArray boothsOrWardsOrLEBIdsToModify = jObj.getJSONArray("listOfModificationIds");
 		
 		Long lebId = jObj.getLong("lebId");
 		String year = jObj.getString("year");
 		
 		List<Long> mappedIdsList = new ArrayList<Long>();
+		List<Long> mappedIdsListToModify = new ArrayList<Long>();
 		
 		for(int i=0; i < boothsOrWardsOrLEBIds.length(); i++)
 			mappedIdsList.add(new Long((String)boothsOrWardsOrLEBIds.get(i)));
+		if(boothsOrWardsOrLEBIdsToModify.length()>0)
+			for(int j=0; j < boothsOrWardsOrLEBIdsToModify.length(); j++)
+				mappedIdsListToModify.add(new Long((String)boothsOrWardsOrLEBIdsToModify.get(j)));
+		
 		
 		if(isBoothLevelMap)
-			resultWithExceptionVO = boothMapperService.saveBoothLocalElectionBodyMappingInfo(mappedIdsList, mappedlocationId, isMapToWard);
+			resultWithExceptionVO = boothMapperService.saveBoothLocalElectionBodyMappingInfo(mappedIdsList,mappedIdsListToModify, mappedlocationId, isMapToWard);
 		
 		if(isAssemblyLevelMap)
-			resultWithExceptionVO = boothMapperService.saveAssemblyLocalBodyMappingInfo(lebId, mappedIdsList, mappedlocationId, year, isMapToWard);
+			resultWithExceptionVO = boothMapperService.saveAssemblyLocalBodyMappingInfo(lebId, mappedIdsList,mappedIdsListToModify, mappedlocationId, year, isMapToWard);
 	}
 	
 }
