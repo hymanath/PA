@@ -202,15 +202,6 @@ function limitText(limitField, limitCount, limitNum)
 
 function populateLocations(val,source)
 {	
-	var elmt = document.getElementById("statusMessageDiv"); 
-	if(!elmt)
-		return;
-	<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
-		elmt.innerHTML = "${savedStatusMsg}";
-		window.opener.location.reload();			
-		window.close();
-	</c:if>		
-
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -218,7 +209,7 @@ function populateLocations(val,source)
 	var row5El = document.getElementById("row5");
 	var row6El = document.getElementById("row6");
 
-	var hiddenEl = document.getElementById("groupScopeValueId");
+//	var hiddenEl = document.getElementById("groupScopeValueId");
 	var stateFieldEl = document.getElementById("stateField");
 	var districtFieldEl = document.getElementById("districtField"); 
 	var constituencyFieldEl = document.getElementById("constituencyField");
@@ -228,7 +219,7 @@ function populateLocations(val,source)
 	
 	if(source == 'onChange')
 	{	
-		hiddenEl.value='';
+		//hiddenEl.value='';
 		stateFieldEl.selectedIndex = '0';
 		
 		if(districtFieldEl)
@@ -380,13 +371,11 @@ function setLocationValue(value,source)
 						<TD>
 						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Edit a Group </span></div>
 						</TD>
-						<s:hidden id="windowTaskId" name="windowTask" value="edit"/>
 					</c:if>
 					<c:if test="${windowTask != 'edit'}"> 
 						<TD>
 						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Create a Group </span></div>
 						</TD>
-						<s:hidden id="windowTaskId" name="windowTask" value="new"/>
 					</c:if>
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
 			</TR>
@@ -408,11 +397,14 @@ function setLocationValue(value,source)
 		</table>
 	</div>	
 
-	<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
-		<DIV id="statusMessageDiv" style="color:green;font-weight:bold"></DIV>			
-	</c:if>						
-	
-  <FIELDSET class="fieldsetEle">
+	<c:if  test="${resultStatus == 'success'}">
+	<div id="successMsg" style="color:green;" >Local User Group Added Successfully!</div>
+	</c:if>	
+	<c:if  test="${resultStatus == 'failure'}">
+	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
+	</c:if>
+
+   <FIELDSET class="fieldsetEle">
 	<LEGEND style="font-size:12px;"><strong>Local Group Details</strong></LEGEND>
 	
 	<s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
@@ -424,7 +416,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <s:select id="categorysId" name="groupCategoryId" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" onchange=""></s:select>
+		  <s:select id="categorysId" name="groupCategoryId" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" ></s:select>
 		</td>
 	 </tr>
 	 
@@ -459,7 +451,7 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <input id="localGroupName" type="text" maxlength="61" style="width:150px;" value="" name="localUserGroupName">
+		 <s:textfield id="localGroupName" style="width:150px;" theme="simple" maxlength="61" name="localUserGroupName"/></td> 
 		</td>
 	  </tr>
 	   
@@ -469,9 +461,8 @@ function setLocationValue(value,source)
 		  <b> : </b>
 		</td>
 		<td>
-		  <textarea id="" cols="10" rows="3" style="width:150px;" name="groupDesc" onkeyup='limitText("localGroupDesc","maxcount",200)'>
-		  </textarea>
-		</td>
+		<s:textarea id="" name="groupDesc" cols="10" rows="3" style="width:150px;" onkeyup='limitText("localGroupDesc","maxcount",200)'/>
+	 </td>
 	  </tr>
 	    </tbody>
 </table>
@@ -521,7 +512,7 @@ function setLocationValue(value,source)
 		<td class="tdstyle" width="100px"><s:label for="boothField" id="boothLabel"  value="Booth" /></td>
 		
 		<td align="left" width="165px">
-		<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+		<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 		</td>
 		
 	</tr>
@@ -530,7 +521,7 @@ function setLocationValue(value,source)
 </FIELDSET>
 
 <FIELDSET class="fieldsetEle">
-<LEGEND style="font-size:12px;"><strong>Contact Details</strong></LEGEND>
+<LEGEND style="font-size:12px;"><strong>Group Scope Details</strong></LEGEND>
 <table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0" align="left">
  	 <tr>
 	    <td width="135px" class="tdstyle">Select Group Scope<font class="required">*</font></td>
@@ -542,7 +533,7 @@ function setLocationValue(value,source)
 	  <tr id="row1" style="display:none;">
 			<td width="135px" class="tdstyle">State<font class="required">*</font></td>
 			<td width="27px"><b> : </b></td>
-			<td><s:select id="stateField" cssClass="selectWidth" name="pstate" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<td><s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null')"></s:select>
 			</td>
 		</tr>
 		 <tr id="row2" style="display:none;">
@@ -550,7 +541,7 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="districtField" cssClass="selectWidth" name="pstate" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd')"></s:select>
 			</td>
 		</tr>
 		 <tr id="row3" style="display:none;" >
@@ -558,32 +549,33 @@ function setLocationValue(value,source)
 			<td width="27px">
 			<b> : </b></td>
 			<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="pstate" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
 		  </td>
 	    </tr>
 		 <tr id="row4" style="display:none;" >
 			<td width="135px" class="tdstyle">Tehsil/Municipality/Corporation<font class="required">*</font></td>
 			<td width="27px"><b> : </b></td>
-			<td><s:select id="mandalField" cssClass="selectWidth" name="pstate" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<td><s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
 		  </td>
 	    </tr>
 		 <tr id="row5" style="display:none;" >
 			<td width="135px" class="tdstyle">Village/Ward<font class="required">*</font></td>
 			<td width="27px"><b> : </b></td>
-			<td><s:select id="hamletField_s" cssClass="selectWidth" name="pstate" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+			<td><s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
 		  </td>
 	     </tr>
 		 <tr id="row6" style="display:none;">
 			<td width="135px" class="tdstyle">Booth<font class="required">*</font></td>
 			<td width="27px"><b> : </b></td>
-			<td><s:select id="boothField_s" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+			<td><s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select>
 			</td>
 		</tr>
 	</table>
 	
  </div>
- <s:hidden id="groupScopeValueId" name="groupScopeValueId"/>
-
+<%-- <s:hidden id="groupScopeValueId" name="groupScopeValueId"/> --%>
+ <s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
+ <s:hidden id="localUserGroupId" name="localUserGroupId" value="%{localUserGroupId}" /> 
  <table class="formTableStyle" width="100%">	
 	<tr>
 	<td width="150px"></td><td width="90px"></td>

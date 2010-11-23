@@ -674,10 +674,9 @@
 		  }	
 		}		
 		
-		function redirectToNewLocalGroupCreation(categoryId)
+		function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)
 		{
-
-			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?groupCategoryId="+categoryId,"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?windowTask="+windowTask+"&grCategoryId="+categoryId+"&localUserGroupId="+localUserGroupId,"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
 		    createGroupBrowser.focus();
 		}
 
@@ -836,7 +835,7 @@
 										<div id="differentViewsRadioDiv_localGroups" class="differentViewsDivClass">	</div>
 										<DIV class="yui-skin-sam" style="text-align:right;">
 										<div id="localPoliticalChangesRegistration"></DIV>
-											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupCreation(0)" value="Create A Group" class="linkButton" />
+											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupCreation('new',0,0)" value="Create A Group" class="linkButton" />
 											<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewLocalGroupMember(0,0)" value="Create A Group Member" class="linkButton" />
 								        </DIV>
 										<div id="localGroupsChartDiv_main" class="contentDivClass">										
