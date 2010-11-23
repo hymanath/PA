@@ -1745,6 +1745,8 @@ function callMarginVotes(partyId)
 </div>
 <br/><br/>
 <!--ref-->
+
+<s:if test="stateData.toPartySwing.size > 0">
 <div class="partyInfoHeading">
 	<c:if test="${stateData.diffOfTotalPercentageWinWithPrevElection > 0}">
 		<s:label labelposition="left"><b><U>Votes from any one of the below parties are flown to you</U></b></s:label>
@@ -1764,6 +1766,8 @@ function callMarginVotes(partyId)
 	</c:forEach>
 </table>
 </div>
+</s:if>
+
 <br>
 
 <s:if test="stateData.rebelPartyCandidates.size > 0">
