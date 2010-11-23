@@ -331,9 +331,9 @@ function buildLogoImage()
 	
 	
 	if(navigator.appName=="Microsoft Internet Explorer")
-		str += '<img src="images/icons/homePage_new/logo.gif">';
+		str += '<img width="171" height="84" src="images/icons/homePage_new/logo.gif">';
 	else
-		str += '<img src="images/icons/homePage_new/logo.png">';
+		str += '<img width="171" height="84" src="images/icons/homePage_new/logo.png">';
 
 	elmt.innerHTML = str;
 }
@@ -494,13 +494,13 @@ function buildElectionTrendzTabView()
 	var content1 = '';
 	content1 += content;
 	content1 += '<div id="assemblyElectionTrendzDiv_main">';
-	content1 += '<div style="padding:10px;"><center><img src="images/icons/partypositions.gif"></center></div>';
+	content1 += '<div style="padding:10px;"><center><img width="16" height="11" src="images/icons/partypositions.gif"></center></div>';
 	content1 += '</div>';
 
 	var content2 = '';
 	//content2 += content;
 	content2 += '<div id="parliamentElectionTrendzDiv_main">';
-	content2 += '<div style="padding:10px;"><center><img src="images/icons/partypositions.gif"></center></div>';
+	content2 += '<div style="padding:10px;"><center><img width="16" height="11" src="images/icons/partypositions.gif"></center></div>';
 	content2 += '</div>';
 
 
@@ -596,7 +596,7 @@ function buildResultsHTMLTable(arr,divId,elecType)
 		str += '<div class="resultsHeading">';
 		str += '<table>';
 		str += '<tr>';
-		str += '<td><img src="images/icons/indexPage/listIcon.png"/></td>';
+		str += '<td><img width="8" height="9" src="images/icons/indexPage/listIcon.png"/></td>';
 		if(elecType == "Assembly")
 		{
 			if(arr[i].electionSubtype == "BYE")

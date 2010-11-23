@@ -15,57 +15,18 @@
 
 <META NAME="Description" CONTENT=" Party Analyst is a tool used by the political parties, media, and politicians. This product has different interfaces for Constituency Management, Cadre Management, Party Results, Cross Voting, Party Performance, Election Comparison, States election results, District election results, Constituency election results, MLA constituencies information, MP constituencies information, Latest news .This tool also provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
-<!-- YUI Dependency files (Start) -->
-
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container_core-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>		
-
-<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
-<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
-<!-- YUI Skin Sam -->
-
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
 
 
-<!-- YUI Dependency files (End) -->
+
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+
+<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+
+<!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"> 
+<!-- Combo-handled YUI JS files: --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
@@ -78,11 +39,7 @@
 <script type="text/Javascript" src="js/homePage/jquery.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 
-<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
-<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
-<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
-<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+
 <script type="text/javascript">
 
 google.load("elements", "1", {packages : ["newsshow"]});
@@ -269,7 +226,7 @@ localBodyString = '<%=localBody%>';
 					<ul class="first-of-type"> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
-								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+								<img id="indexHomeImg" width="28" height="25" src="images/icons/indexPage/pa_home.png" title="home"/>								
 								HOME
 							</a> 
 						</li>
@@ -327,7 +284,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>                                    
-                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
                                     <td width="98%">
                                         <div class="productFeatureHeaderBackground_center">
                                             <span class="headerLabelSpan">
@@ -335,7 +292,7 @@ localBodyString = '<%=localBody%>';
                                             </span>
                                         </div>
                                     </td>
-                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
                                   </tr>
                                 </table>
                             </div>
@@ -364,7 +321,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>                                    
-                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
                                     <td width="98%">
                                         <div class="productFeatureHeaderBackground_center">
                                             <span class="headerLabelSpan">
@@ -372,7 +329,7 @@ localBodyString = '<%=localBody%>';
                                             </span>
                                         </div>
                                     </td>
-                                    <td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
                                   </tr>
                                 </table>
                             </div>
@@ -411,7 +368,7 @@ localBodyString = '<%=localBody%>';
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/newsContainerHead_right.jpg"/></td>
+								<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/newsContainerHead_right.jpg"/></td>
 							  </tr>
 							</table>	
 						 </div>
@@ -431,7 +388,7 @@ localBodyString = '<%=localBody%>';
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 								<td width="98%">
 									<div class="productFeatureHeaderBackground_center">
 										<span class="headerLabelSpan">
@@ -439,7 +396,7 @@ localBodyString = '<%=localBody%>';
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
 							  </tr>
 							</table>
 						</div>
@@ -477,7 +434,7 @@ localBodyString = '<%=localBody%>';
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
 							  </tr>
 							</table>	
 						 </div>
@@ -503,7 +460,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan">
@@ -511,7 +468,7 @@ localBodyString = '<%=localBody%>';
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
 								  </tr>
 								</table>
 							</div>							
@@ -525,7 +482,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img src="images/icons/homePage_new/news_head_left.jpg"/></td>
+									<td width="1%"><img width="30" height="40" src="images/icons/homePage_new/news_head_left.jpg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center" style="background-image:url('images/icons/homePage_new/news_Head_center.jpg');">
 											<span class="headerLabelSpan">
@@ -533,7 +490,7 @@ localBodyString = '<%=localBody%>';
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img src="images/icons/homePage_new/1r.jpg"/></td>
+									<td width="1%"><img width="35" height="40" src="images/icons/homePage_new/1r.jpg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -547,7 +504,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan">
@@ -555,7 +512,7 @@ localBodyString = '<%=localBody%>';
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -579,13 +536,13 @@ localBodyString = '<%=localBody%>';
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/homePage_new/1.jpg"/></td>
+                                <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/1.jpg"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center" style="background-color:#5889a3;">
                                     	<span class="headerLabelSpan" style="color:#000000"> View Your State  </span>
                                     </div>
                                 </td>
-                                 <td width="1%"><img src="images/icons/homePage_new/1r.jpg"/></td>
+                                 <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/1r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -603,7 +560,7 @@ localBodyString = '<%=localBody%>';
 							</table>
 						</div>
                         <div class="widgetsFooter" style="background-color:#5889a3;">
-							<img src="images/icons/homePage_new/b1.jpg" onclick="navigateToStatePage()"></img>
+							<img width="70" height="25" src="images/icons/homePage_new/b1.jpg" onclick="navigateToStatePage()"></img>
 						</div>
                     </div>
                 </td>
@@ -612,13 +569,13 @@ localBodyString = '<%=localBody%>';
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/homePage_new/2.jpg"/></td>
+                                <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/2.jpg"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center" style="background-color:#dea659;">
                                     	<span class="headerLabelSpan" style="color:#000000"> View Your District  </span>
                                     </div>
                                 </td>   
-								 <td width="1%"><img src="images/icons/homePage_new/2r.jpg"/></td>
+								 <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/2r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -642,7 +599,7 @@ localBodyString = '<%=localBody%>';
 							</table>
 						</div>
                         <div class="widgetsFooter" style="background-color:#dea659;">
-							<img src="images/icons/homePage_new/b2.jpg" onclick="navigateToDistrictPage()"></img>
+							<img width="70" height="25" src="images/icons/homePage_new/b2.jpg" onclick="navigateToDistrictPage()"></img>
 						</div>
                     </div>
                 </td>
@@ -651,13 +608,13 @@ localBodyString = '<%=localBody%>';
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/homePage_new/3.jpg"/></td>
+                                <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/3.jpg"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center"  style="background-color:#efdcbc;">
                                     	<span class="headerLabelSpan" style="color:#000000"> View Your Constituency  </span>
                                     </div>
                                 </td>  
-								<td width="1%"><img src="images/icons/homePage_new/3r.jpg"/></td>
+								<td width="1%"><img width="35" height="40" src="images/icons/homePage_new/3r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -693,7 +650,7 @@ localBodyString = '<%=localBody%>';
 						
 						</div>
                         <div class="widgetsFooter" style="background-color:#efdcbc;">
-							<img src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
+							<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
 						</div>
                     </div>
                 </td>                
@@ -702,13 +659,13 @@ localBodyString = '<%=localBody%>';
                     	<div class="widgetsHeader">
                         	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td width="1%"><img src="images/icons/homePage_new/4.jpg"/></td>
+                                <td width="1%"><img width="35" height="40" src="images/icons/homePage_new/4.jpg"/></td>
                                 <td width="98%">
                                 	<div class="headerBackground_center" style="background-color:#a0a5a7;">
                                     	<span class="headerLabelSpan" style="color:#000000"> View Local Bodies Elections  </span>
                                     </div>
                                 </td>
-								<td width="1%"><img src="images/icons/homePage_new/4r.jpg"/></td>
+								<td width="1%"><img width="35" height="40" src="images/icons/homePage_new/4r.jpg"/></td>
                               </tr>
                             </table>
                         </div>
@@ -738,7 +695,7 @@ localBodyString = '<%=localBody%>';
 							</table>
 						</div>
                         <div class="widgetsFooter" style="background-color:#a0a5a7;">
-							<img src="images/icons/homePage_new/b4.jpg" onclick="navigateToLocalBodyPage()"></img>
+							<img width="70" height="25" src="images/icons/homePage_new/b4.jpg" onclick="navigateToLocalBodyPage()"></img>
 						</div>
                     </div>
                 </td>
@@ -755,7 +712,7 @@ localBodyString = '<%=localBody%>';
 						<div class="widgetsHeader">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
 								<td width="98%">
 									<div class="widgetHeaderBackground_center">
 										<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
@@ -763,7 +720,7 @@ localBodyString = '<%=localBody%>';
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
 							  </tr>
 							</table>
 						</div>
@@ -772,7 +729,7 @@ localBodyString = '<%=localBody%>';
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 								<td rowspan="3" valign="top" width="100px">
-									<img src="images/icons/homePage_new/telangana.jpg"/>
+									<img width="80" height="75" src="images/icons/homePage_new/telangana.jpg"/>
 								</td>
 								<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
 								</tr>
@@ -827,13 +784,13 @@ localBodyString = '<%=localBody%>';
 						<div >
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
 								<td width="98%">
 									<div class="widgetHeaderBackground_center">
 										<span class="headerLabelSpan">  </span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
 							  </tr>
 							</table>
 						</div>
@@ -845,7 +802,7 @@ localBodyString = '<%=localBody%>';
 						<div id="pollsWidgetHeader">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td width="1%"><img src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+								<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
 										<span class="headerLabelSpan" style="color:#C66E17;top:13px;">
@@ -853,7 +810,7 @@ localBodyString = '<%=localBody%>';
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
 							  </tr>
 							</table>	
 						 </div>
@@ -872,7 +829,7 @@ localBodyString = '<%=localBody%>';
 			<div id="cpyRight_info" style="padding:10px 0px 10px 0px;">
 				<table width="100%">
 					<tr>
-						<td valign="top" style="width:50px"><img src="images/icons/indexPage/importantNote.png"></img> </td>
+						<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
 						<td valign="top">
 							<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
 							Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>

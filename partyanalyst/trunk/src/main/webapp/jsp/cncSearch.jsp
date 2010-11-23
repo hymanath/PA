@@ -10,20 +10,7 @@
   <META NAME="Keywords" CONTENT="">
   <META NAME="Description" CONTENT="">
 
-	<!-- YUI Dependency files (Start) -->
 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
-	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-
-	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
-
-	<!-- YUI Dependency files (End) -->
 	
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 	<script type="text/javascript" src="js/cncSearch.js"></script>	
@@ -51,54 +38,7 @@
 			}
 		} 
 	 </script>
-	 <style>
-	 		
-	.viewReportButtonSpan {
-		background-image:url("images/icons/constituencyManagement/btn_cm.png");
-		cursor:pointer;
-		height:30px;
-		position:relative;
-		width:80px;
-		border-right:0px;
-		border-bottom:0px;
-		color:#FFFFFF;
-		font-size:12px;
-		font-weight:bold;		
-		position:relative;
-		top:6px;
-
-	}
-	/* Big box with list of options */
-	#ajax_listOfOptions{
-		position:absolute;	/* Never change this one */
-		width:185px;	/* Width of box */
-		height:200px;	/* Height of box */
-		overflow:auto;	/* Scrolling features */
-		border:1px solid #317082;	/* Dark green border */
-		background-color:#FFF;	/* White background color */
-		text-align:left;
-		font-size:0.9em;
-		z-index:100;
-	}
-	#ajax_listOfOptions div{	/* General rule for both .optionDiv and .optionDivSelected */
-		margin:1px;		
-		padding:1px;
-		cursor:pointer;
-		font-size:0.9em;
-	}
-	#ajax_listOfOptions .optionDiv{	/* Div for each item in list */
-		
-	}
-	#ajax_listOfOptions .optionDivSelected{ /* Selected item in the list */
-		background-color:#317082;
-		color:#FFF;
-	}
-	#ajax_listOfOptions_iframe{
-		background-color:#F00;
-		position:absolute;
-		z-index:5;
-	}
-	 </style>
+	
  </HEAD>
  <BODY>
  <div>
