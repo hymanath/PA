@@ -34,6 +34,9 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	private int resultStatus = 3;
 	private HttpSession session;
 	
+	private String scopeState,scopeDistrict,scopeConstituency;
+	private String scopeMandal,scopeVillage,scopeBooth;
+	
 	public int getResultStatus() {
 		return resultStatus;
 	}
@@ -306,8 +309,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return influencingScopeValue;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Influence Range Value is Mandatory",shortCircuit=true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Influence Range Value")
 	public void setInfluencingScopeValue(String influencingScopeValue) {
 		this.influencingScopeValue = influencingScopeValue;
 	}
@@ -326,6 +327,54 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 
 	public void setBooth(String booth) {
 		this.booth = booth;
+	}
+
+	public String getScopeState() {
+		return scopeState;
+	}
+
+	public void setScopeState(String scopeState) {
+		this.scopeState = scopeState;
+	}
+
+	public String getScopeDistrict() {
+		return scopeDistrict;
+	}
+
+	public void setScopeDistrict(String scopeDistrict) {
+		this.scopeDistrict = scopeDistrict;
+	}
+
+	public String getScopeConstituency() {
+		return scopeConstituency;
+	}
+
+	public void setScopeConstituency(String scopeConstituency) {
+		this.scopeConstituency = scopeConstituency;
+	}
+
+	public String getScopeMandal() {
+		return scopeMandal;
+	}
+
+	public void setScopeMandal(String scopeMandal) {
+		this.scopeMandal = scopeMandal;
+	}
+
+	public String getScopeVillage() {
+		return scopeVillage;
+	}
+
+	public void setScopeVillage(String scopeVillage) {
+		this.scopeVillage = scopeVillage;
+	}
+
+	public String getScopeBooth() {
+		return scopeBooth;
+	}
+
+	public void setScopeBooth(String scopeBooth) {
+		this.scopeBooth = scopeBooth;
 	}
 
 	public String execute() throws Exception{
@@ -364,49 +413,49 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		if("2".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.STATE_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeState());
 		}
 		
 		else if("3".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.DISTRICT_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeDistrict());
 		}
 		
 		else if("4".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.CONSTITUENCY_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeConstituency());
 		}
 		
 		else if("5".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.MANDAL_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeMandal().substring(1));
 		}
 		
 		else if("6".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.CENSUS_VILLAGE_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeVillage().substring(1));
 		}
 		
 		else if("7".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+			influencingPeopleBeanVO.setInfluencingScopeValue(this.getScopeMandal().substring(1));
 		}
 		
 		else if("8".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.WARD);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue().substring(1));
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeVillage().substring(1));
 		}
 		
 		else if("9".equalsIgnoreCase(getInfluencingRange()))
 		{
 			influencingPeopleBeanVO.setInfluencingRange(IConstants.BOOTH);
-			influencingPeopleBeanVO.setInfluencingScopeValue(getInfluencingScopeValue());
+			influencingPeopleBeanVO.setInfluencingScopeValue(getScopeBooth());
 		}
 						
 		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO);
@@ -420,8 +469,58 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		resultStatus = result.getResultCode();
 		return SUCCESS;
 	}
+	
+	public void validate()
+	{
+		boolean sstate = scopeState.equalsIgnoreCase("0");
+		boolean sDistrict = sstate || scopeDistrict.equalsIgnoreCase("0");
+		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
+		boolean sMandal = sConstituency || scopeMandal.equalsIgnoreCase("0");
+		boolean sVillage = sMandal || scopeVillage.equalsIgnoreCase("0");
+		boolean sBooth =  sVillage || scopeBooth.equalsIgnoreCase("0");
+		
+		if(influencingRange.equalsIgnoreCase("2") && sstate)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("3") && sDistrict)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("4") && sConstituency)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("5") && sMandal)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("6") && sVillage)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("7") && sMandal)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("8") && sVillage)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		else if(influencingRange.equalsIgnoreCase("9") && sBooth)
+		{
+			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
+			
+		}
+		
+				
+	}
 
-	
-	
-	
 }

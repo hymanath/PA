@@ -41,11 +41,15 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	
 	private String registrationId;
 	private String resultStatus;
+	private Long localUserGroupId;
 	
 	private String savedStatusMsg = "";
 	private Boolean savedStatus = false;
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
 	private IInfluencingPeopleService influencingPeopleService;
+	private String groupScopeId;
+	private String scopeState,scopeDistrict,scopeConstituency;
+	private String scopeMandal,scopeVillage,scopeBooth;
 	
 		
 	public HttpServletRequest getRequest() {
@@ -68,11 +72,11 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		this.registrationId = registrationId;
 	}
 	public String getGroupCategoryId() {
-		return this.localUserGroupDetailsVO.getGroupCategoryId().toString();
+		return this.localUserGroupDetailsVO.getGroupCategoryId();
 	}
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please select Group Category")
 	public void setGroupCategoryId(String groupCategoryId) {
-		this.localUserGroupDetailsVO.setGroupCategoryId(new Long(groupCategoryId));
+		this.localUserGroupDetailsVO.setGroupCategoryId(groupCategoryId);
 	}
 	
 	public String getLocalUserGroupName() {
@@ -98,14 +102,13 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Group Scope",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Group Scope Selection")
 	public void setGroupScopeId(String groupScopeId) {
+		this.groupScopeId = groupScopeId;
 		this.localUserGroupDetailsVO.setGroupScopeId(groupScopeId);
 	}
 	public String getGroupScopeValueId() {
 		return this.localUserGroupDetailsVO.getGroupScopeValueId();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Group Scope Value is Mandatory",shortCircuit=true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Selection for Group Scope Value")
 	public void setGroupScopeValueId(String groupScopeValueId) {
 		this.localUserGroupDetailsVO.setGroupScopeValueId(groupScopeValueId);
 	}
@@ -134,6 +137,13 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	}
 	public void setResultStatus(String resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public Long getLocalUserGroupId() {
+		return localUserGroupDetailsVO.getLocalUserGroupId();
+	}
+	public void setLocalUserGroupId(Long localUserGroupId) {
+		this.localUserGroupDetailsVO.setLocalUserGroupId(localUserGroupId);
 	}
 	public IInfluencingPeopleService getInfluencingPeopleService() {
 		return influencingPeopleService;
@@ -235,6 +245,25 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	public void setWindowTask(String windowTask) {
 		this.localUserGroupDetailsVO.setWindowTask(windowTask);
 	}
+	
+	public void setScopeState(String scopeState) {
+		this.scopeState = scopeState;
+	}
+	public void setScopeDistrict(String scopeDistrict) {
+		this.scopeDistrict = scopeDistrict;
+	}
+	public void setScopeConstituency(String scopeConstituency) {
+		this.scopeConstituency = scopeConstituency;
+	}
+	public void setScopeMandal(String scopeMandal) {
+		this.scopeMandal = scopeMandal;
+	}
+	public void setScopeVillage(String scopeVillage) {
+		this.scopeVillage = scopeVillage;
+	}
+	public void setScopeBooth(String scopeBooth) {
+		this.scopeBooth = scopeBooth;
+	}
 	public String execute() throws Exception{
 		
 		session = request.getSession();
@@ -244,46 +273,50 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		if("2".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.STATE_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeState);
+			
 		}
 		
 		else if("3".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.DISTRICT_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeDistrict);
 		}
 		
 		else if("4".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.CONSTITUENCY_LEVEL);
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeConstituency);
 		}
 		
 		else if("5".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.MANDAL_LEVEL);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeMandal.substring(1));
 		}
 		
 		else if("6".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.CENSUS_VILLAGE_LEVEL);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeVillage.substring(1));
 		}
 		
 		else if("7".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.MUNCIPALITY_CORPORATION_LEVEL);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeMandal.substring(1));
 		}
 		
 		else if("8".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.WARD);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId().substring(1));
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeVillage.substring(1));
 		}
 		
 		else if("9".equalsIgnoreCase(localUserGroupDetailsVO.getGroupScopeId()))
 		{
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.BOOTH);
-			localUserGroupDetailsVO.setGroupScopeValueId(localUserGroupDetailsVO.getGroupScopeValueId());
+			localUserGroupDetailsVO.setGroupScopeValueId(scopeBooth);
 		}
 		
 		localUserGroupDetailsVO = influencingPeopleService.saveLocalUserGroupDetailsTODB(localUserGroupDetailsVO);
@@ -299,5 +332,59 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		}
 		
 		return Action.SUCCESS;
+	}
+	
+
+	public void validate()
+	{
+		boolean sstate = scopeState.equalsIgnoreCase("0");
+		boolean sDistrict = sstate || scopeDistrict.equalsIgnoreCase("0");
+		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
+		boolean sMandal = sConstituency || scopeMandal.equalsIgnoreCase("0");
+		boolean sVillage = sMandal || scopeVillage.equalsIgnoreCase("0");
+		boolean sBooth =  sVillage || scopeBooth.equalsIgnoreCase("0");
+		
+		
+		if(groupScopeId.equalsIgnoreCase("2") && sstate)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("3") && sDistrict)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("4") && sConstituency)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("5") && sMandal)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("6") && sVillage)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("7") && sMandal)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("8") && sVillage)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		else if(groupScopeId.equalsIgnoreCase("9") && sBooth)
+		{
+			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
+			
+		}
+		
 	}
 }

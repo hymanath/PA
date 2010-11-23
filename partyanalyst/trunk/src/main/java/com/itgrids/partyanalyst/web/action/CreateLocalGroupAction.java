@@ -73,6 +73,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
 	private String savedStatusMsg = "";
 	private String name;
 	private String mobile;
@@ -87,6 +88,9 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private String windowTask;
 	private LocalUserGroupDetailsVO localUserGroupDetailsVO;
 	
+	String accessType = "";
+	Long accessValue = 0L;
+	Long defaultGroupScope = 0L;
 	
 	
 	public String getName() {
@@ -156,10 +160,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	public void setDesignations(List<SelectOptionVO> designations) {
 		this.designations = designations;
 	}
-	String accessType = "";
-	Long accessValue = 0L;
-	Long defaultGroupScope = 0L;
-		
+			
 	public RegionServiceDataImp getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -283,12 +284,12 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			return ERROR;
 		
 		//Get Group Categories
-        String groupCategoryId = request.getParameter("groupCategoryId");
+        String grCategoryId = request.getParameter("grCategoryId");
 		
-		if(groupCategoryId.equalsIgnoreCase("0") || groupCategoryId == null)
+		if(grCategoryId.equalsIgnoreCase("0") || grCategoryId == null)
 		    groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID());
 		else
-			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID(),new Long(groupCategoryId));
+			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(regVO.getRegistrationID(),new Long(grCategoryId));
 		
 		session.setAttribute(ISessionConstants.USER_GROUP_CATEGORIES,groupCategories);
 		
@@ -308,12 +309,29 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			mandalsList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 			mandalsList.add(0,new SelectOptionVO(0l,"Select Location"));
 			
+			if(windowTask.equalsIgnoreCase("edit"))
+			{
+				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(localUserGroupDetailsVO.getMandal()), IConstants.PRESENT_YEAR);
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
+			}
+			
+			
 			setDefaultGroupScope(5L);
 		}
 		else if("COUNTRY".equals(accessType))
 		{
 			statesList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 			statesList.add(0,new SelectOptionVO(0l,"Select State"));
+			
+			if(windowTask.equalsIgnoreCase("edit"))
+			{
+				districtsList = cadreManagementService.findDistrictsByState(localUserGroupDetailsVO.getState());	
+				constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(localUserGroupDetailsVO.getDistrict()));
+				mandalsList = regionServiceDataImp.getSubRegionsInConstituency(new Long(localUserGroupDetailsVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
+				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(localUserGroupDetailsVO.getMandal()), IConstants.PRESENT_YEAR);
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
+
+			}
 			setDefaultGroupScope(2L);
 		}
 		else if("STATE".equals(accessType))
@@ -326,6 +344,15 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			statesList.add(obj2);
 			districtsList = staticDataService.getDistricts(accessValue);
 			districtsList.add(0,new SelectOptionVO(0l,"Select District"));
+			
+			if(windowTask.equalsIgnoreCase("edit"))
+			{
+				constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(localUserGroupDetailsVO.getDistrict()));
+				mandalsList = regionServiceDataImp.getSubRegionsInConstituency(new Long(localUserGroupDetailsVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
+				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(localUserGroupDetailsVO.getMandal()), IConstants.PRESENT_YEAR);
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
+			}
+			
 			setDefaultGroupScope(3L);
 		}
 		else if("DISTRICT".equals(accessType))
@@ -337,13 +364,28 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			
 			constituenciesList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
 			constituenciesList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			
+			if(windowTask.equalsIgnoreCase("edit"))
+			{
+				mandalsList = regionServiceDataImp.getSubRegionsInConstituency(new Long(localUserGroupDetailsVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
+				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(localUserGroupDetailsVO.getMandal()), IConstants.PRESENT_YEAR);
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
+			}
+			
 			setDefaultGroupScope(4L);
 		}
+		if(windowTask.equalsIgnoreCase("edit"))
+		{
+			setDefaultGroupScope(new Long(localUserGroupDetailsVO.getGroupScopeId()));
+		}
+		
 		session.setAttribute(ISessionConstants.STATES, statesList);
 		session.setAttribute(ISessionConstants.DISTRICTS,districtsList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES,constituenciesList);
 		session.setAttribute(ISessionConstants.MANDALS,mandalsList);	
 		session.setAttribute(ISessionConstants.VILLAGES,villagesList);
+		session.setAttribute("boothsList",boothsList);
+		
 		return Action.SUCCESS;
 	}
 	
@@ -366,10 +408,10 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		Long userId = regVO.getRegistrationID();
 		
-		String groupCategoryId = request.getParameter("groupCategoryId");
+		String grCategoryId = request.getParameter("groupCategoryId");
 		String groupId = request.getParameter("groupId");
 		
-		if(groupCategoryId.equalsIgnoreCase("0") || groupCategoryId == null){
+		if(grCategoryId.equalsIgnoreCase("0") || grCategoryId == null){
 			groupCategories = influencingPeopleService.getLocalGroupCategoriesList(userId);
 			
 			groupNames = new ArrayList<SelectOptionVO>();
@@ -384,14 +426,14 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			
 		}else{
 			
-			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(groupCategoryId));
+			groupCategories = influencingPeopleService.getGroupCategoryByCategoryId(new Long(grCategoryId));
 			
 			if(groupId.equalsIgnoreCase("0") || groupId == null)
-			    groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(groupCategoryId), userId);
+			    groupNames = influencingPeopleService.getLocalGroupsByCategoryAndUser(new Long(grCategoryId), userId);
 			else
 				groupNames = influencingPeopleService.getLocalGroupDetailsByGroupId(new Long(groupId));
 			
-			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(groupCategoryId), userId);
+			designations = influencingPeopleService.getDesignationsByCategoryAndUser(new Long(grCategoryId), userId);
 			
 			
 		}
@@ -487,7 +529,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		localUserGroupId = request.getParameter("localUserGroupId");
 		windowTask = request.getParameter("windowTask");
-						
+								
         if( "0".equals(localUserGroupId)) {
         	
         	localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
@@ -496,9 +538,11 @@ public class CreateLocalGroupAction extends ActionSupport implements
         else if(localUserGroupId != null) 
         {	
         	localUserGroupDetailsVO = influencingPeopleService.getLocalUserGroupDetailsById(new Long(getLocalUserGroupId()));
-        	 //prepopulateLocations(influencingPeopleBeanVO);
+        	localUserGroupDetailsVO.setWindowTask(windowTask);
+        	// prepopulateLocations(localUserGroupDetailsVO);
         	        	
         }
 		
 	}
+	
 }
