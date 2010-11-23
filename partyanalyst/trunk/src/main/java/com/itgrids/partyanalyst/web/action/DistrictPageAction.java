@@ -657,7 +657,13 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
 		if(allElectionResults.size() == 0)
 			return SUCCESS;
-		String chartName = "allPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
+		String type = new String();
+		if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			type = IConstants.ASSEMBLY_ELECTION_TYPE;
+		}else{
+			type = jObj.getString("electionType");
+		}
+		String chartName = "allPartiesDistrictWisePerformanceIn"+type+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
         String electionType = jObj.getString("electionType");
@@ -675,7 +681,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         String detailedChartName = "detailedChartForAllPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
-        String detailedChartElectionType = jObj.getString("electionType");
+        String detailedChartElectionType = jObj.getString("electionType").toUpperCase();
         if(detailedChartElectionType.equalsIgnoreCase("Select Election Type"))
         	detailedChartElectionType = "All ";
         //colorsSet = new LinkedHashSet<Color>();
@@ -856,15 +862,13 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		session = request.getSession();		
 		if(session.getAttribute(IConstants.USER) == null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-				yearsList = staticDataService.getAllElectionsInDistrict(districtID);				
-				Collections.sort(getAllElectionTypes(electionsInDistrict),new SelectOptionVOComparator());	
+				yearsList = staticDataService.getAllElectionsInDistrict(districtID);	
 			}else{
 				yearsList =  staticDataService.getAllAssemblyElectionsInDistrict(districtID,IConstants.ASSEMBLY_ELECTION_TYPE);	
 			}
 		}else if(session.getAttribute(IConstants.USER) != null ){
 			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)){
-				yearsList = staticDataService.getAllElectionsInDistrict(districtID);							
-				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());				
+				yearsList = staticDataService.getAllElectionsInDistrict(districtID);
 			}else{
 				yearsList =  staticDataService.getAllAssemblyElectionsInDistrict(districtID,IConstants.ASSEMBLY_ELECTION_TYPE);	
 			}
