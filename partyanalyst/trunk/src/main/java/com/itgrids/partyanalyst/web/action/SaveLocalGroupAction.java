@@ -71,11 +71,11 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	public void setRegistrationId(String registrationId) {
 		this.registrationId = registrationId;
 	}
-	public String getGroupCategoryId() {
+	public Long getGroupCategoryId() {
 		return this.localUserGroupDetailsVO.getGroupCategoryId();
 	}
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Please select Group Category")
-	public void setGroupCategoryId(String groupCategoryId) {
+	public void setGroupCategoryId(Long groupCategoryId) {
 		this.localUserGroupDetailsVO.setGroupCategoryId(groupCategoryId);
 	}
 	
@@ -342,7 +342,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
 		boolean sMandal = sConstituency || scopeMandal.equalsIgnoreCase("0");
 		boolean sVillage = sMandal || scopeVillage.equalsIgnoreCase("0");
-		boolean sBooth =  sVillage || scopeBooth.equalsIgnoreCase("0");
+		boolean sBooth =  sMandal || scopeBooth.equalsIgnoreCase("0");
 		
 		
 		if(groupScopeId.equalsIgnoreCase("2") && sstate)
