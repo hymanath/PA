@@ -859,7 +859,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				  }
 		 }
 		 catch(Exception ex){
-			 ex.printStackTrace();
+			// ex.printStackTrace();
 			 VotesMarginAnalysisVO votesMarginAnalysis = new VotesMarginAnalysisVO();
 			 resultStatus.setExceptionEncountered(ex);
 			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -1221,6 +1221,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					  
 					  //Get Opposition Candidate Nominations
 					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  if(constituencyIds != null && constituencyIds.size() > 0)
 					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2),constituencyIds);
 				  }
 				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
@@ -1235,6 +1236,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					  
                       //Get Opposition Candidate Nominations
 					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  if(constituencyIds != null && constituencyIds.size() > 0)
 					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1),constituencyIds);
 				  }
 				  
@@ -1292,7 +1294,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 }
 		 }
 		 catch(Exception ex){
-			 ex.printStackTrace();
+			 //ex.printStackTrace();
 			 log.debug("Exception Raised :" + ex);
 		 }
 		
