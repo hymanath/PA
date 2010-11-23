@@ -477,7 +477,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
 		boolean sMandal = sConstituency || scopeMandal.equalsIgnoreCase("0");
 		boolean sVillage = sMandal || scopeVillage.equalsIgnoreCase("0");
-		boolean sBooth =  sVillage || scopeBooth.equalsIgnoreCase("0");
+		boolean sBooth =  sMandal || scopeBooth.equalsIgnoreCase("0");
 		
 		if(influencingRange.equalsIgnoreCase("2") && sstate)
 		{
