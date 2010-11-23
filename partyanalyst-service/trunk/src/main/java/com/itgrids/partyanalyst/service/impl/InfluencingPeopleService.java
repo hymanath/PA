@@ -554,10 +554,18 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 		return obj;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IInfluencingPeopleService#getDetailsByInfluencingPersonId(java.lang.Long)
+
+	/**
+	 * This method give all Details about Influencing Person when we send ID
+	 * This method is used for display details about Influencing Person
+	 *      and To Edit Influencing Person Details
+	 *      
+	 * @author kamalakar Dandu
+	 * @param Long Local User Group Id
+	 * @return LocalUserGroupDetailsVO
+	 *  
 	 */
+	
 	public InfluencingPeopleBeanVO getDetailsByInfluencingPersonId(Long influencingPersonId)
 	{
 		try{
@@ -565,8 +573,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			List<Object[]> influPerson = influencingPeopleDAO.getDetailsByInfluencingPersonId(influencingPersonId);
 			
-			for(int i=0;i<influPerson.size();i++){
-				Object[] parms = (Object[])influPerson.get(i);
+				Object[] parms = (Object[])influPerson.get(0);
 				
 				influencingPeopleBeanVO.setFirstName(parms[0]!=null?parms[0].toString():"");
 				influencingPeopleBeanVO.setMiddleName(parms[1]!=null?parms[1].toString():"");
@@ -663,9 +670,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				if(userAddress.getTehsil() != null)
 				{
 					influencingPeopleBeanVO.setAreaType(IConstants.RURAL_TYPE);
-					influencingPeopleBeanVO.setMandal(IConstants.RURAL_TYPE+userAddress.getTehsil().getTehsilCode().toString());
+					influencingPeopleBeanVO.setMandal(IConstants.RURAL_TYPE+userAddress.getTehsil().getTehsilId().toString());
 					influencingPeopleBeanVO.setMandalName(userAddress.getTehsil().getTehsilName().toString());
-					influencingPeopleBeanVO.setWardOrHamlet(IConstants.RURAL_TYPE+userAddress.getHamlet().getHamletCode().toString());
+					influencingPeopleBeanVO.setWardOrHamlet(IConstants.RURAL_TYPE+userAddress.getHamlet().getHamletId().toString());
 					influencingPeopleBeanVO.setWardOrHamletName(userAddress.getHamlet().getHamletName().toString());
 				}
 				
@@ -679,7 +686,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeopleBeanVO.setBoothName("");
 				}
 										
-			}
+			
 		 return influencingPeopleBeanVO; 	
 		}
 		catch(Exception e){
