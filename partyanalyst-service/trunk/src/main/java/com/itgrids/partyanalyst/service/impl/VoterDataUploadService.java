@@ -165,7 +165,7 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 				continue;
 			}
 			hamlet = hamlets.get(0);
-			voterFirstName = voterVO.getVoterFirstName();
+			voterFirstName = voterVO.getFirstName();
 			voterlastName = voterVO.getVoterLastName();
 			houseNo = voterVO.getHouseNo();
 			relationshipType = voterVO.getRelationshipType();

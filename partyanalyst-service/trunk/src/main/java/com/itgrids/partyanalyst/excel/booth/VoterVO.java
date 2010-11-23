@@ -2,7 +2,8 @@ package com.itgrids.partyanalyst.excel.booth;
 
 
 public class VoterVO {
-	private String voterFirstName;
+	
+	private String firstName;
 	private String voterMiddleName;
 	private String voterLastName;
 	private String houseNo;
@@ -19,18 +20,20 @@ public class VoterVO {
 	private String voterIDCardNo;
 	private String gender;
 	private Long age;
-	private String sNO;
+	private String voterId;
+	private Long totalVoters;
+	
 	public VoterVO(){
 		
 	}
 
-	public VoterVO(String voterFirstName, String voterMiddleName,
+	public VoterVO(String firstName, String voterMiddleName,
 			String voterLastName, String houseNo, String relationshipType,
 			String relativeFirstName, String relativeMiddleName,
 			String relativeLastName, String townShip, String hamlet, String localArea,
 			String cast, String castCatagery, String castSubCatagery,
 			String voterIDCardNo, String gender, Long age) {
-		this.voterFirstName = voterFirstName;
+		this.firstName = firstName;
 		this.voterMiddleName = voterMiddleName;
 		this.voterLastName = voterLastName;
 		this.houseNo = houseNo;
@@ -49,12 +52,13 @@ public class VoterVO {
 		this.age = age;
 	}
 
-	public String getVoterFirstName() {
-		return voterFirstName;
+	
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setVoterFirstName(String voterFirstName) {
-		this.voterFirstName = voterFirstName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getVoterMiddleName() {
@@ -137,12 +141,12 @@ public class VoterVO {
 		this.cast = cast;
 	}
 
-	public String getSNO() {
-		return sNO;
+	public String getVoterId() {
+		return voterId;
 	}
 
-	public void setSNO(String sno) {
-		sNO = sno;
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
 	}
 
 	public String getCastCatagery() {
@@ -191,6 +195,14 @@ public class VoterVO {
 
 	public void setLocalArea(String localArea) {
 		this.localArea = localArea;
+	}
+
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
 	}
 	
 }

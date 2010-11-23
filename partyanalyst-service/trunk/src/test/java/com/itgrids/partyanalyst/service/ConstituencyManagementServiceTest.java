@@ -51,10 +51,10 @@ public class ConstituencyManagementServiceTest extends BaseDaoTestCase{
 	}*/
 	
 	public void testVoter(){
-		List<VoterVO> list = constituencyManagementService.getVoterInfo(42l, "2009", 0l, 100, false);
+		List<VoterVO> list = constituencyManagementService.getVoterInfo(42l, "2009", 0, 100,"", "firstName");
 		int i=0;
 		for(VoterVO voterVO:list)
-			System.out.println((i++)+" "+ voterVO.getVoterFirstName()+" "+voterVO.getVoterLastName());
+			System.out.println((i++)+" "+ voterVO.getFirstName()+" "+voterVO.getVoterLastName());
 	}
 	
 	

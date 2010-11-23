@@ -72,19 +72,23 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		this.personalUserGroupDAO = personalUserGroupDAO;
 	}
 
-	public List<VoterVO> getVoterInfo(Long hamletId, String year, Long voterId, Integer maxRecords, Boolean isPrev){
-		List voters = null;
-		if(isPrev)
-			voters = boothConstituencyElectionVoterDAO.findPrevVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
-		else
-			voters = boothConstituencyElectionVoterDAO.findNextVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
+	public List<VoterVO> getVoterInfo(Long hamletId,String year, Integer startIndex, Integer maxRecords, String order, String columnName) {	
+		
+		if(!"desc".equalsIgnoreCase(order))
+			order = "";
+		
+		List voters = boothConstituencyElectionVoterDAO.findVotersForHamletAndElectionYearByStartAndMaxResults(hamletId, year, 
+				startIndex, maxRecords, order, columnName);
+		
+		Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVotersCountByHamletAndElectionYear(hamletId, year).get(0);
+		
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
 		VoterVO voterVO = null;
-		Long count = 1l;
+		Long count = new Long(startIndex);
 		for(Object[] voter:(List<Object[]>)voters){
 			voterVO = new VoterVO();
-			voterVO.setSNO((count++)+"");
-			voterVO.setVoterFirstName(voter[0].toString()+ voter[1].toString());
+			voterVO.setVoterId((++count)+"");
+			voterVO.setFirstName(voter[0].toString()+ voter[1].toString());
 			voterVO.setHouseNo(voter[2].toString());
 			voterVO.setAge(Long.parseLong(voter[3].toString()));
 			voterVO.setCast(voter[4].toString());
@@ -94,7 +98,9 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			voterVO.setRelationshipType(voter[10].toString());
 			voterVOs.add(voterVO);
 		}
-		voters = null;
+
+		if(voterVOs.size() > 0)
+			voterVOs.get(0).setTotalVoters(totalRecords);
 		return voterVOs;
 	}
 
@@ -163,13 +169,12 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return voterCastInfoVO;				
 	}
 	
-	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId,String year, Long voterId, Integer maxRecords, Boolean isPrev) {	
-		List voters = null;
-		if(isPrev)
-			voters = boothConstituencyElectionVoterDAO.findPrevVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
-		else
-			voters = boothConstituencyElectionVoterDAO.findNextVotersFromViterIdByHamletAndElectionYear(hamletId, year, voterId, maxRecords);
-			
+	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId, String year) {	
+		
+		List voters = boothConstituencyElectionVoterDAO.findVotersInfoForHamletAndElectionYear(hamletId, year);
+		
+		//Long totalRecords = (Long)boothConstituencyElectionVoterDAO.findTotalVoterHousesCountByHamletAndElectionYear(hamletId, year).get(0);
+		
 		Map<String, List<VoterVO>> voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
 		List<VoterHouseInfoVO> voterHouseInfoVOs = new ArrayList<VoterHouseInfoVO>();
 		VoterHouseInfoVO voterHouseInfoVO = null;
@@ -179,7 +184,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		for(Object[] voter : (List<Object[]>)voters){
 			houseNo = voter[2].toString();
 			voterVO = new VoterVO();
-			voterVO.setVoterFirstName(voter[0].toString());
+			voterVO.setFirstName(voter[0].toString());
 			voterVO.setVoterLastName(voter[1].toString());
 			voterVO.setAge((Long)voter[3]);
 			voterVO.setCast(voter[4].toString());
@@ -197,12 +202,14 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 				continue;
 			voterHouseInfoVO.setHouseNo(entry.getKey());
 			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
-			voterHouseInfoVO.setYounger(voterVOs.get(0).getVoterFirstName());
-			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getVoterFirstName());
+			voterHouseInfoVO.setYounger(voterVOs.get(0).getFirstName());
+			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getFirstName());
 			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
 			voterHouseInfoVOs.add(voterHouseInfoVO);
 		}
 		
+	/*	if(voterHouseInfoVOs.size() > 0)
+			voterHouseInfoVOs.get(0).setTotalHousesCount(totalRecords);*/
 		return voterHouseInfoVOs;
 	}
 	/**

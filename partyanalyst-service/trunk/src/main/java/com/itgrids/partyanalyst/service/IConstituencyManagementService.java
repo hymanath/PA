@@ -12,11 +12,11 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface IConstituencyManagementService {
 	
-	public List<VoterVO> getVoterInfo(Long hamletId, String year, Long voterId, Integer maxRecords, Boolean isPrev);
+	public List<VoterVO> getVoterInfo(Long hamletId,String year, Integer startIndex, Integer maxRecords, String order, String columnName);
 	
 	public VoterCastInfoVO getVotersCastInfoForHamlet(Long hamletId, String year);
 	
-	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId,String year, Long voterId, Integer maxRecords, Boolean isPrev);
+	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId, String year);
 	
 	public TotalMPTCMandalLeaderVO getMPTCElectionResultForMandal(Long mandalID);
 	
