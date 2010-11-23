@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -66,7 +67,7 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 	}*/
 	
 	
-	public void testFindByAssemblyLocalElectionBody()
+	/*public void testFindByAssemblyLocalElectionBody()
 	{
 		List result = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(116l, "2010");
 		System.out.println("Results Size:"+result.size());
@@ -77,5 +78,32 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 			System.out.println("name:"+obj[1].toString());
 			System.out.println("name:"+obj[2].toString());
 		}
+	}*/
+	
+	public void testDeleteByWardsAndConstituency()
+	{
+		List<Long> ids = new ArrayList<Long>(); 
+		ids.add(643l);
+		ids.add(644l);
+		int result=assemblyLocalElectionBodyWardDAO.deleteByWardsAndConstituency(ids);
+		System.out.println("No of records deleted:"+result);
+		setComplete();
 	}
+	
+	/*public void testGetAssemblyLocalElectionBodyWardIds()
+	{
+		List<Long> ids = new ArrayList<Long>(); 
+		ids.add(18302l);
+		ids.add(18303l);
+		
+		List result = assemblyLocalElectionBodyWardDAO.getAssemblyLocalElectionBodyWardIds(313l,ids);
+		System.out.print("Size"+result.size());
+		for(int i = 0;i<result.size();i++)
+		{
+			System.out.println("id:"+result.get(i));
+			
+		}		
+	}*/
+	
+	
 }
