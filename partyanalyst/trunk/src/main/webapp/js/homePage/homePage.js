@@ -23,7 +23,7 @@ function initializeHomePage()
 
 	getDistrictsComboBoxForAState(1, 'districtList_d');
 	getRecentElectionsInState(stateSelectElVal);
-	getProblemsInState(stateSelectElVal);
+	//getProblemsInState(stateSelectElVal);
 	buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
