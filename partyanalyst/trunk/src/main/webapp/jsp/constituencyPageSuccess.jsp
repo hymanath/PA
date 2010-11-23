@@ -123,6 +123,7 @@
 			partyMptcArray:[]
 	};
 	var constituencyId = ${constituencyId};
+	alert(constituencyId);
 	var constituencyTYPE;
 	var totalNoOflocalElectionsBodies = 0;
 	google.load("visualization", "1", {packages:["corechart"]});
@@ -570,6 +571,7 @@ function buildConstituencyElecResultsDataTable(value){
 		str += "<table><tr>";
 		str += '<td><input type="button" class="button" value="Know About Parliament(s)" onclick="getParliamentResults('+elecYear+')"/></td>';
 		str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';
+		str += '<td><div><a class="button" style="color:#FFFFFF;text-decoration:none;" href="municipalWardsAssemblyBoothsMapperAction.action?windowTask=update&constituencyId='+constituencyId+'">Map Municipal/Corp/GMC to Assembly</a></div></td>';
 		str += "</tr></table>";
 		parliamentButtonDiv.innerHTML = str;		
 
@@ -912,7 +914,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
 						</div>		
 					</div>
-				
+				</div>
 
 
 			</td>
@@ -1072,10 +1074,10 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 									<div id="wardsElectionResults_body" class="productFeatureBody yui-skin-sam">
 											<div id="wardsElectionResults_body_radioSelectDiv" style="padding:5px;font-weight:bold;">
 												Select Results Criteria :
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked">All</input>
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise">Party Wise Results</input>	
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)"  value="all" checked="checked"/>All
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="partyWise"/>Party Wise Results	
 												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_parties" id="wardWise_parties" list="greaterInfo.listOfParties" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('partyWise',this.options[this.selectedIndex].value)"/>
-												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise">Ward Wise Results</input>	
+												<input type="radio" name="wardWiseElectionRadio" onclick="changeWardWiseResultsCriteria(this.value)" value="wardWise"/>Ward Wise Results	
 												<s:select theme="simple" cssClass="selectBoxWidth" cssStyle="visibility:hidden;width:100px;" name="wardWise_wards" id="wardWise_ward" list="greaterInfo.listOfWards" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getWardWiseElectionResults('wardWise',this.options[this.selectedIndex].value)"/>
 											</div>											
 										</div>

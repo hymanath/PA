@@ -61,18 +61,24 @@ var stateValue;
 var districtValue;
 var mapLevelValue;
 var mapTypeValue;
+var windowTask = '${windowTask}';
 
 function getBoothOfAssemblyByYear(id)
 {
-	var yearEl = document.getElementById
+	var yearsIdEl = document.getElementById("yearsId");	
+	var year = yearsIdEl.options[yearsIdEl.selectedIndex].text;
+	var localElectionBodyFieldEl = document.getElementById("localElectionBodyField");
+	var localBodyId = localElectionBodyFieldEl.options[localElectionBodyFieldEl.selectedIndex].value;
 	var jsObj=
 		{
-				id: id,
-				task: 'boothsOfAssembly'
+				localBodyId: localBodyId,
+				constituencyId: id,
+				task: 'boothsOfAssembly',
+				year: year
 		}
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "<%=request.getContextPath()%>/municipalWardsAssemblyBoothsMapperAjaxAction.action?"+rparam;		
+		var url = "<%=request.getContextPath()%>/boothsInLocalBodiesAndConstAction.action?"+rparam;		
 	callAjax(jsObj, url);
 }
 
@@ -87,14 +93,23 @@ function displayDistrictLocalBodies(results)
 		return;
 
 	var str = '';
-	for(var i=1;i<results.length;i++)
+	for(var i=0;i<results.length;i++)
 	{
 		str += '<div>';
 		str += '<table width="100%">';
-		str += '<tr>';
-		str += '<td><input type="checkbox" name="localBodiesCheck" value="'+results[i].id+'"></td>';		
-		str += '<td>'+results[i].name+'</td>';
-		str += '</tr>';
+		if(results[i].flag == true)
+		{
+			str += '<tr>';
+			str += '<td><input type="checkbox" id="'+results[i].regionId+'" checked="checked" name="localBodiesCheck" value="'+results[i].flag+'"></td>';		
+			str += '<td>'+results[i].regionName+'</td>';
+			str += '</tr>';
+		} else 
+		{
+			str += '<tr>';
+			str += '<td><input type="checkbox" id="'+results[i].regionId+'" name="localBodiesCheck" value="'+results[i].flag+'"></td>';		
+			str += '<td>'+results[i].regionName+'</td>';
+			str += '</tr>';
+		}	
 		str += '</table>';
 		str += '</div>';
 	}
@@ -130,11 +145,21 @@ function displayAssemblyBooths(results)
 			strBoothInfo+='<table>';				
 			for(var i in results)
 			{	
-				strBoothInfo+='<tr id = "'+results[i].boothConstiElecId+'_row">';			
-				strBoothInfo+= '<td width="50"><span><input name="localBodiesCheck" type="checkbox" value="'+results[i].boothConstiElecId+'"></span></td></td>';
-				strBoothInfo+= '<td width="50"><span id="'+results[i].boothConstiElecId+'_partNo">'+results[i].partNo+'</span></td>';
-				strBoothInfo+= '<td><span id="'+results[i].boothConstiElecId+'_villagesCovered">'+results[i].villagesCovered+'</span></td>';		
-				strBoothInfo+='</tr>';
+				if(results[i].flag == true)
+				{	
+					strBoothInfo+='<tr id = "'+results[i].regionId+'_row">';			
+					strBoothInfo+= '<td width="50"><span><input name="localBodiesCheck" type="checkbox" checked="checked" id="'+results[i].regionId+'" value="'+results[i].flag+'"></span></td></td>';
+					strBoothInfo+= '<td width="50"><span id="'+results[i].regionId+'_partNo">'+results[i].regionName+'</span></td>';
+					strBoothInfo+= '<td><span id="'+results[i].regionId+'_villagesCovered">'+results[i].villagesCovered+'</span></td>';		
+					strBoothInfo+='</tr>';
+				} else 
+				{
+					strBoothInfo+='<tr id = "'+results[i].regionId+'_row">';			
+					strBoothInfo+= '<td width="50"><span><input name="localBodiesCheck" type="checkbox" id="'+results[i].regionId+'" value="'+results[i].flag+'"></span></td></td>';
+					strBoothInfo+= '<td width="50"><span id="'+results[i].regionId+'_partNo">'+results[i].regionName+'</span></td>';
+					strBoothInfo+= '<td><span id="'+results[i].regionId+'_villagesCovered">'+results[i].villagesCovered+'</span></td>';		
+					strBoothInfo+='</tr>';
+				}	
 			}			
 			strBoothInfo+='</table>';
 		strBoothInfo+='</div>';
@@ -153,10 +178,13 @@ function mapLocations()
 {
 	var localBodiesElmts = document.getElementsByName("localBodiesCheck");
 	var localBodyIds = new Array();
+	var modifyLocalBodyIds = new Array();
 	for(var i=0; i<localBodiesElmts.length;i++)
 	{
-		if(localBodiesElmts[i].checked == true)
-			localBodyIds.push(localBodiesElmts[i].value);
+		if(localBodiesElmts[i].checked == true && localBodiesElmts[i].value == 'false')
+			localBodyIds.push(localBodiesElmts[i].id);
+		if(localBodiesElmts[i].checked == false && localBodiesElmts[i].value == 'true')
+			modifyLocalBodyIds.push(localBodiesElmts[i].id);
 	}
 	
 	var yearElmt = document.getElementById("yearsId");
@@ -230,6 +258,7 @@ function mapLocations()
 			isWard : isWard,
 			mappedlocationId : constituencyValue,			
 			listOfIds: localBodyIds,
+			listOfModificationIds: modifyLocalBodyIds,
 			lebId: lebId,
 			year: yearValue,			
 			task: 'mapLocations'
@@ -337,6 +366,7 @@ function showHamletBoothMappings(){
   }
   
   */
+  //
   function showSelectOptions()
   {	  
 	  var mapLevelElmts = document.getElementsByName("mappingOptionsRadio");
@@ -362,20 +392,25 @@ function showHamletBoothMappings(){
 	if(mapLevelValue == 'wardsInLocalBodyToAssembly')
 	{
 		if(row1El.style.display == 'none')
-			row1El.style.display = '';						
+			row1El.style.display = '';								
 		
 	} else if(mapLevelValue == 'boothsInAssemblyToLocalBody')
 	{
 		if(row3El.style.display == 'none')
-			row3El.style.display = '';			
+			row3El.style.display = '';				
 		
 	}else if(mapLevelValue == 'boothsInAssemblyToWardsInLocalBody')	
 	{
 		if(row1El.style.display == 'none')
 			row1El.style.display = '';
 		if(row2El.style.display == 'none')
-			row2El.style.display = '';			
-	}	
+			row2El.style.display = '';					
+	}
+	if(windowTask == 'update')
+	{
+		getLocalBodiesOfDistrict('localBodyWise');
+	}
+		
   }
   /*
   function showLocalElectionBody()
@@ -525,14 +560,21 @@ function getWardOfLocalBodies(id)
 	{
 		getLocationHierarchies(id,'wardsInALocalElectionBody','boothLocaElectionBodyMapper','wardsField','currentAdd')
 	} else {
+		var constituencySelectEl = document.getElementById("constituencyField");
+		var constituencyId = constituencySelectEl.options[constituencySelectEl.selectedIndex].value;
+		var yearsIdEl = document.getElementById("yearsId");	
+		var year = yearsIdEl.options[yearsIdEl.selectedIndex].text;
+		
 		var jsObj=
 			{
-					id: id,				
-					task: 'wardsInALocalElectionBody'
+					localBodyId: id,
+					constituencyId: constituencyId, 				
+					task: 'wardsInALocalElectionBody',
+					year: year
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-			var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;		
+			var url = "<%=request.getContextPath()%>/wardsInLocalBodiesAndConstAction.action?"+rparam;		
 		callAjax(jsObj, url);
 	}
 }
@@ -542,19 +584,23 @@ function getLocalBodiesOfDistrict(taskType)
 	//var mapLevelElmts = document.getElementsByName("mappingOptionsRadio");
 	var districtSelectEl = document.getElementById("districtField");
 	var id = districtSelectEl.options[districtSelectEl.selectedIndex].value;
-	
-	
+	var constituencySelectEl = document.getElementById("constituencyField");
+	var constituencyId = constituencySelectEl.options[constituencySelectEl.selectedIndex].value;
+	var yearsIdEl = document.getElementById("yearsId");	
+	var year = yearsIdEl.options[yearsIdEl.selectedIndex].text;
 	if(mapLevelValue == 'localBodyToAssembly')
 	{	
 		var jsObj=
 			{
-					id: id,
-					taskType:taskType,
-					task: 'localElectionBodiesOfDistrict'
+				districtId: id,
+				constituencyId: constituencyId,
+				task: 'localElectionBodiesOfDistrict',
+				year: year,
+				taskType:'localBodyWise' 
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-			var url = "<%=request.getContextPath()%>/locationsHierarchiesAjaxAction.action?"+rparam;		
+			var url = "<%=request.getContextPath()%>/localBodiesInDistAndConstAction.action?"+rparam;		
 		callAjax(jsObj, url);
 	} else if(mapLevelValue == 'wardsInLocalBodyToAssembly' || mapLevelValue == 'boothsInAssemblyToWardsInLocalBody') {
 			getLocationHierarchies(id,'localElectionBodiesOfDistrict','boothLocaElectionBodyMapper','localBodyField','currentAdd');
@@ -600,7 +646,16 @@ function callAjax(jsObj,url)
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-
+function executeOnload()
+{
+	//first pre select the first option when page loads
+	 var  localBodyToAssemblyRadioEl = document.getElementById("localBodyToAssemblyRadio");
+	localBodyToAssemblyRadioEl.checked = true;
+	showSelectOptions();
+	getLocalBodiesOfDistrict('localBodyWise');
+	 
+	
+}
 </script>
 <style>
 	.selectWidth{
@@ -650,12 +705,12 @@ function callAjax(jsObj,url)
 		<legend>Mapping Criteria</legend>   
 			<table width="100%">
 			<tr>
-				<td><input type="radio" name="mappingOptionsRadio" value="localBodyToAssembly" onclick="showSelectOptions()"/>Map Municipality/Corp/GMC to Assembly Constituency</td>
-				<td><input type="radio" name="mappingOptionsRadio" value="wardsInLocalBodyToAssembly" onclick="showSelectOptions()"/>Map Wards in Municipality/Corp/GMC to Assembly Constituency</td>				
+				<td><input type="radio" id="localBodyToAssemblyRadio" name="mappingOptionsRadio" value="localBodyToAssembly" onclick="showSelectOptions()"/>Map Municipality/Corp/GMC to Assembly Constituency</td>
+				<td><input type="radio" id="wardsInLocalBodyToAssemblyRadio" name="mappingOptionsRadio" value="wardsInLocalBodyToAssembly" onclick="showSelectOptions()"/>Map Wards in Municipality/Corp/GMC to Assembly Constituency</td>				
 			</tr>
 			<tr>
-				<td><input type="radio" name="mappingOptionsRadio" value="boothsInAssemblyToLocalBody" onclick="showSelectOptions()"/>Map Booths in Assembly Constituency to Municipality/Corp/GMC</td>
-				<td><input type="radio" name="mappingOptionsRadio" value="boothsInAssemblyToWardsInLocalBody" onclick="showSelectOptions()"/>Map Booths in Assembly Constituency to Wards in Municipality/Corp/GMC</td>				
+				<td><input type="radio" id="boothsInAssemblyToLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToLocalBody" onclick="showSelectOptions()"/>Map Booths in Assembly Constituency to Municipality/Corp/GMC</td>
+				<td><input type="radio" id="boothsInAssemblyToWardsInLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToWardsInLocalBody" onclick="showSelectOptions()"/>Map Booths in Assembly Constituency to Wards in Municipality/Corp/GMC</td>				
 			</tr>
 			</table>
 		</fieldset>
@@ -681,13 +736,13 @@ function callAjax(jsObj,url)
 			<th align = "left">Year</th>
 			<td><s:select id="yearsId" theme="simple" list="{2009}" cssClass="selectWidth"/></td>
 			<th align = "left">State:</th>
-			<td><s:select id="stateId" theme="simple" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey ="0" headerValue="Select State" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','boothLocaElectionBodyMapper','districtField','currentAdd')" /></td>
+			<td><s:select id="stateId" theme="simple" cssClass="selectWidth" list="stateList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','boothLocaElectionBodyMapper','districtField','currentAdd')" /></td>
 		</tr>
 		<tr>
 			<th align = "left">District:</th>
-			<td><s:select id="districtField" theme="simple" cssClass="selectWidth" list="{}" listKey="id" listValue="name" headerKey ="0" headerValue="Select District" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','boothLocaElectionBodyMapper','constituencyField','currentAdd')" /></td>
+			<td><s:select id="districtField" theme="simple" cssClass="selectWidth" list="districtList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','boothLocaElectionBodyMapper','constituencyField','currentAdd')" /></td>
 			<th>Constituency</th>
-			<td><s:select id="constituencyField" theme="simple" cssClass="selectWidth"list="{}" listKey="id"  listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocalBodiesOfDistrict('localBodyWise')"/></td>
+			<td><s:select id="constituencyField" theme="simple" cssClass="selectWidth"list="constituencyList" listKey="id"  listValue="name"  onchange="getLocalBodiesOfDistrict('localBodyWise')"/></td>
 		</tr>				
 		<tr id="row1" style="display:none;">
 			<th align="left">Municipal/Corp/GMC</th>
@@ -714,7 +769,12 @@ function callAjax(jsObj,url)
 		
 	</div>				
 	<script type="text/javascript">
+
+	if(windowTask == 'update')
+			executeOnload();
+	else 
 		getLocationHierarchies(1,'statesInCountry','boothLocaElectionBodyMapper','stateId','currentAdd');
+		
 	</script>
 </body>
 </html>
