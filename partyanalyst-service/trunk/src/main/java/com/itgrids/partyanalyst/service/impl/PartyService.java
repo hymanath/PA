@@ -115,6 +115,7 @@ public class PartyService implements IPartyService {
 		Long partyId = new Long(party);
 		Long electionType = new Long(elecType);
 		String prevYear = null;
+		Boolean reportSuccess = false;
 		
 		ElectionType electnType = electionTypeDAO.get(electionType);
 		
@@ -141,8 +142,13 @@ public class PartyService implements IPartyService {
 		boolean positiveVotesFlowFlag = true;
 		if(diffOfTotalPercentageWinWithPrevElection.doubleValue()<0)
 			positiveVotesFlowFlag = false;
-		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
+		Map<String, String> partyVotesFlown = new LinkedHashMap<String, String>();
+		
+		if(!new Double(presentElectionTotalPercentageOfVotesWon.doubleValue()).equals(new Double(0)) && !new Double(diffOfTotalPercentageWinWithPrevElection.doubleValue()).equals(new Double(0))){
+		   partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
 				, previousYearPartyPerformanceReportVO.getVotesFlown(),positiveVotesFlowFlag,presentYearPartyPerformanceReportVO.getAllianceParties(),previousYearPartyPerformanceReportVO.getAllianceParties());
+		  reportSuccess = true;
+		}
 		
 		presentYearPartyPerformanceReportVO.setPrevYear(previousYearPartyPerformanceReportVO.getYear());
 		presentYearPartyPerformanceReportVO.setPrevYearTotalSeatsWon(previousYearPartyPerformanceReportVO.getTotalSeatsWon());
@@ -152,6 +158,7 @@ public class PartyService implements IPartyService {
 		presentYearPartyPerformanceReportVO.setTotalPercentageOfVotesWonPreviousElection(prevElectionTotalPercentageOfVotesWon);
 		presentYearPartyPerformanceReportVO.setDiffOfTotalPercentageWinWithPrevElection(diffOfTotalPercentageWinWithPrevElection);
 		presentYearPartyPerformanceReportVO.setToPartySwing(partyVotesFlown);
+		presentYearPartyPerformanceReportVO.setReportSuccessOrFailure(reportSuccess); //report success or failure status
 		
 		if(previousYearPartyPerformanceReportVO.getAllianceParties() != null && previousYearPartyPerformanceReportVO.getAllianceParties().size() > 0)
 			presentYearPartyPerformanceReportVO.setPreviousYearAllianceParties(previousYearPartyPerformanceReportVO.getAllianceParties());
