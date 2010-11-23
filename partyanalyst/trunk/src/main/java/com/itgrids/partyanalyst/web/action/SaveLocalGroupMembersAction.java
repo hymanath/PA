@@ -35,7 +35,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 /**
  * @author Sai Krishna
- *
+ * Represents Saving a Local User Group Member
  */
 public class SaveLocalGroupMembersAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware, ServletContextAware {
@@ -246,10 +246,12 @@ public class SaveLocalGroupMembersAction extends ActionSupport implements
 				
 		userGroupMemberVO = influencingPeopleService.saveUserGroupMemberDetails(userGroupMemberVO);
 		
+		//Exception raised during the saving process 
 		if(userGroupMemberVO.getRs().getExceptionEncountered() != null && userGroupMemberVO.getRs().getResultCode() == ResultCodeMapper.FAILURE){
 			savedStatusMsg = "Failed To ADD Member Details ..";
 			savedStatus = false;
 		}
+		//Successfully saved
 		else{
 			savedStatusMsg = "Successfully Added ".concat(userGroupMemberVO.getName()).concat(" Details ..");
 			savedStatus = true;
