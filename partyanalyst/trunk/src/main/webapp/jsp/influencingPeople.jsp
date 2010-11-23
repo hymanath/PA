@@ -544,7 +544,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	<tr>
 		<td class="tdstyle" width="100px"><s:label for="boothField" id="boothLabel"  value="%{getText('Booth')}" /></td>
 		<td align="left" width="165px">
-		<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+		<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 		</td>
 		<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField','mandalField_add')"/></td>
 	</tr>
