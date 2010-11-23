@@ -7,6 +7,7 @@ public class VoterHouseInfoVO {
 	private String cast;
 	private String elder;
 	private String younger;
+	private Long totalHousesCount; 
 	
 	public VoterHouseInfoVO(){
 		
@@ -59,6 +60,14 @@ public class VoterHouseInfoVO {
 
 	public void setYounger(String younger) {
 		this.younger = younger;
+	}
+
+	public Long getTotalHousesCount() {
+		return totalHousesCount;
+	}
+
+	public void setTotalHousesCount(Long totalHousesCount) {
+		this.totalHousesCount = totalHousesCount;
 	}
 	
 	

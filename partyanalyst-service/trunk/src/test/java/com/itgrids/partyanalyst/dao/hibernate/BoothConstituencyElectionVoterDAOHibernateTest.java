@@ -141,4 +141,15 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		for(int i=0; i<list.size(); i++)
 			System.out.print(list.get(i)+",");
 	}*/
+	
+	public void testFindPrevVotersFromViterIdByHamletAndElectionYear(){
+		List list = boothConstituencyElectionVoterDAO.findVotersForHamletAndElectionYearByStartAndMaxResults(34l, "2009", 
+				11, 10, "", "firstName");
+		for(int i=0; i<list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+
+					((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+
+					((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+
+					((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]);
+		}
+	}
 }

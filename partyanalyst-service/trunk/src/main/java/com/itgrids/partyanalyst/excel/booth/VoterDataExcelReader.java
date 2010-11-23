@@ -63,7 +63,7 @@ public class VoterDataExcelReader {
 				continue;
 			}
 				voterVO.setHouseNo(boothResultExcelColumnMapper.getColumn1());
-				voterVO.setVoterFirstName(boothResultExcelColumnMapper.getColumn2());
+				voterVO.setFirstName(boothResultExcelColumnMapper.getColumn2());
 				voterVO.setVoterLastName(boothResultExcelColumnMapper.getColumn3());
 				voterVO.setRelationshipType(boothResultExcelColumnMapper.getColumn4());
 				voterVO.setRelativeFirstName(boothResultExcelColumnMapper.getColumn5());
@@ -97,7 +97,7 @@ public class VoterDataExcelReader {
 			List<VoterVO> voters = obj.getVoterVOs();
 			for(VoterVO voterVo:voters){
 				System.out.print(voterVo.getHouseNo()+"\t");
-				System.out.print(voterVo.getVoterFirstName()+"\t");
+				System.out.print(voterVo.getFirstName()+"\t");
 				System.out.print(voterVo.getVoterLastName()+"\t");
 				System.out.print(voterVo.getRelationshipType()+"\t");
 				System.out.print(voterVo.getRelativeFirstName()+"\t");
