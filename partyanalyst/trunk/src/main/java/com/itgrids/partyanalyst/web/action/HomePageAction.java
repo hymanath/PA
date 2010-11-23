@@ -20,6 +20,14 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * A class representing to display the data related to home page
+ *
+ * @author  Ashok Dakavaram
+ * 
+ * @see     com.opensymphony.xwork2.ActionSupport
+ */
+
 @SuppressWarnings("serial")
 public class HomePageAction extends ActionSupport implements ServletRequestAware{
 
