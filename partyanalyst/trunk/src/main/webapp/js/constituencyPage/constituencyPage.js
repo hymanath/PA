@@ -658,7 +658,7 @@ function buildProblemViewingWindow()
 		for(var i in constituencyPageMainObj.problemsInfo)
 		{
 			var data = constituencyPageMainObj.problemsInfo[i];			
-			str+='<div class="problemDataDivClass" onclick="showProblemCompleteDetails('+data.problemId+')">';
+			str+='<div class="problemDataDivClass" onclick="showProblemDetails('+data.problemId+')">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
 			str+='<span> '+data.problem+' </span>';
 			str+='</div>';
@@ -674,11 +674,11 @@ function buildProblemViewingWindow()
 		bodyElmt.innerHTML=str;
 }
 
-function  showProblemCompleteDetails(selectedProblemId)
+function  showProblemDetails(selectedProblemId)
 {
 	for(var i in constituencyPageMainObj.problemsInfo)
 		{
-			var data = constituencyPageMainObj.problemsInfo[i];			
+			var data = constituencyPageMainObj.problemsInfo[i];
 			if(data.problemId==selectedProblemId){
 						var elmt = document.getElementById('constituencyMgmtBodyDiv');
 						var divChild = document.createElement('div');
@@ -691,21 +691,27 @@ function  showProblemCompleteDetails(selectedProblemId)
 						showProblemData+='<div align="center"><h3>Complete Report of <span style="color:green">'+data.problem+'</span> </h3></div>';
 						showProblemData+='<fieldset>';  		
 						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
-						showProblemData+='<table id="probDetailsTable">';
-						showProblemData+='<tr><th>Problem</th>';		
-						showProblemData+='<th>Description</th>';
-						showProblemData+='<th>IdentifiedDate</th></tr>';
-						showProblemData+='<tr><td>'+data.problem+'</td>';
-						showProblemData+='<td>'+data.description+'</td>';
-						showProblemData+='<td>'+data.reportedDate+'</td></tr></table>';
+						showProblemData+='		<table id="probDetailsTable">';						
+						showProblemData+='			<tr>';
+						showProblemData+='				<td><b> Problem :</b></td>';
+						showProblemData+='				<td>'+data.problem+'</td>';
+						showProblemData+='			</tr>';
+						showProblemData+='			<tr>';
+						showProblemData+='				<td><b> Description :</b></td>';
+						showProblemData+='				<td>'+data.description+'</td>';
+						showProblemData+='			</tr>';
+						showProblemData+='			<tr>';
+						showProblemData+='				<td><b> Complained Person Name :</b></td>';
+						showProblemData+='				<td>'+data.name+'</td>';
+						showProblemData+='			</tr>';
+						showProblemData+='			<tr>';
+						showProblemData+='				<td><b> PostedDate  :</b></td>';
+						showProblemData+='				<td>'+data.postedDate+'</td>';
+						showProblemData+='			</tr>';
+						showProblemData+='		</table>';		
 						showProblemData+='</fieldset>';
 
-						showProblemData+='<fieldset>';
-						showProblemData+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
-						showProblemData+='<table id="postedPersonTable">';
-						showProblemData+='<tr><th>Name</th>';								
-						showProblemData+='<tr><td>'+data.name+'</td></tr></table>';
-						showProblemData+='</fieldset>';
+				
 						
 						showProblemData+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
 
