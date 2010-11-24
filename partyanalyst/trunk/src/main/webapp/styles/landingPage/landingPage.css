@@ -1078,7 +1078,7 @@ text-decoration:none;
 /* cnc search jsp styles*/
 
 .viewReportButtonSpan {
-	background-image:url("images/icons/constituencyManagement/btn_cm.png");
+	background-image:url("../../images/icons/constituencyManagement/btn_cm.png");
 	cursor:pointer;
 	height:30px;
 	position:relative;
