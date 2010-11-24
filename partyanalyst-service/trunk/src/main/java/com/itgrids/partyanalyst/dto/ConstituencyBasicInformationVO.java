@@ -26,6 +26,8 @@ public class ConstituencyBasicInformationVO implements Serializable {
 	private String constituencyName;
 	/** Type of Constituency*/
 	private String constituencyType;
+	/** Reservation Zone */
+	private String reservationZone;
 	/** District Id */
 	private Long districtId;
 	/** District of the Constituency*/
@@ -133,5 +135,11 @@ public class ConstituencyBasicInformationVO implements Serializable {
 	}
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
+	}
+	public String getReservationZone() {
+		return reservationZone;
+	}
+	public void setReservationZone(String reservationZone) {
+		this.reservationZone = reservationZone;
 	}
 }

@@ -778,7 +778,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			" model.constituencyElection.constituency.electionScope.electionType.electionType," +//12
 			" model.constituencyElection.constituencyElectionResult.totalVotes," +//13
 			" model.constituencyElection.constituencyElectionResult.totalVotesPolled," +//14
-			" model.constituencyElection.constituencyElectionResult.votingPercentage" +//15
+			" model.constituencyElection.constituencyElectionResult.votingPercentage," +//15
+			" model.constituencyElection.reservationZone" +//16
 			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
 			" ) and model.constituencyElection.election.electionYear = ? " +
 			" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? order by model.candidateResult.rank",params);		
@@ -802,7 +803,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			" model.constituencyElection.constituency.localElectionBody.electionType.electionType," +
 			" model.constituencyElection.constituencyElectionResult.totalVotes," +
 			" model.constituencyElection.constituencyElectionResult.totalVotesPolled," +//14
-			" model.constituencyElection.constituencyElectionResult.votingPercentage" +//15
+			" model.constituencyElection.constituencyElectionResult.votingPercentage," +//15
+			" model.constituencyElection.reservationZone" +//16
 			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
 			" ) and model.constituencyElection.election.electionYear = ? " +
 			" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? order by model.candidateResult.rank",params);		
