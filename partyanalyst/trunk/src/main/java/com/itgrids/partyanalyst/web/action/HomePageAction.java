@@ -189,6 +189,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
+	 /**
+     * Returns the problems list in the state
+     *
+     * @return    List<ProblemBeanVO>
+     */
+	
+	//Presently not being used in home page.
 	public String getProblemsInState()
 	{
 		if(task != null){
