@@ -12,52 +12,10 @@
 
 <META NAME="Description" CONTENT=" <c:out value='${districtName}'/> district page provides the outline and basic information ,MLA constituencies information, MP constituencies information, district election results and latest news of the district.<c:out value='${districtName}'/> district page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
-<!-- YUI Dependency files (Start) -->
-
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-
-
-
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
-	<!-- YUI Skin Sam -->
-	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
-	<!-- YUI Dependency files (End)-->
+<!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+<!-- Combo-handled YUI JS files: --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/carousel/carousel-min.js&2.8.2r1/build/layout/layout-min.js"></script> 
 
 	<!-- jQuery dependency file start-->
 		<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
@@ -474,11 +432,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 		var muncipalityDiv='';		
 		muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-		muncipalityDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';	
+		muncipalityDiv+='<td><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
 		muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;">';
 		muncipalityDiv+='<a class="districtPage_headerAnc" href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		muncipalityDiv+='</div></td>';
-		muncipalityDiv+='<td><img src="images/icons/districtPage/header_right.gif"/></td>';	
+		muncipalityDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
 		muncipalityDiv+='</tr></table>';	
 		
 		muncipality.innerHTML = muncipalityDiv;
@@ -492,11 +450,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		
 		var corporationDiv='';	
 		corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-		corporationDiv+='<td width="30"><img src="images/icons/districtPage/header_left.gif"/></td>';	
+		corporationDiv+='<td width="30"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';	
 		corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;">';
 		corporationDiv+='<a class="districtPage_headerAnc" href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a>';
 		corporationDiv+='</div></td>';
-		corporationDiv+='<td><img src="images/icons/districtPage/header_right.gif"/></td>';	
+		corporationDiv+='<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>';	
 		corporationDiv+='</tr></table>';	
 		corporation.innerHTML = corporationDiv;
 	}
@@ -532,7 +490,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			rvStr += '<div class="localBodiesElectionHead">';
 			rvStr += '<table>';
 			rvStr += '<tr>';
-			rvStr += '<td width="10px"><img src="images/icons/indexPage/listIcon.png"></img></td>';
+			rvStr += '<td width="10px"><img width="8" height="9" src="images/icons/indexPage/listIcon.png"></img></td>';
 			if(electionType == muncipalityElectionType)
 				rvStr += '<td><u> '+result[i].muncipalityName+' muncipality Election Details</u></td>';
 			else
@@ -621,7 +579,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var muncipality = document.getElementById("corporationDivHead");	
 		var muncipalityDIV='';
 		muncipalityDIV+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-		muncipalityDIV+='<td width="30"><img src="images/icons/districtPage/header_left.gif"/></td>';
+		muncipalityDIV+='<td width="30"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>';
 		muncipalityDIV+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;">'+totalCorporations+' : <b class="counterSize"> </b></div>';
 		muncipalityDIV+='</td></tr></table>';
 		muncipality.innerHTML += muncipalityDIV;
@@ -1138,7 +1096,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		//graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeLabel"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';
-		graphDivStr += '<td><img id="barloaderImage" src="images/icons/barloader.gif"/></td>';
+		graphDivStr += '<td><img id="barloaderImage" width="220" height="19" src="images/icons/barloader.gif"/></td>';
 		graphDivStr += '</tr>';
 		graphDivStr += '</table>';	
 		 allElecDiv.innerHTML = graphDivStr;
@@ -1254,9 +1212,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div id="statePage_header" style="margin-top:10px;margin-bottom:10px;">
 	<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td><img border="none" src="images/icons/statePage/header_left.png"></td>
+			<td><img border="none" width="40" height="35" src="images/icons/statePage/header_left.png"></td>
 			<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</div></span></td>
-			<td><img border="none" src="images/icons/statePage/header_right.png"></td>
+			<td><img border="none" width="40" height="35" src="images/icons/statePage/header_right.png"></td>
 		</tr>
 	</table>
 </div>
@@ -1272,9 +1230,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			 <div class="productFeatureHeader">
 				<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-						<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="10px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td width="125px"><div class="districtPageRoundedHeaders_center" style="padding:11px;width:255px;"><span>${districtName} District News </span></div></td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
@@ -1288,9 +1246,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="mandalsDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td><div class="districtPageRoundedHeaders_center" style="width:258px;"><span>Know Your Mandals / Tehsils</span></div></td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
@@ -1299,7 +1257,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						<div id="mandalAncSpan" class="mandalNamesDiv">							
 							<table>
 								<tr>
-								<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+								<td> <img width="7" height="5" src="images/icons/districtPage/listIcon.png"/></td>
 								<td><span class="mandalNameSpan">
 									<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${mandalsBeforeDelimitationConstituency.id}&MANDAL_NAME=${mandalsBeforeDelimitationConstituency.name}" class="districtAnc">${mandalsBeforeDelimitationConstituency.name}
 									</a></span>
@@ -1323,13 +1281,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="districtPeopleConnect_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
 							<div class="districtPageRoundedHeaders_center" style="width:253px;">
 								<span>Connect To Your District People</span>
 							</div>
 						</td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>	
 			</div>
@@ -1345,9 +1303,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="districtMap_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td><div class="districtPageRoundedHeaders_center" style="width:528px"><span>Constituencies In ${districtName} District </span></div></td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
@@ -1368,7 +1326,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				 <tr> 
                 <c:forEach var="existConsti" items="${constituenciesStatusVO.existConstituencies}" varStatus="status">
 				
-				 <td> <img src="images/icons/districtPage/listIcon.png"/></td>
+				 <td> <img width="7" height="5" src="images/icons/districtPage/listIcon.png"/></td>
 						<td><h4> 
 						    <a href="constituencyPageAction.action?constituencyId=${existConsti.id}" class="distAnchor" title="Click to view ${existConsti.name} page">
 							    <c:out value="${existConsti.name}"/>
@@ -1397,9 +1355,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						<div id="newConstDiv_head">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
-									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td><div class="districtPageRoundedHeaders_center"><span>New AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
@@ -1408,7 +1366,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 								<div id="newConstAncSpan" class="mandalNamesDiv">		
 								<table>
 									<tr>
-									<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+									<td> <img width="7" height="5" src="images/icons/districtPage/listIcon.png"/></td>
 									<td><span class="mandalNameSpan">
 										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> ${result.name}
 										</a></span>
@@ -1425,9 +1383,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					<div id="delimitMandalsDiv_head">
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+								<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 								<td><div class="districtPageRoundedHeaders_center" style="width:225px;height:14px;"><span>Dissolved AC's in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
-								<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								<td><img  width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 							</tr>
 						</table>
 					</div>
@@ -1436,7 +1394,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						<div id="mandalAncSpan" class="mandalNamesDiv">							
 							<table>
 								<tr>
-								<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+								<td> <img width="7" height="5" src="images/icons/districtPage/listIcon.png"/></td>
 								<td><span class="mandalNameSpan">
 									<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
 									</a></span>
@@ -1486,13 +1444,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
 					<td><div id="districtProblemsMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div></td>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
 							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:847px;">
 								<span>Member of Parliament (MP) in the District</span>
 							</div>
 						</td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
@@ -1534,13 +1492,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="mla_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 					<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 						<td>	
 							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:848px;">
 								<span>Member of Legislative Assembly (MLA) in the District</span>
 							</div>
 						</td>
-						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
 				</table>
 			</div>
@@ -1610,14 +1568,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						<div id="zptc_head">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
-									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>	
 										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
 											<span>Total Number of ZPTC's : </span>
 											<span id="totalZptcCountResultDiv"></span>
 										</div>
 									</td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
@@ -1642,14 +1600,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						<div id="mptc_head"> 
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 								<tr>
-									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 									<td>	
 										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
 											<span>Total Number of MPTC's : </span>
 											<span id="totalMptcCountResultDiv"></span>
 										</div>
 									</td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
 							</table>
 						</div>
