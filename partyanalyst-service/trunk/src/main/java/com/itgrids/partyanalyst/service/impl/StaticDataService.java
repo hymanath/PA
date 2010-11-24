@@ -2385,6 +2385,9 @@ public class StaticDataService implements IStaticDataService {
 			 while(resultIterator.hasNext()){
 				 log.info(" Has Constituency Results ...");
 				 Object[] parms = (Object[])resultIterator.next();
+				 if(parms[16]!=null){
+					 constituencyElectionCompleteResults.setReservationZone(parms[16].toString());	 
+				 }
 				 if(parms[14]!=null)
 					 totalPolledVotes = Double.parseDouble(parms[14].toString());
 				 if(parms[13]!=null){
