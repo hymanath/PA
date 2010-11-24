@@ -117,7 +117,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 				}
 			}
 			entitlementVO.setSetOfGroups(setOfGroups);
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			entitlementVO.setResultStatus(resultStatus);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.warn("There was an error in fetching EntitlementGroups data");

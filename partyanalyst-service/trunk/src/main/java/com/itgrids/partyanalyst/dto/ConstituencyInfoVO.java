@@ -30,8 +30,14 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private Boolean viewCompletePage = false;
 	private String area_type;
 	private String reservation_zone;
+	private List<SelectOptionVO> constituencies;
 	
-	
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}
 	public String getReservation_zone() {
 		return reservation_zone;
 	}
