@@ -257,7 +257,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			//to get all constituenciesByAreaTypeInDistrict  
 			Long locationId = jObj.getLong("id");
 			
-			List<SelectOptionVO> constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,locationId);;
+			List<SelectOptionVO> constituencies = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,locationId).getConstituencies();
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
 		} else if(jObj.getString("task").equalsIgnoreCase("assembliesInParliament"))

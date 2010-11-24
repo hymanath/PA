@@ -229,7 +229,6 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		try {
 			jObj = new JSONObject(param);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -239,7 +238,13 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 			stateId = jObj.getString("stateId");
 		}
 		
-		constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(electionTypeId), new Long(stateId));
+		constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(electionTypeId), new Long(stateId)).getConstituencies();
+		if(constituenciesList!=null && constituenciesList.size()>1){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(0l);
+			selectOptionVO.setName("Select Constituency");
+			constituenciesList.add(0,selectOptionVO);
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -252,7 +257,6 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		try {
 			jObj = new JSONObject(param);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

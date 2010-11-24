@@ -180,8 +180,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("stateId")));
-		/*if(districtsListForACountry != null && districtsListForACountry.size() > 0)
-			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));*/
+		if(districtsListForACountry != null && districtsListForACountry.size() > 1)
+			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
 		
 	 return Action.SUCCESS;
 	}
