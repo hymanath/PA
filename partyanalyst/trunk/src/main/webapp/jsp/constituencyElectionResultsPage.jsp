@@ -110,7 +110,8 @@ var constituencyElecMainObj=	{
 									constituencyName:'',
 									stateName:'',
 									districtName:'',
-									constituencyType:''
+									constituencyType:'',
+									reservationZone:''
 							   },
 		constituencyElectionInfo: {
                                      electionType:'',
@@ -161,6 +162,7 @@ function buildDataForConstituencyResults()
 		allYears.innerHTML = electionYears;
 		
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.constituencyId}';
+		 constituencyElecMainObj.constituencyBasicInfo.reservationZone='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.reservationZone}';		 
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.constituencyName}';
          constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.stateName}';
        	 constituencyElecMainObj.constituencyBasicInfo.districtName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.districtName}';
@@ -247,7 +249,12 @@ function displayConstituencyElectionResults()
 		str+='<table id="constituencyInfoTableClass" class="legendTable" width="100%">';
 		str+='<tr>';
 		str+='<th width="25%">Constituency</th>';
-		str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyName+'</td>';
+		if(constituencyElecMainObj.constituencyBasicInfo.reservationZone==""){
+			str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyName+'</td>';
+		}else{
+			str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyName+' <b style="color:green;"> ( '+ (constituencyElecMainObj.constituencyBasicInfo.reservationZone )+' ) </b></td>';
+		}
+		
 		str+='<th width="25%">Constituency Type</th>';
 		str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyType+'</td>';	
 		str+='</tr>';
