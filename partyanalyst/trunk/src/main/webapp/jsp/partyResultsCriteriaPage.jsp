@@ -140,8 +140,18 @@
 			}
 		}
 		
-		
-		
+	function hideSubmitDiv()
+	{
+		var row4Elmt=document.getElementById("row4");
+		row4Elmt.style.display = "none";
+	}	
+
+	function hidePartyDiv()
+	{
+		var row3Elmt=document.getElementById("row3");
+		row3Elmt.style.display = "none";
+	}	
+	
 	function displaySelectOptions(value, elecType)
 	{		
 		var row2Elmt=document.getElementById("row2");
@@ -183,13 +193,13 @@
 			labelDivElmt.innerHTML="<b>Select State and District</b>";
 			//build state select box first
 			var sstr='';
-			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\');getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\')">';
+			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="hideSubmitDiv();hidePartyDiv();locationName(this.id);getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\')">';
 			stateSelectDivElmt.innerHTML=sstr;
 			// fill it with states							
 			getParticipatedStatesForAnElection(elecType);
 			//build district select box
 			var str='';
-			str+='<select class="nameSelect" name="districtSelectName" id="DistrictNameSelect" onchange="locationName(this.id)">';
+			str+='<select class="nameSelect" name="districtSelectName" id="DistrictNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\');">';
 			str+='	<option>Select District</option>';		
 			str+='</select>';
 			distNConstSelectDivElmt.innerHTML=str;			
@@ -202,14 +212,14 @@
 			labelDivElmt.innerHTML="<b>Select State and Constituency</b>";
 			//build state select box first
 			var sstr='';
-			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\');getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'ConstituencyNameSelect\')">';
+			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="hideSubmitDiv();hidePartyDiv();locationName(this.id);getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'ConstituencyNameSelect\')">';
 			stateSelectDivElmt.innerHTML=sstr;
 			// fill it with states							
 			getParticipatedStatesForAnElection(elecType);
 
 			//build constituencies select box
 			var str='';							
-			str+='<select class="nameSelect" name="constituencySelectName" id="ConstituencyNameSelect" onchange="locationName(this.id)">';
+			str+='<select class="nameSelect" name="constituencySelectName" id="ConstituencyNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\')">';
 			str+='	<option>Select Constituency</option>';
 			str+='</select>';
 			distNConstSelectDivElmt.innerHTML=str;
@@ -222,14 +232,14 @@
 			labelDivElmt.innerHTML="<b>Select State and Municipality</b>";
 			//build state select box first
 			var sstr='';
-			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\');getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'municipalityNameSelect\')">';
+			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="hideSubmitDiv();hidePartyDiv();locationName(this.id);getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'municipalityNameSelect\')">';
 			stateSelectDivElmt.innerHTML=sstr;
 			// fill it with states							
 			getParticipatedStatesForAnElection(elecType);
 
 			//build constituencies select box
 			var str='';							
-			str+='<select class="nameSelect" name="municipalitySelectName" id="municipalityNameSelect" onchange="locationName(this.id)">';
+			str+='<select class="nameSelect" name="municipalitySelectName" id="municipalityNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\')">';
 			str+='	<option>Select Minicipality</option>';
 			str+='</select>';
 			distNConstSelectDivElmt.innerHTML=str;
@@ -242,14 +252,14 @@
 			labelDivElmt.innerHTML="<b>Select State and Municipality</b>";
 			//build state select box first
 			var sstr='';
-			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\');getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'corporationNameSelect\')">';
+			sstr+='<select class="nameSelect" name="stateSelectName" id="stateNameSelect" onchange="hideSubmitDiv();hidePartyDiv();locationName(this.id);getAllConstituenciesInStateByType('+elecType+',this.options[this.selectedIndex].value,\'corporationNameSelect\')">';
 			stateSelectDivElmt.innerHTML=sstr;
 			// fill it with states							
 			getParticipatedStatesForAnElection(elecType);
 
 			//build constituencies select box
 			var str='';							
-			str+='<select class="nameSelect" name="corporationSelectName" id="corporationNameSelect" onchange="locationName(this.id)">';
+			str+='<select class="nameSelect" name="corporationSelectName" id="corporationNameSelect" onchange="locationName(this.id);getPartiesForAState(this.options[this.selectedIndex].value,\'DistrictNameSelect\')">';
 			str+='	<option>Select Minicipality</option>';
 			str+='</select>';
 			distNConstSelectDivElmt.innerHTML=str;
@@ -273,22 +283,27 @@
 	}
 
 	function getPartiesForAState(id)
-	{
-		if(id == 0)
+	{		
+		if(id == 0){		
+			var row3Elmt=document.getElementById("row3");	
+			row3Elmt.style.display = "none";
 			return;
-		var row3Elmt=document.getElementById("row3");
-		row3Elmt.style.display = "";
-		var jsObj= 
-		{		
-			stateId: id,
-			task:"getStaticParties"		
+		}else{			
+			var jsObj= 
+			{		
+				stateId: id,
+				task:"getStaticParties"		
+			}
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
+			callAjax1(param,jsObj,url);
+			var row3Elmt=document.getElementById("row3");
+			row3Elmt.style.display = "";
+			var row4Elmt=document.getElementById("row4");
+			row4Elmt.style.display = "none";
+
+			}
 		}
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
-		callAjax1(param,jsObj,url);
-		var row4Elmt=document.getElementById("row4");
-		row4Elmt.style.display = "none";
-	}
 		
 		/*	Function to display the selectbox with values(State/District/Constituency) based on
 			 level of report selected	*/
