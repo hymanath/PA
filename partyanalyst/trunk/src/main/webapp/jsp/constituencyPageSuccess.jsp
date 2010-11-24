@@ -122,8 +122,7 @@
 			partyArray:[],
 			partyMptcArray:[]
 	};
-	var constituencyId = ${constituencyId};
-	alert(constituencyId);
+	var constituencyId = ${constituencyId};	
 	var constituencyTYPE;
 	var totalNoOflocalElectionsBodies = 0;
 	google.load("visualization", "1", {packages:["corechart"]});
@@ -938,7 +937,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 								<div id="problemViewingDiv_Head"></div>
 								<div id="problemViewingDiv_Body"></div>
 							</div>
-							<div id="problemPostingDiv">
+							<div id="problemPostingDivForConstituencyPage">
 								<div id="problemPostingDiv_Head"></div>
 								<div id="problemPostingDiv_Body"></div>
 							</div>
