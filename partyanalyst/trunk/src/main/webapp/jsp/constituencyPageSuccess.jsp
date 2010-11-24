@@ -14,52 +14,10 @@
 
 <META NAME="Description" CONTENT=" <c:out value='${constituencyDetails.constituencyName}'/> constituency page provides the outline and basic information ,mandals information,constituency election results and latest news of the state.<c:out value='${statePage.stateName}'/> constituency page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
-<!-- YUI Dependency files (Start) -->
-
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-
-
-
-<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
-<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
-<!-- YUI Skin Sam -->
-
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
-<!-- YUI Dependency files (End) -->
+<!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/button/assets/skins/sam/button.css"> 
+<!-- Combo-handled YUI JS files: --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js"></script> 
 
 <!-- jQuery dependency file start-->
 	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
@@ -831,7 +789,7 @@ function buildElectionsSelectBox(myResults){
 	}
 	electionYearSelect += '</select>';
 	electionYearSelect += '</th>';
-	electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+	electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img width="16" height="16" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
 	electionYearSelect += '<td><div id="parliamentResultsButtonDiv"></td>';
 	electionYearSelect += '<td><div id="detailsDiv"></td>';
 	electionYearSelect += '</table>';
@@ -1139,14 +1097,14 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 									<div id="mptc_head">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 											<tr>
-												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
 												<td>	
 													<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
 														<span>Total Number of MPTC's : </span>
 														<span id="totalMptcCountResultDiv"></span>
 													</div>
 												</td>
-												<td><img src="images/icons/districtPage/header_right.gif"/></td>
+												<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 											</tr>
 										</table>
 									</div>
