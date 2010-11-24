@@ -166,8 +166,8 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
 		else 
 			System.out.print(user.getUserName());
         now = new Date(System.currentTimeMillis());
-        mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1));
-        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1));
+        mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1)).getConstituencies();
+        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1)).getConstituencies();
         
         cadreManagementVO = userCadreManagementService.getUserTodaysData(user);
         eventCount = cadreManagementVO.getUserEvents().size();
