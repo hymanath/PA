@@ -98,7 +98,7 @@ public interface IStaticDataService {
 		
 		public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
 	
-		public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);	
+		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);	
 	//>>>>>Constituency Related Methods End
 	
 	//>>>>>Party Related Methods Start

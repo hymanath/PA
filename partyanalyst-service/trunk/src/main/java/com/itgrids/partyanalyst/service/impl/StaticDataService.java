@@ -2082,33 +2082,49 @@ public class StaticDataService implements IStaticDataService {
 	
 	/*
 	 * This method retrieves all the Constituencies based on election type and state id.
+	 * @Author Y.Ravi Kiran.
 	 */
-	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID)
+	//Version 1.2
+	public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID)
 	{
 		List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
 		List constiList;
-		ElectionType electionTypeObj = electionTypeDAO.get(electionTypeId);
-		if(IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()))
-		{
-			constiList = localElectionBodyDAO.findByElectionTypeAndState(electionTypeId, stateID);
-		}else 
-		{	
-			constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
-		}	
-		if(constiList!=null && constiList.size()>0)
-		{
-			for(int i=0;i<constiList.size();i++)
-			{
-				Object[] obj = (Object[])constiList.get(i);
-				SelectOptionVO constituencyData = new SelectOptionVO();
-				constituencyData.setId((Long) obj[0]);
-				constituencyData.setName((String) obj[1]);
-				
-				constituenciesList.add(constituencyData);
-			}
-		}		
-		return constituenciesList;
+		ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+		ResultStatus result = new ResultStatus();
 		
+		try{
+			ElectionType electionTypeObj = electionTypeDAO.get(electionTypeId);		
+			if(IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType()) || IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType()))
+			{
+				constiList = localElectionBodyDAO.findByElectionTypeAndState(electionTypeId, stateID);		
+			}else 
+			{	
+				constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+			}	
+			if(constiList!=null && constiList.size()>0)
+			{
+				for(int i=0;i<constiList.size();i++)
+				{
+					Object[] obj = (Object[])constiList.get(i);
+					SelectOptionVO constituencyData = new SelectOptionVO();
+					constituencyData.setId((Long) obj[0]);
+					constituencyData.setName((String) obj[1]);
+					
+					constituenciesList.add(constituencyData);
+				}			
+			}	
+			
+			constituencyInfoVO.setConstituencies(constituenciesList);			
+			result.setResultPartial(false);
+			result.setResultCode(ResultCodeMapper.SUCCESS);
+			return constituencyInfoVO;
+		}catch(Exception e){			
+			e.printStackTrace();
+			result.setExceptionEncountered(e);
+			result.setResultPartial(true);
+			result.setResultCode(ResultCodeMapper.FAILURE);
+			return constituencyInfoVO;
+		}
 	}
 
 	/**
