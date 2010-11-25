@@ -337,7 +337,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						buildElectionTypesAndYears(results);
 					}
 					if(jsObj.task == "getPartiesPositions")
-					{										
+					{		
+						var imgEl = document.getElementById("ajaxImageEl");	
+						imgEl.style.display='none';							
 						buildElectionTypesAndYearsGraph(results);
 					}if(jsObj.task == "getAllElectionScopes")
 					{										
@@ -592,6 +594,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		muncipalityDIV.innerHTML += rvStr;	
 	}
 	function getAllElections(elecId, type){
+		var barloaderImageEl = document.getElementById("barloaderImage");
+		barloaderImageEl.style.display = 'block';
 		var jsObj=
 		{		
 				districtId:districtId,
@@ -605,7 +609,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
 		callAjax(jsObj,url);
 	}
-	//wkg
+	
 	function buildElectionTypesSelect(result){
 
 		var selectLabel = document.getElementById("graphElectionTypeLabel");
@@ -655,7 +659,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			return;
 		
 		var str = '';
+		str+='<table>';
+		str+='<tr>';
+		str+='<td>';
 		str +='<span style="font-weight:bold;margin-right:10px;">Select Election</span>';
+		str+='</td>';
+		str+='<td>';
 		str += '<select id="electionTypesSelect" onchange = "getPartiesPositions(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 		for(var i in results)
 		{
@@ -665,7 +674,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			
 		}
 		str += '</select>';
-
+		str+='</td>';
+		str+='<td>';
+		str += '<span id="ajaxImageEl" style="margin-left:10px;display:none;"><img src="images/icons/search.gif"/></span>';
+		str+='</td>';
+		str+='</tr>';
+		str+='</table>';
 		elmt.innerHTML = str;
 	
 		var elmt = document.getElementById("electionTypesSelect");
@@ -1096,8 +1110,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		graphDivStr += '<tr>';
 		//graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeLabel"></div></td>';
-		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';
-		graphDivStr += '<td><img id="barloaderImage" width="220" height="19" src="images/icons/barloader.gif"/></td>';
+		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';		
+		graphDivStr += '</tr>';
+		graphDivStr += '<tr>';
+		graphDivStr += '<td colspan="2" align="center"><img id="barloaderImage" src="images/icons/barloader.gif" style="display:none;"/></td>';
 		graphDivStr += '</tr>';
 		graphDivStr += '</table>';	
 		 allElecDiv.innerHTML = graphDivStr;
@@ -1118,7 +1134,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	
 	function getPartiesPositions(id,value){
-		
+
+		var imgEl = document.getElementById("ajaxImageEl");	
+		imgEl.style.display='block';
 		var jsObj=
 		{		electionId:id,
 				electionTypeYear:value,
@@ -1680,7 +1698,7 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						phone:'${problem.phone}',
 						mobile:'${problem.mobile}',
 						address:'${problem.address}',
-						problemLocationId:'${problem.problemLocationId}',
+						problemLocationId:'${problem.problemLocationId}'
 					};
 		
 	problemsInfo.push(problemObj);
