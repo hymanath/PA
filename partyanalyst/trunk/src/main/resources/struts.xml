@@ -865,41 +865,28 @@
 				<param name="root">zptcElectionDetails</param>				
 			</result>		
 		</action>	
-		<action name="districtPageTehsilElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+				
+		
+		<action name="districtPageElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
 			<result type="json" name="success">
 				<param name="root">electionYears</param>				
 			</result>		
-		</action>	
-		<action name="districtPageMptcElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
-			<result type="json" name="success">
-				<param name="root">mptcElectionYears</param>				
-			</result>		
-		</action>	
-		<action name="districtPagePartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+		</action>			
+		
+		
+		<action name="districtPagePartyDetailsAjaxAction" class="districtPageAction" method="getAllPartyDetails">
 			<result type="json" name="success">
 				<param name="root">partyDetails</param>				
 			</result>		
 		</action>
-		<action name="districtPageMuncipalPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+		
+		<action name="districtPageLocalPartyDetailsAjaxAction" class="districtPageAction" method="getLocalBodyElectionInfoForADistrict">
 			<result type="json" name="success">
-				<param name="root">getmuncipalPartyDetails</param>				
+				<param name="root">localPartyDetails</param>				
 			</result>		
 		</action>		
-		<action name="districtPageCorporationPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
-			<result type="json" name="success">
-				<param name="root">getCorporationPartyDetails</param>				
-			</result>		
-		</action>
-		<action name="districtPageMuncipalElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
-			<result type="json" name="success">
-				<param name="root">muncipalElectionYears</param>				
-			</result>		
-		</action>		
-		<action name="districtPageMptcPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
-			<result type="json" name="success">
-				<param name="root">getMptcPartyDetails</param>				
-			</result>		
-		</action>	
+				
+		
 		<action name="districtPageCandidateDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
 			 <result name="success">/jsp/candidateDistrictPageResultsPage.jsp</result>
             <result name="error">/jsp/districtPageFail.jsp</result>	
