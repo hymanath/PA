@@ -921,7 +921,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getPBooth();
 	}
 
-	public void setPBooth(String booth) {
+	public void setPBooth(String pBooth) {
 		this.cadreInfo.setPBooth(pBooth);
 	}
 
