@@ -1678,14 +1678,14 @@ public class CadreManagementService {
 		cadreInfo.setConstituencyName(constituencyCA.getName());
 		
 		if(tehsilCA != null){
-			cadreInfo.setMandal(tehsilCA.getTehsilId().toString());
+			cadreInfo.setMandal(IConstants.RURAL_TYPE+tehsilCA.getTehsilId().toString());
 			cadreInfo.setMandalName(tehsilCA.getTehsilName());
-			cadreInfo.setVillage(hamletCA.getHamletId().toString());
+			cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletCA.getHamletId().toString());
 			cadreInfo.setVillageName(hamletCA.getHamletName());
 		}else if(localBodyCA != null){
-			cadreInfo.setMandal(assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localBodyCA.getLocalElectionBodyId()).get(0).toString());
+			cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(localBodyCA.getLocalElectionBodyId()).get(0).toString());
 			cadreInfo.setMandalName(localBodyCA.getName());
-			cadreInfo.setVillage(wardCA.getConstituencyId().toString());
+			cadreInfo.setVillage(IConstants.URBAN_TYPE+wardCA.getConstituencyId().toString());
 			cadreInfo.setVillageName(wardCA.getName());
 		}
 		
