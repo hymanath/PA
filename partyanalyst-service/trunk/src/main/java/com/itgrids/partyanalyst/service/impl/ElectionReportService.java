@@ -474,6 +474,8 @@ public class ElectionReportService implements IElectionReportService {
 			ex.printStackTrace();
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			electionResultsReportVO = new ElectionResultsReportVO();
+			electionResultsReportVO.setResultStatus(resultStatus);
 		}
 		
 		
