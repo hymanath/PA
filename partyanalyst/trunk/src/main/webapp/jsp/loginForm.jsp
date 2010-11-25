@@ -16,6 +16,31 @@ String districtName = "";
 String constituencyName = "";
 String url = "";
 
+String electionId = "";
+String stateID = "";
+String electionType = "";
+String electionTypeId = "";
+String stateName = "";
+String year = "";
+
+if(request.getParameter("electionId")!=null){
+	electionId = request.getParameter("electionId");
+}
+if(request.getParameter("stateID")!=null){
+	stateID = request.getParameter("stateID");
+}
+if(request.getParameter("electionType")!=null){
+	electionType = request.getParameter("electionType");
+}
+if(request.getParameter("electionTypeId")!=null){
+	electionTypeId = request.getParameter("electionTypeId");
+}
+if(request.getParameter("stateName")!=null){
+	stateName = request.getParameter("stateName");
+}
+if(request.getParameter("year")!=null){
+	year = request.getParameter("year");
+}
 if(request.getParameter("src")!=null){
 	src = request.getParameter("src");
 }
@@ -116,6 +141,14 @@ if(request.getParameter("constituencyName")!=null){
 				<input type="hidden" name="src" value="<%=src %>" />
 				<% } %>
 				<input type="hidden" name="url" value="<%=url %>" />
+                <input type="hidden" name="electionId" value="<%=electionId %>" />
+				<input type="hidden" name="stateID" value="<%=stateID %>" />
+				<input type="hidden" name="electionType" value="<%=electionType %>" />
+				<input type="hidden" name="electionTypeId" value="<%=electionTypeId %>" />
+				<input type="hidden" name="stateName" value="<%=stateName %>" />
+                <input type="hidden" name="year" value="<%=year %>" />
+
+
 				<P>Registered User Sign In</P>
 				
 				<input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Commercial User
