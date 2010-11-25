@@ -301,9 +301,22 @@ function buildCadreInfo(jsObj,results)
 	str += '					<td>'+results.street+'</td>';
 	str += '				</tr>';
 	str += '				<tr>';
-	str += '					<th style="width:125px">Village </th>';
+	str += '					<th style="width:125px">Village/Ward </th>';
 	str += '					<th> : </th>';
 	str += '					<td>'+results.villageName+'</td>';
+	str += '				</tr>';
+
+	if(results.boothName != null && results.boothName.length >0)
+	{
+	str += '					<th style="width:125px">Booth </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.boothName+'</td>';
+	str += '				</tr>';
+	str += '				</tr>';
+	}
+	str += '					<th style="width:125px">Mandal/Municipality </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.mandalName+'</td>';
 	str += '				</tr>';
 	str += '				<tr>';
 	str += '					<th style="width:125px">Constituency</th>';
@@ -346,14 +359,24 @@ function buildCadreInfo(jsObj,results)
 	str += '				<td>'+results.pstreet+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
-	str += '				<th style="width:125px">Hamlet </th>';
-	str += '				<th> : </th>';
-	str += '				<td>'+results.phamletName+'</td>';
-	str += '			</tr>';
 	str += '			<tr>';
-	str += '				<th style="width:125px">Village </th>';
+	str += '				<th style="width:125px">Village/Ward </th>';
 	str += '				<th> : </th>';
 	str += '				<td>'+results.pvillageName+'</td>';
+	str += '			</tr>';
+	str += '			<tr>';
+	if(results.PBoothName != null && results.PBoothName.length >0)
+	{
+	str += '					<th style="width:125px">Booth </th>';
+	str += '					<th> : </th>';
+	str += '					<td>'+results.PBoothName+'</td>';
+	str += '				</tr>';
+	str += '				</tr>';
+	}
+	str += '			<tr>';
+	str += '				<th style="width:125px">Mandal/Municipality </th>';
+	str += '				<th> : </th>';
+	str += '				<td>'+results.pmandalName+'</td>';
 	str += '			</tr>';
 	str += '			<tr>';
 	str += '				<th style="width:125px">Constituency</th>';
