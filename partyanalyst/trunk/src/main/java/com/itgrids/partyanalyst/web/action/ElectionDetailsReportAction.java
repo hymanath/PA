@@ -193,23 +193,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 
 	public String execute () throws Exception 
 	{	
-		if(log.isDebugEnabled()){
-			log.debug("Entered in to Election Details Action");			
-		}
-		if(log.isDebugEnabled())
-			log.debug("stateId:" + stateID);
-		
-		if(log.isDebugEnabled())
-			log.debug("elctionId:" + electionId);		
-				
-		if(log.isDebugEnabled())
-			log.debug("electionType:" + electionType);
-		
-		if(log.isDebugEnabled())
-			log.debug("electionTypeId:" + electionTypeId);
 		electionYears = new ArrayList<SelectOptionVO>();
 		partiesList = new ArrayList<SelectOptionVO>();
-		if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				
+		if(electionType != null && electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
 			try{
 				electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
@@ -221,7 +208,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				electionYears = null;
 				log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
 			}	
-		} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
+		} else 	if(electionType != null && electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
 			try{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
