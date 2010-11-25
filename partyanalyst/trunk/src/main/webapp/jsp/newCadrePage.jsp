@@ -979,7 +979,7 @@
 			<tr>
 				<td width="165px" ><s:label for="pboothField" id="pboothLabel"  value="%{getText('booth')}" /></td>
 				<td align="left" width="165px">
-					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="#session.boothsList_c" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 				</td>
 				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('pboothField', 'pmandalField')"/></td>				
 			</tr>				
