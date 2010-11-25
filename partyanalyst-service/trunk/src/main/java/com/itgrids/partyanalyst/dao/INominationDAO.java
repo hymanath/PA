@@ -138,16 +138,12 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	    
     public List getAllCandidatesByElectionTypes(String electionTypes);
    	
-	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
+    //MPTC's and ZPTC's
+    
+	public List findAllZPTCsOrMPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);	
 	
-	public List findAllMPTCsInaDistrict(Long districtId,String electionType,Long rank,String electionYear);
-	
-	
-	public List findAllZptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear);
-	
-	public List findAllMptcCandidatesInaDistrict(Long districtId,String electionType,String electionYear);
-	
-	
+	public List findAllZptcOrMptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear);
+		
 	public List findAllZptcPartysInaDistrict(Long districtId,String electionTypes,String electionYear,Long partyId,Long rank);
 	
 	public List findAllMptcPartysInaDistrict(Long districtId,String electionType,String electionYear,Long partyId,Long rank);

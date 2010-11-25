@@ -226,19 +226,15 @@ public interface IStaticDataService {
 		
 		public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId);
 		
-		public MandalAllElectionDetailsVO getAllZptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
-		
-		public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
-		
+		public MandalAllElectionDetailsVO getAllZptcOrMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear,String electionType);
+				
 		public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
 		
 		public ConstituencyResultsInElectionVO getAllCandidatesResultsInConstituency(final Long constituencyId,final String electionYear,final String electionType);
 		
 		public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId, Set<Long> parliamentConstituencies);
 		
-		public MandalAllElectionDetailsVO getAllMptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear,int lostFlag);
-		
-		public MandalAllElectionDetailsVO getAllZptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear,int lostFlag);
+		public MandalAllElectionDetailsVO getAllZptcsOrMptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear,int lostFlag,String electionType);
 
 		public ConstituenciesStatusVO getConstituenciesWinnerInfo(Long districtId);
 	//>>>>> Candidate Related Methods End
