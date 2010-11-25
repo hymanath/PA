@@ -582,8 +582,6 @@
 		<input type="radio" name="electionType" value="1" onclick="getReportLevel(this.value);setElectionType('Parliament');"/>Parliament	
 		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
 		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
-		<input type="radio" name="electionType" value="5" onclick="getReportLevel(this.value);setElectionType('Municipal');"/>Municipal
-		<input type="radio" name="electionType" value="6" onclick="getReportLevel(this.value);setElectionType('Corporation');"/>Corporation	
 	</div>
  </td>
  </tr>
