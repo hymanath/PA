@@ -44,6 +44,15 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String constituencyName;
 	
 	private String url;
+	
+	//for election analyze page
+	private String electionId;
+	private String stateID;
+	private String electionType;
+	private Long electionTypeId;
+	private String stateName;
+	private String year;
+	
 	public String getDistrictName() {
 		return districtName;
 	}
@@ -161,6 +170,54 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 
 	public void setLocalBodyElectionTypeId(Long localBodyElectionTypeId) {
 		this.localBodyElectionTypeId = localBodyElectionTypeId;
+	}
+
+	public String getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(String electionId) {
+		this.electionId = electionId;
+	}
+
+	public String getStateID() {
+		return stateID;
+	}
+
+	public void setStateID(String stateID) {
+		this.stateID = stateID;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 
 	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
