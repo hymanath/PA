@@ -902,7 +902,7 @@
 			<tr>
 				<td width="165px" ><s:label for="boothField" id="boothLabel"  value="%{getText('Booth')}" /></td>
 				<td align="left" width="165px">
-					<s:select id="boothField" cssClass="regionSelect" name="booth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+					<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 				</td>
 				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField', 'mandalField')"/></td>				
 			</tr>
@@ -979,7 +979,7 @@
 			<tr>
 				<td width="165px" ><s:label for="pboothField" id="pboothLabel"  value="%{getText('booth')}" /></td>
 				<td align="left" width="165px">
-					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
 				</td>
 				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('pboothField', 'pmandalField')"/></td>				
 			</tr>				
