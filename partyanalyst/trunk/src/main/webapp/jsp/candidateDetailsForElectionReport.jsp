@@ -55,11 +55,26 @@ function callAjax(param,jsObj,url){
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';	
-									if(myResults.candidateDetails!=null){
+
+                                    if(myResults.candidateDetails!=null){
+
+										if(myResults.candidateDetails.length > 0){
 										showCandidates(myResults,jsObj);
-									}else{
+										}
+										else{
+											showErrorInfo();
+										}
+									}
+									else if(myResults.mandalAllElectionDetailsVO != null){
+										if(myResults.mandalAllElectionDetailsVO.length > 0)
+										{
 										showTehsilCandidatesByDistrictWise(myResults,jsObj);
-									}																
+										}
+										else{
+                                            showErrorInfo();
+										}
+									}	
+									
 								}
 								if(jsObj.task == "getCommentsClassificationsList")
 								{
@@ -507,6 +522,35 @@ function allCandidates()
 	var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
 	callAjax(rparam,jsObj,url);
 }
+
+function showErrorInfo()
+{
+
+  var errorEl = document.getElementById("error");
+  var candidatesResultsTable = document.getElementById("participatedCandidatesDetailsDataTable");
+
+    if(errorEl)
+	{
+		errorEl.innerHTML='';
+
+		var errorData='';
+		errorData = 'No candidates matched by this selection criteria';
+		errorEl.innerHTML=errorData;
+	
+
+		if(errorEl.style.display == 'block')
+		{
+			errorEl.style.display = 'none';
+		}
+		if(errorEl.style.display == 'none')
+		{
+			errorEl.style.display = 'block';
+		}
+        
+		candidatesResultsTable.innerHTML= '';
+	}
+}
+
 function showCandidates(results,jsObj)
 {
 
