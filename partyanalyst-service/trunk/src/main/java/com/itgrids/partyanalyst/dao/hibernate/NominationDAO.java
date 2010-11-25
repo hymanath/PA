@@ -577,7 +577,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	//MPTC and ZPTC for district DAO's Starts from here...
 	
 	@SuppressWarnings("unchecked")
-	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear) {
+	public List findAllZPTCsOrMPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear) {
 		Object[] params = {districtId,electionTypes,rank,electionYear};
 		return getHibernateTemplate().find("select model.party.partyFlag, model.constituencyElection.election.electionYear," +
 				" upper(model.candidate.lastname),upper(model.constituencyElection.constituency.tehsil.tehsilName)," +
@@ -592,22 +592,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}
 	
 	@SuppressWarnings("unchecked")
-	public List findAllMPTCsInaDistrict(Long districtId,String electionType,Long rank,String electionYear) {
-		Object[] params = {districtId,electionType,rank,electionYear};
-			return getHibernateTemplate().find("select model.party.partyFlag, model.constituencyElection.election.electionYear," +
-					" upper(model.candidate.lastname),upper(model.constituencyElection.constituency.tehsil.tehsilName)," +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType," +
-					" model.constituencyElection.constituency.tehsil.tehsilId," +
-					" model.candidateResult.votesEarned," +
-					" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId," +
-					" model.candidateResult.votesPercengate,model.party.longName,model.party.partyId,model.constituencyElection.reservationZone,model.constituencyElection.constituency.name" +
-					" from Nomination model where model.constituencyElection.constituency.tehsil.district.districtId = ? and " +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
-					" and model.candidateResult.rank  = ? and model.constituencyElection.election.electionYear = ? ",params);
-		}
-	
-	@SuppressWarnings("unchecked")
-	public List findAllZptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear) {
+	public List findAllZptcOrMptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear) {
 		Object[] params = {districtId,electionTypes,electionYear};
 		return getHibernateTemplate().find("select model.party.partyFlag, model.constituencyElection.election.electionYear," +
 				" upper(model.candidate.lastname),upper(model.constituencyElection.constituency.tehsil.tehsilName)," +
@@ -619,23 +604,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" from Nomination model where model.constituencyElection.constituency.district.districtId = ? and " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ? " +
 				" and model.constituencyElection.election.electionYear = ? order by model.constituencyElection.constituency.constituencyId",params);
-		}
-	
-	@SuppressWarnings("unchecked")
-	public List findAllMptcCandidatesInaDistrict(Long districtId,String electionType,String electionYear) {
-		Object[] params = {districtId,electionType,electionYear};
-			return getHibernateTemplate().find("select model.party.partyFlag, model.constituencyElection.election.electionYear," +
-					" upper(model.candidate.lastname),upper(model.constituencyElection.constituency.tehsil.tehsilName)," +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType," +
-					" model.constituencyElection.constituency.tehsil.tehsilId," +
-					" model.candidateResult.votesEarned," +
-					" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId, " +
-					" model.candidateResult.votesPercengate,model.party.longName,model.party.partyId,model.constituencyElection.reservationZone,model.constituencyElection.constituency.name" +
-					" from Nomination model where model.constituencyElection.constituency.tehsil.district.districtId = ? and " +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType = ? " +
-					"  and model.constituencyElection.election.electionYear = ? order by model.constituencyElection.constituency.constituencyId",params);
-		}
-	
+		}	
+		
 	@SuppressWarnings("unchecked")
 	public List findAllZptcPartysInaDistrict(Long districtId,String electionTypes, String electionYear,Long partyId,Long rank) {
 		Object[] params = {districtId,electionTypes,electionYear,partyId,rank};
