@@ -3155,15 +3155,41 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	/*
 	 * To Delete a Local User Group
 	 */
-    public Integer deleteLocalUserGroup(Long groupId){
+    @SuppressWarnings("unchecked")
+	public Integer deleteLocalUserGroup(Long groupId){
     	
-    	PersonalUserGroup personalUserGroup = personalUserGroupDAO.get(groupId);
-    	Long localGroupRegionId = personalUserGroup.getLocalGroupRegion().getLocalGroupRegionId();
+    	Integer deletedRows = 0;
+    	try{
+	    	
+	    	if(groupId != null && !groupId.equals(0L)){
+		    	PersonalUserGroup personalUserGroup = personalUserGroupDAO.get(groupId);
+		    	Long localGroupRegionId = personalUserGroup.getLocalGroupRegion().getLocalGroupRegionId();
+		    	
+		    	//get staticUser ids and delete records
+		    	List staticUserIds = staticUserGroupDAO.getStaticUserIdsByLocalGroupId(groupId);
+		    	if(staticUserIds != null && staticUserIds.size() > 0){
+		    		
+		    		List<Long> staticUsrIds = new ArrayList<Long>();
+		    		Iterator lstItr = staticUserIds.listIterator();
+		    		while(lstItr.hasNext()){
+		    			staticUsrIds.add((Long)lstItr.next());
+		    		}
+		    		
+		    		Integer staticGrp = staticUserGroupDAO.deleteStaticUserGroupByStaticUserIds(staticUsrIds);
+		    		Integer staticUsrs = staticUsersDAO.deleteStaticUsersByStaticUserIds(staticUsrIds);
+		    	}
+		    	
+		    	//delete local user group
+		        deletedRows = personalUserGroupDAO.deleteLocalUserGroupById(groupId);
+		    	
+		      //delete local group location details
+		    	Integer regions = localGroupRegionDAO.deleteLocalUserGroupRegionById(localGroupRegionId);
+	    	}
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    		log.error("Exception Raised In Deleting Local User Groups :" + ex.getMessage());
+    	}
     	
-    	Integer deletedRows = personalUserGroupDAO.deleteLocalUserGroupById(groupId);
-    	
-    	if(localGroupRegionId != null)
-        	localGroupRegionDAO.deleteLocalUserGroupRegionById(localGroupRegionId);
 		
 	 return deletedRows;
 	}
