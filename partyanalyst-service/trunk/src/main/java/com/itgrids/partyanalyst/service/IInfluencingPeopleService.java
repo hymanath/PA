@@ -75,5 +75,6 @@ public interface IInfluencingPeopleService {
 	public LocalUserGroupDetailsVO getLocalUserGroupDetailsById(Long localUserGroupId);
 	
 	public UserGroupMembersVO saveUserGroupMemberDetails(UserGroupMembersVO userGroupMemberVO);
+    public Integer deleteLocalUserGroup(Long groupId);
 	
 }
