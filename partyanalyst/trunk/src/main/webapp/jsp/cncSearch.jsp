@@ -98,12 +98,22 @@
 	</tr>
 	<tr id="row5">	
 		<td colspan="2" style="color:black;position:relative;z-index:1;">		
-			<div id="textFldDiv"></div>				
+			<div id="textFldDiv" style="height:30px;"></div>				
 		</td>
-	</tr>		
+	</tr>
+	<tr id="row6">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+			<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>				
+		</td>
+	</tr>
+	<tr id="row7">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+			<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" value="Search"/></div>				
+		</td>
+	</tr>
 	</table>
-	<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>
-	<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" class="viewReportButtonSpan" value="Search"/></div>
+	
+	
 
 </s:form>
 </div>

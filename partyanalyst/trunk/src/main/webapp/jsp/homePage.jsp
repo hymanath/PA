@@ -390,9 +390,9 @@ localBodyString = '<%=localBody%>';
 							  <tr>
 								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 								<td width="98%">
-									<div class="productFeatureHeaderBackground_center">
-										<span class="headerLabelSpan">
-											Search partyanalyst.com
+									<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">
+										<span class="headerLabelSpan" style="text-decoration:none;">
+											Search Criteria
 										</span>
 									</div>
 								</td>
@@ -402,9 +402,7 @@ localBodyString = '<%=localBody%>';
 						</div>
 						<div id="adDataMain_body">
 							<div class="adData_main">
-								<div class="adData_head">
-									<span class="newsHeadLink">Search for Candidate or Constituency</span>
-								</div>
+								
 								<div class="adData_body">
 									<table>
 									<tr>
@@ -472,7 +470,7 @@ localBodyString = '<%=localBody%>';
 								  </tr>
 								</table>
 							</div>							
-							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 								<div id="leadersNews"></div>								
 							</div>						
 						</div>
@@ -494,7 +492,7 @@ localBodyString = '<%=localBody%>';
 								  </tr>
 								</table>
 							</div>
-							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 								<div id="topStories"></div>								
 							</div>						
 						</div>
@@ -516,7 +514,7 @@ localBodyString = '<%=localBody%>';
 								  </tr>
 								</table>
 							</div>
-							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 							<div id="partiesNews"></div>
 								<!--<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
 										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
@@ -580,9 +578,10 @@ localBodyString = '<%=localBody%>';
                             </table>
                         </div>
                         <div class="widgetsBody" style="background-color:#d98d06;">
+							<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 							<table>
 								<tr>
-									<td style="text-align:justify;padding-bottom:25px;"> Select your district to view its election results in district level. </td>
+									<td style="text-align:justify;padding-bottom:5px;"> Select your district to view its election results in district level. </td>
 								</tr>
 								<tr>
 									<td><%=stateSelect%></td>
@@ -650,7 +649,7 @@ localBodyString = '<%=localBody%>';
 						
 						</div>
                         <div class="widgetsFooter" style="background-color:#efdcbc;">
-							<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
+							<img width="70" height="25" src="images/icons/homePage_new/b3.jpeg" onclick="navigateToConstituencyPage()"></img>
 						</div>
                     </div>
                 </td>                
