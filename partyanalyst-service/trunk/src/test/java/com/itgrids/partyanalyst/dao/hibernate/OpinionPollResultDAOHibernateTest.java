@@ -23,24 +23,13 @@ public class OpinionPollResultDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	public void testGet(){
-		List result = opinionPollResultDAO.getOpinionPollAnswersForAQuestionByQuestionId(1l);
-		Long totalPolledVotes=0l;
-		Double totalVotesPercentage = new Double(0);
-		QuestionsOptionsVO question = new QuestionsOptionsVO();
-		List<OptionVO> opinionPollQuestionAndPercentages = new ArrayList<OptionVO>(0);
+		List result = opinionPollResultDAO.getOpinionPollAnswersForAQuestionByQuestionId(1l);		
 		for(int i=0;i<result.size();i++){
 			Object[] parms = (Object[])result.get(i);
-			totalPolledVotes+=new Long(parms[0].toString());
-			question.setQuestion(parms[2].toString());			
-		}		
-		for(int i=0;i<result.size();i++){
-			Object[] parms = (Object[])result.get(i);
-			OptionVO optionVO = new OptionVO();
-			optionVO.setOption(parms[1].toString());			
-			optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-			opinionPollQuestionAndPercentages.add(optionVO);		
-			System.out.println(optionVO.getPercentage()+"\t"+((new Long(parms[0].toString())*100)/totalPolledVotes));
-		}		
-		question.setOptions(opinionPollQuestionAndPercentages);				
+			System.out.print(parms[0].toString());
+			System.out.print(parms[1].toString());
+			System.out.print(parms[2].toString());
+			System.out.println(new Long(parms[3].toString()));
+		}			
 	}
 }
