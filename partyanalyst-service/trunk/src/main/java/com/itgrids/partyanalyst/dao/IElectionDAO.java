@@ -120,4 +120,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List findLatestParliamentaryElectionYear(Long state_id);
 	
+	@SuppressWarnings("unchecked")
+	public List findParliamentElectionIdForGivenElectionYearAndElectionYears(Long electionType,String year,String electionSubType);
+	
 }
