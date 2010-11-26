@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -720,6 +722,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				
 		return Action.SUCCESS;
 		
+	}
+	
+	public void deleteLocalUserGroup()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+		}
+		catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		Long localUserGroupIdId = jObj.getLong("localUserGroupIdId");
+		
+		Integer rows = influencingPeopleService.deleteLocalUserGroup(localUserGroupIdId);
+		Log.debug("rows:"+rows);
 	}
 	
 	/*
