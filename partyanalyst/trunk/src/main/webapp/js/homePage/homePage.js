@@ -463,7 +463,8 @@ function homePageAjaxCall(param,jsObj,url){
 			              },
 			               scope : this,
 			               failure : function( o ) {
-			                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+
+			            	  			//alert( "Failed to load result" + o.status + " " + o.statusText);
 			                         }
 			               };
 
