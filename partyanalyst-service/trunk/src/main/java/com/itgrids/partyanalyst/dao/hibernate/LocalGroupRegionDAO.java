@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ILocalGroupRegionDAO;
 import com.itgrids.partyanalyst.model.LocalGroupRegion;
@@ -21,6 +22,14 @@ public class LocalGroupRegionDAO extends GenericDaoHibernate<LocalGroupRegion, L
 
 	public LocalGroupRegionDAO() {
 		super(LocalGroupRegion.class);
+	}
+	
+public Integer deleteLocalUserGroupRegionById(Long groupId) {
+		
+		Query queryObject = getSession().createQuery("delete from LocalGroupRegion model where model.localGroupRegionId = ?");
+		queryObject.setParameter(0, groupId);
+		return queryObject.executeUpdate();
+	
 	}
 
 }
