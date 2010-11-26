@@ -40,6 +40,13 @@ public class StaticUsersDAO extends GenericDaoHibernate<StaticUsers, Long> imple
 	public List findGroupMembersNameAndMobileNosByMemberIds(String memberIds) {
 		return getHibernateTemplate().find("select model.name,model.mobileNumber from StaticUsers model where model.staticUserId in ("+memberIds+")");
 	}
+	
+	public Integer deleteStaticUsersByStaticUserIds(List<Long> staticUserIds) {
+		
+		Query queryObject = getSession().createQuery("delete from StaticUsers model where model.staticUserId in (:staticUserIds)");
+		queryObject.setParameterList("staticUserIds", staticUserIds);
+		return queryObject.executeUpdate();
+	}
 
 
 }
