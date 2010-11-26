@@ -3156,8 +3156,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 * To Delete a Local User Group
 	 */
     public Integer deleteLocalUserGroup(Long groupId){
-		
-		Integer deletedRows = personalUserGroupDAO.deleteLocalUserGroupById(groupId);
+    	
+    	PersonalUserGroup personalUserGroup = personalUserGroupDAO.get(groupId);
+    	Long localGroupRegionId = personalUserGroup.getLocalGroupRegion().getLocalGroupRegionId();
+    	
+    	Integer deletedRows = personalUserGroupDAO.deleteLocalUserGroupById(groupId);
+    	
+    	if(localGroupRegionId != null)
+        	localGroupRegionDAO.deleteLocalUserGroupRegionById(localGroupRegionId);
 		
 	 return deletedRows;
 	}
