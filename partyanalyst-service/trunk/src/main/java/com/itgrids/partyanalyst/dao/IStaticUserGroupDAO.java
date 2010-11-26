@@ -41,4 +41,9 @@ public interface IStaticUserGroupDAO extends GenericDao<StaticUserGroup ,Long> {
 	public List getMemberDetailsOfLocalUserGroup(Long localGroupId);
 	
 	public List<StaticUserGroup> getStaticUserGroupByStaticUserAndGroup(Long staticUserId,Long groupId);
+	
+	@SuppressWarnings("unchecked")
+	public List getStaticUserIdsByLocalGroupId(Long localGroupId);
+	
+	public Integer deleteStaticUserGroupByStaticUserIds(List<Long> staticUserIds);
 }
