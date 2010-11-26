@@ -36,7 +36,7 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 	
 	public List findByAssemblyLocalElectionBody(Long localElectionBodyId, String year) {
 		Object[] params = {localElectionBodyId,year};
-		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.localElectionBodyWard.wardName from AssemblyLocalElectionBodyWard model " +
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency from AssemblyLocalElectionBodyWard model " +
 				"where model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
 	}
 

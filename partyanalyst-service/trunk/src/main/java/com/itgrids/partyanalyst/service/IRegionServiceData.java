@@ -49,5 +49,6 @@ public interface IRegionServiceData {
 	public Set<RegionalMappingInfoVO> getLocalBodiesInDistAndConst(Long districtId, Long constituencyId, String year);
 	public Set<RegionalMappingInfoVO> getWardsInLocalBodyAndConst(Long localBodyId, Long constituencyId, String year);
 	public Set<RegionalMappingInfoVO> getboothsInLocalBodiesAndConst(Long localBodyId, Long constituencyId, String year);
+	public Set<RegionalMappingInfoVO> getboothsInWardsAndConst(Long wardId, Long constituencyId, String year);
 	
 }

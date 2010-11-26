@@ -508,7 +508,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 				for(int j=0;j<wardsList.size();j++)
 				{
 					Object[] obj = (Object[])wardsList.get(j);
-					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),obj[2].toString().concat("( ").concat(obj[1].toString().toUpperCase()).concat(" )")));
+					Constituency constituency = (Constituency)obj[1];
+					String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
+							concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
+					
+					regionsList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+ obj[0].toString()),wardName));
 				}
 			}
 			
@@ -570,7 +574,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for(int j=0;j<wardsList.size();j++)
 			{
 				Object[] obj = (Object[])wardsList.get(j);
-				wards.add(new SelectOptionVO((Long)obj[0],obj[2].toString().concat("( ").concat(obj[1].toString().toUpperCase()).concat(" )")));
+				Constituency constituency = (Constituency)obj[1];
+				String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
+						concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
+				
+				wards.add(new SelectOptionVO((Long)obj[0],wardName));
 			}
 			
 		}
@@ -871,7 +879,12 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for(int j=0;j<wardsList.size();j++)
 			{
 				Object[] obj = (Object[])wardsList.get(j);
-				allWardsInConstituency.add(new SelectOptionVO((Long)obj[0],obj[2].toString().concat("( ").concat(obj[1].toString().toUpperCase()).concat(" )")));
+				Constituency constituency = (Constituency)obj[1];
+				String wardName = constituency.getLocalElectionBodyWard() != null?constituency.getLocalElectionBodyWard().getWardName().
+						concat("( ").concat(constituency.getName().toUpperCase()).concat(" )"):constituency.getName().toUpperCase();
+				
+				allWardsInConstituency.add(new SelectOptionVO((Long)obj[0],wardName));
+				
 			}
 			
 		}
@@ -939,6 +952,40 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					finalList.add(regionalMappingInfoVO);
 				}		 
 		return finalList;
+	}
+
+	public Set<RegionalMappingInfoVO> getboothsInWardsAndConst(Long wardId,
+			Long constituencyId, String year) {
+		
+		Set<RegionalMappingInfoVO> finalList = new LinkedHashSet<RegionalMappingInfoVO>(0);
+		RegionalMappingInfoVO regionalMappingInfoVO = null;
+		// get booths mapped to a ward
+		List rawBoothData = boothDAO.findBoothsInfoForALocalBodyWardByConstituencyAndYear(wardId, new Long(year), constituencyId);
+		 if(rawBoothData.size()>0)
+			{
+				for(int i=0;i<rawBoothData.size();i++)
+				{
+					regionalMappingInfoVO = new RegionalMappingInfoVO();
+					Object[] obj = (Object[])rawBoothData.get(i);
+					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
+					regionalMappingInfoVO.setRegionName(obj[1].toString());
+					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
+					regionalMappingInfoVO.setFlag(true);
+					finalList.add(regionalMappingInfoVO);
+				}
+			}
+		//fetch booths in constituency
+			List rawBoothDataList = boothDAO.findBoothInfoByConstituencyIdAndYear(constituencyId, new Long(year));
+				if(rawBoothDataList.size()>0)
+					for(Object[] values:(List<Object[]>)rawBoothDataList){
+						regionalMappingInfoVO = new RegionalMappingInfoVO();
+						regionalMappingInfoVO.setRegionId(Long.parseLong(values[0].toString()));
+						regionalMappingInfoVO.setRegionName(values[1].toString());
+						regionalMappingInfoVO.setVillagesCovered(values[2].toString());
+						regionalMappingInfoVO.setFlag(false);
+						finalList.add(regionalMappingInfoVO);
+					}		 
+			return finalList;		
 	}
 	
 }

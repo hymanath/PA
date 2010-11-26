@@ -222,7 +222,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"BoothConstituencyElectionVoter model where model.voter.hamlet.township.townshipId = ?", townshipId);
 	}
 
-	@Override
+	
 	public List findVotersInfoForHamletAndElectionYear(Long hamletId,
 			String year) {
 		Object[] params = {hamletId, year};
