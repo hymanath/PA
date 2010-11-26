@@ -1770,7 +1770,11 @@
 				<param name="root">regions</param>				
 			</result>
         </action>
-        
+        <action name="boothsInWardAndConstAction" class="locationsHierarchyAction" method="getboothsInWardsAndConst">
+        	<result type="json" name="success">
+				<param name="root">regions</param>				
+			</result>
+        </action>
         
         
         <action name="testVoterAction" class="voterInfoAction" method="displayPerameters">
