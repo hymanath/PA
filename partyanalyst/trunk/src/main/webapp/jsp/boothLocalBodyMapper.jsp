@@ -319,7 +319,7 @@ function getBoothOfWardByYear(id)
 	callAjax(jsObj, url);
 }
 
-  function showSelectOptions()
+  function showSelectOptions(event)
   {	  
 	  var mapLevelElmts = document.getElementsByName("mappingOptionsRadio");
 	  var divElmt =  document.getElementById("mappingLocationsDiv");
@@ -348,7 +348,8 @@ function getBoothOfWardByYear(id)
 	}
 	if(mapLevelValue == 'localBodyToAssembly')
 	{
-		constituencyFieldEl.selectedIndex = 0;
+		if(event == 'onClick')
+			constituencyFieldEl.selectedIndex = 0;
 	}	 
 	else if(mapLevelValue == 'wardsInLocalBodyToAssembly')
 	{
@@ -371,13 +372,8 @@ function getBoothOfWardByYear(id)
 		if(row2El.style.display == 'none')
 			row2El.style.display = '';
 		if(constituencyFieldElVal != 0)
-			getLocalBodiesOfConstituency(constituencyFieldElVal);
-							
-	}
-	if(windowTask == 'update')
-	{
-		getLocalBodiesOfDistrict('localBodyWise');
-	}
+			getLocalBodiesOfConstituency(constituencyFieldElVal);							
+	}	
 		
   }
   
@@ -550,8 +546,8 @@ function executeOnload()
 	//first pre select the first option when page loads
 	 var  localBodyToAssemblyRadioEl = document.getElementById("localBodyToAssemblyRadio");
 	localBodyToAssemblyRadioEl.checked = true;
-	showSelectOptions();
-	getLocalBodiesOfDistrict('localBodyWise');	
+	showSelectOptions('onLoad');
+	//getLocalBodiesOfDistrict('localBodyWise');	
 }
 
 function getLocalBodiesOfConstituency(id)
@@ -677,12 +673,12 @@ function getLocalBodiesInConstituency(id, selectElement, year)
 		<legend>Mapping Criteria</legend>   
 			<table width="100%">
 			<tr>
-				<td><input type="radio" id="localBodyToAssemblyRadio" name="mappingOptionsRadio" value="localBodyToAssembly" onclick="showSelectOptions()"/>Map <B>Municipality/Corp/GMC To Assembly Constituency</B></td>
-				<td><input type="radio" id="wardsInLocalBodyToAssemblyRadio" name="mappingOptionsRadio" value="wardsInLocalBodyToAssembly" onclick="showSelectOptions()"/>Map <B>Wards</B> in Municipality/Corp/GMC <B>To Assembly Constituency</B></td>				
+				<td><input type="radio" id="localBodyToAssemblyRadio" name="mappingOptionsRadio" value="localBodyToAssembly" onclick="showSelectOptions('onClick')"/>Map <B>Municipality/Corp/GMC To Assembly Constituency</B></td>
+				<td><input type="radio" id="wardsInLocalBodyToAssemblyRadio" name="mappingOptionsRadio" value="wardsInLocalBodyToAssembly" onclick="showSelectOptions('onClick')"/>Map <B>Wards</B> in Municipality/Corp/GMC <B>To Assembly Constituency</B></td>				
 			</tr>
 			<tr>
-				<td><input type="radio" id="boothsInAssemblyToLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToLocalBody" onclick="showSelectOptions()"/>Map <B>Booths</B> in Assembly Constituency <B>To Municipality/Corp/GMC</B></td>
-				<td><input type="radio" id="boothsInAssemblyToWardsInLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToWardsInLocalBody" onclick="showSelectOptions()"/>Map <B>Booths</B> in Assembly Constituency <B>To Wards</B> in Municipality/Corp/GMC</td>				
+				<td><input type="radio" id="boothsInAssemblyToLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToLocalBody" onclick="showSelectOptions('onClick')"/>Map <B>Booths</B> in Assembly Constituency <B>To Municipality/Corp/GMC</B></td>
+				<td><input type="radio" id="boothsInAssemblyToWardsInLocalBodyRadio" name="mappingOptionsRadio" value="boothsInAssemblyToWardsInLocalBody" onclick="showSelectOptions('onClick')"/>Map <B>Booths</B> in Assembly Constituency <B>To Wards</B> in Municipality/Corp/GMC</td>				
 			</tr>
 			</table>
 		</fieldset>
@@ -721,9 +717,7 @@ function getLocalBodiesInConstituency(id, selectElement, year)
 			<div id="localBodyElectionData_main_right" style="height:200px;overflow:auto;"></div>
 			<div id="localBodyElectionData_main_button" ></div>			
 		</fieldset>
-	</div>
-	
-		
+	</div>		
 	</div>				
 	<script type="text/javascript">
 	
