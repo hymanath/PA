@@ -11,7 +11,7 @@ public class QuestionsOptionsVO {
 	private String hasAlreadyPolled;
 	private Long totalVotesObtainedForPoll; 
 	private String startDate;
-	
+	private Long differenceBetweenCurrentDateAndPolledDate;	
 	private ResultStatus resultStatus;
 	
 	
@@ -90,6 +90,13 @@ public class QuestionsOptionsVO {
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
-	}	
-	
+	}
+	public Long getDifferenceBetweenCurrentDateAndPolledDate() {
+		return differenceBetweenCurrentDateAndPolledDate;
+	}
+	public void setDifferenceBetweenCurrentDateAndPolledDate(
+			Long differenceBetweenCurrentDateAndPolledDate) {
+		this.differenceBetweenCurrentDateAndPolledDate = differenceBetweenCurrentDateAndPolledDate;
+	}
+
 }
