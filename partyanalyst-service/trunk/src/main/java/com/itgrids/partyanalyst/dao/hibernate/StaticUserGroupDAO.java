@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.model.StaticUserGroup;
@@ -133,6 +134,20 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 		Object[] params = {staticUserId,groupId};
 		return getHibernateTemplate().find("from StaticUserGroup model where model.staticUser.staticUserId = ? and "+
 				"model.personalUserGroup.personalUserGroupId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getStaticUserIdsByLocalGroupId(Long localGroupId) {
+		
+		return getHibernateTemplate().find("select model.staticUser.staticUserId from StaticUserGroup model where "+
+				"model.personalUserGroup.personalUserGroupId = ?",localGroupId);
+	}
+
+	public Integer deleteStaticUserGroupByStaticUserIds(List<Long> staticUserIds) {
+		
+		Query queryObject = getSession().createQuery("delete from StaticUserGroup model where model.staticUser.staticUserId in (:staticUserIds)");
+		queryObject.setParameterList("staticUserIds", staticUserIds);
+		return queryObject.executeUpdate();
 	}
 
 }
