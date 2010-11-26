@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
@@ -22,8 +25,9 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.mail.iap.Response;
 
-public class VotesPollAction extends ActionSupport implements ServletRequestAware, ServletContextAware {
+public class VotesPollAction extends ActionSupport implements ServletRequestAware, ServletContextAware,ServletResponseAware {
 
 
 	/**
@@ -33,6 +37,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	private static final Logger log = Logger.getLogger(VotesPollAction.class);
 	
 	private HttpServletRequest request;
+	private HttpServletResponse response;
 	private HttpSession session;
 	private String task = null;
 	JSONObject jObj = null;
@@ -113,6 +118,17 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 		jObj = obj;
 	}
 	
+	public HttpServletResponse getResponse() {
+		return response;
+	}
+	public void setResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+	
+	public void setServletResponse(HttpServletResponse response) {
+        this.response = response;
+	}
+	
 	public String execute () throws Exception 
 	{
 		return SUCCESS;
@@ -127,8 +143,26 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			if(jObj.getString("task").equals("getAllPolls")){
-				opinionPollVO = opinionPollService.getAllPollsForTheDay();
+			if(jObj.getString("task").equals("getAllPolls"))
+			{				
+				Cookie[] cookieArray = request.getCookies();
+				boolean availabiity = false;
+				for(int i=0;i<cookieArray.length;i++){
+					 Cookie cookie = cookieArray[i];
+					 if(cookie.getName().equalsIgnoreCase("hasPolled")){
+						 availabiity = true;
+					 }
+				}
+				if(availabiity){
+					opinionPollVO = opinionPollService.getDetailsOfTheLatestOpinionPoll();
+					questionsAndChoicesPercentage = opinionPollVO.getQuestionsOptionsVO();
+					String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
+			        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			        questionsAndChoicesPercentage.setImagePath(chartName);
+					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
+				}else{
+					opinionPollVO = opinionPollService.getAllPollsForTheDay();
+				}
 			}
 		}
 		return SUCCESS;		
@@ -143,8 +177,12 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			if(jObj.getString("task").equals("saveSelectedPoll")){
+			if(jObj.getString("task").equals("saveSelectedPoll")){				
 				questionsAndChoicesPercentage = opinionPollService.saveSelectionResultOfThePoll(jObj.getLong("questionId"),jObj.getLong("selectedPollId"));
+				Cookie cookie = new Cookie("hasPolled","true");				
+				response.addCookie(cookie);
+				cookie.setMaxAge(questionsAndChoicesPercentage.getDifferenceBetweenCurrentDateAndPolledDate().intValue());
+				
 				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
 		        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);

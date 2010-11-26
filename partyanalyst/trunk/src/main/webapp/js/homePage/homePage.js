@@ -447,8 +447,12 @@ function homePageAjaxCall(param,jsObj,url){
 									showResults(myResults);
 								} 
 								else if(jsObj.task == "getAllPolls")
-								{									
-									buildNewPoll(myResults);
+								{
+									if(myResults.description==null){
+										showVotesObtainedForOptions(myResults.questionsOptionsVO);
+									}else{
+										buildNewPoll(myResults);
+									}
 								}
 								else if(jsObj.task == "saveSelectedPoll")
 								{									
