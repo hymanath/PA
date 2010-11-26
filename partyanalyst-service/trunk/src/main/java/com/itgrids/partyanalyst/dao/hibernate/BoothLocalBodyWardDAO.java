@@ -17,12 +17,13 @@ public class BoothLocalBodyWardDAO extends GenericDaoHibernate<BoothLocalBodyWar
 	public Integer deleteRecords(List<Long> boothIds, Long wardId) {
 		StringBuilder query = new StringBuilder();
 		query.append("delete from BoothLocalBodyWard model ");
-		query.append("where model.booth.boothId in (:boothIds) ");
-		query.append("and model.localBodyWard.constituencyId = ?");	
+		query.append("where model.localBodyWard.constituencyId = ?");
+		query.append(" and model.booth.boothId in (:boothIds) ");
+			
 		Query queryObject = getSession().createQuery(query.toString());
-		
-		queryObject.setParameterList("boothIds", boothIds);	
 		queryObject.setParameter(0, wardId);
+		queryObject.setParameterList("boothIds", boothIds);	
+		
 		return queryObject.executeUpdate();
 	}
 	

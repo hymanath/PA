@@ -67,20 +67,20 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 	}*/
 	
 	
-	/*public void testFindByAssemblyLocalElectionBody()
+	public void testFindByAssemblyLocalElectionBody()
 	{
-		List result = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(116l, "2010");
+		List result = assemblyLocalElectionBodyWardDAO.findByAssemblyLocalElectionBody(135l, "2009");
 		System.out.println("Results Size:"+result.size());
 		for(int i = 0;i<result.size();i++)
 		{
 			Object[] obj = (Object[])result.get(i);
 			System.out.println("id:"+Long.parseLong(obj[0].toString()));
-			System.out.println("name:"+obj[1].toString());
-			System.out.println("name:"+obj[2].toString());
+			//System.out.println("name:"+obj[1].toString());
+		//	System.out.println("name:"+obj[2].toString());
 		}
-	}*/
+	}
 	
-	public void testDeleteByWardsAndConstituency()
+	/*public void testDeleteByWardsAndConstituency()
 	{
 		List<Long> ids = new ArrayList<Long>(); 
 		ids.add(643l);
@@ -88,7 +88,7 @@ public class AssemblyLocalElectionBodyWardDAOHibernateTest  extends BaseDaoTestC
 		int result=assemblyLocalElectionBodyWardDAO.deleteByWardsAndConstituency(ids);
 		System.out.println("No of records deleted:"+result);
 		setComplete();
-	}
+	}*/
 	
 	/*public void testGetAssemblyLocalElectionBodyWardIds()
 	{

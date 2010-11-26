@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,17 +16,20 @@ import com.itgrids.partyanalyst.dao.IBoothVillageDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IUserMappingsHistoryDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothLocalBodyWard;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.UserMappingsHistory;
 import com.itgrids.partyanalyst.service.IBoothMapperService;
+import com.itgrids.partyanalyst.service.IDateService;
 
 public class BoothMapperService implements IBoothMapperService{
 
@@ -36,7 +40,10 @@ public class BoothMapperService implements IBoothMapperService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private IBoothVillageDAO boothVillageDAO;
-	private IDelimitationConstituencyDAO delimitationConstituencyDAO;	 
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;	
+	private IUserMappingsHistoryDAO userMappingsHistoryDAO;
+	private IRegistrationDAO registrationDAO;
+	private IDateService dateService;
 	
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
@@ -104,6 +111,31 @@ public class BoothMapperService implements IBoothMapperService{
 	public void setAssemblyLocalElectionBodyWardDAO(
 			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
 		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}	
+
+	public IUserMappingsHistoryDAO getUserMappingsHistoryDAO() {
+		return userMappingsHistoryDAO;
+	}
+
+	public void setUserMappingsHistoryDAO(
+			IUserMappingsHistoryDAO userMappingsHistoryDAO) {
+		this.userMappingsHistoryDAO = userMappingsHistoryDAO;
+	}	
+
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}	
+
+	public IDateService getDateService() {
+		return dateService;
+	}
+
+	public void setDateService(IDateService dateService) {
+		this.dateService = dateService;
 	}
 
 	public List<ConstituencyBoothInfoVO> getBoothOfAssemblyByYear(Long constituencyId, Long year){
@@ -120,28 +152,34 @@ public class BoothMapperService implements IBoothMapperService{
 		return booths;
 	}
 	
-	public ResultWithExceptionVO saveBoothLocalElectionBodyMappingInfo(List<Long> boothIds,List<Long> boothIdsToModify, Long locationId, Boolean isWard){
+	public ResultStatus saveBoothLocalElectionBodyMappingInfo(List<Long> boothIds,List<Long> boothIdsToModify, Long locationId, Boolean isWard, Long userId){
 		int i = 0;
-		ResultWithExceptionVO result = new ResultWithExceptionVO(); 
+		ResultStatus result = new ResultStatus(); 
+		
 		try{
 			Long localBodyId = 0l;
 			Constituency localBodyWard = null;
 			if(isWard){
 				if(boothIdsToModify.size()>0)
 					boothLocalBodyWardDAO.deleteRecords(boothIdsToModify,locationId);
-				
-				localBodyWard = constituencyDAO.get(locationId);
-				localBodyId = localBodyWard.getLocalElectionBody().getLocalElectionBodyId();
-				List<Booth> booths = boothDAO.findByBoothIds(boothIds);
-				for(Booth booth:booths)
-					boothLocalBodyWardDAO.save(new BoothLocalBodyWard(booth, localBodyWard));
+				if(boothIds.size()>0)
+				{
+					localBodyWard = constituencyDAO.get(locationId);
+					localBodyId = localBodyWard.getLocalElectionBody().getLocalElectionBodyId();
+					List<Booth> booths = boothDAO.findByBoothIds(boothIds);
+					for(Booth booth:booths)
+					{
+						boothLocalBodyWardDAO.save(new BoothLocalBodyWard(booth, localBodyWard));						
+					}	
+				}
+				result.setExceptionMsg(saveDataInUserMappingHistory(userId, "BoothLocalBodyWard", boothIdsToModify.size(),boothIds.size()));	
 			}else
 				if(boothIdsToModify.size()>0)
 					boothDAO.removeMappingToLocalBody(boothIdsToModify);
 				localBodyId = locationId;
 			if(boothIds.size()>0)
 				i = boothDAO.updateLocalBodyInfoByBoothIdsAndWardId(localBodyId, boothIds);
-
+			result.setExceptionMsg(saveDataInUserMappingHistory(userId, "Booth", boothIdsToModify.size(),boothIds.size()));	
 		}catch (Exception e) {
 			e.printStackTrace();
 			result.setExceptionEncountered(e);
@@ -150,9 +188,9 @@ public class BoothMapperService implements IBoothMapperService{
 		return result;
 	}
 	
-	public ResultWithExceptionVO saveAssemblyLocalBodyMappingInfo(Long localBodyId, List<Long> localBodyOrWardIds, List<Long> localBodyOrWardIdsToModify, 
-			Long assemblyId, String year, Boolean isWard){
-		ResultWithExceptionVO result = new ResultWithExceptionVO();
+	public ResultStatus saveAssemblyLocalBodyMappingInfo(Long localBodyId, List<Long> localBodyOrWardIds, List<Long> localBodyOrWardIdsToModify, 
+			Long assemblyId, String year, Boolean isWard, Long userId){
+		ResultStatus result = new ResultStatus();
 		Constituency constituency = constituencyDAO.get(assemblyId);
 		LocalElectionBody localElectionBody = null;
 		AssemblyLocalElectionBody assemblyLocalElectionBody = null;
@@ -201,29 +239,36 @@ public class BoothMapperService implements IBoothMapperService{
 						assemblyLocalElectionBodyWard.setConstituency(ward);
 						assemblyLocalElectionBodyWard.setYear(year);
 						assemblyLocalElectionBodyWardDAO.save(assemblyLocalElectionBodyWard);	
-						}		
+						}	
+						
 				}
+				result.setExceptionMsg(saveDataInUserMappingHistory(userId, "AssemblyLocalElectionBodyWard", localBodyOrWardIdsToModify.size(),localBodyOrWardIds.size()));
 			}else{
 				//delete existing mappings if they were unchecked in mapper ui
 				if(localBodyOrWardIdsToModify.size()>0)
 					assemblyLocalElectionBodyDAO.deleteByLocalElectionBodyAndConstituency(localBodyOrWardIdsToModify, assemblyId);
-				List<LocalElectionBody> localBodies = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
-				for(LocalElectionBody electionBody:localBodies){
-					assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(electionBody.getLocalElectionBodyId(), 
-							assemblyId, year);
-					if(assemblyLocalBodies.size() > 0)
-						continue;
-					assemblyLocalElectionBody = new AssemblyLocalElectionBody();
-					assemblyLocalElectionBody.setConstituency(constituency);
-					assemblyLocalElectionBody.setLocalElectionBody(electionBody);
-					assemblyLocalElectionBody.setYear(year);
-					assemblyLocalElectionBody.setIsPartial("0");
-					assemblyLocalElectionBody = assemblyLocalElectionBodyDAO.save(assemblyLocalElectionBody);
+				if(localBodyOrWardIds.size()>0)
+				{	
+					List<LocalElectionBody> localBodies = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
+					for(LocalElectionBody electionBody:localBodies){
+						assemblyLocalBodies = assemblyLocalElectionBodyDAO.findByAssemblyLocalBodyAndYear(electionBody.getLocalElectionBodyId(), 
+								assemblyId, year);
+						if(assemblyLocalBodies.size() > 0)
+							continue;
+						assemblyLocalElectionBody = new AssemblyLocalElectionBody();
+						assemblyLocalElectionBody.setConstituency(constituency);
+						assemblyLocalElectionBody.setLocalElectionBody(electionBody);
+						assemblyLocalElectionBody.setYear(year);
+						assemblyLocalElectionBody.setIsPartial("0");
+						assemblyLocalElectionBody = assemblyLocalElectionBodyDAO.save(assemblyLocalElectionBody);
+					}	
 				}
+				result.setExceptionMsg(saveDataInUserMappingHistory(userId, "AssemblyLocalElectionBody", localBodyOrWardIdsToModify.size(),localBodyOrWardIds.size()));
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setExceptionEncountered(e);
+			
 		}		
 		return result;		
 	}
@@ -286,6 +331,36 @@ public class BoothMapperService implements IBoothMapperService{
 			resultWithException.setExceptionEncountered(e);
 		}
 		return resultWithException;
+	}
+	/**
+	 * This method is used to save the data in userMappingsHistory table, to keep track of all the modifications 
+	 * made by user in mapping related tables in the database 
+	 * @param userId
+	 * @param tableName
+	 * @param noOfRowsDeleted
+	 * @param noOfRowsUpdated
+	 * @return
+	 */
+	private String saveDataInUserMappingHistory(Long userId, String tableName, int noOfRowsDeleted, int noOfRowsUpdated)
+	{
+	
+		String message = null;
+		UserMappingsHistory userMappingsHistory = new UserMappingsHistory();
+		userMappingsHistory.setUser(registrationDAO.get(userId));
+		userMappingsHistory.setTableName("booth_local_body_ward");
+		userMappingsHistory.setLastUpdated(new Date());
+		userMappingsHistory.setNoOfRowsDeleted(Long.parseLong(noOfRowsDeleted+""));
+		userMappingsHistory.setNoOfRowsUpdated(Long.parseLong(noOfRowsUpdated+""));
+		try
+		{
+			userMappingsHistoryDAO.save(userMappingsHistory);			
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+			message = "Exception occured while saving data in UserMappingsHistory table";			
+		}
+		return message;
+		
 	}
 	
 }
