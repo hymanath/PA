@@ -16,5 +16,6 @@ import com.itgrids.partyanalyst.model.LocalGroupRegion;
  *
  */
 public interface ILocalGroupRegionDAO extends GenericDao<LocalGroupRegion, Long> {
+	public Integer deleteLocalUserGroupRegionById(Long groupId);
 
 }
