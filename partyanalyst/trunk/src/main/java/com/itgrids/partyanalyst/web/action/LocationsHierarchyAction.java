@@ -285,6 +285,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			booths.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(booths);
+		} else if(jObj.getString("task").equalsIgnoreCase("localBodiesInConstituency"))
+		{
+			//to get all booths in ward  
+			Long locationId = jObj.getLong("id");
+			String year = jObj.getString("year");
+			List<SelectOptionVO> localBodies = getRegionServiceDataImp().getLocalElectionBodiesInConstituency(locationId, year);
+			localBodies.add(0, new SelectOptionVO(0l, "Select Location"));
+			setRegionsList(localBodies);
 		} 	
 		
 		return Action.SUCCESS;
@@ -386,6 +394,27 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		String year = jObj.getString("year");
 		regions = getRegionServiceDataImp().getboothsInLocalBodiesAndConst(localBodyId, constituencyId, year);
 		 return Action.SUCCESS;
+	}
+	
+	public String getboothsInWardsAndConst()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		Long wardId = jObj.getLong("wardId");
+		Long constituencyId = jObj.getLong("constituencyId");
+		String year = jObj.getString("year");
+		regions = getRegionServiceDataImp().getboothsInWardsAndConst(wardId, constituencyId, year);
+		
+		return Action.SUCCESS;
 	}
 	
 	

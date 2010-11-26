@@ -135,7 +135,7 @@
 									<fieldset class="f2" style="height:150px;">
 									<legend class="l2">Mapping(User Interface)</legend>
 									<h4>Map Booths To Revenue Village<a href="<s:url action="hamletBoothMapperAction"/>"> Map </a></h4>
-									<h4>Map Booths To Local Election Body Wards<a href="<s:url action="municipalWardsAssemblyBoothsMapperAction"/>"> Map </a></h4>
+									<h4>Map Booths To Local Election Body Wards<a href="<s:url action="municipalWardsAssemblyBoothsMapperAction?windowTask=new&constituencyId=0"/>"> Map </a></h4>
 									<h4>Map Villages To Booths <a href="<s:url action="villageBoothMapperAction"/>"> Map </a></h4>
 									</fieldset>
 								</td>								

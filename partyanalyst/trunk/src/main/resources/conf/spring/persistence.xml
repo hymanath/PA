@@ -153,6 +153,7 @@
 				<value>com.itgrids.partyanalyst.model.BoothVillage</value>
 				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserRelation</value>
+				<value>com.itgrids.partyanalyst.model.UserMappingsHistory</value>
 				</list>
 		</property>
 	</bean>

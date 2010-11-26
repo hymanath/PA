@@ -461,4 +461,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="userMappingsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserMappingsHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
