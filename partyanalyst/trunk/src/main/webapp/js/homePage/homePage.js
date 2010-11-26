@@ -348,8 +348,16 @@ function navigateToStatePage()
 function navigateToDistrictPage()
 {
 	var distSelectEl = document.getElementById("districtList_d");
+	var alertEl = document.getElementById("alertMessage_district");
 	var distSelectElVal = distSelectEl.options[distSelectEl.selectedIndex].value;
 	var distSelectElText =  distSelectEl.options[distSelectEl.selectedIndex].text;
+	if(distSelectElVal == 0)
+	{
+		alertEl.innerHTML = 'Please Select District';
+		return;
+	}
+	else
+		alertEl.innerHTML = '';
 	window.location="districtPageAction.action?districtId="+distSelectElVal+"&districtName="+distSelectElText;
 	
 }
