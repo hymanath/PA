@@ -13,11 +13,11 @@ public interface IOpinionPollService {
 	
 	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId);
 	
-
 	public boolean createPoll(OpinionPollVO dataVO, Long userId);
 
 	public List<QuestionsOptionsVO> getAllPolls();
 	
 	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId);
 
+	public OpinionPollVO getDetailsOfTheLatestOpinionPoll();
 }

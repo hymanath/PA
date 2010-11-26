@@ -132,7 +132,35 @@ public class OpinionPollService implements IOpinionPollService {
 		return getQuestionAndPercentageOfVotesForChoices(opinionPollQuestionId);
 	}
 	
-	
+
+	/**
+	 * This method is used to get the results of the latest opinion poll
+	 * @return
+	 */
+	public OpinionPollVO getDetailsOfTheLatestOpinionPoll(){
+		List result  = null;
+		OpinionPollVO opinionPollVO  = new OpinionPollVO();
+		ResultStatus resultStatus = new ResultStatus();
+		Long latestPollId=1l;
+		try{
+			result  = opinionPollQuestionsDAO.getAllPollsForThePresentDay(getCurrentDateAndTime(),IConstants.TRUE);	
+			 for(int i=0;i<result.size();i++){
+					Object[] parms = (Object[])result.get(i);
+					OpinionPollQuestions poll = (OpinionPollQuestions) parms[3];
+					latestPollId = poll.getOpinionPollQuestionsId();
+			 }
+			opinionPollVO.setQuestionsOptionsVO(getQuestionAndPercentageOfVotesForChoices(latestPollId));
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
+			opinionPollVO.setResultStatus(resultStatus);
+			return opinionPollVO; 
+		}catch(Exception e){
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			opinionPollVO.setResultStatus(resultStatus);
+			return opinionPollVO;
+		}
+		 
+	}
 	
 	/**
 	 * This method caluculates the percentage of votes that are obtained for each option in that question and 
@@ -142,8 +170,7 @@ public class OpinionPollService implements IOpinionPollService {
 	 * @return
 	 */
 	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId){
-		Long totalPolledVotes=0l;
-		Double totalVotesPercentage = new Double(0);
+		Long totalPolledVotes=0l;		
 		QuestionsOptionsVO question = new QuestionsOptionsVO();
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -161,7 +188,9 @@ public class OpinionPollService implements IOpinionPollService {
 				optionVO.setVotesObtained(new Long(parms[0].toString()));
 				optionVO.setPercentage(new BigDecimal((new Long(parms[0].toString())*100.0)/totalPolledVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				opinionPollQuestionAndPercentages.add(optionVO);			
+				question.setDifferenceBetweenCurrentDateAndPolledDate(new Long(parms[3].toString()));
 			}		
+			
 			question.setQuestionId(opinionPollQuestionId);
 			question.setOptions(opinionPollQuestionAndPercentages);		
 			question.setTotalVotesObtainedForPoll(totalPolledVotes);

@@ -11,6 +11,7 @@ public class OpinionPollVO {
 	private Date opinionPollStartDate;
 	private Date opinionPollEndDate;
 	private List<QuestionsOptionsVO> quesitons;
+	private QuestionsOptionsVO questionsOptionsVO;
 	private ResultStatus resultStatus;
 	
 	public OpinionPollVO() {
@@ -33,7 +34,14 @@ public class OpinionPollVO {
 		this.resultStatus = resultStatus;
 		}
 	
-	
+	public QuestionsOptionsVO getQuestionsOptionsVO() {
+		return questionsOptionsVO;
+	}
+
+	public void setQuestionsOptionsVO(QuestionsOptionsVO questionsOptionsVO) {
+		this.questionsOptionsVO = questionsOptionsVO;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}

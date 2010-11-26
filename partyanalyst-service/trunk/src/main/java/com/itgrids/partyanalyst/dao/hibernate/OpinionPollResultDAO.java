@@ -43,7 +43,7 @@ public class OpinionPollResultDAO extends GenericDaoHibernate<OpinionPollResult,
 			Long opinionPollQuestionId) {		
 		 Object[] parms = {opinionPollQuestionId};
 		return getHibernateTemplate().find("select model.count,model.opinionPollQuestionOptions.questionOption," +
-				"model.opinionPollQuestionOptions.questionsRepository.question from OpinionPollResult model where" +
+				"model.opinionPollQuestionOptions.questionsRepository.question,DATEDIFF(CURDATE(),model.opinionPollQuestions.opinionPoll.opinionPollEndDate) from OpinionPollResult model where" +
 				" model.opinionPollQuestions.opinionPollQuestionsId  = ? ",parms);
 	}
 	
