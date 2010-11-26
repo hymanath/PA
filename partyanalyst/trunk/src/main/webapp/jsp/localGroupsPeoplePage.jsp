@@ -303,6 +303,28 @@
 			connectPopupPanel.render();
 	}
 
+
+  function deleteLocalUserGroup(localUserGroupIdId){
+
+		var ask = confirm("Do You want to delete");
+			if (ask ==  true)
+		 {
+			var jsObj= 
+			{		
+				localUserGroupIdId :localUserGroupIdId,		  			
+				task: "deleteLocalUserGroup"		
+			};
+			
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "deleteLocalUserGroupAjaxAction.action?"+param;
+			callAjax(jsObj,url);
+		}	
+		
+		else
+		  {
+		  		return;	
+		  }	
+		}		
 	function enableSenderName()
 	{
 		var elmt = document.getElementById("senderNameText");
@@ -400,6 +422,10 @@
 										else
 											statusElmt.innerHTML = '<font color="red">SMS cannot been sent to selected people due to some techniccal difficulty.. </font>';
 									}
+									if(jsObj.task == "deleteLocalUserGroup"){
+											alert("Succesfully Deleted");
+											windwRefresh();	
+									}
 								}
 							catch (e)
 								{   
@@ -447,13 +473,18 @@
 	{
 		
 	}
-	
-	function redirectToNewLocalGroupCreation()
-	{		
-		var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?groupCategoryId="+${localGroupsPeople[0].groupCategoryId},"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
-		createGroupBrowser.focus();
-	}
 
+	function windwRefresh()
+	{
+		window.location.reload();
+	}
+	
+function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)
+		{
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?windowTask="+windowTask+"&grCategoryId="+categoryId+"&localUserGroupId="+localUserGroupId,"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+		    createGroupBrowser.focus();
+		}
+	
 	function redirectToNewLocalGroupMember(categoryId,groupId)
 	{
 
@@ -477,7 +508,7 @@
 			<table width="100%">
 				<tr>
 					<td align="left">
-						<input type="button" value="Create New ${regionTitle}" onclick="redirectToNewLocalGroupCreation()"></input>
+						<input type="button" value="Create New ${regionTitle}" onclick="redirectToNewLocalGroupCreation('new',<%= request.getParameter("regionTitleId")%>,0)"></input>
 					</td>
 					<td align="right">
 						<input type="button" value="select All" onclick="selectAllPeople()"></input>
@@ -502,11 +533,16 @@
 								<td>
 									<a class="groupHeadingAnc" href="javascript:{}" onclick="redirectToNewLocalGroupMember(${group.groupCategoryId},${group.localUserGroupId})">Add Members To ${group.localUserGroupName}</a>
 								</td>
+								<td width="2%"><img src="images/icons/edit.png" style="text-decoration: none; border: 0px none;"></td>
+								<td>
+									<a class="groupHeadingAnc" href="javascript:{}" onclick="redirectToNewLocalGroupCreation('edit',<%= request.getParameter("regionTitleId")%>,${group.localUserGroupId})">Edit ${group.localUserGroupName}</a>
+								</td>
 
 								<td width="2%"><img src="images/icons/delete.png" style="text-decoration: none; border: 0px none;"></td>
 								<td>
-									<a class="groupHeadingAnc" href="javascript:{}">Delete ${group.localUserGroupName}</a>
-								</td>								
+									<a class="groupHeadingAnc" href="javascript:{}" onclick="deleteLocalUserGroup(${group.localUserGroupId})">Delete ${group.localUserGroupName}</a>
+								</td>
+																
 							</tr>
 						</table>
 					</div>
