@@ -186,7 +186,7 @@
 	border-left:1px solid #E0E0D6;
 	border-right:1px solid #E0E0D6;
 	border-bottom:1px solid #E0E0D6;
-	width:272px
+	width:272px;
 	overflow:auto;
 	height:100px;
 }
