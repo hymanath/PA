@@ -90,10 +90,22 @@ function callAjax(param,jsObj,url){
 											elmt.style.display = 'none';
 										showAllianceDetails(myResults);
 										showStatewiseResultsBarChart(myResults);									
-										showPartywiseDetailsDataTable(myResults);												
-										showDistrictWiseResultsLineGraph(myResults);
-										buildAllDistrictResultsDataTable(myResults);
-										buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts,"all", "null");
+										showPartywiseDetailsDataTable(myResults);								
+										
+										if(myResults.electionResultsInDistricts.allPartiesResults != null &&
+											myResults.electionResultsInDistricts.allPartiesResults.length > 0)
+										{
+											showDistrictWiseResultsLineGraph(myResults);
+											buildAllDistrictResultsDataTable(myResults);
+											buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts,"all", "null");
+										}else
+										{
+											var toolsDiv = document.getElementById("analysisToolsDataDiv");
+											var subRegionsDiv = document.getElementById("subRegionWiseDetailsDiv");
+                                            toolsDiv.innerHTML='';
+											subRegionsDiv.innerHTML='';
+										}
+
 									}  									
 								}
 							catch (e) {   
@@ -1241,6 +1253,8 @@ callAjax(rparam,jsObj,url);
 --></DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
+
+<DIV id="subRegionWiseDetailsDiv">
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
@@ -1302,6 +1316,9 @@ callAjax(rparam,jsObj,url);
 </DIV>
 </DIV>
 <DIV class="graphBottom"></DIV>
+</DIV>
+
+<DIV id="analysisToolsDataDiv">
 <DIV class="graphTop">Analysis Tools</DIV>
 <DIV id="toolsDiv">
 	<TABLE class="toolsTable"><TR>
@@ -1444,6 +1461,7 @@ callAjax(rparam,jsObj,url);
 <DIV class = "yui-skin-sam"><div id="panel"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="detailedResultsPanel"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
+</DIV>
 <DIV id="task10"></DIV>
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
