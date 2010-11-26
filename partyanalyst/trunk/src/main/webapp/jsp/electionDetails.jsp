@@ -1366,7 +1366,8 @@ callAjax(rparam,jsObj,url);
 					<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" onclick="openPreYearDistAnalysisWindow()" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
 				</DIV>				
 				</DIV>				
-			</TD>			
+			</TD>		
+			<c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">
 			<TD class="td">
 				<DIV class="toolsDisplay">
 					<h3 align="left">Party Performance</h3>
@@ -1399,7 +1400,8 @@ callAjax(rparam,jsObj,url);
 					</DIV>
 				</DIV>				
 			</TD>
-			<c:if test="${electionType == 'Assembly'}">		
+			</c:if>
+			<c:if test="${electionType == 'Assembly' || electionType == 'Parliament'}">		
 			<TD class="td">
 				<DIV id="comparePrevElection" class="toolsDisplay">
 					<h3 align="left">Elections Comparison</h3>
