@@ -1131,6 +1131,10 @@
 		
 		<action name="deleteInfluencingPeopleAjaxAction" class="influencingPeopleAction" method="deleteInfluencingPeople" >
 		</action>
+		
+		<action name="deleteLocalUserGroupAjaxAction" class="constituencyManagementAction" method="deleteLocalUserGroup" >
+		</action>
+		
 		<action name="sessionCleaningForAModuleAction" class="sessionClearingAction" method="clearingSession" >
 		</action>
 		
@@ -1770,13 +1774,13 @@
 				<param name="root">regions</param>				
 			</result>
         </action>
+        
         <action name="boothsInWardAndConstAction" class="locationsHierarchyAction" method="getboothsInWardsAndConst">
         	<result type="json" name="success">
 				<param name="root">regions</param>				
 			</result>
         </action>
-        
-        
+      
         <action name="testVoterAction" class="voterInfoAction" method="displayPerameters">
         	<result type="json" name="success">
 				<param name="root">constituencyManagementVO</param>				
