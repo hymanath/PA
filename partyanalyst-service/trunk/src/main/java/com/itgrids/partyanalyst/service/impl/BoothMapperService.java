@@ -347,7 +347,7 @@ public class BoothMapperService implements IBoothMapperService{
 		String message = null;
 		UserMappingsHistory userMappingsHistory = new UserMappingsHistory();
 		userMappingsHistory.setUser(registrationDAO.get(userId));
-		userMappingsHistory.setTableName("booth_local_body_ward");
+		userMappingsHistory.setTableName(tableName);
 		userMappingsHistory.setLastUpdated(new Date());
 		userMappingsHistory.setNoOfRowsDeleted(Long.parseLong(noOfRowsDeleted+""));
 		userMappingsHistory.setNoOfRowsUpdated(Long.parseLong(noOfRowsUpdated+""));
