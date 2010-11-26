@@ -6028,8 +6028,15 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		StringBuilder electionYears = new StringBuilder();		
 		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
-		List elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),stateId,electionSubType);			
-		return elections;
+		ElectionType electionType = electionTypeDAO.get(electinTypeId);
+		String elecType = electionType.getElectionType();
+		
+		List elections = null;
+		if(elecType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+			elections = electionDAO.findParliamentElectionIdForGivenElectionYearAndElectionYears(electinTypeId, electionYears.substring(1), electionSubType);
+		else
+		    elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId,electionYears.substring(1),stateId,electionSubType);			
+	 return elections;
 	}
 
 	public List<SelectOptionVO> getLocationsHirarchyByType(String type, Long id) {
