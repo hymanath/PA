@@ -28,5 +28,7 @@ public interface IStaticUsersDAO extends GenericDao<StaticUsers, Long> {
 	public List findGroupMembersNameAndMobileNosByMemberIds(List<Long> memberIds);
 	@SuppressWarnings("unchecked")
 	public List findGroupMembersNameAndMobileNosByMemberIds(String memberIds);
+	
+	public Integer deleteStaticUsersByStaticUserIds(List<Long> staticUserIds);
 
 }
