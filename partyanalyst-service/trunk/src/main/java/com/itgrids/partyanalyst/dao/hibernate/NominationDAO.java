@@ -308,6 +308,29 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictIdForLocalElectionBodys(final Long electionId, final Long partyId, final Long districtId) {
+		
+		return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		List<Nomination> constElectionResults = session.createCriteria(Nomination.class)
+            							.createAlias("constituencyElection", "constElec")
+            							.createAlias("party", "p")
+            							.createAlias("constElec.election", "elec")
+            							.createAlias("constElec.constituency", "const")
+            							.createAlias("const.localElectionBody", "localBody")
+            							.createAlias("localBody.district", "district")
+            							.createAlias("candidate", "cand")
+            							.add(Expression.eq("district.districtId", districtId))
+            							.add(Expression.eq("elec.electionId", electionId))
+            							.add(Expression.eq("p.partyId", partyId))
+            							.addOrder(Order.asc("cand.lastname"))
+            							.list();
+            		 return constElectionResults;
+            }
+        });
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List getCandidateNPartyInfoForParliament(String constituencyIds,String electionType,Long rank, String electionSubtype)
 	{
 		Object[] params = {rank, electionType, electionSubtype};
@@ -1757,4 +1780,5 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}		
 		return getHibernateTemplate().find(sb.toString(),params);		
 	}
+	
 }
