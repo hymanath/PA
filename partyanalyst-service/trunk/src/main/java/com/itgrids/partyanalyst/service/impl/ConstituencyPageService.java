@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
@@ -116,7 +117,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IBoothDAO boothDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
-
+	private ElectionDAO electionDAO;
+	
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -128,6 +130,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public IConstituencyElectionDAO getConstituencyElectionDAO() {
 		return constituencyElectionDAO;
+	}
+
+	public ElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(ElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
 	}
 
 	public void setConstituencyElectionDAO(
@@ -466,6 +476,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		String electionType = "";
 		Boolean hasAnalyzeData = false;
 		List list = new ArrayList(0);
+		Long electionYear=0l;
 		if(constituency != null){
 			
 			if(constituency.getDistrict() != null){
@@ -486,8 +497,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			List<Long> constituencyIds = new ArrayList<Long>(0);
 			constituencyIds.add(constituencyId);
-			
-			list = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
+			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, constituency.getState().getStateId(),IConstants.ELECTION_SUBTYPE_MAIN)
+					.get(0).toString()) ;
+			list = constituencyElectionDAO.getLatestReservationZone(constituencyIds,electionYear);
 					
 			for(int i=0;i<list.size();i++){
 				Object[] params = (Object[])list.get(i);

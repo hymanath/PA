@@ -338,18 +338,14 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"and model.constituency.constituencyId = ?",params);
 	}
 	
-	public List getLatestReservationZone(List<Long> constituencyIds){
+	public List getLatestReservationZone(List<Long> constituencyIds,Long electionYear){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.reservationZone,model.election.electionYear,model.constituency.constituencyId from ConstituencyElection model");			
-		query.append(" where (model.election.electionYear in ");
-		query.append(" (select max(model2.electionYear) from Election model2 where model2.elecSubtype = ? ) ");
-		query.append(" or model.election.electionYear in ");
-		query.append(" (select max(model2.electionYear) from Election model2 where model2.elecSubtype = ? )) ");
+		query.append(" where model.election.electionYear = ? ");		
 		query.append(" and model.constituency.constituencyId in (:constituencyIds)");	
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		queryObject.setString(0,IConstants.ELECTION_SUBTYPE_MAIN);
-		queryObject.setString(1,IConstants.ELECTION_SUBTYPE_BYE);
+		queryObject.setLong(0,electionYear);		
 		queryObject.setParameterList("constituencyIds", constituencyIds);
 		return queryObject.list();
 	}
