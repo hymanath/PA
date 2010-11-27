@@ -903,8 +903,8 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 							<div id="votingTrendzDiv">
 								<div id="votingTrendzDiv_Head"></div>
 								<div id="votingTrendzDiv_Body"></div>
-							</div>
-						</c:if>								
+							</div>	
+						</c:if>						
 						</div>	
 					</div>
 				</div>

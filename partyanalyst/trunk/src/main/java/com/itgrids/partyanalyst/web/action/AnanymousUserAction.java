@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
@@ -38,7 +40,7 @@ ServletRequestAware, ServletContextAware{
 	private List<SelectOptionVO> dobDay;
 	private List<SelectOptionVO> dobYear;
 	private List<SelectOptionVO> dobMonth;
-	
+	private Long result;
 	
 	//for problem management login
     private String redirectLoc = null;
@@ -52,7 +54,12 @@ ServletRequestAware, ServletContextAware{
 	private IAnanymousUserService  ananymousUserService;
 	private IStaticDataService  staticDataService;  
 	
-	
+	public Long getResult() {
+		return result;
+	}
+	public void setResult(Long result) {
+		this.result = result;
+	}
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -263,5 +270,16 @@ ServletRequestAware, ServletContextAware{
 		return Action.SUCCESS;
 	}
 	
-	
+	public String checkForUserNameAvailability(){
+		 try {
+				jObj = new JSONObject(getTask());
+				System.out.println(jObj);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 result = new Long(ananymousUserService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
+		 System.out.println(" Check User :" + result);
+		 
+		 return SUCCESS;
+	 }
 }

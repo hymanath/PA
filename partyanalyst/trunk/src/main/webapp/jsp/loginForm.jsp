@@ -151,7 +151,7 @@ if(request.getParameter("constituencyName")!=null){
 
 				<P>Registered User Sign In</P>
 				
-				<input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Commercial User
+				<input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Customer
 				<input id="freeUserRadio" type="radio" name="userType" value="2"/>Free User
 				<BR>
 				<BR>

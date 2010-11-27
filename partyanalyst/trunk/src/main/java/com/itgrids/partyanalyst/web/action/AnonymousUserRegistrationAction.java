@@ -63,8 +63,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private Long districtId = null;
     private Long localBodyId = null;
     private Long constituencyId = null;
-    private Long localBodyElectionTypeId = null;
-	private Long result;
+    private Long localBodyElectionTypeId = null;	
 	private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
@@ -85,13 +84,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	
 //User Details Validation
-	
-	public Long getResult() {
-		return result;
-	}
-	public void setResult(Long result) {
-		this.result = result;
-	}
+
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "UserName is required",shortCircuit=true)	
 	public void setUserName(String userName) {
 		this.regVO.setUserName(userName);
@@ -392,16 +385,5 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		 return Action.ERROR;
 	}
 	 
-	 public String checkForUserNameAvailability(){
-		 try {
-				jObj = new JSONObject(getTask());
-				System.out.println(jObj);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		 result = new Long(ananymousUserService.checkForUserNameAvalilability(jObj.getString("userName")).getResultCode());
-		 System.out.println(" Check User :" + result);
-		 
-		 return SUCCESS;
-	 }
+	 
 }
