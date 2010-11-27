@@ -266,7 +266,7 @@
 				<tr>
 					<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
 					<td valign="top">
-						<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
+						<div id="copyRightTextDiv"> The Election Information displayed in this website are based on the data provided by the Election Commmission Of India.
 						Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
 				</tr>
 			</table>
@@ -275,7 +275,7 @@
 		<div id="index_inner_footer">
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
-				<td align="left"> Â© Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+				<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
 				<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
 			</tr>
 		</table>
