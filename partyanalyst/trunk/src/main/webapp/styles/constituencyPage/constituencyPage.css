@@ -265,7 +265,7 @@ legend
 	width:expression(document.body.clientWidth > 260? "260px": "auto" );
 }
 
-#problemPostingDiv , #problemViewingDiv , #constituencyPeopleConnectDiv
+#problemViewingDiv , #constituencyPeopleConnectDiv
 {
 	margin-top:50px;
 }

@@ -501,8 +501,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			rvStr += '</tr>';
 			rvStr += '</table>';
 			rvStr += '</div>';
-			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:100%;vertical-align:top;padding:5px;" class="datatableClass">';
-			rvStr += '<table class="datatableClass" width="90%" border="1" style="background-color:#F3F6F7;width:auto;">';
+			rvStr += '<div id="allMuncipalitiesDetails'+i+'" style="width:100%;vertical-align:top;" class="datatableClass">';
+			rvStr += '<table class="datatableClass" width="90%" border="1" style="background-color:#F3F6F7;width:auto;margin-left:5px;">';
 			rvStr += '<tr>';
 			rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
 			rvStr += '<th align="left">Total Wards :</th><td align="left">'+result[i].totalWards+'</td>';
@@ -1043,7 +1043,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		else{
 			graphDivStr += '<img height="260px" width="570" src="charts/'+results.chartPath+'" />';
 			graphDivStr += '<div>';
-			graphDivStr += '<table style="margin-left:200px;margin-right:200px;" width="40%" >';
+			graphDivStr += '<table style="margin-left:90px; margin-right:200px;" width="40%" >';
 			graphDivStr += '<tr>';
 			graphDivStr += '<td>';
 			graphDivStr += '<div ><input type="button" class="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div>';
@@ -1230,16 +1230,31 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
 <div id="connectPeoplePopup_outer" class="yui-skin-sam"><div id="connectPeoplePopup"></div></div>
 
-<div id="statePage_header" style="margin-top:10px;margin-bottom:10px;">
-	<table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td><img border="none" width="40" height="35" src="images/icons/statePage/header_left.png"></td>
-			<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</div></span></td>
-			<td><img border="none" width="40" height="35" src="images/icons/statePage/header_right.png"></td>
-		</tr>
-	</table>
+<div id="statePage_header" style="margin-top:10px;margin-bottom:10px;margin-left:15px;">
+<table width="100%">
+	<tr>
+		<td width="33%">
+			<table>
+				<tr>
+					<td>
+						<%@ include file="navigator.jsp" %>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="67%">
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td><img border="none" width="40" height="35" src="images/icons/statePage/header_left.png"></td>
+						<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</div></span></td>
+						<td><img border="none" width="40" height="35" src="images/icons/statePage/header_right.png"></td>
+					</tr>
+				</table>
+		</td>
+	</tr>
+</table>
 </div>
-<div style="padding:20px;"><%@ include file="navigator.jsp" %></div>
+
 <div id="districtPageMainDiv">	
 	<!--District Page Layout-->
 	<div id="districtPageLayout_main"></div>	
@@ -1475,7 +1490,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>
 			</div>
-			<div id="mp_body" class="yui-skin-sam" style="height:155px;">
+			<div id="mp_body" class="yui-skin-sam">
 				<div id="mpsInfoDivBody">
 					<table id="mpsDataSortingTable">			
 						<c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">			
