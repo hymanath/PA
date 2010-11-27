@@ -813,8 +813,7 @@ localBodyString = '<%=localBody%>';
 							  </tr>
 							</table>	
 						 </div>
-						<div id="pollsWidgetBody" class="yui-skin-sam">
-							
+						<div id="pollsWidgetBody" class="yui-skin-sam" style="height:260px;">
 						</div>
 						<div id="pollsWidgetFooter">
 							
