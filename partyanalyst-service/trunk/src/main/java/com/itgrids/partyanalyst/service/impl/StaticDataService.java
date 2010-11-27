@@ -1305,9 +1305,16 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Long getCompleteValidVotesForADistrict(Long electionId,Long districtId) throws Exception{
+	public Long getCompleteValidVotesForADistrict(Long electionTypeId,Long electionId,Long districtId) throws Exception{
 		Long completeValidVotes = new Long(0);
-		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrict(electionId,districtId);
+		List list = null;
+		
+		Long localElectionBodyCount = checkForLocalElectionType(electionTypeId);
+		if(localElectionBodyCount > 0){
+			list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrictForLocalElectionBody(electionId, districtId);
+		}else{
+		    list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrict(electionId,districtId);
+		}
 		if(list != null){
 		Object params = (Object)list.get(0);
 		Double validVotes = (Double)params;
@@ -1337,14 +1344,18 @@ public class StaticDataService implements IStaticDataService {
 		
 		try{
 			if(electionId != null && partyId != null && districtId != null){
-				//nominations = nominationDAO.findByElectionIdAndPartyId(electionId, partyId);
-				nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(electionId, partyId, districtId);
+				
+				//nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(electionId, partyId, districtId);
 				election = electionDAO.get(electionId);
 				party = partyDAO.get(partyId);
 				district = districtDAO.get(districtId);
+				Long electionTypeId = election.getElectionScope().getElectionType().getElectionTypeId();
+				
+				nominations = checkAndGetNominationsInAnElectionForAPartyInADistrict(electionTypeId,electionId,partyId,districtId);
+				
 				
 				if(nominations != null && nominations.size() > 0 && election != null && party != null && district != null){
-					completeValidVotes = getCompleteValidVotesForADistrict(electionId,districtId);
+					completeValidVotes = getCompleteValidVotesForADistrict(electionTypeId,electionId,districtId);
 					for(Nomination nominationForParty:nominations){
 						if(nominationForParty.getParty().getPartyId().equals(partyId)){
 							Long candidRank = nominationForParty.getCandidateResult().getRank();
@@ -1376,6 +1387,40 @@ public class StaticDataService implements IStaticDataService {
 			log.debug("Exception raised ::" + ex);
 		}
 	return partyElectionDistrictResult;
+	}
+	
+	/*
+	 * Method To Check Wheather The Election Type As LocalElectionBody Election Type Or Not And Get Nominations Based On The Value
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Nomination> checkAndGetNominationsInAnElectionForAPartyInADistrict(Long electionTypeId,Long electionId,Long partyId,Long districtId){
+		
+		List<Nomination> nominations = null;
+		Long localBodyCount = checkForLocalElectionType(electionTypeId);
+		
+		if(localBodyCount > 0){
+			nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictIdForLocalElectionBodys(electionId, partyId, districtId);
+		}else{
+			nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(electionId, partyId, districtId);
+		}
+		
+	 return nominations;
+	}
+	
+	/*
+	 * Method To check Local Election Body Type Or Not
+	 */
+	@SuppressWarnings("unchecked")
+	public Long checkForLocalElectionType(Long electionTypeId){
+        Long localBodyCount = 0L;
+		
+		List localBodyCheck = localElectionBodyDAO.getCountOfLocalBodysForALocalElectionBodyType(electionTypeId);
+		if(localBodyCheck != null){
+			Object values = (Object)localBodyCheck.get(0);
+			localBodyCount = (Long)values;
+		}
+	 return localBodyCount;
 	}
 	
 	public PartyElectionDistrictResult savePartyElectionDistrictResult(final Election election,final Party party,final District district,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
