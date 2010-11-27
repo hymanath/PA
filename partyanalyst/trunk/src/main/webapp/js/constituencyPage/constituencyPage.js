@@ -642,7 +642,7 @@ function buildProblemViewingWindow()
 	
 	var str='';
 	str+='<fieldset id="problemViewingFieldSet">';
-	str+='<legend> View Your constituency Problems</legend>';
+	str+='<legend> View Your Constituency Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
@@ -764,7 +764,7 @@ function buildProblemPostingWindow()
 		
 	var str='';
 	str+='<fieldset id="ProblemPostingFieldSet">';
-	str+='<legend style="font-weight:bold;"> Post Your constituency Problem</legend>';
+	str+='<legend style="font-weight:bold;"> Post Your Constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
