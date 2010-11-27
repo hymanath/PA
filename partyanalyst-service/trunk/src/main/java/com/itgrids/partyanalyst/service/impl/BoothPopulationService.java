@@ -140,57 +140,85 @@ public class BoothPopulationService implements IBoothPopulationService{
 		this.electionScopeDAO = electionScopeDAO;
 	}
 
-	public ResultWithExceptionVO readExcelAndPopulateBoothData(File filePath, String electionYear, Long electionScopeId) {
+	
+	/**
+	 * Uploads Booth Data For an Election Year and For A Particular Election  
+	 */
+	public ResultWithExceptionVO readExcelAndPopulateBoothData(File filePath, String electionYear, 
+			Long electionScopeId, Boolean isValidate) {
 		ResultWithExceptionVO resultWithExceptionVO = new ResultWithExceptionVO();
 		List<ConstituencyInfoVO> finalResult = new ArrayList<ConstituencyInfoVO>();
+		ConstituencyInfoVO constituencyVO = null;
 		long start = System.currentTimeMillis();
+
 		try{
 			BoothDataExcelReader excelReader = new BoothDataExcelReader();
 			excelReader.readExcelFile(filePath);
 			List<BoothDataUploadVO> boothData = excelReader.getBoothDataUploadVOs();
 			List<Constituency> constituencies = null;
+			List<String> constituencyInfo = null;
 			Constituency constituency = null;
 			Long districtId = null;
 			Long totalBooths = 0l;
 			Long year = Long.parseLong(electionYear);
 			String constituencyName = "";
+			Long partNosCount = 0l;
+			Long nullTehsilsCount = 0l;
+			
 			for(BoothDataUploadVO boothDataUploadVO:boothData){
+				constituencyVO = new ConstituencyInfoVO();
+				constituencyInfo = new ArrayList<String>();
 				districtId = boothDataUploadVO.getDistrictId();
 				constituencyName = boothDataUploadVO.getConstituencyName();
+				constituencyVO.setConstituencyName(constituencyName);
+				constituencyVO.setUploadInfo(new ArrayList<String>());
+				
 				constituencies = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(constituencyName, districtId, electionScopeId);
 				if(constituencies.size() != 1){
-					if(log.isDebugEnabled()){
-						log.debug(constituencies.size()+" No Of Constituencies Exists with Constituency Name::"+constituencyName+" And District Id::"+districtId);
-					}
+					constituencyInfo.add(constituencies.size()+" No Of Constituencies Exists with Constituency Name::"+constituencyName+
+							" And District Id::"+districtId);
+					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, partNosCount, 
+							Long.parseLong(boothDataUploadVO.getBooths().size()+""), nullTehsilsCount, 0l));
 					continue;
 				}
 				constituency = constituencies.get(0);
 				totalBooths = (Long)boothDAO.findByConstituencyAndElectionYear(constituency.getConstituencyId(), year).get(0);
 				if(totalBooths > 0){
-					if(log.isDebugEnabled()){
-						log.debug("Booth Data Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+constituencyName);
-					}
+					constituencyInfo.add(totalBooths+" No.of Booths Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+constituencyName);
+					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, partNosCount, 
+							Long.parseLong(boothDataUploadVO.getBooths().size()+""), nullTehsilsCount, 0l));
 					continue;
 				}
-				checkAndInsertBooth(constituency, boothDataUploadVO.getBooths(), districtId, year);
+				
+				constituencyVO.setUploadInfo(constituencyInfo);
+				checkAndInsertBooth(constituency, boothDataUploadVO.getBooths(), districtId, 
+						year, constituencyVO, isValidate);
+				constituencyVO.setBoothsIdentified(Long.parseLong(boothDataUploadVO.getBooths().size()+""));
+				finalResult.add(constituencyVO);
 			}
-		}catch(IndexOutOfBoundsException ex){
-			ex.printStackTrace();
-			/*resultVO.setExceptionEncountered(ex);
-			resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
-			resultVO.setResultPartial(true);*/
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
-			/*resultVO.setExceptionEncountered(ex);
-			resultVO.setResultCode(ResultCodeMapper.FAILURE);
-			resultVO.setResultPartial(true);*/
 		}
+		
 		long end = System.currentTimeMillis();
 		System.out.println("Total Time Taken::"+(end - start)/1000);
+		resultWithExceptionVO.setFinalResult(finalResult);
 		return resultWithExceptionVO;
 	}
 	
-	private void checkAndInsertBooth(Constituency constituency, List<BoothInfo> boothRecords, Long districtId, Long year)throws Exception{
+	private ConstituencyInfoVO updateUploadInfo(ConstituencyInfoVO constituencyVO, List<String> constituencyInfo, 
+			Long partNosCount, Long totalBooths, Long nullTehsils, Long totalCandidates){
+		constituencyVO.setUploadInfo(constituencyInfo);
+		constituencyVO.setBoothsInserted(partNosCount);
+		constituencyVO.setBoothsIdentified(totalBooths);
+		constituencyVO.setNullTehsilsCount(nullTehsils);
+		constituencyVO.setTotalCandidates(totalCandidates);
+		return constituencyVO;
+	}
+	
+	private void checkAndInsertBooth(Constituency constituency, List<BoothInfo> boothRecords, Long districtId, 
+			Long year, ConstituencyInfoVO constituencyVO, Boolean isValidate)throws Exception{
 		Booth booth = null;
 		String tehsilName = "";
 		String partNo = "";
@@ -201,9 +229,11 @@ public class BoothPopulationService implements IBoothPopulationService{
 		Long maleVoters = 0l;
 		Long femaleVoters = 0l;
 		Long totalVoters = 0l;
-		Tehsil tehsil = null;
 		List<Tehsil> tehsils = null;
+		Tehsil tehsil = null;
 		Long boothsCount = 0l;
+		Long nullTehsilsCount = 0l;
+		Long partNosCount = 0l;
 		
 		for(BoothInfo boothRecord:boothRecords){
 			tehsils = null;
@@ -213,102 +243,109 @@ public class BoothPopulationService implements IBoothPopulationService{
 			location = boothRecord.getLocation();
 			villagesCovered = boothRecord.getVillagesCovered();
 			censusCode = boothRecord.getCensusCode();
-			maleVoters = checkAndAssignLong(boothRecord.getMaleVoters());
-			femaleVoters = checkAndAssignLong(boothRecord.getFemaleVoters());
-			totalVoters = checkAndAssignLong(boothRecord.getTotalVoters());
-			if(tehsilName.length() != 0)
+			maleVoters = checkAndAssignLong(boothRecord.getMaleVoters(), constituencyVO.getUploadInfo(), partNo, "Male Voters");
+			femaleVoters = checkAndAssignLong(boothRecord.getFemaleVoters(), constituencyVO.getUploadInfo(), partNo, "Female Voters");
+			totalVoters = checkAndAssignLong(boothRecord.getTotalVoters(), constituencyVO.getUploadInfo(), partNo, "Total Voters");
+				
+			boothsCount = (Long)boothDAO.findByPartNoConstituencyIdAndYear(constituency.getConstituencyId(), year, partNo).get(0);
+            
+			if(boothsCount > 0){
+				constituencyVO.getUploadInfo().add(boothsCount+" No of Booths Exists with Part No:"+partNo+" And Constitency Name:"+constituency.getName()+
+                        " In the Year"+year);
+				continue;
+            }
+			
+			if(tehsilName.length() > 0){
 				tehsils = tehsilDAO.findByTehsilNameAndDistrict(tehsilName, districtId);
-			if((tehsils!= null && tehsils.size() == 1) || tehsilName.length() == 0){
-				if(tehsils != null)
-					tehsil = tehsils.get(0);
-				else
-					tehsil = null;
-				boothsCount = (Long)boothDAO.findByPartNoConstituencyIdAndYear(constituency.getConstituencyId(), year, partNo).get(0);
-				if(boothsCount > 0){
-					if(log.isDebugEnabled()){
-						log.error(boothsCount+" No of Booths Exists with Part No:"+partNo+" And Constitency Name:"+constituency.getName()+
-								" In the Year"+year);
-					}
+				if(tehsils.size() != 1){
+					constituencyVO.getUploadInfo().add(tehsils.size()+ " No. Of Tehsils Exist With Tehsil:"+tehsilName+" and District:"+districtId);
 					continue;
 				}
-					
-				booth = new Booth(partNo,partName,location,villagesCovered,tehsil,maleVoters,femaleVoters,
+				tehsil = tehsils.get(0);
+			}
+			
+			if(tehsil == null)
+				nullTehsilsCount++;
+			
+			if(!isValidate){
+				booth = new Booth(partNo, partName, location, villagesCovered, tehsil, maleVoters, femaleVoters,
 						totalVoters, constituency, year, null,null, null,null);
 				booth = boothDAO.save(booth);
-				checkAndInsertBoothVillageCensus(booth, censusCode);
-			}else{
-				if(log.isDebugEnabled()){
-					log.error("More than one Tehsils Exist With Tehsil:"+tehsilName+" and District:"+districtId);
-				}
+				partNosCount++;	
 			}
+			
+			checkAndInsertBoothVillageCensus(booth, censusCode, constituencyVO.getUploadInfo(), isValidate);
 		}
 		
+		constituencyVO.setNullTehsilsCount(nullTehsilsCount);
+		constituencyVO.setBoothsInserted(partNosCount);
+		
 	}
-			
-	private BoothVillageCensus checkAndInsertBoothVillageCensus(Booth booth,String censusCode)throws Exception{
-		BoothVillageCensus boothVillageCensus = null;
-		String [] censusCodes = null;
+					
+	private void checkAndInsertBoothVillageCensus(Booth booth,String censusCode, List<String> constituencyInfo, Boolean isValidate)throws Exception{
+
 		if(censusCode.contains("\n")||censusCode.contains(",")||censusCode.contains(" ")){
-			censusCodes = StringUtils.split(censusCode, ",\n ");
+			String [] censusCodes = StringUtils.split(censusCode, ",\n ");
 			for(int i=0; i < censusCodes.length; i++){
-				Long censusCodeL = new Long(censusCodes[i]);
-				if(censusCodeL.intValue() == 0)
-					continue;
-				if(checkBoothVillageCensus(booth, censusCodeL)){
-					boothVillageCensus = new BoothVillageCensus(censusCodeL,booth);
-					boothVillageCensusDAO.save(boothVillageCensus);
-				}else{
-					if(log.isDebugEnabled()){
-						log.error("BoothVillageCensus already exists with id and censuscode:"+booth.getBoothId()+" "+censusCodeL);
-					}
-					return boothVillageCensus;
-				}
+				checkBoothVillageCensus(booth, censusCodes[i], constituencyInfo, isValidate);
 			}
-		}else{
-			Long censusCodeL = new Long(censusCode); 
-			if(censusCodeL.intValue() == 0)
-				return null;
-			if(checkBoothVillageCensus(booth, new Long(censusCodeL))){
-				boothVillageCensus = new BoothVillageCensus(new Long(censusCodeL),booth);
-				return boothVillageCensusDAO.save(boothVillageCensus);
-			}else{
-				if(log.isDebugEnabled()){
-					log.error("BoothVillageCensus already exists with id and censuscode:"+booth.getBoothId()+" "+new Long(censusCodeL));
-				}
-				return boothVillageCensus;
-			}
-		}
-		return boothVillageCensus;
+		}else
+			checkBoothVillageCensus(booth, censusCode, constituencyInfo, isValidate);
+
 	}
 
-	private boolean checkBoothVillageCensus(Booth booth, Long censusCode)throws Exception{
-		boolean censusFlag = true;
-		List<BoothVillageCensus> boothVillageCensuses = boothVillageCensusDAO.findByBoothAndCensusCode(booth.getBoothId(), censusCode);
-		if(boothVillageCensuses.size() > 0){
-			censusFlag = false;
+	private void checkBoothVillageCensus(Booth booth, String censusCode, List<String> constituencyInfo, Boolean isValidate)throws Exception{
+		Long censusCodeL;
+		
+		if(StringUtils.isNumeric(censusCode))
+			censusCodeL = Long.parseLong(censusCode);
+		else{
+			constituencyInfo.add("Booth Village Code : "+censusCode+" Is Not A Number");
+			return;
 		}
-		return censusFlag;
+		
+		if(isValidate)
+			return;
+		
+		List<BoothVillageCensus> boothVillageCensuses = boothVillageCensusDAO.findByBoothAndCensusCode(booth.getBoothId(), censusCodeL);
+		
+		if(boothVillageCensuses.size() != 0){
+			constituencyInfo.add("BoothVillageCensus already exists with id and censuscode:"+booth.getBoothId()+" "+censusCodeL);
+			return;
+		}
+		
+		
+		BoothVillageCensus boothVillageCensus = new BoothVillageCensus(censusCodeL , booth);
+		boothVillageCensusDAO.save(boothVillageCensus);
+		
+
 	}
 	
-	public Long checkAndAssignLong(String value)throws Exception{
-		Long longVal = new Long(0);
-		if(!StringUtils.isEmpty(value)){
+	public Long checkAndAssignLong(String value, List<String> constituencyInfo, String partNo, String column){
+		Long longVal = 0l;
+		if(!StringUtils.isEmpty(value) ){
 			if(StringUtils.isNumeric(value.trim()))
 				longVal = new Long(value);
 			else
-				if(log.isDebugEnabled()){
-					log.error(value+" Is Not A Numaric Value");
-				}
+				constituencyInfo.add(value+" Is not A Numaric Value For Part No:"+partNo+" And In Column:"+column);
 		}
+		
 		return longVal;
 	}
 
-	
-	public ResultWithExceptionVO readExcelAndPopulateBoothResult(String electionYear, Long electionScopeId, File filePath){
+	/**
+	 * Upload Booth Results For Election Year and Scope
+	 */
+	public ResultWithExceptionVO readExcelAndPopulateBoothResult(String electionYear, Long electionScopeId, File filePath, Boolean isValidate){
 		long start = System.currentTimeMillis();
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
 		ResultWithExceptionVO resultVO = new ResultWithExceptionVO();
 		Boolean isParliament = false;
+		List<ConstituencyInfoVO> finalResult = new ArrayList<ConstituencyInfoVO>();
+		ConstituencyInfoVO constituencyVO = null;
+		Long boothsInserted = 0l;
+		
+		List<String> constituencyInfo = null;
 		try{
 			
 			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionScopeDAO.get(electionScopeId).getElectionType().getElectionType()))
@@ -326,47 +363,64 @@ public class BoothPopulationService implements IBoothPopulationService{
 			List<BoothResultValueObject> boothresults = null;
 			ConstituencyElection constiElecObj = null;
 			
-			
 			for(ConstituencyBoothBlock constituencyBlock:list){
+				constituencyVO = new ConstituencyInfoVO();
+				constituencyInfo = new ArrayList<String>();
 				acName = constituencyBlock.getConstituencyName();
 				pcName = constituencyBlock.getParliamentConstituencyName();
 				districtId = constituencyBlock.getDistrictId();
 				stateId = constituencyBlock.getStateId();
+				candidateBoothResults = constituencyBlock.getCandidateResults();
+				boothresults = constituencyBlock.getBoothResults();
+				
+				if(isParliament)
+					constituencyVO.setConstituencyName(acName+" Assembly For "+pcName+" Parliament");
+				else
+					constituencyVO.setConstituencyName(acName+" Assembly");
 				
 				booths = (Long)boothDAO.findbyConstituencyNameDistrictIdAndElectionYear(acName, districtId, Long.parseLong(electionYear)).get(0);
 				
 				if(booths == 0){
-					if(log.isDebugEnabled()){
-						log.debug("Booth Data Doesn't Exists For ElectionYear::"+electionYear+" Constituency Name::"+acName);
-					}
+					constituencyInfo.add("Booth Data Doesn't Exists For ElectionYear::"+electionYear+" Constituency Name::"+acName);
+					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, boothsInserted, Long.parseLong(boothresults.size()+""), 0l, 
+							Long.parseLong(constituencyBlock.getCandidateResults().size()+"")));
 					continue;
 				}
+				
+				constituencyVO.setBoothsInDB(booths);
 				
 				boothResults = (Long)boothResultDAO.getParliamentResultHappenedInAssembly(acName, districtId, electionScopeId, electionYear).get(0);
 				
 				if(boothResults > 0){
-					if(log.isDebugEnabled()){
-						log.debug("Booth Results Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+acName);
-					}
+					constituencyInfo.add(boothResults+ " No. Of Booths Already Have Results For ElectionYear::"+electionYear+" Constituency Name::"+acName);
+					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, boothsInserted, Long.parseLong(boothresults.size()+""), 0l, 
+								Long.parseLong(constituencyBlock.getCandidateResults().size()+"")));
+					
 					continue;
 				}
+				
 				if(isParliament)
 					constituencyElections = constituencyElectionDAO.findByConstituencyElectionAndState(electionYear, pcName, electionScopeId, stateId);
 				else
 					constituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, acName, electionScopeId, districtId);
 				
-				if(constituencyElections == null || constituencyElections.size() > 1){
-					if(log.isDebugEnabled()){
-						log.error("Exists More than One ConstituencyElections For Constituency And Election Year::"+electionYear+","+acName);
-					}
+				if(constituencyElections.size() != 1){
+					constituencyInfo.add(constituencyElections.size()+" No.Of ConstituencyElections Exists For Constituency And Election Year::"+electionYear+","+acName);
+					finalResult.add(updateUploadInfo(constituencyVO, constituencyInfo, boothsInserted, Long.parseLong(boothresults.size()+""), 0l, 
+							Long.parseLong(constituencyBlock.getCandidateResults().size()+"")));
 					continue;
 				}
 				
-				candidateBoothResults = constituencyBlock.getCandidateResults();
-				boothresults = constituencyBlock.getBoothResults();
 				constiElecObj = constituencyElections.get(0);
-				checkAndInsertBoothResult(acName, districtId, electionYear, constiElecObj, candidateBoothResults, boothresults);
 				
+				constituencyVO.setUploadInfo(constituencyInfo);
+				constituencyVO.setTotalCandidates(Long.parseLong(constituencyBlock.getCandidateResults().size()+""));
+				constituencyVO.setBoothsIdentified(Long.parseLong(boothresults.size()+""));
+				
+				checkAndInsertBoothResult(acName, districtId, electionYear, constiElecObj, candidateBoothResults, 
+						boothresults, constituencyVO, isValidate);
+				
+				finalResult.add(constituencyVO);
 			}
 			
 		}catch(IndexOutOfBoundsException ex){
@@ -380,62 +434,85 @@ public class BoothPopulationService implements IBoothPopulationService{
 			resultVO.setResultPartial(true);
 			ex.printStackTrace();
 		}
+		
+		resultVO.setFinalResult(finalResult);
 		long end = System.currentTimeMillis();
 		System.out.println("Total Time Taken::"+(end - start)/1000);
 		return resultVO;
 	}
 	
 	public void checkAndInsertBoothResult(String acName, Long districtId, String electionYear, ConstituencyElection constiElecObj, 
-			List<CandidateBoothWiseResult> candidateResults, 
-			List<BoothResultValueObject> boothresults)throws Exception{
+			List<CandidateBoothWiseResult> candidateResults, List<BoothResultValueObject> boothresults, 
+			ConstituencyInfoVO constituencyVO, Boolean isValidate){
+		
 		Map<String, BoothConstituencyElection> boothConstiPartNoMap = new HashMap<String, BoothConstituencyElection>();
 		List<Nomination> nominations = null;
 		Nomination nomination = null;
-		List<BoothResultExcelVO> boothResultsForCandidate = null;
-		
-		checkAndInsertBoothConstituencyElectionAndResult(acName, districtId, electionYear, boothConstiPartNoMap, constiElecObj, boothresults);
+		Long votesEarned = 0l;
+		checkAndInsertBoothConstituencyElectionAndResult(acName, districtId, electionYear, boothConstiPartNoMap, 
+				constiElecObj, boothresults, constituencyVO, isValidate);
 			
 		if(boothConstiPartNoMap.size() > 0)
 			for(CandidateBoothWiseResult candidateBoothWiseResult:candidateResults){
 				nominations = nominationDAO.findByConstituencyElectionAndCandidate(candidateBoothWiseResult.getCandidateName() , 
 						constiElecObj.getConstiElecId());
+				
 				if(nominations.size() != 1){
-					if(log.isDebugEnabled()){
-						log.error("Exists More than One Or No Nominations for Part No:"+candidateBoothWiseResult.getCandidateName()+","+
-								constiElecObj.getConstiElecId());
-					}
+					constituencyVO.getUploadInfo().add(nominations.size()+" No.Of Nominations Exists for Candidate:"+candidateBoothWiseResult.getCandidateName()+
+							" And With Constituency Election Id:"+constiElecObj.getConstiElecId());
 					continue;
 				}
 				
 				nomination = nominations.get(0);
 				
-				boothResultsForCandidate = candidateBoothWiseResult.getBoothresults();
-				for(BoothResultExcelVO boothResultExcel:boothResultsForCandidate)
-					if(boothConstiPartNoMap.get(boothResultExcel.getPartNo()) != null)
-						candidateBoothResultDAO.save(new CandidateBoothResult(boothResultExcel.getVotesEarned(), 
+				for(BoothResultExcelVO boothResultExcel:candidateBoothWiseResult.getBoothresults()){
+					votesEarned = checkAndAssignLong(boothResultExcel.getVotesEarned(), constituencyVO.getUploadInfo(), 
+							boothResultExcel.getPartNo(), candidateBoothWiseResult.getCandidateName());
+					if(!isValidate && boothConstiPartNoMap.get(boothResultExcel.getPartNo()) != null)
+						candidateBoothResultDAO.save(new CandidateBoothResult(votesEarned, 
 								nomination, null, boothConstiPartNoMap.get(boothResultExcel.getPartNo())));
+				}
+					
+					
 			}		
 	}
 				
 	private void checkAndInsertBoothConstituencyElectionAndResult(String acName, Long districtId, String electionYear,
-			Map<String, BoothConstituencyElection> boothConstiPartNoMap,
-			ConstituencyElection constiElecObj,
-			List<BoothResultValueObject> boothresults) {
+			Map<String, BoothConstituencyElection> boothConstiPartNoMap, ConstituencyElection constiElecObj,
+			List<BoothResultValueObject> boothresults, ConstituencyInfoVO constituencyVO, Boolean isValidate) {
 		List<Booth> booths = null;
 		Booth booth = null;
 		BoothConstituencyElection boothConstituencyElection = null;
+		Long boothsInserted = 0l;
+		Long validVotes = 0l;
+		Long tenderVotes = 0l;
+		Long rejectedVotes = 0l;
 		for(BoothResultValueObject boothResult:boothresults){
 			booths = boothDAO.findbyConstituencyNameDistrictIdPartnoAndElectionYear(acName,
 					 districtId, Long.parseLong(electionYear), boothResult.getPartNumber());
 			
-			if(booths.size() != 1)
+			if(booths.size() != 1){
+				constituencyVO.getUploadInfo().add(booths.size()+" No. Of Booths Exists with Part No:"+boothResult.getPartNumber()+" And Constitency Name:"+acName+
+                        " In the Year"+electionYear);
 				continue;
+			}
+			
 			booth = booths.get(0);
-			boothConstituencyElection = boothConstituencyElectionDAO.save(new BoothConstituencyElection(booth, constiElecObj, null, null, null));
-			boothResultDAO.save(new BoothResult(boothConstituencyElection, boothResult.getTotalNoOfValidVotes(), 
-					boothResult.getRejectedVotes(), boothResult.getTenderedVotes()));
+			validVotes = checkAndAssignLong(boothResult.getTotalNoOfValidVotes(), constituencyVO.getUploadInfo(), boothResult.getPartNumber(), "Total Valid Votes"); 
+			rejectedVotes = checkAndAssignLong(boothResult.getRejectedVotes(), constituencyVO.getUploadInfo(), boothResult.getPartNumber(), "Total Rejected Votes");
+			tenderVotes = checkAndAssignLong(boothResult.getTenderedVotes(), constituencyVO.getUploadInfo(), boothResult.getPartNumber(), "Total Tendered Votes");
+		
+			if(!isValidate){
+				boothConstituencyElection = boothConstituencyElectionDAO.save(new BoothConstituencyElection(booth, constiElecObj, null, null, null));
+				boothResultDAO.save(new BoothResult(boothConstituencyElection, validVotes, rejectedVotes, tenderVotes));
+				boothsInserted++;	
+			}
+
 			boothConstiPartNoMap.put(boothResult.getPartNumber(), boothConstituencyElection);
 		}
+		
+		constituencyVO.setBoothsInserted(boothsInserted);
+		
 	}
 	
 }

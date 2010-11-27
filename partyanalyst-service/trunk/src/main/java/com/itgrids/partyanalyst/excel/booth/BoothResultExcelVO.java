@@ -3,31 +3,22 @@ package com.itgrids.partyanalyst.excel.booth;
 public class BoothResultExcelVO {
 
 	private String partNo;
-	private Long votesEarned;
-	
-	public BoothResultExcelVO(){
-		
-	}
-
-	public BoothResultExcelVO(String partNo, Long votesEarned) {
-		this.partNo = partNo;
-		this.votesEarned = votesEarned;
-	}
+	private String votesEarned;
 
 	public String getPartNo() {
 		return partNo;
 	}
-
+	
 	public void setPartNo(String partNo) {
 		this.partNo = partNo;
 	}
-
-	public Long getVotesEarned() {
+	
+	public String getVotesEarned() {
 		return votesEarned;
 	}
-
-	public void setVotesEarned(Long votesEarned) {
+	
+	public void setVotesEarned(String votesEarned) {
 		this.votesEarned = votesEarned;
 	}
-	
+		
 }
