@@ -59,13 +59,27 @@ public class LocalElectionBodyDAOHibernateTest extends BaseDaoTestCase{
 	/*public void testFindByDistrictId(){
 		List list = localElectionBodyDAO.findByDistrictId(19l);
 		System.out.println(list.size());
-	}*/
+	}
 	
 	public void testFindByLocalElectionBodyIds(){
 		List<Long> localBodyOrWardIds = new ArrayList<Long>();
 		localBodyOrWardIds.add(488l);
 		localBodyOrWardIds.add(478l);
 		List<LocalElectionBody> lebs = localElectionBodyDAO.findByLocalElectionBodyIds(localBodyOrWardIds);
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testFindLocalBodysByElectionType(){
+		
+		List result = localElectionBodyDAO.getCountOfLocalBodysForALocalElectionBodyType(2L);
+		
+		if(result != null){
+			Object values = (Object)result.get(0);
+			Long localBodysCount = (Long)values;
+			
+			System.out.println(" Total Local Bodys Count :" + localBodysCount);
+		}
 	}
 	
 }
