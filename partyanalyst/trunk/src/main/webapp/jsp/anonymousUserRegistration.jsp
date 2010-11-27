@@ -103,10 +103,64 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	
 <script type="text/javascript">
+function callAJAX(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "checkAnanymousUserNameAvailability")
+					{
+						showDetails(results);
+					}
+			}catch (e) {   		
+			   	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     			alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
 
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+	
 function getStates()
 {
 	getStatesComboBoxForACountry(1,'stateSelectBox');
+}
+
+function checkAvailability()
+{
+ 	var name = document.getElementById("userNameField").value;
+ 	
+ 	if(name==""){
+		document.getElementById("errorMessageDiv").innerHTML = "UserName field cannot be empty";
+ 	 }else{ 	 	
+ 		document.getElementById("errorMessageDiv").innerHTML = " ";
+ 		var jsObj=
+		{		
+ 				userName:name,
+				task:"checkAnanymousUserNameAvailability"						
+		};	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/checkAnanymousUserNameAvailabilityAction.action?"+rparam;						
+		callAJAX(jsObj,url);
+ 	 }
+}
+
+function showDetails(results)
+{
+	var result = document.getElementById("resultDIV");
+	var str='';
+	if(results==121){		
+		str+='<div style="color:green"> User Name is available</div>';	
+	}else{
+		str+='<div style="color:red"> User Name is not available</div>';	
+	}
+	result.innerHTML = str;
 }
 </script>
 <style type="text/css">
@@ -114,7 +168,7 @@ function getStates()
 		border:2px solid #CFD6DF;
 		margin-bottom:10px;
 		padding:10px;
-		width:300px;
+		width:379px;
 	}
 	legend {
 		background-color:#567AAF;
@@ -132,7 +186,7 @@ function getStates()
 		<table class="registrationTable">
 			<tr>
 				<td colspan="2">
-					<div style="color: red;font-weight:bold;">
+					<div style="color: red;font-weight:bold;" id="errorMessageDiv">
 						<s:actionerror />
 						<s:fielderror />
 						<s:actionmessage/>						
@@ -143,12 +197,14 @@ function getStates()
 		 <br>
         <FIELDSET>
 		<LEGEND><strong>Account Details</strong></LEGEND>
+		<div id="resultDIV"></div>
 		 <div id="loginDetailsDiv" class="accessDivMain">
 			<div id="loginDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">
+				<table class="registrationTable">					
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
 						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
+						<td style="padding-left: 15px;"><input type="button" name="checkUserNameAvailability" value="Check Availability" onclick="checkAvailability()"/></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>

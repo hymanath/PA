@@ -1787,5 +1787,11 @@
 			</result>
         </action>
         
+        <action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result>		
+		</action>	
+		
 	</package>
 </struts>
