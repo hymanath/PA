@@ -23,5 +23,8 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public List getStateToLocalElectionBodyByLEB(String localElectionBodyIds);
 	
+	@SuppressWarnings("unchecked")
+	public List getCountOfLocalBodysForALocalElectionBodyType(Long electionTypeId);
+	
 	
 }
