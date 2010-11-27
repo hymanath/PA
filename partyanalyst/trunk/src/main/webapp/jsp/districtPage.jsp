@@ -119,12 +119,8 @@ var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 		label : "Complete Results"	
 	}];
 
-	var myConfigs = {
-    paginator : new YAHOO.widget.Paginator({
-        rowsPerPage: 10
-    })
-};
-	var myDataTable = new YAHOO.widget.DataTable("mlaInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+	var myDataTable = new YAHOO.widget.DataTable("mlaInfoDivBody",resultsColumnDefs, resultsDataSource);  
 }
 
 
