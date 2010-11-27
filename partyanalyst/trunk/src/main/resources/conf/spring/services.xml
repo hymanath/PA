@@ -194,6 +194,7 @@
 		<property name="boothResultDAO" ref="boothResultDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+		<property name="electionDAO" ref="electionDAO" />	
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
