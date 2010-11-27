@@ -100,6 +100,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(Long electionId,Long partyId, Long districtId);
 	
+	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictIdForLocalElectionBodys(Long electionId,Long partyId, Long districtId);
+	
 	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype,Long stateId);
 	
 	public List getCandidateNPartyInfoForParliament(String constituencyIds,String electionType,Long rank, String electionSubtype);
