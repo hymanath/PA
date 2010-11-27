@@ -223,6 +223,8 @@ public interface IConstants {
     //Entitlements
     public static final String CONSTITUENCY_PAGE = "CONSTITUENCY_PAGE";
     public static final String CONSTITUENCY_PAGE_COMPLETE_VIEW = "CONSTITUENCY_PAGE_COMPLETE_VIEW";
+    public static final String MANDAL_VOTING_TRENDZ = "MANDAL_VOTING_TRENDZ";
+    public static final String VOTING_TRENDZ = "VOTING_TRENDZ";
     public static final String PARTY_PERFORMANCE_REPORT = "PARTY_PERFORMANCE_REPORT";
     public static final String ELECTION_COMPARISION_REPORT = "ELECTION_COMPARISION_REPORT";
     public static final String PARTY_RESULTS_REPORT = "PARTY_RESULTS_REPORT";

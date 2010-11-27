@@ -30,8 +30,8 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private String area_type;
 	private String reservation_zone;
 	private List<SelectOptionVO> constituencies;
-	
-	
+	private Boolean votingTrendz = false;
+		
 	//Upload Info
 	private Long boothsIdentified = 0l;
 	private Long boothsInserted = 0l;
@@ -40,6 +40,12 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private Long totalCandidates = 0l;
 	private Long boothsInDB = 0l; 
 	
+	public Boolean getVotingTrendz() {
+		return votingTrendz;
+	}
+	public void setVotingTrendz(Boolean votingTrendz) {
+		this.votingTrendz = votingTrendz;
+	}
 	public List<SelectOptionVO> getConstituencies() {
 		return constituencies;
 	}
