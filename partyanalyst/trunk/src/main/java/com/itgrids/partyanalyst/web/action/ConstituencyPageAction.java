@@ -652,10 +652,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS)))
 			constituencyDetails.setHasAnalize(false);
 		
-		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.CONSTITUENCY_PAGE_COMPLETE_VIEW)) ||
-				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_PAGE_COMPLETE_VIEW)))
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.MANDAL_VOTING_TRENDZ)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.MANDAL_VOTING_TRENDZ)))
 				constituencyDetails.setViewCompletePage(true);
-			
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.VOTING_TRENDZ)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.VOTING_TRENDZ)))
+				constituencyDetails.setVotingTrendz(true);
+		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
