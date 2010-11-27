@@ -4,7 +4,7 @@
 	border:0px solid #AEE2FF;
 	color:#000000;
 	font-family:MS Sans-serif;
-	font-size:17px;
+	font-size:20px;
 	font-weight:bold;
 	margin-bottom:15px;
 	margin-top:15px;
@@ -42,11 +42,11 @@
 }
 .graphTop
 {
-	background-image:url(../../images/icons/electionResultsReport/top.png);
+	background-image:url(../../images/icons/electionResultsReport/top_image.png);
 	color:#FFFFFF;
-	font-family:Ms sans-serif;
-	font-size:18px;
-	font-weight:lighter;
+	font-family:Times New Roman;
+	font-size:20px;
+	font-weight:bold;
 	height:30px;
 	width:900px;	
 }
@@ -59,7 +59,7 @@
 }
 .graphBottom
 {
-	background-image:url(../../images/icons/electionResultsReport/bottom.png);
+	background-image:url(../../images/icons/electionResultsReport/bottom_image.png);
 	height:15px;	
 	width:900px;
 	border-bottom:0px none none;
@@ -125,19 +125,17 @@ text-decoration:none;
 	text-align:left;
 }
 
-.viewChartsForResults
-{
-	padding:5px;
-	text-decoration:none;
-	background-image:url(../../images/icons/electionResultsReport/linkBtn.png);
-	color:#FFFFFF;
+.viewChartsForResults {
+	background-image:url(../../images/icons/electionResultsReport/table_head.png);
 	border-left:1px solid #9999CC;
 	border-right:1px solid #9999CC;
-	margin-left:10px;
+	color:DimGray;
+	font-family:Verdana;
 	font-size:12px;
-	font-weight: bold;
-	
-	
+	font-weight:lighter;
+	margin-left:10px;
+	padding:5px;
+	text-decoration:none;
 }
 
 #withoutAllianceDiv_Datatable table
@@ -202,3 +200,7 @@ margin:1px;
 	font-size:12px;
 	font-weight: bold;
 }
+
+
+
+
