@@ -333,10 +333,7 @@
 	</bean>
 	
 	<bean name="boothDataValidationService" class="com.itgrids.partyanalyst.service.impl.BoothDataValidationService" >		
-		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
-		<property name="nominationDAO" ref="nominationDAO"/>
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
