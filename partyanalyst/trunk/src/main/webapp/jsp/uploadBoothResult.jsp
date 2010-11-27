@@ -3,6 +3,26 @@
 <html>
 <head>
 <title>Booth Result Upload</title>
+
+<style>
+
+.scopeWise_head {
+	background-color:#F5EFEA;
+	color:#77471D;
+	font-weight:bold;
+	padding:3px;
+	text-align:left;
+}
+.resultsTable
+{
+	width:100%;	
+}
+.resultsTable th
+{
+	text-align:left;	
+}
+</style>
+
 </head>
 	<body>
 	<s:form name="BoothResultUploadForm" action="boothResultUploadAction" method="POST" enctype="multipart/form-data">
@@ -40,12 +60,40 @@
 			</tr>
 		</table>
 	</s:form>
-	<c:if test="${!empty corrections}">
-		<div style="text-align:left;margin-left:50px;">
-			<c:forEach var="result" items="${corrections}" varStatus="">
-				<c:out value="${result}"></c:out><br/>
+	<c:if test="${!empty uploadInfo}">
+		<div style="margin-top: 10px;">
+			<c:forEach var="result" items="${uploadInfo}" varStatus="">
+				<div style="border:2px solid #F5EFEA;width:800px;margin-bottom:15px;text-align:left;">			
+					<DIV class="scopeWise_head">${result.constituencyName } Booth Results Upload Info</DIV>
+					<table border="0" width="100%" class="resultsTable">
+						<tr>
+							<th>Booths In DB:</th>
+							<td>${result.boothsInDB }</td>
+							<th>Booths Identified:</th>
+							<td>${result.boothsIdentified}</td>
+							<th>Booths Results Inserted:</th>
+							<td>${result.boothsInserted}</td>
+							<th>Total Candidates Identified:</th>
+							<td>${result.totalCandidates }</td>
+						</tr>
+					</table>
+					<div>			
+						<hr style="margin:10px;">
+						<c:if test="${! empty result.uploadInfo}">
+							<b>Validations and Corrections:</b>
+							<table>
+								<c:forEach var="info" items="${result.uploadInfo}" varStatus="">
+									<tr><td>${info}</td></tr>
+								</c:forEach>
+							</table>
+						</c:if>
+						<c:if test="${empty result.uploadInfo}">
+							<b>No Corrections Or Validations Required For This Constituency</b>
+						</c:if>
+					</div>	
+				</div>
 			</c:forEach>
 		</div>
-	</c:if>	
+	</c:if>		
 	</body>
 </html>
