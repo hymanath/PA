@@ -764,7 +764,7 @@ function buildProblemPostingWindow()
 		
 	var str='';
 	str+='<fieldset id="ProblemPostingFieldSet">';
-	str+='<legend> Post Your constituency Problem</legend>';
+	str+='<legend style="font-weight:bold;"> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
@@ -1192,10 +1192,11 @@ function buildVotingTrendzInPopUp()
 	str+='</fieldset>';
 	
 	if(bodyElmt)
+	{
 		bodyElmt.innerHTML=str;
-
-	var postButton = new YAHOO.widget.Button("votingTrendzButton");
-	postButton.on("click", viewVotingTrendzPopup); 
+		var postButton = new YAHOO.widget.Button("votingTrendzButton");
+		postButton.on("click", viewVotingTrendzPopup);
+	}
 }
 
 function viewVotingTrendzPopup()

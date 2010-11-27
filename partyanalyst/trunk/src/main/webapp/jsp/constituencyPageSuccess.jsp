@@ -899,10 +899,12 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 								<div id="problemPostingDiv_Head"></div>
 								<div id="problemPostingDiv_Body"></div>
 							</div>
+						<c:if test="${constituencyDetails.votingTrendz}">
 							<div id="votingTrendzDiv">
 								<div id="votingTrendzDiv_Head"></div>
 								<div id="votingTrendzDiv_Body"></div>
-							</div>							
+							</div>
+						</c:if>								
 						</div>	
 					</div>
 				</div>
@@ -1198,7 +1200,7 @@ function buildElectionResults()
 
 	var chartName = "${chartName}";
 	var chart = '';
-	chart+='<img src="charts/'+chartName+'" style="width:600px"/>';
+	chart+='<img src="charts/'+chartName+'" style="width:550px"/>';
 	chartResultDiv.innerHTML = chart;
 
 	var enlargedChartName = "${enlargedChartName}";
@@ -1490,7 +1492,7 @@ function showAllPartiesAllElectionResultsChart(myResults)
 	  var ctitle = 'All Parties Performance In Different Elections'; 
 	  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
 	  new google.visualization.LineChart(chartResultDiv).
-	  draw(data, {curveType: "function",width: 650, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
 
 
 }

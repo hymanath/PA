@@ -280,6 +280,7 @@ legend
 	background-image:url(../../images/icons/constituencyPage/background_head_blue.png);
 	background-repeat:repeat;	
 	color:#FFFFFF;	
+	font-weight:bold;
 }
 
 .problemPostingContentDivClass
@@ -299,6 +300,7 @@ legend
 	background-repeat:repeat;
 	padding:5px;
 	color:#FFFFFF;
+	font-weight:bold;
 }
 
 #constituencyPeopleConnectDiv
