@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -726,7 +727,6 @@ public class AnanymousUserService implements IAnanymousUserService {
 		List<Long> newList = new ArrayList<Long>(originalList);
 		List<Long> tempIds = new ArrayList<Long>();
 		ResultStatus resultStatus = new ResultStatus();
-		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		DataTransferVO resultVO = new DataTransferVO();
 		List<Long> unKnownPeople = new ArrayList<Long>();
@@ -922,6 +922,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		Long totalMsgCount = 0l;
 		Long unreadMsgCount= 0l;
+		String message,data;
 		try{
 			List<Object> result = customMessageDAO.getAllMessagesForUser(userId,messageType);
 			if(result!=null && result.size()!=0){
@@ -929,11 +930,15 @@ public class AnanymousUserService implements IAnanymousUserService {
 				for(int i=0;i<result.size();i++){
 					Object[] parms = (Object[])result.get(i);
 					CandidateVO candidateResults = new CandidateVO();
-					if(parms[0].toString().length() < 20)
-						candidateResults.setData(parms[0].toString());
+					
+					message = StringUtils.replace(parms[0].toString(),"\n","<br>");
+					data = StringUtils.replace(parms[0].toString(),"\n"," ");
+					if(data.length() < 20)
+						candidateResults.setData(data);
 					else
-						candidateResults.setData(parms[0].toString().substring(0, 19));
-					candidateResults.setMessage(parms[0].toString());
+						candidateResults.setData(data.substring(0, 19));
+					
+					candidateResults.setMessage(message);
 					candidateResults.setId(new Long(parms[1].toString()));
 					String candidateName="";
 					
