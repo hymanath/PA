@@ -95,7 +95,7 @@
 #districtPageMainDiv
 {
 	background-color:#FFFFFF;
-	padding-top:20px;
+	padding-top:10px;
 }
 
 #districtPageLayout_top,#districtPageLayout_right,#districtPageLayout_center
@@ -312,7 +312,7 @@
 	background:#335291 none repeat scroll 0 0;
 	color:#FFFFFF;
 	padding:5px;
-	width:150px;
+	width:184px;
 	margin-top:5px;
 	margin-bottom:5px;	
 }
