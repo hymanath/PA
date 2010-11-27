@@ -617,7 +617,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List list = nominationDAO.getNominations("select model from Constituency model");
 		Long end = System.currentTimeMillis(); 
 		System.out.println(list.size()+" Time Taken = "+(end - start)/1000);
-	}*/
+	}
 	
 	public void testGetVotesInAConstituency(){
 		List list = nominationDAO.getVotesInfoForAConstituency("18420","2009","Greater Municipal Corp");
@@ -627,7 +627,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List list2 = nominationDAO.getVotesInfoForAConstituency("8","2009","Assembly");
 		for(int i=0; i<list2.size(); i++)
 			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
-	}
+	}*/
 	
 	/*public void testGetLocalBodyData(){
 		List list = nominationDAO.getCandidatesInfoForTheGivenMuncipalityOrCorporationConstituency("18420","2009","Greater Municipal Corp");
@@ -637,5 +637,14 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}
 	
 	}*/
+	
+	@Test
+	public void testGetNominationsForLocalElectionBodyElection(){
+		
+		List<Nomination> nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictIdForLocalElectionBodys(33L, 361L, 5L);
+		
+		System.out.println(" Total Nominations :" + nominations.size());
+		
+	}
 }
 	
