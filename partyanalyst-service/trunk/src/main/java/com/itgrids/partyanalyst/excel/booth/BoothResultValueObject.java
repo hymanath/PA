@@ -3,42 +3,41 @@ package com.itgrids.partyanalyst.excel.booth;
 public class BoothResultValueObject {
 	
 	
-	private Long totalNoOfValidVotes;
-	private Long rejectedVotes;
-	private Long totalVotes;
-	private Long tenderedVotes;
+	private String totalNoOfValidVotes;
+	private String rejectedVotes;
+	private String totalVotes;
+	private String tenderedVotes;
 	private String partNumber;
 	
-	public BoothResultValueObject() {
-		totalNoOfValidVotes = new Long(0);
-		rejectedVotes = new Long(0);
-		totalVotes = new Long(0);
-		tenderedVotes = new Long(0);
-		partNumber = "";
-	}
-
-	public Long getTotalNoOfValidVotes() {
+	public String getTotalNoOfValidVotes() {
 		return totalNoOfValidVotes;
 	}
-	public void setTotalNoOfValidVotes(Long totalNoOfValidVotes) {
+
+	public void setTotalNoOfValidVotes(String totalNoOfValidVotes) {
 		this.totalNoOfValidVotes = totalNoOfValidVotes;
 	}
-	public Long getRejectedVotes() {
+
+	public String getRejectedVotes() {
 		return rejectedVotes;
 	}
-	public void setRejectedVotes(Long rejectedVotes) {
+
+	public void setRejectedVotes(String rejectedVotes) {
 		this.rejectedVotes = rejectedVotes;
 	}
-	public Long getTotalVotes() {
+
+	public String getTotalVotes() {
 		return totalVotes;
 	}
-	public void setTotalVotes(Long totalVotes) {
+
+	public void setTotalVotes(String totalVotes) {
 		this.totalVotes = totalVotes;
 	}
-	public Long getTenderedVotes() {
+
+	public String getTenderedVotes() {
 		return tenderedVotes;
 	}
-	public void setTenderedVotes(Long tenderedVotes) {
+
+	public void setTenderedVotes(String tenderedVotes) {
 		this.tenderedVotes = tenderedVotes;
 	}
 

@@ -8,7 +8,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.Tehsil;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 

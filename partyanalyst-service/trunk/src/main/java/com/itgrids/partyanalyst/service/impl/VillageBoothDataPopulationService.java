@@ -7,6 +7,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -224,8 +225,20 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	private void checkAndInsertTownshipBooth(Township township,
 			BoothConstituencyElection boothConstituencyElection) {
 		List list = villageBoothElectionDAO.findByTownshipAndBoothConstituencyElection(township.getTownshipId(), boothConstituencyElection.getBoothConstituencyElectionId());
-		if(list.size() == 0)
-			villageBoothElectionDAO.save(new VillageBoothElection(township, boothConstituencyElection));
+		if(list.size() == 0){
+			try{
+				List existingBoothInfo = villageBoothElectionDAO.findVillageAndBoothInfoForBoothConstituencyElection(boothConstituencyElection.getBoothConstituencyElectionId());
+				if(existingBoothInfo.size() > 0){
+					Object[] values = (Object[])existingBoothInfo.get(0);
+					System.out.println(values[3].toString()+" Assembly Part No: "+values[4].toString()+" is Already Mapped To "+
+							values[0].toString()+" Revenue Village In "+values[1].toString()+" Mandal In "+values[2].toString()+" District");
+					return;
+				}
+				villageBoothElectionDAO.save(new VillageBoothElection(township, boothConstituencyElection));
+			}catch (DataIntegrityViolationException e) {
+				System.out.println("Data Duplication::"+ boothConstituencyElection.getBooth().getPartNo());
+			}
+		}
 		return;
 	}
 

@@ -27,5 +27,7 @@ public interface IVillageBoothElectionDAO extends GenericDao<VillageBoothElectio
 	public List findTownshipWiseVotingTrendsForATehsil(Long tehsilId, String electionIds);
 	
 	public List findPolledVotesInAllElectionsOfMandalByRevenueVillages(Long tehsilId);
+	
+	public List findVillageAndBoothInfoForBoothConstituencyElection(Long boothConstituencyElectionId);
 
 }

@@ -81,7 +81,7 @@ public class ExcelBoothResultReader {
 
 	public void identifyRowAndBindObject(List<CandidateBoothWiseResult> candidates, 
 			List<BoothResultValueObject> booths, List<BoothResultExcelColumnMapper> boothResults,
-			String headerInfo[],int columnsOfExcel) throws Exception{
+			String headerInfo[],int columnsOfExcel){
 		BoothResultValueObject boothResultValueObject=null;
 		//System.out.println("Total Columns::"+columnsOfExcel);
 		int tempInt=columnsOfExcel-2;
@@ -98,7 +98,7 @@ public class ExcelBoothResultReader {
 						if(method.getName().startsWith("get")){
 							String longVar=(String)method.invoke(boothResultExcelColumnMapper, null);
 							if(method.getName().equals("getColumn"+String.valueOf(i+1))){
-								boothResultExcelVO.setVotesEarned(checkForComma(longVar));
+								boothResultExcelVO.setVotesEarned(StringUtils.replaceChars(longVar.trim(), ",", ""));
 							}
 							if(method.getName().equals("getColumn2")){
 								boothResultExcelVO.setPartNo(longVar);
@@ -106,13 +106,13 @@ public class ExcelBoothResultReader {
 							}
 							if(i==2){
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt))){
-									boothResultValueObject.setTotalNoOfValidVotes(checkForComma(longVar));								
+									boothResultValueObject.setTotalNoOfValidVotes(StringUtils.replaceChars(longVar.trim(), ",", ""));								
 								}
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt+1))){
-									boothResultValueObject.setRejectedVotes(checkForComma(longVar));
+									boothResultValueObject.setRejectedVotes(StringUtils.replaceChars(longVar.trim(), ",", ""));
 								}
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt+2))){
-									boothResultValueObject.setTenderedVotes(checkForComma(longVar));
+									boothResultValueObject.setTenderedVotes(StringUtils.replaceChars(longVar.trim(), ",", ""));
 								}
 							}
 						}
@@ -126,12 +126,8 @@ public class ExcelBoothResultReader {
 				candidates.add(candidateBoothWiseResult);
 
 			}
-		}catch (IllegalArgumentException argumentExeception) {
-			throw new CsvException(argumentExeception.getMessage());
-		}catch(InvocationTargetException invocationEx){
-			throw new CsvException(invocationEx.getMessage());
-		}catch(IllegalAccessException iace){
-			throw new CsvException(iace.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -161,17 +157,6 @@ public class ExcelBoothResultReader {
 			}
 		}
 		return cellContect;
-	}
-	
-	public Long checkForComma(String value){
-			Long longVal = new Long(0);
-			if(!StringUtils.isEmpty(value)){
-				if(StringUtils.contains(value, ","))
-					longVal = new Long(StringUtils.replaceChars(value.trim(), ",", ""));
-				else
-					longVal = new Long(value);
-			}
-			return longVal;
 	}
 
 	public List<BoothResultExcelColumnMapper> getExcelRecords(Sheet sheet,int rows, int columns){

@@ -26,7 +26,7 @@ public class BoothDataValidationServiceTest {
 		tehsilDAO = EasyMock.createMock(ITehsilDAO.class);
 		constituencyElectionDAO = EasyMock.createMock(IConstituencyElectionDAO.class);
 		boothDataValidationService = new BoothDataValidationService();
-		boothDataValidationService.setConstituencyElectionDAO(constituencyElectionDAO);
+		//boothDataValidationService.setConstituencyElectionDAO(constituencyElectionDAO);
 		boothDataValidationService.setTehsilDAO(tehsilDAO);
 	}
 	
@@ -37,7 +37,7 @@ public class BoothDataValidationServiceTest {
 		BoothInfo boothRecord = new BoothInfo();
 		boothRecord.setCensusCode("222332# 3456");
 		boothRecord.setPartNo("12_ramulapalem");
-		boothDataValidationService.checkAndInsertBooth(new Constituency(new Long(128)), boothRecord, new Long(19), "Atmakur", new ArrayList<String>());
+		//boothDataValidationService.checkAndInsertBooth(new Constituency(new Long(128)), boothRecord, new Long(19), "Atmakur", new ArrayList<String>());
 		EasyMock.verify(tehsilDAO);
 	}
 }

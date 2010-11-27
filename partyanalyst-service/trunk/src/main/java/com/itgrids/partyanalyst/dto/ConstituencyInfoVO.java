@@ -25,12 +25,20 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private Date deformDate;
 	private String constituencyType;
 	private List<SelectOptionVO> assembyConstituencies;
-	private List<String> uploadInfo;
 	private Boolean hasAnalize = false;
 	private Boolean viewCompletePage = false;
 	private String area_type;
 	private String reservation_zone;
 	private List<SelectOptionVO> constituencies;
+	
+	
+	//Upload Info
+	private Long boothsIdentified = 0l;
+	private Long boothsInserted = 0l;
+	private Long nullTehsilsCount = 0l;
+	private List<String> uploadInfo;
+	private Long totalCandidates = 0l;
+	private Long boothsInDB = 0l; 
 	
 	public List<SelectOptionVO> getConstituencies() {
 		return constituencies;
@@ -124,6 +132,38 @@ public class ConstituencyInfoVO extends ResultStatus{
 		this.viewCompletePage = viewCompletePage;
 	}
 	
+	public Long getBoothsIdentified() {
+		return boothsIdentified;
+	}
+	public void setBoothsIdentified(Long boothsIdentified) {
+		this.boothsIdentified = boothsIdentified;
+	}
+	public Long getBoothsInserted() {
+		return boothsInserted;
+	}
+	public void setBoothsInserted(Long boothsInserted) {
+		this.boothsInserted = boothsInserted;
+	}
+	
+	public Long getNullTehsilsCount() {
+		return nullTehsilsCount;
+	}
+	public void setNullTehsilsCount(Long nullTehsilsCount) {
+		this.nullTehsilsCount = nullTehsilsCount;
+	}
+	public Long getTotalCandidates() {
+		return totalCandidates;
+	}
+	public void setTotalCandidates(Long totalCandidates) {
+		this.totalCandidates = totalCandidates;
+	}
+	public Long getBoothsInDB() {
+		return boothsInDB;
+	}
+	public void setBoothsInDB(Long boothsInDB) {
+		this.boothsInDB = boothsInDB;
+	}
+	 
 	
 	
 }

@@ -15,7 +15,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Entitlement;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.utils.IConstants;

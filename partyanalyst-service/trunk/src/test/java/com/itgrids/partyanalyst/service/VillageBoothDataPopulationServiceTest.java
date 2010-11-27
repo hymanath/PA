@@ -18,8 +18,8 @@ public class VillageBoothDataPopulationServiceTest extends BaseDaoTestCase{
 	}
 	
 	public void testReadExcelAndInsertData(){
-		File file = new File("d:/Book1.xls");
-		villageBoothDataPopulationService.readExcelAndInsertData(file, 2l);
+		File file = new File("d:/NelloreMapping2004.xls");
+		villageBoothDataPopulationService.readExcelAndInsertData(file, 4l);
 		setComplete();
 	}
 	
