@@ -123,5 +123,5 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List getLocalBodyElectionsInAState(Long localBodyId,Long stateId);
 	
 	@SuppressWarnings("unchecked")
-	public List getLatestReservationZone(List<Long> constituencyIds);
+	public List getLatestReservationZone(List<Long> constituencyIds,Long electionYear);
 }

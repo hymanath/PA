@@ -919,14 +919,16 @@ public class StaticDataService implements IStaticDataService {
 			constituenciesStatusVO.setTotalDeletedConstituencies(constituenciesStatusVO.getDeletedConstituencies().size());
 			List<ConstituencyWinnerInfoVO> constituencyWinnerInfoVOList = new ArrayList<ConstituencyWinnerInfoVO>();
 			StringBuilder constituencyIDs = new StringBuilder();
+			HashMap<Long,Long> constituencyIdsAndYears = new HashMap<Long,Long>();
 			
 			for(SelectOptionVO constituency : constituencies){
 				constituencyIDs.append(",").append(constituency.getId());
 				constituencyIds.add(constituency.getId());
+				constituencyIdsAndYears.put(constituency.getId(), electionYear);
 			}	
 			
-			log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);			
-			HashMap<Long,Long> constituencyIdsAndYears = new HashMap<Long,Long>();
+		/*	log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);			
+			
 			yearsList = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
 						
 			for(int i=0;i<yearsList.size();i++){
@@ -939,7 +941,7 @@ public class StaticDataService implements IStaticDataService {
 					constituencyIdsAndYears.put(constituencyId, new Long(params[1].toString()));
 				}			
 			}
-			
+			*/
 			constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
 			StringBuilder parliamentIDs = new StringBuilder();
 			
@@ -1351,9 +1353,9 @@ public class StaticDataService implements IStaticDataService {
 				district = districtDAO.get(districtId);
 				Long electionTypeId = election.getElectionScope().getElectionType().getElectionTypeId();
 				
-				nominations = checkAndGetNominationsInAnElectionForAPartyInADistrict(electionTypeId,electionId,partyId,districtId);
+				nominations = checkAndGetNominationsInAnElectionForAPartyInADistrict(electionTypeId,electionId,partyId,districtId);				
 				
-				
+
 				if(nominations != null && nominations.size() > 0 && election != null && party != null && district != null){
 					completeValidVotes = getCompleteValidVotesForADistrict(electionTypeId,electionId,districtId);
 					for(Nomination nominationForParty:nominations){

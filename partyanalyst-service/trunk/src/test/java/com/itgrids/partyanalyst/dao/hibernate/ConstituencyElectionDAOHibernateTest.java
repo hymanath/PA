@@ -181,23 +181,14 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetReservationZoneForAConstituency(){
 		//List list = constituencyElectionDAO.getLatestReservationZone(21l,IConstants.ELECTION_SUBTYPE_MAIN);
 		List<Long> constituencyIds = new ArrayList<Long>(0);
-		constituencyIds.add(232l);
-		constituencyIds.add(21l);
+		constituencyIds.add(8436l);		
 		
 		HashMap<Long,Long> hm = new HashMap<Long,Long>();
-		List list = constituencyElectionDAO.getLatestReservationZone(constituencyIds);
+		List list = constituencyElectionDAO.getLatestReservationZone(constituencyIds,2006l);
 		
 		for(int i=0;i<list.size();i++){
 			Object[] params = (Object[])list.get(i);
-			System.out.println(params[0] + " \t" + params[1]+ " \t" + params[2]);
-			Long constituencyId = new Long(params[2].toString());
-			Long electionYear = new Long(params[1].toString());
-			if(hm.containsKey(constituencyId) && (hm.get(constituencyId)<electionYear)){
-				hm.put(constituencyId, electionYear);
-			}else{
-				hm.put(constituencyId, new Long(params[1].toString()));
-			}			
+			System.out.println(params[0] + " \t" + params[1]+ " \t" + params[2]);	
 		}
-		System.out.println(hm);
 	}
 }
