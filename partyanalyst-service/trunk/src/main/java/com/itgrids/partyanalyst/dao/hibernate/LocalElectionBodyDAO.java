@@ -58,6 +58,13 @@ public class LocalElectionBodyDAO extends GenericDaoHibernate<LocalElectionBody,
 				"model.localElectionBodyId, model.name " +
 				"from LocalElectionBody  model where model.localElectionBodyId in("+localElectionBodyIds+") ");
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCountOfLocalBodysForALocalElectionBodyType(
+			Long electionTypeId) {
+		return getHibernateTemplate().find("select count(model.localElectionBodyId) from LocalElectionBody model where "+
+				"model.electionType.electionTypeId = ?",electionTypeId);
 	} 
 
 }
