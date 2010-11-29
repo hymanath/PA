@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -147,7 +148,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@Test
+	/*@Test
 	public void testFindElectionObjects(){
 		List<Election> elections =  electionDAO.findElections(new Long(1));
 		if(elections!=null){
@@ -169,6 +170,12 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testFindElectionsByState() {
 		List list = electionDAO.findElectionsByState(1l);
 		System.out.println(list.size());
+	}*/
+	
+	public void testFindLatestElectionIdForElectionType(){
+		List list = electionDAO.findLatestElectionIdForElectionType(IConstants.PARLIAMENT_ELECTION_TYPE, IConstants.ELECTION_SUBTYPE_MAIN);
+		System.out.println(list);
 	}
+	
 }
 
