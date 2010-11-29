@@ -10,7 +10,7 @@ public interface ISessionConstants {
 	public static final String MANDALS = "mandalsList";
 	public static final String VILLAGES = "villagesList";
 	public static final String WARDS_OR_HAMLETS = "wardsOrHamletsList";
-	
+	public static final String BOOTHS = "boothsList";
 	// ADDRESS VARIBALES FOR OFFICIAL ADDRESS
 	public static final String STATES_O = "statesList_o";
 	public static final String DISTRICTS_O = "districtsList_o";
@@ -18,6 +18,7 @@ public interface ISessionConstants {
 	public static final String P_CONSTITUENCIES_O = "p_constituencies_o";
 	public static final String MANDALS_O = "mandalsList_o";
 	public static final String VILLAGES_O = "villagesList_o";
+	public static final String BOOTHS_O = "boothsList_o";
 	// cadre levle variables
 	public static final String CADRE_LEVELS_LIST = "cadreLevelsList";
 	public static final String DISTRICTS_C = "districtsList_c";
@@ -26,6 +27,7 @@ public interface ISessionConstants {
 	public static final String CONSTITUENCIES_C = "constituenciesList_c";
 	public static final String MANDALS_C = "mandalsList_c";
 	public static final String VILLAGES_C = "villagesList_c";
+	public static final String BOOTHS_C = "boothsList_c";
 	//contains social categories like sc, st etc.
 	public static final String SOCIALCATEGORIES = "socialStatus";
 	// contains educational qualifications
@@ -40,7 +42,6 @@ public interface ISessionConstants {
 	
 	//cadre skills list based on party
 	public static final String CADRE_SKILLS = "cadreSkills";
-	public static final String CADRE_LEVELS = "cadreLevels";
 	// training camps based on party
 	public static final String PARTY_TRAINING_CAMPS="partyTrainingCamps";
 	public static final String GENDERS = "genders";
@@ -51,7 +52,8 @@ public interface ISessionConstants {
 	public static final String PARTY_COMMITTEES_FLAG = "partyCommittees_flag"; 
 	public static final String CADRE_SKILLS_FLAG = "cadreSkills_flag"; 
 	public static final String PARTY_TRAINING_CAMPS_FLAG = "partyTrainingCamps_flag";
-	
+	//relations list
+	public static final String FAMILY_RELATIONS = "familyRelationsList";
 	
 	//list of information sources for problem complains, local policitcal changes, influencing people 
 	public static final String INFO_SOURCES = "informationSourcesList";
