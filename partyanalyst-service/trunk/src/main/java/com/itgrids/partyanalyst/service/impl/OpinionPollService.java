@@ -147,7 +147,9 @@ public class OpinionPollService implements IOpinionPollService {
 			 for(int i=0;i<result.size();i++){
 					Object[] parms = (Object[])result.get(i);
 					OpinionPollQuestions poll = (OpinionPollQuestions) parms[3];
-					latestPollId = poll.getOpinionPollQuestionsId();
+					if(i==0){
+						latestPollId = poll.getOpinionPollQuestionsId();	
+					}
 			 }
 			opinionPollVO.setQuestionsOptionsVO(getQuestionAndPercentageOfVotesForChoices(latestPollId));
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
