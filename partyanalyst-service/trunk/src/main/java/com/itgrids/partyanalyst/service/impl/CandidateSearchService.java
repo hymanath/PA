@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
 import com.itgrids.partyanalyst.dto.CandidateElectionVO;
@@ -23,6 +24,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 	private ICandidateDAO candidateDAO;	
 	private INominationDAO nominationDAO;
 	private IPartyRebelCandidateDAO partyRebelCandidateDAO;
+	private IElectionDAO electionDAO;
 	
 	
 	public void setPartyRebelCandidateDAO(
@@ -38,6 +40,14 @@ public class CandidateSearchService implements ICandidateSearchService{
 		this.candidateDAO = candidateDAO;
 	}
 	
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
 	public List<SelectOptionVO> getCandidateNamesAndIds(String electionType,
 			Long stateId, String searchString) {
 		List<SelectOptionVO> candidateNamesAndIdsList = null;
@@ -159,6 +169,27 @@ public class CandidateSearchService implements ICandidateSearchService{
 			name = name + candidate.getLastname() + " ";
 		}
 		return StringUtils.trimWhitespace(name);
+	}
+	
+	//Returns Latest ElectionIds for Election Types
+	public String getLatestElectionIdForElectionType(List<String> electionTypes){
+		StringBuilder electionIds = new StringBuilder();
+		List rawData = null;
+		Object[] values = null;
+		try{
+			for(String electionType:electionTypes){
+				rawData = electionDAO.findLatestElectionIdForElectionType(electionType, IConstants.ELECTION_SUBTYPE_MAIN);
+				if(rawData.size() > 0)
+					electionIds.append(",").append(((Object[])rawData.get(0))[0]);
+			}
+				
+		}catch (Exception e) {
+			
+		}
+		if(electionIds.length() > 0)
+			return electionIds.toString().substring(1);
+		else
+			return "";
 	}
 	
 }
