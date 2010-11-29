@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -68,7 +69,6 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String mobile;
 	private String email;
 	private String cadreId;
-	private Long cadreID = null;
 	private String pstate;
 	private String pdistrict;
 	private String pconstituencyID;
@@ -161,15 +161,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setCadreId(String cadreId) {
 		this.cadreInfo.setCadreId(cadreId);
 	}
-
-	public Long getCadreID() {
-		return cadreID;
-	}
-
-	public void setCadreID(Long cadreID) {
-		this.cadreID = cadreID;
-	}
-
+	
 	public String getWindowTask() {
 		return windowTask;
 	}
@@ -211,7 +203,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getFatherOrSpouseName();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Father or Spouse Name is Mandatory", shortCircuit = true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Father or Spouse Name should not contain special characters and numbers", shortCircuit = true)
 	public void setFatherOrSpouseName(String fatherOrSpouseName) {
 		this.cadreInfo.setFatherOrSpouseName(fatherOrSpouseName);
@@ -248,7 +239,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getMobile();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile Number is Mandatory", shortCircuit = true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
@@ -1041,18 +1031,25 @@ public class CadreRegisterAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
+		
 	public void validate() {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		
-		/*int familyMembers = Integer.parseInt(cadreInfo.getNoOfFamilyMembers().trim().length()>0?cadreInfo.getNoOfFamilyMembers().trim():"0");
-		int voters = Integer.parseInt(cadreInfo.getNoOfVoters().trim().length()>0?cadreInfo.getNoOfVoters().trim():"0");
-		
-		if(voters > familyMembers)
+		String familyMbrsCount = cadreInfo.getNoOfFamilyMembers().trim(); 
+		String votersCount = cadreInfo.getNoOfVoters().trim();	
+		if(familyMbrsCount.isEmpty() && !(votersCount.isEmpty()))
+			addFieldError("noOfFamilyMembers","Please Enter No of Family Members");
+		if(!(familyMbrsCount.isEmpty()) && votersCount.isEmpty())
+			addFieldError("noOfVoters","Please Enter No of Voters");		
+		if(!(familyMbrsCount.isEmpty() || votersCount.isEmpty()))
 		{
-			addFieldError("noOfVoters","Please Give Correct value for No of Voters");
-		} */
+			if(StringUtils.isNumeric(familyMbrsCount) && StringUtils.isNumeric(votersCount))
+			{
+				if(Integer.parseInt(familyMbrsCount) < Integer.parseInt(votersCount))
+					addFieldError("noOfVoters","No of Voters in family should not be greater than No of Family Members");				
+			}	
+		}		
 		if("Party".equalsIgnoreCase(regVO.getUserType()) && cadreInfo.getMemberType().equalsIgnoreCase("Active"))
 		{
 			if(cadreInfo.getPartyCommittee() == 0)

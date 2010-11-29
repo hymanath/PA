@@ -28,7 +28,7 @@
 	var successFlag = '${rs.resultCode}';
 	var accessValue = '${sessionScope.USER.accessValue}';
 	var accessType = '${sessionScope.USER.accessType}';
-	
+	var selectedeffectedRange;
 	function setCadreValue(value, source){
 		var scopeLevelEl = document.getElementById("scopeLevel");
 		var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].text;
@@ -252,68 +252,11 @@
 					ageTextEl.focus();
 					ageTextEl.value = '';
 					dobTextEl.value='31/02/1900';	
-				}	
-								
+				}								
 			}
-		}
-		
-	}	
-	
-	function validateClientSide()
-	{
-		var flag;
-		
-		var sameAsCAEl = document.getElementById("sameAsCA");
-		var locationError_cEl = document.getElementById("locationError_c");
-		var locationError_pEl = document.getElementById("locationError_p");
-		//current address fields
-		var stateFieldEl = document.getElementById("stateField");
-		var districtFieldEl = document.getElementById("districtField");
-		var constituencyFieldEl = document.getElementById("constituencyField");
-		var mandalFieldEl = document.getElementById("mandalField");
-		var villageFieldEl = document.getElementById("villageField");
-		//selected values
-		var stateFieldSelected = stateFieldEl.options[stateFieldEl.selectedIndex].value;
-		var districtFieldElSelected = districtFieldEl.options[districtFieldEl.selectedIndex].value;
-		var constituencyFieldElSelected =  constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
-		var mandalFieldElSelected = mandalFieldEl.options[mandalFieldEl.selectedIndex].value; 
-		var villageFieldElSelected = villageFieldEl.options[villageFieldEl.selectedIndex].value;
-
-		//official address
-		var pstateFieldEl = document.getElementById("pstateField");
-		var pdistrictFieldEl = document.getElementById("pdistrictField");
-		var pconstituencyFieldEl = document.getElementById("pconstituencyField");
-		var pmandalFieldEl = document.getElementById("pmandalField");
-		var pvillageFieldEl = document.getElementById("pvillageField");
-		//selected values
-		var pstateFieldSelected = pstateFieldEl.options[pstateFieldEl.selectedIndex].value;
-		var pdistrictFieldSelected = pdistrictFieldEl.options[pdistrictFieldEl.selectedIndex].value;
-		var pconstituencyFieldSelected = pconstituencyFieldEl.options[pconstituencyFieldEl.selectedIndex].value;
-		var pmandalFieldSelected = pmandalFieldEl.options[pmandalFieldEl.selectedIndex].value;
-		var pvillageFieldSelected = pvillageFieldEl.options[pvillageFieldEl.selectedIndex].value;	 
-
-		locationError_cEl.innerHTML = '';
-		locationError_pEl.innerHTML = '';
-		//current address
-		if(stateFieldSelected == '0' || districtFieldElSelected == '0' || constituencyFieldElSelected == '0' || mandalFieldElSelected == '0' || villageFieldElSelected == '0')
-		{
-			locationError_cEl.innerHTML = 'Invalid selection in current address ';
-			flag = false;
-		} else if (sameAsCAEl.checked == false )
-		{
-			if(pstateFieldSelected == '0' || pdistrictFieldSelected == '0' || pconstituencyFieldSelected == '0' || pmandalFieldSelected == '0' || pvillageFieldSelected == '0')
-			{
-				locationError_pEl.innerHTML = 'Invalid selection in permanat address ';
-				flag = false;
-			}
-				
-		} else {
-				flag = true;
-			}
-		
-		return flag;
+		}		
 	}
-
+	
 	function cleanOptionsList(string)
 	{
 		if(string == "state")
@@ -339,8 +282,7 @@
 		{
 			clearOptionsListForSelectElmtId("pconstituencyField");
 			clearOptionsListForSelectElmtId("pmandalField");
-			clearOptionsListForSelectElmtId("pvillageField");
-			
+			clearOptionsListForSelectElmtId("pvillageField");		
 		}
 
 		else if(string == "pdistrict")
@@ -364,13 +306,14 @@
 		var cuurrentAddTableEl = document.getElementById("cuurrentAddTable");
 		var memberTypeRadioEls = document.getElementsByName("memberType");
 		var cadreLevelTableEl = document.getElementById("cadreLevelTable"); 
-		
+		var childrenFlagEl = document.getElementById("childrenFlag");
 		var stateElmt = document.getElementById("cadreLevelState");
 		var districtElmt = document.getElementById("cadreLevelDistrict");
 		var constituencyElmt = document.getElementById("cadreLevelConstituency");
 		var mandalElmt = document.getElementById("cadreLevelMandal");
 		var villageElmt = document.getElementById("cadreLevelVillage");
-		
+		var partyComiteSelectEl = document.getElementById("partyComiteSelect");
+		var partyComiteSelected;
 		if(samsAsCaEl.checked == true)				
 		{
 			permanantAddrEl.style.display = 'none';
@@ -391,13 +334,21 @@
 					cadreLevelTableEl.style.display = 'block';
 				}
 				var effectedRangeEl = document.getElementById("scopeLevel");
-				var selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
+				selectedeffectedRange =effectedRangeEl.options[effectedRangeEl.selectedIndex].value;  
 				
-				if(selectedeffectedRange != '0')
+				if(selectedeffectedRange != '0'  && currentTask == 'new')
 					populateLocations(selectedeffectedRange, 'onLoad');	
 			}	
 		}
-		
+		if(childrenFlagEl.value)
+			showFamilyDetailsTable();
+		/*
+		if(partyComiteSelectEl)
+		{
+			partyComiteSelected = partyComiteSelectEl.options[partyComiteSelectEl.selectedIndex].value;
+			if(partyComiteSelected != 0)
+				getPartyDesignation(partyComiteSelected);
+		}*/
 		manageDOBOptions('onLoad');		 
 	}
 	function populateLocations(val,source)
@@ -442,13 +393,7 @@
 			{
 				mandalFieldEl.selectedIndex = '0';
 				hamletFieldEl.selectedIndex = '0';
-			}  
-			/*   
-			stateFieldEl.selectedIndex = '0';
-			districtFieldEl.selectedIndex = '0';
-			constituencyFieldEl.selectedIndex = '0';
-			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';*/			
+			}						
 		} else 
 			if(source == "onLoad")
 			{
@@ -537,10 +482,7 @@
 			if(row3El.style.display == 'none')
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
-				row4El.style.display = '';
-			/*
-			if(row6El.style.display == 'none')
-				row6El.style.display = '';*/
+				row4El.style.display = '';			
 		}	 
 	}
 	
@@ -548,6 +490,8 @@
 	{
 		var familyDetailsTableEle  =  document.getElementById("familyDetailsTableId");
 		familyDetailsTableEle.style.display = '';
+		var firstFamilyMemberNameIdEl = document.getElementById("firstFamilyMemberNameId");
+		firstFamilyMemberNameIdEl.focus();
 	}
 
 </script>
@@ -651,13 +595,19 @@
     cursor:pointer;
     cursor:hand;
 	}
+	
+	.regionSelect
+	{
+		padding:2px;
+		width:175px;
+	}
 
 </style>
 </head>
 <body class="bodyStyle" onunload="loadOnUnload()">
 <s:form action="cadreRegisterAction" method="POST" theme="simple">
 	<CENTER>
-		<TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+		<TABLE cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
 				<c:if test="${windowTask == 'new'}">
@@ -686,12 +636,6 @@
 		<table id="cadreRegistrationTable" class="registrationTable">
 		<tr>
 			<td colspan="2">
-				<div id="locationError_c" style="color: red;"></div>
-				<div id="locationError_p" style="color: red;"></div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
 				<div style="color: red;">
 					<s:actionerror />
 					<s:fielderror />
@@ -703,17 +647,17 @@
 	<input type="hidden" id="hiddenValue" name="windowTask" value="${windowTask}"/>
 	<FIELDSET>
 		<LEGEND><strong>Personal Details</strong></LEGEND>
-		<table class="cadreDetailsTable" width="100%">		
+		<table class="cadreDetailsTable" width="100%" border="0">		
 			<tr>
 				<td><s:label for="firstNameField" id="fnameLabel" value="%{getText('firstName')}" /><font class="requiredFont"> * </font></td>
-				<td align="left"><s:textfield id="firstNameField" key="cadreInfo.firstName" name="firstName" size="25" tooltip="true" maxlength="40"/></td>
+				<td align="left"><s:textfield id="firstNameField" key="cadreInfo.firstName" name="firstName" size="25" maxlength="40"/></td>
 				<td><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></td>
-				<td align="left"><s:textfield id="middleNameField" key="cadreInfo.middleName" name="middleName" size="25" tooltip="true" maxlength="40"/></td>
+				<td align="left"><s:textfield id="middleNameField" key="cadreInfo.middleName" name="middleName" size="25" maxlength="40"/></td>
 			</tr>
 			<tr>	
 				<td><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /><font class="requiredFont"> * </font></td>
 				<td align="left"><s:textfield id="lastNameField" key="cadreInfo.lastName" name="lastName" size="25" maxlength="40"/>  </td>
-				<td><s:label for="father_spouseName" id="father_spouseNameLabel"  value="%{getText('father_spouseName')}" /><font class="requiredFont"> * </font></td>
+				<td><s:label for="father_spouseName" id="father_spouseNameLabel"  value="%{getText('father_spouseName')}" /></td>
 				<td align="left"><s:textfield id="father_spouseName" name="fatherOrSpouseName" size="25" maxlength="100"/>  </td>
 			</tr>
 			<tr>				
@@ -723,11 +667,11 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan ="6">
-					<table>
-						<tr>
-							<td colspan="6" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
-						</tr>
+				<td colspan="4" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
+			</tr>
+			<tr>
+				<td colspan ="4">
+					<table cellpadding="0">
 						<tr>
 							<td width="162"><s:radio id="dopOptionRadio" name="dobOption" list="#session.dob_Options" onclick="manageDOBOptions('radio')"/></td>
 							<td align="left">
@@ -745,7 +689,7 @@
 							</td>							
 							<td align="left">
 								<span id="ageSpan" style="display:none;">
-									<s:textfield id="ageTextEl" name="age" size="25" maxlength="2"/>
+									<s:textfield id="ageTextEl" name="age" size="1" maxlength="2"/>
 								</span>
 							</td>						
 						</tr>
@@ -753,13 +697,12 @@
 				</td>			
 			</tr>	
 		<tr>
-			<td><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
-			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="25" tooltip="true" maxlength="5"/></td>
+			<td width="162"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
+			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="1" maxlength="2"/></td>
 
 			<td><s:label for="noOfVotersId" id="noOfVotersLableId"  value="No of Voters In Family" /></td>
-			<td align="left"><s:textfield id="noOfVotersId" name="noOfVoters" size="25" tooltip="true" maxlength="5"/></td>
+			<td align="left"><s:textfield id="noOfVotersId" name="noOfVoters" size="1" maxlength="2"/></td>
 		</tr>
-
 		<tr>
 			<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="Family Members Details" /></u></th>
 			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()"><b><u>Edit</u></b></div></td>
@@ -768,10 +711,10 @@
 		
 	  <tr id="firstFamilyMemberRow">
 		  <td width="50"><s:label for="firstFamilyMemberNameId" id="firstFamilyMemberNameLabel" value="Name"/></td>
-		  <td align="left" width="165px"><s:textfield id="firstFamilyMemberNameId" name="firstFamilyMemberName" maxlength="25" size="25" /> </td>
+		  <td align="left" width="165px"><s:textfield id="firstFamilyMemberNameId" name="firstFamilyMemberName" maxlength="50" size="25" /> </td>
 		  
 		  <td width="100"> <s:label for="firstFamilyMemberRelationTextId" id="firstFamilyMemberRelationLabelId" value="Relationship" /></td>
-		  <td align="left"> <s:select id="FamilyMemberRelationTextId" cssClass="regionSelect" name="firstFamilyMemberRelationId" list="#session.relationshipList" listKey="id" listValue="name" onchange="" ></s:select></td>
+		  <td align="left"> <s:select id="FamilyMemberRelationTextId" cssClass="regionSelect" name="firstFamilyMemberRelationId" list="#session.familyRelationsList" listKey="id" listValue="name" onchange="" ></s:select></td>
 					
 		  <td width="100" align="right"><s:label for="firstFamilyMemberDOBId" id="firstFamilyMemberDOBLabel" value="Date Of Birth"/></td>
 		  <td align="left">
@@ -791,10 +734,10 @@
 
 		<tr id="secondFamilyMemberRow">
 		  <td width="50"><s:label for="secondFamilyMemberNameId" id="secondFamilyMemberNameLabel" value="Name"/></td>
-		  <td align="left" width="165px"><s:textfield id="secondFamilyMemberNameId" name="secondFamilyMemberName" maxlength="25" size="25" /> </td>
+		  <td align="left" width="165px"><s:textfield id="secondFamilyMemberNameId" name="secondFamilyMemberName" maxlength="50" size="25" /> </td>
 		  
 		  <td width="100"> <s:label for="secondFamilyMemberRelationTextId" id="secondFamilyMemberRelationLabelId" value="Relationship" /></td>
-		  <td align="left"> <s:select id="secondFamilyMemberRelationTextId" cssClass="regionSelect" name="secondFamilyMemberRelationId" list="#session.relationshipList" listKey="id" listValue="name" onchange="" ></s:select></td>
+		  <td align="left"> <s:select id="secondFamilyMemberRelationTextId" cssClass="regionSelect" name="secondFamilyMemberRelationId" list="#session.familyRelationsList" listKey="id" listValue="name" onchange="" ></s:select></td>
 					
 		  <td width="100" align="right"><s:label for="secondFamilyMemberDOBId" id="secondFamilyMemberDOBLabel" value="Date Of Birth"/></td>
 		  <td align="left">
@@ -814,10 +757,10 @@
 
 		<tr id="thirdFamilyMemberRow">
 		  <td width="50"><s:label for="thirdFamilyMemberNameId" id="thirdFamilyMemberNameLabel" value="Name"/></td>
-		  <td align="left" width="165px"><s:textfield id="thirdFamilyMemberNameId" name="thirdFamilyMemberName" maxlength="25" size="25" /> </td>
+		  <td align="left" width="165px"><s:textfield id="thirdFamilyMemberNameId" name="thirdFamilyMemberName" maxlength="50" size="25" /> </td>
 		  
 		  <td width="100"> <s:label for="thirdFamilyMemberRelationTextId" id="thirdFamilyMemberRelationLabelId" value="Relationship" /></td>
-		  <td align="left"> <s:select id="thirdFamilyMemberRelationTextId" cssClass="regionSelect" name="thirdFamilyMemberRelationId" list="#session.relationshipList" listKey="id" listValue="name" onchange="" ></s:select></td>
+		  <td align="left"> <s:select id="thirdFamilyMemberRelationTextId" cssClass="regionSelect" name="thirdFamilyMemberRelationId" list="#session.familyRelationsList" listKey="id" listValue="name" onchange="" ></s:select></td>
 					
 		  <td width="100" align="right"><s:label for="thirdFamilyMemberDOBId" id="thirdFamilyMemberDOBLabel" value="Date Of Birth"/></td>
 		  <td align="left">
@@ -841,14 +784,14 @@
 		<LEGEND><strong>Contact Details</strong></LEGEND>
 		<table class="cadreDetailsTable" width="100%" border="0">
 			<tr>
-				<td width="165px"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /><font class="requiredFont"> * </font></td>
+				<td width="165px"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
 				<td align="left" width="165px"><s:textfield id="mobileField" name="mobile" maxlength="12" size="25" />  </td>
 				<td width="165px"><s:label for="telePhoneField" id="telePhoneLabel"  value="%{getText('telephoneNo')}" /></td>
 				<td align="left" width="165px"><s:textfield id="telePhoneField" name="telephone" maxlength="10" size="25" />  </td>
 			</tr>
 			<tr>
 				<td width="165px"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
-				<td align="left" colspan="3"><s:textfield id="emailField" name="email" size="75"/>  </td>
+				<td align="left" colspan="3"><s:textfield id="emailField" name="email" size="25"/>  </td>
 			</tr>
 			<tr>
 				<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="%{getText('currAdd')}" /></u></th>
@@ -891,7 +834,7 @@
 			<tr>
 				<td width="165px"><s:label for="villageField" id="villageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Village" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>				
+					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>				
 				</td>
 				<td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
@@ -902,7 +845,7 @@
 			<tr>
 				<td width="165px" ><s:label for="boothField" id="boothLabel"  value="%{getText('Booth')}" /></td>
 				<td align="left" width="165px">
-					<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+					<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name"></s:select>				
 				</td>
 				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField', 'mandalField')"/></td>				
 			</tr>
@@ -968,7 +911,7 @@
 			<tr>
 				<td width="165px" ><s:label for="pvillageField" id="pvillageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" headerKey="0" headerValue="Select Village" onchange="getBoothsInWard('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,'cadreReg','pmandalField')"></s:select>				
+					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,'cadreReg','pmandalField')"></s:select>				
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
 				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="10" size="25" />  </td>
@@ -979,7 +922,7 @@
 			<tr>
 				<td width="165px" ><s:label for="pboothField" id="pboothLabel"  value="%{getText('booth')}" /></td>
 				<td align="left" width="165px">
-					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="#session.boothsList_c" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
+					<s:select id="pboothField" cssClass="regionSelect" name="pBooth" list="#session.boothsList_o" listKey="id" listValue="name"></s:select>				
 				</td>
 				<td width="165px"><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('pboothField', 'pmandalField')"/></td>				
 			</tr>				
@@ -1003,7 +946,7 @@
 			<td width="130"><s:label for="educationField" id="educationLabel"  value="%{getText('education')}" /><font class="requiredFont"> * </font></td>
 			<td align="left"><s:select id="educationField" cssClass="regionSelect" name="education" list="#session.eduQualsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Education"></s:select></td>
 			<td align="left" width="165"><s:label for="professionField" id="professionLabel"  value="%{getText('profession')}" /><font class="requiredFont"> * </font></td>
-			<td align="left"><s:select id="professionField" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
+			<td align="left"><s:select id="professionField" cssClass="regionSelect" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
 		</tr>				
 		<tr>
 			<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
@@ -1030,6 +973,15 @@
 				<s:select id="scopeLevel" cssClass="regionSelect" name="cadreLevel"list="#session.cadreLevelsList" listKey="id" listValue = "name" value="defaultCadreLevel"  headerKey="0" headerValue="Select Cadre Level" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>	
 			</td>
 		</tr>
+		<c:if test="${windowTask == 'update_existing'}">
+				
+				<s:hidden id="effectRangeVal" name="effectRangeVal" value="%{update_existing}" />
+			 		<tr>
+						<td style="width:140px;">Location</td>
+						<td style="color:black;"><s:property value="strCadreLevelValue" /></td>
+						<td><input type="button" value="Edit" onclick="populateLocations(selectedeffectedRange, 'onLoad')"  /></td>
+					</tr>
+		 		</c:if>
 		<tr id="row1" style="display:none;">
 			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
@@ -1073,9 +1025,9 @@
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
 			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
-			<td align="left"><s:select id="partyComiteSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
+			<td align="left"><s:select id="partyComiteSelect" cssClass="regionSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
 			<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
-			<td><select id="comiteeDesignationSelect" name="designation" ><option value="0">Please Select</option></select></td>				
+			<td><s:select id="comiteeDesignationSelect" name="designation" cssClass="regionSelect" list="#session.designations" listKey="id" listValue="name"  headerKey="0" headerValue="Select Designation"/></td>				
 		</tr>
 		<tr>
 			<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /><font class="requiredFont"> * </font></td>
@@ -1131,7 +1083,7 @@
 		</tr>
 		</c:if>
 		</table>
-		<input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
+		<s:hidden name='cadreLevelValue' id='cadreLevelValue' value="%{cadreLevelValue}"/>
 		</fieldset>
 		<c:if test="${windowTask == 'new'}">
 			<div style="text-align: center;">			
@@ -1151,16 +1103,12 @@
 		<input type="hidden" name="defaultDistId" value="${defaultDistId}">
 		<input type="hidden" name="defaultConstId" value="${defaultConstId}">
 		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">	
+		<input type="hidden" name="childrenFlag" id="childrenFlag" value="${childrenFlag}">	
 		<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>	 		
 	</div>
 	</s:form>
 <script type="text/javascript">
 	executeOnload();
 </script>
-<c:if test="${windowTask == 'update_existing'}">
-	<script type="text/javascript">
-		showFamilyDetailsTable();
-	</script>
-</c:if>
 </body>
 </html>
