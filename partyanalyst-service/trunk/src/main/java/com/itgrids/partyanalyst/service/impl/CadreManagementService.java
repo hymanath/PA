@@ -3186,16 +3186,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		if (cadreObjects != null && cadreObjects.size() > 0) {
 			cadreOutputVO = new ArrayList<CadreInfo>();
 			for (Cadre cadre : cadreObjects) {
-				CadreInfo cadreInfoVO = new CadreInfo();
-				cadreInfoVO.setCadreID(cadre.getCadreId());
-				cadreInfoVO.setEmail(cadre.getEmail());
-				cadreInfoVO.setFirstName(cadre.getFirstName());
-				cadreInfoVO.setMiddleName(cadre.getMiddleName());
-				cadreInfoVO.setLastName(cadre.getLastName());
-				cadreInfoVO.setGender(cadre.getGender());
-				cadreInfoVO.setMobile(cadre.getMobile());
-				cadreInfoVO.setTelephone(cadre.getTelephone());
-
+				
+				CadreInfo cadreInfoVO = convertCadreToCadreInfo(cadre);
 				cadreOutputVO.add(cadreInfoVO);
 			}
 		}
