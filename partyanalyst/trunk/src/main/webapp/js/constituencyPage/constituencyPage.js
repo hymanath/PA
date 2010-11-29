@@ -447,105 +447,108 @@ function buildCenterVotersCandidateInfoContent()
 		elmtHead.innerHTML = 'Assemblies Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Parliament:';
 	var elmt = document.getElementById("mandalsVotersInfoDiv_Body");
 	
-	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
-	{		
-		elmt.innerHTML='Voter Info Unavailable';
-			return;
-	}
-	
-
+	var dataAvailability = false;
 	for(var i in constituencyPageMainObj.constituencyVotersInfo)
 	{
-		var data = constituencyPageMainObj.constituencyVotersInfo[i];
-		var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
-		
-		var divChild = document.createElement('div');
-		divChild.setAttribute("id","divChild"+i);
-
-		var str = '';
-		str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
-		if(data.year == "2009"){
-			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
-				str+='Mandals After Delimitation';
-			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
-				str+='Assemblies After Delimitation';
+		if(constituencyPageMainObj.constituencyVotersInfo[i].info.length!=0){
+			dataAvailability = true;	
 		}
-		else{
-			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
-				str+='Mandals Before Delimitation';
-			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
-				str+='Assemblies Before Delimitation';
-		}
-			
-		str+='</div>';
-		if(data.info.length!=0){
-			str+='<div id="divInteractive_Chart_'+i+'"></div>';
-			str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
-		}else{
-			str+='<div id="divChild_Body_'+i+'" class="voterBasicInfoBody"></div>';
-		}
-		
-		divChild.innerHTML=str;
-
-		if(elmt)
-			elmt.appendChild(divChild);
-		
-		var field,column;
-		
-		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
-			field = {key:"mandalName"};
-			column = {key:"mandalName", label:'Assembly Name', sortable:true, resizeable:true};
-		}
-		
-		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly'){
-			field = {key:"mandalName"};
-			column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
-		}
-				
-		if(data.info.length!=0){
-			 var myDataSource = new YAHOO.util.DataSource(data.info); 
-			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-			 myDataSource.responseSchema = { 
-						fields: [
-						         	field,
-									{	key : "mandalMaleVoters",parser:"number"},
-									{	key : "mandalFemaleVoters",parser:"number"},
-									{	key : "mandalTotalVoters",parser:"number"},
-									{	key : "isPartial"}
-								]
-					}; 
-			
-			 var myColumnDefs = [ 
-			             column,
-						{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
-						{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
-						{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
-						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
-					]; 
-			 
-			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
-		}else{	
-			if(basicData != null)
+	}
+	
+	if(!dataAvailability){
+		document.getElementById("constituencyCenterContentOuter1").style.display='none';
+	}else{	
+			for(var i in constituencyPageMainObj.constituencyVotersInfo)
 			{
-			 var myDataSource = new YAHOO.util.DataSource(basicData.info); 
-			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-			 myDataSource.responseSchema = { 
-						fields: [
-						         	field,									
-									{	key : "isPartial"}
-								]
-					}; 
-			
-			 var myColumnDefs = [ 
-			             column,						
-						{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
-					]; 
-			 
-			var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
-			}
-		}
+				var data = constituencyPageMainObj.constituencyVotersInfo[i];
+				var basicData = constituencyPageMainObj.constituencyVotersBasicInfo[i];
+				
+				var divChild = document.createElement('div');
+				divChild.setAttribute("id","divChild"+i);
 		
-
+				var str = '';
+				str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
+				if(data.year == "2009"){
+					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+						str+='Mandals After Delimitation';
+					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+						str+='Assemblies After Delimitation';
+				}
+				else{
+					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+						str+='Mandals Before Delimitation';
+					if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+						str+='Assemblies Before Delimitation';
+				}
+					
+				str+='</div>';
+				if(data.info.length!=0){
+					str+='<div id="divInteractive_Chart_'+i+'"></div>';
+					str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
+				}else{
+					str+='<div id="divChild_Body_'+i+'" class="voterBasicInfoBody"></div>';
+				}
+				
+				divChild.innerHTML=str;
+		
+				if(elmt)
+					elmt.appendChild(divChild);
+				
+				var field,column;
+				
+				if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+					field = {key:"mandalName"};
+					column = {key:"mandalName", label:'Assembly Name', sortable:true, resizeable:true};
+				}
+				
+				if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly'){
+					field = {key:"mandalName"};
+					column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
+				}
+				
+				if(data.info.length!=0){
+					 var myDataSource = new YAHOO.util.DataSource(data.info); 
+					 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+					 myDataSource.responseSchema = { 
+								fields: [
+								         	field,
+											{	key : "mandalMaleVoters",parser:"number"},
+											{	key : "mandalFemaleVoters",parser:"number"},
+											{	key : "mandalTotalVoters",parser:"number"},
+											{	key : "isPartial"}
+										]
+							}; 
+					
+					 var myColumnDefs = [ 
+					             column,
+								{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
+								{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
+								{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
+								{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+							]; 
+					 
+					var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+				}else{
+					if(basicData != null)
+					{
+					 var myDataSource = new YAHOO.util.DataSource(basicData.info); 
+					 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+					 myDataSource.responseSchema = { 
+								fields: [
+								         	field,									
+											{	key : "isPartial"}
+										]
+							}; 
+					
+					 var myColumnDefs = [ 
+					             column,						
+								{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
+							]; 
+					 
+					var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+					}
+				}
+		}
 	}
 }
 
@@ -642,7 +645,7 @@ function buildProblemViewingWindow()
 	
 	var str='';
 	str+='<fieldset id="problemViewingFieldSet">';
-	str+='<legend> View Your Constituency Problems</legend>';
+	str+='<legend> View Your constituency Problems</legend>';
 	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
 
@@ -764,7 +767,7 @@ function buildProblemPostingWindow()
 		
 	var str='';
 	str+='<fieldset id="ProblemPostingFieldSet">';
-	str+='<legend style="font-weight:bold;"> Post Your Constituency Problem</legend>';
+	str+='<legend style="font-weight:bold;"> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
