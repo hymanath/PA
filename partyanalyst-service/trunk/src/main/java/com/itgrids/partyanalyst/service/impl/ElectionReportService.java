@@ -467,6 +467,8 @@ public class ElectionReportService implements IElectionReportService {
 			electionResultsReportVO.setElectionBasicResultsVO(electionBasicResultsVO);
 			electionResultsReportVO.setElectionResultsInDistricts(electionResultsInAllDistrictsVO);
 			
+			setVOForDistrictWiseChart(electionResultsReportVO);
+			
 			log.debug("Parties Results Size:" + allPartiesResults.size());
 			log.debug("Parties Results DistrictWise Size:" + allPartiesResultsInDistricts.size());
 				
@@ -492,6 +494,79 @@ public class ElectionReportService implements IElectionReportService {
 		return count;
 	}
 	
+	
+	public void setVOForDistrictWiseChart(ElectionResultsReportVO electionResultsReportVO){
+		
+		List<SelectOptionVO> participatedParties = new ArrayList<SelectOptionVO>();
+		Map<Long,String> participatedDistrictsMap = new HashMap<Long,String>();
+		List<DistrictWisePartyPositionsVO> partyResultsDistWiseForChart = new ArrayList<DistrictWisePartyPositionsVO>();
+		
+		if(electionResultsReportVO.getElectionResultsInDistricts() != null){
+			
+			int index = -1;
+			int subRegionsCount = 0;
+			if(electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults() != null && electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults().size() > 0){
+				
+				for(DistrictWisePartyPositionsVO partiesParticipat:electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults()){
+					participatedParties.add(new SelectOptionVO(partiesParticipat.getPartyId(),partiesParticipat.getPartyName()));
+					
+					if(partiesParticipat.getPartyResultsInDistricts().size() > subRegionsCount){
+						index++;
+						subRegionsCount = partiesParticipat.getPartyResultsInDistricts().size();
+					}
+				}
+			}
+			
+			//Districts Info
+			if(subRegionsCount > 0){
+				DistrictWisePartyPositionsVO partiDistricts = electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults().get(index);
+				if(partiDistricts != null && partiDistricts.getPartyResultsInDistricts() != null){
+					for(PartyPositionsInDistrictVO districtsPart:partiDistricts.getPartyResultsInDistricts()){
+						participatedDistrictsMap.put(districtsPart.getDistrictId(), districtsPart.getDistrictName());
+					}
+				}
+			}
+			
+			for(Long districts:participatedDistrictsMap.keySet()){
+				
+				DistrictWisePartyPositionsVO partyResInADistrict = new DistrictWisePartyPositionsVO();
+				List<PartyPositionsInDistrictVO> partyResultsInDistricts = new ArrayList<PartyPositionsInDistrictVO>();
+				
+				String regionName = participatedDistrictsMap.get(districts);
+				partyResInADistrict.setPartyId(districts);
+				partyResInADistrict.setPartyName(regionName);
+				
+				for(DistrictWisePartyPositionsVO processedRes:electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults()){
+					
+					PartyPositionsInDistrictVO partyResInSubRegion = new PartyPositionsInDistrictVO();
+					partyResInSubRegion.setDistrictId(processedRes.getPartyId());
+					partyResInSubRegion.setDistrictName(processedRes.getPartyName());
+					Boolean partyFlag = false;
+					
+					for(PartyPositionsInDistrictVO dist:processedRes.getPartyResultsInDistricts()){
+						
+						if(dist.getDistrictName().equalsIgnoreCase(regionName)){
+							partyFlag = true;
+							partyResInSubRegion.setSeatsWon(dist.getSeatsWon());
+							partyResInSubRegion.setCompleteVotesPercentDouble(dist.getCompleteVotesPercentDouble());
+						}
+					}
+					
+					if(partyFlag.equals(false)){
+						partyResInSubRegion.setSeatsWon(0L);
+						partyResInSubRegion.setCompleteVotesPercentDouble(new Double(0));
+					}
+					partyResultsInDistricts.add(partyResInSubRegion);
+				}
+				partyResInADistrict.setPartyResultsInDistricts(partyResultsInDistricts);
+				
+				partyResultsDistWiseForChart.add(partyResInADistrict);
+			}
+			
+			electionResultsReportVO.setPartiDistList(participatedParties);
+			electionResultsReportVO.setPartyResultsforDistWiseChart(partyResultsDistWiseForChart);
+		}
+	}
 	/*
 	 * All Parties Results are Processed and set to PartyPositionsVO
 	 */
