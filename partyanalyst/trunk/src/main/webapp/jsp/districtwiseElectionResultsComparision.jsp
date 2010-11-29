@@ -15,6 +15,8 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
@@ -27,6 +29,7 @@
 var stateId = '${stateID}';
 var electionType = '${electionType}';
 var selectedYear = '${selectedElectionYear}';
+google.load("visualization", "1", {packages:["corechart"]});
 var electionResultsObj = {
 		partyWiseResultsArr:[],
 		allianceResultsArr:[],
@@ -99,13 +102,118 @@ var Localization = { <%
 
 function showDistrictWiseResultsLineGraph(results)
 {
-	var chartName = results.districtWiseElecResultsChartName;
+	/*var chartName = results.districtWiseElecResultsChartName;
 	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
 	var contentStr = '';
 	contentStr+='<IMG src="charts/'+chartName+'" style="margin-left:10px;"></IMG>';
-	districtWiseGraphEl.innerHTML = contentStr;	
+	districtWiseGraphEl.innerHTML = contentStr;	*/
+
+	getDistrictResultsInteractiveChartVotesPercent(results);
+	getDistrictResultsInteractiveChartSeatsWon(results);
 }
+
+function getDistrictResultsInteractiveChartSeatsWon(results)
+ {
+	 var districtWiseGraphEl = document.getElementById("districtWiseSeatsGraph");
+	 var chartColumns = results.partiesDistLevel;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
+	 var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'Party');
+	  var partysCount = 0;
+      //for columns
+	  for(var i in chartColumns){
+		 if(partysCount > 15)
+		  {
+			  break;
+		  }
+	    data.addColumn('number', chartColumns[i].name);
+		partysCount++;
+	  }
+
+      for(var j in chartRows)
+	  {
+		  
+		var partyCount = 0;
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+		  if(partyCount > 15)
+		  {
+			  break;
+		  }
+          var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+		  array.push(seatsWon);
+		  partyCount++;
+		}
+
+        data.addRow(array);
+		
+	  }
+		 
+    
+	  var ctitle = 'All Parties District Wise Election Results By Seats Won'; 
+	  new google.visualization.LineChart(districtWiseGraphEl).
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+      });
+		
+ }
+
+ function getDistrictResultsInteractiveChartVotesPercent(results)
+ {
+	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
+	 var chartColumns = results.partiesDistLevel;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
+	 var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'Party');
+	 var partysCount = 0;
+      //for columns
+	  for(var i in chartColumns){
+		  if(partysCount > 15)
+		  {
+			  break;
+		  }
+	    data.addColumn('number', chartColumns[i].name);
+		partysCount++;
+	  }
+
+     
+	  for(var j in chartRows)
+	  {
+		  
+		var partyCount = 0;
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+		  if(partyCount > 15)
+		  {
+			  break;
+		  }
+          var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+		  array.push(seatsWon);
+
+		   partyCount++;
+		}
+
+        data.addRow(array);
+       
+	  }
+		 
+    
+	  var ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
+	  new google.visualization.LineChart(districtWiseGraphEl).
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+      });
+		
+ }
 
 function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 {
@@ -562,6 +670,7 @@ function updateResultsStatewise(distName,results)
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
+<DIV id="districtWiseSeatsGraph"></DIV>
 <DIV id="distResultsViewOptionsDiv">
 
 	<TABLE width="100%">		
