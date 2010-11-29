@@ -178,6 +178,19 @@ function populateLocations(val,source)
 			 
 }
 </script>
+<style>
+.btnClass
+{
+	background-image:url(images/icons/indexPage/swasthic_body.png);
+	background-repeat:repeat-x;
+	border:1px solid #ADADAD;
+	color:#244565;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:none;
+}	
+
+</style>
 </head>
 <body>
 	
@@ -370,10 +383,10 @@ function populateLocations(val,source)
 				<tr>					
 					<td align="center">
 						
-						<input type="button" onclick="getCadresResults('search')" value="Search"/>
+						<input type="button" class="btnClass" onclick="getCadresResults('search')" value="Search"/>
 						
 						<c:if test="${windowTask == 'Sms'}">
-						<input type="button" onclick="getCadresResults('sms')" value="Send SMS"/>
+						<input type="button" class="btnClass" onclick="getCadresResults('sms')" value="Send SMS"/>
 						</c:if>
 						
 					</td>
@@ -394,7 +407,7 @@ function populateLocations(val,source)
 			
 			<div id="searchResult" style="display:none"></div>
 		</div>
-		<div id="searchResultsDiv_footer"></div>
+		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
 	</div>
 
 	<script type="text/javascript">		

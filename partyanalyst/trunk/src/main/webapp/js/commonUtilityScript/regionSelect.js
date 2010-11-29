@@ -898,16 +898,18 @@ function buildCadresDatatable(results,divId)
 	{
 		var obj={
 					checkBox:'<input type="checkbox" name="cadreResult_check" value="'+results[i].cadreID+'_'+results[i].mobile+'_'+results[i].firstName+'">',
-					fname:results[i].firstName+' '+results[i].middleName,
-					lname:results[i].lastName,
-					gender:results[i].gender,
+					fname:results[i].firstName+' '+results[i].middleName+' '+results[i].lastName,
 					mobile:results[i].mobile,
-					landline:results[i].telephone,
-					email:results[i].email,
+					cadreLevel: results[i].strCadreLevel+'-'+results[i].strCadreLevelValue,
+					address: results[i].villageName+', '+results[i].mandalName+', '+results[i].districtName,
+					memberType: results[i].memberType,
+					education: results[i].educationStr,
+					occupation: results[i].professionStr,						
+					casteCategory: results[i].casteCategoryStr,
 					moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+results[i].cadreID+'\')">More Details</a>',
 					update:'<A href="javascript:{}" onclick="openRegistrationForm('+results[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
 					remove:'<A href="javascript:{}" onclick="deleteCadre('+results[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
-		        };
+		        };				
 		jsArray.push(obj);
 	}
 	
@@ -919,16 +921,20 @@ function buildCadresDatatable(results,divId)
 		}, {
 			key : "fname"
 		}, {
-			key : "lname"
+			key : "cadreLevel"
 		}, {
-			key : "gender"
+			key : "address"
 		}, {
 			key : "mobile",parser:"number"
 		} , {
-			key : "landline",parser:"number"
+			key : "memberType"
 		} , {
-			key : "email"
+			key : "education"
 		} , {
+			key : "occupation"
+		} , {
+			key : "casteCategory"
+		},	{
 			key : "moreDetails"
 		} , {
 			key : "update"
@@ -944,29 +950,37 @@ function buildCadresDatatable(results,divId)
 		sortable : false
 	}, {
 		key : "fname",
-		label : "First Name",
-		sortable : true
-	}, {
-		key : "lname",
-		label : "Last Name",
-		sortable : true
-	}, {
-		key : "gender",
-		label : "Gender",
+		label : "Name",
 		sortable : true
 	}, {
 		key : "mobile",
 		label : "Mobile",
 		sortable : true
-	}, {
-		key : "landline",
-		label : "Landline",
+	},  {
+		key : "cadreLevel",
+		label : "Cadre Level",
 		sortable : true
 	}, {
-		key : "email",
-		label : "Email",
+		key : "address",
+		label : "Address",
+		sortable : true
+	},	{
+		key : "memberType",
+		label : "Cadre Type",
 		sortable : true
 	}, {
+		key : "education",
+		label : "Education",
+		sortable : true
+	},  {
+		key : "occupation",
+		label : "Occupation",
+		sortable : true
+	},  {
+		key : "casteCategory",
+		label : "Caste Category",
+		sortable : true
+	},  {
 		key : "moreDetails",
 		label : "More Details",
 		sortable : false
@@ -1064,9 +1078,9 @@ function showCadreSearchResults(jsObj,results)
 	
 
 	var fStr = '';
-	fStr += '<span><input type="button" onclick="selectCheckBox()" value="Select All"/></span>';
-	fStr += '<span><input type="button" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
-	fStr += '<span><input type="button" onclick="sendCadreSMS()" value="Send SMS"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span>';
 	fStr += '<span id="smsStatusTextSpan"></span>';
 
 	footerElmt.innerHTML = fStr;
