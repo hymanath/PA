@@ -130,7 +130,6 @@ public class SessionClearingAction extends ActionSupport implements ServletReque
 					session.removeAttribute(ISessionConstants.STATES_O);
 					
 					session.removeAttribute(ISessionConstants.DOB_OPTIONS);
-					session.removeAttribute(ISessionConstants.CADRE_LEVELS);
 					session.removeAttribute(ISessionConstants.CADRETYPES);
 					session.removeAttribute(ISessionConstants.GENDERS);
 					session.removeAttribute(ISessionConstants.SOCIALCATEGORIES);

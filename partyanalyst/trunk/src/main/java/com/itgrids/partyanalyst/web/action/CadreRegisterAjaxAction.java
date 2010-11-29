@@ -333,9 +333,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		
 		param=getTask();
 		session = request.getSession();
-		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		if(regVO==null)
-			return ERROR;
+		
 		try {
 			jObj=new JSONObject(param);
 			System.out.println("jObj = "+jObj);
@@ -346,7 +344,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		if(jObj.getString("task").equalsIgnoreCase("designations"))
 		{
 			String id = jObj.getString("id");
-			designationsList = cadreManagementService.getDesignationsInCommittee(regVO.getParty(),new Long(id));
+			designationsList = cadreManagementService.getDesignationsInCommittee(new Long(id));
 			designationsList.add(0,new SelectOptionVO(0L,"Select Designation"));
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, designationsList);
 		}

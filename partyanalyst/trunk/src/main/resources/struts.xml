@@ -427,6 +427,9 @@
 		<action name="cadreRegisterPageAction" class="cadreRegisterPageAction">
 			<result name="success">/jsp/newCadrePage.jsp</result>			
 		</action>
+		<action name="cadreRegisterPagePopupAction" class="cadreRegisterPageAction">
+			<result name="success">/jsp/newCadrePage.jsp</result>			
+		</action>
 		 
         <action name="cadreRegisterAjaxAction" class="cadreRegisterAjaxAction">
            <result type="json" name="success">
@@ -510,6 +513,14 @@
         </action> 
         
         <action name="cadreRegisterAction" class="cadreRegisterAction">
+        	<result name="success">/jsp/newCadrePage.jsp</result>
+        	<result name="input">/jsp/newCadrePage.jsp</result>
+           <result name="error"> /jsp/newCadrePage.jsp</result>
+           <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
+           <result type="redirect" name="update">getCadreInfoAction.action?windowTask=cadreInfoPopup</result>
+        </action>
+        
+        <action name="cadreRegisterPopupAction" class="cadreRegisterAction">
         	<result name="success">/jsp/newCadrePage.jsp</result>
         	<result name="input">/jsp/newCadrePage.jsp</result>
            <result name="error"> /jsp/newCadrePage.jsp</result>

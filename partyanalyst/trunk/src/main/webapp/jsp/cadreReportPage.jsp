@@ -419,9 +419,12 @@
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
-						landLine:cadreData[i].telephone,
-						cadreLevel:cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
-						email:cadreData[i].email,
+						cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
+						address: cadreData[i].villageName+'(V), '+cadreData[i].mandalName+', '+cadreData[i].districtName+'(Dt.)',
+						memberType: cadreData[i].memberType,
+						education: cadreData[i].educationStr,
+						occupation: cadreData[i].professionStr,						
+						casteCategory: cadreData[i].casteCategoryStr,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
 						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
 						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
@@ -432,11 +435,14 @@
 	
 
 		var myColumnDefs = [ 	           
-								{key:"name",label : "Name",sortable:true,resizeable:true}, 
-								{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
-								{key:"landLine",label : "Landline", sortable:true, resizeable:true},
-								{key:"cadreLevel",label : "Cadre Level", sortable:true, resizeable:true}, 
-								{key:"email",label : "Email", resizeable:true},
+								{key:"name",label : "Name",sortable:true}, 
+								{key:"mobile",label : "Mobile"}, 
+								{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
+								{key:"address",label : "Current Address", sortable:true},
+								{key:"memberType",label : "Cadre Type", sortable:true},
+								{key:"education",label : "Education", sortable:true, resizeable:true},
+								{key:"occupation",label : "Occupation", sortable:true, resizeable:true},
+								{key:"casteCategory",label : "Caste Category", sortable:true, resizeable:true},
 								{key:"moreDetails",label : "More Details", resizeable:true},
 								{key:"update",label : "Edit", resizeable:true},
 								{key:"remove",label : "Remove", resizeable:true},
@@ -446,8 +452,8 @@
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		myDataSource.responseSchema = { 
 		fields : [
-					{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
-					{key :"cadreLevel"},{key : "email"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
+					{key : "name"}, {key : "mobile",parser:"number"}, {key : "address"},{key: "education"},{key: "occupation"},{key: "casteCategory"}, 
+					{key :"cadreLevel"},{key : "memberType"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
 				 ]
 		};
 		
@@ -516,7 +522,7 @@
 			function openRegistrationForm(cadreId)
 			{
 				var task = "update_existing";
-				var urlStr = "cadreRegisterPageAction.action?cadreId="+cadreId+"&windowTask="+task;
+				var urlStr = "cadreRegisterPagePopupAction.action?cadreId="+cadreId+"&windowTask="+task;
 				var browser2 = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
 				browser2.focus();				
 			}
