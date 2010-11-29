@@ -532,7 +532,7 @@
 			function openRegistrationForm(cadreId)
 			{
 				var task = "update_existing";
-				var urlStr = "cadreRegisterPagePopupAction.action?cadreId="+cadreId+"&windowTask="+task;
+				var urlStr = "cadreRegisterPageAction.action?cadreId="+cadreId+"&windowTask="+task;
 				var browser2 = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
 				browser2.focus();				
 			}
