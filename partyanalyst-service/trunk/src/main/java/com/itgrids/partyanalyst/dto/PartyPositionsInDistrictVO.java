@@ -29,6 +29,7 @@ public class PartyPositionsInDistrictVO implements Serializable {
 	private Long totalConstituencies;
 	private Long totalConstiValidVotes;
 	private String completeVotesPercent;
+	private Double completeVotesPercentDouble;
 	private Long totalConstiParticipated;
 	
 	//getters and setters
@@ -118,6 +119,12 @@ public class PartyPositionsInDistrictVO implements Serializable {
 	}
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
+	}
+	public Double getCompleteVotesPercentDouble() {
+		return completeVotesPercentDouble;
+	}
+	public void setCompleteVotesPercentDouble(Double completeVotesPercentDouble) {
+		this.completeVotesPercentDouble = completeVotesPercentDouble;
 	}
 
 }
