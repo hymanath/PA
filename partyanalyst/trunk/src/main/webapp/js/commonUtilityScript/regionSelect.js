@@ -1035,19 +1035,20 @@ function showCadreSearchResults(jsObj,results)
 	var headElmt = document.getElementById("searchResultsDiv_head");
 	var bodySearchElmt = document.getElementById("searchResult");
 	var footerElmt = document.getElementById("searchResultsDiv_footer");
-
+	var resultsCountEl = document.getElementById("resultsCount");
 	if(!headElmt || !bodySearchElmt || !footerElmt)
 		return;
 	
 	bodySearchElmt.style.display = 'block';
 
 	headElmt.innerHTML = 'Search Results';
-
+		
 	if(!results || results.length == 0)
 	{
 		bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
 		return;
-	}
+	} else 
+		resultsCountEl.innerHTML = '<span>'+results.length+'</span> cadres found with this selection criteria';
 	
 	if(results[0] != null && results[0].resultStatus != null)
 	{

@@ -388,8 +388,10 @@ function populateLocations(val,source)
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
 		<div id="searchResultsDiv_head"></div>
+		<div id="resultsCount" style="margin-left:30px;color:#707070;font-weight:bold;font-size:13px;"></div>
 		<div id="searchResultsDiv_body">
 			<div id="smsResult"></div>
+			
 			<div id="searchResult" style="display:none"></div>
 		</div>
 		<div id="searchResultsDiv_footer"></div>

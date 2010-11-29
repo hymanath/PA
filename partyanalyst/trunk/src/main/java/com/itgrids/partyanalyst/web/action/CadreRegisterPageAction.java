@@ -549,9 +549,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			partyCommitteesList = new ArrayList<SelectOptionVO>(0);
 			partyTrainingCampsList = new ArrayList<SelectOptionVO>(0);
 			cadreSkillsList = new ArrayList<SelectOptionVO>(0);
-			
 						
-			
 			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
 			if(partyCommitteesList.size()>0)
 				partyCommittees_flag = true;
@@ -563,7 +561,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				cadreSkills_flag = true;
 						
 			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
-			if(windowTask == IConstants.CREATE_NEW)
+			if(windowTask.equals(IConstants.CREATE_NEW))
 				designationsList = new ArrayList<SelectOptionVO>(0);
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS,designationsList);
 			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
