@@ -7,5 +7,6 @@ import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 public interface ICadreFamilyMemberInfoDAO extends GenericDao<CadreFamilyMemberInfo, Long>{
 	
 	public List<Object[]> findByCadreId(Long CadreId);
+	public Integer deleteFamilyMemberDetailsByCadre(Long cadreId);
 
 }

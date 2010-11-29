@@ -69,12 +69,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(" Result Size :" + result.size());
 	}*/
 	
-	/*public void testDeleteCadre()
+	public void testDeleteCadre()
 	{
 		int result=cadreDAO.deleteByCadreId(5l);
 		System.out.println("No of records deleted:"+result);
-		setComplete();
-	}*/
+		
+	}
 	
 	/*public void testFindConstituencyCadresByDist()
 	{
@@ -326,7 +326,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.print("count"+result);			
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testFindCadresByBoothInWard()
 	{
 		List result = cadreDAO.findCadresByBoothInWard(7713l, 1l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -337,7 +337,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[2].toString());
 			System.out.println(parms[3].toString());
 		}			
-	}
+	}*/
 }
 	
 

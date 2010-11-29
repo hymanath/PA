@@ -845,6 +845,11 @@ public class CadreManagementService {
 		{	
 			Integer rows = cadreLanguageEfficiencyDAO.deleteLanguageDetailsByCadre(cadreId, hinLanguageObj.getLanguageId());			
 		}
+		List<Object[]> familyMbrs = cadreFamilyMemberInfoDAO.findByCadreId(cadreId);
+		if(familyMbrs.size()>0)
+		{
+			Integer rows = cadreFamilyMemberInfoDAO.deleteFamilyMemberDetailsByCadre(cadreId);
+		}	
 		Integer deletedRow = cadreDAO.deleteByCadreId(cadreId);
 		return deletedRow;
 	}
@@ -1671,12 +1676,12 @@ public class CadreManagementService {
 		if(districtCA != null)
 		{
 			cadreInfo.setDistrict(districtCA.getDistrictId().toString());
-			cadreInfo.setDistrictName(districtCA.getDistrictName());
+			cadreInfo.setDistrictName(districtCA.getDistrictName()+" (Dt.)");
 		}
 		if(parlConstituencyCA != null)
 		{
 			cadreInfo.setParliament(parlConstituencyCA.getConstituencyId().toString());
-			cadreInfo.setParliamentName(parlConstituencyCA.getName());			
+			cadreInfo.setParliamentName(parlConstituencyCA.getName()+" (Parliament)");			
 		}
 		cadreInfo.setConstituencyID(constituencyCA.getConstituencyId());
 		cadreInfo.setConstituencyName(constituencyCA.getName());
@@ -1685,14 +1690,15 @@ public class CadreManagementService {
 			cadreInfo.setMandal(IConstants.RURAL_TYPE+tehsilCA.getTehsilId().toString());
 			cadreInfo.setMandalName(tehsilCA.getTehsilName());
 			cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletCA.getHamletId().toString());
-			cadreInfo.setVillageName(hamletCA.getHamletName());
+			cadreInfo.setVillageName(hamletCA.getHamletName()+" (V)");
 		}else if(localBodyCA != null){
 			Long assemblyLocalId = (Long)assemblyLocalElectionBodyDAO.findAssemblyLocalElectionBodyByLocalBodyAndConstituency(localBodyCA.getLocalElectionBodyId(),constituencyCA.getConstituencyId()).get(0);
 			cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalId);
 			cadreInfo.setMandalName(localBodyCA.getName()+" "+ localBodyCA.getElectionType().getElectionType());
-			cadreInfo.setVillage(IConstants.URBAN_TYPE+wardCA.getConstituencyId().toString());
-			cadreInfo.setVillageName(wardCA.getName());
-		}
+			cadreInfo.setVillage(IConstants.URBAN_TYPE+wardCA.getConstituencyId());
+			cadreInfo.setVillageName(wardCA.getLocalElectionBodyWard() != null ? wardCA.getLocalElectionBodyWard().getWardName().concat("(").
+					concat(wardCA.getName().toUpperCase()).concat(")"):wardCA.getName());					
+		}		
 		
 		if(boothCA != null)
 		{
@@ -1755,7 +1761,8 @@ public class CadreManagementService {
 				cadreInfo.setPmandal(IConstants.URBAN_TYPE+assemblyLocalBodyId);
 				cadreInfo.setPmandalName(localBodyOA.getName()+" "+localBodyOA.getElectionType().getElectionType());
 				cadreInfo.setPvillage(IConstants.URBAN_TYPE+wardOA.getConstituencyId().toString());
-				cadreInfo.setPvillageName(wardOA.getName());
+				cadreInfo.setPvillageName(wardOA.getLocalElectionBodyWard() != null ? wardOA.getLocalElectionBodyWard().getWardName().concat("(").
+						concat(wardOA.getName().toUpperCase()).concat(")"):wardOA.getName());
 			}
 			if(boothOA != null)
 			{

@@ -18,4 +18,10 @@ public class CadreFamilyMemberInfoDAO extends GenericDaoHibernate<CadreFamilyMem
 	{
 		return getHibernateTemplate().find("select model.cadre.cadreId, model.name, model.dateOfBirth,model.userRelation.relationship, model.userRelation.userRelationId from CadreFamilyMemberInfo model where model.cadre.cadreId = ?", cadreId);
 	}
+
+	public Integer deleteFamilyMemberDetailsByCadre(Long cadreId) {
+		Query queryObject = getSession().createQuery("delete from CadreFamilyMemberInfo model where model.cadre.cadreId = ?");
+		queryObject.setParameter(0, cadreId);
+		return queryObject.executeUpdate();
+	}
 }
