@@ -457,7 +457,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
 		for(SelectOptionVO selectOptionVO:list)
 		{
-			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.TEHSIL));
+			tehsilsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.MANDAL));
 		}
 		return tehsilsList;
 	}
@@ -468,7 +468,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> tehsilsList = new ArrayList<SelectOptionVO>();
 		for(SelectOptionVO selectOptionVO:list)
 		{
-			tehsilsList.add(new SelectOptionVO(new Long(selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.TEHSIL));
+			tehsilsList.add(new SelectOptionVO(new Long(selectOptionVO.getId()),selectOptionVO.getName().toUpperCase()+ " " + IConstants.MANDAL));
 		}
 		return tehsilsList;
 	}
