@@ -420,7 +420,7 @@
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
 						cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
-						address: cadreData[i].villageName+'(V), '+cadreData[i].mandalName+', '+cadreData[i].districtName+'(Dt.)',
+						address: cadreData[i].villageName+', '+cadreData[i].mandalName+', '+cadreData[i].districtName,
 						memberType: cadreData[i].memberType,
 						education: cadreData[i].educationStr,
 						occupation: cadreData[i].professionStr,						
@@ -502,6 +502,7 @@
 									try {												
 											if(o.responseText)
 												myResults = YAHOO.lang.JSON.parse(o.responseText);
+											showConfirmation(myResults);
 									}
 									catch (e)
 										{   
@@ -517,7 +518,16 @@
 						YAHOO.util.Connect.asyncRequest('GET', url, callback);
 				}
 					
-			
+			function showConfirmation(result)
+			{
+				if(result != null && result>0)
+				{
+					alert("Cadre Details Successfully Deleted!");
+					cadreDetailsPanel.hide();
+					window.location.reload(true);
+				}
+					
+			}
 
 			function openRegistrationForm(cadreId)
 			{
@@ -668,8 +678,6 @@
 				</div>					
 			</div>				
 		</div>
-
-	</div>
 
 		<script type="text/javascript">
 

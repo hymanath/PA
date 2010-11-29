@@ -3,13 +3,14 @@
 function buildCadreLevelTable(jsObj,cadreData)
 {
 	var cadresArray = new Array();
+	var cadreDetailsPanel;
 	for(var i in cadreData)
 	{
 		var cObj={
 				name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 				mobile:cadreData[i].mobile,
 				cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
-				address: cadreData[i].villageName+'(V), '+cadreData[i].mandalName+', '+cadreData[i].districtName+'(Dt.)',
+				address: cadreData[i].villageName+', '+cadreData[i].mandalName+', '+cadreData[i].districtName,
 				memberType: cadreData[i].memberType,
 				education: cadreData[i].educationStr,
 				occupation: cadreData[i].professionStr,						
@@ -107,7 +108,7 @@ function getCadrePopup(myColumnDefs,myDataSource,configs)
 {
 	var contentStr = '';
 	contentStr +='<div id="cadreDiv"></div>';
-	 var myPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
+	 cadreDetailsPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
    
 		 fixedcenter : true, 
 		 visible : true,  
@@ -117,9 +118,9 @@ function getCadrePopup(myColumnDefs,myDataSource,configs)
 		 hideaftersubmit:true,
 		 close:true
 	   });
-	   myPanel.setHeader("Cadre Details");
-	   myPanel.setBody(contentStr);
-	   myPanel.render();
+	 cadreDetailsPanel.setHeader("Cadre Details");
+	 cadreDetailsPanel.setBody(contentStr);
+	 cadreDetailsPanel.render();
 
 	   var myDataTable = new YAHOO.widget.DataTable("cadreDiv",
 				myColumnDefs, myDataSource,configs);
