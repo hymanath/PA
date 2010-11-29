@@ -253,7 +253,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			if(electionCompleteDetailsVO != null){
 				if(electionCompleteDetailsVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
 					return Action.ERROR;
+			
 				
+				/*
 				try{
 				//charts for alliance parties state level
 				if(electionCompleteDetailsVO.getElectionBasicResultsVO().getAlliancePartiesList() != null && electionCompleteDetailsVO.getElectionBasicResultsVO().getAlliancePartiesList().size() > 0){
@@ -335,7 +337,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				}catch(Exception ex){
 					ex.printStackTrace();
 					log.debug("Exception Raised :" + ex);
-				}
+				}*/
 			}	
 		}	
 			return Action.SUCCESS;
