@@ -22,7 +22,7 @@ public class PartyWorkingCommitteeDesignationDAOHibernateTest extends BaseDaoTes
 	
 	public void test()
 	{
-		List<PartyWorkingCommitteeDesignation> result=partyWorkingCommitteeDesignationDAO.getDesignationsForPartyCommittee(15l, 1l);
+		List<PartyWorkingCommitteeDesignation> result=partyWorkingCommitteeDesignationDAO.getDesignationsForPartyCommittee(1l);
 		for(PartyWorkingCommitteeDesignation partyWorkingCommitteeDesignation: result){
 			System.out.println("ID:"+partyWorkingCommitteeDesignation.getPartyWkgCommitteeDesignationId());
 			System.out.println("Name:"+partyWorkingCommitteeDesignation.getDesignation());

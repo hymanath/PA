@@ -110,6 +110,7 @@ public class CadreInfo implements Serializable{
 	private String firstFamilyMemberRelation,secondFamilyMemberRelation,thirdFamilyMemberRelation;
 	private String firstFamilyMemberRelationId,secondFamilyMemberRelationId,thirdFamilyMemberRelationId;
 	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
+	private Boolean childrenFlag;
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;
@@ -715,5 +716,13 @@ public class CadreInfo implements Serializable{
 	}
 	public void setPBoothName(String boothName) {
 		pBoothName = boothName;
-	}	
+	}
+	public Boolean getChildrenFlag() {
+		return childrenFlag;
+	}
+	public void setChildrenFlag(Boolean childrenFlag) {
+		this.childrenFlag = childrenFlag;
+	}
+	
+	
 }

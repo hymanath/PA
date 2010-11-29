@@ -15,10 +15,9 @@ public class PartyWorkingCommitteeDesignationDAO extends GenericDaoHibernate<Par
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PartyWorkingCommitteeDesignation> getDesignationsForPartyCommittee(
-			Long partyId, Long partyWorkingCommitteeId) {
-		Object params[] = {partyId, partyWorkingCommitteeId};
-		return getHibernateTemplate().find("from PartyWorkingCommitteeDesignation model where model.partyWorkingCommittee.party.partyId = ? and model.partyWorkingCommittee.partyWorkingCommitteeId = ?", params);
+	public List<PartyWorkingCommitteeDesignation> getDesignationsForPartyCommittee(Long partyWorkingCommitteeId) {
+		
+		return getHibernateTemplate().find("from PartyWorkingCommitteeDesignation model where model.partyWorkingCommittee.partyWorkingCommitteeId = ?", partyWorkingCommitteeId);
 	}
 
 	@SuppressWarnings("unchecked")
