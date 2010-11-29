@@ -548,7 +548,7 @@ public class ElectionReportService implements IElectionReportService {
 						if(dist.getDistrictName().equalsIgnoreCase(regionName)){
 							partyFlag = true;
 							partyResInSubRegion.setSeatsWon(dist.getSeatsWon());
-							partyResInSubRegion.setCompleteVotesPercentDouble(dist.getCompleteVotesPercentDouble());
+							partyResInSubRegion.setCompleteVotesPercentDouble(new Double(dist.getCompleteVotesPercent()));
 						}
 					}
 					
@@ -563,7 +563,7 @@ public class ElectionReportService implements IElectionReportService {
 				partyResultsDistWiseForChart.add(partyResInADistrict);
 			}
 			
-			electionResultsReportVO.setPartiDistList(participatedParties);
+			electionResultsReportVO.setPartiesDistLevel(participatedParties);
 			electionResultsReportVO.setPartyResultsforDistWiseChart(partyResultsDistWiseForChart);
 		}
 	}
