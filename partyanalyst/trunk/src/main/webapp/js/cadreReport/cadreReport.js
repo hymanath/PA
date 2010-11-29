@@ -27,7 +27,7 @@ function buildCadreLevelTable(jsObj,cadreData)
 		{key:"name",label : "Name",sortable:true}, 
 		{key:"mobile",label : "Mobile"}, 
 		{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
-		{key:"address",label : "Current Address", sortable:true},
+		{key:"address",label : "Address", sortable:true},
 		{key:"memberType",label : "Cadre Type", sortable:true},
 		{key:"education",label : "Education", sortable:true, resizeable:true},
 		{key:"occupation",label : "Occupation", sortable:true, resizeable:true},
