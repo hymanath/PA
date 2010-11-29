@@ -146,42 +146,109 @@ function showDistrictWiseResultsLineGraph(results)
 	contentStr1+='<a href="javascript:{}" class="viewChartsForResults" title="Click to view Detailed Results Chart" onclick="showDetailedResultsChart(\''+detailedResultsChart+'\')">View Detailed Results Chart</a>';	
 	districtWiseDetailedGraphE1.innerHTML = contentStr1;*/
 
-	getDistrictResultsInteractiveChart(results);
+	getDistrictResultsInteractiveChartVotesPercent(results);
+	getDistrictResultsInteractiveChartSeatsWon(results);
 
 }
 
-function getDistrictResultsInteractiveChart(results)
+function getDistrictResultsInteractiveChartSeatsWon(results)
  {
-	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
-	 var chartColumns = results.partiDistList;
+	 var districtWiseGraphEl = document.getElementById("districtWiseSeatsGraph");
+	 var chartColumns = results.partiesDistLevel;
 	 var chartRows = results.partyResultsforDistWiseChart;
 		
 	 var data = new google.visualization.DataTable();
 	
 	 data.addColumn('string', 'Party');
+	  var partysCount = 0;
       //for columns
 	  for(var i in chartColumns){
+		 if(partysCount > 15)
+		  {
+			  break;
+		  }
 	    data.addColumn('number', chartColumns[i].name);
+		partysCount++;
 	  }
 
-	  for(var j in chartRows)
+      for(var j in chartRows)
 	  {
+		  
+		var partyCount = 0;
         var array = new Array();
 		array.push(chartRows[j].partyName);
 
 		for(var k in chartRows[j].partyResultsInDistricts)
 		{
+		  if(partyCount > 15)
+		  {
+			  break;
+		  }
           var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
 		  array.push(seatsWon);
+		  partyCount++;
 		}
 
         data.addRow(array);
+		
 	  }
 		 
     
-	  var ctitle = 'All Parties District Wise Election Results'; 
+	  var ctitle = 'All Parties District Wise Election Results By Seats Won'; 
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 860, height: 400,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+      });
+		
+ }
+
+ function getDistrictResultsInteractiveChartVotesPercent(results)
+ {
+	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
+	 var chartColumns = results.partiesDistLevel;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
+	 var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'Party');
+	 var partysCount = 0;
+      //for columns
+	  for(var i in chartColumns){
+		  if(partysCount > 15)
+		  {
+			  break;
+		  }
+	    data.addColumn('number', chartColumns[i].name);
+		partysCount++;
+	  }
+
+     
+	  for(var j in chartRows)
+	  {
+		  
+		var partyCount = 0;
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+		  if(partyCount > 15)
+		  {
+			  break;
+		  }
+          var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+		  array.push(seatsWon);
+
+		   partyCount++;
+		}
+
+        data.addRow(array);
+       
+	  }
+		 
+    
+	  var ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
+	  new google.visualization.LineChart(districtWiseGraphEl).
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
@@ -1493,6 +1560,7 @@ callAjax(rparam,jsObj,url);
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
+<DIV id="districtWiseSeatsGraph"></DIV>
 <DIV id="detailedGraph" style="text-align:right;padding:15px;"></DIV>
 <DIV id="distResultsViewOptionsDiv">
 	<TABLE width="100%">	

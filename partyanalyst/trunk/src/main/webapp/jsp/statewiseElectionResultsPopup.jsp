@@ -15,6 +15,7 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
@@ -27,6 +28,7 @@
 var stateId = '${stateID}';
 var electionType = '${electionType}';
 var selectedYear = '${selectedElectionYear}';
+var allianceResults;
 var electionResultsObj = {
 		partyWiseResultsArr:[],
 		allianceResultsArr:[],
@@ -34,6 +36,7 @@ var electionResultsObj = {
 	    districtWiseResultsWithoutAllianceArr:[],
 	    allianceGroupNamesArray:[]
 	};
+google.load("visualization", "1", {packages:["corechart"]});
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -99,6 +102,7 @@ function getSelectedYearElectionResults(stateId,electionType,selectedYear)
 function showAllianceDetails(results)
 {
 	var allianceResultsArr = results.electionBasicResultsVO.alliancePartiesList;
+	allianceResults = allianceResultsArr;
 	var assignToAllianceResultsArr = new Array();
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
 	var allianceGrpName;
@@ -114,7 +118,7 @@ function showAllianceDetails(results)
 		str+='<div id="allianceResults_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
 		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;margin-top:10px;margin-bottom:10px;">';
-		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\',\''+header+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a>';
+		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph('+i+',\''+header+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a>';
 		str+='</div>';
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
@@ -168,12 +172,51 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 }
 function showStatewiseResultsBarChart(results)
 {
-	var chartName = results.statewiseElectionResultsChartName;
+	/*var chartName = results.statewiseElectionResultsChartName;
 	var statewiseGraphEl = document.getElementById("graphImage");
 
 	var contentStr = '';
 	contentStr+='<IMG src="charts/'+chartName+'"  border="1" style="border-color:#EFF3F7;"></IMG>';
-	statewiseGraphEl.innerHTML = contentStr;	 
+	statewiseGraphEl.innerHTML = contentStr;*/	
+	
+	var ctitle = 'Party Results In ' +results.electionBasicResultsVO.electionType+ ' ' +results.electionBasicResultsVO.electionYear+''; 
+	var electionType = results.electionBasicResultsVO.electionType;
+	var allPartyRes = results.electionBasicResultsVO.allPartiesResults;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Year');
+	data.addColumn('number', 'Seats Won');
+	data.addColumn('number', '2nd Pos');
+	data.addColumn('number', '3rd Pos');
+	data.addColumn('number', '4th Pos');
+
+	data.addRows(10);
+
+    var count = 0;
+   	for(var i=0;i<allPartyRes.length;i++)
+	{
+        //check for main parties, if more parties are available then only top 10 main parties are considered
+		if(electionType == 'Parliament' && allPartyRes[i].partyName != 'TDP' && allPartyRes[i].partyName != 'TRS' && allPartyRes[i].partyName != 'CPI' && allPartyRes[i].partyName != 'CPM' && allPartyRes[i].partyName != 'BJP' && allPartyRes[i].partyName != 'INC' && allPartyRes[i].partyName != 'SP' && allPartyRes[i].partyName != 'BSP' && allPartyRes[i].partyName != 'DMK' && allPartyRes[i].partyName != 'JD(U)')
+		{
+				continue;
+		}
+		else if(count < 10)
+		{
+			data.setValue(count, 0, allPartyRes[i].partyName);				
+			data.setValue(count, 1, allPartyRes[i].totalSeatsWon);
+			data.setValue(count, 2, allPartyRes[i].secondPosWon);
+			data.setValue(count, 3, allPartyRes[i].thirdPosWon);
+			data.setValue(count, 4, allPartyRes[i].fourthPosWon);
+			count++;
+			
+		}
+	}
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('graphImage'));
+		
+	chart.draw(data, {width:880,height: 350,title:ctitle,legend:'right',legendTextStyle:{fontSize:10},
+				  hAxis: {title: 'Party',textStyle:{fontSize:'10',fontWeight:'bold'},slantedText:true, slantedTextAngle:30, titleTextStyle: {color: 'red'}}
+	});
 }
 function showPartywiseDetailsDataTable(results)
 {   
@@ -226,8 +269,8 @@ function showPartywiseDetailsDataTable(results)
 
 	var chartpartywiseImgChartElmt = document.getElementById("partywiseResults_img_anc");
 	var imgStr = '';
-	imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
-	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'Party Results Line Chart\')">View Party Results Line Charts</a>';
+	/*imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
+	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'Party Results Line Chart\')">View Party Results Line Charts</a>';*/
 	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
 	{
 		imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
@@ -287,15 +330,62 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
       };	     	
 	
 }
-function showAllianceGraph(divId,chartId, chartName)
+function showAllianceGraph(index,allianceGroupName)
 {
-	if(myPanel)
-		myPanel.destroy();
-	//var contentStr='';
-	//contentStr+='<DIV>'+chartName+'</DIV>';
-	var contentStr ='<IMG src="charts/'+chartId+'"></IMG>';
-	
-	var contentStr='<IMG src="charts/'+chartId+'"></IMG>';
+	var results = allianceResults[index].partiesInAlliance;
+   	var data = new google.visualization.DataTable();
+   
+	//for chart columns
+	data.addColumn('string', 'Party');
+	for(var i=0;i<results.length;i++)
+	{
+      data.addColumn('number',results[i].partyName);
+	}
+
+	//for chart rows (seats won)
+	var array = new Array();
+	array.push('Seats Won');
+    for(var j=0;j<results.length;j++)
+	{
+      array.push(results[j].totalSeatsWon);
+	}
+	 data.addRow(array);
+
+	//for chart rows (2nd pos)
+	var array1 = new Array();
+	array1.push('2nd Pos');
+    for(var k=0;k<results.length;k++)
+	{
+      array1.push(results[k].secondPosWon);
+	}
+	data.addRow(array1);
+
+	//for chart rows (3rd pos)
+	var array2 = new Array();
+	array2.push('3rd Pos');
+    for(var l=0;l<results.length;l++)
+	{
+      array2.push(results[l].thirdPosWon);
+	}
+	data.addRow(array2);
+
+	//for chart rows (4th pos)
+	var array3 = new Array();
+	array3.push('4th Pos');
+    for(var m=0;m<results.length;m++)
+	{
+      array3.push(results[m].fourthPosWon);
+	}
+	data.addRow(array3);
+
+	//for chart rows (Nth pos)
+	var array4 = new Array();
+	array4.push('Nth Pos');
+    for(var n=0;n<results.length;n++)
+	{
+      array4.push(results[n].nthPosWon);
+	}
+	data.addRow(array4);
 
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
@@ -308,17 +398,24 @@ function showAllianceGraph(divId,chartId, chartName)
 		  hideaftersubmit:true,
 		  close:true
        });
-	   myPanel.setHeader(chartName);
-	   myPanel.setHeader(chartName);
-       myPanel.setBody(contentStr);
-       myPanel.render();
+	
+	var str = '';
+	str += '<div id="panelChartDiv"></div>';
+
+	myPanel.setHeader(allianceGroupName);	  
+	myPanel.setBody(str);
+	myPanel.render();
+
+    var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
+	chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
 }
 function showPartyResultsWithoutAlliance(chartId)
 {	
 	//partywiseResultsWithoutAlliance
+	var results = electionResultsObj.partyWiseResultsWithoutAllianceArr;
 
 	var contentStr ='<div id="withoutAllianceDiv_main" style="height:250px;overflow-y:auto">';
-	contentStr +='<div id="withoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
+	contentStr +='<div id="withoutAllianceDiv_graph"></div>';
 	contentStr +='<div id="withoutAllianceDiv_Datatable"></div>';
 	contentStr +='</div>';
 
@@ -336,6 +433,56 @@ function showPartyResultsWithoutAlliance(chartId)
 	   myPanel.setHeader("Party Results Without Alliance");
        myPanel.setBody(contentStr);
        myPanel.render();	
+
+	   //interactive chart
+	var data = new google.visualization.DataTable();
+   
+	//for chart columns
+	data.addColumn('string', 'Party');
+	for(var i=0;i<results.length;i++)
+	{
+      data.addColumn('number',results[i].party);
+	}
+
+	//for chart rows (seats won)
+	var array = new Array();
+	array.push('Seats Won');
+    for(var j=0;j<results.length;j++)
+	{
+      array.push(results[j].seatsWon);
+	}
+	 data.addRow(array);
+
+	//for chart rows (2nd pos)
+	var array1 = new Array();
+	array1.push('2nd Pos');
+    for(var k=0;k<results.length;k++)
+	{
+      array1.push(results[k].second);
+	}
+	data.addRow(array1);
+
+	//for chart rows (3rd pos)
+	var array2 = new Array();
+	array2.push('3rd Pos');
+    for(var l=0;l<results.length;l++)
+	{
+      array2.push(results[l].third);
+	}
+	data.addRow(array2);
+
+	//for chart rows (4th pos)
+	var array3 = new Array();
+	array3.push('4th Pos');
+    for(var m=0;m<results.length;m++)
+	{
+      array3.push(results[m].fourth);
+	}
+	data.addRow(array3);
+
+	
+    var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
+	chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
 		buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
 }
 </SCRIPT>
