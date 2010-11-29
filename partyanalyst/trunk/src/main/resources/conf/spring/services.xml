@@ -152,6 +152,7 @@
 		<property name="candidateDAO" ref="candidateDAO" />		
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="partyRebelCandidateDAO" ref="partyRebelCandidateDAO" />
+		<property name="electionDAO" ref="electionDAO" />
 	</bean>	
 	
 	
