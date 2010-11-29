@@ -1703,7 +1703,7 @@ public class CadreManagementService {
 		if(boothCA != null)
 		{
 			cadreInfo.setBooth(boothCA.getBoothId().toString());
-			cadreInfo.setBoothName(boothCA.getPartNo());
+			cadreInfo.setBoothName("Booth No"+boothCA.getPartNo()+" - "+boothCA.getLocation());
 		}
 		//check whether the current address is same as official address
 		if (currentAddress.getUserAddressId() == officialAddress.getUserAddressId()) {
@@ -1717,7 +1717,8 @@ public class CadreManagementService {
 			cadreInfo.setPParliament(cadreInfo.getParliament());
 			cadreInfo.setPconstituencyID(cadreInfo.getConstituencyID());
 			cadreInfo.setPmandal(cadreInfo.getPvillage());
-			cadreInfo.setPvillage(cadreInfo.getVillage());							
+			cadreInfo.setPvillage(cadreInfo.getVillage());	
+			cadreInfo.setPBooth(cadreInfo.getBooth());
 			
 		} else {
 			cadreInfo.setSameAsCA(false);
@@ -1767,7 +1768,7 @@ public class CadreManagementService {
 			if(boothOA != null)
 			{
 				cadreInfo.setPBooth(boothOA.getBoothId().toString());
-				cadreInfo.setPBoothName(boothOA.getPartName());
+				cadreInfo.setPBoothName("Booth No"+boothOA.getPartName()+" "+boothOA.getLocation());
 			}
 		}
 
