@@ -133,7 +133,7 @@ function callAjax(param,jsObj,url){
 function showDistrictWiseResultsLineGraph(results)
 {
 
-	var chartName = results.districtWiseElecResultsChartName;
+	/*var chartName = results.districtWiseElecResultsChartName;
 	var detailedResultsChart = results.districtWiseElecDetailedResultsChartName;
 	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
@@ -144,91 +144,47 @@ function showDistrictWiseResultsLineGraph(results)
 	var districtWiseDetailedGraphE1 = document.getElementById("detailedGraph"); 
     var contentStr1 = '';
 	contentStr1+='<a href="javascript:{}" class="viewChartsForResults" title="Click to view Detailed Results Chart" onclick="showDetailedResultsChart(\''+detailedResultsChart+'\')">View Detailed Results Chart</a>';	
-	districtWiseDetailedGraphE1.innerHTML = contentStr1;
+	districtWiseDetailedGraphE1.innerHTML = contentStr1;*/
 
-	//getDistrictResultsInteractiveChart(results);
+	getDistrictResultsInteractiveChart(results);
 
 }
 
 function getDistrictResultsInteractiveChart(results)
  {
 	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
-	 var chartColumns = results.electionResultsInDistricts.allPartiesResults;
-	 partyResDistrictWise = chartColumns;
-
-	 var locationsSize = 0;
-	 var locationsIndex=0;
-	 var locationsArray = new Array();
-	 var max = 0;
-	
+	 var chartColumns = results.partiDistList;
+	 var chartRows = results.partyResultsforDistWiseChart;
+		
 	 var data = new google.visualization.DataTable();
 	
 	 data.addColumn('string', 'Party');
       //for columns
 	  for(var i in chartColumns){
-	   if(max == 8)
-		break;
-       
-	   var colData = chartColumns[i].partyName;
-	   data.addColumn('number', colData);
-
-	   if(chartColumns[i].partyResultsInDistricts.length > locationsSize)
-	   {
-		locationsSize = chartColumns[i].partyResultsInDistricts.length;
-        locationsIndex = i;
-	   }
-	   max = max + 1;
+	    data.addColumn('number', chartColumns[i].name);
 	  }
 
-      for(var m in chartColumns[locationsIndex].partyResultsInDistricts)
-	  {
-        var lname = chartColumns[locationsIndex].partyResultsInDistricts[m].districtName;
-        locationsArray.push(lname);
-	  }
-	  var chartRows = locationsArray;
-      
-	  //for rows
 	  for(var j in chartRows)
 	  {
-		  	  var array = new Array();
-			  array.push(chartRows[j]);
-			  var max = 0;
-			  for(var r in chartColumns)
-			  {
-			  if(max == 8)
-			   break;
-              var value = getPercentage(chartRows[j],r);
-        	  array.push(value);
-			  max = max + 1;
-			  }
-			  data.addRow(array);
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+          var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+		  array.push(seatsWon);
+		}
+
+        data.addRow(array);
 	  }
+		 
+    
 	  var ctitle = 'All Parties District Wise Election Results'; 
 	  new google.visualization.LineChart(districtWiseGraphEl).
 	  draw(data, {curveType: "function",width: 860, height: 400,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
-
-function getPercentage(loc,index)
-{
-	var res = 0;
-	var locn = partyResDistrictWise[index].partyResultsInDistricts;
-	
-	    if(locn != null)
-		{
-			for(var k in locn)
-			{
-				if(locn[k].districtName == loc)
-				{
-					res=locn[k].completeVotesPercentDouble;
-					return res;
-				}
-			}
-		}
-	
- return res;
-}
 
 
 function showDetailedResultsChart(chartName){

@@ -505,6 +505,22 @@ function allCandidates()
 		}	
 							
 	}
+	if(electionType == 'MUNCIPALITY' || electionType == 'CORPORATION' || electionType == 'Greater Municipal Corp')
+	{
+		if(stateLevelAEl.checked == true)
+		{
+			electionLevel = "statewiseAssembly";
+			locationId = 0;
+			stateId = stateID;
+		}
+		if(distLevelAEl.checked == true)
+		{
+			electionLevel = "districtwiseAssembly";
+			locationId = selectdistrictAEl.value;
+			stateId = stateID;
+		}	
+							
+	}
 	
 	var jsObj=		
 	{		
@@ -805,7 +821,7 @@ function handleAddCommentsCancel(task,status)
 			<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>	
-	 <c:if test="${electionType == 'Assembly'}" >  
+	 <c:if test="${electionType == 'Assembly' || electionType == 'MUNCIPALITY' || electionType == 'CORPORATION' ||  electionType == 'Greater Municipal Corp'}" >  
 		<TR id="regionalOptionsRow">
 		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
 		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>District Level</TD>
