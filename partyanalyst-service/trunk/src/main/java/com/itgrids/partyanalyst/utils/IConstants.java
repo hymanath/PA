@@ -314,5 +314,10 @@ public interface IConstants {
     public static final String BOOTH = "BOOTH";
     public static final String MP_CONSTITUENCY = "MP CONSTITUENCY";
     
+    public static final String HTMLDOUBLEQUOTES = "&#34";
+    public static final String HTMLSINGLEQUOTE = "&#34";
+    public static final String HTMLSLASH = "&#47";
+    public static final String HTMLENTER = "<BR>";
+    public static final String HTMLSPACE = " ";
     
 }
