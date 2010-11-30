@@ -57,7 +57,7 @@ var Localization = { <%
 
 var stateName = '${stateDetails.name}';
 districtName = '${districtName}';
-
+google.load("visualization", "1", {packages:["corechart"]});
 var tehsilDetails={
 			zptcArray:[],
 			mptcArray:[],
@@ -325,8 +325,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						}
 					}
 					if(jsObj.task == "getAllElectionsInDistrict")
-					{										
-						showAllElectionsInDistrict(results);
+					{		
+						//JFree graph								
+						//showAllElectionsInDistrict(results);
+
+						//Google Graph
+						showElectionGraph(results);
 					}
 					if(jsObj.task == "getElectionTypesAndYears")
 					{										
@@ -1023,7 +1027,47 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		mptcCount++;	 
 	}
 
-	
+
+	function showElectionGraph(chartResults)
+	{
+		var allElecDiv = document.getElementById("allElectionResultsInDT_body");
+		var allElecDivImg = document.getElementById("barloaderImage");
+
+		if(allElecDivImg)
+			allElecDivImg.style.display = 'none';
+		
+		    var chartColumns = chartResults.result[0].result;
+			var chartRows = chartResults.result;
+
+			 var data = new google.visualization.DataTable();
+			 data.addColumn('string', 'Party');
+
+		     //for chart columns
+			 for(var i in chartColumns)
+			 {
+			   var colData = chartColumns[i].partyName;
+			   data.addColumn('number', colData);
+			 }
+
+		      //for chart rows
+			  for(var j in chartRows)
+			  {
+				  var array = new Array();
+				  var electionStr = chartRows[j].electionType+" "+ chartRows[j].electionYear;
+				  array.push(electionStr);
+
+				  for(var k in chartRows[j].result)
+				  {
+					  var percentage = chartRows[j].result[k].votesPercent;
+		              array.push(percentage);
+				  }
+				 
+				  data.addRow(array);
+			  }
+
+			  new google.visualization.LineChart(allElecDiv).
+			  draw(data, {curveType: "function",width: 550, height: 300,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+	}
 //ref
 	function showAllElectionsInDistrict(results){
 				
