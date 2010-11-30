@@ -310,55 +310,55 @@ public class ElectionReportService implements IElectionReportService {
 						List<PartyPositionsVO> alliancPartyResultsForAGroup =  new ArrayList<PartyPositionsVO>();
 						List<DistrictWisePartyPositionsVO> districtWiseAlliancPartysResults = new ArrayList<DistrictWisePartyPositionsVO>();
 						
-						log.debug("Allaianc Partys ......" + alliancPartys.size());
+						log.debug("Alliance Partys ......" + alliancPartys.size());
 						for(SelectOptionVO alliancParty:alliancPartys){
 							
 							//Overall results map processing
 							if(!participatedPartysResults.isEmpty()){
 								if(participatedPartysResults.containsKey(alliancParty.getId())){
-								PartyElectionResult partyElectionResult = participatedPartysResults.get(alliancParty.getId());
-								PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
-								alliancPartyResultsForAGroup.add(partyPositions);
-								participatedPartysResults.remove(alliancParty.getId());
+									PartyElectionResult partyElectionResult = participatedPartysResults.get(alliancParty.getId());
+									PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
+									alliancPartyResultsForAGroup.add(partyPositions);
+									participatedPartysResults.remove(alliancParty.getId());
 								}
 								else{
-								PartyElectionResult partyElectionResult = staticDataService.getPartyElectionResultsForAParty(electionID,alliancParty.getId());
-								PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
-								alliancPartyResultsForAGroup.add(partyPositions);
+									PartyElectionResult partyElectionResult = staticDataService.getPartyElectionResultsForAParty(electionID,alliancParty.getId());
+									PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
+									alliancPartyResultsForAGroup.add(partyPositions);
 								}
 							}
 							
 							//District wise Results map processing for non parliament elections
 							if(!participatedDistrictWiseResults.isEmpty() && !electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
 								if(participatedDistrictWiseResults.containsKey(alliancParty.getId())){
-								List<PartyElectionDistrictResult> partyElecDistResultList = participatedDistrictWiseResults.get(alliancParty.getId());
-								DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
-								Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
-								districtWiseAlliancPartysResults.add(distWisePartyResults);
-								participatedDistrictWiseResults.remove(alliancParty.getId());
+									List<PartyElectionDistrictResult> partyElecDistResultList = participatedDistrictWiseResults.get(alliancParty.getId());
+									DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
+									Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
+									districtWiseAlliancPartysResults.add(distWisePartyResults);
+									participatedDistrictWiseResults.remove(alliancParty.getId());
 								}
 								else{
-								List<PartyElectionDistrictResult> partyElecDistResultList = partyElectionDistrictResultDAO.getPartyElecResultsInAllDistsForAParty(electionID,alliancParty.getId());
-								DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
-								Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
-								districtWiseAlliancPartysResults.add(distWisePartyResults);
+									List<PartyElectionDistrictResult> partyElecDistResultList = partyElectionDistrictResultDAO.getPartyElecResultsInAllDistsForAParty(electionID,alliancParty.getId());
+									DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
+									Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
+									districtWiseAlliancPartysResults.add(distWisePartyResults);
 								}
 							}
 							
 							//state wise Results map processing for parliament elections
 							if(!participatedStateWiseResults.isEmpty() && electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
 								if(participatedStateWiseResults.containsKey(alliancParty.getId())){
-								List<PartyElectionStateResult> partyElecStateResultList = participatedStateWiseResults.get(alliancParty.getId());
-								DistrictWisePartyPositionsVO stateWisePartyResults = getStateWiseProcessedResultsForAParty(partyElecStateResultList);
-								Collections.sort(stateWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
-								districtWiseAlliancPartysResults.add(stateWisePartyResults);
-								participatedStateWiseResults.remove(alliancParty.getId());
+									List<PartyElectionStateResult> partyElecStateResultList = participatedStateWiseResults.get(alliancParty.getId());
+									DistrictWisePartyPositionsVO stateWisePartyResults = getStateWiseProcessedResultsForAParty(partyElecStateResultList);
+									Collections.sort(stateWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
+									districtWiseAlliancPartysResults.add(stateWisePartyResults);
+									participatedStateWiseResults.remove(alliancParty.getId());
 								}
 								else{
-								List<PartyElectionStateResult> partyElecStateResultList	 = partyElectionStateResultDAO.getResultsInAllStatesForAParty(electionID, alliancParty.getId());
-								DistrictWisePartyPositionsVO stateWisePartyResults = getStateWiseProcessedResultsForAParty(partyElecStateResultList);
-								Collections.sort(stateWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
-								districtWiseAlliancPartysResults.add(stateWisePartyResults);
+									List<PartyElectionStateResult> partyElecStateResultList	 = partyElectionStateResultDAO.getResultsInAllStatesForAParty(electionID, alliancParty.getId());
+									DistrictWisePartyPositionsVO stateWisePartyResults = getStateWiseProcessedResultsForAParty(partyElecStateResultList);
+									Collections.sort(stateWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
+									districtWiseAlliancPartysResults.add(stateWisePartyResults);
 								}
 							}
 						}
@@ -382,13 +382,13 @@ public class ElectionReportService implements IElectionReportService {
 				//Overall Results Processing into List<PartyPositionsVO> without grouping of alliance
 			    overallPartyResultsWithoutAllianc = getProcessedMapForAllPartiesResults(participatedPartysTotalResults);
 			    if(overallPartyResultsWithoutAllianc != null)
-			    Collections.sort(overallPartyResultsWithoutAllianc, new PartyElectionResultsComparator());
+			     Collections.sort(overallPartyResultsWithoutAllianc, new PartyElectionResultsComparator());
 			    if(!electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-				overallPartyResultsDistrictwiseWithoutAllianc = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseTotalResults);
+				 overallPartyResultsDistrictwiseWithoutAllianc = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseTotalResults);
 			    else if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-			    overallPartyResultsDistrictwiseWithoutAllianc = getProcessedMapForAllPartiesStatewiseResults(participatedStateWiseTotalResults);
+			     overallPartyResultsDistrictwiseWithoutAllianc = getProcessedMapForAllPartiesStatewiseResults(participatedStateWiseTotalResults);
 			    if(overallPartyResultsDistrictwiseWithoutAllianc != null)
-                Collections.sort(overallPartyResultsDistrictwiseWithoutAllianc, new PartyElecDistrictResultsComparator());
+                 Collections.sort(overallPartyResultsDistrictwiseWithoutAllianc, new PartyElecDistrictResultsComparator());
 			}
 			
 			//Overall Results Processing into List<PartyPositionsVO> by grouping of alliance 
