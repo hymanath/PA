@@ -484,7 +484,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				log.debug("Task::"+jObj.getString("task"));					
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
 			}catch(Exception e){
-				//Do proper exception handling and pass the message to fron end.
+				e.printStackTrace();
 			}
 		}		
 		return SUCCESS;  
@@ -497,7 +497,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				log.debug("Task::"+jObj.getString("task"));		
 				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
 			}catch(Exception e){
-				//Do proper exception handling and pass the message to fron end.
+				e.printStackTrace();
 			}
 		}		
 		return SUCCESS;  
@@ -515,7 +515,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 					muncipalityErrorMsg = "Failed to retrive data.";
 				}			
 			}catch(Exception e){
-				//Do proper exception handling and pass the message to fron end.
+				e.printStackTrace();
 			}
 		}		
 		return SUCCESS;  
@@ -559,7 +559,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
-		districtWisePartyResultVO = staticDataService.getDistrictWiseElectionReport(jObj.getLong("electionTypeId"),jObj.getLong("districtId"));
+		districtWisePartyResultVO = staticDataService.getElectionResultsForDistrict(jObj.getLong("electionTypeId"),jObj.getLong("districtId"));
+
+		
+		// Following commented code can be used to build JFree Charts..
+		
+		
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
 		if(allElectionResults.size() == 0)
 			return SUCCESS;
@@ -596,8 +601,87 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         		+" District", "Elections", "Percentages", (DefaultCategoryDataset) chartColorsAndDataSetVO2.getDataSet(), detailedChartPath, 600, 800, new ArrayList<Color>(chartColorsAndDataSetVO2.getColorsSet()),false);	
 
         
+		
         return SUCCESS;
 	}
+	
+	// Following commented code can be used to build JFree Charts..
+	
+	private ChartColorsAndDataSetVO createDataset(List<PartyResultVO> allElectionResults) {
+		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+		Set<Color> colorsSet = new LinkedHashSet<Color>();
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+        ElectionResultVO partiesElecResultForGraph = null;
+        colorsSet = new LinkedHashSet<Color>();
+        int i=0;
+        for(PartyResultVO partyResultVO:allElectionResults){
+        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+        		partiesElecResultForGraph = new ElectionResultVO();
+        		partiesElecResultForGraph.setPercentage(result.getPercentage());
+        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
+        		partiesElectionResults.add(partiesElecResultForGraph);
+        	}
+        	if(++i == 10)
+        		break; 
+        }
+        
+                
+        Collections.sort(partiesElectionResults, new ElectionResultComparator());
+        
+        for(ElectionResultVO graphInfo:partiesElectionResults){
+        	
+        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
+			{	colorsSet.add(IConstants.TDP_COLOR);
+				log.debug("TDP ADDED");
+			}
+			
+        	else
+        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
+        		{	colorsSet.add(IConstants.INC_COLOR);
+        		log.debug("INC ADDEd");
+        		}
+            	else
+            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
+            		{	colorsSet.add(IConstants.BJP_COLOR);
+            			log.debug("BJP ADDEd");
+            		}
+                	else
+                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
+                    		{colorsSet.add(IConstants.PRP_COLOR);
+                    		log.debug("PRP ADDEd");
+                    		}
+                    	else
+                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
+                        		{
+                    			colorsSet.add(IConstants.TRS_COLOR);
+                    			log.debug("TRS ADDEd");
+                    			}
+                    		else
+	                    		if(IConstants.AIMIM.equalsIgnoreCase(graphInfo.getPartyName()))
+	                        		{
+	                    			colorsSet.add(IConstants.AIMIM_COLOR);
+	                    			log.debug("AIMIM ADDEd");
+	                    			}
+	                    		else
+		                    		if(IConstants.CPI.equalsIgnoreCase(graphInfo.getPartyName()))
+		                        		{
+		                    			colorsSet.add(IConstants.CPI_COLOR);
+		                    			log.debug("CPI ADDEd");
+		                    			}
+                    		else
+		                    	{colorsSet.add(null);
+		                    	log.debug("Default ADDEd");
+		                    	}
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());
+        }
+        chartColorsAndDataSetVO.setDataSet(dataset);
+        chartColorsAndDataSetVO.setColorsSet(colorsSet);
+        return chartColorsAndDataSetVO;
+    }
+	
 	
 	/**
 	 * 
@@ -683,80 +767,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}
 		return electionTypes;
 	}
-	private ChartColorsAndDataSetVO createDataset(List<PartyResultVO> allElectionResults) {
-		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
-		Set<Color> colorsSet = new LinkedHashSet<Color>();
-		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
-        ElectionResultVO partiesElecResultForGraph = null;
-        colorsSet = new LinkedHashSet<Color>();
-        int i=0;
-        for(PartyResultVO partyResultVO:allElectionResults){
-        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
-        		partiesElecResultForGraph = new ElectionResultVO();
-        		partiesElecResultForGraph.setPercentage(result.getPercentage());
-        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
-        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
-        		partiesElectionResults.add(partiesElecResultForGraph);
-        	}
-        	if(++i == 10)
-        		break; 
-        }
-        
-                
-        Collections.sort(partiesElectionResults, new ElectionResultComparator());
-        
-        for(ElectionResultVO graphInfo:partiesElectionResults){
-        	
-        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
-			{	colorsSet.add(IConstants.TDP_COLOR);
-				log.debug("TDP ADDED");
-			}
-			
-        	else
-        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
-        		{	colorsSet.add(IConstants.INC_COLOR);
-        		log.debug("INC ADDEd");
-        		}
-            	else
-            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
-            		{	colorsSet.add(IConstants.BJP_COLOR);
-            			log.debug("BJP ADDEd");
-            		}
-                	else
-                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
-                    		{colorsSet.add(IConstants.PRP_COLOR);
-                    		log.debug("PRP ADDEd");
-                    		}
-                    	else
-                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
-                        		{
-                    			colorsSet.add(IConstants.TRS_COLOR);
-                    			log.debug("TRS ADDEd");
-                    			}
-                    		else
-	                    		if(IConstants.AIMIM.equalsIgnoreCase(graphInfo.getPartyName()))
-	                        		{
-	                    			colorsSet.add(IConstants.AIMIM_COLOR);
-	                    			log.debug("AIMIM ADDEd");
-	                    			}
-	                    		else
-		                    		if(IConstants.CPI.equalsIgnoreCase(graphInfo.getPartyName()))
-		                        		{
-		                    			colorsSet.add(IConstants.CPI_COLOR);
-		                    			log.debug("CPI ADDEd");
-		                    			}
-                    		else
-		                    	{colorsSet.add(null);
-		                    	log.debug("Default ADDEd");
-		                    	}
-        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
-           			graphInfo.getElectionYear());
-        }
-        chartColorsAndDataSetVO.setDataSet(dataset);
-        chartColorsAndDataSetVO.setColorsSet(colorsSet);
-        return chartColorsAndDataSetVO;
-    }
+	
 	
 	public String getAllElectionsInDistrict(){
 		try {
