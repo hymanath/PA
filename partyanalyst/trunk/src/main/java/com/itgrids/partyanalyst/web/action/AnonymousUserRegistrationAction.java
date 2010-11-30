@@ -87,6 +87,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "UserName is required",shortCircuit=true)	
 	public void setUserName(String userName) {
+		this.userName = userName;
 		this.regVO.setUserName(userName);
 	}	
 	public String getUserName() {
@@ -367,7 +368,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		       if(constituency==null || constituency.equalsIgnoreCase("0")){
 		    	   addFieldError("constituency","Please select a Constituency.");
 		       }
-		       if(new Long(ananymousUserService.checkForUserNameAvalilability(userName).getResultCode()) == 121){
+		       Long result = new Long(ananymousUserService.checkForUserNameAvalilability(userName).getResultCode());
+		       if(result != 121L){
 		    	   addFieldError("userName","UserName does not exist.");
 		       }
 	   }
