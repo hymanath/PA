@@ -641,9 +641,9 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	@Test
 	public void testGetNominationsForLocalElectionBodyElection(){
 		
-		List<Nomination> nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictIdForLocalElectionBodys(33L, 361L, 5L);
-		
-		System.out.println(" Total Nominations :" + nominations.size());
+		List list2 = nominationDAO.getAllElectionIdsAndYearsForADistrict(1L);
+		for(int i=0; i<list2.size(); i++)
+			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
 		
 	}
 }

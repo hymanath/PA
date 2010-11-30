@@ -181,4 +181,5 @@ public class PartyElectionResultVO implements Serializable {
 		this.votesPercent = votesPercent;
 	}
 	
+	
 }

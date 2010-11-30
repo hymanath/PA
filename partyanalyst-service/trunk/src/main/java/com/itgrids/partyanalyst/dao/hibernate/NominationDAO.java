@@ -1879,5 +1879,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}		
 		return getHibernateTemplate().find(sb.toString(),params);		
 	}
-	
+	public List getAllElectionIdsAndYearsForADistrict(Long districtId){
+		return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType" +				
+				" from Nomination model where model.constituencyElection.constituency.district.districtId = ? group by" +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.election.electionYear order by " +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType",districtId);
+	}
 }
