@@ -36,15 +36,15 @@ public class PartyElectionDistrictResultDAOHibernateTest extends BaseDaoTestCase
 		}
 	}*/
 	
-	/*public void testGetAllElectionResultsInDistrictForElectionType(){
-		List list = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(2l, 19l);
+	public void testGetAllElectionResultsInDistrictForElectionType(){
+		List list = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(1l, 19l);
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
-	}*/
+	}
 	
-	public void testGetAllDistrictWiseElectionResultsForStatePartyAndElection(){
+	/*public void testGetAllDistrictWiseElectionResultsForStatePartyAndElection(){
 		List list = partyElectionDistrictResultDAO.findDistrictWiseElectionResultsForStatePartyAndElection(24l, 1l, 3l);
 		System.out.println(list.size());
-	}
+	}*/
 	
 }

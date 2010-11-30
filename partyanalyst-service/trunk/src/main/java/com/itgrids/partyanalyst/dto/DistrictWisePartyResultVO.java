@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
+import java.util.Set;
 
 public class DistrictWisePartyResultVO extends ResultStatus{
 
@@ -30,7 +31,21 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	private List<PartyResultVO> partyElectionResultsList;
 	private List<ElectionResultVO> alliancePartiesInElection;
 	private List<PartyPositionsVO> partiesPositionsInElection;
+	private List<ElectionResultVO> result;
+	private Set<SelectOptionVO> electionYearsAndType;
 	
+	public Set<SelectOptionVO> getElectionYearsAndType() {
+		return electionYearsAndType;
+	}
+	public void setElectionYearsAndType(Set<SelectOptionVO> electionYearsAndType) {
+		this.electionYearsAndType = electionYearsAndType;
+	}
+	public List<ElectionResultVO> getResult() {
+		return result;
+	}
+	public void setResult(List<ElectionResultVO> result) {
+		this.result = result;
+	}
 	public Long getSeatsWonDiff() {
 		return seatsWonDiff;
 	}

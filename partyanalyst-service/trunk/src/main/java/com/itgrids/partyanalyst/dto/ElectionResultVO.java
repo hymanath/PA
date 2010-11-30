@@ -22,7 +22,16 @@ public class ElectionResultVO {
 	private List<AlliancePartyResultsVO> partiesAlliances;
 	private String electionYearAndType;
 	private Boolean alliancRes;
+	private List<PartyElectionResultVO> result;
 	
+	public List<PartyElectionResultVO> getResult() {
+		return result;
+	}
+
+	public void setResult(List<PartyElectionResultVO> result) {
+		this.result = result;
+	}
+
 	public String getVotesRange() {
 		return votesRange;
 	}

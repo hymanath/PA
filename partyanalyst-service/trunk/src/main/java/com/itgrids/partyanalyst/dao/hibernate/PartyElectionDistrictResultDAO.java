@@ -68,6 +68,14 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 				" and model.district.districtId = ? order by model.party.partyId", params);
 	}
 	
+	public List getAllElectionResultsInDistrict(Long electionTypeId, Long districtId){
+		Object[] params = {electionTypeId, districtId};
+		return getHibernateTemplate().find("select distinct model.election.electionYear," +
+				" model.election.electionScope.electionType.electionType" +
+				" from PartyElectionDistrictResult model where model.election.electionScope.electionScopeId = ?" +
+				" and model.district.districtId = ? order by model.party.partyId", params);
+	}
+	
 	public List findDistrictWiseElectionResultsForStatePartyAndElection(Long partyId, Long stateId, Long electionId){
 		Object[] params = {partyId, electionId, stateId};
 		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName, model.totalConstiParticipated, " +
