@@ -356,16 +356,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 	   public void validate() {		       
 		       if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equalsIgnoreCase(password)){
-					addActionMessage("Entered Password and Reentered Password are not Same.");			
+					addFieldError("reEnteredPassword","Entered Password and Reentered Password are not Same.");			
 		       }
 		       if(state==null || state.equalsIgnoreCase("0")){
-		    	   addActionMessage("Please select a State.");
+		    	   addFieldError("state","Please select a State.");
 		       }
 		       if(district==null || district.equalsIgnoreCase("0")){
-		    	   addActionMessage("Please select a District.");
+		    	   addFieldError("district","Please select a District.");
 		       }
 		       if(constituency==null || constituency.equalsIgnoreCase("0")){
-		    	   addActionMessage("Please select a Constituency.");
+		    	   addFieldError("constituency","Please select a Constituency.");
+		       }
+		       if(new Long(ananymousUserService.checkForUserNameAvalilability(userName).getResultCode()) == 121){
+		    	   addFieldError("userName","UserName does not exist.");
 		       }
 	   }
 	
