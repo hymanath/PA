@@ -6236,5 +6236,16 @@ public class StaticDataService implements IStaticDataService {
 		}
 	 return latestConstituencies;
 	}
+	
+	public String removeSpecialCharectersFromString(String formatString)
+	{
+		String str = formatString; 
+		
+		str = StringUtils.replace(str,"\n",IConstants.HTMLENTER);
+		str = StringUtils.replace(str,"'",IConstants.HTMLSINGLEQUOTE);
+		str = StringUtils.replace(str,"\"",IConstants.HTMLDOUBLEQUOTES);
+		
+		return str; 
+	}
 }
 

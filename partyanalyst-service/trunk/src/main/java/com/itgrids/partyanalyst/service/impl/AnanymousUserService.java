@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.UserConnectedto;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnanymousUserService implements IAnanymousUserService {
@@ -52,8 +53,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IStaticDataService staticDataService;
 	
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -931,8 +941,18 @@ public class AnanymousUserService implements IAnanymousUserService {
 					Object[] parms = (Object[])result.get(i);
 					CandidateVO candidateResults = new CandidateVO();
 					
-					message = StringUtils.replace(parms[0].toString(),"\n","<br>");
+					if(parms[0] != null)
+						message = staticDataService.removeSpecialCharectersFromString(parms[0].toString());
+					else
+						message = "";
+					
+					/*message = StringUtils.replace(parms[0].toString(),"\n",IConstants.HTMLENTER);
+					message = StringUtils.replace(message,"'",IConstants.HTMLSINGLEQUOTE);
+					message = StringUtils.replace(message,"\"",IConstants.HTMLDOUBLEQUOTES);*/
+					
 					data = StringUtils.replace(parms[0].toString(),"\n"," ");
+					data = staticDataService.removeSpecialCharectersFromString(data);
+					
 					if(data.length() < 20)
 						candidateResults.setData(data);
 					else
