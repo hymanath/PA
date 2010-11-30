@@ -549,6 +549,7 @@ public class ElectionReportService implements IElectionReportService {
 							partyFlag = true;
 							partyResInSubRegion.setSeatsWon(dist.getSeatsWon());
 							partyResInSubRegion.setCompleteVotesPercentDouble(new Double(dist.getCompleteVotesPercent()));
+							dist.setCompleteVotesPercentDouble(new Double(dist.getCompleteVotesPercent()));
 						}
 					}
 					
