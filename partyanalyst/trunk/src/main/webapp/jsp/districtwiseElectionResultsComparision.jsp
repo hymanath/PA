@@ -109,11 +109,11 @@ function showDistrictWiseResultsLineGraph(results)
 	contentStr+='<IMG src="charts/'+chartName+'" style="margin-left:10px;"></IMG>';
 	districtWiseGraphEl.innerHTML = contentStr;	*/
 
-	getDistrictResultsInteractiveChartVotesPercent(results);
-	getDistrictResultsInteractiveChartSeatsWon(results);
+	getDistrictResultsInteractiveChartVotesPercent(results,null);
+	getDistrictResultsInteractiveChartSeatsWon(results,null);
 }
 
-function getDistrictResultsInteractiveChartSeatsWon(results)
+function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
  {
 	 var districtWiseGraphEl = document.getElementById("districtWiseSeatsGraph");
 	 var chartColumns = results.partiesDistLevel;
@@ -125,9 +125,14 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 	  var partysCount = 0;
       //for columns
 	  for(var i in chartColumns){
-		 if(partysCount > 15)
+		  if(partysCount > 15)
 		  {
 			  break;
+		  }
+		   if(partyN != null)
+		  {
+            data.addColumn('number', partyN);
+			break;
 		  }
 	    data.addColumn('number', chartColumns[i].name);
 		partysCount++;
@@ -142,13 +147,28 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 
 		for(var k in chartRows[j].partyResultsInDistricts)
 		{
-		  if(partyCount > 15)
+		   if(partyN == null && partyCount > 15)
 		  {
 			  break;
 		  }
-          var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
-		  array.push(seatsWon);
-		  partyCount++;
+
+		  if(partyN != null)
+		  {
+			  if(chartRows[j].partyResultsInDistricts[k].districtName == partyN)
+			  {
+				   var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+				   array.push(seatsWon);
+				   partyCount++;
+
+			  }
+            
+		  }
+		  else
+		  {
+			  var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+			  array.push(seatsWon);
+			  partyCount++;
+		  }
 		}
 
         data.addRow(array);
@@ -156,14 +176,18 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 	  }
 		 
     
-	  var ctitle = 'All Parties District Wise Election Results By Seats Won'; 
+	  var ctitle='';
+      if(partyN != null) 
+	     ctitle = partyN+' District Wise Election Results By Seats Won'; 
+	  else
+         ctitle = 'All Parties District Wise Election Results By Seats Won';
 	  new google.visualization.LineChart(districtWiseGraphEl).
 	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
 
- function getDistrictResultsInteractiveChartVotesPercent(results)
+ function getDistrictResultsInteractiveChartVotesPercent(results,partyN)
  {
 	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 	 var chartColumns = results.partiesDistLevel;
@@ -179,6 +203,11 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 		  {
 			  break;
 		  }
+		  if(partyN != null)
+		  {
+            data.addColumn('number', partyN);
+			break;
+		  }
 	    data.addColumn('number', chartColumns[i].name);
 		partysCount++;
 	  }
@@ -193,14 +222,29 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 
 		for(var k in chartRows[j].partyResultsInDistricts)
 		{
-		  if(partyCount > 15)
+		  if(partyN == null && partyCount > 15)
 		  {
 			  break;
 		  }
-          var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
-		  array.push(seatsWon);
 
-		   partyCount++;
+		  if(partyN != null)
+		  {
+			  if(chartRows[j].partyResultsInDistricts[k].districtName == partyN)
+			  {
+				   var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+				   array.push(seatsWon);
+				   partyCount++;
+
+			  }
+            
+		  }
+		  else
+		  {
+			  var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+			  array.push(seatsWon);
+
+			   partyCount++;
+		  }
 		}
 
         data.addRow(array);
@@ -208,7 +252,11 @@ function getDistrictResultsInteractiveChartSeatsWon(results)
 	  }
 		 
     
-	  var ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
+	 var ctitle='';
+      if(partyN != null) 
+	     ctitle = partyN+' District Wise Election Results By Votes Percentage'; 
+	  else
+         ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
 	  new google.visualization.LineChart(districtWiseGraphEl).
 	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
@@ -583,6 +631,10 @@ function allDistResultsRadioClickHandler(results)
 		{
 			selectBoxEl[i].style.display = 'none';}
 	}
+
+	getDistrictResultsInteractiveChartVotesPercent(results,null);
+	getDistrictResultsInteractiveChartSeatsWon(results,null);
+
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
 }
 function partywiseRadioClickHandler()
@@ -622,6 +674,8 @@ function updateDistResultsPartywise(partyName,results)
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	if(partyName != 'Select Party')
 	{	
+		getDistrictResultsInteractiveChartVotesPercent(results,partyName);
+	    getDistrictResultsInteractiveChartSeatsWon(results,partyName);
 		buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");
 	}else return;	
 }
