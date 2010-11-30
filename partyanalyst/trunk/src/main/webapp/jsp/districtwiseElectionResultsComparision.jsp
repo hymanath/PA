@@ -263,6 +263,126 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		
  }
 
+ function getInteractiveChartBySeatsWonForADistrict(results,districtN)
+ {
+	 
+	 var districtWiseGraphEl = document.getElementById("districtWiseSeatsGraph");
+	 var chartRows = results.electionResultsInDistricts.allPartiesResults;
+		
+	 var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'District');
+	 data.addColumn('number', districtN);
+	  
+      var partyCount = 0;
+      for(var j in chartRows)
+	  {
+		  
+		if(partyCount > 12)
+		{
+			break;
+		}
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+		var distFlag = false;
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+			
+		     if(chartRows[j].partyResultsInDistricts[k].districtName == districtN)
+			 {
+				 var seatsWon = chartRows[j].partyResultsInDistricts[k].seatsWon;
+				 array.push(seatsWon);
+				 partyCount++;
+				 distFlag = true;
+				 break;
+			 }
+		  
+          
+		}
+
+		if(distFlag == false)
+		{
+          array.push(0);
+		  partyCount++;
+		}
+
+
+        data.addRow(array);
+		
+	  }
+		 
+	  var ctitle='';
+      if(districtN != null) 
+	     ctitle = districtN+' District Election Results By Seats Won'; 
+	  else
+         ctitle = 'All Parties District Wise Election Results By Seats Won';
+	  new google.visualization.LineChart(districtWiseGraphEl).
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+      });
+		
+ }
+
+ function getInteractiveChartByVotesPercentForADistrict(results,districtN)
+ {
+	 
+	 var districtWiseGraphEl = document.getElementById("districtWiseGraph");
+	 var chartRows = results.electionResultsInDistricts.allPartiesResults;
+		
+	 var data = new google.visualization.DataTable();
+	
+	 data.addColumn('string', 'District');
+	 data.addColumn('number', districtN);
+	  
+      var partyCount = 0;
+      for(var j in chartRows)
+	  {
+		  
+		if(partyCount > 12)
+		{
+			break;
+		}
+        var array = new Array();
+		array.push(chartRows[j].partyName);
+		var distFlag = false;
+
+		for(var k in chartRows[j].partyResultsInDistricts)
+		{
+			
+		     if(chartRows[j].partyResultsInDistricts[k].districtName == districtN)
+			 {
+				 var seatsWon = chartRows[j].partyResultsInDistricts[k].completeVotesPercentDouble;
+				 array.push(seatsWon);
+				 partyCount++;
+				 distFlag = true;
+				 break;
+			 }
+		  
+          
+		}
+
+		if(distFlag == false)
+		{
+          array.push(0);
+		  partyCount++;
+		}
+
+
+        data.addRow(array);
+		
+	  }
+		 
+	  var ctitle='';
+      if(districtN != null) 
+	     ctitle = districtN+' District Election Results By Votes Percent'; 
+	  else
+         ctitle = 'All Parties District Wise Election Results By Votes Percent';
+	  new google.visualization.LineChart(districtWiseGraphEl).
+	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+      });
+		
+ }
+
 function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 {
 	
@@ -686,6 +806,8 @@ function updateDistResultsDistwise(distName,results)
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	if(distName != 'Select District')
 	{	
+		getInteractiveChartBySeatsWonForADistrict(results,distName);
+		getInteractiveChartByVotesPercentForADistrict(results,distName);
 		buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);
 	}else return;	
 }
@@ -702,7 +824,11 @@ function updateResultsStatewise(distName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	if(distName != 'Select State' )
-		{buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);}
+		{
+		getInteractiveChartBySeatsWonForADistrict(results,distName);
+		getInteractiveChartByVotesPercentForADistrict(results,distName);
+		buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);
+		}
 		else return;	
 }
 </SCRIPT>
