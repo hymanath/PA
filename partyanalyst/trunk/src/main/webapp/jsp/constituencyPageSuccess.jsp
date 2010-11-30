@@ -183,12 +183,12 @@
 									showAllConnectedUsersInPanelByFilterView(jsObj,myResults);
 								}
 							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
+							  // 	alert("Invalid JSON result" + e);   
 							}  
  		               },
  		               scope : this,
  		               failure : function( o ) {
- 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
  		                         }
  		               };
 
