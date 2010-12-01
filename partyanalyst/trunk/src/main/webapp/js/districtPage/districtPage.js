@@ -235,7 +235,7 @@ function buildProblemPostingWindowForDistrict()
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your district problem and bring it to the all people notice.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
-	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'">POST</a></div>';
+	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';
 	str+='</div>';
 	str+='</fieldset>';
 	
