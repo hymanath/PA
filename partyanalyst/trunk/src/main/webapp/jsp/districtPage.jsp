@@ -1790,7 +1790,7 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 
 userLoginStatus = '${userDetails.loginStatus}';
 userId = '${userDetails.userId}';
-
+forwardTask = "${redirectLoc}";
 
 initializeDistrictPage();
 getAllMptcYears();
@@ -1799,6 +1799,14 @@ initializeResultsTableForMp();
 initializeResultsTable();
 showAllElectionsInDistrictHead();
 getElectionTypesAndYears();
+
+if(forwardTask != null)
+{
+	if(forwardTask != "")
+	{
+      openAddNewProblemWindow();
+	}
+}
 
 getMuncipalPartyDetails();
 getCorporationPartyDetails();

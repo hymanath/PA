@@ -6,15 +6,18 @@ var districtPageMainObj = {
 
 var districtId;
 var districtName;
-
 var constituencies = new Array();
 var districtMlas = new Array();
 var districtMps = new Array();
 var problemsInfo = new Array();
 var connectedPeople = new Array();
 var connectStatus = new Array();
-var userLoginStatus = '';
-var userId = '';
+var userLoginStatus = "";
+var userId = "";
+var userType="";
+var userLogIn="";
+var forwardTask = "";
+
 function buildDistrictPageLayout()
 {
 	var cadreReportPageLayout = new YAHOO.widget.Layout('districtPageLayout_main', { 
@@ -225,6 +228,14 @@ function handleCancel()
 {
 	this.cancel();
 }
+
+
+function openAddNewProblemWindow()
+{	
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=2&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
+
 function buildProblemPostingWindowForDistrict()
 {
 	var headElmt = document.getElementById('problemPostingDiv_Head');
@@ -282,4 +293,5 @@ function initializeDistrictPage()
 	buildDistrictLatestNews();
 	buildDistrictLevelProblemWindow();
 	buildDistrictConnectPeopleWindow();
+	
 }
