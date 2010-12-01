@@ -913,8 +913,8 @@ function buildCadresDatatable(results,divId)
 					occupation: results[i].professionStr,						
 					casteCategory: results[i].casteCategoryStr,
 					moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+results[i].cadreID+'\')">More Details</a>',
-					update:'<A href="javascript:{}" onclick="openRegistrationForm('+results[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
-					remove:'<A href="javascript:{}" onclick="deleteCadre('+results[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
+					update:'<A href="javascript:{}" onclick="openRegistrationForm('+results[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>'
+					
 		        };				
 		jsArray.push(obj);
 	}
@@ -944,8 +944,6 @@ function buildCadresDatatable(results,divId)
 			key : "moreDetails"
 		} , {
 			key : "update"
-		} , {
-			key : "remove"
 		} 
 		]
 	};
@@ -993,10 +991,6 @@ function buildCadresDatatable(results,divId)
 	},  {
 		key : "update",
 		label : "Edit",
-		sortable : false
-	}, {
-		key : "remove",
-		label : "Remove",
 		sortable : false
 	}
 	];
