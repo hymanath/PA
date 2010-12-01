@@ -49,6 +49,7 @@ public class ProblemPostControlAction extends ActionSupport implements
     private String name;
     private Long stateId;
     private Long districtId;
+    private String districtName;
     private Long localBodyId;
     private Long constituencyId;
     private Long localBodyElectionTypeId;
@@ -99,6 +100,14 @@ public class ProblemPostControlAction extends ActionSupport implements
 
 	public void setLocalBodyElectionTypeId(Long localBodyElectionTypeId) {
 		this.localBodyElectionTypeId = localBodyElectionTypeId;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 
 	public Long getStateId() {
