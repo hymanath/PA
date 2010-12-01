@@ -29,6 +29,7 @@ public class CadreBasicInformationVO implements Serializable {
 	private String skillsSearchType;
 	private Boolean isAndSearch;	//search based on AND/OR
 	private Boolean isOrSearch;
+	private String genderSearchType;
 	
 	
 	//Getters and Setters
@@ -112,5 +113,12 @@ public class CadreBasicInformationVO implements Serializable {
 	public void setIsOrSearch(Boolean isOrSearch) {
 		this.isOrSearch = isOrSearch;
 	}
+	public String getGenderSearchType() {
+		return genderSearchType;
+	}
+	public void setGenderSearchType(String genderSearchType) {
+		this.genderSearchType = genderSearchType;
+	}
+	
 
 }
