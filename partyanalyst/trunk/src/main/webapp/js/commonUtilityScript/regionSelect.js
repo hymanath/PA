@@ -412,7 +412,7 @@ function expandFilterOptions()
 			cType = elmts[i].value; 
 	}
 	
-	if(cType == "all" || cType == "normal")
+	if(cType == "All" || cType == "normal")
 		height = 300;
 	else if(cType == "active")
 		height = 420;

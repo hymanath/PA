@@ -3712,13 +3712,6 @@
 			<div id="cadreGroupsHeadDiv" class=".yui-widget-hd">Associate Groups</div>
 			<div id="cadreGroupsBodyDiv" style="height: 130px;">Associate groups</div>
 		</div>
-	</div>
-	<div id="cadreDetailsMainDiv">
-		<div id="regionLevelCadreDiv">
-			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
-			<div id="regionLevelCadreDivBody"></div>
-			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action" class="ancLink">Know your Cadre Strength areas</a></div>
-		</div>		
 		<div id="cadreSMSMainDiv">
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
 			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
@@ -3728,6 +3721,14 @@
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Sms')">Cadre SMS</a></span>
 			</div>
 		</div>
+	</div>
+	<div id="cadreDetailsMainDiv">
+		<div id="regionLevelCadreDiv">
+			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
+			<div id="regionLevelCadreDivBody"></div>
+			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action" class="ancLink">Know your Cadre Strength areas</a></div>
+		</div>		
+		
 	</div>		
 	<div id="cadreTeamsMainDiv">
 		<div id="cadreTeamsAccordianDiv"></div>
