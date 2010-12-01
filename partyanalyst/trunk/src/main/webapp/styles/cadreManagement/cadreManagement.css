@@ -38,7 +38,7 @@
 	{
 		height:97%;
 		width:auto;
-		background-color:#CBDCE8;		
+		background-color:#FFFFFF;		
 	}
 	
 	#cadreDetailsMainDiv
@@ -103,14 +103,14 @@
 	
 	#cadreSMSMainDiv
 	{
-		height:38%;		
+		height:48%;		
 		margin-top:5px;
 		background-color:#F9FCFF;		
 		border:2px solid #95A6B7;
 	}
 	#cadreGroupsMainDiv
 	{
-		height:100%;
+		height:50%;
 		background-color:#F9FCFF;				
 		border:2px solid #95A6B7;
 	}
@@ -118,7 +118,10 @@
 	
 	#cadreSMSBodyDiv
 	{
-		height:65px;
+		height:90px;
+		line-height:20px;
+		padding:5px;
+		text-align:justify;
 	}
 	#cadreSMSFooterDiv
 	{
@@ -148,7 +151,7 @@
 	#regionLevelCadreDiv
 	{		
 		border:2px solid #95A6B7;
-		height:58%;
+		height:98%;
 	}
 	#cadreStrengthAreasDiv
 	{
@@ -167,7 +170,8 @@
 	}
 	#regionLevelCadreDivBody
 	{
-		height:165px;
+		height:250px;
+		padding:6px;
 	}
 
 	.ancLink
