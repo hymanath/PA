@@ -595,7 +595,8 @@ function getCadresResults(btnType)
 	var mandalSelectElmt = document.getElementById("mandalField_s");
 	var villageSelectElmt = document.getElementById("hamletField_s");
 	var boothSelectElmt = document.getElementById("boothField_s");
-	
+	var genderRadioEls = document.getElementsByName("genderTypeRadio");
+	var genderOption; 
 	if(REPORTLEVEL == '') 
 	{
 		elmt.innerHTML = 'Please Select Range';
@@ -755,7 +756,11 @@ function getCadresResults(btnType)
 			SMSTEXTAREAVALUE = textAreaElmtValue;
 
 	}
-	
+	for(var i=0; i<genderRadioEls.length;i++)
+	{
+		if(genderRadioEls[i].checked == true)
+			genderOption = genderRadioEls[i].value;
+	}
 
 	var jsObj=
 		{		
@@ -765,6 +770,7 @@ function getCadresResults(btnType)
 			socialStatusArray:SOCIALSTATUSARRAY,
 			cadreType:CADRETYPE,
 			searchType:SEARCHTYPE,
+			gender: genderOption,
 			searchCriteria:SEARCHCRITERIA,
 			searchCriteriaArray:SEARCHCRITERIAARRAY,
 			searchCriteriaValue:SEARCHCRITERIAVALUE,
