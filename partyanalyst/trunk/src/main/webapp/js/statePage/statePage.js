@@ -23,7 +23,7 @@ var searchString = '';
 function buildStatePageLayout()
 {
 	var statePageLayout = new YAHOO.widget.Layout('statePage_layout_main', { 
-	height:600,
+	height:650,
 	units: [			
 			{ 
 				position: 'right', 

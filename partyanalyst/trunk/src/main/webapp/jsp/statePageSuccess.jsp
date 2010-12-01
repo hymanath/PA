@@ -216,7 +216,7 @@
 								  </tr>
 								</table>
 							</div>
-							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;width:304px;height:220px;">
+							<div id="stateNewsBody" class="productFeatureBody" style="overflow:hidden;width:304px;height:250px;">
 								
 							</div>						
 						</div>
@@ -225,56 +225,13 @@
 				</div>			
 			</div>
 			<div id="statePage_layout_center">
-				<div id="stateMap_main">
-				<c:if test="${statePage.stateName == 'Andhra Pradesh'}">
-				<object width="550" height="430">
-					<param name="movie" value="images/icons/statePage/stateMap.swf">
-					 <param name="wmode" value="transparent"> 
-					<embed wmode="transparent" src="images/icons/statePage/stateMap.swf" width="550" height="430">
-					</embed>
-				</object>
-				</c:if>
-				<c:if test="${statePage.stateName != 'Andhra Pradesh'}">
-
-				<div width="550" height="430">
-				   <!--<div class="stateInformation_head"> Districts In <c:out value="${statePage.stateName}" /></div>-->
-				   <div class="stateInformation_head">
-				   <table width="95%" border="0" cellpadding="0" cellspacing="0" style="width:95%;margin-left:15px;">
-									<tr>
-										<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center" style="height:14px;"><span>Districts In <c:out value="${statePage.stateName}"/> </span></div></td>
-										<td><img src="images/icons/districtPage/header_right.gif"/></td>
-									</tr>
-					</table>
-					</div>
-				<div id="stateCensusDiv_body" style="width:626px;">	
-				   <BR>
-				 <table border="0" class="stateDetailsTable" bgColor="AliceBlue">
-				    <tr>
-					
-					<c:forEach var="districts" items="${districtData}" varStatus="status">
-                             
-						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
-						<td><h4> 
-						    <a href="districtPageAction.action?districtId=${districts.id}&districtName=${districts.name}" class="distAnchor" title="Click to view ${districts.name} page">
-							    <c:out value="${districts.name}" /> 
-							</a> 
-						</h4></td>
-                       
-
-						<c:if test="${status.count%5 == 0}">
-						 </tr>
-						 <tr>
-						</c:if>
-					</c:forEach>
-					
-					</tr>
-					
-				 </table><br>
-				 </div>
-				</div>
-				</c:if>
-
+				<div id="stateMap_main">				
+					<object width="550" height="500">
+						<param name="movie" value="images/stateMaps/${statePage.stateName}/stateMap.swf">
+						 <param name="wmode" value="transparent"> 
+						<embed wmode="transparent" src="images/stateMaps/${statePage.stateName}/stateMap.swf" width="550" height="500">
+						</embed>
+					</object>	
 				</div>
                
 			</div>
