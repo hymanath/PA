@@ -276,6 +276,14 @@ function populateLocations(val,source)
 						<input type="radio" name="cadreTypeRadio" value="active" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Active Cadre
 						<input type="radio" name="cadreTypeRadio" value="normal" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Normal Cadre
 					</td>
+				</tr>
+				<tr>
+					<th align="left"><font color="#FF0000"> * </font> Gender</th>
+					<td align="left">
+						<input type="radio" name="genderTypeRadio" value="allGenders" checked="checked" onClick="getCriteriaValue(this.value,'searchCriteria')"/> All
+						<input type="radio" name="genderTypeRadio" value="male" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Male
+						<input type="radio" name="genderTypeRadio" value="female" onClick="getCriteriaValue(this.value,'searchCriteria')"/> Female
+					</td>
 				</tr>			
 				</table>
 			</div>

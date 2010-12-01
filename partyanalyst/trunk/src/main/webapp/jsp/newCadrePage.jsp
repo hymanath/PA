@@ -985,37 +985,37 @@
 		<tr id="row1" style="display:none;">
 			<td width="200"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="stateField_s" cssClass="regionSelect" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="stateField_s" cssClass="regionSelect" name="cadreLevelState" value="defaultStateId" list="#session.statesList_c" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row2" style="display:none;">
 			<td width="200"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="districtField_s" cssClass="regionSelect" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="districtField_s" cssClass="regionSelect" name="cadreLevelDistrict" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
 			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td>
-				<s:select id="constituencyField_s" value="defaultConstId" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="constituencyField_s" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
 			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /></td>
 			<td>
-				<s:select id="hamletField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="hamletField_s" cssClass="regionSelect" name="cadreLevelVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row6" style="display:none;">
 			<td width="200">Booth No</td>
 			<td>
-				<s:select id="boothField_s" cssClass="regionSelect" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="boothField_s" cssClass="regionSelect" name="cadreLevelBooth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 			<td>
 				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/>
@@ -1099,9 +1099,6 @@
 				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
 			</div>
 		</c:if>	
-		<input type="hidden" name="defaultStateId" value="${defaultStateId}">
-		<input type="hidden" name="defaultDistId" value="${defaultDistId}">
-		<input type="hidden" name="defaultConstId" value="${defaultConstId}">
 		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">	
 		<input type="hidden" name="childrenFlag" id="childrenFlag" value="${childrenFlag}">	
 		<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>	 		
