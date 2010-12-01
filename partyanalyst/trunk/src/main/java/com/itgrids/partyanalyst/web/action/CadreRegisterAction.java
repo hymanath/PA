@@ -46,15 +46,14 @@ public class CadreRegisterAction extends ActionSupport implements
 	private ServletContext context;
 
 	private CadreManagementService cadreManagementService;
-	private final static Logger log = Logger
-			.getLogger(CadreRegisterAction.class);
+	private final static Logger log = Logger.getLogger(CadreRegisterAction.class);
 
-	public void setCadreManagementService(
-			CadreManagementService cadreManagementService) {
+	public void setCadreManagementService(CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
 	}
 
 	private CadreInfo cadreInfo = new CadreInfo();
+	//form input variables
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -110,30 +109,12 @@ public class CadreRegisterAction extends ActionSupport implements
 	private List<String> languageOptions_Hindi;
 	private String cadreLevelState;
 	private String cadreLevelDistrict;
-	private String cadreLevelConstituency;
-	private String cadreLevelMandal;
-	private String cadreLevelVillage;
-	//updating session variables
-	private List<SelectOptionVO> districtList;
-	private List<SelectOptionVO> constituencyList;
-	private List<SelectOptionVO> mandalList;
-	private List<SelectOptionVO> villagesList;
-	private List<SelectOptionVO> districtsList_o;
-	private List<SelectOptionVO> constituenciesList_o;
-	private List<SelectOptionVO> mandalsList_o;
-	private List<SelectOptionVO> villagesList_o;
-	private List<SelectOptionVO> districtsList_c;
-	private List<SelectOptionVO> constituenciesList_c;
-	private List<SelectOptionVO> mandalsList_c;
-	private List<SelectOptionVO> villagesList_c;
-	private List<SelectOptionVO> designationsList;
-	private Long defaultStateId;
-	private Long defaultDistId;
-	private Long defaultConstId;
+	private String cadreLevelConstituency;	
 	private Long defaultCadreLevelId;
 	private String booth;
 	private String pBooth;
 	private Long partyCommittee;
+	
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	
@@ -526,7 +507,6 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setSkills(List<String> skills) {
-		log.error("inside setting method"+skills.size());
 		this.cadreInfo.setSkills(skills);
 	}	
 
@@ -535,7 +515,6 @@ public class CadreRegisterAction extends ActionSupport implements
 	}
 
 	public void setLanguageOptions_English(List<String> languageOptions_English) {
-	log.error("inside setter english method:"+languageOptions_English.size());
 		this.cadreInfo.setLanguageOptions_English(languageOptions_English);
 	}
 
@@ -576,7 +555,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelState();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection in Cadre Level Region")
 	public void setCadreLevelState(String cadreLevelState) {
 		this.cadreInfo.setCadreLevelState(cadreLevelState);
 	}
@@ -585,7 +563,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelDistrict();
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection in Cadre Level Region")
 	public void setCadreLevelDistrict(String cadreLevelDistrict) {
 		this.cadreInfo.setCadreLevelDistrict(cadreLevelDistrict);
 	}
@@ -594,7 +571,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelConstituency();
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Cadre Level Region")
 	public void setCadreLevelConstituency(String cadreLevelConstituency) {
 		this.cadreInfo.setCadreLevelConstituency(cadreLevelConstituency);
 	}
@@ -603,7 +579,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelMandal();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Mandal Selection in Cadre Level Region")
 	public void setCadreLevelMandal(String cadreLevelMandal) {
 		this.cadreInfo.setCadreLevelMandal(cadreLevelMandal);
 	}
@@ -612,154 +587,21 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelVillage();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Village Selection in Cadre Level Region")
 	public void setCadreLevelVillage(String cadreLevelVillage) {
 		this.cadreInfo.setCadreLevelVillage(cadreLevelVillage);
-	}
-	
-	
-
-	public List<SelectOptionVO> getDistrictList() {
-		return districtList;
-	}
-
-	public void setDistrictList(List<SelectOptionVO> districtList) {
-		this.districtList = districtList;
-	}
-
-	public List<SelectOptionVO> getConstituencyList() {
-		return constituencyList;
-	}
-
-	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
-		this.constituencyList = constituencyList;
-	}
-
-	public List<SelectOptionVO> getMandalList() {
-		return mandalList;
-	}
-
-	public void setMandalList(List<SelectOptionVO> mandalList) {
-		this.mandalList = mandalList;
-	}
-
-	public List<SelectOptionVO> getVillagesList() {
-		return villagesList;
-	}
-
-	public void setVillagesList(List<SelectOptionVO> villagesList) {
-		this.villagesList = villagesList;
-	}
-
-	public List<SelectOptionVO> getDistrictsList_o() {
-		return districtsList_o;
-	}
-
-	public void setDistrictsList_o(List<SelectOptionVO> districtsList_o) {
-		this.districtsList_o = districtsList_o;
-	}
-
-	public List<SelectOptionVO> getConstituenciesList_o() {
-		return constituenciesList_o;
-	}
-
-	public void setConstituenciesList_o(List<SelectOptionVO> constituenciesList_o) {
-		this.constituenciesList_o = constituenciesList_o;
-	}
-
-	public List<SelectOptionVO> getMandalsList_o() {
-		return mandalsList_o;
-	}
-
-	public void setMandalsList_o(List<SelectOptionVO> mandalsList_o) {
-		this.mandalsList_o = mandalsList_o;
-	}
-
-	public List<SelectOptionVO> getVillagesList_o() {
-		return villagesList_o;
-	}
-
-	public void setVillagesList_o(List<SelectOptionVO> villagesList_o) {
-		this.villagesList_o = villagesList_o;
-	}
-
-	public List<SelectOptionVO> getDistrictsList_c() {
-		return districtsList_c;
-	}
-
-	public void setDistrictsList_c(List<SelectOptionVO> districtsList_c) {
-		this.districtsList_c = districtsList_c;
-	}
-
-	public List<SelectOptionVO> getConstituenciesList_c() {
-		return constituenciesList_c;
-	}
-
-	public void setConstituenciesList_c(List<SelectOptionVO> constituenciesList_c) {
-		this.constituenciesList_c = constituenciesList_c;
-	}
-
-	public List<SelectOptionVO> getMandalsList_c() {
-		return mandalsList_c;
-	}
-
-	public void setMandalsList_c(List<SelectOptionVO> mandalsList_c) {
-		this.mandalsList_c = mandalsList_c;
-	}
-
-	public List<SelectOptionVO> getVillagesList_c() {
-		return villagesList_c;
-	}
-
-	public void setVillagesList_c(List<SelectOptionVO> villagesList_c) {
-		this.villagesList_c = villagesList_c;
-	}
-
-	public List<SelectOptionVO> getDesignationsList() {
-		return designationsList;
-	}
-
-	public void setDesignationsList(List<SelectOptionVO> designationsList) {
-		this.designationsList = designationsList;
 	}	
-
-	public Long getDefaultStateId() {
-		return defaultStateId;
-	}
-
-	public void setDefaultStateId(Long defaultStateId) {
-		this.defaultStateId = defaultStateId;
-	}
-
-	public Long getDefaultDistId() {
-		return defaultDistId;
-	}
-
-	public void setDefaultDistId(Long defaultDistId) {
-		this.defaultDistId = defaultDistId;
-	}
-
-	public Long getDefaultConstId() {
-		return defaultConstId;
-	}
-
-	public void setDefaultConstId(Long defaultConstId) {
-		this.defaultConstId = defaultConstId;
-	}
 
 	public Long getDefaultCadreLevelId() {
 		return defaultCadreLevelId;
 	}
 
 	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
-		this.defaultCadreLevelId = defaultCadreLevelId;
-		
-			
+		this.defaultCadreLevelId = defaultCadreLevelId;			
 	}
 	
 	// to make the active or normal cadre type radio button to pre select active radio button
 	public String getDefaultCadreType() {
-		return "Active";
+		return this.cadreInfo.getMemberType();
 	}
 	
 	// to pre select cadre level  based on user access type
@@ -768,7 +610,19 @@ public class CadreRegisterAction extends ActionSupport implements
 		if(this.defaultCadreLevelId == null)
 			this.defaultCadreLevelId = cadreInfo.getCadreLevel();
 		return this.defaultCadreLevelId;
+	}
+	
+	public String getDefaultStateId() {
+		return this.cadreInfo.getCadreLevelState();
+	}
+
+	public String getDefaultDistId() {
+		return this.cadreInfo.getCadreLevelDistrict();
 	}	
+
+	public String getDefaultConstId() {
+		return this.cadreInfo.getCadreLevelConstituency();
+	}
 	
 	public Boolean getSameAsCAFlag() {
 		return sameAsCAFlag;
@@ -868,9 +722,7 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	public void setThirdFamilyMemberDOB(String thirdFamilyMemberDOB) {
 		this.cadreInfo.setThirdFamilyMemberDOB(thirdFamilyMemberDOB);
-	}
-	
-	
+	}	
 
 	public String getPParliament() {
 		return this.cadreInfo.getPParliament();
@@ -891,12 +743,10 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setServletRequest(HttpServletRequest req) {
 		request = req;
 		session = req.getSession();
-
 	}
 
 	public void setServletContext(ServletContext context) {
 		this.context = context;
-
 	}
 
 	public String getBooth() {
@@ -922,7 +772,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setPartyCommittee(Long partyCommittee) {
 		this.cadreInfo.setPartyCommittee(partyCommittee);
 	}
-
+	
 	public String execute() throws Exception {
 		log.debug("In The Excecute For Cader");
 		session = request.getSession();
@@ -936,28 +786,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
 		cadreInfo.setAccessType(regVO.getAccessType());
 		
-		/*
-		if ("MP".equals(regVO.getAccessType())) {
-			Long constituencyID = cadreInfo.getConstituencyID();
-			Long pConstituencyID = cadreInfo.getPconstituencyID();
-			List<SelectOptionVO> list = cadreManagementService.getStateDistricConstituencytByConstituencyID(constituencyID);
-			List<SelectOptionVO> list1 = cadreManagementService.getStateDistricConstituencytByConstituencyID(pConstituencyID);
-			SelectOptionVO obj = new SelectOptionVO();
-			if (list.size() == 3)
-			{	
-				obj = list.get(1);
-				cadreInfo.setDistrict(obj.getId().toString());
-			}
-			if (list1.size() == 3)
-			{	
-				obj = list1.get(1);
-				cadreInfo.setPconstituencyID(obj.getId().longValue());
-			}
-			
-		}*/
-		System.out.println(cadreInfo.getMobile());
 		rs = cadreManagementService.saveCader(cadreInfo, skills,windowTask);
-		//setDefaultCadreLevelId(getCadreLevel());
+		
 		if (rs.getExceptionEncountered() == null)
 		{
 			cadreInfo = new CadreInfo();
@@ -969,8 +799,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(4l);
-				
+				setDefaultCadreLevelId(4l);				
 							
 			}else if("COUNTRY".equals(regVO.getAccessType()))
 			{
@@ -985,8 +814,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(0l);
-				
+				setDefaultCadreLevelId(0l);				
 				
 			}else if("STATE".equals(regVO.getAccessType())){
 				log.debug("Access Type = State ****");
@@ -999,9 +827,7 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(2l);
-				
-				
+				setDefaultCadreLevelId(2l);				
 				
 			}else if("DISTRICT".equals(regVO.getAccessType())){
 				log.debug("Access Type = District ****");			
@@ -1013,15 +839,12 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
-				setDefaultCadreLevelId(3l);	
-				
-			}			
-					 
+				setDefaultCadreLevelId(3l);				
+			}					 
 			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
-			
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
 		}
 		
