@@ -279,15 +279,15 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			setRegionsList(booths);
 			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
-				session.setAttribute(ISessionConstants.DISTRICTS_O, booths);
+				session.setAttribute(ISessionConstants.BOOTHS_O, booths);
 			}
 			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
-				session.setAttribute(ISessionConstants.DISTRICTS, booths);
+				session.setAttribute(ISessionConstants.BOOTHS, booths);
 			}
 			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
-				session.setAttribute(ISessionConstants.DISTRICTS_C, booths);
+				session.setAttribute(ISessionConstants.BOOTHS_C, booths);
 			}
 		}  else if(jObj.getString("task").equalsIgnoreCase("boothsInWard"))
 		{

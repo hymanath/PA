@@ -453,7 +453,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				
 				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
 				constituencyList_c = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
-				session.setAttribute(ISessionConstants.STATES, stateList);
+				//session.setAttribute(ISessionConstants.STATES, stateList);
 				//default state element to be selected in cadre level selection for active cadre
 				setDefaultStateId(list.get(0).getId());
 				//default district element to be selected in cadre level selection for active cadre
@@ -468,7 +468,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				log.debug("Access Type = Country ****");
 				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 				stateList.add(0,new SelectOptionVO(0l,"Select State"));
-				session.setAttribute(ISessionConstants.STATES, stateList);
+				//session.setAttribute(ISessionConstants.STATES, stateList);
 				//default cadre level element to be selected in cadre level selection for active cadre
 				setDefaultCadreLevelId(0l);				
 				
@@ -482,7 +482,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				stateList.add(obj2);
 				districtList = staticDataService.getDistricts(accessValue);
 				districtList.add(0,new SelectOptionVO(0l,"Select District"));
-				session.setAttribute(ISessionConstants.STATES, stateList);
+				//session.setAttribute(ISessionConstants.STATES, stateList);
 				//default state element to be selected in cadre level selection for active cadre
 				setDefaultStateId(accessValue);
 				//default cadre level element to be selected in cadre level selection for active cadre
@@ -497,7 +497,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
 				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 				districtList_c = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
-				session.setAttribute(ISessionConstants.STATES, stateList);
+				//session.setAttribute(ISessionConstants.STATES, stateList);
 				//default state element to be selected in cadre level selection for active cadre
 				setDefaultStateId(list.get(0).getId());
 				//default district element to be selected in cadre level selection for active cadre
@@ -514,7 +514,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				constituencyList = constituencyInfoVO.getAssembyConstituencies();
 				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
-				session.setAttribute(ISessionConstants.STATES, stateList);
+				//session.setAttribute(ISessionConstants.STATES, stateList);
+				
 				setDefaultCadreLevelId(3l);
 			}			
 			setSameAsCAFlag(true);
@@ -522,6 +523,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			session.setAttribute(ISessionConstants.STATES, stateList);
 			session.setAttribute(ISessionConstants.DISTRICTS,districtList);
 			session.setAttribute(ISessionConstants.CONSTITUENCIES,constituencyList);
+			session.setAttribute(ISessionConstants.P_CONSTITUENCIES, parliamentConstituencyList);
 			session.setAttribute(ISessionConstants.MANDALS,mandalList);	
 			session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.BOOTHS,new ArrayList<SelectOptionVO>());		
@@ -529,6 +531,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			session.setAttribute(ISessionConstants.STATES_O, stateList_o);
 			session.setAttribute(ISessionConstants.DISTRICTS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O,new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.BOOTHS_O,new ArrayList<SelectOptionVO>());
