@@ -1312,7 +1312,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>
 			</div>
-			<div id="district_Politician_news" class="productFeatureBody" style="overflow:hidden;width:300px;height:220px;">
+			<div id="district_Politician_news" class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 				
 			</div>						
 		</div>
