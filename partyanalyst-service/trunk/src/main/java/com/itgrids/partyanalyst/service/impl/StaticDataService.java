@@ -125,6 +125,7 @@ import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyElectionResultComparator;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
 import com.itgrids.partyanalyst.utils.SelectOptionVOByIdComparator;
 import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
@@ -3897,6 +3898,7 @@ public class StaticDataService implements IStaticDataService {
 		return allElecList;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public DistrictWisePartyResultVO getElectionResultsForDistrict(Long electionScopeId, Long districtId){
 		List<ElectionResultVO> electionVO = new ArrayList<ElectionResultVO>(0);
 		
@@ -3955,7 +3957,7 @@ public class StaticDataService implements IStaticDataService {
 					seleList.add(partyElectionResultVO);	
 				}
 			}
-			
+			Collections.sort(seleList, new PartyElectionResultComparator());
 			electionResultVO.setResult(seleList);
 			electionVO.add(electionResultVO);
 		}
