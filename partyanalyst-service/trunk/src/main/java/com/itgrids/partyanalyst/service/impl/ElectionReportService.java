@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -498,7 +499,7 @@ public class ElectionReportService implements IElectionReportService {
 	public void setVOForDistrictWiseChart(ElectionResultsReportVO electionResultsReportVO){
 		
 		List<SelectOptionVO> participatedParties = new ArrayList<SelectOptionVO>();
-		Map<Long,String> participatedDistrictsMap = new HashMap<Long,String>();
+		Map<String,String> participatedDistrictsMap = new HashMap<String,String>();
 		List<DistrictWisePartyPositionsVO> partyResultsDistWiseForChart = new ArrayList<DistrictWisePartyPositionsVO>();
 		
 		if(electionResultsReportVO.getElectionResultsInDistricts() != null){
@@ -522,18 +523,19 @@ public class ElectionReportService implements IElectionReportService {
 				DistrictWisePartyPositionsVO partiDistricts = electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults().get(index);
 				if(partiDistricts != null && partiDistricts.getPartyResultsInDistricts() != null){
 					for(PartyPositionsInDistrictVO districtsPart:partiDistricts.getPartyResultsInDistricts()){
-						participatedDistrictsMap.put(districtsPart.getDistrictId(), districtsPart.getDistrictName());
+						participatedDistrictsMap.put(districtsPart.getDistrictName(), districtsPart.getDistrictName());
 					}
 				}
 			}
 			
-			for(Long districts:participatedDistrictsMap.keySet()){
+						
+			for(String districts:participatedDistrictsMap.keySet()){
 				
 				DistrictWisePartyPositionsVO partyResInADistrict = new DistrictWisePartyPositionsVO();
 				List<PartyPositionsInDistrictVO> partyResultsInDistricts = new ArrayList<PartyPositionsInDistrictVO>();
 				
 				String regionName = participatedDistrictsMap.get(districts);
-				partyResInADistrict.setPartyId(districts);
+				partyResInADistrict.setPartyId(0L);
 				partyResInADistrict.setPartyName(regionName);
 				
 				for(DistrictWisePartyPositionsVO processedRes:electionResultsReportVO.getElectionResultsInDistricts().getAllPartiesResults()){
