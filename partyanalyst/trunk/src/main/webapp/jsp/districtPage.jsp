@@ -327,10 +327,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "getAllElectionsInDistrict")
 					{		
 						//JFree graph								
-						//showAllElectionsInDistrict(results);
+						showAllElectionsInDistrict(results);
 
 						//Google Graph
-						showElectionGraph(results);
+						//showElectionGraph(results);
 					}
 					if(jsObj.task == "getElectionTypesAndYears")
 					{										
