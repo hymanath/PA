@@ -157,7 +157,6 @@
 
 	<bean id="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction" singleton="false">
 		<property name="boothPopulationService" ref="boothPopulationService" />
-		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
 	<bean id="voterDataUploadAction" class="com.itgrids.partyanalyst.web.action.VoterDataUploadAction" singleton="false">
@@ -167,7 +166,6 @@
 	
 	<bean id="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction" singleton="false">
 		<property name="boothPopulationService" ref="boothPopulationService" />
-		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
 	<bean id="problemUploadAction" class="com.itgrids.partyanalyst.web.action.ProblemUploadAction" singleton="false">
@@ -509,7 +507,6 @@
 	
 	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
-		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="anonymousUserRegisterAction" class="com.itgrids.partyanalyst.web.action.AnonymousUserRegistrationAction" singleton="false">
