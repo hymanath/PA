@@ -736,7 +736,7 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10			        
+		        rowsPerPage    : 15			        
 			    }),
 			    caption:"Partywise Results" 
 				};
@@ -752,7 +752,6 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 }
 function showAllianceDetails(results)
 {	
-	
 	var allianceResultsArr = results.electionBasicResultsVO.alliancePartiesList;
 	allianceResults = allianceResultsArr;
 	var assignToAllianceResultsArr = new Array();
@@ -1715,9 +1714,10 @@ callAjax(rparam,jsObj,url);
 					<div id="partywiseResultsWithoutAlliance"></div>
 				</DIV>
 			</TD>
-			<c:if test="${electionType == 'Assembly'}"> 
 			<TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
-			</c:if>
+			<!--<c:if test="${electionType == 'Assembly'}"> 
+			    <TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
+			</c:if>-->
 		</TR>
 		<TR>
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
