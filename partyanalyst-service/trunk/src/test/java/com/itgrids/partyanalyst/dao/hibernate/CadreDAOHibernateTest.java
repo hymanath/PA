@@ -338,6 +338,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[3].toString());
 		}			
 	}*/
+	
+	public void testFindCadreDetailsByLevelAndProperty()
+	{
+		List results = cadreDAO.findCadreDetailsByLevelAndProperty(1l, "currentAddress", "district", "districtId", 19l, "and model.gender = 'Male'");
+		System.out.println(results.size());
+	}
 }
 	
 

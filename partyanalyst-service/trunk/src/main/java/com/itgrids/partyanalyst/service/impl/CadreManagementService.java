@@ -2636,21 +2636,21 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
     }
 
 
-    /*
+/*    
 	 * Method to get cadre details by cadre type
 	 * 
-	 */
+	 
 	@SuppressWarnings("unchecked")
 	public List getCadreByCadreType(String type,List<Long> cadreIds){
 		
 		List cadreTypeObjList = null;
 		if(cadreIds != null && cadreIds.size() > 0)
-		cadreTypeObjList = cadreDAO.findCadreIdsByMemberTypeAndCadreList(type,cadreIds);
+		cadreTypeObjList = cadreDAO.findCadreIdsByMemberTypeAndCadreList(type,cadreIds, );
 		
 	 return cadreTypeObjList;
 
 		
-	}
+	}*/
 
 	/*
 	 * Method to Obtain Cadre Objects based on a search criteria
@@ -2665,17 +2665,24 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		List<Cadre> cadreObjects = null;
 		List<Long> cadreIds = null;
 		Map<Long, Long> cadreIdsMap = new HashMap<Long, Long>();
-
+		String query = null;
+		if(cadreInputVO.getGenderSearchType().equals("Male"))
+			query = "and model.gender = 'Male'";
+		if(cadreInputVO.getGenderSearchType().equals("Female"))
+			query = "and model.gender = 'Female'";
+		if(cadreInputVO.getGenderSearchType().equals("allGenders"))
+			query = "";	
+		
 		if (userId != null && cadreInputVO != null) {
 
 			// Location Based Or Level Based Search
 			if (cadreInputVO.getSearchType().equals(IConstants.LOCATION_BASED)) {
 				cadreIds = getLocationBasedSearch(userId, cadreInputVO
-						.getCadreLevelId(), cadreInputVO.getCadreLocationId());
+						.getCadreLevelId(), cadreInputVO.getCadreLocationId(), query);
 			} else if (cadreInputVO.getSearchType().equals(
 					IConstants.LEVEL_BASED)) {
 				cadreIds = getLevelBasedSearch(userId, cadreInputVO
-						.getCadreLevelId());
+						.getCadreLevelId(), query);
 			}
 
 			// search by CadreType
@@ -2683,12 +2690,10 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					IConstants.CADRE_MEMBER_TYPE_ACTIVE)
 					|| cadreInputVO.getCadreType().equals(
 							IConstants.CADRE_MEMBER_TYPE_NORMAL)) {
-
 				List cadreTypeObjList = null;
 				if (cadreIds != null && cadreIds.size() > 0)
-					cadreTypeObjList = cadreDAO
-							.findCadreIdsByMemberTypeAndCadreList(cadreInputVO
-									.getCadreType(), cadreIds);
+					cadreTypeObjList = cadreDAO.findCadreIdsByMemberTypeAndCadreList(cadreInputVO
+									.getCadreType(), cadreIds, query);
 
 				if (cadreTypeObjList != null)
 					cadreIds = getProcessedObjects(cadreTypeObjList);
@@ -2732,7 +2737,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndUser(
 											userId, paramObject, paramField,
-											eduList);
+											eduList,query);
 							if (cadreTypeObjList != null) {
 								List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
 								cadreIdsMap = setResultCadreIdsToMap(
@@ -2744,7 +2749,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndCadreIds(
 											paramObject, paramField, eduList,
-											cadreIds);
+											cadreIds, query);
 							if (cadreTypeObjList != null)
 								cadreIds = getProcessedObjects(cadreTypeObjList);
 						}
@@ -2779,7 +2784,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndUser(
 											userId, paramObject, paramField,
-											casList);
+											casList, query);
 							if (cadreTypeObjList != null) {
 								List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
 								cadreIdsMap = setResultCadreIdsToMap(
@@ -2791,7 +2796,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndCadreIds(
 											paramObject, paramField, casList,
-											cadreIds);
+											cadreIds, query);
 							if (cadreTypeObjList != null)
 								cadreIds = getProcessedObjects(cadreTypeObjList);
 						}
@@ -2825,7 +2830,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndUser(
 											userId, paramObject, paramField,
-											ocupList);
+											ocupList, query);
 							if (cadreTypeObjList != null) {
 								List<Long> cadreIDs = getProcessedObjects(cadreTypeObjList);
 								cadreIdsMap = setResultCadreIdsToMap(
@@ -2837,7 +2842,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 							cadreTypeObjList = cadreDAO
 									.findCadreByPropertyValueListAndCadreIds(
 											paramObject, paramField, ocupList,
-											cadreIds);
+											cadreIds, query);
 							if (cadreTypeObjList != null)
 								cadreIds = getProcessedObjects(cadreTypeObjList);
 						}
@@ -3083,13 +3088,14 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	}
 
 	/*
-	 * Method To get Location Based Search Results
+	 * Method To get Location Based Search Results.This method is invoked from getCadreSearchResultsByInputCriteria
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Long> getLocationBasedSearch(Long userId, Long levelId,
-			Long locationId) {
+			Long locationId, String query) {
 
 		List<Long> cadreIds = null;
+		
 		if (levelId != null && locationId != null) {
 				
 			String ObjectOne = "", ObjectTwo = "", field = "", id = "";
@@ -3129,12 +3135,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				ObjectTwo = "booth";
 				field = "boothId";
 			}
-
 			if (!"".equalsIgnoreCase(ObjectOne)
 					&& !"".equalsIgnoreCase(ObjectTwo)
 					&& !"".equalsIgnoreCase(field)) {
 				List cadreObjList = cadreDAO.findCadreDetailsByLevelAndProperty(userId, ObjectOne,
-								ObjectTwo, field, locationId);
+								ObjectTwo, field, locationId,query);
 				if (cadreObjList != null && cadreObjList.size() > 0)
 					cadreIds = getProcessedObjects(cadreObjList);
 			}
@@ -3146,11 +3151,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	 * Level based Cadre Search
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Long> getLevelBasedSearch(Long userId, Long levelId) {
+	public List<Long> getLevelBasedSearch(Long userId, Long levelId, String query) {
 		List<Long> cadreIds = null;
 		if (userId != null && levelId != null) {
 			List cadreObjList = cadreDAO.findCadreByUserAndCadreLevel(userId,
-					levelId);
+					levelId, query);
 			if (cadreObjList != null && cadreObjList.size() > 0)
 				cadreIds = getProcessedObjects(cadreObjList);
 		}
