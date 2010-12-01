@@ -10,11 +10,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -44,15 +46,17 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private IRegionServiceData regionServiceDataImp;
 	private IStaticDataService staticDataService;
 	private IProblemManagementService problemManagementService;
+	private CadreManagementService cadreManagementService;
 	
 	private String requestSrc;
-	private Long stateId;
-	private Long districtId;
-	private Long constituencyId;
-	private Long localElectionBodyId;
+	private Long stateId = 0l;
+	private Long districtId = 0l;
+	private Long constituencyId = 0l;
+	private Long localElectionBodyId = 0l;
 	private Boolean isParliament;
 	private List<SelectOptionVO> problemScopes;
 	private Long  problemLocation;
+	private Long scope;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -238,7 +242,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	
 	public Long  getDefaultScope()
 	{
-		return new Long(requestSrc);
+		return scope;
 	}	
 
 	public List<SelectOptionVO> getProblemScopes() {
@@ -263,15 +267,27 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 
 	public void setPConstituencyList(List<SelectOptionVO> constituencyList) {
 		pConstituencyList = constituencyList;
+	}	
+
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}	
+
+	public Long getScope() {
+		return scope;
+	}
+
+	public void setScope(Long scope) {
+		this.scope = scope;
 	}
 
 	public String execute () throws Exception 
 	{
-		/*constituencyId = 232l;
-		stateId= 1l;
-		districtId = 19l;
-		isParliament =false;
-		requestSrc = "3";*/
 		HttpSession session = request.getSession();
 		session = request.getSession();
 		stateList = new ArrayList<SelectOptionVO>();
@@ -284,20 +300,23 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
+		
+		/*
 		session.setAttribute(ISessionConstants.STATES, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.DISTRICTS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.CONSTITUENCIES, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.MANDALS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
-		
+		*/
 		try{
+		if("FreeUser".equals(session.getAttribute("UserType")))
+		{	
+			setScope(new Long(requestSrc));
 			if("1".equalsIgnoreCase(requestSrc))	
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
-				session.setAttribute(ISessionConstants.STATES, stateList);
-				setProblemLocation(stateId);
-				
+				setProblemLocation(stateId);				
 					
 			}else if("2".equalsIgnoreCase(requestSrc))
 			{
@@ -307,11 +326,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				if(locationHirarchies != null){
 					stateId = getLocationIdFromHirarchy(IConstants.STATE,locationHirarchies);
 				}
-				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
-				
-				session.setAttribute(ISessionConstants.STATES, stateList);
-				session.setAttribute(ISessionConstants.DISTRICTS, districtList);	
-				
+				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);				
 				
 			} else if("3".equalsIgnoreCase(requestSrc))
 			{
@@ -328,21 +343,15 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				
 				if(isParliament)
 				{
-					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
-					session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
-					session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
+					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();					
 					
 				} else 
 				{
 					districtId = getLocationIdFromHirarchy(IConstants.DISTRICT,locationHirarchies);
 					districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
-					constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
-					session.setAttribute(ISessionConstants.DISTRICTS, districtList);
-					session.setAttribute(ISessionConstants.P_CONSTITUENCIES, new ArrayList<SelectOptionVO>());
-					session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
-					
+					constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);					
 				}				
-				session.setAttribute(ISessionConstants.STATES, stateList);			
+							
 			} else if(IConstants.LOCAL_ELECTION_BODY.equalsIgnoreCase(requestSrc))
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
@@ -355,19 +364,86 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				}
 				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(districtId);
-				mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
-							
-				session.setAttribute(ISessionConstants.STATES, stateList);
-				session.setAttribute(ISessionConstants.DISTRICTS, districtList);
-				session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
-				session.setAttribute(ISessionConstants.MANDALS, mandalList);
+				mandalList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);							
 			} else
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
-				session.setAttribute(ISessionConstants.STATES, stateList);
 				setProblemLocation(0l);
 			}		
-		
+		} else if("PartyAnalyst".equals(session.getAttribute("UserType")))
+		{
+			String accessType =user.getAccessType();
+			Long accessValue= new Long(user.getAccessValue());
+			
+			if("MLA".equals(accessType))
+			{
+				log.debug("Access Type = MLA ****");
+				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+				
+				stateList = regionServiceDataImp.getStatesByCountry(1l);			
+				districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
+				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
+				mandalList = regionServiceDataImp.getSubRegionsInConstituency(list.get(2).getId(), IConstants.PRESENT_YEAR, null);
+				mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
+				stateId = list.get(0).getId();
+				districtId = list.get(1).getId();
+				constituencyId = list.get(2).getId();
+				setProblemLocation(constituencyId);
+				setScope(3l);
+							
+			}else if("COUNTRY".equals(accessType))
+			{
+				log.debug("Access Type = Country ****");
+				stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+				stateList.add(0,new SelectOptionVO(0L, "Select State"));
+				setProblemLocation(0l);
+				setScope(0l);
+				
+				
+			}else if("STATE".equals(accessType)){
+				log.debug("Access Type = State ****");
+				
+				String name = cadreManagementService.getStateName(accessValue);
+				SelectOptionVO obj2 = new SelectOptionVO();
+				obj2.setId(accessValue);
+				obj2.setName(name);			
+				stateList.add(obj2);
+				districtList = staticDataService.getDistricts(accessValue);
+				districtList.add(0,new SelectOptionVO(0l,"Select District"));
+				stateId = accessValue;	
+				setProblemLocation(stateId);
+				setScope(1l);
+				
+			}else if("DISTRICT".equals(accessType)){
+				log.debug("Access Type = District ****");			
+				List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+				stateList = regionServiceDataImp.getStatesByCountry(1l);			
+				districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
+				constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
+				stateId = list.get(0).getId();
+				districtId = accessValue;	
+				setProblemLocation(districtId);
+				setScope(2l);
+				
+			} else if("MP".equals(accessType)){
+				log.debug("Access Type = MP ****");
+				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+				constituencyList = constituencyInfoVO.getAssembyConstituencies();
+				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+				setScope(3l);
+			}
+		}
+		session.setAttribute(ISessionConstants.STATES, stateList);
+		session.setAttribute(ISessionConstants.DISTRICTS, districtList);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
+		session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
+		session.setAttribute(ISessionConstants.MANDALS, mandalList);
+		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, wardsOrHamletsList);
+		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.error("Exception Raised :" + ex);

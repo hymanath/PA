@@ -59,6 +59,10 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	private List<SelectOptionVO> socialStatus = new ArrayList<SelectOptionVO>();
 	private IProblemManagementService problemManagementService;
 	private Long defaultInfluenceRange;
+	private Long defaultState = 0l;
+	private Long defaultDistrict = 0l;
+	private Long defaultConstituency = 0l;
+	
 	
 	public List<SelectOptionVO> getInfluenceRange() {
 		return influenceRange;
@@ -237,6 +241,25 @@ public class InfluencingPeopleAction extends ActionSupport implements
 	public void setDefaultInfluenceRange(Long defaultInfluenceRange) {
 		this.defaultInfluenceRange = defaultInfluenceRange;
 	}
+	
+	public Long getDefaultState() {
+		return defaultState;
+	}
+	public void setDefaultState(Long defaultState) {
+		this.defaultState = defaultState;
+	}
+	public Long getDefaultDistrict() {
+		return defaultDistrict;
+	}
+	public void setDefaultDistrict(Long defaultDistrict) {
+		this.defaultDistrict = defaultDistrict;
+	}
+	public Long getDefaultConstituency() {
+		return defaultConstituency;
+	}
+	public void setDefaultConstituency(Long defaultConstituency) {
+		this.defaultConstituency = defaultConstituency;
+	}
 	public String execute() throws Exception {
 		
 		session = request.getSession();
@@ -280,20 +303,24 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			constituencyList.add(list.get(2));
 			mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
 			mandalList.add(0,new SelectOptionVO(0l,"Select Location"));
-			
+			setDefaultState(list.get(0).getId());
+			setDefaultDistrict(list.get(1).getId());
+			setDefaultConstituency(list.get(2).getId());
+			setDefaultInfluenceRange(4l);
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
+				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
 			}
 							
-			setDefaultInfluenceRange(4l);
+			
 		}
 		else if("COUNTRY".equals(accessType))
 		{
 			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 			stateList.add(0,new SelectOptionVO(0l,"Select State"));
-			
+			setDefaultInfluenceRange(0l);
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
 				districtList = cadreManagementService.findDistrictsByState(influencingPeopleBeanVO.getState());	
@@ -301,7 +328,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
-
+				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));	
 			}
 			
 		}
@@ -311,20 +338,21 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);
-			
+			setDefaultState(accessValue);
 			stateList.add(obj2);
 			districtList = staticDataService.getDistricts(accessValue);
 			districtList.add(0,new SelectOptionVO(0l,"Select District"));
-			
+			setDefaultInfluenceRange(2l);
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
 				constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(influencingPeopleBeanVO.getDistrict()));
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
+				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
 			}
 		
-			setDefaultInfluenceRange(2l);
+			
 			
 		}
 		else if("DISTRICT".equals(accessType))
@@ -336,15 +364,19 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			
 			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
 			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			setDefaultInfluenceRange(3l);
+			setDefaultState(list.get(0).getId());
+			setDefaultDistrict(list.get(1).getId());
 			
 			if(windowTask.equalsIgnoreCase("edit"))
 			{
 				mandalList = regionServiceDataImp.getSubRegionsInConstituency(new Long(influencingPeopleBeanVO.getConstituency()), IConstants.PRESENT_YEAR,"currentAdd");
 				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(influencingPeopleBeanVO.getMandal()), IConstants.PRESENT_YEAR);
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(influencingPeopleBeanVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(influencingPeopleBeanVO.getConstituency()));
+				setDefaultInfluenceRange(new Long(influencingPeopleBeanVO.getInfluencingRange()));
 			}
 			
-			setDefaultInfluenceRange(3l);
+			
 		}
 		
 		

@@ -423,7 +423,8 @@
 	<bean id="addNewProblemAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
-		<property name="staticDataService" ref="staticDataService" />		
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />		
 	</bean>
 	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />				
