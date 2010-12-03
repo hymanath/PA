@@ -884,7 +884,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		}		
 		if("Party".equalsIgnoreCase(regVO.getUserType()) && cadreInfo.getMemberType().equalsIgnoreCase("Active"))
 		{
-			if(cadreInfo.getPartyCommittee() == 0)
+			/*if(cadreInfo.getPartyCommittee() == 0)
 			{
 				addFieldError("partyCommittee","Please select Party Committee");
 			}
@@ -896,7 +896,7 @@ public class CadreRegisterAction extends ActionSupport implements
 			if(cadreInfo.getEffectiveDate().length() ==0 )
 			{
 				addFieldError("effectiveDate","Effective Date is Mandatory");
-			}
+			}*/
 			
 						
 			if(cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0
