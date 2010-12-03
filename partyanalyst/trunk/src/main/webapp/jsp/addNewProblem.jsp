@@ -154,11 +154,11 @@ function limitText(limitField, limitCount, limitNum)
 					<TABLE class="problemDetailsTable">
 						<tr>
 							<td width="100px;"><%=problemLabel%><font class="requiredFont"> * </font></td>
-							<td style="padding-left: 15px;"><INPUT type="text" size="53" id="nameText" name="problem"></td>						
+							<td style="padding-left: 15px;"><s:textfield size="53" id="nameText" name="problem" maxlength="200"/></td>						
 						</tr>
 						<tr>
 							<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
-							<td style="padding-left: 15px;"><textarea cols="40" id="descTextArea" onkeyup="limitText('descTextArea','maxcount',500)"  name="description"></textarea></td>
+							<td style="padding-left: 15px;"><s:textarea cols="40" id="descTextArea" onkeyup="limitText('descTextArea','maxcount',500)"  name="description"/></td>
 							
 							<div id="limitDiv">
 									<table style="width:100%;"><tr>
@@ -235,7 +235,7 @@ function limitText(limitField, limitCount, limitNum)
 				<TABLE width="85%">
 				<tr>
 					<td ><%=reportedDate%></td>
-					<td style="padding-left:15px;"><INPUT type="text" readonly="readonly" id="reportedDateField" name="reportedDate" size="20" /> 
+					<td style="padding-left:15px;"><s:textfield readonly="true" id="reportedDateField" name="reportedDate" size="20" /> 
 					</td>
 				</tr>
 				<tr>
@@ -243,7 +243,7 @@ function limitText(limitField, limitCount, limitNum)
 					<td style="padding-left:10px;">
 						<TABLE>
 							<TR>
-								<TD><input type="text" id="existingFromText" readonly="readonly" name="existingFromDate" size="20"/>
+								<TD><s:textfield id="existingFromText" readonly="true" name="existingFromDate" size="20"/>
 								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
 								<TD>
 									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
