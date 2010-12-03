@@ -366,7 +366,14 @@
 		var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
 		var constituencyFieldEl = document.getElementById("constituencyField_s");
 		var mandalFieldEl = document.getElementById("mandalField_s");
-		var hamletFieldEl = document.getElementById("hamletField_s");		
+		var hamletFieldEl = document.getElementById("hamletField_s");
+		var mandalField_sVal;	
+		row1El.style.display = 'none';
+		row2El.style.display = 'none';
+		row3El.style.display = 'none';
+		row4El.style.display = 'none';
+		row5El.style.display = 'none';
+		row6El.style.display = 'none';	
 		if(source == 'onChange')
 		{	
 			hiddenEl.value='';
@@ -394,17 +401,26 @@
 				mandalFieldEl.selectedIndex = '0';
 				hamletFieldEl.selectedIndex = '0';
 			}						
-		} else 
-			if(source == "onLoad")
+		} else if(source == "onLoad")
 			{
 				setCadreValue(accessValue,'onChange');
+				if(val == 9)
+				{
+					mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
+					var flag = mandalField_sVal.search("Greater Municipal Corp");
+					if(flag == '-1')
+					{
+						if(row6El.style.display == 'none')
+							row6El.style.display = '';						
+					} else {
+						if(row5El.style.display == 'none')
+							row5El.style.display = '';
+						if(row6El.style.display == 'none')
+							row6El.style.display = '';
+					}
+				}
 			}	
-		row1El.style.display = 'none';
-		row2El.style.display = 'none';
-		row3El.style.display = 'none';
-		row4El.style.display = 'none';
-		row5El.style.display = 'none';
-		row6El.style.display = 'none';		
+				
 		var value = val;
 		if(value == 1)
 		{
@@ -884,7 +900,7 @@
 				</td>
 				<td><s:label for="pdistrictField" id="pdistrictLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 					<td align="left">
-						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','pconstituencyField','OfficialAdd');cleanOptionsList('pdistrict')" headerKey="0" headerValue="Select District"></s:select>
+						<s:select id="pdistrictField" cssClass="regionSelect" name="pdistrict" list="#session.districtsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','cadreReg','pconstituencyField','OfficialAdd');cleanOptionsList('pdistrict')"></s:select>
 					</td>
 			</c:if>
 			<c:if test="${sessionScope.USER.accessType == 'MP'}"> 
@@ -901,11 +917,11 @@
 			<tr>
 				<td width="165px"><s:label for="pconstituencyField" id="pconstituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','pmandalField','OfficialAdd', 'null');cleanOptionsList('pconstituency')" headerKey="0" headerValue="Select Constituency"></s:select> 
+					<s:select id="pconstituencyField" cssClass="regionSelect" name="pconstituencyID" list="#session.constituenciesList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','cadreReg','pmandalField','OfficialAdd', 'null');cleanOptionsList('pconstituency')"></s:select> 
 				</td>
 				<td width="165px"><s:label for="pmandalField" id="pmandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 				<td align="left" width="165px">
-					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','pvillageField','OfficialAdd');getBooths('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select>				 
+					<s:select id="pmandalField" cssClass="regionSelect" name="pmandal" list="#session.mandalsList_o" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','cadreReg','pvillageField','OfficialAdd');getBooths('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')"></s:select>				 
 				</td>
 			</tr>
 			<tr>
@@ -991,31 +1007,31 @@
 		<tr id="row2" style="display:none;">
 			<td width="200"><s:label for="districtField_s" id="districtLabel"  value="%{getText('DISTRICT')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="districtField_s" cssClass="regionSelect" name="cadreLevelDistrict" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="districtField_s" cssClass="regionSelect" name="cadreLevelDistrict" value="defaultDistId" list="#session.districtsList_c" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreReg','constituencyField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
 			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td>
-				<s:select id="constituencyField_s" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="constituencyField_s" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
 			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /></td>
 			<td>
-				<s:select id="hamletField_s" cssClass="regionSelect" name="cadreLevelVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="hamletField_s" cssClass="regionSelect" name="cadreLevelVillage" list="#session.villagesList_c" listKey="id" listValue="name" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>
 		<tr id="row6" style="display:none;">
 			<td width="200">Booth No</td>
 			<td>
-				<s:select id="boothField_s" cssClass="regionSelect" name="cadreLevelBooth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="boothField_s" cssClass="regionSelect" name="cadreLevelBooth" list="#session.boothsList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 			<td>
 				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/>

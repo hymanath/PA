@@ -110,6 +110,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String cadreLevelState;
 	private String cadreLevelDistrict;
 	private String cadreLevelConstituency;	
+	private String cadreLevelBooth;
 	private Long defaultCadreLevelId;
 	private String booth;
 	private String pBooth;
@@ -590,6 +591,14 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setCadreLevelVillage(String cadreLevelVillage) {
 		this.cadreInfo.setCadreLevelVillage(cadreLevelVillage);
 	}	
+
+	public String getCadreLevelBooth() {
+		return this.cadreInfo.getCadreLevelBooth();
+	}
+
+	public void setCadreLevelBooth(String cadreLevelBooth) {
+		this.cadreInfo.setCadreLevelBooth(cadreLevelBooth);
+	}
 
 	public Long getDefaultCadreLevelId() {
 		return defaultCadreLevelId;
