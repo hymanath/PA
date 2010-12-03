@@ -3927,7 +3927,8 @@ public class StaticDataService implements IStaticDataService {
 		for(int i=0; i<allElecList.size(); i++){
 			ElectionResultVO electionResultVO = new ElectionResultVO();
 			Set<String> party2 = new HashSet<String>(party);
-			List<PartyElectionResultVO> seleList = new ArrayList<PartyElectionResultVO>(0); 
+			Map<String,PartyElectionResultVO> seleList = new HashMap<String,PartyElectionResultVO>(); 
+			List<PartyElectionResultVO> selectList = new ArrayList<PartyElectionResultVO>(); 
 			
 			String electYear = allElecList.get(i).getId().toString();
 			String electType =  allElecList.get(i).getName();
@@ -3943,7 +3944,8 @@ public class StaticDataService implements IStaticDataService {
 						partyElectionResultVO.setVotesPercentage(resultVO.getPercentage());
 						partyElectionResultVO.setVotesPercent(new BigDecimal(resultVO.getPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
 						partyElectionResultVO.setPartyName(result.getPartyName());
-						seleList.add(partyElectionResultVO);						
+						//seleList.add(partyElectionResultVO);	
+						seleList.put(result.getPartyName(), partyElectionResultVO);
 						party2.remove(result.getPartyName());
 					}				
 				}
@@ -3953,12 +3955,15 @@ public class StaticDataService implements IStaticDataService {
 				while(it.hasNext()){
 					PartyElectionResultVO partyElectionResultVO = new PartyElectionResultVO();
 					partyElectionResultVO.setVotesPercentage("0");
+					partyElectionResultVO.setVotesPercent(new BigDecimal(0));
 					partyElectionResultVO.setPartyName(it.next().toString());
-					seleList.add(partyElectionResultVO);	
+					//seleList.add(partyElectionResultVO);	
+					seleList.put(partyElectionResultVO.getPartyName(), partyElectionResultVO);
 				}
 			}
-			Collections.sort(seleList, new PartyElectionResultComparator());
-			electionResultVO.setResult(seleList);
+			selectList.addAll(seleList.values());
+			Collections.sort(selectList, new PartyElectionResultComparator());
+			electionResultVO.setResult(selectList);
 			electionVO.add(electionResultVO);
 		}
 		districtWisePartyResultVO.setResult(electionVO);
