@@ -1011,19 +1011,19 @@
 			</td>
 		</tr>
 		<tr id="row3" style="display:none;">
-			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
+			<td width="200"><s:label for="constituencyField_s" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
 			<td>
 				<s:select id="constituencyField_s" value="defaultConstId" name="cadreLevelConstituency" cssClass="regionSelect" list="#session.constituenciesList_c" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreReg','mandalField_s','cadreLevel');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>								
 		<tr id="row4" style="display:none;">
-			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /></td>
+			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 			<td>
 				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
-			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /></td>
+			<td width="200"><s:label for="hamletField_s" id="mandalLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
 			<td>
 				<s:select id="hamletField_s" cssClass="regionSelect" name="cadreLevelVillage" list="#session.villagesList_c" listKey="id" listValue="name" onchange="getBoothsInWard('cadreLevel','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField_s');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
@@ -1040,13 +1040,13 @@
 		
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
-			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /><font class="requiredFont"> * </font></td>
+			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /></td>
 			<td align="left"><s:select id="partyComiteSelect" cssClass="regionSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
 			<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
 			<td><s:select id="comiteeDesignationSelect" name="designation" cssClass="regionSelect" list="#session.designations" listKey="id" listValue="name"  headerKey="0" headerValue="Select Designation"/></td>				
 		</tr>
 		<tr>
-			<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /><font class="requiredFont"> * </font></td>
+			<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /></td>
 			<td colspan="4" align="left">					
 				<table class="cadreDetailsTable">
 					<tr>				
