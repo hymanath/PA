@@ -636,7 +636,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		//	System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]+"\t"+parms[4]+"\t"+parms[5]+"\t"+parms[6]+"\t"+parms[7]+"\t"+parms[8]+"\t"+parms[9]+"\t"+parms[10]+"\t"+parms[11]+"\t"+parms[12]+"\t"+parms[13]+"\t"+parms[14]+"\t");
 		}
 	
-	}*/
+	}
 	
 	@Test
 	public void testGetNominationsForLocalElectionBodyElection(){
@@ -645,6 +645,20 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		for(int i=0; i<list2.size(); i++)
 			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
 		
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetTotalValidVotesAndEarnedVotesInAConstituency(){
+		
+		List result = nominationDAO.getVotesInfoForAConstituency("232", "2009", IConstants.ASSEMBLY_ELECTION_TYPE);
+		
+		System.out.println(" Results Size :" + result.size());
+		for(int i=0;i<result.size();i++){
+		 Object[] params = (Object[])result.get(i);
+		 System.out.println(" Total Candidate Votes Earned :" + (Double)params[0]);
+		 System.out.println(" Total Constituency Valid Votes :" + (Double)params[1]);
+		}
 	}
 }
 	
