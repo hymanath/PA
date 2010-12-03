@@ -754,7 +754,7 @@ function handleCancel()
 	this.cancel();
 }
 
-function openAddNewProblemWindow()
+function openAddNewProblemWindowForConstituency()
 {	
 	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
@@ -1575,7 +1575,7 @@ function initializeConstituencyPage()
 	{
 		if(constituencyPageMainObj.forwardTask != "")
 		{
-          openAddNewProblemWindow();
+		   openAddNewProblemWindowForConstituency();
 		}
 	}
 	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
