@@ -1874,12 +1874,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
 				electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
 			
-			sb.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+			sb.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? group by model.constituencyElection.constituency.constituencyId");
 		}else{
-			sb.append("and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
+			sb.append("and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? group by model.constituencyElection.constituency.constituencyId");
 		}		
 		return getHibernateTemplate().find(sb.toString(),params);		
 	}
+	@SuppressWarnings("unchecked")
 	public List getAllElectionIdsAndYearsForADistrict(Long districtId){
 		return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType" +				
