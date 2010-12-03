@@ -422,8 +422,6 @@
 						cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
 						address: cadreData[i].villageName+', '+cadreData[i].mandalName+', '+cadreData[i].districtName,
 						memberType: cadreData[i].memberType,
-						education: cadreData[i].educationStr,
-						occupation: cadreData[i].professionStr,						
 						casteCategory: cadreData[i].casteCategoryStr,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
 						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
@@ -440,8 +438,6 @@
 								{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
 								{key:"address",label : "Address", sortable:true},
 								{key:"memberType",label : "Cadre Type", sortable:true},
-								{key:"education",label : "Education", sortable:true, resizeable:true},
-								{key:"occupation",label : "Occupation", sortable:true, resizeable:true},
 								{key:"casteCategory",label : "Caste Category", sortable:true, resizeable:true},
 								{key:"moreDetails",label : "More Details", resizeable:true},
 								{key:"update",label : "Edit", resizeable:true},
@@ -452,7 +448,7 @@
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		myDataSource.responseSchema = { 
 		fields : [
-					{key : "name"}, {key : "mobile",parser:"number"}, {key : "address"},{key: "education"},{key: "occupation"},{key: "casteCategory"}, 
+					{key : "name"}, {key : "mobile",parser:"number"}, {key : "address"},{key: "casteCategory"}, 
 					{key :"cadreLevel"},{key : "memberType"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
 				 ]
 		};
