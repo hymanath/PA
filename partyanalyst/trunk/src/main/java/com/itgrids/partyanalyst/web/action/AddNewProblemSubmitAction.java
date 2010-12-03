@@ -120,6 +120,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
 	public void setProblem(String problem) {
 		this.problem = problem;
 	}
@@ -129,6 +130,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Description field should not contain special characters and numbers", shortCircuit = true)
 	public void setDescription(String description) {
 		this.description = description;
 	}
