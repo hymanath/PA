@@ -111,6 +111,7 @@ public class CadreInfo implements Serializable{
 	private String firstFamilyMemberRelationId,secondFamilyMemberRelationId,thirdFamilyMemberRelationId;
 	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	private Boolean childrenFlag;
+	private String cadreLevelBooth;
 	
 	public void setUserID(Long userID) {
 		this.userID = userID;
@@ -723,6 +724,14 @@ public class CadreInfo implements Serializable{
 	public void setChildrenFlag(Boolean childrenFlag) {
 		this.childrenFlag = childrenFlag;
 	}
+	public String getCadreLevelBooth() {
+		return cadreLevelBooth;
+	}
+	public void setCadreLevelBooth(String cadreLevelBooth) {
+		this.cadreLevelBooth = cadreLevelBooth;
+	}
+	
+	
 	
 	
 }
