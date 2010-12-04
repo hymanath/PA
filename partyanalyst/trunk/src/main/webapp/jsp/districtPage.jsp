@@ -1066,7 +1066,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			  }
 
 			  new google.visualization.LineChart(allElecDiv).
-			  draw(data, {curveType: "function",width: 550, height: 300,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+			  draw(data, {curveType: "function",width: 850, height: 350,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
 	}
 //ref
 	function showAllElectionsInDistrict(results){
@@ -1353,22 +1353,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<div id="problemPostingDiv_Head"></div>
 			<div id="problemPostingDiv_Body"></div>
 		</div>
-		<div id="districtPeopleConnect_main">
-			<div id="districtPeopleConnect_head">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
-					<tr>
-						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-						<td>	
-							<div class="districtPageRoundedHeaders_center" style="width:253px;">
-								<span>Connect To Your District People</span>
-							</div>
-						</td>
-						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
-					</tr>
-				</table>	
-			</div>
-			<div id="districtPeopleConnect_body"></div>
-		</div>
+		
 	</div>
 
 	<!--District Page Center Layout-->
@@ -1424,9 +1409,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</div>
 		
 		<c:if test="${stateDetails.name == 'Andhra Pradesh'}">
-		<table>
+		<table width="100%">
 			<tr>
-				<td>
+				<td width="50%">
 					<div id="newConstDiv_main">
 						<div id="newConstDiv_head">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -1454,7 +1439,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						</div>
 					</div>
         </td>
-        <td>
+        <td width="50%">
 				<div id="delimitMandalsDiv_main">
 					<div id="delimitMandalsDiv_head">
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -1485,30 +1470,45 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
         </tr>
 		</table>
 		</c:if>
-		
-		<div id="partiesPerformanceGraphDistrict">
-			<div id="alliancePartiesCarousel" class="yui-skin-sam">
-				<ul>
-				<li>
-					<div id="allElectionResultsInDT"  class="allianceListDiv">
-						<div id="allElectionResultsInDT_head"></div>
-						<div id="allElectionResultsInDT_body"></div>
-					
-					</div>
-				</li>
-				<li>
-					<div id="positionsGraphDiv" class="allianceListDiv">
-						<center><div id="electionHirarchiDiv" ></div></center>
-						<div id="partyPositionsDiv"></div>
-					</div>
-				</li>
-				</ul>
+		<div id="districtPeopleConnect_main">
+			<div id="districtPeopleConnect_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+						<td>	
+							<div class="districtPageRoundedHeaders_center" style="width:528px;">
+								<span>Connect To Your District People</span>
+							</div>
+						</td>
+						<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>	
 			</div>
+			<div id="districtPeopleConnect_body"></div>
 		</div>
+		
 	</div>
 	<div id="detailedChartDiv" style="position:absolute;top:750px;left:150px;z-index:1;"></div>
 	
-	
+	<div id="partiesPerformanceGraphDistrict">
+		<div id="alliancePartiesCarousel" class="yui-skin-sam">
+			<ul>
+			<li>
+				<div id="allElectionResultsInDT"  class="allianceListDiv">
+					<div id="allElectionResultsInDT_head"></div>
+					<div id="allElectionResultsInDT_body"></div>
+				
+				</div>
+			</li>
+			<li>
+				<div id="positionsGraphDiv" class="allianceListDiv">
+					<center><div id="electionHirarchiDiv" ></div></center>
+					<div id="partyPositionsDiv"></div>
+				</div>
+			</li>
+			</ul>
+		</div>
+	</div>
 
 	<!--District Page MP, MLA Div-->
 	<div id="mpMla_main">
