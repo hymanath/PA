@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.helper.CadreSMSVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreSMSAction extends ActionSupport implements ServletRequestAware{
@@ -102,11 +103,11 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		if("COUNTRY".equals(accessType)){
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> states = new ArrayList<SelectOptionVO>();
-			regions.add(new SelectOptionVO(2L,"State"));
-			regions.add(new SelectOptionVO(3L,"District"));
-			regions.add(new SelectOptionVO(4L,"Constituency"));
-			regions.add(new SelectOptionVO(5L,"Mandal"));
-			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(2L,"STATE"));
+			regions.add(new SelectOptionVO(3L,"DISTRICT"));
+			regions.add(new SelectOptionVO(4L,"CONSTITUENCY"));
+			regions.add(new SelectOptionVO(5L,"MANDAL"));
+			regions.add(new SelectOptionVO(6L,"VILLAGE"));
 			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
 			regions.add(new SelectOptionVO(8L,"WARD"));
 			regions.add(new SelectOptionVO(9L,"BOOTH"));
@@ -119,11 +120,11 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> states = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
-			regions.add(new SelectOptionVO(2L,"State"));
-			regions.add(new SelectOptionVO(3L,"District"));
-			regions.add(new SelectOptionVO(4L,"Constituency"));
-			regions.add(new SelectOptionVO(5L,"Mandal"));
-			regions.add(new SelectOptionVO(6L,"Village"));
+			regions.add(new SelectOptionVO(2L,"STATE"));
+			regions.add(new SelectOptionVO(3L,"DISTRICT"));
+			regions.add(new SelectOptionVO(4L,"CONSTITUENCY"));
+			regions.add(new SelectOptionVO(5L,"MANDAL"));
+			regions.add(new SelectOptionVO(6L,"VILLAGE"));
 			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
 			regions.add(new SelectOptionVO(8L,"WARD"));
 			regions.add(new SelectOptionVO(9L,"BOOTH"));
@@ -143,36 +144,47 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			List<SelectOptionVO> states = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
-			regions.add(new SelectOptionVO(3L,"District"));
-			regions.add(new SelectOptionVO(4L,"Constituency"));
-			regions.add(new SelectOptionVO(5L,"Mandal"));
-			regions.add(new SelectOptionVO(6L,"Village"));
-			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
-			regions.add(new SelectOptionVO(8L,"WARD"));
-			regions.add(new SelectOptionVO(9L,"BOOTH"));
-			cadreSMSVO.setRegions(regions);
 			List<SelectOptionVO> stateDistrict = cadreManagementService.getStateDistrictByDistrictID(id);
 			states.add(stateDistrict.get(0));
 			cadreSMSVO.setStates(states);
 			districts.add(stateDistrict.get(1));
 			cadreSMSVO.setDistricts(districts);
-			//constituencies = cadreManagementService.getUserAccessMLAConstituencies(userID);
 			constituencies = regionServiceDataImp.getConstituenciesByDistrictID(stateDistrict.get(1).getId());
 			constituencies.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			cadreSMSVO.setConstituencies(constituencies);
+			regions.add(new SelectOptionVO(3L,"DISTRICT"));
+			regions.add(new SelectOptionVO(4L,"CONSTITUENCY"));
+			regions.add(new SelectOptionVO(5L,"MANDAL"));
+			regions.add(new SelectOptionVO(6L,"VILLAGE"));
+			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+			regions.add(new SelectOptionVO(8L,"WARD"));
+			regions.add(new SelectOptionVO(9L,"BOOTH"));
+			cadreSMSVO.setRegions(regions);
+			
 		}else if("MLA".equals(accessType) || "MP".equals(accessType)){
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> states = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> mandals = new ArrayList<SelectOptionVO>();
-			regions.add(new SelectOptionVO(4L,"Constituency"));
-			regions.add(new SelectOptionVO(5L,"Mandal"));
-			regions.add(new SelectOptionVO(6L,"Village"));
-			regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
-			regions.add(new SelectOptionVO(8L,"WARD"));
-			regions.add(new SelectOptionVO(9L,"BOOTH"));
-			cadreSMSVO.setRegions(regions);
+			String areaType = regionServiceDataImp.getConstituencyAreaType(new Long(accessValue));
+			if(areaType != null && areaType.equals(IConstants.CONST_TYPE_URBAN))
+			{
+				regions.add(new SelectOptionVO(4L,"CONSTITUENCY"));
+				regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+				regions.add(new SelectOptionVO(8L,"WARD"));
+				regions.add(new SelectOptionVO(9L,"BOOTH"));
+				cadreSMSVO.setRegions(regions);
+			} else
+			{
+				regions.add(new SelectOptionVO(4L,"CONSTITUENCY"));
+				regions.add(new SelectOptionVO(5L,"MANDAL"));
+				regions.add(new SelectOptionVO(6L,"VILLAGE"));
+				regions.add(new SelectOptionVO(7L,"MUNICIPAL-CORP-GMC"));
+				regions.add(new SelectOptionVO(8L,"WARD"));
+				regions.add(new SelectOptionVO(9L,"BOOTH"));
+				cadreSMSVO.setRegions(regions);
+			}			
 			List<SelectOptionVO> stateDistrictConstituency = cadreManagementService.getStateDistricConstituencytByConstituencyID(id);
 			states.add(stateDistrictConstituency.get(0));
 			cadreSMSVO.setStates(states);
