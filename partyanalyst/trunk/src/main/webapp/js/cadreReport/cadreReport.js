@@ -4,6 +4,7 @@ function buildCadreLevelTable(jsObj,cadreData)
 {
 	var cadresArray = new Array();
 	var cadreDetailsPanel;
+	var title = cadreData.length+" Cadres available in "+jsObj.nodeLabel+" Level";
 	for(var i in cadreData)
 	{
 		var cObj={
@@ -27,10 +28,10 @@ function buildCadreLevelTable(jsObj,cadreData)
 		{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
 		{key:"address",label : "Address", sortable:true},
 		{key:"memberType",label : "Cadre Type", sortable:true},
-		{key:"casteCategory",label : "Caste Category", sortable:true, resizeable:true},
-		{key:"moreDetails",label : "More Details", resizeable:true},
-		{key:"update",label : "Edit", resizeable:true},
-		{key:"remove",label : "Remove", resizeable:true},
+		{key:"casteCategory",label : "Caste Category", sortable:true},
+		{key:"moreDetails",label : "More Details"},
+		{key:"update",label : "Edit"},
+		{key:"remove",label : "Remove"}
 						]; 
 	var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
@@ -47,7 +48,7 @@ function buildCadreLevelTable(jsObj,cadreData)
 		})
 	};
 		
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 
 function buildZeroCadreTree(id,val)
@@ -100,21 +101,23 @@ function buildRegionCadreTree(id,val)
 	divElmt.appendChild(childDivElmt);			
 }		
 
-function getCadrePopup(myColumnDefs,myDataSource,configs)
+function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 {
 	var contentStr = '';
+	contentStr +='<div style="text-align:left;color:#707070;font-size:12px;font-family:verdana;font-weight:bold;">'+title+'</div>';
 	contentStr +='<div id="cadreDiv"></div>';
-	 cadreDetailsPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
-   
-		 fixedcenter : true, 
-		 visible : true,  
-		 constraintoviewport : true, 
-		 iframe :true,
-		 modal :true,
-		 hideaftersubmit:true,
-		 close:true
-	   });
-	 cadreDetailsPanel.setHeader("Cadre Details");
+	cadreDetailsPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
+		
+	 fixedcenter : true, 
+	 visible : true,  
+	 constraintoviewport : true, 
+	 iframe :true,
+	 modal :true,
+	 hideaftersubmit:true,
+	 close:true		 
+	 });	 
+	 
+	 cadreDetailsPanel.setHeader("Cadres Details");
 	 cadreDetailsPanel.setBody(contentStr);
 	 cadreDetailsPanel.render();
 
@@ -149,8 +152,8 @@ function buildZeroCadreTable(myResults, cadreData)
 
 function buildZeroCadreTableBoothsInMandals(myResults, cadreData)
 {
-var localArr = new Array();
-	
+	var localArr = new Array();
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {				
@@ -179,7 +182,7 @@ var localArr = new Array();
 		fields: ["mandal","partNo","booth"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 
 	
 }
@@ -187,14 +190,13 @@ var localArr = new Array();
 function buildZeroCadreTableBoothsInLEB(myResults, cadreData)
 {
 var localArr = new Array();
-	
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {	
 					localBody: cadreData[i].localElectionBody.name,
 					partNo: cadreData[i].booth.id,
-					booth : cadreData[i].booth.name
-						
+					booth : cadreData[i].booth.name						
 				  }
 		localArr.push(obj);
 	}
@@ -218,14 +220,14 @@ var localArr = new Array();
 		fields: ["localBody","partNo","booth"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 
 	
 }
 function buildZeroCadreTableHamlet(myResults, cadreData)
 {
 	var localArr = new Array();
-	
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {				
@@ -257,11 +259,12 @@ function buildZeroCadreTableHamlet(myResults, cadreData)
 		fields: ["state","district","mandal","revenueVillage","hamlet"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 	
 }
 function buildZeroCadreTableLocalElectionBodies(myResults, cadreData)
 {
+	var title='';
 	var localArr = new Array();
 	for(var i in cadreData)
 	{
@@ -276,8 +279,8 @@ function buildZeroCadreTableLocalElectionBodies(myResults, cadreData)
 	
 	  var myColumnDefs = [
 			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true},
-			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true, resizeable:true}
+			{key:"district",label:"District"},
+			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true}
 		];
 		
 		var configs = {
@@ -293,12 +296,13 @@ function buildZeroCadreTableLocalElectionBodies(myResults, cadreData)
 
 
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 
 function buildZeroCadreTableWards(myResults, cadreData)
 {
 	var localArr = new Array();
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {
@@ -312,10 +316,10 @@ function buildZeroCadreTableWards(myResults, cadreData)
 
 	
 	  var myColumnDefs = [
-			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true},
-			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true, resizeable:true},
-			{key:"ward",label:"Ward",sortable:true, resizeable:true}
+			{key:"state",label:"State", sortable:true},
+			{key:"district",label:"District"},
+			{key:"localElectionBody",label:"Municipal-Corp-GMC",sortable:true},
+			{key:"ward",label:"Ward",sortable:true}
 		];
 		
 		var configs = {
@@ -331,11 +335,12 @@ function buildZeroCadreTableWards(myResults, cadreData)
 
 
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 function buildZeroCadreTableConstituency(myResults, cadreData)
 {
 	var localArr = new Array();
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {
@@ -348,9 +353,9 @@ function buildZeroCadreTableConstituency(myResults, cadreData)
 
 	
 	  var myColumnDefs = [
-			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true},
-			{key:"constituency",label:"Constituency",sortable:true, resizeable:true}
+			{key:"state",label:"State", sortable:true},
+			{key:"district",label:"District"},
+			{key:"constituency",label:"Constituency",sortable:true}
 		];
 		
 		var configs = {
@@ -366,12 +371,12 @@ function buildZeroCadreTableConstituency(myResults, cadreData)
 
 
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 function buildZeroCadreTableVillage(myResults, cadreData)
 {
 	var localArr = new Array();
-			
+	var title='';		
 	for(var i in cadreData)
 	{		
 		var obj = {
@@ -385,10 +390,10 @@ function buildZeroCadreTableVillage(myResults, cadreData)
 	
 	
 	var myColumnDefs = [
-		{key:"state",label:"State", sortable:true, resizeable:true},
-		{key:"district",label:"District", resizeable:true},
-		{key:"mandal",label:"Mandal",sortable:true, resizeable:true},
-		{key:"revenueVillage",label:"Village",sortable:true, resizeable:true}
+		{key:"state",label:"State", sortable:true},
+		{key:"district",label:"District"},
+		{key:"mandal",label:"Mandal",sortable:true},
+		{key:"revenueVillage",label:"Village",sortable:true}
 	];
 	
 	var configs = {
@@ -402,12 +407,13 @@ function buildZeroCadreTableVillage(myResults, cadreData)
 		fields: ["state","district","mandal","revenueVillage"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 
 function buildZeroCadreTableTehsil(myResults, cadreData)
 {
 	var localArr = new Array();
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {
@@ -420,9 +426,9 @@ function buildZeroCadreTableTehsil(myResults, cadreData)
 
 	
 	  var myColumnDefs = [
-			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true},
-			{key:"mandal",label:"Mandal",sortable:true, resizeable:true}
+			{key:"state",label:"State", sortable:true},
+			{key:"district",label:"District"},
+			{key:"mandal",label:"Mandal",sortable:true}
 		];
 		
 		var configs = {
@@ -438,12 +444,12 @@ function buildZeroCadreTableTehsil(myResults, cadreData)
 
 
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);
 }
 function buildZeroCadreTableDistrict(myResults, cadreData)
 {
 	var localArr = new Array();
-		
+	var title='';	
 	for(var i in cadreData)
 	{				
 		var obj = {
@@ -454,8 +460,8 @@ function buildZeroCadreTableDistrict(myResults, cadreData)
 	}
 	
 	 var myColumnDefs = [
-			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true}					
+			{key:"state",label:"State", sortable:true},
+			{key:"district",label:"District"}					
 		];
 		
 	var configs = {
@@ -469,13 +475,13 @@ function buildZeroCadreTableDistrict(myResults, cadreData)
 		fields: ["state","district"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);			
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);			
 
 }
 function buildZeroCadreTableState(myResults, cadreData)
 {
 	var localArr = new Array();	
-
+	var title='';
 	for(var i in cadreData)
 	{
 		var obj = {					
@@ -486,8 +492,8 @@ function buildZeroCadreTableState(myResults, cadreData)
 	}
 	
 	 var myColumnDefs = [
-			{key:"state",label:"State", sortable:true, resizeable:true},
-			{key:"district",label:"District", resizeable:true}					
+			{key:"state",label:"State", sortable:true},
+			{key:"district",label:"District"}					
 		];
 		
 	var configs = {
@@ -501,7 +507,7 @@ function buildZeroCadreTableState(myResults, cadreData)
 		fields: ["state","district"]
 	};					
 
-	getCadrePopup(myColumnDefs,myDataSource,configs);				
+	getCadrePopup(myColumnDefs,myDataSource,configs,title);				
 }
 
 
