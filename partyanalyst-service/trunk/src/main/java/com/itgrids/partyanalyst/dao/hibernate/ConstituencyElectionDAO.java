@@ -55,8 +55,9 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElection> findByConstituency(Constituency constituency){
-		return getHibernateTemplate().find("from ConstituencyElection model where and model.constituency.constituencyId=?", constituency.getConstituencyId());	
+	public List findAllElectionsByConstituencyId(Long constituencyId){
+		return getHibernateTemplate().find("select model.constiElecId, model.election.electionYear from " +
+				"ConstituencyElection model where  model.constituency.constituencyId=? order by model.election.electionYear DESC", constituencyId);	
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -368,6 +369,13 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getElectionYearAndElectionTypeByConstituencyId(Long constituencyId)
+	{
+		return getHibernateTemplate().find(" select model.election.electionId, model.election.electionYear, model.constituency.electionScope.electionType.electionType from ConstituencyElection model "+
+				"where constituency.constituencyId = ?",constituencyId);
+		
+	}
 	
 }
 

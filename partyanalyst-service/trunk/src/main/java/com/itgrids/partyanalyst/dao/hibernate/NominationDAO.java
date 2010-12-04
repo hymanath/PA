@@ -68,7 +68,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List findByConstituencyElection(Long constituencyElectionID){
 		return getHibernateTemplate().find( "select model.party.shortName, model.party.longName, model.candidateResult.votesEarned, model.candidateResult.rank, " +
-				"model.nominationId, model.candidate.lastname, model.candidate.candidateId from Nomination model where model.constituencyElection.constiElecId = ?",constituencyElectionID);
+				"model.nominationId, model.candidate.lastname, model.candidate.candidateId, model.constituencyElection.election.electionId, model.constituencyElection.election.electionScope.electionType.electionType, "+
+				"model.constituencyElection.election.electionYear  from Nomination model where model.constituencyElection.constiElecId = ?",constituencyElectionID);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -176,7 +176,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
 			}
 		}
-	}*/
+	}
 	
 	public void testGetReservationZoneForAConstituency(){
 		//List list = constituencyElectionDAO.getLatestReservationZone(21l,IConstants.ELECTION_SUBTYPE_MAIN);
@@ -189,6 +189,22 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(int i=0;i<list.size();i++){
 			Object[] params = (Object[])list.get(i);
 			System.out.println(params[0] + " \t" + params[1]+ " \t" + params[2]);	
+		}
+	}*/
+	
+	public void testfindAllElectionsByConstituencyId()
+	{
+		
+		List list = constituencyElectionDAO.findAllElectionsByConstituencyId(new Long(232));
+		
+		System.out.println(list.size());
+		
+		if(list.size() > 0)
+		{
+			for(int i=0;i<list.size();i++){
+				Object[] params = (Object[])list.get(i);
+				System.out.println(params[0] + " \t" + params[1]);	
+			}
 		}
 	}
 }

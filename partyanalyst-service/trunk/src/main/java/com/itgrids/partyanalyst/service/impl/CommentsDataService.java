@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
@@ -809,5 +810,53 @@ public class CommentsDataService implements ICommentsDataService {
 		}
 	 return candStatics;
 	}
-
+	
+	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
+	{
+		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
+		
+		List years = constituencyElectionDAO.findAllElectionsByConstituencyId(constituencyId);
+		
+		if(years != null || years.size() > 0)
+		{
+			for(int i=0; i<years.size(); i++)
+			{
+				SelectOptionVO option = new SelectOptionVO();				
+				Object[] params= (Object[])years.get(i);
+				option.setId((Long)params[0]);
+				option.setName(params[1].toString());
+				
+				electionYears.add(option);				
+			}
+		}
+		
+		return electionYears;
+	}
+	
+	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constiElectionId)
+	{
+		List<CandidateVO> candidates = new ArrayList<CandidateVO>();
+		
+		List info = nominationDAO.findByConstituencyElection(constiElectionId);
+		
+		if(info != null || info.size() > 0)
+		{
+			for(int i=0; i<info.size(); i++)
+			{
+				CandidateVO candidate = new CandidateVO();				
+				Object[] params = (Object []) info.get(i);
+				candidate.setCandidateName(params[5].toString());
+				candidate.setParty(params[0].toString());
+				candidate.setStatus(params[3].toString());
+				candidate.setNominationId((Long) params[4]);
+				candidate.setId((Long) params[6]);
+				candidate.setElectionId((Long) params[7]);
+				candidate.setElectionType(params[8].toString());
+				candidate.setYear(params[9].toString());
+				
+				candidates.add(candidate);
+			}
+		}
+		return candidates;
+	}
 }

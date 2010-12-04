@@ -22,7 +22,26 @@ public class CandidateVO {
 	private String postedDate;
 	private Long costumMessageId;
 	private Long recepientId;
+	private Long nominationId;
+	private Long electionId;
+	private String electionType;
 	
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
 	public CandidateVO(){
 		
 	}
@@ -175,4 +194,12 @@ public class CandidateVO {
 		this.recepientId = recepientId;
 	}	
 	
+	public Long getNominationId() {
+		return nominationId;
+	}
+
+	public void setNominationId(Long nominationId) {
+		this.nominationId = nominationId;
+	}
+
 }

@@ -9,7 +9,10 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import org.hibernate.sql.Select;
+
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
@@ -43,4 +46,7 @@ public interface ICommentsDataService {
 	
 	public List<SelectOptionVO> getCandidateCommentsCategoryStatics(Long candidateRank);
 	
+	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId);
+	
+	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constElectionId);
 }
