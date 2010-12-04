@@ -26,6 +26,7 @@
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 
@@ -681,9 +682,9 @@ function buildConstituencyElecResultsDataTable(value){
 
 function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,constiType,constiName,electionYear)
 {
-	
-    var chartColumns = partiesList;
+	var chartColumns = partiesList;
 	var chartRows = constituencyResults;
+    var partiesArray = new Array();
 
 	 var data = new google.visualization.DataTable();
 	 data.addColumn('string', 'Party');
@@ -693,6 +694,8 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
 	 {
 	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
 	   data.addColumn('number', colData);
+
+	   partiesArray.push(chartColumns[i].party);
 	 }
 
       //for chart rows
@@ -718,9 +721,19 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
 	  {
          ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear;
 	  }
-	  new google.visualization.LineChart(chartResultDiv).
-	  //draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
-	   draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+       
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+	  
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		 new google.visualization.LineChart(chartResultDiv).
+		      draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+	  }else
+	  {
+		 new google.visualization.LineChart(chartResultDiv).
+		      draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+	  }
 }
 
 function getParliamentResults(elecYear){
@@ -1483,11 +1496,14 @@ function showAllPartiesAllElectionResultsChart(myResults)
      var data = new google.visualization.DataTable();
 	 data.addColumn('string', 'Party');
 
+     var partiesArray = new Array();
      //for chart columns
 	 for(var i in chartColumns)
 	 {
 	   var colData = chartColumns[i].name;
 	   data.addColumn('number', colData);
+
+	   partiesArray.push(chartColumns[i].name);
 	 }
 
       //for chart rows
@@ -1508,10 +1524,20 @@ function showAllPartiesAllElectionResultsChart(myResults)
 
 	  var ctitle = 'All Parties Performance In Different Elections'; 
 	  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
-	  new google.visualization.LineChart(chartResultDiv).
-	  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
 
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		  new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
+	  else
+	  {
+          new google.visualization.LineChart(chartResultDiv).
+			  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+	  }
 }
 
 
