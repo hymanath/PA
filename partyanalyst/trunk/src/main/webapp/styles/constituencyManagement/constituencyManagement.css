@@ -167,7 +167,8 @@
 	font-weight:bold;
 }
 .linkButton  {
-background-image:url("../../images/icons/electionResultsReport/linkBtn.png");
+background-color:#483D8B;
+/*background-image:url("../../images/icons/electionResultsReport/linkBtn.png");*/
 border-left:1px solid #9999CC;
 border-right:1px solid #9999CC;
 color:#FFFFFF;
