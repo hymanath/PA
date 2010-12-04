@@ -710,7 +710,14 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
 		  data.addRow(array);
 	  }
 
-	  var ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear; 
+      var ctitle='';
+	  if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+	  {
+	    ctitle = 'Assembly Constituency Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear;
+	  }else
+	  {
+         ctitle = 'Mandal Wise Election Results Chart For '+constiName+' '+constiType+' Constituency In '+electionYear;
+	  }
 	  new google.visualization.LineChart(chartResultDiv).
 	  //draw(data, {curveType: "function",width: 900, height: 400,title:ctitle});
 	   draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
