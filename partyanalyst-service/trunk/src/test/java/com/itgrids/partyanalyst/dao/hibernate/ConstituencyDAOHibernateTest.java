@@ -248,8 +248,10 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testFindConstituenciesByNameScopeAndCountryId(){
-		List<Constituency> list = constituencyDAO.findConstituenciesByNameScopeAndCountryId("Nellore", 1l, 1l);
-		System.out.println(list.size());
+		/*List<Constituency> list = constituencyDAO.findConstituenciesByNameScopeAndCountryId("Nellore", 1l, 1l);
+		System.out.println(list.size());*/
+		Float val = new Float(10.01234);
+		System.out.println(Math.round(val*100)/100.0);
 	}
 	
 }

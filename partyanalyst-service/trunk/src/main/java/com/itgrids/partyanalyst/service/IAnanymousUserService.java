@@ -6,10 +6,11 @@ import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IAnanymousUserService {
 
-	public Boolean saveAnonymousUserDetails(RegistrationVO userDetails);
+	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate);
 	
 	public RegistrationVO checkAnonymousUserLogin(String anonymousUserId,String password);
 	
@@ -27,5 +28,9 @@ public interface IAnanymousUserService {
 	public NavigationVO getAllMessageTypes();
 	
 	public String displayMessageAndUpdateUnread(Long customMessageId);
+	
+	public List<SelectOptionVO> findAllProfileOptsAvailableInDB();
+	
+	public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
 	
 }

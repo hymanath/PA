@@ -24,7 +24,7 @@ public class RegistrationVO extends BaseDTO{
 	private String name;
 	private String gender;
 	private String userName;
-	private String password; 
+	private String password;
 	private String dateOfBirth;
 	private String email;
 	private String phone;
@@ -34,6 +34,7 @@ public class RegistrationVO extends BaseDTO{
 	private String state;
 	private String district;
 	private String constituency;
+	
 	private String pincode;
 	private String accessType;
 	private String accessValue;
@@ -42,6 +43,7 @@ public class RegistrationVO extends BaseDTO{
 	private String subscribePartyImpDate;
 	private String userType;
 	private String userStatus; // contains wheather commercial user or free user
+    private List<Long> profileOpts;
 	private List<String> entitlements = new ArrayList<String>(0);
 	private Set<SelectOptionVO> countries = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> states = new HashSet<SelectOptionVO>(0);
@@ -307,6 +309,14 @@ public class RegistrationVO extends BaseDTO{
 	}
 	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
+	}
+
+	public List<Long> getProfileOpts() {
+		return profileOpts;
+	}
+
+	public void setProfileOpts(List<Long> profileOpts) {
+		this.profileOpts = profileOpts;
 	}
 	
 }

@@ -379,7 +379,5 @@ public class Registration implements java.io.Serializable {
 	public void setInfluencingPeople(Set<InfluencingPeople> influencingPeople) {
 		this.influencingPeople = influencingPeople;
 	}
-
-	
 	
 }

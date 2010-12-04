@@ -46,6 +46,8 @@ public interface ICommentsDataService {
 	
 	public List<SelectOptionVO> getCandidateCommentsCategoryStatics(Long candidateRank);
 	
+	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Long constiElecId);
+	
 	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId);
 	
 	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constElectionId);

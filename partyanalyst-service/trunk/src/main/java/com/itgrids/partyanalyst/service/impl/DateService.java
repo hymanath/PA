@@ -57,7 +57,7 @@ public class DateService implements IDateService {
 	 * @author Ravi Kiran.Y
 	 * @date 30-09-10
 	 */
-	public Date convertStringToDate(String givenDate,String dateFormat){
+	public static Date convertStringToDate(String givenDate,String dateFormat){
 		 DateFormat formatter ; 
 	     Date date = null; 
 		 try{
@@ -114,12 +114,12 @@ public class DateService implements IDateService {
 	/*
 	 * To convert timestamp which is in yyyy-MM-dd format to dd-MM-yyyy format.
 	 */
-	public String timeStampConversionToDDMMYY(String idate){
+	public static String timeStampConversionToDDMMYY(String idate){
 		String convertedDated=null;
 		SimpleDateFormat sdfInput =  
 	        new SimpleDateFormat ("yyyy-MM-dd") ;  
 	     SimpleDateFormat sdfOutput =  
-	        new SimpleDateFormat  ("dd-MM-yyyy") ;  		  
+	        new SimpleDateFormat  ("dd/MM/yyyy") ;  		  
 	  
 	     Date date;
 		try {

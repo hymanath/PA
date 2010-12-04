@@ -216,4 +216,13 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select count(distinct model.commentData.commentDataCategory.commentDataCategoryId) "+
 				"from CommentCategoryCandidate model where model.nomination.nominationId = ? group by model.commentData.commentDataCategory.commentDataCategoryId",nominationId);
 	}
+	
+	public List getAllCommentsByUserAndCategoryForANomination(Long nominationId){
+		Object[] params = {nominationId};
+		return getHibernateTemplate().find("select model.freeUser.userId, model.freeUser.name, model.commentData.commentDesc, " +
+				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
+				"model.commentData.commentDataCategory.commentClassification from CommentCategoryCandidate model where " +
+				"model.nomination.nominationId = ? group by model.freeUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+	}
+	
 }

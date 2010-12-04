@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -34,10 +35,10 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
-import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.model.CommentCategoryConstituency;
 import com.itgrids.partyanalyst.model.CommentCategoryParty;
@@ -47,8 +48,6 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
-import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -811,7 +810,85 @@ public class CommentsDataService implements ICommentsDataService {
 	 return candStatics;
 	}
 	
-	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
+	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Long constiElecId){
+		List constiElecInfo = nominationDAO.findByConstituencyElection(constiElecId);
+		List commentsByUser = null;
+		Map<Long, List<Object[]>> userwiseComments = null;
+		Map<Long, UserCommentsInfoVO> categoryAndScores = null;
+		List<Object[]> comments = null;
+		CandidateCommentsVO candidateCommentsVO = null;
+		List<CandidateCommentsVO> allUsersCommentsForNomination = null;
+		List<CandidateCommentsVO> allNominationsComments = new ArrayList<CandidateCommentsVO>();
+		CandidateCommentsVO nominationComments = null;
+		List<UserCommentsInfoVO> commetsAndScores = null;
+		UserCommentsInfoVO userCommentInfoVO = null;
+		Double commentScore = 0.0d;
+		for(Object[] values:(List<Object[]>)constiElecInfo){
+			nominationComments = new CandidateCommentsVO();
+			nominationComments.setCandidateId((Long)values[6]);
+			nominationComments.setCandidate(values[5].toString());
+			nominationComments.setPartyName(values[0].toString());
+			nominationComments.setRank((Long)values[3]);
+			commentsByUser = commentCategoryCandidateDAO.getAllCommentsByUserAndCategoryForANomination((Long)values[4]);
+			userwiseComments = new HashMap<Long, List<Object[]>>();
+			
+			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
+				comments = userwiseComments.get(commentInfo[0]);
+				if(comments == null)
+					comments = new ArrayList<Object[]>();
+				comments.add(commentInfo);
+				userwiseComments.put((Long)commentInfo[0], comments);
+			}
+			
+			allUsersCommentsForNomination = new ArrayList<CandidateCommentsVO>();
+			for(Entry<Long, List<Object[]>> entry:userwiseComments.entrySet()){
+				comments = entry.getValue();
+				candidateCommentsVO = new CandidateCommentsVO();
+				candidateCommentsVO.setUserId((Long)comments.get(0)[0]);
+				candidateCommentsVO.setUserName((String)comments.get(0)[1]);
+				commetsAndScores = new ArrayList<UserCommentsInfoVO>(0);
+				for(Object[] userCatComments:entry.getValue()){
+					userCommentInfoVO = new UserCommentsInfoVO();
+					userCommentInfoVO.setComment(userCatComments[2].toString());
+					userCommentInfoVO.setCommentCategory(userCatComments[3].toString());
+					userCommentInfoVO.setCommentCategoryId((Long)userCatComments[4]);
+					commentScore = new Double(1.0/(comments.size()));
+					userCommentInfoVO.setCommentScore(Math.round(commentScore*100)/100.0);
+					commetsAndScores.add(userCommentInfoVO);
+				}
+				candidateCommentsVO.setCommetsAndScores(commetsAndScores);
+				allUsersCommentsForNomination.add(candidateCommentsVO);
+			}
+			
+			categoryAndScores = new HashMap<Long, UserCommentsInfoVO>();
+			
+			for(CandidateCommentsVO commentByUser:allUsersCommentsForNomination){
+				for(UserCommentsInfoVO commentCategory:commentByUser.getCommetsAndScores()){
+					userCommentInfoVO = categoryAndScores.get(commentCategory.getCommentCategoryId());
+					
+					if(userCommentInfoVO == null)
+						userCommentInfoVO = new UserCommentsInfoVO();
+					else
+						categoryAndScores.remove(commentCategory.getCommentCategoryId());
+					
+					userCommentInfoVO.setCommentScore(commentCategory.getCommentScore() + userCommentInfoVO.getCommentScore());
+					categoryAndScores.put(commentCategory.getCommentCategoryId(), userCommentInfoVO);
+				}
+			}
+			
+			commetsAndScores = new ArrayList<UserCommentsInfoVO>();
+			
+			for(Map.Entry<Long, UserCommentsInfoVO> categoryEntry:categoryAndScores.entrySet())
+				commetsAndScores.add(categoryEntry.getValue());
+			
+			nominationComments.setCommetsAndScores(commetsAndScores);
+			allNominationsComments.add(nominationComments);
+		}
+		
+		return allNominationsComments;
+	}
+
+public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
 		
@@ -859,4 +936,5 @@ public class CommentsDataService implements ICommentsDataService {
 		}
 		return candidates;
 	}
+
 }

@@ -751,7 +751,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemSourceScope(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(dateService.timeStampConversionToDDMMYY(values[7].toString()));
+				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			
@@ -921,7 +921,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProbSource(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(dateService.timeStampConversionToDDMMYY(values[7].toString()));
+				problemBeanVO.setExistingFrom(DateService.timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			return problems;
@@ -1176,8 +1176,8 @@ public class ProblemManagementReportService implements
 			List<Object> list = null;
 			NavigationVO navigationVO = null;	
 			try{
-				Date firstDate = dateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
-				Date secondDate = dateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
+				Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN);
+				Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN);
 				list = problemHistoryDAO.getAllNonApprovedProblemsBetweenDatesWithCompleteData(firstDate,secondDate,status,getUserSelectedChoice(type));
 				navigationVO = generateVoContainingAllApprovalProblems(list);
 				return navigationVO;
