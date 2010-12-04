@@ -69,6 +69,7 @@
 		{
 			padding:40px;
 			text-align:left;
+			color:#FFFFFF;
 		}
 		
 		#influencePeopleData_body .yui-pg-container 
@@ -92,11 +93,29 @@
 			margin-top:20px;
 		}
 
-		.selectButtonsDiv
-		{
-			text-align:right;
+		.elbutton
+		{   
+			
+			color:#FFFAF0; 
+	        font: bold small 'trebuchet ms',helvetica,sans-serif; 
+			background-color:#483D8B;
+	  
+			
+	} 
+			
 		}
+
+		/*#buttoneleId
+		{
+			 cursor:pointer;
+			 cursor:hand;
+		}*/
+		/*.elbutton
+		{
 		
+		
+		}*/
+
 		#smsStatus
 		{
 			text-align:center;
@@ -550,13 +569,14 @@
 				<table width="100%">
 					<tr>
 						<td align="left">
-							<input type="button" value="View Results By Regions" onclick="javascript:{window.location.reload();}"></input>
-							<input type="button" value="Show All Results" onclick="showAllPeopleRecords()"></input>
+							<input type="button" class="elbutton" value="View Results By Regions" onclick="javascript:{window.location.reload();}"></input> </div>
+							<input type="button" class="elbutton" value="Show All Results" onclick="showAllPeopleRecords()"></input>
 						</td>
 						<td align="right">
-							<input type="button" value="select All" onclick="selectAllPeople()"></input>
-							<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
-							<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+							<input type="button" class="elbutton" value="select All" onclick="selectAllPeople()"></input>
+						
+							<input type="button" class="elbutton" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+							<input type="button"  class="elbutton"value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
 						</td>
 					</tr>
 				</table>
