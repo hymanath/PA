@@ -27,6 +27,8 @@ public class ConstituencyInfoVO extends ResultStatus{
 	private List<SelectOptionVO> assembyConstituencies;
 	private Boolean hasAnalize = false;
 	private Boolean viewCompletePage = false;
+	private Boolean analyzeComments = false;
+	private Boolean postComments = false;
 	private String area_type;
 	private String reservation_zone;
 	private List<SelectOptionVO> constituencies;
@@ -168,6 +170,18 @@ public class ConstituencyInfoVO extends ResultStatus{
 	}
 	public void setBoothsInDB(Long boothsInDB) {
 		this.boothsInDB = boothsInDB;
+	}
+	public Boolean getAnalyzeComments() {
+		return analyzeComments;
+	}
+	public void setAnalyzeComments(Boolean analyzeComments) {
+		this.analyzeComments = analyzeComments;
+	}
+	public Boolean getPostComments() {
+		return postComments;
+	}
+	public void setPostComments(Boolean postComments) {
+		this.postComments = postComments;
 	}
 	 
 	
