@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.CadreColumnNames;
 import com.itgrids.partyanalyst.dao.columns.enums.EducationQualificationColumnNames;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
@@ -69,12 +70,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(" Result Size :" + result.size());
 	}*/
 	
-	public void testDeleteCadre()
+	/*public void testDeleteCadre()
 	{
 		int result=cadreDAO.deleteByCadreId(5l);
 		System.out.println("No of records deleted:"+result);
 		
-	}
+	}*/
 	
 	/*public void testFindConstituencyCadresByDist()
 	{
@@ -128,19 +129,22 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}
-	
+	*/
 	public void testFindWardCadresByMandal()
 	{
-		List result = cadreDAO.findCadresByWard(562l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		List result = cadreDAO.findCadresByWard(566l,7l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		for(int i=0;i<result.size();i++){
 			Object[] parms = (Object[])result.get(i);
-			System.out.print(parms[0].toString());
+			Constituency consti = (Constituency)parms[0];
+			System.out.print(consti.getName());
+			System.out.print(consti.getLocalElectionBodyWard().getWardName());
+			System.out.print(consti.getConstituencyId());
+			
 			System.out.println(parms[1].toString());
-			System.out.println(parms[2].toString());
 			
 		}
 		
-	}*/
+	}
 	/*public void testFindCadresByHamlet()
 	{
 		List<Cadre> result = cadreDAO.findCadresByHamlet(857l, 5l, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
@@ -339,11 +343,11 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}			
 	}*/
 	
-	public void testFindCadreDetailsByLevelAndProperty()
+	/*public void testFindCadreDetailsByLevelAndProperty()
 	{
 		List results = cadreDAO.findCadreDetailsByLevelAndProperty(1l, "currentAddress", "district", "districtId", 19l, "and model.gender = 'Male'");
 		System.out.println(results.size());
-	}
+	}*/
 }
 	
 
