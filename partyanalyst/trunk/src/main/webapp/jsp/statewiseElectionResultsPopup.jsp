@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
@@ -406,8 +407,18 @@ function showAllianceGraph(index,allianceGroupName)
 	myPanel.setBody(str);
 	myPanel.render();
 
-    var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
-	chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
+	var staticColors = setStaticPartyColorsForInteractiveCharts(results);
+
+    if(staticColors != null && staticColors.length > 0)
+	{
+		var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
+				chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+	}
+	else
+	{
+		var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
+				chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
+	}
 }
 function showPartyResultsWithoutAlliance(chartId)
 {	
@@ -436,12 +447,14 @@ function showPartyResultsWithoutAlliance(chartId)
 
 	   //interactive chart
 	var data = new google.visualization.DataTable();
+	var partiesArray = new Array();
    
 	//for chart columns
 	data.addColumn('string', 'Party');
 	for(var i=0;i<results.length;i++)
 	{
       data.addColumn('number',results[i].party);
+	  partiesArray.push(results[i].party);
 	}
 
 	//for chart rows (seats won)
@@ -480,10 +493,19 @@ function showPartyResultsWithoutAlliance(chartId)
 	}
 	data.addRow(array3);
 
-	
-    var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
-	chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
-		buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
+	var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+	if(staticColors != null && staticColors.length > 0)
+	{
+		var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
+		chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+	}
+	else
+	{
+		var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
+		chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
+	}
+ 
+	buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
 }
 </SCRIPT>
 </HEAD>
