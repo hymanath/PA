@@ -44,6 +44,7 @@ public class CommentData extends BaseModel implements Serializable {
 	private Date commentDate;
 	private String commentBy;
 	private CommentDataCategory commentDataCategory;
+	private String isApproved;
 	private Set<CommentCategoryCandidate> commentCategoryCandidate = new HashSet<CommentCategoryCandidate>(0);
 	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
@@ -52,7 +53,6 @@ public class CommentData extends BaseModel implements Serializable {
 	public CommentData() {
 		super();
 	}
-
 
 	//parameterized constructor
 	public CommentData(String commentDesc, Date commentDate, String commentBy,
@@ -70,7 +70,6 @@ public class CommentData extends BaseModel implements Serializable {
 		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "comment_data_id", unique = true, nullable = false)
@@ -78,22 +77,18 @@ public class CommentData extends BaseModel implements Serializable {
 		return commentDataId;
 	}
 
-
 	public void setCommentDataId(Long commentDataId) {
 		this.commentDataId = commentDataId;
 	}
-
 
 	@Column(name = "comment_desc", length = 250)
 	public String getCommentDesc() {
 		return commentDesc;
 	}
 
-
 	public void setCommentDesc(String commentDesc) {
 		this.commentDesc = commentDesc;
 	}
-
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "commented_on", length = 10)
@@ -101,11 +96,9 @@ public class CommentData extends BaseModel implements Serializable {
 		return commentDate;
 	}
 
-
 	public void setCommentDate(Date commentDate) {
 		this.commentDate = commentDate;
 	}
-
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "comment_data_category_id")
@@ -115,22 +108,18 @@ public class CommentData extends BaseModel implements Serializable {
 		return commentDataCategory;
 	}
 
-
 	public void setCommentDataCategory(CommentDataCategory commentDataCategory) {
 		this.commentDataCategory = commentDataCategory;
 	}
-
 
 	@Column(name = "commented_by", length = 250)
 	public String getCommentBy() {
 		return commentBy;
 	}
 
-
 	public void setCommentBy(String commentBy) {
 		this.commentBy = commentBy;
 	}
-
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commentData")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -138,19 +127,16 @@ public class CommentData extends BaseModel implements Serializable {
 		return commentCategoryCandidate;
 	}
 
-
 	public void setCommentCategoryCandidate(
 			Set<CommentCategoryCandidate> commentCategoryCandidate) {
 		this.commentCategoryCandidate = commentCategoryCandidate;
 	}
-
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commentData")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<CommentCategoryParty> getCommentCategoryParty() {
 		return commentCategoryParty;
 	}
-
 
 	public void setCommentCategoryParty(
 			Set<CommentCategoryParty> commentCategoryParty) {
@@ -163,10 +149,18 @@ public class CommentData extends BaseModel implements Serializable {
 		return commentCategoryConstituency;
 	}
 
-
 	public void setCommentCategoryConstituency(
 			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.commentCategoryConstituency = commentCategoryConstituency;
+	}
+
+	@Column(name = "is_approved", length = 20)
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
 	}
 
 }

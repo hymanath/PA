@@ -20,10 +20,6 @@ public interface IDateService {
 	 */
 	public Date getPresentPreviousAndCurrentDayDate(String dateFormat,int noOfDays,String choice);
 	
-	public Date convertStringToDate(String date,String dateFormat);
-	
 	public String timeStampConversionToYYMMDD(String idate);
-	
-	public String timeStampConversionToDDMMYY(String idate);
 	
 }

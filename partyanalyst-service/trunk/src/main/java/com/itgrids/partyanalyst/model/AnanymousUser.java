@@ -53,31 +53,18 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 
 	 private Set<UserConnectedto> userConnectedtosenderId = new HashSet<UserConnectedto>(0); 
 	 private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
+	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 
 	 public AnanymousUser()
 	 {
+		 
 	 }
-	
-	 public AnanymousUser(Long userId, String name, String gender, String username,
-			 String password,Date dateofbirth,String email,String phone,String mobile,String address,
-			 String pincode,State state,District district,Constituency constituency)
+	 
+	 public AnanymousUser(Long userId)
 	 {
 		 this.userId = userId;
-		 this.name = name;
-		 this.gender = gender;
-		 this.username = username;
-		 this.password = password;
-		 this.dateofbirth = dateofbirth;
-		 this.email = email;
-		 this.phone = phone;
-		 this.mobile = mobile;
-		 this.address = address;
-		 this.pincode = pincode;
-		 this.state = state;
-		 this.district = district;
-		 this.constituency = constituency;
 	 }
-
+	
 	public AnanymousUser(String name, String gender,
 			String username, String password, Date dateofbirth, String email,
 			String phone, String mobile, String address, String pincode,
@@ -295,5 +282,16 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 			Set<UserConnectedto> userConnectedtorecepientId) {
 		this.userConnectedtorecepientId = userConnectedtorecepientId;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserProfileOpts> getUserProfileOptses() {
+		return userProfileOptses;
+	}
+
+	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
+		this.userProfileOptses = userProfileOptses;
+	}
+
 	
 }

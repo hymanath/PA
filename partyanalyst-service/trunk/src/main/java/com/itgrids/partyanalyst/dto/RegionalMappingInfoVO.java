@@ -16,18 +16,23 @@ public class RegionalMappingInfoVO implements Serializable {
 	public Long getRegionId() {
 		return regionId;
 	}
+	
 	public void setRegionId(Long regionId) {
 		this.regionId = regionId;
 	}
+	
 	public String getRegionName() {
 		return regionName;
 	}
+	
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
 	}
+	
 	public Boolean getFlag() {
 		return flag;
 	}
+	
 	public void setFlag(Boolean flag) {
 		this.flag = flag;
 	}	
@@ -35,9 +40,11 @@ public class RegionalMappingInfoVO implements Serializable {
 	public String getVillagesCovered() {
 		return villagesCovered;
 	}
+	
 	public void setVillagesCovered(String villagesCovered) {
 		this.villagesCovered = villagesCovered;
 	}
+	
 	@Override
 	public boolean equals(Object obj){
 		if(regionId==null)

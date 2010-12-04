@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class CandidateCommentsVO implements java.io.Serializable{
 
 	/**
@@ -23,6 +25,9 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private String constituencyName;
 	private String partyName;
 	private Long rank;
+	private Long userId;
+	private String userName;
+	private List<UserCommentsInfoVO> commetsAndScores;
 	
 	//getters and setters
 	public Long getCandidateId() {
@@ -78,6 +83,24 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	}
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+	public List<UserCommentsInfoVO> getCommetsAndScores() {
+		return commetsAndScores;
+	}
+	public void setCommetsAndScores(List<UserCommentsInfoVO> commetsAndScores) {
+		this.commetsAndScores = commetsAndScores;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }

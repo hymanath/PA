@@ -164,6 +164,8 @@
 				<value>com.itgrids.partyanalyst.model.UserRelation</value>
 				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserMappingsHistory</value>
+				<value>com.itgrids.partyanalyst.model.ProfileOpts</value>
+				<value>com.itgrids.partyanalyst.model.UserProfileOpts</value>
 		 </list>
 		</property>
 	</bean>
@@ -735,6 +737,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="profileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProfileOptsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userProfileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProfileOptsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -799,6 +809,11 @@
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="boothDAO" ref="boothDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+	
+	<bean id="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService" >
+    	<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
 	
 </beans>

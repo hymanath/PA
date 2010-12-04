@@ -20,8 +20,10 @@ import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
+import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -32,7 +34,9 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
+import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.UserConnectedto;
+import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -54,7 +58,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IStaticDataService staticDataService;
-	
+	private IProfileOptsDAO profileOptsDAO;
+	private IUserProfileOptsDAO userProfileOptsDAO;
 	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -116,6 +121,14 @@ public class AnanymousUserService implements IAnanymousUserService {
 		this.stateDAO = stateDAO;
 	}
 
+	public IUserProfileOptsDAO getUserProfileOptsDAO() {
+		return userProfileOptsDAO;
+	}
+
+	public void setUserProfileOptsDAO(IUserProfileOptsDAO userProfileOptsDAO) {
+		this.userProfileOptsDAO = userProfileOptsDAO;
+	}
+
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
@@ -149,6 +162,14 @@ public class AnanymousUserService implements IAnanymousUserService {
 	}
 	
 	
+	public IProfileOptsDAO getProfileOptsDAO() {
+		return profileOptsDAO;
+	}
+
+	public void setProfileOptsDAO(IProfileOptsDAO profileOptsDAO) {
+		this.profileOptsDAO = profileOptsDAO;
+	}
+
 	/**
 	 * This method can be used for saving of Anonymous User details.
 	 * 
@@ -156,33 +177,47 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param RegistrationVO
 	 * @return RegistrationVO
 	 */
-	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails){
+	public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final Boolean isUpdate){
 		
 		AnanymousUser ananymousUserReturn = (AnanymousUser)transactionTemplate.execute(new TransactionCallback() {
+			
 			public Object doInTransaction(TransactionStatus status) {	
-				AnanymousUser ananymousUser = new AnanymousUser();
-				try{
-				ananymousUser.setName(userDetails.getFirstName());
-				ananymousUser.setLastName(userDetails.getLastName());
-				ananymousUser.setUsername(userDetails.getUserName());
-				ananymousUser.setPassword(userDetails.getPassword());
-				ananymousUser.setGender(userDetails.getGender());
-				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-				Date date =null;
-				date= format.parse(userDetails.getDateOfBirth());
+				AnanymousUser ananymousUser = null;
+				ProfileOpts profileOpts = null;
+				if(!isUpdate)
+					ananymousUser = new AnanymousUser();
+				else{
+					ananymousUser = ananymousUserDAO.get(userDetails.getRegistrationID());
+					userProfileOptsDAO.removeOptsOfExistingUser(userDetails.getRegistrationID());
+				}
 				
-				ananymousUser.setDateofbirth(date);
-				ananymousUser.setEmail(userDetails.getEmail());
-				ananymousUser.setMobile(userDetails.getMobile());
-				ananymousUser.setPhone(userDetails.getPhone());
-				ananymousUser.setAddress(userDetails.getAddress());
-				//userDetails.getCountry()
-				ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
-				ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
-				ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
-				ananymousUser.setPincode(userDetails.getPincode());
-				ananymousUser = ananymousUserDAO.save(ananymousUser);
-				 
+				try{
+					if(!isUpdate){
+						ananymousUser.setUsername(userDetails.getUserName());
+						ananymousUser.setPassword(userDetails.getPassword());
+					}
+					
+					ananymousUser.setName(userDetails.getFirstName());
+					ananymousUser.setLastName(userDetails.getLastName());
+					ananymousUser.setGender(userDetails.getGender());
+					SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+					Date date = format.parse(userDetails.getDateOfBirth());
+					ananymousUser.setDateofbirth(date);
+					ananymousUser.setEmail(userDetails.getEmail());
+					ananymousUser.setMobile(userDetails.getMobile());
+					ananymousUser.setPhone(userDetails.getPhone());
+					ananymousUser.setAddress(userDetails.getAddress());
+					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
+					ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
+					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
+					ananymousUser.setPincode(userDetails.getPincode());
+					ananymousUser = ananymousUserDAO.save(ananymousUser);
+					
+					for(Long optsId:userDetails.getProfileOpts()){
+						profileOpts = profileOptsDAO.get(optsId);
+						userProfileOptsDAO.save(new UserProfileOpts(ananymousUser, profileOpts));
+					}
+					
 				}catch(Exception e){
 					e.printStackTrace();
 					status.setRollbackOnly();
@@ -1037,4 +1072,35 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 	return navigationVO;
 	}
+	
+	public List<SelectOptionVO> findAllProfileOptsAvailableInDB(){
+		List<SelectOptionVO> opts = new ArrayList<SelectOptionVO>();
+		List list = profileOptsDAO.getAllProfileOpts();
+		for(Object[] values:(List<Object[]>)list)
+			opts.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString()));
+		return opts;
+	}
+	
+	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
+		RegistrationVO registrationVO = new RegistrationVO();
+		AnanymousUser registration = ananymousUserDAO.get(registrationId);
+		
+		registrationVO.setRegistrationID(registrationId);
+		registrationVO.setUserName(registration.getUsername());
+		registrationVO.setPassword(registration.getPassword());
+		registrationVO.setGender(registration.getGender());
+		registrationVO.setEmail(registration.getEmail());
+		registrationVO.setPhone(registration.getPhone());
+		registrationVO.setMobile(registration.getMobile());
+		registrationVO.setAddress(registration.getAddress());
+		registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
+		registrationVO.setFirstName(registration.getName());
+		registrationVO.setLastName(registration.getLastName());
+		registrationVO.setState(registration.getState().getStateId().toString());
+		registrationVO.setDistrict(registration.getDistrict().getDistrictId().toString());
+		registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
+		
+		return registrationVO;
+	}
+	
 }

@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
+import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CustomMessage;
+import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -23,7 +26,6 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 	
 	private IAnanymousUserDAO ananymousUserDAO;
 	private ICustomMessageDAO customMessageDAO;
-	
 	
 	public ICustomMessageDAO getCustomMessageDAO() {
 		return customMessageDAO;
@@ -41,10 +43,10 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
-	/*public void testAnonymousUserLogin(){		
+	public void testAnonymousUserLogin(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkAnonymousUserLogin("ravi","kiran");	
 		assertEquals(detailsList.size(), 1);
-	}*/
+	}
 
 	/*public void testAvailabityOfUserNameForAnonymousUser(){		
 		List<Long> details =  new ArrayList<Long>(0);

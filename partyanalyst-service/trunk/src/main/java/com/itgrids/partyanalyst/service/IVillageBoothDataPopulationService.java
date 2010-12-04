@@ -6,6 +6,6 @@ import com.itgrids.partyanalyst.dto.VillageBoothElectionVO;
 
 public interface IVillageBoothDataPopulationService {
 
-	public VillageBoothElectionVO readExcelAndInsertData(File fPath, Long elecId);
+	public VillageBoothElectionVO readExcelAndInsertData(File fPath, Long elecId, Boolean isValidate);
 	
 }

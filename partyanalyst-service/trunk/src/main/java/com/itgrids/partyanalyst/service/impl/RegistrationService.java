@@ -163,5 +163,34 @@ public class RegistrationService implements IRegistrationService{
 		return entitlementVO;
 	}
 	
+	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
+		RegistrationVO registrationVO = new RegistrationVO();
+		List<Registration> users = registrationDAO.findByUserRegistrationId(registrationId);
+		
+		Registration registration = users.get(0);
+		
+		registrationVO.setRegistrationID(registrationId);
+		registrationVO.setUserName(registration.getUserName());
+		registrationVO.setPassword(registration.getPassword());
+		registrationVO.setGender(registration.getGender());
+		registrationVO.setEmail(registration.getEmail());
+		registrationVO.setPhone(registration.getPhone());
+		registrationVO.setMobile(registration.getMobile());
+		registrationVO.setAddress(registration.getAddress());
+		registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateOfBirth().toString()));
+		registrationVO.setAccessType(registration.getAccessType());
+		registrationVO.setAccessValue(registration.getAccessValue());
+		registrationVO.setFirstName(registration.getFirstName());
+		registrationVO.setLastName(registration.getLastName());
+		registrationVO.setUserType(registration.getUserType());
+		
+		if(registration.getParty() != null){
+			registrationVO.setParty(registration.getParty().getPartyId());
+			registrationVO.setPartyShortName(registration.getParty().getShortName());
+		}
+		
+		return registrationVO;
+	}
+	
 	
 }

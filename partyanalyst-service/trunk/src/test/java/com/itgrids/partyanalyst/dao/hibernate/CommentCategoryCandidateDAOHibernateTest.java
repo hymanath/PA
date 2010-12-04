@@ -79,14 +79,14 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	*/
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetCommentsCountForACandidate(){
 		List commentsCount = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(new Long(9),new Long(24),"WON");
 		if(commentsCount != null && commentsCount.size() > 0){
 			Object params = (Object)commentsCount.get(0);
 			System.out.println("Comments Count :" + (Long)params);
 		}
-	}
+	}*/
 	/*
 	@SuppressWarnings("unchecked")
 	public void testGetCommentCountGroupedByCategory(){
@@ -102,7 +102,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	*/
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetCommentCategoryGroupedByConstituency(){
 		List commentsCount = commentCategoryCandidateDAO.getCommentsCommentCategoryCountGroupedByConstituencyForAParty(new Long(9),new Long(62),"WON");
 		if(commentsCount != null && commentsCount.size() > 0){
@@ -114,5 +114,11 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println("...........................................");
 			}
 		}
+	}*/
+	
+	public void testGetAllCommentsByUserAndCategoryForANomination(){
+		List list = commentCategoryCandidateDAO.getAllCommentsByUserAndCategoryForANomination(13606l);
+		System.out.println(list.size());
 	}
+	
 }
