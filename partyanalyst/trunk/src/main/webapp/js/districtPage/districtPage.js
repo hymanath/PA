@@ -21,7 +21,7 @@ var forwardTask = "";
 function buildDistrictPageLayout()
 {
 	var cadreReportPageLayout = new YAHOO.widget.Layout('districtPageLayout_main', { 
-	height:1150,
+	height:1060,
 	units: [
 			{ 
 				position: 'right', 
