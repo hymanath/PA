@@ -10,7 +10,19 @@
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
+<style type="text/css">
 
+	.calBtn
+	{
+		background-image: url("images/icons/constituencyManagement/calendar.jpeg");
+		height: 24px;
+		width: 24px;	
+	}
+
+</style>
 <script type="text/javascript">
 
 	var ACCESSVALUE;
@@ -260,15 +272,17 @@
 					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="#session.gender" value="male"/>  </td>			
+						<td><s:radio id="genderField" name="gender" list="#session.gender" />  </td>			
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:select name="day" id="dobDay"  list="#session.dobDay" listKey="id" listValue="name"></s:select>
-							<s:select name="month" id="dobMonth" list="#session.dobMonth" listKey="id" listValue="name"></s:select>
-							<s:select name="year" id="dobYear" list="#session.dobYear" listKey="id" listValue="name"></s:select>							
+							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
+							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
 						 </td>
+						<td>
+							<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
+						</td>
 					</tr>
 					<tr>
 						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>

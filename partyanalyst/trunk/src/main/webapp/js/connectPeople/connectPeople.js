@@ -519,7 +519,7 @@ function buildPeopleYouMayKnowContent()
 
 	var str = '';
 	str += '<div id="peopleMayKnow_main">';
-	str += '<div id="peopleMayKnow_head"> People You may Know</div>';
+	str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;<a href="anonymousUserAction.action?userId='+loginUserId+'">View Profile</a></div>';
 	str += '<div id="peopleMayKnow_body">';
 	str += '	<div class="peopleMayKnow_data">';
 	str += '	<table width="100%" class="peopleMayKnow_data_table">';

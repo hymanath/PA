@@ -96,6 +96,7 @@
 	</bean>
 	<bean id="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction" singleton="false">
 		<property name="registrationService" ref="registrationService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	<bean id="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" singleton="false">
 		<property name="constituencySearchService" ref="constituencySearchService" />
@@ -508,6 +509,7 @@
 	
 	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	
 	<bean id="anonymousUserRegisterAction" class="com.itgrids.partyanalyst.web.action.AnonymousUserRegistrationAction" singleton="false">

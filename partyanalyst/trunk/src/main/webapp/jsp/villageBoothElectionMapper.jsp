@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,6 +33,16 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+<style>
+
+.scopeWise_head {
+	background-color:#F5EFEA;
+	color:#77471D;
+	font-weight:bold;
+	padding:3px;
+	text-align:left;
+}
+</style>
 <script type="text/javascript">
 
 		function getElectionYears(id){
@@ -91,10 +102,87 @@
 						<option value="0">Select </option>
 					</select>
 				</td>
+			</tr>
+			<tr>
 				<td><s:file name="filePath" label="File Path"/></td>
-				<td colspan="2"><s:submit name="upload" value="Upload" align="center"/></td>
+				<td><s:submit name="upload" value="Upload" align="center"/></td>
+				<td><s:checkbox name="isValidate" id="isValidate" label="Validate Data"/></td>
 			</tr>
 		</table>
 	</s:form>
+	<c:if test="${! empty villageBoothElectionVO }">
+		<div>
+			<table>
+				<tr>
+					<td>
+						<div style="border:2px solid #F5EFEA;width:800px;margin-bottom:15px;text-align:left;">
+						<DIV class="scopeWise_head">Revenue Villages Corrections</DIV>
+							<c:choose>
+								<c:when test="${! empty villageBoothElectionVO.villageErrors}">
+									<c:forEach items="${villageBoothElectionVO.villageErrors}" var="village">
+										${village }<br>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									No Village Level Corrections.....
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="border:2px solid #F5EFEA;width:800px;margin-bottom:15px;text-align:left;">
+						<DIV class="scopeWise_head">Hamlets Corrections</DIV>
+							<c:choose>
+								<c:when test="${! empty villageBoothElectionVO.hamletErrors}">
+									<c:forEach items="${villageBoothElectionVO.hamletErrors}" var="hamlet">
+										${hamlet }<br>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									No Hamlet Level Corrections.....
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div style="border:2px solid #F5EFEA;width:800px;margin-bottom:15px;text-align:left;">
+						<DIV class="scopeWise_head">Booths Corrections</DIV>
+							<c:choose>
+								<c:when test="${! empty villageBoothElectionVO.boothErrors}">
+									<c:forEach items="${villageBoothElectionVO.boothErrors}" var="booth">
+										${booth }<br>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									No Booth Level Corrections.....
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</td>
+				</tr>		
+				<tr>
+					<td>
+						<div style="border:2px solid #F5EFEA;width:800px;margin-bottom:15px;text-align:left;">
+						<DIV class="scopeWise_head">Data Duplicate Corrections</DIV>
+							<c:choose>
+								<c:when test="${! empty villageBoothElectionVO.dataDuplicateErrors}">
+									<c:forEach items="${villageBoothElectionVO.dataDuplicateErrors}" var="duplicate">
+										${duplicate }<br>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									No Duplications Exists In Data.....
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</td>
+				</tr>	
+			</table>
+		</div>
+	</c:if>
 </body>
 </html>

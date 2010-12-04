@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%
 //Problem Management
@@ -44,7 +45,16 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	localBodyElectionTypeId = request.getParameter("localBodyElectionTypeId");
 }
 %>
+<style type="text/css">
 
+	.calBtn
+	{
+		background-image: url("images/icons/constituencyManagement/calendar.jpeg");
+		height: 24px;
+		width: 24px;	
+	}
+
+</style>
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <html>  
 <head>  
@@ -75,7 +85,9 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
@@ -127,11 +139,6 @@ function callAJAX(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
-function getStates()
-{
-	getStatesComboBoxForACountry(1,'stateSelectBox');
-}
-
 function checkAvailability()
 {
  	var name = document.getElementById("userNameField").value;
@@ -195,29 +202,31 @@ function showDetails(results)
 			</tr>
 		</table>
 		 <br>
-        <FIELDSET>
-		<LEGEND><strong>Account Details</strong></LEGEND>
-		<div id="resultDIV"></div>
-		 <div id="loginDetailsDiv" class="accessDivMain">
-			<div id="loginDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">					
-					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
-						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
-						<td style="padding-left: 15px;"><input type="button" name="checkUserNameAvailability" value="Check Availability" onclick="checkAvailability()"/></td>
-					</tr>
-					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
-						<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
-					</tr>
-					<tr>
-						<td width="101px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('reEnterPassword')}" /></td>
-						<td style="padding-left: 15px;"><s:password id="passwordField" name="reEnteredPassword"/>  </td>
-					</tr>
-				</table>
-			</div>
-		 </div>
-         </FIELDSET>
+		 <c:if test="${empty registrationId}">
+	        <FIELDSET>
+				<LEGEND><strong>Account Details</strong></LEGEND>
+				<div id="resultDIV"></div>
+				 <div id="loginDetailsDiv" class="accessDivMain">
+					<div id="loginDetailsDivBody" class="accessDivBody">
+						<table class="registrationTable">					
+							<tr>
+								<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
+								<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
+								<td style="padding-left: 15px;"><input type="button" name="checkUserNameAvailability" value="Check Availability" onclick="checkAvailability()"/></td>
+							</tr>
+							<tr>
+								<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
+								<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
+							</tr>
+							<tr>
+								<td width="101px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('reEnterPassword')}" /></td>
+								<td style="padding-left: 15px;"><s:password id="passwordField" name="reEnteredPassword"/>  </td>
+							</tr>
+						</table>
+					</div>
+				 </div>
+	         </FIELDSET>
+         </c:if>
 		 <FIELDSET>
 		 <LEGEND><strong>Personal Details</strong></LEGEND>
 		 <div id="personalDetailsDiv" class="accessDivMain">
@@ -233,15 +242,17 @@ function showDetails(results)
 					</tr>					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="#session.gender" value="male"/>  </td>			
+						<td><s:radio id="genderField" name="gender" list="#session.gender"/>  </td>			
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:select name="day" id="dobDay"  list="#session.dobDay" listKey="id" listValue="name"></s:select>
-							<s:select name="month" id="dobMonth" list="#session.dobMonth" listKey="id" listValue="name"></s:select>
-							<s:select name="year" id="dobYear" list="#session.dobYear" listKey="id" listValue="name"></s:select>							
+							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
+							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
 						 </td>
+						<td>
+							<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
+						</td>
 					</tr>
 				  </table>
 				</div>
@@ -262,27 +273,20 @@ function showDetails(results)
 					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="State" /></td>
-								
 					 	<td>
-								<select class="regionsSelectBox"  name="state" id="stateSelectBox" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" style="width:130px;">
-								<option value="0"> Select State</option>
-								</select>
+					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:130px;" />
 						</td>
 					</tr>	
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="District" /></td>
 						<td>
-								<select class="regionsSelectBox"  name="district" id="districtSelectBox" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" style="width:130px;">
-								<option value="0"> Select District</option>
-								</select>
+							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:130px;" />
 						</td>
 					</tr>	
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="constituencySelectBox" id="constituencytLabel"  value="Constituency" /></td>
-						<td>							
-								<select class="regionsSelectBox"  name="constituency" id="constituencySelectBox" style="width:130px;">
-								<option value="0"> Select Constituency</option>
-								</select>
+						<td>
+							<s:select name="constituency" id="constituencySelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:130px;" />							
 						</td>
 					</tr>
 					<tr>
@@ -300,6 +304,12 @@ function showDetails(results)
 					</tr>
 
 					<tr>
+						<td colspan="2" width="100px;" style="padding-left:15px;">
+							<s:checkboxlist list="#session.profileOpts" labelposition="top" listKey="id" listValue="name" name="profileOpts"/>	
+						</td>
+					</tr>
+
+					<tr>
 						<td width="100px;"></td>
 						<td> <div style="text-align: left;"><s:submit name="Save"></s:submit></div></td>
 					</tr> 				
@@ -313,6 +323,7 @@ function showDetails(results)
          <input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 		 <input type="hidden" name="task" value="<%=task %>" />
 		 <input type="hidden" name="name" value="<%=name %>" />
+		 <input type="hidden" name="registrationId" value="${registrationId }" />
 		 <input type="hidden" name="stateId" value="<%=stateId %>" />
 		 <input type="hidden" name="districtId" value="<%=districtId %>" />
 		 <input type="hidden" name="localBodyId" value="<%=localBodyId %>" />
@@ -320,7 +331,7 @@ function showDetails(results)
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
 </s:form>  
 <script language="javascript">
-getStates();
+
 </script>
 </body>  
 </html>
