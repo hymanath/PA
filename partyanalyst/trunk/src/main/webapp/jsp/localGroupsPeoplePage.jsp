@@ -125,6 +125,11 @@
 	{
 		text-decoration:underline;
 	}
+	.elbutton {
+		background-color:#483D8B;
+		color:#FFFAF0;
+		font:bold small 'trebuchet ms',helvetica,sans-serif;
+	}
 </style>
 
 <script type="text/javascript">
@@ -508,12 +513,12 @@ function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)
 			<table width="100%">
 				<tr>
 					<td align="left">
-						<input type="button" value="Create New ${regionTitle}" onclick="redirectToNewLocalGroupCreation('new',<%= request.getParameter("regionTitleId")%>,0)"></input>
+						<input class="elbutton" type="button" value="Create New ${regionTitle}" onclick="redirectToNewLocalGroupCreation('new',<%= request.getParameter("regionTitleId")%>,0)"></input>
 					</td>
 					<td align="right">
-						<input type="button" value="select All" onclick="selectAllPeople()"></input>
-						<input type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
-						<input type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
+						<input class="elbutton" type="button" value="select All" onclick="selectAllPeople()"></input>
+						<input class="elbutton" type="button" value="DeSelect All" onclick="DeSelectAllPeople()"></input>
+						<input class="elbutton" type="button" value="Send SMS" onclick="sendSMSToSelectedPeople()"></input>
 					</td>
 				</tr>
 			</table>
