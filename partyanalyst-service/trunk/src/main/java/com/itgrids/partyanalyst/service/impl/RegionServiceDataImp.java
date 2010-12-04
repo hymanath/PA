@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+//import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+//import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
@@ -54,6 +56,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private IBoothMapperService boothMapperService;
+	//private IRegionScopesDAO regionScopesDAO;
 	
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -140,7 +143,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setBoothMapperService(IBoothMapperService boothMapperService) {
 		this.boothMapperService = boothMapperService;
+	}	
+/*
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
 	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}*/
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
 		List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
@@ -986,6 +997,26 @@ public class RegionServiceDataImp implements IRegionServiceData {
 						finalList.add(regionalMappingInfoVO);
 					}		 
 			return finalList;		
+	}
+	
+	/*
+	public List<SelectOptionVO> getAllRegionScopes() {
+		List<SelectOptionVO> scopes = new ArrayList<SelectOptionVO>(0);
+		List<RegionScopes> allScopes = regionScopesDAO.getAll();
+		for(RegionScopes regionScopes: allScopes)
+		{
+			scopes.add(new SelectOptionVO(regionScopes.getRegionScopesId(),regionScopes.getScope()));
+		}
+		return scopes;
+	}
+*/
+	public String getConstituencyAreaType(Long constituencyId) {
+		
+		Constituency constituency = constituencyDAO.get(constituencyId); 
+		String areaType = null;
+		if(constituency.getAreaType()!= null)
+			areaType = constituency.getAreaType();
+		return areaType;
 	}
 	
 }
