@@ -601,10 +601,18 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		
 	}
 
-	public List findCadresByWard(Long localElectionBodyId, Long userID,
+	/*public List findCadresByWard(Long localElectionBodyId, Long userID,
 			String cadreType) {
 		Object[] params = {localElectionBodyId,userID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.ward.constituencyId, model.currentAddress.ward.name, count(model.currentAddress.ward.constituencyId) from Cadre model " +
+				"where model.currentAddress.localElectionBody.localElectionBodyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.ward.constituencyId order by model.currentAddress.ward.name", params); 
+		return results;
+	}*/
+	
+	public List findCadresByWard(Long localElectionBodyId, Long userID,
+			String cadreType) {
+		Object[] params = {localElectionBodyId,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.ward, count(model.currentAddress.ward.constituencyId) from Cadre model " +
 				"where model.currentAddress.localElectionBody.localElectionBodyId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.ward.constituencyId order by model.currentAddress.ward.name", params); 
 		return results;
 	}
