@@ -266,17 +266,18 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		int hiden = 0;
 
 		userFullName = regVO.getFirstName() + " " + regVO.getLastName();
-		session.setAttribute(IConstants.USER,regVO);
 		session.setAttribute("loginStatus", "out");
 		session.setAttribute("HiddenCount", hiden);
 		
 		if("1".equalsIgnoreCase(userType)){
 			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
 			session.setAttribute("UserType", "PartyAnalyst");
 		}else{
 			userFullName = regVO.getFirstName() + " "; 
 			regVO.setUserStatus(IConstants.FREE_USER);
+			session.setAttribute(IConstants.USER,regVO);
 			session.setAttribute("UserName", userFullName);
 			session.setAttribute("UserType", "FreeUser");
 			return getRedirectPageDetails();	
