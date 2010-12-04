@@ -192,13 +192,14 @@
  				YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
 
-	function showDetails(id, region)
+	function showDetails(id, region, nodeLabel)
 	{
 		var jsObj = {
 				
 			cadreId: id,
 			cadreRegion: region,
-			cadreType: 'TotalCadre'
+			cadreType: 'TotalCadre',
+			nodeLabel: nodeLabel
 		}	
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -215,12 +216,12 @@
 							myResults = YAHOO.lang.JSON.parse(o.responseText);	
 							if(jsObj.cadreRegion == "Not Assigned To Any Booth")	
 							{
-								showNotAssignedBoothCadreInWardable(myResults);
+								showNotAssignedBoothCadreInWardable(myResults, jsObj);
 								
 							}
 							else if(jsObj.cadreRegion == "CADRES BY BOOTHS IN WARD")
 							{
-								showAssignedBoothCadreInWardable(myResults);
+								showAssignedBoothCadreInWardable(myResults, jsObj);
 							}
 						}
 						catch(e)
@@ -238,8 +239,10 @@
 		
 	} 		
 	
-	function showAssignedBoothCadreInWardable(myResults)
+	function showAssignedBoothCadreInWardable(myResults, jsObj)
 	{
+		var count = myResults.cadreInfo.length;
+		var title = count+" Cadres having booth Details in "+jsObj.nodeLabel;
 		var cadreData = myResults.cadreInfo;
 		var cadresArray = new Array();
 		for(var i in cadreData)
@@ -247,10 +250,10 @@
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
-						landLine:cadreData[i].telephone,
+						cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
+						address: cadreData[i].villageName+', '+cadreData[i].mandalName+', '+cadreData[i].districtName,
+						memberType: cadreData[i].memberType,												
 						caste:cadreData[i].casteCategoryStr,
-						education:cadreData[i].educationStr,
-						email:cadreData[i].email,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
 						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
 						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
@@ -261,23 +264,23 @@
 	
 
 		var myColumnDefs = [ 	           
-								{key:"name",label : "Name",sortable:true,resizeable:true}, 
-								{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
-								{key:"landLine",label : "Landline", sortable:true, resizeable:true},
-								{key:"caste",label : "Caste", sortable:true, resizeable:true}, 
-								{key:"education",label : "Education", sortable:true, resizeable:true}, 
-								{key:"email",label : "Email", resizeable:true},
-								{key:"moreDetails",label : "More Details", resizeable:true},
-								{key:"update",label : "Edit", resizeable:true},
-								{key:"remove",label : "Remove", resizeable:true},
+								{key:"name",label : "Name",sortable:true}, 
+								{key:"mobile",label : "Mobile", sortable:true}, 
+								{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
+								{key:"address",label : "Address", sortable:true},
+								{key:"memberType",label : "Cadre Type", sortable:true},								
+								{key:"caste",label : "Caste", sortable:true},								
+								{key:"moreDetails",label : "More Details"},
+								{key:"update",label : "Edit"},
+								{key:"remove",label : "Remove"}
 								
 							]; 
 		var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		myDataSource.responseSchema = { 
 		fields : [
-					{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
-					{key :"caste"},{key :"education"},{key : "email"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
+					{key : "name"}, {key : "mobile",parser:"number"},{key : "address"}, 
+					{key :"cadreLevel"},{key : "memberType"},{key :"caste"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
 				 ]
 		};
 		
@@ -287,22 +290,24 @@
 			})
 		};
 
-		getCadrePopup(myColumnDefs,myDataSource,configs);
+		getCadrePopup(myColumnDefs,myDataSource,configs, title);
 	}
 
-	function showNotAssignedBoothCadreInWardable(myResults)
+	function showNotAssignedBoothCadreInWardable(myResults, jsObj)
 	{
-	var cadreData = myResults.cadreInfo;
+		var count = myResults.cadreInfo.length;
+		var title = count+" Cadres not having booth Details in "+jsObj.nodeLabel ;
+		var cadreData = myResults.cadreInfo;
 		var cadresArray = new Array();
 		for(var i in cadreData)
 		{
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
-						landLine:cadreData[i].telephone,
+						cadreLevel: cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
+						address: cadreData[i].villageName+', '+cadreData[i].mandalName+', '+cadreData[i].districtName,
+						memberType: cadreData[i].memberType,						
 						caste:cadreData[i].casteCategoryStr,
-						education:cadreData[i].educationStr,
-						email:cadreData[i].email,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
 						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
 						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
@@ -313,23 +318,23 @@
 	
 
 		var myColumnDefs = [ 	           
-								{key:"name",label : "Name",sortable:true,resizeable:true}, 
-								{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
-								{key:"landLine",label : "Landline", sortable:true, resizeable:true},
-								{key:"caste",label : "Caste", sortable:true, resizeable:true}, 
-								{key:"education",label : "Education", sortable:true, resizeable:true}, 
-								{key:"email",label : "Email", resizeable:true},
-								{key:"moreDetails",label : "More Details", resizeable:true},
-								{key:"update",label : "Edit", resizeable:true},
-								{key:"remove",label : "Remove", resizeable:true},
+								{key:"name",label : "Name",sortable:true}, 
+								{key:"mobile",label : "Mobile", sortable:true}, 
+								{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
+								{key:"address",label : "Address", sortable:true},
+								{key:"memberType",label : "Cadre Type", sortable:true},								
+								{key:"caste",label : "Caste", sortable:true}, 
+								{key:"moreDetails",label : "More Details"},
+								{key:"update",label : "Edit"},
+								{key:"remove",label : "Remove"}
 								
 							]; 
 		var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		myDataSource.responseSchema = { 
 		fields : [
-					{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
-					{key :"caste"},{key :"education"},{key : "email"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
+					{key : "name"},{key : "mobile",parser:"number"},{key : "address"},{key :"cadreLevel"},{key : "memberType"}, 
+					{key :"caste"},{key : "update"},{key:"remove"},{key:"moreDetails"} 
 				 ]
 		};
 		
@@ -339,7 +344,7 @@
 			})
 		};
 
-		getCadrePopup(myColumnDefs,myDataSource,configs);
+		getCadrePopup(myColumnDefs,myDataSource,configs,title);
 
 		
 	}	
@@ -387,11 +392,19 @@
 		str+='<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>';
 		if(cadreRegionInfo != null && cadreRegionInfo.length >0)
 		{
-			//var id = cadreRegionInfo[0].regionId;
-			//var re
-			str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span><a href="javascript:{}" id="anchor1" onclick="showDetails('+cadreRegionInfo[0].regionId+',\''+cadreRegionInfo[0].region+'\')"/>view Details</a></div>';
-			str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span><a href="javascript:{}" id="anchor2" onclick="showDetails('+cadreRegionInfo[1].regionId+',\''+cadreRegionInfo[1].region+'\')"/>view Details</a></div>';
-			
+			if(cadreRegionInfo[0].cadreCount != 0)
+			{
+				str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span><a href="javascript:{}" id="anchor1" onclick="showDetails('+cadreRegionInfo[0].regionId+',\''+cadreRegionInfo[0].region+'\', \''+node.label+'\')"/>view Details</a></div>';
+			} else {
+				str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[0].regionName+'('+cadreRegionInfo[0].region+')-'+cadreRegionInfo[0].cadreCount+' </span></div>';
+				}
+			if(cadreRegionInfo[1].cadreCount != 0)
+			{
+				str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span><a href="javascript:{}" id="anchor2" onclick="showDetails('+cadreRegionInfo[1].regionId+',\''+cadreRegionInfo[1].region+'\', \''+node.label+'\')"/>view Details</a></div>';
+			} else 
+			{
+				str+='<div style="margin:5px;"><span id="'+node.label+'" >'+cadreRegionInfo[1].regionName+'('+cadreRegionInfo[1].region+')-'+cadreRegionInfo[1].cadreCount+' </span></div>';
+			}			
 		}	
 			
 		var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
@@ -400,11 +413,11 @@
 
 	function showLink(value)
 	{	
-		
 		var cadreData = new Array();
 		var cadresArray = new Array();
+		var indexOfHyphen = value.lastIndexOf("-");
+		var title = value.substring(indexOfHyphen+1)+" Cadres Available in "+value.substring(0,indexOfHyphen);
 		
-
 		for(var i in cadreDetailsArr)
 		{
 			if(cadreDetailsArr[i].label == value)
@@ -438,10 +451,10 @@
 								{key:"cadreLevel",label : "Cadre Level", sortable:true}, 
 								{key:"address",label : "Address", sortable:true},
 								{key:"memberType",label : "Cadre Type", sortable:true},
-								{key:"casteCategory",label : "Caste Category", sortable:true, resizeable:true},
-								{key:"moreDetails",label : "More Details", resizeable:true},
-								{key:"update",label : "Edit", resizeable:true},
-								{key:"remove",label : "Remove", resizeable:true},
+								{key:"casteCategory",label : "Caste Category", sortable:true},
+								{key:"moreDetails",label : "More Details"},
+								{key:"update",label : "Edit"},
+								{key:"remove",label : "Remove"}
 								
 							]; 
 		var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
@@ -459,7 +472,7 @@
 			})
 		};
 
-		getCadrePopup(myColumnDefs,myDataSource,configs);
+		getCadrePopup(myColumnDefs,myDataSource,configs, title);
 	}
 
 	function getCadreInfo(cadreId)
