@@ -660,6 +660,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.VOTING_TRENDZ)))
 				constituencyDetails.setVotingTrendz(true);
 		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMETNS_ANALYZE)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMETNS_ANALYZE)))
+				constituencyDetails.setAnalyzeComments(true);
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMENTS_POST)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMENTS_POST)))
+				constituencyDetails.setPostComments(true);
+		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
