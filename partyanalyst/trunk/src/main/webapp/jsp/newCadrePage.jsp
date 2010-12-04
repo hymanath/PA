@@ -686,7 +686,8 @@
 				<td colspan="4" style="font-weight:normal;color:black;">If you dont know exact "Date Of Birth", select "Age" option and enter approximate age in Age text box</td>							
 			</tr>
 			<tr>
-				<td colspan ="4">
+				<td>Birth Details<font class="requiredFont"> * </font></td>
+				<td colspan ="3">
 					<table cellpadding="0">
 						<tr>
 							<td width="162"><s:radio id="dopOptionRadio" name="dobOption" list="#session.dob_Options" onclick="manageDOBOptions('radio')"/></td>
@@ -853,7 +854,7 @@
 					<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>				
 				</td>
 				<td width="165px"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
-				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="10" size="25" />  </td>
+				<td align="left" width="165px"><s:textfield id="pinCodeField" name="pinCode" maxlength="6" size="25" />  </td>
 			</tr>
 			<tr>
 				<th colspan="4"><u>Booth details are not compulsory</u></th>
@@ -930,7 +931,7 @@
 					<s:select id="pvillageField" cssClass="regionSelect" name="pvillage" list="#session.villagesList_o" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','pconstituencyField','pboothField',this.options[this.selectedIndex].value,'cadreReg','pmandalField')"></s:select>				
 				</td>
 				<td width="165px"><s:label for="ppinCodeField" id="ppinCodeLabel"  value="%{getText('pincode')}" /></td>
-				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="10" size="25" />  </td>
+				<td align="left" width="165px"><s:textfield id="ppinCodeField" name="pPinCode" maxlength="6" size="25" />  </td>
 			</tr>
 			<tr>
 				<th colspan="4"><u>Booth details are not compulsory</u></th>
