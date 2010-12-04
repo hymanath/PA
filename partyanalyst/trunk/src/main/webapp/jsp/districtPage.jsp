@@ -26,6 +26,8 @@
 
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>	
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
+	<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
+
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">
@@ -1040,16 +1042,21 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			var chartRows = chartResults.result;
 
 			 var data = new google.visualization.DataTable();
+			 var partiesArray = new Array();
 			 data.addColumn('string', 'Party');
 
 		     //for chart columns
 			 for(var i in chartColumns)
 			 {
-			   var colData = chartColumns[i].partyName;
-			   data.addColumn('number', colData);
+				 if(chartColumns[i].partyName != null)
+				 {
+				   var colData = chartColumns[i].partyName;
+				   data.addColumn('number', colData);
+				   partiesArray.push(chartColumns[i].partyName);
+				 }
 			 }
 
-		      //for chart rows
+			  //for chart rows
 			  for(var j in chartRows)
 			  {
 				  var array = new Array();
@@ -1065,8 +1072,18 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				  data.addRow(array);
 			  }
 
-			  new google.visualization.LineChart(allElecDiv).
-			  draw(data, {curveType: "function",width: 850, height: 350,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+			   //static colors for parties
+               var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+			   if(staticColors != null && staticColors.length > 0)
+	           {
+				  new google.visualization.LineChart(allElecDiv).
+					  draw(data, {curveType: "function",width: 850, height: 350,title:"",colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+			   }else
+		       {
+				  new google.visualization.LineChart(allElecDiv).
+					  draw(data, {curveType: "function",width: 850, height: 350,title:"",legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:20}});
+			   }
+
 	}
 //ref
 	function showAllElectionsInDistrict(results){
