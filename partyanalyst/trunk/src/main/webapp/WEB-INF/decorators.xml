@@ -58,7 +58,8 @@
 		<pattern>/createLocalGroupMemberPopupAction*</pattern>
 		<pattern>/saveLocalGroupMembersAction*</pattern>
 		<pattern>/cadreRegisterPopupAction*</pattern>
-		<pattern>/cadreRegisterPagePopupAction*</pattern>						
+		<pattern>/cadreRegisterPagePopupAction*</pattern>
+		<pattern>/analyzeConstituencyPopupAction*</pattern>						
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

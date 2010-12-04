@@ -1804,5 +1804,21 @@
 			</result>		
 		</action>	
 		
+		<action name="analyzeConstituencyPopupAction" class="analyzeConstituencyPopupAction">		   
+           <result name="success">/jsp/analyzeConstituencyPopupPage.jsp</result>	
+        </action>
+        
+		<action name="getCandidateResultsInConstituencyForAnalyzeAction" class="analyzeConstituencyPopupAction" method = "getCandidateResults">		   
+           <result type="json" name="success">
+				<param name="root">candidateVO</param>				
+			</result>	
+        </action>  
+        
+        <action name="getElectionYearsInConstituencyForAnalyzeAction" class="analyzeConstituencyPopupAction" method = "getElectionYearsForConstituency">		   
+           <result type="json" name="success">
+				<param name="root">electionYears</param>				
+			</result>	
+        </action>  
+              
 	</package>
 </struts>
