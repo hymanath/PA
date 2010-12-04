@@ -384,7 +384,7 @@ function getLevelWiseRangeDetails()
 
   
    var rangeStr='';
-   rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="1"/> Country';
+   //rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="1"/> Country';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="2"/> State';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="3"/> District';
    rangeStr+='<input type="radio" name="accessLevelRadio" onClick="getRegionsForAccessLevel(this.value,\'accessRegion\')" value="4"/> Constituency';
@@ -522,16 +522,16 @@ function sendSMSWithoutSearch()
 function getRegionsForAccessLevel(accessValue,regionElmtId)
 {
 	REPORTLEVEL = accessValue;
-
 	
-	var countrySelectBoxElmt = document.getElementById("countrySelectBox");
+	/*
+	//var countrySelectBoxElmt = document.getElementById("countrySelectBox");
 	var stateSelectBoxElmt = document.getElementById("stateSelectBox");
 	var districtSelectBoxElmt = document.getElementById("districtSelectBox");
 	var constituencySelectBoxElmt = document.getElementById("constituencySelectBox");
 	var mandalSelectBoxElmt = document.getElementById("mandalSelectBox");
 	var villageSelectBoxElmt = document.getElementById("villageSelectBox");
 
-	countrySelectBoxElmt.style.display="none";
+	//countrySelectBoxElmt.style.display="none";
 	stateSelectBoxElmt.style.display="none";
 	districtSelectBoxElmt.style.display="none";
 	constituencySelectBoxElmt.style.display="none";
@@ -540,29 +540,29 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 
 	if(REPORTLEVEL == '1')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '2')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 		stateSelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '3')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 		stateSelectBoxElmt.style.display="";
 		districtSelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '4')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 		stateSelectBoxElmt.style.display="";
 		districtSelectBoxElmt.style.display="";
 		constituencySelectBoxElmt.style.display="";
 	}
 	else if(REPORTLEVEL == '5')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 		stateSelectBoxElmt.style.display="";
 		districtSelectBoxElmt.style.display="";
 		constituencySelectBoxElmt.style.display="";
@@ -570,14 +570,14 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 	}
 	else if(REPORTLEVEL == '6')
 	{
-		countrySelectBoxElmt.style.display="";
+		//countrySelectBoxElmt.style.display="";
 		stateSelectBoxElmt.style.display="";
 		districtSelectBoxElmt.style.display="";
 		constituencySelectBoxElmt.style.display="";
 		mandalSelectBoxElmt.style.display="";
 		villageSelectBoxElmt.style.display="";
 	}
-	
+	*/
 
 }
 
