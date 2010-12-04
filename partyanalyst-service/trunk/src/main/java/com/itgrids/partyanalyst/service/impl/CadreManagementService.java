@@ -3116,6 +3116,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			} else if (levelId.equals(new Long(5))) {
 				ObjectTwo = "tehsil";
 				field = "tehsilId";
+				id = locationId.toString().substring(1);
+				locationId = new Long(id);
 			} else if (levelId.equals(new Long(6))) {
 				ObjectTwo = "hamlet";
 				field = "hamletId";
@@ -3131,6 +3133,8 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			} else if (levelId.equals(new Long(8))) {
 				ObjectTwo = "ward";
 				field = "constituencyId";
+				id = locationId.toString().substring(1);
+				locationId = new Long(id);
 			} else if (levelId.equals(new Long(9))) {
 				ObjectTwo = "booth";
 				field = "boothId";
@@ -3565,7 +3569,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		Long count = 0l;
 		for (int i = 0; i < size; i++) {
 			Object[] voObject = (Object[]) boothCadres.get(i);
-			count += Long.parseLong(voObject[2].toString());
+			count += Long.parseLong(voObject[1].toString());
 		}
 		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY BOOTHS");
 		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+localElectionBodyId));
@@ -3702,7 +3706,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		Long count = 0l;
 		for (int i = 0; i < size; i++) {
 			Object[] voObject = (Object[]) cadresInWards.get(i);
-			count += Long.parseLong(voObject[2].toString());			
+			count += Long.parseLong(voObject[1].toString());			
 		}
 		CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("CADRES BY WARDS");
 		regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+localElectionBodyId));
@@ -3749,10 +3753,12 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for (int i = 0; i < size; i++) {
 			Object[] voObject = (Object[]) cadresInWards.get(i);
+			Constituency constituency = (Constituency)voObject[0];
 			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("WARD");
-			regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+voObject[0].toString()));
-			regionInfoVo.setRegionName(voObject[1].toString());
-			regionInfoVo.setCadreCount(new Long(voObject[2].toString()));
+			regionInfoVo.setRegionId(new Long(IConstants.URBAN_TYPE+constituency.getConstituencyId()));
+			regionInfoVo.setRegionName(constituency.getLocalElectionBodyWard()!= null?constituency.getLocalElectionBodyWard().getWardName().concat("(").
+					concat(constituency.getName()).toUpperCase().concat(")"):constituency.getName());
+			regionInfoVo.setCadreCount(new Long(voObject[1].toString()));
 			formattedData.add(regionInfoVo);
 		}
 		return formattedData;
