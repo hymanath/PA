@@ -83,6 +83,7 @@
 	var constituencyId = ${constituencyId};	
 	var constituencyTYPE;
 	var totalNoOflocalElectionsBodies = 0;
+	
 	google.load("visualization", "1", {packages:["corechart"]});
 	function callAjax(jsObj,url)
 	{	
@@ -899,6 +900,10 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 								<div id="problemPostingDiv_Head"></div>
 								<div id="problemPostingDiv_Body"></div>
 							</div>
+							<div id="analyzeConstituencyPageDiv_main">
+								<div id="analyzeConstituencyPageDiv_Head"></div>
+								<div id="analyzeConstituencyPageDiv_Body"></div>
+							</div>
 						<c:if test="${constituencyDetails.votingTrendz}">
 							<div id="votingTrendzDiv">
 								<div id="votingTrendzDiv_Head"></div>
@@ -1137,11 +1142,12 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 </div>
 </div>
 <script type="text/javascript">
-
+	
+	
 	/*	Constituency Page basic Info
 		-----------------------------
 	*/
-	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
+		constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
 	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";	
 	
 	constituencyPageMainObj.forwardTask = "${redirectLoc}";
@@ -1153,6 +1159,10 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	constituencyPageMainObj.constituencyInfo.deformDate = "${constituencyDetails.deformDate}";
 	constituencyPageMainObj.constituencyInfo.constituencyType = "${constituencyDetails.constituencyType}";
 	constituencyPageMainObj.constituencyInfo.reservation_zone = "${constituencyDetails.reservation_zone}";	
+	
+	<c:forEach var="parliament" items="${navigationVO.pcsInfo}">
+		parliamentConstiId = "${parliament.id}";		
+	</c:forEach>
 	
 	/*	Constituency Election Results Info
 		----------------------------------

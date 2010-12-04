@@ -538,4 +538,8 @@
 	    <property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
+	<bean id="analyzeConstituencyPopupAction" class="com.itgrids.partyanalyst.web.action.AnalyzeConstituencyPopupAction" singleton="false">
+		<property name="commentsDataService" ref="commentsDataService" />	
+	</bean>
+	
 </beans>		

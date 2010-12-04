@@ -105,6 +105,7 @@ var constituencyConnectedPeople = new Array();
 var connectStatus = new Array();
 var userLoginStatus;
 var userId = '';
+var parliamentConstiId = '';
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
 		var map = new GMap2(document.getElementById("map_canvas"));
 		var geocoder = new GClientGeocoder();
@@ -780,6 +781,32 @@ function buildProblemPostingWindow()
 
 	/*var postButton = new YAHOO.widget.Button("postButton");
 	postButton.on("click", openAddNewProblemWindow); */
+}
+
+function buildAnalyzeConstituencyWindow()
+{
+	var headElmt = document.getElementById('analyzeConstituencyPageDiv_Head');
+	var bodyElmt = document.getElementById('analyzeConstituencyPageDiv_Body');
+		
+	var str='';
+	str+='<fieldset id="analyzeConstituencyFieldSet">';
+	str+='<legend style="font-weight:bold;"> Analyze Your Constituency</legend>';
+	str+='<div id="analyzeConstituencyContentDiv" class="problemPostingContentDivClass">';	
+	str+='<div>Analyze your constituency politics and can give comments and reasons.</div>';
+	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
+	//str+='<div id="analyzeConstituencyButtonDiv"><a href="analyzeConstituencyPopupAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">Analyze</a></div>';
+	str+='<div id="analyzeConstituencyButtonDiv"><a href="javascript:{}" onclick="openAnalyzeConstituencyWindow()">Analyze</a></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+}
+
+function openAnalyzeConstituencyWindow()
+{	
+	var browser1 = window.open("analyzeConstituencyPopupAction.action?constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	browser1.focus();
 }
 
 function buildConstituencyConnectPeopleWindow()
@@ -1566,9 +1593,10 @@ function initializeConstituencyPage()
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
+	buildAnalyzeConstituencyWindow();
 	buildProblemViewingWindow();
 	buildVotingTrendzInPopUp();
-	buildElectionResults();	
+	buildElectionResults();		
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
     if(constituencyPageMainObj.forwardTask != null)
