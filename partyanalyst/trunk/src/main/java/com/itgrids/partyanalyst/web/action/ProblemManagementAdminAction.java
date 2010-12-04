@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -17,16 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
-import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
-import com.itgrids.partyanalyst.dto.OptionVO;
-import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -223,7 +219,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 				}
 				
 				else if(jObj.getString("task").equals("selectedDate")){
-					Date selectedDate = dateService.convertStringToDate(jObj.getString("selectedDate"),IConstants.DATE_PATTERN);
+					Date selectedDate = DateService.convertStringToDate(jObj.getString("selectedDate"),IConstants.DATE_PATTERN);
 					result = problemManagementReportService.getAllApprovalProblemsForSelectedDate(selectedDate,IConstants.NEW,jObj.getString("choice"));
 				}
 				

@@ -27,9 +27,11 @@
 		<property name="customMessageDAO" ref="customMessageDAO" />		
 		<property name="messageTypeDAO" ref="messageTypeDAO"/>
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
+		<property name="profileOptsDAO" ref="profileOptsDAO"/>
+		<property name="userProfileOptsDAO" ref="userProfileOptsDAO"/>
 		<property name="dateService" ref="dateService"/> 
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/> 
-		<property name="staticDataService" ref="staticDataService" /> 
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >

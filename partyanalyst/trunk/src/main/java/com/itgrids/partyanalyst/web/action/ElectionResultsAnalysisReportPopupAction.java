@@ -333,7 +333,6 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getAnalysisDetailsInPartyWonPositions"))
@@ -369,7 +368,6 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

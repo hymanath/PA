@@ -770,7 +770,6 @@ public class ConstituencyPageAction extends ActionSupport implements
    		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
-   		
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
    		if(user==null){
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL);	

@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VillageBoothElectionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVillageBoothDataPopulationService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,7 +24,9 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 	private Long electionId;
 	private IStaticDataService staticDataService;
 	private String task = null;
+	private Boolean isValidate;
 	JSONObject jObj = null;
+	private VillageBoothElectionVO villageBoothElectionVO;
 	private static final Logger log = Logger.getLogger(VillageBoothElectionMapAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -87,8 +90,25 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 		this.staticDataService = staticDataService;
 	}
 
+	public Boolean getIsValidate() {
+		return isValidate;
+	}
+
+	public void setIsValidate(Boolean isValidate) {
+		this.isValidate = isValidate;
+	}
+
+	public VillageBoothElectionVO getVillageBoothElectionVO() {
+		return villageBoothElectionVO;
+	}
+
+	public void setVillageBoothElectionVO(
+			VillageBoothElectionVO villageBoothElectionVO) {
+		this.villageBoothElectionVO = villageBoothElectionVO;
+	}
+
 	public String execute(){
-		villageBoothDataPopulationService.readExcelAndInsertData(filePath, electionId);
+		villageBoothElectionVO = villageBoothDataPopulationService.readExcelAndInsertData(filePath, electionId, isValidate);
 		return SUCCESS;
 	}
 	
