@@ -62,8 +62,12 @@
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type = "text/javascript">
+var accessValue = '${sessionScope.USER.accessValue}';
+var accessType = '${sessionScope.USER.accessType}';
+
 function populateLocations(val,source)
 {	
+
 	REPORTLEVEL = val;
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
@@ -71,13 +75,15 @@ function populateLocations(val,source)
 	var row4El = document.getElementById("row4");
 	var row5El = document.getElementById("row5");
 	var row6El = document.getElementById("row6");
-	//var boothNoTextEl = document.getElementById("boothNoText");
-	//var hiddenEl = document.getElementById("cadreLevelValue");
 	var stateFieldEl = document.getElementById("stateField_s");
 	var districtFieldEl = document.getElementById("districtField_s"); 
+	var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
 	var constituencyFieldEl = document.getElementById("constituencyField_s");
 	var mandalFieldEl = document.getElementById("mandalField_s");
 	var hamletFieldEl = document.getElementById("hamletField_s");		
+
+	
+	/*
 	if(source != 'onLoad')
 	{
 		clearOptionsListForSelectElmtId("stateField_s");
@@ -86,6 +92,51 @@ function populateLocations(val,source)
 		clearOptionsListForSelectElmtId("mandalField_s");
 		clearOptionsListForSelectElmtId("hamletField_s");
 		getLocationHierarchies(1, "statesInCountry", "cadreSearch", "stateField_s", null, null, null);
+	}*/	
+	if(source == 'onChange')
+{
+	if(accessType == 'COUNTRY')
+	{
+		stateFieldEl.selectedIndex = '0';
+		districtFieldEl.selectedIndex = '0';
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+	} else if(accessType == 'STATE')
+	{
+		districtFieldEl.selectedIndex = '0';
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+	} else if(accessType == 'DISTRICT' || accessType == 'MP')
+	{
+		constituencyFieldEl.selectedIndex = '0';
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+		getSubRegionsInDistrict(selectedDistrict,'cadreSearch','constituencyField_s','cadreSearch')
+	} else if(accessType == 'MLA')
+	{
+		mandalFieldEl.selectedIndex = '0';
+		hamletFieldEl.selectedIndex = '0';
+	}						
+} else if(source == "onLoad")
+	{
+		//setCadreValue(accessValue,'onChange');
+		if(val == 9)
+		{
+			mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
+			var flag = mandalField_sVal.search("Greater Municipal Corp");
+			if(flag == '-1')
+			{
+				if(row6El.style.display == 'none')
+					row6El.style.display = '';						
+			} else {
+				if(row5El.style.display == 'none')
+					row5El.style.display = '';
+				if(row6El.style.display == 'none')
+					row6El.style.display = '';
+			}
+		}
 	}	
 	
 	row1El.style.display = 'none';
@@ -177,6 +228,160 @@ function populateLocations(val,source)
 	}
 			 
 }
+
+/*
+function populateLocations(val,source)
+{	
+	REPORTLEVEL = val;
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+	//var boothNoTextEl = document.getElementById("boothNoText");
+	//var hiddenEl = document.getElementById("cadreLevelValue");
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s");
+	var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var mandalField_sVal;	
+	row1El.style.display = 'none';
+	row2El.style.display = 'none';
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+	row6El.style.display = 'none';	
+	if(source == 'onChange')
+	{	
+		//hiddenEl.value='';
+		if(accessType == 'COUNTRY')
+		{
+			stateFieldEl.selectedIndex = '0';
+			districtFieldEl.selectedIndex = '0';
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+		} else if(accessType == 'STATE')
+		{
+			districtFieldEl.selectedIndex = '0';
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+		} else if(accessType == 'DISTRICT' || accessType == 'MP')
+		{
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+			getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel')
+		} else if(accessType == 'MLA')
+		{
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+		}						
+	} else if(source == "onLoad")
+		{
+			//setCadreValue(accessValue,'onChange');
+			if(val == 9)
+			{
+				mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
+				var flag = mandalField_sVal.search("Greater Municipal Corp");
+				if(flag == '-1')
+				{
+					if(row6El.style.display == 'none')
+						row6El.style.display = '';						
+				} else {
+					if(row5El.style.display == 'none')
+						row5El.style.display = '';
+					if(row6El.style.display == 'none')
+						row6El.style.display = '';
+				}
+			}
+		}	
+			
+	var value = val;
+	if(value == 1)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		
+	} else if(value == 2)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+	} else if(value == 3)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';					
+	} else if(value == 4)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';			
+	} else if(value == 5)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 6)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 7)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 8)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 9)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';			
+	}	 
+}
+*/
 </script>
 <style>
 .btnClass
@@ -248,7 +453,7 @@ function populateLocations(val,source)
 								<tr id="row4" style="display:none;">
 									<td width="200"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /></td>
 									<td>
-										<s:select id="mandalField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,'cadreSearch','null','cadreSearch','constituencyField_s')"></s:select>
+										<s:select id="mandalField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreSearch','null','cadreSearch','constituencyField_s','row6', 'row5')"></s:select>
 									</td>
 								</tr>					
 								<tr id="row5" style="display:none;">
