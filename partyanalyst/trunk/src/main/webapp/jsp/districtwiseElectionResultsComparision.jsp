@@ -16,6 +16,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
@@ -120,6 +121,7 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	 var chartRows = results.partyResultsforDistWiseChart;
 		
 	 var data = new google.visualization.DataTable();
+	 var partiesArray = new Array();
 	
 	 data.addColumn('string', 'Party');
 	  var partysCount = 0;
@@ -132,9 +134,11 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		   if(partyN != null)
 		  {
             data.addColumn('number', partyN);
+			partiesArray.push(partyN);
 			break;
 		  }
 	    data.addColumn('number', chartColumns[i].name);
+		partiesArray.push(chartColumns[i].name);
 		partysCount++;
 	  }
 
@@ -175,16 +179,28 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		
 	  }
 		 
-    
+      //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
 	  var ctitle='';
       if(partyN != null) 
 	     ctitle = partyN+' District Wise Election Results By Seats Won'; 
 	  else
          ctitle = 'All Parties District Wise Election Results By Seats Won';
+
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+        new google.visualization.LineChart(districtWiseGraphEl).
+		  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+		  });
+	  }
+	  else
+	  {
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
-      });
-		
+		  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+		  });
+	  }
+			
  }
 
  function getDistrictResultsInteractiveChartVotesPercent(results,partyN)
@@ -194,6 +210,7 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	 var chartRows = results.partyResultsforDistWiseChart;
 		
 	 var data = new google.visualization.DataTable();
+	 var partiesArray = new Array();
 	
 	 data.addColumn('string', 'Party');
 	 var partysCount = 0;
@@ -206,9 +223,11 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		  if(partyN != null)
 		  {
             data.addColumn('number', partyN);
+			partiesArray.push(partyN);
 			break;
 		  }
 	    data.addColumn('number', chartColumns[i].name);
+		partiesArray.push(chartColumns[i].name);
 		partysCount++;
 	  }
 
@@ -257,10 +276,23 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	     ctitle = partyN+' District Wise Election Results By Votes Percentage'; 
 	  else
          ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
-	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
-      });
-		
+
+	   //static colors for parties
+      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+	  if(staticColors != null && staticColors.length > 0)
+	  {
+		   new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	  }
+	  else
+	  {
+		  new google.visualization.LineChart(districtWiseGraphEl).
+			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  });
+	  }
+
  }
 
  function getInteractiveChartBySeatsWonForADistrict(results,districtN)
