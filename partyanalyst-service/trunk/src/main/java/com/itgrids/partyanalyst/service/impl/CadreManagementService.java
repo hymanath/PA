@@ -355,7 +355,7 @@ public class CadreManagementService {
 		this.boothDAO = boothDAO;
 	}
 
-	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<String> skills, String task) {
+	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<Long> skills, String task) {
 		
 		final ResultStatus rs= new ResultStatus();
 		if (log.isDebugEnabled()) {
@@ -671,7 +671,7 @@ public class CadreManagementService {
 		}
 	}
 */
-	private void setCadreSkillsInfo(final Cadre cadreObj, final List<String> skills, String task) {
+	private void setCadreSkillsInfo(final Cadre cadreObj, final List<Long> skills, String task) {
 		log.debug("inside cadre skills block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
@@ -694,7 +694,7 @@ public class CadreManagementService {
 					{	
 						for (int i = 0; i < skills.size(); i++) {
 							CadreSkills cadreSkill = new CadreSkills();
-							PartyCadreSkills partyCadreSkill = partyCadreSkillsDAO.get(new Long(skills.get(i)));
+							PartyCadreSkills partyCadreSkill = partyCadreSkillsDAO.get(skills.get(i));
 							cadreSkill.setPartyCadreSkills(partyCadreSkill);
 							cadreSkill.setCadre(cadreObj);
 							cadreSkillsDAO.save(cadreSkill);
@@ -712,7 +712,7 @@ public class CadreManagementService {
 		});					
 	}
 
-	private void setParticipatedTrainingCamps(final Cadre cadreObj, final List<String> trainingCamps, String task) {
+	private void setParticipatedTrainingCamps(final Cadre cadreObj, final List<Long> trainingCamps, String task) {
 		log.debug("inside setParticipatedTrainingCamps block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
@@ -733,7 +733,7 @@ public class CadreManagementService {
 				{		
 					for (int j = 0; j < trainingCamps.size(); j++) {
 						CadreParticipatedTrainingCamps cadreParticipatedTrainingCamp = new CadreParticipatedTrainingCamps();
-						PartyTrainingCamps partyTrainingCamp = partyTrainingCampsDAO.get(new Long(trainingCamps.get(j)));
+						PartyTrainingCamps partyTrainingCamp = partyTrainingCampsDAO.get(trainingCamps.get(j));
 						cadreParticipatedTrainingCamp.setPartyTrainingCamps(partyTrainingCamp);
 						cadreParticipatedTrainingCamp.setCadre(cadreObj);
 						cadreParticipatedTrainingCampsDAO.save(cadreParticipatedTrainingCamp);
@@ -1916,23 +1916,24 @@ public class CadreManagementService {
 						cadreInfo.setEndingDate(sdf.format(cadre.getEndingDate()));
 					// set cadre skills
 					List<CadreSkills> cadreSkillsList=cadreSkillsDAO.findByCadreId(cadre.getCadreId());
-					String[] cadreSkillsIds = new String[cadreSkillsList.size()];
+					List<Long> cadreSkillsIds = new ArrayList<Long>();
 					String[] cadreSkills = new String[cadreSkillsList.size()];
 					if(cadreSkillsList != null && cadreSkillsList.size()>0)
 					{	
 						log.debug("skills list size:"+cadreSkillsList.size());
 						int j=0;
 						for(CadreSkills obj: cadreSkillsList){
-							cadreSkillsIds[j] = obj.getCadreSkillId().toString();
+							cadreSkillsIds.add(obj.getCadreSkillId().longValue());
 							cadreSkills[j] = obj.getPartyCadreSkills().getSkill();							
 							j++;
 						}
 					}
-					//cadreInfo.setSkills(cadreSkillsIds);
+					cadreInfo.setSkills(cadreSkillsIds);
 					cadreInfo.setCadreSkillsNames(cadreSkills);
 					//set cadre Participated training camps
 					List<CadreParticipatedTrainingCamps> result=cadreParticipatedTrainingCampsDAO.findByCadreId(cadre.getCadreId());
 					List<SelectOptionVO> trainingCamps = new ArrayList<SelectOptionVO>(); 
+					List<Long> trainingCampIds = new ArrayList<Long>();
 					String[] participatedTrainingCampNames = new String[result.size()];
 					
 					int k = 0;
@@ -1941,10 +1942,12 @@ public class CadreManagementService {
 						optionVO.setId(obj.getPartyTrainingCamps().getPartyTrainingCampsId());
 						optionVO.setName(obj.getPartyTrainingCamps().getRegionLevel());
 						trainingCamps.add(optionVO);
+						trainingCampIds.add(obj.getPartyTrainingCamps().getPartyTrainingCampsId());
 						participatedTrainingCampNames[k] = obj.getPartyTrainingCamps().getRegionLevel();
 						k++;						
 					}
 					cadreInfo.setSelectedTrainingCamps(trainingCamps);
+					cadreInfo.setTrainingCamps(trainingCampIds);
 					cadreInfo.setCadreParticipatedCampNames(participatedTrainingCampNames);					
 			}
 		}	
