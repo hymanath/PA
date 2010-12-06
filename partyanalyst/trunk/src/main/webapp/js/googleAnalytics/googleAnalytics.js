@@ -21,11 +21,11 @@
 	 for(var i=0; i<parties.length; i++)
 	 {
 		 if(parties[i].partyName == 'TDP')
-			 colorArray.push('#FFFF00');
+			 colorArray.push('#C7005D');
 		 else if(parties[i].partyName == 'TRS')
              colorArray.push('#F5A9F2');
 		 else if(parties[i].partyName == 'INC')
-             colorArray.push('#BDBDBD');
+             colorArray.push('#2A00D2');
 		 else if(parties[i].partyName == 'BJP')
              colorArray.push('#FE9A2E');
 		 else if(parties[i].partyName == 'PRP')
@@ -55,11 +55,11 @@
 	 for(var i=0; i<parties.length; i++)
 	 {
 		 if(parties[i] == 'TDP')
-			 colorArray.push('#FFFF00');
+			 colorArray.push('#C7005D');
 		 else if(parties[i] == 'TRS')
              colorArray.push('#F5A9F2');
 		 else if(parties[i] == 'INC')
-             colorArray.push('#BDBDBD');
+             colorArray.push('#2A00D2');
 		 else if(parties[i] == 'BJP')
              colorArray.push('#FE9A2E');
 		 else if(parties[i] == 'PRP')
