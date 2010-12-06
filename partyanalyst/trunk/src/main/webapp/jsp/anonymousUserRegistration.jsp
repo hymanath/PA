@@ -312,7 +312,7 @@ function showDetails(results)
 
 					<tr>
 						<td colspan="2" width="100px;" style="padding-left:15px;">
-							<s:checkboxlist list="#session.profileOpts" labelposition="top" listKey="id" listValue="name" name="profileOpts"/>	
+							<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>	
 						</td>
 					</tr>
 
