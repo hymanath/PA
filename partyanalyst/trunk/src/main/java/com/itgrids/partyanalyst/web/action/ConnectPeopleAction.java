@@ -180,14 +180,14 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		session = request.getSession();
 		Object regVO = session.getAttribute(IConstants.USER);
 		
-		if(regVO == null){
+		if(regVO == null || ((RegistrationVO)regVO).getRegistrationID() == null){
 			log.error(" No User Log In .....");			
 			return IConstants.NOT_LOGGED_IN;
 		}
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
 		List<Long> userId = new ArrayList<Long>(0);
-		loginUserId = new Long(user.getRegistrationID());
+		loginUserId = user.getRegistrationID();
 		userId.add(loginUserId);
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);

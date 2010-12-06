@@ -42,6 +42,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private Long localBodyId = null;
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
+    private Long loginUserId;
+    
 	private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
@@ -267,6 +269,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		Boolean savedSuccessfully;
 		
 		if(registrationId != null){
+			loginUserId = registrationId;
 			regVO.setRegistrationID(registrationId);
 			savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
 		}else
@@ -338,6 +341,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
 		return Action.ERROR;
 	}
+	
+	 public Long getLoginUserId() {
+		return loginUserId;
+	 }
+	
+	 public void setLoginUserId(Long loginUserId) {
+		this.loginUserId = loginUserId;
+	 }
 	
 	 
 }
