@@ -106,6 +106,11 @@ function fillOptionsForSelectedElmt(elmtId, optionsList)
 }
 function getSubRegionsInDistrict(distId, module, elementId, addressType)
 {	
+	if(distId == 0)
+	{
+		alert("Select Valid District");
+		return;
+	}
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	
 	var scopeSelected;
