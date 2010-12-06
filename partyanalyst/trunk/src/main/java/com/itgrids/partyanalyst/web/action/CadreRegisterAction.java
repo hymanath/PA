@@ -103,8 +103,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String firstFamilyMemberRelationId,secondFamilyMemberRelationId,thirdFamilyMemberRelationId;
 	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	private ResultStatus rs; 
-	private List<String> skills;
-	private List<String> trainingCamps;
+	private List<Long> skills;
+	private List<Long> trainingCamps;
 	private List<String> languageOptions_English;
 	private List<String> languageOptions_Hindi;
 	private String cadreLevelState;
@@ -127,11 +127,11 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo = cadreInfo;
 	}
 
-	public List<String> getTrainingCamps() {
+	public List<Long> getTrainingCamps() {
 		return cadreInfo.getTrainingCamps();
 	}
 
-	public void setTrainingCamps(List<String> trainingCamps) {
+	public void setTrainingCamps(List<Long> trainingCamps) {
 		log.error("inside setting method of training camps"+trainingCamps.size());
 		this.cadreInfo.setTrainingCamps(trainingCamps);
 	}
@@ -503,11 +503,11 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.rs = rs;
 	}	
 
-	public List<String> getSkills() {
+	public List<Long> getSkills() {
 		return cadreInfo.getSkills();
 	}
 
-	public void setSkills(List<String> skills) {
+	public void setSkills(List<Long> skills) {
 		this.cadreInfo.setSkills(skills);
 	}	
 
@@ -555,7 +555,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getCadreLevelState() {
 		return cadreInfo.getCadreLevelState();
 	}
-
+	
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid State Selection in Cadre Level")
 	public void setCadreLevelState(String cadreLevelState) {
 		this.cadreInfo.setCadreLevelState(cadreLevelState);
 	}
@@ -564,6 +565,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelDistrict();
 	}
 	
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid District Selection in Cadre Level")
 	public void setCadreLevelDistrict(String cadreLevelDistrict) {
 		this.cadreInfo.setCadreLevelDistrict(cadreLevelDistrict);
 	}
@@ -572,6 +574,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelConstituency();
 	}
 	
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Constituency Selection in Cadre Level")
 	public void setCadreLevelConstituency(String cadreLevelConstituency) {
 		this.cadreInfo.setCadreLevelConstituency(cadreLevelConstituency);
 	}
@@ -580,6 +583,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getCadreLevelMandal();
 	}
 
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Mandal/Municipal/Corp/GMC Selection in Cadre Level")
 	public void setCadreLevelMandal(String cadreLevelMandal) {
 		this.cadreInfo.setCadreLevelMandal(cadreLevelMandal);
 	}
@@ -587,7 +591,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getCadreLevelVillage() {
 		return cadreInfo.getCadreLevelVillage();
 	}
-
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Village/Ward/Division Selection in Cadre Level")
 	public void setCadreLevelVillage(String cadreLevelVillage) {
 		this.cadreInfo.setCadreLevelVillage(cadreLevelVillage);
 	}	
@@ -595,7 +599,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getCadreLevelBooth() {
 		return this.cadreInfo.getCadreLevelBooth();
 	}
-
+	//@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Booth Selection in Cadre Level")
 	public void setCadreLevelBooth(String cadreLevelBooth) {
 		this.cadreInfo.setCadreLevelBooth(cadreLevelBooth);
 	}
