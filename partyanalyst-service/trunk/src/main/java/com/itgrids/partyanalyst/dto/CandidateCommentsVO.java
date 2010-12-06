@@ -27,6 +27,7 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long rank;
 	private Long userId;
 	private String userName;
+	private Long postedUsersCount;
 	private List<UserCommentsInfoVO> commetsAndScores;
 	
 	//getters and setters
@@ -101,6 +102,12 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public Long getPostedUsersCount() {
+		return postedUsersCount;
+	}
+	public void setPostedUsersCount(Long postedUsersCount) {
+		this.postedUsersCount = postedUsersCount;
 	}
 	
 }
