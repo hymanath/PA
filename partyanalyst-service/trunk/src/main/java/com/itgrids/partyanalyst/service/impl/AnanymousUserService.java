@@ -213,6 +213,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setPincode(userDetails.getPincode());
 					ananymousUser = ananymousUserDAO.save(ananymousUser);
 					
+					if(userDetails.getProfileOpts() != null)
 					for(Long optsId:userDetails.getProfileOpts()){
 						profileOpts = profileOptsDAO.get(optsId);
 						userProfileOptsDAO.save(new UserProfileOpts(ananymousUser, profileOpts));
@@ -1085,20 +1086,25 @@ public class AnanymousUserService implements IAnanymousUserService {
 		RegistrationVO registrationVO = new RegistrationVO();
 		AnanymousUser registration = ananymousUserDAO.get(registrationId);
 		
-		registrationVO.setRegistrationID(registrationId);
-		registrationVO.setUserName(registration.getUsername());
-		registrationVO.setPassword(registration.getPassword());
-		registrationVO.setGender(registration.getGender());
-		registrationVO.setEmail(registration.getEmail());
-		registrationVO.setPhone(registration.getPhone());
-		registrationVO.setMobile(registration.getMobile());
-		registrationVO.setAddress(registration.getAddress());
-		registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
-		registrationVO.setFirstName(registration.getName());
-		registrationVO.setLastName(registration.getLastName());
-		registrationVO.setState(registration.getState().getStateId().toString());
-		registrationVO.setDistrict(registration.getDistrict().getDistrictId().toString());
-		registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
+		try{
+			registrationVO.setRegistrationID(registrationId);
+			registrationVO.setUserName(registration.getUsername());
+			registrationVO.setPassword(registration.getPassword());
+			registrationVO.setGender(registration.getGender());
+			registrationVO.setEmail(registration.getEmail());
+			registrationVO.setPhone(registration.getPhone());
+			registrationVO.setMobile(registration.getMobile());
+			registrationVO.setAddress(registration.getAddress());
+			registrationVO.setDateOfBirth(DateService.timeStampConversionToDDMMYY(registration.getDateofbirth().toString()));
+			registrationVO.setFirstName(registration.getName());
+			registrationVO.setLastName(registration.getLastName());
+			registrationVO.setState(registration.getState().getStateId().toString());
+			registrationVO.setDistrict(registration.getDistrict().getDistrictId().toString());
+			registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
+			registrationVO.setPincode(registration.getPincode());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return registrationVO;
 	}
