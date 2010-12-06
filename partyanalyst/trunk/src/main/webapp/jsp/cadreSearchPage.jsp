@@ -118,6 +118,7 @@ function populateLocations(val,source)
 	{
 		mandalFieldEl.selectedIndex = '0';
 		hamletFieldEl.selectedIndex = '0';
+		getSubRegionsInConstituency(accessValue,'cadreSearch','mandalField_s','cadreSearch')
 	}						
 } else if(source == "onLoad")
 	{
@@ -459,7 +460,7 @@ function populateLocations(val,source)
 								<tr id="row5" style="display:none;">
 									<td width="200"><s:label for="hamletField_s" id="mandalLabel" theme="simple"  value="%{getText('wardOrHamlet')}" /></td>
 									<td>
-										<s:select id="hamletField_s" cssClass="regionSelect" list="{}" theme="simple" listKey="id" listValue="name"></s:select>
+										<s:select id="hamletField_s" cssClass="regionSelect" onchange="getBoothsInWard('cadreSearch','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreSearch','mandalField_s')" list="{}" theme="simple" listKey="id" listValue="name"></s:select>
 									</td>
 								</tr>
 								<tr id="row6" style="display:none;">
