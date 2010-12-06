@@ -95,11 +95,11 @@ public class CadreInfo implements Serializable{
 	private Long partyCommittee;
 	private String educationStr;
 	private String casteCategoryStr;
-	private List<String> skills;
+	private List<Long> skills;
 	private String[] cadreSkillsNames;
 	private List<SelectOptionVO> selectedTrainingCamps = new ArrayList<SelectOptionVO>();
 	private String[] cadreParticipatedCampNames;
-	private List<String> trainingCamps;
+	private List<Long> trainingCamps;
 	private String cadreLevelState;
 	private String cadreLevelDistrict;
 	private String cadreLevelConstituency;
@@ -538,10 +538,10 @@ public class CadreInfo implements Serializable{
 	public void setCadreParticipatedCampNames(String[] cadreParticipatedCampNames) {
 		this.cadreParticipatedCampNames = cadreParticipatedCampNames;
 	}
-	public List<String> getSkills() {
+	public List<Long> getSkills() {
 		return skills;
 	}
-	public void setSkills(List<String> skills) {
+	public void setSkills(List<Long> skills) {
 		this.skills = skills;
 	}
 	public List<SelectOptionVO> getSelectedTrainingCamps() {
@@ -550,10 +550,10 @@ public class CadreInfo implements Serializable{
 	public void setSelectedTrainingCamps(List<SelectOptionVO> selectedTrainingCamps) {
 		this.selectedTrainingCamps = selectedTrainingCamps;
 	}
-	public List<String> getTrainingCamps() {
+	public List<Long> getTrainingCamps() {
 		return trainingCamps;
 	}
-	public void setTrainingCamps(List<String> trainingCamps) {
+	public void setTrainingCamps(List<Long> trainingCamps) {
 		this.trainingCamps = trainingCamps;
 	}
 	public String getCadreLevelState() {
