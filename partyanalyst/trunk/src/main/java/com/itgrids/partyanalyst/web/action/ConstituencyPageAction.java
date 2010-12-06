@@ -135,7 +135,21 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private NavigationVO messageTypes;
 	private LocalBodyElectionResultsVO localBodyElectionResults;
 	private ConstituencyVO greaterInfo;
-	
+	private Long parliamentConstiId;    
+    private String taskType;
+    
+	public Long getParliamentConstiId() {
+		return parliamentConstiId;
+	}
+	public void setParliamentConstiId(Long parliamentConstiId) {
+		this.parliamentConstiId = parliamentConstiId;
+	}
+	public String getTaskType() {
+		return taskType;
+	}
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
 	public List<SelectOptionVO> getLocalBodyId() {
 		return localBodyId;
 	}

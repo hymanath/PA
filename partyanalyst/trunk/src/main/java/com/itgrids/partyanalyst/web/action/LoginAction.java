@@ -53,6 +53,25 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String stateName;
 	private String year;
 	
+	private Long parliamentConstiId;    
+    private String taskType;
+    
+	public Long getParliamentConstiId() {
+		return parliamentConstiId;
+	}
+
+	public void setParliamentConstiId(Long parliamentConstiId) {
+		this.parliamentConstiId = parliamentConstiId;
+	}
+
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
+
 	public String getDistrictName() {
 		return districtName;
 	}

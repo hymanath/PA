@@ -55,6 +55,8 @@
 			<result type="redirect" name="adminUpload">adminUpload.action</result>
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result type="redirect" name="userEntitlementAction">userEntitlementAction.action</result>
+			<result type="redirect" name="analyzeConstituencyPopup">analyzeConstituencyPopupAction.action</result>
+			
 			<result type="chain" name="redirectUrl">${url}</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
@@ -65,7 +67,8 @@
 			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
 			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
 			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
-			 <result name="connectPeoplePageRedirect" type="chain">connectPeopleAction</result>			 
+			 <result name="connectPeoplePageRedirect" type="chain">connectPeopleAction</result>
+			 			 	 
         </action>
 		
 		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
@@ -1804,8 +1807,18 @@
 			</result>		
 		</action>	
 		
-		<action name="analyzeConstituencyPopupAction" class="analyzeConstituencyPopupAction">		   
-           <result name="success">/jsp/analyzeConstituencyPopupPage.jsp</result>	
+		<action name="analyzeConstituencyPopupAction" class="analyzeConstituencyPopupAction">	
+			<result name="success">/jsp/analyzeConstituencyPopupPage.jsp</result>
+    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=analyzeConstituencyAction</result>
+			<result type="redirect" name="PARTY_ANALYST_USER">electionResultsAnalysisAction.action</result>
+
+            <!-- Problem Management Flow From Different Pages -->
+			 <interceptor-ref name="basicStack"/>
+			 <result name="statePageRedirect" type="chain">statePageAction</result>
+			 <result name="districtPageRedirect" type="chain">districtPageAction</result>
+			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
+			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>	   
+           	
         </action>
         
 		<action name="getCandidateResultsInConstituencyForAnalyzeAction" class="analyzeConstituencyPopupAction" method = "getCandidateResults">		   
@@ -1819,6 +1832,11 @@
 				<param name="root">electionYears</param>				
 			</result>	
         </action>  
-              
+        
+        <action name="getCommentsResultsForElectionYearAction" class="analyzeConstituencyPopupAction" method = "getCommentsResults">		   
+           <result type="json" name="success">
+				<param name="root">candidateComments</param>				
+			</result>	
+        </action>       
 	</package>
 </struts>

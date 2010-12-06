@@ -64,6 +64,10 @@
 </style>
 <script type="text/javascript">
 	
+	var userId = "${sessionScope.USER.registrationID}";
+	var userType = "${sessionScope.USER.userStatus}";
+	var loginStat = "${sessionScope.loginStatus}";
+	
 	var constituencyResults,createGroupDialog;
 	var parliamentResult;
 	var tehsilElections={
@@ -85,6 +89,8 @@
 	var constituencyTYPE;
 	var totalNoOflocalElectionsBodies = 0;
 	
+	var taskType = "${taskType}";
+
 	google.load("visualization", "1", {packages:["corechart"]});
 	function callAjax(jsObj,url)
 	{	
