@@ -1054,12 +1054,13 @@ function showCadreSearchResults(jsObj,results)
 		return;
 	
 	bodySearchElmt.style.display = 'block';
-
+	resultsCountEl.innerHTML ='';
 	headElmt.innerHTML = 'Search Results';
 		
 	if(!results || results.length == 0)
 	{
 		bodySearchElmt.innerHTML = '<div style="color:#C0566F;font-size:12px;">No Search results found.</div>';
+		
 		return;
 	} else 
 		resultsCountEl.innerHTML = '<span>'+results.length+'</span> cadres found with this selection criteria';
