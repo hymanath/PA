@@ -518,8 +518,9 @@ function buildPeopleYouMayKnowContent()
 		return;
 
 	var str = '';
+	str += '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
 	str += '<div id="peopleMayKnow_main">';
-	str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;<a href="anonymousUserAction.action?userId='+loginUserId+'">View Profile</a></div>';
+	str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	str += '<div id="peopleMayKnow_body">';
 	str += '	<div class="peopleMayKnow_data">';
 	str += '	<table width="100%" class="peopleMayKnow_data_table">';
