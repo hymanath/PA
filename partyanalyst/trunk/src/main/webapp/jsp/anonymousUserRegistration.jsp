@@ -188,7 +188,14 @@ function showDetails(results)
 <body>  
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple">  
    <br><br>
-  <div id="headerDiv" style="margin-right: 500px;font-size:20px;text-decoration:underline;" > User Registration Form </div>
+  <div id="headerDiv" style="margin-right: 500px;font-size:20px;text-decoration:underline;" > 
+   <c:if test="${empty registrationId}">
+   	User Registration Form
+   </c:if>
+   <c:if test="${! empty registrationId}">
+   	User Profile
+   </c:if> 
+  </div>
  <div id="registrationMainDiv">
 		<table class="registrationTable">
 			<tr>
