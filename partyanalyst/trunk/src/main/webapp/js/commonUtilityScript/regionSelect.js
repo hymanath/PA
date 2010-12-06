@@ -713,7 +713,7 @@ function getCadresResults(btnType)
 		}
 		else if(REPORTLEVEL == "9")
 		{
-			if(!boothSelectElmt || boothSelectElmt.options[villageSelectElmt.selectedIndex].value == "0")
+			if(!boothSelectElmt || boothSelectElmt.options[boothSelectElmt.selectedIndex].value == "0")
 			{
 				elmt.innerHTML = 'Select Village Location';
 				return;
