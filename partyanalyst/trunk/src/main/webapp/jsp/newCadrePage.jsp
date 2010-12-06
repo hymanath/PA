@@ -398,7 +398,8 @@
 		var hiddenEl = document.getElementById("cadreLevelValue");
 		var stateFieldEl = document.getElementById("stateField_s");
 		var districtFieldEl = document.getElementById("districtField_s");
-		var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
+		if(districtFieldEl.options.length > 0)
+			var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
 		var constituencyFieldEl = document.getElementById("constituencyField_s");
 		var mandalFieldEl = document.getElementById("mandalField_s");
 		var hamletFieldEl = document.getElementById("hamletField_s");
