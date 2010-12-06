@@ -795,7 +795,25 @@ function buildAnalyzeConstituencyWindow()
 	str+='<div>Analyze your constituency politics and can give comments and reasons.</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
 	//str+='<div id="analyzeConstituencyButtonDiv"><a href="analyzeConstituencyPopupAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">Analyze</a></div>';
-	str+='<div id="analyzeConstituencyButtonDiv"><a href="javascript:{}" onclick="openAnalyzeConstituencyWindow()">Analyze</a></div>';
+
+	if(loginStat == 'out')
+	{
+		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
+		{
+			str	+= '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
+			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Analyze</a>';
+			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">View Results</a>';
+			str += '</div>';		
+		}
+	}
+	else {
+        str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" style="margin-right:10px;">Analyze</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" style="margin-right:10px;">View Results</a>';
+		str += '</div>';		
+	}
+		
+	
 	str+='</div>';
 	str+='</fieldset>';
 	
@@ -803,10 +821,24 @@ function buildAnalyzeConstituencyWindow()
 		bodyElmt.innerHTML=str;
 }
 
-function openAnalyzeConstituencyWindow()
-{	
-	var browser1 = window.open("analyzeConstituencyPopupAction.action?constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
-	browser1.focus();
+
+function openAnalyzeConstituencyWindow(type)
+{		
+	var taskType = type;
+
+	if(userId != "" && userType == "FREE_USER")
+	{
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		browser1.focus();
+	}
+	else if(userId == "" && userType == "FREE_USER")
+	{
+		alert("Please Login To Post Comment");
+	}
+	else if(userType != "FREE_USER")
+	{
+		alert("Comment For Free User Only");
+	}
 }
 
 function buildConstituencyConnectPeopleWindow()
@@ -1599,12 +1631,22 @@ function initializeConstituencyPage()
 	buildElectionResults();		
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
-    if(constituencyPageMainObj.forwardTask != null)
+
+    if(constituencyPageMainObj.forwardTask != null && taskType == "")
 	{
 		if(constituencyPageMainObj.forwardTask != "")
 		{
 		   openAddNewProblemWindowForConstituency();
 		}
+	}
+
+	if(constituencyPageMainObj.forwardTask != null && constituencyPageMainObj.forwardTask != "" && taskType == "analyze")
+	{		
+		   openAnalyzeConstituencyWindow("analyze");
+	}
+	else if(constituencyPageMainObj.forwardTask != null && constituencyPageMainObj.forwardTask != "" && taskType == "viewResults")
+	{		
+		  openAnalyzeConstituencyWindow("viewResults");
 	}
 	getMandalVotesShareDetailsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
 

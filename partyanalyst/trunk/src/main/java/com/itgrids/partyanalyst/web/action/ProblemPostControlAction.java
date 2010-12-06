@@ -53,7 +53,34 @@ public class ProblemPostControlAction extends ActionSupport implements
     private Long localBodyId;
     private Long constituencyId;
     private Long localBodyElectionTypeId;
+    private Long parliamentConstiId;
+    private String constituencyName;
+    private String taskType;
 	
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public Long getParliamentConstiId() {
+		return parliamentConstiId;
+	}
+
+	public void setParliamentConstiId(Long parliamentConstiId) {
+		this.parliamentConstiId = parliamentConstiId;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}

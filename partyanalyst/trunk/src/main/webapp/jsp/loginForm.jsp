@@ -23,6 +23,15 @@ String electionTypeId = "";
 String stateName = "";
 String year = "";
 
+String parliamentConstiId = "";
+String taskType = "";
+
+if(request.getParameter("parliamentConstiId")!=null){
+	parliamentConstiId = request.getParameter("parliamentConstiId");
+}
+if(request.getParameter("taskType")!=null){
+	taskType = request.getParameter("taskType");
+}
 if(request.getParameter("electionId")!=null){
 	electionId = request.getParameter("electionId");
 }
@@ -247,6 +256,8 @@ if(request.getParameter("constituencyName")!=null){
 							<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
 							<input type="hidden" name="districtName" value="<%=districtName %>" />
 							<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />
+							<input type="hidden" name="taskType" value="<%=taskType %>" />
+							<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />
 								
 							<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 							<c:remove var="USER_REG_SUCCESS" scope="session" />
@@ -326,7 +337,9 @@ if(request.getParameter("constituencyName")!=null){
 								<input type="hidden" name="constituencyId" value="<%=constituencyId %>" />
 								<input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />			 
 								<input type="hidden" name="districtName" value="<%=districtName %>" />
-								<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />					
+								<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />	
+								<input type="hidden" name="taskType" value="<%=taskType %>" />
+								<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />				
 								<table  class="loginDetailTable">
 									<tr>
 										<td>
