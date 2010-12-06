@@ -1085,8 +1085,9 @@ public class AnanymousUserService implements IAnanymousUserService {
 	public RegistrationVO getDetailsOfUserByUserId(Long registrationId){
 		RegistrationVO registrationVO = new RegistrationVO();
 		AnanymousUser registration = ananymousUserDAO.get(registrationId);
-		
+		List<Long> userOpts = new ArrayList<Long>();
 		try{
+			
 			registrationVO.setRegistrationID(registrationId);
 			registrationVO.setUserName(registration.getUsername());
 			registrationVO.setPassword(registration.getPassword());
@@ -1102,6 +1103,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 			registrationVO.setDistrict(registration.getDistrict().getDistrictId().toString());
 			registrationVO.setConstituency(registration.getConstituency().getConstituencyId().toString());
 			registrationVO.setPincode(registration.getPincode());
+			
+			for(UserProfileOpts userOptsModel:registration.getUserProfileOptses())
+				userOpts.add(userOptsModel.getProfileOpts().getProfileOptsId());
+			
+			registrationVO.setProfileOpts(userOpts);
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
