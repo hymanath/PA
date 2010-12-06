@@ -144,6 +144,11 @@ function getSubRegionsInDistrict(distId, module, elementId, addressType)
 
 function getSubRegionsInConstituency(id, module, elementId, addressType)
 {	
+	if(id == 0)
+	{
+		alert("Select Valid Contituency");
+		return;
+	}
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	var scopeSelected;
 	var areaType = '';
@@ -181,6 +186,11 @@ function getSubRegionsInConstituency(id, module, elementId, addressType)
 
 function getSubRegionsInTehsilOrLocalElecBody(id,name,  module, addressType, areaType, constituencyField, rowId1, rowId2)
 {
+	if(id == 0)
+	{
+		alert("Select valid Mandal/Municipality/Corp/GMC");
+		return;
+	}	
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	var scopeSelected;
 	var constituencyEl = document.getElementById(constituencyField);
