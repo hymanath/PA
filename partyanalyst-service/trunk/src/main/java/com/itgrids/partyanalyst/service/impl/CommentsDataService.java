@@ -871,6 +871,8 @@ public class CommentsDataService implements ICommentsDataService {
 					else
 						categoryAndScores.remove(commentCategory.getCommentCategoryId());
 					
+					userCommentInfoVO.setCommentCategoryId(commentCategory.getCommentCategoryId());
+                    userCommentInfoVO.setCommentCategory(commentCategory.getCommentCategory());
 					userCommentInfoVO.setCommentScore(Math.round((commentCategory.getCommentScore() + userCommentInfoVO.getCommentScore())*100)/100.0);
 					categoryAndScores.put(commentCategory.getCommentCategoryId(), userCommentInfoVO);
 				}
@@ -881,6 +883,7 @@ public class CommentsDataService implements ICommentsDataService {
 			for(Map.Entry<Long, UserCommentsInfoVO> categoryEntry:categoryAndScores.entrySet())
 				commetsAndScores.add(categoryEntry.getValue());
 			
+			nominationComments.setPostedUsersCount(Long.parseLong(userwiseComments.size()+""));
 			nominationComments.setCommetsAndScores(commetsAndScores);
 			allNominationsComments.add(nominationComments);
 		}
