@@ -53,7 +53,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private Long districtId = 0l;
 	private Long constituencyId = 0l;
 	private Long localElectionBodyId = 0l;
-	private Boolean isParliament;
+	private Boolean isParliament = false;
 	private List<SelectOptionVO> problemScopes;
 	private Long  problemLocation;
 	private Long scope;
@@ -296,7 +296,6 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		mandalList = new ArrayList<SelectOptionVO>();
 		wardsOrHamletsList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
-		problemScopes = problemManagementService.getAllProblemImpactLevel();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
@@ -313,12 +312,12 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		if("FreeUser".equals(session.getAttribute("UserType")))
 		{	
 			setScope(new Long(requestSrc));
-			if("1".equalsIgnoreCase(requestSrc))	
+			if("2".equalsIgnoreCase(requestSrc))	
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
 				setProblemLocation(stateId);				
 					
-			}else if("2".equalsIgnoreCase(requestSrc))
+			}else if("3".equalsIgnoreCase(requestSrc))
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
 				setProblemLocation(districtId);
@@ -328,7 +327,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				}
 				districtList = regionServiceDataImp.getDistrictsByStateID(stateId);				
 				
-			} else if("3".equalsIgnoreCase(requestSrc))
+			} else if("4".equalsIgnoreCase(requestSrc))
 			{
 				stateList = regionServiceDataImp.getStatesByCountry(1l);
 				setProblemLocation(constituencyId);
@@ -389,7 +388,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				districtId = list.get(1).getId();
 				constituencyId = list.get(2).getId();
 				setProblemLocation(constituencyId);
-				setScope(3l);
+				setScope(4l);
 							
 			}else if("COUNTRY".equals(accessType))
 			{
@@ -412,7 +411,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				districtList.add(0,new SelectOptionVO(0l,"Select District"));
 				stateId = accessValue;	
 				setProblemLocation(stateId);
-				setScope(1l);
+				setScope(2l);
 				
 			}else if("DISTRICT".equals(accessType)){
 				log.debug("Access Type = District ****");			
@@ -424,7 +423,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				stateId = list.get(0).getId();
 				districtId = accessValue;	
 				setProblemLocation(districtId);
-				setScope(2l);
+				setScope(3l);
 				
 			} else if("MP".equals(accessType)){
 				log.debug("Access Type = MP ****");
@@ -434,9 +433,10 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				constituencyList = constituencyInfoVO.getAssembyConstituencies();
 				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
-				setScope(3l);
+				setScope(4l);
 			}
 		}
+		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM,stateId);
 		session.setAttribute(ISessionConstants.STATES, stateList);
 		session.setAttribute(ISessionConstants.DISTRICTS, districtList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);

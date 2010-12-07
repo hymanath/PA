@@ -27,9 +27,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private HttpServletRequest request;
 	private IProblemManagementService problemManagementService;
 	private HttpSession session;
-	private ProblemManagementDataVO problemManagementDataVO;
 	private ProblemBeanVO problemBeanFromDB;
 	private Boolean isSuccessfullyInserted;
+	ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 	
 	//form inputs
 	private String problem;
@@ -50,7 +50,6 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String email;
 	private String address;
 	private Long status;
-	
 	private Long problemScope;
 	private Long problemLocationId;
 		
@@ -67,7 +66,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+	
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
 
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
 
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
@@ -87,17 +93,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public void setSession(HttpSession session) {
 		this.session = session;
-	}	
-
-	public ProblemManagementDataVO getProblemManagementDataVO() {
-		return problemManagementDataVO;
 	}
-
-	public void setProblemManagementDataVO(
-			ProblemManagementDataVO problemManagementDataVO) {
-		this.problemManagementDataVO = problemManagementDataVO;
-	}	
-
+	
 	public ProblemBeanVO getProblemBeanFromDB() {
 		return problemBeanFromDB;
 	}
@@ -116,23 +113,23 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	//form input setters and getters
 	public String getProblem() {
-		return problem;
+		return problemBeanVO.getProblem();
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Problem field is mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Problem field should not contain special characters and numbers", shortCircuit = true)
 	public void setProblem(String problem) {
-		this.problem = problem;
+		this.problemBeanVO.setProblem(problem);
 	}
 
 	public String getDescription() {
-		return description;
+		return problemBeanVO.getDescription();
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Description field should not contain special characters and numbers", shortCircuit = true)
 	public void setDescription(String description) {
-		this.description = description;
+		this.problemBeanVO.setDescription(description);
 	}
 
 	public String getState() {
@@ -197,19 +194,19 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 
 	public String getReportedDate() {
-		return reportedDate;
+		return problemBeanVO.getReportedDate();
 	}
 
 	public void setReportedDate(String reportedDate) {
-		this.reportedDate = reportedDate;
+		this.problemBeanVO.setReportedDate(reportedDate);
 	}
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Existing From Date",shortCircuit=true)
 	public String getExistingFromDate() {
-		return existingFromDate;
+		return problemBeanVO.getExistingFrom();
 	}
 
 	public void setExistingFromDate(String existingFromDate) {
-		this.existingFromDate = existingFromDate;
+		this.problemBeanVO.setExistingFrom(existingFromDate);
 	}
 
 	public String getProbSource() {
@@ -260,19 +257,19 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}	
 	
 	public Long getStatus() {
-		return status;
+		return problemBeanVO.getProblemStatusId();
 	}
 
 	public void setStatus(Long status) {
-		this.status = status;
+		this.problemBeanVO.setProblemStatusId(status);
 	}	
 
 	public Long getProblemScope() {
-		return problemScope;
+		return problemBeanVO.getProblemImpactLevelId();
 	}
 
 	public void setProblemScope(Long problemScope) {
-		this.problemScope = problemScope;
+		this.problemBeanVO.setProblemImpactLevelId(problemScope);
 	}
 	
 	public Long getDefaultState() {
@@ -293,11 +290,11 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 
 	public Long getProblemLocationId() {
-		return problemLocationId;
+		return problemBeanVO.getProblemImpactLevelValue();
 	}
 
 	public void setProblemLocationId(Long problemLocationId) {
-		this.problemLocationId = problemLocationId;
+		this.problemBeanVO.setProblemImpactLevelValue(problemLocationId);
 	}
 
 	public String execute() throws Exception
@@ -308,11 +305,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		if(user==null)
 			return ERROR;
 		
-		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
-		problemManagementDataVO = new ProblemManagementDataVO();
 		problemBeanVO.setUserID(user.getRegistrationID());
-		problemBeanVO.setProblem(getProblem());
-		problemBeanVO.setDescription(getDescription());
+		//problemBeanVO.setProblem(getProblem());
+		//problemBeanVO.setDescription(getDescription());
 		
 		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
@@ -324,10 +319,10 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		problemBeanVO.setTehsil(getMandal());
 		problemBeanVO.setVillage(getVillage());
 		problemBeanVO.setHamlet(getHamlet());*/
-		problemBeanVO.setReportedDate(getReportedDate());
-		problemBeanVO.setExistingFrom(getExistingFromDate());
-		problemBeanVO.setProblemImpactLevelId(getProblemScope());
-		problemBeanVO.setProblemImpactLevelValue(getProblemLocationId());
+		//problemBeanVO.setReportedDate(getReportedDate());
+		//problemBeanVO.setExistingFrom(getExistingFromDate());
+		//problemBeanVO.setProblemImpactLevelId(getProblemScope());
+		//problemBeanVO.setProblemImpactLevelValue(getProblemLocationId());
 		
 		/*problemBeanVO.setProbSourceId(new Long(getProbSource()));
 		if(problemBeanVO.getProbSourceId() != 1L)
@@ -339,7 +334,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemBeanVO.setAddress(getAddress());
 		}*/
 		
-		problemBeanVO.setProblemStatusId(getStatus());
+		//problemBeanVO.setProblemStatusId(getStatus());
 		
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
 					
@@ -347,6 +342,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
 			 isSuccessfullyInserted = true;
+			 problemBeanVO = new ProblemBeanVO();
 		 } else 
 			 isSuccessfullyInserted = false;
 		 

@@ -146,7 +146,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		this.redirectLoc = redirectLoc;
 	}
 
-	@Override
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
