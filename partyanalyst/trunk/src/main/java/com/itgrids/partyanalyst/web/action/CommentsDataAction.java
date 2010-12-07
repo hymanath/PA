@@ -124,7 +124,7 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			Long constituencyId = new Long(jObj.getString("constituencyId"));
 			String category = jObj.getString("category");
 			Long commentCategoryId = new Long(jObj.getString("commentCategoryId"));
-			Long severity = 0l;
+			Long severity = jObj.getLong("reasonSeverityvalue");
 			if(log.isDebugEnabled())
 			{	
 				log.debug("electionYear:"+electionYear);
