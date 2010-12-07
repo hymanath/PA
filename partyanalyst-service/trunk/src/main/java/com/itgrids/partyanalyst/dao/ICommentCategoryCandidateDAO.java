@@ -73,5 +73,8 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getCommentsCountForACandidateFromNominationId(Long nominationId);
 	
 	public List getAllCommentsByUserAndCategoryForANomination(Long nominationId);
+
+	public List getAllCommentsOfUserForANomination(Long electionId,
+			Long constituencyId, Long candidateId, Long userId, String hqlQuery);
 	
 }

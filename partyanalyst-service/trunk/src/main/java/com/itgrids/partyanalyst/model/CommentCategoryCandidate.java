@@ -38,6 +38,7 @@ public class CommentCategoryCandidate extends BaseModel implements Serializable 
 	private Nomination nomination;
 	private Registration paidUser;
 	private AnanymousUser freeUser;
+	private Float severity = 0f;
 	
 	//default constructor
 	public CommentCategoryCandidate() {
@@ -109,6 +110,15 @@ public class CommentCategoryCandidate extends BaseModel implements Serializable 
 
 	public void setFreeUser(AnanymousUser freeUser) {
 		this.freeUser = freeUser;
+	}
+
+	@Column(name="severity")
+	public Float getSeverity() {
+		return severity;
+	}
+
+	public void setSeverity(Float severity) {
+		this.severity = severity;
 	}
 
 }

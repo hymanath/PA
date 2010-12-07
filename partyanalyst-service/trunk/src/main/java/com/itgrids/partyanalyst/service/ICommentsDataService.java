@@ -29,8 +29,8 @@ public interface ICommentsDataService {
 	public List<ElectionCommentsVO> getConstituencyCommentsData(String electionType,String electionYear,Long electionId,Long constituencyId,
 			String categoryType);
 	
-	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType,String electionYear,Long electionId,
-			Long constituencyId,Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType);
+	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType,String electionYear,Long electionId, Long constituencyId,
+			Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType, Float severity);
 	
 	public CommentCategoryParty savePartyCommentForAnElection(String electionType,String electionYear,Long electionId,Long partyId,
 			String commentDesc,String commentedBy,Long commentCategoryId);
@@ -38,8 +38,8 @@ public interface ICommentsDataService {
 	public CommentCategoryConstituency saveConstituencyCommentForAnElection(String electionType,String electionYear,
 			Long electionId,Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId);
 	
-	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType);
+	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,	Long constituencyId, 
+			Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType, Long severityPercent);
 	
 	public ConstituencyCommentsVO saveConstituencyCommentsToDB(String electionType, String electionYear, Long electionId,
 			Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId);
