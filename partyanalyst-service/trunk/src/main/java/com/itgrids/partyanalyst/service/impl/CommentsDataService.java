@@ -185,27 +185,34 @@ public class CommentsDataService implements ICommentsDataService {
 		List<ElectionCommentsVO> electionCommentsVO =  new ArrayList<ElectionCommentsVO>();
 		ResultStatus resultStatus = new ResultStatus();
 		List<CommentCategoryCandidate> candidateComments = null;
+		
+		String hqlQuery = "";
+		if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
+			hqlQuery = " and model.paidUser.registrationId = ?";
+		else
+			hqlQuery = " and model.freeUser.userId = ?";
+		
 		try{
 			candidateComments = new ArrayList<CommentCategoryCandidate>();
 			if(categoryType != null && categoryType.equals(IConstants.CANDIDATE_COMMENTS_ALL)){
 				if(candidateId != null && !candidateId.equals(new Long(0))){
-				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAllElections(candidateId);
+					candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAllElections(candidateId);
 				}
 			}
 			else if(categoryType != null && categoryType.equals(IConstants.CANDIDATE_COMMENTS_CONSTITUENCY)){
 				if(electionType != null && electionYear != null && constituencyId != null && candidateId != null){
-				//candidateComments = commentCategoryCandidateDAO.getCommentsOnACandidateInAConstituency(electionType, electionYear, candidateId, 
-					//	constituencyId, userId, userType);
+					candidateComments = commentCategoryCandidateDAO.getCommentsOnACandidateInAConstituency(electionType, electionYear, candidateId, 
+						constituencyId, userId, hqlQuery);
 				}
 			}
 			else if(categoryType != null && categoryType.equals(IConstants.CANDIDATE_COMMENTS_ALL_CONSTITUENCY)){
 				if(electionId != null && !electionId.equals(new Long(0)) && candidateId != null){
-				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAnElection(electionId, 
-						candidateId, userId);
+					candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAnElection(electionId, 
+							candidateId, userId, hqlQuery);
 				}
 				else if(electionType != null && electionYear != null && candidateId != null){
-				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidate(electionType, electionYear, 
-						candidateId, userId);
+					candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidate(electionType, electionYear, 
+							candidateId, userId, hqlQuery);
 				}
 			}
 			

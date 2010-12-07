@@ -16,11 +16,11 @@ import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategoryCandidate, Long> {
 	
 	public List<CommentCategoryCandidate> getCommentsOnACandidateInAConstituency(String electionType,String electionYear,
-			Long candidateId,Long constituencyId);
+			Long candidateId,Long constituencyId, Long userId, String hqlQuery);
 	
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(String electionType,String electionYear,Long candidateId, Long userId);
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(String electionType,String electionYear,Long candidateId, Long userId, String hqlQuery);
 	
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long UserId);
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long UserId, String hqlQuery);
 	
 	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAllElections(Long candidateId);
 	
