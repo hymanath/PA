@@ -916,7 +916,7 @@ public class CommentsDataService implements ICommentsDataService {
 					userCommentInfoVO.setComment(userCatComments[2].toString());
 					userCommentInfoVO.setCommentCategory(userCatComments[3].toString());
 					userCommentInfoVO.setCommentCategoryId((Long)userCatComments[4]);
-					commentScore = new Double(1.0/(comments.size()));
+					commentScore = userCatComments[6] != null ? Math.round(Double.parseDouble(userCatComments[6]+"")*100)/100.0 : 0.0d;
 					userCommentInfoVO.setCommentScore(commentScore);
 					commetsAndScores.add(userCommentInfoVO);
 				}

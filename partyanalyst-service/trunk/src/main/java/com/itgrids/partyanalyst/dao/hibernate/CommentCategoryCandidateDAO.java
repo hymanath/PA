@@ -223,7 +223,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		Object[] params = {nominationId};
 		return getHibernateTemplate().find("select model.freeUser.userId, model.freeUser.name, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
-				"model.commentData.commentDataCategory.commentClassification from CommentCategoryCandidate model where " +
+				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
 				"model.nomination.nominationId = ? group by model.freeUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
 	}
 
