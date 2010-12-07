@@ -567,6 +567,8 @@
 	    <property name="commentCategoryConstituencyDAO" ref="commentCategoryConstituencyDAO" />
 	    <property name="commentCategoryPartyDAO" ref="commentCategoryPartyDAO" />
 	    <property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />
+	    <property name="ananymousUserDAO" ref="ananymousUserDAO" />
+	    <property name="registrationDAO" ref="registrationDAO" />
 	</bean>
 	
 	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
