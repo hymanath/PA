@@ -54,9 +54,9 @@ var Localization = { <%
 		String CONSTITUENCY = rb.getString("CONSTITUENCY");
 		String ACONSTITUENCY = rb.getString("ACONSTITUENCY");
 		String PCONSTITUENCY = rb.getString("PCONSTITUENCY");
-		String MANDAL  = rb.getString("MANDAL");
+		String MANDAL  = rb.getString("subRegions");
 		String VILLAGE = rb.getString("VILLAGE");
-		String HAMLET   = rb.getString("HAMLET");		
+		String HAMLET   = rb.getString("wardOrHamlet");		
 		String email = rb.getString("email");
 		String address = rb.getString("address");
 		String telephoneNo = rb.getString("telephoneNo");
@@ -76,6 +76,10 @@ var localizationObj={
 		locationAlert:'<%=locationAlert%>'
 };
 var hidden = '${sessionScope.HiddenCount}';
+var userType = '${sessionScope.UserType}';
+var accessType = '${sessionScope.USER.accessType}';
+var accessValue = '${problemLocation}';
+var scope = '${scope}';
 
 function incrementHidden()
 {
@@ -145,9 +149,13 @@ function limitText(limitField, limitCount, limitNum)
 	</table>		
 	<div id="problemDetailsDiv" class="accessDivMain" >		
 		<div id="problemDetailsDivBody" class="accessDivBody">
-			<c:if test="${problemBeanFromDB != null}">
+			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'PartyAnalyst'}">
 				<DIV id="alertMessage" style="color:green;font-weight:bold">Problem Added Successfully</DIV>
 			</c:if>
+			<c:if test="${problemBeanFromDB != null && sessionScope.UserType == 'FreeUser'}">
+				<DIV id="alertMessage" style="color:green;font-weight:bold">Thanks for posting your problem.Your problem will be reviewed by our team and will be published once it gets acceptance from them</DIV>
+			</c:if>
+			
 			<DIV style="width:500px;">
 				<FIELDSET>
 					<LEGEND>Problem Details</LEGEND>
@@ -174,7 +182,7 @@ function limitText(limitField, limitCount, limitNum)
 					<P>Select Problem Location from the following List boxes</P>
 					<DIV id="ajaxImgSpan" style="text-align:center;display:none;margin:10px;"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></DIV>
 					<DIV id="locationAlert" style="color:red;font-weight:bold"></DIV>
-					<TABLE>
+					<TABLE width="100%">
 					<tr>
 						<td>Problem Scope<font class="requiredFont">*</font></td>
 						<td style="padding-left: 15px;">
@@ -185,13 +193,13 @@ function limitText(limitField, limitCount, limitNum)
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="stateField" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
 						<tr id="row2" style="display:none;">
 							<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="districtField" cssClass="selectWidth" name="state" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+								<s:select id="districtField_s" cssClass="selectWidth" name="state" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
 					</c:if>
@@ -199,34 +207,39 @@ function limitText(limitField, limitCount, limitNum)
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="stateField" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
-						<TR id="row6" style="display:none;">	
+						<TR id="row2" style="display:none;">	
 							<TD><%=PCONSTITUENCY%></TD>
 							<TD style="padding-left: 15px;">
-							<s:select id="pConstituencyField" cssClass="selectWidth" name="state" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="state" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</TD>
 						</TR>
 					</c:if>
 					<tr id="row3" style="display:none;">
 						<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="constituencyField" cssClass="selectWidth" name="state" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="state" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>								
 					<tr id="row4" style="display:none;">
 						<td><%=MANDAL%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="mandalField" cssClass="selectWidth" name="state" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','newProblemPost','hamletField','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							<s:select id="mandalField_s" cssClass="selectWidth" name="state" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','null','currentAdd','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>					
 					<tr id="row5" style="display:none;">
 						<td><%=HAMLET%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="hamletField" cssClass="selectWidth" name="state" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="setLocationValue(this.options[this.selectedIndex].value)"></s:select>
+							<s:select id="hamletField_s" cssClass="selectWidth" name="state" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>	
+					<tr id="row6" style="display:none;">
+						<td >Booth No</td>
+						<td style="padding-left: 15px;"><s:select id="boothField_s" cssClass="selectWidth" name="booth" list="{}" listKey="id" listValue="name" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+						<td><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/></td>
+					</tr>
 					</TABLE>											
 				</FIELDSET>
 				<FIELDSET>
