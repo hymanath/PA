@@ -757,7 +757,7 @@ function handleCancel()
 
 function openAddNewProblemWindowForConstituency()
 {	
-	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=4&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
 }
 
