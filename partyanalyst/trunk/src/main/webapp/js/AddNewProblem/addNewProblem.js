@@ -535,8 +535,12 @@ function validateClientSide()
 }
 
 function populateLocations(val,source)
-{	
-
+{
+	if(val == 0)
+	{
+		alert("Select valid Problem Scope");
+		return;
+	}
 	var row1El = document.getElementById("row1");
 	var row2El = document.getElementById("row2");
 	var row3El = document.getElementById("row3");
@@ -544,83 +548,155 @@ function populateLocations(val,source)
 	var row5El = document.getElementById("row5");
 	var row6El = document.getElementById("row6");
 	var hiddenEl = document.getElementById("problemLocation");
-	var stateFieldEl = document.getElementById("stateField");
-	var districtFieldEl = document.getElementById("districtField"); 
-	var constituencyFieldEl = document.getElementById("constituencyField");
-	var mandalFieldEl = document.getElementById("mandalField");
-	var hamletFieldEl = document.getElementById("hamletField");
-	var pConstituencyFieldEl = document.getElementById("pConstituencyField");
-	if(source == 'onChange')
-	{	
-		hiddenEl.value='';
-		stateFieldEl.selectedIndex = '0';
-		if(districtFieldEl)
-			districtFieldEl.selectedIndex = '0';
-		constituencyFieldEl.selectedIndex = '0';
-		mandalFieldEl.selectedIndex = '0';
-		hamletFieldEl.selectedIndex = '0';
-		if(pConstituencyFieldEl)
-		pConstituencyFieldEl.selectedIndex = '0';
-	}	
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s"); 
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var selectedConst = 0;
+	var selectedDistrict = 0;
+	
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var pConstituencyFieldEl = document.getElementById("pConstituencyField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
 	row1El.style.display = 'none';
-	if(row2El)
-		row2El.style.display = 'none';
+	row2El.style.display = 'none';
 	row3El.style.display = 'none';
 	row4El.style.display = 'none';
 	row5El.style.display = 'none';
-	if(row6El)
-		row6El.style.display = 'none';
+	row6El.style.display = 'none';
 	
-	var value = val;
+	if(districtFieldEl.options.length > 0)
+		selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;	
+	if(constituencyFieldEl.options.length > 0)
+		 selectedConst = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
 	
-	if( (value>1) || (value==1) ){
-		if(row1El.style.display == 'none')
-		{	
-			row1El.style.display = '';			 
-		}		
-	}
-	if( (value>2) || (value==2) ){
-		if(row2El)
-		{	
-			if(row2El.style.display == 'none')
-			{	
-				row2El.style.display = '';
-			}
-		}	
-	}
-	if( (value>3) || (value==3) ){
-				
-		if(isParliament == 'false' || source == 'onChange')
-		{	
-			if(row3El.style.display == 'none')
-			{	
-				row3El.style.display = '';
-			}
-		} 
-		if(isParliament == 'true')
-		{	
-			if(row6El.style.display == 'none')
-			{	
-				row6El.style.display = '';
+	if(source == 'onChange')
+	{	
+		hiddenEl.value='';
+		if(scope == 2)
+		{
+			
+		} else if(scope == 3)
+		{
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+			boothFieldEl.selectedIndex = '0';
+			getSubRegionsInDistrict(selectedDistrict,'newProblemPost','constituencyField_s','currentAdd')
+			
+		} else if (scope == 4)
+		{
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+			boothFieldEl.selectedIndex = '0';			
+			getSubRegionsInConstituency(selectedConst,'newProblemPost','mandalField_s','currentAdd');		
+			
+		} else if (scope == 7)
+		{
+			
+		}			
+		
+	} else if(source == "onLoad")
+		{
+		setLocationValue(accessValue,'onLoad');
+			if(val == 9)
+			{
+				mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
+				var flag = mandalField_sVal.search("Greater Municipal Corp");
+				if(flag == '-1')
+				{
+					if(row6El.style.display == 'none')
+						row6El.style.display = '';						
+				} else {
+					if(row5El.style.display == 'none')
+						row5El.style.display = '';
+					if(row6El.style.display == 'none')
+						row6El.style.display = '';
+				}
 			}
 		}
-	}
-	if( (value>4) || (value==4) || (value>5) || (value==5)  ){
+	var value = val;
+	if(value == 1)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		
+	} else if(value == 2)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+	} else if(value == 3)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';					
+	} else if(value == 4)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';			
+	} else if(value == 5)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
 		if(row4El.style.display == 'none')
-		{	
+			row4El.style.display = '';				
+	} else if(value == 6)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
 			row4El.style.display = '';
-		}		
-	}
-	
-	if( (value>6) || (value==6) || (value>7) || (value==7) ){
 		if(row5El.style.display == 'none')
-		{	
-			row5El.style.display = '';
-		}		
-	}	 
+			row5El.style.display = '';			
+	} else if(value == 7)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 8)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 9)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';			
+	}		 
 }
 
-function setLocationValue(value)
+function setLocationValue(value, source)
 {
 	if(value == '0')
 	{
