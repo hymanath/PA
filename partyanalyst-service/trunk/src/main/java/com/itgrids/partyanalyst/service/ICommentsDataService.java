@@ -9,8 +9,6 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import org.hibernate.sql.Select;
-
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
@@ -23,20 +21,25 @@ import com.itgrids.partyanalyst.model.CommentCategoryParty;
 
 public interface ICommentsDataService {
 
-	public List<ElectionCommentsVO> getCandidateCommentsData(String electionType,String electionYear,Long electionId,Long constituencyId,Long candidateId,String categoryType);
+	public List<ElectionCommentsVO> getCandidateCommentsData(String electionType,String electionYear,Long electionId,
+			Long constituencyId,Long candidateId,String categoryType, Long userId, String userType);
 	
 	public List<ElectionCommentsVO> getPartyCommentsData(String electionType,String electionYear,Long electionId,Long partyId,String categoryType);
 	
-	public List<ElectionCommentsVO> getConstituencyCommentsData(String electionType,String electionYear,Long electionId,Long constituencyId,String categoryType);
+	public List<ElectionCommentsVO> getConstituencyCommentsData(String electionType,String electionYear,Long electionId,Long constituencyId,
+			String categoryType);
 	
-	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType,String electionYear,Long electionId,Long constituencyId,Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId);
+	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType,String electionYear,Long electionId,
+			Long constituencyId,Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType);
 	
-	public CommentCategoryParty savePartyCommentForAnElection(String electionType,String electionYear,Long electionId,Long partyId,String commentDesc,String commentedBy,Long commentCategoryId);
+	public CommentCategoryParty savePartyCommentForAnElection(String electionType,String electionYear,Long electionId,Long partyId,
+			String commentDesc,String commentedBy,Long commentCategoryId);
 	
-	public CommentCategoryConstituency saveConstituencyCommentForAnElection(String electionType,String electionYear,Long electionId,Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId);
+	public CommentCategoryConstituency saveConstituencyCommentForAnElection(String electionType,String electionYear,
+			Long electionId,Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId);
 	
 	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId);
+			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, Long userId, String userType);
 	
 	public ConstituencyCommentsVO saveConstituencyCommentsToDB(String electionType, String electionYear, Long electionId,
 			Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId);

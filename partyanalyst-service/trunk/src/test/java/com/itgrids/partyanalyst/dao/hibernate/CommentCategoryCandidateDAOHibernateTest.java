@@ -116,9 +116,11 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetAllCommentsByUserAndCategoryForANomination(){
+	/*public void testGetAllCommentsByUserAndCategoryForANomination(){
 		List list = commentCategoryCandidateDAO.getAllCommentsByUserAndCategoryForANomination(13606l);
 		System.out.println(list.size());
-	}
+	}*/
+	
+	
 	
 }
