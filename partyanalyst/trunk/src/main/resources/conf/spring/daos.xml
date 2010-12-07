@@ -465,11 +465,23 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="regionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="profileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProfileOptsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 	<bean id="userProfileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProfileOptsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="moduleRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleRegionScopesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

@@ -154,8 +154,11 @@
 				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserRelation</value>
 				<value>com.itgrids.partyanalyst.model.UserMappingsHistory</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopes</value>
 				<value>com.itgrids.partyanalyst.model.ProfileOpts</value>
 				<value>com.itgrids.partyanalyst.model.UserProfileOpts</value>
+				<value>com.itgrids.partyanalyst.model.ModuleDetails</value>
+				<value>com.itgrids.partyanalyst.model.ModuleRegionScopes</value>
 				</list>
 		</property>
 	</bean>
