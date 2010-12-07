@@ -124,7 +124,7 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			Long constituencyId = new Long(jObj.getString("constituencyId"));
 			String category = jObj.getString("category");
 			Long commentCategoryId = new Long(jObj.getString("commentCategoryId"));
-			
+			Long severity = 0l;
 			if(log.isDebugEnabled())
 			{	
 				log.debug("electionYear:"+electionYear);
@@ -148,7 +148,7 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			{
 				log.debug(category+"block:");				
 				electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
-						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType ));
+						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType, severity));
 				log.debug("After Save!!!!!!!!!!!!!!!!");
 				log.debug("Saved Candidate Comments Obj::::::::::::::"+electionCommentsVO.getCandidateCommentsSaved());
 				
