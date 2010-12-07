@@ -164,8 +164,11 @@
 				<value>com.itgrids.partyanalyst.model.UserRelation</value>
 				<value>com.itgrids.partyanalyst.model.CadreFamilyMemberInfo</value>
 				<value>com.itgrids.partyanalyst.model.UserMappingsHistory</value>
+				<value>com.itgrids.partyanalyst.model.RegionScopes</value>
 				<value>com.itgrids.partyanalyst.model.ProfileOpts</value>
 				<value>com.itgrids.partyanalyst.model.UserProfileOpts</value>
+				<value>com.itgrids.partyanalyst.model.ModuleDetails</value>
+				<value>com.itgrids.partyanalyst.model.ModuleRegionScopes</value>
 		 </list>
 		</property>
 	</bean>
@@ -737,6 +740,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="regionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegionScopesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="profileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProfileOptsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -744,6 +751,14 @@
 	<bean id="userProfileOptsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProfileOptsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="moduleRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleRegionScopesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+		<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 	
 	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
 		<property name="boothDAO" ref="boothDAO" />

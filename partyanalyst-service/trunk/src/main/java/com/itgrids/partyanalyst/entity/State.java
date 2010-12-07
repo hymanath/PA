@@ -24,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.itgrids.partyanalyst.model.EPaper;
+import com.itgrids.partyanalyst.model.ModuleRegionScopes;
 
 /**
  * State entity. 
@@ -317,5 +318,4 @@ public class State implements java.io.Serializable {
 	public void setEpaper(Set<EPaper> epaper) {
 		this.epaper = epaper;
 	}
-
 }

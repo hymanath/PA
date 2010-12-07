@@ -33,7 +33,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	private Hamlet hamlet;
 	private Ward ward;
 	private Township township;
-	private ProblemImpactLevel problemImpactLevel;
+	private RegionScopes problemImpactLevel;
 	private Long problemImpactLevelValue;
 	private ProblemAndProblemSource problemAndProblemSource;
 	private ProblemClassification problemClassification;
@@ -56,7 +56,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 			ProblemClassification problemClassification,
 			ProblemAndProblemSource problemAndProblemSource,
 			Set<ProblemHistory> problemHistories,
-			ProblemImpactLevel problemImpactLevel,
+			RegionScopes problemImpactLevel,
 			Long problemImpactLevelValue,Date updatedDate) {
 		this.hamlet = hamlet;
 		this.ward = ward;
@@ -150,14 +150,14 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_impact_level_id")
+	@JoinColumn(name = "region_scopes_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ProblemImpactLevel getProblemImpactLevel() {
+	public RegionScopes getProblemImpactLevel() {
 		return problemImpactLevel;
 	}
 
-	public void setProblemImpactLevel(ProblemImpactLevel problemImpactLevel) {
+	public void setProblemImpactLevel(RegionScopes problemImpactLevel) {
 		this.problemImpactLevel = problemImpactLevel;
 	}
 

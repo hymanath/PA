@@ -82,7 +82,7 @@ public class ProblemImpactLevel extends BaseModel implements Serializable {
 		this.description = description;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemImpactLevel")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemImpactLevel")
 	public Set<ProblemLocation> getProblemHistory() {
 		return problemHistory;
 	}
@@ -90,5 +90,5 @@ public class ProblemImpactLevel extends BaseModel implements Serializable {
 	public void setProblemHistory(Set<ProblemLocation> problemHistory) {
 		this.problemHistory = problemHistory;
 	}
-
+*/
 }
