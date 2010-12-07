@@ -46,13 +46,13 @@ public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Lon
 	@SuppressWarnings("unchecked")
 	public List<ProblemLocation> findByLevel(Long levelId, Long levelValue) {
 		Object[] params = {levelId,levelValue};
-		return getHibernateTemplate().find("from ProblemLocation model where model.problemImpactLevel.problemImpactLevelId = ? and "+
+		return getHibernateTemplate().find("from ProblemLocation model where model.problemImpactLevel.regionScopesId =  and "+
 				"model.problemImpactLevelValue = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List findByLevel(Long levelId, List<Long> levelValues) {
-		Query queryObject = getSession().createQuery("select model.problemLocationId from ProblemLocation model where model.problemImpactLevel.problemImpactLevelId = ? and "+
+		Query queryObject = getSession().createQuery("select model.problemLocationId from ProblemLocation model where model.problemImpactLevel.regionScopesId = ? and "+
 				"model.problemImpactLevelValue in (:levelValues)");
 		queryObject.setParameter(0,levelId);
 		queryObject.setParameterList("levelValues", levelValues);

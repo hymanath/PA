@@ -321,5 +321,10 @@ public interface IConstants {
     public static final String HTMLSLASH = "&#47";
     public static final String HTMLENTER = "<BR>";
     public static final String HTMLSPACE = " ";
+    public static final String ADD_NEW_PROBLEM = "ADD_NEW_PROBLEM";
+    public static final String ADD_INFLUENCING_PEOPLE = "ADD_INFLUENCING_PEOPLE";
+    public static final String ADD_CADRE = "ADD_NEW_CADRE";
+    public static final String ADD_POLITICAL_CHANGES = "ADD_LOCAL_POLITICAL_CHANGES";
+    public static final String MUNICIPAL_CORP_GMC = "MUNICIPAL-CORP-GMC"; 
     
 }

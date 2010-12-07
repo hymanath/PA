@@ -19,7 +19,9 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-//import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IModuleDetailsDAO;
+import com.itgrids.partyanalyst.dao.IModuleRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
@@ -30,7 +32,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
-//import com.itgrids.partyanalyst.model.RegionScopes;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
@@ -56,7 +58,8 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private IBoothMapperService boothMapperService;
-	//private IRegionScopesDAO regionScopesDAO;
+	private IModuleRegionScopesDAO moduleRegionScopesDAO;
+	private IModuleDetailsDAO moduleDetailsDAO;
 	
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -144,14 +147,23 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setBoothMapperService(IBoothMapperService boothMapperService) {
 		this.boothMapperService = boothMapperService;
 	}	
-/*
-	public IRegionScopesDAO getRegionScopesDAO() {
-		return regionScopesDAO;
+	
+	public IModuleRegionScopesDAO getModuleRegionScopesDAO() {
+		return moduleRegionScopesDAO;
 	}
 
-	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
-		this.regionScopesDAO = regionScopesDAO;
-	}*/
+	public void setModuleRegionScopesDAO(
+			IModuleRegionScopesDAO moduleRegionScopesDAO) {
+		this.moduleRegionScopesDAO = moduleRegionScopesDAO;
+	}	
+
+	public IModuleDetailsDAO getModuleDetailsDAO() {
+		return moduleDetailsDAO;
+	}
+
+	public void setModuleDetailsDAO(IModuleDetailsDAO moduleDetailsDAO) {
+		this.moduleDetailsDAO = moduleDetailsDAO;
+	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
 		List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
@@ -186,8 +198,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			objVO.setId(tehsil.getTehsilId());
 			objVO.setName(tehsil.getTehsilName());
 			mandalNames.add(objVO);
-		}
-		
+		}		
 				
 		return mandalNames;
 	}
@@ -781,8 +792,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					Object[] obj = (Object[])boothsList.get(i);
 					boothDataList.add(new SelectOptionVO(new Long(obj[0].toString()),"Booth No "+ obj[1]));
 				}
-			}
-			
+			}			
 		}
 		
 	 return boothDataList;
@@ -1017,6 +1027,27 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		if(constituency.getAreaType()!= null)
 			areaType = constituency.getAreaType();
 		return areaType;
+	}
+/**
+ * this method retrieves all the regions scopes like (state, district etc) for a module based on the state id
+ */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getAllRegionScopesForModule(String module,
+			Long stateId) {
+		if(log.isDebugEnabled())
+			log.debug("Inside getAllRegionScopesForModule() method in RegionServiceDataImp service");
+		List<SelectOptionVO> scopes = new ArrayList<SelectOptionVO>(0);
+		List result = moduleDetailsDAO.findModuleIdByModuleName(IConstants.ADD_NEW_PROBLEM);
+		Long  moduleId = Long.parseLong(result.get(0).toString());
+		List allScopes = moduleRegionScopesDAO.findRegionScopesForModuleByState(moduleId, stateId);
+		if(allScopes != null && allScopes.size()>0)
+			for(int i = 0;i<allScopes.size();i++)
+			{
+				Object[] obj = (Object[])allScopes.get(i);
+				scopes.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),obj[1].toString()));				
+			}
+		
+		return scopes;
 	}
 	
 }

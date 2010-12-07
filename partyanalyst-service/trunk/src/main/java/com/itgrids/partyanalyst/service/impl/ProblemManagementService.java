@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -97,6 +99,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IConstituencyDAO constituencyDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ITehsilDAO tehsilDAO;
+	private IRegionScopesDAO regionScopesDAO;
 	
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
@@ -285,8 +288,15 @@ public class ProblemManagementService implements IProblemManagementService {
 			IProblemImpactLevelDAO problemImpactLevelDAO) {
 		this.problemImpactLevelDAO = problemImpactLevelDAO;
 	}
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
 
-    
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
 	/**
 	 * Used To Get The Problems Of a Hamlet In a Particular Year
 	 */
@@ -425,7 +435,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					
 					/*hamlet = hamletDAO.get(new Long(problemBeanVO.getHamlet()));
 					problemLocation.setHamlet(hamlet);*/
-					ProblemImpactLevel problemImpactLevel = problemImpactLevelDAO.get(problemBeanVO.getProblemImpactLevelId());
+					RegionScopes problemImpactLevel = regionScopesDAO.get(problemBeanVO.getProblemImpactLevelId());
 					problemLocation.setProblemImpactLevel(problemImpactLevel);
 					problemLocation.setProblemImpactLevelValue(getProblemImpactValue(problemBeanVO.getProblemImpactLevelId(),problemBeanVO.getProblemImpactLevelValue()));
 					problemLocation.setProblemAndProblemSource(problemAndProblemSource);
@@ -445,9 +455,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemBeanFromDB.setExistingFrom(sdf.format(eDateOfAddNewProb));
 					//problemBeanFromDB.setHamlet(problemHistory.getProblemLocation().getHamlet().getHamletName());
 					problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
-					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getProblemImpactLevelId());
+					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getRegionScopesId());
 					//Long impactValue = getProblemImpactValue(problemLocation.getProblemImpactLevelValue());
-					problemBeanFromDB.setProblemImpactLevelValue(getProblemImpactValue(problemImpactLevel.getProblemImpactLevelId(),problemLocation.getProblemImpactLevelValue()));
+					problemBeanFromDB.setProblemImpactLevelValue(getProblemImpactValue(problemImpactLevel.getRegionScopesId(),problemLocation.getProblemImpactLevelValue()));
 					problemBeanFromDB.setIsApproved(problemHistory.getIsApproved());
 					
 				}catch(Exception e){
@@ -466,10 +476,11 @@ public class ProblemManagementService implements IProblemManagementService {
 	
 	public Long getProblemImpactValue(Long impactLevelId,Long impactLevelValue){
 		
-		ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(impactLevelId);
+		//ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(impactLevelId);
+		RegionScopes impactLevel = regionScopesDAO.get(impactLevelId);
 		if(impactLevel != null){
-			if(impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.STATE) || impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.DISTRICT) 
-					|| impactLevel.getProblemImpactLevel().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			if(impactLevel.getScope().equalsIgnoreCase(IConstants.STATE) || impactLevel.getScope().equalsIgnoreCase(IConstants.DISTRICT) 
+					|| impactLevel.getScope().equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			   return impactLevelValue;
 			}
 			else{
@@ -549,7 +560,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemBeanVO.setProblemId(problem.getProblemId());
 					problemBeanVO.setProblemLocationId(problemLocation.getProblemLocationId());
 					//problemBeanVO.setHamletId(problemLocation.getHamlet().getHamletId());
-					problemBeanVO.setProblemImpactLevelId(problemLocation.getProblemImpactLevel().getProblemImpactLevelId());
+					problemBeanVO.setProblemImpactLevelId(problemLocation.getProblemImpactLevel().getRegionScopesId());
 					problemBeanVO.setProblemImpactLevelValue(problemLocation.getProblemImpactLevelValue());
 					problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
 					problemBeanVO.setProblem(problem.getProblem());
@@ -573,26 +584,27 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 		String result = "";
 		if(problemImpactLevelId != null && !problemImpactLevelId.equals(0L)){
-		ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(problemImpactLevelId);
-			if(impactLevel.getProblemImpactLevel().equals(IConstants.STATE)){
+		//ProblemImpactLevel impactLevel = problemImpactLevelDAO.get(problemImpactLevelId);
+			RegionScopes impactLevel = regionScopesDAO.get(problemImpactLevelId);
+			if(impactLevel.getScope().equals(IConstants.STATE)){
 				State state = stateDAO.get(problemImpactLevelValue);
 				return state.getStateName();
-			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.DISTRICT)){
+			}else if(impactLevel.getScope().equals(IConstants.DISTRICT)){
 				District district = districtDAO.get(problemImpactLevelValue);
 				return district.getDistrictName();
-			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.CONSTITUENCY)){
+			}else if(impactLevel.getScope().equals(IConstants.CONSTITUENCY)){
 				Constituency constituency = constituencyDAO.get(problemImpactLevelValue);
 				return constituency.getName();
-			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.TEHSIL)){
+			}else if(impactLevel.getScope().equals(IConstants.MANDAL)){
 				Tehsil tehsil = tehsilDAO.get(problemImpactLevelValue);
 				return tehsil.getTehsilName();
-			}else if(impactLevel.getProblemImpactLevel().equalsIgnoreCase("LOCAL ELECTION BODY")){
+			}else if(impactLevel.getScope().equalsIgnoreCase("MUNICIPAL_CORP_GMC")){
 				LocalElectionBody localElec = localElectionBodyDAO.get(problemImpactLevelValue);
 				return localElec.getName();
-			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.WARD)){
+			}else if(impactLevel.getScope().equals(IConstants.WARD)){
 				Constituency constituency = constituencyDAO.get(problemImpactLevelValue);
 				return constituency.getName();
-			}else if(impactLevel.getProblemImpactLevel().equals(IConstants.HAMLET)){
+			}else if(impactLevel.getScope().equalsIgnoreCase(IConstants.VILLAGE)){
 				Hamlet hamlet = hamletDAO.get(problemImpactLevelValue);
 				return hamlet.getHamletName();
 			}
@@ -618,7 +630,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				iDate = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 				problemFromDB.setReportedDate(sdf.format(iDate));
 				//problemFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
-				problemFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getProblemImpactLevelId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
+				problemFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
 				problemFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
 				problemFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());
 				problemFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
@@ -680,7 +692,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						 problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 						 //problemBeanFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
 						 
-						 problemBeanFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getProblemImpactLevelId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
+						 problemBeanFromDB.setAddress(getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(),problemHistory.getProblemLocation().getProblemImpactLevelValue()));
 						 problemBeanFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
 						 problemBeanFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());					 
 						 problemBeanFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());

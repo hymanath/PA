@@ -179,7 +179,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
-				"model.problemLocation.problemImpactLevel.problemImpactLevelId," +
+				"model.problemLocation.problemImpactLevel.regionScopesId," +
 				"model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
@@ -211,7 +211,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
 				"model.problemLocation.problemAndProblemSource.problem.problem,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,"+
-				"model.problemLocation.problemImpactLevel.problemImpactLevelId," +
+				"model.problemLocation.problemImpactLevel.regionScopesId," +
 				"model.problemLocation.problemAndProblemSource.problemSource.informationSource," +
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
@@ -283,7 +283,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public String buildCommonQueryForProblems(){		
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.problemStatus.status," );
-		query.append(" model.problemLocation.problemImpactLevel.problemImpactLevelId,");
+		query.append(" model.problemLocation.problemImpactLevel.regionScopesId,");
 		query.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
 		query.append(" model.problemLocation.problemAndProblemSource.problem.problem,");
 		query.append(" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,"); 
@@ -298,7 +298,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		StringBuilder conditionQuery = new StringBuilder();
 		conditionQuery.append(" select model.problemLocation.problemAndProblemSource.problem.problem,");	
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.description,");
-		conditionQuery.append(" model.problemLocation.problemImpactLevel.problemImpactLevel,");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel.scope,");
 		conditionQuery.append(" model.problemLocation.problemImpactLevelValue,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.name,");
@@ -363,10 +363,10 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		Object[] params = {date, status,isApproved};		
 		
 		StringBuilder query = new StringBuilder();		
-		query.append( "select count(model.dateUpdated),model.problemLocation.problemImpactLevel.problemImpactLevel from ProblemHistory model ");
+		query.append( "select count(model.dateUpdated),model.problemLocation.problemImpactLevel.scope from ProblemHistory model ");
 		query.append(" where date(model.dateUpdated) = ? and model.problemStatus.status = ? and model.isApproved = ? ");
 		query.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
-		query.append(" group by model.problemLocation.problemImpactLevel.problemImpactLevelId");			
+		query.append(" group by model.problemLocation.problemImpactLevel.regionScopesId");			
 		return getHibernateTemplate().find(query.toString(),params);
 	}
 	//	queryObject.setMaxResults(20);
@@ -375,7 +375,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public List getAllProblemHistoryIdsForGivenLocationByTheirIds(List<Long> locationIds,String impactLevel,String problemType){			
 		StringBuilder locationQuery = new StringBuilder();
 		locationQuery.append(getCommonDataForAllProblems());
-		locationQuery.append(" where model.problemLocation.problemImpactLevel.problemImpactLevel = ?");
+		locationQuery.append(" where model.problemLocation.problemImpactLevel.scope = ?");
 		locationQuery.append(" and model.isApproved = ? ");
 		locationQuery.append(" and model.problemLocation.problemImpactLevelValue in (:locationIds)");		
 		locationQuery.append(" and model.problemLocation.problemAndProblemSource.externalUser is not null ");
@@ -397,7 +397,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public List getProblemHistoryByProblemStatusForAUser(Long userId,
 			Long statusId, String isPushed,String isDeleted) {
 		Object[] params = {userId,statusId,isPushed,isDeleted};
-		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.problemImpactLevelId,"+
+		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.regionScopesId,"+
 				"model.problemLocation.problemImpactLevelValue,model.problemStatus.problemStatusId,model.dateUpdated,"+
 				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problem.problemId,model.isApproved,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+
@@ -415,7 +415,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List getProblemHistoryForAUser(Long userId, String isPushed,String isDeleted) {
 		Object[] params = {userId,isPushed,isDeleted};
-		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.problemImpactLevelId,"+
+		return getHibernateTemplate().find("select model.problemLocation.problemImpactLevel.regionScopesId,"+
 				"model.problemLocation.problemImpactLevelValue,model.problemStatus.problemStatusId,model.dateUpdated,"+
 				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problem.problemId,model.isApproved,"+
 				"model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.problem,"+

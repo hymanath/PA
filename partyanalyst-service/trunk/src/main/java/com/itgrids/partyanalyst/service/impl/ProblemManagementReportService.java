@@ -28,7 +28,6 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -640,7 +639,7 @@ public class ProblemManagementReportService implements
 					problemBeanVO.setProblem(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem()));
 					problemBeanVO.setDescription(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription()));
 					//problemBeanVO.setHamlet(checkForNull(problemHistory.getProblemLocation().getHamlet().getHamletName()));
-					problemBeanVO.setHamlet(problemManagementService.getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getProblemImpactLevelId(), problemHistory.getProblemLocation().getProblemImpactLevelValue()));
+					problemBeanVO.setHamlet(problemManagementService.getLocationDetails(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(), problemHistory.getProblemLocation().getProblemImpactLevelValue()));
 					problemBeanVO.setExistingFrom(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom().toString()));
 					problemBeanVO.setReportedDate(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn().toString()));
 					
