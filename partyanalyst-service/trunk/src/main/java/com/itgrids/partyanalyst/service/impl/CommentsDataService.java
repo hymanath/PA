@@ -263,12 +263,12 @@ public class CommentsDataService implements ICommentsDataService {
 				Set entries = commentsMap.entrySet();
 				Iterator iterator = entries.iterator();
 				while(iterator.hasNext()){
-				Map.Entry entry = (Map.Entry)iterator.next();
-				List<CommentCategoryCandidate> commentsList = (List<CommentCategoryCandidate>)entry.getValue();
-				Long electionId = (Long)entry.getKey();
-				ElectionCommentsVO electionComments = getCandidateCommentResultsFromMap(electionId,commentsList);
-				if(electionComments != null)
-				electionCommentsVO.add(electionComments);
+					Map.Entry entry = (Map.Entry)iterator.next();
+					List<CommentCategoryCandidate> commentsList = (List<CommentCategoryCandidate>)entry.getValue();
+					Long electionId = (Long)entry.getKey();
+					ElectionCommentsVO electionComments = getCandidateCommentResultsFromMap(electionId,commentsList);
+					if(electionComments != null)
+					electionCommentsVO.add(electionComments);
 				}
 			}
 		}
@@ -280,6 +280,7 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public ElectionCommentsVO getCandidateCommentResultsFromMap(Long electionId,List<CommentCategoryCandidate> commentsList){
 		ElectionCommentsVO elecComments = null;
+		Float severity = 0f;
 		if(commentsList != null){
 			String electionType = "";
 			String electionYear = "";
@@ -298,7 +299,8 @@ public class CommentsDataService implements ICommentsDataService {
 				candComments.setCommentedBy(comments.getCommentData().getCommentBy());
 				candComments.setCommentedOn(sdf.format(comments.getCommentData().getCommentDate()).toString());
 				candComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
-				
+				severity = comments.getSeverity() != null? comments.getSeverity(): 0f;
+				candComments.setReasonScore(Math.round(severity*100)/100.0f);
 				candidateCommentsVO.add(candComments);
 			}
 			elecComments.setElectionId(electionId);
@@ -550,13 +552,36 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
 			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, 
-			Long userId, String userType){
+			Long userId, String userType, Long severityPercent){
 		
 		log.debug("Inside saveCandidateCommentsToDB Method ......");
 		
+		CommentCategoryCandidate commentCategoryCandidate = null;
+		Float severity = severityPercent/100f;
+		Float remainingValue = 1 - severity;
+		Float tempSeverity = 0f;
+		String hqlQuery = "";
+		if(IConstants.PARTY_ANALYST_USER.equalsIgnoreCase(userType))
+			hqlQuery = " and model.paidUser.registrationId = ?";
+		else
+			hqlQuery = " and model.freeUser.userId = ?";
+		
+		List<Object[]> candidatesIdAndReasonSeverity = commentCategoryCandidateDAO.getAllCommentsOfUserForANomination(electionId, constituencyId, 
+				candidateId, userId, hqlQuery);
+		
+		if(candidatesIdAndReasonSeverity.size() == 0)
+			severity = 1f;
+		
+		for(Object[] values:candidatesIdAndReasonSeverity){
+			commentCategoryCandidate = commentCategoryCandidateDAO.get((Long)values[0]);
+			tempSeverity = commentCategoryCandidate.getSeverity();
+			commentCategoryCandidate.setSeverity(Math.round(tempSeverity*remainingValue*100)/100.0f);
+			commentCategoryCandidateDAO.save(commentCategoryCandidate);
+		}
+		
 		CandidateCommentsVO candidateComments = null;
-		CommentCategoryCandidate commentCategoryCandidate = saveCandidateCommentForAnElection(electionType, electionYear, electionId, 
-				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType);
+		commentCategoryCandidate = saveCandidateCommentForAnElection(electionType, electionYear, electionId, 
+				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType, severity);
 		
 		if(commentCategoryCandidate != null){
 			candidateComments = new CandidateCommentsVO();
@@ -575,10 +600,9 @@ public class CommentsDataService implements ICommentsDataService {
 	 * @see com.itgrids.partyanalyst.service.ICommentsDataService#saveCandidateCommentForAnElection(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long)
 	 * Method to save a comment for a candidate
 	 */
-	public CommentCategoryCandidate saveCandidateCommentForAnElection(
-			String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,final String commentDesc,
-			final String commentedBy,Long commentCategoryId, final Long userId, final String userType) {
+	public CommentCategoryCandidate saveCandidateCommentForAnElection(String electionType, String electionYear, Long electionId,
+			Long constituencyId, Long candidateId,final String commentDesc,	final String commentedBy,Long commentCategoryId, 
+			final Long userId, final String userType, final Float severity) {
 		
 		log.debug("Inside saveCandidateCommentForAnElection Method ......");
 		
@@ -623,6 +647,7 @@ public class CommentsDataService implements ICommentsDataService {
 					else
 						commentCategoryCandidateSaved.setPaidUser(registrationDAO.get(userId));
 					
+					commentCategoryCandidateSaved.setSeverity(severity);
 					commentCategoryCandidateSaved = commentCategoryCandidateDAO.save(commentCategoryCandidateSaved);
 					
 					log.debug("Saved Successfully ......");

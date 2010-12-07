@@ -28,6 +28,7 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long userId;
 	private String userName;
 	private Long postedUsersCount;
+	private Float reasonScore = 0.0f;
 	private List<UserCommentsInfoVO> commetsAndScores;
 	
 	//getters and setters
@@ -109,5 +110,12 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	public void setPostedUsersCount(Long postedUsersCount) {
 		this.postedUsersCount = postedUsersCount;
 	}
+	public Float getReasonScore() {
+		return reasonScore;
+	}
+	public void setReasonScore(Float reasonScore) {
+		this.reasonScore = reasonScore;
+	}
+	
 	
 }
