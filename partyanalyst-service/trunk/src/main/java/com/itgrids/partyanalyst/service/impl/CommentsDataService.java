@@ -21,6 +21,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryPartyDAO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
@@ -63,6 +65,8 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentCategoryPartyDAO commentCategoryPartyDAO;
 	private ICommentCategoryConstituencyDAO commentCategoryConstituencyDAO;
 	private ICommentDataCategoryDAO commentDataCategoryDAO;
+	private IAnanymousUserDAO ananymousUserDAO;
+	private IRegistrationDAO registrationDAO;
 		
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
@@ -152,13 +156,29 @@ public class CommentsDataService implements ICommentsDataService {
 		this.commentDataCategoryDAO = commentDataCategoryDAO;
 	}
 
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
+
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
+	}
+
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
 	/*
 	 * This Method gets all comments on a candidate based on the input selected parameters and sets the data to VO,ElectionCommentsVO.
 	 * comments may be related to a particular election result of a candidate or all elections.
 	 */
 	public List<ElectionCommentsVO> getCandidateCommentsData(String electionType,
 			String electionYear, Long electionId, Long constituencyId,
-			Long candidateId, String categoryType) {
+			Long candidateId, String categoryType, Long userId, String userType) {
 		
 		if(log.isDebugEnabled())
 		log.debug("Inside getCandidateCommentsData Method.....");
@@ -174,15 +194,18 @@ public class CommentsDataService implements ICommentsDataService {
 			}
 			else if(categoryType != null && categoryType.equals(IConstants.CANDIDATE_COMMENTS_CONSTITUENCY)){
 				if(electionType != null && electionYear != null && constituencyId != null && candidateId != null){
-				candidateComments = commentCategoryCandidateDAO.getCommentsOnACandidateInAConstituency(electionType, electionYear, candidateId, constituencyId);
+				//candidateComments = commentCategoryCandidateDAO.getCommentsOnACandidateInAConstituency(electionType, electionYear, candidateId, 
+					//	constituencyId, userId, userType);
 				}
 			}
 			else if(categoryType != null && categoryType.equals(IConstants.CANDIDATE_COMMENTS_ALL_CONSTITUENCY)){
 				if(electionId != null && !electionId.equals(new Long(0)) && candidateId != null){
-				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAnElection(electionId, candidateId);
+				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidateInAnElection(electionId, 
+						candidateId, userId);
 				}
 				else if(electionType != null && electionYear != null && candidateId != null){
-				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidate(electionType, electionYear, candidateId);
+				candidateComments = commentCategoryCandidateDAO.getAllCommentsOnACandidate(electionType, electionYear, 
+						candidateId, userId);
 				}
 			}
 			
@@ -203,6 +226,7 @@ public class CommentsDataService implements ICommentsDataService {
 			ElectionCommentsVO electionComments = new ElectionCommentsVO();
 			electionComments.setResultStatus(resultStatus);
 		}
+		
 	  return electionCommentsVO;
 	}
 	
@@ -518,12 +542,14 @@ public class CommentsDataService implements ICommentsDataService {
 	 * Method to save the comments placed for a candidate to DB
 	 */
 	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId){
+			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId, 
+			Long userId, String userType){
 		
 		log.debug("Inside saveCandidateCommentsToDB Method ......");
 		
 		CandidateCommentsVO candidateComments = null;
-		CommentCategoryCandidate commentCategoryCandidate = saveCandidateCommentForAnElection(electionType,electionYear,electionId,constituencyId,candidateId,commentDesc,commentedBy,commentCategoryId);
+		CommentCategoryCandidate commentCategoryCandidate = saveCandidateCommentForAnElection(electionType, electionYear, electionId, 
+				constituencyId, candidateId, commentDesc, commentedBy, commentCategoryId, userId, userType);
 		
 		if(commentCategoryCandidate != null){
 			candidateComments = new CandidateCommentsVO();
@@ -544,7 +570,8 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CommentCategoryCandidate saveCandidateCommentForAnElection(
 			String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,final String commentDesc,final String commentedBy,Long commentCategoryId) {
+			Long constituencyId, Long candidateId,final String commentDesc,
+			final String commentedBy,Long commentCategoryId, final Long userId, final String userType) {
 		
 		log.debug("Inside saveCandidateCommentForAnElection Method ......");
 		
@@ -583,6 +610,11 @@ public class CommentsDataService implements ICommentsDataService {
 					commentCategoryCandidateSaved = new CommentCategoryCandidate();
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
 					commentCategoryCandidateSaved.setCommentData(commentData);
+					
+					if(IConstants.FREE_USER.equalsIgnoreCase(userType))
+						commentCategoryCandidateSaved.setFreeUser(ananymousUserDAO.get(userId));
+					else
+						commentCategoryCandidateSaved.setPaidUser(registrationDAO.get(userId));
 					
 					commentCategoryCandidateSaved = commentCategoryCandidateDAO.save(commentCategoryCandidateSaved);
 					
@@ -773,7 +805,7 @@ public class CommentsDataService implements ICommentsDataService {
 			 return commentCategoryPartySaved;
 			}
 		});
-	  return commentCategoryParty;
+		return commentCategoryParty;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -807,7 +839,7 @@ public class CommentsDataService implements ICommentsDataService {
 				}
 			}
 		}
-	 return candStatics;
+		return candStatics;
 	}
 	
 	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Long constiElecId){
@@ -872,7 +904,7 @@ public class CommentsDataService implements ICommentsDataService {
 						categoryAndScores.remove(commentCategory.getCommentCategoryId());
 					
 					userCommentInfoVO.setCommentCategoryId(commentCategory.getCommentCategoryId());
-                    userCommentInfoVO.setCommentCategory(commentCategory.getCommentCategory());
+					userCommentInfoVO.setCommentCategory(commentCategory.getCommentCategory());
 					userCommentInfoVO.setCommentScore(Math.round((commentCategory.getCommentScore() + userCommentInfoVO.getCommentScore())*100)/100.0);
 					categoryAndScores.put(commentCategory.getCommentCategoryId(), userCommentInfoVO);
 				}
@@ -891,7 +923,7 @@ public class CommentsDataService implements ICommentsDataService {
 		return allNominationsComments;
 	}
 
-public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
+	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
 	{
 		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
 		

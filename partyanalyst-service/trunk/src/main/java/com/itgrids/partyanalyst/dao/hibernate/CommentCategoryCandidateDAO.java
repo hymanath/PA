@@ -34,11 +34,12 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 
 	@SuppressWarnings("unchecked")
 	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(
-			String electionType, String electionYear, Long candidateId) {
-		Object[] params = {electionType,electionYear,candidateId};
-		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionScope.electionType.electionType = ?"+
+			String electionType, String electionYear, Long candidateId, Long userId) {
+		Object[] params = {electionType,electionYear,candidateId, userId};
+		return getHibernateTemplate().find("from CommentCategoryCandidate model where " +
+				"model.nomination.constituencyElection.election.electionScope.electionType.electionType = ?"+
 				" and model.nomination.constituencyElection.election.electionYear = ?" +
-				" and model.nomination.candidate.candidateId = ?", params);
+				" and model.nomination.candidate.candidateId = ? and model.freeUser.userId = ?", params);
 
 	}
 
@@ -49,9 +50,10 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId){
-		Object[] params = {electionId,candidateId};
-		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? and model.nomination.candidate.candidateId = ?",params);
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long userId){
+		Object[] params = {electionId, candidateId, userId};
+		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? " +
+				"and model.nomination.candidate.candidateId = ? and model.freeUser.userId = ?",params);
 	}
 
 	@SuppressWarnings("unchecked")

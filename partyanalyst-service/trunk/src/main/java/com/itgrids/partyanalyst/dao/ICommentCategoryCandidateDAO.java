@@ -15,11 +15,12 @@ import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 
 public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategoryCandidate, Long> {
 	
-	public List<CommentCategoryCandidate> getCommentsOnACandidateInAConstituency(String electionType,String electionYear,Long candidateId,Long constituencyId);
+	public List<CommentCategoryCandidate> getCommentsOnACandidateInAConstituency(String electionType,String electionYear,
+			Long candidateId,Long constituencyId);
 	
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(String electionType,String electionYear,Long candidateId);
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(String electionType,String electionYear,Long candidateId, Long userId);
 	
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId);
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long UserId);
 	
 	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAllElections(Long candidateId);
 	
@@ -72,5 +73,5 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getCommentsCountForACandidateFromNominationId(Long nominationId);
 	
 	public List getAllCommentsByUserAndCategoryForANomination(Long nominationId);
-
+	
 }
