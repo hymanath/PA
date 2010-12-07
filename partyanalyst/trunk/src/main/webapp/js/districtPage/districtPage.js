@@ -232,7 +232,7 @@ function handleCancel()
 
 function openAddNewProblemWindow()
 {	
-	var browser1 = window.open("addNewProblemAction.action?requestSrc=2&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=3&districtId="+districtId+'&districtName='+districtName,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
 	browser1.focus();
 }
 
