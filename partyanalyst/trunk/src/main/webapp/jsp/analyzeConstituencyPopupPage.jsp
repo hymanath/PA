@@ -55,6 +55,16 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
+	
+	<!-- Dependencies --> 
+	<script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script src="http://yui.yahooapis.com/2.8.2r1/build/dragdrop/dragdrop-min.js"></script>
+
+	<!-- Slider skin (optional) --> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+
+	<!-- Slider source file --> 
+	<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
@@ -191,6 +201,10 @@ body
 	margin-bottom:20px;
 }
 
+#slider-bg
+{ 
+	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+} 
 </style>
 
 <script type="text/javascript">
@@ -309,6 +323,9 @@ body
 		var constituencyId;
 		var commentCategoryId;
 		var alertMessageEl = document.getElementById("alertMessage"); 
+		var reasonSeverityElmt = document.getElementById("slider-value");
+		var reasonSeverityvalue = reasonSeverityElmt.innerHTML;
+ 
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
@@ -328,6 +345,11 @@ body
 			alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
 			return;		
 		}	
+		if(reasonSeverityvalue == 0)
+		{
+			alertMessageEl.innerHTML = 'Please Select Reason severity value!';
+			return;
+		} 
 		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
 		{
 			var jsObj={
@@ -341,9 +363,10 @@ body
 					postedBy: postedByVal,
 					category: category,
 					commentCategoryId: commentCategoryId,
+					reasonSeverityvalue: reasonSeverityvalue, 
 					task:"addNewComment"				
 				  }	 
-				
+			console.log(jsObj);	
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
 			callAjax(jsObj,url);	
@@ -473,17 +496,29 @@ body
 			str+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
 			str+='<OPTION id="0" >Select Reason</OPTION>';
 			str+='</SELECT></TD>';
+
+			str += '<td>';
+			str += '<div class="yui-skin-sam">';
+			
+			str += '<div id="slider-bg" class="yui-h-slider" tabindex="-1" title="Slider"> ';
+			str += '    <div id="slider-thumb" class="yui-slider-thumb">';
+			str += '		<img src="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/thumb-n.gif">';
+			str += '	</div> ';
+			str += '</div> ';
+			str += ' Reason Severity : <span id="slider-value">0</span></p> ';
+			str += '</div>';
+			str += '</td>';
 			str+='</TR>';
 			getCommentsClassifications(rank);
 			
 		}	
 		str+='<TR>';
 		str+='<TD align="left" valign="top" class="commentsInputTd">Comment*</TD>';	
-		str+='<TD class="commentsInputTd" valign="top" align="left"><TEXTAREA style="width:300px;" id="commentText" name="commentText"></TEXTAREA></TD>';
+		str+='<TD colspan="2" class="commentsInputTd" valign="top" align="left"><TEXTAREA style="width:300px;" id="commentText" name="commentText"></TEXTAREA></TD>';
 		str+='</TR>';
 		str+='<TR>';
 		str+='<TD align="left" class="commentsInputTd" valign="top">Posted By*</TD>';	
-		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
+		str+='<TD colspan="2" class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
 		str+='</DIV>';
@@ -597,7 +632,8 @@ body
 							comment: previousComments[i].commentDesc,
 							classification: previousComments[i].commentCategory,
 							commentedBy: previousComments[i].commentedBy, 
-							date: previousComments[i].commentedOn							
+							date: previousComments[i].commentedOn,
+							score:previousComments[i].reasonScore
 							};
 					commentsData.push(commentObj);					
 				}			
@@ -615,13 +651,14 @@ body
 													{key: "comment", label: "Comment", sortable:true},	
 													{key: "classification", label: "Classification", sortable:true},		
 													{key: "commentedBy", label: "CommentedBy", sortable:true},	
-													{key: "date", label: "Date", sortable:true}	               								             		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
+													{key: "date", label: "Date", sortable:true},
+													{key: "score", label: "Reason Severity", sortable:true}
 													];                	 	    
 
 							var previousCommentsDataSource = new YAHOO.util.DataSource(data); 
 							previousCommentsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 							previousCommentsDataSource.responseSchema = {
-									  fields: [ "comment", "classification", "commentedBy", "date"]     
+									  fields: [ "comment", "classification", "commentedBy", "date","score"]     
 							};
 							var myConfigs = { 
 									paginator : new YAHOO.widget.Paginator({ 
@@ -822,6 +859,52 @@ body
 
 		</div>		
 	</div>
+	
+	<script type="text/javascript">
+	(function() {
+ var Event = YAHOO.util.Event,
+ Dom = YAHOO.util.Dom,
+ lang = YAHOO.lang,
+ slider,
+ bg="slider-bg", thumb="slider-thumb",
+ valuearea="slider-value", textfield="slider-converted-value"
 
+ // The slider can move 0 pixels up
+ var topConstraint = 0;
+
+ // The slider can move 200 pixels down
+ var bottomConstraint = 100;
+
+ var scaleFactor = 1.5;
+ // The amount the slider moves when the value is changed with the arrow
+ // keys
+ var keyIncrement = 1;
+
+ var tickSize = 1;
+
+ Event.onDOMReady(function() {
+
+ slider = YAHOO.widget.Slider.getHorizSlider(bg,
+ thumb, topConstraint, bottomConstraint, 1);
+
+ // Sliders with ticks can be animated without YAHOO.util.Anim
+ slider.animate = true;
+ slider.subscribe("change", function(offsetFromStart) {
+
+ var valnode = Dom.get(valuearea);
+ var fld = Dom.get(textfield);
+
+ // Display the pixel value of the control
+ valnode.innerHTML = offsetFromStart;
+
+ // Update the title attribute on the background. This helps assistive
+ // technology to communicate the state change
+ Dom.get(bg).title = "slider value = " + actualValue;
+
+ });
+
+ });
+})(); 
+	</script>
 </body>
 </html>
