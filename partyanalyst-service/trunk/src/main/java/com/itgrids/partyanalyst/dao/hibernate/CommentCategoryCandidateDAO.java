@@ -25,37 +25,37 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	@SuppressWarnings("unchecked")
 	public List<CommentCategoryCandidate> getCommentsOnACandidateInAConstituency(
 			String electionType, String electionYear, Long candidateId,
-			Long constituencyId) {
-		Object[] params = {electionType,electionYear,candidateId,constituencyId};
+			Long constituencyId, Long userId, String hqlQuery) {
+		Object[] params = {electionType,electionYear,candidateId,constituencyId, userId};
 		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionScope.electionType.electionType = ?"+
 				" and model.nomination.constituencyElection.election.electionYear = ?" +
-				" and model.nomination.candidate.candidateId = ? and model.nomination.constituencyElection.constituency.constituencyId = ?", params);
+				" and model.nomination.candidate.candidateId = ? and model.nomination.constituencyElection.constituency.constituencyId = ? " +
+				hqlQuery, params);
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long userId, String hqlQuery){
+		Object[] params = {electionId, candidateId, userId};
+		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? " +
+				"and model.nomination.candidate.candidateId = ? "+hqlQuery,params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<CommentCategoryCandidate> getAllCommentsOnACandidate(
-			String electionType, String electionYear, Long candidateId, Long userId) {
+			String electionType, String electionYear, Long candidateId, Long userId, String hqlQuery) {
 		Object[] params = {electionType,electionYear,candidateId, userId};
 		return getHibernateTemplate().find("from CommentCategoryCandidate model where " +
 				"model.nomination.constituencyElection.election.electionScope.electionType.electionType = ?"+
 				" and model.nomination.constituencyElection.election.electionYear = ?" +
-				" and model.nomination.candidate.candidateId = ? and model.freeUser.userId = ?", params);
+				" and model.nomination.candidate.candidateId = ? "+hqlQuery, params);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAllElections(
-			Long candidateId) {
+	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAllElections(Long candidateId) {
 		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.candidate.candidateId = ?", candidateId);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<CommentCategoryCandidate> getAllCommentsOnACandidateInAnElection(Long electionId,Long candidateId, Long userId){
-		Object[] params = {electionId, candidateId, userId};
-		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? " +
-				"and model.nomination.candidate.candidateId = ? and model.freeUser.userId = ?",params);
-	}
-
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountForACandidate(Long candidateId,
 			Long constituencyId, String electionType, String electionYear) {
