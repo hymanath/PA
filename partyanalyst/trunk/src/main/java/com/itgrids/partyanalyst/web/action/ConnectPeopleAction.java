@@ -184,6 +184,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			log.error(" No User Log In .....");			
 			return IConstants.NOT_LOGGED_IN;
 		}
+		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
 		List<Long> userId = new ArrayList<Long>(0);
@@ -193,6 +194,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
 		
 		return Action.SUCCESS;
+		
 	}
 	public String updateUserStatus() throws Exception
 	{

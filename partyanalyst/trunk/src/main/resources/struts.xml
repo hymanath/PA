@@ -1452,7 +1452,7 @@
 		 
 		 <action name="anonymousUserRegistrationAction" class="anonymousUserRegisterAction">
 		    <result name="input">/jsp/anonymousUserRegistration.jsp</result>
-		     <result name="connect">/jsp/connectPeoplePage.jsp</result>
+		     <result type="redirect" name="connect">connectPeopleAction.action</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			<result name="error">/jsp/anonymousUserRegistration.jsp</result>	
 			 <interceptor-ref name="exception"/>
