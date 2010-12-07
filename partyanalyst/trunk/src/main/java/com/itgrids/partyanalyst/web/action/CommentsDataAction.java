@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CommentCategoryParty;
 import com.itgrids.partyanalyst.service.ICommentsDataService;
@@ -96,11 +98,23 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Long registrationId = null;
+		String userType = "";
+		
+		HttpSession session = request.getSession();
+		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+		
+		if(regVO != null){
+			registrationId = regVO.getRegistrationID();
+			userType = regVO.getUserStatus();	
+		}
+		
 		if(jObj.getString("task").equalsIgnoreCase("addNewComment"))
 		{
+
 			electionCommentsVO = new ElectionCommentsVO();
 			String electionYear = jObj.getString("year");
 			String electionType = jObj.getString("electionType");
@@ -112,6 +126,7 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			Long constituencyId = new Long(jObj.getString("constituencyId"));
 			String category = jObj.getString("category");
 			Long commentCategoryId = new Long(jObj.getString("commentCategoryId"));
+			
 			if(log.isDebugEnabled())
 			{	
 				log.debug("electionYear:"+electionYear);
@@ -126,14 +141,16 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 			if(category.equals("party"))
 			{			
 				log.debug(category+"block:");
-				electionCommentsVO.setPartyCommentsSaved(commentsDataService.savePartyCommentsToDB(electionType, electionYear, electionId, partyId, commentDesc, commentedBy, commentCategoryId));
+				electionCommentsVO.setPartyCommentsSaved(commentsDataService.savePartyCommentsToDB(electionType, electionYear, electionId, 
+						partyId, commentDesc, commentedBy, commentCategoryId));
 				log.debug("After Save!!!!!!!!!!!!!!!!");
 				log.debug("Saved Party Comments Obj::::::::::::::"+electionCommentsVO.getPartyCommentsSaved());				
 				
 			} if(category.equals("candidate"))
 			{
 				log.debug(category+"block:");				
-				electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId));
+				electionCommentsVO.setCandidateCommentsSaved(commentsDataService.saveCandidateCommentsToDB(electionType, electionYear, 
+						electionId,constituencyId, candidateId,commentDesc,commentedBy,commentCategoryId, registrationId, userType ));
 				log.debug("After Save!!!!!!!!!!!!!!!!");
 				log.debug("Saved Candidate Comments Obj::::::::::::::"+electionCommentsVO.getCandidateCommentsSaved());
 				
@@ -163,7 +180,8 @@ public class CommentsDataAction extends ActionSupport implements ServletRequestA
 				
 			}
 			
-			commentsListFromService = commentsDataService.getCandidateCommentsData(electionType, electionYear, electionId, constituencyId, candidateId, IConstants.CANDIDATE_COMMENTS_CONSTITUENCY);
+			commentsListFromService = commentsDataService.getCandidateCommentsData(electionType, electionYear, electionId, 
+					constituencyId, candidateId, IConstants.CANDIDATE_COMMENTS_CONSTITUENCY, registrationId, userType);
 			//getCandidateCommentsData(String electionType,String electionYear,Long electionId,Long constituencyId,Long candidateId,String categoryType);
 			if(commentsListFromService != null && commentsListFromService.size()>0)
 			{
