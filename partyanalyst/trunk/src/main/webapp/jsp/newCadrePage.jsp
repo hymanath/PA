@@ -1011,7 +1011,7 @@
 		</table>
 	</fieldset>		
 	<fieldset>
-		<legend><strong>Cadre Lavel Details</strong></legend>
+		<legend><strong>Cadre Level Details</strong></legend>
 		<table class="cadreDetailsTable">
 			<tr>
 				<td width="200"><s:label for="cadreTypeField" id="cadreTypeLabel"  value="%{getText('memberType')}" /><font class="requiredFont"> * </font></td>
@@ -1079,7 +1079,7 @@
 		<c:if test="${sessionScope.USER.userType == 'Party' && sessionScope.partyCommittees_flag == true}">
 		<tr>
 			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /></td>
-			<td align="left"><s:select id="partyComiteSelect" cssClass="regionSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Partie Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
+			<td align="left"><s:select id="partyComiteSelect" cssClass="regionSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Party Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
 			<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
 			<td><s:select id="comiteeDesignationSelect" name="designation" cssClass="regionSelect" list="#session.designations" listKey="id" listValue="name"  headerKey="0" headerValue="Select Designation"/></td>				
 		</tr>
@@ -1153,6 +1153,11 @@
 				<a href="cadreReportAction.action" class="anchor">Go To Cadre Management Report</a>
 			</div>
 		</c:if>	
+		<input type="hidden" name="defaultState" value="${defaultStateId}">
+		<input type="hidden" name="defaultDist" value="${defaultDistId}">
+		<input type="hidden" name="defaultConst" value="${defaultConstId}">
+		<input type="hidden" name="defaultCadre" value="${defaultCadreType}">
+		
 		<input type="hidden" name="sameAsCAFlag" id="sameAsCAFlag" value="${sameAsCAFlag}">	
 		<input type="hidden" name="childrenFlag" id="childrenFlag" value="${childrenFlag}">	
 		<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>	 		
