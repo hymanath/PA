@@ -40,7 +40,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String constituency;
 	private String mandal;
 	private String village;
-	private String hamlet;
+	private String booth;
 	private String reportedDate;
 	private String existingFromDate;
 	private String probSource;
@@ -52,11 +52,15 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private Long status;
 	private Long problemScope;
 	private Long problemLocationId;
+	private String defaultScopeId;
+	private String defaultStateId;
+	private String defaultDistId;
+	private String defaultConstId;
+	
 		
 	
 	public void setServletRequest(HttpServletRequest request) {
-	this.request = request;
-		
+		this.request = request;		
 	}	
 	
 	public HttpServletRequest getRequest() {
@@ -79,17 +83,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return problemManagementService;
 	}
 
-
 	public void setProblemManagementService(
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
 
-
 	public HttpSession getSession() {
 		return session;
 	}
-
 
 	public void setSession(HttpSession session) {
 		this.session = session;
@@ -133,64 +134,59 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 
 	public String getState() {
-		return state;
+		return problemBeanVO.getState();
 	}
 	
 	public void setState(String state) {
-		this.state = state;
+		this.problemBeanVO.setState(state);
 	}
 
 	public String getDistrict() {
-		return district;
-	}
-	
+		return problemBeanVO.getDistrict();
+	}	
 	
 	public void setDistrict(String district) {
-		this.district = district;
+		this.problemBeanVO.setDistrict(district);
 	}
 
 	public String getParliamentConstituency() {
 		return parliamentConstituency;
 	}
-
 	
 	public void setParliamentConstituency(String parliamentConstituency) {
 		this.parliamentConstituency = parliamentConstituency;
 	}
 
 	public String getConstituency() {
-		return constituency;
-	}
-	
+		return problemBeanVO.getConstituency();
+	}	
 	
 	public void setConstituency(String constituency) {
-		this.constituency = constituency;
+		this.problemBeanVO.setConstituency(constituency);
 	}
 
 	public String getMandal() {
-		return mandal;
-	}
-	
+		return problemBeanVO.getTehsil();
+	}	
 	
 	public void setMandal(String mandal) {
-		this.mandal = mandal;
+		this.problemBeanVO.setTehsil(mandal);
 	}
 
 	public String getVillage() {
-		return village;
-	}
-	
+		return problemBeanVO.getVillage();
+	}	
 	
 	public void setVillage(String village) {
-		this.village = village;
-	}
-
-	public String getHamlet() {
-		return hamlet;
+		this.problemBeanVO.setVillage(village);
 	}
 	
-	public void setHamlet(String hamlet) {
-		this.hamlet = hamlet;
+	public String getBooth() {
+		return problemBeanVO.getBooth();
+	}
+
+	public void setBooth(String booth) {
+		this.problemBeanVO.setBooth(booth);
 	}
 
 	public String getReportedDate() {
@@ -270,24 +266,50 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public void setProblemScope(Long problemScope) {
 		this.problemBeanVO.setProblemImpactLevelId(problemScope);
+	}	
+	
+	public String getDefaultStateId() {
+		return defaultStateId;
+	}
+
+	public void setDefaultStateId(String defaultStateId) {
+		this.defaultStateId = defaultStateId;
+	}
+
+	public String getDefaultDistId() {
+		return defaultDistId;
+	}
+
+	public void setDefaultDistId(String defaultDistId) {
+		this.defaultDistId = defaultDistId;
+	}
+
+	public String getDefaultConstId() {
+		return defaultConstId;
+	}
+
+	public void setDefaultConstId(String defaultConstId) {
+		this.defaultConstId = defaultConstId;
+	}
+
+	public String getDefaultState() {
+		if(this.problemBeanVO.getState() != null && !this.problemBeanVO.getState().isEmpty())
+			return this.problemBeanVO.getState();
+		return getDefaultStateId();
 	}
 	
-	public Long getDefaultState() {
-		return new Long(this.state);
+	public String getDefaultDistrict() {
+		if(this.problemBeanVO.getDistrict() != null && !this.problemBeanVO.getDistrict().isEmpty())
+			return this.problemBeanVO.getDistrict();		
+		return getDefaultDistId();
+	}	
+
+	public String getDefaultConstituency() {
+		if(this.problemBeanVO.getConstituency() != null && !this.problemBeanVO.getConstituency().isEmpty())
+			return this.problemBeanVO.getConstituency();
+		
+		return getDefaultConstId();
 	}
-	
-	public Long getDefaultDistrict() {
-		return new Long(this.district);
-	}	
-
-	public Long getDefaultConstituency() {
-		return new Long(this.constituency);
-	}	
-
-	public Long getDefaultLocalElectionBody() {
-		return new Long(this.village);
-	}	
-
 
 	public Long getProblemLocationId() {
 		return problemBeanVO.getProblemImpactLevelValue();
@@ -295,6 +317,21 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 
 	public void setProblemLocationId(Long problemLocationId) {
 		this.problemBeanVO.setProblemImpactLevelValue(problemLocationId);
+	}	
+
+	public String getDefaultScopeId() {
+		return defaultScopeId;
+	}
+
+	public void setDefaultScopeId(String defaultScopeId) {
+		this.defaultScopeId = defaultScopeId;
+	}
+	
+	public String getDefaultScope()
+	{
+		if(this.problemBeanVO.getProblemImpactLevelId() != null)
+			return problemBeanVO.getProblemImpactLevelId().toString();
+		return this.defaultScopeId;
 	}
 
 	public String execute() throws Exception
@@ -343,6 +380,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 {
 			 isSuccessfullyInserted = true;
 			 problemBeanVO = new ProblemBeanVO();
+			 
 		 } else 
 			 isSuccessfullyInserted = false;
 		 

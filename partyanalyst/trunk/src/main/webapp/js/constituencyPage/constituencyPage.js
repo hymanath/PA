@@ -106,6 +106,7 @@ var connectStatus = new Array();
 var userLoginStatus;
 var userId = '';
 var parliamentConstiId = '';
+var parliamentConstiName = '';
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
 		var map = new GMap2(document.getElementById("map_canvas"));
 		var geocoder = new GClientGeocoder();
@@ -790,9 +791,9 @@ function buildAnalyzeConstituencyWindow()
 		
 	var str='';
 	str+='<fieldset id="analyzeConstituencyFieldSet">';
-	str+='<legend style="font-weight:bold;"> Analyze Your Constituency</legend>';
+	str+='<legend style="font-weight:bold;"> Assess Your Party Results</legend>';
 	str+='<div id="analyzeConstituencyContentDiv" class="problemPostingContentDivClass">';	
-	str+='<div>Analyze your constituency politics and can give comments and reasons.</div>';
+	str+='<div>Assess your constituency election results and post your reasons for winning/loosing .</div>';
 	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
 	//str+='<div id="analyzeConstituencyButtonDiv"><a href="analyzeConstituencyPopupAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">Analyze</a></div>';
 
@@ -801,15 +802,15 @@ function buildAnalyzeConstituencyWindow()
 		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
 		{
 			str	+= '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
-			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Analyze</a>';
+			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
 			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">View Results</a>';
 			str += '</div>';		
 		}
 	}
 	else {
         str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" style="margin-right:10px;">Analyze</a>';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" style="margin-right:10px;">View Results</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" style="margin-right:10px;">Assess</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" style="margin-right:10px;">View Results</a>';
 		str += '</div>';		
 	}
 		
@@ -828,7 +829,7 @@ function openAnalyzeConstituencyWindow(type)
 
 	if(userId != "" && userType == "FREE_USER")
 	{
-		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+		var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyPageMainObj.constituencyInfo.constituencyId+"&parliamentConstiId="+parliamentConstiId+"&parliamentConstiName="+parliamentConstiName+"&constituencyName="+constituencyPageMainObj.constituencyInfo.constituencyName+"&userId="+userId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
 		browser1.focus();
 	}
 	else if(userId == "" && userType == "FREE_USER")

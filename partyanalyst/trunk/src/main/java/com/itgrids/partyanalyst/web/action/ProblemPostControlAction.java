@@ -54,6 +54,7 @@ public class ProblemPostControlAction extends ActionSupport implements
     private Long constituencyId;
     private Long localBodyElectionTypeId;
     private Long parliamentConstiId;
+    private Long parliamentConstiName;
     private String constituencyName;
     private String taskType;
 	
@@ -196,6 +197,14 @@ public class ProblemPostControlAction extends ActionSupport implements
 
 	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
+	}	
+
+	public Long getParliamentConstiName() {
+		return parliamentConstiName;
+	}
+
+	public void setParliamentConstiName(Long parliamentConstiName) {
+		this.parliamentConstiName = parliamentConstiName;
 	}
 
 	public String execute(){

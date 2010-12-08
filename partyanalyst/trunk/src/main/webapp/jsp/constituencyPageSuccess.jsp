@@ -1187,7 +1187,8 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 	constituencyPageMainObj.constituencyInfo.reservation_zone = "${constituencyDetails.reservation_zone}";	
 	
 	<c:forEach var="parliament" items="${navigationVO.pcsInfo}">
-		parliamentConstiId = "${parliament.id}";		
+		parliamentConstiId = "${parliament.id}";
+		parliamentConstiName = "${parliament.name}";		
 	</c:forEach>
 	
 	/*	Constituency Election Results Info
