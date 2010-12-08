@@ -120,10 +120,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 	
 	public List findVotersInfoForConstituencyInAnYearByLocalElectionBody(Long constituencyId, Long year, String localBodyTypes){
-		Object[] params = {year, constituencyId, localBodyTypes};
+		Object[] params = {year, constituencyId};
 		return getHibernateTemplate().find("select model.localBody.localElectionBodyId, model.localBody.name, sum(model.maleVoters), " +
-				" sum(model.femaleVoters),sum(model.totalVoters) from Booth model where model.year = (select max(model1.year) from Booth model1 where " +
-				" model1.year <= ?) and model.constituency.constituencyId =? and model.localElectionBody.electionType.electionType in ("+localBodyTypes+")" +
+				" sum(model.femaleVoters),sum(model.totalVoters), model.localBody.electionType.electionType from Booth model where model.year = (select max(model1.year) from Booth model1 where " +
+				" model1.year <= ?) and model.constituency.constituencyId =? and model.localBody.electionType.electionType in ("+localBodyTypes+")" +
 				" group by model.localBody.localElectionBodyId order by model.localBody.name",params);
 	}
 	

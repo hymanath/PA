@@ -21,6 +21,7 @@ public interface IConstants {
 	public static final String HAMLET_TYPE = "1";
 	public static final String TOWNSHIP_TYPE = "2";
 	public static final String INDIPENDENT = "IND";
+	
 	//MPTC  data upload column names in excel sheet - start
 	public final static String MPTC_NAME = "MPTC_NAME";//2
 	public final static String CONSTITUENCY_TOTAL_VOTES = "CONSTITUENCY_TOTAL_VOTES";//3
@@ -55,7 +56,7 @@ public interface IConstants {
 	public final static String SUB_GOVERNING_BODY = "SUB_GOVERNING_BODY";
 	public final static String SUB_GOVERNING_BODY_PARTY = "SUB_GOVERNING_BODY_PARTY";
 	
-//MPTC  data upload column names in excel sheet - end
+	//MPTC  data upload column names in excel sheet - end
 
 	public final static String ZPTC_NAME = "ZPTC_NAME";
 	public static final String ZPTC = "ZPTC";

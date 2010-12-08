@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -345,7 +346,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			 
 		 return constituencyElectionResultList;
 		 }
-	return null;	
+		 return null;	
 	}
 	
 	
@@ -915,6 +916,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Map<String, String> mandalsIdsYear = new LinkedHashMap<String, String>(0);
 		Map<String, List<String>> isPartialByYear = new LinkedHashMap<String, List<String>>(0);
 		List<String> isPartialInfoForMandal = null;
+		
 		for (int i = 0; i < mandalsList.size(); i++) 
 		{
 			Object[] obj = (Object[]) mandalsList.get(i);	
@@ -943,6 +945,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			mandalsIdsYear.put(year, ids.toString());
 			localElectionsInfo.add(mandalVO);
 		}	
+		
 		constituencyVO.setLocalElectionsInfo(localElectionsInfo);
 		
 		Set<String>  keys = mandalsIdsYear.keySet();
@@ -954,7 +957,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			VotersWithDelimitationInfoVO votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
 			VotersWithDelimitationInfoVO votersWithDelimitationBasicInfoVO = new VotersWithDelimitationInfoVO();
-			
 			votersWithDelimitationInfoVO.setYear(year);
 			votersWithDelimitationBasicInfoVO.setYear(year);
 			
@@ -967,15 +969,23 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					votersBasicInfoForMandalList.add(votersInfo);
 				}
 			}
+			
 			votersWithDelimitationBasicInfoVO.setVotersBasicInfoForMandalVO(votersBasicInfoForMandalList);
 			votersWithDelimitationBasicInfoVOList.add(votersWithDelimitationBasicInfoVO);
 			constituencyVO.setAssembliesOfParliamentBasicInfo(votersWithDelimitationBasicInfoVOList);
 			
-			
-			
 			String mandalIds = mandalsIdsYear.get(year);
 			List<String> partailData = isPartialByYear.get(year);
 			List votersList = boothDAO.findVoterInformationByMandalIdsAndDelimitationYear(mandalIds, year, constituencyId);
+			
+			if(votersList.size() == 0){
+				if(calculateVotersForLocalElectionBodies(constituencyId, 
+					votersWithDelimitationInfoVO, Long.parseLong(year.trim())))
+						votersWithDelimitationInfoVOList.add(votersWithDelimitationInfoVO);
+				
+				continue;
+			}
+				
 			
 			for(int j = 0;j<votersList.size();j++)
 			{
@@ -983,12 +993,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				
 				Object[] vObj = (Object[]) votersList.get(j);
 				votersInfo.setMandalId( ((Long)vObj[0]).toString());
-				votersInfo.setMandalName(vObj[1].toString());
+				votersInfo.setMandalName(vObj[1].toString().toUpperCase()+" "+IConstants.MANDAL);
 				votersInfo.setTotalMaleVoters(vObj[2].toString());
 				votersInfo.setTotalFemaleVoters(vObj[3].toString());
 				votersInfo.setTotalVoters(vObj[4].toString());
 				votersInfo.setTotVoters(new BigDecimal(vObj[4].toString()));
-				
+				votersInfo.setIsMandal(true);
 				Object[] obj = (Object[]) mandalsList.get(j);
 				
 				if(partailData.get(j).equalsIgnoreCase("1"))
@@ -1001,24 +1011,58 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				
 				votersInfoForMandalList.add(votersInfo);
 			}
+			
 			votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoForMandalList);
+			calculateVotersForLocalElectionBodies(constituencyId, votersWithDelimitationInfoVO, Long.parseLong(year.trim()));
 			votersWithDelimitationInfoVOList.add(votersWithDelimitationInfoVO);
+
 		}
 		
 		constituencyVO.setAssembliesOfParliamentInfo(votersWithDelimitationInfoVOList);
-		//calculateVotersForLocalElectionBodies(constituencyVO);
 		return constituencyVO;
 		
 	}
 		
-	private void calculateVotersForLocalElectionBodies(ConstituencyVO constituencyVO) {
-		List beforeDelimLocalBodies = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBody(constituencyVO.getId(), 
-				IConstants.DELIMITATION_YEAR, "'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
-		List beforeDelimGMCs = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(constituencyVO.getId(), 
-				IConstants.DELIMITATION_YEAR, IConstants.GREATER_ELECTION_TYPE);
+	private Boolean calculateVotersForLocalElectionBodies(Long constituencyId, VotersWithDelimitationInfoVO votersWithDelimitationInfoVO, Long year) {
+		VotersInfoForMandalVO votersInfoInTown = null;
+		List<VotersInfoForMandalVO> votersInfoInTowns = new ArrayList<VotersInfoForMandalVO>();
+		votersWithDelimitationInfoVO.setYear(IConstants.DELIMITATION_YEAR+"");
+		List beforeDelimLocalBodies = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBody(constituencyId, 
+				year, "'"+IConstants.MUNCIPLE_ELECTION_TYPE+"','"+IConstants.CORPORATION_ELECTION_TYPE+"'");
+		List beforeDelimGMCs = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(constituencyId, 
+				year, IConstants.GREATER_ELECTION_TYPE);
+		
+		if(beforeDelimLocalBodies.size() == 0 && beforeDelimGMCs.size() == 0){
+			return false;
+		}
+			
+		
 		for(Object[] values:(List<Object[]>)beforeDelimLocalBodies){
+			votersInfoInTown = new VotersInfoForMandalVO();
+			votersInfoInTown.setMandalId( ((Long)values[0]).toString());
+			votersInfoInTown.setMandalName(values[1].toString().toUpperCase() + " " +values[5]);
+			votersInfoInTown.setTotalMaleVoters(values[2].toString());
+			votersInfoInTown.setTotalFemaleVoters(values[3].toString());
+			votersInfoInTown.setTotalVoters(values[4].toString());
+			votersInfoInTown.setTotVoters(new BigDecimal(values[4].toString()));
+			votersInfoInTowns.add(votersInfoInTown);
 			
 		}
+		
+		for(Object[] values:(List<Object[]>)beforeDelimGMCs){
+			votersInfoInTown = new VotersInfoForMandalVO();
+			votersInfoInTown.setMandalId( ((Long)values[0]).toString());
+			votersInfoInTown.setMandalName(values[5] + " " + values[1]);
+			votersInfoInTown.setTotalMaleVoters(values[2].toString());
+			votersInfoInTown.setTotalFemaleVoters(values[3].toString());
+			votersInfoInTown.setTotalVoters(values[4].toString());
+			votersInfoInTown.setTotVoters(new BigDecimal(values[4].toString()));
+			votersInfoInTowns.add(votersInfoInTown);
+		}
+		
+		votersInfoInTowns.addAll(0, votersWithDelimitationInfoVO.getVotersInfoForMandalVO());
+		votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoInTowns);
+		return true;
 	}
 
 	public List<CandidateInfoForConstituencyVO> extractCandidateNPartyDataFromList(List candidateList)
