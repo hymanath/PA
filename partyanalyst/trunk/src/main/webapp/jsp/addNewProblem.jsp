@@ -133,7 +133,7 @@ function limitText(limitField, limitCount, limitNum)
 </TABLE>
 </CENTER>
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<s:form action="addNewProblemSubmitAction" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
+<s:form action="addNewProblemSubmitAction" method="POST" theme="simple" name="form">
 
  
 <div id = "addNewProblemMainDiv">
