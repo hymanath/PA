@@ -62,11 +62,10 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long problemImpactLevelValue;
 	private String isApproved;
 	private String isDeleted;
+	private String booth;
 	
 	private List<ProblemHistoryVO> problemHistories;
-    
-
-	
+    	
 	public String getPostedDate() {
 		return postedDate;
 	}
@@ -497,6 +496,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public void setProblemLocation(String problemLocation) {
 		this.problemLocation = problemLocation;
 	}
+	
+	public String getBooth() {
+		return booth;
+	}
+
+	public void setBooth(String booth) {
+		this.booth = booth;
+	}
+	
+	
 	
 	
 }
