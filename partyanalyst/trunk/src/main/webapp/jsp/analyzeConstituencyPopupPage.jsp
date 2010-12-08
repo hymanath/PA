@@ -109,23 +109,6 @@ body
 	color: #5B514A;
 }
 
-#analyzebodyDiv
-{
-	padding:20px;
-}
-
-#analyzeTableLabel
-{
-	border-bottom:2px solid #BC997E;
-	margin-bottom:10px;
-	padding:5px;
-}
-
-#candidateResults
-{
-	padding:5px;
-}
-
 #candidateResults_body table
 {
 	width:90%;
@@ -204,13 +187,23 @@ body
 #slider-bg
 { 
 	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
-} 
+}
+.yui-skin-sam .yui-h-slider {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+height:28px;
+width:100px;
+}
+ 
 </style>
 
 <script type="text/javascript">
 	
 	var constituencyId = "${constituencyId}";
 	var parliamentConstiId = "${parliamentConstiId}";
+	var parliamentConstiName = "${parliamentConstiName}";
 	var constituencyName = "${constituencyName}";
 	var electionId = '';
 	var electionType = '';
@@ -219,7 +212,7 @@ body
 	var userId = "${userId}";
 	var hidden=1;
 	var displayBody;
-
+	var userName = '${sessionScope.UserName}';
 	function incrementHidden()
 	{
 		hidden++;
@@ -366,7 +359,7 @@ body
 					reasonSeverityvalue: reasonSeverityvalue, 
 					task:"addNewComment"				
 				  }	 
-			console.log(jsObj);	
+			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
 			callAjax(jsObj,url);	
@@ -395,12 +388,15 @@ body
 	{
 		var elmtHead = document.getElementById("candidateResults_head");
 		var elmtBody = document.getElementById("candidateResults_body");
-
+		var radioStr = '';
 		if(!elmtHead || !elmtBody)
 			return;
 		
 		var hStr = '';
-		hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Candidate Results </font>';
+		if(results[0].electionType == 'Assembly')		
+			hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
+		if(results[0].electionType == 'Parliament')	
+			hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
 		elmtHead.innerHTML = hStr;
 		
 		if(results == null || results.length == 0)
@@ -423,8 +419,12 @@ body
 				rankStatus = "Won";
 			else
 				rankStatus = "Lost";
+			if(i == 0)
+				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"></input>'
+			else
+				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"></input>' 	
 			var obj =	{
-							radio:'<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"></input>',
+							radio: radioStr,
 							candidateName:results[i].candidateName,
 							party:results[i].party,
 							status:results[i].status,
@@ -450,6 +450,7 @@ body
 
         var myDataTable = new YAHOO.widget.DataTable("candidateResults_body",
                 myColumnDefs, myDataSource);
+       showPostComments(results[0].id,results[0].candidateName,'candidate',results[0].status,constituencyId,constituencyName,results[0].party,jsObj.task,'0')
 
 	}
 	
@@ -459,7 +460,7 @@ body
 		var elmtBody = document.getElementById("candidateComments_body");
 
 		var hStr = '';
-		hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Candidate Details </font>';
+		//hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Candidate Details </font>';
 		elmtHead.innerHTML = hStr;
 
 		var str = '';
@@ -474,8 +475,8 @@ body
 		str += '</div>';
 		
 		str += '<div id="previousComments_main" class="commentsDataMainDiv">';
-		str += '<div id="previousComments_head">';
-		str += '	<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Previous Comments </font>';
+		str += '<div id="previousComments_head" style="margin-top:10px;margin-bottom:10px;">';
+		//str += '	<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">Existing Reasons</font>';
 		str += '</div>';
 		str	+= '<div id="previousComments"></div>';
 		str += '</div>';
@@ -485,19 +486,21 @@ body
 		//str+='<LEGEND><B>Add New Comment</B></LEGEND>';
 		
 		str+='<div id="postNewComment_main" class="commentsDataMainDiv">';
-		str+='<div id="postNewComment_head"><font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Add New Comment</font></div>';
+		str+='<div id="postNewComment_head"><font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Add New Reason</font></div>';
 		str+='<DIV id="alertMessage" style="padding:10px;">Fields marked with * are Mandatory</DIV>';
 		str+='<DIV>';
 		str+='<TABLE width="100%" class="commentsInputTable" border="1" cellspacing="0" cellpadding="0">';
 		if(rank != 'null' && category == 'candidate')
 		{
 			str+='<TR>';
-			str+='<TD align="left" class="commentsInputTd">Reasons*</TD>';	
+			str+='<TD align="left" class="commentsInputTd">Reason*</TD>';	
 			str+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
 			str+='<OPTION id="0" >Select Reason</OPTION>';
 			str+='</SELECT></TD>';
-
-			str += '<td>';
+			str+='</TR>';
+			str+='<TR>';
+			str += '<td class="commentsInputTd">Set Significance</td>';
+			str += '<td class="commentsInputTd">';
 			str += '<div class="yui-skin-sam">';
 			
 			str += '<div id="slider-bg" class="yui-h-slider" tabindex="-1" title="Slider"> ';
@@ -513,18 +516,18 @@ body
 			
 		}	
 		str+='<TR>';
-		str+='<TD align="left" valign="top" class="commentsInputTd">Comment*</TD>';	
-		str+='<TD colspan="2" class="commentsInputTd" valign="top" align="left"><TEXTAREA style="width:300px;" id="commentText" name="commentText"></TEXTAREA></TD>';
+		str+='<TD align="left" valign="top" class="commentsInputTd">Describe your Reason*</TD>';	
+		str+='<TD class="commentsInputTd" valign="top" align="left"><TEXTAREA style="width:300px;" id="commentText" name="commentText"></TEXTAREA></TD>';
 		str+='</TR>';
 		str+='<TR>';
 		str+='<TD align="left" class="commentsInputTd" valign="top">Posted By*</TD>';	
-		str+='<TD colspan="2" class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
+		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" readonly="true" id="commentPostedByText" name="commentPostedByText"/></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
 		str+='</DIV>';
 		//str+='</FIELDSET>';
 		
-		str+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Save"/>';
+		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Post"/>';
 		str+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
 		str+='</div>';
 		str+='</div>';
@@ -534,7 +537,12 @@ body
 		elmtBody.innerHTML = str;
 
 		showExistingComments(id,candidateName,category,constituencyId,constituencyName,partyName);
-
+		var commentTextEl = document.getElementById("commentText");
+		if(commentTextEl)
+			commentTextEl.focus();
+		var commentPostedByTextEl = document.getElementById("commentPostedByText");
+		if(commentPostedByTextEl)
+			commentPostedByTextEl.value = userName;	
 	}
 	
 	function buildCommentsClassificationsOptions(results)
@@ -567,7 +575,7 @@ body
 		var previousCommentsEl = document.getElementById("previousComments");
 			 
 		
-		if(previousCommentsEl.innerHTML == 'No Previous Comments')
+		if(previousCommentsEl.innerHTML == '0 Reasons posted for this candidate')
 		{
 			var newCommentDataObj=
 			{		
@@ -607,8 +615,11 @@ body
 		var candidateName = jsObj.candidateName;
 		var commentsData = new Array();	
 		var year = jsObj.year;
-		var contentStr = '';	
-			contentStr+='<TABLE width="100%" class="commentsInputTable">';
+		candidateName
+		
+		var contentStr = '';
+		contentStr+='<P>'+candidateName+' contested from '+party+' party in '+electionType+' '+year+' election';	
+		/*	contentStr+='<TABLE width="100%" class="commentsInputTable">';
 			contentStr+='<TR>';
 			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Candidate:</B></TD>';
 			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+candidateName+'</TD>';
@@ -621,7 +632,7 @@ body
 			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Constituency:</B></TD>';
 			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+constituencyName+'</TD>';		
 			contentStr+='</TR>';
-			contentStr+='</TABLE>';
+			contentStr+='</TABLE>';*/
 			candidateInfoEl.innerHTML = contentStr;		
 			if(previousComments != null)
 			{	
@@ -640,7 +651,7 @@ body
 				buildPreviousCommentsDataTable(commentsData);
 			} else 
 				{
-				previousCommentsEl.innerHTML="No Previous Comments";
+				previousCommentsEl.innerHTML="0 Reasons posted for this candidate";
 				}	
 	}
 
@@ -660,13 +671,14 @@ body
 							previousCommentsDataSource.responseSchema = {
 									  fields: [ "comment", "classification", "commentedBy", "date","score"]     
 							};
+							if(data.length>5)
+							{	
 							var myConfigs = { 
 									paginator : new YAHOO.widget.Paginator({ 
 									rowsPerPage    : 5	               							        
-									}),
-									caption:"Previous Comments" 
+									}) 
 									};
-							
+							}
 							previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);
 
 							return { 
@@ -722,7 +734,7 @@ body
 			return;
 		
 		var hStr = '';
-		hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Coments Results </font>';
+		//hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Coments Results </font>';
 		elmtHead.innerHTML = hStr;
 
 		var str = '';
@@ -797,37 +809,42 @@ body
 
 		elmtBody.innerHTML = str;
 	}
+	function executeOnload()
+	{
+		var yearEl = document.getElementById("electionYears");
+		var year;
+		if(yearEl.options.length>0)
+		{
+				yearEl.selectedIndex = '1';
+				year =  yearEl.options[yearEl.selectedIndex].value;				
+		}
+		if(taskType== 'analyze')
+		{
+			getCandidatesResults(year);
+		} else if(taskType== 'viewResults')
+		{
+			getCommentsResults(year);
+		}
+		
+		
+			
+	}
 
 </script>
 </head>
 <body class="yui-skin-sam">
 	<div id="commentsDialogDiv"></div>
 	<div id="analyzeContainerMain">
-		<div id="analyzeHeadingDiv" class="analyzeHeadingDiv"> Analyze Constituency</div>
+		<div id="analyzeHeadingDiv" class="analyzeHeadingDiv"> Assess ${constituencyName} Constituency Election Results</div>
 		<div id="analyzebodyDiv">
-			<div id="analyzeTableLabel">				
-				<table class="analyzeTable">	
-				<tr>
-					<td><img src="images/icons/infoicon.png"></td>
-					<c:if test="${taskType == 'analyze'}">
-						<td style="font-weight:bold;">Please select election type and election year to view candidates results.</td>
-					</c:if>
-					<c:if test="${taskType == 'viewResults'}">
-						<td style="font-weight:bold;">Please select election type and election year to view previous comments.</td>
-					</c:if>
-				</tr>
-				</table>
-			</div>
-
-			<div style="height:50px;">
+				<div style="margin-top:10px;margin-bottom:10px;">
 				<table class="analyzeTable">						
 					<tr>
 						<th>Election Type</th>
-						<td width="250px">
-							<input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)"/>Assembly
-							<input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"/>Parliament
-						</td>
-
+						<td><input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)"/>Assembly<B>(${constituencyName})</B></td>
+						<td><input type="radio" name="electionTypeRadio" value="parliament" onclick="getElectionYears(this.value)"/>Parliament<B>(${parliamentConstiName})</B></td>
+					</tr>
+					<tr>
 						<th>Election Year</th>
 						<td>
 						<c:if test="${taskType == 'analyze'}">
@@ -839,21 +856,21 @@ body
 							
 						</td>
 					</tr>
-				</table>
+				</table>								
 			</div>
 
 			<div id="commentsResults">
-				<div id="commentsResults_head" style="height:50px;"></div>
+				<div id="commentsResults_head"></div>
 				<div id="commentsResults_body"></div>
 			</div>
 
 			<div id="candidateResults">
-				<div id="candidateResults_head" style="height:50px;"></div>
+				<div id="candidateResults_head" style="margin-top:10px;margin-bottom:10px;"></div>
 				<div id="candidateResults_body"></div>
 			</div>
 
 			<div id="candidateComments">
-				<div id="candidateComments_head" style="height:50px;"></div>
+				<div id="candidateComments_head" style="margin-top:10px;margin-bottom:10px;"></div>
 				<div id="candidateComments_body"></div>
 			</div>			
 
@@ -905,6 +922,7 @@ body
 
  });
 })(); 
+	executeOnload();
 	</script>
 </body>
 </html>

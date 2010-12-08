@@ -35,6 +35,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 	private ICommentsDataService commentsDataService;
 	private List<CandidateVO> candidateVO;
 	private String parliamentConstiId;
+	private String parliamentConstiName;
 	private String constituencyName;
 	private String userId;
 	private String taskType;
@@ -157,6 +158,14 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 
 	public void setConstituencyId(String constituencyId) {
 		this.constituencyId = constituencyId;
+	}	
+
+	public String getParliamentConstiName() {
+		return parliamentConstiName;
+	}
+
+	public void setParliamentConstiName(String parliamentConstiName) {
+		this.parliamentConstiName = parliamentConstiName;
 	}
 
 	public String execute()
