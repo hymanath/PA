@@ -116,6 +116,10 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String pBooth;
 	private Long partyCommittee;
 	
+	private String defaultState;
+	private String defaultDist;
+	private String defaultConst;
+	
 	//to display or hide official address form inputs.if set to true, the form inputs are hidden, if set to false form inputs are shown
 	private Boolean sameAsCAFlag;
 	
@@ -610,11 +614,13 @@ public class CadreRegisterAction extends ActionSupport implements
 
 	public void setDefaultCadreLevelId(Long defaultCadreLevelId) {
 		this.defaultCadreLevelId = defaultCadreLevelId;			
-	}
+	}	
 	
 	// to make the active or normal cadre type radio button to pre select active radio button
 	public String getDefaultCadreType() {
-		return this.cadreInfo.getMemberType();
+		if(this.cadreInfo.getMemberType() != null && !this.cadreInfo.getMemberType().isEmpty())
+			return this.cadreInfo.getMemberType();
+		return "Active";
 	}
 	
 	// to pre select cadre level  based on user access type
@@ -623,18 +629,49 @@ public class CadreRegisterAction extends ActionSupport implements
 		if(this.defaultCadreLevelId == null)
 			this.defaultCadreLevelId = cadreInfo.getCadreLevel();
 		return this.defaultCadreLevelId;
-	}
+	}	
 	
-	public String getDefaultStateId() {
-		return this.cadreInfo.getCadreLevelState();
+	public String getDefaultState() {
+		return defaultState;
 	}
 
+	public void setDefaultState(String defaultState) {
+		this.defaultState = defaultState;
+	}
+
+	public String getDefaultDist() {
+		return defaultDist;
+	}
+
+	public void setDefaultDist(String defaultDist) {
+		this.defaultDist = defaultDist;
+	}
+
+	public String getDefaultConst() {
+		return defaultConst;
+	}
+
+	public void setDefaultConst(String defaultConst) {
+		this.defaultConst = defaultConst;
+	}
+
+	public String getDefaultStateId() {
+		if(this.cadreInfo.getCadreLevelState() != null && !this.cadreInfo.getCadreLevelState().isEmpty())
+			return this.cadreInfo.getCadreLevelState();
+		return getDefaultState();
+	}
+	
+	
 	public String getDefaultDistId() {
-		return this.cadreInfo.getCadreLevelDistrict();
+		if(this.cadreInfo.getCadreLevelDistrict() != null && !this.cadreInfo.getCadreLevelDistrict().isEmpty())
+			return this.cadreInfo.getCadreLevelDistrict();
+		return getDefaultDist();
 	}	
 
 	public String getDefaultConstId() {
-		return this.cadreInfo.getCadreLevelConstituency();
+		if(this.cadreInfo.getCadreLevelConstituency() != null && !this.cadreInfo.getCadreLevelConstituency().isEmpty())
+			return this.cadreInfo.getCadreLevelConstituency();
+		return getDefaultConst();
 	}
 	
 	public Boolean getSameAsCAFlag() {
@@ -809,8 +846,10 @@ public class CadreRegisterAction extends ActionSupport implements
 			{
 				log.debug("Access Type = MLA ****");
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
 				setDefaultCadreLevelId(4l);				
 							
@@ -821,11 +860,13 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.STATES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
 				setDefaultCadreLevelId(0l);				
 				
@@ -834,11 +875,13 @@ public class CadreRegisterAction extends ActionSupport implements
 				session.setAttribute(ISessionConstants.CONSTITUENCIES,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS, new ArrayList<SelectOptionVO>());
 				//clear cadre level selections 
 				session.setAttribute(ISessionConstants.DISTRICTS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C, new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
 				setDefaultCadreLevelId(2l);				
 				
@@ -847,10 +890,12 @@ public class CadreRegisterAction extends ActionSupport implements
 
 				session.setAttribute(ISessionConstants.MANDALS,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES, new ArrayList<SelectOptionVO>());	
+				session.setAttribute(ISessionConstants.BOOTHS, new ArrayList<SelectOptionVO>());
 				
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C,new ArrayList<SelectOptionVO>());
 				session.setAttribute(ISessionConstants.MANDALS_C,new ArrayList<SelectOptionVO>());	
 				session.setAttribute(ISessionConstants.VILLAGES_C, new ArrayList<SelectOptionVO>());
+				session.setAttribute(ISessionConstants.BOOTHS_C, new ArrayList<SelectOptionVO>());
 				//default cadre level element to be selected in cadre level selection for active cadre
 				setDefaultCadreLevelId(3l);				
 			}					 
@@ -858,6 +903,7 @@ public class CadreRegisterAction extends ActionSupport implements
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.MANDALS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.VILLAGES_O, new ArrayList<SelectOptionVO>());
+			session.setAttribute(ISessionConstants.BOOTHS_O, new ArrayList<SelectOptionVO>());
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
 		}
 		
