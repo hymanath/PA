@@ -1600,8 +1600,13 @@ function showDetailedElectionResult(id)
 		var urlStr = '';
 		if('${constituencyVO.electionType}' == 'Parliament')
 			urlStr += 'constituencyPageAction.action?constituencyId=${info.mandalId}';
-		else
-			urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
+		else{
+			if(${info.isMandal})
+				urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
+			else
+				urlStr += 'localBodyElectionAction.action?localBodyId=${info.mandalId}';
+		}
+		
 		var vObj=
 				{
 					mandalId:'${info.mandalId}',
