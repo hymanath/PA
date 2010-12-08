@@ -565,7 +565,7 @@ function populateLocations(val,source)
 	row5El.style.display = 'none';
 	row6El.style.display = 'none';
 	
-	if(districtFieldEl.options.length > 0)
+	if(districtFieldEl && districtFieldEl.options.length > 0)
 		selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;	
 	if(constituencyFieldEl.options.length > 0)
 		 selectedConst = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
