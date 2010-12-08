@@ -342,7 +342,11 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				
 				if(isParliament)
 				{
-					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();					
+					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
+					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(constituencyId);
+					constituencyList = constituencyInfoVO.getAssembyConstituencies();
+					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));					
 					
 				} else 
 				{
