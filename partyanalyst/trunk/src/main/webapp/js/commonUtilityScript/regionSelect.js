@@ -762,6 +762,14 @@ function getCadresResults(btnType)
 			genderOption = genderRadioEls[i].value;
 	}
 
+	var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
+	var senderNameTextElmt = document.getElementById("senderNameText");
+
+	var SENDERNAME = '';
+
+	if(includeSenderElmtCheck && includeSenderElmtCheck.checked == true)
+		SENDERNAME = senderNameTextElmt.value;
+
 	var jsObj=
 		{		
 			reportLevel:REPORTLEVEL,
@@ -778,18 +786,36 @@ function getCadresResults(btnType)
 			txtAreaValue:SMSTEXTAREAVALUE,
 			includeCadreName:SMSINCLUDECADRENAME,
 			taskType:btnType,
+			senderName:SENDERNAME,
 			task:"cadreSearch"		
 		}
 	
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	
+	var elmtSr = document.getElementById("smsResult");
+
+	if(elmtSr && btnType == "search")
+		elmtSr.style.display = 'none';
+	
+	if(btnType == "sms")
+		elmtSr.style.display = '';
 
 	if(btnType == "search")
-		var url = "getCadresDetailsAjaxAction.action?"+rparam;						
-	else if(btnType == "sms")
-		var url = "sendSMSForCadresAction.action?"+rparam;						
+	{
+		var search = "forTotalCount";
+		var url = "getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask="+winTask+"&sort=total&startIndex=0&results=-5";
+		callAjax(jsObj,url);
+		buildCadreSearchResultDataTable(rparam);
+		//var url = "getCadresDetailsAjaxAction.action?"+rparam;
+	}
 
-	callAjax(jsObj,url);
+	else if(btnType == "sms")
+	{
+		var url = "sendSMSForCadresAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
 }
 
 function getVillagesComboBoxForAMandal(value,elmtId)
@@ -1032,7 +1058,7 @@ function showSMSResults(jsObj,results)
 	bodySMSElmt.innerHTML = 'SMS successfullty sent to '+results.totalSmsSent+' cadres';
 	bodySMSElmt.innerHTML += '<a href="javascript:{}" onclick="showSentSMSCadres()"> View cadres</a>';
 
-	buildCadresDatatable(results.smsSentCadreInfo,"searchResult");
+	//buildCadresDatatable(results.smsSentCadreInfo,"searchResult");
 }
 
 function showSentSMSCadres()
@@ -1041,10 +1067,12 @@ function showSentSMSCadres()
 
 	if(elmt)
 		elmt.style.display = 'block';
+
+	getCadresResults('search');
 }
 
 
-function showCadreSearchResults(jsObj,results)
+/*function showCadreSearchResults(jsObj,results)
 {
 	var headElmt = document.getElementById("searchResultsDiv_head");
 	var bodySearchElmt = document.getElementById("searchResult");
@@ -1085,7 +1113,7 @@ function showCadreSearchResults(jsObj,results)
 	fStr += '<span id="smsStatusTextSpan"></span>';
 
 	footerElmt.innerHTML = fStr;
-}
+}*/
 
 function selectCheckBox()
 {
@@ -1275,8 +1303,11 @@ function showSMSStatus(jsObj,results)
 	}
 
 	if(elmt)
-		elmt.innerHTML = '<font color="green"><blink>SMS sent successfull to '+results.totalSmsSent+' Cadres</blink></font>';
-	
+	{
+		elmt.innerHTML = '<font color="green"><blink>SMS sent successfull to '+results.totalSmsSent+' Cadre</blink></font>';
+		elmt.style.display = '';
+	}
+
 	if(CLICKTYPE == "Search")
 		var t=setTimeout("smsDialog.hide();",5000);	
 }
@@ -1297,7 +1328,9 @@ function callAjax(jsObj,url)
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "search")
 							{
-								showCadreSearchResults(jsObj,myResults);
+								//showCadreSearchResults(jsObj,myResults);
+								showCadreSearchResults(myResults.totalSearchCount);
+
 							}
 							else if(jsObj.task == "cadreSearch" && jsObj.taskType == "sms")
 							{
@@ -1569,4 +1602,13 @@ function deleteCadre(cadreId)
 	  		return;	
 	  }
 	
+}
+
+function enableSenderName()
+{
+	var elmt = document.getElementById("senderNameText");
+	if(elmt.disabled == true)
+		elmt.disabled = false;
+	else
+		elmt.disabled = true;
 }
