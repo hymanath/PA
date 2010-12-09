@@ -244,7 +244,7 @@ function callAjaxForStates(jsObj,url)
 function executeonLoad()
 {
 	var selectEl = document.getElementById("stateSelect");	
-	selectEl.selectedIndex = '1';
+	//selectEl.selectedIndex = '1';
 
 	buildAutoSuggest();
 	var selectedState =  selectEl.options[selectEl.selectedIndex].value;
