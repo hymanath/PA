@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1540,18 +1539,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		PartyElectionResultVO partyVotes = null; 
 		List list = candidateBoothResultDAO.findAssemblyRegionResultsForPartiesForAConstituency(constituencyId, constituencyId, electionYear);
 		List nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
-		Long votesEarnedBoothwise = 0l;
+		Long constiVotesEarned = 0l;
 		Long votesDiff = 0l;
 		Long othersSum = 0l;
 		for(Object[] values: (List<Object[]>)nominationResult)
-			partyIdAndTheirVotes.put(Long.parseLong(values[5].toString()), (Double)values[2]);
+			partyIdAndTheirVotes.put((Long)values[4], (Double)values[2]);
 		
 		for(Object[] values: (List<Object[]>)list){
 			partyVotes = new PartyElectionResultVO();
 			partyVotes.setPartyId(Long.parseLong(values[0].toString()));
 			partyVotes.setRank(Long.parseLong(values[2].toString()));
-			votesEarnedBoothwise = partyIdAndTheirVotes.get(values[0]).longValue();
-			votesDiff = votesEarnedBoothwise - Long.parseLong(values[3].toString());
+			constiVotesEarned = partyIdAndTheirVotes.get(values[2]).longValue();
+			votesDiff = constiVotesEarned - Long.parseLong(values[3].toString());
 			if(votesDiff < 0){
 				partyVotes.setVotesEarned(0l);
 				partyVotes.setVotesPercentage("0");
@@ -1589,7 +1588,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			totalVotesEarned = 0l;
 			for(int j=0; j < partiesResultlist.size(); j++)
 				totalVotesEarned += partiesResultlist.get(j).getPartyElectionResultVOs().get(i).getVotesEarned();
-			partyIdAndTheirVotes.put(partiesResultlist.get(0).getPartyElectionResultVOs().get(i).getPartyId(), totalVotesEarned);
+			partyIdAndTheirVotes.put(partiesResultlist.get(0).getPartyElectionResultVOs().get(i).getRank(), totalVotesEarned);
 		}
 			
 		List nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
@@ -1597,7 +1596,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			partyVotes = new PartyElectionResultVO();
 			partyVotes.setPartyId((Long)values[5]);
 			partyVotes.setRank(Long.parseLong(values[4].toString()));
-			votesEarnedBoothwise = partyIdAndTheirVotes.get(values[5]);
+			votesEarnedBoothwise = partyIdAndTheirVotes.get(values[4]);
 			votesDiff =  ((Double)values[2]).longValue() - votesEarnedBoothwise;
 			if(votesDiff < 0){
 				partyVotes.setVotesEarned(0l);
@@ -1672,6 +1671,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				if(tehsilId==Long.parseLong(parms[1].toString())){				
 					if(parms[5]!= null && totalVotes != null){
 						PartyElectionResultVO partyElectionResultVO = new PartyElectionResultVO();
+						partyElectionResultVO.setRank((Long)parms[2]);
 						partyElectionResultVO.setPartyId((Long)parms[7]);
 						partyElectionResultVO.setVotesEarned((Long)parms[5]);
 						partyElectionResultVO.setVotesPercentage(new BigDecimal(((Long)parms[5]*100.0)/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());		
