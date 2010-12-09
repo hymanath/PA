@@ -638,7 +638,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	
 	}
 	
-	@Test
+	/*@Test
 	public void testGetNominationsForLocalElectionBodyElection(){
 		
 		List list2 = nominationDAO.getAllElectionIdsAndYearsForADistrict(1L);
@@ -646,7 +646,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
 		
 	}*/
-	
+	/*
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetTotalValidVotesAndEarnedVotesInAConstituency(){
@@ -659,6 +659,37 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		 System.out.println(" Total Candidate Votes Earned :" + (Double)params[0]);
 		 System.out.println(" Total Constituency Valid Votes :" + (Double)params[1]);
 		}
+		
+	}*/
+	
+	public void testfindByCandidateLastName(){
+	//String[] names = {"reddy","jagan"};
+	String sort = "model.candidate.candidateId";
+	List<Object[]> obj = nominationDAO.findByFirstMiddleAndLastNames("reddy",sort,"asc",0,20,"3,4");
+	int i;
+	for(i=0;i<obj.size();i++)
+	{
+		
+	Object[] x = (Object[])obj.get(i);
+	
+	for(Object y : x)
+	{
+    	System.out.print("  "+y.toString());
+    }
+	System.out.println();
 	}
+	System.out.println(obj.size());
+   /* i=0;
+	for(Candidate result:obj)
+	{
+		System.out.println("============="+ ++i +" "+result.getLastname());
+		//System.out.print("   "+new ArrayList<Nomination>(result.getNominations()).get(0).getParty().getShortName());
+	}*/
+	
+}
+public void testTotalSearchCount(){
+	List<Long> obj = nominationDAO.totalSearchCount("kamalakara","2,4");
+	System.out.println(obj.get(0));
+}
 }
 	

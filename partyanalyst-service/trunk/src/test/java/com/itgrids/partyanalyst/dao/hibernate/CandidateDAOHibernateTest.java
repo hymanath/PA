@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.Nomination;
 
 
 public class CandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -51,11 +53,11 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println((endTime-startTime)/1000);
 	}*/
 	
-	public void testfindByCandidateLastName(){
+	/*public void testfindByCandidateLastName(){
 		String[] names = {"reddy","jagan"};
 		
 		List<Candidate> obj = candidateDAO.findByFirstMiddleAndLastNames(names);
 		System.out.println(obj.size());
-	}
+	}*/
 	
 }
