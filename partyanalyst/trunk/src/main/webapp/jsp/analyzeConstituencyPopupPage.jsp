@@ -111,7 +111,10 @@ body
 
 #candidateResults_body table
 {
-	width:90%;
+	margin-bottom:15px;
+	margin-left:20px;
+	margin-top:15px;
+	width:92%;
 }
 
 .commentImg
@@ -189,28 +192,20 @@ body
 	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
 }
 .yui-skin-sam .yui-h-slider {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
-height:28px;
-width:100px;
-}
-h3 {
-	background-image:url(images/icons/electionResultsReport/heading.png);
-	border-left:1px solid #CCCCCC;
-	border-right:1px solid #CCCCCC;
-	color:#006221;
-	font-family:MS Sans-serif;
-	font-size:17px;
-	font-weight:bold;
-	height:25px;
-	margin-bottom:15px;
-	margin-top:0;
-	padding:10px;
-	text-align:center;
-	width:450px;
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+	height:28px;
+	width:100px;
 } 
+.yui-skin-sam .yui-dt table {
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:verdana;
+	font-size:11px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -405,12 +400,38 @@ h3 {
 		var radioStr = '';
 		if(!elmtHead || !elmtBody)
 			return;
+
+		hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		hStr+='<TR>';
+		hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		hStr+='<TD>'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</TD>';
+		hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		hStr+='</TR>';
+		hStr+='</TABLE>';	
+
 		
 		var hStr = '';
 		if(results[0].electionType == 'Assembly')		
-			hStr += '<font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
-		if(results[0].electionType == 'Parliament')	
-			hStr += '<font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
+		{
+			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			hStr+='<TR>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><H3 style="width:585px;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			hStr+='</TR>';
+			hStr+='</TABLE>';
+		}
+		if(results[0].electionType == 'Parliament')
+		{
+			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			hStr+='<TR>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><H3 style="width:585px;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			hStr+='</TR>';
+			hStr+='</TABLE>';
+		}	
+			//hStr += '<font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
 		elmtHead.innerHTML = hStr;
 		
 		if(results == null || results.length == 0)
@@ -474,15 +495,9 @@ h3 {
 		var elmtBody = document.getElementById("candidateComments_body");
 
 		var hStr = '';
-		//hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Candidate Details </font>';
 		elmtHead.innerHTML = hStr;
 
 		var str = '';
-		//str += '<div id="candidateDetails">';
-		//str += '</div>';
-		//str += '<div id="candidateComments">';
-		//str	+= '<FIELDSET align="center">';
-		//str	+= '<LEGEND><B>Comments Details</B></LEGEND>';
 		str += '<div id="candidateInfo_main" class="commentsDataMainDiv">';
 		str	+= '<div id="candidateInfo_head" align="left"></div>';
 		str += '<div id="candidateInfo_body" align="left"></div>';
@@ -490,17 +505,19 @@ h3 {
 		
 		str += '<div id="previousComments_main" class="commentsDataMainDiv">';
 		str += '<div id="previousComments_head" style="margin-top:10px;margin-bottom:10px;">';
-		//str += '	<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">Existing Reasons</font>';
 		str += '</div>';
 		str	+= '<div id="previousComments"></div>';
 		str += '</div>';
-		//str	+= '</FIELDSET>';	
-
-		//str+='<FIELDSET align="center">';
-		//str+='<LEGEND><B>Add New Comment</B></LEGEND>';
-		
 		str+='<div id="postNewComment_main" class="commentsDataMainDiv">';
-		str+='<div id="postNewComment_head"><font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;"> Add Reasons For '+candidateName+'</font></div>';
+		str+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		str+='<TR>';
+		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+'</H3></TD>';
+		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		str+='</TR>';
+		str+='</TABLE>';
+		
+		str+='<div id="postNewComment_head"></div>';
 		str+='<DIV id="alertMessage" style="padding:10px;">Fields marked with * are Mandatory</DIV>';
 		str+='<DIV>';
 		str+='<TABLE width="100%" class="commentsInputTable" border="1" cellspacing="0" cellpadding="0">';
@@ -513,7 +530,7 @@ h3 {
 			str+='</SELECT></TD>';
 			str+='</TR>';
 			str+='<TR>';
-			str += '<td class="commentsInputTd">Set Significance</td>';
+			str += '<td class="commentsInputTd">Set Significance*</td>';
 			str += '<td class="commentsInputTd">';
 			str += '<div class="yui-skin-sam">';
 			
@@ -522,7 +539,7 @@ h3 {
 			str += '		<img src="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/thumb-n.gif">';
 			str += '	</div> ';
 			str += '</div> ';
-			str += ' Reason Severity : <span id="slider-value">0</span></p> ';
+			str += ' Significance : <span id="slider-value">0</span></p> ';
 			str += '</div>';
 			str += '</td>';
 			str+='</TR>';
@@ -542,7 +559,7 @@ h3 {
 		//str+='</FIELDSET>';
 		
 		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Post"/>';
-		str+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
+		str+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="closeCurrentWindow()" value="Exit"/></DIV>';
 		str+='</div>';
 		str+='</div>';
 
@@ -558,7 +575,10 @@ h3 {
 		if(commentPostedByTextEl)
 			commentPostedByTextEl.value = userName;	
 	}
-	
+	function closeCurrentWindow()
+	{
+		window.close();
+	}
 	function buildCommentsClassificationsOptions(results)
 	{
 		
@@ -632,22 +652,15 @@ h3 {
 		candidateName
 		
 		var contentStr = '';
-		contentStr+='<P style="font-size:12px;color:#707070;font-weight:bold;text-decoration:underline;">Reasons For '+candidateName+' contested from '+party+' party in '+electionType+' '+year+' election';	
-		/*	contentStr+='<TABLE width="100%" class="commentsInputTable">';
-			contentStr+='<TR>';
-			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Candidate:</B></TD>';
-			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+candidateName+'</TD>';
-			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Election:</B></TD>';
-			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+electionType+''+year+'</TD>';		
-			contentStr+='</TR>';
-			contentStr+='<TR>';
-			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Party:</B></TD>';
-			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+party+'</TD>';
-			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Constituency:</B></TD>';
-			contentStr+='<TD style="width:30%;" class="commentsInputTd">'+constituencyName+'</TD>';		
-			contentStr+='</TR>';
-			contentStr+='</TABLE>';*/
-			candidateInfoEl.innerHTML = contentStr;		
+		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		contentStr+='<TR>';
+		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' contested from '+party+' party in '+electionType+' '+year+' elections</H3></TD>';
+		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		contentStr+='</TR>';
+		contentStr+='</TABLE>';	
+			
+		candidateInfoEl.innerHTML = contentStr;		
 			if(previousComments != null)
 			{	
 				
@@ -673,11 +686,12 @@ h3 {
 	{
 		//previousComments
 		var previousCommentsColumnDefs = [
-													{key: "comment", label: "Comment", sortable:true},	
-													{key: "classification", label: "Classification", sortable:true},		
-													{key: "commentedBy", label: "CommentedBy", sortable:true},	
+														
+													{key: "classification", label: "Reason", sortable:true},		
+													{key: "comment", label: "Description", sortable:true},
+													{key: "commentedBy", label: "Posted By", sortable:true},	
 													{key: "date", label: "Date", sortable:true},
-													{key: "score", label: "Reason Severity", sortable:true}
+													{key: "score", label: "Significance", sortable:true}
 													];                	 	    
 
 							var previousCommentsDataSource = new YAHOO.util.DataSource(data); 
@@ -854,15 +868,15 @@ h3 {
 			<TABLE cellspacing="0" cellpadding="0" border="0">
 				<TR>
 					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
-					<TD valign="top"><DIV class="mainHeading" style="width:500px;">Assess ${constituencyName} Constituency Election Results</DIV></TD>
+					<TD valign="top"><DIV class="mainHeading" style="width:500px;">Assess ${constituencyName} Constituency Elections Results</DIV></TD>
 					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
 				</TR>
 			</TABLE>
 		</DIV>
 		</center>
 		<div id="analyzebodyDiv">
-				<div style="margin-top:10px;margin-bottom:10px;">
-				<table class="analyzeTable">						
+				<div style="margin-top:10px;margin-bottom:10px;border:2px solid #DBDCDB;" >
+				<table class="inputsTable" width="100%' border="0">						
 					<tr>
 						<th>Election Type</th>
 						<td><input type="radio" name="electionTypeRadio" value="assembly" checked="checked" onclick="getElectionYears(this.value)"/>Assembly<B>(${constituencyName})</B></td>
@@ -870,7 +884,7 @@ h3 {
 					</tr>
 					<tr>
 						<th>Election Year</th>
-						<td>
+						<td colspan="2">
 						<c:if test="${taskType == 'analyze'}">
 							<s:select theme="simple" id="electionYears" list="electionYears" listKey="id" listValue="name" headerKey="0" headerValue="select" onchange="getCandidatesResults(this.options[this.selectedIndex].value)"></s:select>					
 						</c:if>
@@ -882,14 +896,13 @@ h3 {
 					</tr>
 				</table>								
 			</div>
-			<HR>
 			<div id="commentsResults">
 				<div id="commentsResults_head"></div>
 				<div id="commentsResults_body"></div>
 			</div>
 
-			<div id="candidateResults">
-				<div id="candidateResults_head" style="margin-top:10px;margin-bottom:10px;"></div>
+			<div id="candidateResults" style="margin-top:10px;margin-bottom:10px;border-bottom:2px solid #DBDCDB;border-left:2px solid #DBDCDB;border-right:2px solid #DBDCDB;">
+				<div id="candidateResults_head" ></div>
 				<div id="candidateResults_body"></div>
 			</div>
 

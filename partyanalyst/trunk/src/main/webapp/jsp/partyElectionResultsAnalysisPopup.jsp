@@ -31,6 +31,12 @@
 <script type="text/javascript" src="js/ElectionResultsAnalysisReport/partyElectionResultsAnalysisReport.js"></script>
 <script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 
+	<!-- Slider skin (optional) --> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+
+	<!-- Slider source file --> 
+	<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
+
 <c:if test="${electionType != 'Parliament' && status =='analyzed'}">
 	<TITLE>${stateName} ${electionType} ${electionYear} Election Results Analyzed Constituencies </TITLE>
 </c:if>
@@ -76,6 +82,18 @@
 	{
 		width:100%;
 	}
+	#slider-bg
+{ 
+	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+}
+.yui-skin-sam .yui-h-slider {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+	height:28px;
+	width:100px;
+}
 </style>
 
 
@@ -86,6 +104,7 @@ var electionType = '${electionType}';
 var electionYear = '${electionYear}';
 var status = '${status}'
 var hidden=1;
+
 function incrementHidden()
 {
 	hidden++;
@@ -319,6 +338,8 @@ function getCommentsClassifications(rank)
 		var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam+"&hidden="+hidden;		
 		callAjax(rparam,jsObj,url);	
 	}
+
+
 	function handleAddCommentsSubmit(id,category,constituencyId)
 	{
 		var commentVal = document.getElementById("commentText").value; 
@@ -328,6 +349,9 @@ function getCommentsClassifications(rank)
 		var constituencyId;
 		var commentCategoryId;
 		var alertMessageEl = document.getElementById("alertMessage"); 
+		var reasonSeverityElmt = document.getElementById("slider-value");
+		var reasonSeverityvalue = reasonSeverityElmt.innerHTML;
+ 
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
@@ -354,6 +378,11 @@ function getCommentsClassifications(rank)
 			alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
 			return;		
 		}	
+		if(reasonSeverityvalue == 0)
+		{
+			alertMessageEl.innerHTML = 'Please Select Reason severity value!';
+			return;
+		}
 		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
 		{
 			var jsObj={
@@ -367,6 +396,7 @@ function getCommentsClassifications(rank)
 					postedBy: postedByVal,
 					category: category,
 					commentCategoryId: commentCategoryId,
+					reasonSeverityvalue: reasonSeverityvalue,
 					task:"addNewComment"				
 				  }	 
 				
@@ -378,6 +408,7 @@ function getCommentsClassifications(rank)
 				
 		
 	}
+	
 
 	function handleAddCommentsCancel(task,status)
 	{
@@ -508,6 +539,50 @@ function getCommentsClassifications(rank)
 	{
 		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
 	}
+	(function() {
+		 var Event = YAHOO.util.Event,
+		 Dom = YAHOO.util.Dom,
+		 lang = YAHOO.lang,
+		 slider,
+		 bg="slider-bg", thumb="slider-thumb",
+		 valuearea="slider-value", textfield="slider-converted-value"
+
+		 // The slider can move 0 pixels up
+		 var topConstraint = 0;
+
+		 // The slider can move 200 pixels down
+		 var bottomConstraint = 100;
+
+		 var scaleFactor = 1.5;
+		 // The amount the slider moves when the value is changed with the arrow
+		 // keys
+		 var keyIncrement = 1;
+
+		 var tickSize = 1;
+
+		 Event.onDOMReady(function() {
+
+		 slider = YAHOO.widget.Slider.getHorizSlider(bg,
+		 thumb, topConstraint, bottomConstraint, 1);
+
+		 // Sliders with ticks can be animated without YAHOO.util.Anim
+		 slider.animate = true;
+		 slider.subscribe("change", function(offsetFromStart) {
+
+		 var valnode = Dom.get(valuearea);
+		 var fld = Dom.get(textfield);
+
+		 // Display the pixel value of the control
+		 valnode.innerHTML = offsetFromStart;
+
+		 // Update the title attribute on the background. This helps assistive
+		 // technology to communicate the state change
+		 Dom.get(bg).title = "slider value = " + actualValue;
+
+		 });
+
+		 });
+		})(); 
 	
 </SCRIPT>
 </BODY>
