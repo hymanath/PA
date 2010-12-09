@@ -95,23 +95,97 @@ public class CandidateSearchService implements ICandidateSearchService{
 		return candidatesList;
 	}
 	
+	
 	public List<CandidateVO> getCandidatesDetails(Long candidateId, String name){
+		
 		List<CandidateVO> candidateVOs = new ArrayList<CandidateVO>();
-		if(candidateId.longValue() != 0)
+		
+		CandidateVO candidateVO = extractNominationsForCandidate(candidateDAO.get(candidateId));
+		candidateVOs.add(candidateVO);
+		
+		return candidateVOs;
+	}
+	
+	public Long getTotalSearchCount(String searchText,String ConstType,Long stateId)
+	{
+		List<String> idlist = new ArrayList<String>();
+		
+		if(ConstType.equalsIgnoreCase(IConstants.MP))
 		{
-			CandidateVO candidateVO = extractNominationsForCandidate(candidateDAO.get(candidateId));
+			idlist.add(IConstants.PARLIAMENT_ELECTION_TYPE);
+		}
+		if(ConstType.equalsIgnoreCase(IConstants.MLA))
+		{
+			idlist.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+		}
+		String electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
+		
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds);
+		
+		return totSearchCount.get(0);
+	}
+	
+	public List<CandidateVO> getCandidatesDetails(String searchText,String sortOption,String order,
+											Integer startIndex,Integer maxResult,String ConstType,Long stateId){
+		
+		List<CandidateVO> candidateVOs = new ArrayList<CandidateVO>();
+		
+		/*String firstAndLastNames [] = StringUtils.delimitedListToStringArray(StringUtils.trimWhitespace(name), " ");
+		List<Candidate> candidates = candidateDAO.findByFirstMiddleAndLastNames(firstAndLastNames);*/
+		String option = "";
+		if(sortOption.equalsIgnoreCase("id"))
+			option = "model.candidate.candidateId";
+		else if(sortOption.equalsIgnoreCase("candidateName"))
+			option = "model.candidate.lastname";
+		else if(sortOption.equalsIgnoreCase("party"))
+			option = "model.party.shortName";
+		else if(sortOption.equalsIgnoreCase("year"))
+			option = "model.constituencyElection.election.electionYear";
+		else if(sortOption.equalsIgnoreCase("ConstituencyName"))
+			option = "model.constituencyElection.constituency.name";
+		else if(sortOption.equalsIgnoreCase("scope"))
+			option = "model.constituencyElection.election.electionScope.electionType.electionType";
+		else if(sortOption.equalsIgnoreCase("position"))
+			option = "model.candidateResult.rank";	
+		
+		List<String> idlist = new ArrayList<String>();
+		
+		String electionIds = new String();
+		
+		if(ConstType.equalsIgnoreCase(IConstants.MP))
+		{
+			idlist.add(IConstants.PARLIAMENT_ELECTION_TYPE);
+		}
+		if(ConstType.equalsIgnoreCase(IConstants.MLA))
+		{
+			idlist.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+		}
+		
+		 electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
+
+		List<Object[]> candidates = nominationDAO.findByFirstMiddleAndLastNames(searchText,option,order,startIndex,maxResult,electionIds);
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds);
+		
+		Long count = new Long(startIndex);
+		
+		for(int i=0;i<candidates.size();i++)
+		{
+			CandidateVO candidateVO = new CandidateVO();
+			Object[] params = (Object[])candidates.get(i);
+			
+			candidateVO.setId(++count);
+			candidateVO.setCandidateName(params[0]!=null?params[0].toString():"");
+			candidateVO.setParty(params[1]!=null?params[1].toString():"");
+			candidateVO.setYear(params[2]!=null?params[2].toString():"");
+			candidateVO.setConstituencyName(params[3]!=null?params[3].toString():"");
+			candidateVO.setScope(params[4]!=null?params[4].toString():"");
+			candidateVO.setPosition(params[5]!=null?params[5].toString():"");
+			candidateVO.setCandidateId(params[6]!=null?(Long.parseLong(params[6].toString())):0l);
 			candidateVOs.add(candidateVO);
+			
 		}
-		else{
-			String firstAndLastNames [] = StringUtils.delimitedListToStringArray(StringUtils.trimWhitespace(name), " ");
-			List<Candidate> candidates = candidateDAO.findByFirstMiddleAndLastNames(firstAndLastNames);
-					
-			for(Candidate candidate:candidates)
-			{
-				CandidateVO candidateVO = extractNominationsForCandidate(candidate);
-				candidateVOs.add(candidateVO);
-			}
-		}
+		
+		candidateVOs.get(0).setTotalSearchCount(totSearchCount.get(0));
 		return candidateVOs;
 	}
 	
@@ -172,13 +246,18 @@ public class CandidateSearchService implements ICandidateSearchService{
 	}
 	
 	//Returns Latest ElectionIds for Election Types
-	public String getLatestElectionIdForElectionType(List<String> electionTypes){
+	public String getLatestElectionIdForElectionType(List<String> electionTypes,String ConstType,Long stateId){
 		StringBuilder electionIds = new StringBuilder();
 		List rawData = null;
 		Object[] values = null;
 		try{
 			for(String electionType:electionTypes){
+				if(ConstType.equalsIgnoreCase(IConstants.MP))
 				rawData = electionDAO.findLatestElectionIdForElectionType(electionType, IConstants.ELECTION_SUBTYPE_MAIN);
+				
+				else if(ConstType.equalsIgnoreCase(IConstants.MLA))
+					rawData = electionDAO.findLatestElectionIdForElectionType(electionType, IConstants.ELECTION_SUBTYPE_MAIN,stateId);
+				
 				if(rawData.size() > 0)
 					electionIds.append(",").append(((Object[])rawData.get(0))[0]);
 			}
