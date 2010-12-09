@@ -1890,4 +1890,38 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.constituencyElection.election.electionYear order by " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType",districtId);
 	}
+			
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult,String ids){
+		
+		StringBuffer queryBuffer = new StringBuffer("select model.candidate.lastname,model.party.shortName,"); 
+		queryBuffer.append("model.constituencyElection.election.electionYear,model.constituencyElection.constituency.name, ");
+		queryBuffer.append("model.constituencyElection.election.electionScope.electionType.electionType, ");
+		queryBuffer.append("model.candidateResult.rank,model.candidate.candidateId from Nomination model where ");
+		//queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' and " );
+		//queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
+		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+") order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List totalSearchCount(String searchText, String ids){
+		
+		StringBuffer queryBuffer = new StringBuffer("select count(model.candidate.candidateId) from Nomination model where ");
+		//queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' and " );
+		//queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
+		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+")");
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		return queryObject.list();		
+	}
+	
 }

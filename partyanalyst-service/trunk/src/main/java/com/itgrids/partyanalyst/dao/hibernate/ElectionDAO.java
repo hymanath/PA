@@ -375,8 +375,15 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	public List findLatestElectionIdForElectionType(String electionType, String subType){
 		Object[] params = {electionType, subType, electionType, subType};
 		return getHibernateTemplate().find("select model.electionId, model.electionYear from Election model where model.electionScope.electionType.electionType = ? " +
-				"and model.elecSubtype = ? and model.electionYear = (select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ? " +
-				"and model.elecSubtype = ?) ", params);
+				"and model.elecSubtype = ? and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.electionScope.electionType.electionType = ? " +
+				"and model1.elecSubtype = ?) ", params);
+	}
+	
+	public List findLatestElectionIdForElectionType(String electionType, String subType,Long stateId){
+		Object[] params = {electionType, subType, electionType, subType, stateId, stateId};
+		return getHibernateTemplate().find("select model.electionId, model.electionYear from Election model where model.electionScope.electionType.electionType = ? " +
+				"and model.elecSubtype = ? and model.electionYear = (select max(model1.electionYear) from Election model1 where model1.electionScope.electionType.electionType = ? " +
+				"and model1.elecSubtype = ? and model1.electionScope.state.stateId = ? ) and model.electionScope.state.stateId = ?", params);
 	}
 	
 
