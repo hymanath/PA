@@ -110,7 +110,55 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return queryObject.list();		
 	}
 	
-
+	/*@SuppressWarnings("unchecked")
+	public List<Candidate> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult){
+		
+		StringBuffer queryBuffer = new StringBuffer("select model.candidate from Nomination model where ");
+		
+		queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
+		queryBuffer.append("model.constituencyElection.election.electionId in (:ids) order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());		
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();		
+	}*/
+	
+	
+	/*@SuppressWarnings("unchecked")
+	public List<Object[]> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult,String ids){
+		
+		StringBuffer queryBuffer = new StringBuffer("select model.candidate.lastname,model.party.shortName,"); 
+		queryBuffer.append("model.constituencyElection.election.electionYear,model.constituencyElection.constituency.name, ");
+		queryBuffer.append("model.constituencyElection.election.electionScope.electionType.electionType, ");
+		queryBuffer.append("model.candidateResult.rank from Nomination model where ");
+		queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
+		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+") order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List totalSearchCount(String searchText, String ids){
+		
+		StringBuffer queryBuffer = new StringBuffer("select count(model.candidate.candidateId) from Nomination model where ");
+		queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
+		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+")");
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		return queryObject.list();		
+	}*/
+	
 	@SuppressWarnings("unchecked")
 	public List<Long> findCandidatesSize(){
 		Query queryObject = getSession().createQuery("select count(model.candidateId) from Candidate model");

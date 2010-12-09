@@ -761,6 +761,65 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return getHibernateTemplate().find("select count(model.cadreId) from Cadre model where model.currentAddress.booth.boothId is null" +
 				" and model.currentAddress.ward.constituencyId = ? and model.registration.registrationId = ? and model.memberType = ? and model.currentAddress.ward.constituencyId is not null", params);
 	}
-
-			
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findActiveCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult)
+	{
+		StringBuffer queryBuffer = new StringBuffer("select model.cadreId,model.firstName,model.lastName,model.mobile,model.currentAddress.userAddressId ,"); 
+		queryBuffer.append("model.memberType, model.education.qualification, model.occupation.occupation, model.casteCategory.category,model.cadreLevel.level ");
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findNormalCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult)
+	{
+		StringBuffer queryBuffer = new StringBuffer("select model.cadreId,model.firstName,model.lastName,model.mobile,model.currentAddress.userAddressId ,"); 
+		queryBuffer.append("model.memberType, model.education.qualification, model.occupation.occupation, model.casteCategory.category ");
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		return queryObject.list();
+	}
+	
+	public List<Object[]> findNormalCadre(Long registrationId)
+	{
+		StringBuffer queryBuffer = new StringBuffer("select model.cadreId ");
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" and model.memberType = 'Normal'" );
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String sortOption,String order,Integer startIndex,Integer maxResult)
+	{
+		StringBuffer queryBuffer = new StringBuffer("select model.cadreId ");
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr+" "+"order by "+sortOption+" " +order);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		queryObject.setFirstResult(startIndex);
+		queryObject.setMaxResults(maxResult);
+		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr)
+	{
+		StringBuffer queryBuffer = new StringBuffer("select count(model.cadreId) ");
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr);
+		
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		return queryObject.list();
+	}
 }
