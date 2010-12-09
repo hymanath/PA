@@ -15,12 +15,14 @@ import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SearchListVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -44,7 +46,9 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	private CadreManagementService cadreManagementService;
 	private List<CadreInfo> cadreInfo;
 	private SmsResultVO smsResultVO;
+	private SearchListVO searchListVO;
 	private String cadreId;
+	private Long totalSearchCount;
 	
 	
 	public SmsResultVO getSmsResultVO() {
@@ -145,6 +149,22 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		
 	}
 	
+	public SearchListVO getSearchListVO() {
+		return searchListVO;
+	}
+
+	public void setSearchListVO(SearchListVO searchListVO) {
+		this.searchListVO = searchListVO;
+	}
+
+	public Long getTotalSearchCount() {
+		return totalSearchCount;
+	}
+
+	public void setTotalSearchCount(Long totalSearchCount) {
+		this.totalSearchCount = totalSearchCount;
+	}
+
 	public String execute() throws Exception
 	{
 		
@@ -305,8 +325,13 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		smsResultVO  = cadreManagementService.sendSMSToSelectedCadreCriteria(user.getRegistrationID(), setPartyCadreDetails(jObj), jObj.getString("includeCadreName"), jObj.getString("txtAreaValue"));
+		String message = jObj.getString("txtAreaValue");
+		String senderName = jObj.getString("senderName");
+		if(!senderName.isEmpty())
+		{
+			message = message+" "+IConstants.MESSAGE_APPENDER+" "+senderName;
+		}
+		smsResultVO  = cadreManagementService.sendSMSToSelectedCadreCriteria(user.getRegistrationID(), setPartyCadreDetails(jObj), jObj.getString("includeCadreName"),message);
 		return Action.SUCCESS;
 	}
 	public String getCadresSearch()
@@ -414,6 +439,44 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		return partyCadreDetailsVO;
 	}
 	
+	public String getCadreDetailsForSMS()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		String sortOption = request.getParameter("sort");
+		String order = request.getParameter("dir");
+		String windowTask = request.getParameter("windowTask");
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer maxResult = Integer.parseInt(request.getParameter("results"));
 	
-	
+		
+		String param = null;
+		param = getTask();
+		
+		searchListVO = new SearchListVO();
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		cadreInfo = cadreManagementService.getCadreDetailsForSMS(user.getRegistrationID(),setPartyCadreDetails(jObj),windowTask,sortOption,order,startIndex,maxResult);
+		
+		searchListVO.setTotalSearchCount(new Long(cadreInfo.get(0).getPinCode()));
+		
+		if(new Long(cadreInfo.get(0).getPinCode()) !=0){
+		searchListVO.setCadreInfo(cadreInfo);
+		}
+		
+		else if(searchListVO.getCadreInfo() != null && searchListVO.getCadreInfo().size() > 0)
+		{
+			CadreInfo cadre = searchListVO.getCadreInfo().get(0);
+			searchListVO.getCadreInfo().remove(cadre);
+		}
+		
+		return SUCCESS;
+	}
+
 }	
