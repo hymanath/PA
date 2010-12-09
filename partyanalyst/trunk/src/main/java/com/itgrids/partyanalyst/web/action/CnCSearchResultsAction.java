@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SearchListVO;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -28,9 +29,20 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 	private ICandidateSearchService candidateSearchService ; 
 	List<ConstituencyVO> constituencySearchList ;
 	List<CandidateVO> candidatateSearchList ;
+	private SearchListVO searchListVO ;
 	private Long id;
 	private String constType;
+	private Long totalSearchCount;
+	private Long state;
 	
+	public Long getState() {
+		return state;
+	}
+
+	public void setState(Long state) {
+		this.state = state;
+	}
+
 	public String getSearchText() {
 		return searchText;
 	}
@@ -99,6 +111,22 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		this.constType = constType;
 	}
 
+	public SearchListVO getSearchListVO() {
+		return searchListVO;
+	}
+
+	public void setSearchListVO(SearchListVO searchListVO) {
+		this.searchListVO = searchListVO;
+	}
+
+	public Long getTotalSearchCount() {
+		return totalSearchCount;
+	}
+
+	public void setTotalSearchCount(Long totalSearchCount) {
+		this.totalSearchCount = totalSearchCount;
+	}
+
 	@SuppressWarnings("unchecked")
 	public String execute() {
 		session = request.getSession();		
@@ -117,7 +145,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 				return "redirectToConstituencyPage";
 			}
 		}
-		else if(getSearchName() != null && getSearchName().equals("Candidate"))
+		/*else if(getSearchName() != null && getSearchName().equals("Candidate"))
 		{			
 			List<SelectOptionVO> candidateNamesAndIds = (List<SelectOptionVO>)session.getAttribute("candidateNamesAndIds");
 			SelectOptionVO selectOptionVO = getNameAndIdForSearchText(candidateNamesAndIds, getSearchText());
@@ -128,7 +156,47 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 				return "redirectToCandidatePage";
 			}
 		}	
+		return SUCCESS;	}*/
+				
+		else if(getSearchName() != null && getSearchName().equals("Candidate"))
+		{			
+			List<SelectOptionVO> candidateNamesAndIds = (List<SelectOptionVO>)session.getAttribute("candidateNamesAndIds");
+			SelectOptionVO selectOptionVO = getNameAndIdForSearchText(candidateNamesAndIds, getSearchText());
+			
+			if(selectOptionVO.getId() == 0)
+			{
+				totalSearchCount = candidateSearchService.getTotalSearchCount(getSearchText(),getConstType(),getState());
+			}
+			
+			if(selectOptionVO.getId() != 0)
+			{
+				candidatateSearchList = candidateSearchService.getCandidatesDetails(selectOptionVO.getId(), selectOptionVO.getName());
+				id = candidatateSearchList.get(0).getId();
+				return "redirectToCandidatePage";
+			}
+		}	
 		return SUCCESS;	
+	}
+	
+	public String cncSearchAjax()
+	{
+		searchListVO = new SearchListVO();
+		String searchText = request.getParameter("searchText");
+		String constType = request.getParameter("constType");
+		String sortOption = request.getParameter("sort");
+		String order = request.getParameter("dir");
+		String stateId= request.getParameter("state");
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer maxResult = Integer.parseInt(request.getParameter("results"));
+		Long staId = Long.parseLong(stateId);
+		
+		candidatateSearchList = candidateSearchService.getCandidatesDetails(searchText,sortOption,order,
+																		startIndex,maxResult,constType,staId);
+		
+		searchListVO.setCandidateVOList(candidatateSearchList);
+		searchListVO.setTotalSearchCount(candidatateSearchList.get(0).getTotalSearchCount());
+		
+		return SUCCESS;
 	}
 		
 	private SelectOptionVO getNameAndIdForSearchText(List<SelectOptionVO> namesAndIds, String searchText){
