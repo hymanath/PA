@@ -1801,11 +1801,17 @@
 			</result>
         </action>
         
-        <action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
+         <action name="cnCSearchAjaxAction" class="cnCSearchResultsAction" method="cncSearchAjax">
+        	<result type="json" name="success">
+				<param name="root">searchListVO</param>				
+			</result>
+        </action>
+        
+         <action name="checkAnanymousUserNameAvailabilityAction" class="anonymousUserAction" method="checkForUserNameAvailability">
 			<result type="json" name="success">
 				<param name="root">result</param>				
 			</result>		
-		</action>	
+		</action>
 		
 		<action name="analyzeConstituencyPopupAction" class="analyzeConstituencyPopupAction">	
 			<result name="success">/jsp/analyzeConstituencyPopupPage.jsp</result>
@@ -1837,6 +1843,13 @@
            <result type="json" name="success">
 				<param name="root">candidateComments</param>				
 			</result>	
-        </action>       
+        </action>    
+		
+		<action name="getCadreDetailsForSMSAjaxAction" class="cadreSearchAjaxAction" method="getCadreDetailsForSMS">
+        	<result type="json" name="success">
+				<param name="root">searchListVO</param>				
+			</result>
+        </action>
+        
 	</package>
 </struts>
