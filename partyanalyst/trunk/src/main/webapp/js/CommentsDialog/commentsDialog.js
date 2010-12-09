@@ -1,4 +1,5 @@
 var addCommentsDialog;
+//var previousCommentsDataTable;
 
 function showCommentsDialog(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status)
 {	
@@ -6,16 +7,16 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	var divChild = document.createElement('div');
 	divChild.setAttribute('id','addCommentDiv');
 	var contentStr='';
-	contentStr+='<div class="hd" align="left">Add/View Your Comments</div>';
+	contentStr+='<div class="hd" align="left">Add/View Your Reasons</div>';
 	contentStr+='<div class="bd" align="left">';
 	contentStr+='<FIELDSET align="center">';
-	contentStr+='<LEGEND><B>Comments Details</B></LEGEND>';
+	contentStr+='<LEGEND><B>Previous Reasons</B></LEGEND>';
 	contentStr+='<div id="candidateInfo" align="left"></div>';
 	contentStr+='<div id="previousComments" style="padding:10px;"></div>';
 	contentStr+='</FIELDSET>';	
 	contentStr+='<div id="commentsDetailsDivBody">';
 	contentStr+='<FIELDSET align="center">';
-	contentStr+='<LEGEND><B>Add New Comment</B></LEGEND>';
+	contentStr+='<LEGEND><B>Add New Reason</B></LEGEND>';
 	contentStr+='<DIV id="alertMessage" style="padding:10px;">Fields marked with * are Mandatory</DIV>';
 	contentStr+='<DIV>';
 	contentStr+='<TABLE width="100%" class="commentsInputTable" border="1" cellspacing="0" cellpadding="0">';
@@ -27,11 +28,25 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 		contentStr+='<OPTION id="0" >Select Reason</OPTION>';
 		contentStr+='</SELECT></TD>';
 		contentStr+='</TR>';
+		contentStr+='<TR>';
+		contentStr += '<td class="commentsInputTd">Set Significance*</td>';
+		contentStr += '<td class="commentsInputTd">';
+		contentStr += '<div class="yui-skin-sam">';
+		
+		contentStr += '<div id="slider-bg" class="yui-h-slider" tabindex="-1" title="Slider"> ';
+		contentStr += '    <div id="slider-thumb" class="yui-slider-thumb">';
+		contentStr += '		<img src="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/thumb-n.gif">';
+		contentStr += '	</div> ';
+		contentStr += '</div> ';
+		contentStr += ' Significance : <span id="slider-value">0</span></p> ';
+		contentStr += '</div>';
+		contentStr += '</td>';
+		contentStr+='</TR>';
 		getCommentsClassifications(rank);
 		showExistingComments(id,candidateName,category,constituencyId,constituencyName,partyName);
 	}	
 	contentStr+='<TR>';
-	contentStr+='<TD align="left" valign="top" class="commentsInputTd">Comment*</TD>';	
+	contentStr+='<TD align="left" valign="top" class="commentsInputTd">Description*</TD>';	
 	contentStr+='<TD class="commentsInputTd" valign="top" align="left"><TEXTAREA style="width:300px;" id="commentText" name="commentText"></TEXTAREA></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
@@ -41,7 +56,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	contentStr+='</TABLE>';
 	contentStr+='</DIV>';
 	contentStr+='</FIELDSET>';	
-	contentStr+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Save"/>';
+	contentStr+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Post"/>';
 	contentStr+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
 	contentStr+='</div>';
 	contentStr+='</div>';
@@ -132,7 +147,7 @@ function showPreviousComments(results,jsObj)
 			buildPreviousCommentsDataTable(commentsData);
 		} else 
 			{
-			previousCommentsEl.innerHTML="No Previous Comments";
+			previousCommentsEl.innerHTML="No Previous Reasons";
 			}	
 }
 
@@ -140,9 +155,9 @@ function buildPreviousCommentsDataTable(data)
 {
 	//previousComments
 	var previousCommentsColumnDefs = [
-	               								{key: "comment", label: "Comment", sortable:true},	
-	               								{key: "classification", label: "Classification", sortable:true},		
-	               								{key: "commentedBy", label: "CommentedBy", sortable:true},	
+	               								{key: "classification", label: "Reason", sortable:true},
+	               								{key: "comment", label: "Description", sortable:true},
+	               								{key: "commentedBy", label: "Posted By", sortable:true},	
 	               								{key: "date", label: "Date", sortable:true}	               								             		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
 	               		              	 	    ];                	 	    
 
@@ -151,13 +166,14 @@ function buildPreviousCommentsDataTable(data)
 	               		previousCommentsDataSource.responseSchema = {
 	                              fields: [ "comment", "classification", "commentedBy", "date"]     
 	               		};
-	               		var myConfigs = { 
-	               			    paginator : new YAHOO.widget.Paginator({ 
-	               				rowsPerPage    : 5	               							        
-	               			    }),
-	               			    caption:"Previous Comments" 
-	               				};
-	               		
+	               		if(data.length > 5)
+	               		{
+		               		var myConfigs = { 
+		               			    paginator : new YAHOO.widget.Paginator({ 
+		               				rowsPerPage    : 5	               							        
+		               			    }) 
+		               				};
+	               		}	
 	               		previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);
 
 	               		return { 
@@ -175,7 +191,7 @@ function updatePreviousCommentsDataTable(results)
 	var previousCommentsEl = document.getElementById("previousComments");
 		 
 	
-	if(previousCommentsEl.innerHTML == 'No Previous Comments')
+	if(previousCommentsEl.innerHTML == 'No Previous Reasons')
 	{
 		var newCommentDataObj=
 		{		
@@ -204,6 +220,8 @@ function updatePreviousCommentsDataTable(results)
 	postedByVal.value='';
 	commentCategoryEl.selectedIndex='0';		
 }
+
+
 
 
 
