@@ -3224,6 +3224,18 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			// get cadre matching the selection criteria
 			List<CadreInfo> cadreDetails = getCadreDetailsBySearchCriteria(
 					userId, cadreInputVO);
+			
+			List<CadreInfo> removeList= new ArrayList<CadreInfo>();
+			
+			for(CadreInfo removeCadre : cadreDetails)
+			{
+				if(removeCadre.getMobile().length() < 10)
+					removeList.add(removeCadre);
+			}
+			for(CadreInfo removeCadre : removeList)
+			{
+				cadreDetails.remove(removeCadre);	
+			}
 
 			if (cadreDetails == null || cadreDetails.size() == 0) {
 				smsResultVO.setStatus(1l);
@@ -3928,4 +3940,344 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 	}
 	
+	
+	/*public List<CadreInfo> getCadreDetailsForSMS(Long userId, PartyCadreDetailsVO cadreInputVO,String sort, String order,Integer startIndex,Integer maxResult)
+	{
+		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
+		
+		if (userId != null && cadreInputVO != null) {
+			
+			Long cadreLevelId = cadreInputVO.getCadreLevelId();//country-1,state-2,distric-3,con-4,man-5,vil-6,M-C-G-7,wa-8,bo-9
+			Long cadreLocationId = cadreInputVO.getCadreLocationId();
+			String cdType = cadreInputVO.getCadreType();
+			String searchType = cadreInputVO.getSearchType();
+			String SearchCriteria = null ;
+			String cadreType = null;
+			String sortOption = null;
+			String cadreTypeSelect = null;
+			
+			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
+			{
+				if(cadreLevelId == 2)
+					SearchCriteria = "and model.currentAddress.state.stateId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 3)
+					SearchCriteria = "and model.currentAddress.district.districtId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 4)
+					SearchCriteria = "and model.currentAddress.constituency.constituencyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 5)
+					SearchCriteria = "and model.currentAddress.tehsil.tehsilId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 6)
+					SearchCriteria = "and model.currentAddress.hamlet.hamletId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 7)
+					SearchCriteria = "and model.currentAddress.localElectionBody.localElectionBodyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 8)
+					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 9)
+					SearchCriteria = "and model.currentAddress.booth.boothId = "+cadreLocationId.toString();
+			}
+			
+			if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
+				SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
+				
+			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL))
+			{
+				cadreType = " and model.memberType = 'Normal' ";
+			}
+			else if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_ACTIVE))
+			{
+				cadreType = " and model.memberType = 'Active' ";
+			}
+			else if(cdType.equalsIgnoreCase(IConstants.ALL))
+			{
+				cadreType = " ";
+			}
+			
+			if(sort.equalsIgnoreCase("firstName"))
+				sortOption = " model.firstName "; 
+			else if(sort.equalsIgnoreCase("mobile"))
+				sortOption = " model.mobile ";
+			else if(sort.equalsIgnoreCase("strCadreLevel"))
+				sortOption = " model.cadreLevel.level ";
+			else if(sort.equalsIgnoreCase("memberType"))
+				sortOption = " model.memberType ";
+			else if(sort.equalsIgnoreCase("educationStr"))
+				sortOption = " model.education.qualification ";
+			else if(sort.equalsIgnoreCase("professionStr"))
+				sortOption = " model.occupation.occupation ";
+			else if(sort.equalsIgnoreCase("casteCategoryStr"))
+				sortOption = " model.casteCategory.category ";
+			
+			List<Object[]> result = null;
+			List<Object[]> result2 = null;
+			
+			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_ACTIVE) || cdType.equalsIgnoreCase(IConstants.ALL))
+			{
+				result = cadreDAO.findActiveCadreForSMS(userId,cadreType,SearchCriteria,sortOption,order,startIndex,maxResult);
+			}
+			
+			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL) || cdType.equalsIgnoreCase(IConstants.ALL))
+			{
+				result2 = cadreDAO.findActiveCadreForSMS(userId,cadreType,SearchCriteria,sortOption,order,startIndex,maxResult);
+			}
+			for(Object[] params:result)
+			{
+				CadreInfo cadreInfo = new CadreInfo();
+				
+				cadreInfo.setCadreId(params[0] != null ? params[0].toString() :"");
+				cadreInfo.setFirstName(params[1] != null ? params[1].toString() :"");
+				cadreInfo.setLastName(params[2] != null ? params[2].toString() :"");
+				cadreInfo.setMobile(params[3] != null ? params[3].toString() :"");
+				cadreInfo.setMemberType(params[5] != null ? params[5].toString() :"");
+				cadreInfo.setEducationStr(params[6] != null ? params[6].toString() :"");
+				cadreInfo.setProfessionStr(params[7] != null ? params[7].toString() :"");
+				cadreInfo.setCasteCategoryStr(params[8] != null ? params[8].toString() :"");
+				cadreInfo.setStrCadreLevel(params[9] != null ? params[9].toString() :"");
+				
+				if(cadreInfo.getMobile().length() != 0)
+				cadreInfoList.add(cadreInfo);
+			}
+			
+			for(Object[] params:result2)
+			{
+				CadreInfo cadreInfo = new CadreInfo();
+				
+				cadreInfo.setCadreId(params[0] != null ? params[0].toString() :"");
+				cadreInfo.setFirstName(params[1] != null ? params[1].toString() :"");
+				cadreInfo.setLastName(params[2] != null ? params[2].toString() :"");
+				cadreInfo.setMobile(params[3] != null ? params[3].toString() :"");
+				cadreInfo.setMemberType(params[5] != null ? params[5].toString() :"");
+				cadreInfo.setEducationStr(params[6] != null ? params[6].toString() :"");
+				cadreInfo.setProfessionStr(params[7] != null ? params[7].toString() :"");
+				cadreInfo.setCasteCategoryStr(params[8] != null ? params[8].toString() :"");
+				
+				if(cadreInfo.getMobile().length() != 0)
+				cadreInfoList.add(cadreInfo);
+			}
+		}
+		
+		return cadreInfoList;
+	}
+*/
+	
+	
+	public List<CadreInfo> getCadreDetailsForSMS(Long userId, PartyCadreDetailsVO cadreInputVO,String windowTask,String sort, String order,Integer startIndex,Integer maxResult)
+	{
+		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
+		
+		if (userId != null && cadreInputVO != null) {
+			
+			Long cadreLevelId = cadreInputVO.getCadreLevelId();//country-1,state-2,distric-3,con-4,man-5,vil-6,M-C-G-7,wa-8,bo-9
+			Long cadreLocationId = cadreInputVO.getCadreLocationId();
+			String cdType = cadreInputVO.getCadreType();
+			String searchType = cadreInputVO.getSearchType();
+			String SearchCriteria = new String();
+			String cadreType = new String();
+			String sortOption = new String();
+			
+			String socStatus = new String();
+			String castStr = new String();
+			String eduStr = new String();
+			String occStr = new String();
+			String andOrStr = new String();
+			String genderStr = new String();
+			String mobileStr = new String();
+		
+			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
+			{
+				if(cadreLevelId == 2)
+					SearchCriteria = "and model.currentAddress.state.stateId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 3)
+					SearchCriteria = "and model.currentAddress.district.districtId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 4)
+					SearchCriteria = "and model.currentAddress.constituency.constituencyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 5)
+					SearchCriteria = "and model.currentAddress.tehsil.tehsilId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 6)
+					SearchCriteria = "and model.currentAddress.hamlet.hamletId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 7)
+					SearchCriteria = "and model.currentAddress.localElectionBody.localElectionBodyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 8)
+					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString();
+				else if(cadreLevelId == 9)
+					SearchCriteria = "and model.currentAddress.booth.boothId = "+cadreLocationId.toString();
+			}
+			
+			if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
+				SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
+				
+			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL))
+			{
+				cadreType = " and model.memberType = 'Normal' ";
+			}
+			else if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_ACTIVE))
+			{
+				cadreType = " and model.memberType = 'Active' ";
+			}
+			else if(cdType.equalsIgnoreCase(IConstants.ALL))
+			{
+				cadreType = " ";
+			}
+			
+			if(sort.equalsIgnoreCase("firstName"))
+				sortOption = " model.firstName "; 
+			else if(sort.equalsIgnoreCase("mobile"))
+				sortOption = " model.mobile ";
+			else if(sort.equalsIgnoreCase("strCadreLevel"))
+				sortOption = " model.cadreLevel.level ";
+			else if(sort.equalsIgnoreCase("memberType"))
+				sortOption = " model.memberType ";
+			else if(sort.equalsIgnoreCase("educationStr"))
+				sortOption = " model.education.qualification ";
+			else if(sort.equalsIgnoreCase("professionStr"))
+				sortOption = " model.occupation.occupation ";
+			else if(sort.equalsIgnoreCase("casteCategoryStr"))
+				sortOption = " model.casteCategory.category ";
+			
+			
+			if(cadreInputVO.getIsSocialStatus() == true)
+			{
+				if(cadreInputVO.getIsOrSearch() == true)
+					andOrStr = " or ";
+				else 
+					andOrStr = " and ";
+				
+				Long castCategory = cadreInputVO.getCadreCasteCategory().get(0).getCadreCategoryId();
+				
+				if(castCategory == 0)
+					castStr = " ";
+				else
+					castStr =" model.casteCategory.socialCategoryId = "+castCategory+" "+andOrStr+" ";
+				
+				Long eduCategory = cadreInputVO.getCadreEducationQualification().get(0).getCadreCategoryId();
+				
+				if(eduCategory == 0)
+					eduStr = " ";
+				else
+					eduStr = " model.education.eduQualificationId = "+eduCategory+" "+andOrStr+" ";
+				
+				Long occCategory = cadreInputVO.getCadreOccupation().get(0).getCadreCategoryId();
+				
+				if(occCategory == 0)
+					occStr = " ";
+				else
+					occStr = " model.occupation.occupationId = "+occCategory+" ";
+				
+				socStatus += " and ("+castStr+" "+eduStr+" "+occStr+")";
+				
+			}
+			
+			if(cadreInputVO.getGenderSearchType().equalsIgnoreCase("Male"))
+				genderStr = " and model.gender like 'Male'";
+			else if(cadreInputVO.getGenderSearchType().equalsIgnoreCase("FeMale"))
+				genderStr = " and model.gender like 'FeMale'";
+			else 
+				genderStr =" ";
+			
+			if(windowTask.equalsIgnoreCase("Sms"))
+				mobileStr=" and length(model.mobile) > 0";
+			
+			else if(windowTask.equalsIgnoreCase("Search"))
+				mobileStr=" ";
+			
+			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr).get(0);
+			
+			if(maxResult < 0)
+			{
+				List<CadreInfo> cadreInfoListTotal = new ArrayList<CadreInfo>();
+				CadreInfo cadreTotal = new CadreInfo();
+				cadreTotal.setPinCode(totalSearchCount.toString());
+				cadreInfoListTotal.add(cadreTotal);
+				return cadreInfoListTotal;
+			}
+			
+			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,sortOption,order,startIndex,maxResult);
+			
+			for(Long id:cadreIds)
+			{
+				Cadre cadre = cadreDAO.get(id);
+				CadreInfo cadreInfo = new CadreInfo();
+				
+				cadreInfo.setCadreId(cadre.getCadreId().toString());
+				cadreInfo.setFirstName(cadre.getFirstName());
+				cadreInfo.setLastName(cadre.getLastName());
+				cadreInfo.setMemberType(cadre.getMemberType());
+				cadreInfo.setEducationStr(cadre.getEducation().getQualification());
+				cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
+				cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
+				cadreInfo.setMobile(cadre.getMobile()!= null ? cadre.getMobile() :"");
+				
+				if(cadre.getCadreLevelValue() != null)
+					cadreInfo.setStrCadreLevel(getCadreLevelValueStr(cadre.getCadreLevel().getLevel(),cadre.getCadreLevelValue()));
+				else
+					cadreInfo.setStrCadreLevel("N/A");
+							
+				cadreInfo.setEmail(setAddress(cadre));
+				
+				if(windowTask.equalsIgnoreCase("Sms") && cadreInfo.getMobile().length() != 0)
+					cadreInfoList.add(cadreInfo);
+				
+				else if(windowTask.equalsIgnoreCase("Search"))
+					cadreInfoList.add(cadreInfo);
+			}
+			
+			if(totalSearchCount == 0)
+			{
+				CadreInfo cadreInfo= new CadreInfo();
+				cadreInfoList.add(cadreInfo);
+				cadreInfoList.get(0).setPinCode(totalSearchCount.toString());
+			}
+			else
+				cadreInfoList.get(0).setPinCode(totalSearchCount.toString());
+		}
+		
+		
+		return cadreInfoList;
+	}
+	
+	String getCadreLevelValueStr(String level,Long Value)
+	{
+		String levelStr = new String(level+"-");
+		
+		if(level.equalsIgnoreCase(IConstants.STATE_LEVEL))
+			levelStr += stateDAO.get(Value).getStateName();
+		else if(level.equalsIgnoreCase(IConstants.DISTRICT_LEVEL))
+			levelStr += districtDAO.get(Value).getDistrictName();
+		else if(level.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL) ||
+									level.equalsIgnoreCase(IConstants.WARD))
+			levelStr += constituencyDAO.get(Value).getName();
+		else if(level.equalsIgnoreCase(IConstants.MANDAL_LEVEL))
+			levelStr += tehsilDAO.get(Value).getTehsilName();
+		else if(level.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL))
+			levelStr += hamletDAO.get(Value).getHamletName();
+		else if(level.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			levelStr += localElectionBodyDAO.get(Value).getName();
+		else if(level.equalsIgnoreCase(IConstants.BOOTH))
+			levelStr += boothDAO.get(Value).getPartName();
+		
+		return levelStr;
+	}
+	
+	String setAddress(Cadre cadre)
+	{
+		String address = new String();
+		if(cadre.getCurrentAddress() == null)
+		{
+			return "";
+		}
+		
+		if(cadre.getCurrentAddress().getWard() != null)
+			address += cadre.getCurrentAddress().getWard().getName()+" ";
+		else
+			address += cadre.getCurrentAddress().getHamlet().getHamletName()+"(V) ";
+	
+		if(cadre.getCurrentAddress().getLocalElectionBody() != null)
+			address += cadre.getCurrentAddress().getLocalElectionBody().getName()+" ";
+		else
+			address += cadre.getCurrentAddress().getTehsil().getTehsilName()+" ";
+		
+		address += cadre.getCurrentAddress().getDistrict().getDistrictName()+"(Dt)";
+		
+		return address;
+		
+	}
 }
