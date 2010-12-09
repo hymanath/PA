@@ -802,15 +802,15 @@ function buildAnalyzeConstituencyWindow()
 		if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
 		{
 			str	+= '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
-			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
-			str += '<a href="javascript:{}" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">View Results</a>';
+			str += '<a href="javascript:{}" title="Click to Assess Results" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'analyze\')">Assess</a>';
+			str += '<a href="javascript:{}" title="Click to View Previous Posts" style="margin-right:10px;" onclick="openAnalyzeConstituencyWindow(\'viewResults\')">Previous Posts</a>';
 			str += '</div>';		
 		}
 	}
 	else {
         str += '<div id="analyzeConstituencyButtonDiv" style="text-align:right;padding:5px;">';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" style="margin-right:10px;">Assess</a>';
-		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" style="margin-right:10px;">View Results</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=analyze" title="Click to Assess Results" style="margin-right:10px;">Assess</a>';
+		str += '<a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'&parliamentConstiId='+parliamentConstiId+'&parliamentConstiName='+parliamentConstiName+'&constituencyName='+constituencyPageMainObj.constituencyInfo.constituencyName+'&taskType=viewResults" title="Click to View Previous Posts" style="margin-right:10px;">Previous Posts</a>';
 		str += '</div>';		
 	}
 		
