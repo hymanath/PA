@@ -544,4 +544,9 @@
 		<property name="commentsDataService" ref="commentsDataService" />	
 	</bean>
 	
+	<bean id="cnCSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction" singleton="false">
+	    <property name="constituencySearchService" ref="constituencySearchService" />
+	    <property name="candidateSearchService" ref="candidateSearchService" />
+	</bean>
+	
 </beans>		
