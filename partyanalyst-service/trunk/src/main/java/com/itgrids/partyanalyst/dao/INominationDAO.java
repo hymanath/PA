@@ -361,4 +361,10 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getAllPartiesForAnElectionYearForLocalBody(String electionYear,String electionType);
 	
 	public List getAllElectionIdsAndYearsForADistrict(Long districtId);
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult,String ids);
+	
+	@SuppressWarnings("unchecked")
+	public List totalSearchCount(String searchText, String ids);
 }
