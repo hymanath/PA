@@ -54,7 +54,7 @@ public class ProblemPostControlAction extends ActionSupport implements
     private Long constituencyId;
     private Long localBodyElectionTypeId;
     private Long parliamentConstiId;
-    private Long parliamentConstiName;
+    private String parliamentConstiName;
     private String constituencyName;
     private String taskType;
 	
@@ -199,11 +199,11 @@ public class ProblemPostControlAction extends ActionSupport implements
 		this.userStatus = userStatus;
 	}	
 
-	public Long getParliamentConstiName() {
+	public String getParliamentConstiName() {
 		return parliamentConstiName;
 	}
 
-	public void setParliamentConstiName(Long parliamentConstiName) {
+	public void setParliamentConstiName(String parliamentConstiName) {
 		this.parliamentConstiName = parliamentConstiName;
 	}
 
@@ -222,6 +222,9 @@ public class ProblemPostControlAction extends ActionSupport implements
 			
 			RegistrationVO userVO = (RegistrationVO)regVO;
 			if(userVO.getUserStatus().equals(IConstants.PARTY_ANALYST_USER)){
+				if(taskType.equalsIgnoreCase("analyze"))
+					return getRedirectPageDetails();
+				else
 				return IConstants.PARTY_ANALYST_USER;
 			}else if(userVO.getUserStatus().equals(IConstants.FREE_USER)){
 				//task = "pm_redirect";
