@@ -6,6 +6,7 @@ import java.util.List;
 public class CandidateVO {
 	
 	private Long id;
+	private Long candidateId;
 	private String candidateName;
 	private String data;
 	private String image;
@@ -22,6 +23,9 @@ public class CandidateVO {
 	private String postedDate;
 	private Long costumMessageId;
 	private Long recepientId;
+	private String scope;
+	private String position;
+	private Long totalSearchCount;
 	private Long nominationId;
 	private Long electionId;
 	private String electionType;
@@ -170,6 +174,14 @@ public class CandidateVO {
 		this.postedDate = postedDate;
 	}
 
+	public Long getTotalSearchCount() {
+		return totalSearchCount;
+	}
+
+	public void setTotalSearchCount(Long totalSearchCount) {
+		this.totalSearchCount = totalSearchCount;
+	}
+
 	public Long getCostumMessageId() {
 		return costumMessageId;
 	}
@@ -186,12 +198,36 @@ public class CandidateVO {
 		this.message = message;
 	}
 
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public Long getRecepientId() {
 		return recepientId;
 	}
 
 	public void setRecepientId(Long recepientId) {
 		this.recepientId = recepientId;
+	}
+
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}	
 	
 	public Long getNominationId() {
