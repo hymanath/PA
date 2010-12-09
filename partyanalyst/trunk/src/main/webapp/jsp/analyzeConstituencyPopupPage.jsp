@@ -89,7 +89,7 @@ body
 
 .analyzeHeadingDiv
 {
-	color:#804900;
+	color:#707070;
 	font-size:20px;
 	text-decoration:underline;
 	text-align:center;
@@ -196,7 +196,21 @@ background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/
 height:28px;
 width:100px;
 }
- 
+h3 {
+	background-image:url(images/icons/electionResultsReport/heading.png);
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
+	color:#006221;
+	font-family:MS Sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	height:25px;
+	margin-bottom:15px;
+	margin-top:0;
+	padding:10px;
+	text-align:center;
+	width:450px;
+} 
 </style>
 
 <script type="text/javascript">
@@ -394,9 +408,9 @@ width:100px;
 		
 		var hStr = '';
 		if(results[0].electionType == 'Assembly')		
-			hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
+			hStr += '<font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
 		if(results[0].electionType == 'Parliament')	
-			hStr += '<font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
+			hStr += '<font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Election Results</font>';
 		elmtHead.innerHTML = hStr;
 		
 		if(results == null || results.length == 0)
@@ -486,7 +500,7 @@ width:100px;
 		//str+='<LEGEND><B>Add New Comment</B></LEGEND>';
 		
 		str+='<div id="postNewComment_main" class="commentsDataMainDiv">';
-		str+='<div id="postNewComment_head"><font class="analyzeHeadingDiv" style="font-size:14px;font-weight:bold;"> Add New Reason</font></div>';
+		str+='<div id="postNewComment_head"><font class="analyzeHeadingDiv" style="font-size:12px;font-weight:bold;"> Add Reasons For '+candidateName+'</font></div>';
 		str+='<DIV id="alertMessage" style="padding:10px;">Fields marked with * are Mandatory</DIV>';
 		str+='<DIV>';
 		str+='<TABLE width="100%" class="commentsInputTable" border="1" cellspacing="0" cellpadding="0">';
@@ -618,7 +632,7 @@ width:100px;
 		candidateName
 		
 		var contentStr = '';
-		contentStr+='<P>'+candidateName+' contested from '+party+' party in '+electionType+' '+year+' election';	
+		contentStr+='<P style="font-size:12px;color:#707070;font-weight:bold;text-decoration:underline;">Reasons For '+candidateName+' contested from '+party+' party in '+electionType+' '+year+' election';	
 		/*	contentStr+='<TABLE width="100%" class="commentsInputTable">';
 			contentStr+='<TR>';
 			contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Candidate:</B></TD>';
@@ -835,7 +849,17 @@ width:100px;
 <body class="yui-skin-sam">
 	<div id="commentsDialogDiv"></div>
 	<div id="analyzeContainerMain">
-		<div id="analyzeHeadingDiv" class="analyzeHeadingDiv"> Assess ${constituencyName} Constituency Election Results</div>
+		<center>
+		<DIV id="pageHeading" style="margin:0px;">
+			<TABLE cellspacing="0" cellpadding="0" border="0">
+				<TR>
+					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
+					<TD valign="top"><DIV class="mainHeading" style="width:500px;">Assess ${constituencyName} Constituency Election Results</DIV></TD>
+					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
+				</TR>
+			</TABLE>
+		</DIV>
+		</center>
 		<div id="analyzebodyDiv">
 				<div style="margin-top:10px;margin-bottom:10px;">
 				<table class="analyzeTable">						
@@ -858,7 +882,7 @@ width:100px;
 					</tr>
 				</table>								
 			</div>
-
+			<HR>
 			<div id="commentsResults">
 				<div id="commentsResults_head"></div>
 				<div id="commentsResults_body"></div>
