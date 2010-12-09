@@ -607,7 +607,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 		
 		log.debug("Inside getVotingTrendzForAConstituency method ....");
 		
-		ElectionTrendzReportVO electionTrendzReportVO = null;
+		ElectionTrendzReportVO electionTrendzReportVO = new ElectionTrendzReportVO();
 		ResultStatus resultStatus = new ResultStatus();
 		
 		ElectionTrendzInfoVO completeTrendzVO = null;
@@ -642,7 +642,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			if(maleAndFemaleElecResults != null)
 			maleAndFemaleTrendzVO = getProcessedResultsForVotingTrendz(null,maleAndFemaleElecResults);
 			
-			electionTrendzReportVO = new ElectionTrendzReportVO();
+			
 			
 			List basicDetails = constituencyDAO.basicElecDetailsForAConstituency(constituencyId);
 			if(basicDetails != null && basicDetails.size() > 0){
@@ -669,6 +669,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			
 		}catch(Exception ex){
 			log.debug("Exception Raised ... : " + ex);
+			ex.printStackTrace();
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultPartial(true);
 			resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
