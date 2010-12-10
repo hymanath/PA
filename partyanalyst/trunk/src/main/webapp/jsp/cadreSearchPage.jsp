@@ -836,6 +836,7 @@ function showCadreSearchResults(searchCount)
 	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span>';
 	fStr += '<span id="smsStatusTextSpan"></span>';
 	footerElmt.innerHTML = fStr;
+	footerElmt.style.display = '';
 	}
 
 }
