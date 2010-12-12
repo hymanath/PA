@@ -30,6 +30,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 	List<ConstituencyVO> constituencySearchList ;
 	List<CandidateVO> candidatateSearchList ;
 	private SearchListVO searchListVO ;
+	private ConstituencyVO constituencyVO;
 	private Long id;
 	private String constType;
 	private Long totalSearchCount;
@@ -138,26 +139,18 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
 			if(getConstType().equalsIgnoreCase(IConstants.MP))
 				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
-			constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText(), electionType);
-			if(constituencySearchList.size() == 1)
+			
+			totalSearchCount = constituencySearchService.getTotalConstituencySearchCount(getSearchText(),electionType,getState());
+			
+			if(totalSearchCount == 1)
 			{
+				constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText(), electionType);
 				id = constituencySearchList.get(0).getId();
 				return "redirectToConstituencyPage";
 			}
-		}
-		/*else if(getSearchName() != null && getSearchName().equals("Candidate"))
-		{			
-			List<SelectOptionVO> candidateNamesAndIds = (List<SelectOptionVO>)session.getAttribute("candidateNamesAndIds");
-			SelectOptionVO selectOptionVO = getNameAndIdForSearchText(candidateNamesAndIds, getSearchText());
-			candidatateSearchList = candidateSearchService.getCandidatesDetails(selectOptionVO.getId(), selectOptionVO.getName());
-			if(candidatateSearchList.size() == 1)
-			{
-				id = candidatateSearchList.get(0).getId();
-				return "redirectToCandidatePage";
-			}
-		}	
-		return SUCCESS;	}*/
-				
+			
+	     }
+					
 		else if(getSearchName() != null && getSearchName().equals("Candidate"))
 		{			
 			List<SelectOptionVO> candidateNamesAndIds = (List<SelectOptionVO>)session.getAttribute("candidateNamesAndIds");
@@ -198,6 +191,29 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		
 		return SUCCESS;
 	}
+	public String constituencysearch()
+	{
+		searchListVO = new SearchListVO();
+		String searchText=request.getParameter("searchText");
+		String constType=request.getParameter("constType");
+		String sortOption = request.getParameter("sort");
+		String order = request.getParameter("dir");
+		String stateId= request.getParameter("state");
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer maxResult = Integer.parseInt(request.getParameter("results"));
+		Long staId = Long.parseLong(stateId);
+		
+		constituencySearchList = constituencySearchService.getConstituencyInformation(searchText,constType,staId,sortOption,order,startIndex,maxResult);
+		
+		if(constituencySearchList.size() > 0)
+		{
+			searchListVO.setConstituencyVOList(constituencySearchList);
+			searchListVO.setTotalSearchCount(constituencySearchList.get(0).getTotalPolledVotes());
+		}
+		
+		return SUCCESS;
+		}
+
 		
 	private SelectOptionVO getNameAndIdForSearchText(List<SelectOptionVO> namesAndIds, String searchText){
 		SelectOptionVO selectOptionVO = null;
