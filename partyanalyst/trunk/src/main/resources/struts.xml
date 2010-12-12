@@ -1850,6 +1850,12 @@
 				<param name="root">searchListVO</param>				
 			</result>
         </action>
+   
+       <action name="constituencySearchAjaxAction" class="cnCSearchResultsAction" method="constituencysearch">
+        	<result type="json" name="success">
+			<param name="root">searchListVO</param>				
+			</result>
+        </action>
         
 	</package>
 </struts>

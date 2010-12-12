@@ -420,12 +420,12 @@ function setLocationValue(value,source)
 		</td>
 	 </tr>
 	 
-	 <tr><td></td>
+	 <!--<tr><td></td>
 		<td width="14"></td>
 		<td width="185">
 		 <input class="btn_crtCategory" type="button" onclick="showHideCategoryData(1)" value="Create Category">
 		</td>
-	  </tr>
+	  </tr>  -->
 	  <tr id="catgrNameRow" style="display:none;">
 	    <td></td>
 		<td width="14"><b> </b></td>

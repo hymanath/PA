@@ -278,7 +278,7 @@ function buildCandidateSearchResultDataTable()
 		    				{key:"year", label: "Year",sortable:true},
 							{key:"constituencyName", label: "Constituency",sortable:true},
 							{key:"scope", label: "Election",sortable:true},
-		    				{key:"position", label: "Position",sortable:true}	    			    				
+		    				{key:"position", label: "Position",sortable:true}	    			    			
 		    	        ]; 
 	var CandidateSearchResultDataSource = new YAHOO.util.DataSource("cnCSearchAjaxAction.action?searchText="+searString+"&constType="+constType+"&state="+stateId+"&"); 
 	CandidateSearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
@@ -313,6 +313,70 @@ function buildCandidateSearchResultDataTable()
 			oDS: CandidateSearchResultDataSource,
 			oDT: CandidateSearchResultDataTable
 		};
+	}
+
+function buildConstituencySearchResultDataTable()
+{
+
+ YAHOO.widget.DataTable.formatEmail = function(elLiner, oRecord, oColumn, oData) 
+  {
+	var constName = oData;
+	var constId= oRecord.getData("constituencyId");
+	var distId= oRecord.getData("districtId");
+	if(constType == 'MLA')
+	{
+	  elLiner.innerHTML ="<a href=\"constituencyPageAction.action?districtId="+distId+"&constituencyId="+constId+">"+constName+"</a>";
+	}
+	else if(constType == 'MP')
+	{
+	elLiner.innerHTML ="<a href=\"constituencyPageAction.action?constituencyId="+constId+">"+constName+"</a>";
+	}
+  };
+
+	var ConstituencySearchResultColumnDefs = [ 
+		    	            {key:"id", label: "SNO"},
+							{key:"name", label: "constituency",sortable: true,formatter:YAHOO.widget.DataTable.formatEmail} ,
+		    	            {key:"electionType", label: "Election Type", sortable: true}, 
+		    	           	{key:"districtName", label: "District", sortable: true},
+		    				{key:"stateName", label: "State",sortable:true},
+						    {key:"delemitationInfoStr", label:"Delimination",sortable:true}
+						 ]; 
+	var ConstituencySearchResultDataSource = new YAHOO.util.DataSource("constituencySearchAjaxAction.action?searchText="+searString+"&constType="+constType+"&state="+stateId+"&"); 
+
+	ConstituencySearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+	
+	ConstituencySearchResultDataSource.responseSchema = { 
+            resultsList:"constituencyVOList", 
+            fields: [
+					 {key:"id", parser:"number"},"name","districtId","constituencyId",       
+			         "electionType", "districtName", "stateName","delemitationInfoStr"
+					],
+            metaFields: 
+					{
+	            totalRecords: "totalSearchCount" // Access to value in the server response
+	        }         
+        };
+
+
+    var myConfigs = {
+			        initialRequest: "sort=name&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+			        dynamicData: true, // Enables dynamic server-driven data
+			        sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+		};
+
+
+		var ConstituencySearchResultDataTable = new YAHOO.widget.DataTable("searchResultsDiv", ConstituencySearchResultColumnDefs,ConstituencySearchResultDataSource, myConfigs);
+
+		ConstituencySearchResultDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
+		        oPayload.totalRecords = oResponse.meta.totalRecords;
+		        return oPayload;
+		}
+		
+		return {
+			oDS: ConstituencySearchResultDataSource,
+			oDT: ConstituencySearchResultDataTable
+		}; 
 	}
 
 
@@ -386,56 +450,26 @@ function buildCandidateSearchResultDataTable()
 	<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;font-weight:bold;"></div>
 </s:form>
 	</div>
- <c:if test="${searchName == 'Candidate' }">
-	<div style="padding:0px;font-weight:bold">
-		<font color="green">Total <s:property value="totalSearchCount" /> Results Found for " <s:property value="searchText" /> ".</font>
+<div style="padding:0px;font-weight:bold">
+
+	<font color="green">Total <s:property value="totalSearchCount" /> Results Found for " <s:property value="searchText" /> ".</font>
 	</div>
-	</c:if> 
-	
-	<c:if test="${searchName == 'Constituency' }">
-	<div id="headerDiv" style="padding: 10px;font-weight:bold">
-		<font color="green">Search results for " <s:property value="searchText" /> ".</font>
-	</div>
-	</c:if>
-	
+
 	<div id="mainDiv" class="yui-skin-sam">	
 	<div id="searchResultsDiv"></div>
-	<div>
-	<c:if test="${constituencySearchList != null }">
-		
-		<%System.out.println("IN constituency search list"); %>
-	 	<table class="searchresultsTable" width="600px" border="1px">  
-	  	<tr>  
-        	<th style="padding:5px">Constituency</th>  
-         	<th style="padding:5px">Election Type</th>  
-         	<th style="padding:5px">District</th>
-         	<th style="padding:5px">State</th>
-         	<th style="padding:5px">Delemination</th>
-     	</tr>  
-   		<s:iterator value="constituencySearchList" id="ConstituencyVO" status="cust_stat">  
-   		<tr>		
-      	 	<td width="100px" style="padding:5px">
-      	 	<c:url value="constituencyPageAction.action" var="displayconstituencyURL">
-			<c:param name="constituencyId"   value="${id}" />
-			</c:url>
-			
-      	 	<a href='<c:out value="${displayconstituencyURL}" />'><s:property value="name" /></a></td>
-       		<td width="100px" style="padding:5px"><s:property value="electionType" /> </td>
-       		<td width="120px" style="padding:5px"><s:property value="districtName" /></td>
-       		<td width="180px" style="padding:5px"><s:property value="stateName" /></td>       
-       		<td width="100px" style="padding:5px"><s:property value="delemitationInfo" /></td>
-   		</tr> 
-   		</s:iterator>
-   		</table>
-   		</c:if>
-    </div> 
-   </div>
+	</div>
    
  <script type="text/javascript">
  if(searchName == "Candidate" && SearchCount != 0 )
  {
 	buildCandidateSearchResultDataTable();
  }
+
+if(searchName == 'Constituency' && SearchCount != 0 )
+ {
+	buildConstituencySearchResultDataTable();
+ }
+
  getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');
 
 </script>
