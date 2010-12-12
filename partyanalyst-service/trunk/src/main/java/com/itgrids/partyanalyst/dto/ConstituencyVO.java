@@ -4,14 +4,18 @@ import java.util.Date;
 import java.util.List;
 
 
+
 public class ConstituencyVO extends ResultStatus{
 	
 	private Long id;
+	private Long constituencyId;
+	private Long districtId;
 	private String name;
 	private String stateName;
 	private String districtName;
 	private String electionType;
 	private Date delemitationInfo;
+	private String delemitationInfoStr;
 	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo;
 	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentBasicInfo;
 	private String[] pieChartNames;
@@ -36,7 +40,7 @@ public class ConstituencyVO extends ResultStatus{
 		
 	}
 	public ConstituencyVO(Long id, String name, String stateName, String districtName,
-			String electionType, Date delemitationInfo) {
+			String electionType,Date delemitationInfo) {
 		this.id = id;
 		this.name = name;
 		this.stateName = stateName;
@@ -187,5 +191,23 @@ public class ConstituencyVO extends ResultStatus{
 	public void setLocalElectionsInfo(List<MandalVO> localElectionsInfo) {
 		this.localElectionsInfo = localElectionsInfo;
 	}
-	
+	public String getDelemitationInfoStr() {
+		return delemitationInfoStr;
+	}
+	public void setDelemitationInfoStr(String delemitationInfoStr) {
+		this.delemitationInfoStr = delemitationInfoStr;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+		
 }

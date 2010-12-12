@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -247,11 +248,46 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindConstituenciesByNameScopeAndCountryId(){
-		/*List<Constituency> list = constituencyDAO.findConstituenciesByNameScopeAndCountryId("Nellore", 1l, 1l);
-		System.out.println(list.size());*/
+/*	public void testFindConstituenciesByNameScopeAndCountryId(){
+		List<Constituency> list = constituencyDAO.findConstituenciesByNameScopeAndCountryId("Nellore", 1l, 1l);
+		System.out.println(list.size());
 		Float val = new Float(10.01234);
 		System.out.println(Math.round(val*100)/100.0);
 	}
+	*/   //String searchText,String sortoption,String order,Integr startINdex,Integer maxResult,String ids
+
+	String stateStr =  "and model.state.stateId = 1";	
+	public void testFindByConstituencyNames(){
+		List<Object[]> list = constituencyDAO.findByConstituencyNamesForPalriament("v","","model.name","asc",0,100);
+		//List<Object[]> list = constituencyDAO.findByConstituencyNamesForAssembly("v","","model.name","asc",0,100);
+		System.out.println(list.size());
+		
+		Iterator lstItr = list.listIterator();
+		while(lstItr.hasNext()){
+			Object[] values  =(Object[])lstItr.next();
+			
+			System.out.println(" .................................... ");
+			System.out.println(" Constituency Id : " + (Long)values[0]);
+			System.out.println(" Constituency    : " + (String)values[1]);
+			System.out.println(" Election Type   : " + (String)values[2]);
+			//System.out.println(" District   	 : " + (String)values[3]);
+			System.out.println(" State			 : " + (String)values[3]);
+			System.out.println(" Deform date     : " +  values[4]);
+		}
+		
+	}
+	
+
+	//String searchText, String ids
+	@Test
+	public void testTotalSearchCount()
+	{
+		String state = "and model.state.stateId = 1";	
+		Object obj=constituencyDAO.totalSearchCount("v",1l,"");
+		System.out.println(obj);
+	
+	}
+	
+	
 	
 }

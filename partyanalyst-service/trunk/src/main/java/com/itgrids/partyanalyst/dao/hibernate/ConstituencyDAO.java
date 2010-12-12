@@ -325,4 +325,49 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("from Constituency  model where model.name = ? and model.electionScope.electionScopeId = ? and " +
 				"model.state.country.countryId = ?", params);
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByConstituencyNamesForAssembly(String searchText,String stateStr,String sortoption,String order,Integer startIndex,Integer maxResult)
+	{
+	   StringBuffer queryBuffer=new StringBuffer("select model.constituencyId,model.name,");
+	   queryBuffer.append("model.electionScope.electionType.electionType,model.state.stateName, ");
+	   queryBuffer.append("model.deformDate,model.district.districtName,model.district.districtId from Constituency model where ");
+	   queryBuffer.append("model.name like '"+searchText+"%' and model.electionScope.electionType.electionTypeId = 2 "+stateStr+" ");
+	   queryBuffer.append("order by "+sortoption+" "+order);
+	   Query queryobject=getSession().createQuery(queryBuffer.toString());
+	   
+	   queryobject.setFirstResult(startIndex);
+	   queryobject.setMaxResults(maxResult);
+	   return queryobject.list();
+	   
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByConstituencyNamesForPalriament(String searchText,String stateStr,String sortoption,String order,Integer startIndex,Integer maxResult)
+	{
+	   StringBuffer queryBuffer=new StringBuffer("select model.constituencyId,model.name,");
+	   queryBuffer.append("model.electionScope.electionType.electionType,");
+	   queryBuffer.append("model.state.stateName,model.deformDate from Constituency model where ");
+	   queryBuffer.append("model.name like '"+searchText+"%' and model.electionScope.electionType.electionTypeId = 1 "+stateStr+" ");
+	   queryBuffer.append("order by "+sortoption+" "+order);
+	   Query queryobject=getSession().createQuery(queryBuffer.toString());
+	   
+	   queryobject.setFirstResult(startIndex);
+	   queryobject.setMaxResults(maxResult);
+	   return queryobject.list();
+	   
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public Object totalSearchCount(String searchText,Long electionTypeId,String state){
+		
+		StringBuffer queryBuffer = new StringBuffer("select count(model.constituencyId) from Constituency model where ");
+		queryBuffer.append("model.name like '"+searchText+"%'and model.electionScope.electionType.electionTypeId = "+electionTypeId +" "+state);
+		Query queryObject = getSession().createQuery(queryBuffer.toString());
+		
+		return queryObject.uniqueResult();	
+}
+
 }

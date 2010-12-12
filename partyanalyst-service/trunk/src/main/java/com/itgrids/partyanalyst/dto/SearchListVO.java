@@ -6,6 +6,7 @@ public class SearchListVO {
 
 	 private List<CandidateVO> candidateVOList;
 	 private List<CadreInfo> cadreInfo;
+	 List<ConstituencyVO> constituencyVOList;
 	 private Long totalSearchCount;
 	 
 	 
@@ -26,5 +27,11 @@ public class SearchListVO {
 	}
 	public void setCadreInfo(List<CadreInfo> cadreInfo) {
 		this.cadreInfo = cadreInfo;
+	}
+	public List<ConstituencyVO> getConstituencyVOList() {
+		return constituencyVOList;
+	}
+	public void setConstituencyVOList(List<ConstituencyVO> constituencyVOList) {
+		this.constituencyVOList = constituencyVOList;
 	}
 }
