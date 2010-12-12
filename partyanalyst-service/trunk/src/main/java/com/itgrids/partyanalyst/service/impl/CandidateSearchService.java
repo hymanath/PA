@@ -125,6 +125,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 		return totSearchCount.get(0);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<CandidateVO> getCandidatesDetails(String searchText,String sortOption,String order,
 											Integer startIndex,Integer maxResult,String ConstType,Long stateId){
 		
