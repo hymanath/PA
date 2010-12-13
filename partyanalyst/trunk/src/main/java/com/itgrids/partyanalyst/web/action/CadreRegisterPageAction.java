@@ -539,7 +539,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		} else if(windowTask.equals(IConstants.UPDATE_EXISTING))
 		{
 			
-			session.setAttribute(ISessionConstants.STATES, stateList_o);			
+			session.setAttribute(ISessionConstants.STATES, stateList_o);	
+			session.setAttribute(ISessionConstants.STATES_O, stateList_o);
 			setDefaultCadreLevelId(cadreInfo.getCadreLevel());
 			setSameAsCAFlag(cadreInfo.getSameAsCA());			
 		}
@@ -624,6 +625,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     {
     		session = request.getSession();
     		System.out.println("inside method populate const");
+    		List<SelectOptionVO> pConstituencyList = new ArrayList<SelectOptionVO>();
     		//get districts
     		List<SelectOptionVO> districtNames_c=cadreManagementService.findDistrictsByState(cadreInfo.getState());			
     		SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
@@ -632,9 +634,23 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
     		session.setAttribute(ISessionConstants.DISTRICTS, districtNames_c);
 			
     		//get constituencies
-    		List<SelectOptionVO> constituencynames_c=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getDistrict()));	
-			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
-			constituencynames_c.add(0, obj1);
+    		List<SelectOptionVO> constituencynames_c = new ArrayList<SelectOptionVO>();
+    		if(cadreInfo.getDistrict() != null)
+    		{
+    			constituencynames_c=regionServiceDataImp.getConstituenciesByDistrictID(new Long(cadreInfo.getDistrict()));	
+    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+    			constituencynames_c.add(0, obj1);        		
+    		}
+    		if(cadreInfo.getParliament() != null)
+    		{
+    			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+    			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(new Long(cadreInfo.getParliament()));
+    			pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+    			constituencynames_c=constituencyInfoVO.getAssembyConstituencies();	
+    			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select Constituency");
+    			constituencynames_c.add(0, obj1);
+    			session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
+    		}
     					
 			session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencynames_c);
 			
@@ -702,6 +718,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			System.out.println("same as ca true");
 			session.setAttribute(ISessionConstants.DISTRICTS_O, districtNames_c);
 			session.setAttribute(ISessionConstants.CONSTITUENCIES_O, constituencynames_c);
+			session.setAttribute(ISessionConstants.P_CONSTITUENCIES_O, pConstituencyList);
 			session.setAttribute(ISessionConstants.MANDALS_O, mandals_c);
 			session.setAttribute(ISessionConstants.VILLAGES_O, villageNames_c);
 			session.setAttribute(ISessionConstants.BOOTHS_O, boothsList_c);
