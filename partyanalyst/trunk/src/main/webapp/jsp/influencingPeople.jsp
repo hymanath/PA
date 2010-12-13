@@ -519,13 +519,30 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 		<td class="tdstyle"><s:label for="streetField" id="streetLabel" value="%{getText('street')}" /></td>
 		<td><s:textfield id="streetField" name="streetName" maxlength="100"  /></td>
 	</tr>
-	<tr>
+	
+	<c:if test="${sessionScope.USER.accessType != 'MP'}">
+		<tr>
+			<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+			<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
+			<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
+			<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')"></s:select></td>
+		</tr>				
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MP'}">
+		<tr>
+			<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+			<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','influencingPeopleReg','pConstituencyField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
+			<td class="tdstyle"><s:label for="pConstituencyField_add" id="pConstituencyField_addLabel"  value="%{getText('PCONSTITUENCY')}"/><font class="required"> * </font></td>
+			<td><s:select id="pConstituencyField_add" cssClass="regionSelect" name="pConstituency" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" ></s:select></td>
+		</tr>
+	</c:if>	
+	<!--<tr>
 		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
 		<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
 		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
 		<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" headerKey="0" ></s:select></td>
 	</tr>	
-	<tr>
+	--><tr>
 		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/><font class="required"> * </font></td>
 		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
 
@@ -579,41 +596,57 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 			<td align="left">
 				<s:select id="scopeLevel" list="#session.influenceRange" listKey="id" listValue="name" value="defaultInfluenceRange" name="influencingRange" cssClass="regionSelect" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"/> 
 			</td>			
-		</tr>	 								
-		<tr id="row1" style="display:none;">
-			<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
-			<td>
-			<s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null')"></s:select>
-			</td>
 		</tr>
-		<tr id="row2" style="display:none;">
-			<td width="120px" class="tdstyle"><%=DISTRICT%><font class="required"> * </font></td>
-			<td>
-			<s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd')"></s:select>
-			</td>
-		</tr>
+		<c:if test="${sessionScope.USER.accessType != 'MP'}">	 								
+			<tr id="row1" style="display:none;">
+				<td width="120px" class="tdstyle"><%=STATE%><font class="required">*</font></td>
+				<td>
+				<s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList_c" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null')"></s:select>
+				</td>
+			</tr>
+			<tr id="row2" style="display:none;">
+				<td width="120px" class="tdstyle"><%=DISTRICT%><font class="required"> * </font></td>
+				<td>
+				<s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList_c" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd')"></s:select>
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${sessionScope.USER.accessType == 'MP'}">
+			<tr id="row1" style="display:none;">
+				<td width="120px" class="tdstyle"><%=STATE%><font class="requiredFont">*</font></td>
+				<td>
+					<s:select id="stateField_s" cssClass="selectWidth" name="scopeState" list="#session.statesList_c" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				</td>
+			</tr>
+			<TR id="row2" style="display:none;">	
+				<TD width="120px" class="tdstyle"><%=PCONSTITUENCY%></TD>
+				<TD>
+				<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				</TD>
+			</TR>
+		</c:if>
 		<tr id="row3" style="display:none;">
 		<td width="120px" class="tdstyle"><%=ACONSTITUENCY%><font class="required"> * </font></td>
 		<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
+			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList_c" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
 		</td>
 	</tr>								
 	<tr id="row4" style="display:none;">
 		<td width="120px" class="tdstyle"><%=MANDAL%><font class="required"> * </font></td>
 		<td>
-			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
+			<s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList_c" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
 		</td>
 	</tr>					
 	<tr id="row5" style="display:none;">
 		<td width="120px" class="tdstyle"><%=wardOrHamlet%><font class="required"> * </font></td>
 		<td>
-			<s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
+			<s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{#session.villagesList_c}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
 		</td>
 	</tr>	
 	<tr id="row6" style="display:none;">
 			<td width="120px" class="tdstyle">Booth No</td>
 			<td>
-				<s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth"list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select>
+				<s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth"list="{#session.boothsList_c}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select>
 			</td>
 			<td>
 				<input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField')"/>
@@ -627,7 +660,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 <s:hidden id="influencingPersonIdId" name="influencingPersonId" value="%{influencingPersonId}" /> 
 
 <div id="saveDiv" align="center">
-	<s:submit cssClass="button" value="Save Record" name="Save"></s:submit>
+	<s:submit cssClass="button" value="Save" name="Save"></s:submit>
 </div>
 <%--<div id="exitDiv" align="center">
 	<input type="button" name="exit" onclick="sessionClean('influencingPeople','District','new')" value="Exit" ></input> 
