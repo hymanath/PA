@@ -36,7 +36,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	
 	private String scopeState,scopeDistrict,scopeConstituency;
 	private String scopeMandal,scopeVillage,scopeBooth;
-	
+	private Long pConstituencyId;
 	public int getResultStatus() {
 		return resultStatus;
 	}
@@ -376,6 +376,20 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	public void setScopeBooth(String scopeBooth) {
 		this.scopeBooth = scopeBooth;
 	}
+	
+	public Long getPConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setPConstituencyId(Long constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+	
+	public Long getDefaultPConstituency()
+	{
+		return pConstituencyId; 
+	}
+
 
 	public String execute() throws Exception{
 		
@@ -405,7 +419,8 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		influencingPeopleBeanVO.setParty(getParty());
 		influencingPeopleBeanVO.setCast(getCast());
 		influencingPeopleBeanVO.setPosition(getPosition());
-		
+		influencingPeopleBeanVO.setPConstituencyId(getPConstituencyId());
+		influencingPeopleBeanVO.setAccessType(regVO.getAccessType());
 		influencingPeopleBeanVO.setWindowTask(getWindowTask());
 		influencingPeopleBeanVO.setInfluencingPersonId(getInfluencingPersonId());
 		
@@ -471,7 +486,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 	
 	public void validate()
-	{
+	{/*
 		boolean sstate = scopeState.equalsIgnoreCase("0");
 		boolean sDistrict = sstate || scopeDistrict.equalsIgnoreCase("0");
 		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
@@ -519,7 +534,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 			addFieldError("influencingRange","Please Select All Required Fields in Influencing Scope Details");
 			
 		}
-		
+		*/
 				
 	}
 
