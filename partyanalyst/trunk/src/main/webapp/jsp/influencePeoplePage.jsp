@@ -224,7 +224,7 @@
 					sortable : true
 				} , {
 					key : "districtName",
-					label : "District",
+					label : "District / Parliament",
 					sortable : true
 				} , {
 					key : "stateName",
@@ -562,7 +562,7 @@
 	<div id="messageBox_outer" class="yui-skin-sam"><div id="messageBox"></div></div>
 	<div id="influencePeopleData_main">		
 		<div id="influencePeopleData_head">
-			<center> Influencing People Details In ${regionName} ${regionType}</center>
+			<center> Influencing People In ${regionName}</center>
 		</div>
 		<div id="influencePeopleData_body" class="yui-skin-sam">		
 			<div id="selectButtonsDiv" class="selectButtonsDiv">
