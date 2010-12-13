@@ -57,6 +57,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private List<SelectOptionVO> problemScopes;
 	private Long  problemLocation;
 	private Long scope;
+	private Long pConstituencyId;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -285,6 +286,20 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	public void setScope(Long scope) {
 		this.scope = scope;
 	}
+	
+
+	public Long getPConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setPConstituencyId(Long constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+	
+	public Long getDefaultPConstituency()
+	{
+		return pConstituencyId; 
+	}
 
 	public String execute () throws Exception 
 	{
@@ -342,11 +357,11 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				
 				if(isParliament)
 				{
+					setPConstituencyId(constituencyId); 
 					ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 					pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
 					constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(constituencyId);
-					constituencyList = constituencyInfoVO.getAssembyConstituencies();
-					constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));					
+					constituencyList = constituencyInfoVO.getAssembyConstituencies();										
 					
 				} else 
 				{
@@ -430,13 +445,26 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 				setScope(3l);
 				
 			} else if("MP".equals(accessType)){
+				List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				stateId = list.get(0).getId();
+				stateList = regionServiceDataImp.getStatesByCountry(1l);
+				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+				pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
+				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+				constituencyList = constituencyInfoVO.getAssembyConstituencies();
+									
+				/*
 				log.debug("Access Type = MP ****");
 				ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
-				stateList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+				pConstituencyList = new ArrayList<SelectOptionVO>();
+				
 				constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
 				constituencyList = constituencyInfoVO.getAssembyConstituencies();
 				constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
-				parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+				pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+				*/
+				setIsParliament(true);
+				setPConstituencyId(accessValue);
 				setScope(4l);
 			}
 		}

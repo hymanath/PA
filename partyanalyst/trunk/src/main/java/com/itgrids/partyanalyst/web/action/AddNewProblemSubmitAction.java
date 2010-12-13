@@ -56,6 +56,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String defaultStateId;
 	private String defaultDistId;
 	private String defaultConstId;
+	public Boolean isParliament;
+	private Long pConstituencyId;
 	
 		
 	
@@ -332,6 +334,27 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		if(this.problemBeanVO.getProblemImpactLevelId() != null)
 			return problemBeanVO.getProblemImpactLevelId().toString();
 		return this.defaultScopeId;
+	}	
+
+	public Boolean getIsParliament() {
+		return isParliament;
+	}
+
+	public void setIsParliament(Boolean isParliament) {
+		this.isParliament = isParliament;
+	}	
+
+	public Long getPConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setPConstituencyId(Long constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+	
+	public Long getDefaultPConstituency()
+	{
+		return pConstituencyId; 
 	}
 
 	public String execute() throws Exception

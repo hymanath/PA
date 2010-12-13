@@ -213,7 +213,7 @@ function limitText(limitField, limitCount, limitNum)
 						<TR id="row2" style="display:none;">	
 							<TD><%=PCONSTITUENCY%></TD>
 							<TD style="padding-left: 15px;">
-							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="state" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</TD>
 						</TR>
 					</c:if>
@@ -312,7 +312,8 @@ function limitText(limitField, limitCount, limitNum)
 		<input type="hidden" name="defaultStateId" value="${defaultState}">
 		<input type="hidden" name="defaultDistId" value="${defaultDistrict}">
 		<input type="hidden" name="defaultConstId" value="${defaultConstituency}">
-		<input type="hidden" name="defaultScopeId" value="${defaultScope}">	
+		<input type="hidden" name="defaultScopeId" value="${defaultScope}">
+		<input type="hidden" name="isParliament" value="${isParliament}">	
 		
 			<table>
 				<tr>
