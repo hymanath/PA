@@ -488,7 +488,17 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 										
 					userAddress.setCountry(countryDAO.get(new Long(1L)));
 					userAddress.setState(stateDAO.get(new Long(influencingPeopleBeanVO.getState())));
-					userAddress.setDistrict(districtDAO.get(new Long(influencingPeopleBeanVO.getDistrict())));
+					if("MP".equals(influencingPeopleBeanVO.getAccessType()))
+					{
+						userAddress.setParliamentConstituency(constituencyDAO.get(influencingPeopleBeanVO.getPConstituencyId()));
+						userAddress.setDistrict(null);
+					} else
+					{
+						userAddress.setParliamentConstituency(null);
+						userAddress.setDistrict(districtDAO.get(new Long(influencingPeopleBeanVO.getDistrict())));
+					}
+					
+					//userAddress.setDistrict(districtDAO.get(new Long(influencingPeopleBeanVO.getDistrict())));
 					userAddress.setConstituency(constituencyDAO.get(new Long(influencingPeopleBeanVO.getConstituency())));
 					userAddress.setHouseNo(influencingPeopleBeanVO.getHouseNo());
 					userAddress.setStreet(influencingPeopleBeanVO.getStreetName());
@@ -596,8 +606,17 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				
 				influencingPeopleBeanVO.setState(userAddress.getState().getStateId().toString());
 				influencingPeopleBeanVO.setStateName(userAddress.getState().getStateName().toString());
-				influencingPeopleBeanVO.setDistrict(userAddress.getDistrict().getDistrictId().toString());
-				influencingPeopleBeanVO.setDistrictName(userAddress.getDistrict().getDistrictName().toString());
+				
+				if(userAddress.getDistrict() != null)
+				{
+					influencingPeopleBeanVO.setDistrict(userAddress.getDistrict().getDistrictId().toString());
+					influencingPeopleBeanVO.setDistrictName(userAddress.getDistrict().getDistrictName().toString());					
+				}
+				if(userAddress.getParliamentConstituency() != null)
+				{
+					influencingPeopleBeanVO.setPConstituencyId(userAddress.getParliamentConstituency().getConstituencyId());
+					influencingPeopleBeanVO.setParliamentConstName(userAddress.getParliamentConstituency().getName());					
+				}
 				influencingPeopleBeanVO.setConstituency(userAddress.getConstituency().getConstituencyId().toString());
 				influencingPeopleBeanVO.setConstituencyName(userAddress.getConstituency().getName().toString());
 				influencingPeopleBeanVO.setHouseNo(userAddress.getHouseNo());
@@ -1645,6 +1664,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				LocalElectionBody localBody = null;
 				Hamlet hamlet  = null;
 				Constituency ward = null;
+				Constituency parliamentConst = null;
 				
 				Object infAddress = (Object)influencingPeopleAddress.get(i++);
 				UserAddress userAddr = (UserAddress)infAddress;
@@ -1662,9 +1682,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				hamlet = userAddr.getHamlet();
 				if(userAddr.getWard() != null)
 				ward = userAddr.getWard();
-				
+				if(userAddr.getParliamentConstituency() != null)
+				parliamentConst = 	userAddr.getParliamentConstituency();
+					
 				influencingPeopleBeanVO.setState(state.getStateName());
-				influencingPeopleBeanVO.setDistrict(district.getDistrictName());
+				if(district != null)
+					influencingPeopleBeanVO.setDistrict(district.getDistrictName()+" (District)");
+				if(parliamentConst != null)
+					influencingPeopleBeanVO.setDistrict(parliamentConst.getName()+" (Parliament)");
+				
 				influencingPeopleBeanVO.setConstituency(constituency.getName());
 				if(tehsil != null && tehsil.getTehsilId() != null){
 					influencingPeopleBeanVO.setMandal(tehsil.getTehsilName());
