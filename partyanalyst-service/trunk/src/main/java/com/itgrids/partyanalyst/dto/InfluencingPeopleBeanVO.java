@@ -47,8 +47,10 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private String booth;
 	private String boothName;
 	private String InfluencingRangeName;
-	
+	private String accessType;
 	private ResultStatus resultStatus;
+	private Long pConstituencyId;
+	private String parliamentConstName;
 	
 	public String getWindowTask() {
 		return windowTask;
@@ -386,6 +388,35 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	public void setInfluencingRangeName(String influencingRangeName) {
 		InfluencingRangeName = influencingRangeName;
 	}
+	
+	public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+
+	public Long getPConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setPConstituencyId(Long constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+
+	public String getParliamentConstName() {
+		return parliamentConstName;
+	}
+
+	public void setParliamentConstName(String parliamentConstName) {
+		this.parliamentConstName = parliamentConstName;
+	}
+	
+	
+	
+	
+	
 	
 	
 }
