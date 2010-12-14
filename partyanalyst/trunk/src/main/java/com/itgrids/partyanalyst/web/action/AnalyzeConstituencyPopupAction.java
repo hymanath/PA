@@ -238,7 +238,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		
 		Long constiElectionId = Long.parseLong(jObj.getString("constElecId"));
 		
-		candidateComments = commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(constiElectionId);
+		candidateComments = commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(false,constiElectionId);
 		
 		return Action.SUCCESS;
 	}

@@ -18,6 +18,8 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></SCRIPT>
 
+<script type="text/Javascript" src="js/homePage/jquery.js"></script>
+
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
@@ -59,23 +61,25 @@
 		font-size:12px;
 		width:900px;
 		margin-top:10px;
+		border:1px solid #E1E6E9;
 	}
 
 	.constituencyAnalysisHeadDiv
 	{
-		color:#344D6E;
+		color:#5F3F08;
 		font-size:12px;
 		font-weight:bold;
-		padding:5px;
+		/*padding:5px;*/
 		word-spacing:6px;
 		cursor:pointer;
-		background-image:url("images/icons/indexPage/swasthic_body.png");
+		/*background-image:url("images/icons/indexPage/swasthic_body.png");*/
+		background-image:url("images/icons/districtPage/header_body.png");
 	}
 
 	.constituencyAnalysisBodyDiv
 	{
 		padding:15px;		
-		background-color:#F5F7F9;
+		background-color:#FFFFFF;
 	}
 
 	.constituencyAnalysisBodyDiv table
@@ -83,17 +87,29 @@
 		width:100%;
 	}
 	#slider-bg
-{ 
-	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
-}
-.yui-skin-sam .yui-h-slider {
-	-moz-background-clip:border;
-	-moz-background-inline-policy:continuous;
-	-moz-background-origin:padding;
-	background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
-	height:28px;
-	width:100px;
-}
+	{ 
+		background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+	}
+	.yui-skin-sam .yui-h-slider {
+		-moz-background-clip:border;
+		-moz-background-inline-policy:continuous;
+		-moz-background-origin:padding;
+		background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
+		height:28px;
+		width:100px;
+	}
+
+	.analysisLink
+	{
+		color:#4B481B;
+		text-decoration:none;
+	}
+
+	.analysisLink:hover
+	{
+		text-decoration:underline;
+	}
+
 </style>
 
 
@@ -163,6 +179,10 @@ function callAjax(param,jsObj,url){
 								else if(jsObj.task == "getConstituencyStatusAnalysisCategoryForVotesMarginWindow")
 								{
 									showAnalysisDetails(jsObj,myResults);
+								}
+								else if(jsObj.task == "getConstituencyAnalyzedComments")
+								{
+									showConstituencyAnalyzedComments(jsObj,myResults);
 								}
 						}
 						catch (e) {   

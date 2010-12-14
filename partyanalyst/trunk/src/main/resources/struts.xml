@@ -56,6 +56,7 @@
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result type="redirect" name="userEntitlementAction">userEntitlementAction.action</result>
 			<result type="redirect" name="analyzeConstituencyPopup">analyzeConstituencyPopupAction.action</result>
+						
 			
 			<result type="chain" name="redirectUrl">${url}</result>
 			
@@ -68,6 +69,7 @@
 			 <result name="constituencyPageRedirect" type="chain">constituencyPageAction</result>
 			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
 			 <result name="connectPeoplePageRedirect" type="chain">connectPeopleAction</result>
+			 <result name="assessConstituencyResults" type="chain">constituencyPageAction</result>
 			 			 	 
         </action>
 		
@@ -1110,7 +1112,13 @@
            	<param name="root">electionBasicCommentsVOList</param>
         	</result>       		
         </action>
-                
+        
+        <action name="getConstituencyAnalyzedCommentsAction" class="partyElectionResultsAnalysisAction" method="getConstituencyAnalyzedComments"> 
+            <result type="json" name="success">
+           	<param name="root">candidateComments</param>
+        	</result>       		
+        </action>
+               
         <action name="partyElectionResultsAjaxAction" class="partyElectionResultsAction" method="ajaxCallHandler"> 
             <result type="json" name="success">
            	<param name="root">electionResultPartyVO</param>
@@ -1434,7 +1442,7 @@
          <action name="problemPostControlAction" class="problemPostControlAction">
 			
 			<result name="success">/jsp/homePage.jsp</result>
-    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=constituencyProblemManagement</result>
+    		<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?src=${src}</result>
 			<result type="redirect" name="PARTY_ANALYST_USER">constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT</result>
 
             <!-- Problem Management Flow From Different Pages -->

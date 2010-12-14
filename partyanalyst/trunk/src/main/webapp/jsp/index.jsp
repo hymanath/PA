@@ -140,8 +140,12 @@
 												</div>
 
 												<div id="impEventsDiv_footer" style="text-align:right">
-													<span class="dashBoardLinks"><a href="cadreManagementAction.action#yui-gen3">View All</a></span>
-													<span class="dashBoardLinks"><a href="javascript:{}" onclick="buildNewEventPopup()">Create</a></span>
+													<span class="dashBoardLinks">
+														<a href="cadreManagementAction.action#yui-gen3" class="indexPageAnc">View All</a>
+													</span>
+													<span class="dashBoardLinks">
+														<a href="javascript:{}" class="indexPageAnc" onclick="buildNewEventPopup()">Create</a>
+													</span>
 												</div>
 											</div>
 										</td>
@@ -167,8 +171,12 @@
 													</ul>
 												</div>
 												<div id="impDatesDiv_footer" style="text-align:right">
-													<span class="dashBoardLinks"><a href="cadreManagementAction.action#cadreImpDatesDiv">View All</a></span>
-													<span class="dashBoardLinks"><a href="javascript:{}" onclick="buildNewImpDatePopup()">Create</a></span>
+													<span class="dashBoardLinks">
+														<a href="cadreManagementAction.action#cadreImpDatesDiv" class="indexPageAnc">View All</a>
+													</span>
+													<span class="dashBoardLinks">
+														<a href="javascript:{}" onclick="buildNewImpDatePopup()" class="indexPageAnc">Create</a>
+													</span>
 												</div>
 											</div>
 										</td>
@@ -191,12 +199,14 @@
 													</ul>
 												</div> 
 												<div id="cadresDiv_footer" style="text-align:right">
-													<span class="dashBoardLinks"><a href="cadreManagementAction.action#regionLevelCadreDivHead">View All</a></span>
 													<span class="dashBoardLinks">
-														<span><img src="images/icons/indexPage/sms_cell.png"/></span>
-														<span>		
-															<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup();">Send SMS</a>				
-														</span>
+														<a href="cadreManagementAction.action#regionLevelCadreDivHead" class="indexPageAnc">View All</a>
+													</span>
+													<span class="dashBoardLinks">
+														<!--<span><img src="images/icons/indexPage/sms_cell.png"/></span>-->
+														<span>
+															<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup();" class="indexPageAnc">Send SMS</a>				
+														</span>														
 													</span>
 												</div>
 											</div>
@@ -236,8 +246,8 @@
 										</ul>
 									</div>
 									<div id="usergroups_footer" style="text-align:right">
-										<span class="dashBoardLinks">View All</span>
-										<span class="dashBoardLinks">Create</span>
+										<span class="dashBoardLinks"><a class="indexPageAnc" href="userGroupAction.action">View All</a></span>
+										<span class="dashBoardLinks"><a href="javascript:{}" class="indexPageAnc">Create</a></span>
 									</div>
 								</div>
 							</td>

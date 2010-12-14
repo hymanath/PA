@@ -7,21 +7,65 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></SCRIPT> 
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
-<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
-<LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/partyElectionResultsReport.css">
-<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+
+<!-- YUI Dependency files (Start) -->
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+
+
+
+<!-- YUI Skin Sam -->
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<!-- YUI Dependency files (End) -->
+
+<!-- Dependencies --> 
+<script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.8.2r1/build/dragdrop/dragdrop-min.js"></script>
+
+<!-- Slider skin (optional) --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/slider.css">
+
+<!-- Slider source file --> 
+<script src="http://yui.yahooapis.com/2.8.2r1/build/slider/slider-min.js"></script>
+
+<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
+<LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/partyElectionResultsReport.css">
 <LINK rel="stylesheet" type="text/css" href="styles/CommentsDialog/commentsDialog.css">
-<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+
+
 <c:if test="${electionType != 'Parliament' && rank =='0'}"><TITLE>${stateName} ${electionType} ${electionYear} Lost Constituencies Results</TITLE></c:if>
 <c:if test="${electionType != 'Parliament' && rank =='1'}"><TITLE>${stateName} ${electionType} ${electionYear} Won Constituencies Results</TITLE></c:if>
 <c:if test="${electionType == 'Parliament' && rank =='0'}"><TITLE>${electionType} ${electionYear} Lost Constituencies Results</TITLE></c:if>
@@ -48,6 +92,53 @@ function incrementHidden()
 {
 	hidden++;
 }
+
+(function() {
+ var Event = YAHOO.util.Event,
+ Dom = YAHOO.util.Dom,
+ lang = YAHOO.lang,
+ slider,
+ bg="slider-bg", thumb="slider-thumb",
+ valuearea="slider-value", textfield="slider-converted-value"
+
+ // The slider can move 0 pixels up
+ var topConstraint = 0;
+
+ // The slider can move 200 pixels down
+ var bottomConstraint = 100;
+
+ var scaleFactor = 1.5;
+ // The amount the slider moves when the value is changed with the arrow
+ // keys
+ var keyIncrement = 1;
+
+ var tickSize = 1;
+
+ Event.onDOMReady(function() {
+
+ slider = YAHOO.widget.Slider.getHorizSlider(bg,
+ thumb, topConstraint, bottomConstraint, 1);
+
+ // Sliders with ticks can be animated without YAHOO.util.Anim
+ slider.animate = true;
+ slider.subscribe("change", function(offsetFromStart) {
+
+ var valnode = Dom.get(valuearea);
+ var fld = Dom.get(textfield);
+
+ // Display the pixel value of the control
+ valnode.innerHTML = offsetFromStart;
+
+ // Update the title attribute on the background. This helps assistive
+ // technology to communicate the state change
+ Dom.get(bg).title = "slider value = " + actualValue;
+
+ });
+
+ });
+})(); 
+executeOnload();
+
 function callAjax(param,jsObj,url){
 	var myResults;
 
@@ -451,6 +542,9 @@ function callAjax(param,jsObj,url){
 		var constituencyId;
 		var commentCategoryId;
 		var alertMessageEl = document.getElementById("alertMessage"); 
+		var reasonSeverityElmt = document.getElementById("slider-value");
+		var reasonSeverityvalue = reasonSeverityElmt.innerHTML;
+
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
@@ -490,6 +584,7 @@ function callAjax(param,jsObj,url){
 					postedBy: postedByVal,
 					category: category,
 					commentCategoryId: commentCategoryId,
+					reasonSeverityvalue: reasonSeverityvalue,
 					task:"addNewComment"				
 				  }	 
 				
