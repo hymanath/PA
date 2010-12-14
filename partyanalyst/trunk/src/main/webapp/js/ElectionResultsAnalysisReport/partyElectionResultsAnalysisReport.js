@@ -3,6 +3,9 @@ var partyElectionResultsAnalysisObj ={
 		notAnalyzedCandidates:[]
 };
 var emptyArray = new Array();
+var selectedBodyDivId = null;
+
+
 function showAnalysisDetails(jsObj,results)
 {		
 	var rank;	
@@ -30,16 +33,21 @@ function showAnalysisDetails(jsObj,results)
 		var partyName = results[i].partyName;		
 
 		contentStr += '<div id="'+results[i].constituencyName+'_main" class="constituencyAnalysisMainDiv">';
-		contentStr += '	<div id="'+results[i].constituencyName+'_head" class="constituencyAnalysisHeadDiv" onclick="showBodyDiv(this.id)">';
-		contentStr += '		<table><tr>';
-		contentStr += '		<td><img  id="'+results[i].constituencyName+'_img" onclick="showBodyDiv(this.id)" src="images/icons/plusNew.png"/></td>';
-		contentStr += '		<td style="vertical-align:center;width:150px;"> - '+results[i].constituencyName+' </td>';
-		contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
-		contentStr += '		<td><input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/></td>';
-		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\',\''+jsObj.task+'\',\''+jsObj.status+'\')" value="Add Reason"/></td>';
+		contentStr += '	<div id="'+results[i].constituencyName+'_head" class="constituencyAnalysisHeadDiv" onclick="showBodyDiv(this.id,\''+results[i].nominationId+'\')">';
+		contentStr += '		<table width="100%"><tr>';
+		contentStr += '		<td width="3%"><img style="cursor:default;" height="30" width="15" id="'+results[i].constituencyName+'_img" onclick="showBodyDiv(this.id)" src="images/icons/jQuery/next.png"/></td>';
+		contentStr += '		<td style="vertical-align:center;">'+results[i].constituencyName+' Constituency Analysis Details</td>';
+		//contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
+		contentStr += '		<td width="20%" align="right"><a href="javascript:{}" class="analysisLink" onclick="getMoreDetails('+results[i].constituencyId+')">View Complete Results<a/></td>';
+		contentStr += '		<td width="12%" align="right"><a href="javascript:{}" class="analysisLink" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\',\''+jsObj.task+'\',\''+jsObj.status+'\')" >Add Reason</a></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
-		contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
+
+		if(i == 0)
+			contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
+		else
+			contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
+
 		contentStr += '		<div id="dataTable'+i+'"></div>';
 		contentStr += '</div>';
 		contentStr += '</div>';
@@ -47,7 +55,7 @@ function showAnalysisDetails(jsObj,results)
 	
 	analysisDetailsEl.innerHTML = contentStr;
 
-	for(var i in results)
+	/*for(var i in results)
 	{
 		var resultsArr = new Array();
 		for(var j in results[i].candidateComments)
@@ -63,8 +71,136 @@ function showAnalysisDetails(jsObj,results)
 		}
 
 		
-		buildCandidateCommentsDataTable('dataTable'+i,resultsArr);
+		//buildCandidateCommentsDataTable('dataTable'+i,resultsArr);
+	}*/
+}
+
+function showBodyDiv(id,nominationId)
+{
+	
+	if(nominationId == null || nominationId == "null")
+		return;
+	
+	var bodyId = id.substring(0,id.indexOf('_'))+"_body";
+	var bodyElmt = document.getElementById(bodyId);
+
+
+	if(!bodyElmt)
+		return;
+
+	var jsObj= 
+	{
+		nominationId: nominationId,	 	
+		bodyId:bodyId,
+		task:"getConstituencyAnalyzedComments"		
 	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	url = "getConstituencyAnalyzedCommentsAction.action?"+param+"&hidden="+hidden;
+
+	callAjax(param,jsObj,url);
+
+	
+
+	if(selectedBodyDivId != null)
+		$("#"+selectedBodyDivId).slideToggle();
+
+	selectedBodyDivId = bodyId;		
+	$("#"+bodyId).slideToggle();
+
+	/*if(bodyElmt.style.display == 'none')
+		bodyElmt.style.display = 'block';
+	else if(bodyElmt.style.display == 'block')
+		bodyElmt.style.display = 'none';*/
+
+}
+
+function showConstituencyAnalyzedComments(jsObj,myResults)
+{
+	var elmt = document.getElementById(jsObj.bodyId);
+	if(!elmt)
+		return;
+	
+	var results = myResults[0];
+
+	var str = '';
+	str += '<div class="commentContent_candidate">';
+	str += '<table class="commentContent_candidate_table">';
+	str += '<tr>';
+	str += '<th align="left">Candidate Name</th>';
+	str += '<td>:</td>';
+	str += '<th align="left">'+results.candidate+'</th>';			
+	str += '</tr>';
+	str += '<tr>';
+	str += '<th align="left">Posted Users</th>';
+	str += '<td>:</td>';
+	str += '<th align="left">'+results.postedUsersCount+'</th>';			
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	
+	str += '<div class="commentContent_comment">';
+	str += '<div class="commentsDetailsLabel"> Reasons </div>';
+	if(results.commetsAndScores == null || results.commetsAndScores.length == 0)
+	{
+		str += '<font class="noCommentFont">No comments has been posted </font>';
+	}
+	else
+	{
+		str += '<table class="commentContentTable">';
+		for(var j=0; j<results.commetsAndScores.length; j++)
+		{
+			var data = results.commetsAndScores[j];				
+			
+			str += '<tr>';
+			str += '<td><img src="images/icons/districtPage/listIcon.png"></img></td>';
+			str += '<td>'+data.commentCategory+'</td>';
+			str += '<td>'+data.commentScore+'</td>';
+			str += '</tr>';
+		}
+		str += '</table>';
+	}
+	str += '</div>';
+
+	str += '</div>';
+
+	elmt.innerHTML = str;
+
+}
+
+function buildCandidateCommentsDataTable(divId, dataSrc)
+{	
+	var candidateCommentsColumnDefs = [
+														
+		              	 	    {key: "candidate", label: "Candidate", sortable:true},
+		              	 	 	{key: "commentDesc", label: "Comment", sortable:true},
+		              	 	    {key: "commentCategory", label:"Reason", sortable:true},
+		              	 	 	{key: "commentedBy", label: "Commented By", sortable:true},
+		              	 	 	{key: "commentedOn", label: "Date"}  	 	 	      	 	 	
+		              	 	    ];                	 	    
+
+		var candidateCommentsDataSource = new YAHOO.util.DataSource(dataSrc); 
+		
+		candidateCommentsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSArray; 
+		candidateCommentsDataSource.responseSchema = {
+                fields: [		
+                         		  {key: "candidate"},
+                         		  {key: "commentDesc"},
+                         		  {key: "commentCategory"},
+                         		  {key: "commentedBy"},
+                         		  {key: "commentedOn"}     		  
+                         		  ] 
+        		};
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10			        
+			    })
+			     
+				};
+		
+		var candidateCommentsDataTable = new YAHOO.widget.DataTable(divId, candidateCommentsColumnDefs, candidateCommentsDataSource,myConfigs);					
+
 }
 
 function showNotAnalyzedDetails(jsObj,results)
@@ -151,56 +287,4 @@ function buildCandidateElectionResultsDataTable(notAnalyzedCandidatesResults)
 		candidateElectionResultsDataTable = new YAHOO.widget.DataTable("notAnalyzedDataTableDiv", candidateElectionResultsColumnDefs, candidateElectionResultsDataSource,myConfigs);						
 					
 	
-}
-
-
-function showBodyDiv(id)
-{
-	
-	var bodyId = id.substring(0,id.indexOf('_'))+"_body";
-	var bodyElmt = document.getElementById(bodyId);
-
-
-	if(!bodyElmt)
-		return;
-	if(bodyElmt.style.display == 'none')
-		bodyElmt.style.display = 'block';
-	else if(bodyElmt.style.display == 'block')
-		bodyElmt.style.display = 'none';
-
-}
-
-function buildCandidateCommentsDataTable(divId, dataSrc)
-{	
-	var candidateCommentsColumnDefs = [
-														
-		              	 	    {key: "candidate", label: "Candidate", sortable:true},
-		              	 	 	{key: "commentDesc", label: "Comment", sortable:true},
-		              	 	    {key: "commentCategory", label:"Reason", sortable:true},
-		              	 	 	{key: "commentedBy", label: "Commented By", sortable:true},
-		              	 	 	{key: "commentedOn", label: "Date"}  	 	 	      	 	 	
-		              	 	    ];                	 	    
-
-		var candidateCommentsDataSource = new YAHOO.util.DataSource(dataSrc); 
-		
-		candidateCommentsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSArray; 
-		candidateCommentsDataSource.responseSchema = {
-                fields: [		
-                         		  {key: "candidate"},
-                         		  {key: "commentDesc"},
-                         		  {key: "commentCategory"},
-                         		  {key: "commentedBy"},
-                         		  {key: "commentedOn"}     		  
-                         		  ] 
-        		};
-
-		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10			        
-			    })
-			     
-				};
-		
-		var candidateCommentsDataTable = new YAHOO.widget.DataTable(divId, candidateCommentsColumnDefs, candidateCommentsDataSource,myConfigs);					
-
 }

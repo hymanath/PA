@@ -589,14 +589,21 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';	
 		contentStr+='</div>';
-		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';	
-		contentStr+='<table width="95%" class="reasonsAnalysis">';
+		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';		
+		contentStr+='<table width="95%" class="reasonsAnalysis">';		
+		contentStr+='<tr>';
+		contentStr+='<th></th>';
+		contentStr+='<th>Comment</th>';		
+		contentStr+='<th>No of Const</th>';
+		contentStr+='<th>Impact Value</th>';
+		contentStr+='</tr>';
 		for(var i in results.analysisCategoryBasicResultVO)
 		{
 			contentStr+='<tr>';
 			contentStr+='<td width="10%" align="left"><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></td>';
 			contentStr+='<td width="50%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryType+' </td>';
-			contentStr+='<td align="left"> <a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></td>';
+			contentStr+='<td align="left" width="20%"> <a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></td>';
+			contentStr+='<td width="15%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryScore+' </td>';
 			contentStr+='</tr>';
 		}	
 		contentStr+='</table>';
@@ -732,13 +739,20 @@ function showAnalysisDetailsInPartyWonPositions(results)
 			contentStr+='				</TABLE>';	
 			contentStr+='			</div>';
 			contentStr+='			<div id="wonPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';
-			contentStr+='			<TABLE class="wonLostPosTable" width="95%">';
+			contentStr+='			<TABLE class="wonLostPosTable" width="95%">';			
+			contentStr+='<tr>';
+			contentStr+='<th></th>';
+			contentStr+='<th>Comment</th>';		
+			contentStr+='<th>No of Const</th>';
+			contentStr+='<th>Impact Value</th>';
+			contentStr+='</tr>';
 			for(var i in results.analysisCategoryBasicResultVO)
 			{    
 			contentStr+='			<TR>';
 			contentStr+='				<td width="10%" align="left"><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></td>';
 			contentStr+='				<TD style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TD>';
-			contentStr+='				<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+			contentStr+='				<TD style="width:20%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+			contentStr+='				<td width="15%" align="left"> '+results.analysisCategoryBasicResultVO[i].categoryScore+' </td>';
 			contentStr+='			</TR>';	
 			}
 			contentStr+='			</TABLE>';	
@@ -844,7 +858,8 @@ function buildVotesMarginInfoContent(jsObj,results)
 				str+= '<tr>';
 				str+= '<td align="left">'+dt.categoryType+'</td>';
 				str+= '<td><a href="javascript:{}" onclick="showMarginCountAnalysisForCategory('+i+','+partyId+','+dt.categoryId+',\''+jsObj.status+'\')">'+dt.categoryResultCount+'</a></td>';						
-				str+= '</tr>';
+				str+= '<td align="left">'+dt.categoryScore+'</td>';
+				str+= '</tr>';	
 			}
 			str+= '</table>';
 			str+= '</div>';

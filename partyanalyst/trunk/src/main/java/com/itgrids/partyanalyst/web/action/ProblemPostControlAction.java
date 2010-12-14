@@ -57,7 +57,16 @@ public class ProblemPostControlAction extends ActionSupport implements
     private String parliamentConstiName;
     private String constituencyName;
     private String taskType;
+    private String src = "constituencyProblemManagement";
 	
+	public String getSrc() {
+		return src;
+	}
+
+	public void setSrc(String src) {
+		this.src = src;
+	}
+
 	public String getTaskType() {
 		return taskType;
 	}
@@ -214,6 +223,11 @@ public class ProblemPostControlAction extends ActionSupport implements
 		
 		if(regVO == null){
 			log.error(" No User Log In .....");
+			if("analyze".equalsIgnoreCase(taskType) || "viewResults".equalsIgnoreCase(taskType))
+			{
+				if("CONSTITUENCY".equalsIgnoreCase(redirectLoc))
+				src="assessConstituencyResults";
+			}
 			userStatus = IConstants.PROBLEM_MANAGEMENT_LOGIN;
 			return IConstants.NOT_LOGGED_IN;
 		}

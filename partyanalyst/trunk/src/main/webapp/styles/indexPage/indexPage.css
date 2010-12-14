@@ -485,3 +485,15 @@ text-decoration:none;
 	word-spacing:4px;
 	line-height:16px;
 }
+
+.indexPageAnc
+{
+	color:#7C684E;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.indexPageAnc:hover
+{	
+	text-decoration:underline;
+}

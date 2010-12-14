@@ -13,10 +13,12 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
+import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -53,7 +55,26 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	JSONObject jObj = null;
 	JSONArray jsonArray =null;
 	
+	private ICommentsDataService commentsDataService;
+	private List<CandidateCommentsVO> candidateComments;
 	
+	
+
+	public List<CandidateCommentsVO> getCandidateComments() {
+		return candidateComments;
+	}
+
+	public void setCandidateComments(List<CandidateCommentsVO> candidateComments) {
+		this.candidateComments = candidateComments;
+	}
+
+	public ICommentsDataService getCommentsDataService() {
+		return commentsDataService;
+	}
+
+	public void setCommentsDataService(ICommentsDataService commentsDataService) {
+		this.commentsDataService = commentsDataService;
+	}
 
 	public String getResultStatus() {
 		return resultStatus;
@@ -531,6 +552,25 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
 		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex, categoryId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyAnalyzedComments() throws Exception
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long nominationId = new Long(jObj.getString("nominationId"));
+		
+		candidateComments = commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(true,nominationId);
 		
 		return Action.SUCCESS;
 	}
