@@ -15,7 +15,7 @@ public class CommentsDataServiceTest extends BaseDaoTestCase{
 	}
 	
 	public void testCategoryData(){
-		commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(1098l);
+		commentsDataService.getAnalyzedResonsWithRatingsForConstituencyInAnElection(false, 1098l);
 	}
 	
 	

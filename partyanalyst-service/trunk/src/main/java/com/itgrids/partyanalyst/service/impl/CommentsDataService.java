@@ -874,10 +874,15 @@ public class CommentsDataService implements ICommentsDataService {
 		return candStatics;
 	}
 	
-	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Long constiElecId){
-		List constiElecInfo = nominationDAO.findByConstituencyElection(constiElecId);
+	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Boolean isNomination, 
+			Long constiElecOrNominationId){
+		List constiElecInfo = null;
+		if(isNomination)
+			constiElecInfo = nominationDAO.findByNominationId(constiElecOrNominationId);
+		else
+			constiElecInfo = nominationDAO.findByConstituencyElection(constiElecOrNominationId);
 		List commentsByUser = null;
-		Map<Long, List<Object[]>> userwiseComments = null;
+		Map<String, List<Object[]>> userwiseComments = null;
 		Map<Long, UserCommentsInfoVO> categoryAndScores = null;
 		List<Object[]> comments = null;
 		CandidateCommentsVO candidateCommentsVO = null;
@@ -893,19 +898,31 @@ public class CommentsDataService implements ICommentsDataService {
 			nominationComments.setCandidate(values[5].toString());
 			nominationComments.setPartyName(values[0].toString());
 			nominationComments.setRank((Long)values[3]);
-			commentsByUser = commentCategoryCandidateDAO.getAllCommentsByUserAndCategoryForANomination((Long)values[4]);
-			userwiseComments = new HashMap<Long, List<Object[]>>();
+			
+			userwiseComments = new HashMap<String, List<Object[]>>();
+			
+			commentsByUser = commentCategoryCandidateDAO.getAllCommentsByFreeUserAndCategoryForANomination((Long)values[4]);
 			
 			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
-				comments = userwiseComments.get(commentInfo[0]);
+				comments = userwiseComments.get(commentInfo[0]+IConstants.FREE_USER);
 				if(comments == null)
 					comments = new ArrayList<Object[]>();
 				comments.add(commentInfo);
-				userwiseComments.put((Long)commentInfo[0], comments);
+				userwiseComments.put(commentInfo[0]+IConstants.FREE_USER, comments);
+			}
+			
+			commentsByUser = commentCategoryCandidateDAO.getAllCommentsByPaidUserAndCategoryForANomination((Long)values[4]);
+			
+			for(Object[] commentInfo:(List<Object[]>)commentsByUser){
+				comments = userwiseComments.get(commentInfo[0]+IConstants.PARTY_ANALYST_USER);
+				if(comments == null)
+					comments = new ArrayList<Object[]>();
+				comments.add(commentInfo);
+				userwiseComments.put(commentInfo[0]+IConstants.PARTY_ANALYST_USER, comments);
 			}
 			
 			allUsersCommentsForNomination = new ArrayList<CandidateCommentsVO>();
-			for(Entry<Long, List<Object[]>> entry:userwiseComments.entrySet()){
+			for(Entry<String, List<Object[]>> entry:userwiseComments.entrySet()){
 				comments = entry.getValue();
 				candidateCommentsVO = new CandidateCommentsVO();
 				candidateCommentsVO.setUserId((Long)comments.get(0)[0]);

@@ -103,7 +103,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?",params);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountGroupedByCommentCategory(Long electionId,
 			Long partyId, String category) {
@@ -113,6 +113,39 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?"+
 				" group by model.commentData.commentDataCategory.commentDataCategoryType",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountAndScoreGroupedByCommentCategory(Long electionId,Long partyId,String category) {
+		Object[] params = {electionId,partyId,category};
+		
+		return getHibernateTemplate().find("select count(distinct model.nomination.constituencyElection.constituency.constituencyId),model.commentData.commentDataCategory.commentDataCategoryId,model.commentData.commentDataCategory.commentDataCategoryType, sum(model.severity) from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?"+
+				" group by model.commentData.commentDataCategory.commentDataCategoryId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalPostedPaidUsersGroupedByCommentCategory(Long electionId,Long partyId,String category) {
+		Object[] params = {electionId,partyId,category};
+		
+		return getHibernateTemplate().find("select count(distinct model.paidUser.registrationId) from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?"+
+				" group by model.nomination.party.partyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalPostedFreeUsersGroupedByCommentCategory(Long electionId,Long partyId,String category) {
+		Object[] params = {electionId,partyId,category};
+		
+		return getHibernateTemplate().find("select count(distinct model.freeUser.userId) from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?"+
+				" group by model.nomination.party.partyId",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -142,7 +175,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank, model.nomination.nominationId "+
 				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
 				"and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
 	}
@@ -163,7 +196,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank, model.nomination.nominationId "+
 				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
 				"and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ? "+
 				"and model.commentData.commentDataCategory.commentDataCategoryId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
@@ -173,7 +206,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getCommentResultsForCandidateNominations(
 			List<Long> nominationIds) {
 		Query queryObject = getSession().createQuery("select model.commentData.commentDataCategory.commentDataCategoryId,model.commentData.commentDataCategory.commentDataCategoryType,"+
-				"count(distinct model.nomination.constituencyElection.constituency.constituencyId) from CommentCategoryCandidate model where "+
+				"count(distinct model.nomination.constituencyElection.constituency.constituencyId), sum(model.severity) from CommentCategoryCandidate model where "+
 				"model.nomination.nominationId in (:nominationIds) group by model.commentData.commentDataCategory.commentDataCategoryId");
 		queryObject.setParameterList("nominationIds", nominationIds);
 		return queryObject.list();
@@ -219,12 +252,20 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"from CommentCategoryCandidate model where model.nomination.nominationId = ? group by model.commentData.commentDataCategory.commentDataCategoryId",nominationId);
 	}
 	
-	public List getAllCommentsByUserAndCategoryForANomination(Long nominationId){
+	public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId){
 		Object[] params = {nominationId};
 		return getHibernateTemplate().find("select model.freeUser.userId, model.freeUser.name, model.commentData.commentDesc, " +
 				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
 				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
 				"model.nomination.nominationId = ? group by model.freeUser.userId, model.commentData.commentDataCategory.commentDataCategoryId", params);
+	}
+	
+	public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId){
+		Object[] params = {nominationId};
+		return getHibernateTemplate().find("select model.paidUser.registrationId, model.paidUser.firstName, model.commentData.commentDesc, " +
+				"model.commentData.commentDataCategory.commentDataCategoryType, model.commentData.commentDataCategory.commentDataCategoryId, " +
+				"model.commentData.commentDataCategory.commentClassification, model.severity from CommentCategoryCandidate model where " +
+				"model.nomination.nominationId = ? group by model.paidUser.registrationId, model.commentData.commentDataCategory.commentDataCategoryId", params);
 	}
 
 	public List getAllCommentsOfUserForANomination(Long electionId,

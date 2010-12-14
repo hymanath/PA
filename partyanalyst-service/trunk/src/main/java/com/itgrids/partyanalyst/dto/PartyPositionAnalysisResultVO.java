@@ -25,6 +25,16 @@ public class PartyPositionAnalysisResultVO implements Serializable {
 	private List<SelectOptionVO> multipleCategories;
 	private List<AnalysisCategoryBasicVO> analysisCategoryBasicResultVO;
 	
+	private Long totalUsers;
+	
+	public Long getTotalUsers() {
+		return totalUsers;
+	}
+
+	public void setTotalUsers(Long totalUsers) {
+		this.totalUsers = totalUsers;
+	}
+
 	private ResultStatus resultStatus = new ResultStatus();
 	
 	public String getResultType() {

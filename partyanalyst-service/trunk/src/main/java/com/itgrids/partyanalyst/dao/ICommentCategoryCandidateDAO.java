@@ -40,10 +40,19 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getCommentsCountForACandidateInAConstituencyInAnELection(Long electionId,Long candidateId,Long constituencyId);
 	
 	@SuppressWarnings("unchecked")
-	public List getCommentsCountInAnElectionForAPartyForCommentCategory(Long electionId,Long partyId,String category);
+	public List getCommentsCountInAnElectionForAPartyForCommentCategory(Long electionId,Long partyId,String category);		
 	
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountGroupedByCommentCategory(Long electionId,Long partyId,String category);
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountAndScoreGroupedByCommentCategory(Long electionId,Long partyId,String category);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalPostedPaidUsersGroupedByCommentCategory(Long electionId,Long partyId,String category);
+	
+	@SuppressWarnings("unchecked")
+	public List getTotalPostedFreeUsersGroupedByCommentCategory(Long electionId,Long partyId,String category);
 	
 	@SuppressWarnings("unchecked")
 	public List getCommentsCommentCategoryCountGroupedByConstituencyForAParty(Long electionId,Long partyId,String category);
@@ -72,7 +81,9 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountForACandidateFromNominationId(Long nominationId);
 	
-	public List getAllCommentsByUserAndCategoryForANomination(Long nominationId);
+	public List getAllCommentsByFreeUserAndCategoryForANomination(Long nominationId);
+	
+	public List getAllCommentsByPaidUserAndCategoryForANomination(Long nominationId);
 
 	public List getAllCommentsOfUserForANomination(Long electionId,
 			Long constituencyId, Long candidateId, Long userId, String hqlQuery);
