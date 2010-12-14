@@ -19,7 +19,15 @@ public class AnalysisCategoryBasicVO implements Serializable {
 	private Long categoryId;
 	private String categoryType;
 	private Long categoryResultCount;
+	private Float categoryScore;
 	
+	
+	public Float getCategoryScore() {
+		return categoryScore;
+	}
+	public void setCategoryScore(Float categoryScore) {
+		this.categoryScore = categoryScore;
+	}
 	public Long getCategoryId() {
 		return categoryId;
 	}

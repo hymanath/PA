@@ -345,6 +345,8 @@ public class AnalysisReportService implements IAnalysisReportService {
 			candidateCommentsVO.setCommentedOn(sdf.format((Date)results[6]).toString());
 			candidateCommentsVO.setCommentCategory((String)results[7]);
 			candidateCommentsVO.setRank((Long)results[8]);
+			if(results.length > 9)
+				candidateCommentsVO.setNominationId((Long)results[9]);
 		}
 		
 	 return candidateCommentsVO;
@@ -373,6 +375,10 @@ public class AnalysisReportService implements IAnalysisReportService {
 	    List<SelectOptionVO> multipleCategories = null;
 	    Long totalConstituenciesCount = new Long(0);
 	    partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+	    List postedPaidUsers = null;
+	    List postedFreeUsers = null;
+	    Long postedPaidUsersCount = 0L;
+	    Long postedFreeUsersCount = 0L;
 	    
         if(electionId == null){
         	List election = null;
@@ -413,14 +419,33 @@ public class AnalysisReportService implements IAnalysisReportService {
 				analysisResults = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(electionId,partyId,IConstants.CANDIDATE_COMMENTS_WON);
 				analysisBasicResults = getAnalysisCategoryBasicDetails(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_WON);
 				multipleCategories = getMultipleCategoriesBasicResults(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_WON);
+				postedPaidUsers = commentCategoryCandidateDAO.getTotalPostedPaidUsersGroupedByCommentCategory(electionId, partyId, IConstants.CANDIDATE_COMMENTS_WON);
+				postedFreeUsers = commentCategoryCandidateDAO.getTotalPostedFreeUsersGroupedByCommentCategory(electionId, partyId, IConstants.CANDIDATE_COMMENTS_WON);
 				}
 				else if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
 				analysisResults = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(electionId,partyId,IConstants.CANDIDATE_COMMENTS_LOST);
 				analysisBasicResults = getAnalysisCategoryBasicDetails(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_LOST);
 				multipleCategories = getMultipleCategoriesBasicResults(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_LOST);
+				postedPaidUsers = commentCategoryCandidateDAO.getTotalPostedPaidUsersGroupedByCommentCategory(electionId, partyId, IConstants.CANDIDATE_COMMENTS_LOST);
+				postedFreeUsers = commentCategoryCandidateDAO.getTotalPostedFreeUsersGroupedByCommentCategory(electionId, partyId, IConstants.CANDIDATE_COMMENTS_LOST);
 				}
 			}
 		}
+		
+		//processing posted users count (Start)
+		if(postedPaidUsers != null && postedPaidUsers.size() > 0 )
+		{
+			postedPaidUsersCount = (Long)postedPaidUsers.get(0);
+		}
+		
+		if(postedFreeUsers.size() > 0)
+		{
+			postedFreeUsersCount = (Long)postedFreeUsers.get(0);	
+		}
+		partyPositionAnalysisResultVO.setTotalUsers(postedPaidUsersCount + postedFreeUsersCount);
+		
+		//processing posted users count (End)
+		
 		
 		//process basicResults
 		if(basicResults != null && basicResults.size() > 0){
@@ -492,7 +517,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 		if(electionId != null && partyId != null && includeAllianc == false){
 			analysisCategoryBasicVO = new ArrayList<AnalysisCategoryBasicVO>();
 			
-			List analysisResults = commentCategoryCandidateDAO.getCommentsCountGroupedByCommentCategory(electionId, partyId, analysisCategory);
+			List analysisResults = commentCategoryCandidateDAO.getCommentsCountAndScoreGroupedByCommentCategory(electionId, partyId, analysisCategory);
 			if(analysisResults != null && analysisResults.size() > 0){
 				for(int i=0;i<analysisResults.size();i++){
 					Object[] params = (Object[])analysisResults.get(i);
@@ -501,6 +526,9 @@ public class AnalysisReportService implements IAnalysisReportService {
 					analysisBasics.setCategoryId((Long)params[1]);
 					analysisBasics.setCategoryType((String)params[2]);
 					analysisBasics.setCategoryResultCount((Long)params[0]);
+					
+					BigDecimal scoreVal = new BigDecimal((Double)params[3]).setScale(2, BigDecimal.ROUND_HALF_UP);
+					analysisBasics.setCategoryScore(scoreVal.floatValue());
 					
 					analysisCategoryBasicVO.add(analysisBasics);
 				}
@@ -704,6 +732,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					ElectionBasicCommentsVO elecBasicComments = new ElectionBasicCommentsVO();
 					elecBasicComments.setConstituencyId(constituencyId);
 					elecBasicComments.setConstituencyName(commentsList.get(0).getConstituencyName());
+					elecBasicComments.setNominationId(commentsList.get(0).getNominationId());
 					elecBasicComments.setPartyId(partyId);
 					elecBasicComments.setPartyName(party.getShortName());
 					elecBasicComments.setCandidateComments(commentsList);
@@ -953,7 +982,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 					 AnalysisCategoryBasicVO analysisCategory = new AnalysisCategoryBasicVO();
 					 analysisCategory.setCategoryId((Long)params[0]);
 					 analysisCategory.setCategoryType((String)params[1]);
-					 analysisCategory.setCategoryResultCount(countVal);
+					 analysisCategory.setCategoryResultCount(countVal);					 
+
+					 BigDecimal scoreVal = new BigDecimal((Double)params[3]).setScale(2, BigDecimal.ROUND_HALF_UP);
+					 analysisCategory.setCategoryScore(scoreVal.floatValue());
+						
 					 analysisCategoryVosList.add(analysisCategory);
 					
 				 }

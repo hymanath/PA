@@ -30,6 +30,14 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long postedUsersCount;
 	private Float reasonScore = 0.0f;
 	private List<UserCommentsInfoVO> commetsAndScores;
+	private Long nominationId;
+	
+	public Long getNominationId() {
+		return nominationId;
+	}
+	public void setNominationId(Long nominationId) {
+		this.nominationId = nominationId;
+	}
 	
 	//getters and setters
 	public Long getCandidateId() {

@@ -21,7 +21,16 @@ public class ElectionBasicCommentsVO implements Serializable {
 	private String partyName;
 	private Long constituencyId;
 	private String constituencyName;
+	private Long nominationId;
 	
+	public Long getNominationId() {
+		return nominationId;
+	}
+
+	public void setNominationId(Long nominationId) {
+		this.nominationId = nominationId;
+	}
+
 	private List<CandidateCommentsVO> candidateComments;
 	
 	private ResultStatus resultStatus;

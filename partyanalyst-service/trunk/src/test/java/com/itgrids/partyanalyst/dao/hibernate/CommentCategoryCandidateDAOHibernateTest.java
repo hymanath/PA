@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -121,6 +122,36 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
+	/*public void testGetAllCommentsByPaidUserAndCategoryForANomination(){
+		List list = commentCategoryCandidateDAO.getAllCommentsByPaidUserAndCategoryForANomination(16262l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetTotalPostedUsersGroupedByCommentCategory(){
+		List list = commentCategoryCandidateDAO.getTotalPostedPaidUsersGroupedByCommentCategory(4L, 361L, IConstants.CANDIDATE_COMMENTS_LOST);
+		List freeUserList = commentCategoryCandidateDAO.getTotalPostedFreeUsersGroupedByCommentCategory(4L, 361L, IConstants.CANDIDATE_COMMENTS_LOST);
+		System.out.println(list.size());
+		System.out.println(freeUserList.size());
+		
+		Long paidUsers = 0L;
+		Long freeUsers = 0L;
+		
+		if(list.size() > 0 )
+		{
+			paidUsers = (Long)list.get(0);					
+			System.out.println(" Paid User Count"+ paidUsers);
+		}
+		
+		if(freeUserList.size() > 0)
+		{
+			freeUsers = (Long)freeUserList.get(0);					
+			System.out.println(" Free User Count"+ freeUsers);
+		}
+		
+		System.out.println(" Total Users = "+(paidUsers+freeUsers));
+		
+		
+	}
 	
 	
 }
