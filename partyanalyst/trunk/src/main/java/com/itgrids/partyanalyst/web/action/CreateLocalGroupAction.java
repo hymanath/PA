@@ -21,6 +21,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.LocalUserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -71,6 +72,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	private List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> districtsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> pConstituencyList  = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> villagesList = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
@@ -271,6 +273,13 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	public void setLocalUserGroupDetailsVO(
 			LocalUserGroupDetailsVO localUserGroupDetailsVO) {
 		this.localUserGroupDetailsVO = localUserGroupDetailsVO;
+	}	
+	
+	public List<SelectOptionVO> getPConstituencyList() {
+		return pConstituencyList;
+	}
+	public void setPConstituencyList(List<SelectOptionVO> constituencyList) {
+		pConstituencyList = constituencyList;
 	}
 	public String execute(){
 		
@@ -293,12 +302,11 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		
 		session.setAttribute(ISessionConstants.USER_GROUP_CATEGORIES,groupCategories);
 		
-		//Get Scopes Data
-		setGroupScopesData();
-		
 		 accessType =regVO.getAccessType();
 		 accessValue = new Long(regVO.getAccessValue());
-		
+		//Get Scopes Data
+			setGroupScopesData();
+			
 		if("MLA".equals(accessType))
 		{
 			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
@@ -316,8 +324,28 @@ public class CreateLocalGroupAction extends ActionSupport implements
 			}
 			
 			
-			setDefaultGroupScope(5L);
+			setDefaultGroupScope(4L);
 		}
+		
+		else if("MP".equals(accessType)){
+			
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+						
+			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			statesList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+			constituenciesList = constituencyInfoVO.getAssembyConstituencies();
+			constituenciesList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			pConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));
+			setDefaultGroupScope(4L);
+			if(windowTask.equalsIgnoreCase("edit"))
+			{
+				mandalsList = regionServiceDataImp.getSubRegionsInConstituency(new Long(localUserGroupDetailsVO.getConstituency()), IConstants.PRESENT_YEAR, null);
+				villagesList = getRegionServiceDataImp().getHamletsOrWards(new Long(localUserGroupDetailsVO.getMandal()), IConstants.PRESENT_YEAR);
+				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));				
+			}
+			
+		}
+		
 		else if("COUNTRY".equals(accessType))
 		{
 			statesList = cadreManagementService.findStatesByCountryID(accessValue.toString());
@@ -332,7 +360,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
 
 			}
-			setDefaultGroupScope(2L);
+			setDefaultGroupScope(0L);
 		}
 		else if("STATE".equals(accessType))
 		{
@@ -353,7 +381,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
 			}
 			
-			setDefaultGroupScope(3L);
+			setDefaultGroupScope(2L);
 		}
 		else if("DISTRICT".equals(accessType))
 		{
@@ -372,7 +400,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 				boothsList = getRegionServiceDataImp().getBoothsInTehsilOrMunicipality(new Long(localUserGroupDetailsVO.getMandal()),new Long(IConstants.PRESENT_ELECTION_YEAR),new Long(localUserGroupDetailsVO.getConstituency()));
 			}
 			
-			setDefaultGroupScope(4L);
+			setDefaultGroupScope(3L);
 		}
 		if(windowTask.equalsIgnoreCase("edit"))
 		{
@@ -382,6 +410,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		session.setAttribute(ISessionConstants.STATES, statesList);
 		session.setAttribute(ISessionConstants.DISTRICTS,districtsList);
 		session.setAttribute(ISessionConstants.CONSTITUENCIES,constituenciesList);
+		session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
 		session.setAttribute(ISessionConstants.MANDALS,mandalsList);	
 		session.setAttribute(ISessionConstants.VILLAGES,villagesList);
 		session.setAttribute("boothsList",boothsList);
@@ -392,7 +421,8 @@ public class CreateLocalGroupAction extends ActionSupport implements
 	public void setGroupScopesData(){
 		
 		groupScopes.add(new SelectOptionVO(2l,"STATE"));
-		groupScopes.add(new SelectOptionVO(3l,"DISTRICT"));
+		if(!"MP".equals(accessType))
+			groupScopes.add(new SelectOptionVO(3l,"DISTRICT"));
 		groupScopes.add(new SelectOptionVO(4l,"CONSTITUENCY"));
 		groupScopes.add(new SelectOptionVO(5l,"MANDAL"));
 		groupScopes.add(new SelectOptionVO(6l,"VILLAGE"));
