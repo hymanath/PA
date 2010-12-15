@@ -42,6 +42,8 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private String district;
 	private String districtName;
 	private String constituency;
+	private String pConstituencyId;
+	private String pConstituencyName;
 	private String constituencyName;
 	private String mandal;
 	private String mandalName;
@@ -53,7 +55,7 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	private String houseNo;
 	private String streetName;
 	private String pincode;
-	
+	private String accessType;
 	private List<UserGroupMembersVO> groupMemberDetails;
 	private String windowTask;
 	
@@ -251,6 +253,28 @@ public class LocalUserGroupDetailsVO implements Serializable {
 	public void setGroupScopeRangePlace(String groupScopeRangePlace) {
 		this.groupScopeRangePlace = groupScopeRangePlace;
 	}
+	public String getPConstituencyId() {
+		return pConstituencyId;
+	}
+	public void setPConstituencyId(String constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+	public String getPConstituencyName() {
+		return pConstituencyName;
+	}
+	public void setPConstituencyName(String constituencyName) {
+		pConstituencyName = constituencyName;
+	}
+	public String getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	
+	
+	
+	
 	
 
 }

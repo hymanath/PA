@@ -3122,7 +3122,16 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					localGroupRegion.setPincode(localGroupDetails.getPincode());
 					localGroupRegion.setStreetName(localGroupDetails.getStreetName());
 					localGroupRegion.setState(stateDAO.get(new Long(localGroupDetails.getState())));
-					localGroupRegion.setDistrict(districtDAO.get(new Long(localGroupDetails.getDistrict())));
+					if("MP".equals(localGroupDetails.getAccessType()))
+					{
+						localGroupRegion.setDistrict(null);
+						localGroupRegion.setParliamentConstituency(constituencyDAO.get(new Long(localGroupDetails.getPConstituencyId())));
+					} else 
+					{
+						localGroupRegion.setDistrict(districtDAO.get(new Long(localGroupDetails.getDistrict())));
+						localGroupRegion.setParliamentConstituency(null);
+					}
+					
 					localGroupRegion.setConstituency(constituencyDAO.get(new Long(localGroupDetails.getConstituency())));
 					
 					if (IConstants.URBAN_TYPE.equals(localGroupDetails.getMandal().substring(0,1)))
@@ -3426,8 +3435,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			localUserGroupDetailsVO.setStreetName(localGroupRegion.getStreetName());
 			localUserGroupDetailsVO.setState(localGroupRegion.getState().getStateId().toString());
 			localUserGroupDetailsVO.setStateName(localGroupRegion.getState().getStateName());
-			localUserGroupDetailsVO.setDistrict(localGroupRegion.getDistrict().getDistrictId().toString());
-			localUserGroupDetailsVO.setDistrictName(localGroupRegion.getDistrict().getDistrictName());
+			if(localGroupRegion.getDistrict() != null)
+			{
+				localUserGroupDetailsVO.setDistrict(localGroupRegion.getDistrict().getDistrictId().toString());
+				localUserGroupDetailsVO.setDistrictName(localGroupRegion.getDistrict().getDistrictName());				
+			} else if(localGroupRegion.getParliamentConstituency() != null)
+			{
+				localUserGroupDetailsVO.setPConstituencyId(localGroupRegion.getParliamentConstituency().getConstituencyId().toString());
+				localUserGroupDetailsVO.setPConstituencyName(localGroupRegion.getParliamentConstituency().getName());
+			}			
 			localUserGroupDetailsVO.setConstituency(localGroupRegion.getConstituency().getConstituencyId().toString());
 			localUserGroupDetailsVO.setConstituencyName(localGroupRegion.getConstituency().getName());
 			localUserGroupDetailsVO.setPincode(localGroupRegion.getPincode());
