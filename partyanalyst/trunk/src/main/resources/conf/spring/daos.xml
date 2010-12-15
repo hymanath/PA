@@ -4,8 +4,36 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+
+	<bean id="delimitationBlockDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationBlockDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="blockDAO" class="com.itgrids.partyanalyst.dao.hibernate.BlockDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+
+	<bean id="delimitationWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationWardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
   	
-  	<bean id="cadreFamilyMemberInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreFamilyMemberInfoDAO" >
+  	<bean id="delimitationVillageDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationVillageDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+  	
+  	<bean id="delimitationConstituencyTownDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyTownDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+  	
+  	<bean id="delimitationYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationYearDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+  
+  	<bean id="censusYearDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusYearDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+  
+   	<bean id="cadreFamilyMemberInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreFamilyMemberInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
