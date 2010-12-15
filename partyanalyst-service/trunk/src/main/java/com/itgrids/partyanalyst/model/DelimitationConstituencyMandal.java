@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "delimitation_constituency_mandal_details")
@@ -18,6 +24,7 @@ public class DelimitationConstituencyMandal extends BaseModel {
 	private DelimitationConstituency delimitationConstituency;
 	private Tehsil tehsil;
 	private String isPartial;
+	private Set<DelimitationVillage> delimitationVillage = new HashSet<DelimitationVillage>(0);
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,6 +60,14 @@ public class DelimitationConstituencyMandal extends BaseModel {
 	}
 	public void setIsPartial(String isPartial) {
 		this.isPartial = isPartial;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "delimitationConstituencyMandal")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationVillage> getDelimitationVillage() {
+		return delimitationVillage;
+	}
+	public void setDelimitationVillage(Set<DelimitationVillage> delimitationVillage) {
+		this.delimitationVillage = delimitationVillage;
 	}
 
 }
