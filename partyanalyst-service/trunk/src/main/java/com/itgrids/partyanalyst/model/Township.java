@@ -47,6 +47,8 @@ public class Township implements java.io.Serializable {
 	private Set<Hamlet> hamlets = new HashSet<Hamlet>(0);
 	private Set<VillageBoothElection> villageBoothElections = new HashSet<VillageBoothElection>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	private Set<DelimitationConstituencyTown> delimitationConstituencyTown = new HashSet<DelimitationConstituencyTown>(0);
+	private Set<DelimitationVillage> delimitationVillage = new HashSet<DelimitationVillage>(0);
 	//private Set<Census> censuses = new HashSet<Census>();
 	
 	// Constructors
@@ -169,6 +171,27 @@ public class Township implements java.io.Serializable {
 
 	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
 		this.localGroupRegion = localGroupRegion;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "township")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationConstituencyTown> getDelimitationConstituencyTown() {
+		return delimitationConstituencyTown;
+	}
+
+	public void setDelimitationConstituencyTown(
+			Set<DelimitationConstituencyTown> delimitationConstituencyTown) {
+		this.delimitationConstituencyTown = delimitationConstituencyTown;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "township")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationVillage> getDelimitationVillage() {
+		return delimitationVillage;
+	}
+
+	public void setDelimitationVillage(Set<DelimitationVillage> delimitationVillage) {
+		this.delimitationVillage = delimitationVillage;
 	}
 
 	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "township")

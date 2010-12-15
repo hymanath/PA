@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * Ward entity. 
@@ -43,6 +44,8 @@ public class Ward implements java.io.Serializable {
 	private String wardName;
 	private Long wardCode;
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
+	private Set<DelimitationWard> delimitationWard = new HashSet<DelimitationWard>(0);
+	private Set<Block> block = new HashSet<Block>(0);
 
 	// Constructors
 	
@@ -111,6 +114,26 @@ public class Ward implements java.io.Serializable {
 
 	public void setProblemLocations(Set<ProblemLocation> problemLocations) {
 		this.problemLocations = problemLocations;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationWard> getDelimitationWard() {
+		return delimitationWard;
+	}
+
+	public void setDelimitationWard(Set<DelimitationWard> delimitationWard) {
+		this.delimitationWard = delimitationWard;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Block> getBlock() {
+		return block;
+	}
+
+	public void setBlock(Set<Block> block) {
+		this.block = block;
 	}
 
 	
