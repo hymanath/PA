@@ -159,7 +159,14 @@
 				<value>com.itgrids.partyanalyst.model.UserProfileOpts</value>
 				<value>com.itgrids.partyanalyst.model.ModuleDetails</value>
 				<value>com.itgrids.partyanalyst.model.ModuleRegionScopes</value>
-				</list>
+				<value>com.itgrids.partyanalyst.model.DelimitationBlock</value>
+				<value>com.itgrids.partyanalyst.model.Block</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationWard</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationVillage</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyTown</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationYear</value>
+				<value>com.itgrids.partyanalyst.model.CensusYear</value>
+			</list>
 		</property>
 	</bean>
 	
