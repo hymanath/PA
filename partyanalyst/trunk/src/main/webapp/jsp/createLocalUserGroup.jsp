@@ -96,17 +96,18 @@
 
 .regionSelect
 {
-width:146px;
+	width:146px;
 }
 .selectWidth
 {
-width:150px;
+	width:150px;
 }
 
 .fieldsetEle
 {
-border:4px solid #F6DFC9
-margin-bottom:10px;
+	border:4px solid #F6DFC9;
+	margin-bottom:10px;
+	padding:5px;
 }
 
 .bodystyles 
@@ -116,15 +117,15 @@ margin-bottom:10px;
 }
 
 .addLocalGroupHeader {
-background-image:url("images/icons/cadreReport/bg_center.png");
-background-repeat:repeat-x;
-color:#FFFFFF;
-font-size:18px;
-font-weight:bold;
-height:24px;
-padding-top:1px;
-text-align:center;
-width:150px;
+	background-image:url("images/icons/cadreReport/bg_center.png");
+	background-repeat:repeat-x;
+	color:#FFFFFF;
+	font-size:18px;
+	font-weight:bold;
+	height:24px;
+	padding-top:1px;
+	text-align:center;
+	width:150px;
 }
 
 </style>
@@ -210,7 +211,7 @@ function populateLocations(val,source)
 	var row6El = document.getElementById("row6");
 
 //	var hiddenEl = document.getElementById("groupScopeValueId");
-	var stateFieldEl = document.getElementById("stateField");
+	var stateFieldEl = document.getElementById("stateField_s");
 	var districtFieldEl = document.getElementById("districtField"); 
 	var constituencyFieldEl = document.getElementById("constituencyField");
 	var mandalFieldEl = document.getElementById("mandalField");
@@ -362,27 +363,21 @@ function setLocationValue(value,source)
 
 </script>
 </head>
-<body onload="populateLocations(${defaultGroupScope},'onChange')" class="bodyStyles">
+<body class="bodyStyles">
 <center>
 <TABLE border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
 				<TD><img border="none" src="images/icons/cadreReport/bg_left.png"></TD>
 					<c:if test="${windowTask == 'edit'}">
-						<TD>
-						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Edit a Group </span></div>
-						</TD>
+						<TD><div class="addLocalGroupHeader"><span style="margin-top:2px;">Edit a Group </span></div></TD>
 					</c:if>
 					<c:if test="${windowTask != 'edit'}"> 
-						<TD>
-						<div class="addLocalGroupHeader"><span style="margin-top:2px;">Create a Group </span></div>
-						</TD>
+						<TD><div class="addLocalGroupHeader"><span style="margin-top:2px;">Create a Group </span></div></TD>
 					</c:if>
 				<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>	
 			</TR>
 	</TABLE>
 </center>
- <%--<div id="wrapper" style="width:550px;">  --%>
-
    <div id="loginDetailsDivBody" align="center" class="accessDivBody">
 	<div id="errorMsgDiv">
 		<table class="registrationTable" >
@@ -403,21 +398,15 @@ function setLocationValue(value,source)
 	<c:if  test="${resultStatus == 'failure'}">
 	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
 	</c:if>
-
+	<s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
    <FIELDSET class="fieldsetEle">
 	<LEGEND style="font-size:12px;"><strong>Local Group Details</strong></LEGEND>
-	
-	<s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
-	
 	<table class="formTableStyle" cellpadding="0" cellspacing="0" border="0" align="left">
   	 <tr>
-	    <td class="tdstyle" width="165px">Select Group Category<font class="required">*</font></td>
-		<td width="14">
-		  <b> : </b>
-		</td>
-		<td>
-		  <s:select id="categorysId" name="groupCategoryId" cssStyle="width:150px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" ></s:select>
-		</td>
+	    <td class="tdstyle">Group Category<font class="required">*</font></td>
+		<td><s:select id="categorysId" name="groupCategoryId" cssStyle="width:180px;" list="#session.USER_GROUP_CATEGORIES" listKey="id" listValue="name" ></s:select></td>
+		<td class="tdstyle">Group Name<font class="required">*</font></td>
+		<td><s:textfield id="localGroupName" style="width:180px;" theme="simple" maxlength="61" name="localUserGroupName"/></td>
 	 </tr>
 	 
 	 <!--<tr><td></td>
@@ -428,93 +417,64 @@ function setLocationValue(value,source)
 	  </tr>  -->
 	  <tr id="catgrNameRow" style="display:none;">
 	    <td></td>
-		<td width="14"><b> </b></td>
-		<td width="250px"  class="tdstyle">
-		 Category &nbsp;&nbsp;&nbsp;:  <input id="categoryName" type="text" maxlength="61" style="width:150px;" value="" name="catgryName">
+		<td class="tdstyle">Category &nbsp;&nbsp;&nbsp;:  <input id="categoryName" type="text" maxlength="61" style="width:150px;" value="" name="catgryName">
 		</td>
 	  </tr>
 	  <tr id="catgrDescRow" style="display:none;">
-	    <td width="100px"></td>
-		<td width="14">
-		  <b> </b>
-		</td>
-		<td class="tdstyle">
-		Desciption :  <input id="categoryDesc" type="text" maxlength="61" style="width:150px;" value="" name="catgryDesc">
+	    <td class="tdstyle">Desciption :  <input id="categoryDesc" type="text" maxlength="61" style="width:150px;" value="" name="catgryDesc">
 		  <input class="btn_sbtCategory" type="button" onclick="" value="Create">
 		  <a href="javascript:{}" onclick="showHideCategoryData(0)">Hide</a>
 		</td>
-	  </tr>
-
+	  </tr>	  	   
 	  <tr>
-	    <td class="tdstyle">Enter Group Name<font class="required">*</font></td>
-		<td width="14">
-		  <b> : </b>
-		</td>
-		<td>
-		 <s:textfield id="localGroupName" style="width:150px;" theme="simple" maxlength="61" name="localUserGroupName"/></td> 
-		</td>
-	  </tr>
-	   
-	  <tr>
-	    <td class="tdstyle">Enter Group Description</td>
-		<td width="14">
-		  <b> : </b>
-		</td>
-		<td>
-		<s:textarea id="" name="groupDesc" cols="10" rows="3" style="width:150px;" onkeyup='limitText("localGroupDesc","maxcount",200)'/>
-	 </td>
-	  </tr>
-	    </tbody>
+	    <td class="tdstyle">Group Description</td>
+		<td colspan="3"><s:textarea id="" name="groupDesc" cols="10" rows="3" style="width:463px;"/></td>
+	  </tr>	    
 </table>
 </FIELDSET>
 <FIELDSET class="fieldsetEle">
-	<LEGEND style="font-size:12px;"><strong>Contact Details</strong></LEGEND>
- <table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+	<LEGEND style="font-size:12px;"><strong>Contact Address</strong></LEGEND>
+ <table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<td class="tdstyle"><s:label for="houseNoField" id="houseNoLabel"  value="%{getText('houseNo')}" /></td>
 		<td><s:textfield id="houseNoField" name="houseNo" maxlength="25" /></td>
 		<td class="tdstyle"><s:label for="streetField" id="streetLabel" value="%{getText('street')}" /></td>
 		<td><s:textfield id="streetField" name="streetName" maxlength="100"  /></td>
-	</tr>
-
+	</tr>	
+	<c:if test="${sessionScope.USER.accessType != 'MP'}">
+		<tr>
+			<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+			<td><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','userGroupReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
+			<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
+			<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','userGroupReg','constituencyField_add','currentAdd');cleanOptionsList('district')"></s:select></td>
+		</tr>				
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MP'}">
+		<tr>
+			<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+			<td><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','userGroupReg','pConstituencyField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
+			<td class="tdstyle"><s:label for="pConstituencyField_add" id="pConstituencyField_addLabel"  value="%{getText('PCONSTITUENCY')}"/><font class="required"> * </font></td>
+			<td><s:select id="pConstituencyField_add" cssClass="regionSelect" name="pConstituency" list="#session.p_constituencies" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','userGroupReg','constituencyField_add','currentAdd');cleanOptionsList('district')" ></s:select></td>
+		</tr>
+	</c:if>
 	<tr>
-		<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="State" /><font class="required"> * </font></td>
-		
-		<td ><s:select id="stateField_add" cssClass="regionSelect" name="state" list="#session.statesList" listKey="id" listValue="name" headerKey = "0" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtField_add','currentAdd');cleanOptionsList('state')"></s:select></td>
-		
-		<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="District"/><font class="required"> * </font></td>
-
-		<td><s:select id="districtField_add" cssClass="regionSelect" name="district" list="#session.districtsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyField_add','currentAdd');cleanOptionsList('district')" headerKey="0" ></s:select></td>
-	</tr>
-
-	<tr>
-		<td class="tdstyle" width="100px"><s:label for="constituencyField" id="constituencyLabel"  value="Constituency"/><font class="required"> * </font></td>
-		
-		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
-
-		<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="Tehsil/Muncipality"/><font class="required"> * </font></td>
-		
-		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
+		<td class="tdstyle"><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('ACONSTITUENCY')}"/><font class="requiredFont"> * </font></td>
+		<td><s:select id="constituencyField_add" cssClass="regionSelect" name="constituency" list="#session.constituenciesList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','userGroupReg','mandalField_add','currentAdd', 'null');cleanOptionsList('constituency')" headerKey="0" ></s:select></td>
+		<td class="tdstyle"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
+		<td><s:select id="mandalField_add" cssClass="regionSelect" name="mandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','userGroupReg','villageField_add','currentAdd');getBooths('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','boothsInTehsilOrMunicipality')" headerKey="0" headerValue="Select Mandal"></s:select></td>
 	</tr>
 	<tr>
- 		<td class="tdstyle" width="100px"><s:label for="wardOrHamlet" id="wardOrHamletLabel"  value="Village/Ward" /><font class="required"> * </font></td>
-		
-		<td><s:select id="villageField_add" cssClass="regionSelect" name="villageOrWard" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
-		
+ 		<td class="tdstyle"><s:label for="villageField" id="villageLabel"  value="%{getText('wardOrHamlet')}" /><font class="requiredFont"> * </font></td>
+		<td><s:select id="villageField_add" cssClass="regionSelect" name="villageOrWard" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'userGroupReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
 		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="Pincode" /></td>
-		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="10"/></td>
-		
+		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="10"/></td>		
 	</tr>
 	<tr>
 		<th colspan="4" width="15px" class="tdstyle" style="color:#0000AA;"><u>Booth details are not compulsory</u></th>
 	</tr>	
 	<tr>
-		<td class="tdstyle" width="100px"><s:label for="boothField" id="boothLabel"  value="Booth" /></td>
-		
-		<td align="left" width="165px">
-		<s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select>				
-		</td>
-		
+		<td class="tdstyle"><s:label for="boothField" id="boothLabel"  value="Booth" /></td>
+		<td align="left"><s:select id="boothField" cssClass="regionSelect" name="booth" list="#session.boothsList" listKey="id" listValue="name" headerKey="0" headerValue="Select Booth"></s:select></td>		
 	</tr>
  </table>
 
@@ -522,71 +482,81 @@ function setLocationValue(value,source)
 
 <FIELDSET class="fieldsetEle">
 <LEGEND style="font-size:12px;"><strong>Group Scope Details</strong></LEGEND>
-<table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0" align="left">
+<table class="formTableStyle" width="100%" height="64" cellpadding="0" cellspacing="0" border="0" align="left">
  	 <tr>
-	    <td width="135px" class="tdstyle">Select Group Scope<font class="required">*</font></td>
-		<td width="14"><b> : </b></td>
-		<td width="185">
-		  <s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" value="defaultGroupScope" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select>
-		</td>
+	    <td class="tdstyle">Group Scope<font class="required">*</font></td>
+		<td><s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" value="defaultGroupScope" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 	  </tr>
-	  <tr id="row1" style="display:none;">
+	   <c:if test="${sessionScope.USER.accessType != 'MP'}">	 								
+			<tr id="row1" style="display:none;">
+				<td class="tdstyle"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+				<td><s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','userGroupReg','districtField','currentAdd', 'null')"></s:select></td>
+			</tr>
+			<tr id="row2" style="display:none;">
+				<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
+				<td><s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'userGroupReg','constituencyField','currentAdd')"></s:select></td>
+			</tr>
+		</c:if>
+		<c:if test="${sessionScope.USER.accessType == 'MP'}">
+			<tr id="row1" style="display:none;">
+				<td class="tdstyle"><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
+				<td><s:select id="stateField_s" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','userGroupReg','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			</tr>
+			<TR id="row2" style="display:none;">	
+				<td class="tdstyle"><s:label for="parlConstituencyField" id="parlConstituencyLabel"  value="%{getText('PCONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
+				<TD><s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies" listKey="id" listValue="name" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','userGroupReg','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></TD>
+			</TR>
+		</c:if>
+	  
+	  
+	  <!--<tr id="row1" style="display:none;">
 			<td width="135px" class="tdstyle">State<font class="required">*</font></td>
-			<td width="27px"><b> : </b></td>
 			<td><s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField','currentAdd', 'null')"></s:select>
 			</td>
 		</tr>
 		 <tr id="row2" style="display:none;">
 			<td width="135px" class="tdstyle">District<font class="required">*</font></td>
-			<td width="27px">
-			<b> : </b></td>
-			<td>
-			<s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd')"></s:select>
+				<s:select id="districtField" cssClass="selectWidth" name="scopeDistrict" list="#session.districtsList" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField','currentAdd')"></s:select>
 			</td>
 		</tr>
+		 -->
 		 <tr id="row3" style="display:none;" >
-			<td width="135px" class="tdstyle">Constituency<font class="required">*</font></td>
-			<td width="27px">
-			<b> : </b></td>
-			<td>
-			<s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField','currentAdd')"></s:select>
-		  </td>
+			<td class="tdstyle"><s:label for="parlConstituencyField" id="parlConstituencyLabel"  value="%{getText('ACONSTITUENCY')}" /><font class="requiredFont"> * </font></td>
+			<td><s:select id="constituencyField" cssClass="selectWidth" name="scopeConstituency" list="#session.constituenciesList" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'userGroupReg','mandalField','currentAdd')"></s:select></td>
 	    </tr>
 		 <tr id="row4" style="display:none;" >
-			<td width="135px" class="tdstyle">Tehsil/Municipality/Corporation<font class="required">*</font></td>
-			<td width="27px"><b> : </b></td>
-			<td><s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select>
-		  </td>
+			<td class="tdstyle" width="105px"><s:label for="mandalField" id="mandalLabel"  value="Tehsil/Muncipality"/><font class="required"> * </font></td>
+			<td><s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select></td>
 	    </tr>
 		 <tr id="row5" style="display:none;" >
-			<td width="135px" class="tdstyle">Village/Ward<font class="required">*</font></td>
-			<td width="27px"><b> : </b></td>
-			<td><s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'cadreReg','mandalField')"></s:select>
-		  </td>
+			
+			<td><s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'userGroupReg','mandalField')"></s:select></td>
 	     </tr>
 		 <tr id="row6" style="display:none;">
-			<td width="135px" class="tdstyle">Booth<font class="required">*</font></td>
-			<td width="27px"><b> : </b></td>
-			<td><s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select>
-			</td>
+			<td class="tdstyle">Booth<font class="required">*</font></td>
+			<td><s:select id="boothField_s" cssClass="selectWidth" name="scopeBooth" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange=""></s:select></td>
 		</tr>
 	</table>
+	</FIELDSET>
+	<table class="formTableStyle" width="100%">	
+		<tr>
+		<td width="500"></td>
+		 <td><div align="right">
+			<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
+			</div>
+		</td>
+		</tr>
+	</table>
+<s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
+ <s:hidden id="localUserGroupId" name="localUserGroupId" value="%{localUserGroupId}" />
+ <s:hidden id="defaultGroupScope" name="defaultGroupScope" value="%{defaultGroupScope}" />
 	
+	</s:form>
  </div>
 <%-- <s:hidden id="groupScopeValueId" name="groupScopeValueId"/> --%>
- <s:hidden id="windowTaskId" name="windowTask" value="%{windowTask}"/>
- <s:hidden id="localUserGroupId" name="localUserGroupId" value="%{localUserGroupId}" /> 
- <table class="formTableStyle" width="100%">	
-	<tr>
-	<td width="150px"></td><td width="90px"></td>
-	 <td><div align="right">
-		<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
-		</div>
-	</td>
-	</tr>
-</table>
-</FIELDSET>
-</div>
-</s:form>
+ 
 </body>
+<script type="text/javascript">
+populateLocations(${defaultGroupScope},'onChange');
+</script>
 </html>

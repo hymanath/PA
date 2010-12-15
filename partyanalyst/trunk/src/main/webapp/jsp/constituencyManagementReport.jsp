@@ -676,7 +676,7 @@
 		
 		function redirectToNewLocalGroupCreation(windowTask,categoryId,localUserGroupId)
 		{
-			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?windowTask="+windowTask+"&grCategoryId="+categoryId+"&localUserGroupId="+localUserGroupId,"createLocalGroup","scrollbars=yes,height=600,width=600,left=200,top=200");										 
+			var createGroupBrowser = window.open("<s:url action="createLocalGroupAction.action"/>?windowTask="+windowTask+"&grCategoryId="+categoryId+"&localUserGroupId="+localUserGroupId,"createLocalGroup","scrollbars=yes,height=600,width=800,left=200,top=100");										 
 		    createGroupBrowser.focus();
 		}
 

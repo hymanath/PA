@@ -50,8 +50,8 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	private String groupScopeId;
 	private String scopeState,scopeDistrict,scopeConstituency;
 	private String scopeMandal,scopeVillage,scopeBooth;
-	
-		
+	private Long defaultGroupScope;
+			
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -263,6 +263,20 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	}
 	public void setScopeBooth(String scopeBooth) {
 		this.scopeBooth = scopeBooth;
+	}	
+	
+	public Long getDefaultGroupScope() {
+		return defaultGroupScope;
+	}
+	public void setDefaultGroupScope(Long defaultGroupScope) {
+		this.defaultGroupScope = defaultGroupScope;
+	}	
+	
+	public String getPConstituencyId() {
+		return localUserGroupDetailsVO.getPConstituencyId();
+	}
+	public void setPConstituencyId(String pConstituencyId) {
+		localUserGroupDetailsVO.setPConstituencyId(pConstituencyId);
 	}
 	public String execute() throws Exception{
 		
@@ -318,6 +332,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 			localUserGroupDetailsVO.setGroupScopeRange(IConstants.BOOTH);
 			localUserGroupDetailsVO.setGroupScopeValueId(scopeBooth);
 		}
+		localUserGroupDetailsVO.setAccessType(regVO.getAccessType());
 		
 		localUserGroupDetailsVO = influencingPeopleService.saveLocalUserGroupDetailsTODB(localUserGroupDetailsVO);
 		
@@ -329,6 +344,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 			resultStatus = "success";
 			savedStatusMsg = "Successfully Added ".concat(localUserGroupDetailsVO.getLocalUserGroupName()).concat(" ..");
 			savedStatus = true;
+			localUserGroupDetailsVO = new LocalUserGroupDetailsVO();
 		}
 		
 		return Action.SUCCESS;
@@ -336,7 +352,7 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 	
 
 	public void validate()
-	{
+	{/*
 		boolean sstate = scopeState.equalsIgnoreCase("0");
 		boolean sDistrict = sstate || scopeDistrict.equalsIgnoreCase("0");
 		boolean sConstituency = sDistrict || scopeConstituency.equalsIgnoreCase("0");
@@ -385,6 +401,6 @@ public class SaveLocalGroupAction extends ActionSupport implements ServletReques
 			addFieldError("groupScopeId","Please Select All Required Fields in Group Scope Details");
 			
 		}
-		
+		*/
 	}
 }
