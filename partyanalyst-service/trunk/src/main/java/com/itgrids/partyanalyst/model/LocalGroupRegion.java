@@ -61,7 +61,7 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	private String houseNo;
 	private String streetName;
 	private String pincode;
-	
+	private Constituency parliamentConstituency;
 	private Set<PersonalUserGroup> personalUserGroup = new HashSet<PersonalUserGroup>(0);
 	
 	//Default Constructor
@@ -281,6 +281,20 @@ public class LocalGroupRegion extends BaseModel implements Serializable {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="parliament_constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
+	public Constituency getParliamentConstituency() {
+		return parliamentConstituency;
+	}
+
+	public void setParliamentConstituency(Constituency parliamentConstituency) {
+		this.parliamentConstituency = parliamentConstituency;
+	}
+	
+	
 
 	
 

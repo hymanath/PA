@@ -152,11 +152,12 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		
 		Query queryObject = getSession().createQuery("select count(model.personalUserGroupId) from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
-				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId in (:constituencyIds) "+
-				"and model.staticLocalGroup.staticLocalGroupId = ?");
+				"is not null and model.localGroupRegion.constituency is not null and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency.constituencyId in (:constituencyIds)");
+				
 		queryObject.setParameter(0,userId);
+		queryObject.setParameter(1,categoryId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
-		queryObject.setParameter(2,categoryId);
+		
 	 return queryObject.list();
     }
 
@@ -179,12 +180,13 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Query queryObject = getSession().createQuery("select count(model.personalUserGroupId),model.localGroupRegion.constituency.constituencyId "+
 				"from PersonalUserGroup model where "+
 				"model.createdUserId.registrationId = ? and model.staticLocalGroup is not null and model.localGroupRegion "+
-				"is not null and model.localGroupRegion.constituency is not null and model.localGroupRegion.constituency.constituencyId in (:constituencyIds) "+
-				"and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency is not null "+
+				"is not null and model.localGroupRegion.constituency is not null and model.staticLocalGroup.staticLocalGroupId = ? and model.localGroupRegion.constituency.constituencyId in (:constituencyIds) "+
+				"and model.localGroupRegion.constituency is not null "+
 				"group by model.localGroupRegion.constituency.constituencyId");
 		queryObject.setParameter(0,userId);
+		queryObject.setParameter(1,categoryId);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
-		queryObject.setParameter(2,categoryId);
+		
 		
 	 return queryObject.list();
 	}

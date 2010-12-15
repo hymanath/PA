@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -116,7 +117,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetLocalUserGroupDetailsById(){
 		List<Object[]>results = personalUserGroupDAO.getLocalUserGroupDetailsById(15L);
@@ -130,6 +131,42 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[3].toString());
 			System.out.println(parms[4].toString());
 		}
-	}
+	}*/
 	
+	/*public void testGetTotalCountOfLocalGroupsInAssemblyConstituencysGroupByConstituency()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(223l);
+		ids.add(241l);
+		ids.add(232l);
+		ids.add(233l);
+		ids.add(340l);
+		ids.add(341l);
+		ids.add(238l);
+		
+		List result = personalUserGroupDAO.getTotalCountOfLocalGroupsInAssemblyConstituencysGroupByConstituency(6l, ids, 1l);
+		System.out.println(" Results Size :" + result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.println(parms[0].toString());
+			System.out.println(parms[1].toString());
+			
+		}
+	}*/
+	
+	public void testGetTotalCountOfLocalGroupsInAssemblyConstituencies()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(223l);
+		ids.add(241l);
+		ids.add(232l);
+		ids.add(233l);
+		ids.add(340l);
+		ids.add(341l);
+		ids.add(238l);
+		
+		List result = personalUserGroupDAO.getTotalCountOfLocalGroupsInAssemblyConstituencies(6l, ids, 1l);
+		System.out.println(" Results Size :" + result.size());
+		Long count  = Long.parseLong(result.get(0).toString());
+	}
 }
