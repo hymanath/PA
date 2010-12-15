@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * Country entity. 
@@ -40,6 +41,8 @@ public class Country implements java.io.Serializable {
 	private String capital;
 	private String isoCode;
 	private Set<State> states = new HashSet<State>(0);
+	private Set<CensusYear> censusYear = new HashSet<CensusYear>(0);
+	private Set<DelimitationYear> delimitationYear = new HashSet<DelimitationYear>(0);
 
 	// Constructors
 
@@ -120,5 +123,26 @@ public class Country implements java.io.Serializable {
 				"countryId", countryId).append("countryName", countryName)
 				.append("capital", capital).append("isoCode", isoCode).toString();
 	}*/
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "country")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CensusYear> getCensusYear() {
+		return censusYear;
+	}
+
+	public void setCensusYear(Set<CensusYear> censusYear) {
+		this.censusYear = censusYear;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "country")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationYear> getDelimitationYear() {
+		return delimitationYear;
+	}
+
+	public void setDelimitationYear(Set<DelimitationYear> delimitationYear) {
+		this.delimitationYear = delimitationYear;
+	}
+
 	
 }
