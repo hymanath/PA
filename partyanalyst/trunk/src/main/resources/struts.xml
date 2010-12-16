@@ -1636,8 +1636,13 @@
 			<result type="json" name="success">
 				<param name="root">userDetails</param>				
 			</result>		
-		</action>      
+		</action> 
 		
+		<action name="getAllPostedReasonsStatusUserAction" class="connectPeopleAction" method="getAllPostedReasonsStatusUser">
+			<result type="json" name="success">
+				<param name="root">userDetails</param>				
+			</result>		
+		</action>
 		
 		<action name="getGhmcResultsAction" class="constituencyPageAction" method="getGhmcResults">
 			<result type="json" name="success">
@@ -1864,6 +1869,23 @@
 			<param name="root">searchListVO</param>				
 			</result>
         </action>
+       
+       <action name="commentsControlAdminAction" class="commentsControlAdminAction">
+		   <result name="error">/jsp/commentsControlAdminPage.jsp</result>
+           <result name="success">/jsp/commentsControlAdminPage.jsp</result>	
+        </action>
         
+        <action name="getAllComments" class="commentsControlAdminAction" method="getComments">
+        	<result type="json" name="success">
+			<param name="root">candidateCommentsVO</param>				
+			</result>
+        </action>
+        
+        <action name="controlReasonsAction" class="commentsControlAdminAction" method="controlReasons">
+        	<result type="json" name="success">
+			<param name="root">candidateCommentsVO</param>				
+			</result>
+        </action>        
+               
 	</package>
 </struts>
