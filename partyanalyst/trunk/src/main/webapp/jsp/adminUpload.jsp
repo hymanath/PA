@@ -97,7 +97,13 @@
 									<legend class="l2">Entitlements</legend>
 									<h4>Organise Entitlements:<a href="<s:url action="userEntitlementAction"/>">organise</a></h4>
 									</fieldset>
-								</td>								
+								</td>	
+								<td>
+									<fieldset class="f2">
+									<legend class="l2">Scrutinize Comments</legend>
+									<h4>Accept/Reject recent posted comments:<a href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
+									</fieldset>
+								</td>							
 							</tr>
 						</table>
 				</fieldset>

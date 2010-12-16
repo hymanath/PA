@@ -549,5 +549,8 @@
 	    <property name="constituencySearchService" ref="constituencySearchService" />
 	    <property name="candidateSearchService" ref="candidateSearchService" />
 	</bean>
+	<bean id="commentsControlAdminAction" class="com.itgrids.partyanalyst.web.action.CommentsControlAdminAction" singleton="false">
+		<property name="commentsDataService" ref="commentsDataService" />				
+	</bean>
 	
 </beans>		
