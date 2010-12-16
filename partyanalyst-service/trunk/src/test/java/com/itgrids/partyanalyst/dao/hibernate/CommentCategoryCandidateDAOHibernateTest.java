@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
+import com.itgrids.partyanalyst.service.impl.DateService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -127,7 +129,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetTotalPostedUsersGroupedByCommentCategory(){
+	/*public void testGetTotalPostedUsersGroupedByCommentCategory(){
 		List list = commentCategoryCandidateDAO.getTotalPostedPaidUsersGroupedByCommentCategory(4L, 361L, IConstants.CANDIDATE_COMMENTS_LOST);
 		List freeUserList = commentCategoryCandidateDAO.getTotalPostedFreeUsersGroupedByCommentCategory(4L, 361L, IConstants.CANDIDATE_COMMENTS_LOST);
 		System.out.println(list.size());
@@ -151,6 +153,14 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(" Total Users = "+(paidUsers+freeUsers));
 		
 		
+	}*/
+	
+	public void testGetAllOpenedComments()
+	{
+		System.out.println();
+		List list = commentCategoryCandidateDAO.getAllOpenedComments(DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"),
+				DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"));
+		System.out.println(list.size());
 	}
 	
 	

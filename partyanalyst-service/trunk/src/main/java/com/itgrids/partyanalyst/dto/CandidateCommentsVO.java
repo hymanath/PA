@@ -17,11 +17,12 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private static final long serialVersionUID = -7800041292600461335L;
 	
 	private Long candidateId;
-	private String candidate;
+	private String candidate;	
+	private Long commentId;
 	private String commentDesc;
 	private String commentedBy;
 	private String commentedOn;
-	private String commentCategory;
+	private String commentCategory;	
 	private String constituencyName;
 	private String partyName;
 	private Long rank;
@@ -31,7 +32,27 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Float reasonScore = 0.0f;
 	private List<UserCommentsInfoVO> commetsAndScores;
 	private Long nominationId;
+	private String electionType;
+	private String electionYear;
 	
+	public Long getCommentId() {
+		return commentId;
+	}
+	public void setCommentId(Long commentId) {
+		this.commentId = commentId;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
 	public Long getNominationId() {
 		return nominationId;
 	}

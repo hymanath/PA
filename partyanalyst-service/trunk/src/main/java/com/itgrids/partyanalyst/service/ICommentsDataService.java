@@ -55,4 +55,8 @@ public interface ICommentsDataService {
 	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId);
 	
 	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constElectionId);
+	
+	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate);
+	
+	public List<CandidateCommentsVO> scrutinizePostedComments(List<Long> reasonIds, String actionType, String fromDate, String toDate);
 }
