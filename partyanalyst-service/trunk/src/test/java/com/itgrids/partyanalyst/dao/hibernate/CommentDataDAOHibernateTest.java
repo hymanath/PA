@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -22,13 +23,23 @@ public class CommentDataDAOHibernateTest extends BaseDaoTestCase {
 	public void setCommentDataDAO(ICommentDataDAO commentDataDAO) {
 		this.commentDataDAO = commentDataDAO;
 	}
-	
+	/*
 	@Test
 	public void testGetAllComments(){
 		List<CommentData> commentsData = commentDataDAO.getAll();
 		if(commentsData != null){
 			System.out.println("Size :" + commentsData.size());
 		}
+	}*/
+	
+	public void testScrutinePostedComments(){
+		
+		List<Long>  reasonIds = new ArrayList<Long>();
+		reasonIds.add(20L);		
+		int status = commentDataDAO.updateSetIsApprovedStatusToPostedComments(reasonIds, "true");
+		setComplete();
+		System.out.println(status);
+		
 	}
 	
 }

@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryPartyDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
+import com.itgrids.partyanalyst.dao.ICommentDataDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -36,6 +38,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -67,7 +70,9 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentDataCategoryDAO commentDataCategoryDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IRegistrationDAO registrationDAO;
-		
+	private ICommentDataDAO commentDataDAO; 	
+	
+
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	
@@ -170,6 +175,14 @@ public class CommentsDataService implements ICommentsDataService {
 
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
+	}
+	
+	public ICommentDataDAO getCommentDataDAO() {
+		return commentDataDAO;
+	}
+
+	public void setCommentDataDAO(ICommentDataDAO commentDataDAO) {
+		this.commentDataDAO = commentDataDAO;
 	}
 
 	/*
@@ -1020,5 +1033,89 @@ public class CommentsDataService implements ICommentsDataService {
 		}
 		return candidates;
 	}
-
+	
+	public String getUserSelectedChoice(String choice){
+		if(choice.equalsIgnoreCase("approved")){
+			return IConstants.TRUE;
+		}else if(choice.equalsIgnoreCase("rejected")){
+			return IConstants.FALSE;
+		}else{
+			return IConstants.REJECTED;
+		}			
+	}
+	
+	public List<CandidateCommentsVO> extractCommentsDetailsFromList(List comments)
+	{
+		List<CandidateCommentsVO> commentsList = null;
+		
+		if(comments != null || comments.size() > 0)
+		{
+			commentsList = new ArrayList<CandidateCommentsVO>();
+			for (int i = 0; i < comments.size(); i++)
+			{
+				CandidateCommentsVO comment = new CandidateCommentsVO();
+				Object[] params = (Object[])comments.get(i);
+				comment.setCommentId((Long)params[0]);
+				comment.setCommentDesc(params[1].toString());
+				comment.setCommentedOn(params[2].toString());
+				comment.setCommentedBy(params[3].toString());
+				comment.setCandidateId((Long)params[4]);
+				comment.setCandidate(params[5].toString());
+				comment.setPartyName(params[6].toString());
+				comment.setConstituencyName(params[7].toString());
+				comment.setRank((Long)params[8]);
+				comment.setElectionType(params[9].toString());
+				comment.setElectionYear(params[10].toString());
+				
+				commentsList.add(comment);
+				
+			}
+		}			
+		
+		return commentsList;
+	}
+	
+	
+		
+	public List<CandidateCommentsVO> getAllComments(String fromDate,String toDate)
+	{
+		List<CandidateCommentsVO> candidateComments = null;			
+		try{
+			candidateComments = new ArrayList<CandidateCommentsVO>();
+			
+			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			List comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);			
+			
+			return extractCommentsDetailsFromList(comments);
+			
+		}catch(Exception e){				
+			return candidateComments;
+		}	
+	}
+	
+	public List<CandidateCommentsVO> scrutinizePostedComments(List<Long> reasonIds, String actionType, String fromDate, String toDate) 
+	{
+		List<CandidateCommentsVO> candidateComments = null;
+		String isApproved = IConstants.FALSE;
+		
+		if(actionType.equalsIgnoreCase(IConstants.APPROVED))
+			isApproved = IConstants.TRUE;
+		else if(actionType.equalsIgnoreCase(IConstants.REJECTED))
+			isApproved = IConstants.FALSE;
+		
+		try {
+			
+			int count = commentDataDAO.updateSetIsApprovedStatusToPostedComments(reasonIds, isApproved);
+			
+			Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			Date secondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+			List comments = commentCategoryCandidateDAO.getAllOpenedComments(firstDate, secondDate);
+			
+			return extractCommentsDetailsFromList(comments);
+			
+		} catch (Exception e) {
+			return candidateComments;
+		}
+	}
 }

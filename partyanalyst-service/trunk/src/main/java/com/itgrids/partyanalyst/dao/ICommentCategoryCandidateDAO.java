@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -88,4 +89,7 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getAllCommentsOfUserForANomination(Long electionId,
 			Long constituencyId, Long candidateId, Long userId, String hqlQuery);
 	
+	public List getAllCommentsBetweenDates(Date fromDate, Date toDate, String isApproved);
+	
+	public List getAllOpenedComments(Date fromDate, Date toDate);
 }

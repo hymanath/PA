@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -276,4 +277,51 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"and model.nomination.candidate.candidateId = ? "+hqlQuery, params);
 	}
 	
+	public String getCommonDataForAllProblems(){
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append(" select model.commentData.commentDataId,");	
+		conditionQuery.append(" model.commentData.commentDesc,");
+		conditionQuery.append(" model.commentData.commentDate,");
+		conditionQuery.append(" model.commentData.commentBy,");		
+		conditionQuery.append(" model.nomination.candidate.candidateId,");
+		conditionQuery.append(" model.nomination.candidate.lastname,");
+		conditionQuery.append(" model.nomination.party.shortName,");
+		conditionQuery.append(" model.nomination.constituencyElection.constituency.name, ");
+		conditionQuery.append(" model.nomination.candidateResult.rank, ");
+		conditionQuery.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
+		conditionQuery.append(" model.nomination.constituencyElection.election.electionYear ");
+		
+		conditionQuery.append(" from CommentCategoryCandidate model ");
+		return conditionQuery.toString();
+	}
+	
+	public List getAllCommentsBetweenDates(Date fromDate, Date toDate, String isApproved)
+	{
+		Object[] params = {fromDate, toDate, isApproved};
+		StringBuilder query = new StringBuilder();
+		query.append(getCommonDataForAllProblems());		
+		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
+		query.append(" and model.commentData.isApproved = ? ");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setDate(0,fromDate);
+		queryObject.setDate(1,toDate);
+		queryObject.setString(2,isApproved);
+		queryObject.setMaxResults(100);
+		return queryObject.list();
+	}
+	public List getAllOpenedComments(Date fromDate, Date toDate)
+	{
+		Object[] params = {fromDate, toDate};
+		StringBuilder query = new StringBuilder();
+		query.append(getCommonDataForAllProblems());		
+		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
+		query.append(" and model.commentData.isApproved is null and model.freeUser is not null");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setDate(0,fromDate);
+		queryObject.setDate(1,toDate);
+		queryObject.setMaxResults(100);
+		return queryObject.list();
+	}
 }

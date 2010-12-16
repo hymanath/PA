@@ -329,4 +329,5 @@ public interface IConstants {
     public static final String ADD_POLITICAL_CHANGES = "ADD_LOCAL_POLITICAL_CHANGES";
     public static final String MUNICIPAL_CORP_GMC = "MUNICIPAL-CORP-GMC"; 
     
+    public static final String APPROVED = "Approved"; 
 }
