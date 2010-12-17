@@ -318,6 +318,13 @@ public interface IConstants {
     public static final String BOOTH = "BOOTH";
     public static final String MP_CONSTITUENCY = "MP CONSTITUENCY";
     
+    //Constants for census mappings upload
+    public static final String SNO          = "SNO";
+    public static final String TRU          = "TRU";
+    public static final String SCOPE        = "SCOPE";
+    public static final String REGION_NAME  = "NAME";
+    public static final String REGION_LEVEL = "LEVEL";
+    
     public static final String HTMLDOUBLEQUOTES = "&#34";
     public static final String HTMLSINGLEQUOTE = "&#34";
     public static final String HTMLSLASH = "&#47";
