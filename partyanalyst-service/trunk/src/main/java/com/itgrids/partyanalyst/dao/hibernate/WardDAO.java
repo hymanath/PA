@@ -30,5 +30,12 @@ public class WardDAO extends GenericDaoHibernate<Ward, Long> implements
 	public List<Ward> findByWardCode(Object wardCode){
 		return findByProperty(WardColumnNames.WARD_CODE, wardCode);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ward> findByWardNameAndTownship(String wardName,Long townId){
+		
+		Object[] params = {wardName,townId};
+		return getHibernateTemplate().find("from Ward model where model.wardName = ? and model.township.townshipId = ?",params);
+	}
 
 }

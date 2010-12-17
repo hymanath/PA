@@ -23,6 +23,16 @@ IDelimitationConstituencyMandalDAO {
 				"model.delimitationConstituency.delimitationConstituencyID =?", 
 				delimitationConstituencyID);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DelimitationConstituencyMandal> findDelConstMandalByDelConstID(
+			Long delimitationConstituencyID,Long tehsilId) {
+		
+		Object[] params = {delimitationConstituencyID,tehsilId};
+		return getHibernateTemplate().find("from DelimitationConstituencyMandal model where " +
+				"model.delimitationConstituency.delimitationConstituencyID =? and model.tehsil.tehsilId = ?", 
+				params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Tehsil> getTehsilsByDelimitationConstituencyID(Long delimitationConstituencyID) {

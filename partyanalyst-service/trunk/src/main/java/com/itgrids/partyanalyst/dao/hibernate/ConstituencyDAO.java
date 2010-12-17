@@ -106,6 +106,12 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {constituencyName,districtId};
 		return getHibernateTemplate().find("from Constituency model where model.name = ? and model.district.districtId = ?", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findByConstituencyNameAndDistrictId(String constituencyName,Long districtId,String electionType){
+		Object[] params = {constituencyName,districtId,electionType};
+		return getHibernateTemplate().find("from Constituency model where model.name = ? and model.district.districtId = ? and model.electionScope.electionType.electionType = ?", params);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List findConstituencyByDistrictElectionType(Long districtId, String electionType) {

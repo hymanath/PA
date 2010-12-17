@@ -24,6 +24,16 @@ IDelimitationConstituencyDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
+			Long constituencyID,Long year) {
+		
+		Object[] params = {constituencyID,year};
+		return getHibernateTemplate().find("from DelimitationConstituency model where " +
+				"model.constituency.constituencyId = ? and model.year = ?", 
+				params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<DelimitationConstituency> findByElectionScopeIdStateIdAndElectionYear(Long electionScopeId, Long stateId, Long electionYear){
 		Object[] params = {electionScopeId, stateId, electionYear};
 		return getHibernateTemplate().find("from DelimitationConstituency model where " +
