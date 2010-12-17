@@ -215,10 +215,16 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list1.size());
 	}*/
 	
-	public void testGetByLocations(){
+	/*public void testGetByLocations(){
 		List<Long> list = new ArrayList<Long>();
 		list.add(new Long(404)); 
 		List list1 = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(list,IConstants.CONSTITUENCY_LEVEL,IConstants.TRUE);
+		System.out.println(list1.size());
+	}*/
+	
+	public void testgetAllPostedProblemsByAnanymousUserId(){
+		
+		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L);
 		System.out.println(list1.size());
 	}
 }

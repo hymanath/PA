@@ -92,4 +92,6 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getAllCommentsBetweenDates(Date fromDate, Date toDate, String isApproved);
 	
 	public List getAllOpenedComments(Date fromDate, Date toDate);
+	
+	public List getPostedReasonsByFreeUserId(Long registrationId);
 }

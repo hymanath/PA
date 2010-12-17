@@ -34,7 +34,14 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private Long nominationId;
 	private String electionType;
 	private String electionYear;
+	private String isApproved;
 	
+	public String getIsApproved() {
+		return isApproved;
+	}
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
 	public Long getCommentId() {
 		return commentId;
 	}

@@ -424,4 +424,19 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"user.registrationId = ? and model.problemLocation.problemAndProblemSource.isPushed != ? and model.isDelete != ?",params);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.dao.IProblemHistoryDAO#getAllPostedProblemsByAnanymousUserId(java.lang.Long)
+	 * DAO Method that retrieves all problems data posted by a Ananymous user
+	 */
+	public List getAllPostedProblemsByAnanymousUserId(Long registrationId)
+	{
+		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId,"+
+				" model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
+				" model.problemLocation.problemAndProblemSource.problem.year,model.problemLocation.problemAndProblemSource.problem.problem,"+
+				" model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue,"+				
+				" model.problemLocation.problemImpactLevel.scope,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
+				"externalUser.userId = ? ",registrationId);
+	}
+	
 }

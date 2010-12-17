@@ -15,23 +15,28 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
+import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
+import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
@@ -60,7 +65,26 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IStaticDataService staticDataService;
 	private IProfileOptsDAO profileOptsDAO;
 	private IUserProfileOptsDAO userProfileOptsDAO;
+	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
+	private IProblemHistoryDAO problemHistoryDAO;
 	
+	public IProblemHistoryDAO getProblemHistoryDAO() {
+		return problemHistoryDAO;
+	}
+
+	public void setProblemHistoryDAO(IProblemHistoryDAO problemHistoryDAO) {
+		this.problemHistoryDAO = problemHistoryDAO;
+	}
+
+	public ICommentCategoryCandidateDAO getCommentCategoryCandidateDAO() {
+		return commentCategoryCandidateDAO;
+	}
+
+	public void setCommentCategoryCandidateDAO(
+			ICommentCategoryCandidateDAO commentCategoryCandidateDAO) {
+		this.commentCategoryCandidateDAO = commentCategoryCandidateDAO;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -1116,4 +1140,111 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return registrationVO;
 	}
 	
+	
+	public List<CandidateCommentsVO> getAllPostedReasonsByUserId(Long registrationId)
+	{
+		List<CandidateCommentsVO> commentsList = null;
+		
+		try 
+		{	
+			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId);
+			
+			if(comments != null || comments.size() > 0)
+			{
+				commentsList = new ArrayList<CandidateCommentsVO>();			
+				for (int i = 0; i < comments.size(); i++)
+				{
+					CandidateCommentsVO comment = new CandidateCommentsVO();
+					Object[] params = (Object[])comments.get(i);
+					
+					CommentData commentData = (CommentData)params[0];
+					comment.setCommentId(commentData.getCommentDataId());
+					comment.setCommentDesc(commentData.getCommentDesc());
+					comment.setCommentedOn(commentData.getCommentDate().toString());
+					comment.setCommentedBy(commentData.getCommentBy());
+					comment.setIsApproved(commentData.getIsApproved());
+					comment.setCandidateId((Long)params[1]);
+					comment.setCandidate(params[2].toString());
+					comment.setPartyName(params[3].toString());
+					comment.setConstituencyName(params[4].toString());
+					comment.setRank((Long)params[5]);
+					comment.setElectionType(params[6].toString());
+					comment.setElectionYear(params[7].toString());					
+					
+					commentsList.add(comment);					
+				}
+			}	
+			
+			return commentsList; 
+			
+		}
+		catch (Exception e)
+		{
+			return commentsList; 
+		}		
+	}
+	
+	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId)
+	{
+		List<ProblemDetailsVO> problemList = null;
+		
+		try
+		{			
+			List problems = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(registrationId);
+			
+			if(problems != null && problems.size() > 0 )
+			{
+				problemList = new ArrayList<ProblemDetailsVO>();
+				
+				for (int i = 0; i < problems.size(); i++)
+				{
+					Object[] params = (Object[])problems.get(i);
+					ProblemDetailsVO problem = new ProblemDetailsVO();
+					problem.setProblemID((Long)params[0]);
+					problem.setDescription(params[1].toString());
+					problem.setIdentifiedDate(params[2].toString());
+					problem.setYear(params[3].toString());
+					problem.setDefinition(params[4].toString());
+					problem.setExistingFrom(params[5].toString());
+					
+					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
+					{
+						if(params[6] != null)
+							problem.setLocation(stateDAO.get(Long.parseLong(params[6].toString())).getStateName());
+						else
+							problem.setLocation(" ");
+					}
+					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.DISTRICT))
+					{
+						if(params[6] != null)
+							problem.setLocation(districtDAO.get(Long.parseLong(params[6].toString())).getDistrictName());
+						else
+							problem.setLocation(" ");
+					}						
+					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						if(params[6] != null)
+							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName());
+						else
+							problem.setLocation(" ");
+						
+					}	
+					else
+						problem.setLocation(" ");
+					
+					problem.setLocationType(params[7].toString());
+					problem.setIsApproved(params[8].toString());
+					
+					problemList.add(problem);
+				}
+			}
+			
+			return problemList;
+			
+		} catch (Exception e) {
+			
+			return problemList;
+		}
+		
+	}
 }

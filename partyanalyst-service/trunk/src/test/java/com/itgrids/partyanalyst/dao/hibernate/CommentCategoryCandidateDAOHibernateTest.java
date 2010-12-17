@@ -155,13 +155,19 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetAllOpenedComments()
+	/*public void testGetAllOpenedComments()
 	{
 		System.out.println();
 		List list = commentCategoryCandidateDAO.getAllOpenedComments(DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"),
 				DateService.convertStringToDate("2010-12-13", "yyyy-MM-dd"));
 		System.out.println(list.size());
 	}
+	 */	
 	
-	
+	public void testGetPostedReasonsByFreeUserId()
+	{
+		List list = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(2L);
+		
+		System.out.println(list.size());
+	}
 }
