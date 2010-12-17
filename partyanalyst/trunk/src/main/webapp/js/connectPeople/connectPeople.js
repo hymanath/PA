@@ -34,6 +34,14 @@ var commentsInfo = {
 
 var loginUserId = '';
 
+var postedApprovedReasons = [];
+var postedRejectedReasons = [];
+var postedNotConsideredReasons = [];
+
+var postedApprovedProblems = [];
+var postedRejectedProblems = [];
+var postedNotConsideredProblems = [];
+
 var selectedmessage = null;
 
 function initializeTabView()
@@ -60,7 +68,14 @@ function initializeTabView()
 		label: tabLable,
 		content: '<div id="inboxMessages_main"></div>'
 	}));
- 
+	
+
+	myTabs.addTab( new YAHOO.widget.Tab({
+		label: 'Posted Reasons/Problems',
+		content: '<div id="postedDiv_main"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
+		active: false
+	}));
+
 	myTabs.appendTo("connectPeople_messages_center");
 	
 	
@@ -372,6 +387,14 @@ function callAjax(param,jsObj,url){
 					}else if(jsObj.task == "updateReadMessageInDB"){
 						updatedInfo(results);
 					}
+					else if(jsObj.task == "getAllPostedReasonsStatusUser")
+					{
+						showPostedReasons(jsObj,results);
+					}
+					else if(jsObj.task == "getAllPostedProblemsByUser")
+					{
+						showPostedProblems(jsObj,results);
+					}
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -570,10 +593,328 @@ function buildPeopleYouMayKnowContent()
 	elmt.innerHTML = str;
 }
 
+function showPostedProblems(jsObj,results)
+{
+	var elmt = document.getElementById("postedProblems_main");
+
+	for(var i=0; i<results.length; i++)
+	{
+		if(results[i].isApproved == "true")
+			postedApprovedProblems.push(results[i]);
+		else if(results[i].isApproved == "rejected")
+			postedRejectedProblems.push(results[i]);
+		else if(results[i].isApproved == "false")
+			postedNotConsideredProblems.push(results[i]);
+	}
+
+	var str = '';
+	str += '<div class="tabContainerHeading">Total posted problems - '+results.length+'</div>';
+	str += '<div style="padding:5px;">';
+	str += '<table id="reasonsCountTable">';
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Problems Approved</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'approved\')">'+postedApprovedProblems.length+'</a> </td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Problems Rejected</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'rejected\')">'+postedRejectedProblems.length+'</a> </td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Problems Not Considered</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'notConsidered\')">'+postedNotConsideredProblems.length+' </a></td>';
+	str += '</tr>';
+
+	str += '</table>';
+	str += '</div>';	
+
+	elmt.innerHTML = str;
+}
+
+function openDialogOfProblems(type)
+{
+	var reasons = new Array();
+	var title = '';
+	if(type == "approved")
+	{
+		reasons = postedApprovedProblems;
+		title = 'Approved Reasons';
+	}
+	else if(type == "rejected")
+	{
+		reasons = postedRejectedProblems;
+		title = 'Rejected Reasons';
+	}
+	else if(type == "notConsidered")
+	{
+		reasons = postedNotConsideredProblems;
+		title = 'Not Considered Reasons';
+	}
+	
+	title = 'Total '+type+' problems';
+	$( "#jQueryPopup" ).dialog({
+			title:title,
+			autoOpen: true,
+			show: "blind",
+			width: 900,
+			minHeight:400,
+			modal: true,
+			hide: "explode"
+		});
+
+	buildProblemsDatatable(reasons,"reasonsDataTable");
+}
+
+function buildProblemsDatatable(commentsArray,divId)
+{
+	var resultsDataSource = new YAHOO.util.DataSource(commentsArray);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "definition"
+		}, {
+			key : "description"
+		}, {
+			key : "existingFrom"
+		}, {
+			key : "identifiedDate"
+		}, {
+			key : "location"
+		} , {
+			key : "locationType"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "definition",
+		label : "Problem",
+		sortable : true
+	}, {
+		key : "description",
+		label : "Description",
+		sortable : true
+	}, {
+		key : "existingFrom",
+		label : "Existing From",
+		sortable : true
+	}, {
+		key : "identifiedDate",
+		label : "Posted On",
+		sortable : true
+	}, {
+		key : "location",
+		label : "Location",
+		sortable : true
+	}, {
+		key : "locationType",
+		label : "Location Type",
+		sortable : true
+	} 
+	];
+
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10,		        
+				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+				rowsPerPageOptions: [20,40,60], 
+			    pageLinks: 20
+			    }) 
+				};	
+	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  
+}
+
+function showPostedReasons(jsObj,results)
+{
+	var elmt = document.getElementById("postedReasons_main");
+	
+	for(var i=0; i<results.length; i++)
+	{
+		if(results[i].isApproved == "true")
+			postedApprovedReasons.push(results[i]);
+		else if(results[i].isApproved == "false")
+			postedRejectedReasons.push(results[i]);
+		else if(results[i].isApproved == null)
+			postedNotConsideredReasons.push(results[i]);
+	}
+
+	var str = '';
+	str += '<div class="tabContainerHeading">Total posted reasons - '+results.length+'</div>';
+	str += '<div style="padding:5px;">';
+	str += '<table id="reasonsCountTable">';
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Reasons Approved</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'approved\')">'+postedApprovedReasons.length+'</a> </td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Reasons Rejected</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'rejected\')">'+postedRejectedReasons.length+'</a> </td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th align="left">Reasons Not Considered</th>';
+	str += '<td> - </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'notConsidered\')">'+postedNotConsideredReasons.length+' </a></td>';
+	str += '</tr>';
+
+	str += '</table>';
+	str += '</div>';	
+
+	elmt.innerHTML = str;
+}
+
+function openDialogOfReasons(type)
+{
+	var reasons = new Array();
+	var title = '';
+	if(type == "approved")
+	{
+		reasons = postedApprovedReasons;
+		title = 'Approved Reasons';
+	}
+	else if(type == "rejected")
+	{
+		reasons = postedRejectedReasons;
+		title = 'Rejected Reasons';
+	}
+	else if(type == "notConsidered")
+	{
+		reasons = postedNotConsideredReasons;
+		title = 'Not Considered Reasons';
+	}
+	
+	title = 'Total '+type+' reasons';
+	$( "#jQueryPopup" ).dialog({
+			title:title,
+			autoOpen: true,
+			show: "blind",
+			width: 900,
+			minHeight:400,
+			modal: true,
+			hide: "explode"
+		});
+
+	buildCommentsDatatable(reasons,"reasonsDataTable");
+}
+
+function buildCommentsDatatable(commentsArray,divId)
+{
+	var resultsDataSource = new YAHOO.util.DataSource(commentsArray);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "candidate"
+		}, {
+			key : "partyName"
+		}, {
+			key : "electionYear",parser:"number"
+		}, {
+			key : "rank"
+		}, {
+			key : "commentDesc"
+		} , {
+			key : "commentedBy"
+		} , {
+			key : "commentedOn"
+		} , {
+			key : "constituencyName"
+		},  {
+			key : "electionType"
+		}]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "candidate",
+		label : "Candidate",
+		sortable : true
+	}, {
+		key : "partyName",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "electionYear",
+		label : "Year",
+		sortable : true
+	}, {
+		key : "rank",
+		label : "Status",
+		sortable : true
+	}, {
+		key : "commentDesc",
+		label : "Reason",
+		sortable : true
+	}, {
+		key : "commentedBy",
+		label : "Posted By",
+		sortable : true
+	} , {
+		key : "commentedOn",
+		label : "Posted On",
+		sortable : true
+	} , {
+		key : "constituencyName",
+		label : "Constituency",
+		sortable : true
+	} , {
+		key : "electionType",
+		label : "Election",
+		sortable: true
+		
+	} ];
+
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10,		        
+				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+				rowsPerPageOptions: [20,40,60], 
+			    pageLinks: 20
+			    }) 
+				};	
+	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  
+}
+
+function getAllPostedReasonsForUser()
+{	
+	var jsObj=
+	{
+			task:"getAllPostedReasonsStatusUser"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPostedReasonsStatusUserAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+
+function getAllPostedProblemsForUser()
+{
+	var jsObj=
+	{
+			task:"getAllPostedProblemsByUser"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPostedProblemsByUserAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+
 function initializeConnectPeople()
 {
 	initializeTabView();	
 	getAllRequestMessagesForUser();
+	getAllPostedReasonsForUser();
+	getAllPostedProblemsForUser();
 	buildInboxMessagesForUser();
 	buildConnectionsContentForUser();
 	buildPeopleYouMayKnowContent();

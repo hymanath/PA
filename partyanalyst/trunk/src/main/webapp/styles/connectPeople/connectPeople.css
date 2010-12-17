@@ -259,3 +259,47 @@
 	margin:0 5px;
 	padding:10px;
 }
+
+.tabContainerHeading
+{
+	background-color:#ECF3F5;
+	color:#1B7AB0;
+	font-size:12px;
+	font-weight:bold;
+	margin-top:10px;
+	padding:5px;
+}
+
+#reasonsCountTable th
+{
+	padding:5px;
+	color:#2B4158;
+}
+
+#reasonsCountTable td
+{
+	color:#624821;
+	font-weight:bold;
+	padding:5px;
+}
+
+.reasonsCountAnc
+{
+	color:#624821;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.reasonsCountAnc:hover
+{
+	text-decoration:underline;
+}
+
+.yui-skin-sam .yui-dt table 
+{
+	border:1px solid #7F7F7F;
+	color:#222222;
+	font-family:arial;
+	font-size:inherit;
+	font-weight:normal;
+}

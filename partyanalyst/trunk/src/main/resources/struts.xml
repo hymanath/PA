@@ -1640,9 +1640,15 @@
 		
 		<action name="getAllPostedReasonsStatusUserAction" class="connectPeopleAction" method="getAllPostedReasonsStatusUser">
 			<result type="json" name="success">
-				<param name="root">userDetails</param>				
+				<param name="root">candidateCommentsVO</param>				
 			</result>		
 		</action>
+		
+		<action name="getAllPostedProblemsByUserAction" class="connectPeopleAction" method="getAllPostedProblemsByUser">
+			<result type="json" name="success">
+				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>		
 		
 		<action name="getGhmcResultsAction" class="constituencyPageAction" method="getGhmcResults">
 			<result type="json" name="success">
