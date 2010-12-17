@@ -12,8 +12,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
@@ -46,7 +48,33 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private DataTransferVO userDetails;
 	private DataTransferVO dataTransferVO;
 	private Long loginUserId;
-	private String message;
+	private String message;	
+	private List<CandidateCommentsVO> candidateCommentsVO;
+	private List<ProblemDetailsVO> problemDetailsVO;
+	
+	public List<ProblemDetailsVO> getProblemDetailsVO() {
+		return problemDetailsVO;
+	}
+
+	public void setProblemDetailsVO(List<ProblemDetailsVO> problemDetailsVO) {
+		this.problemDetailsVO = problemDetailsVO;
+	}
+
+	public List<CandidateCommentsVO> getCandidateCommentsVO() {
+		return candidateCommentsVO;
+	}
+
+	public void setCandidateCommentsVO(List<CandidateCommentsVO> candidateCommentsVO) {
+		this.candidateCommentsVO = candidateCommentsVO;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	
 	public Long getLoginUserId() {
 		return loginUserId;
@@ -462,13 +490,38 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		message = ananymousUserService.displayMessageAndUpdateUnread(loginUserId);
 		return SUCCESS;
 	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	
+	public String getAllPostedReasonsStatusUser()
+	{		
+		try {
+			jObj = new JSONObject(getTask());			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		
+		candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
+		return Action.SUCCESS;
 	}
 	
+	public String getAllPostedProblemsByUser()
+	{
+		try {
+			jObj = new JSONObject(getTask());			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		
+		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID());
+		return Action.SUCCESS;
+	}
 }

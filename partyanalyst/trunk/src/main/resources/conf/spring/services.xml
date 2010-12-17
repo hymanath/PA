@@ -32,6 +32,9 @@
 		<property name="dateService" ref="dateService"/> 
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/> 
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+		<property name="problemHistoryDAO" ref="problemHistoryDAO" />	
+		
 	</bean>  
 	
 	<bean name="opinionPollService" class="com.itgrids.partyanalyst.service.impl.OpinionPollService" >
