@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -32,5 +34,9 @@ public interface IAnanymousUserService {
 	public List<SelectOptionVO> findAllProfileOptsAvailableInDB();
 	
 	public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
+	
+	public List<CandidateCommentsVO> getAllPostedReasonsByUserId(Long registrationId);
+	
+	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId);
 	
 }

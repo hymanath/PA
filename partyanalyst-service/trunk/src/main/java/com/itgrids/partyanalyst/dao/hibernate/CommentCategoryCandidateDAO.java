@@ -312,7 +312,6 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	}
 	public List getAllOpenedComments(Date fromDate, Date toDate)
 	{
-		Object[] params = {fromDate, toDate};
 		StringBuilder query = new StringBuilder();
 		query.append(getCommonDataForAllProblems());		
 		query.append(" where date(model.commentData.commentDate) >= ? and date(model.commentData.commentDate) <= ? ");
@@ -322,6 +321,55 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObject.setDate(0,fromDate);
 		queryObject.setDate(1,toDate);
 		queryObject.setMaxResults(100);
+		return queryObject.list();
+	}
+	
+	/*
+	public List getPostedReasonsByFreeUserId(Long registrationId)
+	{		
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.commentData.commentDataId,");	
+		query.append(" model.commentData.commentDesc,");
+		query.append(" model.commentData.commentDate,");
+		query.append(" model.commentData.commentBy,");			
+		query.append(" model.nomination.candidate.candidateId,");
+		query.append(" model.nomination.candidate.lastname,");
+		query.append(" model.nomination.party.shortName,");
+		query.append(" model.nomination.constituencyElection.constituency.name, ");
+		query.append(" model.nomination.candidateResult.rank, ");
+		query.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
+		query.append(" model.nomination.constituencyElection.election.electionYear, ");
+		query.append(" model.commentData.isApproved ");
+		
+		query.append(" from CommentCategoryCandidate model ");
+		query.append(" where model.freeUser.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, registrationId);
+		queryObject.setMaxResults(100);
+		
+		return queryObject.list();
+	}*/
+	
+	public List getPostedReasonsByFreeUserId(Long registrationId)
+	{		
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.commentData, ");			
+		query.append(" model.nomination.candidate.candidateId,");
+		query.append(" model.nomination.candidate.lastname,");
+		query.append(" model.nomination.party.shortName,");
+		query.append(" model.nomination.constituencyElection.constituency.name, ");
+		query.append(" model.nomination.candidateResult.rank, ");
+		query.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
+		query.append(" model.nomination.constituencyElection.election.electionYear");	
+		
+		query.append(" from CommentCategoryCandidate model ");
+		query.append(" where model.freeUser.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, registrationId);
+		queryObject.setMaxResults(100);
+		
 		return queryObject.list();
 	}
 }

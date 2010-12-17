@@ -10,7 +10,35 @@ public class ProblemDetailsVO {
 	private String identifiedDate;
 	private String location;	
 	private String source;
+	private String year;
+	private String existingFrom;
+	private String locationType;
+	private String isApproved;
 	
+	public String getIsApproved() {
+		return isApproved;
+	}
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	public String getExistingFrom() {
+		return existingFrom;
+	}
+	public void setExistingFrom(String existingFrom) {
+		this.existingFrom = existingFrom;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
 	public Long getProblemID() {
 		return problemID;
 	}
