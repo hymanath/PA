@@ -47,4 +47,6 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 
 	public List<Township> findByTownshipNameTehsilNameDistrictId(Long districtId,
 			String mandalName, String revenueVillage);
+	
+	public List<Township> findTownsByTownNameAndTypeAndDistrict(String townName,String townType,Long districtId);
 }
