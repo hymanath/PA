@@ -89,6 +89,7 @@
 		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
 		<action name="voterDataUpload"><result>/jsp/voterDataUpload.jsp</result></action>
 		<action name="problemDataUpload"><result>/jsp/ProblemUpload.jsp</result></action>
+		<action name="delimitationMappingsUpload"><result>/jsp/delimitationUpload.jsp</result></action>
 		<!-- Data Upload -->
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
@@ -1891,7 +1892,12 @@
         	<result type="json" name="success">
 			<param name="root">candidateCommentsVO</param>				
 			</result>
-        </action>        
+        </action>    
+        <action name="delimitationMappingsUploadAction" class="delimitationMappingsUploadAction">
+			<result name="input">/jsp/delimitationUpload.jsp</result>
+           <result name="success">/jsp/delimitationUpload.jsp</result>
+        </action>
+            
                
 	</package>
 </struts>
