@@ -12,19 +12,15 @@ public class OpenSessionInViewAutoFlushFilter extends OpenSessionInViewFilter {
      * Overrides the getSession method and changes the default flush behaviour to AUTO.
      */
     @Override
-    protected Session getSession( SessionFactory sessionFactory ) throws DataAccessResourceFailureException {
-
+    protected Session getSession(SessionFactory sessionFactory) throws DataAccessResourceFailureException {
         Session session = super.getSession( sessionFactory );
         session.setFlushMode( FlushMode.AUTO );
-
         return session;
     }
 
     @Override
     protected void closeSession( Session session , SessionFactory sessionFactory ) {
-
         session.flush();
-
         super.closeSession( session, sessionFactory );
        
     }

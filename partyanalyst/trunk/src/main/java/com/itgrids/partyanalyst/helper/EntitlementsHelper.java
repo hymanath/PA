@@ -22,7 +22,9 @@ public class EntitlementsHelper {
 			return true;
 		return false;
 	}
-
 	
+	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, String regionType, Long regionId){
+		return loginService.checkForRegionToViewReport(registrationVO, regionType, regionId);
+	}
 	
 }
