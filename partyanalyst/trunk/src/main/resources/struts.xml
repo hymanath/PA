@@ -1892,6 +1892,15 @@
         	<result type="json" name="success">
 			<param name="root">candidateCommentsVO</param>				
 			</result>
+        </action>
+        <action name="getProblemCompleteDetailsAction" class="problemCompleteDetailsAction" method="getProblemCompleteDetails">
+        	<result type="json" name="success">
+			<param name="root">problemBeanVO</param>				
+			</result>
+        </action>        
+         <action name="problemCompleteDetailsAction" class="problemCompleteDetailsAction">
+		    <result name="success">/jsp/problemCompleteDetailsPage.jsp</result>	
+        </action>       
         </action>    
         <action name="delimitationMappingsUploadAction" class="delimitationMappingsUploadAction">
 			<result name="input">/jsp/delimitationUpload.jsp</result>
