@@ -1900,8 +1900,7 @@
         </action>        
          <action name="problemCompleteDetailsAction" class="problemCompleteDetailsAction">
 		    <result name="success">/jsp/problemCompleteDetailsPage.jsp</result>	
-        </action>       
-        </action>    
+        </action>           
         <action name="delimitationMappingsUploadAction" class="delimitationMappingsUploadAction">
 			<result name="input">/jsp/delimitationUpload.jsp</result>
            <result name="success">/jsp/delimitationUpload.jsp</result>
