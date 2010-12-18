@@ -197,8 +197,8 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 		try {
 			long currentTime=System.currentTimeMillis();
 			if(logger.isDebugEnabled()){
-			logger.debug("4.2");
-			logger.debug("Constituency No =="+(++constituencyNo));
+				logger.debug("4.2");
+				logger.debug("Constituency No =="+(++constituencyNo));
 			}
 			Long constiCount = 0l;
 			Constituency constituencyObj;

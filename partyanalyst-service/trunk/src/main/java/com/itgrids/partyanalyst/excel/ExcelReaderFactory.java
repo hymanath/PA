@@ -1,17 +1,10 @@
 package com.itgrids.partyanalyst.excel;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
 
 public class ExcelReaderFactory {
 	private static Map<String, IExcelReader> excelReaders;
+	
 	public static IExcelReader  selectReader(String pattern){
 		IExcelReader optedReader=null;
 		if(excelReaders!=null && excelReaders.size()>0){

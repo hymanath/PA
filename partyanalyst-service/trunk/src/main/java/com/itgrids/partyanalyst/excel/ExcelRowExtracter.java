@@ -1,13 +1,8 @@
 package com.itgrids.partyanalyst.excel;
 
-import java.lang.reflect.Method;
-
 import jxl.Sheet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class ExcelRowExtracter {
 	String excelColumn1;
@@ -33,16 +28,16 @@ public class ExcelRowExtracter {
 		for(int columnPos=0;columnPos<noOfColumns;columnPos++){
 			String cellData=checkCellData((sheet.getCell(columnPos,rowNo)).getContents());
 			switch (columnPos) {
-			case 0:setExcelColumn1(cellData);break;
-			case 1:setExcelColumn2(cellData);break;
-			case 2:setExcelColumn3(cellData);break;
-			case 3:setExcelColumn4(cellData);break;
-			case 4:setExcelColumn5(cellData);break;
-			case 5:setExcelColumn6(cellData);break;
-			case 6:setExcelColumn7(cellData);break;
-			case 7:setExcelColumn8(cellData);break;
-			case 8:setExcelColumn9(cellData);break;
-			default:break;
+				case 0:setExcelColumn1(cellData);break;
+				case 1:setExcelColumn2(cellData);break;
+				case 2:setExcelColumn3(cellData);break;
+				case 3:setExcelColumn4(cellData);break;
+				case 4:setExcelColumn5(cellData);break;
+				case 5:setExcelColumn6(cellData);break;
+				case 6:setExcelColumn7(cellData);break;
+				case 7:setExcelColumn8(cellData);break;
+				case 8:setExcelColumn9(cellData);break;
+				default:break;
 			}
 		}
 		if(StringUtils.isNotEmpty(getExcelColumn2()) && StringUtils.isNotEmpty(getExcelColumn7()) && StringUtils.isNotEmpty(getExcelColumn6()) && (StringUtils.isNotEmpty(getExcelColumn8()) && StringUtils.isNumeric(StringUtils.replace(getExcelColumn8(), ",", ""))) && StringUtils.isNotEmpty(getExcelColumn9())){
