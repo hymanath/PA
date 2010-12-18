@@ -721,12 +721,12 @@ public class DelimitationMappingsUploadService implements
 		
 		
 		//Navigate Thru Data Available rows In sheet 
-		for(int row=headerRow; row<totalRowsInSheet; row++){
+		for(int row=headerRow; row<=totalRowsInSheet; row++){
 			
 			HSSFRow sheetRow = currentSheet.getRow(row);
 			delimitationMappingUploadVO.setCurrentRow(row);
 			
-			if(row == totalRowsInSheet-1){
+			if(row == totalRowsInSheet){
 				saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
 			}
 			
@@ -1404,6 +1404,5 @@ public class DelimitationMappingsUploadService implements
 		
 	 return constituencyObj;
 	}
-	
 	
 }
