@@ -303,7 +303,10 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.identifiedOn,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.externalUser.name,");
 		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.problemId,");
-		conditionQuery.append(" model.problemHistoryId");
+		conditionQuery.append(" model.problemHistoryId,");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.problem.existingFrom,");
+		conditionQuery.append(" model.problemStatus.status,");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel.regionScopesId");
 		conditionQuery.append(" from ProblemHistory model ");
 		return conditionQuery.toString();
 	}
@@ -422,6 +425,16 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn,model.problemLocation.problemAndProblemSource."+
 				"problem.existingFrom,model.isDelete,model.problemLocation.problemLocationId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
 				"user.registrationId = ? and model.problemLocation.problemAndProblemSource.isPushed != ? and model.isDelete != ?",params);
+	}
+
+	public List findProblemCompleteInfo(Long problemHistoryId) {
+			StringBuilder locationQuery = new StringBuilder();
+			locationQuery.append(getCommonDataForAllProblems());
+			locationQuery.append(" where model.problemHistoryId = ?");
+			Query queryObject = getSession().createQuery(locationQuery.toString());
+			queryObject.setLong(0,problemHistoryId);
+			return queryObject.list();
+		
 	}
 	
 	/*

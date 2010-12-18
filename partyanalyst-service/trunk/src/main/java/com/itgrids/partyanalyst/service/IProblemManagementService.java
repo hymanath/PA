@@ -35,5 +35,6 @@ public interface IProblemManagementService {
 	//Problems Push Methods
 	public List<ProblemBeanVO> getProblemDetailsBasedOnProblemStatusForAUser(Long userId,Long statusId,String isPushed,String isDeleted);
 	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue);
+	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId);
 		
 }
