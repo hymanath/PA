@@ -30,7 +30,6 @@ import com.itgrids.partyanalyst.dto.PartyPostionInfoVO;
 import com.itgrids.partyanalyst.dto.PositionType;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;

@@ -211,11 +211,9 @@ public class RegistrationVO extends BaseDTO{
 		return country;
 	}
 
-
 	public void setCountry(String country) {
 		this.country = country;
 	}
-
 
 	public String getPincode() {
 		return pincode;

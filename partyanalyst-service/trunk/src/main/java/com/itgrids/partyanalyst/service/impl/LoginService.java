@@ -6,8 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGroupEntitlementDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserCountryAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
@@ -15,8 +22,13 @@ import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Country;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -31,7 +43,54 @@ public class LoginService implements ILoginService{
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IGroupEntitlementDAO groupEntitlementDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
+	private ICountryDAO countryDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
@@ -90,6 +149,24 @@ public class LoginService implements ILoginService{
 
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
+	}
+
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public RegistrationVO checkForValidUser(String userName,String password){
@@ -156,6 +233,7 @@ public class LoginService implements ILoginService{
 	private void getUserAccessInfo(Long userGroupId, Set<SelectOptionVO> countries,
 			Set<SelectOptionVO> states, Set<SelectOptionVO> districts,
 			Set<SelectOptionVO> assemblies, Set<SelectOptionVO> parliaments){
+		
 		getListFromRawdata(userCountryAccessInfoDAO.findByUser(userGroupId), countries);
 		getListFromRawdata(userStateAccessInfoDAO.findByUser(userGroupId), states);
 		getListFromRawdata(userDistrictAccessInfoDAO.findByUser(userGroupId), districts);
@@ -206,4 +284,88 @@ public class LoginService implements ILoginService{
 		return regVO;
 	}
 
+	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, final String regionType, Long regionId){
+		if(registrationVO == null)
+			return false;
+		Country country = null;
+		State state = null;
+		District district = null;
+		Tehsil tehsil = null;
+		Constituency ac = null;
+		Constituency pc = null;
+		Constituency constituency = null;
+		SelectOptionVO countrySelect = null;
+		SelectOptionVO stateSelect = null;
+		SelectOptionVO districtSelect = null;
+		SelectOptionVO acSelect = null;
+		SelectOptionVO pcSelect = null;
+		
+		if(IConstants.COUNTRY_LEVEL.equalsIgnoreCase(regionType)){
+			country = countryDAO.get(regionId);
+			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+		}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(regionType)){
+			state = stateDAO.get(regionId);	
+			country = state.getCountry();
+			
+			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+		}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(regionType)){
+			district = districtDAO.get(regionId);
+			state = district.getState();	
+			country = state.getCountry();
+			
+			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+		}else if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(regionType)){
+			constituency = constituencyDAO.get(regionId);
+			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
+				ac = constituency;
+				district = ac.getDistrict();
+				Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId).get(0))[0];
+				pc = constituencyDAO.get(pcId);
+			}else
+				pc = constituency;
+			
+			state = pc.getState();				
+			country = state.getCountry();
+			
+			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+			if(ac != null)
+				acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
+			pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
+			
+		}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(regionType)){
+			tehsil = tehsilDAO.get(regionId);
+			district = tehsil.getDistrict();
+			state = district.getState();	
+			country = state.getCountry();
+			Long acId = (Long)((Object[])delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(regionId).get(0))[0];
+			Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(acId).get(0))[0];
+			ac = constituencyDAO.get(acId);
+			pc = constituencyDAO.get(pcId);
+			state = pc.getState();				
+			country = state.getCountry();
+			
+			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+			acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
+			pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
+
+		}
+		
+		if(countrySelect != null && registrationVO.getCountries().contains(countrySelect)||
+				stateSelect != null && registrationVO.getStates().contains(stateSelect)||
+				districtSelect != null && registrationVO.getDistricts().contains(districtSelect)||
+				acSelect != null && registrationVO.getAssemblies().contains(acSelect)||
+				pcSelect != null && registrationVO.getParliaments().contains(pcSelect))
+			return true;
+		
+		return false;	
+	}
+
+	
 }
