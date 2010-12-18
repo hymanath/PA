@@ -144,8 +144,16 @@
 		<property name="userStateAccessInfoDAO" ref="userStateAccessInfoDAO" />
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
-		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
+	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="partyDAO" ref="partyDAO" />

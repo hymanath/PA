@@ -255,9 +255,11 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		
 		//Entitlement Check
 		HttpSession session = request.getSession();
-		Object regVO = session.getAttribute(IConstants.USER);
-		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.TEHSIL_ANALYSIS)) ||
-				(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.TEHSIL_ANALYSIS)))
+		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
+		
+		if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
+				(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(regVO,  IConstants.TEHSIL_ANALYSIS)))||
+				!entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID)))
 			villageDetailsVO.setShowRevenueVillageInfo(false);
 		
 		

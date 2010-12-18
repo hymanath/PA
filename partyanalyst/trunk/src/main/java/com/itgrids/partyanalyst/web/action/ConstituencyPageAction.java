@@ -660,27 +660,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 		
 		HttpSession session = request.getSession();
-		Object regVO = session.getAttribute(IConstants.USER);
+		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
 		
-		if((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
-			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS)))
-			constituencyDetails.setHasAnalize(false);
-		
-		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.MANDAL_VOTING_TRENDZ)) ||
-				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.MANDAL_VOTING_TRENDZ)))
-				constituencyDetails.setViewCompletePage(true);
-		
-		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.VOTING_TRENDZ)) ||
-				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.VOTING_TRENDZ)))
-				constituencyDetails.setVotingTrendz(true);
-		
-		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMETNS_ANALYZE)) ||
-				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMETNS_ANALYZE)))
-				constituencyDetails.setAnalyzeComments(true);
-		
-		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMENTS_POST)) ||
-				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMENTS_POST)))
-				constituencyDetails.setPostComments(true);
+		//Entilements Check
+		checkForRegionAndReportLevelEntitlements(regVO);
 		
 		constituencyName = constituencyDetails.getConstituencyName();
 		
@@ -816,6 +799,38 @@ public class ConstituencyPageAction extends ActionSupport implements
 		}
 		else
 			return Action.ERROR;   	
+	}
+	
+	private void checkForRegionAndReportLevelEntitlements(RegistrationVO regVO){
+		
+		if(!entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.CONSTITUENCY_LEVEL, constituencyId)){
+			constituencyDetails.setHasAnalize(false);
+			constituencyDetails.setViewCompletePage(false);
+			constituencyDetails.setVotingTrendz(false);
+			constituencyDetails.setAnalyzeComments(false);
+			constituencyDetails.setPostComments(false);
+			return;
+		}
+		
+		if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
+			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS))))
+			constituencyDetails.setHasAnalize(false);
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.MANDAL_VOTING_TRENDZ)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.MANDAL_VOTING_TRENDZ)))
+				constituencyDetails.setViewCompletePage(true);
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.VOTING_TRENDZ)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.VOTING_TRENDZ)))
+				constituencyDetails.setVotingTrendz(true);
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMETNS_ANALYZE)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMETNS_ANALYZE)))
+				constituencyDetails.setAnalyzeComments(true);
+		
+		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMENTS_POST)) ||
+				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMENTS_POST)))
+				constituencyDetails.setPostComments(true);
 	}
 	
 	public String getGhmcResults(){
