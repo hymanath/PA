@@ -261,7 +261,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 		
-	}*/
+	}
 	
 	public void testgetAllPostedProblemsByAnanymousUserId(){
 		
