@@ -556,5 +556,7 @@
 	<bean id="commentsControlAdminAction" class="com.itgrids.partyanalyst.web.action.CommentsControlAdminAction" singleton="false">
 		<property name="commentsDataService" ref="commentsDataService" />				
 	</bean>
-	
+	<bean id="problemCompleteDetailsAction" class="com.itgrids.partyanalyst.web.action.ProblemCompleteDetailsAction" singleton="false">
+		<property name="problemManagementService" ref="problemManagementService" />				
+	</bean>
 </beans>		

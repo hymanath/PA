@@ -419,6 +419,8 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="boothDAO" ref="boothDAO" />
    </bean>
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
