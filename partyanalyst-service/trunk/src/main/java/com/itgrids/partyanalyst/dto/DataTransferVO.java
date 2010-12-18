@@ -29,7 +29,80 @@ public class DataTransferVO extends ResultStatus{
 	private String loginStatus;
 	private Long userId;
 	private List<SelectOptionVO> seleList;
-		
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private String stateName;
+	private String districtName;
+	private String constituencyName;	
+	private String districtUsersCount;
+	private String constituencyUsersCount;
+	
+	
+	public String getDistrictUsersCount() {
+		return districtUsersCount;
+	}
+
+	public void setDistrictUsersCount(String districtUsersCount) {
+		this.districtUsersCount = districtUsersCount;
+	}
+
+	public String getConstituencyUsersCount() {
+		return constituencyUsersCount;
+	}
+
+	public void setConstituencyUsersCount(String constituencyUsersCount) {
+		this.constituencyUsersCount = constituencyUsersCount;
+	}
+	
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	
 	public List<SelectOptionVO> getSeleList() {
 		return seleList;
 	}

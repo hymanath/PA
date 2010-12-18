@@ -17,4 +17,8 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount);	
 	
 	public List<AnanymousUser> getDetailsForUsers(List<Long> userIds);
+	
+	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);
+	
+	public List getConnectedUsersCount(Long locationId,String locationType);
 }

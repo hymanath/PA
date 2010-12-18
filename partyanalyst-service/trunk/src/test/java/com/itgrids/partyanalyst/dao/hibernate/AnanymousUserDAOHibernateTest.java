@@ -43,10 +43,10 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
 
-	public void testAnonymousUserLogin(){		
+	/*public void testAnonymousUserLogin(){		
 		List<AnanymousUser> detailsList = ananymousUserDAO.checkAnonymousUserLogin("ravi","kiran");	
 		assertEquals(detailsList.size(), 1);
-	}
+	}*/
 
 	/*public void testAvailabityOfUserNameForAnonymousUser(){		
 		List<Long> details =  new ArrayList<Long>(0);
@@ -57,5 +57,22 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		}
 		System.out.println(detailsList.size());
 	}*/
+	
+	/*public void testGetAnanymousUserLocationDetailsByIds()
+	{
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(2L);
+		
+		List locationDetails = ananymousUserDAO.getAnanymousUserLocationDetailsByIds(userIds);
+		System.out.println(locationDetails.size());
+		
+	}*/
+	
+	public void testGetConnectedUsersCount()
+	{
+		List connectedCount = ananymousUserDAO.getConnectedUsersCount(19L, IConstants.DISTRICT);
+		
+		System.out.println(connectedCount);
+	}
 	
 }
