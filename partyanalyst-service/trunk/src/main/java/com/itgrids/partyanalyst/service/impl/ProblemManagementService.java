@@ -23,7 +23,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -43,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
@@ -52,6 +55,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -104,8 +108,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	private ProblemBeanVO problemBeanVO = null;
 	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-		
-	
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 	
+	private IBoothDAO boothDAO;
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
 	}
@@ -295,6 +299,23 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
 		this.regionScopesDAO = regionScopesDAO;
+	}
+	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
 	}
 
 	/**
@@ -1186,6 +1207,144 @@ public class ProblemManagementService implements IProblemManagementService {
 		}
 		
 	 return problemsResultList;
+	}
+
+	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId) {
+		if(log.isDebugEnabled())
+			log.info("Entered in to getProblemCompleteInfo");
+		if(log.isDebugEnabled())
+			log.debug("problem History Id:"+problemHistoryId);
+		
+		ProblemBeanVO result = new ProblemBeanVO();
+		Date iDate,eDate;
+		State state = null;
+		District district = null;
+		Constituency constituency = null;
+		Tehsil tehsil = null;
+		Hamlet hamlet = null;
+		LocalElectionBody localBody = null;
+		Constituency ward = null;
+		Booth booth = null;
+		try{
+		List list1 = problemHistoryDAO.findProblemCompleteInfo(59l);
+		
+		if(list1.size()!=0){			
+			Object[] parms = (Object[])list1.get(0);
+			iDate = (Date)parms[4];
+			eDate = (Date)parms[8];
+			result.setProblem(parms[0].toString());
+			result.setDescription(parms[1].toString());
+			result.setImpactLevel(parms[2].toString());
+			result.setProblemImpactLevelId((Long)parms[10]);
+			
+			switch (result.getProblemImpactLevelId().intValue()) {
+            
+            case 2:  
+        	{
+        		state = stateDAO.get((Long)parms[3]);
+				result.setProblemLocation(state.getStateName());
+        		break;
+        	}
+            case 3:
+            {
+            	district = districtDAO.get((Long)parms[3]);
+            	result.setProblemLocation(district.getDistrictName());
+            	result.setState(district.getState().getStateName());
+            	break;
+            }
+            case 4: {
+            	constituency = constituencyDAO.get((Long)parms[3]);
+				result.setProblemLocation(constituency.getName());
+				if(IConstants.PARLIAMENT_ELECTION_TYPE.equals(constituency.getElectionScope().getElectionType().getElectionType()))
+				{					
+					result.setState(constituency.getState().getStateName());
+				} else 
+				{
+					result.setState(constituency.getState().getStateName());
+					result.setDistrict(constituency.getDistrict().getDistrictName()+"(Dt.)");
+				}				
+            	break;
+            }
+            case 5: 
+            {
+            	tehsil = tehsilDAO.get((Long)parms[3]);
+				result.setProblemLocation(tehsil.getTehsilName());
+				result = setConstDistStateTOResult(tehsil.getTehsilId(),result);
+				result.setTehsil(tehsil.getTehsilName());
+				break;
+            }            
+            case 6:
+            {
+            	hamlet = hamletDAO.get((Long)parms[3]);
+            	result.setProblemLocation(hamlet.getHamletName());
+            	result = setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId(),result);
+				result.setTehsil(hamlet.getTownship().getTehsil().getTehsilName());            	
+            	break;
+            }
+            case 7:
+            {
+            	localBody = localElectionBodyDAO.get((Long)parms[3]);
+            	result.setProblemLocation(localBody.getName()); 
+            	result.setDistrict(localBody.getDistrict().getDistrictName());
+            	result.setState(localBody.getDistrict().getState().getStateName());
+            	break;
+            }
+            case 8:
+            {
+            	ward = constituencyDAO.get((Long)parms[3]);
+            	result.setProblemLocation(ward.getName());
+            	result.setLocalBody(ward.getLocalElectionBody().getName());
+            	result.setDistrict(ward.getLocalElectionBody().getDistrict().getDistrictName());
+            	result.setState(ward.getLocalElectionBody().getDistrict().getState().getStateName());
+            	break;
+            }
+            case 9:
+            {
+            	booth = boothDAO.get((Long)parms[3]);
+            	if(booth.getTehsil()!= null)
+            	{
+            		result.setTehsil(booth.getTehsil().getTehsilName());
+            		result = setConstDistStateTOResult(booth.getTehsil().getTehsilId(),result);           		
+            	}else if(booth.getLocalBody() != null)
+            	{
+            		if(booth.getBoothLocalBodyWard() != null)
+            			result.setWard(booth.getBoothLocalBodyWard().getLocalBodyWard().getName());
+            		result.setLocalBody(booth.getLocalBody().getName());
+            		result.setDistrict(booth.getLocalBody().getDistrict().getDistrictName());
+                	result.setState(booth.getLocalBody().getDistrict().getState().getStateName());
+                	
+            	}
+            	result.setProblemLocation(booth.getPartName()+booth.getLocation());
+            	break;
+            }
+            default: System.out.println("Invalid Scope.");break;
+        }			
+		result.setPostedDate(sdf.format(iDate));
+		result.setName(parms[5].toString());
+		result.setProblemId((Long)parms[6]);
+		result.setProblemHistoryId((Long)parms[7]);
+		result.setExistingFrom(sdf.format(eDate));
+		result.setStatus(parms[9].toString());			
+		}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			result.setExceptionMsg("Exception raised when retriecing problem complete info");
+			result.setExceptionEncountered(e);
+		}
+		
+		return result;
+	}
+	
+	private ProblemBeanVO setConstDistStateTOResult(Long tehsilId, ProblemBeanVO result)
+	{
+		List stateDistConstMandal = delimitationConstituencyMandalDAO.getStateDistConstituencyMandalByMandalID(tehsilId);
+		Object[] objVO = (Object[]) stateDistConstMandal.get(0);
+		result.setState(objVO[1].toString());
+		result.setDistrict(objVO[3].toString());
+		result.setConstituency(objVO[5].toString());
+		
+		return result;
 	}
 }
 

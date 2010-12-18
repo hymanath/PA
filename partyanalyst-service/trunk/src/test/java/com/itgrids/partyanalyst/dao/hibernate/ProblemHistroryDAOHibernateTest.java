@@ -217,9 +217,50 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	
 	/*public void testGetByLocations(){
 		List<Long> list = new ArrayList<Long>();
-		list.add(new Long(404)); 
+		list.add(new Long(232)); 
 		List list1 = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(list,IConstants.CONSTITUENCY_LEVEL,IConstants.TRUE);
 		System.out.println(list1.size());
+		if(list1.size()!=0){
+			for(int i=0;i<list.size();i++){
+				Object[] parms = (Object[])list1.get(i);
+				
+				System.out.println("prob"+parms[0].toString());
+				System.out.println("desc"+parms[1].toString());
+				System.out.println("scope"+parms[2].toString());
+				System.out.println("ilv"+parms[3].toString());
+				System.out.println("ion"+parms[4].toString());
+				System.out.println("name"+parms[5].toString());
+				System.out.println("pid"+parms[6].toString());
+				System.out.println("phid"+parms[7].toString());
+				
+			}
+		}
+		
+	}*/
+	
+	public void testFindProblemCompleteInfo(){
+		
+		List list1 = problemHistoryDAO.findProblemCompleteInfo(59l);
+		System.out.println(list1.size());
+		if(list1.size()!=0){
+			for(int i=0;i<list1.size();i++){
+				Object[] parms = (Object[])list1.get(i);
+				
+				System.out.println("prob"+parms[0].toString());
+				System.out.println("desc"+parms[1].toString());
+				System.out.println("scope"+parms[2].toString());
+				System.out.println("ilv"+parms[3].toString());
+				System.out.println("ion"+parms[4].toString());
+				System.out.println("name"+parms[5].toString());
+				System.out.println("pid"+parms[6].toString());
+				System.out.println("phid"+parms[7].toString());
+				System.out.println("pFrom"+parms[8].toString());
+				System.out.println("from"+parms[9].toString());
+				System.out.println("from"+parms[10].toString());
+				
+			}
+		}
+		
 	}*/
 	
 	public void testgetAllPostedProblemsByAnanymousUserId(){
@@ -227,4 +268,6 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L);
 		System.out.println(list1.size());
 	}
+	
+	
 }

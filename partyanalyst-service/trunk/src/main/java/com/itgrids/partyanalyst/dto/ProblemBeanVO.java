@@ -30,6 +30,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String tehsil;
 	private String village;
 	private String hamlet;
+	private String localBody;
 	private String postedDate;
 	private String reportedDate;
 	private String existingFrom;
@@ -63,7 +64,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String isApproved;
 	private String isDeleted;
 	private String booth;
-	
+	private String ward;
 	private List<ProblemHistoryVO> problemHistories;
     	
 	public String getPostedDate() {
@@ -504,6 +505,26 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public void setBooth(String booth) {
 		this.booth = booth;
 	}
+
+	public String getLocalBody() {
+		return localBody;
+	}
+
+	public void setLocalBody(String localBody) {
+		this.localBody = localBody;
+	}
+
+	public String getWard() {
+		return ward;
+	}
+
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+	
+	
+	
+	
 	
 	
 	
