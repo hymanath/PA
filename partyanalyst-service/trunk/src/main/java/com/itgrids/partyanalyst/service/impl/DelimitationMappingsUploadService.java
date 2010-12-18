@@ -726,6 +726,10 @@ public class DelimitationMappingsUploadService implements
 			HSSFRow sheetRow = currentSheet.getRow(row);
 			delimitationMappingUploadVO.setCurrentRow(row);
 			
+			if(row == totalRowsInSheet-1){
+				saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
+			}
+			
 			Boolean isState  = checkForState(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,stateName);
 			if(isState){
 				stateObj = getStateObjectByStateName(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,stateName);
