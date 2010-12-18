@@ -14,11 +14,14 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -51,7 +54,35 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private String message;	
 	private List<CandidateCommentsVO> candidateCommentsVO;
 	private List<ProblemDetailsVO> problemDetailsVO;
+	private NavigationVO messageTypes;
+	private ConstituenciesStatusVO constituenciesStatusVO;
+	private IStaticDataService staticDataService;
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public ConstituenciesStatusVO getConstituenciesStatusVO() {
+		return constituenciesStatusVO;
+	}
+
+	public void setConstituenciesStatusVO(
+			ConstituenciesStatusVO constituenciesStatusVO) {
+		this.constituenciesStatusVO = constituenciesStatusVO;
+	}
+
+	public NavigationVO getMessageTypes() {
+		return messageTypes;
+	}
+
+	public void setMessageTypes(NavigationVO messageTypes) {
+		this.messageTypes = messageTypes;
+	}
+
 	public List<ProblemDetailsVO> getProblemDetailsVO() {
 		return problemDetailsVO;
 	}
@@ -220,6 +251,11 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		userId.add(loginUserId);
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
+		
+		messageTypes = ananymousUserService.getAllMessageTypes();
+		
+		if(dataTransferVO.getDistrictId() != null)
+			constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(dataTransferVO.getDistrictId());	
 		
 		return Action.SUCCESS;
 		
@@ -524,4 +560,5 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID());
 		return Action.SUCCESS;
 	}
+	
 }

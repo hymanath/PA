@@ -202,10 +202,12 @@ function closeConnectPopup()
 
 function showAllConnectPeopleWindow(locationId,locationName,userLoginId,locationType)
 {	
+	connetLocationType = locationType;	
+
 	var str = '';
 	str += '<div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div>';
 	
-	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
+	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
 				 width:'500px',
                  fixedcenter : true, 
                  visible : true,
@@ -219,7 +221,17 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 	
 	connectPopupPanel.setHeader("People Connected to "+locationName);   
 	connectPopupPanel.setBody(str);
-    connectPopupPanel.render();
+    connectPopupPanel.render();*/
+
+	$( "#connectPeoplePopup" ).dialog({
+			title:"People Connected to "+locationName,
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			minHeight:400,
+			modal: true,
+			hide: "explode"
+		});
 
 	getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType);
 }
@@ -462,7 +474,7 @@ function connectUserSetPeople()
 				locationType:connetLocationType,
 				task:"connectUserSet"
 			 };
-
+	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserSetAction.action?"+rparam;					
 	callAjax(jsObj,url);

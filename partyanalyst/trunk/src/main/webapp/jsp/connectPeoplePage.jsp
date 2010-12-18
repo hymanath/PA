@@ -71,13 +71,18 @@
 <!-- JQuery files (End) -->
 
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
+<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">	
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
 
 </head>
 <body>
+	<div id="connectPeoplePopup_outer" class="yui-skin-sam">
+		<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
+	</div>
 	<div id="jQueryPopup"> <div id="reasonsDataTable_outer" class="yui-skin-sam"> <div id="reasonsDataTable"></div> </div></div>
 	<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>
 	<div id="connectPeoplePage_main">
@@ -85,7 +90,7 @@
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
+					<div id="constituencyLeftContentOuter" class="rounded"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -99,29 +104,41 @@
 					
 				</td>
 				<td width="30%" valign="top">
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
+					<div id="constituencyRightContentOuter" class="rounded"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-						
-							<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
-											 
+							<div id="connectPeople_editProfile_center" class="yui-skin-sam">
 							</div>
+							<div id="connectPeople_quickAccess_center" class="yui-skin-sam" style="margin-top:10px;">									 
+							</div>	
+							<div id="connectPeople_count_center" class="yui-skin-sam" style="margin-top:10px;">											
+							</div>	
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyCenterContentOuter" class="rounded"> 						
+					<div id="constituencyBottomContentOuter" class="rounded"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
-						
-							<div id="connectPeople_connect_center" class="yui-skin-sam">
+						<div class="corner bottomRight"></div>							
+							<table width="100%">
+								<tr>
+									<td width="70%" valign="top">
+										<div id="connectPeople_connect_center" class="yui-skin-sam">
 											 
-							</div>
+										</div>
+									</td>
+									<td width="30%" valign="top">
+										<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
+											 
+										</div>
+									</td>
+								</tr>
+							</table>							
 					</div>
 				</td>
 			</tr>
@@ -133,6 +150,18 @@
 	<script type="text/javascript"> 
 		
 		loginUserId = '${loginUserId}';
+		stateId = '${dataTransferVO.stateId}';
+		stateName = '${dataTransferVO.stateName}';
+		districtId = '${dataTransferVO.districtId}';
+		districtName = '${dataTransferVO.districtName}';
+		constituencyId = '${dataTransferVO.constituencyId}';
+		constituencyName = '${dataTransferVO.constituencyName}';
+
+		districtConnectCount = '${dataTransferVO.districtUsersCount}';
+		constituencyConnectCount = '${dataTransferVO.constituencyUsersCount}';
+
+		connetLocationId = constituencyId;
+		connectUserLoginId = loginUserId;
 
 		connectedPeopleInfo.connectPeopleStatus.resultCode = '${dataTransferVO.resultStatusForConnectedPeople.resultCode}';	
 		connectedPeopleInfo.connectPeopleStatus.exceptionMsg = '${dataTransferVO.resultStatusForConnectedPeople.exceptionMsg}';
@@ -192,6 +221,22 @@
 			commentsInfo.comments.push(obj);
 		</c:forEach>
 		
+		<c:forEach var="status" varStatus="stat" items="${messageTypes.messageTypes}">
+			var obj =	{
+							id:'${status.id}',
+							name:'${status.name}'
+						};
+			connectStatus.push(obj);
+		</c:forEach>
+		
+		<c:forEach var="constituency" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">
+			var obj =	{
+							id:'${constituency.constituencyId}',
+							name:'${constituency.constituencyName}'
+						};
+			constituencies.push(obj);
+		</c:forEach>	
+
 		initializeConnectPeople();
 	</script>
 </body>

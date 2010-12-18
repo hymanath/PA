@@ -180,7 +180,6 @@
 	color:#1B7AB0;
 	font-size:12px;
 	font-weight:bold;
-	margin-top:10px;
 }
 
 #connecttion_main_body
@@ -195,8 +194,7 @@
 
 #peopleMayKnow_main
 {
-	border:2px solid #D6E7EC;
-	margin-top:10px;
+	border:2px solid #D6E7EC;	
 	height:320px;
 }
 
@@ -302,4 +300,36 @@
 	font-family:arial;
 	font-size:inherit;
 	font-weight:normal;
+}
+
+#connectPeople_quickAccess_center
+{
+	position:relative;
+}
+
+#regionAccessTable th
+{
+	padding:5px;
+	text-align:left;
+	color:#3C4A52;
+}
+
+#regionAccessTable td
+{
+	padding:5px;
+	text-align:left;
+	color:#552F0E;
+}
+
+.regionBodyClass
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	padding:10px;
+}
+
+#constituencyRightContentOuter
+{
+	height:340px;
 }
