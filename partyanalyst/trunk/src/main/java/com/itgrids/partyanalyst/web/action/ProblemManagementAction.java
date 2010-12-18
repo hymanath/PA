@@ -404,4 +404,27 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 	 	return Action.SUCCESS;
 	}	
 	
+	public String getProblemCompleteDetails(){
+		problemManagementDataVO = new ProblemManagementDataVO();
+		ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+		
+		session = request.getSession();
+					
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		Long problemHistoryId = jObj.getLong("problemHistoryId");
+		problemBeanVO = problemManagementService.getProblemCompleteInfo(problemHistoryId);
+		return Action.SUCCESS;
+	}
+	
+	
 }
