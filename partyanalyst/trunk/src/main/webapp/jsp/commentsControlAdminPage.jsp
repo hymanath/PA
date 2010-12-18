@@ -325,8 +325,7 @@ function getAllProblemsBetweenDates(task)
 			toDate:endDate,					
 			task:task						
 	};
-	
-	console.log(jsObj);
+		
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/getAllComments.action?"+rparam;					
 	callAjax(jsObj,url);

@@ -33,6 +33,15 @@ var commentsInfo = {
 						  };
 
 var loginUserId = '';
+var stateId = '';
+var stateName = '';
+var districtId = '';
+var districtName = '';
+var constituencyId = '';
+var constituencyName = '';
+
+var districtConnectCount = '';
+var constituencyConnectCount = '';
 
 var postedApprovedReasons = [];
 var postedRejectedReasons = [];
@@ -43,6 +52,9 @@ var postedRejectedProblems = [];
 var postedNotConsideredProblems = [];
 
 var selectedmessage = null;
+
+var connectStatus = [];
+var constituencies = [];
 
 function initializeTabView()
 {
@@ -203,7 +215,7 @@ function markMessageAsRead(msgId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateReadMessageInDBAction.action?"+rparam;					
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function buildConnectionsContentForUser()
@@ -321,7 +333,7 @@ function sendMessageToConnectedUser(userId,type)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "messageToConnectedUser.action?"+rparam;					
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function showMessageSentConfirmation(results)
@@ -348,7 +360,7 @@ function closeMessagePopup()
 }
 
 
-function callAjax(param,jsObj,url){
+function callAjax(jsObj,url){
 	var results;	
 	var callback = {			
 	    success : function( o ) {
@@ -394,6 +406,18 @@ function callAjax(param,jsObj,url){
 					else if(jsObj.task == "getAllPostedProblemsByUser")
 					{
 						showPostedProblems(jsObj,results);
+					}
+					else if(jsObj.task == "getAllConnectedUsers")
+					{	
+						showAllConnectedUsersInPanel(jsObj,results);
+					}
+					else if(jsObj.task == "getAllConnectedUsersByFilterView")
+					{
+						showAllConnectedUsersInPanelByFilterView(jsObj,results);
+					}
+					else if(jsObj.task == "connectUserSet")
+					{
+						showAllConnectedUsersStatus(jsObj,results);
 					}
 					
 			}catch (e) {   		
@@ -490,7 +514,7 @@ function blockRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function acceptRequest(requestId)
@@ -504,7 +528,7 @@ function acceptRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function rejectRequest(requestId)
@@ -518,7 +542,7 @@ function rejectRequest(requestId)
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;					
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function getAllRequestMessagesForUser(){
@@ -530,18 +554,99 @@ function getAllRequestMessagesForUser(){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getRequestMessagesForUserAction.action?"+rparam;						
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
+}
+
+function buildQuickRegionAccessContent()
+{	
+	var profElmt = document.getElementById("connectPeople_editProfile_center");
+	var qElmt = document.getElementById("connectPeople_quickAccess_center");
+	var connectCountElmt = document.getElementById("connectPeople_count_center");
+	
+	if(!profElmt || !qElmt || !connectCountElmt)
+		return;
+
+	var pStr = '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
+	profElmt.innerHTML = pStr;
+
+	var str = '';
+	str += '<div id="regionAccessDiv_main">';
+	str += '<div id="regionAccessDiv_head">';
+	str += '<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
+	str += '<tr>';
+	str += '	<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
+	str += '	<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>View Your Location Details </span></div></td>';
+	str += '	<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '<div id="regionAccessDiv_body" class="regionBodyClass">';
+	str += '<table id="regionAccessTable">';
+	str += '<tr>';
+	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th>View Your State</th>';
+	str += '<td> - </td>';
+	str += '<td><a href="statePageAction.action?stateId='+stateId+'">'+stateName+'</a></td>';
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th>View Your District</th>';
+	str += '<td> - </td>';
+	str += '<td><a href="districtPageAction.action?districtId='+districtId+'&districtName='+districtName+'">'+districtName+'</a></td>';
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '<th>View Your Constituency</th>';
+	str += '<td> - </td>';
+	str += '<td><a href="constituencyPageAction.action?districtId='+districtId+'&constituencyId='+constituencyId+'">'+constituencyName+'</a></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '</div>';
+
+	qElmt.innerHTML = str;
+
+	var cStr = '';
+	cStr += '<div id="connectCountDiv_main">';
+	cStr += '<div id="connectCountDiv_head">';
+	cStr += '	<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
+	cStr += '	<tr>';
+	cStr += '		<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
+	cStr += '		<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>View connected people </span></div></td>';
+	cStr += '		<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
+	cStr += '	</tr>';
+	cStr += '	</table>';
+	cStr += '</div>';
+	cStr += '<div id="connectCountDiv_body" class="regionBodyClass">';	
+	cStr += '<table id="regionAccessTable">';
+	cStr += '<tr>';
+	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	cStr += '<th>People Registered To '+constituencyName+' Constituency</th>';
+	cStr += '<td> - </td>';
+	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
+	cStr += '</tr>';
+	cStr += '<tr>';
+	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	cStr += '<th>People Registered To '+districtName+' District</th>';
+	cStr += '<td> - </td>';
+	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
+	cStr += '</tr>';	
+	cStr += '</table>';
+	cStr += '</div>';
+	cStr += '</div>';
+
+	connectCountElmt.innerHTML = cStr;
 }
 
 function buildPeopleYouMayKnowContent()
 {
+	
 	var elmt = document.getElementById("connectPeople_PeopleMayKnow_center");
 
 	if(!elmt)
 		return;
-
-	var str = '';
-	str += '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
+	
+	var str = '';	
 	str += '<div id="peopleMayKnow_main">';
 	str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	str += '<div id="peopleMayKnow_body">';
@@ -894,7 +999,7 @@ function getAllPostedReasonsForUser()
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllPostedReasonsStatusUserAction.action?"+rparam;						
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function getAllPostedProblemsForUser()
@@ -906,7 +1011,7 @@ function getAllPostedProblemsForUser()
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllPostedProblemsByUserAction.action?"+rparam;						
-	callAjax(rparam,jsObj,url);
+	callAjax(jsObj,url);
 }
 
 function initializeConnectPeople()
@@ -918,4 +1023,5 @@ function initializeConnectPeople()
 	buildInboxMessagesForUser();
 	buildConnectionsContentForUser();
 	buildPeopleYouMayKnowContent();
+	buildQuickRegionAccessContent();
 }

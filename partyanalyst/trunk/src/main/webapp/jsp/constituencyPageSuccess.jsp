@@ -19,9 +19,17 @@
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/button/button-min.js"></script> 
 
-<!-- jQuery dependency file start-->
-	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>	
-<!-- jQuery dependency file end-->
+
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<!-- JQuery files (End) -->
 
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
@@ -835,7 +843,9 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 </head>
 <body onLoad="getString()">
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
-<div id="connectPeoplePopup_outer" class="yui-skin-sam"><div id="connectPeoplePopup"></div></div>
+<div id="connectPeoplePopup_outer" class="yui-skin-sam">
+		<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
+</div>
 <div id="constituencyPageMain">
 
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
