@@ -1689,7 +1689,8 @@ function showDetailedElectionResult(id)
 						phone:'${problem.phone}',
 						mobile:'${problem.mobile}',
 						address:'${problem.address}',
-						problemLocationId:'${problem.problemLocationId}'
+						problemLocationId:'${problem.problemLocationId}',
+						problemHistoryId:'${problem.problemHistoryId}'
 					};
 		
 	constituencyPageMainObj.problemsInfo.push(problemObj);
