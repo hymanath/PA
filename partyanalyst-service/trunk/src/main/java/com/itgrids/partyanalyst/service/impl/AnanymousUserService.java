@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -49,7 +51,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnanymousUserService implements IAnanymousUserService {
 
-	
+	public static Logger log = Logger.getLogger(AnanymousUserService.class); 
 	//Other Templates
 	private TransactionTemplate transactionTemplate = null;
 	
@@ -641,6 +643,57 @@ public class AnanymousUserService implements IAnanymousUserService {
 		//DataTransferVO dataVo = new DataTransferVO();
 		List<CandidateVO> resultVO = new ArrayList<CandidateVO>(); 
 		try{
+			if(userId.size() != 1)
+			{
+				return null;
+			}
+			/*
+			 * This block is used to get the location details of the logged in user ie., state, district, constituency
+			 *  
+			 */
+			Object[] params = null;
+			List details = ananymousUserDAO.getAnanymousUserLocationDetailsByIds(userId);
+			if(details.size() == 1)
+			{				
+				params = (Object[]) details.get(0);
+				
+				dataTransferVO.setStateId((Long)params[0]);
+				dataTransferVO.setStateName(params[1].toString());
+				dataTransferVO.setDistrictId((Long)params[2]);
+				dataTransferVO.setDistrictName(params[3].toString());
+				dataTransferVO.setConstituencyId((Long)params[4]);
+				dataTransferVO.setConstituencyName(params[5].toString());				
+			}
+			else
+			{
+				if(log.isDebugEnabled())
+					log.fatal(" Exists more than one user with same user id = "+userId.get(0));
+			}
+				
+			
+			/*
+			 * This block is used to get the connected users count in logged in user location  
+			 * 
+			 */
+			if(dataTransferVO.getConstituencyId() != null)
+			{
+				List constCount = ananymousUserDAO.getConnectedUsersCount(dataTransferVO.getConstituencyId(), IConstants.CONSTITUENCY);
+				if(constCount.size() == 1)
+				{
+					dataTransferVO.setConstituencyUsersCount(constCount.get(0).toString());					
+				}
+				
+			}
+			
+			if(dataTransferVO.getDistrictId() != null)
+			{
+				List distCount = ananymousUserDAO.getConnectedUsersCount(dataTransferVO.getDistrictId(), IConstants.DISTRICT);
+				if(distCount.size() == 1)
+				{
+					dataTransferVO.setDistrictUsersCount(distCount.get(0).toString());					
+				}
+			}
+			
 			
 			/*
 			 * This block is used to get all the connected people for the given user or users.

@@ -70,4 +70,37 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		queryObject.setParameterList("userIds", userIds);
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.state.stateId,model.state.stateName,model.district.districtId,model.district.districtName,model.constituency.constituencyId,model.constituency.name");
+		query.append(" from AnanymousUser model where ");
+		query.append(" model.userId in (:userIds)");	
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("userIds", userIds);
+		return queryObject.list();
+		
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public List getConnectedUsersCount(Long locationId,String locationType)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model.userId) ");
+		query.append(" from AnanymousUser model where ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			query.append(" model.constituency.constituencyId = ? group by model.constituency.constituencyId");
+		else if (locationType.equalsIgnoreCase(IConstants.DISTRICT)) {
+			query.append(" model.district.districtId = ? group by model.district.districtId");
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, locationId);
+		
+		return queryObject.list();
+		
+	}
 }
