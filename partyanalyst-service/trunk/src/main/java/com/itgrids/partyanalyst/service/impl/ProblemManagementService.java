@@ -22,6 +22,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -110,6 +111,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 	
 	private IBoothDAO boothDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
 	}
@@ -316,6 +319,15 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
+	}	
+
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 
 	/**
@@ -501,10 +513,16 @@ public class ProblemManagementService implements IProblemManagementService {
 		RegionScopes impactLevel = regionScopesDAO.get(impactLevelId);
 		if(impactLevel != null){
 			if(impactLevel.getScope().equalsIgnoreCase(IConstants.STATE) || impactLevel.getScope().equalsIgnoreCase(IConstants.DISTRICT) 
-					|| impactLevel.getScope().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					|| impactLevel.getScope().equalsIgnoreCase(IConstants.CONSTITUENCY) || impactLevel.getScope().equalsIgnoreCase(IConstants.BOOTH)){
 			   return impactLevelValue;
 			}
-			else{
+			else if(impactLevel.getScope().equalsIgnoreCase(IConstants.MUNICIPAL_CORP_GMC)) {
+				Long assemblyLocalElectionBodyId = new Long(impactLevelValue.toString().substring(1));
+				List localElectionBodyIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalElectionBodyId);
+				Object object = (Object)localElectionBodyIdsList.get(0);
+				return (Long)object;				
+			}			
+			else {
 				String value = impactLevelValue.toString().substring(1);
 				return new Long(value);
 			}
