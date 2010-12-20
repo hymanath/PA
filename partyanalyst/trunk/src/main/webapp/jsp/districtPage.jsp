@@ -1781,7 +1781,8 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						phone:'${problem.phone}',
 						mobile:'${problem.mobile}',
 						address:'${problem.address}',
-						problemLocationId:'${problem.problemLocationId}'
+						problemLocationId:'${problem.problemLocationId}',
+						problemHistoryId: '${problem.problemHistoryId}'
 					};
 		
 	problemsInfo.push(problemObj);
