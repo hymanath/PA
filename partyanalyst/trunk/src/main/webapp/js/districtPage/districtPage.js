@@ -138,9 +138,9 @@ function buildDistrictLevelProblemWindow()
 		for(var i in problemsInfo)
 		{
 			var data = problemsInfo[i];			
-			str+='<div class="problemDataDivClass" onclick="showProblemCompleteDetails('+data.problemId+')">';
-			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
-			str+='<span> '+data.problem+' </span>';
+			str+='<div class="problemDataDivClass">';
+			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png" style="margin-right:5px;"></img></span>';
+			str+='<span><a href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='</div>';
 			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
 		}
