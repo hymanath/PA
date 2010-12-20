@@ -1374,11 +1374,11 @@ public class ProblemManagementReportService implements
 						}
 					}
 					
-				}else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY)){
+				}else if(locationType.equalsIgnoreCase(IConstants.MUNICIPAL_CORP_GMC)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInALocalElectionBody(locationIds,locationType));
-				}else if(locationType.equalsIgnoreCase(IConstants.TEHSIL_LEVEL)){
+				}else if(locationType.equalsIgnoreCase(IConstants.MANDAL)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInATehsil(locationIds,locationType));
-				}else if(locationType.equalsIgnoreCase(IConstants.HAMLET_LEVEL)){
+				}else if(locationType.equalsIgnoreCase(IConstants.CENSUS_VILLAGE_LEVEL)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAHamlet(locationIds,locationType));
 				}else if(locationType.equalsIgnoreCase(IConstants.CENSUS_WARD_LEVEL)){
 					result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAWard(locationIds,locationType));
@@ -1501,28 +1501,29 @@ public class ProblemManagementReportService implements
 					}				
 				}
 				if(ruralConstituencies!=null && ruralConstituencies.size()!=0){				
-					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
-					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
-						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
-						constituencyResult.addAll(localElectionBodyResult);
-					}				
+					
+					List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(ruralConstituencies);
+					if(tehsilIds!=null && tehsilIds.size()!=0){
+						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.MANDAL);
+						constituencyResult.addAll(tehsilResult);
+					}
 				}
 				if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
-					List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urbanConstituencies);
-					if(tehsilIds!=null && tehsilIds.size()!=0){
-						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
-						constituencyResult.addAll(tehsilResult);
+					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
+					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
+						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.MUNICIPAL_CORP_GMC);
+						constituencyResult.addAll(localElectionBodyResult);
 					}				
 				}
 				if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
 					List<Long> tehsilIds = delimitationConstituencyMandalDAO.getLatestMandalIdsByConstituenciesIds(urban_rural_constituencies);
 					if(tehsilIds!=null && tehsilIds.size()!=0){
-						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.TEHSIL_LEVEL);
+						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.MANDAL);
 						constituencyResult.addAll(tehsilResult);
 					}				
 					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(urban_rural_constituencies);
 					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
-						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.LOCALELECTIONBODY);
+						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.MUNICIPAL_CORP_GMC);
 						constituencyResult.addAll(localElectionBodyResult);
 					}				
 				}
