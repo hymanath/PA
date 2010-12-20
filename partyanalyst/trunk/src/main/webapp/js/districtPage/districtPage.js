@@ -140,7 +140,7 @@ function buildDistrictLevelProblemWindow()
 			var data = problemsInfo[i];			
 			str+='<div class="problemDataDivClass">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png" style="margin-right:5px;"></img></span>';
-			str+='<span><a href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
+			str+='<span><a class="districtAnc" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='</div>';
 			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
 		}
