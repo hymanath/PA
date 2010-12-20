@@ -236,7 +236,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		}
 		List<Long> listOfLocalBodyElections = new ArrayList<Long>();
 		listOfLocalBodyElections.add(localBodyId);
-		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfLocalBodyElections,IConstants.LOCALELECTIONBODY).getApprovalProblems();
+		problemBean = problemManagementReportService.getAllProblemsForGivenLocation(listOfLocalBodyElections,IConstants.MUNICIPAL_CORP_GMC).getApprovalProblems();
 		return Action.SUCCESS;
 	}
 	
