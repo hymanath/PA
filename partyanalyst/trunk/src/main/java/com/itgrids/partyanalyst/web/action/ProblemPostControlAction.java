@@ -236,7 +236,7 @@ public class ProblemPostControlAction extends ActionSupport implements
 			
 			RegistrationVO userVO = (RegistrationVO)regVO;
 			if(userVO.getUserStatus().equals(IConstants.PARTY_ANALYST_USER)){
-				if(taskType.equalsIgnoreCase("analyze"))
+				if("analyze".equalsIgnoreCase(taskType))
 					return getRedirectPageDetails();
 				else
 				return IConstants.PARTY_ANALYST_USER;
