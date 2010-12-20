@@ -20,42 +20,42 @@ function showProblemDetails(result)
 	str+='<p>';
 	if(result.impactLevel == 'STATE')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+'</span><BR>';
 	} else if(result.impactLevel == 'DISTRICT')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.state+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.state+'</span><BR>';
 	} else if(result.impactLevel == 'CONSTITUENCY')
 	{
 		if(result.constituency == null)
-			str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
+			str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
 		else
-			str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.state+'</span><BR>';
+			str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.state+'</span><BR>';
 		
 	} else if(result.impactLevel == 'MANDAL')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.constituency+','+result.district+', '+result.state+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.constituency+','+result.district+', '+result.state+'</span><BR>';
 	} else if(result.impactLevel == 'VILLAGE')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.tehsil+', '+result.constituency+','+result.district+', '+result.state+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.tehsil+', '+result.constituency+','+result.district+', '+result.state+'</span><BR>';
 	} else if(result.impactLevel == 'WARD')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.localBody+','+result.district+', '+result.state+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.localBody+','+result.district+', '+result.state+'</span><BR>';
 	} else if(result.impactLevel == 'BOOTH')
 	{
 		if(result.tehsil != null)
-			str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.tehsil+', '+result.constituency+', '+result.district+', '+result.state+'</span><BR>';
+			str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.tehsil+', '+result.constituency+', '+result.district+', '+result.state+'</span><BR>';
 		if(result.localBody != null)
-			str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.localBody+', '+result.district+', '+result.state+'</span><BR>';
+			str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.localBody+', '+result.district+', '+result.state+'</span><BR>';
 	} else if(result.impactLevel == 'MUNICIPAL-CORP-GMC')
 	{
-		str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
+		str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
 	}
-	//str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
-	str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Problem Impact Level: <span class="bluetext">'+result.impactLevel+'</span><BR>';
-	str+='<img src="images/icons/indexPage/listIcon.png" style="margin-right:5px;">Status: <span class="bluetext">'+result.status+'</span></p><hr>';
-	str+='<p><img src="images/icons/indexPage/listIcon.png" height="8px" width="8px" style="margin-right:5px;">Reported Date: <span class="bluetext">'+result.postedDate+'</span><BR>';
-	str+='<img src="images/icons/indexPage/listIcon.png" height="8px" width="8px" style="margin-right:5px;">Problem Existing From: <span class="bluetext">'+result.existingFrom+'</span><BR>';
-	str+='<img src="images/icons/indexPage/listIcon.png" height="8px" width="8px" style="margin-right:5px;">Reported By: <span class="bluetext">'+result.name+'</span></p><hr>';
+	//str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;">Location: <span class="bluetext">'+result.problemLocation+', '+result.district+', '+result.state+'</span><BR>';
+	str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Impact Level: <span class="bluetext">'+result.impactLevel+'</span><BR>';
+	str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Status: <span class="bluetext">'+result.status+'</span></p><hr>';
+	str+='<p><img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported Date: <span class="bluetext">'+result.postedDate+'</span><BR>';
+	str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Existing From: <span class="bluetext">'+result.existingFrom+'</span><BR>';
+	str+='<img src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported By: <span class="bluetext">'+result.name+'</span></p><hr>';
 	str+='';
 	str+='';
 	divEl.innerHTML = str;
