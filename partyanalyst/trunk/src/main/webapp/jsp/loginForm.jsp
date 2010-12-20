@@ -272,8 +272,8 @@ if(request.getParameter("constituencyName")!=null){
 								<tr>
 									<th>Sign In As</th>
 									<td>
-										<input id="paUserRadio" type="radio" name="userType" value="1" checked="checked"/>Customer
-										<input id="freeUserRadio" type="radio" name="userType" value="2"/>Free User
+										<input id="paUserRadio" type="radio" name="userType" value="1"/>Customer
+										<input id="freeUserRadio" type="radio" name="userType" value="2" checked="checked"/>Free User
 									</td>
 								</tr>
 								<tr>
@@ -304,7 +304,7 @@ if(request.getParameter("constituencyName")!=null){
 					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_left_login.jpg"></img></td>
 					<td>
 						<div id="registerHeadCenter_center" class="containerHeader_center">
-							<span class="containerHeader_center_label">New User Signup</span>
+							<span class="containerHeader_center_label">New Free User Signup</span>
 						</div>
 					</td>
 					<td width="15px"><img src="images/icons/homePage_new/blue_header_top_right_login.jpg"></img></td>
