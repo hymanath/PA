@@ -309,6 +309,7 @@
 						mobile:'${problem.mobile}',
 						address:'${problem.address}',
 						problemLocationId:'${problem.problemLocationId}',
+						problemHistoryId: '${problem.problemHistoryId}'
 					};
 		
 	problemsInfo.push(problemObj);

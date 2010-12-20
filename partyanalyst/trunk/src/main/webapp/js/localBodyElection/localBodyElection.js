@@ -308,9 +308,9 @@ function buildLocalElectionLevelProblemWindow(areaType)
 		for(var i in problemsInfo)
 		{
 			var data = problemsInfo[i];			
-			str+='<div class="problemDataDivClass" onclick="buildMoreDetailsPopUp('+data.problemId+')">';
+			str+='<div class="problemDataDivClass">';
 			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
-			str+='<span> '+data.problem+' </span>';
+			str+='<span><a class="districtAnc" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
 			str+='</div>';
 		}
 	}
