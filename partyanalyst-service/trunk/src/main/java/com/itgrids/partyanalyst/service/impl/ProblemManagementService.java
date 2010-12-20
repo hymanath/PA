@@ -1209,6 +1209,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	 return problemsResultList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId) {
 		if(log.isDebugEnabled())
 			log.info("Entered in to getProblemCompleteInfo");
@@ -1226,7 +1227,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		Constituency ward = null;
 		Booth booth = null;
 		try{
-		List list1 = problemHistoryDAO.findProblemCompleteInfo(59l);
+		List list1 = problemHistoryDAO.findProblemCompleteInfo(problemHistoryId);
 		
 		if(list1.size()!=0){			
 			Object[] parms = (Object[])list1.get(0);
