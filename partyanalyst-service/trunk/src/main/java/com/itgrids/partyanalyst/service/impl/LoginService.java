@@ -322,6 +322,7 @@ public class LoginService implements ILoginService{
 			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
 				ac = constituency;
 				district = ac.getDistrict();
+				districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
 				Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId).get(0))[0];
 				pc = constituencyDAO.get(pcId);
 			}else
@@ -332,7 +333,6 @@ public class LoginService implements ILoginService{
 			
 			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
 			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
 			if(ac != null)
 				acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
 			pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
