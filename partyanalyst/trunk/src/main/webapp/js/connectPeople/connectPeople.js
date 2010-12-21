@@ -59,6 +59,13 @@ var constituencies = [];
 function initializeTabView()
 {
 	var myTabs = new YAHOO.widget.TabView();
+
+	myTabs.addTab( new YAHOO.widget.Tab({
+		label: 'Posted Reasons/Problems',
+		content: '<div id="postedDiv_main"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
+		active: true
+	}));
+
 	var str = '';
 	str += '<div id="storyBoard_main">';
 	str += '<div id="storyBoard_header_Div"></div>';
@@ -69,7 +76,7 @@ function initializeTabView()
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: 'Story Board',
 		content: str,
-		active: true
+		active: false
 	}));
 	
 	var tabLable = 'Inbox';
@@ -81,12 +88,6 @@ function initializeTabView()
 		content: '<div id="inboxMessages_main"></div>'
 	}));
 	
-
-	myTabs.addTab( new YAHOO.widget.Tab({
-		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
-		active: false
-	}));
 
 	myTabs.appendTo("connectPeople_messages_center");
 	
@@ -302,7 +303,7 @@ function showMailPopup(id,name,type)
 	str	+= '<div id="connectStatus"></div>';
 	str	+= '</div>';
 	
-	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
+	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
 				 width:'400px',
                  fixedcenter : true, 
                  visible : true,
@@ -316,7 +317,21 @@ function showMailPopup(id,name,type)
 	
 	connectPopupPanel.setHeader("Send Message To "+name);
     connectPopupPanel.setBody(str);
-    connectPopupPanel.render();
+    connectPopupPanel.render();*/
+
+	$( "#connectPeoplePopup" ).dialog({
+			title:"Send Message to "+name,
+			autoOpen: true,
+			show: "blind",
+			width: 400,
+			minHeight:300,
+			modal: true,
+			hide: "explode"
+		});
+	
+	var elmt = document.getElementById("allConnectedUsersDisplay_main");
+	if(elmt)
+		elmt.innerHTML = str;
 }
 
 function sendMessageToConnectedUser(userId,type)
@@ -701,15 +716,22 @@ function buildPeopleYouMayKnowContent()
 function showPostedProblems(jsObj,results)
 {
 	var elmt = document.getElementById("postedProblems_main");
-
-	for(var i=0; i<results.length; i++)
+	
+	if(results == null || results.length == 0)
 	{
-		if(results[i].isApproved == "true")
-			postedApprovedProblems.push(results[i]);
-		else if(results[i].isApproved == "rejected")
-			postedRejectedProblems.push(results[i]);
-		else if(results[i].isApproved == "false")
-			postedNotConsideredProblems.push(results[i]);
+		results = [];
+	}		
+	else
+	{
+		for(var i=0; i<results.length; i++)
+		{
+			if(results[i].isApproved == "true")
+				postedApprovedProblems.push(results[i]);
+			else if(results[i].isApproved == "rejected")
+				postedRejectedProblems.push(results[i]);
+			else if(results[i].isApproved == "false")
+				postedNotConsideredProblems.push(results[i]);
+		}
 	}
 
 	var str = '';
@@ -839,16 +861,22 @@ function showPostedReasons(jsObj,results)
 {
 	var elmt = document.getElementById("postedReasons_main");
 	
-	for(var i=0; i<results.length; i++)
+	if(results == null || results.length == 0)
 	{
-		if(results[i].isApproved == "true")
-			postedApprovedReasons.push(results[i]);
-		else if(results[i].isApproved == "false")
-			postedRejectedReasons.push(results[i]);
-		else if(results[i].isApproved == null)
-			postedNotConsideredReasons.push(results[i]);
+		results = [];
+	}		
+	else
+	{
+		for(var i=0; i<results.length; i++)
+		{
+			if(results[i].isApproved == "true")
+				postedApprovedReasons.push(results[i]);
+			else if(results[i].isApproved == "false")
+				postedRejectedReasons.push(results[i]);
+			else if(results[i].isApproved == null)
+				postedNotConsideredReasons.push(results[i]);
+		}
 	}
-
 	var str = '';
 	str += '<div class="tabContainerHeading">Total posted reasons - '+results.length+'</div>';
 	str += '<div style="padding:5px;">';

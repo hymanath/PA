@@ -137,7 +137,7 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	//str	+= '<input type="button" class="cancelButton" onclick="closeConnectPeoplePopup()" value="Cancel"/>';
 	str	+= '</div>';
 	
-	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
+	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeoplePopup", {      
 				 width:'500px',
                  fixedcenter : true, 
                  visible : true,
@@ -151,7 +151,22 @@ function showConnectConfirmDialogBox(userId,userName,constituency,userLoginId,lo
 	
 	connectPopupPanel.setHeader("Connect To "+userName);
     connectPopupPanel.setBody(str);
-    connectPopupPanel.render();
+    connectPopupPanel.render();*/
+
+	$( "#connectPeoplePopup" ).dialog({
+			title:"Connect To "+userName,
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			minHeight:300,
+			modal: true,
+			hide: "explode"
+		});
+	
+	var elmt = document.getElementById("allConnectedUsersDisplay_main");
+	if(elmt)
+		elmt.innerHTML = str;
+
 }
 
 function doConnectPeople(connectUserId,userLoginId,locationId,locationType,locationName)
@@ -181,12 +196,12 @@ function closeConnectPanel(jsObj,results)
 	if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{
 		buttonElmt.innerHTML = '';
-		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent to '+jsObj.connectUserName+" successfully.</font></blink>";
+		elmt.innerHTML = '<blink><font color="green" style="font-weight:bold;"> Requested sent successfully.</font></blink>';
 		buildConnectUsersContent(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId);		
 		var t=setTimeout("closeConnectPopup()",2000);
 	}
 	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
-		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent to '+jsObj.connectUserName+" due to some technically difficulty.</blink></font>";
+		elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request Cannot be sent due to some technically difficulty.</blink></font>';
 		
 }
 
@@ -224,7 +239,7 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
     connectPopupPanel.render();*/
 
 	$( "#connectPeoplePopup" ).dialog({
-			title:"People Connected to "+locationName,
+			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: true,
 			show: "blind",
 			width: 500,
@@ -266,7 +281,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	}
 	else if(users.length == 0)
 	{
-		str	+= '<div> No People Connected In this District</div>';
+		str	+= '<div> No People Connected In '+jsObj.locationName+' '+jsObj.locationType+'</div>';
 		elmt.innerHTML = str;
 		return
 	}
@@ -275,7 +290,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str += '<div class="allConnectPeople_Head_content">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td align="left">Total People Connected to '+districtName+' district - '+users.length+'</td>';
+	str += '<td align="left">Total People Connected to '+jsObj.locationName+' '+jsObj.locationType+' - '+users.length+'</td>';
 	str += '<td align="right">';
 	str += '<table border="0" cellpadding="0" cellspacing="0">';
 	str += '<tr>';
@@ -392,7 +407,7 @@ function showMailPopup(id,name,type)
 	str	+= '<div id="connectStatus"></div>';
 	str	+= '</div>';
 	
-	var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
+	/*var connectPopupPanel = new YAHOO.widget.Dialog("connectPeopleMessagePopup", {      
 				 width:'400px',
                  fixedcenter : true, 
                  visible : true,
@@ -406,7 +421,21 @@ function showMailPopup(id,name,type)
 	
 	connectPopupPanel.setHeader("Send Message To "+name);
     connectPopupPanel.setBody(str);
-    connectPopupPanel.render();
+    connectPopupPanel.render();*/
+
+	$( "#connectPeoplePopup" ).dialog({
+			title:"Send Message to "+name,
+			autoOpen: true,
+			show: "blind",
+			width: 400,
+			minHeight:300,
+			modal: true,
+			hide: "explode"
+		});
+	
+	var elmt = document.getElementById("allConnectedUsersDisplay_main");
+	if(elmt)
+		elmt.innerHTML = str;
 }
 
 function sendMessageToConnectedUser(userId,type)
