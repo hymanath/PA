@@ -280,6 +280,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			Map<Long, DistrictWisePartyResultVO> resultOne, Map<Long, DistrictWisePartyResultVO> resultTwo, Boolean isBiggerMapLatest){
 		DistrictWisePartyResultVO districtVO1 = null;
 		DistrictWisePartyResultVO districtVO2 = null;
+		DistrictWisePartyResultVO temp = null;
 		List<DistrictWisePartyResultVO> districts1 = new ArrayList<DistrictWisePartyResultVO>();
 		List<DistrictWisePartyResultVO> districts2 = new ArrayList<DistrictWisePartyResultVO>();
 		for(Map.Entry<Long, DistrictWisePartyResultVO> entry1:resultOne.entrySet()){
@@ -311,8 +312,15 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				districtVO2.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());	
 			}
 			
+			if(!isBiggerMapLatest){
+				temp = districtVO2;
+				districtVO2 = districtVO1;
+				districtVO1 = temp;
+			}
+			
 			districts1.add(districtVO1);
 			districts2.add(districtVO2);
+			
 		}
 		
 		electionComparisonReportVO.setDistrictWisePartyResultsForYearOne(districts1);
