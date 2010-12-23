@@ -28,6 +28,19 @@ public interface ISessionConstants {
 	public static final String MANDALS_C = "mandalsList_c";
 	public static final String VILLAGES_C = "villagesList_c";
 	public static final String BOOTHS_C = "boothsList_c";
+	
+	//location variables used in add new problem ap is shorct cut for add new problem
+	public static final String STATES_AP = "statesList_ap";
+	public static final String DISTRICTS_AP = "districtsList_ap";
+	public static final String CONSTITUENCIES_AP = "constituenciesList_ap";
+	//parliament Constituencies
+	public static final String P_CONSTITUENCIES_AP = "p_constituencies_ap";
+	public static final String MANDALS_AP = "mandalsList_ap";
+	public static final String VILLAGES_AP = "villagesList_ap";
+	public static final String WARDS_OR_HAMLETS_AP = "wardsOrHamletsList_ap";
+	public static final String BOOTHS_AP = "boothsList_ap";
+	
+	
 	//contains social categories like sc, st etc.
 	public static final String SOCIALCATEGORIES = "socialStatus";
 	// contains educational qualifications
