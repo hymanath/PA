@@ -469,12 +469,13 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 			}
 		}
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM,stateId);
-		session.setAttribute(ISessionConstants.STATES, stateList);
-		session.setAttribute(ISessionConstants.DISTRICTS, districtList);
-		session.setAttribute(ISessionConstants.CONSTITUENCIES, constituencyList);
-		session.setAttribute(ISessionConstants.P_CONSTITUENCIES, pConstituencyList);
-		session.setAttribute(ISessionConstants.MANDALS, mandalList);
-		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, wardsOrHamletsList);
+		session.setAttribute(ISessionConstants.STATES_AP, stateList);
+		session.setAttribute(ISessionConstants.DISTRICTS_AP, districtList);
+		session.setAttribute(ISessionConstants.CONSTITUENCIES_AP, constituencyList);
+		session.setAttribute(ISessionConstants.P_CONSTITUENCIES_AP, pConstituencyList);
+		session.setAttribute(ISessionConstants.MANDALS_AP, mandalList);
+		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS_AP, wardsOrHamletsList);
+		session.setAttribute(ISessionConstants.BOOTHS_AP,new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
 		}catch(Exception ex){
 			ex.printStackTrace();
