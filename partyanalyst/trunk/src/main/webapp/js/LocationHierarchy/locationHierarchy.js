@@ -196,6 +196,7 @@ function getSubRegionsInTehsilOrLocalElecBody(id,name,  module, addressType, are
 		alert("Select valid Mandal/Municipality/Corp/GMC");
 		return;
 	}	
+	
 	var scopeSelectEl = document.getElementById("scopeLevel");
 	var scopeSelected;
 	var constituencyEl = document.getElementById(constituencyField);
@@ -232,19 +233,19 @@ function getSubRegionsInTehsilOrLocalElecBody(id,name,  module, addressType, are
 		{
 			if(row6El.style.display == 'none')
 				row6El.style.display = '';
-			getLocationHierarchies(id,'boothsInTehsilOrMunicipality','cadreReg','boothField_s','cadreLevel', null,constituencyElVal);
+			getLocationHierarchies(id,'boothsInTehsilOrMunicipality',module,'boothField_s',addressType, null,constituencyElVal);
 		} else {
 			if(row5El.style.display == 'none')
 				row5El.style.display = '';
 			if(row6El.style.display == 'none')
 				row6El.style.display = '';
 			clearOptionsListForSelectElmtId('boothField_s');
-			getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', null,null);
+			getLocationHierarchies(id,'hamletsOrWardsInRegion',module,'hamletField_s',addressType, null,null);
 		}	
 	}
 	
 	else if(scopeSelected == 'WARD' || scopeSelected == 'VILLAGE' ) {
-		getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s','cadreLevel', null,null);
+		getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s',addressType, null,null);
 	}
 	
 	
