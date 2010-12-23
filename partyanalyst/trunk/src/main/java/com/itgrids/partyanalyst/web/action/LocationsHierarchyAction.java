@@ -168,6 +168,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			{
 				session.setAttribute(ISessionConstants.DISTRICTS_C, districts);
 			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.DISTRICTS_AP, districts);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
 		{
 			//to fetch all assembly constituencies in district
@@ -186,6 +190,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
 				session.setAttribute(ISessionConstants.CONSTITUENCIES_C, constituencies);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.CONSTITUENCIES_AP, constituencies);
 			}
 		} else if(jObj.getString("task").equalsIgnoreCase("subRegionsInConstituency"))
 		{
@@ -207,6 +215,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			{
 				session.setAttribute(ISessionConstants.MANDALS_C, subRegions);
 			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.MANDALS_AP, subRegions);
+			}
 		}  else if(jObj.getString("task").equalsIgnoreCase("hamletsOrWardsInRegion"))
 		{
 			//to get hamlets if the selected area is of type rural , to get wards if the selected area type is urban, both(hamlets and wards) if the selected area is of type urban-rural
@@ -225,6 +237,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
 				session.setAttribute(ISessionConstants.VILLAGES_C, hamletsOrWards);
+			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.VILLAGES_AP, hamletsOrWards);
 			}
 		} else if(jObj.getString("task").equalsIgnoreCase("localElectionBodiesOfDistrict"))
 		{
@@ -289,6 +305,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			{
 				session.setAttribute(ISessionConstants.BOOTHS_C, booths);
 			}
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.BOOTHS_AP, booths);
+			}
 		}  else if(jObj.getString("task").equalsIgnoreCase("boothsInWard"))
 		{
 			//to get all booths in ward  
@@ -297,6 +317,10 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			List<SelectOptionVO> booths = getRegionServiceDataImp().getboothsInWard(locationId, new Long(IConstants.PRESENT_ELECTION_YEAR), constituencyId);
 			booths.add(0, new SelectOptionVO(0l, "Select Location"));
 			setRegionsList(booths);
+			if(jObj.getString("address").equalsIgnoreCase("currentAdd") && jObj.getString("taskType").equalsIgnoreCase("newProblemPost"))
+			{
+				session.setAttribute(ISessionConstants.BOOTHS_AP, booths);
+			}
 		} else if(jObj.getString("task").equalsIgnoreCase("localBodiesInConstituency"))
 		{
 			//to get all booths in ward  
