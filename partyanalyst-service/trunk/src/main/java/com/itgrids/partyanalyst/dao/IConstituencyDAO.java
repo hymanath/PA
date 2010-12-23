@@ -51,6 +51,9 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Constituency> findByConstituencyNameAndDistrictId(String constituencyName,Long districtId);
 	
+	@SuppressWarnings("unchecked")
+	public List findByConstituencyIdConstituencyNameAndDistrictId(String constituencyName,Long districtId);
+	
 	public List<Constituency> findByConstituencyNameAndDistrictId(String constituencyName,Long districtId,String electionType);
 	
 	public List findConstituencyByDistrictElectionType(Long districtId, String electionType);
@@ -119,4 +122,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> findByConstituencyNamesForAssembly(String searchText,String stateStr,String sortoption,String order,Integer startIndex,Integer maxResult);
 	public List<Object[]> findByConstituencyNamesForPalriament(String searchText,String stateStr,String sortoption,String order,Integer startIndex,Integer maxResult);
 	public Object totalSearchCount(String searchText,Long electionType,String state);
+	
+	@SuppressWarnings("unchecked")
+	public List getWardIdByWardNameAndLocalBodyId(String wardName,Long localBodyId);
 }

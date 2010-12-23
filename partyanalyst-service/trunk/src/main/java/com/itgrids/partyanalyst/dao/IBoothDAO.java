@@ -30,6 +30,9 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List findByConstituencyAndElectionYear(Long constituencyId, Long year);
 	
 	public List findByPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo);
+	
+	@SuppressWarnings("unchecked")
+	public List findBoothIdPartNoConstituencyIdAndYear(Long constituencyId, Long year, String partNo);
 
 	public List<Booth> findbyConstituencyNameDistrictIdPartnoAndElectionYear(
 			String acName, Long districtId, Long electionYear, String partNumber);

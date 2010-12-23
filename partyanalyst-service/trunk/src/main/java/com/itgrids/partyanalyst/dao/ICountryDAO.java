@@ -37,5 +37,8 @@ public interface ICountryDAO extends GenericDao<Country, Long>{
 	public List<Country> findByCapital(Object capital);
 
 	public List<Country> findByIsoCode(Object isoCode);
+	
+	@SuppressWarnings("unchecked")
+	public List getCountryIdByCountryName(String name);
 
 }

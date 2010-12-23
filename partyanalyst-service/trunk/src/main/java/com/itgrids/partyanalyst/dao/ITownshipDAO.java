@@ -42,6 +42,9 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List<Township> findByTehsilID(Long mandalID);
 	
 	public List<Township> findByTownshipNameAndTehsilId(String townshipName,Long tehsilId);
+	
+	@SuppressWarnings("unchecked")
+	public List findTownshipIdByTownshipNameAndTehsilId(String townshipName,Long tehsilId);
 
 	public List getStateToRevenueVillageByRV(String rvIDs);
 
