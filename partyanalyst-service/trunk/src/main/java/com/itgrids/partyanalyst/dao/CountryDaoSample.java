@@ -66,4 +66,9 @@ public class CountryDaoSample extends GenericDaoHibernate<Country, Long>
 		return null;
 	}
 
+	public List getCountryIdByCountryName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

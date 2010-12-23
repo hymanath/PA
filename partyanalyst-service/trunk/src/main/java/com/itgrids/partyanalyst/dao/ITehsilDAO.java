@@ -41,6 +41,9 @@ public interface ITehsilDAO extends GenericDao<Tehsil, Long>{
 	
 	public List<Tehsil> findByTehsilNameAndDistrict(String name, Long districtId);
 	
+	@SuppressWarnings("unchecked")
+	public List findTehsilIdByTehsilNameAndDistrict(String name, Long districtId);
+	
 	public List<Tehsil> findByState(Long stateId);
 	
 	public List<Tehsil> findByDistrict(Long districtId);

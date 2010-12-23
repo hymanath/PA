@@ -69,5 +69,8 @@ public interface IStateDAO extends GenericDao<State, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findStatesByCountryId(Long countryId);
+	
+	@SuppressWarnings("unchecked")
+	public List findStateIdByNameAndCountryId(String stateName,Long countryId);
 
 }
