@@ -35,7 +35,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.CadreDataColumnNames;
 import com.itgrids.partyanalyst.dto.GenericUploadDataVO;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -1174,47 +1173,6 @@ public class GenericUploadService implements IGenericUploadService {
 	}
 	
 		
-	public static void main(String args[]){
-		
-        try{
-			
-			InputStream myxls = new FileInputStream("workbook.xls");
-			HSSFWorkbook wb     = new HSSFWorkbook(myxls);
-			
-			HSSFSheet sheet = wb.getSheetAt(0);         // first sheet
-			HSSFRow row     = sheet.getRow(5);         // first row
-			HSSFCell cell1   = row.getCell(0);        // first cell
-			HSSFCell cell2   = row.getCell(1);       // second cell
-			HSSFCell cell3   = row.getCell(2);      // third cell
-			HSSFCell cell4   = row.getCell(3);     // fourth cell
-			
-			System.out.println("Total No Of  Sheets :" + wb.getNumberOfSheets());
-			System.out.println("Total No Of  Rows In Sheet 4 :" + sheet.getLastRowNum());
-			
-			System.out.println("First Cell No In Row 0 " + row.getFirstCellNum());
-			System.out.println("Last Cell No In Row 0 " + row.getLastCellNum());
-			System.out.println("Physical No Of Cells In Row 0 " + row.getPhysicalNumberOfCells());
-									
-			if(cell1 != null)
-			    System.out.println(cell1.getCellType() + " Is Data Type In Cell 1 in Row 0 , Data Is " + cell1.getRichStringCellValue().toString());
-			if(cell2 != null){
-			   // System.out.println(cell2.getCellType() + " Is Data Type In Cell 2 in Row 0 , Data Is " + cell2.getRichStringCellValue().toString());
-				Double num = cell2.getNumericCellValue();
-				System.out.println(" Data In Cell 2 :" + num.longValue());
-			}
-			if(cell3 != null)
-				System.out.println(cell3.getCellType() + " Is Data Type In Cell 3 in Row 0 , Data Is " + cell3.getRichStringCellValue().toString());
-			if(cell4 != null)
-				System.out.println(cell4.getCellType() + " Is Data Type In Cell 4 in Row 0 , Data Is " + cell4.getRichStringCellValue().toString());
-			
-		}catch(Exception ex){
-			ex.printStackTrace();
-			System.out.println("Exception Raised :"+ ex);
-		}
-		finally{
-			System.out.println("Entered Into Finally ..");
-		}
-	}
 	
 	
 }
