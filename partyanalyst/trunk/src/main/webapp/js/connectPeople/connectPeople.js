@@ -434,6 +434,10 @@ function callAjax(jsObj,url){
 					{
 						showAllConnectedUsersStatus(jsObj,results);
 					}
+					else if(jsObj.task == "connectToUser")
+					{
+						closeConnectPanel(jsObj,results);
+					}
 					
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -669,6 +673,7 @@ function buildPeopleYouMayKnowContent()
 	str += '	<table width="100%" class="peopleMayKnow_data_table">';
 	
 	var arrData = peopleYouMayKnowInfo.peopleYouMayKnow;
+
 	for(var i=0; i<arrData.length; i++)
 	{
 		str += '	<tr>';
@@ -687,7 +692,7 @@ function buildPeopleYouMayKnowContent()
 		str += '						<img height="15" width="15" src="images/icons/plusNew.png">';
 		str += '					</td>';
 		str += '					<td align="right">';
-		str += '<a class="peopleConnectAnc"  href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Connect\')">Connect</a>';		
+		str += '<a class="peopleConnectAnc"  href="javascript:{}" onclick="showConnectConfirmDialogBox(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\''+arrData[i].constituencyName+'\',\''+loginUserId+'\',\''+constituencyId+'\',\'CONSTITUENCY\',\''+constituencyName+'\')">Connect</a>';		
 		str += '					</td>';
 		str += '				</tr>';
 		str += '		</table>';
