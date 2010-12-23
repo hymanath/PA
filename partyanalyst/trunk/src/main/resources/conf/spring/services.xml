@@ -685,6 +685,19 @@
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	
+	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">
+	    <property name="countryDAO" ref="countryDAO" />
+	    <property name="stateDAO" ref="stateDAO" />
+	    <property name="districtDAO" ref="districtDAO" />
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="townshipDAO" ref="townshipDAO" />
+	    <property name="tehsilDAO" ref="tehsilDAO" />
+	    <property name="wardDAO" ref="wardDAO" />
+	    <property name="boothDAO" ref="boothDAO" />
+	    <property name="hamletDAO" ref="hamletDAO" />
+	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	</bean>
 
 </beans>		
 		
