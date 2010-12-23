@@ -1057,7 +1057,7 @@
 		<tr id="row4" style="display:none;">
 			<td width="200"><s:label for="mandalField" id="mandalLabel"  value="%{getText('subRegions')}" /><font class="requiredFont"> * </font></td>
 			<td>
-				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','null','cadreLevel','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+				<s:select id="mandalField_s" cssClass="regionSelect" name="cadreLevelMandal" list="#session.mandalsList_c" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreReg','cadreLevel','null','constituencyField_s', 'row6', 'row5');setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
 		</tr>					
 		<tr id="row5" style="display:none;">
