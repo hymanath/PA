@@ -270,11 +270,13 @@ public interface IConstants {
 	public static final String PARTY_ANALYST_USER = "PARTY_ANALYST_USER";
 	public static final String FREE_USER = "FREE_USER";
 	public static final String POLITICIAN = "POLITICIAN";
+	public static final String COUNTRY = "COUNTRY";
 	public static final String STATE = "STATE";
 	public static final String DISTRICT = "DISTRICT";
 	public static final String CONSTITUENCY = "CONSTITUENCY";
 	public static final String TEHSIL = "TEHSIL";
 	public static final String HAMLET = "HAMLET";
+	public static final String TOWNSHIP = "TOWNSHIP";
 	public static final String User = "User";
 	public static final String External_person = "External_person";
 	public static final String Call_Center = "Call_Center";
@@ -337,4 +339,9 @@ public interface IConstants {
     public static final String MUNICIPAL_CORP_GMC = "MUNICIPAL-CORP-GMC"; 
     
     public static final String APPROVED = "Approved"; 
+    public static final String NAME = "NAME"; 
+    public static final String CADRE = "CADRE"; 
+    public static final String FAMILY_MEMBERS = "FAMILY MEMBERS"; 
+    
+      
 }
