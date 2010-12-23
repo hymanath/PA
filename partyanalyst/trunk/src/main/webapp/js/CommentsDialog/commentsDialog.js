@@ -4,11 +4,22 @@ var addCommentsDialog;
 function showCommentsDialog(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status)
 {	
 	var elmt = document.getElementById('commentsDialogDiv');
-	var divChild = document.createElement('div');
-	divChild.setAttribute('id','addCommentDiv');
+
+	$( "#commentsDialogDiv" ).dialog({
+			title:"Add/View Your Reasons",
+			autoOpen: true,
+			show: "blind",
+			width: 900,
+			minHeight:400,
+			modal: true,
+			hide: "explode"
+		});
+
+	/*var divChild = document.createElement('div');
+	divChild.setAttribute('id','addCommentDiv');*/
 	var contentStr='';
-	contentStr+='<div class="hd" align="left">Add/View Your Reasons</div>';
-	contentStr+='<div class="bd" align="left">';
+	//contentStr+='<div class="hd" align="left">Add/View Your Reasons</div>';
+	contentStr+='<div align="left">';
 	contentStr+='<FIELDSET align="center">';
 	contentStr+='<LEGEND><B>Previous Reasons</B></LEGEND>';
 	contentStr+='<div id="candidateInfo" align="left"></div>';
@@ -60,7 +71,9 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	contentStr+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
 	contentStr+='</div>';
 	contentStr+='</div>';
-	divChild.innerHTML=contentStr;
+
+	elmt.innerHTML = contentStr;
+	/*divChild.innerHTML=contentStr;
 	elmt.appendChild(divChild);
 	
 	if(addCommentsDialog)
@@ -79,11 +92,27 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 			  y:400,				  
 			  buttons : []
              } ); 
-	addCommentsDialog.render();
+	addCommentsDialog.render();*/
 	//setFocus();
+	
+	
 	var commentsEl = document.getElementById("commentText").focus();	
+	sliderInit();
 	
 }
+
+function sliderInit() 
+{
+	var slider = YAHOO.widget.Slider.getHorizSlider("slider-bg", "slider-thumb", 0, 100);
+	slider.animate = true; 
+	slider.subscribe("change", function(offsetFromStart) {
+		
+	 var valnode = document.getElementById("slider-value");
+	 if(valnode)
+		valnode.innerHTML = offsetFromStart;
+	 });
+}
+
 function buildCommentsClassificationsOptions(results)
 {
 	
@@ -106,7 +135,7 @@ function buildCommentsClassificationsOptions(results)
 }
 
 function showPreviousComments(results,jsObj)
-{
+{	
 	var previousComments = results.candidateCommentsVO;
 	var previousCommentsEl = document.getElementById("previousComments");
 	var candidateInfoEl = document.getElementById("candidateInfo");
