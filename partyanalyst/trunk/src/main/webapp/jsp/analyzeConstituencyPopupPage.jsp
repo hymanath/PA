@@ -56,6 +56,17 @@
 
 	<!-- YUI Dependency files (End) -->
 	
+	<!-- JQuery files (Start) -->
+	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+	<!-- JQuery files (End) -->
+
 	<!-- Dependencies --> 
 	<script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script src="http://yui.yahooapis.com/2.8.2r1/build/dragdrop/dragdrop-min.js"></script>
@@ -84,7 +95,7 @@ body
 
 #analyzeContainerMain
 {
-	padding:40px;
+	padding:30px 40px 40px 40px;
 }
 
 .analyzeHeadingDiv
@@ -197,13 +208,34 @@ body
 	-moz-background-origin:padding;
 	background:transparent url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/skins/sam/bg-h.gif) no-repeat scroll 5px 0;
 	height:28px;
-	width:100px;
+	width:110px;
 } 
 .yui-skin-sam .yui-dt table {
 	border-collapse:separate;
 	border-spacing:0;
 	font-family:verdana;
 	font-size:11px;
+}
+
+#commentsDialogDiv_content
+{
+	color:#313C44;
+	line-height:18px;
+	padding:5px;
+	text-align:justify;	
+}
+
+#commentChangesTable th
+{
+	text-align:left;
+	font-size:11px;
+	color:#313C44;
+}
+
+#commentChangesTable td
+{
+	text-align:left;
+	color:#473722;
 }
 
 </style>
@@ -222,6 +254,9 @@ body
 	var hidden=1;
 	var displayBody;
 	var userName = '${sessionScope.UserName}';
+	
+	var previousScore = [];
+
 	function incrementHidden()
 	{
 		hidden++;
@@ -285,7 +320,7 @@ body
 	callAjax(jsObj,url);
 	}
 
-	function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName)
+	function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName,rank)
 	{
 		
 		var candidateId;
@@ -305,7 +340,8 @@ body
 				electionId: electionId,
 				electionType: electionType,
 				year: year,				
-				partyName: partyName,			
+				partyName: partyName,	
+				rank:rank,
 				task:"getPreviousComments"				
 			  }
 
@@ -324,16 +360,21 @@ body
 		var candidateId;
 		var constituencyId;
 		var commentCategoryId;
+		var commentCategoryName;
 		var alertMessageEl = document.getElementById("alertMessage"); 
 		var reasonSeverityElmt = document.getElementById("slider-value");
 		var reasonSeverityvalue = reasonSeverityElmt.innerHTML;
- 
+		var newPercentValue = '';
+		var postConfirmElmt = document.getElementById("commentsDialogDiv_content");
+		var decimalValue = '';
+				
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
 			if(commentCategoryEl)
 			{
 				commentCategoryId = commentCategoryEl.value;
+				commentCategoryName = commentCategoryEl.options[commentCategoryEl.selectedIndex].text;
 				
 			}	
 			partyId = '0';
@@ -352,29 +393,81 @@ body
 			alertMessageEl.innerHTML = 'Please Select Reason severity value!';
 			return;
 		} 
-		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
+		
+		decimalValue = reasonSeverityvalue/100
+		newPercentValue = (100 - reasonSeverityvalue)/100;		
+		
+		var newScore = [];
+		if(previousScore != null || previousScore.length > 0)
 		{
-			var jsObj={
-					electionId: electionId,
-					electionType: electionType,
-					year: year,
-					partyId: partyId,
-					candidateId: candidateId,
-					constituencyId: constituencyId,
-					commentDesc: commentVal,
-					postedBy: postedByVal,
-					category: category,
-					commentCategoryId: commentCategoryId,
-					reasonSeverityvalue: reasonSeverityvalue, 
-					task:"addNewComment"				
-				  }	 
+			for(var i=0; i<previousScore.length; i++)
+			{
+				var obj = {
+							reasons:previousScore[i].classification,
+							score:''
+							};								
+				var x = previousScore[i].score * newPercentValue;				
+				obj.score = Math.round(x*Math.pow(10,2))/Math.pow(10,2);
+				newScore.push(obj) ;
+			}
+						
+			var str = '';
+			str += '<div>';
+			str += 'The addition of '+commentCategoryName+' with significance '+reasonSeverityvalue+' will effect the significance of previously posted reasons in the following way - ';
+			str += '</div>';
+			str += '<table id="commentChangesTable">';
+			for(var i=0; i<newScore.length; i++)
+			{
+				str += '<tr>';
+				str += '<th>'+newScore[i].reasons+'</th>';
+				str += '<td> = </td>';
+				str += '<td>'+newScore[i].score+'</td>';
+				str += '</tr>';
+			}
+			str += '<tr>';
+			str += '<th>'+commentCategoryName+'</th>';
+			str += '<td> = </td>';
+			str += '<td>'+decimalValue+'</td>';
+			str += '</tr>';
+			str += '<table>';
 			
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
-			callAjax(jsObj,url);	
-			alertMessageEl.innerHTML = '';
 		}
-				
+		
+		$( "#commentsDialogDiv" ).dialog({
+			resizable: false,			
+			modal: true,
+			buttons: {
+				"Continue": function() {
+					$(this).dialog("close");
+					if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
+					{
+						var jsObj={
+								electionId: electionId,
+								electionType: electionType,
+								year: year,
+								partyId: partyId,
+								candidateId: candidateId,
+								constituencyId: constituencyId,
+								commentDesc: commentVal,
+								postedBy: postedByVal,
+								category: category,
+								commentCategoryId: commentCategoryId,
+								reasonSeverityvalue: reasonSeverityvalue, 
+								task:"addNewComment"				
+							  }	 						
+						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+						var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+						callAjax(jsObj,url);	
+						alertMessageEl.innerHTML = '';
+					}
+				},
+				Cancel: function() {
+					$(this).dialog("close");					
+				}
+			}
+		});
+		
+		postConfirmElmt.innerHTML = str;
 		
 	}
 	function getCandidatesResults(constElecId)
@@ -401,11 +494,11 @@ body
 		if(!elmtHead || !elmtBody)
 			return;
 
-		hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 		hStr+='<TR>';
-		hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		hStr+='<TD>'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</TD>';
-		hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		hStr+='<TD >'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</TD>';
+		hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		hStr+='</TR>';
 		hStr+='</TABLE>';	
 
@@ -413,21 +506,21 @@ body
 		var hStr = '';
 		if(results[0].electionType == 'Assembly')		
 		{
-			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 			hStr+='<TR>';
-			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-			hStr+='<TD><H3 style="width:585px;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
-			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><H3 style="width:auto;">'+constituencyName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			hStr+='</TR>';
 			hStr+='</TABLE>';
 		}
 		if(results[0].electionType == 'Parliament')
 		{
-			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			hStr+='<TABLE border="0" cellpadding="0" cellspacing="0" width="100%">';
 			hStr+='<TR>';
-			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-			hStr+='<TD><H3 style="width:585px;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
-			hStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			hStr+='<TD><H3 style="width:auto;">'+parliamentConstiName+' '+results[0].electionType+' '+results[0].year+' Elections Results</H3></TD>';
+			hStr+='<TD width="3px"><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 			hStr+='</TR>';
 			hStr+='</TABLE>';
 		}	
@@ -455,9 +548,9 @@ body
 			else
 				rankStatus = "Lost";
 			if(i == 0)
-				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"></input>'
+				radioStr = '<input type="radio" name="candidateRadio" checked="checked" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>'
 			else
-				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\')"></input>' 	
+				radioStr = '<input type="radio" name="candidateRadio" value="'+results[i].id+'" onclick="showPostComments(this.value,\''+results[i].candidateName+'\',\'candidate\',\''+results[i].status+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+results[i].party+'\',\''+jsObj.task+'\',\'0\',\''+results[i].electionType+'\',\''+results[i].year+'\')"></input>' 	
 			var obj =	{
 							radio: radioStr,
 							candidateName:results[i].candidateName,
@@ -485,11 +578,11 @@ body
 
         var myDataTable = new YAHOO.widget.DataTable("candidateResults_body",
                 myColumnDefs, myDataSource);
-       showPostComments(results[0].id,results[0].candidateName,'candidate',results[0].status,constituencyId,constituencyName,results[0].party,jsObj.task,'0')
+       showPostComments(results[0].id,results[0].candidateName,'candidate',results[0].status,constituencyId,constituencyName,results[0].party,jsObj.task,'0',results[0].electionType,results[0].year)
 
 	}
 	
-	function showPostComments(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status)
+	function showPostComments(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status,electionType,year)
 	{
 		var elmtHead = document.getElementById("candidateComments_head");
 		var elmtBody = document.getElementById("candidateComments_body");
@@ -512,7 +605,11 @@ body
 		str+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		str+='<TR>';
 		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+'</H3></TD>';
+		if(rank == 1)
+			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Wining in '+year+' '+electionType+' Elections </H3></TD>';
+		else
+			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Losing in '+year+' '+electionType+' Elections </H3></TD>';
+
 		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
@@ -552,7 +649,7 @@ body
 		str+='</TR>';
 		str+='<TR>';
 		str+='<TD align="left" class="commentsInputTd" valign="top">Posted By*</TD>';	
-		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" readonly="true" id="commentPostedByText" name="commentPostedByText"/></TD>';
+		str+='<TD class="commentsInputTd" valign="top" align="left"><input type="text" style="width:300px;" id="commentPostedByText" name="commentPostedByText"/></TD>';
 		str+='</TR>';
 		str+='</TABLE>';
 		str+='</DIV>';
@@ -567,13 +664,16 @@ body
 		
 		elmtBody.innerHTML = str;
 
-		showExistingComments(id,candidateName,category,constituencyId,constituencyName,partyName);
 		var commentTextEl = document.getElementById("commentText");
 		if(commentTextEl)
 			commentTextEl.focus();
 		var commentPostedByTextEl = document.getElementById("commentPostedByText");
 		if(commentPostedByTextEl)
 			commentPostedByTextEl.value = userName;	
+		
+		showExistingComments(id,candidateName,category,constituencyId,constituencyName,partyName,rank);
+		sliderInit();
+		
 	}
 	function closeCurrentWindow()
 	{
@@ -655,17 +755,19 @@ body
 		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
 		contentStr+='<TR>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
-		contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' contested from '+party+' party in '+electionType+' '+year+' elections</H3></TD>';
+		if(jsObj.rank == 1)
+			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Winning in '+year+' '+electionType+' elections</H3></TD>';
+		else
+			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Losing in '+year+' '+electionType+' elections</H3></TD>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
 			
 		candidateInfoEl.innerHTML = contentStr;		
 			if(previousComments != null)
-			{	
-				
+			{					
 				for(var i in previousComments)
-				{
+				{					
 					var commentObj = {
 							comment: previousComments[i].commentDesc,
 							classification: previousComments[i].commentCategory,
@@ -673,13 +775,15 @@ body
 							date: previousComments[i].commentedOn,
 							score:previousComments[i].reasonScore
 							};
-					commentsData.push(commentObj);					
-				}			
+					commentsData.push(commentObj);
+					previousScore.push(commentObj);
+				}							
 				buildPreviousCommentsDataTable(commentsData);
-			} else 
-				{
+			} 
+			else 
+			{				
 				previousCommentsEl.innerHTML="0 Reasons posted for this candidate";
-				}	
+			}	
 	}
 
 	function buildPreviousCommentsDataTable(data)
@@ -718,12 +822,20 @@ body
 	function getElectionYears(value)
 	{
 		var id;
+		var elmt = document.getElementById("mainHeadingDiv");
+		if(!elmt)
+			return;
 
 		if(value == "assembly")
+		{
 			id = constituencyId;
+			elmt.innerHTML = 'Assess ${constituencyName} Assembly Constituency Elections Results';
+		}
 		else if(value == "parliament")
+		{
 			id = parliamentConstiId;
-		
+			elmt.innerHTML = 'Assess ${constituencyName} Parliament Constituency Elections Results';
+		}		
 		
 		var jsObj=
 		{
@@ -857,18 +969,30 @@ body
 		
 			
 	}
+	
+	function sliderInit() 
+	{
+		slider = YAHOO.widget.Slider.getHorizSlider("slider-bg", "slider-thumb", 0, 100);
+		slider.animate = true; 
+		slider.subscribe("change", function(offsetFromStart) {
+			
+		 var valnode = document.getElementById("slider-value");
+		 if(valnode)
+			valnode.innerHTML = offsetFromStart;
+		 });
+	}
 
 </script>
 </head>
 <body class="yui-skin-sam">
-	<div id="commentsDialogDiv"></div>
+	<div id="commentsDialogDiv"><div id="commentsDialogDiv_content"></div></div>
 	<div id="analyzeContainerMain">
 		<center>
 		<DIV id="pageHeading" style="margin:0px;">
 			<TABLE cellspacing="0" cellpadding="0" border="0">
 				<TR>
 					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
-					<TD valign="top"><DIV class="mainHeading" style="width:500px;">Assess ${constituencyName} Constituency Elections Results</DIV></TD>
+					<TD valign="top"><DIV id="mainHeadingDiv" class="mainHeading" style="width:500px;">Assess ${constituencyName} Assembly Constituency Elections Results</DIV></TD>
 					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
 				</TR>
 			</TABLE>
@@ -915,51 +1039,7 @@ body
 	</div>
 	
 	<script type="text/javascript">
-	(function() {
- var Event = YAHOO.util.Event,
- Dom = YAHOO.util.Dom,
- lang = YAHOO.lang,
- slider,
- bg="slider-bg", thumb="slider-thumb",
- valuearea="slider-value", textfield="slider-converted-value"
-
- // The slider can move 0 pixels up
- var topConstraint = 0;
-
- // The slider can move 200 pixels down
- var bottomConstraint = 100;
-
- var scaleFactor = 1.5;
- // The amount the slider moves when the value is changed with the arrow
- // keys
- var keyIncrement = 1;
-
- var tickSize = 1;
-
- Event.onDOMReady(function() {
-
- slider = YAHOO.widget.Slider.getHorizSlider(bg,
- thumb, topConstraint, bottomConstraint, 1);
-
- // Sliders with ticks can be animated without YAHOO.util.Anim
- slider.animate = true;
- slider.subscribe("change", function(offsetFromStart) {
-
- var valnode = Dom.get(valuearea);
- var fld = Dom.get(textfield);
-
- // Display the pixel value of the control
- valnode.innerHTML = offsetFromStart;
-
- // Update the title attribute on the background. This helps assistive
- // technology to communicate the state change
- Dom.get(bg).title = "slider value = " + actualValue;
-
- });
-
- });
-})(); 
-	executeOnload();
+		executeOnload();
 	</script>
 </body>
 </html>
