@@ -51,6 +51,17 @@
 
 <!-- YUI Dependency files (End) -->
 
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<!-- JQuery files (End) -->
+
 <!-- Dependencies --> 
 <script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="http://yui.yahooapis.com/2.8.2r1/build/dragdrop/dragdrop-min.js"></script>
@@ -70,6 +81,18 @@
 <c:if test="${electionType != 'Parliament' && rank =='1'}"><TITLE>${stateName} ${electionType} ${electionYear} Won Constituencies Results</TITLE></c:if>
 <c:if test="${electionType == 'Parliament' && rank =='0'}"><TITLE>${electionType} ${electionYear} Lost Constituencies Results</TITLE></c:if>
 <c:if test="${electionType == 'Parliament' && rank =='1'}"><TITLE>${electionType} ${electionYear} Won Constituencies Results</TITLE></c:if>
+
+<style type="text/css">
+
+#slider-bg
+{ 
+	background:url(http://yui.yahooapis.com/2.8.2r1/build/slider/assets/bg-fader.gif) 5px 0 no-repeat; 
+}
+.yui-skin-sam .yui-h-slider {		
+	width:110px;
+}
+</style>
+
 <SCRIPT type="text/javascript">
 var labelResources = { <%		
 		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
@@ -92,52 +115,6 @@ function incrementHidden()
 {
 	hidden++;
 }
-
-(function() {
- var Event = YAHOO.util.Event,
- Dom = YAHOO.util.Dom,
- lang = YAHOO.lang,
- slider,
- bg="slider-bg", thumb="slider-thumb",
- valuearea="slider-value", textfield="slider-converted-value"
-
- // The slider can move 0 pixels up
- var topConstraint = 0;
-
- // The slider can move 200 pixels down
- var bottomConstraint = 100;
-
- var scaleFactor = 1.5;
- // The amount the slider moves when the value is changed with the arrow
- // keys
- var keyIncrement = 1;
-
- var tickSize = 1;
-
- Event.onDOMReady(function() {
-
- slider = YAHOO.widget.Slider.getHorizSlider(bg,
- thumb, topConstraint, bottomConstraint, 1);
-
- // Sliders with ticks can be animated without YAHOO.util.Anim
- slider.animate = true;
- slider.subscribe("change", function(offsetFromStart) {
-
- var valnode = Dom.get(valuearea);
- var fld = Dom.get(textfield);
-
- // Display the pixel value of the control
- valnode.innerHTML = offsetFromStart;
-
- // Update the title attribute on the background. This helps assistive
- // technology to communicate the state change
- Dom.get(bg).title = "slider value = " + actualValue;
-
- });
-
- });
-})(); 
-executeOnload();
 
 function callAjax(param,jsObj,url){
 	var myResults;
