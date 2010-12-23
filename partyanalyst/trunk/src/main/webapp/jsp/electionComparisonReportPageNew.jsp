@@ -1189,7 +1189,7 @@ function callPartyPositionAjax(param,jsObj){
 				   },
 				   scope : this,
 				   failure : function( o ) {
-								alert( "Failed to load result" + o.status + " " + o.statusText);
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
 
@@ -1412,7 +1412,7 @@ function callAjax(param,jsObj){
 				   },
 				   scope : this,
 				   failure : function( o ) {
-								alert( "Failed to load result" + o.status + " " + o.statusText);
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
 
