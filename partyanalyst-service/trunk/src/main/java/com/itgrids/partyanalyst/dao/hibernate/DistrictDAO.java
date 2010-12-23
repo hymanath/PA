@@ -89,4 +89,11 @@ IDistrictDAO {
 		queryObject.setParameterList("stateIds", stateIds);
 		return queryObject.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getDistrictIdByStateIdAndDistrictName(Long stateID,
+			String districtName) {
+		Object[] params = {stateID, districtName};
+		return getHibernateTemplate().find("select model.districtId from District model where model.state.stateId = ? and model.districtName = ?", params);
+	}
 }
