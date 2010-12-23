@@ -1,0 +1,432 @@
+/* 
+ * Copyright (c) 2009 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on December 23,2010
+ */
+package com.itgrids.partyanalyst.dto;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author Sai Krishna
+ *
+ */
+public class GenericUploadDataVO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Long   cadreId;
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String name;
+	private String gender;
+	private Date   dateOfBirth;
+	private Long   age;
+	private String headOfFamily;
+	private String father;
+	private String spouse;
+	private Date   fatherOrSpouseDob;
+	private Long   fatherOrSpouseAge;
+	private String firstChild;
+	private String secondChild;
+	private String thirdChild;
+	private String fourthChild;
+	private String fifthChild;
+	private String mobile;
+	private String phoneNo;
+	private String email;
+	private String houseNo;
+	private String street;
+	private String education;
+	private String profession;
+	private String caste;
+	private String cadreLevel;
+	private String memberOfPartySince;
+	private String presentResponsibilityInParty;
+	private String pincode;
+	
+	private Boolean canSave;
+	
+	/**
+	 * @return the cadreId
+	 */
+	public Long getCadreId() {
+		return cadreId;
+	}
+	/**
+	 * @param cadreId the cadreId to set
+	 */
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * @return the middleName
+	 */
+	public String getMiddleName() {
+		return middleName;
+	}
+	/**
+	 * @param middleName the middleName to set
+	 */
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	/**
+	 * @return the gender
+	 */
+	public String getGender() {
+		return gender;
+	}
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	/**
+	 * @return the headOfFamily
+	 */
+	public String getHeadOfFamily() {
+		return headOfFamily;
+	}
+	/**
+	 * @param headOfFamily the headOfFamily to set
+	 */
+	public void setHeadOfFamily(String headOfFamily) {
+		this.headOfFamily = headOfFamily;
+	}
+	
+	/**
+	 * @return the mobile
+	 */
+	public String getMobile() {
+		return mobile;
+	}
+	/**
+	 * @param mobile the mobile to set
+	 */
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	/**
+	 * @return the phoneNo
+	 */
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	/**
+	 * @param phoneNo the phoneNo to set
+	 */
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return the houseNo
+	 */
+	public String getHouseNo() {
+		return houseNo;
+	}
+	/**
+	 * @param houseNo the houseNo to set
+	 */
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	/**
+	 * @return the education
+	 */
+	public String getEducation() {
+		return education;
+	}
+	/**
+	 * @param education the education to set
+	 */
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	/**
+	 * @return the profession
+	 */
+	public String getProfession() {
+		return profession;
+	}
+	/**
+	 * @param profession the profession to set
+	 */
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+	/**
+	 * @return the caste
+	 */
+	public String getCaste() {
+		return caste;
+	}
+	/**
+	 * @param caste the caste to set
+	 */
+	public void setCaste(String caste) {
+		this.caste = caste;
+	}
+	/**
+	 * @return the cadreLevel
+	 */
+	public String getCadreLevel() {
+		return cadreLevel;
+	}
+	/**
+	 * @param cadreLevel the cadreLevel to set
+	 */
+	public void setCadreLevel(String cadreLevel) {
+		this.cadreLevel = cadreLevel;
+	}
+	/**
+	 * @return the memberOfPartySince
+	 */
+	public String getMemberOfPartySince() {
+		return memberOfPartySince;
+	}
+	/**
+	 * @param memberOfPartySince the memberOfPartySince to set
+	 */
+	public void setMemberOfPartySince(String memberOfPartySince) {
+		this.memberOfPartySince = memberOfPartySince;
+	}
+	/**
+	 * @return the pincode
+	 */
+	public String getPincode() {
+		return pincode;
+	}
+	/**
+	 * @param pincode the pincode to set
+	 */
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+	/**
+	 * @return the canSave
+	 */
+	public Boolean getCanSave() {
+		return canSave;
+	}
+	/**
+	 * @param canSave the canSave to set
+	 */
+	public void setCanSave(Boolean canSave) {
+		this.canSave = canSave;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return the father
+	 */
+	public String getFather() {
+		return father;
+	}
+	/**
+	 * @param father the father to set
+	 */
+	public void setFather(String father) {
+		this.father = father;
+	}
+	/**
+	 * @return the spouse
+	 */
+	public String getSpouse() {
+		return spouse;
+	}
+	/**
+	 * @param spouse the spouse to set
+	 */
+	public void setSpouse(String spouse) {
+		this.spouse = spouse;
+	}
+	/**
+	 * @return the firstChild
+	 */
+	public String getFirstChild() {
+		return firstChild;
+	}
+	/**
+	 * @param firstChild the firstChild to set
+	 */
+	public void setFirstChild(String firstChild) {
+		this.firstChild = firstChild;
+	}
+	/**
+	 * @return the secondChild
+	 */
+	public String getSecondChild() {
+		return secondChild;
+	}
+	/**
+	 * @param secondChild the secondChild to set
+	 */
+	public void setSecondChild(String secondChild) {
+		this.secondChild = secondChild;
+	}
+	/**
+	 * @return the thirdChild
+	 */
+	public String getThirdChild() {
+		return thirdChild;
+	}
+	/**
+	 * @param thirdChild the thirdChild to set
+	 */
+	public void setThirdChild(String thirdChild) {
+		this.thirdChild = thirdChild;
+	}
+	/**
+	 * @return the fourthChild
+	 */
+	public String getFourthChild() {
+		return fourthChild;
+	}
+	/**
+	 * @param fourthChild the fourthChild to set
+	 */
+	public void setFourthChild(String fourthChild) {
+		this.fourthChild = fourthChild;
+	}
+	/**
+	 * @return the fifthChild
+	 */
+	public String getFifthChild() {
+		return fifthChild;
+	}
+	/**
+	 * @param fifthChild the fifthChild to set
+	 */
+	public void setFifthChild(String fifthChild) {
+		this.fifthChild = fifthChild;
+	}
+	/**
+	 * @return the street
+	 */
+	public String getStreet() {
+		return street;
+	}
+	/**
+	 * @param street the street to set
+	 */
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	/**
+	 * @return the presentResponsibilityInParty
+	 */
+	public String getPresentResponsibilityInParty() {
+		return presentResponsibilityInParty;
+	}
+	/**
+	 * @param presentResponsibilityInParty the presentResponsibilityInParty to set
+	 */
+	public void setPresentResponsibilityInParty(String presentResponsibilityInParty) {
+		this.presentResponsibilityInParty = presentResponsibilityInParty;
+	}
+	/**
+	 * @return the dateOfBirth
+	 */
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+	/**
+	 * @param dateOfBirth the dateOfBirth to set
+	 */
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	/**
+	 * @return the age
+	 */
+	public Long getAge() {
+		return age;
+	}
+	/**
+	 * @param age the age to set
+	 */
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	/**
+	 * @return the fatherOrSpouseAge
+	 */
+	public Long getFatherOrSpouseAge() {
+		return fatherOrSpouseAge;
+	}
+	/**
+	 * @param fatherOrSpouseAge the fatherOrSpouseAge to set
+	 */
+	public void setFatherOrSpouseAge(Long fatherOrSpouseAge) {
+		this.fatherOrSpouseAge = fatherOrSpouseAge;
+	}
+	/**
+	 * @return the fatherOrSpouseDob
+	 */
+	public Date getFatherOrSpouseDob() {
+		return fatherOrSpouseDob;
+	}
+	/**
+	 * @param fatherOrSpouseDob the fatherOrSpouseDob to set
+	 */
+	public void setFatherOrSpouseDob(Date fatherOrSpouseDob) {
+		this.fatherOrSpouseDob = fatherOrSpouseDob;
+	}
+		
+
+}
