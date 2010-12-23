@@ -7,7 +7,7 @@
 <link href="<s:url value='/styles/table.css'/>" rel="stylesheet" type="text/css" media="all"/>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Party Performance Report</title>
+<title>Party Performance Report</title> 
 <!-- YUI Dependency Files-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -175,7 +175,7 @@ function callAjax(param,jsObj,url){
 				   },
 				   scope : this,
 				   failure : function( o ) {
-								alert( "Failed to load result" + o.status + " " + o.statusText);
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
 
@@ -197,7 +197,7 @@ function callPositionAjax(param,jsObj){
 				   },
 				   scope : this,
 				   failure : function( o ) {
-								alert( "Failed to load result" + o.status + " " + o.statusText);
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
 							 }
 				   };
 
