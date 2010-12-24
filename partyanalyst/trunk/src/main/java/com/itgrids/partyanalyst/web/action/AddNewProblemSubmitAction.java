@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
@@ -315,7 +316,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public Long getProblemLocationId() {
 		return problemBeanVO.getProblemImpactLevelValue();
 	}
-
+	
+	@RequiredFieldValidator(type = ValidatorType.FIELD, message = "Problem Location is Mandatory",shortCircuit=true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Select valid Problem Location")	
 	public void setProblemLocationId(Long problemLocationId) {
 		this.problemBeanVO.setProblemImpactLevelValue(problemLocationId);
 	}	
