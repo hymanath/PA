@@ -245,7 +245,7 @@ function getSubRegionsInTehsilOrLocalElecBody(id,name,  module, addressType, are
 	}
 	
 	else if(scopeSelected == 'WARD' || scopeSelected == 'VILLAGE' ) {
-		getLocationHierarchies(id,'hamletsOrWardsInRegion','cadreReg','hamletField_s',addressType, null,null);
+		getLocationHierarchies(id,'hamletsOrWardsInRegion',module,'hamletField_s',addressType, null,null);
 	}
 	
 	
