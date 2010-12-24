@@ -577,11 +577,11 @@ public class GenericUploadService implements IGenericUploadService {
 			if(isBlankRow || isRegion || isHeader)
 				continue;
 			
-			Boolean isResultData = checkForResultDataToSave(row,excelHeaderInfo);
+			Boolean isResultData = checkForResultDataToSave(row,excelHeaderInfo,rowIndex,totRows);
 			//Record Details Are Available and Ready To Save
 			if(isResultData){
 				//call service method to save cadre details...
-				
+				displayResult();
 				
 				//set genericUploadDataVO canSave method to false after saving data
 				this.genericUploadDataVO = new GenericUploadDataVO();
@@ -600,6 +600,28 @@ public class GenericUploadService implements IGenericUploadService {
 			setExcelDataToBeSavedToVO(row,excelHeaderInfo);
 			
 			continue;			
+		}
+	}
+	
+	/**
+	 * Display the result before saving
+	 */
+	private void displayResult(){
+		
+		if(log.isDebugEnabled())
+			log.debug("Result Is Ready To Save ..");
+		
+		if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+			
+			log.debug(" Cadre Data To Save ..");
+			log.debug(" Head Of Family :" + this.genericUploadDataVO.getHeadOfFamily());
+			log.debug(" Spouse         :" + this.genericUploadDataVO.getSpouse());
+			log.debug(" Father         :" + this.genericUploadDataVO.getFather());
+			log.debug(" Child1         :" + this.genericUploadDataVO.getFirstChild());
+			log.debug(" Child2         :" + this.genericUploadDataVO.getSecondChild());
+			log.debug(" Education      :" + this.genericUploadDataVO.getEducation());
+			log.debug(" Profession     :" + this.genericUploadDataVO.getProfession());
+			log.debug(" ..........................");
 		}
 	}
 	
@@ -894,12 +916,25 @@ public class GenericUploadService implements IGenericUploadService {
 	 * @return
 	 * @throws Exception
 	 */
-	private Boolean checkForResultDataToSave(HSSFRow row,Map<String,Integer> excelHeaderInfo) throws Exception{
+	private Boolean checkForResultDataToSave(HSSFRow row,Map<String,Integer> excelHeaderInfo,Integer rowIndex,Integer totRows) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Checking wheather To Save Data Or Not ..");
 		
 		Boolean isResultData = false;
+		
+		//if last row in sheet and check wheather ready to save
+		if(rowIndex == totRows){
+			
+			if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+				
+				if(log.isDebugEnabled())
+					log.debug("Last Record Is Ready To Save ..");
+				return true;
+			}
+		}
+		
+		//check wheather data is ready to save
 		if(!excelHeaderInfo.isEmpty()){
 			
 			Integer snoCellNo = excelHeaderInfo.get(IConstants.SNO);
@@ -958,10 +993,21 @@ public class GenericUploadService implements IGenericUploadService {
 			return isRegion;
 		
 		//check for region field
-		if(cell0 != null && cell0.getCellType() == HSSFCell.CELL_TYPE_STRING && cell1 != null && cell1.getCellType() == HSSFCell.CELL_TYPE_STRING){
+		if(cell0 != null && cell0.getCellType() == HSSFCell.CELL_TYPE_STRING && cell1 != null && cell1.getCellType() == HSSFCell.CELL_TYPE_STRING || cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
 			
 			String regionType = cell0.getRichStringCellValue().toString();
-			String regionName = cell1.getRichStringCellValue().toString();
+			String regionName = "";
+			
+			if(cell1.getCellType() == HSSFCell.CELL_TYPE_STRING)
+				regionName = cell1.getRichStringCellValue().toString();
+			
+			else if(cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+				
+				Double cellVal     = cell1.getNumericCellValue();
+				Long cellLongvalue = cellVal.longValue();
+				regionName         = cellLongvalue.toString();
+			}
+			
 			if(regionsMap.containsKey(regionType)){
 				getRegionDetailsByRegionName(regionType,regionName);
 				
@@ -969,6 +1015,7 @@ public class GenericUploadService implements IGenericUploadService {
 				if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
 					
 					//call service method to save data
+					displayResult();
 					
 					//set genericUploadDataVO canSave method to false after saving data
 					this.genericUploadDataVO = new GenericUploadDataVO();
@@ -991,6 +1038,48 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Started Checking Wheather The Row Contains Header Data ..");
 		Boolean isHeader = false;
+		
+		int i=0;
+		//To get column which begins with data without blank
+		for(;i<=row.getPhysicalNumberOfCells();){
+			HSSFCell cell  = row.getCell(i);
+			if(cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+				continue;
+		}
+		
+		if(i < row.getPhysicalNumberOfCells()){
+			
+			HSSFCell cell0  = row.getCell(i);
+			
+			//check for cell data is not blank
+			if(cell0 != null && cell0.getCellType()!= HSSFCell.CELL_TYPE_BLANK){
+				
+				if(cell0.getCellType() == HSSFCell.CELL_TYPE_STRING){
+					
+					String cellValue = cell0.getRichStringCellValue().getString();
+					if(cellValue.equalsIgnoreCase(IConstants.SNO)){
+						
+						isHeader = true;	
+						if(log.isDebugEnabled())
+							log.debug("Header Data Found ..");
+						
+						//Iterate Until Header Data Is Available
+						while(isHeader){
+							
+							//add header data to header map
+							excelHeaderInfo.put(cellValue, i);
+							cell0  = row.getCell(++i);
+							
+							if(cell0 == null || cell0.getCellType()!= HSSFCell.CELL_TYPE_BLANK)
+								break;
+							
+							cellValue = cell0.getRichStringCellValue().getString();
+						}
+						
+					}
+				}
+			}
+		}
 		
 	 return isHeader;
 	}
@@ -1172,7 +1261,23 @@ public class GenericUploadService implements IGenericUploadService {
 	 this.regionsMap = regionMap;
 	}
 	
+	/*	
+    public static void main(String args[]){
 		
+        try{
+			
+        	File upFile = new File("cadreUpload.xls");
+        	GenericUploadService cadreUpload = new GenericUploadService();
+        	cadreUpload.interpretDataInExcelAndSetToVO(upFile, IConstants.CADRE, 1L);
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :"+ ex);
+		}
+		finally{
+			
+		}
+	}*/
 	
 	
 }
