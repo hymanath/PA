@@ -599,7 +599,7 @@ function populateLocations(val,source)
 		
 	} else if(source == "onLoad")
 		{
-		setLocationValue(accessValue,'onLoad');
+		setLocationValue(accessValue,'onChange');
 			if(val == 9)
 			{
 				mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
@@ -705,8 +705,59 @@ function setLocationValue(value, source)
 		return;
 	}	
 	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s");
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
+
 	hiddenEl.value = '';
-	hiddenEl.value = value;
+	var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	if(stateFieldEl.options.length > 0)
+		var selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value;
+	if(districtFieldEl.options.length > 0)
+		var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;
+	if(constituencyFieldEl.options.length > 0)
+		 var selectedConstituency = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
+	if(mandalFieldEl.options.length > 0)
+		var selectedMandal = mandalFieldEl.options[mandalFieldEl.selectedIndex].value;
+	if(hamletFieldEl.options.length > 0)
+		var selectedHamlet = hamletFieldEl.options[hamletFieldEl.selectedIndex].value;
+	if(boothFieldEl.options.length > 0)
+		var selectedBooth = boothFieldEl.options[boothFieldEl.selectedIndex].value;
+	if(source == 'onChange'){
+
+		if(scopeLevelElVal == 2 && selectedState != 0)
+		{	
+			hiddenEl.value = selectedState;
+		}	
+		if(scopeLevelElVal == 3 && selectedDistrict != 0)
+		{
+			hiddenEl.value = selectedDistrict;
+		}		
+		if(scopeLevelElVal == 4 && selectedConstituency != 0)
+		{
+			hiddenEl.value = selectedConstituency;
+		}	
+		if((scopeLevelElVal == 5 || scopeLevelElVal == 7) && selectedMandal != 0)
+		{
+			hiddenEl.value = selectedMandal;
+		}	
+		if((scopeLevelElVal == 6 || scopeLevelElVal == 8) && selectedHamlet != 0)
+		{
+			hiddenEl.value = selectedHamlet;
+		}	
+		if(scopeLevelElVal == 9 && selectedBooth != 0)
+		{
+			hiddenEl.value = selectedBooth;
+		}				
+		
+	} else if(source == 'onLoad'){
+		return;
+	}
+	
 }
 
 function refreshParentWindow()
