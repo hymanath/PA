@@ -193,13 +193,13 @@ function limitText(limitField, limitCount, limitNum)
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','newProblemPost','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
 						<tr id="row2" style="display:none;">
 							<td><%=DISTRICT%><font class="requiredFont"> * </font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								<s:select id="districtField_s" cssClass="selectWidth" name="district" list="#session.districtsList_ap" listKey="id" listValue="name" value="defaultDistrict" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
 					</c:if>
@@ -207,32 +207,32 @@ function limitText(limitField, limitCount, limitNum)
 						<tr id="row1" style="display:none;">
 							<td><%=STATE%><font class="requiredFont">*</font></td>
 							<td style="padding-left: 15px;">
-								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+								<s:select id="stateField_s" cssClass="selectWidth" name="state" list="#session.statesList_ap" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','newProblemPost','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</td>
 						</tr>
 						<TR id="row2" style="display:none;">	
 							<TD><%=PCONSTITUENCY%></TD>
 							<TD style="padding-left: 15px;">
-							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="pConstituencyField_s" cssClass="selectWidth" name="pConstituencyId" list="#session.p_constituencies_ap" listKey="id" listValue="name" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','newProblemPost','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 							</TD>
 						</TR>
 					</c:if>
 					<tr id="row3" style="display:none;">
 						<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="constituencyField_s" cssClass="selectWidth" name="constituency" list="#session.constituenciesList_ap" listKey="id" listValue="name" value="defaultConstituency" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'newProblemPost','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>								
 					<tr id="row4" style="display:none;">
 						<td><%=MANDAL%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','null','currentAdd','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="mandalField_s" cssClass="selectWidth" name="mandal" list="#session.mandalsList_ap" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'newProblemPost','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>					
 					<tr id="row5" style="display:none;">
 						<td><%=HAMLET%><font class="requiredFont"> * </font></td>
 						<td style="padding-left: 15px;">
-							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
+							<s:select id="hamletField_s" cssClass="selectWidth" name="village" list="#session.wardsOrHamletsList_ap" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'newProblemPost','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 						</td>
 					</tr>	
 					<tr id="row6" style="display:none;">
