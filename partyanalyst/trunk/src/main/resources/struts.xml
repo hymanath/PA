@@ -90,6 +90,7 @@
 		<action name="voterDataUpload"><result>/jsp/voterDataUpload.jsp</result></action>
 		<action name="problemDataUpload"><result>/jsp/ProblemUpload.jsp</result></action>
 		<action name="delimitationMappingsUpload"><result>/jsp/delimitationUpload.jsp</result></action>
+		<action name="genericModuleDataUpload"><result>/jsp/genericUpload.jsp</result></action>
 		<!-- Data Upload -->
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
@@ -1902,10 +1903,14 @@
 		    <result name="success">/jsp/problemCompleteDetailsPage.jsp</result>	
         </action>           
         <action name="delimitationMappingsUploadAction" class="delimitationMappingsUploadAction">
-			<result name="input">/jsp/delimitationUpload.jsp</result>
+		   <result name="input">/jsp/delimitationUpload.jsp</result>
            <result name="success">/jsp/delimitationUpload.jsp</result>
         </action>
-            
-               
+        
+        <action name="genericUploadAction" class="genericUploadAction">
+           <result name="input">/jsp/genericUpload.jsp</result>
+		   <result name="success">/jsp/genericUpload.jsp</result>
+	    </action>
+                
 	</package>
 </struts>
