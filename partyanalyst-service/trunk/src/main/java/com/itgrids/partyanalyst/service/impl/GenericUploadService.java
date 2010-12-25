@@ -36,10 +36,13 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.GenericUploadDataVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.service.IGenericUploadDataService;
 import com.itgrids.partyanalyst.service.IGenericUploadService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -78,9 +81,12 @@ public class GenericUploadService implements IGenericUploadService {
 	private Map<String,Long> regionsMap;
 	private GenericUploadDataVO genericUploadDataVO;
 	
+	private Long userId;
 	private String module;
 		
 	private static Logger log = Logger.getLogger(GenericUploadService.class);
+	
+	private IGenericUploadDataService genericUploadDataService;
 
 	/**
 	 * @return the wardDAO
@@ -405,6 +411,21 @@ public class GenericUploadService implements IGenericUploadService {
 	}
 
 	/**
+	 * @return the genericUploadDataService
+	 */
+	public IGenericUploadDataService getGenericUploadDataService() {
+		return genericUploadDataService;
+	}
+
+	/**
+	 * @param genericUploadDataService the genericUploadDataService to set
+	 */
+	public void setGenericUploadDataService(
+			IGenericUploadDataService genericUploadDataService) {
+		this.genericUploadDataService = genericUploadDataService;
+	}
+
+	/**
 	 * @return the totalNoOfSheets
 	 */
 	public Integer getTotalNoOfSheets() {
@@ -445,6 +466,20 @@ public class GenericUploadService implements IGenericUploadService {
 	 */
 	public void setGenericUploadDataVO(GenericUploadDataVO genericUploadDataVO) {
 		this.genericUploadDataVO = genericUploadDataVO;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	/**
@@ -493,7 +528,7 @@ public class GenericUploadService implements IGenericUploadService {
 	 * @return UploadDataErrorMessageVO - which contains upload status
 	 */
 	public UploadDataErrorMessageVO interpretDataInExcelAndSetToVO(
-			File uploadFile,String module,Long countryId) {
+			File uploadFile,String module,Long countryId,Long userId) {
 		
 		if(log.isDebugEnabled())
 			log.debug("Started To Get HSSFWorkbook From Input Excel File ..");
@@ -501,6 +536,7 @@ public class GenericUploadService implements IGenericUploadService {
 		UploadDataErrorMessageVO uploadDataStatusVO = new UploadDataErrorMessageVO();
 		try{
 			
+			this.userId = userId;
 			this.module = module;
 			this.countryId = countryId;
 			this.uploadFile = uploadFile;
@@ -575,7 +611,7 @@ public class GenericUploadService implements IGenericUploadService {
 					
 					if(log.isDebugEnabled())
 						log.debug("Last Record Is Ready To Save ..");
-					displayResult();
+					saveResult();
 					break;
 				}
 			}
@@ -597,7 +633,7 @@ public class GenericUploadService implements IGenericUploadService {
 			//Record Details Are Available and Ready To Save
 			if(isResultData){
 				//call service method to save cadre details...
-				displayResult();
+				saveResult();
 				
 				//set genericUploadDataVO canSave method to false after saving data
 				this.genericUploadDataVO = new GenericUploadDataVO();
@@ -622,22 +658,27 @@ public class GenericUploadService implements IGenericUploadService {
 	/**
 	 * Display the result before saving
 	 */
-	private void displayResult(){
+	private void saveResult() throws Exception{
 		
-		if(log.isDebugEnabled())
-			log.debug("Result Is Ready To Save ..");
-		
+			
 		if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
 			
-			log.debug(" Cadre Data To Save ..");
-			log.debug(" Head Of Family :" + this.genericUploadDataVO.getHeadOfFamily());
-			log.debug(" Spouse         :" + this.genericUploadDataVO.getSpouse());
-			log.debug(" Father         :" + this.genericUploadDataVO.getFather());
-			log.debug(" Child1         :" + this.genericUploadDataVO.getFirstChild());
-			log.debug(" Child2         :" + this.genericUploadDataVO.getSecondChild());
-			log.debug(" Education      :" + this.genericUploadDataVO.getEducation());
-			log.debug(" Profession     :" + this.genericUploadDataVO.getProfession());
-			log.debug(" ..........................");
+			if(log.isDebugEnabled())
+				log.debug("Result Is Ready To Save ..");
+			
+			this.genericUploadDataVO.setStateId(this.stateId);
+			this.genericUploadDataVO.setDistrictId(this.districtId);
+			this.genericUploadDataVO.setConstituencyId(this.constituencyId);
+			this.genericUploadDataVO.setLocalBodyId(this.localelectionBodyId);
+			this.genericUploadDataVO.setMandalId(this.tehsilId);
+			this.genericUploadDataVO.setVillageId(this.townshipId);
+			this.genericUploadDataVO.setWardId(this.wardId);
+			this.genericUploadDataVO.setBoothId(this.boothId);
+			
+			//call save service
+			ResultStatus rs = genericUploadDataService.saveGenericUploadData(this.userId, this.genericUploadDataVO, this.module);
+			if(rs.getResultCode() == ResultCodeMapper.FAILURE)
+				throw new Exception(rs.getExceptionEncountered());
 		}
 	}
 	
@@ -1018,7 +1059,7 @@ public class GenericUploadService implements IGenericUploadService {
 				if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
 					
 					//call service method to save data
-					displayResult();
+					saveResult();
 					
 					//set genericUploadDataVO canSave method to false after saving data
 					this.genericUploadDataVO = new GenericUploadDataVO();
