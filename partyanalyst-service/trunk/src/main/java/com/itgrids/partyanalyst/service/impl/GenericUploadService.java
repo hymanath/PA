@@ -512,7 +512,7 @@ public class GenericUploadService implements IGenericUploadService {
 			readAndPersistExcelData(uploadDataStatusVO);
 			
 		}catch(Exception ex){
-			
+			ex.printStackTrace();
 			log.error("Exception Raised While Reading The Excel data :" + ex);
 			uploadDataStatusVO.setExceptionEncountered(ex);
 			uploadDataStatusVO.setResultPartial(true);
@@ -566,6 +566,19 @@ public class GenericUploadService implements IGenericUploadService {
 		for(int rowIndex=0;rowIndex<=totRows;rowIndex++){
 			
 			HSSFRow row = currentSheet.getRow(rowIndex);
+			
+			//save data if it is last record..
+			//if last row in sheet and check wheather ready to save
+			if(rowIndex == totRows){
+				
+				if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+					
+					if(log.isDebugEnabled())
+						log.debug("Last Record Is Ready To Save ..");
+					displayResult();
+					break;
+				}
+			}
 			
 			//Check for blank row
 			Boolean isBlankRow = checkForBlankRow(row);
@@ -639,16 +652,13 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Started Setting Excel Data To VO ..");
 		
-		Integer dobCellNO = 0;
-		Integer nameCellNO = 0;
-		
+		Integer familyCellNO = 0;
+				
 		if(!excelHeaderInfo.isEmpty()){
 			
-			if(excelHeaderInfo.containsKey("DOB"))
-				dobCellNO = excelHeaderInfo.get("DOB");
-			if(excelHeaderInfo.containsKey(IConstants.NAME))
-				nameCellNO = excelHeaderInfo.get(IConstants.NAME);
-			
+			if(excelHeaderInfo.containsKey("familyMembers"))
+				familyCellNO = excelHeaderInfo.get("familyMembers");
+						
 			
 			//Iterate Thru Headers and fill appropriate data to VO
 			for(String headers:excelHeaderInfo.keySet()){
@@ -665,11 +675,11 @@ public class GenericUploadService implements IGenericUploadService {
 				//check and save name in VO
                 if(headers.equalsIgnoreCase(IConstants.NAME)){
 					
-                	checkAndSaveNameDetailsInVO(row,cellNO,this.module,nameCellNO);
+                	checkAndSaveNameDetailsInVO(row,cellNO,this.module,familyCellNO);
 					continue;
 				}else if(headers.equalsIgnoreCase("DOB")){
 					
-					checkAndSaveDOBDetails(row,cellNO,this.module,dobCellNO);
+					checkAndSaveDOBDetails(row,cellNO,this.module,familyCellNO);
 					continue;
 				}
 				
@@ -745,9 +755,10 @@ public class GenericUploadService implements IGenericUploadService {
 					if(HSSFDateUtil.isCellDateFormatted(cellData)){
 						this.genericUploadDataVO.setDateOfBirth(cellData.getDateCellValue());
 					}
-				}else{
+				    else{
 					Double age = cellData.getNumericCellValue();
 					this.genericUploadDataVO.setAge(age.longValue());
+				    }
 				}
 			}
 				
@@ -845,8 +856,8 @@ public class GenericUploadService implements IGenericUploadService {
 			Date dateCellValue = new Date();
 			
 			//using reflection mechanism to set data to appropriate fields in VO
-			Class cls   = GenericUploadDataVO.class;
-			Field field = cls.getDeclaredField(header);
+			Class cls   = this.genericUploadDataVO.getClass();
+			Field field = cls.getField(header);
 			
 			//check data type in cell
 			switch(dataCell.getCellType()){
@@ -877,7 +888,7 @@ public class GenericUploadService implements IGenericUploadService {
 			
 			//save cell data to VO appropriate field
 			if(!"".equalsIgnoreCase(cellValueToSave))
-				field.set(cls, cellValueToSave);
+				field.set(this.genericUploadDataVO, cellValueToSave);
 		}
 	}
 	
@@ -925,17 +936,6 @@ public class GenericUploadService implements IGenericUploadService {
 			log.debug("Checking wheather To Save Data Or Not ..");
 		
 		Boolean isResultData = false;
-		
-		//if last row in sheet and check wheather ready to save
-		if(rowIndex == totRows){
-			
-			if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
-				
-				if(log.isDebugEnabled())
-					log.debug("Last Record Is Ready To Save ..");
-				return true;
-			}
-		}
 		
 		//check wheather data is ready to save
 		if(!excelHeaderInfo.isEmpty()){
@@ -1075,7 +1075,7 @@ public class GenericUploadService implements IGenericUploadService {
 							excelHeaderInfo.put(cellValue, i);
 							cell0  = row.getCell(++i);
 							
-							if(cell0 == null || cell0.getCellType()!= HSSFCell.CELL_TYPE_BLANK)
+							if(cell0 == null || cell0.getCellType() == HSSFCell.CELL_TYPE_BLANK)
 								break;
 							
 							cellValue = cell0.getRichStringCellValue().getString();
