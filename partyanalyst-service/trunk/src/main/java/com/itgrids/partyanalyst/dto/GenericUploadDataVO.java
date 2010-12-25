@@ -52,8 +52,21 @@ public class GenericUploadDataVO implements Serializable {
 	public String presentResponsibilityInParty;
 	public String pincode;
 	public String familyMembers;
+	public String memberType;
 	
 	private Boolean canSave;
+	
+	
+	private Long stateId;
+	private Long districtId;
+	private Long constituencyId;
+	private Long mandalId;
+	private Long villageId;
+	private Long localBodyId;
+	private Long wardId;
+	private Long boothId;
+	private Long hamletId;
+	private Long parliamentConstiId;
 	
 	/**
 	 * @return the cadreId
@@ -439,6 +452,138 @@ public class GenericUploadDataVO implements Serializable {
 	 */
 	public void setFamilyMembers(String familyMembers) {
 		this.familyMembers = familyMembers;
+	}
+	/**
+	 * @return the stateId
+	 */
+	public Long getStateId() {
+		return stateId;
+	}
+	/**
+	 * @param stateId the stateId to set
+	 */
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	/**
+	 * @return the districtId
+	 */
+	public Long getDistrictId() {
+		return districtId;
+	}
+	/**
+	 * @param districtId the districtId to set
+	 */
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	/**
+	 * @return the constituencyId
+	 */
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	/**
+	 * @param constituencyId the constituencyId to set
+	 */
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	/**
+	 * @return the mandalId
+	 */
+	public Long getMandalId() {
+		return mandalId;
+	}
+	/**
+	 * @param mandalId the mandalId to set
+	 */
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	/**
+	 * @return the villageId
+	 */
+	public Long getVillageId() {
+		return villageId;
+	}
+	/**
+	 * @param villageId the villageId to set
+	 */
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	/**
+	 * @return the localBodyId
+	 */
+	public Long getLocalBodyId() {
+		return localBodyId;
+	}
+	/**
+	 * @param localBodyId the localBodyId to set
+	 */
+	public void setLocalBodyId(Long localBodyId) {
+		this.localBodyId = localBodyId;
+	}
+	/**
+	 * @return the wardId
+	 */
+	public Long getWardId() {
+		return wardId;
+	}
+	/**
+	 * @param wardId the wardId to set
+	 */
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	/**
+	 * @return the boothId
+	 */
+	public Long getBoothId() {
+		return boothId;
+	}
+	/**
+	 * @param boothId the boothId to set
+	 */
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
+	}
+	/**
+	 * @return the hamletId
+	 */
+	public Long getHamletId() {
+		return hamletId;
+	}
+	/**
+	 * @param hamletId the hamletId to set
+	 */
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+	/**
+	 * @return the parliamentConstiId
+	 */
+	public Long getParliamentConstiId() {
+		return parliamentConstiId;
+	}
+	/**
+	 * @param parliamentConstiId the parliamentConstiId to set
+	 */
+	public void setParliamentConstiId(Long parliamentConstiId) {
+		this.parliamentConstiId = parliamentConstiId;
+	}
+	/**
+	 * @return the memberType
+	 */
+	public String getMemberType() {
+		return memberType;
+	}
+	/**
+	 * @param memberType the memberType to set
+	 */
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
 	}
 		
 
