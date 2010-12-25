@@ -36,5 +36,6 @@
 			<td colspan="2" align="center"><s:submit name="upload" value="Upload" align="center"/></td>
 		</tr>
 	</table>
+	</s:form>
 	</body>
 </html>
