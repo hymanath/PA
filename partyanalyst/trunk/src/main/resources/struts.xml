@@ -1910,6 +1910,7 @@
         <action name="genericUploadAction" class="genericUploadAction">
            <result name="input">/jsp/genericUpload.jsp</result>
 		   <result name="success">/jsp/genericUpload.jsp</result>
+		   <result name="error">/jsp/genericUpload.jsp</result>
 	    </action>
                 
 	</package>
