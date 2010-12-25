@@ -333,7 +333,7 @@
 			if(statusId == -1)
 			{
 				alertMessageDivEl.innerHTML ='';
-				alertMessageDivEl.innerHTML = 'Please Select Problem Staus From The DropDown ';
+				alertMessageDivEl.innerHTML = 'Please Select Valid Problem Staus';
 				
 				return;
 			} 
