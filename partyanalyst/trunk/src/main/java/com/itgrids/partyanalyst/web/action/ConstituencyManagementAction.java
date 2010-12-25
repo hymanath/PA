@@ -490,7 +490,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			stateList.add(list.get(0));
 			districtList.add(list.get(1));
 			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
-			constituencyList.add(new SelectOptionVO(0l,"Select Constituency"));
+			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
 			
 		} else if("MP".equals(accessType)){
 			log.debug("Access Type = MP ****");
