@@ -569,12 +569,15 @@ public class GenericUploadService implements IGenericUploadService {
 			
 			//Check for blank row
 			Boolean isBlankRow = checkForBlankRow(row);
+			if(isBlankRow)
+				continue;
 			//Check for region details
 			Boolean isRegion   = checkWheatherRowContainsRegionData(row);
+			if(isRegion)
+				continue;
 			//Check for header data
 			Boolean isHeader   = checkWheatherRowContainsHeaderData(row,excelHeaderInfo);
-			
-			if(isBlankRow || isRegion || isHeader)
+			if(isHeader)
 				continue;
 			
 			Boolean isResultData = checkForResultDataToSave(row,excelHeaderInfo,rowIndex,totRows);
@@ -1041,13 +1044,13 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		int i=0;
 		//To get column which begins with data without blank
-		for(;i<=row.getPhysicalNumberOfCells();){
+		for(i=0;i<=row.getLastCellNum();i++){
 			HSSFCell cell  = row.getCell(i);
 			if(cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
 				continue;
 		}
 		
-		if(i < row.getPhysicalNumberOfCells()){
+		if(i < row.getLastCellNum()){
 			
 			HSSFCell cell0  = row.getCell(i);
 			
