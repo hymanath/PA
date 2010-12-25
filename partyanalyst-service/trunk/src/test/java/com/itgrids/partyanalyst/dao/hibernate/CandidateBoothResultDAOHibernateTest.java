@@ -103,12 +103,12 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 	}*/
 		
-	public void testAssemblies(){
+	/*public void testAssemblies(){
 		List list = candidateBoothResultDAO.findAllPartiesElectionResultsInDistrictForElectionType(19l,"Parliament");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 	}
-	
+	*/
 
 	/*public void testAssemblies(){
 
@@ -381,5 +381,11 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
 	}*/
+	
+	public void testGetCandidatesResultsForElectionAndConstituencyByMandalWise()
+	{
+	  List obj = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandalWise(232l,"2009","Assembly");
+	  System.out.println(obj.size());
+	}
 	
 }
