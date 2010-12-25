@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -10,6 +12,12 @@ public class OccupationDAO extends GenericDaoHibernate<Occupation, Long> impleme
 	public OccupationDAO() {
 		super(Occupation.class);
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Occupation> getOccupationDetailsByOccupationType(String occupationType) {
+		
+		return getHibernateTemplate().find("from Occupation model where model.occupation = ?",occupationType);
 	}
 
 }

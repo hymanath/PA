@@ -11,5 +11,11 @@ public class UserRelationDAO extends GenericDaoHibernate<UserRelation, Long> imp
 	public UserRelationDAO() {
 		super(UserRelation.class);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<UserRelation> findByRelationType(String relation) {
+		
+		return getHibernateTemplate().find("from UserRelation model where model.relationship = ?",relation);
+	}
 	
 }
