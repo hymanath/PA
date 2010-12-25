@@ -17,6 +17,6 @@ import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
  */
 public interface IGenericUploadService {
 
-	public UploadDataErrorMessageVO interpretDataInExcelAndSetToVO(File uploadFile,String module,Long countryId);
+	public UploadDataErrorMessageVO interpretDataInExcelAndSetToVO(File uploadFile,String module,Long countryId,Long userId);
 	
 }
