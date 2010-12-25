@@ -285,6 +285,7 @@ public class LoginService implements ILoginService{
 	}
 
 	public Boolean checkForRegionToViewReport(RegistrationVO registrationVO, final String regionType, Long regionId){
+		
 		if(registrationVO == null)
 			return false;
 		Country country = null;
@@ -300,68 +301,85 @@ public class LoginService implements ILoginService{
 		SelectOptionVO acSelect = null;
 		SelectOptionVO pcSelect = null;
 		
-		if(IConstants.COUNTRY_LEVEL.equalsIgnoreCase(regionType)){
-			country = countryDAO.get(regionId);
-			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
-		}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(regionType)){
-			state = stateDAO.get(regionId);	
-			country = state.getCountry();
-			
-			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
-			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-		}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(regionType)){
-			district = districtDAO.get(regionId);
-			state = district.getState();	
-			country = state.getCountry();
-			
-			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
-			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
-		}else if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(regionType)){
-			constituency = constituencyDAO.get(regionId);
-			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
-				ac = constituency;
-				district = ac.getDistrict();
+		try{
+			if(IConstants.COUNTRY_LEVEL.equalsIgnoreCase(regionType)){
+				country = countryDAO.get(regionId);
+				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+			}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(regionType)){
+				state = stateDAO.get(regionId);	
+				country = state.getCountry();
+				
+				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+			}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(regionType)){
+				district = districtDAO.get(regionId);
+				state = district.getState();	
+				country = state.getCountry();
+				
+				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
 				districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
-				Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId).get(0))[0];
-				pc = constituencyDAO.get(pcId);
-			}else
-				pc = constituency;
-			
-			state = pc.getState();				
-			country = state.getCountry();
-			
-			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
-			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-			if(ac != null)
-				acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
-			pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
-			
-		}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(regionType)){
-			tehsil = tehsilDAO.get(regionId);
-			district = tehsil.getDistrict();
-			state = district.getState();	
-			country = state.getCountry();
-			Long acId = (Long)((Object[])delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(regionId).get(0))[0];
-			Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(acId).get(0))[0];
-			ac = constituencyDAO.get(acId);
-			pc = constituencyDAO.get(pcId);
-			state = pc.getState();				
-			country = state.getCountry();
-			
-			countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
-			stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
-			districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
-			acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
-			pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
+			}else if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(regionType)){
+				constituency = constituencyDAO.get(regionId);
+				state = constituency.getState();				
+				country = state.getCountry();
+				
+				if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
+					acSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+					district = constituency.getDistrict();
+					districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+					List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId);
 
+					if(pcs.size() > 0){
+						Long pcId = (Long)((Object[])delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(regionId).get(0))[0];
+						pc = constituencyDAO.get(pcId);
+						pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
+					}
+					
+				}else
+					pcSelect = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+				
+				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+				
+			}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(regionType)){
+				tehsil = tehsilDAO.get(regionId);
+				district = tehsil.getDistrict();
+				state = district.getState();	
+				country = state.getCountry();
+				Long acId = 0l;
+				Long pcId = 0l;
+				
+				List acs = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(regionId);
+				
+				if(acs.size() > 0){
+					acId = (Long)((Object[])acs.get(0))[0];	
+					ac = constituencyDAO.get(acId);
+					acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
+				
+					List pcs = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(acId);
+					
+					if(acs.size() > 0){
+						pcId = (Long)((Object[])pcs.get(0))[0];
+						pc = constituencyDAO.get(pcId);
+						pcSelect = new SelectOptionVO(pc.getConstituencyId(), pc.getName());
+					}
+				}
+				
+				countrySelect = new SelectOptionVO(country.getCountryId(), country.getCountryName());
+				stateSelect = new SelectOptionVO(state.getStateId(), state.getStateName());
+				districtSelect = new SelectOptionVO(district.getDistrictId(), district.getDistrictName());
+				
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		if(countrySelect != null && registrationVO.getCountries().contains(countrySelect)||
-				stateSelect != null && registrationVO.getStates().contains(stateSelect)||
-				districtSelect != null && registrationVO.getDistricts().contains(districtSelect)||
-				acSelect != null && registrationVO.getAssemblies().contains(acSelect)||
-				pcSelect != null && registrationVO.getParliaments().contains(pcSelect))
+		if((countrySelect != null && registrationVO.getCountries().contains(countrySelect))||
+				(stateSelect != null && registrationVO.getStates().contains(stateSelect))||
+				(districtSelect != null && registrationVO.getDistricts().contains(districtSelect))||
+				(acSelect != null && registrationVO.getAssemblies().contains(acSelect))||
+				(pcSelect != null && registrationVO.getParliaments().contains(pcSelect)))
 			return true;
 		
 		return false;	

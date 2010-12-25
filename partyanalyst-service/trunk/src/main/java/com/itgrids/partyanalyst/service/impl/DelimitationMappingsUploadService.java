@@ -15,12 +15,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import jxl.Cell;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -48,7 +45,6 @@ import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.DelimitationMappingUploadVO;
 import com.itgrids.partyanalyst.dto.MandalSubRegionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -634,7 +630,7 @@ public class DelimitationMappingsUploadService implements
 	 * @param row
 	 * @param excelHeaderInfo
 	 */
-	@SuppressWarnings("unchecked")
+
 	private void getMandatoryHeaderDetailsAndSetToHeadersMap(List<String> mandatoryHeaders,HSSFRow row,Map<String,Integer> excelHeaderInfo) throws Exception{
 		
 		if(log.isDebugEnabled())
@@ -666,7 +662,7 @@ public class DelimitationMappingsUploadService implements
 	 * @param row
 	 * @param excelHeaderInfo
 	 */
-	@SuppressWarnings("unchecked")
+
 	private void getOptionalHeaderDetailsAndSetToHeadersMap(List<String> headers,HSSFRow row,Map<String,Integer> excelHeaderInfo){
 		
 		if(log.isDebugEnabled())
@@ -1045,6 +1041,7 @@ public class DelimitationMappingsUploadService implements
 			}
 			
 			//check and save delimitation village details
+			@SuppressWarnings("unused")
 			DelimitationVillage delimVillageObj = null;
 			List<DelimitationVillage> delimitationVillage = delimitationVillageDAO.findByDelimitationMandalAndTownship(delimitationMandal.getDcm_id(), townshipObj.getTownshipId());
 			
@@ -1086,6 +1083,7 @@ public class DelimitationMappingsUploadService implements
 			}
 			
 			//check and save delimitation village details
+			@SuppressWarnings("unused")
 			DelimitationWard delimWardObj = null;
 			List<DelimitationWard> delimitationWard = delimitationWardDAO.findByDelimitationConstituenyTownAndWard(delimitationTown.getDelimitationConstituencyTownId(), wardObj.getWardId());
 			

@@ -1204,7 +1204,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			
 			if(comments != null || comments.size() > 0)
 			{
-				commentsList = new ArrayList<CandidateCommentsVO>();			
+				commentsList = new ArrayList<CandidateCommentsVO>();
 				for (int i = 0; i < comments.size(); i++)
 				{
 					CandidateCommentsVO comment = new CandidateCommentsVO();

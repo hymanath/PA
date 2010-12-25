@@ -256,7 +256,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	}
 	*/   //String searchText,String sortoption,String order,Integr startINdex,Integer maxResult,String ids
 
-	String stateStr =  "and model.state.stateId = 1";	
+	/*String stateStr =  "and model.state.stateId = 1";	
 	public void testFindByConstituencyNames(){
 		List<Object[]> list = constituencyDAO.findByConstituencyNamesForPalriament("v","","model.name","asc",0,100);
 		//List<Object[]> list = constituencyDAO.findByConstituencyNamesForAssembly("v","","model.name","asc",0,100);
@@ -286,8 +286,16 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		Object obj=constituencyDAO.totalSearchCount("v",1l,"");
 		System.out.println(obj);
 	
-	}
+	}*/
 	
-	
+	/*public void testGetConstituencies(){
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		List<Constituency> list = constituencyDAO.findByDistrict(19l);
+		for(Constituency listObj:list){
+			listObj.getElectionScope().getElectionType();
+			listObj.getDistrict().getState().getStateName();
+		}
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+	}*/
 	
 }

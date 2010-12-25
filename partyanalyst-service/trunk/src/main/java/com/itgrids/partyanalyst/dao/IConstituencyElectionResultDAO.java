@@ -58,14 +58,11 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	
 	public List<ConstituencyElectionResult> findByElectionTypeAndYearAndCountry(Long electionTypeId,String year,Long countryId);
 	
-	@SuppressWarnings("unchecked")
-	public List findByElectionTypeIdAndYearAndStateId(Long electionTypeId, String electionYear, Long stateId);
+	/*public List findByElectionTypeIdAndYearAndStateId(Long electionTypeId, String electionYear, Long stateId);
 	
-	@SuppressWarnings("unchecked")
 	public List findByElectionTypeIdAndYearAndCountryId(Long electionTypeId,String year,Long countryId);
 	
-	@SuppressWarnings("unchecked")
-	public List findByElectionTypeIdYearStateIdDistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);
+	public List findByElectionTypeIdYearStateIdDistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);*/
 
 	public List getTotalVotesAndValidVotesForMPTCZPTC(Long tehsilId,
 			String electionType, String electionYear);
