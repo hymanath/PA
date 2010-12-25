@@ -583,7 +583,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
 	</tr>
 	<tr>
 		
-		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /></td>	
+		<td class="tdstyle" width="88px;"><s:label for="positionField" id="positionLabel"  value="%{getText('position')}" /><font class="required"> * </font></td>	
 		<td> <s:select id="position" list="#session.positionsList" listKey="id" listValue="name" name="position" cssClass="regionSelect" /></td>
 	</tr>
  </table>
