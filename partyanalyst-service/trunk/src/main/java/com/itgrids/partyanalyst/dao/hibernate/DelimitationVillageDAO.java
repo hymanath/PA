@@ -22,4 +22,10 @@ public class DelimitationVillageDAO extends GenericDaoHibernate<DelimitationVill
 				"model.township.townshipId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getVillagesFromPartialMandal(Long dcmId)
+	{
+		return getHibernateTemplate().find("select model.township.townshipId from DelimitationVillage model where " +
+				" model.delimitationConstituencyMandal.dcm_id = ? and  model.township.townshipType like 'V'",dcmId);
+	}
 }

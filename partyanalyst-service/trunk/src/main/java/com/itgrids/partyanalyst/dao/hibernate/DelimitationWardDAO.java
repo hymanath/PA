@@ -20,4 +20,11 @@ public class DelimitationWardDAO extends GenericDaoHibernate<DelimitationWard, L
 		return getHibernateTemplate().find("from DelimitationWard model where model.delimitationConstituencyTown.delimitationConstituencyTownId = ? and "+
 				"model.ward.wardId = ?",params);
 	}
+	
+	public List getWardsFromPartialTownship(Long dctId)
+	{
+		return getHibernateTemplate().find("select model.ward.wardId from DelimitationWard model where " +
+				" model.delimitationConstituencyTown.delimitationConstituencyTownId = ? and " +
+				" model.delimitationConstituencyTown.township.greaterTown like 'N' ",dctId);
+	}
 }

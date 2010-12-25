@@ -135,4 +135,36 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 				" model.level in ("+levels+") group by model.township.townshipId", params);
 	}
 	
+	  @SuppressWarnings("unchecked")
+	  public List findMandalWiseCensusDetails(Long stateId,Long districtId,Long tehsilId,Long year,String level){
+		Object[] params = {stateId,districtId,tehsilId,new Long(year),level};
+		return getHibernateTemplate().find("select model.totalPopulation,model.totalMalePopulation,model.totalFemalePopulation, "+
+				" model.populationSC,model.populationST from Census model where model.stateId = ? and model.districtId = ? and model.tehsilId = ? " +
+			    " and model.year = ? and model.level = ? and model.tru = 'Total' ",params);
+	}
+	
+	  @SuppressWarnings("unchecked")
+	  public List findCensusDetailsForAPartialMandal(Long stateId,Long districtId,Long year,String level,String villageIds){
+		Object[] params = {stateId,districtId,new Long(year),level};
+		return getHibernateTemplate().find("select sum(model.totalPopulation),sum(model.totalMalePopulation),sum(model.totalFemalePopulation), "+
+				" sum(model.populationSC),sum(model.populationST) from Census model where model.stateId = ? and model.districtId = ? and "+
+				"model.year = ? and model.level = ? and model.township.townshipId in ("+villageIds+")",params);
+	}
+	  
+	  @SuppressWarnings("unchecked")
+	  public List<Object[]> findTownshipWiseCensusDetails(Long stateId,Long districtId,Long townshipId,Long year,String level){
+		Object[] params = {stateId,districtId,townshipId,new Long(year),level};
+		return getHibernateTemplate().find("select model.totalPopulation,model.totalMalePopulation,model.totalFemalePopulation, "+
+				" model.populationSC,model.populationST from Census model where model.stateId = ? and model.districtId = ? and model.township.townshipId = ?  and model.year = ? and model.level = ?",params);
+	}
+	  
+	  @SuppressWarnings("unchecked")
+	  public List findCensusDetailsForAPartialTown(Long stateId,Long districtId,Long year,String level,String wardIds){
+		  Object[] params = {stateId,districtId,year,level};
+		  return getHibernateTemplate().find("select sum(model.totalPopulation),sum(model.totalMalePopulation),sum(model.totalFemalePopulation), "+
+					" sum(model.populationSC),sum(model.populationST) from Census model where model.stateId = ? and model.districtId = ? and "+
+					"model.year = ? and model.level = ? and model.wardId in ("+wardIds+")",params);
+		  
+	  }
+	  
 }
