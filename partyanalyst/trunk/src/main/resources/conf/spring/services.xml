@@ -209,7 +209,13 @@
 		<property name="boothResultDAO" ref="boothResultDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
-		<property name="electionDAO" ref="electionDAO" />	
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="censusDAO" ref="censusDAO" />
+		<property name="delimitationVillageDAO" ref="delimitationVillageDAO" />
+		<property name="delimitationWardDAO" ref="delimitationWardDAO" />
+		<property name="delimitationConstituencyTownDAO" ref="delimitationConstituencyTownDAO" />	
+		
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
