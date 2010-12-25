@@ -62,10 +62,33 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		System.out.println(result);
 	}*/
 	
-	public void testGetMandalsOfConstituency(){
+	/*public void testGetMandalsOfConstituency(){
 		List tehsil = delimitationConstituencyMandalDAO.getMandalsOfConstituency(232l);
 		for(int i=0;i<tehsil.size(); i++)
 			System.out.println(((Object[])tehsil.get(i))[0]+"--"+((Object[])tehsil.get(i))[1]+"--"+((Object[])tehsil.get(i))[2]+"--"+((Object[])tehsil.get(i))[3]);
-	}
+	}*/
+	/*public void testGetLatestMandalDetailsForAConstituency()
+	{
+		List<Object[]> mandals = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(232l);
+		
+		for(int i=0;i<mandals.size();i++)
+		{
+			System.out.println(mandals.get(i)[0]+" "+mandals.get(i)[1]+" "+i);
+		}
+	}*/
 	
+	
+	public void testGetLatestMandalsForAConstituency()
+	{
+		List<Object[]> mandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(234l);
+		
+		for(Object[] obj:mandals)
+		{
+			for(Object y:obj)
+			{
+				System.out.print("     "+y.toString());
+			}
+			System.out.println();
+		}
+	}
 }

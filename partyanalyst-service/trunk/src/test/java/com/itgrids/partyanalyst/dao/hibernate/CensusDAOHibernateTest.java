@@ -85,7 +85,7 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 			} 
 		}
 	}*/
-	
+	/*
 	public void testFindAllRevenueVillagesInfoInMandal(){
 		List list = censusDAO.findAllRevenueVillagesInfoInMandal(2001l, 861l, "'"+IConstants.CENSUS_VILLAGE_LEVEL+"','"+IConstants.CENSUS_WARD_LEVEL+"'");
 		for(Object[] values:(List<Object[]>)list){
@@ -95,6 +95,60 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 		}
 			
 	}
+	*/
 	
-	
+  /* public void testFindMandalWiseCensusDetails()
+   {
+	   List<Object[]> list = censusDAO.findMandalWiseCensusDetails(1l,19l,854l,2001l,"TEHSIL");
+	   System.out.println(list.size());
+	   
+	   Object[] obj = list.get(0);
+	   
+	   System.out.println("Total Population ---"+obj[0]);
+	   System.out.println("Total Male Population ---"+obj[1]);
+	   System.out.println("Total Female Population ---"+obj[2]);
+	   System.out.println("Total SC Population ---"+obj[3]);
+	   System.out.println("Total ST Population ---"+obj[4]);
+   }*/
+   
+   /*@SuppressWarnings("unchecked")
+   public void testFindCensusDetailsForAPartialMandal()
+   {
+	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialMandal(1l,19l,2001l,"VILLAGE","21547,21548,21549,21550");
+	   System.out.println(list.size());
+	   Object[] obj = list.get(0);
+	   for(Object y:obj)
+	   {
+		   System.out.println(y.toString());
+	   }
+   }*/
+   
+   public void testFindTownshipWiseCensusDetails()
+   {
+	   List<Object[]> list = censusDAO.findTownshipWiseCensusDetails(1l,19l,21664l,2001l,"TOWN");
+	   System.out.println(list.size());
+	   
+	   Object[] obj = list.get(0);
+	   
+	   System.out.println("Total Population ---"+obj[0]);
+	   System.out.println("Total Male Population ---"+obj[1]);
+	   System.out.println("Total Female Population ---"+obj[2]);
+	   System.out.println("Total SC Population ---"+obj[3]);
+	   System.out.println("Total ST Population ---"+obj[4]);
+   }
+   
+  /* @SuppressWarnings("unchecked")
+   public void testFindCensusDetailsForAPartialTown()
+   {
+	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialTown(1l,19l,2001l,"WARD","2957,2958");
+	   System.out.println(list.size());
+	   Object[] obj = list.get(0);
+	   
+	   System.out.println("Total Population ---"+obj[0]);
+	   System.out.println("Total Male Population ---"+obj[1]);
+	   System.out.println("Total Female Population ---"+obj[2]);
+	   System.out.println("Total SC Population ---"+obj[3]);
+	   System.out.println("Total ST Population ---"+obj[4]);
+   }*/
+  
 }
