@@ -117,9 +117,15 @@
 									buildVotingTrendzData(myResults);
 								}else if(jsObj.task == "getConstituencyResultsBySubLocations")
 								{		
-									constituencyResults = myResults;							
+									constituencyResults = myResults;
+									buildCensusSelect(constituencyResults);
 									buildConstituencyElecResultsDataTable("number");
-								}else if(jsObj.task == "getConstituencyElections")
+								}
+								else if(jsObj.task == "getCensusDetailsForAConstituency")
+								{
+									buildCensusChartForAConstituency(myResults);
+								}
+								else if(jsObj.task == "getConstituencyElections")
 								{		
 									buildElectionsSelectBox(myResults);									
 								}else if(jsObj.task == "getParliamentConstituencyElectionResults")
@@ -707,7 +713,7 @@ function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,cons
 	 for(var i in chartColumns)
 	 {
 	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
-	   data.addColumn('number', colData);
+	   data.addColumn('number',colData);
 
 	   partiesArray.push(chartColumns[i].party);
 	 }
@@ -994,6 +1000,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 				<div class="corner bottomRight"></div>
 				<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
 				<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
+				<div id="censusSelectDiv" style="padding-left:10px;"></div>
 				<div id="mandalOrConstiElecResultDiv">
 				<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
 				<div id="electionResultsInConstituencyDiv"></div>
@@ -1557,6 +1564,122 @@ function showAllPartiesAllElectionResultsChart(myResults)
 	  }
 }
 
+function buildCensusSelect(myResult)
+{
+	var censelectEle = document.getElementById("censusSelectDiv");
+	
+	var cenvar = '';
+	cenvar += '<table>';
+	cenvar += '<th>Select Census :</th>';
+	cenvar += '<th>';
+	cenvar += '<select id="censusSelect" class = "selectWidth" onchange = "getCensusDetailsForAConstituency(\'${constituencyId}\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
+	cenvar += '<option value=\'0\'>select Census</option>';
+	cenvar += '<option value=\'1\'>Total Population</option>';
+	cenvar += '<option value=\'2\'>Male Population</option>';
+	cenvar += '<option value=\'3\'>Female Polpultion</option>';
+	cenvar += '<option value=\'4\'>SC Population</option>';
+	cenvar += '<option value=\'5\'>ST Population</option>';
+	cenvar += '</select>';
+	cenvar += '</th>';
+	cenvar += '</table>';
+
+	censelectEle.innerHTML = cenvar;
+}
+
+function getCensusDetailsForAConstituency(constituencyId,index,text)
+{
+	if(index == 0)
+			return;
+	var electionSelectEle = document.getElementById("electionYearSelect");
+	var electionYear      = electionSelectEle.options[electionSelectEle.selectedIndex].text;
+
+		var jsObj = {
+			constituencyId  : constituencyId,
+			censusYear      : 2001,
+			delimitationYear: 2009,
+			seletedIndex    : index,
+			seletedText     : text,
+			electionYear    : electionYear,
+			others          : true,
+			task:"getCensusDetailsForAConstituency"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getCensusDetailsForAConstituency.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function buildCensusChartForAConstituency(myResults)
+{
+	if(myResults.censusVO.length == 0)
+		return;
+
+	else if(myResults.censusVO.length > 0)
+	{
+    var chartColumns = myResults.candidateNamePartyAndStatus;
+	var chartRows    = myResults.constituencyOrMandalWiseElectionVO;
+	var census       = myResults.censusVO;
+    var partiesArray = new Array();
+	var selectedIndex= census[0].censusSelectedIndex;
+	
+	 var data = new google.visualization.DataTable();
+	 data.addColumn('string', 'Party');
+
+	 var colData = census[0].censusFields[0];
+	 data.addColumn('number',colData);
+	 partiesArray.push(colData);
+
+	 //for chart columns
+	 for(var i in chartColumns)
+	 {
+	   var colData = chartColumns[i].party +'['+chartColumns[i].rank+']';
+	   data.addColumn('number',colData);
+
+	   partiesArray.push(chartColumns[i].party);
+	 }
+
+      //for chart rows
+	  for(var j in chartRows)
+	  {
+		  var array = new Array();
+		  array.push(chartRows[j].locationName);
+		
+		if(selectedIndex == 1)
+		var censusPercentage = census[j].totPopPercent;
+		else if(selectedIndex == 2)
+		var censusPercentage = census[j].malePopPercent;
+		else if(selectedIndex == 3)
+		var censusPercentage = census[j].femalePopPercent;
+		else if(selectedIndex == 4)
+		var censusPercentage = census[j].populationSCPercent;
+		else if(selectedIndex == 5)
+		var censusPercentage = census[j].populationSTPercent;
+	  
+	     array.push(censusPercentage);
+
+		  for(var k in chartRows[j].partyElectionResultVOs)
+		  {
+			  var percentage = chartRows[j].partyElectionResultVOs[k].votesPercent;
+              array.push(percentage);
+		  }
+
+		  data.addRow(array);
+	  }
+    var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
+	ctitle = "Assembly Constituency Wise Election Results V/S Census Chart For '${constituencyDetails.constituencyName}'";
+       
+	 if(chartRows.length == 1)
+	{
+		 new google.visualization.ColumnChart(chartResultDiv).
+		      draw(data, {width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+	}
+	 if(chartRows.length > 1)
+	{
+		 new google.visualization.LineChart(chartResultDiv).
+		      draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+	}
+  }
+
+}
 
 function showDetailedElectionResult(id)
 {
