@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVotingTrendzCharts;
+import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
@@ -137,6 +138,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private ConstituencyVO greaterInfo;
 	private Long parliamentConstiId;    
     private String taskType;
+    List<CensusVO> censusVO = new ArrayList<CensusVO>();
     
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
@@ -296,6 +298,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.zptcElectionType = zptcElectionType;
 	}
 
+	public List<CensusVO> getCensusVO() {
+		return censusVO;
+	}
+	public void setCensusVO(List<CensusVO> censusVO) {
+		this.censusVO = censusVO;
+	}
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
 	}
@@ -625,11 +633,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 	}
 
 	public String execute() throws Exception{
-		
+       
 		String url = request.getRequestURL().toString();
 		String substr = url.substring(7);
 		String path = substr.substring(0, substr.indexOf('/')) ;
-		
 		
 		if(path.equalsIgnoreCase("partyanalyst.com"))
 			mapKey = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRScRx3TrvnxStTkM4udVhaLbRJhbBQtQ6p3f6vU6rRwFFw_2yEXM9Af3g&sensor=true";
@@ -1426,6 +1433,43 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  return SUCCESS;
 	}
 
+	public String getCensusDetailsForAConstituency()
+	{
+	   if(task != null)
+	   {
+		   try{
+				jObj = new JSONObject(getTask());
+				System.out.println(jObj);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+	
+			Long constituencyId      = Long.parseLong(jObj.getString("constituencyId"));
+			Long censusYear          = Long.parseLong(jObj.getString("censusYear"));
+			Long delimitationYear    = Long.parseLong(jObj.getString("delimitationYear"));
+			Long censusSelectedIndex = Long.parseLong(jObj.getString("seletedIndex"));
+			String censusText        = jObj.getString("seletedText");
+			String electionYear      = jObj.getString("electionYear");
+		try{
+		    censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(constituencyId,delimitationYear,censusYear);
+			constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus(constituencyId,electionYear,IConstants.ASSEMBLY_ELECTION_TYPE);
+			
+			List<String> censusFieldList = new ArrayList<String>();
+			censusFieldList.add(censusText);
+			if(censusVO != null && censusVO.size() > 0)
+			{
+				censusVO.get(0).setCensusFields(censusFieldList);
+				censusVO.get(0).setCensusSelectedIndex(censusSelectedIndex);
+			}
+			constituencyRevenueVillagesVO.setCensusVO(censusVO);
+	       }
+		catch(Exception ex){
+			log.debug("No data is available...");
+		  }
+	   }
+	   
+	   return SUCCESS;
+	}
   public String getParliamentConstituencyAssemblyWiseResults(){
 	  
 	  String param = getTask();
