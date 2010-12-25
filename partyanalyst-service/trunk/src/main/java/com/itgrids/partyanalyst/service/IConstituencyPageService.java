@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
@@ -67,5 +68,29 @@ public interface IConstituencyPageService {
 	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId);
 	
 	public ConstituencyRevenueVillagesVO getMandalsResultsInAnElectionForChart(String mandalIds, String electionYear, String electionType);
+	
+	public List<CensusVO> getCensusDetailsForAssemblyConstituency(Long constituencyId,Long delimitationYear,Long censusYear);
+	
+	public List<Object[]> getLatestTownsForADelimitationConstituency(Long delimitationConstituencyId);
+	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAssemblyConstituencyForCensus(Long constituencyId,String electionYear,String electionType);
+	
+	public CensusVO getCensusDetailsForATehsil(Object[] params,Long censusYear,Long delimitationConstituencyId);
+	
+	public CensusVO getVillageWiseCensusDetailsForPartialTehsil(Long stateId,Long districtId,Long dcmId,Long censusYear);
+	
+	public List<CensusVO> getCensusDetailsOfATowmInAPartialTehsil(Long delimitationConstituencyId,Long mandalId,Long censusYear);
+	
+	public CensusVO getCensusDetailsForATown(Object[] params,Long censusYear);
+	
+	public CensusVO setCensusDetailsToVO(Object[] details);
+	
+	public String getWardIdsOfAPartialTownship(Long dctId);
+	
+	public String getVillageIdsOfAPartialTehsil(Long dcmId);
+	
+	public CensusVO addCensusDataToSingleVO(List<CensusVO> censusVOList);
+	
+	public  List<CensusVO> calculateCensusPercentage(List<CensusVO> censusVOList);
 	
 }

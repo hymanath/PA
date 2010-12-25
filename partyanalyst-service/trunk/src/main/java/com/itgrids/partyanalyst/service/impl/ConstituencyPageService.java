@@ -29,14 +29,19 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyTownDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationVillageDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationWardDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
@@ -45,6 +50,7 @@ import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
+import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
@@ -75,8 +81,11 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -112,13 +121,36 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO; 
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
 	private IConstituencyElectionDAO constituencyElectionDAO;
+	private IDelimitationConstituencyTownDAO delimitationConstituencyTownDAO;
 	private IStaticDataService staticDataService;		
 	private IBoothResultDAO boothResultDAO; 
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IBoothDAO boothDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ElectionDAO electionDAO;
+	private ITehsilDAO tehsilDAO;
+	private ICensusDAO censusDAO;
+	private IDelimitationVillageDAO delimitationVillageDAO;
+	private IDelimitationWardDAO delimitationWardDAO;
 	
+		
+	public IDelimitationVillageDAO getDelimitationVillageDAO() {
+		return delimitationVillageDAO;
+	}
+
+	public void setDelimitationVillageDAO(
+			IDelimitationVillageDAO delimitationVillageDAO) {
+		this.delimitationVillageDAO = delimitationVillageDAO;
+	}
+
+	public IDelimitationWardDAO getDelimitationWardDAO() {
+		return delimitationWardDAO;
+	}
+
+	public void setDelimitationWardDAO(IDelimitationWardDAO delimitationWardDAO) {
+		this.delimitationWardDAO = delimitationWardDAO;
+	}
+
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
 	}
@@ -230,6 +262,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		this.townshipDAO = townshipDAO;
 	}
 
+	public ICensusDAO getCensusDAO() {
+		return censusDAO;
+	}
+
+	public void setCensusDAO(ICensusDAO censusDAO) {
+		this.censusDAO = censusDAO;
+	}
+
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
@@ -272,6 +312,15 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		this.boothDAO = boothDAO;
 	}
 
+	public IDelimitationConstituencyTownDAO getDelimitationConstituencyTownDAO() {
+		return delimitationConstituencyTownDAO;
+	}
+
+	public void setDelimitationConstituencyTownDAO(
+			IDelimitationConstituencyTownDAO delimitationConstituencyTownDAO) {
+		this.delimitationConstituencyTownDAO = delimitationConstituencyTownDAO;
+	}
+
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
 	}
@@ -283,6 +332,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 
 	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
@@ -1204,6 +1261,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * And Assembly Constituency Election Results (Mandal Wise)
 	 */
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear,Boolean includeOthers){
+		
 		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
 		List<ConstituencyOrMandalWiseElectionVO> constituencyElectionResults = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
 		List<SelectOptionVO> missingConstituencies = null;
@@ -1223,7 +1281,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
 						getElectionType().getElectionType());	
 				constituencyRevenueVillagesVO.setElectionYear(electionYear);
+				constituencyRevenueVillagesVO.setAreaType(constituency.getAreaType());
 			}
+			
+			//constituencyRevenueVillagesVO.setCensusVO(censusVO);
 			return constituencyRevenueVillagesVO;
 		}
 		
@@ -1237,6 +1298,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
 					getElectionType().getElectionType());
 			constituencyRevenueVillagesVO.setElectionYear(electionYear);
+			constituencyRevenueVillagesVO.setAreaType(constituency.getAreaType());
+			
 			List<SelectOptionVO> assemblies = getAssembliesForParliament(constituencyId, new Long(electionYear));
 			int i=0;
 			
@@ -1335,6 +1398,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
 		constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyElectionResults);
+	
+		//constituencyRevenueVillagesVO.setCensusVO(censusVO);
 		return constituencyRevenueVillagesVO;
 	}
 	
@@ -2215,5 +2280,680 @@ public class ConstituencyPageService implements IConstituencyPageService {
   		charts.setPreviousYearChart(partiesMandalResults);
   		return charts;
   	}
+	
+	/**
+	 * This method give Mandal Wise Election Result when we pass ConstituencyId,ElectionYear,ElectionType
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long constituencyId
+	 * @param String ElectionYear
+ 	 * @param String ElectionType
+	 * @return ConstituencyRevenueVillagesVO
+	 * 
+	 */
+	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAssemblyConstituencyForCensus(Long constituencyId,String electionYear,String electionType)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus().. Call");
+			}
+		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVOMain = null;
+		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandalWise(constituencyId, electionYear, electionType);
 		
+		//Here we set the result to the VO
+		if(list.size() > 0)
+			constituencyRevenueVillagesVOMain = setDataForVOForCorrespondingAssemblyOrParliament(list,constituencyId,
+				null, electionYear, electionType, false, true);
+		
+		//Here we are getting Total votesPercent in String format,so we are converting into Big Decimal
+		if(constituencyRevenueVillagesVOMain != null)
+		{
+			for(ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVO:constituencyRevenueVillagesVOMain.getConstituencyOrMandalWiseElectionVO())
+			{
+				for(PartyElectionResultVO partyElectionResultVO:constituencyOrMandalWiseElectionVO.getPartyElectionResultVOs())
+				{
+					partyElectionResultVO.setVotesPercent(new BigDecimal(partyElectionResultVO.getVotesPercentage()));
+				}
+				
+			}
+			return constituencyRevenueVillagesVOMain;
+		}
+	}catch(Exception ex)
+	{
+		log.debug("Exception Occured In the constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus().... ");
+		log.error("Exception raised please check the log for details"+ex);
+		return null;
+	}
+		return null;
+	}
+	/**
+	 * This method give all Census Details of a Constituency when we pass Constituency Id,Delimitation Year,Census Year
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long constituencyId
+	 * @param Long Delimitation Year
+ 	 * @param Long Census Year
+	 * @return List<CensusVO>
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<CensusVO> getCensusDetailsForAssemblyConstituency(Long constituencyId,Long delimitationYear,Long censusYear)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.getCensusDetailsForAssemblyConstituency().. Call");
+			}	
+			//Getting Delimitation Constituency Id
+			List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(constituencyId,delimitationYear,censusYear);
+			
+			if(delimConstList != null && delimConstList.size() > 0 )
+			{
+				Long delimitationConstituencyId = (Long) delimConstList.get(0);
+				
+				List<CensusVO> censusVOList = new ArrayList<CensusVO>();
+								
+				//Here we are getting Latest Tehsil to the Delimitation Constituency
+				List<Object[]> delimConMandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(delimitationConstituencyId);
+				
+				if(delimConMandals != null && delimConMandals.size() > 0)
+				{
+					//Here we are getting census details to each tehsil in the Constituency.
+					for(Object[] params:delimConMandals)
+					{
+						CensusVO  censusVO = getCensusDetailsForATehsil(params,censusYear,delimitationConstituencyId);
+						
+						//If census is not present to the Tehsil then it retuns null,that we are ommitting
+						if(censusVO != null)
+						censusVOList.add(censusVO);
+					}
+				}
+				 //Here we are passing the CensusVO list to calculate and return the Calculated list
+				  return calculateCensusPercentage(censusVOList);
+			  }
+			
+			else
+			{
+				if(log.isDebugEnabled()){
+					log.debug("There No Delimitaition Constituency Id for this Constituency......and There is no possibility of getting Census Details");
+				}	
+				return null;
+			}
+			
+		}
+		catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+		
+	}
+	
+	 /**
+	 * 
+	 * This Method will give Census Details  for A Tehsil when we pass Object Array which contains Tehsil Id
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public CensusVO getCensusDetailsForATehsil(Object[] params,Long censusYear,Long delimitationConstituencyId)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Entered Into constituencyPageService.getCensusDetailsForATehsil() Method .....");
+			}
+			
+			Long dcmId         = (Long)params[0];
+			Long mandalId      = (Long)params[1];
+			String mandalName  = params[2].toString();
+			boolean isPartial  = params[3].toString().equalsIgnoreCase("0");
+			
+			Tehsil tehsil   = tehsilDAO.get(mandalId);
+			Long districtId =  tehsil.getDistrict().getDistrictId();
+			Long stateId    =  tehsil.getDistrict().getState().getStateId();
+			
+			//if mandal is partial then calculate census for mandal sub regions
+			if(isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial Block of constituencyPageService.getCensusDetailsForATehsil() Method .....");
+				}
+			//For villages
+			CensusVO censusVOVillage = getVillageWiseCensusDetailsForPartialTehsil(stateId,districtId,dcmId,censusYear);
+			//For Towns		
+			List<CensusVO> censusVOTown = getCensusDetailsOfATowmInAPartialTehsil(delimitationConstituencyId,mandalId,censusYear);
+			
+			
+			//Here we are add the villages wise census and towns wise(if town is partial ward wise census)to a single mandal census VO 
+			if(censusVOTown != null && censusVOTown.size() > 0)
+			{
+				if(censusVOVillage != null)
+				{
+					censusVOTown.add(censusVOVillage);
+				}
+				CensusVO censusVOTehsil	= addCensusDataToSingleVO(censusVOTown);
+				censusVOTehsil.setTehsilId(mandalId);
+				censusVOTehsil.setLocationName(mandalName);
+				
+				return censusVOTehsil;
+			}
+			else
+			{
+				if(censusVOVillage != null)
+				{
+					censusVOVillage.setTehsilId(mandalId);
+					censusVOVillage.setLocationName(mandalName);
+					return censusVOVillage;
+				}
+			}
+			
+		}
+			//mandal is full
+			else if(!isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial false Block of constituencyPageService.getCensusDetailsForATehsil() Method .....");
+				}
+				List<Object[]> list = censusDAO.findMandalWiseCensusDetails(stateId,districtId,mandalId,censusYear,IConstants.TEHSIL_LEVEL);
+				
+				if(list != null && list.size() > 0)
+				{
+				   CensusVO censusVO = setCensusDetailsToVO(list.get(0));
+				   censusVO.setTehsilId(mandalId);
+				   censusVO.setLocationName(mandalName);
+				   return censusVO;
+				}
+			}
+				
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.getCensusDetailsForATehsil().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+    return null;
+   }
+	 /**
+	 * 
+	 * This Method will give Census Details  for Villages in the Tehsil if it is partial
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long stateId
+	 * @param Long districtId
+	 * @param Long dcmId
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public CensusVO getVillageWiseCensusDetailsForPartialTehsil(Long stateId,Long districtId,Long dcmId,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into constituencyPageService.getVillageWiseCensusDetailsForPartialTehsil() Method .....");
+		}
+			
+		//Here we are getting String as return type which contains comma separeted Village ids 
+		String villageIdStr = getVillageIdsOfAPartialTehsil(dcmId);
+		
+		if((villageIdStr != null) && !(villageIdStr.trim().isEmpty()) )
+		{
+			
+		List<Object[]> villCensus = censusDAO.findCensusDetailsForAPartialMandal(stateId,districtId,censusYear,IConstants.CENSUS_VILLAGE_LEVEL,villageIdStr);
+		
+		if(villCensus != null && villCensus.size() > 0)
+		{
+			Object [] details = villCensus.get(0);
+			CensusVO censusVO = new CensusVO();
+			censusVO = setCensusDetailsToVO(details);
+			return censusVO;
+		}
+	   }
+	  }catch(Exception ex)
+		{
+		  log.debug("Exception Occured In the constituencyPageService.getVillageWiseCensusDetailsForPartialTehsil().... ");
+		  log.error("Exception raised please check the log for details"+ex);
+		  return null;
+		}
+		return null;
+  }
+	
+	 /**
+	 * 
+	 * This Method will give Census Details  for Towns in the Tehsil if it is partial
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long delimitationConstituencyId
+	 * @param Long mandalId
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	public List<CensusVO> getCensusDetailsOfATowmInAPartialTehsil(Long delimitationConstituencyId,Long mandalId,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into constituencyPageService.getCensusDetailsOfATowmInAPartialTehsil() Method .....");
+		}
+		//Here we are getting Latest towns for Delimitation Constituency
+		List<Object[]> towns = getLatestTownsForATehsil(delimitationConstituencyId,mandalId);
+		
+		if(towns != null && towns.size() > 0)
+		{
+			List<CensusVO> townCensusVOList = new ArrayList<CensusVO>();
+			for(Object[] param:towns)
+			{
+				//Here we are getting Census Details For a town
+				CensusVO  censusVO = getCensusDetailsForATown(param,censusYear);
+				
+				//If census is not present to the town then it retuns null,that we are ommitting
+				if(censusVO != null)
+				townCensusVOList.add(censusVO);
+			}
+			
+			return townCensusVOList;
+		}
+	}catch(Exception ex)
+	{
+		log.debug("Exception Occured In the constituencyPageService.getCensusDetailsOfATowmInAPartialTehsil().... ");
+		log.error("Exception raised please check the log for details"+ex);
+		return null;
+	}
+		return null;
+		
+		
+	}
+	
+	
+	 /**
+	 * 
+	 * This Method will give Latest Towns for A DelimitationConstituency when we pass delimitationConstituencyId as Parameter
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long delimitationConstituencyId
+	 * @return List<Object[]>
+	 * 
+	 *  
+	 */
+	public List<Object[]> getLatestTownsForADelimitationConstituency(Long delimitationConstituencyId)
+	{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.getLatestTownsForADelimitationConstituency() with Delimitation ConstituencyId "+delimitationConstituencyId);
+		}
+		
+		try
+		{
+		List<Object[]> delimConTowns = delimitationConstituencyTownDAO.getLatestTownsForAConstituency(delimitationConstituencyId);
+		
+		if(delimConTowns != null && delimConTowns.size() > 0)
+		{
+			return delimConTowns;
+		}
+		else
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In this "+delimitationConstituencyId+" Delimitation Constituency, There are no Towns Exists..... ");
+			}
+			return null;
+		}
+	  }catch(Exception e){
+		  log.debug("Exception Occured In the constituencyPageService.getLatestTownsForADelimitationConstituency() with Delimitation ConstituencyId "+delimitationConstituencyId);
+		  log.error("Exception raised please check the log for details"+e);
+		  e.printStackTrace();
+		  return null;
+	  }
+	}
+	
+	 /**
+	 * 
+	 * This Method will give Census Details  for A Town when we pass Object Array which contains Town Id
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public CensusVO getCensusDetailsForATown(Object[] params,Long censusYear)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Entered Into constituencyPageService.getCensusDetailsForATown() Method .....");
+			}	
+			
+			//we are setting the Location Details
+			Long dctId = (Long)params[0];
+			Long townshipId = (Long)params[1];
+			boolean isPartial  = params[2].toString().equalsIgnoreCase("1");
+			
+			Township township = townshipDAO.get(townshipId);
+			Long districtId =  township.getTehsil().getDistrict().getDistrictId();
+			Long stateId =  township.getTehsil().getDistrict().getState().getStateId();
+			
+			if(isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial Block of constituencyPageService.getCensusDetailsForATown() Method .....");
+				}
+				
+				//Here we are getting String as return type which contains comma separeted ward ids 
+				String wardIdStr = getWardIdsOfAPartialTownship(dctId);
+				
+				if((wardIdStr != null) && (!wardIdStr.isEmpty()))
+				{
+				//Here we are getting census details of the total wards group By   
+				List<Object[]> wardCensus = censusDAO.findCensusDetailsForAPartialTown(stateId,districtId,censusYear,IConstants.WARD,wardIdStr);
+					
+				if(wardCensus != null && wardCensus.size() > 0)
+				{
+					return setCensusDetailsToVO(wardCensus.get(0));
+				}
+				
+			   }
+			}
+			else
+			{
+				if(log.isDebugEnabled()){
+					log.debug("The Town is full in the Constituency and Entered to partial false Block of constituencyPageService.getCensusDetailsForATown() Method .....");
+				}
+				//Here we are getting census details of the Township
+				List<Object[]> list = censusDAO.findTownshipWiseCensusDetails(stateId,districtId,townshipId,censusYear,IConstants.TOWN);
+				if(list != null && list.size() > 0)
+				{
+				   return  setCensusDetailsToVO(list.get(0));
+				}
+		  }
+			
+		  return null;
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.getCensusDetailsForATown().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * This Method will set Census Details to the CensusVO
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @return CensusVO
+	 * 
+	 */
+	
+	public CensusVO setCensusDetailsToVO(Object[] details)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered isPartial Block of constituencyPageService.setCensusDetailsToVO() Method .....");
+		}
+		
+		CensusVO censusVO = new CensusVO();
+	
+		censusVO.setTotalPopulation((Long)details[0]);
+		censusVO.setMalePopulation((Long)details[1]);
+		censusVO.setFemalePopulation((Long)details[2]);
+		censusVO.setPopulationSC((Long)details[3]);
+		censusVO.setPopulationST((Long)details[4]);
+		
+		return censusVO;
+		}
+		catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.setCensusDetailsToVO().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * This Method will give comma separated String which contains Ward Ids
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long Delimitation Constituency Town Id
+	 * @return String
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public String getWardIdsOfAPartialTownship(Long dctId)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered isPartial Block of constituencyPageService.getWardIdsOfAPartialTownship() Method .....");
+		}
+		//Here we are getting wards of a Township
+		List<Object[]> list = delimitationWardDAO.getWardsFromPartialTownship(dctId);
+		StringBuilder wardIds = new StringBuilder();
+		
+		for(int i=0;i<list.size();i++ )
+		{
+			Object obj = list.get(i);
+			wardIds.append(obj.toString());
+			wardIds.append(",");
+		}
+		
+		//Here we are removing the "," which is present at the end
+		if(wardIds.length() > 0)
+		{
+			String wardIdStr = wardIds.substring(0, wardIds.length()-1);
+			return wardIdStr;
+		}
+		else
+		{
+			return null;
+		}
+	 }
+		catch(Exception ex){
+			
+			log.debug("Exception Occured In the constituencyPageService.getWardIdsOfAPartialTownship().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+	}
+			
+	/**
+	 * 
+	 * This Method will give comma separated String which contains Village Ids
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long Delimitation Constituency Mandal Id
+	 * @return String
+	 * 
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public String getVillageIdsOfAPartialTehsil(Long dcmId)
+	{
+		try{
+		if(log.isDebugEnabled()){
+			log.debug("Entered isPartial Block of constituencyPageService.getVillageIdsOfAPartialTehsil() Method .....");
+		}
+		List<Object[]> list = delimitationVillageDAO.getVillagesFromPartialMandal(dcmId);
+
+		StringBuilder villageIds = new StringBuilder();
+		
+		for(int i=0;i<list.size();i++ )
+		{
+			Object obj = list.get(i);
+			villageIds.append(obj.toString());
+			villageIds.append(",");
+		}
+		if(villageIds.length() > 0)
+		{
+			String villageIdStr = villageIds.substring(0, villageIds.length()-1);
+			return villageIdStr;
+		}
+		else
+		{
+			return null;
+		}
+	  }catch(Exception ex){
+		  log.debug("Exception Occured In the constituencyPageService.getVillageIdsOfAPartialTehsil().... ");
+		  log.error("Exception raised please check the log for details"+ex);
+		  return null;
+	  }
+	}
+	
+	 /**
+	 * 
+	 * This Method will give Latest Towns for A DelimitationConstituency when we pass delimitationConstituencyId as Parameter
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long delimitationConstituencyId
+	 * @param Long tehsilId
+	 * @return List<Object[]>
+	 * 
+	 *  
+	 */
+	
+	public List<Object[]> getLatestTownsForATehsil(Long delimitationConstituencyId,Long tehsilId)
+	{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.getLatestTownsForATehsil("+delimitationConstituencyId+" "+tehsilId+")");
+		}
+		
+		try
+		{
+		List<Object[]> towns = delimitationConstituencyTownDAO.getLatestTownsForATehsil(delimitationConstituencyId, tehsilId);
+		
+		if(towns != null && towns.size() > 0)
+		{
+			return towns;
+		}
+		else
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In this "+delimitationConstituencyId+" Delimitation Constituency, There are no Towns Exists..... ");
+			}
+		}
+	  }catch(Exception e){
+		  log.debug("Exception Occured In the constituencyPageService.getLatestTownsForATehsil("+delimitationConstituencyId+" "+tehsilId+")");
+		  log.error("Exception raised please check the log for details"+e);
+		  e.printStackTrace();
+	  }
+		return null;
+	}
+	/**
+	 * 
+	 * This Method add List of census Details to a single VO
+	 * 
+	 * @author kamalakar Dandu
+	 * @param List<CensusVO>
+	 * @return CensusVO
+	 * 
+	 *  
+	 */
+	
+	public CensusVO addCensusDataToSingleVO(List<CensusVO> censusVOList)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.addCensusDataToSingleVO() method ......");
+		}
+		if(censusVOList.size() == 0)
+			return null;
+		else
+		{
+			CensusVO censusVO = new CensusVO();
+			
+			Long totalPopulation = 0l;
+			Long totalMalePopulation = 0l;
+			Long totalFemalePopulation = 0l;
+			Long totalSCPopulation = 0l;
+			Long totalSTPopulation = 0l;
+			
+			for(CensusVO cenVO:censusVOList)
+			{
+				totalPopulation += cenVO.getTotalPopulation();
+				totalMalePopulation +=cenVO.getMalePopulation();
+				totalFemalePopulation += cenVO.getFemalePopulation();
+				totalSCPopulation += cenVO.getPopulationSC();
+				totalSTPopulation += cenVO.getPopulationST();
+			}
+			censusVO.setTotalPopulation(totalPopulation);
+			censusVO.setMalePopulation(totalMalePopulation);
+			censusVO.setFemalePopulation(totalFemalePopulation);
+			censusVO.setPopulationSC(totalSCPopulation);
+			censusVO.setPopulationST(totalSTPopulation);
+			
+			return censusVO;
+		}
+	}catch(Exception e){
+		  log.debug("Exception Occured In the constituencyPageService.addCensusDataToSingleVO() method .........");
+		  log.error("Exception raised please check the log for details"+e);
+		  return null;
+	  }
+	}
+	
+	
+	 /**
+	 * 
+	 * This Method will Calculate Percentages of the Census Details 
+	 * 
+	 * @author kamalakar Dandu
+	 * @param List<CensusVO>
+	 * @return List<CensusVO>
+	 * 
+	 *  
+	 */
+	
+	public  List<CensusVO> calculateCensusPercentage(List<CensusVO> censusVOList)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.calculateCensusPercentage()");
+		}
+		if(censusVOList.size() > 0)
+		{
+		//Here we are Counting the Census Percentage
+		for(CensusVO cenVO:censusVOList)
+		{
+			cenVO.setTotPopPercent(new BigDecimal((cenVO.getTotalPopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setTotalPopulationPercentage(cenVO.getTotPopPercent().toString());
+			cenVO.setMalePopPercent(new BigDecimal((cenVO.getMalePopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setMalePopulationPercentage(cenVO.getMalePopPercent().toString());
+			cenVO.setFemalePopPercent(new BigDecimal((cenVO.getFemalePopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setFemalePopulationPercentage(cenVO.getFemalePopPercent().toString());
+			cenVO.setPopulationSCPercent(new BigDecimal((cenVO.getPopulationSC()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setPopulationSCPercentage(cenVO.getPopulationSCPercent().toString());
+			cenVO.setPopulationSTPercent(new BigDecimal((cenVO.getPopulationST()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setPopulationSTPercentage(cenVO.getPopulationSTPercent().toString());
+		}
+		return censusVOList;
+		}
+		else
+		{
+			return null;
+		}
+	  }catch(Exception e){
+		  log.debug("Exception Occured In the constituencyPageService.calculateCensusPercentage().......");
+		  log.error("Exception raised please check the log for details"+e);
+		  return null;
+	  }
+	}
+
+
+
 }

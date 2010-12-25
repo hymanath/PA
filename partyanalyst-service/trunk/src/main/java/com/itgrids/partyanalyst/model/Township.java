@@ -42,6 +42,7 @@ public class Township implements java.io.Serializable {
 	private String townshipName;
 	private Long townshipCode;
 	private String townshipType;
+	private String greaterTown;
 	private Set<Ward> wards = new HashSet<Ward>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<Hamlet> hamlets = new HashSet<Hamlet>(0);
@@ -192,6 +193,15 @@ public class Township implements java.io.Serializable {
 
 	public void setDelimitationVillage(Set<DelimitationVillage> delimitationVillage) {
 		this.delimitationVillage = delimitationVillage;
+	}
+
+	@Column(name = "greater_town", length = 25)
+	public String getGreaterTown() {
+		return greaterTown;
+	}
+
+	public void setGreaterTown(String greaterTown) {
+		this.greaterTown = greaterTown;
 	}
 
 	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "township")
