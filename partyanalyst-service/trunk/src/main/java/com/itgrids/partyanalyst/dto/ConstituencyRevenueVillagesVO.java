@@ -9,6 +9,7 @@ public class ConstituencyRevenueVillagesVO extends ResultStatus{
 	private String constituencyName;
 	private String electionType;
 	private String electionYear;
+	private String areaType;
 	private List<CandidatePartyInfoVO> candidateNamePartyAndStatus;
 	private List<RevenueVillageElectionVO> revenueVillageElectionVO;
 	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
@@ -19,7 +20,17 @@ public class ConstituencyRevenueVillagesVO extends ResultStatus{
 	private List<SelectOptionVO> missingConstituencies;
 	private Long postalBaletAndMissingConstiVotes;
 	private List<ElectionWiseMandalPartyResultVO>  electionInfoByLocations;
+	private List<CensusVO> censusVO;
 	
+	
+	public List<CensusVO> getCensusVO() {
+		return censusVO;
+	}
+
+	public void setCensusVO(List<CensusVO> censusVO) {
+		this.censusVO = censusVO;
+	}
+
 	public List<ConstituencyOrMandalWiseElectionVO> getConstituencyOrMandalWiseElectionVO() {
 		return constituencyOrMandalWiseElectionVO;
 	}
@@ -156,6 +167,14 @@ public class ConstituencyRevenueVillagesVO extends ResultStatus{
 	@Override
 	public int hashCode(){
 		return this.constituencyId.hashCode();
+	}
+
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
 	}
 	
 }
