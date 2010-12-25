@@ -19,6 +19,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IGenericUploadService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -158,7 +159,12 @@ public class GenericUploadAction extends ActionSupport implements
 		if(log.isDebugEnabled())
 			log.debug("Started Executing Upload Action Request ..");
 		
-		genericUploadService.interpretDataInExcelAndSetToVO(filePath, IConstants.CADRE, 1L);
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		genericUploadService.interpretDataInExcelAndSetToVO(filePath, IConstants.CADRE, 1L,user.getRegistrationID());
 		
 	 return Action.SUCCESS;
 	}
