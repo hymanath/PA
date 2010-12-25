@@ -662,7 +662,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 	}*/
 	
-	public void testfindByCandidateLastName(){
+	/*public void testfindByCandidateLastName(){
 	//String[] names = {"reddy","jagan"};
 	String sort = "model.candidate.candidateId";
 	List<Object[]> obj = nominationDAO.findByFirstMiddleAndLastNames("reddy",sort,"asc",0,20,"3,4");
@@ -679,17 +679,50 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	System.out.println();
 	}
 	System.out.println(obj.size());
-   /* i=0;
+    i=0;
 	for(Candidate result:obj)
 	{
 		System.out.println("============="+ ++i +" "+result.getLastname());
 		//System.out.print("   "+new ArrayList<Nomination>(result.getNominations()).get(0).getParty().getShortName());
-	}*/
+	}
 	
-}
-public void testTotalSearchCount(){
-	List<Long> obj = nominationDAO.totalSearchCount("kamalakara","2,4");
-	System.out.println(obj.get(0));
-}
+	}*/
+	/*public void testTotalSearchCount(){
+		List<Long> obj = nominationDAO.totalSearchCount("kamalakara","2,4");
+		System.out.println(obj.get(0));
+	}*/
+		
+		public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(){
+			long start = System.currentTimeMillis();
+			Map<Long, List<Object[]>> constituenciesInfoById = new HashMap<Long, List<Object[]>>();
+			Long constituencyId = 0l;
+			String constituencyName = "";
+			Long partyId = null;
+			Long rank = null;
+			List<Object[]> constituencyResult = null;
+			List<Long> alliancePartiesIds = new ArrayList<Long>();
+			List list = nominationDAO.findElectionResultsForAllCostituenciesByElectionTypeYearAndDistrictId(2l, "2004", 23l);
+			for(Object[] values:(List<Object[]>)list){
+				constituencyId = (Long)values[0];
+				constituencyResult = constituenciesInfoById.get(constituencyId);
+				if(constituencyResult == null)
+					constituencyResult = new ArrayList<Object[]>();
+					constituencyResult.add(values);
+				constituenciesInfoById.put(constituencyId, constituencyResult);
+			}
+			System.out.println(list.size());
+			long end = System.currentTimeMillis();
+			System.out.println((end-start)/1000);
+		}
+		
+		/*public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndSateId(){
+			
+		}
+	
+		public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndDistrictId(){
+			
+		}*/
+	
+	
 }
 	

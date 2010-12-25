@@ -18,8 +18,11 @@ public class VillageBoothDataPopulationServiceTest extends BaseDaoTestCase{
 	}
 	
 	public void testReadExcelAndInsertData(){
+		long start = System.currentTimeMillis();
 		File file = new File("d:/NelloreMapping2004.xls");
-		villageBoothDataPopulationService.readExcelAndInsertData(file, 4l, true);
+		villageBoothDataPopulationService.readExcelAndInsertData(file, 5l, false);
+		long end = System.currentTimeMillis();
+		System.out.println((end-start)/1000);
 		setComplete();
 	}
 	

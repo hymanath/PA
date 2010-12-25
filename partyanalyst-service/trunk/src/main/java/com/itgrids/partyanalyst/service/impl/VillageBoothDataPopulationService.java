@@ -40,8 +40,6 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	private IBoothDAO boothDAO;
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
-	private File filePath;
-	private Long electionId;
 	private IElectionDAO electionDAO;
 	private TransactionTemplate transactionTemplate;
 	private static final Logger log = Logger.getLogger(VillageBoothDataPopulationService.class);
@@ -121,16 +119,14 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 		this.electionDAO = electionDAO;
 	}
 
-	public VillageBoothElectionVO readExcelAndInsertData(File fPath, Long elecId, final Boolean isValidate){
+	public VillageBoothElectionVO readExcelAndInsertData(final File fPath, final Long elecId, final Boolean isValidate){
 		log.debug("The File Uploaded::"+fPath+" And Election Id ::"+ elecId);
-		this.filePath = fPath;
-		this.electionId = elecId;
 		VillageBoothElectionVO villageBoothElectionVO = (VillageBoothElectionVO)transactionTemplate.execute
 		(new TransactionCallback(){
 			public Object doInTransaction(TransactionStatus status) {
 				VillageBoothElectionVO villageBoothElectionVO = new VillageBoothElectionVO();				
 				try{
-					readFromExcel(villageBoothElectionVO, isValidate);
+					readFromExcel(fPath, elecId, villageBoothElectionVO, isValidate);
 				}catch(Exception e){
 					e.printStackTrace();
 					status.setRollbackOnly();
@@ -139,12 +135,10 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				return villageBoothElectionVO;
 			}					
 		});
-		this.filePath = null;
-		this.electionId = null;
 		return villageBoothElectionVO;
 	}
 	
-	private void readFromExcel(VillageBoothElectionVO villageBoothElectionVO, Boolean isValidate)throws Exception {
+	private void readFromExcel(File filePath, Long electionId, VillageBoothElectionVO villageBoothElectionVO, Boolean isValidate)throws Exception {
 		log.debug("Entered Into Uploaded Part...........");
 		Workbook workbook = Workbook.getWorkbook(filePath);	
 		Sheet[] sheets = workbook.getSheets();
@@ -164,18 +158,21 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 		List<String> hamletErrors = new ArrayList<String>();
 		List<String> boothErrors = new ArrayList<String>();
 		List<String> dataDuplicateErrors = new ArrayList<String>();
-		
+		Election election = electionDAO.get(electionId);
+		Long electionYear = new Long(election.getElectionYear());
 		boolean isHamletExists;
 		
 		for(Sheet sheet:sheets){
 			districtId = new Long(sheet.getCell(0,0).getContents().trim());
-			Long electionYear = 0l;
+			
 			for (int row = 2; row < sheet.getRows(); row++) {
-				isHamletExists = true;
+				partNos = sheet.getCell(4, row).getContents().trim();
+				if(partNos.length() == 0)
+					continue;
+				
 				if(!constituencyName.equalsIgnoreCase(sheet.getCell(0, row).getContents().trim())){
 					constituencyName = sheet.getCell(0, row).getContents().trim();
-					Election election = electionDAO.get(electionId);
-					electionYear = new Long(election.getElectionYear());
+					
 					constituencyInfo = constituencyDAO.findByConstituencyNameElectionScopeAndDistrictId(constituencyName, districtId, 
 							election.getElectionScope().getElectionScopeId());
 					if(constituencyInfo.size() != 1)
@@ -185,6 +182,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				
 				mandalName = sheet.getCell(1, row).getContents().trim();
 				if(!revenueVillage.equalsIgnoreCase(sheet.getCell(2, row).getContents().trim())){
+					villageBoothElectionDAO.flushAndclearSession();
 					revenueVillage = sheet.getCell(2, row).getContents().trim();
 					townships = townshipDAO.findByTownshipNameTehsilNameDistrictId(districtId, mandalName, revenueVillage);
 					if(townships.size() != 1){
@@ -194,11 +192,11 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 					township = townships.get(0);
 				}
 				
+				isHamletExists = false;
 				if(!hamletName.equalsIgnoreCase(sheet.getCell(3, row).getContents().trim())){
 					hamletName = sheet.getCell(3, row).getContents().trim();
-					if(hamletName.length() == 0)
-						isHamletExists = false;		
-					else{
+					if(hamletName.length() > 0){
+						isHamletExists = true;		
 						hamlets = hamletDAO.findByHamletNameAndTownshipId(township.getTownshipId(), hamletName);
 						if(hamlets.size() != 1){
 							hamletErrors.add(hamlets.size() + " No. Of Hamlets Exists With Name \'"+hamletName+"\' In Revenue Village:"+revenueVillage+" And In Mandal:"+mandalName+" At Row No::"+(row+1));
@@ -207,11 +205,11 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 						hamlet = hamlets.get(0);
 					}					
 				}
-				partNos = sheet.getCell(4, row).getContents().trim();
-				if(partNos.length() > 0){	
-					insertDataIntoDB(constituencyId, electionYear, township, hamlet, partNos, 
-							isHamletExists, boothErrors, dataDuplicateErrors, isValidate, constituencyName);		
-				}
+				
+				
+				insertDataIntoDB(constituencyId, electionYear, township, hamlet, partNos, 
+						isHamletExists, boothErrors, dataDuplicateErrors, isValidate, constituencyName);	
+				
 			}
 		}		
 		
@@ -251,13 +249,9 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				dataDuplicateErrors.add(values[3].toString()+" Assembly Part No: "+values[4].toString()+" is Already Mapped To "+
 						values[0].toString()+" Revenue Village In "+values[1].toString()+" Mandal In "+values[2].toString()+" District");
 				return;
-			}
+			} 
 			if(!isValidate)
 				villageBoothElectionDAO.save(new VillageBoothElection(township, boothConstituencyElection));
-		}else{
-			dataDuplicateErrors.add(boothConstituencyElection.getConstituencyElection().getConstituency().getName()+" Assembly Part No: "+
-					boothConstituencyElection.getBooth().getPartNo()+" is Already Mapped To "+
-					township.getTownshipName()+" Revenue Village In "+township.getTehsil().getTehsilName()+" Mandal ");
 		}
 	}
 

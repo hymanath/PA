@@ -239,6 +239,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			calculateDifferencesFromLatest(electionComparisonReportVO, resultTwo, resultOne, false);
 		else
 			calculateDifferencesFromLatest(electionComparisonReportVO, resultOne, resultTwo, true);
+		//long heapSizeEnd = Runtime.getRuntime().totalMemory();
+		
+		//System.out.println("Heap Size :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+(heapSizeEnd - heapSize));
 		
 		return electionComparisonReportVO;
 	}

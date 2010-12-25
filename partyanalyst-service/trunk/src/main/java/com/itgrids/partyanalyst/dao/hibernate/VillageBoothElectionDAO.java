@@ -86,6 +86,11 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 				"model.boothConstituencyElection.boothConstituencyElectionId = ?",boothConstituencyElectionId);
 	}
 	
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
+	}
+	
 }
 
 		
