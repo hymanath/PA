@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -65,8 +66,21 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 		constituencyPageService.getTownshipWiseElectionsForTehsil(21827l, 844l);
 	}*/
 	
-	public void testGetConstituencyElecResults(){
+	/*public void testGetConstituencyElecResults(){
 		constituencyPageService.getConstituencyElecResults(403l, "2004",true);
+	}*/
+	
+	public void test()
+	{
+		List<String> list = new ArrayList<String>();
+		
+		if(list.size() > 0)
+		{
+			System.out.println(list.size());
+		}
+		
+		constituencyPageService.getCensusDetailsForAssemblyConstituency(231l,2009l,2001l);
+		
 	}
 
 }
