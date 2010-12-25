@@ -204,7 +204,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return party;
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Party Selection")
+	
 	public void setParty(String party) {
 		this.party = party;
 	}
@@ -214,7 +214,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		return position;
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Position",shortCircuit=true)
+	
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[1-9]+[0-9]*$", message = "Invalid Position Selection")
 	public void setPosition(String position) {
 		this.position = position;
