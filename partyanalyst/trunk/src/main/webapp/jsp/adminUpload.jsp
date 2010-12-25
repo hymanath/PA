@@ -103,7 +103,13 @@
 									<legend class="l2">Scrutinize Comments</legend>
 									<h4>Accept/Reject recent posted comments:<a href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
 									</fieldset>
-								</td>							
+								</td>	
+								<td>
+									<fieldset class="f2">
+									<legend class="l2">Delimitation Census Upload</legend>
+									<h4>Upload Delimitation Mapping Data For Constituencies :<a href="<s:url action="delimitationMappingsUpload"/>"><b>&nbsp;Start Mapping</b></a></h4>
+									</fieldset>
+								</td>	
 							</tr>
 						</table>
 				</fieldset>
