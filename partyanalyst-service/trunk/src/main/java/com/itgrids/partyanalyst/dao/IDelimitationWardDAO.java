@@ -7,6 +7,8 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.DelimitationWard;
 
 public interface IDelimitationWardDAO extends GenericDao<DelimitationWard, Long>{
+	
+	public List getWardsFromPartialTownship(Long dctId);
 
 	public List<DelimitationWard> findByDelimitationConstituenyTownAndWard(Long delimconstiTownId,Long wardId);
 }
