@@ -21,36 +21,37 @@ public class GenericUploadDataVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long   cadreId;
-	private String firstName;
-	private String middleName;
-	private String lastName;
-	private String name;
-	private String gender;
-	private Date   dateOfBirth;
-	private Long   age;
-	private String headOfFamily;
-	private String father;
-	private String spouse;
-	private Date   fatherOrSpouseDob;
-	private Long   fatherOrSpouseAge;
-	private String firstChild;
-	private String secondChild;
-	private String thirdChild;
-	private String fourthChild;
-	private String fifthChild;
-	private String mobile;
-	private String phoneNo;
-	private String email;
-	private String houseNo;
-	private String street;
-	private String education;
-	private String profession;
-	private String caste;
-	private String cadreLevel;
-	private String memberOfPartySince;
-	private String presentResponsibilityInParty;
-	private String pincode;
+	public Long   cadreId;
+	public String firstName;
+	public String middleName;
+	public String lastName;
+	public String name;
+	public String gender;
+	public Date   dateOfBirth;
+	public Long   age;
+	public String headOfFamily;
+	public String father;
+	public String spouse;
+	public Date   fatherOrSpouseDob;
+	public Long   fatherOrSpouseAge;
+	public String firstChild;
+	public String secondChild;
+	public String thirdChild;
+	public String fourthChild;
+	public String fifthChild;
+	public String mobile;
+	public String phoneNo;
+	public String email;
+	public String houseNo;
+	public String street;
+	public String education;
+	public String profession;
+	public String caste;
+	public String cadreLevel;
+	public String memberOfPartySince;
+	public String presentResponsibilityInParty;
+	public String pincode;
+	public String familyMembers;
 	
 	private Boolean canSave;
 	
@@ -426,6 +427,18 @@ public class GenericUploadDataVO implements Serializable {
 	 */
 	public void setFatherOrSpouseDob(Date fatherOrSpouseDob) {
 		this.fatherOrSpouseDob = fatherOrSpouseDob;
+	}
+	/**
+	 * @return the familyMembers
+	 */
+	public String getFamilyMembers() {
+		return familyMembers;
+	}
+	/**
+	 * @param familyMembers the familyMembers to set
+	 */
+	public void setFamilyMembers(String familyMembers) {
+		this.familyMembers = familyMembers;
 	}
 		
 
