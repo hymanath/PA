@@ -456,7 +456,18 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" group by model.boothConstituencyElection.booth.tehsil.tehsilId, " +
 				" model.nomination.nominationId",params);
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List getCandidatesResultsForElectionAndConstituencyByMandalWise(Long constituencyId, String electionYear, String electionType){
+		Object[] params = {new Long(electionYear), constituencyId, electionType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilName," +
+				" model.boothConstituencyElection.booth.tehsil.tehsilId, model.nomination.candidateResult.rank, model.nomination.candidate.lastname, " +
+				" model.nomination.party.shortName, sum(model.votesEarned),model.nomination.candidate.candidateId, " +
+				" model.nomination.party.partyId from CandidateBoothResult model where model.boothConstituencyElection.booth.year = ? " +
+				" and model.boothConstituencyElection.booth.constituency.constituencyId = ? and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
+				" group by model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				" model.nomination.nominationId",params);
+	}
 	@SuppressWarnings("unchecked")
 	public List getCandidatesResultsForElectionAndConstituencyByLocalElectionBody(Long constituencyId, String electionYear, String electionType, 
 			String localBodyTypes){
