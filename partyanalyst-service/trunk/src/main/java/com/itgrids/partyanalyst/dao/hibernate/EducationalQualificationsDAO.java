@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
@@ -11,5 +13,11 @@ public class EducationalQualificationsDAO extends GenericDaoHibernate<Educationa
 	public EducationalQualificationsDAO() {
 		super(EducationalQualifications.class);
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<EducationalQualifications> getEducationalQualificationsByQualificationType(String qualificationType) {
+		
+		return getHibernateTemplate().find("from EducationalQualifications model where model.qualification = ?",qualificationType);
 	}
 }
