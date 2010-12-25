@@ -1048,6 +1048,8 @@ public class GenericUploadService implements IGenericUploadService {
 			HSSFCell cell  = row.getCell(i);
 			if(cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
 				continue;
+			else if(cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
+				break;
 		}
 		
 		if(i < row.getLastCellNum()){
@@ -1256,6 +1258,7 @@ public class GenericUploadService implements IGenericUploadService {
 		regionMap.put(IConstants.TEHSIL,       0L);
 		regionMap.put(IConstants.MANDAL,       0L);
 		regionMap.put(IConstants.VILLAGE,      0L);
+		regionMap.put(IConstants.MUNCPAL_CORP, 0L);
 		regionMap.put(IConstants.TOWNSHIP,     0L);
 		regionMap.put(IConstants.WARD,         0L);
 		regionMap.put(IConstants.HAMLET,       0L);
@@ -1264,23 +1267,7 @@ public class GenericUploadService implements IGenericUploadService {
 	 this.regionsMap = regionMap;
 	}
 	
-	/*	
-    public static void main(String args[]){
-		
-        try{
-			
-        	File upFile = new File("cadreUpload.xls");
-        	GenericUploadService cadreUpload = new GenericUploadService();
-        	cadreUpload.interpretDataInExcelAndSetToVO(upFile, IConstants.CADRE, 1L);
-			
-		}catch(Exception ex){
-			ex.printStackTrace();
-			log.debug("Exception Raised :"+ ex);
-		}
-		finally{
-			
-		}
-	}*/
 	
+    	
 	
 }
