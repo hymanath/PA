@@ -1912,6 +1912,12 @@
 		   <result name="success">/jsp/genericUpload.jsp</result>
 		   <result name="error">/jsp/genericUpload.jsp</result>
 	    </action>
+	    
+	     <action name="getCensusDetailsForAConstituency" class="constituencyPageAction" method="getCensusDetailsForAConstituency">
+        	<result type="json" name="success">
+			<param name="root">constituencyRevenueVillagesVO</param>				
+			</result>
+       </action>
                 
 	</package>
 </struts>
