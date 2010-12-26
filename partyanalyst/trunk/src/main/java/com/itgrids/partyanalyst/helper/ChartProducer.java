@@ -57,6 +57,8 @@ public class ChartProducer {
 
 	public static void createPie3DChart(SortedMap<String, Integer> positions, String filename, String chartTitle) {
 		
+		
+		
 		DefaultPieDataset dataSet = new DefaultPieDataset();
 	    for(String entry : positions.keySet()) {
 	        dataSet.setValue(entry, positions.get(entry));
@@ -81,7 +83,10 @@ public class ChartProducer {
 		 }
 		 catch (java.io.IOException exc)
 		 {
-		    log.error("Error writing image to file");
+	            System.out.println("Exception while creating the chart" );
+	            exc.printStackTrace();
+	            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+
 		 }
 
 	}
@@ -126,7 +131,10 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+            System.out.println("Exception while creating the chart" );
+            exc.printStackTrace();
+            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+
 		}
 	}
 	
@@ -172,7 +180,10 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+            System.out.println("Exception while creating the chart" );
+            exc.printStackTrace();
+            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+
 		}
 	}
 		
@@ -278,7 +289,10 @@ public class ChartProducer {
 			}
 			catch (java.io.IOException exc)
 			{
-			log.error("Error writing image to file");
+	            System.out.println("Exception while creating the chart" );
+	            exc.printStackTrace();
+	            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+
 			}
 	       
 		
@@ -310,7 +324,10 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+            System.out.println("Exception while creating the chart" );
+            exc.printStackTrace();
+            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+
 		}
 		
 	}
@@ -398,6 +415,7 @@ public class ChartProducer {
 		catch (java.io.IOException exc)
 		{
 		log.error("Error writing image to file");
+		exc.printStackTrace();
 		}
 	}
 
@@ -460,6 +478,7 @@ public class ChartProducer {
 		catch (java.io.IOException exc)
 		{
 			log.error("Error writing image to file");
+			exc.printStackTrace();
 		}
 	}
 	
@@ -666,6 +685,8 @@ public class ChartProducer {
         catch (Exception e)
         {
             System.out.println("Exception while creating the chart");
+            e.printStackTrace();
+            System.out.println(System.getProperty("java.io.tmpdir"));
         }
 		
 	}
@@ -759,7 +780,9 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         }
         catch (Exception e)
         {
-            System.out.println("Exception while creating the chart");
+            System.out.println("Exception while creating the chart" );
+            e.printStackTrace();
+            System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
         }
 	}
 
