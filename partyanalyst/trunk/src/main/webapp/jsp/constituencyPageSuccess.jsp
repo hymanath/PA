@@ -1666,17 +1666,35 @@ function buildCensusChartForAConstituency(myResults)
 	  }
     var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
 	ctitle = "Assembly Constituency Wise Election Results V/S Census Chart For '${constituencyDetails.constituencyName}'";
-       
+
+	var staticColors = setStaticColorsForInteractiveChartsForCensusAndPartiesArray(partiesArray);
+    
 	 if(chartRows.length == 1)
 	{
+		if(staticColors != null && staticColors.length > 0)
+		{
+		  new google.visualization.ColumnChart(chartResultDiv).
+		      draw(data, {width: 900, height: 450,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+		else
+		{
 		 new google.visualization.ColumnChart(chartResultDiv).
-		      draw(data, {width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		  draw(data, {width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
 	}
 	 if(chartRows.length > 1)
 	{
+		 if(staticColors != null && staticColors.length > 0)
+		{
 		 new google.visualization.LineChart(chartResultDiv).
-		      draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
-	}
+		      draw(data, {curveType: "function",width: 900, height: 450,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+		else
+		{
+		   new google.visualization.ColumnChart(chartResultDiv).
+		  draw(data, {width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+		}
+	 }
   }
 
 }
