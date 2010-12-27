@@ -449,11 +449,12 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	 * @param cadre
 	 * @param uploadResultsVO
 	 */
-	private void saveCadreFamilyMembersDetails(Cadre cadre,GenericUploadDataVO uploadResultsVO){
+	private void saveCadreFamilyMembersDetails(Cadre cadre,GenericUploadDataVO uploadResultsVO) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Started Saving Cadre Family Members Details ..");
 		
+		try{
 		Date dob = new Date();
 		String name = "";
 		
@@ -501,6 +502,9 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 			name = uploadResultsVO.getThirdChild();
 			saveCadreFamilyData(cadre,name,"Child",dob);
 		}
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
@@ -511,23 +515,27 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	 * @param type
 	 * @param dob
 	 */
-	private void saveCadreFamilyData(Cadre cadre,String memberName,String type,Date dob){
+	private void saveCadreFamilyData(Cadre cadre,String memberName,String type,Date dob) throws Exception{
 		
-		CadreFamilyMemberInfo cadreFamilyMembers = new CadreFamilyMemberInfo();
-		List<UserRelation> userRelationList = null;
-		
-		userRelationList = userRelationDAO.findByRelationType(type);
-		if(userRelationList == null || userRelationList.size() == 0)
-			userRelationList = userRelationDAO.findByRelationType("Others");
-		
-		if(userRelationList != null && userRelationList.size() > 0){
+		try{
+			CadreFamilyMemberInfo cadreFamilyMembers = new CadreFamilyMemberInfo();
+			List<UserRelation> userRelationList = null;
 			
-			cadreFamilyMembers.setCadre(cadre);
-			cadreFamilyMembers.setName(memberName);
-			cadreFamilyMembers.setDateOfBirth(dob);
-			cadreFamilyMembers.setUserRelation(userRelationList.get(0));
+			userRelationList = userRelationDAO.findByRelationType(type);
+			if(userRelationList == null || userRelationList.size() == 0)
+				userRelationList = userRelationDAO.findByRelationType("Others");
 			
-			cadreFamilyMemberInfoDAO.save(cadreFamilyMembers);
+			if(userRelationList != null && userRelationList.size() > 0){
+				
+				cadreFamilyMembers.setCadre(cadre);
+				cadreFamilyMembers.setName(memberName);
+				cadreFamilyMembers.setDateOfBirth(dob);
+				cadreFamilyMembers.setUserRelation(userRelationList.get(0));
+				
+				cadreFamilyMemberInfoDAO.save(cadreFamilyMembers);
+			}
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -545,6 +553,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		
 		Cadre cadre = new Cadre();
 		
+		try{
 		//Get User
 		Registration user = registrationDAO.get(userId);
 		cadre.setRegistration(user);
@@ -572,7 +581,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		if(uploadResultsVO.getCaste() != null && !"".equalsIgnoreCase(uploadResultsVO.getCaste()))
 			socialCatList = socialCategoryDAO.getSocialCategoryDetailsByCategoryType(uploadResultsVO.getCaste());
 		else 
-			socialCatList = socialCategoryDAO.getSocialCategoryDetailsByCategoryType("NA");
+			socialCatList = socialCategoryDAO.getSocialCategoryDetailsByCategoryType("N/A");
 		if(socialCatList != null && socialCatList.size() > 0)
 			cadre.setCasteCategory(socialCatList.get(0));
 		
@@ -612,6 +621,11 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		cadre.setGender(gender.trim());
 		String fatherOrSpouse = uploadResultsVO.getFather() != null ? uploadResultsVO.getFather() : uploadResultsVO.getSpouse();
 		cadre.setFatherOrSpouseName(fatherOrSpouse.trim());
+		String memOfPartySince = uploadResultsVO.getMemberOfPartySince() != null ? uploadResultsVO.getMemberOfPartySince() : null;
+		cadre.setMemberOfPartySince(memOfPartySince);
+		String presentRespInParty = uploadResultsVO.getPresentResponsibilityInParty() != null ? uploadResultsVO.getPresentResponsibilityInParty() : null;
+		cadre.setPresentRespInParty(presentRespInParty);
+		
 		
 		//Cadre Date Of Birth
 		if(uploadResultsVO.getDateOfBirth() != null){
@@ -634,16 +648,23 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		cadre.setCadreLevelValue(getCadreLevelValue(uploadResultsVO));
 		
 		cadre = cadreDAO.save(cadre);
-		
+		}catch(Exception ex){
+			throw ex;
+		}
 	 return cadre;
 	}
 	
 	private Long getCadreLevelId(String cadreLevel) throws Exception{
 		
+		
 		Long level = 0L;
+		try{
 		List<CadreLevel> levelList = cadreLevelDAO.findByCadreLevel(cadreLevel);
 		if(levelList != null && levelList.size() > 0)
 			level = levelList.get(0).getCadreLevelID();
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	 return level;
 	}
@@ -661,6 +682,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		
 		UserAddress userAddress = new UserAddress();
 		
+		try{
 		//For India
 		Country country = countryDAO.get(1L);
 		userAddress.setCountry(country);
@@ -677,25 +699,37 @@ public class GenericUploadDataService implements IGenericUploadDataService {
         	
         	Tehsil tehsil = tehsilDAO.get(uploadResultsVO.getMandalId());
         	userAddress.setTehsil(tehsil);
+        	
+        	if(uploadResultsVO.getVillageId() == null || uploadResultsVO.getVillageId().equals(0L))
+        		throw new Exception("Village Details Not Available ..");
+        		
+        	//village details
+        	if(uploadResultsVO.getVillageId() != null && !uploadResultsVO.getVillageId().equals(0L)){
+            	
+            	Township village = townshipDAO.get(uploadResultsVO.getVillageId());
+            	userAddress.setTownship(village);
+            }
         }
         
         if(uploadResultsVO.getLocalBodyId() != null && !uploadResultsVO.getLocalBodyId().equals(0L)){
         	
         	LocalElectionBody localBody = localBodyDAO.get(uploadResultsVO.getLocalBodyId());
         	userAddress.setLocalElectionBody(localBody);
+        	
+        	if(uploadResultsVO.getWardId() == null || uploadResultsVO.getWardId().equals(0L))
+        		throw new Exception("Ward Details Not Available ..");
+        	
+        	//ward details
+        	if(uploadResultsVO.getWardId() != null && !uploadResultsVO.getWardId().equals(0L)){
+            	
+            	Constituency ward = constituencyDAO.get(uploadResultsVO.getWardId());
+            	userAddress.setWard(ward);
+            }
         }
         
-        if(uploadResultsVO.getVillageId() != null && !uploadResultsVO.getVillageId().equals(0L)){
-        	
-        	Township village = townshipDAO.get(uploadResultsVO.getVillageId());
-        	userAddress.setTownship(village);
-        }
         
-        if(uploadResultsVO.getWardId() != null && !uploadResultsVO.getWardId().equals(0L)){
-        	
-        	Constituency ward = constituencyDAO.get(uploadResultsVO.getWardId());
-        	userAddress.setWard(ward);
-        }
+        
+        
         
         if(uploadResultsVO.getBoothId() != null && !uploadResultsVO.getBoothId().equals(0L)){
         	
@@ -722,6 +756,9 @@ public class GenericUploadDataService implements IGenericUploadDataService {
         	userAddress.setStreet(uploadResultsVO.getStreet());
         if(uploadResultsVO.getPincode() != null && !"".equalsIgnoreCase(uploadResultsVO.getPincode()))
         	userAddress.setPinCode(uploadResultsVO.getPincode());
+		}catch(Exception ex){
+			throw ex;
+		}
       		
 	 return userAddress;
 	}
@@ -736,6 +773,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		
 		Long levelValue = 0L;
 		
+		try{
 		if(uploadResultsVO.getCadreLevel() != null && !"".equalsIgnoreCase(uploadResultsVO.getCadreLevel())){
 			
 			if(uploadResultsVO.getCadreLevel().equalsIgnoreCase(IConstants.STATE))
@@ -763,7 +801,9 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 					uploadResultsVO.getCadreLevel().equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
 				return uploadResultsVO.getLocalBodyId();
 		}
-		
+		}catch(Exception ex){
+			throw ex;
+		}
 	 return levelValue;
 	}
 
