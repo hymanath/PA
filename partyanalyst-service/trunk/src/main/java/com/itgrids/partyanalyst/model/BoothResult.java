@@ -11,11 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "booth_result")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BoothResult extends BaseModel implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;

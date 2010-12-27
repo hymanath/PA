@@ -22,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -32,6 +34,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "party_training_camps")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyTrainingCamps implements java.io.Serializable {
 
 	/**

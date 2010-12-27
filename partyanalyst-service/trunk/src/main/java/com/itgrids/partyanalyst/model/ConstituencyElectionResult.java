@@ -10,17 +10,15 @@ package com.itgrids.partyanalyst.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -29,6 +27,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "constituency_election_result")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ConstituencyElectionResult extends BaseModel implements java.io.Serializable {
 
 	/**

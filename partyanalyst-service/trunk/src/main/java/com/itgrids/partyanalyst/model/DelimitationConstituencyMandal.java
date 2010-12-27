@@ -15,11 +15,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "delimitation_constituency_mandal_details")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DelimitationConstituencyMandal extends BaseModel {
+
+	private static final long serialVersionUID = 834695361806308898L;
 	private Long dcm_id;
 	private DelimitationConstituency delimitationConstituency;
 	private Tehsil tehsil;

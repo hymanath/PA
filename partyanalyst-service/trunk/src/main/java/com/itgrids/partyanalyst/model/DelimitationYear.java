@@ -25,6 +25,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -36,6 +38,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="delimitation_year")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DelimitationYear extends BaseModel implements java.io.Serializable{
 	
 	 private static final long serialVersionUID = 1429540901539571873L;

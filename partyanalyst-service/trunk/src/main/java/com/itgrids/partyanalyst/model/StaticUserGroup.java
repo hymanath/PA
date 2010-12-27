@@ -15,11 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "static_user_group")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StaticUserGroup implements java.io.Serializable {
 
 	/**

@@ -9,7 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
 /**
@@ -18,6 +19,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 @Table(name = "census_master")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Census extends BaseModel implements java.io.Serializable {
 
 	/**

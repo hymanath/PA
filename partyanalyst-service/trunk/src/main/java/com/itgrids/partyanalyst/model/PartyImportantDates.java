@@ -9,7 +9,6 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,12 +21,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity	
 @Table(name="party_important_date")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyImportantDates extends BaseModel {
 
 	

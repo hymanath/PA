@@ -17,8 +17,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "problem")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Problem extends BaseModel implements Serializable{
 	
 	/**

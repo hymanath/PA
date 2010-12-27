@@ -10,13 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 @Entity
 @Table(name = "hamlet_booth_election")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class HamletBoothElection extends BaseModel{
 
+	private static final long serialVersionUID = 1L;
 	private Long hamletBoothElectionId;
 	private Hamlet hamlet;
 	private BoothConstituencyElection boothConstituencyElection;

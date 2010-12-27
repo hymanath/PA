@@ -7,8 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "election_governing_body_position")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ElectionGoverningBodyPosition {
 
 	private Long governingBodyPositionId;

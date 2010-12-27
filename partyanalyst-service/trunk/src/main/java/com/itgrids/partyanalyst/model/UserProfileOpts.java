@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,14 +13,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "user_profile_opts")
-public class UserProfileOpts extends BaseModel{
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class UserProfileOpts extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long userProfileOptsId;
 	private AnanymousUser user;
 	private ProfileOpts profileOpts;

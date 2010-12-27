@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 /**
  * 
@@ -25,7 +27,10 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name="user_event")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserEvents extends BaseModel {
+
+	private static final long serialVersionUID = 1L;
 	private Long userEventsId;
 	private Registration registration;
 	private String description;

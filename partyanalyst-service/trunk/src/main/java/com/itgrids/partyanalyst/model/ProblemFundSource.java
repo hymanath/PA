@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,14 +13,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "problem_fund_source")
-public class ProblemFundSource extends BaseModel{
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ProblemFundSource extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long problemFundSourceId;
 	private String status;
 	private String description;

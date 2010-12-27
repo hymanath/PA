@@ -12,19 +12,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "influencing_people")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class InfluencingPeople extends BaseModel{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private Long influencingPeopleId;
 	private Registration registration;
 	private String firstName;

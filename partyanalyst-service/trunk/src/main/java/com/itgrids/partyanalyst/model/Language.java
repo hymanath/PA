@@ -19,6 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -27,11 +29,9 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "language")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Language implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Long languageId;
 	private String language;

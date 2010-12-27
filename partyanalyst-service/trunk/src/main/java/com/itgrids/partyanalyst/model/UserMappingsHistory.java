@@ -8,6 +8,7 @@
 
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -21,6 +22,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -31,11 +34,9 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "user_mappings_history")
-public class UserMappingsHistory extends BaseModel implements java.io.Serializable {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class UserMappingsHistory extends BaseModel implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	   * Holds the primary key of the table. 

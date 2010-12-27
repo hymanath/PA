@@ -13,11 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 @Entity
 @Table(name="user_connectedto")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserConnectedto extends BaseModel implements Serializable {
 
 	/**

@@ -11,15 +11,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * @author Sai Krishna Basetti
@@ -27,11 +27,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="problem_impact_level")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProblemImpactLevel extends BaseModel implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private Long problemImpactLevelId;

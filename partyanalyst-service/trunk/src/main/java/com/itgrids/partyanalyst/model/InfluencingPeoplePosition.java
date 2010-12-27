@@ -16,13 +16,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "influencing_people_position")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class InfluencingPeoplePosition extends BaseModel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Long influencingPeoplePositionId;
 	private String position;

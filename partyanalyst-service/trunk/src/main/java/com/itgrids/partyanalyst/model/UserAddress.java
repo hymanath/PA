@@ -20,12 +20,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * PartyWorkingCommittee entity. 
  * @author <a href="mailto:raghavenderprasad@gmail.com">Raghav</a>
  */
 @Entity
 @Table(name = "user_address")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserAddress implements java.io.Serializable {
 
 	/**

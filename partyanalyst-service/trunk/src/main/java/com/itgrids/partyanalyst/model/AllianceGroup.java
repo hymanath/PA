@@ -13,12 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name= "alliance_groups")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AllianceGroup extends BaseModel implements Serializable {
 
 	/**

@@ -18,14 +18,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * ProblemSourceScope Entity
  * @author<a href="r.sivakumar@itgrids.com" >Sivakumar</a>
@@ -33,8 +30,10 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "problem_source_scope")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProblemSourceScope extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long problemSourceScopeId;
 	private String scope;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0);

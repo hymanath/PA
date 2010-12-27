@@ -14,10 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "problem_status")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProblemStatus extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long problemStatusId;
 	private String status;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0);

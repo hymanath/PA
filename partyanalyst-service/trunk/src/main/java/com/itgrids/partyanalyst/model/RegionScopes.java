@@ -19,12 +19,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * Occupation entity. 
  * @author <a href="mailto:raghavenderprasad@gmail.com">Raghav</a>
  */
 @Entity
 @Table(name = "region_scopes")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class RegionScopes extends BaseModel implements java.io.Serializable {
 
 	/**

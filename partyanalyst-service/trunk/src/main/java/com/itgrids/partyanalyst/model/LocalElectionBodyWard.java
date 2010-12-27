@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -23,13 +25,10 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "local_election_body_ward")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LocalElectionBodyWard extends BaseModel implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8117328490181862137L;
-	
 	private Long localElectionBodyWardId;
 	private String wardName;
 	private String cirlceName;

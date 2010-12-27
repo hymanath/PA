@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,14 +16,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "voter")
-public class Voter extends BaseModel implements java.io.Serializable {
-	
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Voter extends BaseModel implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private Long voterId;
 	private String houseNo;
 	private String firstName;

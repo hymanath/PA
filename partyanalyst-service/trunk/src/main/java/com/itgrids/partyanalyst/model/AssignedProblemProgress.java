@@ -14,14 +14,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "assigned_problem_progress")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AssignedProblemProgress extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long assignedProblemProgressId;
 	private String description;
 	private String concernedPersonName;

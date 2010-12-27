@@ -14,13 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "information_source")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class InformationSource extends BaseModel implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3768383074738249375L;
 	private Long informationSourceId;
 	private String informationSource;

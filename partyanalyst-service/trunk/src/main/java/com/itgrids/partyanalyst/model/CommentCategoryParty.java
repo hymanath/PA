@@ -20,12 +20,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "comment_category_party")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CommentCategoryParty extends BaseModel implements Serializable {
 
 	/**
