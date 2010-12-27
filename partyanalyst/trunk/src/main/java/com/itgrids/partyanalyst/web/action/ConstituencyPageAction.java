@@ -1439,7 +1439,6 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	   {
 		   try{
 				jObj = new JSONObject(getTask());
-				System.out.println(jObj);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}	
