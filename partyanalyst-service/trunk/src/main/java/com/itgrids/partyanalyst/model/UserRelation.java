@@ -6,7 +6,7 @@
  * Created on November 03, 2010
  */
 package com.itgrids.partyanalyst.model;
-import java.util.Date;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,13 +17,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -32,9 +30,8 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "user_relation")
-
-
-public class UserRelation implements java.io.Serializable  {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class UserRelation implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private Long userRelationId;

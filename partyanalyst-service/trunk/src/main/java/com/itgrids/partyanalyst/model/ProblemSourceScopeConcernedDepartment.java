@@ -16,14 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.itgrids.partyanalyst.model.BaseModel;
-
 @Entity
 @Table(name = "problem_source_scope_concerned_department")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProblemSourceScopeConcernedDepartment extends BaseModel implements Serializable{
 
 	

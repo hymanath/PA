@@ -18,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -26,6 +28,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "assembly_local_election_body_ward")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AssemblyLocalElectionBodyWard extends BaseModel {
 
 	/**

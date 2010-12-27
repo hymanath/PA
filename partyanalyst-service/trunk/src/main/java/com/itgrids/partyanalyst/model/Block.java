@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -36,9 +39,11 @@ import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="block")
-public class Block extends BaseModel implements java.io.Serializable{
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Block extends BaseModel implements Serializable{
 	
-	 private Long blockId;
+	private static final long serialVersionUID = 1L;
+	private Long blockId;
 	 private String blockName;
 	 private Ward ward;
 	 private String description;

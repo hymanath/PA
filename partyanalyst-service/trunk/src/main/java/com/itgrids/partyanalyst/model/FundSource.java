@@ -6,7 +6,6 @@
  * Created on December 23, 2009
  */
 package com.itgrids.partyanalyst.model;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +19,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "fund_source")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FundSource {
 	
 	private Long fundSourceID;

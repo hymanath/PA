@@ -15,13 +15,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "my_group")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MyGroup implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private  Long myGroupId;
 	private String groupName;

@@ -21,12 +21,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * ModuleDetails entity. 
  * @author <a href="mailto:raghavenderprasad@gmail.com">Raghav</a>
  */
 @Entity
 @Table(name = "module_details")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ModuleDetails extends BaseModel implements java.io.Serializable {
 
 	/**

@@ -3,8 +3,9 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 
 public class BaseModel implements Serializable {
-	   
-    private volatile Object object;
+
+	private static final long serialVersionUID = 1L;
+	private volatile Object object;
     private Long id;
    
     public Long getId() {

@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,14 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 
@@ -30,8 +29,10 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name="event_action_plan")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserEventActionPlan extends BaseModel {
 
+	private static final long serialVersionUID = 1L;
 	private Long eventActionPlanId;
 	private String action;
 	private UserEvents userEvents;

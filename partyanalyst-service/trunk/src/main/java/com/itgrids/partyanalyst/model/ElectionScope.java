@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,11 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -33,6 +32,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "election_scope")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ElectionScope extends BaseModel implements java.io.Serializable {
 
 	/**

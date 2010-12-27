@@ -11,15 +11,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "user_constituency_access_info")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserConstituencyAccessInfo extends BaseModel{
 
-
+	private static final long serialVersionUID = 1L;
 	private Long userConstituencyAccessInfoId;
 	private UserGroups userGroup;
 	private Constituency constituency ;

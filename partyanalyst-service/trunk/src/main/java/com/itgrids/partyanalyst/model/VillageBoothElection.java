@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,13 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "village_booth_election")
-public class VillageBoothElection extends BaseModel{
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class VillageBoothElection extends BaseModel implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Long villageBoothElectionId;
 	private BoothConstituencyElection boothConstituencyElection;

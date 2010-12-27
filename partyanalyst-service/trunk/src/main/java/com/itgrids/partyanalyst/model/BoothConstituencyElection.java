@@ -16,12 +16,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "booth_constituency_election")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BoothConstituencyElection extends BaseModel implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;

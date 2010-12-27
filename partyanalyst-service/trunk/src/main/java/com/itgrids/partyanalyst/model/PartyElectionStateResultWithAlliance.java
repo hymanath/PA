@@ -23,12 +23,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "party_election_state_result_with_alliance")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PartyElectionStateResultWithAlliance extends BaseModel implements Serializable {
 
 	/**

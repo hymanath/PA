@@ -23,6 +23,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -31,6 +33,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "tehsil")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Tehsil implements java.io.Serializable {
 
 	/**

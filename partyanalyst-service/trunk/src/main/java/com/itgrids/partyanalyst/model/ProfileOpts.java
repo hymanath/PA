@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,12 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "profile_opts")
-public class ProfileOpts extends BaseModel{
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ProfileOpts extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private Long profileOptsId;
 	private String name;
 	private String description;
