@@ -2708,10 +2708,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		CensusVO censusVO = new CensusVO();
 	
 		censusVO.setTotalPopulation((Long)details[0]);
-		censusVO.setMalePopulation((Long)details[1]);
-		censusVO.setFemalePopulation((Long)details[2]);
-		censusVO.setPopulationSC((Long)details[3]);
-		censusVO.setPopulationST((Long)details[4]);
+		censusVO.setPopulationSC((Long)details[1]);
+		censusVO.setPopulationST((Long)details[2]);
+		censusVO.setLiterates((Long)details[3]);
+		censusVO.setIlliterates((Long)details[4]);
+		censusVO.setWorkingPeople((Long)details[5]);
+		censusVO.setNonWorkingPeople((Long)details[6]);
 		
 		return censusVO;
 		}
@@ -2878,24 +2880,30 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			CensusVO censusVO = new CensusVO();
 			
 			Long totalPopulation = 0l;
-			Long totalMalePopulation = 0l;
-			Long totalFemalePopulation = 0l;
 			Long totalSCPopulation = 0l;
 			Long totalSTPopulation = 0l;
+			Long literates = 0l;
+			Long illiterates = 0l;
+			Long workingPeople = 0l;
+			Long nonWorkingPeople = 0l;
 			
 			for(CensusVO cenVO:censusVOList)
 			{
-				totalPopulation += cenVO.getTotalPopulation();
-				totalMalePopulation +=cenVO.getMalePopulation();
-				totalFemalePopulation += cenVO.getFemalePopulation();
+				totalPopulation   += cenVO.getTotalPopulation();
 				totalSCPopulation += cenVO.getPopulationSC();
 				totalSTPopulation += cenVO.getPopulationST();
+				literates         += cenVO.getLiterates();
+				illiterates       += cenVO.getIlliterates();
+				workingPeople     += cenVO.getWorkingPeople();
+				nonWorkingPeople  += cenVO.getNonWorkingPeople();
 			}
 			censusVO.setTotalPopulation(totalPopulation);
-			censusVO.setMalePopulation(totalMalePopulation);
-			censusVO.setFemalePopulation(totalFemalePopulation);
 			censusVO.setPopulationSC(totalSCPopulation);
 			censusVO.setPopulationST(totalSTPopulation);
+			censusVO.setLiterates(literates);
+			censusVO.setIlliterates(illiterates);
+			censusVO.setWorkingPeople(workingPeople);
+			censusVO.setNonWorkingPeople(nonWorkingPeople);
 			
 			return censusVO;
 		}
@@ -2932,14 +2940,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 			cenVO.setTotPopPercent(new BigDecimal((cenVO.getTotalPopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
 			cenVO.setTotalPopulationPercentage(cenVO.getTotPopPercent().toString());
-			cenVO.setMalePopPercent(new BigDecimal((cenVO.getMalePopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
-			cenVO.setMalePopulationPercentage(cenVO.getMalePopPercent().toString());
-			cenVO.setFemalePopPercent(new BigDecimal((cenVO.getFemalePopulation()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
-			cenVO.setFemalePopulationPercentage(cenVO.getFemalePopPercent().toString());
 			cenVO.setPopulationSCPercent(new BigDecimal((cenVO.getPopulationSC()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
 			cenVO.setPopulationSCPercentage(cenVO.getPopulationSCPercent().toString());
 			cenVO.setPopulationSTPercent(new BigDecimal((cenVO.getPopulationST()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
 			cenVO.setPopulationSTPercentage(cenVO.getPopulationSTPercent().toString());
+			cenVO.setLiteratesPercent(new BigDecimal((cenVO.getLiterates()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setLiteratesPercentage(cenVO.getLiteratesPercent().toString());
+			cenVO.setIlliteratesPercent(new BigDecimal((cenVO.getIlliterates()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setIlliteratesPercentage(cenVO.getIlliteratesPercent().toString());
+			cenVO.setWorkingPeoplePercent(new BigDecimal((cenVO.getWorkingPeople()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setWorkingPeoplePercentage(cenVO.getWorkingPeoplePercent().toString());
+			cenVO.setNonWorkingPeoplePercent(new BigDecimal((cenVO.getNonWorkingPeople()*100.0)/cenVO.getTotalPopulation()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			cenVO.setNonWorkingPeoplePercentage(cenVO.getNonWorkingPeoplePercent().toString());
 		}
 		return censusVOList;
 		}

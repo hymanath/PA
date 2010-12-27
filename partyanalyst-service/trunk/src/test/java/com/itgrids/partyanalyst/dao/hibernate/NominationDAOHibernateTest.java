@@ -692,7 +692,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(obj.get(0));
 	}*/
 		
-		public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(){
+	/*	public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(){
 			long start = System.currentTimeMillis();
 			Map<Long, List<Object[]>> constituenciesInfoById = new HashMap<Long, List<Object[]>>();
 			Long constituencyId = 0l;
@@ -714,7 +714,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			long end = System.currentTimeMillis();
 			System.out.println((end-start)/1000);
 		}
-		
+		*/
 		/*public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndSateId(){
 			
 		}
@@ -723,6 +723,11 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			
 		}*/
 	
-	
+	public void testGetData(){
+        List list = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank("231,232,233,236,237,238,239,241,340,341","2009","Assembly",1l);
+        System.out.println("Size is:--->"+list.size());   
+    }
+
+
 }
 	
