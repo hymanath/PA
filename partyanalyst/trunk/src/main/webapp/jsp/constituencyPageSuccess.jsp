@@ -1570,13 +1570,13 @@ function buildCensusSelect(myResult)
 	
 	var cenvar = '';
 	cenvar += '<table>';
-	cenvar += '<th>Select Census :</th>';
+	cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
 	cenvar += '<th>';
 	cenvar += '<select id="censusSelect" class = "selectWidth" onchange = "getCensusDetailsForAConstituency(\'${constituencyId}\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 	cenvar += '<option value=\'0\'>select Census</option>';
 	cenvar += '<option value=\'1\'>Total Population</option>';
 	cenvar += '<option value=\'2\'>Male Population</option>';
-	cenvar += '<option value=\'3\'>Female Polpultion</option>';
+	cenvar += '<option value=\'3\'>Female Population</option>';
 	cenvar += '<option value=\'4\'>SC Population</option>';
 	cenvar += '<option value=\'5\'>ST Population</option>';
 	cenvar += '</select>';
