@@ -703,6 +703,7 @@
 	    <property name="boothDAO" ref="boothDAO" />
 	    <property name="hamletDAO" ref="hamletDAO" />
 	    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	    <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
 	    <property name="genericUploadDataService" ref="genericUploadDataService" />
 	</bean>
 	
