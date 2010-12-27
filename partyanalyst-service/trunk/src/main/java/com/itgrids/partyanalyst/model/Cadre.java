@@ -34,7 +34,7 @@ public class Cadre extends BaseModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long cadreId;
+	 private Long cadreId;
 	 private Registration registration;
 	 private CadreLevel cadreLevel;
 	 private Long cadreLevelValue;
@@ -61,6 +61,8 @@ public class Cadre extends BaseModel{
 	 private SocialCategory casteCategory;
 	 private Double annualIncome;
 	 private String memberType;
+	 private String memberOfPartySince;
+	 private String presentRespInParty;
 	 private PartyWorkingCommitteeDesignation designation;
 	 private UserAddress currentAddress;
 	 private UserAddress permanentAddress;
@@ -434,6 +436,36 @@ public class Cadre extends BaseModel{
 
 	public void setNoOfVoters(String noOfVoters) {
 		this.noOfVoters = noOfVoters;
+	}
+
+	/**
+	 * @return the memberOfPartySince
+	 */
+	@Column(name = "member_of_party_since", length = 10)
+	public String getMemberOfPartySince() {
+		return memberOfPartySince;
+	}
+
+	/**
+	 * @param memberOfPartySince the memberOfPartySince to set
+	 */
+	public void setMemberOfPartySince(String memberOfPartySince) {
+		this.memberOfPartySince = memberOfPartySince;
+	}
+
+	/**
+	 * @return the presentRespInParty
+	 */
+	@Column(name = "present_resp_in_party", length = 100)
+	public String getPresentRespInParty() {
+		return presentRespInParty;
+	}
+
+	/**
+	 * @param presentRespInParty the presentRespInParty to set
+	 */
+	public void setPresentRespInParty(String presentRespInParty) {
+		this.presentRespInParty = presentRespInParty;
 	}
 	
  }
