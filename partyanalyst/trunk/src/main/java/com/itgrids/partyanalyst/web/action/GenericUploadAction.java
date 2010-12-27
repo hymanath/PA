@@ -20,6 +20,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.UploadDataErrorMessageVO;
 import com.itgrids.partyanalyst.service.IGenericUploadService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -48,6 +49,9 @@ public class GenericUploadAction extends ActionSupport implements
 	private static final Logger log = Logger.getLogger(GenericUploadAction.class);
 	
 	private IGenericUploadService genericUploadService;
+	private UploadDataErrorMessageVO uploadResultsVO;
+	private Boolean uploadStatus;
+	private String loginDetails = "";
 
 	/**
 	 * @return the session
@@ -154,6 +158,49 @@ public class GenericUploadAction extends ActionSupport implements
 		this.genericUploadService = genericUploadService;
 	}
 
+	/**
+	 * @return the uploadResultsVO
+	 */
+	public UploadDataErrorMessageVO getUploadResultsVO() {
+		return uploadResultsVO;
+	}
+
+	/**
+	 * @param uploadResultsVO the uploadResultsVO to set
+	 */
+	public void setUploadResultsVO(UploadDataErrorMessageVO uploadResultsVO) {
+		this.uploadResultsVO = uploadResultsVO;
+	}
+
+	/**
+	 * @return the uploadStatus
+	 */
+	public Boolean getUploadStatus() {
+		return uploadStatus;
+	}
+
+	/**
+	 * @param uploadStatus the uploadStatus to set
+	 */
+	public void setUploadStatus(Boolean uploadStatus) {
+		this.uploadStatus = uploadStatus;
+	}
+
+	
+	/**
+	 * @return the loginDetails
+	 */
+	public String getLoginDetails() {
+		return loginDetails;
+	}
+
+	/**
+	 * @param loginDetails the loginDetails to set
+	 */
+	public void setLoginDetails(String loginDetails) {
+		this.loginDetails = loginDetails;
+	}
+
 	public String execute(){
 		
 		if(log.isDebugEnabled())
@@ -161,10 +208,17 @@ public class GenericUploadAction extends ActionSupport implements
 		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null)
+		if(user == null){
+			
+			loginDetails = "Please Login To Upload ..";
 			return ERROR;
+		}
 		
-		genericUploadService.interpretDataInExcelAndSetToVO(filePath, IConstants.CADRE, 1L,user.getRegistrationID());
+		uploadResultsVO = genericUploadService.interpretDataInExcelAndSetToVO(filePath, IConstants.CADRE, 1L,user.getRegistrationID());
+		
+		if(uploadResultsVO.getExceptionEncountered() != null)
+			uploadStatus = false;
+		else uploadStatus = true;
 		
 	 return Action.SUCCESS;
 	}
