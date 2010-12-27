@@ -16,6 +16,12 @@ public class UploadDataErrorMessageVO extends ResultStatus{
 	private List<String> townshipsInfo;
 	private List<String> hamletsInfo;
 	
+	private Integer totalRows;
+	private Integer currentSheet;
+	private Integer totalSheets;
+	private Integer totalRowsExecuted;
+	private String uploadStatus;
+	
 	public UploadDataErrorMessageVO(){
 		
 	}
@@ -77,6 +83,76 @@ public class UploadDataErrorMessageVO extends ResultStatus{
 
 	public void setHamletsInfo(List<String> hamletsInfo) {
 		this.hamletsInfo = hamletsInfo;
+	}
+
+	/**
+	 * @return the totalRows
+	 */
+	public Integer getTotalRows() {
+		return totalRows;
+	}
+
+	/**
+	 * @param totalRows the totalRows to set
+	 */
+	public void setTotalRows(Integer totalRows) {
+		this.totalRows = totalRows;
+	}
+
+	/**
+	 * @return the currentSheet
+	 */
+	public Integer getCurrentSheet() {
+		return currentSheet;
+	}
+
+	/**
+	 * @param currentSheet the currentSheet to set
+	 */
+	public void setCurrentSheet(Integer currentSheet) {
+		this.currentSheet = currentSheet;
+	}
+
+	/**
+	 * @return the totalSheets
+	 */
+	public Integer getTotalSheets() {
+		return totalSheets;
+	}
+
+	/**
+	 * @param totalSheets the totalSheets to set
+	 */
+	public void setTotalSheets(Integer totalSheets) {
+		this.totalSheets = totalSheets;
+	}
+
+	/**
+	 * @return the totalRowsExecuted
+	 */
+	public Integer getTotalRowsExecuted() {
+		return totalRowsExecuted;
+	}
+
+	/**
+	 * @param totalRowsExecuted the totalRowsExecuted to set
+	 */
+	public void setTotalRowsExecuted(Integer totalRowsExecuted) {
+		this.totalRowsExecuted = totalRowsExecuted;
+	}
+
+	/**
+	 * @return the uploadStatus
+	 */
+	public String getUploadStatus() {
+		return uploadStatus;
+	}
+
+	/**
+	 * @param uploadStatus the uploadStatus to set
+	 */
+	public void setUploadStatus(String uploadStatus) {
+		this.uploadStatus = uploadStatus;
 	}
 	
 	
