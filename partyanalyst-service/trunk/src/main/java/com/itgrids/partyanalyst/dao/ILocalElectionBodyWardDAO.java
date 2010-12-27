@@ -10,4 +10,7 @@ public interface ILocalElectionBodyWardDAO extends GenericDao<LocalElectionBodyW
 
 	public List getLocalBodyElectionInfo(List<Long> constituencyIds);
 	
+	@SuppressWarnings("unchecked")
+	public List findWardIdByWardNameAndLocalelectionId(String name,Long localBodyId);
+	
 }

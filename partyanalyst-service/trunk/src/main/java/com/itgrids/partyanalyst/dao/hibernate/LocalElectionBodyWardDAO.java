@@ -29,4 +29,13 @@ public class LocalElectionBodyWardDAO extends GenericDaoHibernate<LocalElectionB
 		queryObject.setParameterList("constituencyIds", constituencyIds);
 		return queryObject.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List findWardIdByWardNameAndLocalelectionId(String name,
+			Long localBodyId) {
+		
+		Object[] params = {name,localBodyId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId from LocalElectionBodyWard model where "+
+				"model.wardName = ? and model.constituency.localElectionBody.localElectionBodyId = ?",params);
+	}
 }
