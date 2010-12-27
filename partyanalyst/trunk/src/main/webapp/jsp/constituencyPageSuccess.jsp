@@ -1573,12 +1573,13 @@ function buildCensusSelect(myResult)
 	cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
 	cenvar += '<th>';
 	cenvar += '<select id="censusSelect" class = "selectWidth" onchange = "getCensusDetailsForAConstituency(\'${constituencyId}\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
-	cenvar += '<option value=\'0\'>select Census</option>';
-	cenvar += '<option value=\'1\'>Total Population</option>';
-	cenvar += '<option value=\'2\'>Male Population</option>';
-	cenvar += '<option value=\'3\'>Female Population</option>';
-	cenvar += '<option value=\'4\'>SC Population</option>';
-	cenvar += '<option value=\'5\'>ST Population</option>';
+	cenvar += '<option value=\'0\'>Select Census</option>';
+	cenvar += '<option value=\'1\'>SC Population</option>';
+	cenvar += '<option value=\'2\'>ST Population</option>';
+	cenvar += '<option value=\'3\'>Literates</option>';
+	cenvar += '<option value=\'4\'>illiterates</option>';
+	cenvar += '<option value=\'5\'>Working People</option>';
+	cenvar += '<option value=\'6\'>Non Working People</option>';
 	cenvar += '</select>';
 	cenvar += '</th>';
 	cenvar += '</table>';
@@ -1644,15 +1645,17 @@ function buildCensusChartForAConstituency(myResults)
 		  array.push(chartRows[j].locationName);
 		
 		if(selectedIndex == 1)
-		var censusPercentage = census[j].totPopPercent;
-		else if(selectedIndex == 2)
-		var censusPercentage = census[j].malePopPercent;
-		else if(selectedIndex == 3)
-		var censusPercentage = census[j].femalePopPercent;
-		else if(selectedIndex == 4)
 		var censusPercentage = census[j].populationSCPercent;
-		else if(selectedIndex == 5)
+		else if(selectedIndex == 2)
 		var censusPercentage = census[j].populationSTPercent;
+		else if(selectedIndex == 3)
+		var censusPercentage = census[j].literatesPercent;
+		else if(selectedIndex == 4)
+		var censusPercentage = census[j].illiteratesPercent;
+		else if(selectedIndex == 5)
+		var censusPercentage = census[j].workingPeoplePercent;
+		else if(selectedIndex == 6)
+		var censusPercentage = census[j].nonWorkingPeoplePercent;
 	  
 	     array.push(censusPercentage);
 
