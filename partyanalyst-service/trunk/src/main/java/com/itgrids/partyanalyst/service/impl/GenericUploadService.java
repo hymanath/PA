@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -62,6 +63,7 @@ public class GenericUploadService implements IGenericUploadService {
 	private ITownshipDAO townshipDAO;
 	private IConstituencyDAO constituencyDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
 	
 	private File uploadFile;
 	private Integer totalNoOfSheets;
@@ -226,6 +228,21 @@ public class GenericUploadService implements IGenericUploadService {
 	 */
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	/**
+	 * @return the localElectionBodyWardDAO
+	 */
+	public ILocalElectionBodyWardDAO getLocalElectionBodyWardDAO() {
+		return localElectionBodyWardDAO;
+	}
+
+	/**
+	 * @param localElectionBodyWardDAO the localElectionBodyWardDAO to set
+	 */
+	public void setLocalElectionBodyWardDAO(
+			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
+		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
 	}
 
 	/**
@@ -546,12 +563,15 @@ public class GenericUploadService implements IGenericUploadService {
 			instantiateRegionsMap();
 			obtainHSSFWorkbookForUploadExcel();
 			readAndPersistExcelData(uploadDataStatusVO);
+			uploadDataStatusVO.setUploadStatus("Upload Finished Successfully ..");
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.error("Exception Raised While Reading The Excel data :" + ex);
 			uploadDataStatusVO.setExceptionEncountered(ex);
 			uploadDataStatusVO.setResultPartial(true);
+			uploadDataStatusVO.setExceptionMsg(ex.getMessage());
+			uploadDataStatusVO.setUploadStatus("Upload Failed Due To Errors ..");
 		}
 		
 	 return uploadDataStatusVO;
@@ -567,21 +587,29 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Started Reading Excel Data From HSSFWorkbook ..");
 		
-		//Iterating thru all sheets in workbook
-		for(int sheetIndex = 0 ; sheetIndex<totalNoOfSheets ; sheetIndex++){
+		try{
+			uploadDataStatusVO.setTotalSheets(totalNoOfSheets);
+			uploadDataStatusVO.setTotalRowsExecuted(0);
 			
-			HSSFSheet currentSheet = this.uploadWorkbook.getSheetAt(sheetIndex);
-			Integer totalNoOfRows = currentSheet.getLastRowNum();
-			Integer sheetCount = ++sheetIndex;
-			
-			if(log.isDebugEnabled()){
-				log.debug("Reading Sheet " + sheetCount + " ..");
-				log.debug(totalNoOfRows + " Rows Of Data is Available To Read ..");
+			//Iterating thru all sheets in workbook
+			for(int sheetIndex = 0 ; sheetIndex<totalNoOfSheets ; sheetIndex++){
+				
+				HSSFSheet currentSheet = this.uploadWorkbook.getSheetAt(sheetIndex);
+				Integer totalNoOfRows = currentSheet.getLastRowNum();
+				Integer sheetCount = sheetIndex+1;
+				
+				if(log.isDebugEnabled()){
+					log.debug("Reading Sheet " + sheetCount + " ..");
+					log.debug(totalNoOfRows + " Rows Of Data is Available To Read ..");
+				}
+				
+				//read data in current sheet
+				uploadDataStatusVO.setCurrentSheet(sheetCount);
+				readAndSaveDataInCurrentSheet(currentSheet,totalNoOfRows,sheetCount,uploadDataStatusVO);
+				
 			}
-			
-			//read data in current sheet
-			readAndSaveDataInCurrentSheet(currentSheet,totalNoOfRows,sheetCount,uploadDataStatusVO);
-			
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -596,62 +624,69 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		if(log.isDebugEnabled())
 			log.debug("Started Reading Sheet " + sheetCount + " ..");
-		//Map To Hold The Excel Sheet Headers Information
-		Map<String,Integer> excelHeaderInfo = new HashMap<String,Integer>();
 		
-		for(int rowIndex=0;rowIndex<=totRows;rowIndex++){
+		try{
+			//Map To Hold The Excel Sheet Headers Information
+			Map<String,Integer> excelHeaderInfo = new HashMap<String,Integer>();
 			
-			HSSFRow row = currentSheet.getRow(rowIndex);
-			
-			//save data if it is last record..
-			//if last row in sheet and check wheather ready to save
-			if(rowIndex == totRows){
+			for(int rowIndex=0;rowIndex<=totRows;rowIndex++){
 				
-				if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+				uploadDataStatusVO.setTotalRowsExecuted(uploadDataStatusVO.getTotalRowsExecuted()+1);
+				
+				HSSFRow row = currentSheet.getRow(rowIndex);
+				
+				//save data if it is last record..
+				//if last row in sheet and check wheather ready to save
+				if(rowIndex == totRows){
+					
+					if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+						
+						if(log.isDebugEnabled())
+							log.debug("Last Record Is Ready To Save ..");
+						saveResult();
+						break;
+					}
+				}
+				
+				//Check for blank row
+				Boolean isBlankRow = checkForBlankRow(row);
+				if(isBlankRow)
+					continue;
+				//Check for region details
+				Boolean isRegion   = checkWheatherRowContainsRegionData(row);
+				if(isRegion)
+					continue;
+				//Check for header data
+				Boolean isHeader   = checkWheatherRowContainsHeaderData(row,excelHeaderInfo);
+				if(isHeader)
+					continue;
+				
+				Boolean isResultData = checkForResultDataToSave(row,excelHeaderInfo,rowIndex,totRows);
+				//Record Details Are Available and Ready To Save
+				if(isResultData){
+					//call service method to save cadre details...
+					saveResult();
+					
+					//set genericUploadDataVO canSave method to false after saving data
+					this.genericUploadDataVO = new GenericUploadDataVO();
+					this.genericUploadDataVO.setCanSave(false);
+				}
+				
+				Boolean isRowStarted = checkForRowStartedWithDataToSave(row,excelHeaderInfo);
+				//Save data row started
+				if(isRowStarted){
 					
 					if(log.isDebugEnabled())
-						log.debug("Last Record Is Ready To Save ..");
-					saveResult();
-					break;
-				}
-			}
-			
-			//Check for blank row
-			Boolean isBlankRow = checkForBlankRow(row);
-			if(isBlankRow)
-				continue;
-			//Check for region details
-			Boolean isRegion   = checkWheatherRowContainsRegionData(row);
-			if(isRegion)
-				continue;
-			//Check for header data
-			Boolean isHeader   = checkWheatherRowContainsHeaderData(row,excelHeaderInfo);
-			if(isHeader)
-				continue;
-			
-			Boolean isResultData = checkForResultDataToSave(row,excelHeaderInfo,rowIndex,totRows);
-			//Record Details Are Available and Ready To Save
-			if(isResultData){
-				//call service method to save cadre details...
-				saveResult();
+						log.debug("Started Setting " + this.module +" Data To VO ..");
+					this.genericUploadDataVO.setCanSave(true);
+				}				
+				//set row data to VO
+				setExcelDataToBeSavedToVO(row,excelHeaderInfo);
 				
-				//set genericUploadDataVO canSave method to false after saving data
-				this.genericUploadDataVO = new GenericUploadDataVO();
-				this.genericUploadDataVO.setCanSave(false);
+				continue;			
 			}
-			
-			Boolean isRowStarted = checkForRowStartedWithDataToSave(row,excelHeaderInfo);
-			//Save data row started
-			if(isRowStarted){
-				
-				if(log.isDebugEnabled())
-					log.debug("Started Setting " + this.module +" Data To VO ..");
-				this.genericUploadDataVO.setCanSave(true);
-			}				
-			//set row data to VO
-			setExcelDataToBeSavedToVO(row,excelHeaderInfo);
-			
-			continue;			
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -660,25 +695,28 @@ public class GenericUploadService implements IGenericUploadService {
 	 */
 	private void saveResult() throws Exception{
 		
-			
-		if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
-			
-			if(log.isDebugEnabled())
-				log.debug("Result Is Ready To Save ..");
-			
-			this.genericUploadDataVO.setStateId(this.stateId);
-			this.genericUploadDataVO.setDistrictId(this.districtId);
-			this.genericUploadDataVO.setConstituencyId(this.constituencyId);
-			this.genericUploadDataVO.setLocalBodyId(this.localelectionBodyId);
-			this.genericUploadDataVO.setMandalId(this.tehsilId);
-			this.genericUploadDataVO.setVillageId(this.townshipId);
-			this.genericUploadDataVO.setWardId(this.wardId);
-			this.genericUploadDataVO.setBoothId(this.boothId);
-			
-			//call save service
-			ResultStatus rs = genericUploadDataService.saveGenericUploadData(this.userId, this.genericUploadDataVO, this.module);
-			if(rs.getResultCode() == ResultCodeMapper.FAILURE)
-				throw new Exception(rs.getExceptionEncountered());
+		try{	
+			if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+				
+				if(log.isDebugEnabled())
+					log.debug("Result Is Ready To Save ..");
+				
+				this.genericUploadDataVO.setStateId(this.stateId);
+				this.genericUploadDataVO.setDistrictId(this.districtId);
+				this.genericUploadDataVO.setConstituencyId(this.constituencyId);
+				this.genericUploadDataVO.setLocalBodyId(this.localelectionBodyId);
+				this.genericUploadDataVO.setMandalId(this.tehsilId);
+				this.genericUploadDataVO.setVillageId(this.townshipId);
+				this.genericUploadDataVO.setWardId(this.wardId);
+				this.genericUploadDataVO.setBoothId(this.boothId);
+				
+				//call save service
+				ResultStatus rs = genericUploadDataService.saveGenericUploadData(this.userId, this.genericUploadDataVO, this.module);
+				if(rs.getResultCode() == ResultCodeMapper.FAILURE)
+					throw new Exception(rs.getExceptionEncountered());
+			}
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -693,39 +731,43 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Started Setting Excel Data To VO ..");
 		
-		Integer familyCellNO = 0;
+		try{
+			Integer familyCellNO = 0;
+					
+			if(!excelHeaderInfo.isEmpty()){
 				
-		if(!excelHeaderInfo.isEmpty()){
-			
-			if(excelHeaderInfo.containsKey("familyMembers"))
-				familyCellNO = excelHeaderInfo.get("familyMembers");
+				if(excelHeaderInfo.containsKey("familyMembers"))
+					familyCellNO = excelHeaderInfo.get("familyMembers");
+							
+				
+				//Iterate Thru Headers and fill appropriate data to VO
+				for(String headers:excelHeaderInfo.keySet()){
+					
+					if(headers.equalsIgnoreCase(IConstants.SNO))
+						continue;
+					
+					Integer cellNO = excelHeaderInfo.get(headers);
+					HSSFCell dataCell = row.getCell(cellNO);
+					
+					if(dataCell == null || dataCell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+						continue;
+					
+					//check and save name in VO
+	                if(headers.equalsIgnoreCase(IConstants.NAME)){
 						
-			
-			//Iterate Thru Headers and fill appropriate data to VO
-			for(String headers:excelHeaderInfo.keySet()){
-				
-				if(headers.equalsIgnoreCase(IConstants.SNO))
-					continue;
-				
-				Integer cellNO = excelHeaderInfo.get(headers);
-				HSSFCell dataCell = row.getCell(cellNO);
-				
-				if(dataCell == null || dataCell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
-					continue;
-				
-				//check and save name in VO
-                if(headers.equalsIgnoreCase(IConstants.NAME)){
+	                	checkAndSaveNameDetailsInVO(row,cellNO,this.module,familyCellNO);
+						continue;
+					}else if(headers.equalsIgnoreCase("DOB")){
+						
+						checkAndSaveDOBDetails(row,cellNO,this.module,familyCellNO);
+						continue;
+					}
 					
-                	checkAndSaveNameDetailsInVO(row,cellNO,this.module,familyCellNO);
-					continue;
-				}else if(headers.equalsIgnoreCase("DOB")){
-					
-					checkAndSaveDOBDetails(row,cellNO,this.module,familyCellNO);
-					continue;
+					checkAndSaveCellData(dataCell,headers);
 				}
-				
-				checkAndSaveCellData(dataCell,headers);
 			}
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -741,6 +783,7 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Check and Save DOB Details to VO ..");
 		
+		try{
 		Boolean isData = false;
 		HSSFCell cellData = row.getCell(cellNO);
 		
@@ -750,7 +793,7 @@ public class GenericUploadService implements IGenericUploadService {
 			if(module.equalsIgnoreCase(IConstants.CADRE)){
 				
 				HSSFCell nameTypeCell = row.getCell(dobCellNO);
-				if(nameTypeCell != null && nameTypeCell.getCellType() != HSSFCell.CELL_TYPE_BLANK && nameTypeCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+				if(nameTypeCell != null && nameTypeCell.getCellType() != HSSFCell.CELL_TYPE_BLANK && nameTypeCell.getCellType() == HSSFCell.CELL_TYPE_STRING){
 					
 					String nameTypeCellVal = nameTypeCell.getRichStringCellValue().toString();
 					
@@ -804,6 +847,9 @@ public class GenericUploadService implements IGenericUploadService {
 			}
 				
 		}
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
@@ -819,6 +865,7 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Check and Save Name in VO ..");
 		
+		try{
 		Boolean isData = false;
 		HSSFCell cellData = row.getCell(cellNO);
 				
@@ -877,6 +924,9 @@ public class GenericUploadService implements IGenericUploadService {
 			if(!isData)
 				this.genericUploadDataVO.setName(cellValue);
 		}
+		}catch(Exception ex){
+			throw ex;
+		}
 	}
 	
 	/**
@@ -890,6 +940,7 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Check And Set Cell Data To VO ..");
 		
+		try{
 		if(dataCell != null && dataCell.getCellType() != HSSFCell.CELL_TYPE_BLANK){
 			
 			Double doubleValue = 0D;
@@ -918,8 +969,10 @@ public class GenericUploadService implements IGenericUploadService {
 			                                	 cellValueToSave = dateCellValue.toString();
 			                                 }
 			                                 else{
+			                                				                                	
 			                                	 doubleValue     = dataCell.getNumericCellValue();
-			                                	 cellValueToSave = doubleValue.toString();
+			                                	 Long longVal    = doubleValue.longValue();
+			                                	 cellValueToSave = longVal.toString();
 			                                 }
 			                                 break;
 			                                 
@@ -930,6 +983,9 @@ public class GenericUploadService implements IGenericUploadService {
 			//save cell data to VO appropriate field
 			if(!"".equalsIgnoreCase(cellValueToSave))
 				field.set(this.genericUploadDataVO, cellValueToSave);
+		}
+		}catch(Exception ex){
+			throw ex;
 		}
 	}
 	
@@ -944,8 +1000,9 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		if(log.isDebugEnabled())
 			log.debug("Checking Wheather Save Data Row Started Or Not ..");
-		
 		Boolean isRowDataStart = false;
+		try{
+		
         if(!excelHeaderInfo.isEmpty()){
 			
 			Integer snoCellNo = excelHeaderInfo.get(IConstants.SNO);
@@ -961,6 +1018,9 @@ public class GenericUploadService implements IGenericUploadService {
 				}
 			}
 		}
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	 return isRowDataStart;
 	}
@@ -975,8 +1035,9 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		if(log.isDebugEnabled())
 			log.debug("Checking wheather To Save Data Or Not ..");
-		
 		Boolean isResultData = false;
+		try{
+		
 		
 		//check wheather data is ready to save
 		if(!excelHeaderInfo.isEmpty()){
@@ -995,6 +1056,9 @@ public class GenericUploadService implements IGenericUploadService {
 				
 			}
 		}
+		}catch(Exception ex){
+			throw ex;
+		}
 	 
 	 return isResultData;	
 	}
@@ -1009,10 +1073,15 @@ public class GenericUploadService implements IGenericUploadService {
 		
 		Boolean isBlank=true;
 		
-        for(int i=0;i<=4;i++){
-			HSSFCell cell  = row.getCell(i);
-			if(cell != null && cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
-				return false;
+		try{
+		
+	        for(int i=0;i<=4;i++){
+				HSSFCell cell  = row.getCell(i);
+				if(cell != null && cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
+					return false;
+			}
+		}catch(Exception ex){
+			throw ex;
 		}
 		
 	 return isBlank;
@@ -1026,47 +1095,54 @@ public class GenericUploadService implements IGenericUploadService {
 	private Boolean checkWheatherRowContainsRegionData(HSSFRow row) throws Exception{
 		
 		Boolean isRegion = false;
-		HSSFCell cell0  = row.getCell(0);
-		HSSFCell cell1  = row.getCell(1);
-		HSSFCell cell2  = row.getCell(2);
-		HSSFCell cell3  = row.getCell(3);
-		HSSFCell cell4  = row.getCell(4);
-			
-		//is executed if not region field
-		if(cell2 != null && cell2.getCellType() != HSSFCell.CELL_TYPE_BLANK || cell3 != null && cell3.getCellType() != HSSFCell.CELL_TYPE_BLANK || cell4 != null && cell4.getCellType() != HSSFCell.CELL_TYPE_BLANK)
-			return isRegion;
 		
-		//check for region field
-		if(cell0 != null && cell0.getCellType() == HSSFCell.CELL_TYPE_STRING && cell1 != null && cell1.getCellType() == HSSFCell.CELL_TYPE_STRING || cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+		try{
 			
-			String regionType = cell0.getRichStringCellValue().toString();
-			String regionName = "";
-			
-			if(cell1.getCellType() == HSSFCell.CELL_TYPE_STRING)
-				regionName = cell1.getRichStringCellValue().toString();
-			
-			else if(cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+			HSSFCell cell0  = row.getCell(0);
+			HSSFCell cell1  = row.getCell(1);
+			HSSFCell cell2  = row.getCell(2);
+			HSSFCell cell3  = row.getCell(3);
+			HSSFCell cell4  = row.getCell(4);
 				
-				Double cellVal     = cell1.getNumericCellValue();
-				Long cellLongvalue = cellVal.longValue();
-				regionName         = cellLongvalue.toString();
-			}
+			//is executed if not region field
+			if(cell2 != null && cell2.getCellType() != HSSFCell.CELL_TYPE_BLANK || cell3 != null && cell3.getCellType() != HSSFCell.CELL_TYPE_BLANK || cell4 != null && cell4.getCellType() != HSSFCell.CELL_TYPE_BLANK)
+				return isRegion;
 			
-			if(regionsMap.containsKey(regionType)){
-				getRegionDetailsByRegionName(regionType,regionName);
+			//check for region field
+			if(cell0 != null && cell0.getCellType() == HSSFCell.CELL_TYPE_STRING && cell1 != null && cell1.getCellType() == HSSFCell.CELL_TYPE_STRING || cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
 				
-				//check wheather to save data
-				if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+				String regionType = cell0.getRichStringCellValue().toString();
+				String regionName = "";
+				
+				if(cell1.getCellType() == HSSFCell.CELL_TYPE_STRING)
+					regionName = cell1.getRichStringCellValue().toString();
+				
+				else if(cell1.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
 					
-					//call service method to save data
-					saveResult();
-					
-					//set genericUploadDataVO canSave method to false after saving data
-					this.genericUploadDataVO = new GenericUploadDataVO();
-					this.genericUploadDataVO.setCanSave(false);
+					Double cellVal     = cell1.getNumericCellValue();
+					Long cellLongvalue = cellVal.longValue();
+					regionName         = cellLongvalue.toString();
 				}
-			 return true;
+				
+				if(regionsMap.containsKey(regionType)){
+					getRegionDetailsByRegionName(regionType,regionName);
+					
+					//check wheather to save data
+					if(this.genericUploadDataVO != null && this.genericUploadDataVO.getCanSave() != null && this.genericUploadDataVO.getCanSave()){
+						
+						//call service method to save data
+						saveResult();
+						
+						//set genericUploadDataVO canSave method to false after saving data
+						this.genericUploadDataVO = new GenericUploadDataVO();
+						this.genericUploadDataVO.setCanSave(false);
+					}
+				 return true;
+				}
 			}
+        }catch(Exception ex){
+			
+			throw ex;
 		}
 			
 	 return isRegion;
@@ -1083,48 +1159,55 @@ public class GenericUploadService implements IGenericUploadService {
 			log.debug("Started Checking Wheather The Row Contains Header Data ..");
 		Boolean isHeader = false;
 		
-		int i=0;
-		//To get column which begins with data without blank
-		for(i=0;i<=row.getLastCellNum();i++){
-			HSSFCell cell  = row.getCell(i);
-			if(cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
-				continue;
-			else if(cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
-				break;
-		}
+		try{
 		
-		if(i < row.getLastCellNum()){
+		
+			int i=0;
+			//To get column which begins with data without blank
+			for(i=0;i<=row.getLastCellNum();i++){
+				HSSFCell cell  = row.getCell(i);
+				if(cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+					continue;
+				else if(cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
+					break;
+			}
 			
-			HSSFCell cell0  = row.getCell(i);
-			
-			//check for cell data is not blank
-			if(cell0 != null && cell0.getCellType()!= HSSFCell.CELL_TYPE_BLANK){
+			if(i < row.getLastCellNum()){
 				
-				if(cell0.getCellType() == HSSFCell.CELL_TYPE_STRING){
+				HSSFCell cell0  = row.getCell(i);
+				
+				//check for cell data is not blank
+				if(cell0 != null && cell0.getCellType()!= HSSFCell.CELL_TYPE_BLANK){
 					
-					String cellValue = cell0.getRichStringCellValue().getString();
-					if(cellValue.equalsIgnoreCase(IConstants.SNO)){
+					if(cell0.getCellType() == HSSFCell.CELL_TYPE_STRING){
 						
-						isHeader = true;	
-						if(log.isDebugEnabled())
-							log.debug("Header Data Found ..");
-						
-						//Iterate Until Header Data Is Available
-						while(isHeader){
+						String cellValue = cell0.getRichStringCellValue().getString();
+						if(cellValue.equalsIgnoreCase(IConstants.SNO)){
 							
-							//add header data to header map
-							excelHeaderInfo.put(cellValue, i);
-							cell0  = row.getCell(++i);
+							isHeader = true;	
+							if(log.isDebugEnabled())
+								log.debug("Header Data Found ..");
 							
-							if(cell0 == null || cell0.getCellType() == HSSFCell.CELL_TYPE_BLANK)
-								break;
+							//Iterate Until Header Data Is Available
+							while(isHeader){
+								
+								//add header data to header map
+								excelHeaderInfo.put(cellValue, i);
+								cell0  = row.getCell(++i);
+								
+								if(cell0 == null || cell0.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+									break;
+								
+								cellValue = cell0.getRichStringCellValue().getString();
+							}
 							
-							cellValue = cell0.getRichStringCellValue().getString();
 						}
-						
 					}
 				}
 			}
+		}catch(Exception ex){
+			
+			throw ex;
 		}
 		
 	 return isHeader;
@@ -1141,9 +1224,11 @@ public class GenericUploadService implements IGenericUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Started To Get " + regionName + " " + regionType + " Details ..");
 		
+		try{
 		//If Region Is Country
-		if(regionType.equalsIgnoreCase(IConstants.COUNTRY))
+		if(regionType.equalsIgnoreCase(IConstants.COUNTRY)){
 			getCountryRegionDetails(regionType,regionName);
+		}
 			
 		else if(regionType.equalsIgnoreCase(IConstants.STATE))
 			getStateRegionDetails(regionType,regionName);
@@ -1171,96 +1256,161 @@ public class GenericUploadService implements IGenericUploadService {
 			
 		else if(regionType.equalsIgnoreCase(IConstants.BOOTH))
 			getBoothRegionDetails(regionType,regionName);
+		}catch(Exception ex){
+		
+			throw ex;
+		}
 			
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getCountryRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List countryLst = countryDAO.getCountryIdByCountryName(regionName);
-		this.countryId  = getIdFromList(countryLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.countryId);
+		try{
+			
+			List countryLst = countryDAO.getCountryIdByCountryName(regionName);
+			this.countryId  = getIdFromList(countryLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.countryId);
+		}
+		catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getStateRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List stateLst = stateDAO.findStateIdByNameAndCountryId(regionName, this.countryId);
-		this.stateId  = getIdFromList(stateLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.stateId);
+		try{
+				
+			List stateLst = stateDAO.findStateIdByNameAndCountryId(regionName, this.countryId);
+			this.stateId  = getIdFromList(stateLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.stateId);
+		
+		}catch(Exception ex){
+			
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getDistrictRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List distLst    = districtDAO.getDistrictIdByStateIdAndDistrictName(this.stateId, regionName);
-		this.districtId = getIdFromList(distLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.districtId);
+		try{
+			List distLst    = districtDAO.getDistrictIdByStateIdAndDistrictName(this.stateId, regionName);
+			this.districtId = getIdFromList(distLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.districtId);
+		}
+		catch(Exception ex){
+			
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getConstituencyRegionDetails(String regionType,String regionName) throws Exception{
 		
+		try{
+			
 		List constiLst      = constituencyDAO.findByConstituencyIdConstituencyNameAndDistrictId(regionName, this.districtId); 
 		this.constituencyId = getIdFromList(constiLst,regionName,regionType);
 		this.regionsMap.put(regionType, this.constituencyId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getMandalRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List mandLst  = tehsilDAO.findTehsilIdByTehsilNameAndDistrict(regionName, this.districtId);
-		this.tehsilId = getIdFromList(mandLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.tehsilId);
+		try{
+			
+			List mandLst  = tehsilDAO.findTehsilIdByTehsilNameAndDistrict(regionName, this.districtId);
+			this.tehsilId = getIdFromList(mandLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.tehsilId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getVillageRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List villLst    = townshipDAO.findTownshipIdByTownshipNameAndTehsilId(regionName, this.tehsilId);
-		this.townshipId = getIdFromList(villLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.townshipId);
+		try{
+			
+			List villLst    = townshipDAO.findTownshipIdByTownshipNameAndTehsilId(regionName, this.tehsilId);
+			this.townshipId = getIdFromList(villLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.townshipId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getLocalBodyRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List localElecLst        = localElectionBodyDAO.getLocalElectionBodyIdByNameAndDistrictId(regionName, this.districtId);
-		this.localelectionBodyId = getIdFromList(localElecLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.localelectionBodyId);
+		try{
+			List localElecLst        = localElectionBodyDAO.getLocalElectionBodyIdByNameAndDistrictId(regionName, this.districtId);
+			this.localelectionBodyId = getIdFromList(localElecLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.localelectionBodyId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getWardRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List wardLst = constituencyDAO.getWardIdByWardNameAndLocalBodyId(regionName, this.localelectionBodyId);
-		this.wardId  = getIdFromList(wardLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.wardId);
-		
+		try{
+			//check for ward details in localelectionbodyward table
+	 		List wardList = localElectionBodyWardDAO.findWardIdByWardNameAndLocalelectionId(regionName, this.localelectionBodyId);
+			if(wardList != null && wardList.size() > 0){
+				
+				this.wardId  = getIdFromList(wardList,regionName,regionType);
+				this.regionsMap.put(regionType, this.wardId);
+			}
+			
+			//ward details not avbl in localelectionbodyward table then go for ward(constituency) table
+			else{
+				
+				List wardLst = constituencyDAO.getWardIdByWardNameAndLocalBodyId(regionName, this.localelectionBodyId);
+				this.wardId  = getIdFromList(wardLst,regionName,regionType);
+				this.regionsMap.put(regionType, this.wardId);
+			}
+		}catch(Exception ex){
+			throw ex;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getHamletRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List hamLst   = hamletDAO.findByHamletNameAndTownshipId(regionName, this.townshipId);
-		this.hamletId = getIdFromList(hamLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.hamletId);
+		try{
+			List hamLst   = hamletDAO.findByHamletNameAndTownshipId(regionName, this.townshipId);
+			this.hamletId = getIdFromList(hamLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.hamletId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void getBoothRegionDetails(String regionType,String regionName) throws Exception{
 		
-		List boothsLst = boothDAO.findBoothIdPartNoConstituencyIdAndYear(this.constituencyId, 2009L, regionName);
-		this.boothId   = getIdFromList(boothsLst,regionName,regionType);
-		this.regionsMap.put(regionType, this.boothId);
+		try{
+			List boothsLst = boothDAO.findBoothIdPartNoConstituencyIdAndYear(this.constituencyId, 2009L, regionName);
+			this.boothId   = getIdFromList(boothsLst,regionName,regionType);
+			this.regionsMap.put(regionType, this.boothId);
+		}catch(Exception ex){
+			throw ex;
+		}
 		
 	}
 	
@@ -1268,17 +1418,26 @@ public class GenericUploadService implements IGenericUploadService {
 	private Long getIdFromList(List list,String regionName,String regionType) throws Exception{
 		Long regId = 0L;
 		
-		if(list != null){
-			
-			//if more regions exists
-			if(list.size() == 0 || list.size() > 1){
-				throw new Exception("No or More Than One " + regionType + " Details Exists For " + regionName);
-			} 
-			
-			if(list.size() == 1){
-				Object value = (Object)list.get(0);
-				regId = (Long)value;
+		try{
+			if(list != null){
+				
+				//if more regions exists
+				if(list.size() == 0 || list.size() > 1){
+					throw new Exception("No or More Than One " + regionType + " Details Exists For " + regionName);
+				} 
+				
+				if(list.size() == 1){
+					Object value = (Object)list.get(0);
+					regId = (Long)value;
+				}
 			}
+			
+			if(list == null || regId.equals(0L)){
+				throw new Exception("NO " + regionType + " Details For " + regionName);
+			}
+		
+		}catch(Exception ex){
+			throw ex;
 		}
 		
 	 return regId;
