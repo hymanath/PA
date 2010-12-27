@@ -25,16 +25,28 @@ public class CensusVO implements Serializable{
 	private Long totalPopulation;
 	private Long malePopulation;
 	private Long femalePopulation;
+	private Long literates;
+	private Long illiterates;
+	private Long workingPeople;
+	private Long nonWorkingPeople;
 	private String totalPopulationPercentage;
 	private String malePopulationPercentage; 
 	private String femalePopulationPercentage;
 	private String populationSCPercentage;
 	private String populationSTPercentage;
+	private String literatesPercentage;
+	private String illiteratesPercentage;
+	private String workingPeoplePercentage;
+	private String nonWorkingPeoplePercentage;
 	private BigDecimal totPopPercent;
 	private BigDecimal malePopPercent; 
 	private BigDecimal femalePopPercent;
 	private BigDecimal populationSCPercent;
 	private BigDecimal populationSTPercent;
+	private BigDecimal literatesPercent;
+	private BigDecimal illiteratesPercent;
+	private BigDecimal workingPeoplePercent;
+	private BigDecimal nonWorkingPeoplePercent;
 	private String locationName;
 	private List<String> censusFields; 
 	private Long censusSelectedIndex;
@@ -184,5 +196,77 @@ public class CensusVO implements Serializable{
 	}
 	public void setPopulationSTPercent(BigDecimal populationSTPercent) {
 		this.populationSTPercent = populationSTPercent;
+	}
+	public Long getLiterates() {
+		return literates;
+	}
+	public void setLiterates(Long literates) {
+		this.literates = literates;
+	}
+	public Long getIlliterates() {
+		return illiterates;
+	}
+	public void setIlliterates(Long illiterates) {
+		this.illiterates = illiterates;
+	}
+	public Long getWorkingPeople() {
+		return workingPeople;
+	}
+	public void setWorkingPeople(Long workingPeople) {
+		this.workingPeople = workingPeople;
+	}
+	public Long getNonWorkingPeople() {
+		return nonWorkingPeople;
+	}
+	public void setNonWorkingPeople(Long nonWorkingPeople) {
+		this.nonWorkingPeople = nonWorkingPeople;
+	}
+	public String getLiteratesPercentage() {
+		return literatesPercentage;
+	}
+	public void setLiteratesPercentage(String literatesPercentage) {
+		this.literatesPercentage = literatesPercentage;
+	}
+	public String getIlliteratesPercentage() {
+		return illiteratesPercentage;
+	}
+	public void setIlliteratesPercentage(String illiteratesPercentage) {
+		this.illiteratesPercentage = illiteratesPercentage;
+	}
+	public String getWorkingPeoplePercentage() {
+		return workingPeoplePercentage;
+	}
+	public void setWorkingPeoplePercentage(String workingPeoplePercentage) {
+		this.workingPeoplePercentage = workingPeoplePercentage;
+	}
+	public String getNonWorkingPeoplePercentage() {
+		return nonWorkingPeoplePercentage;
+	}
+	public void setNonWorkingPeoplePercentage(String nonWorkingPeoplePercentage) {
+		this.nonWorkingPeoplePercentage = nonWorkingPeoplePercentage;
+	}
+	public BigDecimal getLiteratesPercent() {
+		return literatesPercent;
+	}
+	public void setLiteratesPercent(BigDecimal literatesPercent) {
+		this.literatesPercent = literatesPercent;
+	}
+	public BigDecimal getIlliteratesPercent() {
+		return illiteratesPercent;
+	}
+	public void setIlliteratesPercent(BigDecimal illiteratesPercent) {
+		this.illiteratesPercent = illiteratesPercent;
+	}
+	public BigDecimal getWorkingPeoplePercent() {
+		return workingPeoplePercent;
+	}
+	public void setWorkingPeoplePercent(BigDecimal workingPeoplePercent) {
+		this.workingPeoplePercent = workingPeoplePercent;
+	}
+	public BigDecimal getNonWorkingPeoplePercent() {
+		return nonWorkingPeoplePercent;
+	}
+	public void setNonWorkingPeoplePercent(BigDecimal nonWorkingPeoplePercent) {
+		this.nonWorkingPeoplePercent = nonWorkingPeoplePercent;
 	}
 }

@@ -96,8 +96,8 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 			
 	}
 	*/
-	
-  /* public void testFindMandalWiseCensusDetails()
+	/*
+   public void testFindMandalWiseCensusDetails()
    {
 	   List<Object[]> list = censusDAO.findMandalWiseCensusDetails(1l,19l,854l,2001l,"TEHSIL");
 	   System.out.println(list.size());
@@ -105,13 +105,15 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   Object[] obj = list.get(0);
 	   
 	   System.out.println("Total Population ---"+obj[0]);
-	   System.out.println("Total Male Population ---"+obj[1]);
-	   System.out.println("Total Female Population ---"+obj[2]);
-	   System.out.println("Total SC Population ---"+obj[3]);
-	   System.out.println("Total ST Population ---"+obj[4]);
-   }*/
+	   System.out.println("Total SC Population ---"+obj[1]);
+	   System.out.println("Total ST Population ---"+obj[2]);
+	   System.out.println("Literates---"+obj[3]);
+	   System.out.println("Illiterates ----"+obj[4]);
+	   System.out.println("Working People---"+obj[5]);
+	   System.out.println("Non Working People---"+obj[6]);
+   }
    
-   /*@SuppressWarnings("unchecked")
+   @SuppressWarnings("unchecked")
    public void testFindCensusDetailsForAPartialMandal()
    {
 	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialMandal(1l,19l,2001l,"VILLAGE","21547,21548,21549,21550");
@@ -121,7 +123,7 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   {
 		   System.out.println(y.toString());
 	   }
-   }*/
+   }
    
    public void testFindTownshipWiseCensusDetails()
    {
@@ -130,25 +132,29 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   
 	   Object[] obj = list.get(0);
 	   
-	   System.out.println("Total Population ---"+obj[0]);
-	   System.out.println("Total Male Population ---"+obj[1]);
-	   System.out.println("Total Female Population ---"+obj[2]);
-	   System.out.println("Total SC Population ---"+obj[3]);
-	   System.out.println("Total ST Population ---"+obj[4]);
-   }
+	   System.out.println("Total Population ----  "+obj[0]);
+	   System.out.println("Total SC Population ---"+obj[1]);
+	   System.out.println("Total ST Population ---"+obj[2]);
+	   System.out.println("Literates---           "+obj[3]);
+	   System.out.println("Illiterates ----       "+obj[4]);
+	   System.out.println("Working People---      "+obj[5]);
+	   System.out.println("Non Working People---  "+obj[6]);
+   }*/
    
-  /* @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
    public void testFindCensusDetailsForAPartialTown()
    {
 	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialTown(1l,19l,2001l,"WARD","2957,2958");
 	   System.out.println(list.size());
 	   Object[] obj = list.get(0);
 	   
-	   System.out.println("Total Population ---"+obj[0]);
-	   System.out.println("Total Male Population ---"+obj[1]);
-	   System.out.println("Total Female Population ---"+obj[2]);
-	   System.out.println("Total SC Population ---"+obj[3]);
-	   System.out.println("Total ST Population ---"+obj[4]);
-   }*/
+	   System.out.println("Total Population ----  "+obj[0]);
+	   System.out.println("Total SC Population ---"+obj[1]);
+	   System.out.println("Total ST Population ---"+obj[2]);
+	   System.out.println("Literates---           "+obj[3]);
+	   System.out.println("Illiterates ----       "+obj[4]);
+	   System.out.println("Working People---      "+obj[5]);
+	   System.out.println("Non Working People---  "+obj[6]);
+   }
   
 }
