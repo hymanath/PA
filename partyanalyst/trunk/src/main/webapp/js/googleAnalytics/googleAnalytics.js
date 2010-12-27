@@ -90,16 +90,18 @@
 	 var colorCount = 0;
 	 for(var i=0; i<parties.length; i++)
 	 {
-		 if(parties[i] == 'Total Population')
-			 colorArray.push('#82CAFF');
-		 else if(parties[i] == 'Male Population')
-             colorArray.push('#82CAFF');
-		 else if(parties[i] == 'Female Polpultion')
-             colorArray.push('#82CAFF');
-		 else if(parties[i] == 'SC Population')
-             colorArray.push('#82CAFF');
+		 if(parties[i] == 'SC Population')
+			 colorArray.push('#FF00FF');
 		 else if(parties[i] == 'ST Population')
-             colorArray.push('#82CAFF');
+             colorArray.push('#FF00FF');
+		 else if(parties[i] == 'Literates')
+             colorArray.push('#FF00FF');
+		 else if(parties[i] == 'illiterates')
+             colorArray.push('#FF00FF');
+		 else if(parties[i] == 'Working People')
+             colorArray.push('#FF00FF');
+		 else if(parties[i] == 'Non Working People')
+             colorArray.push('#FF00FF');
 		 else if(parties[i] == 'TDP')
 			 colorArray.push('#C7005D');
 		 else if(parties[i] == 'TRS')
