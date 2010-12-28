@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,17 +23,28 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 <script type="text/javascript">
 var id = '${problemHistoryId}';
+var logInStat = '${sessionScope.loginStatus}';
+var userType = '${sessionScope.UserType}';
+
 function callAjax(jsObj,url)
 {	
 		var callback = {			
 		               success : function( o ) {
 						try {
-							myResults = YAHOO.lang.JSON.parse(o.responseText);							
-							showProblemDetails(myResults);
+							myResults = YAHOO.lang.JSON.parse(o.responseText);
+							if(jsObj.task == "getProblemCompleteDetails")
+							{										
+								showProblemDetails(myResults, jsObj);
+							}								
+							if(jsObj.task == "getProblemAllComments")
+							{
+								showProblemAllComments(myResults);
+							}
+							
 						}catch (e) {   
 						  // 	alert("Invalid JSON result" + e);   
 						}  
@@ -43,6 +56,42 @@ function callAjax(jsObj,url)
 		               };
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function approvalCallAjax(jsObj,url)
+{	
+		var callback = {			
+		               success : function( o ) {
+						try {
+							myResults = YAHOO.lang.JSON.parse(o.responseText);							
+							showConfirmation(myResults);
+						}catch (e) {   
+						  // 	alert("Invalid JSON result" + e);   
+						}  
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function showConfirmation(results, obj)
+{
+	var rasonTextEl = document.getElementById("rasonText");
+	if(results.resultCode == 0)
+	{
+		alert("You have Successfully posted your comment!");
+		
+	} else if(results.resultCode == 1)
+	{
+		alert(results.exceptionMsg);
+	} 
+	if(rasonTextEl)
+		rasonTextEl.value = '';
+	getProblemAllComments(id);
+	
+	
 }
 </script>
 <style>
@@ -96,6 +145,22 @@ h3 {
 	font-weight:bold;
 	padding:8px 5px;
 }
+.divInfo
+{
+ background-color:#FFFFFF;
+ border-bottom: 1px solid #B3C1CE;
+ border-left: 1px solid #B3C1CE;
+ border-right: 1px solid #B3C1CE;
+ padding:5px;
+}
+.accept
+{
+	background: url{images/accept.jpeg};
+}
+.reject
+{
+	background: url{images/reject.jpeg};
+}
 </style>
 </head>
 <body>
@@ -103,18 +168,65 @@ h3 {
 <table width="100%" border="0">
 	<tr>
 		<td width="70%">
-			<div id="problemDetails"></div>
-			
+			<div id="problemDetails"></div>			
 		</td>
-		<td width="30%">
-			<div id="problemComments"></div>
+		<td width="30%" valign="top">
+				<div id="approveProblem" style="height:100px;">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					  <tr>
+						<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+						<td width="98%">
+							<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">
+								<span class="headerLabelSpan" style="text-decoration:none;">
+									Give Comments 
+								</span>
+							</div>
+						</td>
+						<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+					  </tr>
+					</table>
+					<div class="divInfo">
+						
+						<div id="description">
+						<p style="margin-top:10px;">If you reside in the same area and know any details about this problem, please give your comments either by Accepting<img height="20" width="20" src="images/icons/accept.png"/> or <img height="20" width="20" src="images/icons/reject.png"/> Rejecting this problem </p>
+						</div>
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+							<div id="alertDiv" style="color:red;font-weight:bold;margin:2px;"></div>	
+							<table style="margin-top:10px;">
+							<tr>
+								<td><label>Comment</label></td>
+								<td><textarea id="rasonText" name="reasonText" onkeyup="clearError()"></textarea></td>
+							</tr>
+							</table>												
+							<table style="margin:25px;" border="0" cellpadding="0" cellspacing="3">	
+								<tr>
+									<td><a href="javascript:{}" onclick="submitHandler('Accept')"><img border="0" height="30" width="100" src="images/accept.jpg"></a></td>
+									<td><a href="javascript:{}" onclick="submitHandler('Reject')"><img border="0" height="30" width="100" src="images/reject.jpg"></a></td>
+								</tr>
+							</table>
+						</c:if>
+						<c:if test="${sessionScope.loginStatus != 'out'}">
+						<s:form action="loginInputAction" method="POST">
+						<input type="hidden" name="redirectLoc" value="PROBLEM_DISCUSSION" />
+						<input type="hidden" name="problemHistoryId" value="${problemHistoryId}" />
+						<input type="hidden" name="logInStatus" value="${logInStatus}" />
+						<p style="margin-top:10px;">Registered Users Login to post comments</p>
+						<input type="submit" Value="Login"/>						
+						</s:form>
+						</c:if>
+					</div>							
+				</div>
+				
 		</td>		
 	</tr>	
 </table>
+<div id="showAllPostsDiv" style="margin-top:10px;"></div>
 </div>
 
 <script type="text/javascript">
-getProblemCompleteDetails(id);
+
+executeOnload();
+
 </script>
 </body>
 </html>
