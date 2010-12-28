@@ -104,6 +104,7 @@ var candidateIndex = 1,candidateListSize,prevButtonElmt,nextButtonElmt;
 var constituencyConnectedPeople = new Array();
 var connectStatus = new Array();
 var userLoginStatus;
+var userStatus = '${userStatus}';
 var userId = '';
 var parliamentConstiId = '';
 var parliamentConstiName = '';
@@ -772,8 +773,15 @@ function buildProblemPostingWindow()
 	str+='<legend style="font-weight:bold;"> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
 	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
-	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
-	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">POST</a></div>';
+	
+	if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
+	{		
+		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()">POST</a></div>';
+	}
+	else
+	{    
+		str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=CONSTITUENCY&constituencyId='+constituencyPageMainObj.constituencyInfo.constituencyId+'">POST</a></div>';
+	}
 	str+='</div>';
 	str+='</fieldset>';
 	
