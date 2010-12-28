@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -36,5 +37,6 @@ public interface IProblemManagementService {
 	public List<ProblemBeanVO> getProblemDetailsBasedOnProblemStatusForAUser(Long userId,Long statusId,String isPushed,String isDeleted);
 	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue);
 	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId);
+	public Date getCurrentDateAndTime();
 		
 }
