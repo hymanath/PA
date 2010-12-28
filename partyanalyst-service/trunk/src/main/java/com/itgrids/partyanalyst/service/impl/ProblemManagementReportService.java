@@ -1436,14 +1436,24 @@ public class ProblemManagementReportService implements
 		 * @return List<Object>
 		 * @date 06-10-10
 		 */
+		@SuppressWarnings("unchecked")
 		public List<Object> getAllAcceptedProblemsInATehsil(List<Long> locationIds, String locationType) {			
 			List<Object> teshilResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);			
 			if(teshilResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
-				List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(locationIds);
-				if(listOfHamlets!=null && listOfHamlets.size()!=0){
-					List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
-					teshilResult.addAll(hamletResult);	
-				}				
+				
+				for(Long tehsils:locationIds){
+					
+					List<Long> ids = new ArrayList<Long>();
+					ids.add(tehsils);
+					List<Long> listOfHamlets = hamletDAO.findHamletsByTehsilIds(ids);
+					if(listOfHamlets!=null && listOfHamlets.size()!=0){
+						List<Object> hamletResult = getAllAcceptedProblemsInAHamlet(listOfHamlets,IConstants.HAMLET_LEVEL);
+						teshilResult.addAll(hamletResult);
+						if(hamletResult != null && hamletResult.size() >= IConstants.MAX_PROBLEMS_DISPLAY)
+							return teshilResult;
+						
+					}	
+				}
 			}			
 			return teshilResult;
 		}
@@ -1480,6 +1490,7 @@ public class ProblemManagementReportService implements
 		 * @return List<Object>
 		 * @date 06-10-10
 		 */
+		@SuppressWarnings("unchecked")
 		public List getAllAcceptedProblemsInAConstituency(List<Long> locationIds, String locationType) {
 			List<Object> constituencyResult = problemHistoryDAO.getAllProblemHistoryIdsForGivenLocationByTheirIds(locationIds,locationType,IConstants.TRUE);
 			if(constituencyResult.size()<IConstants.MAX_PROBLEMS_DISPLAY){
@@ -1506,6 +1517,9 @@ public class ProblemManagementReportService implements
 					if(tehsilIds!=null && tehsilIds.size()!=0){
 						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.MANDAL);
 						constituencyResult.addAll(tehsilResult);
+						if(tehsilResult != null && tehsilResult.size() >= IConstants.MAX_PROBLEMS_DISPLAY)
+							return constituencyResult;
+						
 					}
 				}
 				if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
@@ -1513,6 +1527,8 @@ public class ProblemManagementReportService implements
 					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
 						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.MUNICIPAL_CORP_GMC);
 						constituencyResult.addAll(localElectionBodyResult);
+						if(localElectionBodyResult != null && localElectionBodyResult.size() >= IConstants.MAX_PROBLEMS_DISPLAY)
+							return constituencyResult;
 					}				
 				}
 				if(urban_rural_constituencies!=null && urban_rural_constituencies.size()!=0){
@@ -1520,11 +1536,15 @@ public class ProblemManagementReportService implements
 					if(tehsilIds!=null && tehsilIds.size()!=0){
 						tehsilResult = getAllAcceptedProblemsInATehsil(tehsilIds,IConstants.MANDAL);
 						constituencyResult.addAll(tehsilResult);
+						if(tehsilResult != null && tehsilResult.size() >= IConstants.MAX_PROBLEMS_DISPLAY)
+							return constituencyResult;
 					}				
 					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(urban_rural_constituencies);
 					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
 						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.MUNICIPAL_CORP_GMC);
 						constituencyResult.addAll(localElectionBodyResult);
+						if(localElectionBodyResult != null && localElectionBodyResult.size() >= IConstants.MAX_PROBLEMS_DISPLAY)
+							return constituencyResult;
 					}				
 				}
 			}
