@@ -1195,7 +1195,8 @@
 		</action>
 		<action name="addNewProblemAction" class="addNewProblemAction"> 
 		       <result name="input">/jsp/addNewProblem.jsp</result>
-               <result name="success">/jsp/addNewProblem.jsp</result>                   		
+               <result name="success">/jsp/addNewProblem.jsp</result>     
+               <result name="error">/jsp/addNewProblem.jsp</result>              		
         </action>
         <action name="addNewProblemAjaxAction" class="addNewProblemAction" method="getDistricts"> 
               <result type="json" name="success">

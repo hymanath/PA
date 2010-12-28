@@ -244,9 +244,12 @@ function buildProblemPostingWindowForDistrict()
 	str+='<fieldset id="ProblemPostingFieldSet">';
 	str+='<legend style="font-weight:bold;"> Post Your District Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
-	str+='<div>Post your district problem and bring it to the all people notice.</div>';
-	//str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()"/></div>';
-	str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';
+	str+='<div>Post your district problem and bring it to the all people notice.</div>';	
+	if(userLoginStatus=="true"){		
+		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()">POST</a></div>';	
+	}else{
+		str+='<div id="problemPostingButtonDiv"><a href="problemPostControlAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">POST</a></div>';	
+	}
 	str+='</div>';
 	str+='</fieldset>';
 	
@@ -288,7 +291,7 @@ function buildDistrictConnectPeopleWindow()
 
 function initializeDistrictPage()
 {
-	//buildProblemPostingWindowForDistrict();
+	buildProblemPostingWindowForDistrict();
 	buildDistrictPageLayout();
 	buildDistrictLatestNews();
 	buildDistrictLevelProblemWindow();
