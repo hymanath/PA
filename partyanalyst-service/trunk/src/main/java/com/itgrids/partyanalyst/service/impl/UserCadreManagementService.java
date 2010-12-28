@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
@@ -31,7 +32,16 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 	public CadreManagementVO getUserData(RegistrationVO user) {
 		log.debug("UserCadreManagementService.getUserData()::::started");
 		CadreManagementVO cadreManagementVO = new CadreManagementVO();
-
+		UserCadresInfoVO userCadreInfo = new UserCadresInfoVO();
+		
+		if(user.getParentUserId() == null)
+			userCadreInfo.setIsParent(true);
+		else
+			userCadreInfo.setIsParent(false);
+		userCadreInfo.setUserID(user.getRegistrationID());
+		userCadreInfo.setUserAccessType(user.getAccessType());
+		userCadreInfo.setUserAccessValue(user.getAccessValue());
+		
 		Long userID = user.getRegistrationID();
 		Long partyID = user.getParty();
 		try{
@@ -41,7 +51,7 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 			cadreManagementVO.setUserEvents(userPlannedEvents);
 			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user,calendar);
 			cadreManagementVO.setUserImpDates(userImpDatesList);
-			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
+			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userCadreInfo);
 			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
 		}catch (Exception exceptionEncountered) {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
@@ -54,14 +64,23 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 	public CadreManagementVO getUserTodaysData(RegistrationVO user) {
 		log.debug("UserCadreManagementService.getUserData()::::started");
 		CadreManagementVO cadreManagementVO = new CadreManagementVO();
-
+		UserCadresInfoVO userCadreInfo = new UserCadresInfoVO();
+		
+		if(user.getParentUserId() == null)
+			userCadreInfo.setIsParent(true);
+		else
+			userCadreInfo.setIsParent(false);
+		userCadreInfo.setUserID(user.getRegistrationID());
+		userCadreInfo.setUserAccessType(user.getAccessType());
+		userCadreInfo.setUserAccessValue(user.getAccessValue());
+		
 		Long userID = user.getRegistrationID();
 		try{
 			List<UserEventVO> userPlannedEvents =userCalendarService.getTodaysUserPlannedEvents(userID);
 			cadreManagementVO.setUserEvents(userPlannedEvents);
 			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserTodaysImportantEvents(user);
 			cadreManagementVO.setUserImpDates(userImpDatesList);
-			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
+			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userCadreInfo);
 			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
 		}catch (Exception exceptionEncountered) {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);

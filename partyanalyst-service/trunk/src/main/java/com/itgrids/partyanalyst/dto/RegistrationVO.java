@@ -50,6 +50,15 @@ public class RegistrationVO extends BaseDTO{
 	private Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
+	private Long parentUserId;
+
+	public Long getParentUserId() {
+		return parentUserId;
+	}
+
+	public void setParentUserId(Long parentUserId) {
+		this.parentUserId = parentUserId;
+	}
 
 	private ResultStatus resultStatus;
 	

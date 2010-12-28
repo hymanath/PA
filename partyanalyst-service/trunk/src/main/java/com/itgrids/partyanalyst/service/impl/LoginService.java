@@ -197,6 +197,7 @@ public class LoginService implements ILoginService{
 			regVO.setSubscribePartyImpDate(reg.getIncludePartyImpDateStatus());
 			regVO.setUserType(reg.getUserType());
 			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
+			regVO.setParentUserId(reg.getParentUser() != null?reg.getParentUser().getRegistrationId():null);
 			
 			if(reg.getParty() != null){
 				regVO.setParty(reg.getParty().getPartyId());

@@ -13,6 +13,8 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findByProperty(String propertyName, Object value);
 	public List<Cadre> findByUserID(Long userID);
 	public Long findTotalCadresByUserID(Long userID, String cadrerType);
+	public Long findTotalCadresByUserIDInALocation(Long userID, String cadreType, String model, String idToCompare, Long locationId);
+	public List findTotalCadresByUserIdBasedOnCadreLevel(Long userID, String cadreType, String model, String idToCompare, Long locationId);
 	public List findCadresByLevels(Long userID, String cadrerType);
 	public List findStatesByCountryID(String countryID);
 	public List findDistrictsByStateID(String stateID);
@@ -43,6 +45,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	//public List findMandalsByConstituencyID(String constituencyId);
 	
 	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID, String cadreType);
+	public List<Cadre> findCadresByCadreLevelByUserIDInALocation(String cadreLevel, Long userID, String cadreType, String model, String idToCompare, Long locationId);	
 	
 	public List getUserAccessStates(Long userID);
 	public List getUserAccessDistricts(Long userID);

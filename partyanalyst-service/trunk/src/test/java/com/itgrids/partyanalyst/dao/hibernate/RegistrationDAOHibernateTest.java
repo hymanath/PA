@@ -63,9 +63,16 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(entitlements.size());
 	}*/
 	
-	public void testGetUserEntitlements(){		
+	/*public void testGetUserEntitlements(){		
 		List arr = registrationDAO.getAllRegisteredUsers();
 		Assert.assertEquals(1, arr.size());
+	}*/
+	
+	public void testSubUsers()
+	{
+		Registration reg =  registrationDAO.get(5L);
+		System.out.println(reg.getParentUser());
+		System.out.println(reg.getSubUsers().size());
 	}
 	
 	

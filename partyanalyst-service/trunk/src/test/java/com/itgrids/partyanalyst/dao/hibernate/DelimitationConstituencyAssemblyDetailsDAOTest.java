@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestCase{
 
@@ -72,11 +73,18 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindAssemblyConstituenciesOfParliamentConstituency(){
+	/*public void testFindAssemblyConstituenciesOfParliamentConstituency(){
 		List<Long> list = new ArrayList<Long>();
 		list.add(new Long(404));
 		List result = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(list);
 		System.out.println(result);
+	}*/
+	
+	public void testFindParliamentConstituenciesByDistrictId()
+	{
+		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(19L, IConstants.DELIMITATION_YEAR);
+		
+		System.out.println(list.size());
 	}
 	
 }

@@ -53,4 +53,6 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getAllRegionScopesForModule(String module, Long stateId);
 	public String getConstituencyAreaType(Long constituencyId);  
 	
+	public String getRegionNameByRegionId(Long regionId,String regionType);
+	public List<SelectOptionVO> getParliamentConstituenciesByDistrict(Long district);	
 }

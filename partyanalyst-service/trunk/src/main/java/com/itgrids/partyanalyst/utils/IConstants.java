@@ -241,6 +241,10 @@ public interface IConstants {
     public static final String ENTITLEMENT_PAGE = "ENTITLEMENT_PAGE";
     public static final String COMMENTS_POST = "COMMENTS_POST";
     public static final String COMMETNS_ANALYZE = "COMMETNS_ANALYZE";
+    public static final String CADRE_VIEW = "CADRE_VIEW";
+    public static final String CADRE_CREATE = "CADRE_CREATE";
+    public static final String CADRE_UPDATE = "CADRE_UPDATE";
+    public static final String CADRE_DELETE = "CADRE_DELETE";
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
     public static final String ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION = "ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION";
