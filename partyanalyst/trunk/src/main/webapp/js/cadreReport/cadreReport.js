@@ -5,8 +5,16 @@ function buildCadreLevelTable(jsObj,cadreData)
 	var cadresArray = new Array();
 	var cadreDetailsPanel;
 	var title = cadreData.length+" Cadres available in "+jsObj.nodeLabel+" Level";
+	var update = "No Access";
+	var remove = "No Access";
+
 	for(var i in cadreData)
 	{
+		if(cadreUpdate)			
+			update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';
+		if(cadreDelete)
+			remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
+
 		var cObj={
 				name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 				mobile:cadreData[i].mobile,
@@ -15,8 +23,8 @@ function buildCadreLevelTable(jsObj,cadreData)
 				memberType: cadreData[i].memberType,
 				casteCategory: cadreData[i].casteCategoryStr,
 				moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
-				update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
-				remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
+				update:update,
+				remove:remove
 				 };
 
 		cadresArray.push(cObj);

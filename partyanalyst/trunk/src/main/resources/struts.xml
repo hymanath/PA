@@ -353,6 +353,16 @@
 			<result name="success">/jsp/registration.jsp</result>
 		</action>
 		
+		<action name="subUserRegPageAction" class="userAction" method="subUserRegistration">
+			<result name="success">/jsp/registration.jsp</result>
+		</action>	
+		
+		<action name="getSubUserAccessValueAction" class="userAction" method="getSubUserAccessValue">
+			<result type="json" name="success">
+           		<param name="root">regionList</param>
+        	</result>			
+		</action>			
+		
 		<action name="cadreReportAction" class="cadreReportAction">
 			<result name="success">/jsp/cadreReportPage.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>

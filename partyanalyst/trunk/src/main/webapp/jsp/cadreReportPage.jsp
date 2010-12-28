@@ -66,7 +66,10 @@
 		var cadreDetailsArr = new Array();
 		//var cadresArray = new Array();
 		var panel;
-
+		var cadreView;
+		var cadreCreate;
+		var cadreUpdate;
+		var cadreDelete;
 			function buildJSObject(id,value,type)
 			{				
 				var ob =
@@ -245,8 +248,15 @@
 		var title = count+" Cadres having booth Details in "+jsObj.nodeLabel;
 		var cadreData = myResults.cadreInfo;
 		var cadresArray = new Array();
+		var update = "No Access";
+		var remove = "No Access";
 		for(var i in cadreData)
 		{
+			if(cadreUpdate)			
+				update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';
+			if(cadreDelete)
+				remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
+
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
@@ -255,8 +265,8 @@
 						memberType: cadreData[i].memberType,												
 						caste:cadreData[i].casteCategoryStr,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
-						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
-						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
+						update:update,
+						remove:remove
 					 };
 
 			cadresArray.push(cObj);
@@ -299,8 +309,16 @@
 		var title = count+" Cadres not having booth Details in "+jsObj.nodeLabel ;
 		var cadreData = myResults.cadreInfo;
 		var cadresArray = new Array();
+		var update = "No Access";
+		var remove = "No Access";
+		
 		for(var i in cadreData)
-		{
+		{ 
+			if(cadreUpdate)			
+				update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';
+			if(cadreDelete)
+				remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
+
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
@@ -309,8 +327,8 @@
 						memberType: cadreData[i].memberType,						
 						caste:cadreData[i].casteCategoryStr,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
-						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
-						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
+						update:update,
+						remove:remove
 					 };
 
 			cadresArray.push(cObj);
@@ -412,23 +430,30 @@
 	}
 
 	function showLink(value)
-	{	
+	{			
 		var cadreData = new Array();
 		var cadresArray = new Array();
 		var indexOfHyphen = value.lastIndexOf("-");
 		var title = value.substring(indexOfHyphen+1)+" Cadres Available in "+value.substring(0,indexOfHyphen);
+		var update = "No Access";
+		var remove = "No Access";		
 		
+
 		for(var i in cadreDetailsArr)
 		{
 			if(cadreDetailsArr[i].label == value)
 			{
 				cadreData = cadreDetailsArr[i].obj;
 			}
-		}
+		}		
 		
-
 		for(var i in cadreData)
 		{
+			if(cadreUpdate)	
+				update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';			
+			if(cadreDelete)
+				remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
+
 			var cObj={
 						name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
 						mobile:cadreData[i].mobile,
@@ -437,8 +462,8 @@
 						memberType: cadreData[i].memberType,
 						casteCategory: cadreData[i].casteCategoryStr,
 						moreDetails:'<a href="javascript:{}" onclick="getCadreInfo(\''+cadreData[i].cadreID+'\')">More Details</a>',
-						update:'<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>',
-						remove:'<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>'
+						update:update,
+						remove:remove
 					 };
 
 			cadresArray.push(cObj);
@@ -610,7 +635,9 @@
 					<div style="text-align:right;padding-top:10px;">
 					<input type="hidden" id="hiddenVal" name="cadreId" value="0"/>
 					<input type="hidden" id="hiddenValue" name="windowTask" value="new"/>
+					<c:if test="${userCadresInfoVO.cadreCreate}">
 					<input type="submit" id="registerCadreSubmit" name="registersubmit" value="Register Cadre"/>
+					</c:if>
 				</div>					
 				</div>
 			</div>	
@@ -700,7 +727,12 @@
 			<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >
 				buildJSObject('${pd1.value}','${pd1.key}','regionLevelCadres');
 			</c:forEach>
-
+			
+			cadreView = ${userCadresInfoVO.cadreView};
+			cadreCreate = ${userCadresInfoVO.cadreCreate};
+			cadreUpdate = ${userCadresInfoVO.cadreUpdate};
+			cadreDelete = ${userCadresInfoVO.cadreDelete};		
+		
 			buildTreeView();	
 		</script>	
 	</s:form>	

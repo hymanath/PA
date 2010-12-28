@@ -425,6 +425,11 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Boolean isParent = true;
+		if(user.getParentUserId() != null)
+			isParent = false;
+		
 		if(jObj.getString("cadreLevel").equalsIgnoreCase("locationLevel"))
 		{
 			cadresLevel = userCalendarService.getCadresByRegionType(user.getRegistrationID(), jObj.getString("regionVal"), new Long(jObj.getString("regionSelectVal")));
@@ -433,7 +438,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		else if(jObj.getString("cadreLevel").equalsIgnoreCase("cadreLevel"))
 		{
 			
-			cadresLocation = cadreManagementService.getCadresByCadreLevel(jObj.getString("regionVal"), user.getRegistrationID());
+			cadresLocation = cadreManagementService.getCadresByCadreLevel(jObj.getString("regionVal"), user.getRegistrationID(), isParent, user.getAccessType(), new Long(user.getAccessValue()));
 			result = "cadreLevel";
 		} 
 		return result;

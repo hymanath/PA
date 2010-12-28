@@ -449,7 +449,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		String windowTask = request.getParameter("windowTask");
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 		Integer maxResult = Integer.parseInt(request.getParameter("results"));
-	
+		
+		Long registrationId = user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId() ;
 		
 		String param = null;
 		param = getTask();
@@ -462,7 +463,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		
-		cadreInfo = cadreManagementService.getCadreDetailsForSMS(user.getRegistrationID(),setPartyCadreDetails(jObj),windowTask,sortOption,order,startIndex,maxResult);
+		cadreInfo = cadreManagementService.getCadreDetailsForSMS(registrationId,setPartyCadreDetails(jObj),windowTask,sortOption,order,startIndex,maxResult);
 		
 		searchListVO.setTotalSearchCount(new Long(cadreInfo.get(0).getPinCode()));
 		

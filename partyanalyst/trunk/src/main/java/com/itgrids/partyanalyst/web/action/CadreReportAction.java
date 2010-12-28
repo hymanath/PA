@@ -17,8 +17,10 @@ import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreReportAction extends ActionSupport implements ServletContextAware,ServletRequestAware{
 
@@ -32,9 +34,17 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 	private List<UserEventVO> userEventList = new ArrayList<UserEventVO>();
 	private List<ImportantDatesVO> ImpDatesList = new ArrayList<ImportantDatesVO>();
 	private CadreManagementVO cadreManagementVO = new CadreManagementVO();
+	private EntitlementsHelper entitlementsHelper;
 	
 	
-	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
@@ -68,10 +78,11 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			userCadresInfoVO = new UserCadresInfoVO();
 		}
 		else
-		{
-			userCadresInfoVO.setUserID(user.getRegistrationID()); 
+		{			
+			userCadresInfoVO.setUserID(user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId()); 
 			userCadresInfoVO.setUserAccessType(user.getAccessType());
 			userCadresInfoVO.setUserAccessValue(user.getAccessValue());
+			userCadresInfoVO.setIsParent(user.getParentUserId() == null ? true : false);
 			if("MLA".equalsIgnoreCase(user.getAccessType())
 					|| "MP".equalsIgnoreCase(user.getAccessType())){
 				String constituencyName = cadreManagementService.getConstituencyName(new Long(user.getAccessValue()));
@@ -90,6 +101,22 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 				userCadresInfoVO.setUserAccessDisplayValue(mandalName);
 			}
 			userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
+			
+			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
+					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_VIEW))))
+				userCadresInfoVO.setCadreView(false);			
+			
+			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_CREATE)) ||
+					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_CREATE))))
+				userCadresInfoVO.setCadreCreate(false);			
+			
+			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_UPDATE)) ||
+					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_UPDATE))))
+				userCadresInfoVO.setCadreUpdate(false);
+						
+			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_DELETE)) ||
+					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_DELETE))))
+				userCadresInfoVO.setCadreDelete(false);
 			
 			/*
 			 * User Event VO Mock Data

@@ -8,6 +8,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -22,7 +23,16 @@ public class RegistrationAction extends ActionSupport implements
 	private IRegistrationService registrationService;
 	private IStaticDataService staticDataService;
 	private RegistrationVO regVO = new RegistrationVO();
-	 
+	private String registrationType;
+	
+	public String getRegistrationType() {
+		return registrationType;
+	}
+
+	public void setRegistrationType(String registrationType) {
+		this.registrationType = registrationType;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -52,9 +62,31 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setParty(party);
 	}
 	
-	public String execute() throws Exception{
+	public String execute() throws Exception
+	{
+		String requestStatus = null;
+		Long userId = null;
+		if("subUser".equalsIgnoreCase(registrationType))
+		{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null){
+				return IConstants.NOT_LOGGED_IN;
+			}
+						
+			regVO.setParentUserId(user.getRegistrationID());
+			if(regVO.getAccessType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				regVO.setAccessType(IConstants.MLA);
+			else if(regVO.getAccessType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				regVO.setAccessType(IConstants.MP);
+				
+			requestStatus = registrationService.saveRegistration(regVO);
+		}
+		else
+		{			
+			requestStatus = registrationService.saveRegistration(regVO);
+		}
 		
-		String requestStatus = registrationService.saveRegistration(regVO);
 		if( !"SUCCESS".equalsIgnoreCase(requestStatus)){	
 			addActionError("UserName Already Exists");
 			return ERROR;

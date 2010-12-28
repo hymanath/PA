@@ -831,7 +831,9 @@ public class CadreRegisterAction extends ActionSupport implements
 		String name2 = request.getParameter("lastName");
 		String name3 = request.getParameter("constituency");
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-		cadreInfo.setUserID(regVO.getRegistrationID());
+		
+		//cadreInfo.setUserID(regVO.getRegistrationID());
+		cadreInfo.setUserID(regVO.getParentUserId() == null ? regVO.getRegistrationID() : regVO.getParentUserId());
 		cadreInfo.setUserType(regVO.getUserType());
 		cadreInfo.setUserPartyName(regVO.getPartyShortName());
 		cadreInfo.setAccessType(regVO.getAccessType());
