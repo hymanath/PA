@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -11,7 +14,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,8 +36,12 @@ ServletRequestAware, ServletContextAware  {
 	JSONObject jObj = null;
 	private String task;
 	private static final Logger log = Logger.getLogger(ProblemCompleteDetailsAction.class);
-	private Long problemHistoryId; 
-
+	private Long problemHistoryId;
+	private Boolean logInStatus = null;
+	private String userType = null; 
+	private HttpSession session;
+	private List<ApprovalInfoVO> problemApproovals = new ArrayList<ApprovalInfoVO>(0);
+	private IDataApprovalService dataApprovalService;
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -97,8 +107,56 @@ ServletRequestAware, ServletContextAware  {
 		this.problemHistoryId = problemHistoryId;
 	}	
 
+	public Boolean getLogInStatus() {
+		return logInStatus;
+	}
+
+	public void setLogInStatus(Boolean logInStatus) {
+		this.logInStatus = logInStatus;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}	
+	
+	public List<ApprovalInfoVO> getProblemApproovals() {
+		return problemApproovals;
+	}
+
+	public void setProblemApproovals(List<ApprovalInfoVO> problemApproovals) {
+		this.problemApproovals = problemApproovals;
+	}	
+
+	public IDataApprovalService getDataApprovalService() {
+		return dataApprovalService;
+	}
+
+	public void setDataApprovalService(IDataApprovalService dataApprovalService) {
+		this.dataApprovalService = dataApprovalService;
+	}
+
 	public String execute(){
-				
+		session = request.getSession();
+		Object obj = session.getAttribute("USER");
+		
+		if(obj != null)
+		{
+			RegistrationVO user = (RegistrationVO) obj ;
+			logInStatus = true;
+			userType = user.getUserType();
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -120,6 +178,29 @@ ServletRequestAware, ServletContextAware  {
 		problemBeanVO = problemManagementService.getProblemCompleteInfo(problemHistoryId);
 		return Action.SUCCESS;
 	}
+	
+	public String ajaxCallHandler() throws Exception{
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		log.debug("Task::"+jObj.getString("task"));
+		
+		if(jObj.getString("task").equalsIgnoreCase("getProblemAllComments"))
+		{			
+			Long id = jObj.getLong("id");
+			problemApproovals = dataApprovalService.getAllProblemComments(id);
+		}
+		return Action.SUCCESS;
+	}
+
 	
 
 }
