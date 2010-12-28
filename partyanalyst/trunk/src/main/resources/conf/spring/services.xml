@@ -691,6 +691,13 @@
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	<bean id="dataApprovalService" class="com.itgrids.partyanalyst.service.impl.DataApprovalService" >
+    	<property name="transactionTemplate" ref="transactionTemplate" />
+    	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
+    	<property name="ananymousUserDAO" ref="ananymousUserDAO" />
+    	<property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
+    	<property name="problemManagementService" ref="problemManagementService" />
+	</bean>
 	
 	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">
 	    <property name="countryDAO" ref="countryDAO" />

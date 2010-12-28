@@ -169,6 +169,9 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyTown</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationYear</value>
 				<value>com.itgrids.partyanalyst.model.CensusYear</value>
+				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
+				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
+				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
 			</list>
 		</property>
 	</bean>
