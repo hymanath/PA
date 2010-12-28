@@ -81,8 +81,6 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
-import com.itgrids.partyanalyst.model.DelimitationConstituency;
-import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -1261,7 +1259,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * And Assembly Constituency Election Results (Mandal Wise)
 	 */
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear,Boolean includeOthers){
-		
 		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
 		List<ConstituencyOrMandalWiseElectionVO> constituencyElectionResults = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
 		List<SelectOptionVO> missingConstituencies = null;
@@ -1355,7 +1352,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Long partyBaletVotes = 0l;
 			Long totalBaletVotes = totalValidVotes - boothWiseValidVotes;
 			
-			
+			if(includeOthers){
 				partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
 				assemblyConstiElecVO = new ConstituencyOrMandalWiseElectionVO();
 				assemblyConstiElecVO.setLocationName(IConstants.OTHERS);
@@ -1393,7 +1390,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					
 				assemblyConstiElecVO.setPartyElectionResultVOs(partyElectionResultVOs);
 				
-				constituencyElectionResults.add(assemblyConstiElecVO);
+				constituencyElectionResults.add(assemblyConstiElecVO);	
+			}
+			
 		}
 		
 		constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
