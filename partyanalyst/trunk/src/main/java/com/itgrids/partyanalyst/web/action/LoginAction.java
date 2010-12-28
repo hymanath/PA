@@ -28,7 +28,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String userFullName = null;
 	private String src = null;
 	private String userType = null;
-	
 	//for problem management login
     private String redirectLoc = null;
     
@@ -55,6 +54,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	
 	private Long parliamentConstiId;    
     private String taskType;
+    private Long problemHistoryId;
     
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
@@ -264,6 +264,14 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.url = url;
 	}
 
+	public Long getProblemHistoryId() {
+		return problemHistoryId;
+	}
+
+	public void setProblemHistoryId(Long problemHistoryId) {
+		this.problemHistoryId = problemHistoryId;
+	}
+	
 	public String execute(){
 
 		session = request.getSession();
@@ -331,6 +339,8 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 				return "localElectionBodyPageRedirect";
 			}else if(redirectLoc.equalsIgnoreCase(IConstants.CONNECT_REDIRECT)){
 				return "connectPeoplePageRedirect";
+			}else if(redirectLoc.equalsIgnoreCase(IConstants.PROBLEM_DISCUSSION)){
+				return "problemDiscussionRedirect";
 			}
 		}
 		return finalResultString();
