@@ -346,6 +346,7 @@ public interface IConstants {
     public static final String NAME = "NAME"; 
     public static final String CADRE = "CADRE"; 
     public static final String FAMILY_MEMBERS = "FAMILY MEMBERS"; 
+    public static final String PROBLEM_DISCUSSION = "PROBLEM_DISCUSSION";
     public static final String MUNCPAL_CORP = "MUNCIPALITY/CORPORATION";
     
       
