@@ -396,7 +396,7 @@
 					<tr>
 						<td width="100px;" id="thId"> </td>
 						<td style="padding-left: 15px;" id="tdId">
-							<s:hidden name="registrationType" value="${registrationType}"/>							
+							<input type="hidden" name="registrationType" value="${registrationType}"/>							
 						</td>
 					</tr>
 					
