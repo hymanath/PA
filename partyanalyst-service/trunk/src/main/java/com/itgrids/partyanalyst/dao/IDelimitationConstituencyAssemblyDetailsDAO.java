@@ -33,4 +33,6 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	public List findDistrictsOfParliamentConstituency(Long parliamentId);
 	
 	public List<Long> findAssembliesConstituenciesForAListOfParliamentConstituency(List<Long> parliamentConstituencyIds);
+	
+	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year);
 }

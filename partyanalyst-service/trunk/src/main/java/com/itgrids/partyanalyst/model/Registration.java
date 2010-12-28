@@ -59,7 +59,10 @@ public class Registration implements java.io.Serializable {
 	 private Set<UserGroupPrivileges> writeWriteUserPrevilegesSet = new HashSet<UserGroupPrivileges>(0);
 	 private Set<OpinionPoll> opinionPoll = new HashSet<OpinionPoll>(0); 
 	 private Set<InfluencingPeople> influencingPeople = new HashSet<InfluencingPeople>(0);
-	 
+	 private Registration parentUser;
+	 private Set<Registration> subUsers = new HashSet<Registration>(0);
+	
+
 	public Registration() {
 		 
 	}
@@ -382,5 +385,30 @@ public class Registration implements java.io.Serializable {
 	public void setInfluencingPeople(Set<InfluencingPeople> influencingPeople) {
 		this.influencingPeople = influencingPeople;
 	}
+
+
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="parent_user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Registration getParentUser() {
+		return parentUser;
+	}
+
+	public void setParentUser(Registration parentUser) {
+		this.parentUser = parentUser;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentUser")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Registration> getSubUsers() {
+		return subUsers;
+	}
+
+	public void setSubUsers(Set<Registration> subUsers) {
+		this.subUsers = subUsers;
+	}
+	
 	
 }

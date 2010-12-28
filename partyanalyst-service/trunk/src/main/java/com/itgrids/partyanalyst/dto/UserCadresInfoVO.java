@@ -23,7 +23,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Long totalNormalCadres = null;
 	private Long totalNonAssignedToBoothActiveCadres = null;
 	private Long totalNonAssignedToBoothNormalCadres = null;
-
+	private Boolean isParent; 
 	/**
 	 *  regionLevel No Cadres contains like following
 	 * Zero Cadres in 5 Districts
@@ -64,7 +64,37 @@ public class UserCadresInfoVO implements Serializable{
 	private ResultStatus resultStatus = null;
 	private Map<Long, String> zeroCadreBooths = null;
 	private Map<Long, String> zeroCadreBoothsInMandal = null;
+	
+	private Boolean cadreView = true;
+	private Boolean cadreCreate = true;
+	private Boolean cadreUpdate = true;
+	private Boolean cadreDelete = true;
 
+	
+	public Boolean getCadreView() {
+		return cadreView;
+	}
+	public void setCadreView(Boolean cadreView) {
+		this.cadreView = cadreView;
+	}
+	public Boolean getCadreCreate() {
+		return cadreCreate;
+	}
+	public void setCadreCreate(Boolean cadreCreate) {
+		this.cadreCreate = cadreCreate;
+	}
+	public Boolean getCadreUpdate() {
+		return cadreUpdate;
+	}
+	public void setCadreUpdate(Boolean cadreUpdate) {
+		this.cadreUpdate = cadreUpdate;
+	}
+	public Boolean getCadreDelete() {
+		return cadreDelete;
+	}
+	public void setCadreDelete(Boolean cadreDelete) {
+		this.cadreDelete = cadreDelete;
+	}
 	public Long getUserID() {
 		return userID;
 	}
@@ -271,5 +301,13 @@ public class UserCadresInfoVO implements Serializable{
 	public void setTotalNonAssignedToBoothNormalCadres(
 			Long totalNonAssignedToBoothNormalCadres) {
 		this.totalNonAssignedToBoothNormalCadres = totalNonAssignedToBoothNormalCadres;
-	}	
+	}
+	public Boolean getIsParent() {
+		return isParent;
+	}
+	public void setIsParent(Boolean isParent) {
+		this.isParent = isParent;
+	}
+	
+	
 }

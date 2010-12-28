@@ -860,9 +860,30 @@ public class CadreManagementService {
 		}
 		ResultStatus resultStatus = new ResultStatus();
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		Long totalUserAccessLevelCaders = 0L;
+		Long totalNormalCadres = 0L;
+		String model = null;
+		String idToCompare = null;
+		Long accessLocationValue = new Long(userCadreInfo.getUserAccessValue());
 		try {
-			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
-			Long totalNormalCadres = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_NORMAL);
+			if(userCadreInfo.getIsParent())
+			{
+				totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+				totalNormalCadres = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_NORMAL);
+			}
+			else
+			{
+				List<String> modelDetails = getSubUserAccessTypeModelAndPrimaryKey(userCadreInfo.getUserAccessType());
+				if(modelDetails != null && modelDetails.size() == 2)
+				{
+					model = modelDetails.get(0);
+					idToCompare = modelDetails.get(1);
+				}
+				
+				totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, accessLocationValue);
+				totalNormalCadres = cadreDAO.findTotalCadresByUserIDInALocation(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_NORMAL, model, idToCompare, accessLocationValue);		
+			}
+			
 			//Long nonAssignedToBoothActiveCadres = getAllNonAssignedBoothCadres(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 			//Long nonAssignedToBoothNormalCadres = getAllNonAssignedBoothCadres(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_NORMAL);
 			userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
@@ -871,7 +892,7 @@ public class CadreManagementService {
 			//userCadreInfo.setTotalNonAssignedToBoothNormalCadres(nonAssignedToBoothNormalCadres);
 			userCadreInfo = getUserAccessRegions(userCadreInfo);
 			
-			Map<String, Long> cadresByCadreLevel = getCadreLevelCadresCount(userCadreInfo.getUserID());
+			Map<String, Long> cadresByCadreLevel = getCadreLevelCadresCount(userCadreInfo);
 			
 			userCadreInfo.setRegionLevelCadres(cadresByCadreLevel);
 		} catch (Exception e) {
@@ -883,7 +904,34 @@ public class CadreManagementService {
 
 		return userCadreInfo;
 	}
-
+	
+	public List<String> getSubUserAccessTypeModelAndPrimaryKey(String accessType)
+	{
+		List<String> modelDetails = new ArrayList<String>();
+		
+		if(accessType.equalsIgnoreCase(IConstants.STATE))
+		{
+			modelDetails.add("state");
+			modelDetails.add("stateId");
+		}
+		else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			modelDetails.add("district");
+			modelDetails.add("districtId");
+		}
+		else if(accessType.equalsIgnoreCase(IConstants.MLA))
+		{
+			modelDetails.add("constituency");
+			modelDetails.add("constituencyId");
+		}
+		else if(accessType.equalsIgnoreCase(IConstants.MP))
+		{
+			modelDetails.add("parliamentConstituency");
+			modelDetails.add("constituencyId");
+		}
+		
+		return modelDetails;
+	}
 	/*@SuppressWarnings("unchecked")
 	public UserCadresInfoVO getUserAccessRegions(UserCadresInfoVO userCadreInfo) {
 		if (log.isDebugEnabled()) {
@@ -1400,9 +1448,26 @@ public class CadreManagementService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Long> getCadreLevelCadresCount(Long userID) {
-		List cadresByRegionList = cadreDAO.findCadresByLevels(userID,
-				IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+	public Map<String, Long> getCadreLevelCadresCount(UserCadresInfoVO userCadreInfo)
+	{
+		List cadresByRegionList = null;
+		String model = null;
+		String idToCompare = null;
+		if(userCadreInfo.getIsParent())
+		{
+			cadresByRegionList = cadreDAO.findCadresByLevels(userCadreInfo.getUserID(),IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		}
+		else
+		{
+			List<String> modelDetails = getSubUserAccessTypeModelAndPrimaryKey(userCadreInfo.getUserAccessType());
+			if(modelDetails != null && modelDetails.size() == 2)
+			{
+				model = modelDetails.get(0);
+				idToCompare = modelDetails.get(1);
+			}
+			cadresByRegionList = cadreDAO.findTotalCadresByUserIdBasedOnCadreLevel(userCadreInfo.getUserID(), IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, new Long(userCadreInfo.getUserAccessValue()));
+		}
+		
 		Map<String, Long> result = new LinkedHashMap<String, Long>();
 		for (int i = 0; i < cadresByRegionList.size(); i++) {
 			Object[] objInfo = (Object[]) cadresByRegionList.get(i);
@@ -1614,10 +1679,25 @@ public class CadreManagementService {
 		return name;
 	}
 
-	public List<CadreInfo> getCadresByCadreLevel(String cadreLevel, Long userID) {
+	public List<CadreInfo> getCadresByCadreLevel(String cadreLevel, Long userID, Boolean isParent,String accessType,Long acessLocationId)
+	{
 		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
-		List<Cadre> cadresList = cadreDAO.findCadresByCadreLevel(cadreLevel,
-				userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		List<Cadre> cadresList = null;
+		String model = null;
+		String idToCompare = null;
+		
+		if(isParent)
+			cadresList = cadreDAO.findCadresByCadreLevel(cadreLevel,userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		else
+		{
+			List<String> modelDetails = getSubUserAccessTypeModelAndPrimaryKey(accessType);
+			if(modelDetails != null && modelDetails.size() == 2)
+			{
+				model = modelDetails.get(0);
+				idToCompare = modelDetails.get(1);
+			}
+			cadresList = cadreDAO.findCadresByCadreLevelByUserIDInALocation(cadreLevel, userID, IConstants.CADRE_MEMBER_TYPE_ACTIVE, model, idToCompare, acessLocationId);
+		}
 		for (Cadre cadre : cadresList) {
 			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 			cadreInfoList.add(cadreInfo);

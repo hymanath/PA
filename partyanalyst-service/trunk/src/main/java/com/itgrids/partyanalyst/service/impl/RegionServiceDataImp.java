@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -60,7 +62,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IBoothMapperService boothMapperService;
 	private IModuleRegionScopesDAO moduleRegionScopesDAO;
 	private IModuleDetailsDAO moduleDetailsDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -1050,4 +1062,49 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return scopes;
 	}
 	
+	public String getRegionNameByRegionId(Long regionId,String regionType)
+	{
+		String regionName = null;
+		
+		if(regionType.equalsIgnoreCase(IConstants.STATE))
+		{
+			State state = stateDAO.get(regionId);
+			regionName = state.getStateName();
+		}
+		else if(regionType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			District district = districtDAO.get(regionId);
+			regionName = district.getDistrictName();
+		}
+		else if(regionType.equalsIgnoreCase(IConstants.MLA) || regionType.equalsIgnoreCase(IConstants.MP))
+		{
+			Constituency constituency = constituencyDAO.get(regionId);
+			regionName = constituency.getName();
+		}		
+		return regionName;
+	}
+	
+	public List<SelectOptionVO> getParliamentConstituenciesByDistrict(Long districtId)
+	{
+		List<SelectOptionVO> regionList = null; 
+		SelectOptionVO optionVO = null;
+		
+		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(districtId, IConstants.DELIMITATION_YEAR);
+		
+		if(list != null && list.size() > 0)
+		{
+			regionList = new ArrayList<SelectOptionVO>();
+			
+			for (Object[] params:(List<Object[]>)list) {
+				optionVO = new SelectOptionVO();
+				optionVO.setId((Long)params[0]);
+				optionVO.setName(params[1].toString());
+				
+				regionList.add(optionVO);
+			}
+		}
+		
+		return regionList;
+	}
 }
+ 

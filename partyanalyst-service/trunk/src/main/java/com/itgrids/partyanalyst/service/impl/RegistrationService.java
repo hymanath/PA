@@ -112,6 +112,8 @@ public class RegistrationService implements IRegistrationService{
 		reg.setAccessType(values.getAccessType());
 		reg.setAccessValue(values.getAccessValue());
 		reg.setUserType(values.getUserType());
+		if(values.getParentUserId() != null)
+			reg.setParentUser(registrationDAO.get(values.getParentUserId()));
 		return reg;
 	}
 	

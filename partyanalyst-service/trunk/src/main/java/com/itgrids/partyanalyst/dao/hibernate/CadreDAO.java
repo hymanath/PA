@@ -43,6 +43,38 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return totalCadres;
 	}
 	
+	public Long findTotalCadresByUserIDInALocation(Long userID, String cadreType, String model, String idToCompare, Long locationId){
+		Query query = getSession().createQuery("SELECT count(*) FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? " );
+		query.setLong(0, userID);
+		query.setString(1, cadreType);
+		query.setLong(2, locationId);
+		Long totalCadres = (Long) query.uniqueResult();
+		return totalCadres;
+	}
+	
+	public List findTotalCadresByUserIdBasedOnCadreLevel(Long userID, String cadreType, String model, String idToCompare, Long locationId)
+	{		
+		Object[] params = {userID, cadreType, locationId};
+		List totalCadresByLevel = getHibernateTemplate().find("SELECT model.cadreLevel.level,count(model.cadreId) " +
+				"FROM Cadre model WHERE model.registration.registrationId = ? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? "+
+				"group by model.cadreLevel.level order by model.cadreLevel.cadreLevelID", params); 
+		return totalCadresByLevel;
+		
+	}
+	/*ref
+	 * 
+	 * @SuppressWarnings("unchecked")
+	public List findCadreByPropertyValueAndCadreIds(String propertyObject,
+			String propertyField, Long propertyValue, List<Long> cadreIds) {
+		Query queryObject = getSession().createQuery("select model.cadreId from Cadre model where model."+propertyObject+"."+propertyField+" = ? and "+
+		          "model.cadreId in (:cadreIds)");
+		queryObject.setParameter(0, propertyValue);
+        queryObject.setParameterList("cadreIds", cadreIds);
+        return queryObject.list();
+	}
+	 * 
+	 */
+	
 	@SuppressWarnings("unchecked")
 	public List findCadresByLevels(Long userID, String cadreType){
 		Object[] params = {userID, cadreType};
@@ -244,6 +276,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID,cadreLevel, cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ?", params); 
+		return results;
+	}
+	
+	public List<Cadre> findCadresByCadreLevelByUserIDInALocation(String cadreLevel, Long userID, String cadreType, String model, String idToCompare, Long locationId){
+		Object[] params = {userID,cadreLevel, cadreType, locationId};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model WHERE model.registration.registrationId = ? and model.cadreLevel.level=? and model.memberType = ? and model.currentAddress."+model+"."+idToCompare+" = ? ", params);		
 		return results;
 	}
 
