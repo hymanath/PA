@@ -513,4 +513,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="approvalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userApprovalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserApprovalDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userProblemApprovalDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

@@ -558,7 +558,11 @@
 		<property name="commentsDataService" ref="commentsDataService" />				
 	</bean>
 	<bean id="problemCompleteDetailsAction" class="com.itgrids.partyanalyst.web.action.ProblemCompleteDetailsAction" singleton="false">
-		<property name="problemManagementService" ref="problemManagementService" />				
+		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="dataApprovalService" ref="dataApprovalService" />				
+	</bean>
+	<bean id="dataApprovalAction" class="com.itgrids.partyanalyst.web.action.DataApprovalAction" singleton="false">
+		<property name="dataApprovalService" ref="dataApprovalService" />				
 	</bean>
 	
 	<bean id="genericUploadAction" class="com.itgrids.partyanalyst.web.action.GenericUploadAction" singleton="false">
