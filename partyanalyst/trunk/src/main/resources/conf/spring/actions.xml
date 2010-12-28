@@ -149,11 +149,14 @@
 
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
-		<property name="staticDataService" ref="staticDataService" /> 
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="registrationService" ref="registrationService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />				
 	</bean>
 	
 	<bean id="cadreReportAction" class ="com.itgrids.partyanalyst.web.action.CadreReportAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 
 	<bean id="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction" singleton="false">
@@ -270,7 +273,8 @@
 	
 	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
-		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />				
 	</bean>
 	
 	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">	

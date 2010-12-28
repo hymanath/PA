@@ -1,4 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>  
 <head>  
 <title> Registration</title>
@@ -27,8 +28,14 @@
 
 	var ACCESSVALUE;
 
+	var mainUserAccessType = '${userAccessType}';
+	var mainUserAccessValue = '${userAccessValue}';
+	var mainUserAccessLocation = '${userAccessLocation}';	
+
+	var SUB_USER_ACCESSVALUE;
+
 	function getAccessValue(value)
-	{		
+	{			
 		var thElmt=document.getElementById("thId");
 		var tdElmt=document.getElementById("tdId");
 
@@ -66,15 +73,17 @@
 		var jsObj=
 			{
 					reportLevel:value,
-					selected:svalue
+					selected:svalue,
+					taskType:"mainUser"
 			}
 					
 		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			callAjax(rparam);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/partyResultScopeAction.action?"+rparam;
+			callAjax(jsObj,url,rparam);
 	}
 	function buildSelectBox(results,param)
-	{			
+	{	
 		var tdElmt=document.getElementById("tdId");		
 		
 		var jsObj=YAHOO.lang.JSON.parse(param.substring(5));
@@ -193,15 +202,33 @@
 		for(i=len-1;i>=0;i--)		
 			elmt.remove(i);
 	}
-	function callAjax(param){
-		
- 		var myResults;
- 		var url = "<%=request.getContextPath()%>/partyResultScopeAction.action?"+param;		
+
+	function buildSubUsersRegionSelect(jsObj,results)
+	{
+		var tdElmt=document.getElementById("tdId");
+
+		var str = '';
+		str += '<select name="accessValue">';
+		for(var i=0; i<results.length; i++)
+		{
+			str += '<option value="'+results[i].id+'">'+results[i].name+'</option>';
+		}
+		str += '</select>';
+
+		tdElmt.innerHTML = str;
+	}
+
+	function callAjax(jsObj,url,param)
+	{		
+ 		var myResults; 				
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 								
-								buildSelectBox(myResults.namesList,param);								
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 	
+								if(jsObj.taskType == "subUser")
+									buildSubUsersRegionSelect(jsObj,myResults);									
+								else if(jsObj.taskType == "mainUser")
+									buildSelectBox(myResults.namesList,param);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -214,6 +241,39 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
+
+	function getAccessValuesForSubUser(value)
+	{
+		SUB_USER_ACCESSVALUE = value;
+
+		var thElmt=document.getElementById("thId");
+		var tdElmt=document.getElementById("tdId");
+
+		thElmt.innerHTML='<font class="requiredFont"> * </font> <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
+		
+		var str = '';
+		if(mainUserAccessType == value)
+		{
+			str += '<select name="accessValue">';
+			str += '<option>'+mainUserAccessLocation+'</option>';
+			str += '</select>';
+			tdElmt.innerHTML=str;
+		}
+		else
+		{
+			var jsObj=
+			{
+					mainUserLocationId:mainUserAccessValue,
+					reportLevel:value,
+					taskType:"subUser"
+			};				
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getSubUserAccessValueAction.action?"+rparam;
+			callAjax(jsObj,url,rparam);
+		}		
+	}
+
 </script>
 
 </head>  
@@ -313,14 +373,34 @@
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="userTypeField" id="userTypeLabel"  value="%{getText('userType')}" /></td>
 						<td style="padding-left: 10px;"><s:radio id="userTypeField" name="userType" list="#session.userType" required="true"></s:radio> </td>
 					</tr>
+										
+					<c:if test="${registrationType == 'subUser'}">				
+					<tr>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
+						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" required="true" onclick="getAccessValuesForSubUser(this.value);"></s:radio> </td>
+					</tr>
+					</c:if>
+
+					<c:if test="${registrationType == 'mainUser'}">
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
 						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
 					</tr>
+					</c:if>					
+					
 					<tr>
 						<td width="100px;" id="thId"> </td>
 						<td style="padding-left: 15px;" id="tdId"> </td>
 					</tr>
+
+					<tr>
+						<td width="100px;" id="thId"> </td>
+						<td style="padding-left: 15px;" id="tdId">
+							<s:hidden name="registrationType" value="${registrationType}"/>							
+						</td>
+					</tr>
+					
+
 				 </table>
 			 </div>
 		</div> 

@@ -75,7 +75,7 @@
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">User Registration</legend>
-									<h4>Register a new user:<a href="<s:url action="userRegPageAction"/>">Register</a></h4>
+									<h4>Register a new user:<a href="<s:url action="userRegPageAction?registrationType=mainUser"/>">Register</a></h4>
 									</fieldset>
 								</td>
 								<td>

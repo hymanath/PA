@@ -154,6 +154,9 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		region = request.getParameter("cadreRegion");
 		regionId = request.getParameter("cadreId");
 		cadreType = request.getParameter("cadreType");
+		Boolean isParent = true;
+		if(user.getParentUserId() != null)
+			isParent = false;
 		this.setRegion(region);
 		this.setRegionId(regionId);
 		this.setCadreType(cadreType);
@@ -300,7 +303,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 		{
 			log.debug("In if Region level cadre");
-			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID);
+			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), new Long(user.getAccessValue()));
 			
 			this.setCadreInfo(cadreInfo);
 		}
@@ -312,8 +315,9 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		cadreDetailsInfoVO = new CadreDetailsInfoVO();
 		session=request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		Long userID = user.getRegistrationID();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");		
+		//Long userID = user.getRegistrationID();
+		Long userID = user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId();
 		region = request.getParameter("cadreRegion");
 		regionId = request.getParameter("cadreId");
 		cadreType = request.getParameter("cadreType");
@@ -594,6 +598,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	
 	public String getZeroLevelCadre()
 	{
+		Boolean isParent = true;
 		cadreDetailsInfoVO = new CadreDetailsInfoVO();
 		region = request.getParameter("cadreRegion");
 		regionId = request.getParameter("cadreId");
@@ -605,7 +610,11 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		cadreInfo = new ArrayList<CadreInfo>();
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		Long userID = user.getRegistrationID();
+		
+		if(user.getParentUserId() != null)			
+			isParent = false;
+		
+		Long userID = user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId();
 		log.debug("In if Zero level cadre");
 		UserCadresInfoVO userCadresInfoVo = (UserCadresInfoVO) session.getAttribute("USERCADRESINFOVO");
 		List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
@@ -697,8 +706,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			 cadreDetailsInfoVO.setZeroCadresRegion(regions);			
 		}else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 			{
-				log.debug("In if Region level cadre");
-				cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID);				
+				log.debug("In if Region level cadre");	
+				cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID, isParent, user.getAccessType(), new Long(user.getAccessValue()));
 				cadreDetailsInfoVO.setCadreInfo(cadreInfo);
 			}
 		 return Action.SUCCESS;
