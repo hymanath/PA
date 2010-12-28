@@ -158,8 +158,8 @@ public class DataApprovalService implements IDataApprovalService {
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		if(result != null && result.size()>0)
 		{
-			ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
 			for(int i=0;i<result.size();i++){
+				ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
 				Object[] parms = (Object[])result.get(i);
 				approvalInfoVO.setReason(parms[3].toString());
 				approvalInfoVO.setIsApproved(parms[4].toString());
@@ -173,19 +173,5 @@ public class DataApprovalService implements IDataApprovalService {
 		return approvals;
 	}
 	
-	/*public static void main(String args[])
-	{
-		try{
-			java.util.Date today = new java.util.Date();
-			String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-			String formatDate = sdf.format(today) ;
-			today = sdf.parse(formatDate);
-			System.out.println(today);	
-		} catch(Exception e)
-		{
-			
-		}
-		
-	}*/
+	
 }
