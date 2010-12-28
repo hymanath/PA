@@ -56,6 +56,7 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private Set<UserConnectedto> userConnectedtosenderId = new HashSet<UserConnectedto>(0); 
 	 private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
 	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
+	 private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
 	 
 	 public AnanymousUser()
 	 {
@@ -294,6 +295,18 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	public void setUserProfileOptses(Set<UserProfileOpts> userProfileOptses) {
 		this.userProfileOptses = userProfileOptses;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserApprovalDetails> getUserApprovalDetails() {
+		return userApprovalDetails;
+	}
+
+	public void setUserApprovalDetails(Set<UserApprovalDetails> userApprovalDetails) {
+		this.userApprovalDetails = userApprovalDetails;
+	}
+
+	
+		
+	
 
 	
 }
