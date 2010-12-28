@@ -32,6 +32,10 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
 				<prop key="hibernate.max_fetch_depth">0</prop>
+				<prop key="hibernate.connection.autoReconnect">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">
@@ -178,6 +182,9 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationWard</value>
 				<value>com.itgrids.partyanalyst.model.Block</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationBlock</value>
+				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
+				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
+				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
 		 </list>
 		</property>
 	</bean>
@@ -792,10 +799,22 @@
 	<bean id="moduleRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleRegionScopesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-		<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO" >
+	<bean id="moduleDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ModuleDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
+	
+	<bean id="approvalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="userApprovalDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserApprovalDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="userProblemApprovalDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
 	
 	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
 		<property name="boothDAO" ref="boothDAO" />
