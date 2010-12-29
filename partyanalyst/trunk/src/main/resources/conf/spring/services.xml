@@ -428,7 +428,7 @@
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="boothDAO" ref="boothDAO" />
-		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />		
    </bean>
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
@@ -697,7 +697,7 @@
     	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
     	<property name="ananymousUserDAO" ref="ananymousUserDAO" />
     	<property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
-    	<property name="problemManagementService" ref="problemManagementService" />
+    	<property name="problemManagementService" ref="problemManagementService" />    	
 	</bean>
 	
 	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">
