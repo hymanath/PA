@@ -94,6 +94,12 @@ public class DelimitationMappingsUploadService implements
 	private HSSFWorkbook uploadWorkbook;
 	private DelimitationYear delimitationYearObj;
 	private DelimitationMappingUploadVO delimitationMappingsUploadVO;
+	
+	private String recentTown="";
+	private String recentWard="";
+	private String recentBlock="";
+	private String recentMandal="";
+	private String recentVillage="";
 		
 	private static Logger log = Logger.getLogger(DelimitationMappingsUploadService.class);
 		
@@ -411,6 +417,76 @@ public class DelimitationMappingsUploadService implements
 	}
 
 	/**
+	 * @return the recentTown
+	 */
+	public String getRecentTown() {
+		return recentTown;
+	}
+
+	/**
+	 * @param recentTown the recentTown to set
+	 */
+	public void setRecentTown(String recentTown) {
+		this.recentTown = recentTown;
+	}
+
+	/**
+	 * @return the recentWard
+	 */
+	public String getRecentWard() {
+		return recentWard;
+	}
+
+	/**
+	 * @param recentWard the recentWard to set
+	 */
+	public void setRecentWard(String recentWard) {
+		this.recentWard = recentWard;
+	}
+
+	/**
+	 * @return the recentBlock
+	 */
+	public String getRecentBlock() {
+		return recentBlock;
+	}
+
+	/**
+	 * @param recentBlock the recentBlock to set
+	 */
+	public void setRecentBlock(String recentBlock) {
+		this.recentBlock = recentBlock;
+	}
+
+	/**
+	 * @return the recentMandal
+	 */
+	public String getRecentMandal() {
+		return recentMandal;
+	}
+
+	/**
+	 * @param recentMandal the recentMandal to set
+	 */
+	public void setRecentMandal(String recentMandal) {
+		this.recentMandal = recentMandal;
+	}
+
+	/**
+	 * @return the recentVillage
+	 */
+	public String getRecentVillage() {
+		return recentVillage;
+	}
+
+	/**
+	 * @param recentVillage the recentVillage to set
+	 */
+	public void setRecentVillage(String recentVillage) {
+		this.recentVillage = recentVillage;
+	}
+
+	/**
 	 * @return the transactionTemplate
 	 */
 	public TransactionTemplate getTransactionTemplate() {
@@ -682,6 +758,30 @@ public class DelimitationMappingsUploadService implements
 	}
 	
 	/**
+	 * Check wheather row is blank or not
+	 * @param row
+	 * @return
+	 * @throws Exception
+	 */
+	private Boolean checkForBlankRow(HSSFRow row) throws Exception{
+		
+		Boolean isBlank=true;
+		
+		try{
+		
+	        for(int i=0;i<=4;i++){
+				HSSFCell cell  = row.getCell(i);
+				if(cell != null && cell.getCellType() != HSSFCell.CELL_TYPE_BLANK)
+					return false;
+			}
+		}catch(Exception ex){
+			throw ex;
+		}
+		
+	 return isBlank;
+	}
+	
+	/**
 	 * Process The Excel Sheet and Insert Delimitation Mapping Details To Corresponding Entities
 	 * @param headerRow
 	 * @param currentSheet
@@ -705,25 +805,43 @@ public class DelimitationMappingsUploadService implements
 		if(log.isInfoEnabled())
 			log.info("Data Available In " + totalRowsInSheet + " Rows In Sheet " + sheetNo);
 		
-		String recentTown="";
-		String recentWard="";
-		String recentBlock="";
-		String recentMandal="";
-		String recentVillage="";
-		
+				
 		//Map<mandalName/TownName ,Map<Village/Ward,villageName/WardName>>
 		Map<String,MandalSubRegionsVO> mandalsMap = new HashMap<String,MandalSubRegionsVO>();
 		Map<String,MandalSubRegionsVO> townsMap   = new HashMap<String,MandalSubRegionsVO>();
 		
 		
 		//Navigate Thru Data Available rows In sheet 
-		for(int row=headerRow; row<=totalRowsInSheet; row++){
+		for(int row=headerRow; row<=totalRowsInSheet+1; row++){
+			
+			
+			//last row
+			if(row == totalRowsInSheet+1){
+				saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
+				
+				//delimitationMappingUploadVO.getMappedConstituencies().add(constituencyName);
+				Set<String> mappedConstituencies = delimitationMappingUploadVO.getMappedConstituencies();
+				if(mappedConstituencies == null || mappedConstituencies.size() == 0){
+					mappedConstituencies = new HashSet<String>();
+					mappedConstituencies.add(constituencyName);
+				}else if(mappedConstituencies != null && mappedConstituencies.size() > 0){
+					mappedConstituencies.add(constituencyName);
+				}
+				
+				delimitationMappingUploadVO.setMappedConstituencies(mappedConstituencies);
+				if(log.isInfoEnabled())
+					log.info(" Mapped " + constituencyName + " Constituency Sub Regions successfully ..");
+				break;
+			}
 			
 			HSSFRow sheetRow = currentSheet.getRow(row);
-			delimitationMappingUploadVO.setCurrentRow(row);
+			delimitationMappingUploadVO.setCurrentRow(row+1);
 			
-			if(row == totalRowsInSheet){
-				saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
+			//Check for blank row
+			if(sheetRow != null){
+			Boolean isBlankRow = checkForBlankRow(sheetRow);
+			if(isBlankRow)
+				continue;
 			}
 			
 			Boolean isState  = checkForState(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,stateName);
@@ -781,8 +899,7 @@ public class DelimitationMappingsUploadService implements
 				}
 			}
 			
-			Map<String,String> regionMap = mapSubRegionsDetailsToConstituency(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),excelHeaderInfo.get(IConstants.SCOPE),sheetRow,stateObj,districtObj,constituencyObj,mandalsMap,townsMap,
-					recentMandal,recentTown,recentWard,recentVillage,recentBlock);
+			Map<String,String> regionMap = mapSubRegionsDetailsToConstituency(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),excelHeaderInfo.get(IConstants.SCOPE),sheetRow,stateObj,districtObj,constituencyObj,mandalsMap,townsMap);
 			
 			if(regionMap.containsKey(IConstants.MANDAL))
 				recentMandal = regionMap.get(IConstants.MANDAL);
@@ -792,6 +909,8 @@ public class DelimitationMappingsUploadService implements
 				recentVillage = regionMap.get(IConstants.VILLAGE);
 			else if(regionMap.containsKey(IConstants.WARD))
 				recentWard = regionMap.get(IConstants.WARD);
+			
+			
 		}
 	}
 	
@@ -807,7 +926,7 @@ public class DelimitationMappingsUploadService implements
 	 * @param townsMap
 	 */
 	private Map<String,String> mapSubRegionsDetailsToConstituency(Integer levelColumnNo,Integer regionColumnNo,Integer scopeColumnNo,HSSFRow row,State state,District district,Constituency constituency,
-			Map<String,MandalSubRegionsVO> mandalsMap,Map<String,MandalSubRegionsVO> townsMap,String recentMandal,String recentTown,String recentWard,String recentVillage,String recentblock) throws Exception{
+			Map<String,MandalSubRegionsVO> mandalsMap,Map<String,MandalSubRegionsVO> townsMap) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Started Mapping SubRegions Inside mapSubRegionsDetailsToConstituency Method ..");
@@ -842,37 +961,38 @@ public class DelimitationMappingsUploadService implements
 			
 		if(levelCell.getRichStringCellValue().toString().equalsIgnoreCase(IConstants.MANDAL)){
 			
-			recentMandal = regionNameCell.getRichStringCellValue().toString();
-			regionMap.put(IConstants.MANDAL, recentMandal);
+			this.recentMandal = regionNameCell.getRichStringCellValue().toString();
+			regionMap.put(IConstants.MANDAL, this.recentMandal);
 			
 			MandalSubRegionsVO mandalRegion = new MandalSubRegionsVO();
-			mandalRegion.setMandalName(recentMandal);
+			mandalRegion.setMandalName(this.recentMandal);
 			mandalRegion.setIsPartial(isPartial);
 						
 			mandalsMap.put(recentMandal, mandalRegion);
 			
 		}else if(levelCell.getRichStringCellValue().toString().equalsIgnoreCase("TOWN")){
 			
-			recentTown = regionNameCell.getRichStringCellValue().toString();
-			regionMap.put("TOWN",recentTown);
+			this.recentTown = regionNameCell.getRichStringCellValue().toString();
+			regionMap.put("TOWN",this.recentTown);
 
 			MandalSubRegionsVO townRegion = new MandalSubRegionsVO();
-			townRegion.setMandalName(recentTown);
+			townRegion.setMandalName(this.recentTown);
 			townRegion.setIsPartial(isPartial);
+			townRegion.setMandalForTown(this.recentMandal);
 						
 			townsMap.put(recentTown, townRegion);
 			
 		}else if(levelCell.getRichStringCellValue().toString().equalsIgnoreCase(IConstants.VILLAGE)){
 			
-			recentVillage = regionNameCell.getRichStringCellValue().toString();
-			regionMap.put(IConstants.VILLAGE,recentVillage);
+			this.recentVillage = regionNameCell.getRichStringCellValue().toString();
+			regionMap.put(IConstants.VILLAGE,this.recentVillage);
 			
 			SelectOptionVO village = new SelectOptionVO();
-			village.setName(recentVillage);
+			village.setName(this.recentVillage);
 			
 			List<SelectOptionVO> villagesInMandal = null;
 			
-			MandalSubRegionsVO mandalRegion = mandalsMap.get(recentMandal);
+			MandalSubRegionsVO mandalRegion = mandalsMap.get(this.recentMandal);
 			villagesInMandal = mandalRegion.getVillagesList();
 			
 			if(villagesInMandal != null && villagesInMandal.size() > 0){
@@ -887,15 +1007,15 @@ public class DelimitationMappingsUploadService implements
 			
 		}else if(levelCell.getRichStringCellValue().toString().equalsIgnoreCase(IConstants.WARD)){
 			
-			recentWard = regionNameCell.getRichStringCellValue().toString();
-			regionMap.put(IConstants.WARD,recentWard);
+			this.recentWard = regionNameCell.getRichStringCellValue().toString();
+			regionMap.put(IConstants.WARD,this.recentWard);
 			
 			SelectOptionVO ward = new SelectOptionVO();
 			ward.setName(recentWard);
 			
 			List<SelectOptionVO> wardsInTown = null;
 			
-			MandalSubRegionsVO townRegion = townsMap.get(recentTown);
+			MandalSubRegionsVO townRegion = townsMap.get(this.recentTown);
 			wardsInTown = townRegion.getVillagesList();
 			
 			if(wardsInTown != null && wardsInTown.size() > 0){
@@ -1127,7 +1247,15 @@ public class DelimitationMappingsUploadService implements
 				Township townshipObj = null;
 				
 				if(townshipsList != null && townshipsList.size() > 1){
-					throw new Exception("More Than One Town Exists With Name " + town +" In " + districtObj.getDistrictName() + " District");
+					
+					townshipsList = townshipDAO.findTownsByTownNameAndTypeAndDistrict(town, "T", districtObj.getDistrictId(),townData.getMandalForTown());
+					
+					if(townshipsList != null && townshipsList.size() > 1){
+						throw new Exception("More Than One Town Exists With Name " + town +" In " + districtObj.getDistrictName() + " District");
+					}else if(townshipsList != null && townshipsList.size() == 1){
+						townshipObj = townshipsList.get(0);
+					}
+					
 				}else if(townshipsList != null && townshipsList.size() == 1){
 					townshipObj = townshipsList.get(0);
 				}else{
@@ -1401,6 +1529,36 @@ public class DelimitationMappingsUploadService implements
 		}
 		
 	 return constituencyObj;
+	}
+	
+	
+    public static void main(String args[]){
+		
+        try{
+			
+			InputStream myxls = new FileInputStream("censusMapping(Nalgonda).xls");
+			HSSFWorkbook wb     = new HSSFWorkbook(myxls);
+			
+			HSSFSheet sheet = wb.getSheetAt(0);  
+			
+			System.out.println(" Last Row No :" + sheet.getLastRowNum());
+			
+			// first sheet
+			HSSFRow row     = sheet.getRow(5);         // first row
+			HSSFCell cell1   = row.getCell(0);        // first cell
+			HSSFCell cell2   = row.getCell(1);       // second cell
+			HSSFCell cell3   = row.getCell(2);      // third cell
+			HSSFCell cell4   = row.getCell(3);     // fourth cell
+			
+			
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			System.out.println("Exception Raised :"+ ex);
+		}
+		finally{
+			System.out.println("Entered Into Finally ..");
+		}
 	}
 	
 }

@@ -24,6 +24,7 @@ public class MandalSubRegionsVO implements Serializable {
 	private Long mandalId;
 	private String mandalName;
 	private Boolean isPartial;
+	private String mandalForTown;
 	
 	private List<SelectOptionVO> villagesList;
 
@@ -81,6 +82,20 @@ public class MandalSubRegionsVO implements Serializable {
 	 */
 	public void setVillagesList(List<SelectOptionVO> villagesList) {
 		this.villagesList = villagesList;
+	}
+
+	/**
+	 * @return the mandalForTown
+	 */
+	public String getMandalForTown() {
+		return mandalForTown;
+	}
+
+	/**
+	 * @param mandalForTown the mandalForTown to set
+	 */
+	public void setMandalForTown(String mandalForTown) {
+		this.mandalForTown = mandalForTown;
 	} 
 
 }
