@@ -196,7 +196,7 @@ ServletRequestAware, ServletContextAware  {
 		if(jObj.getString("task").equalsIgnoreCase("getProblemAllComments"))
 		{			
 			Long id = jObj.getLong("id");
-			problemApproovals = dataApprovalService.getAllProblemComments(id);
+			problemBeanVO = dataApprovalService.getAllProblemComments(id);
 		}
 		return Action.SUCCESS;
 	}
