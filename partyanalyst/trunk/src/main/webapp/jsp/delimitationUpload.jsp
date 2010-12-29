@@ -23,6 +23,15 @@
 {
 	text-align:left;	
 }
+#censusResults
+{
+	background-color:#F5EFEA;
+	color: #77471D;
+    font-family: Arial;
+    font-size: 14px;
+    text-align: left;
+
+}
 </style>
 </head>
 	<body>
@@ -67,8 +76,15 @@
 	</s:form>
 
 	<c:if test="${delimitationMappingUploadVO != null}">
+
+	<c:if test="${delimitationMappingUploadVO.exceptionEncountered == null}">
+		    
+		   <BR><BR>
+		   <H2>Upload Process Completed Successfully ...</H2><BR><BR>
+			
+	</c:if>
 	  <c:if test="${delimitationMappingUploadVO.delimitationYear != null}">
-	   <table>
+	   <table id = "censusResults">
 	      <tr>
 		     <td><b>Delimitation Year :<b></td>
 		     <td><c:out value="${delimitationMappingUploadVO.delimitationYear}" /></td>
@@ -86,18 +102,26 @@
 
           <c:if test="${delimitationMappingUploadVO.mappedConstituencies != null}">
 		  <tr>
-		   <td>Mapped Constituencies :</td>
-			  <c:forEach var="consti" items="${delimitationMappingUploadVO.mappedConstituencies}">
-						
-				 <td><c:out value="${consti}" />,</td>
-			  
+		   <td><b>Mapped Constituencies :<b></td>
+		     
+			  <c:forEach var="consti" items="${delimitationMappingUploadVO.mappedConstituencies}" varStatus="status">
+					
+				<c:if test="${status.count%3 == 0}">
+				   </tr>
+				   <tr>
+				</c:if>
+				<td><c:out value="${consti}" /></td>
+							  
 			  </c:forEach>
+		  </tr>
+		  <tr>
+		     <td>.........................................</td>
 		  </tr>
 		  </c:if>
 
 		  <c:if test="${delimitationMappingUploadVO.exceptionEncountered != null}">
 		    <tr>
-			</td><b>Exception Encountered :</b></td>
+			</td><H2>Exception Encountered :</H2></td>
 		    <c:out value="${delimitationMappingUploadVO.exceptionEncountered}" />
 			</tr>
 		  </c:if>
