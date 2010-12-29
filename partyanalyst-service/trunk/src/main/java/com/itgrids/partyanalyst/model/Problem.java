@@ -112,7 +112,7 @@ public class Problem extends BaseModel implements Serializable{
 	public void setYear(String year) {
 		this.year = year;
 	}
-	@Column(name = "problem_title", length = 200)
+	@Column(name = "problem_title", length = 100)
 	public String getProblem() {
 		return problem;
 	}
