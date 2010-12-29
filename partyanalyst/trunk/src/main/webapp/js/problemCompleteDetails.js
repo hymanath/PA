@@ -93,44 +93,78 @@ function showProblemDetails(result)
 function showProblemAllComments(results)
 {
 	var showAllPostsDivEl = document.getElementById("showAllPostsDiv");
-	
 	var str = '';
+	if(results.problemApproovals.length == 0)
+	{
+		str+='<div id="description">No Previous Posts</div><hr>';
+		showAllPostsDivEl.innerHTML = str;
+		return;
+	}
+			
 	str+='<table width="100%" border="0" cellspacing="0" cellpadding="0">';
 	str+='<tr>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>';
 	str+='<td width="98%">';
 	str+='<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">';
-	str+='<span class="headerLabelSpan" style="text-decoration:none;">Previous Posts</span>';
-	str+='</div>';
+	str+='<table border="0" width="100%" style="color:white;margin:2px;">';
+	str+='<tr>';
+	str+='<td width="85%"><span class="headerLabelSpan" style="text-decoration:none;position:static;">Previous Posts</span></td>';	
+	str+='<td width="1%"><img height="20" title="Accepted" width="20" src="images/icons/accept.png"/>';
 	str+='</td>';
+	if(results.acceptedCount == null)
+	{
+		str+='<th width="1%">0';
+		str+='</th>';			
+	} else 
+	{
+		str+='<th width="1%">'+results.acceptedCount+'';
+		str+='</th>';
+		
+	}	
+	str+='<td width="1%"><img height="20" title="Rejected" width="20" src="images/icons/reject.png"/>';
+	str+='</td>';
+	if(results.rejectedCount == null)
+	{
+		str+='<th width="1%">0';
+		str+='</th>';
+		
+	} else {
+		str+='<th width="1%">'+results.rejectedCount+'';
+		str+='</th>';		
+	}
+	str+='<th width="10%">Total Posts:';
+	str+='</th>';
+	str+='<th width="1%">'+results.totalPosts+'';
+	str+='</th>';	
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>';
 	str+='</tr>';
 	str+='</table>';
 	str+='<div class="divInfo" style="text-align:left;">';
-	if(results.length == 0)
-		str+='<div id="description">No Previous Posts</div><hr>';
-	for(var i in results)
+	for(var i in results.problemApproovals)
 	{
 		str+='<div style="border:1px solid #AAAAAA;margin:2px;padding:5px;">';
 		str+='<table width="100%" border="0">';
 		str+='<tr>';
-		if(results[i].isApproved == 'Accept')
+		if(results.problemApproovals[i].isApproved == 'Accept')
 			str+='<td width="2%"><img src="images/icons/accept.png" height="22"/></td>';
-		else if(results[i].isApproved == 'Reject')
+		else if(results.problemApproovals[i].isApproved == 'Reject')
 			str+='<td width="2%"><img src="images/icons/reject.png" height="22"/></td>';
 		str+='<td width="68%">';
-		str+='<div style="font-family:verdana;color:#707070;font-weight:bold;">'+results[i].userName+'</div>';
+		str+='<div style="font-family:verdana;color:#707070;font-weight:bold;">'+results.problemApproovals[i].userName+'</div>';
 		str+='</td>';		
 		str+='<th width="10%">';
 		str+='Posted On:';
 		str+='</th>';
 		str+='<td width="20%">';
-		str+='<div>'+results[i].lastUpdate+'</div>';
+		str+='<div>'+results.problemApproovals[i].lastUpdate+'</div>';
 		str+='</td>';
 		str+='</tr>';
 		str+='</table><hr>';
 		str+='<h3>Comment</h3>';
-		str+='<div id="description">'+results[i].reason+'</div>';
+		str+='<div id="description">'+results.problemApproovals[i].reason+'</div>';
 		str+='</div>';
 	}
 	str+='<div>';
