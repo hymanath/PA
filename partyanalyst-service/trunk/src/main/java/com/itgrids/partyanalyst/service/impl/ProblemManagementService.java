@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
@@ -111,7 +112,7 @@ public class ProblemManagementService implements IProblemManagementService {
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 	
 	private IBoothDAO boothDAO;
-	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;	
 	
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
@@ -328,8 +329,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
-	}
-
+	}	
+	
 	/**
 	 * Used To Get The Problems Of a Hamlet In a Particular Year
 	 */
@@ -1343,7 +1344,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		result.setProblemId((Long)parms[6]);
 		result.setProblemHistoryId((Long)parms[7]);
 		result.setExistingFrom(sdf.format(eDate));
-		result.setStatus(parms[9].toString());			
+		result.setStatus(parms[9].toString());
 		}
 		}catch(Exception e)
 		{

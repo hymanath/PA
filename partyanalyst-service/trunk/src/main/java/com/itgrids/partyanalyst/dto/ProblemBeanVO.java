@@ -66,6 +66,10 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String booth;
 	private String ward;
 	private List<ProblemHistoryVO> problemHistories;
+	private String totalPosts;
+	private String acceptedCount;
+	private String rejectedCount;
+	private List<ApprovalInfoVO> problemApproovals;
     	
 	public String getPostedDate() {
 		return postedDate;
@@ -521,12 +525,38 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public void setWard(String ward) {
 		this.ward = ward;
 	}
-	
-	
-	
-	
-	
-	
+
+	public String getTotalPosts() {
+		return totalPosts;
+	}
+
+	public void setTotalPosts(String totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+
+	public String getAcceptedCount() {
+		return acceptedCount;
+	}
+
+	public void setAcceptedCount(String acceptedCount) {
+		this.acceptedCount = acceptedCount;
+	}
+
+	public String getRejectedCount() {
+		return rejectedCount;
+	}
+
+	public void setRejectedCount(String rejectedCount) {
+		this.rejectedCount = rejectedCount;
+	}
+
+	public List<ApprovalInfoVO> getProblemApproovals() {
+		return problemApproovals;
+	}
+
+	public void setProblemApproovals(List<ApprovalInfoVO> problemApproovals) {
+		this.problemApproovals = problemApproovals;
+	}
 	
 	
 }

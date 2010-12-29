@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ApprovalDetails;
@@ -110,7 +111,7 @@ public class DataApprovalService implements IDataApprovalService {
 						rs.setExceptionMsg("You have already posted your comment!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);
 					}
-					else if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId() == approvalInfoVO.getUserId())
+					else if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId().equals(approvalInfoVO.getUserId()))
 					{
 						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);						
@@ -152,25 +153,48 @@ public class DataApprovalService implements IDataApprovalService {
 		return rs;
 	}
 
-	public List<ApprovalInfoVO> getAllProblemComments(Long problemHistoryId) throws Exception {
-		List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId);
+	@SuppressWarnings("unchecked")
+	public ProblemBeanVO getAllProblemComments(Long problemHistoryId) throws Exception {
 		List<ApprovalInfoVO> approvals = new ArrayList<ApprovalInfoVO>(0);
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
-		if(result != null && result.size()>0)
-		{
-			for(int i=0;i<result.size();i++){
-				ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
-				Object[] parms = (Object[])result.get(i);
-				approvalInfoVO.setReason(parms[3].toString());
-				approvalInfoVO.setIsApproved(parms[4].toString());
-				approvalInfoVO.setUserName(parms[1].toString()+parms[2].toString());
-				String approvedDate = sdf.format((Date)parms[5]);
-				approvalInfoVO.setLastUpdate(approvedDate);
-				approvals.add(approvalInfoVO);				
+		ProblemBeanVO problemBeanVO  = new ProblemBeanVO();
+		try{
+			List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId);	
+			List postsCount = userProblemApprovalDAO.findCountOfPosts(problemHistoryId);
+			Long totalPostsCount = 0l;			
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+			if(result != null && result.size()>0)
+			{
+				for(int i=0;i<result.size();i++){
+					ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
+					Object[] parms = (Object[])result.get(i);
+					approvalInfoVO.setReason(parms[3].toString());
+					approvalInfoVO.setIsApproved(parms[4].toString());
+					approvalInfoVO.setUserName(parms[1].toString()+parms[2].toString());
+					String approvedDate = sdf.format((Date)parms[5]);
+					approvalInfoVO.setLastUpdate(approvedDate);
+					approvals.add(approvalInfoVO);				
+				}
+			
 			}
+			if(postsCount != null && postsCount.size()>0)
+			{
+				for(int i=0;i<postsCount.size();i++){
+					Object[] params = (Object[])postsCount.get(i);
+					if("Accept".equals(params[2].toString()))
+						problemBeanVO.setAcceptedCount(params[1].toString());
+					else if("Reject".equals(params[2].toString()))
+						problemBeanVO.setRejectedCount(params[1].toString());				
+					totalPostsCount += (Long)params[0]; 							
+				}
+			}
+			problemBeanVO.setTotalPosts(totalPostsCount.toString());
+			problemBeanVO.setProblemApproovals(approvals);
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-	}
-		return approvals;
+		return problemBeanVO;
 	}
 	
 	
