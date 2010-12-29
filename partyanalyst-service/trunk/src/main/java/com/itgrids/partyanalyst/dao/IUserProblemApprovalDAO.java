@@ -10,4 +10,7 @@ public interface IUserProblemApprovalDAO extends GenericDao<UserProblemApproval,
 	List findProblemApprovalsByUser(Long userId, Long problemHistoryId);
 	@SuppressWarnings("unchecked")
 	List findApprovalInfoForProblem(Long problemHistoryId);
+	@SuppressWarnings("unchecked")
+	List findCountOfPosts(Long problemHistoryId);
+	
 }

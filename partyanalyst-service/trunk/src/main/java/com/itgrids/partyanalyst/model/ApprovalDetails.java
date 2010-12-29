@@ -61,7 +61,7 @@ public class ApprovalDetails extends BaseModel implements Serializable {
 		this.approvalDetailsId = approvalDetailsId;
 	}
 
-	@Column(name = "reason", length = 200)
+	@Column(name = "reason", length = 1000)
 	public String getReason() {
 		return reason;
 	}

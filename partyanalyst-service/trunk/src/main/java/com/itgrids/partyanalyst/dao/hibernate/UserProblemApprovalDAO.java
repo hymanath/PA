@@ -26,6 +26,13 @@ public List findApprovalInfoForProblem(Long problemHistoryId) {
 	
 	return getHibernateTemplate().find("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
-			" where model.problemHistory.problemHistoryId = ?", problemHistoryId);
+			" where model.problemHistory.problemHistoryId = ? order by model.userApprovalDetails.approvalDetails.postedDate", problemHistoryId);
+}
+
+@SuppressWarnings("unchecked")
+public List findCountOfPosts(Long problemHistoryId) {
+	
+	return getHibernateTemplate().find("select count(model.userProblemApprovalId), count(model.userApprovalDetails.approvalDetails.isApproved), model.userApprovalDetails.approvalDetails.isApproved from UserProblemApproval model" +
+			" where model.userApprovalDetails.approvalDetails.isApproved is not null and model.problemHistory.problemHistoryId = ? group by model.userApprovalDetails.approvalDetails.isApproved", problemHistoryId);
 }
 }
