@@ -1925,7 +1925,7 @@
         </action>     
         <action name="problemCommentsAction" class="problemCompleteDetailsAction" method="ajaxCallHandler">
 		    <result type="json" name="success">
-		    	<param name="root">problemApproovals</param>	
+		    	<param name="root">problemBeanVO</param>	
 		    </result>
         </action>       
         
