@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
@@ -22,10 +23,10 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 
-	@Test
+/*	@Test
 	public void test(){
 		Assert.assertEquals(1, 1);
-	}
+	}*/
 	/*private ICandidateResultDAO candidateResultDAO;
 	CandidateResult candRes = new CandidateResult(new Long(4),null,new Double(50000),new Long(4));
 	
@@ -77,7 +78,7 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetElectionResults(){
+	/*public void testGetElectionResults(){
 		List results = candidateResultDAO.getElectionResultsForAllPartiesInAMandal(new Long(835),"MPTC","2006");
 		
 		System.out.println("Size :" + results.size());
@@ -90,5 +91,14 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 			
 			System.out.println("..");
 		}
+	}*/
+	
+	public void testGetData(){	
+		int list = candidateResultDAO.updateMarginVotesAndPercentage("10.20",30.54d,"2009",IConstants.ASSEMBLY_ELECTION_TYPE,232l,15404l);
+		System.out.println(list);
+	//	setComplete();
 	}
+	
+	
+	
 }

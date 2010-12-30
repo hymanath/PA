@@ -125,6 +125,7 @@ public interface IConstants {
 	public final static String WARD = "WARD";
 	public final static String LOCAL_BODY_ELECTION = "LOCAL_BODY_ELECTION";
 	public final static String WINNER_CANDIDATES="WINNER";
+	public final static String SUCCESSOR_CANDIDATES="SUCCESSOR";
 	public final static String ALL_CANDIDATES="ALL_CANDIDATES";
 	public final static String LOST_CANDIDATES="LOST_CANDIDATES";
 	public final static String CENSUS_VILLAGE_LEVEL = "VILLAGE";

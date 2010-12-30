@@ -224,7 +224,8 @@ public interface IStaticDataService {
 		
 		public List<CandidateElectionResultVO> getWinningCandidatesInConstituencies(String electionYear, List<Long> constituencyIds);
 		
-		public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId);
+		public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,
+				String electionLevel,Long locationId,Long partyId,Long stateId,int startIndex, int maxResult, String order, String columnName);
 		
 		public MandalAllElectionDetailsVO getAllZptcOrMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear,String electionType);
 				

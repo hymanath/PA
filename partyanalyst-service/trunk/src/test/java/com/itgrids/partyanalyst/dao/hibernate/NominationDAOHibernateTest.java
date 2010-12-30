@@ -690,7 +690,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	/*public void testTotalSearchCount(){
 		List<Long> obj = nominationDAO.totalSearchCount("kamalakara","2,4");
 		System.out.println(obj.get(0));
-	}*/
+	}
 		
 	/*	public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(){
 			long start = System.currentTimeMillis();
@@ -724,8 +724,9 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		}*/
 	
 	public void testGetData(){
-        List list = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank("231,232,233,236,237,238,239,241,340,341","2009","Assembly",1l);
-        System.out.println("Size is:--->"+list.size());   
+		//String electionYear,String electionType,Long constituencyId,Long candidateId
+		List list = nominationDAO.getList("2009",IConstants.ASSEMBLY_ELECTION_TYPE,232l,15404l);
+		System.out.println(list.get(0).toString()); 
     }
 
 

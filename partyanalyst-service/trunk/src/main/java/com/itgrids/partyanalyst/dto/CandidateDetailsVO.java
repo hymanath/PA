@@ -52,10 +52,17 @@ public class CandidateDetailsVO implements Serializable{
 	private Long currentRowNo;
 	private String localBodyElectionsConstituencyName;
 	private String reservationZone;
+	private Long totalSearchCount;
 	//getters and setters
 	
 	public Long getConstituencyId() {
 		return constituencyId;
+	}
+	public Long getTotalSearchCount() {
+		return totalSearchCount;
+	}
+	public void setTotalSearchCount(Long totalSearchCount) {
+		this.totalSearchCount = totalSearchCount;
 	}
 	public String getReservationZone() {
 		return reservationZone;

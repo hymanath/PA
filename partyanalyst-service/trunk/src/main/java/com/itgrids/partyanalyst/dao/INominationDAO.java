@@ -375,5 +375,19 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List findElectionResultsForAllCostituenciesByElectionTypeYearAndStateId(Long electionTypeId, String year, Long stateId);
 	
 	public List findElectionResultsForAllCostituenciesByElectionTypeYearAndDistrictId(Long electionTypeId, String year, Long districtId);
+
+	@SuppressWarnings("unchecked")
+	public List getCountOfAllCandidates(String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,String candidateDetails,Long partyId);
 	
+	@SuppressWarnings("unchecked")
+	public int updateMarginVotesAndPercentage(String marginPercentage,Double marginVotes,String electionYear,String electionType,Long constituencyId,Long candidateId);
+
+	public List getList(String electionYear,String electionType,Long constituencyId,Long candidateId);
+
+	public List getAllCandidateDetails(String electionYear,Long locationId,Long stateId,String electionType,
+			Long rank,String locationType,String candidateType,Long partyId,
+			int startIndex, int maxResult, String order, String columnName);
+	
+	public List getCountOfAllCandidateDetails(String electionYear,Long locationId,Long stateId,String electionType,
+			Long rank,String locationType,String candidateType,Long partyId);
 }
