@@ -109,7 +109,7 @@ function showProblemAllComments(results)
 	str+='<table border="0" width="100%" style="color:white;margin:2px;">';
 	str+='<tr>';
 	str+='<td width="85%"><span class="headerLabelSpan" style="text-decoration:none;position:static;">Previous Posts</span></td>';	
-	str+='<td width="1%"><img height="20" title="Accepted" width="20" src="images/icons/accept.png"/>';
+	str+='<td width="1%"><img title="No Of People Accepted" height="20" title="Accepted" width="20" src="images/icons/accept.png"/>';
 	str+='</td>';
 	if(results.acceptedCount == null)
 	{
@@ -121,7 +121,7 @@ function showProblemAllComments(results)
 		str+='</th>';
 		
 	}	
-	str+='<td width="1%"><img height="20" title="Rejected" width="20" src="images/icons/reject.png"/>';
+	str+='<td width="1%"><img height="20" title="No of People Rejected" title="Rejected" width="20" src="images/icons/reject.png"/>';
 	str+='</td>';
 	if(results.rejectedCount == null)
 	{
@@ -149,9 +149,11 @@ function showProblemAllComments(results)
 		str+='<table width="100%" border="0">';
 		str+='<tr>';
 		if(results.problemApproovals[i].isApproved == 'Accept')
-			str+='<td width="2%"><img src="images/icons/accept.png" height="22"/></td>';
+			str+='<td width="2%"><img title="Accepted" src="images/icons/accept.png" height="22"/></td>';
 		else if(results.problemApproovals[i].isApproved == 'Reject')
-			str+='<td width="2%"><img src="images/icons/reject.png" height="22"/></td>';
+			str+='<td width="2%"><img title="Rejected" src="images/icons/reject.png" height="22"/></td>';
+		else if(results.problemApproovals[i].isApproved == 'FollowUp')
+			str+='<th width="2%">RE:</th>';
 		str+='<td width="68%">';
 		str+='<div style="font-family:verdana;color:#707070;font-weight:bold;">'+results.problemApproovals[i].userName+'</div>';
 		str+='</td>';		
@@ -174,8 +176,15 @@ function submitHandler(val)
 {
 	var rasonTextEl = document.getElementById("rasonText");
 	var alertDivEl = document.getElementById("alertDiv");
-	var reason = rasonTextEl.value;
+	var rasonTextEl1 = document.getElementById("rasonText1");
+	var alertDivEl1 = document.getElementById("alertDiv1");
 	alertDivEl.innerHTML = '';
+	alertDivEl1.innerHTML = '';
+	var reason;
+	if(val != 'FollowUp')
+		reason = rasonTextEl.value;
+	else 
+		reason = rasonTextEl1.value;
 	if(reason == '')
 	{
 		alertDivEl.innerHTML = 'Please give any comment';
@@ -200,7 +209,10 @@ function executeOnload()
 	getProblemCompleteDetails(id);
 	getProblemAllComments(id);
 	var rasonTextEl = document.getElementById("rasonText");
+	var rasonTextEl1 = document.getElementById("rasonText1");
 	if(rasonTextEl)
 		rasonTextEl.focus();
-	else return;
+	if(rasonTextEl1)
+		rasonTextEl1.focus();	
+	
 }
