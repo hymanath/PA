@@ -106,12 +106,17 @@ public class DataApprovalService implements IDataApprovalService {
 					
 					List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
 					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
-					if(userPrevPosts != null && userPrevPosts.size()>0)
+					if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
 					{	
 						rs.setExceptionMsg("You have already posted your comment!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);
 					}
-					else if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId().equals(approvalInfoVO.getUserId()))
+					else if(userPrevPosts != null && userPrevPosts.size() == 0 && "FollowUp".equals(approvalInfoVO.getIsApproved()))
+					{	
+						rs.setExceptionMsg("You should have Accepted or Rejected a probelm to participate in the discussion!");
+						rs.setResultCode(ResultCodeMapper.FAILURE);
+					}
+					else if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId().equals(approvalInfoVO.getUserId()) && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
 					{
 						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);						

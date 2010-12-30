@@ -26,7 +26,7 @@ public List findApprovalInfoForProblem(Long problemHistoryId) {
 	
 	return getHibernateTemplate().find("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
-			" where model.problemHistory.problemHistoryId = ? order by model.userApprovalDetails.approvalDetails.postedDate", problemHistoryId);
+			" where model.problemHistory.problemHistoryId = ? order by date(model.userApprovalDetails.approvalDetails.postedDate) desc", problemHistoryId);
 }
 
 @SuppressWarnings("unchecked")
