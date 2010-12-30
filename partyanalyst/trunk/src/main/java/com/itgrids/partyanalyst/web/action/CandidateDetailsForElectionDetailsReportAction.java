@@ -249,8 +249,18 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			log.debug(partyId);
 			log.debug(stateID);
 			try{
-				candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID));
+				
+				if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					int startIndex = new Long(request.getParameter("startIndex").toString()).intValue();
+					int maxResult = new Long(request.getParameter("results").toString()).intValue();
+					String order = request.getParameter("dir").toString();
+					String columnName = request.getParameter("sort").toString();
+					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),startIndex,maxResult,order,columnName);
+				}else{
+					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),0,0,null,null);
+				}	
 			}catch(Exception e){
+				e.printStackTrace();
 				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 				candidateDetailsVO = null;
 			}

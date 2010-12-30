@@ -555,8 +555,7 @@ function allCandidates()
 			electionLevel = "districtwiseAssembly";
 			locationId = selectdistrictAEl.value;
 			stateId = stateID;
-		}	
-							
+		}					
 	}
 	
 	var jsObj=		
@@ -572,8 +571,104 @@ function allCandidates()
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	incrementHidden();
-	var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
-	callAjax(rparam,jsObj,url);
+	if(electionType == 'Assembly' || electionType == 'Parliament'){
+		buildDataTable(rparam);
+	}else{
+		var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
+		callAjax(rparam,jsObj,url);
+	}
+}
+
+function buildDataTable(rparam)
+{
+	document.getElementById("electionPageAjaxImgDiv").style.display = 'none';
+
+	YAHOO.widget.DataTable.moreDetails = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var user = oData;
+		var id= oRecord.getData("constituencyId");
+		var electionType= oRecord.getData("electionType");
+		var electionYear= oRecord.getData("electionYear");
+		elLiner.innerHTML ='<A href="javascript:{}" title="Click To View Detailed Election Results" onclick="getMoreDetails('+id+',\''+electionType+'\','+electionYear+')">More Details</A>';
+			
+	  };
+
+	  YAHOO.widget.DataTable.partyFlag = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var user = oData;
+		var partyFlag= oRecord.getData("partyFlag");		
+		elLiner.innerHTML ='<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>';			
+	  };
+
+	  YAHOO.widget.DataTable.commentsCount = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var user = oData;
+		var commentsCount= oRecord.getData("commentsCount");		
+		elLiner.innerHTML =commentsCount+' Reasons ';			
+	  };
+	  
+	  YAHOO.widget.DataTable.comments = function(elLiner, oRecord, oColumn, oData) 
+	  {
+		var user = oData;		
+		var constituencyId = oRecord.getData("constituencyId");
+		var constituencyName = oRecord.getData("constituencyName");	
+		var candidateName = oRecord.getData("candidateName");
+		var candidateId = oRecord.getData("candidateId");	
+		var rank = oRecord.getData("rank");	
+		var partyName = oRecord.getData("partyName");		
+		elLiner.innerHTML ='<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateId+'\',\''+candidateName+'\',\'candidate\',\''+rank+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+partyName+'\',\''+1+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>';			
+	  };
+	  
+	var candidateDetails = [ 
+	       							{key:"candidateName", label: "Name",sortable: true} ,
+	       		    	            {key:"constituencyName", label: "Constituency", sortable: true}, 
+	       		    	           	{key:"partyName", label: "Party Name", sortable: true},
+	       							{key:"partyFlag", label: "Party Flag",sortable:true,formatter:YAHOO.widget.DataTable.partyFlag},
+	       		    				{key:"votesEarned", label: "Votes Earned",sortable:true},
+	       							{key:"votesPercentage", label: "Votes %",sortable:true},
+	       		    				{key:"rank", label: "Rank",sortable:true},
+	       							{key:"votesDifference", label: "Margin Votes",sortable:true},
+	       							{key:"marginVotesPercentage", label: "Margin Votes %",sortable:true},
+	       							{key:"details", label: "More Details",formatter:YAHOO.widget.DataTable.moreDetails},
+	       							{key:"commentsCount", label: "Comments Count",formatter:YAHOO.widget.DataTable.commentsCount},
+	       							{key:"comments", label: "comments",formatter:YAHOO.widget.DataTable.comments}
+	       		    	        ]; 
+	       	var candidateDetailsDataSource = new YAHOO.util.DataSource("candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden+"&"); 
+	       	candidateDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
+	       	
+	       	candidateDetailsDataSource.responseSchema = { 
+	                   resultsList:"candidateDetails", 
+	       		fields: [
+	       				{key:"candidateName"},
+	       				"constituencyName","partyName", "partyFlag","votesEarned",
+	       				"votesPercentage","rank","votesDifference","marginVotesPercentage",
+	       				"constituencyId","electionType","electionYear","commentsCount","comments","candidateId","candidateName"
+	       				],
+	       		metaFields: {
+	       			totalRecords: "totalSearchCount" // Access to value in the server response
+	       		}         
+	               };
+
+
+	           var myConfigs = {
+	       			        initialRequest: "sort=candidateName&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+	       			        dynamicData: true, // Enables dynamic server-driven data
+	       			        sortedBy : {key:"candidateName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	       			        paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+	       		};
+
+	       		var candidateDetailsDataTable = new YAHOO.widget.DataTable("participatedCandidatesDetailsDataTable", candidateDetails,candidateDetailsDataSource, myConfigs);
+
+	       		candidateDetailsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) 
+	       		{		
+	       		        oPayload.totalRecords = oResponse.meta.totalRecords;
+	       		        return oPayload;
+	       		}
+	       		//function calling to build Result
+	       		return {
+	       			oDS: candidateDetailsDataSource,
+	       			oDT: candidateDetailsDataTable,
+	           	};
 }
 
 function showErrorInfo()
@@ -821,11 +916,10 @@ function handleAddCommentsCancel(task,status)
 {
 	allCandidates();
 	addCommentsDialog.hide();
-
 }
 
 
-</SCRIPT>
+--></SCRIPT>
 </HEAD>
 <BODY class="yui-skin-sam">
 <CENTER>
