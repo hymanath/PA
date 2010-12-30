@@ -60,4 +60,7 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	public List<CandidateResult> findCandidateResults(Long candidateId);
 	
 	public List<CandidateResult> findCandidateResults(Long candidateId,Long electionId,Long constituencyId);
+	
+	public int updateMarginVotesAndPercentage(String marginPercentage,Double marginVotes,String electionYear,String electionType,
+			Long constituencyId,Long candidateId);
 }

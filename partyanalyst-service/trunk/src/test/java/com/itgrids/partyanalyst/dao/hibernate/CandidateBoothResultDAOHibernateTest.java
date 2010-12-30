@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -382,10 +383,11 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
 	}*/
 	
-	public void testGetCandidatesResultsForElectionAndConstituencyByMandalWise()
+	/*public void testGetCandidatesResultsForElectionAndConstituencyByMandalWise()
 	{
 	  List obj = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandalWise(232l,"2009","Assembly");
 	  System.out.println(obj.size());
-	}
+	}*/
 	
+
 }

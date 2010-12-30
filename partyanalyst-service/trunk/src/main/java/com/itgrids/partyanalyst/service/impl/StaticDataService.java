@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
@@ -3096,22 +3097,23 @@ public class StaticDataService implements IStaticDataService {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId){
+	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,
+			String electionLevel,Long locationId,Long partyId,Long stateId,int startIndex, int maxResult, String order, String columnName){
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
 		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
 		int flag=0,lostFlag=1;
 		try{
 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
-				if(partyId==0l){
-					candidateDetailsVO = getCandidatesInfoForAnElectionType(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,stateId);						
+				if(partyId==0l){					
+					candidateDetailsVO = getCandidatesInfoForAnElectionType(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);					
 				}else{
-					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId);
+					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId,startIndex,maxResult,order,columnName);
 				}
 			}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 				if(partyId==0l){
-					candidateDetailsVO = getCandidatesInfoForAnElectionType(IConstants.PARLIAMENT_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,stateId);		
+					candidateDetailsVO = getCandidatesInfoForAnElectionType(IConstants.PARLIAMENT_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);		
 				}else{
-					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.PARLIAMENT_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId);
+					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.PARLIAMENT_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId,startIndex,maxResult,order,columnName);
 				}
 			}
 			else if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){					
@@ -3176,7 +3178,7 @@ public class StaticDataService implements IStaticDataService {
 			//Local Election Body
 			else {
 				if(partyId==0l){
-					candidateDetailsVO = getCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,locationId,stateId);						
+					candidateDetailsVO = getCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);						
 				}else{
 					//candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId);
 				}		
@@ -3186,7 +3188,7 @@ public class StaticDataService implements IStaticDataService {
 			//check and place candidate comments size..
 			if(candidateDetailsVO.getCandidateDetails() != null){
 			for(CandidateDetailsVO results:candidateDetailsVO.getCandidateDetails()){
-			List count = commentCategoryCandidateDAO.getCommentsCountForACandidate(results.getCandidateId(), results.getConstituencyId(), results.getElectionType(), results.getElectionYear());
+			List count = commentCategoryCandidateDAO.getCommentsCountForACandidate(results.getCandidateId(), results.getConstituencyId(), results.getElectionType(), results.getElectionYear());			
 			if(count != null && count.size() > 0){
 				Object params = (Object)count.get(0);
 				Long commentsCount = (Long)params;
@@ -3289,142 +3291,176 @@ public class StaticDataService implements IStaticDataService {
 	 */
 	
 	public CandidateDetailsVO getCandidatesInfoForAnElectionType(String electionType,String electionYear,
-			String resultsCategory,String electionLevel,Long locationId,Long stateId){
+			String resultsCategory,String electionLevel,Long locationId,Long stateId,int startIndex, int maxResult, String order, String columnName){
+		
 		Long winnerCandidateRank = 1l,successorCandidateRank=2l;
 		List allCandidateResult= null;
 		List winnerCandidateResult = null;
 		List successorCandidateResult = null;
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
+		CandidateDetailsVO details = new CandidateDetailsVO();
 		List<CandidateDetailsVO> allCandidates = new ArrayList<CandidateDetailsVO>(0);
 		List<CandidateDetailsVO> winnerCandidate = new ArrayList<CandidateDetailsVO>(0);
 		List<CandidateDetailsVO> successorCandidate = new ArrayList<CandidateDetailsVO>(0);
 		int lostFlag=1;
 		try{
+			//String electionYear,Long locationId,String electionType,Long rank,String locationType,String candidateType,String candidateDetails);
+		
 				if(resultsCategory.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
-					if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
-					}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-						
-						if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-						  winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
-						  successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
-						}
-						//for Local election Bodys
-						else {
-							
-							 winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,winnerCandidateRank);
-							 successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,successorCandidateRank);
-
-						}
-							
-						  
-					}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){	
-						
-							if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-								StringBuilder listOfConstituencies  = new StringBuilder();	
-								listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
-								if(listOfConstituencies != null && listOfConstituencies.length() > 0){
-									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-								}
-							}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-								StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
-								listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);	
-								if(listOfParliamentConstituencies != null && listOfParliamentConstituencies.length() > 0){
-									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-								}
+					List nominationList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,null,0l);
+					List candidateList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,"Candidates",0l);
+					Long count = new Long(nominationList.get(0).toString())- new Long(candidateList.get(0).toString());
+					//System.out.println("Count--->"+count);					
+					if(count!=0l){
+						if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
+							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
+							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
+						}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){						
+							if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+							  winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
+							  successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
 							}
-							//for local election bodys
+							//for Local election Bodys
+							else {							
+								 winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,winnerCandidateRank);
+								 successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,successorCandidateRank);
+							}
+						}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){	
+							
+								if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+									StringBuilder listOfConstituencies  = new StringBuilder();	
+									listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
+									if(listOfConstituencies != null && listOfConstituencies.length() > 0){
+										winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+										successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+									}
+								}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+									StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
+									listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);	
+									if(listOfParliamentConstituencies != null && listOfParliamentConstituencies.length() > 0){
+										winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+										successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+									}
+								}
+								//for local election bodys
+								else{
+									StringBuilder listOfConstituencies  = new StringBuilder();	
+									listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
+									if(listOfConstituencies != null && listOfConstituencies.length() > 0){
+										winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+										successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+									}
+								}
+						}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){					
+								winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);
+						}
+						//winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l,0,electionType);
+						//candidateDetailsVO.setCandidateDetails(winnerCandidate);	
+						saveMarginVotesAndPercentagesForWinners(winnerCandidateResult,successorCandidateResult);
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,0L,startIndex,maxResult,order,columnName);
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
+					}else{
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,0L,startIndex,maxResult,order,columnName);						
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
+					}
+				}else if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES) || resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
+					List nominationList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.LOST_CANDIDATES,null,0l);
+					List candidateList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.LOST_CANDIDATES,"Candidates",0l);
+					Long count = new Long(nominationList.get(0).toString())- new Long(candidateList.get(0).toString());
+					//System.out.println("Count--->"+count);
+				//	System.out.println("nominationList--->"+new Long(nominationList.get(0).toString()));
+				//	System.out.println("candidateList--->"+new Long(candidateList.get(0).toString()));
+					//System.out.println("==========");
+					if(count!=0l){
+						if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
+							lostFlag = 0;
+						}else if(resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
+							lostFlag = 1;
+						}
+						if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
+							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
+							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
+							allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryId(electionYear,locationId,electionType);
+						}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+							
+							if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) ||
+									electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
+							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
+							allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYear(electionYear,stateId,electionType);	
+							}
+							//Local Body Elections
+							else{
+								winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,successorCandidateRank);
+								allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearForLocalBody(electionYear,stateId,electionType);
+							}
+							
+						}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+							
+							 if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || 
+									 electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+									StringBuilder listOfConstituencies  = new StringBuilder();	
+									listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
+									if(listOfConstituencies != null && listOfConstituencies.length() > 0){
+										winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+										successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+										allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(listOfConstituencies.substring(1),electionYear,electionType);	
+									}
+							 }else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+									StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
+									listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);	
+									if(listOfParliamentConstituencies != null && listOfParliamentConstituencies.length() > 0){
+										winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+										successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+										allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(listOfParliamentConstituencies.substring(1),electionYear,electionType);	
+									}
+							}
+							//Local Body ELections
 							else{
 								StringBuilder listOfConstituencies  = new StringBuilder();	
 								listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
 								if(listOfConstituencies != null && listOfConstituencies.length() > 0){
 									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
 									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+									allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyForLocalBody(listOfConstituencies.substring(1),electionYear,electionType);
 								}
-							}
-					}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){					
+							}	
+						}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
 							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,winnerCandidateRank);
 							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);
-					}
-					winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l,0,electionType);
-					candidateDetailsVO.setCandidateDetails(winnerCandidate);
+							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(locationId.toString(),electionYear,electionType);
+						}
 					
-				}else if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES) || resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
-					if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
-						lostFlag = 0;
-					}else if(resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
-						lostFlag = 1;
-					}
-					if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
-						allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryId(electionYear,locationId,electionType);
-					}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-						
-						if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) ||
-								electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
-						allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYear(electionYear,stateId,electionType);	
-						}
-						//Local Body Elections
-						else{
-							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,winnerCandidateRank);
-							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(electionYear,stateId,electionType,successorCandidateRank);
-							allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearForLocalBody(electionYear,stateId,electionType);
-						}
-						
-					}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-						
-						 if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || 
-								 electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-								StringBuilder listOfConstituencies  = new StringBuilder();	
-								listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
-								if(listOfConstituencies != null && listOfConstituencies.length() > 0){
-									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-									allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(listOfConstituencies.substring(1),electionYear,electionType);	
-								}
-						 }else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-								StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
-								listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);	
-								if(listOfParliamentConstituencies != null && listOfParliamentConstituencies.length() > 0){
-									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-									allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(listOfParliamentConstituencies.substring(1),electionYear,electionType);	
-								}
-						}
-						//Local Body ELections
-						else{
-							StringBuilder listOfConstituencies  = new StringBuilder();	
-							listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
-							if(listOfConstituencies != null && listOfConstituencies.length() > 0){
-								winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-								successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-								allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyForLocalBody(listOfConstituencies.substring(1),electionYear,electionType);
-							}
+						successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l,lostFlag,electionType);
+						allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult,lostFlag,electionType);
+						if(successorCandidate!=null){
+							allCandidates.addAll(successorCandidate);
 						}	
-					}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-						winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);
-						allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(locationId.toString(),electionYear,electionType);
+						//candidateDetailsVO.setCandidateDetails(allCandidates);
+						//saveMarginVotesAndPercentagesForWinners(winnerCandidateResult,successorCandidateResult);
+						saveMarginVotesAndPercentagesForAllCandidates(winnerCandidateResult,allCandidateResult);
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,0L,startIndex,maxResult,order,columnName);
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
+					}else{
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,0L,startIndex,maxResult,order,columnName);
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
 					}
-				
-					successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l,lostFlag,electionType);
-					allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult,lostFlag,electionType);
-					if(successorCandidate!=null){
-						allCandidates.addAll(successorCandidate);
-					}	
-					candidateDetailsVO.setCandidateDetails(allCandidates);
-				}		
+				}	
 				return candidateDetailsVO;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -3435,6 +3471,220 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
+	/**
+	 * This method can be used to get all the details of all the candidates.
+	 * 
+	 * @param electionYear
+	 * @param locationId
+	 * @param stateId
+	 * @param electionType
+	 * @param rank
+	 * @param locationType
+	 * @param candidateType
+	 * @param partyId
+	 * @param startIndex
+	 * @param maxResult
+	 * @param order
+	 * @param columnName
+	 * @return
+	 */
+	public CandidateDetailsVO getAllCandidateDetails(String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId,int startIndex, int maxResult, String order, String columnName){
+		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
+		List<CandidateDetailsVO> data = new ArrayList<CandidateDetailsVO>(0); 
+		String sortColumnName="";
+		
+		try{
+			if(columnName.equalsIgnoreCase("candidateName")){
+				sortColumnName = "model.candidate.lastname";
+			}else if(columnName.equalsIgnoreCase("votesEarned")){
+				sortColumnName = "model.candidateResult.votesEarned";
+			}else if(columnName.equalsIgnoreCase("votesPercentage")){
+				sortColumnName = "model.candidateResult.votesPercengate";
+			}else if(columnName.equalsIgnoreCase("rank")){
+				sortColumnName = "model.candidateResult.rank";
+			}else if(columnName.equalsIgnoreCase("partyFlag")){
+				sortColumnName = "model.party.partyFlag";
+			}else if(columnName.equalsIgnoreCase("partyName")){
+				sortColumnName = "model.party.longName";
+			}else if(columnName.equalsIgnoreCase("constituencyName")){
+				sortColumnName = "model.constituencyElection.constituency.name";
+			}else if(columnName.equalsIgnoreCase("marginVotesPercentage")){
+				sortColumnName = "model.candidateResult.marginVotesPercentage";
+			}else if(columnName.equalsIgnoreCase("votesDifference")){
+				sortColumnName = "model.candidateResult.marginVotes";
+			}	
+			
+			List result = nominationDAO.getAllCandidateDetails(electionYear,locationId,stateId,electionType,rank,locationType,candidateType,partyId,startIndex,maxResult,order,sortColumnName);
+			
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				CandidateDetailsVO candidateDetailsVo = new CandidateDetailsVO();				
+				String candidateName = parms[0].toString();
+				if(candidateName.contains("\n")){
+					candidateName = candidateName.replace("\n"," ");
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
+				}else{
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
+				}
+				if(parms[2]!= null){
+					candidateDetailsVo.setVotesEarned(parms[7].toString());
+				}else{
+					candidateDetailsVo.setVotesEarned("--");
+				}
+				if(parms[3]!= null){
+					candidateDetailsVo.setVotesPercentage(parms[8].toString());
+				}else{
+					candidateDetailsVo.setVotesPercentage("--");
+				}			
+				candidateDetailsVo.setRank(new Long(parms[9].toString()));
+				if(parms[6]!= null){
+					candidateDetailsVo.setPartyFlag(parms[5].toString());
+				}else{
+					candidateDetailsVo.setPartyFlag("no_Image.png");
+				}			
+				candidateDetailsVo.setPartyName(parms[3].toString());
+				Long constituencyID = new Long(parms[1].toString());
+				candidateDetailsVo.setConstituencyId(constituencyID);
+				candidateDetailsVo.setConstituencyName(parms[2].toString().toUpperCase());
+				candidateDetailsVo.setElectionYear(parms[12].toString());
+				candidateDetailsVo.setElectionType(parms[13].toString());
+				candidateDetailsVo.setMoreDetails("view more details");
+				candidateDetailsVo.setMarginVotesPercentage(parms[11].toString());
+				candidateDetailsVo.setVotesDifference(new Float(parms[10].toString())+0.0f);
+				candidateDetailsVo.setCandidateId(new Long(parms[14].toString()));
+				data.add(candidateDetailsVo);
+			}
+			
+			candidateDetailsVO.setCandidateDetails(data);
+			
+			List count = nominationDAO.getCountOfAllCandidateDetails(electionYear,locationId,stateId,electionType,rank,locationType,candidateType,partyId);
+			candidateDetailsVO.setTotalSearchCount(new Long(count.get(0).toString()));
+			//System.out.println(new Long(count.get(0).toString()));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return candidateDetailsVO;
+	}
+	
+	/**
+	 * This method is used to caluculate and store marging votes and margin votes percentage.
+	 * 
+	 * @param winningCandidate
+	 * @param allCandidates
+	 */
+	public void saveMarginVotesAndPercentagesForAllCandidates(final List winningCandidate,final List allCandidates){		
+		try{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						Map<Long,Float> winner = new HashMap<Long,Float>(0);
+						Long constituencyId,candidateId;
+						Float differenceVotes,votesPercentage;
+						String marginVotesPercentage,electionYear,electionType;
+						Double marginVotes;
+						
+							for(int i=0;i<winningCandidate.size();i++){
+								Object[] parms = (Object[])winningCandidate.get(i);
+								winner.put(Long.parseLong(parms[9].toString()), Float.parseFloat(parms[2].toString()));
+							}		
+							for(int i=0;i<allCandidates.size();i++){
+								Object[] parms = (Object[])allCandidates.get(i);
+								constituencyId = Long.parseLong(parms[9].toString());
+								candidateId = Long.parseLong(parms[0].toString());
+								electionYear = parms[11].toString();
+								electionType = parms[12].toString();
+								if(winner.containsKey(constituencyId)){
+									differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[2].toString());
+									if(winner.get(constituencyId)!=0){
+										votesPercentage =  differenceVotes/winner.get(constituencyId)*100;
+									}else{
+										votesPercentage = 0f;
+									}	
+									marginVotes = Float.parseFloat(differenceVotes.toString())+0.0d;
+									marginVotesPercentage = new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+								}else{
+									marginVotes =  0.0d;
+									votesPercentage = 0f;
+									marginVotesPercentage = votesPercentage.toString();
+								}
+								Long rank = new Long(parms[4].toString());
+								if(rank!=1){
+									int count = candidateResultDAO.updateMarginVotesAndPercentage(marginVotesPercentage,marginVotes,electionYear,electionType,constituencyId,candidateId);
+								}				
+								//System.out.println("marginVotesPercentage--->"+marginVotesPercentage+"constituencyId-->"+constituencyId+"  candidateId--->"+candidateId);
+						}
+					}
+				});
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	
+	/**
+	 * This method can be used to caluculate margin votes and margin votes percentage.
+	 * 
+	 * @param winningCandidate
+	 * @param successorCandidate
+	 */
+	public void saveMarginVotesAndPercentagesForWinners(final List winningCandidate,final List successorCandidate){		
+	try{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					Map<Long,Float> successor = new HashMap<Long,Float>(0);
+					Long constituencyId,candidateId;
+					Float differenceVotes,votesPercentage;
+					String marginVotesPercentage,electionYear,electionType;
+					Double marginVotes;
+				for(int i=0;i<successorCandidate.size();i++){
+					Object[] parms = (Object[])successorCandidate.get(i);
+					successor.put(Long.parseLong(parms[9].toString()), Float.parseFloat(parms[2].toString()));
+				}
+				for(int i=0;i<winningCandidate.size();i++){
+				//	CandidateDetailsVO candidateDetailsVo = new CandidateDetailsVO();
+					Object[] parms = (Object[])winningCandidate.get(i);
+					constituencyId = Long.parseLong(parms[9].toString());
+					candidateId = Long.parseLong(parms[0].toString());
+					electionYear = parms[11].toString();
+					electionType = parms[12].toString();
+					if(successor.containsKey(constituencyId)){
+						differenceVotes = (Float.parseFloat(parms[2].toString())-successor.get(constituencyId));
+						if(Float.parseFloat(parms[2].toString())!=0f){
+							List list = nominationDAO.getVotesInfoForAConstituency(parms[9].toString(),parms[11].toString(),parms[12].toString());
+							Double allCandidateVotes=0d;
+							Double constituencyValidVotes=0d;
+							for(int k=0; k<list.size(); k++){
+								Object[] parm = (Object[])list.get(k);
+								if(parm[0]!=null){
+									allCandidateVotes = new Double(parm[0].toString());
+								}
+								if(parm[1]!=null){
+									constituencyValidVotes = new Double(parm[1].toString());
+								}
+							}
+							if(constituencyValidVotes!=0){							
+								marginVotesPercentage = new BigDecimal((differenceVotes/constituencyValidVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							}else{
+								marginVotesPercentage = new BigDecimal((differenceVotes/allCandidateVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString();							
+							}
+						}else{
+							marginVotesPercentage = "0.00";						 
+						}		
+						marginVotes = Float.parseFloat(differenceVotes.toString())+0.0d;							
+					}else{
+						differenceVotes = 0f;
+						votesPercentage = 0f;
+						marginVotes = differenceVotes + 0.0d;
+						marginVotesPercentage = votesPercentage.toString();
+					}
+					
+					int count = candidateResultDAO.updateMarginVotesAndPercentage(marginVotesPercentage,marginVotes,electionYear,electionType,constituencyId,candidateId);
+				//	System.out.println("marginVotesPercentage--->"+marginVotesPercentage+"constituencyId-->"+constituencyId+"  candidateId--->"+candidateId);
+					}
+				}
+			});
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * This method retrives candidates participated and won for a party.
 	 * 
@@ -3449,81 +3699,117 @@ public class StaticDataService implements IStaticDataService {
 	 */
 								
 	public CandidateDetailsVO getCandidatesWinnerInfoForAnElectionTypes(String electionType,String electionYear,
-			String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId){
+			String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId,int startIndex, int maxResult, String order, String columnName){
 		Long winnerCandidateRank = 1l,successorCandidateRank=2l;
 		List allCandidateResult= null;
 		List winnerCandidateResult = null;
 		List successorCandidateResult = null;
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
+		CandidateDetailsVO details = new CandidateDetailsVO();
 		List<CandidateDetailsVO> allCandidates = new ArrayList<CandidateDetailsVO>(0);
 		List<CandidateDetailsVO> winnerCandidate = new ArrayList<CandidateDetailsVO>(0);
 		List<CandidateDetailsVO> successorCandidate = new ArrayList<CandidateDetailsVO>(0);
 		int lostFlag=1;
 		try{
 				if(resultsCategory.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
-					if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRankForAParty(electionYear,locationId,electionType,partyId,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
-					}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForAParty(electionYear,stateId,electionType,winnerCandidateRank,partyId);
-						successorCandidateResult =  nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
-						}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-						if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){							
-							StringBuilder listOfConstituencies  = new StringBuilder();	
-							listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank,partyId);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-						}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-							StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
-							listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);						
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank,partyId);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-						}		 
-						}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){					
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(locationId.toString(),electionYear,electionType,winnerCandidateRank,partyId);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);
+					List nominationList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,null,partyId);
+					List candidateList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,"Candidates",partyId);
+					Long count = new Long(nominationList.get(0).toString())- new Long(candidateList.get(0).toString());
+					//System.out.println("Count--->"+count);					
+					if(count!=0l){
+							if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
+								winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRankForAParty(electionYear,locationId,electionType,partyId,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
+							}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+								winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForAParty(electionYear,stateId,electionType,winnerCandidateRank,partyId);
+								successorCandidateResult =  nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
+								}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+								if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){							
+									StringBuilder listOfConstituencies  = new StringBuilder();	
+									listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
+									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank,partyId);
+									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+								}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+									StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
+									listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);						
+									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank,partyId);
+									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+								}		 
+								}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){					
+									winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(locationId.toString(),electionYear,electionType,winnerCandidateRank,partyId);
+									successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);
+								}
+							//winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,partyId,0,electionType);
+							//candidateDetailsVO.setCandidateDetails(winnerCandidate);
+							saveMarginVotesAndPercentagesForWinners(winnerCandidateResult,successorCandidateResult);
+							//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+							details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partyId,startIndex,maxResult,order,columnName);							
+							candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+							candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
+						}else{
+							//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+							details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partyId,startIndex,maxResult,order,columnName);							
+							candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+							candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
 						}
-					winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,partyId,0,electionType);
-					candidateDetailsVO.setCandidateDetails(winnerCandidate);
 				}else if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES) || resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
-					if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
-						lostFlag = 0;
-					}else if(resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
-						lostFlag = 1;						
-					}
-					if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
-						allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdForAParty(electionYear,locationId,electionType,partyId);
-					}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
-						winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
-						successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
-						allCandidateResult = nominationDAO.findAllAssemblyCandidatesForAnElectionBytheElectionYear(electionYear,stateId,electionType,partyId);	
-					}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
-						if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){						
-							StringBuilder listOfConstituencies  = new StringBuilder();	
-							listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(listOfConstituencies.substring(1),electionYear,electionType,partyId);
-						}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-							StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
-							listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(listOfParliamentConstituencies.substring(1),electionYear,electionType,partyId);						
+					List nominationList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.LOST_CANDIDATES,null,partyId);
+					List candidateList = nominationDAO.getCountOfAllCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.LOST_CANDIDATES,"Candidates",partyId);
+					Long count = new Long(nominationList.get(0).toString())- new Long(candidateList.get(0).toString());
+					//System.out.println("Count--->"+count);
+					if(count!=0l){
+						if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
+							lostFlag = 0;
+						}else if(resultsCategory.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
+							lostFlag = 1;						
 						}
-					}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,winnerCandidateRank);
-							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);	
-							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(locationId.toString(),electionYear,electionType,partyId);
+						if(electionLevel.equalsIgnoreCase(IConstants.COUNTRY_LEVEL)){
+							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,winnerCandidateRank);
+							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(electionYear,locationId,electionType,successorCandidateRank);
+							allCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByCountryIdForAParty(electionYear,locationId,electionType,partyId);
+						}else if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+							winnerCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,winnerCandidateRank);
+							successorCandidateResult = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRank(electionYear,stateId,electionType,successorCandidateRank);
+							allCandidateResult = nominationDAO.findAllAssemblyCandidatesForAnElectionBytheElectionYear(electionYear,stateId,electionType,partyId);	
+						}else if(electionLevel.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+							if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){						
+								StringBuilder listOfConstituencies  = new StringBuilder();	
+								listOfConstituencies = getConstituenciesForDistrictByType(locationId,stateId,electionYear,electionType);
+								winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+								allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(listOfConstituencies.substring(1),electionYear,electionType,partyId);
+							}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+								StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
+								listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);
+								winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfParliamentConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
+								allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(listOfParliamentConstituencies.substring(1),electionYear,electionType,partyId);						
+							}
+						}else if(electionLevel.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+								winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,winnerCandidateRank);
+								successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(locationId.toString(),electionYear,electionType,successorCandidateRank);	
+								allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(locationId.toString(),electionYear,electionType,partyId);
+						}
+						//successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,partyId,lostFlag,electionType);
+						//allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult,lostFlag,electionType);					
+						//if(successorCandidate!=null){
+						//	allCandidates.addAll(successorCandidate);
+						//}	
+					//	candidateDetailsVO.setCandidateDetails(allCandidates);
+						//saveMarginVotesAndPercentagesForWinners(winnerCandidateResult,successorCandidateResult);
+						saveMarginVotesAndPercentagesForAllCandidates(winnerCandidateResult,allCandidateResult);
+						
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						//getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partyId);
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partyId,startIndex,maxResult,order,columnName);							
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
+					}else{
+						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId				
+						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partyId,startIndex,maxResult,order,columnName);							
+						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
+						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
 					}
-					successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,partyId,lostFlag,electionType);
-					allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult,lostFlag,electionType);					
-					if(successorCandidate!=null){
-						allCandidates.addAll(successorCandidate);
-					}	
-					candidateDetailsVO.setCandidateDetails(allCandidates);
 				}	
 				return candidateDetailsVO;
 		}catch(Exception e){

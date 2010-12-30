@@ -7,25 +7,15 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateBoothResult;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.NominationHistory;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.utils.IConstants;
-
-
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateResultColumnNames;
+import com.itgrids.partyanalyst.model.CandidateResult;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 
@@ -156,6 +146,26 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		  queryObject.setParameter(1, electionId);
 		  queryObject.setParameter(2, constituencyId);
 		return queryObject.list();
+	}
+	
+	public int updateMarginVotesAndPercentage(String marginPercentage,Double marginVotes,String electionYear,String electionType,Long constituencyId,Long candidateId){
+		StringBuilder query = new StringBuilder();				
+		query.append(" update CandidateResult model set model.marginVotesPercentage = ? ,model.marginVotes  = ? where");
+		query.append(" model.nomination.nominationId = (select model1.nominationId from Nomination model1 where ");
+		query.append("model1.constituencyElection.election.electionYear = ?");
+		query.append(" and model1.constituencyElection.constituency.electionScope.electionType.electionType = ?");
+		query.append(" and model1.constituencyElection.constituency.constituencyId = ?");
+		query.append(" and model1.candidate.candidateId = ?)");		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setString(0, marginPercentage);
+		queryObject.setDouble(1, marginVotes);
+		queryObject.setString(2, electionYear);
+		queryObject.setString(3, electionType);
+		queryObject.setLong(4, constituencyId);
+		queryObject.setLong(5, candidateId);
+		
+		return queryObject.executeUpdate();
 	}
 	
 }

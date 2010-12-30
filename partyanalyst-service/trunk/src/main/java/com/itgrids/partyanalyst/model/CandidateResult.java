@@ -44,8 +44,10 @@ public class CandidateResult extends BaseModel implements java.io.Serializable {
 	private Nomination nomination;
 	private Double votesEarned;
 	private Long rank;
-	private String votesPercengate;
-
+	private String votesPercengate;	
+	private String marginVotesPercentage;
+	private Double marginVotes;
+	
 	// Constructors
 
 	/** default constructor */
@@ -116,6 +118,25 @@ public class CandidateResult extends BaseModel implements java.io.Serializable {
 
 	public void setVotesPercengate(String votesPercengate) {
 		this.votesPercengate = votesPercengate;
+	}
+
+	
+	@Column(name = "margin_votes_percentage")
+	public String getMarginVotesPercentage() {
+		return marginVotesPercentage;
+	}
+
+	public void setMarginVotesPercentage(String marginVotesPercentage) {
+		this.marginVotesPercentage = marginVotesPercentage;
+	}
+
+	@Column(name = "margin_votes", precision = 10, scale = 0)
+	public Double getMarginVotes() {
+		return marginVotes;
+	}
+
+	public void setMarginVotes(Double marginVotes) {
+		this.marginVotes = marginVotes;
 	}
 	
 }

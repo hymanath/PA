@@ -65,12 +65,12 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(booths.size());
 	}*/
 
-	public void testFindVotersInfoForConstituencyInAnYearByLocalElectionBody(){
+	/*public void testFindVotersInfoForConstituencyInAnYearByLocalElectionBody(){
 		List list = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBody(232l, 2009l, "'"+IConstants.GREATER_ELECTION_TYPE+"'");
 		System.out.println(list.size());
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]);
-	}
+	}*/
 	
 	/*public void testFindAssemblyConstituenciesDetailsForParliament(){
 		List list = boothDAO.findAssemblyConstituenciesDetailsForParliament("223,241,232,233,340,341,238", "2009");
@@ -152,5 +152,9 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("id:"+values[0]+"\t"+"Part No:"+values[1]+"\t"+"const Id "+values[2]+"\t"+"local id:"+values[3]);
 	}*/
 	
+	public void testUpdateVillagesCoveredInfoInAConstituency() {
+		int update = boothDAO.updateVillagesCoveredInfoInAConstituency(232l, "", "", 2009l);
+		System.out.println(update);
+	}
 	
 }
