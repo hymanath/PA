@@ -19,6 +19,7 @@ public class CensusVO implements Serializable{
 	private int year;
 	private Long districtId;
 	private Long tehsilId;
+	private Long locationId;
 	private Long populationSC;
 	private Long populationST;
 	private String tru;
@@ -268,5 +269,11 @@ public class CensusVO implements Serializable{
 	}
 	public void setNonWorkingPeoplePercent(BigDecimal nonWorkingPeoplePercent) {
 		this.nonWorkingPeoplePercent = nonWorkingPeoplePercent;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
 	}
 }

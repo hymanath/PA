@@ -1258,6 +1258,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * This Method Returns Election Results Of a Parliament Constituency (Assembly Constituencies Wise)
 	 * And Assembly Constituency Election Results (Mandal Wise)
 	 */
+	@SuppressWarnings("unchecked")
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear,Boolean includeOthers){
 		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
 		List<ConstituencyOrMandalWiseElectionVO> constituencyElectionResults = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
@@ -2964,7 +2965,129 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		  return null;
 	  }
 	}
+	 
+	/**
+	 * 
+	 * This Method will give Census Details of a Parliament Constituency 
+	 * 
+	 * @author kamalakar Dandu
+	 * @param ConstituencyId
+	 * @return List<CensusVO>
+	 * 
+	 *  
+	 */
+	public List<CensusVO> getCensusDetailsForAParliamentConstituency(Long parliamentId,Long electionYear,Long delimitationYear,Long censusYear)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.getCensusDetailsForAParliamentConstituency()");
+			}
+			List<CensusVO> censusVOParliament = new ArrayList<CensusVO>();
+			
+			//Here we are getting Assemblies in a Parliament Constituency...
+			List<SelectOptionVO> assemblies = getAssembliesForParliament(parliamentId,electionYear);
+			
+			for(SelectOptionVO assembly:assemblies)
+			{
+				//Here we are getting Assembly wise census 
+				List<CensusVO> censusVOAssembly = getCensusDetailsForAssemblyConstituency(assembly.getId(),delimitationYear,censusYear);
+				
+				if(censusVOAssembly != null && censusVOAssembly.size() > 0)
+				{
+					CensusVO censusVO = addCensusDataToSingleVO(censusVOAssembly);
+					censusVO.setLocationName(assembly.getName());
+					censusVO.setLocationId(assembly.getId());
+					censusVOParliament.add(censusVO);
+				}
+			}
+			return calculateCensusPercentage(censusVOParliament);
+			
+		}catch(Exception ex){
+			log.debug("Exception Occured In the constituencyPageService.getCensusDetailsForAParliamentConstituency().......");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+	
+	}
+	/**
+	 * 
+	 * This Method will remove the Assembly constituencies from census VO List, in which Election result is not available
+	 * 
+	 * @author kamalakar Dandu
+	 * @param List<CensusVO> censusVOList
+	 * @param ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO
+	 * @return List<CensusVO>
+	 * 
+	 *  
+	 */
+	public List<CensusVO> removeMissingConstituencies(List<CensusVO> censusVOList,ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.removeMissingConstituencies() method ........");
+			}
 
-
+		//Here we are Itarates the List of Missing Constituencies
+		for(SelectOptionVO missing :constituencyRevenueVillagesVO.getMissingConstituencies())
+		{
+			//Here we are searching for missing Consttuency id in the census VO List and removing that census VO.
+			for(CensusVO censusVO:censusVOList)
+			{
+				if(censusVO.getLocationId() ==  missing.getId())
+				{
+					censusVOList.remove(censusVO);
+				}
+			}
+		}
+		
+		return censusVOList;
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.removeMissingConstituencies() method ........");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * This Method will add census VOs to list as per the order of Constituencies in the Election result 
+	 * 
+	 * @author kamalakar Dandu
+	 * @param List<CensusVO> censusVOList
+	 * @param ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO
+	 * @return List<CensusVO>
+	 * 
+	 *  
+	 */
+	
+	public List<CensusVO> setCensusVO(List<CensusVO> censusVOList,ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.setCensusVO() method ........");
+			}
+			
+		List<CensusVO> censusVO = new ArrayList<CensusVO>();
+		//Here we are setting the Census VOs as per the order of Constituencies in the Election result
+		for(ConstituencyOrMandalWiseElectionVO resultVO :constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO())
+		{
+			for(CensusVO cen:censusVOList)
+			{
+				if(resultVO.getLocationId() == cen.getLocationId())
+				  censusVO.add(cen);		
+			}
+		}
+		return censusVO;
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.setCensusVO() method ........");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+	}
 
 }
