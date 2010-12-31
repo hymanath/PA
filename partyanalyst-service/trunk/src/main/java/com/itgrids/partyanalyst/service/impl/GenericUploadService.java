@@ -827,6 +827,36 @@ public class GenericUploadService implements IGenericUploadService {
 						}
 						isData = true;
 						
+					}else if(nameTypeCellVal.equalsIgnoreCase("firstChild")){
+						
+						if(HSSFDateUtil.isCellDateFormatted(cellData))
+							this.genericUploadDataVO.setFirstChildDob(cellData.getDateCellValue());
+						else{
+							Double age = cellData.getNumericCellValue();
+							this.genericUploadDataVO.setFirstChildAge(age.longValue());
+						}
+						isData = true;
+						
+					}else if(nameTypeCellVal.equalsIgnoreCase("secondChild")){
+						
+						if(HSSFDateUtil.isCellDateFormatted(cellData))
+							this.genericUploadDataVO.setSecondChildDob(cellData.getDateCellValue());
+						else{
+							Double age = cellData.getNumericCellValue();
+							this.genericUploadDataVO.setSecondChildAge(age.longValue());
+						}
+						isData = true;
+						
+					}else if(nameTypeCellVal.equalsIgnoreCase("thirdChild")){
+						
+						if(HSSFDateUtil.isCellDateFormatted(cellData))
+							this.genericUploadDataVO.setThirdChildDob(cellData.getDateCellValue());
+						else{
+							Double age = cellData.getNumericCellValue();
+							this.genericUploadDataVO.setThirdChildAge(age.longValue());
+						}
+						isData = true;
+						
 					}
 				}
 				
@@ -1074,6 +1104,9 @@ public class GenericUploadService implements IGenericUploadService {
 		Boolean isBlank=true;
 		
 		try{
+			
+			if(row == null)
+				return true;
 		
 	        for(int i=0;i<=4;i++){
 				HSSFCell cell  = row.getCell(i);

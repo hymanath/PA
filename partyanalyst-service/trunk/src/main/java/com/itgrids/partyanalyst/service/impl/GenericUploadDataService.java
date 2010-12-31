@@ -444,6 +444,21 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 	 return resultStatus;
 	}
 	
+	private Date getExactDateOfBirthFromAge(Long age){
+		
+		Date date = null;
+		
+		Calendar cal = Calendar.getInstance();
+		Date todaysDate = new Date();
+		cal.setTime((todaysDate));
+		Integer calcAge = new Integer(age.intValue());
+		cal.add(Calendar.YEAR, -calcAge);
+		
+		date = cal.getTime();
+		
+	 return date;
+	}
+	
 	/**
 	 * Saving Cadre Family Member Details
 	 * @param cadre
@@ -467,13 +482,13 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 				dob = uploadResultsVO.getFatherOrSpouseDob();
 			else if(uploadResultsVO.getFatherOrSpouseAge() != null && uploadResultsVO.getFatherOrSpouseAge() > 0){
 				
-				Calendar cal = Calendar.getInstance();
+				/*Calendar cal = Calendar.getInstance();
 				Date todaysDate = new Date();
 				cal.setTime((todaysDate));
 				Integer age = new Integer(uploadResultsVO.getFatherOrSpouseAge().intValue());
-				cal.add(Calendar.YEAR, -age);
+				cal.add(Calendar.YEAR, -age);*/
 				
-				dob = cal.getTime();
+				dob = getExactDateOfBirthFromAge(uploadResultsVO.getFatherOrSpouseAge());
 			}
 			
 			if(uploadResultsVO.getSpouse() != null && !"".equalsIgnoreCase(uploadResultsVO.getSpouse()))
@@ -486,6 +501,12 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		if(uploadResultsVO.getFirstChild() != null && !"".equalsIgnoreCase(uploadResultsVO.getFirstChild())){
 			
 			name = uploadResultsVO.getFirstChild();
+			
+			if(uploadResultsVO.getFirstChildDob() != null)
+				dob = uploadResultsVO.getFirstChildDob();
+			else if(uploadResultsVO.getFirstChildAge() != null && uploadResultsVO.getFirstChildAge() > 0)
+				dob = getExactDateOfBirthFromAge(uploadResultsVO.getFirstChildAge());
+				
 			saveCadreFamilyData(cadre,name,"Child",dob);
 		}
 		
@@ -493,6 +514,11 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		if(uploadResultsVO.getSecondChild() != null && !"".equalsIgnoreCase(uploadResultsVO.getSecondChild())){
 			
 			name = uploadResultsVO.getSecondChild();
+			if(uploadResultsVO.getSecondChildDob() != null)
+				dob = uploadResultsVO.getSecondChildDob();
+			else if(uploadResultsVO.getSecondChildAge() != null && uploadResultsVO.getSecondChildAge() > 0)
+				dob = getExactDateOfBirthFromAge(uploadResultsVO.getSecondChildAge());
+			
 			saveCadreFamilyData(cadre,name,"Child",dob);
 		}
 		
@@ -500,6 +526,11 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		if(uploadResultsVO.getThirdChild() != null && !"".equalsIgnoreCase(uploadResultsVO.getThirdChild())){
 			
 			name = uploadResultsVO.getThirdChild();
+			if(uploadResultsVO.getThirdChildDob() != null)
+				dob = uploadResultsVO.getThirdChildDob();
+			else if(uploadResultsVO.getThirdChildAge() != null && uploadResultsVO.getThirdChildAge() > 0)
+				dob = getExactDateOfBirthFromAge(uploadResultsVO.getThirdChildAge());
+			
 			saveCadreFamilyData(cadre,name,"Child",dob);
 		}
 		}catch(Exception ex){
@@ -602,6 +633,11 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		cadre.setPermanentAddress(currentAddress);
 		
 		//cadre basic details
+		if(uploadResultsVO.getFirstName() == null && uploadResultsVO.getName() == null && uploadResultsVO.getMiddleName() == null && uploadResultsVO.getLastName() == null && 
+				uploadResultsVO.getHeadOfFamily() == null){
+			throw new Exception("No Cadre Name Data Exists ..");
+		}
+		
 		String firstName =  uploadResultsVO.getFirstName() != null ? uploadResultsVO.getFirstName() : uploadResultsVO.getName();
 		if(uploadResultsVO.getHeadOfFamily() != null && !"".equalsIgnoreCase(uploadResultsVO.getHeadOfFamily()))
 			cadre.setFirstName(uploadResultsVO.getHeadOfFamily());
@@ -620,6 +656,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 		String gender = uploadResultsVO.getGender() != null ? uploadResultsVO.getGender() : "Male";
 		cadre.setGender(gender.trim());
 		String fatherOrSpouse = uploadResultsVO.getFather() != null ? uploadResultsVO.getFather() : uploadResultsVO.getSpouse();
+		if(fatherOrSpouse != null)
 		cadre.setFatherOrSpouseName(fatherOrSpouse.trim());
 		String memOfPartySince = uploadResultsVO.getMemberOfPartySince() != null ? uploadResultsVO.getMemberOfPartySince() : null;
 		cadre.setMemberOfPartySince(memOfPartySince);
