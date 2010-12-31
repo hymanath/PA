@@ -1001,6 +1001,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 				<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
 				<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 				<div id="censusSelectDiv" style="padding-left:10px;"></div>
+				<div id="censusErrorMsgDiv" style="padding-left:10px;"></div>
 				<div id="mandalOrConstiElecResultDiv">
 				<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
 				<div id="electionResultsInConstituencyDiv"></div>
@@ -1570,7 +1571,15 @@ function buildCensusSelect(myResult)
 	
 	var cenvar = '';
 	cenvar += '<table>';
-	cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
+	if('${constituencyDetails.constituencyType}' == 'Assembly')
+	{
+		cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
+	}
+
+	if('${constituencyDetails.constituencyType}' == 'Parliament')
+	{
+		cenvar += '<th>To Compare Assembly Wise Election Results With Census, Select Any Census Parameter:</th>';
+	}
 	cenvar += '<th>';
 	cenvar += '<select id="censusSelect" class = "selectWidth" onchange = "getCensusDetailsForAConstituency(\'${constituencyId}\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 	cenvar += '<option value=\'0\'>Select Census</option>';
@@ -1581,7 +1590,8 @@ function buildCensusSelect(myResult)
 	cenvar += '<option value=\'5\'>Working People</option>';
 	cenvar += '<option value=\'6\'>Non Working People</option>';
 	cenvar += '</select>';
-	cenvar += '</th>';
+	cenvar += '</th>'
+	cenvar += '<td><div id="censusAjaxImgDiv" align="center" style="display:none;"><img width="16" height="16" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
 	cenvar += '</table>';
 
 	censelectEle.innerHTML = cenvar;
@@ -1591,8 +1601,17 @@ function getCensusDetailsForAConstituency(constituencyId,index,text)
 {
 	if(index == 0)
 			return;
+
+	var imgElmt = document.getElementById('censusAjaxImgDiv');
+	
+	if(imgElmt.style.display == "none")
+	{
+          imgElmt.style.display = "block";
+	}
+
 	var electionSelectEle = document.getElementById("electionYearSelect");
 	var electionYear      = electionSelectEle.options[electionSelectEle.selectedIndex].text;
+	var constituencyType  = '${constituencyDetails.constituencyType}';
 
 		var jsObj = {
 			constituencyId  : constituencyId,
@@ -1601,7 +1620,8 @@ function getCensusDetailsForAConstituency(constituencyId,index,text)
 			seletedIndex    : index,
 			seletedText     : text,
 			electionYear    : electionYear,
-			others          : true,
+			constituencyType: constituencyType,
+			others          : false,
 			task:"getCensusDetailsForAConstituency"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1612,8 +1632,19 @@ function getCensusDetailsForAConstituency(constituencyId,index,text)
 function buildCensusChartForAConstituency(myResults)
 {
 	if(myResults.censusVO.length == 0)
+	{
+		showCensusError();
+		hideCensusAjaxImage();
 		return;
+	}
 
+	else if(myResults.censusVO.length != myResults.constituencyOrMandalWiseElectionVO.length)
+	{
+		showCensusError();
+		hideCensusAjaxImage();
+		return;
+	}
+	
 	else if(myResults.censusVO.length > 0)
 	{
     var chartColumns = myResults.candidateNamePartyAndStatus;
@@ -1698,10 +1729,30 @@ function buildCensusChartForAConstituency(myResults)
 		  draw(data, {width: 900, height: 450,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 		}
 	 }
+   hideCensusAjaxImage();
   }
 
 }
 
+function hideCensusAjaxImage()
+{
+ var imgElmt = document.getElementById('censusAjaxImgDiv');
+	if(imgElmt.style.display == "block")
+	{
+          imgElmt.style.display = "none";
+	}
+}
+
+function showCensusError(myResult)
+{
+	var cenErrorEle = document.getElementById("censusErrorMsgDiv");
+	
+	var cenvar = '';
+	cenvar += '<table>';
+	cenvar += '<th>Census Data not avaliable for this Constituency.</th>';
+	cenvar += '</table>';
+	cenErrorEle.innerHTML = cenvar;
+}
 function showDetailedElectionResult(id)
 {
 
