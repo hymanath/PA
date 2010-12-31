@@ -93,4 +93,10 @@ public interface IConstituencyPageService {
 	
 	public  List<CensusVO> calculateCensusPercentage(List<CensusVO> censusVOList);
 	
+	public List<CensusVO> getCensusDetailsForAParliamentConstituency(Long parliamentId,Long electionYear,Long delimitationYear,Long censusYear);
+	
+	public List<CensusVO> removeMissingConstituencies(List<CensusVO> censusVOList,ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO);
+	
+	public List<CensusVO> setCensusVO(List<CensusVO> censusVOList,ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO);
+	
 }
