@@ -1449,20 +1449,45 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			Long censusSelectedIndex = Long.parseLong(jObj.getString("seletedIndex"));
 			String censusText        = jObj.getString("seletedText");
 			String electionYear      = jObj.getString("electionYear");
+			String constituencyType  = jObj.getString("constituencyType");
 		try{
-		    censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(constituencyId,delimitationYear,censusYear);
-			constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus(constituencyId,electionYear,IConstants.ASSEMBLY_ELECTION_TYPE);
-			
-			List<String> censusFieldList = new ArrayList<String>();
-			censusFieldList.add(censusText);
-			if(censusVO != null && censusVO.size() > 0)
+		    if(constituencyType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+		    {
+			    censusVO = constituencyPageService.getCensusDetailsForAssemblyConstituency(constituencyId,delimitationYear,censusYear);
+				constituencyRevenueVillagesVO = constituencyPageService.getMandalElectionInfoForAssemblyConstituencyForCensus(constituencyId,electionYear,IConstants.ASSEMBLY_ELECTION_TYPE);
+				
+				List<String> censusFieldList = new ArrayList<String>();
+				censusFieldList.add(censusText);
+				if(censusVO != null && censusVO.size() > 0)
+				{
+					censusVO.get(0).setCensusFields(censusFieldList);
+					censusVO.get(0).setCensusSelectedIndex(censusSelectedIndex);
+				}
+				constituencyRevenueVillagesVO.setCensusVO(censusVO);
+		    }
+		    else if(constituencyType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 			{
-				censusVO.get(0).setCensusFields(censusFieldList);
-				censusVO.get(0).setCensusSelectedIndex(censusSelectedIndex);
-			}
-			constituencyRevenueVillagesVO.setCensusVO(censusVO);
-	       }
-		catch(Exception ex){
+		    	List<CensusVO> censusVOList = null;
+		    	censusVOList = constituencyPageService.getCensusDetailsForAParliamentConstituency(constituencyId,Long.parseLong(electionYear),delimitationYear,censusYear);
+		    	constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(constituencyId,electionYear,false);
+		    	
+		    	if(censusVOList != null && constituencyRevenueVillagesVO != null && censusVOList.size() >0 && constituencyRevenueVillagesVO.getMissingConstituencies().size() > 0)
+		    	{
+		    		censusVOList = constituencyPageService.removeMissingConstituencies(censusVOList,constituencyRevenueVillagesVO);
+		    	}
+		    	censusVO = constituencyPageService.setCensusVO(censusVOList,constituencyRevenueVillagesVO);
+		    	
+		    	List<String> censusFieldList = new ArrayList<String>();
+				censusFieldList.add(censusText);
+				if(censusVO != null && censusVO.size() > 0)
+				{
+					censusVO.get(0).setCensusFields(censusFieldList);
+					censusVO.get(0).setCensusSelectedIndex(censusSelectedIndex);
+				}
+				constituencyRevenueVillagesVO.setCensusVO(censusVO);
+		    }
+		   }
+			catch(Exception ex){
 			log.debug("No data is available...");
 		  }
 	   }
