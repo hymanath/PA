@@ -35,10 +35,20 @@ public class GenericUploadDataVO implements Serializable {
 	public Date   fatherOrSpouseDob;
 	public Long   fatherOrSpouseAge;
 	public String firstChild;
+	public Date   firstChildDob;
+	public Long   firstChildAge;
 	public String secondChild;
+	public Date   secondChildDob;
+	public Long   secondChildAge;
 	public String thirdChild;
+	public Date   thirdChildDob;
+	public Long   thirdChildAge;
 	public String fourthChild;
+	public Date   fourthChildDob;
+	public Long   fourthChildAge;
 	public String fifthChild;
+	public Date   fifthChildDob;
+	public Long   fifthChildAge;
 	public String mobile;
 	public String phoneNo;
 	public String email;
@@ -584,6 +594,126 @@ public class GenericUploadDataVO implements Serializable {
 	 */
 	public void setMemberType(String memberType) {
 		this.memberType = memberType;
+	}
+	/**
+	 * @return the firstChildDob
+	 */
+	public Date getFirstChildDob() {
+		return firstChildDob;
+	}
+	/**
+	 * @param firstChildDob the firstChildDob to set
+	 */
+	public void setFirstChildDob(Date firstChildDob) {
+		this.firstChildDob = firstChildDob;
+	}
+	/**
+	 * @return the firstChildAge
+	 */
+	public Long getFirstChildAge() {
+		return firstChildAge;
+	}
+	/**
+	 * @param firstChildAge the firstChildAge to set
+	 */
+	public void setFirstChildAge(Long firstChildAge) {
+		this.firstChildAge = firstChildAge;
+	}
+	/**
+	 * @return the secondChildDob
+	 */
+	public Date getSecondChildDob() {
+		return secondChildDob;
+	}
+	/**
+	 * @param secondChildDob the secondChildDob to set
+	 */
+	public void setSecondChildDob(Date secondChildDob) {
+		this.secondChildDob = secondChildDob;
+	}
+	/**
+	 * @return the secondChildAge
+	 */
+	public Long getSecondChildAge() {
+		return secondChildAge;
+	}
+	/**
+	 * @param secondChildAge the secondChildAge to set
+	 */
+	public void setSecondChildAge(Long secondChildAge) {
+		this.secondChildAge = secondChildAge;
+	}
+	/**
+	 * @return the thirdChildDob
+	 */
+	public Date getThirdChildDob() {
+		return thirdChildDob;
+	}
+	/**
+	 * @param thirdChildDob the thirdChildDob to set
+	 */
+	public void setThirdChildDob(Date thirdChildDob) {
+		this.thirdChildDob = thirdChildDob;
+	}
+	/**
+	 * @return the thirdChildAge
+	 */
+	public Long getThirdChildAge() {
+		return thirdChildAge;
+	}
+	/**
+	 * @param thirdChildAge the thirdChildAge to set
+	 */
+	public void setThirdChildAge(Long thirdChildAge) {
+		this.thirdChildAge = thirdChildAge;
+	}
+	/**
+	 * @return the fourthChildDob
+	 */
+	public Date getFourthChildDob() {
+		return fourthChildDob;
+	}
+	/**
+	 * @param fourthChildDob the fourthChildDob to set
+	 */
+	public void setFourthChildDob(Date fourthChildDob) {
+		this.fourthChildDob = fourthChildDob;
+	}
+	/**
+	 * @return the fourthChildAge
+	 */
+	public Long getFourthChildAge() {
+		return fourthChildAge;
+	}
+	/**
+	 * @param fourthChildAge the fourthChildAge to set
+	 */
+	public void setFourthChildAge(Long fourthChildAge) {
+		this.fourthChildAge = fourthChildAge;
+	}
+	/**
+	 * @return the fifthChildDob
+	 */
+	public Date getFifthChildDob() {
+		return fifthChildDob;
+	}
+	/**
+	 * @param fifthChildDob the fifthChildDob to set
+	 */
+	public void setFifthChildDob(Date fifthChildDob) {
+		this.fifthChildDob = fifthChildDob;
+	}
+	/**
+	 * @return the fifthChildAge
+	 */
+	public Long getFifthChildAge() {
+		return fifthChildAge;
+	}
+	/**
+	 * @param fifthChildAge the fifthChildAge to set
+	 */
+	public void setFifthChildAge(Long fifthChildAge) {
+		this.fifthChildAge = fifthChildAge;
 	}
 		
 
