@@ -1531,7 +1531,7 @@ public class DelimitationMappingsUploadService implements
 	 return constituencyObj;
 	}
 	
-	
+	/*
     public static void main(String args[]){
 		
         try{
@@ -1559,6 +1559,6 @@ public class DelimitationMappingsUploadService implements
 		finally{
 			System.out.println("Entered Into Finally ..");
 		}
-	}
+	}*/
 	
 }
