@@ -1,293 +1,112 @@
+<style type="text/css">
+		.mainHeading 
+		{
+			background-image:url("images/icons/electionResultsReport/heading.png");
+			border:0 solid #AEE2FF;
+			color:#000000;
+			font-family:MS Sans-serif;
+			font-size:17px;
+			font-weight:bold;
+			height:25px;
+			margin-bottom:15px;
+			margin-top:15px;
+			padding:10px;
+			text-align:center;
+		}
+		#inputSelectionCriteria,#crossVotingData_Graph_Div,#constituencyMainDetails_Div,#crossVotingDetailsDiv,#overViewHeadingDiv
+		{
+			padding: 10px;
+			color: #707070;
+			margin: 10px;
+			border: 2px solid #E0E0D6;
+			font-family: verdana;
+			
+		}
+		
+		#selectLocationOptions
+		{
+			padding: 10px;
+			color: #707070;
+			margin: 10px;
+			border: 2px solid #E0E0D6;
+		}
+		.selectWidth
+		{
+			width:150px;
+			font-weight: bold;
+			color:#909090;
+			margin-left: 5px; 
+		}
+		CAPTION
+		{
+			font-weight: bold;
+			font-size:12px;
+			text-align: center;
+			padding: 10px;
+			border-bottom: 1px solid #707070;	
+			color: #247CD4;		
+		}
+		
+	
+		.participatingPartiestable th
+		{		
+			padding:5px;
+			background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+			border:1px solid #ADADAD;
+		}
 
-body
-{
-	width:130%;
-}
+		.participatingPartiestable td
+		{			
+			padding:5px;
+			border:1px solid #ADADAD;
+		}
+		.detailsTableHeader
+		{
+			background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+			height:30px;
+			text-align:left;
+		}
 
-fieldset
-{
-	border:4px solid #CFD6DF;
-	margin-bottom:10px;
-}
+		.detailsTableHeaderSpan
+		{
+			position:relative;
+			top:8px;
+			color:#4B74C6;
+			font-weight:bold;
+		}
 
-legend
-{
-	background-color:#01254D;
-	color:#FFFFFF;
-	font-size:14px;
-	padding:5px;
-	font-weight:bold;
-}
+		.detailsBodyDiv
+		{
+			border-bottom:1px solid #D2D6DB;
+			border-left:1px solid #D2D6DB;
+			border-right:1px solid #D2D6DB;
+		}
+		
+		#votesShareDetailsTable th
+		{
+			background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll ;
+			border:1px solid #ADADAD;
+			padding:5px;
+			color:#18325A;
+		}
 
-#inputSelectionCriteria, #crossVotingData_Graph_Div, #constituencyMainDetails_Div, #crossVotingDetailsDiv, #overViewHeadingDiv 
-{
-	overflow:auto;
-}
-
-.detailsTableHeaderSpan  {
-color:#FFFFFF;
-font-size:20px;
-font-weight:bold;
-position:relative;
-top:5px;
-margin-left:10px;
-}
-
-.detailsTableHeader  {
-background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
-height:40px;
-text-align:left;
-}
-
-.participatingPartiestable th {
-background-image:url("../../images/icons/tv9Icons/tableHeader.png");
-background-repeat:repeat;
-border:1px solid #ADADAD;
-font-size:19px;
-padding:10px;
-}
-
-.participatingPartiestable td {
-border:2px solid #212629;
-font-size:18px;
-padding:5px;
-font-weight:bold;
-}
-
-#votesShareDetailsTable th {
-background:url("../../images/icons/tv9Icons/tableHeader.png") repeat scroll 0 0 transparent;
-color:#FFFFFF;
-font-size:17px;
-padding:1px;
-}
-
-#votesShareDetailsTable td {
-border:2px solid #212629;
-color:#121922;
-font-size:17px;
-font-weight:bold;
-padding:2px;
-}
-
-.votesSharingHeaderPara
-{
-	color:#121922;
-	font-size:13px;
-	font-weight:bold;
-}
-
-.mandalVotesShareTable th {
-background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
-border:1px solid #ADADAD;
-color:#121922;
-font-size:19px;
-font-weight:bold;
-padding:5px;
-}
-
-.mandalVotesShareTable td {
-background-color:#F0F8FF;
-color:#121922;
-font-size:17px;
-font-weight:bold;
-padding:5px;
-}
-
-.mandalvotersAnc
-{
-	font-size:17px;
-	font-weight:bold;
-	text-decoration:none;
-}
-
-.mandalResultsTable th {
-background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
-color:#FFFFFF;
-padding:5px;
-font-size:17px;
-}
-
-.viewAncs  {
-color:#764B00;
-font-weight:bold;
-text-decoration:none;
-}
-
-.mandalResultsTable  {
-border-collapse:collapse;
-border-color:#212629;
-border-width:2px;
-}
-
-.mandalResultsTable td {
-color:#212629;
-font-size:17px;
-font-weight:bold;
-padding:8px;
-}
-
-.mandalVotingTrendzGraphImg
-{
-	-moz-border-radius:4px 4px 4px 4px;
-	border:4px solid #351A05;
-	left:710px;
-	position:absolute;	
-}
-
-.trendzGraphDiv
-{
-	background-color:#FFFFFF;
-	color:black;
-	font-size:12px;
-	padding-right:10px;
-	padding-top:5px;
-	text-align:right;
-}
-
-#selectLocationOptions,#inputSelectionCriteria {
-border:2px solid #E0E0D6;
-color:#121922;
-font-size:14px;
-font-weight:bold;
-margin:10px;
-padding:10px;
-}
-
-.districtPageRoundedHeaders_center  {
-background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
-color:#FFFFFF;
-font-weight:bold;
-font-size:19px;
-padding:0px;
-}
-
-#zptc_body, #mptc_body {
-border-bottom:2px solid #212629;
-border-left:2px solid #212629;
-border-right:2px solid #212629;
-height:480px;
-overflow:auto;
-}
-
-.zptcMptcVotersTable th
-{
-	font-size:	16px;
-}
-
-.zptcMptcVotersTable td
-{
-	font-size:	18px;
-	color:red;
-	font-weight:bold;
-}
-
-#municipalityVotersDiv th
-{
-	font-size:15px;
-	padding:5px;
-}
-#totalZptcCountResultsDiv,#totalMptcCountResultsDiv  
-{
-	color:red;
-	font-size:19px;
-}
-
-#mandalVotingTrendzDataDiv_body  {
-overflow:visible;
-}
-
-#zptcPartyTrendsDetailsDiv
-{
-	width:100%;
-}
-
-.mptcZptcSpanHead
-{
-	position:relative;
-	top:7px;
-}
-
-.yui-skin-sam .yui-dt table 
-{
-	border:1px solid;
-}
-
-#zptc_body .yui-skin-sam .yui-dt th a, #mptc_body .yui-skin-sam .yui-dt th a, #municipalityVotersDiv .yui-skin-sam .yui-dt th a
-{
-	font-size:18px;
-}
-
-#zptc_body .yui-skin-sam .yui-dt td, #mptc_body .yui-skin-sam .yui-dt td,#municipalityVotersDiv .yui-skin-sam .yui-dt td
-{
-	font-size:17px;
-	color:#2E0933;
-}
-
-/* Styles for Revenue Village popup*/
-
-.votesShareTable th {
-background-image:url("../../images/icons/tv9Icons/thBackGround.png");
-border:1px solid #ADADAD;
-color:#FFFFFF;
-padding:5px;
-font-size:19px;
-}
-
-.votesShareTable td {
-border:2px solid #212629;
-color:#121922;
-font-family:Verdana;
-font-size:12px;
-padding:5px;
-text-align:center;
-font-size:18px;
-}
-
-#revenueDataTable table
-{
-	width:70%;
-}
-
-#revenueDataTable .yui-dt th a 
-{
-	font-size:17px;
-}
-
-#revenueDataTable .yui-dt td {
-color:#121922;
-font-size:16px;
-font-weight:bold;
-}
-
-#candidateDetails table
-{
-	width:60%;
-}
-
-#candidateDetails .yui-dt th a 
-{
-	font-size:17px;
-}
-
-#candidateDetails .yui-dt td {
-color:#121922;
-font-size:16px;
-font-weight:bold;
-}
-
-#villagesVotingTrendz table
-{
-	width:65%;
-}
-
-#villagesVotingTrendz .yui-dt th a 
-{
-	font-size:17px;
-}
-
-#villagesVotingTrendz .yui-dt td 
-{
-	color:#121922;
-	font-size:16px;
-	font-weight:bold;
-}
+		#votesShareDetailsTable td
+		{
+			padding:5px;
+			border:1px solid #DFDFDF;
+			color:#707070;
+			font-weight: bold;
+		}
+		.mandalVotesShareTable th
+		{
+			background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+			border:1px solid #ADADAD;
+			padding:5px;
+		}
+		.mandalVotesShareTable td
+		{
+			background-color:  #F0F8FF;
+			text-align:center;
+			padding:5px;
+			
+		}

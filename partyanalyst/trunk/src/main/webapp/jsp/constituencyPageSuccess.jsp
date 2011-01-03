@@ -840,7 +840,7 @@ function buildElectionsSelectBox(myResults){
 
 function openConstVotingTrendzWindow(distId,constId,constName)
 {			
-	var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,left=200,top=200");
+	var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
 
 	browser1.focus();
 }
