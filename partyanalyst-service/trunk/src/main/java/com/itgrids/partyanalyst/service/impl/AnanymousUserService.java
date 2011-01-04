@@ -340,11 +340,13 @@ public class AnanymousUserService implements IAnanymousUserService {
 	 * @param locationType
 	 * @return DataTransferVO
 	 */
-	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status){
+	public DataTransferVO getAllRegisteredAnonymousUserBasedOnLocation(List<Long> locationIds,String locationType,Long retrivalCount,Long loginId,String status,Long startIndex){
 		ResultStatus resultStatus = new ResultStatus();
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Object> result = new ArrayList<Object>();		
+		List<Long> userIds = new ArrayList<Long>();
+		userIds.add(loginId);
 		
 		try{
 			
@@ -357,9 +359,11 @@ public class AnanymousUserService implements IAnanymousUserService {
 				}
 				
 			}
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);	
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex);	
 			candidateDetails = setFriendsListForAUser(result,loginId,status);		
 			dataTransferVO.setCandidateVO(candidateDetails);
+			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
+			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));			
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			dataTransferVO.setResultStatus(resultStatus);	
@@ -395,12 +399,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 		DataTransferVO dataTransferVO = new DataTransferVO();
 		List<CandidateVO> candidateDetails = new ArrayList<CandidateVO>();
 		List<Object> result = new ArrayList<Object>();		
-		
+		Long startIndex = 0L;
 		try{
 			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject);
 			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
 			
-			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount);			
+			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex);			
 			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
 			dataTransferVO.setCandidateVO(candidateDetails);
 			
