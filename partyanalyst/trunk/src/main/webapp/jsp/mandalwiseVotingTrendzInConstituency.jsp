@@ -711,7 +711,7 @@
 		            }
 					var chart = new google.visualization.PieChart(chartDiv);
 
-					chart.draw(data, {width: 400, height: 300, title: ctitle, legendFontSize:14,fontSize:10,titleFontSize:12,tooltipFontSize:8, stroke:3});
+					chart.draw(data, {width: 400, height: 280, title: ctitle, legendFontSize:14,legendTextStyle:{fontSize:10},fontSize:10,titleFontSize:12,tooltipFontSize:12, stroke:3});
 				}
 		      }
 
@@ -1038,10 +1038,16 @@
 											}
 										}if(jsObj.task == "getUrbanRuralResults") 
 										{
+											/*var elmt = document.getElementById("electionPageAjaxImgDiv");
+											if(elmt)
+												elmt.style.display = 'none';
+											buildResultsForUrbanRural(jsObj,myResults);*/
 											var elmt = document.getElementById("electionPageAjaxImgDiv");
 											if(elmt)
 												elmt.style.display = 'none';
-											buildResultsForUrbanRural(jsObj,myResults);
+											if(myResults!= null){
+											 showChartData(jsObj, myResults);
+											}
 										}
 										
 										 
@@ -2152,15 +2158,16 @@
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;
 			
-			if(constType == 'null')
+			/*if(constType == 'null')
 			{									
 				var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;
 				
 			} else 
 			{
 				var url = "<%=request.getContextPath()%>/getUrbanRuralResultsAjaxAction.action?"+rparam;
-			}
+			}*/
 			
 			callAjax(jsObj, url);
 					
@@ -2360,7 +2367,7 @@
 			
 			mdlwiseVotersDetailsStr+='</Table>';
 			mandalvotersDetailsEl.innerHTML = mdlwiseVotersDetailsStr;
-				
+			
 			if(resultsData.urbanRuralConstiResults != null)
 			{	
 				var urbanConstResults = resultsData.urbanRuralConstiResults;
@@ -2464,6 +2471,7 @@
 			
 			//Rendering Mandal voting trendz data
 			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
+			
 			if(results[0].biElectionResultsVO != null )
 			{
 				bodyElmt.innerHTML = '';
@@ -2615,6 +2623,8 @@
 						bodyElmt.innerHTML = str;
 						getConstituencyResults("2010","getConstituencyResultsBySubLocationsFor2010");
 						getConstituencyResults("2009","getConstituencyResultsBySubLocations");
+												
+						
 						
 		} else if(urbanConstResults != null)
 		{
@@ -2712,6 +2722,10 @@
 			}
 			
 			bodyElmt.innerHTML = urbanStr;
+
+			//added on jan 4th
+			getConstituencyResults("2010","getConstituencyResultsBySubLocationsFor2010");
+			getConstituencyResults("2009","getConstituencyResultsBySubLocations");
 			//building 2004 2009 charts
 
 			
@@ -3553,7 +3567,7 @@
     choicesItem.push("AC");
 	choicesItem.push("PC");
 
-	        checkForNetworkAndDisplayChart();
+	        //checkForNetworkAndDisplayChart();
            	buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			//partyVotesSharing('all','-',1);
