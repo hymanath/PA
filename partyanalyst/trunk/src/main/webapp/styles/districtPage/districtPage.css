@@ -432,15 +432,15 @@
 .connectPeople_body_name
 {
 	color:#094776;
-	font-size:14px;
-	font-weight:bold;
+	font-size:12px;
+	/*font-weight:bold;*/
 }
 
 .connectPeople_body_constituency
 {
 	color:#754815;
 	font-size:11px;
-	font-weight:bold;
+	/*font-weight:bold;*/
 	padding-top:5px;
 	padding-bottom:5px;
 }
@@ -471,7 +471,7 @@
 #allConnectPeople_body
 {
 	border-bottom:1px solid #ADADAD;
-	height:300px;
+	height:400px;
 	overflow:auto;	
 }
 
@@ -514,4 +514,13 @@
 #problemPostingDiv
 {
 	width:320px;
+}
+
+.ConnectStatusButtonClass
+{
+	-moz-border-radius:5px 5px 5px 5px;
+	background-color:#E0E7E9;
+	color:#3D4143;
+	font-weight:bold;
+	cursor:pointer;
 }
