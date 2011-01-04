@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <!-- JQuery files (End) -->
-
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <script type="text/javascript" src="js/districtPage/districtPage.js"></script>

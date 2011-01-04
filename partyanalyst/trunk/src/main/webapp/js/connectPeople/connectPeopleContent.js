@@ -5,9 +5,10 @@ var connetLocationId = '';
 var connetLocationName = '';
 var connetLocationType = '';
 var connectUserLoginId = '';
+var connectRequestedUserId = '';
 
 function buildConnectUsersContent(connectedPeopleData,divId,locationType,locationId,locationName,userLoginStatus,userLoginId)
-{
+{	
 	connectDivId = divId;
 	connectUserLoginStatus = userLoginStatus;
 	connetLocationId = locationId;
@@ -248,10 +249,37 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			hide: "explode"
 		});
 
-	getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType);
+	//------
+
+	var jsObj ={
+				locationId:locationId,							
+				locationName:locationName,
+				userId:userLoginId,
+				locationType:locationType,
+				task:"getAllConnectedUsers"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllConnectedUserAction.action?"+rparam;	
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:6,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllConnectedUsersInPanel(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+
+	//-------
+
+	//getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType);
 }
 
-function getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType)
+/*function getAllConnectedUserInLocation(locationId,locationName,userLoginId,locationType)
 {	
 	var jsObj ={
 				locationId:locationId,							
@@ -264,12 +292,15 @@ function getAllConnectedUserInLocation(locationId,locationName,userLoginId,locat
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConnectedUserAction.action?"+rparam;					
 	callAjax(jsObj,url);
-}
+}*/
 
 function showAllConnectedUsersInPanel(jsObj,results)
 {	
 	var str = '';	
 	var elmt = document.getElementById("allConnectedUsersDisplay_main");
+	var totalResultsCount = results.totalResultsCount;
+	var connectedPeopleCount = results.connectedPeopleCount;
+	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
 
 	var users = results.candidateVO;
 
@@ -290,12 +321,14 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str += '<div class="allConnectPeople_Head_content">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td align="left">Total People Connected to '+jsObj.locationName+' '+jsObj.locationType+' - '+users.length+'</td>';
+	str += '<td align="left">Total People - '+totalResultsCount+'</td>';
+	str += '<td align="left">Connected - '+connectedPeopleCount+'</td>';
+	str += '<td align="left">Not Connected - '+notConnectedPeopleCount+'</td>';
 	str += '<td align="right">';
 	str += '<table border="0" cellpadding="0" cellspacing="0">';
 	str += '<tr>';
 	str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
-	str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showsearchFilter()">Filter View</span></div></td>';
+	str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showsearchFilter()">Options</span></div></td>';
 	str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
 	str += '</tr>';
 	str += '</table>';
@@ -329,10 +362,46 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str	+= '<div id="allConnectPeople_body">';	
 	str += buildAllConnectUserString(users);
 	str	+= '</div>';
-	str	+= '<div id="allConnectPeople_footer">';
+	
+	str	+= '<div id="allConnectPeople_footer" style="display:none;">';
 	str	+= '<table width="100%">';
-	str	+= '<tr>';
-	str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
+	str	+= '<tr>';	
+	str += '<td width="80%" style="color:#754815"> Do you Want to connect to <span id="allConnectPeople_footer_span"></span> ?</td>';
+	str += '<td width="20%" align="right">';
+	str += '<div class="ConnectStatusButtonClass" onclick="connectUserSetPeople()">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td> Connect Now </td>';
+	str += '<td><a style="margin: 0px 10px;" href="javascript:{}"><img style="border:none;" src="images/icons/accept.png"></img></a></td>';	
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	str += '</td>';
+	str += '</tr>';	
+	str += '<tr>';
+	str += '<td width="80%">';
+	str += '<div id="connectMessageDiv">';
+	str += '<div style="color:#595B3E">Add Custom Message</div>';
+	str += '<div><textarea id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea></div>';
+	str +='	<div id="limitDiv">';
+	str +='	<table style="width:100%;"><tr>';
+	str +='	<td align="left" style="width:50%;color:#4B4242;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+	str +='	<td align="right" style="width:50%;color:#4B4242;"><div>Max 200 chars</div></td>';
+	str +='	</tr></table>';
+	str +='	</div>';	
+	str += '</td>';
+	str += '<td width="20%" align="right" valign="top">';
+	str += '<div class="ConnectStatusButtonClass" onclick="hideConfirmDiv()">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td>Connect Later </td>';
+	str += '<td><a style="margin: 0px 10px;" href="javascript:{}"><img style="border:none;" src="images/icons/reject.png"></img></a></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '<div>';
+	str += '</td>';
+
+	/*str	+= '<td width="30%" align="center" style="color:#FFFFFF;background-color:#306397;">Message</td>';
 	str	+= '<td width="60%" align="left">';
 	str += '<textarea id="AllConnectUserMsg" onkeyup="limitText(\'AllConnectUserMsg\',\'maxcount\',200)" rows="3" cols="40"></textarea>';
 	str +='<div id="limitDiv">';
@@ -345,12 +414,85 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	str	+= '<td width="10%" align="center"><div id="allConnectPeopleButtonDiv"><input type="button" class="connectButton" onclick="connectUserSetPeople()" value="Connect"/></div></td>';
 	str	+= '</tr>';
 	str += '<tr>';
-	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';
+	str += '<td colspan="3" align="center"><div id="allConnectPeopleStatusTextDiv"></div></td>';*/
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td >';
+	str += '	<div id="allConnectPeopleStatusTextDiv"></div>';
+	str += '</td>';
+	str += '<td></td>';
 	str += '</tr>';
 	str	+= '</table>';
 	str	+= '</div>';
 	
 	elmt.innerHTML = str;
+}
+
+function connectUserSetPeople()
+{
+	//var elements = document.getElementsByName("connectUserCheck");
+	var statusElmt = document.getElementById("allConnectPeopleStatusTextDiv");
+
+	var users = new Array();
+
+	if(connectRequestedUserId == "")
+		return;
+	/*
+	if(elements.length == 0)
+		return;
+	
+	for(var i=0; i<elements.length; i++)
+	{
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].checked==true)
+				users.push(elements[i].value);
+		}
+	}*/
+	
+	users.push(connectRequestedUserId);
+	if(users.length == 0)
+	{
+		statusElmt.innerHTML = '<font color="red">Atleast One User Has To Selected To Connect</font>';
+		return;
+	}
+	else
+		statusElmt.innerHTML = '';
+
+	var connectTextAreaElmt = document.getElementById("AllConnectUserMsg");
+	var connectMsg = connectTextAreaElmt.value;
+	var jsObj ={
+				connetLocationId:connetLocationId,				
+				connectUserIds:users,
+				connectMessage:connectMsg,
+				userId:connectUserLoginId,
+				locationType:connetLocationType,
+				task:"connectUserSet"
+			 };
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "connectToUserSetAction.action?"+rparam;					
+	callAjax(jsObj,url);
+}
+
+function hideConfirmDiv()
+{
+	var elmt = document.getElementById("allConnectPeople_footer");
+
+	if(elmt)
+		$("#allConnectPeople_footer").slideUp();
+}
+
+function showConfirmDiv(name,id)
+{
+	var elmt = document.getElementById("allConnectPeople_footer");
+	var spanElmt = document.getElementById("allConnectPeople_footer_span");
+
+	if(elmt)
+		$("#allConnectPeople_footer").slideDown();
+	connectRequestedUserId = id;
+	if(spanElmt)
+		spanElmt.innerHTML = name; 
 }
 
 function buildAllConnectUserString(users)
@@ -361,7 +503,43 @@ function buildAllConnectUserString(users)
 		str += '<div class="allConnectPeopleDataDiv_main">';
 		str += '<table width="100%">';
 		str += '<tr>';
-		str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '<td valign="top" width="15%"><img height="45" width="50" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';		
+		str += '<td valign="top" width="55%">';
+		str += '<div class="connectPeople_body_name">'+users[i].candidateName+'</div>';
+		str += '<div><span class="connectPeople_body_constituency">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
+		str += '</td>';
+		str += '<td valign="middle" width="30%" align="right">';
+		if(users[i].status == "NOT CONNECTED")
+		{
+			str += '<table border="0" cellpadding="0" cellspacing="0">';
+			str += '<tr>';
+			str += '<td><img height="20px" src="images/icons/cadreReport/bg_left.png"/></td>';
+			str += '<td><div class="allConnectPeople_Head_botton_center_div"><span class="allConnectPeople_Head_botton_center_span" onclick="showConfirmDiv(\''+users[i].candidateName+'\',\''+users[i].id+'\')">Connect</span></div></td>';
+			str += '<td><img height="20px" src="images/icons/cadreReport/bg_right.png"/></td>';
+			str += '</tr>';
+			str += '</table>';
+		}
+		else if(users[i].status == "PENDING" || users[i].status == "LOGGED_USER")
+		{
+			str += '<div>'+users[i].status+'</div>';
+		}
+		else 
+		{
+			str += '<span class="connectPeople_body_status">';
+			str += '<a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">';
+			str += '	<img title="Send Message" width="22" height="20" style="border:none;" src="images/icons/candidatePage/contact.png">';
+			str += '</a>';
+			//str += users[i].status;
+			str += '</span>';
+			str += '<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>';
+		}
+		str += '</td>';
+		str += '</tr>';
+
+
+
+
+		/*str += '<td rowspan="2" width="20%"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
 		str += '<td width="80%"><div class="connectPeople_body_name">'+users[i].candidateName+'</div></td>';				
 		if(users[i].status == "NOT CONNECTED")
 			str += '<td rowspan="2" width="10%"><input type="checkbox" name="connectUserCheck" value="'+users[i].id+'"/></td>';
@@ -380,14 +558,14 @@ function buildAllConnectUserString(users)
 		{
 			str += '<td width="50%" align="right"><span class="connectPeople_body_status"> <a href="javascript:{}" onclick="showMailPopup(\''+users[i].id+'\',\''+users[i].candidateName+'\',\'Message\')">Send a Message</a> CONNECTED </span> <div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div></td>';
 		}
-		str += '</tr>';
+		str += '</tr>';*/
 		str += '</table>';
 		str += '</td>';
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
 	}	
-
+	str += '<div class="custom_paginator_class"></div>';
 	return str;
 }
 
@@ -466,48 +644,7 @@ function showMessageConfirmation(results)
 	}
 	elmt.innerHTML = str;
 }
-function connectUserSetPeople()
-{
-	var elements = document.getElementsByName("connectUserCheck");
-	var statusElmt = document.getElementById("allConnectPeopleStatusTextDiv");
 
-	var users = new Array();;
-	
-	if(elements.length == 0)
-		return;
-	
-	for(var i=0; i<elements.length; i++)
-	{
-		for(var i=0;i<elements.length;i++)
-		{
-			if(elements[i].checked==true)
-				users.push(elements[i].value);
-		}
-	}
-	
-	if(users.length == 0)
-	{
-		statusElmt.innerHTML = '<font color="red">Atleast One User Has To Selected To Connect</font>';
-		return;
-	}
-	else
-		statusElmt.innerHTML = '';
-
-	var connectTextAreaElmt = document.getElementById("AllConnectUserMsg");
-	var connectMsg = connectTextAreaElmt.value;
-	var jsObj ={
-				connetLocationId:connetLocationId,				
-				connectUserIds:users,
-				connectMessage:connectMsg,
-				userId:connectUserLoginId,
-				locationType:connetLocationType,
-				task:"connectUserSet"
-			 };
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "connectToUserSetAction.action?"+rparam;					
-	callAjax(jsObj,url);
-}
 
 function showAllConnectedUsersStatus(jsObj,results)
 {
@@ -559,10 +696,23 @@ function getAllConnectedUsersByFilterView(locationType)
 				statusText:connectStatusSelectElmtText,
 				task:"getAllConnectedUsersByFilterView"
 			 };
-
+	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllConnectedUsersByFilterViewAction.action?"+rparam;					
-	callAjax(jsObj,url);
+	/*callAjax(jsObj,url);*/
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:5,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllConnectedUsersInPanelByFilterView(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+	
 }
 
 function showAllConnectedUsersInPanelByFilterView(jsObj,results)
@@ -587,7 +737,7 @@ function showAllConnectedUsersInPanelByFilterView(jsObj,results)
 	}
 	else
 	{
-		str += buildAllConnectUserString(users);	
+		str += buildAllConnectUserString(users);			
 		elmt.innerHTML = str;
 	}
 }
