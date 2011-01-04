@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,12 +78,28 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		
 		Long userID = user.getRegistrationID();
 		try{
+			
+			//User Planned Events
 			List<UserEventVO> userPlannedEvents =userCalendarService.getTodaysUserPlannedEvents(userID);
-			cadreManagementVO.setUserEvents(userPlannedEvents);
+			if(userPlannedEvents != null)
+			    cadreManagementVO.setUserEvents(userPlannedEvents);
+			else
+				cadreManagementVO.setUserEvents(userPlannedEvents = new ArrayList<UserEventVO>());
+			
+			//User Important Dates
 			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserTodaysImportantEvents(user);
-			cadreManagementVO.setUserImpDates(userImpDatesList);
+			if(userImpDatesList != null)
+			    cadreManagementVO.setUserImpDates(userImpDatesList);
+			else
+				cadreManagementVO.setUserImpDates(userImpDatesList = new ArrayList<ImportantDatesVO>());
+			
+			//Cadres By Level
 			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userCadreInfo);
-			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
+			if(cadresByCadreLevel != null && !cadresByCadreLevel.isEmpty())
+			    cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
+			else
+				cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel = new HashMap<String,Long>());
+				
 		}catch (Exception exceptionEncountered) {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
 			
