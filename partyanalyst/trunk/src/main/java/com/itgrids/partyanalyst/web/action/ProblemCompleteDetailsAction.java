@@ -193,10 +193,13 @@ ServletRequestAware, ServletContextAware  {
 		}	
 		log.debug("Task::"+jObj.getString("task"));
 		
+		int resultsCount = Integer.parseInt(request.getParameter("resultsCount"));
+		int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		
 		if(jObj.getString("task").equalsIgnoreCase("getProblemAllComments"))
 		{			
 			Long id = jObj.getLong("id");
-			problemBeanVO = dataApprovalService.getAllProblemComments(id);
+			problemBeanVO = dataApprovalService.getAllProblemComments(id, startIndex,resultsCount);
 		}
 		return Action.SUCCESS;
 	}
