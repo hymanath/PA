@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
 import com.itgrids.partyanalyst.model.UserProblemApproval;
@@ -21,12 +22,24 @@ public List findProblemApprovalsByUser(Long userId, Long problemHistoryId) {
 											" from UserProblemApproval model where model.userApprovalDetails.user.userId = ? and model.problemHistory.problemHistoryId = ?", params);
 	}
 
-@SuppressWarnings("unchecked")
+/*@SuppressWarnings("unchecked")
 public List findApprovalInfoForProblem(Long problemHistoryId) {
 	
 	return getHibernateTemplate().find("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
 			" where model.problemHistory.problemHistoryId = ? order by date(model.userApprovalDetails.approvalDetails.postedDate) desc", problemHistoryId);
+}*/
+
+@SuppressWarnings("unchecked")
+public List findApprovalInfoForProblem(Long problemHistoryId, int startIndex, int maxResult) {
+	Query queryObject = getSession().createQuery("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
+			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
+			" where model.problemHistory.problemHistoryId = ? order by date(model.userApprovalDetails.approvalDetails.postedDate) desc");
+	
+	queryObject.setLong(0, problemHistoryId);
+	queryObject.setFirstResult(startIndex);
+	queryObject.setMaxResults(maxResult);
+	return queryObject.list();
 }
 
 @SuppressWarnings("unchecked")

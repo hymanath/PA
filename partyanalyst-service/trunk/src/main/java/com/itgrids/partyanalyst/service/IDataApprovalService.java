@@ -9,5 +9,5 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 public interface IDataApprovalService {
 
 	ResultStatus saveProblemsApprovalData(ApprovalInfoVO approvalInfoVOToSave);
-	ProblemBeanVO getAllProblemComments (Long problemHistoryId) throws Exception;
+	ProblemBeanVO getAllProblemComments (Long problemHistoryId, int startIndex, int maxResult) throws Exception;
 }

@@ -159,11 +159,11 @@ public class DataApprovalService implements IDataApprovalService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ProblemBeanVO getAllProblemComments(Long problemHistoryId) throws Exception {
+	public ProblemBeanVO getAllProblemComments(Long problemHistoryId, int startIndex, int maxResult) throws Exception {
 		List<ApprovalInfoVO> approvals = new ArrayList<ApprovalInfoVO>(0);
 		ProblemBeanVO problemBeanVO  = new ProblemBeanVO();
 		try{
-			List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId);	
+			List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId, startIndex,maxResult);	
 			List postsCount = userProblemApprovalDAO.findCountOfPosts(problemHistoryId);
 			Long totalPostsCount = 0l;			
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
@@ -192,7 +192,7 @@ public class DataApprovalService implements IDataApprovalService {
 					totalPostsCount += (Long)params[0]; 							
 				}
 			}
-			problemBeanVO.setTotalPosts(totalPostsCount.toString());
+			problemBeanVO.setTotalResultsCount(totalPostsCount.toString());
 			problemBeanVO.setProblemApproovals(approvals);
 		} catch(Exception e)
 		{
