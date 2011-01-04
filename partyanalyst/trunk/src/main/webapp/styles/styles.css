@@ -1,4 +1,3 @@
-
 /* Party performance page styles */
 table.partyPerformanceCriteriaTable
 	{
@@ -227,3 +226,17 @@ table.partyResultsCriteriaTable td {
 {
 	color:red;
 }	
+
+.paginatorElmtClass
+{
+	padding:10px;
+	text-align:right;
+}
+
+.paginatorElmtClass a
+{
+	border:1px solid #ADADAD;
+	padding:3px;
+	text-decoration:none;
+	margin:0px 3px 0px 3px;
+}
