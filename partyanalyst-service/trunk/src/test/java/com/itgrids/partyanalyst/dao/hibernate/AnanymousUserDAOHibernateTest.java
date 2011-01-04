@@ -68,11 +68,19 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetConnectedUsersCount()
+	/*public void testGetConnectedUsersCount()
 	{
 		List connectedCount = ananymousUserDAO.getConnectedUsersCount(19L, IConstants.DISTRICT);
 		
 		System.out.println(connectedCount);
-	}
+	}*/
 	
+	public void testGetAllUsersCountInSelectedLocations()
+	{
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(19L);
+		String count = ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, IConstants.DISTRICT);
+		
+		System.out.println(count);
+	}
 }

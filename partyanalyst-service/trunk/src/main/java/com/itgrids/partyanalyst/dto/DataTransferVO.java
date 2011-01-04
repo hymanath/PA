@@ -37,8 +37,26 @@ public class DataTransferVO extends ResultStatus{
 	private String constituencyName;	
 	private String districtUsersCount;
 	private String constituencyUsersCount;
+	private String totalResultsCount;
+	private String connectedPeopleCount;
 	
 	
+	public String getConnectedPeopleCount() {
+		return connectedPeopleCount;
+	}
+
+	public void setConnectedPeopleCount(String connectedPeopleCount) {
+		this.connectedPeopleCount = connectedPeopleCount;
+	}
+
+	public String getTotalResultsCount() {
+		return totalResultsCount;
+	}
+
+	public void setTotalResultsCount(String totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
+	}
+
 	public String getDistrictUsersCount() {
 		return districtUsersCount;
 	}

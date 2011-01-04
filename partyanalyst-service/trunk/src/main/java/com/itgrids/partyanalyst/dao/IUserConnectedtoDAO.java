@@ -15,4 +15,6 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	public List<Object> getAllConnectedPeopleForUser(List<Long> senderId);
 	
 	public List<Object> getAllPeopleThatMayBeKnownForUser(Long userId);
+	
+	public String getCountOfAllConnectedPeopleForUser(List<Long> senderId);
 }
