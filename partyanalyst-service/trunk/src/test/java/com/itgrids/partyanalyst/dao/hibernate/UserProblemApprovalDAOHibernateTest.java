@@ -47,6 +47,22 @@ public class UserProblemApprovalDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
+	
+	public void testFindApprovalInfoForProblem()
+	{
+		List result = userProblemApprovalDAO.findApprovalInfoForProblem(59l,1, 5);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(parms[0].toString());
+			System.out.println(parms[1].toString());
+			System.out.println(parms[2].toString());
+			System.out.println(parms[3].toString());
+			System.out.println(parms[4].toString());
+			
+		}
+		
+	}
 
 	public void testFindCountOfPosts()
 	{
