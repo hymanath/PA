@@ -93,12 +93,17 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetData(){	
-		int list = candidateResultDAO.updateMarginVotesAndPercentage("10.20",30.54d,"2009",IConstants.ASSEMBLY_ELECTION_TYPE,232l,15404l);
-		System.out.println(list);
+	/*public void testGetData1(){	
+	//	int list = candidateResultDAO.updateMarginVotesAndPercentage("10.20",30.54d,"2009",IConstants.ASSEMBLY_ELECTION_TYPE,232l,15404l);
+	//	System.out.println(list);
 	//	setComplete();
-	}
-	
+	}*/
+	public void testGetData2(){	
+		//String marginPercentage,Double marginVotes,String electionYear,String electionType,Long constituencyId,Long candidateId)
+			int result = candidateResultDAO.updateMarginVotesAndPercentage("10.20",30.54d,"2005",IConstants.MUNCIPLE_ELECTION_TYPE,6856l, 48949l);
+			System.out.println(result);
+			setComplete();
+		}
 	
 	
 }
