@@ -571,7 +571,7 @@ function allCandidates()
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	incrementHidden();
-	if(electionType == 'Assembly' || electionType == 'Parliament'){
+	if(electionType == 'Assembly' || electionType == 'Parliament' || electionType == 'MUNCIPALITY' || electionType == 'CORPORATION' || electionType == 'Greater Municipal Corp'){
 		buildDataTable(rparam);
 	}else{
 		var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
