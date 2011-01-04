@@ -19,7 +19,19 @@ function getProblemAllComments(id)
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "problemCommentsAction.action?"+rparam;
 	
-	callAjax(jsObj, url);
+	//callAjax(jsObj, url);
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:5,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showProblemAllComments(results);
+		}
+	});
+	custom_paginator.initialize();
 }
 
 function clearError()
@@ -143,6 +155,7 @@ function showProblemAllComments(results)
 	str+='</tr>';
 	str+='</table>';
 	str+='<div class="divInfo" style="text-align:left;">';
+	str+='<div class="custom_paginator_class"></div>';
 	for(var i in results.problemApproovals)
 	{
 		str+='<div style="border:1px solid #AAAAAA;margin:2px;padding:5px;">';
@@ -169,6 +182,7 @@ function showProblemAllComments(results)
 		str+='<div id="description">'+results.problemApproovals[i].reason+'</div>';
 		str+='</div>';
 	}
+	str+='<div class="custom_paginator_class"></div>';
 	str+='<div>';
 	showAllPostsDivEl.innerHTML = str;
 }

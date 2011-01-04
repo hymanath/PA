@@ -36,6 +36,8 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <!-- JQuery files (End) -->
+<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+
 <script type="text/javascript">
 var id = '${problemHistoryId}';
 var logInStat = '${sessionScope.loginStatus}';
@@ -51,10 +53,10 @@ function callAjax(jsObj,url)
 							{										
 								showProblemDetails(myResults, jsObj);
 							}								
-							if(jsObj.task == "getProblemAllComments")
+							/*if(jsObj.task == "getProblemAllComments")
 							{
 								showProblemAllComments(myResults);
-							}
+							}*/
 							
 						}catch (e) {   
 						  // 	alert("Invalid JSON result" + e);   
