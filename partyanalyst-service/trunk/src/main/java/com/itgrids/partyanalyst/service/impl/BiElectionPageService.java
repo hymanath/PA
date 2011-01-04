@@ -1822,7 +1822,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		
-		if("RURAL".equalsIgnoreCase(constituency.getAreaType()) || "URBAN".equalsIgnoreCase(constituency.getAreaType())){
+		//if("RURAL".equalsIgnoreCase(constituency.getAreaType()) || "URBAN".equalsIgnoreCase(constituency.getAreaType())){
+		if(constituency.getStartDate() != null){
 			
 			BiElectionResultsVO resultForCroVotAndNonParty = new BiElectionResultsVO();
 			biElectionResultsMainVO.setConstituencyType(constituency.getAreaType());
