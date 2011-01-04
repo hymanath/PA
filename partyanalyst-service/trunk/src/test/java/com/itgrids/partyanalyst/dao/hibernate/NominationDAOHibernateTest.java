@@ -646,12 +646,12 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(((Object[])list2.get(i))[0]+"\t"+((Object[])list2.get(i))[1]);
 		
 	}*/
-	/*
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetTotalValidVotesAndEarnedVotesInAConstituency(){
 		
-		List result = nominationDAO.getVotesInfoForAConstituency("232", "2009", IConstants.ASSEMBLY_ELECTION_TYPE);
+		List result = nominationDAO.getVotesInfoForAConstituency("8722", "2005", IConstants.MUNCIPLE_ELECTION_TYPE);
 		
 		System.out.println(" Results Size :" + result.size());
 		for(int i=0;i<result.size();i++){
@@ -660,7 +660,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		 System.out.println(" Total Constituency Valid Votes :" + (Double)params[1]);
 		}
 		
-	}*/
+	}
 	
 	/*public void testfindByCandidateLastName(){
 	//String[] names = {"reddy","jagan"};
@@ -723,12 +723,40 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			
 		}*/
 	
-	public void testGetData(){
+/*	public void testGetData(){
 		//String electionYear,String electionType,Long constituencyId,Long candidateId
 		List list = nominationDAO.getList("2009",IConstants.ASSEMBLY_ELECTION_TYPE,232l,15404l);
 		System.out.println(list.get(0).toString()); 
     }
 
-
+*/
+	
+/*	public void testData1(){
+		List list = nominationDAO.getCountOfAllCandidates("2005",0l,1l,IConstants.CORPORATION_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,"Candidates",0l);
+		System.out.println(list.get(0).toString()); 
+	}*/
+	
+/*	public void testData2(){
+//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+		List list = nominationDAO.getCountOfAllLocalBodyCandidates("2005",0l,1l,IConstants.MUNCIPLE_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,"Candidates",0l);
+		System.out.println(list);
+		List list2 = nominationDAO.getCountOfAllLocalBodyCandidates("2005",0l,1l,IConstants.MUNCIPLE_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,null,0l);
+		System.out.println(list2);
+	}*/
+	
+	/*public void testFindAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(){
+		List list = nominationDAO.findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody("2005", 1l, IConstants.MUNCIPLE_ELECTION_TYPE, 2l);
+		System.out.println(list.size());
+	}*/
+	/*
+	public void testGetAllCandidateDetails(){
+		
+		 * (String electionYear,Long locationId,Long stateId,String electionType,
+		 * Long rank,String locationType,String candidateType,Long partyId,
+			int startIndex, int maxResult, String order, String columnName)
+		 
+		List list = nominationDAO.getAllCandidateDetails("2005", 0l,1l, IConstants.MUNCIPLE_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,0l,0,20,"asc","model.candidate.lastname");
+		System.out.println(list.size());
+	}*/
 }
 	

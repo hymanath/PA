@@ -762,24 +762,41 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(String constituencyId,String electionYear,String electionType,Long rank){
+	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(String constituencyId,String electionYear,String electionType,Long rank,Long partyId){
 		Object[] params = {electionYear,electionType,rank};		
-	return getHibernateTemplate().find("select model.candidate.candidateId," +
-			" model.candidate.lastname," +
-			" model.candidateResult.votesEarned," +
-			" model.candidateResult.votesPercengate," +
-			" model.candidateResult.rank," +
-			" model.party.partyId," +  
-			" model.party.partyFlag," +
-			" model.party.longName," +
-			" model.party.shortName," +
-			" model.constituencyElection.constituency.constituencyId," +
-			" model.constituencyElection.constituency.name," +	
-			" model.constituencyElection.election.electionYear," +
-			" model.constituencyElection.constituency.localElectionBody.electionType.electionType" +		
-			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
-			" ) and model.constituencyElection.election.electionYear = ? " +
-			" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? and model.candidateResult.rank = ? order by model.candidateResult.rank",params);
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.candidate.candidateId,");
+		sb.append(" model.candidate.lastname,");
+		sb.append(" model.candidateResult.votesEarned,");
+		sb.append(" model.candidateResult.votesPercengate,");
+		sb.append(" model.candidateResult.rank,");
+		sb.append(" model.party.partyId,");  
+		sb.append(" model.party.partyFlag,");
+		sb.append(" model.party.longName,");
+		sb.append(" model.party.shortName,");
+		sb.append(" model.constituencyElection.constituency.constituencyId,");
+		sb.append(" model.constituencyElection.constituency.name,");	
+		sb.append(" model.constituencyElection.election.electionYear,");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType");		
+		sb.append(" from Nomination model where model.constituencyElection.constituency.constituencyId in ( :constituencyId )");
+		sb.append(" and model.constituencyElection.election.electionYear = ? ");
+		sb.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
+		sb.append(" and model.candidateResult.rank = ? order by model.candidateResult.rank");
+		
+		if(partyId!=0l){
+			sb.append(" and model.party.partyId = ?");
+		}
+		Query queryObject = getSession().createQuery(sb.toString());
+		
+		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameter(0, electionYear);
+		queryObject.setParameter(1, electionType);
+		queryObject.setParameter(2, rank);		
+		if(partyId!=0l){
+			queryObject.setParameter(3,partyId);
+		}
+		
+		return queryObject.list();
 		
 	}
 	
@@ -932,24 +949,40 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(String electionYear,Long stateId,String electionType,Long rank) {
-		Object[] params = {electionYear, stateId,electionType,rank};
-		return getHibernateTemplate().find("select model.candidate.candidateId," +
-				" model.candidate.lastname," +
-				" model.candidateResult.votesEarned," +
-				" model.candidateResult.votesPercengate," +
-				" model.candidateResult.rank," +
-				" model.party.partyId," +  
-				" model.party.partyFlag," +
-				" model.party.longName," +
-				" model.party.shortName," +
-				" model.constituencyElection.constituency.constituencyId," +
-				" model.constituencyElection.constituency.name," +	
-				" model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.localElectionBody.electionType.electionType" +
-				" from Nomination model where" +
-				" model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.localElectionBody.district.state.stateId = ? and" +
-				" model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? and model.candidateResult.rank = ?",params); 
+	public List findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(String electionYear,Long stateId,String electionType,Long rank,Long partyId) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.candidate.candidateId,");
+		sb.append(" model.candidate.lastname,");
+		sb.append(" model.candidateResult.votesEarned,");
+		sb.append(" model.candidateResult.votesPercengate,");
+		sb.append(" model.candidateResult.rank,");
+		sb.append(" model.party.partyId,");  
+		sb.append(" model.party.partyFlag,");
+		sb.append(" model.party.longName,");
+		sb.append(" model.party.shortName,");
+		sb.append(" model.constituencyElection.constituency.constituencyId,");//9
+		sb.append(" model.constituencyElection.constituency.name,");	//10
+		sb.append(" model.constituencyElection.election.electionYear,");//11
+		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType");//12
+		sb.append(" from Nomination model where");
+		sb.append(" model.constituencyElection.election.electionYear = ? and ");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.district.state.stateId = ? and");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? and model.candidateResult.rank = ?");
+		if(partyId!=0l){
+			sb.append(" and model.party.partyId = ?");
+		}
+		Query queryObject = getSession().createQuery(sb.toString());
+		
+		queryObject.setParameter(0, electionYear);
+		queryObject.setParameter(1, stateId);
+		queryObject.setParameter(2, electionType);
+		queryObject.setParameter(3, rank);
+		if(partyId!=0l){
+			queryObject.setParameter(4,partyId);
+		}
+		
+		return queryObject.list();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1880,14 +1913,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		sb.append(" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +")");
 		sb.append(" and model.constituencyElection.election.electionYear = ?");
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE) ||
-				electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-			
+				electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){			
 			sb.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? group by model.constituencyElection.constituency.constituencyId");
 		}else{
 			sb.append("and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? group by model.constituencyElection.constituency.constituencyId");
 		}		
 		return getHibernateTemplate().find(sb.toString(),params);		
 	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List getAllElectionIdsAndYearsForADistrict(Long districtId){
 		return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," +
@@ -2095,26 +2129,55 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.append(" model.candidateResult.marginVotesPercentage,");//11
 		
 	    query.append(" model.constituencyElection.election.electionYear,");//12
-	    query.append(" model.constituencyElection.constituency.electionScope.electionType.electionType,");//13
+	    
+	    if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+	    	query.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType,");	//13	
+	    }else{
+	    	 query.append(" model.constituencyElection.constituency.electionScope.electionType.electionType,");	//13
+	    }
+	    
+	   // query.append(" model.constituencyElection.constituency.electionScope.electionType.electionType,");//13
 	    query.append(" model.candidate.candidateId");//14
 	    
 	    query.append(" from Nomination model where");
 	    
 	    query.append(" model.constituencyElection.election.electionYear = ?");
-	    query.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+	    if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+	    	query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");		
+	    }else{
+	    	 query.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+	    }
+	   
 			
 		if(locationId!=0l){
 			if(locationType.equalsIgnoreCase(IConstants.COUNTRY_LEVEL))
 				query.append(" and model.constituencyElection.constituency.state.country.countryId = ? ");			
-			else if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL))
-				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
-			else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL))
-				query.append(" and model.constituencyElection.constituency.district.districtId = ?");		
+			else if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+				if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+					 //query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");
+					query.append(" and model.constituencyElection.constituency.localElectionBody.district.state.stateId  = ?");
+				}else{
+					query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+				}
+			}
+			else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+				if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+					query.append(" and model.constituencyElection.constituency.localElectionBody.district.districtId = ?");		
+				}else{
+					query.append(" and model.constituencyElection.constituency.district.districtId = ?");	
+				}
+			}
+					
 			else 
 				query.append(" and model.constituencyElection.constituency.constituencyId = ?");
 		}
 		if(stateId!=0l){
-			query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+				 //query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");
+				query.append(" and model.constituencyElection.constituency.localElectionBody.district.state.stateId  = ?");
+			}else{
+				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			}			
 		}
 		
 		if(candidateType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))			
@@ -2176,25 +2239,45 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List getCountOfAllCandidateDetails(String electionYear,Long locationId,Long stateId,String electionType,
 			Long rank,String locationType,String candidateType,Long partyId) {
 		StringBuilder query = new StringBuilder();
-		query.append("select count(model.candidate.lastname)");
-		
-	    query.append(" from Nomination model where");
-	    
+		query.append("select count(model.candidate.lastname)");		
+	    query.append(" from Nomination model where");	    
 	    query.append(" model.constituencyElection.election.electionYear = ?");
-	    query.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+	    
+	    if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+	    	query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");		
+	    }else{
+	    	 query.append(" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? ");
+	    }
+	 
 			
 		if(locationId!=0l){
 			if(locationType.equalsIgnoreCase(IConstants.COUNTRY_LEVEL))
 				query.append(" and model.constituencyElection.constituency.state.country.countryId = ? ");			
-			else if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL))
-				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
-			else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL))
-				query.append(" and model.constituencyElection.constituency.district.districtId = ?");		
+			else if(locationType.equalsIgnoreCase(IConstants.STATE_LEVEL)){
+				if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+					 //query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");
+					query.append(" and model.constituencyElection.constituency.localElectionBody.district.state.stateId  = ?");
+				}else{
+					query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+				}
+			}				
+			else if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+				if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+					query.append(" and model.constituencyElection.constituency.localElectionBody.district.districtId = ?");		
+				}else{
+					query.append(" and model.constituencyElection.constituency.district.districtId = ?");	
+				}
+			}					
 			else 
 				query.append(" and model.constituencyElection.constituency.constituencyId = ?");
 		}
 		if(stateId!=0l){
-			query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE)){
+				 //query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");
+				query.append(" and model.constituencyElection.constituency.localElectionBody.district.state.stateId  = ?");
+			}else{
+				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			}
 		}
 		
 		if(candidateType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))			
@@ -2218,8 +2301,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				flag = 2l;
 			}else if(flag==0 && stateId!=0l){
 				queryObject.setLong(2,stateId);				
-			}		
-			
+			}			
 			if(candidateType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){
 				if(flag==2l){
 					flag = 3l;
@@ -2236,15 +2318,72 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 						queryObject.setLong(3,partyId);
 					}
 				}
-			}
-			
+			}			
 			if(flag!=4l){
 				if(partyId!=0l && flag == 3l)
 					queryObject.setLong(5,partyId);
 				else if(partyId!=0l)
 					queryObject.setLong(4,partyId);
-			}
+			}			
+		return queryObject.list();	
+	}
+	
+	
+	public List getCountOfAllLocalBodyCandidates(String electionYear,Long locationId,Long stateId,String electionType,
+			Long rank,String locationType,String candidateType,String candidateDetails,Long partyId) {
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select count(model)");		
+	    query.append(" from Nomination model where");	    
+	    query.append(" model.constituencyElection.election.electionYear = ?");
+	    query.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? ");
+	    query.append(" and model.constituencyElection.constituency.localElectionBody.district.state.stateId  = ?");
+	    
+		if(locationId!=0l){			
+			query.append(" and model.constituencyElection.constituency.localElectionBody.district.districtId = ?");
+		}
+
+		if(candidateType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))			
+			query.append(" and model.candidateResult.rank = ?");
+		else if(candidateType.equalsIgnoreCase(IConstants.LOST_CANDIDATES))
+			query.append(" and model.candidateResult.rank != ?");
+		
+		if(partyId!=0l)
+			query.append(" and model.party.partyId = ? ");
+		
+		if(candidateDetails!=null)
+			query.append(" and model.candidateResult.marginVotesPercentage is not null");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setString(0,electionYear);
+			queryObject.setString(1,electionType);
+			queryObject.setLong(2,stateId);
+
+		int flag=0;
+		if(locationId!=0l){
+			flag = 1;
+			queryObject.setLong(3,locationId);				
+		}				
 			
+		if(candidateType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES) || candidateType.equalsIgnoreCase(IConstants.LOST_CANDIDATES)){			
+			if(flag == 1){
+				flag = 2;
+				queryObject.setLong(4,rank);
+			}else{
+				flag = 3;
+				queryObject.setLong(3,rank);
+			}
+		}
+		
+		if(partyId!=0l){
+			if(flag == 2){
+				queryObject.setLong(5,partyId);
+			}else if(flag == 3){
+				queryObject.setLong(4,partyId);
+			}else {
+				queryObject.setLong(3,partyId);
+			}		
+		}
 		return queryObject.list();	
 	}
 }

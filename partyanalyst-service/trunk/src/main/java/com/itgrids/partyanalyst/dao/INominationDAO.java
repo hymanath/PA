@@ -348,10 +348,10 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getVotesInfoForAConstituency(String constituencyId,String electionYear,String electionType);
 		
 	@SuppressWarnings("unchecked")
-	public List findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(String electionYear,Long stateId,String electionType,Long rank);
+	public List findAllCandidatesForAnElectionBytheElectionYearByRankForLocalBody(String electionYear,Long stateId,String electionType,Long rank,Long partyId);
 	
 	@SuppressWarnings("unchecked")
-	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(String constituencyId,String electionYear,String electionType,Long rank);
+	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(String constituencyId,String electionYear,String electionType,Long rank,Long partyId);
 	
 	@SuppressWarnings("unchecked")
 	public List findAllCandidatesForAnElectionBytheElectionYearForLocalBody(String electionYear,Long stateId,String electionType);
@@ -390,4 +390,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getCountOfAllCandidateDetails(String electionYear,Long locationId,Long stateId,String electionType,
 			Long rank,String locationType,String candidateType,Long partyId);
+	
+	public List getCountOfAllLocalBodyCandidates(String electionYear,Long locationId,Long stateId,String electionType,
+			Long rank,String locationType,String candidateType,String candidateDetails,Long partyId);
 }
