@@ -659,7 +659,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 				
 		//for chart changes
-        List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
+		
+		List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
         
         if(electionResList != null && electionResList.size() > 0){
 			
@@ -811,7 +812,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String constiName = jObj.getString("constiName");
 		
 		biElectionResultsMainVO  = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);		
-		DataTransferVO charts = constituencyPageService.getPreviousAndPresentElectionYearsGraphsForAConstituency(constiId);
+		/*DataTransferVO charts = constituencyPageService.getPreviousAndPresentElectionYearsGraphsForAConstituency(constiId);
 		String allElecPartiesGraph = "ByeElectionConsti_"+constiId+"_allElecPartiesGraph.png";
 		String pres2010LineChartName = null;
 		if(charts.getLatestYearChart() != null)
@@ -848,7 +849,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					null, "Mandal","Percentages", null, dataset, presChartPath, 800, 400, ChartUtils.getLineChartColors(partiesInChart),true);
 		
 		//for 2010 bye election
-		/*
+		
 		if(charts.getLatestYearChart() != null){
 		partiesInChart = new LinkedHashSet<String>();
 		dataset = createDataSetForPresentYear((ConstituencyRevenueVillagesVO)charts.getLatestYearChart(), partiesInChart);
@@ -859,7 +860,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		else
 			ChartProducer.create3DBarChartWithInputParams("Mandalwise Results For "+constiName+" Assembly In 2010",
 					null, "Mandal","Percentages", null, dataset, pres2010ChartPath, 800, 400, ChartUtils.getLineChartColors(partiesInChart),true);
-		}*/
+		}
 		
 		partiesInChart = new LinkedHashSet<String>();
 		if(((List<PartyResultVO>)charts.getPreviousYearChart()).size() > 0){
@@ -878,7 +879,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsMainVO.getBiElectionResultsMainVO()));
 		}
 		else
-			getPieChartsInfo(biElectionResultsMainVO, constiId);
+			//getPieChartsInfo(biElectionResultsMainVO, constiId);*/
 		constituencyVO = getVotersShareInMandalsPieChart(constiId);
 		biElectionResultsMainVO.setConstituencyVO(constituencyVO);
 		
