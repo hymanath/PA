@@ -172,6 +172,7 @@
 				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
 			</list>
 		</property>
 	</bean>
