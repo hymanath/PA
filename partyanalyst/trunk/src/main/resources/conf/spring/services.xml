@@ -215,6 +215,7 @@
 		<property name="delimitationVillageDAO" ref="delimitationVillageDAO" />
 		<property name="delimitationWardDAO" ref="delimitationWardDAO" />
 		<property name="delimitationConstituencyTownDAO" ref="delimitationConstituencyTownDAO" />	
+		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />	
 		
 	</bean>	
 	
