@@ -20,6 +20,7 @@ public class CensusVO implements Serializable{
 	private Long districtId;
 	private Long tehsilId;
 	private Long locationId;
+	private Long constituencyId;
 	private Long populationSC;
 	private Long populationST;
 	private String tru;
@@ -52,7 +53,730 @@ public class CensusVO implements Serializable{
 	private List<String> censusFields; 
 	private Long censusSelectedIndex;
 	
+	private String level;
+	private Long houseHolds;
+	private Long populationUnderSix;
+	private Long maleUnderSix;
+	private Long femaleUnderSix;
+	private Long maleSC;
+	private Long femaleSC;	
+	private Long maleST;
+	private Long femaleST;
+	private Long populationLiterates;
+	private Long maleLiterates;
+	private Long femaleLiterates;
+	private Long populationIlliterates;
+	private Long maleIlliterates;
+	private Long femaleIlliterates;
+	private Long workingPopulation;
+	private Long workingMale;
+	private Long workingFemale;
+	private Long mainWorkPopulation;
+	private Long mainWorkMale;
+	private Long mainWorkFemale;
+	private Long mainCLPopulation;
+	private Long mainCLMale;
+	private Long mainCLFemale;
+	private Long mainALPopulation;
+	private Long mainALMale;
+	private Long mainALFemale;
+	private Long mainHHPopulation;
+	private Long mainHHMale;
+	private Long mainHHFemale;
+	private Long mainOTPopulation;
+	private Long mainOTMale;
+	private Long mainOTFemale;
+	private Long margWorkPopulation;
+	private Long margWorkMale;
+	private Long margWorkFemale;
+	private Long margCLPopulation;
+	private Long margCLMale;
+	private Long margCLFemale;
+	private Long margALPopulation;
+	private Long margALMale;
+	private Long margALFemale;
+	private Long margHHPopulation;
+	private Long margHHMale;
+	private Long margHHFemale;
+	private Long margOTPopulation;
+	private Long margOTMale;
+	private Long margOTFemale;
+	private Long nonWorkingPopulation;
+	private Long nonWorkingMale;
+	private Long nonWorkingFemale;
+	private Double sexRatio;
+	private Double sexRatioSC;
+	private Double sexRatioST;
+	private Double houseHoldsSize;
+	private Double percentageSC;
+	private Double percentageST;
+	private Double sexRatioUnderSix;
+	private Double maleLiteratureRate;
+	private Double femaleLiteratureRate;
+	private Double genderGap;
+	private Double popLiteraturePercentage;
+	private Double maleLiteraturePercentage;
+	private Double femaleLiteraturePercentage;
+	private Double totalPopPercentage;
+	private Double totalWorkingPopPercentage;
+	private Double totalWorkingMalePercentage;
+	private Double totalWorkingFemalePercentage;
+	private Double totalMainPopPercentage;
+	private Double totalMainMalePercentage;
+	private Double totalMainFemalePercentage;
+	private Double totalMargPopPercentage;
+	private Double totalMargMalePercentage;
+	private Double totalMargFemalePercentage;
+	private Double nonWorkingPopPercentage;
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	private Double nonWorkingMalePercentage;
+	private Double nonWorkingFemalePercentage;
+	private Double popCLPercentage;
+	private Double maleCLPercentage;
+	private Double femaleCLPercentage;
+	private Double popALPercentage;
+	private Double maleALPercentage;
+	private Double femaleALPercentage;
+	private Double popHHPercentage;
+	private Double maleHHPercentage;
+	private Double femaleHHPercentage;
+	private Double popOWPercentage;
+	private Double maleOWPercentage;
+	private Double femaleOWPercentage;
+	private Long mainMargCLPopulation;
+	private Long mainMargCLMale;
+	private Long mainMargCLFemale;
 	
+	private Long mainMargALPopulation;
+	private Long mainMargALMale;
+	private Long mainMargALFemale;
+	private Long mainMargHHPopulation;
+	private Long mainMargHHMale;
+	private Long mainMargHHFemale;
+	private Long mainMargOWPopulation;
+	private Long mainMargOWMale;
+	private Long mainMargOWFemale;
+	private Double wpr;
+	
+	
+	
+	public Long getMainMargALPopulation() {
+		return mainMargALPopulation;
+	}
+	public void setMainMargALPopulation(Long mainMargALPopulation) {
+		this.mainMargALPopulation = mainMargALPopulation;
+	}
+	public Long getMainMargALMale() {
+		return mainMargALMale;
+	}
+	public void setMainMargALMale(Long mainMargALMale) {
+		this.mainMargALMale = mainMargALMale;
+	}
+	public Long getMainMargALFemale() {
+		return mainMargALFemale;
+	}
+	public void setMainMargALFemale(Long mainMargALFemale) {
+		this.mainMargALFemale = mainMargALFemale;
+	}
+	public Long getMainMargHHPopulation() {
+		return mainMargHHPopulation;
+	}
+	public void setMainMargHHPopulation(Long mainMargHHPopulation) {
+		this.mainMargHHPopulation = mainMargHHPopulation;
+	}
+	public Long getMainMargHHMale() {
+		return mainMargHHMale;
+	}
+	public void setMainMargHHMale(Long mainMargHHMale) {
+		this.mainMargHHMale = mainMargHHMale;
+	}
+	public Long getMainMargHHFemale() {
+		return mainMargHHFemale;
+	}
+	public void setMainMargHHFemale(Long mainMargHHFemale) {
+		this.mainMargHHFemale = mainMargHHFemale;
+	}
+	public Long getMainMargOWPopulation() {
+		return mainMargOWPopulation;
+	}
+	public void setMainMargOWPopulation(Long mainMargOWPopulation) {
+		this.mainMargOWPopulation = mainMargOWPopulation;
+	}
+	public Long getMainMargOWMale() {
+		return mainMargOWMale;
+	}
+	public void setMainMargOWMale(Long mainMargOWMale) {
+		this.mainMargOWMale = mainMargOWMale;
+	}
+	public Long getMainMargOWFemale() {
+		return mainMargOWFemale;
+	}
+	public void setMainMargOWFemale(Long mainMargOWFemale) {
+		this.mainMargOWFemale = mainMargOWFemale;
+	}
+	public Double getWpr() {
+		return wpr;
+	}
+	public void setWpr(Double wpr) {
+		this.wpr = wpr;
+	}
+	public Double getPopOWPercentage() {
+		return popOWPercentage;
+	}
+	public void setPopOWPercentage(Double popOWPercentage) {
+		this.popOWPercentage = popOWPercentage;
+	}
+	public Double getMaleOWPercentage() {
+		return maleOWPercentage;
+	}
+	public void setMaleOWPercentage(Double maleOWPercentage) {
+		this.maleOWPercentage = maleOWPercentage;
+	}
+	public Double getFemaleOWPercentage() {
+		return femaleOWPercentage;
+	}
+	public void setFemaleOWPercentage(Double femaleOWPercentage) {
+		this.femaleOWPercentage = femaleOWPercentage;
+	}
+	public Long getMainMargCLPopulation() {
+		return mainMargCLPopulation;
+	}
+	public void setMainMargCLPopulation(Long mainMargCLPopulation) {
+		this.mainMargCLPopulation = mainMargCLPopulation;
+	}
+	public Long getMainMargCLMale() {
+		return mainMargCLMale;
+	}
+	public void setMainMargCLMale(Long mainMargCLMale) {
+		this.mainMargCLMale = mainMargCLMale;
+	}
+	public Long getMainMargCLFemale() {
+		return mainMargCLFemale;
+	}
+	public void setMainMargCLFemale(Long mainMargCLFemale) {
+		this.mainMargCLFemale = mainMargCLFemale;
+	}
+	public Double getPopALPercentage() {
+		return popALPercentage;
+	}
+	public void setPopALPercentage(Double popALPercentage) {
+		this.popALPercentage = popALPercentage;
+	}
+	public Double getMaleALPercentage() {
+		return maleALPercentage;
+	}
+	public void setMaleALPercentage(Double maleALPercentage) {
+		this.maleALPercentage = maleALPercentage;
+	}
+	public Double getFemaleALPercentage() {
+		return femaleALPercentage;
+	}
+	public void setFemaleALPercentage(Double femaleALPercentage) {
+		this.femaleALPercentage = femaleALPercentage;
+	}
+	public Double getPopHHPercentage() {
+		return popHHPercentage;
+	}
+	public void setPopHHPercentage(Double popHHPercentage) {
+		this.popHHPercentage = popHHPercentage;
+	}
+	public Double getMaleHHPercentage() {
+		return maleHHPercentage;
+	}
+	public void setMaleHHPercentage(Double maleHHPercentage) {
+		this.maleHHPercentage = maleHHPercentage;
+	}
+	public Double getFemaleHHPercentage() {
+		return femaleHHPercentage;
+	}
+	public void setFemaleHHPercentage(Double femaleHHPercentage) {
+		this.femaleHHPercentage = femaleHHPercentage;
+	}
+	public Double getNonWorkingPopPercentage() {
+		return nonWorkingPopPercentage;
+	}
+	public void setNonWorkingPopPercentage(Double nonWorkingPopPercentage) {
+		this.nonWorkingPopPercentage = nonWorkingPopPercentage;
+	}
+	public Double getNonWorkingMalePercentage() {
+		return nonWorkingMalePercentage;
+	}
+	public void setNonWorkingMalePercentage(Double nonWorkingMalePercentage) {
+		this.nonWorkingMalePercentage = nonWorkingMalePercentage;
+	}
+	public Double getNonWorkingFemalePercentage() {
+		return nonWorkingFemalePercentage;
+	}
+	public void setNonWorkingFemalePercentage(Double nonWorkingFemalePercentage) {
+		this.nonWorkingFemalePercentage = nonWorkingFemalePercentage;
+	}
+	public Double getPopCLPercentage() {
+		return popCLPercentage;
+	}
+	public void setPopCLPercentage(Double popCLPercentage) {
+		this.popCLPercentage = popCLPercentage;
+	}
+	public Double getMaleCLPercentage() {
+		return maleCLPercentage;
+	}
+	public void setMaleCLPercentage(Double maleCLPercentage) {
+		this.maleCLPercentage = maleCLPercentage;
+	}
+	public Double getFemaleCLPercentage() {
+		return femaleCLPercentage;
+	}
+	public void setFemaleCLPercentage(Double femaleCLPercentage) {
+		this.femaleCLPercentage = femaleCLPercentage;
+	}
+	public Double getTotalMainPopPercentage() {
+		return totalMainPopPercentage;
+	}
+	public void setTotalMainPopPercentage(Double totalMainPopPercentage) {
+		this.totalMainPopPercentage = totalMainPopPercentage;
+	}
+	public Double getTotalMainMalePercentage() {
+		return totalMainMalePercentage;
+	}
+	public void setTotalMainMalePercentage(Double totalMainMalePercentage) {
+		this.totalMainMalePercentage = totalMainMalePercentage;
+	}
+	public Double getTotalMainFemalePercentage() {
+		return totalMainFemalePercentage;
+	}
+	public void setTotalMainFemalePercentage(Double totalMainFemalePercentage) {
+		this.totalMainFemalePercentage = totalMainFemalePercentage;
+	}
+	public Double getTotalMargPopPercentage() {
+		return totalMargPopPercentage;
+	}
+	public void setTotalMargPopPercentage(Double totalMargPopPercentage) {
+		this.totalMargPopPercentage = totalMargPopPercentage;
+	}
+	public Double getTotalMargMalePercentage() {
+		return totalMargMalePercentage;
+	}
+	public void setTotalMargMalePercentage(Double totalMargMalePercentage) {
+		this.totalMargMalePercentage = totalMargMalePercentage;
+	}
+	public Double getTotalMargFemalePercentage() {
+		return totalMargFemalePercentage;
+	}
+	public void setTotalMargFemalePercentage(Double totalMargFemalePercentage) {
+		this.totalMargFemalePercentage = totalMargFemalePercentage;
+	}
+	public Double getTotalPopPercentage() {
+		return totalPopPercentage;
+	}
+	public void setTotalPopPercentage(Double totalPopPercentage) {
+		this.totalPopPercentage = totalPopPercentage;
+	}
+	public Double getTotalWorkingPopPercentage() {
+		return totalWorkingPopPercentage;
+	}
+	public void setTotalWorkingPopPercentage(Double totalWorkingPopPercentage) {
+		this.totalWorkingPopPercentage = totalWorkingPopPercentage;
+	}
+	public Double getTotalWorkingMalePercentage() {
+		return totalWorkingMalePercentage;
+	}
+	public void setTotalWorkingMalePercentage(Double totalWorkingMalePercentage) {
+		this.totalWorkingMalePercentage = totalWorkingMalePercentage;
+	}
+	public Double getTotalWorkingFemalePercentage() {
+		return totalWorkingFemalePercentage;
+	}
+	public void setTotalWorkingFemalePercentage(Double totalWorkingFemalePercentage) {
+		this.totalWorkingFemalePercentage = totalWorkingFemalePercentage;
+	}
+	public Double getPopLiteraturePercentage() {
+		return popLiteraturePercentage;
+	}
+	public void setPopLiteraturePercentage(Double popLiteraturePercentage) {
+		this.popLiteraturePercentage = popLiteraturePercentage;
+	}
+	public Double getMaleLiteraturePercentage() {
+		return maleLiteraturePercentage;
+	}
+	public void setMaleLiteraturePercentage(Double maleLiteraturePercentage) {
+		this.maleLiteraturePercentage = maleLiteraturePercentage;
+	}
+	public Double getFemaleLiteraturePercentage() {
+		return femaleLiteraturePercentage;
+	}
+	public void setFemaleLiteraturePercentage(Double femaleLiteraturePercentage) {
+		this.femaleLiteraturePercentage = femaleLiteraturePercentage;
+	}
+	public Double getSexRatioUnderSix() {
+		return sexRatioUnderSix;
+	}
+	public void setSexRatioUnderSix(Double sexRatioUnderSix) {
+		this.sexRatioUnderSix = sexRatioUnderSix;
+	}
+	public Double getMaleLiteratureRate() {
+		return maleLiteratureRate;
+	}
+	public void setMaleLiteratureRate(Double maleLiteratureRate) {
+		this.maleLiteratureRate = maleLiteratureRate;
+	}
+	public Double getFemaleLiteratureRate() {
+		return femaleLiteratureRate;
+	}
+	public void setFemaleLiteratureRate(Double femaleLiteratureRate) {
+		this.femaleLiteratureRate = femaleLiteratureRate;
+	}
+	public Double getGenderGap() {
+		return genderGap;
+	}
+	public void setGenderGap(Double genderGap) {
+		this.genderGap = genderGap;
+	}
+	public Double getSexRatio() {
+		return sexRatio;
+	}
+	public void setSexRatio(Double sexRatio) {
+		this.sexRatio = sexRatio;
+	}
+	public Double getSexRatioSC() {
+		return sexRatioSC;
+	}
+	public void setSexRatioSC(Double sexRatioSC) {
+		this.sexRatioSC = sexRatioSC;
+	}
+	public Double getSexRatioST() {
+		return sexRatioST;
+	}
+	public void setSexRatioST(Double sexRatioST) {
+		this.sexRatioST = sexRatioST;
+	}
+	public Double getHouseHoldsSize() {
+		return houseHoldsSize;
+	}
+	public void setHouseHoldsSize(Double houseHoldsSize) {
+		this.houseHoldsSize = houseHoldsSize;
+	}
+	public Double getPercentageSC() {
+		return percentageSC;
+	}
+	public void setPercentageSC(Double percentageSC) {
+		this.percentageSC = percentageSC;
+	}
+	public Double getPercentageST() {
+		return percentageST;
+	}
+	public void setPercentageST(Double percentageST) {
+		this.percentageST = percentageST;
+	}
+	public Long getMargOTPopulation() {
+		return margOTPopulation;
+	}
+	public void setMargOTPopulation(Long margOTPopulation) {
+		this.margOTPopulation = margOTPopulation;
+	}
+	public Long getMargOTMale() {
+		return margOTMale;
+	}
+	public void setMargOTMale(Long margOTMale) {
+		this.margOTMale = margOTMale;
+	}
+	public Long getMargOTFemale() {
+		return margOTFemale;
+	}
+	public void setMargOTFemale(Long margOTFemale) {
+		this.margOTFemale = margOTFemale;
+	}
+	public Long getNonWorkingPopulation() {
+		return nonWorkingPopulation;
+	}
+	public void setNonWorkingPopulation(Long nonWorkingPopulation) {
+		this.nonWorkingPopulation = nonWorkingPopulation;
+	}
+	public Long getNonWorkingMale() {
+		return nonWorkingMale;
+	}
+	public void setNonWorkingMale(Long nonWorkingMale) {
+		this.nonWorkingMale = nonWorkingMale;
+	}
+	public Long getNonWorkingFemale() {
+		return nonWorkingFemale;
+	}
+	public void setNonWorkingFemale(Long nonWorkingFemale) {
+		this.nonWorkingFemale = nonWorkingFemale;
+	}
+	public Long getMargALPopulation() {
+		return margALPopulation;
+	}
+	public void setMargALPopulation(Long margALPopulation) {
+		this.margALPopulation = margALPopulation;
+	}
+	public Long getMargALMale() {
+		return margALMale;
+	}
+	public void setMargALMale(Long margALMale) {
+		this.margALMale = margALMale;
+	}
+	public Long getMargALFemale() {
+		return margALFemale;
+	}
+	public void setMargALFemale(Long margALFemale) {
+		this.margALFemale = margALFemale;
+	}
+	public Long getMargHHPopulation() {
+		return margHHPopulation;
+	}
+	public void setMargHHPopulation(Long margHHPopulation) {
+		this.margHHPopulation = margHHPopulation;
+	}
+	public Long getMargHHMale() {
+		return margHHMale;
+	}
+	public void setMargHHMale(Long margHHMale) {
+		this.margHHMale = margHHMale;
+	}
+	public Long getMargHHFemale() {
+		return margHHFemale;
+	}
+	public void setMargHHFemale(Long margHHFemale) {
+		this.margHHFemale = margHHFemale;
+	}
+	public Long getMainOTPopulation() {
+		return mainOTPopulation;
+	}
+	public void setMainOTPopulation(Long mainOTPopulation) {
+		this.mainOTPopulation = mainOTPopulation;
+	}
+	public Long getMainOTMale() {
+		return mainOTMale;
+	}
+	public void setMainOTMale(Long mainOTMale) {
+		this.mainOTMale = mainOTMale;
+	}
+	public Long getMainOTFemale() {
+		return mainOTFemale;
+	}
+	public void setMainOTFemale(Long mainOTFemale) {
+		this.mainOTFemale = mainOTFemale;
+	}
+	public Long getMargWorkPopulation() {
+		return margWorkPopulation;
+	}
+	public void setMargWorkPopulation(Long margWorkPopulation) {
+		this.margWorkPopulation = margWorkPopulation;
+	}
+	public Long getMargWorkMale() {
+		return margWorkMale;
+	}
+	public void setMargWorkMale(Long margWorkMale) {
+		this.margWorkMale = margWorkMale;
+	}
+	public Long getMargWorkFemale() {
+		return margWorkFemale;
+	}
+	public void setMargWorkFemale(Long margWorkFemale) {
+		this.margWorkFemale = margWorkFemale;
+	}
+	public Long getMargCLPopulation() {
+		return margCLPopulation;
+	}
+	public void setMargCLPopulation(Long margCLPopulation) {
+		this.margCLPopulation = margCLPopulation;
+	}
+	public Long getMargCLMale() {
+		return margCLMale;
+	}
+	public void setMargCLMale(Long margCLMale) {
+		this.margCLMale = margCLMale;
+	}
+	public Long getMargCLFemale() {
+		return margCLFemale;
+	}
+	public void setMargCLFemale(Long margCLFemale) {
+		this.margCLFemale = margCLFemale;
+	}
+	public Long getMainCLPopulation() {
+		return mainCLPopulation;
+	}
+	public void setMainCLPopulation(Long mainCLPopulation) {
+		this.mainCLPopulation = mainCLPopulation;
+	}
+	public Long getMainCLMale() {
+		return mainCLMale;
+	}
+	public void setMainCLMale(Long mainCLMale) {
+		this.mainCLMale = mainCLMale;
+	}
+	public Long getMainCLFemale() {
+		return mainCLFemale;
+	}
+	public void setMainCLFemale(Long mainCLFemale) {
+		this.mainCLFemale = mainCLFemale;
+	}
+	public Long getMainALPopulation() {
+		return mainALPopulation;
+	}
+	public void setMainALPopulation(Long mainALPopulation) {
+		this.mainALPopulation = mainALPopulation;
+	}
+	public Long getMainALMale() {
+		return mainALMale;
+	}
+	public void setMainALMale(Long mainALMale) {
+		this.mainALMale = mainALMale;
+	}
+	public Long getMainALFemale() {
+		return mainALFemale;
+	}
+	public void setMainALFemale(Long mainALFemale) {
+		this.mainALFemale = mainALFemale;
+	}
+	public Long getMainHHPopulation() {
+		return mainHHPopulation;
+	}
+	public void setMainHHPopulation(Long mainHHPopulation) {
+		this.mainHHPopulation = mainHHPopulation;
+	}
+	public Long getMainHHMale() {
+		return mainHHMale;
+	}
+	public void setMainHHMale(Long mainHHMale) {
+		this.mainHHMale = mainHHMale;
+	}
+	public Long getMainHHFemale() {
+		return mainHHFemale;
+	}
+	public void setMainHHFemale(Long mainHHFemale) {
+		this.mainHHFemale = mainHHFemale;
+	}
+	public Long getMainWorkPopulation() {
+		return mainWorkPopulation;
+	}
+	public void setMainWorkPopulation(Long mainWorkPopulation) {
+		this.mainWorkPopulation = mainWorkPopulation;
+	}
+	public Long getMainWorkMale() {
+		return mainWorkMale;
+	}
+	public void setMainWorkMale(Long mainWorkMale) {
+		this.mainWorkMale = mainWorkMale;
+	}
+	public Long getMainWorkFemale() {
+		return mainWorkFemale;
+	}
+	public void setMainWorkFemale(Long mainWorkFemale) {
+		this.mainWorkFemale = mainWorkFemale;
+	}
+	public Long getWorkingPopulation() {
+		return workingPopulation;
+	}
+	public void setWorkingPopulation(Long workingPopulation) {
+		this.workingPopulation = workingPopulation;
+	}
+	public Long getWorkingMale() {
+		return workingMale;
+	}
+	public void setWorkingMale(Long workingMale) {
+		this.workingMale = workingMale;
+	}
+	public Long getWorkingFemale() {
+		return workingFemale;
+	}
+	public void setWorkingFemale(Long workingFemale) {
+		this.workingFemale = workingFemale;
+	}
+	public Long getPopulationLiterates() {
+		return populationLiterates;
+	}
+	public void setPopulationLiterates(Long populationLiterates) {
+		this.populationLiterates = populationLiterates;
+	}
+	public Long getMaleLiterates() {
+		return maleLiterates;
+	}
+	public void setMaleLiterates(Long maleLiterates) {
+		this.maleLiterates = maleLiterates;
+	}
+	public Long getFemaleLiterates() {
+		return femaleLiterates;
+	}
+	public void setFemaleLiterates(Long femaleLiterates) {
+		this.femaleLiterates = femaleLiterates;
+	}
+	public Long getPopulationIlliterates() {
+		return populationIlliterates;
+	}
+	public void setPopulationIlliterates(Long populationIlliterates) {
+		this.populationIlliterates = populationIlliterates;
+	}
+	public Long getMaleIlliterates() {
+		return maleIlliterates;
+	}
+	public void setMaleIlliterates(Long maleIlliterates) {
+		this.maleIlliterates = maleIlliterates;
+	}
+	public Long getFemaleIlliterates() {
+		return femaleIlliterates;
+	}
+	public void setFemaleIlliterates(Long femaleIlliterates) {
+		this.femaleIlliterates = femaleIlliterates;
+	}
+	public Long getMaleST() {
+		return maleST;
+	}
+	public void setMaleST(Long maleST) {
+		this.maleST = maleST;
+	}
+	public Long getFemaleST() {
+		return femaleST;
+	}
+	public void setFemaleST(Long femaleST) {
+		this.femaleST = femaleST;
+	}
+	public Long getMaleSC() {
+		return maleSC;
+	}
+	public void setMaleSC(Long maleSC) {
+		this.maleSC = maleSC;
+	}
+	public Long getFemaleSC() {
+		return femaleSC;
+	}
+	public void setFemaleSC(Long femaleSC) {
+		this.femaleSC = femaleSC;
+	}
+	public Long getMaleUnderSix() {
+		return maleUnderSix;
+	}
+	public void setMaleUnderSix(Long maleUnderSix) {
+		this.maleUnderSix = maleUnderSix;
+	}
+	public Long getFemaleUnderSix() {
+		return femaleUnderSix;
+	}
+	public void setFemaleUnderSix(Long femaleUnderSix) {
+		this.femaleUnderSix = femaleUnderSix;
+	}
+	public Long getPopulationUnderSix() {
+		return populationUnderSix;
+	}
+	public void setPopulationUnderSix(Long populationUnderSix) {
+		this.populationUnderSix = populationUnderSix;
+	}
+	public Long getHouseHolds() {
+		return houseHolds;
+	}
+	public void setHouseHolds(Long houseHolds) {
+		this.houseHolds = houseHolds;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
 	public Long getCensusSelectedIndex() {
 		return censusSelectedIndex;
 	}

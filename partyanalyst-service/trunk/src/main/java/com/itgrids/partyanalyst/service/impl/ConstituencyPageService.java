@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
@@ -60,6 +62,7 @@ import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ElectionResultByLocationVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
@@ -69,6 +72,8 @@ import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -80,11 +85,14 @@ import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -130,6 +138,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private ICensusDAO censusDAO;
 	private IDelimitationVillageDAO delimitationVillageDAO;
 	private IDelimitationWardDAO delimitationWardDAO;
+	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	
 		
 	public IDelimitationVillageDAO getDelimitationVillageDAO() {
@@ -287,6 +296,15 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IConstituencyCensusDetailsDAO getConstituencyCensusDetailsDAO() {
+		return constituencyCensusDetailsDAO;
+	}
+
+	public void setConstituencyCensusDetailsDAO(
+			IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
+		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
 	}
 
 	public void setCandidateBoothResultDAO(
@@ -1282,7 +1300,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyRevenueVillagesVO.setAreaType(constituency.getAreaType());
 			}
 			
-			//constituencyRevenueVillagesVO.setCensusVO(censusVO);
 			return constituencyRevenueVillagesVO;
 		}
 		
@@ -1399,7 +1416,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
 		constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyElectionResults);
 	
-		//constituencyRevenueVillagesVO.setCensusVO(censusVO);
 		return constituencyRevenueVillagesVO;
 	}
 	
@@ -2347,7 +2363,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				log.debug("In the constituencyPageService.getCensusDetailsForAssemblyConstituency().. Call");
 			}	
 			//Getting Delimitation Constituency Id
-			List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(constituencyId,delimitationYear,censusYear);
+			List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(constituencyId,delimitationYear);
 			
 			if(delimConstList != null && delimConstList.size() > 0 )
 			{
@@ -2990,22 +3006,68 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			for(SelectOptionVO assembly:assemblies)
 			{
-				//Here we are getting Assembly wise census 
-				List<CensusVO> censusVOAssembly = getCensusDetailsForAssemblyConstituency(assembly.getId(),delimitationYear,censusYear);
+				boolean isExists = checkForConstituencyExistance(assembly.getId());
 				
-				if(censusVOAssembly != null && censusVOAssembly.size() > 0)
+				if(isExists)
 				{
-					CensusVO censusVO = addCensusDataToSingleVO(censusVOAssembly);
-					censusVO.setLocationName(assembly.getName());
-					censusVO.setLocationId(assembly.getId());
-					censusVOParliament.add(censusVO);
+					List<Object[]> cenList = findConstituencyWiseCensusDetails(assembly.getId(),censusYear);
+					
+					if(cenList != null && cenList.size() > 0)
+					{
+						CensusVO censusVO = setCensusDetailsToVO(cenList.get(0));
+						censusVO.setLocationName(assembly.getName());
+						censusVO.setLocationId(assembly.getId());
+						censusVOParliament.add(censusVO);
+					}
+				}
+				else
+				{
+					List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(assembly.getId(),delimitationYear);
+					
+					if(delimConstList != null && delimConstList.size() > 0 )
+					{
+						Long delimitationConstituencyId = (Long) delimConstList.get(0);
+						
+						List<CensusVO> censusVOList = new ArrayList<CensusVO>();
+						
+						List<Object[]> delimConMandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(delimitationConstituencyId);
+						
+						if(delimConMandals != null && delimConMandals.size() > 0)
+						{
+							//Here we are getting census details to each tehsil in the Constituency.
+							for(Object[] params:delimConMandals)
+							{
+								CensusVO  censusVO = getCompleteCensusDetailsForATehsil(params,censusYear,delimitationConstituencyId);
+								
+								//If census is not present to the Tehsil then it retuns null,that we are ommitting
+								if(censusVO != null)
+								censusVOList.add(censusVO);
+							}
+						}
+												
+						CensusVO censusMainVO = addCompleteCensusDataToSingleVO(censusVOList);
+						String result = saveCensusToConstituencyCensusDetails(censusMainVO,assembly.getId(),censusYear);
+						
+						if(result.equalsIgnoreCase(IConstants.SUCCESS))
+						{
+							List<Object[]> cenList = findConstituencyWiseCensusDetails(assembly.getId(),censusYear);
+							
+							if(cenList != null && cenList.size() > 0)
+							{
+								CensusVO censusVO = setCensusDetailsToVO(cenList.get(0));
+								censusVO.setLocationName(assembly.getName());
+								censusVO.setLocationId(assembly.getId());
+								censusVOParliament.add(censusVO);
+							}
+						}
+					 }
 				}
 			}
 			return calculateCensusPercentage(censusVOParliament);
 			
 		}catch(Exception ex){
 			log.debug("Exception Occured In the constituencyPageService.getCensusDetailsForAParliamentConstituency().......");
-			log.error("Exception raised please check the log for details"+ex);
+			log.error("Exception raised please check the log for details "+ex);
 			return null;
 		}
 	
@@ -3085,9 +3147,975 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}catch(Exception ex)
 		{
 			log.debug("Exception Occured In the constituencyPageService.setCensusVO() method ........");
-			log.error("Exception raised please check the log for details"+ex);
+			log.error("Exception raised please check the log for details "+ex);
 			return null;
 		}
 	}
 
+	/**
+	 * This Method will Check the availability of given Constituency in Constituency_census_details Table. 
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long constituencyId
+	 * @return boolean
+	 * 
+	 */
+	
+	public boolean checkForConstituencyExistance(Long constituencyId)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.setCensusVO() method ........");
+		}
+		//Here we are getting Constitiency Id
+		List<Long>list = constituencyCensusDetailsDAO.checkForConstituencyExistance(constituencyId);
+		
+		if(list != null && list.size() > 0)
+		{
+			Long id = list.get(0);
+			
+			if(id.equals(constituencyId))
+			{
+				return true;
+			}
+		}
+		}catch(Exception ex){
+			log.debug("Exception Occured In the constituencyPageService.checkForConstituencyExistance() method ........");
+			log.error("Exception raised please check the log for details "+ex);
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * This Method will give Census details of a Constituency from Constituency_census_details Table. 
+	 * @author kamalakar Dandu
+	 * @param Long constituencyId
+	 * @param Long censusYear
+	 * @return boolean
+	 */
+	
+	public List<Object[]> findConstituencyWiseCensusDetails(Long constituencyId,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.findConstituencyWiseCensusDetails() method ........");
+		}
+		Long stateId = constituencyDAO.getStateIdByConstituencyId(constituencyId).get(0);
+		
+		//Here we are getting Census details of a Connstituency
+		List<Object[]> list = constituencyCensusDetailsDAO.findConstituencyWiseCensusDetails(stateId,constituencyId,censusYear);
+		
+		if(list != null && list.size() > 0)
+		{
+			return list;
+		}
+		}catch(Exception ex){
+			log.debug("Exception Occured In the constituencyPageService.findConstituencyWiseCensusDetails() method ........");
+			log.error("Exception raised please check the log for details "+ex);
+			return null;
+		}
+		return null;
+	}
+	
+	 /**
+	 * 
+	 * This Method will give Census Details  for A Tehsil when we pass Object Array which contains Tehsil Id
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @param Long censusYear
+	 * @param delimitationConstituencyId
+	 * @return CensusVO
+	 * 
+	 */
+	
+	public CensusVO getCompleteCensusDetailsForATehsil(Object[] params,Long censusYear,Long delimitationConstituencyId)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Entered Into constituencyPageService.getCompleteCensusDetailsForATehsil() Method .....");
+			}
+			
+			Long dcmId         = (Long)params[0];
+			Long mandalId      = (Long)params[1];
+			String mandalName  = params[2].toString();
+			boolean isPartial  = params[3].toString().equalsIgnoreCase("0");
+			
+			Tehsil tehsil   = tehsilDAO.get(mandalId);
+			Long districtId =  tehsil.getDistrict().getDistrictId();
+			Long stateId    =  tehsil.getDistrict().getState().getStateId();
+			
+			//if mandal is partial then calculate census for mandal sub regions
+			if(isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial Block of constituencyPageService.getCompleteCensusDetailsForATehsil() Method .....");
+				}
+			//For villages
+			CensusVO censusVOVillage = getVillageWiseCompleteCensusDetailsForPartialTehsil(stateId,districtId,dcmId,censusYear);
+			//For Towns		
+			List<CensusVO> censusVOTown = getCompleteCensusDetailsOfATownInAPartialTehsil(delimitationConstituencyId,mandalId,censusYear);
+			
+			
+			//Here we are add the villages wise census and towns wise(if town is partial ward wise census)to a single mandal census VO 
+			if(censusVOTown != null && censusVOTown.size() > 0)
+			{
+				if(censusVOVillage != null)
+				{
+					censusVOTown.add(censusVOVillage);
+				}
+				CensusVO censusVOTehsil	= addCompleteCensusDataToSingleVO(censusVOTown);
+				censusVOTehsil.setTehsilId(mandalId);
+				censusVOTehsil.setLocationName(mandalName);
+				
+				return censusVOTehsil;
+			}
+			else
+			{
+				if(censusVOVillage != null)
+				{
+					censusVOVillage.setTehsilId(mandalId);
+					censusVOVillage.setLocationName(mandalName);
+					return censusVOVillage;
+				}
+			}
+			
+		}
+			//mandal is full
+			else if(!isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial false Block of constituencyPageService.getCompleteCensusDetailsForATehsil() Method .....");
+				}
+				List<Object[]> list = censusDAO.findMandalWiseCompleteCensusDetails(stateId,districtId,mandalId,censusYear,IConstants.TEHSIL_LEVEL);
+				
+				if(list != null && list.size() > 0)
+				{
+				   CensusVO censusVO = setCompleteCensusDetailsToVO(list.get(0));
+				   censusVO.setTehsilId(mandalId);
+				   censusVO.setLocationName(mandalName);
+				   
+				   return censusVO;
+				}
+			}
+				
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.getCompleteCensusDetailsForATehsil().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+    return null;
+   }
+	
+	 /**
+	 * 
+	 * This Method will Set the Data to Census VO when we pass Object[] Array.
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @return CensusVO
+	 * 
+	 */
+	
+	public CensusVO setCompleteCensusDetailsToVO(Object[] details)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered isPartial Block of constituencyPageService.setCompleteCensusDetailsToVO() Method .....");
+		}
+		
+		CensusVO censusVO = new CensusVO();
+		
+		censusVO.setHouseHolds((Long)details[0]);
+		censusVO.setTotalPopulation((Long)details[1]);
+		censusVO.setMalePopulation((Long)details[2]);
+		censusVO.setFemalePopulation((Long)details[3]);
+		censusVO.setPopulationUnderSix((Long)details[4]);
+		censusVO.setMaleUnderSix((Long)details[5]);
+		censusVO.setFemaleUnderSix((Long)details[6]);
+		censusVO.setPopulationSC((Long)details[7]);
+		censusVO.setMaleSC((Long)details[8]);
+		censusVO.setFemaleSC((Long)details[9]);
+		censusVO.setPopulationST((Long)details[10]);
+		censusVO.setMaleST((Long)details[11]);
+		censusVO.setFemaleST((Long)details[12]);
+		censusVO.setPopulationLiterates((Long)details[13]);
+		censusVO.setMaleLiterates((Long)details[14]);
+		censusVO.setFemaleLiterates((Long)details[15]);
+		censusVO.setPopulationIlliterates((Long)details[16]);
+		censusVO.setMaleIlliterates((Long)details[17]);
+		censusVO.setFemaleIlliterates((Long)details[18]);
+		censusVO.setWorkingPopulation((Long)details[19]);
+		censusVO.setWorkingMale((Long)details[20]);
+		censusVO.setWorkingFemale((Long)details[21]);
+		censusVO.setMainWorkPopulation((Long)details[22]);
+		censusVO.setMainWorkMale((Long)details[23]);
+		censusVO.setMainWorkFemale((Long)details[24]);
+		censusVO.setMainCLPopulation((Long)details[25]);
+		censusVO.setMainCLMale((Long)details[26]);
+		censusVO.setMainCLFemale((Long)details[27]);
+		censusVO.setMainALPopulation((Long)details[28]);
+		censusVO.setMainALMale((Long)details[29]);
+		censusVO.setMainALFemale((Long)details[30]);
+		censusVO.setMainHHPopulation((Long)details[31]);
+		censusVO.setMainHHMale((Long)details[32]);
+		censusVO.setMainHHFemale((Long)details[33]);
+		censusVO.setMainOTPopulation((Long)details[34]);
+		censusVO.setMainOTMale((Long)details[35]);
+		censusVO.setMainOTFemale((Long)details[36]);
+		censusVO.setMargWorkPopulation((Long)details[37]);
+		censusVO.setMargWorkMale((Long)details[38]);
+		censusVO.setMargWorkFemale((Long)details[39]);
+		censusVO.setMargCLPopulation((Long)details[40]);
+		censusVO.setMargCLMale((Long)details[41]);
+		censusVO.setMargCLFemale((Long)details[42]);
+		censusVO.setMargALPopulation((Long)details[43]);
+		censusVO.setMargALMale((Long)details[44]);
+		censusVO.setMargALFemale((Long)details[45]);
+		censusVO.setMargHHPopulation((Long)details[46]);
+		censusVO.setMargHHMale((Long)details[47]);
+		censusVO.setMargHHFemale((Long)details[48]);
+		censusVO.setMargOTPopulation((Long)details[49]);
+		censusVO.setMargOTMale((Long)details[50]);
+		censusVO.setMargOTFemale((Long)details[51]);
+		censusVO.setNonWorkingPopulation((Long)details[52]);
+		censusVO.setNonWorkingMale((Long)details[53]);
+		censusVO.setNonWorkingFemale((Long)details[54]);
+		censusVO.setSexRatio((Double)details[55]);
+		censusVO.setSexRatioSC((Double)details[56]);
+		censusVO.setSexRatioST((Double)details[57]);
+		censusVO.setHouseHoldsSize((Double)details[58]);
+		censusVO.setPercentageSC((Double)details[59]);
+		censusVO.setPercentageST((Double)details[60]);
+		censusVO.setSexRatioUnderSix((Double)details[61]);
+		censusVO.setMaleLiteratureRate((Double)details[62]);
+		censusVO.setFemaleLiteratureRate((Double)details[63]);
+		censusVO.setGenderGap((Double)details[64]);
+		censusVO.setPopLiteraturePercentage((Double)details[65]);
+		censusVO.setMaleLiteraturePercentage((Double)details[66]);
+		censusVO.setFemaleLiteraturePercentage((Double)details[67]);
+		censusVO.setTotalPopPercentage((Double)details[68]);
+		censusVO.setTotalWorkingPopPercentage((Double)details[69]);
+		censusVO.setTotalWorkingMalePercentage((Double)details[70]);
+		censusVO.setTotalWorkingFemalePercentage((Double)details[71]);
+		censusVO.setTotalMainPopPercentage((Double)details[72]);
+		censusVO.setTotalMainMalePercentage((Double)details[73]);
+		censusVO.setTotalMainFemalePercentage((Double)details[74]);
+		censusVO.setTotalMargPopPercentage((Double)details[75]);
+		censusVO.setTotalMargMalePercentage((Double)details[76]);
+		censusVO.setTotalMargFemalePercentage((Double)details[77]);
+		censusVO.setNonWorkingPopPercentage((Double)details[78]);
+		censusVO.setNonWorkingMalePercentage((Double)details[79]);
+		censusVO.setNonWorkingFemalePercentage((Double)details[80]);
+		censusVO.setPopCLPercentage((Double)details[81]);
+		censusVO.setMaleCLPercentage((Double)details[82]);
+		censusVO.setFemaleCLPercentage((Double)details[83]);
+		censusVO.setPopALPercentage((Double)details[84]);
+		censusVO.setMaleALPercentage((Double)details[85]);
+		censusVO.setFemaleALPercentage((Double)details[86]);
+		censusVO.setPopHHPercentage((Double)details[87]);
+		censusVO.setMaleHHPercentage((Double)details[88]);
+		censusVO.setFemaleHHPercentage((Double)details[89]);
+		censusVO.setPopOWPercentage((Double)details[90]);
+		censusVO.setMaleOWPercentage((Double)details[91]);
+		censusVO.setFemaleOWPercentage((Double)details[92]);
+		censusVO.setMainMargCLPopulation((Long)details[93]);
+		censusVO.setMainMargCLMale((Long)details[94]);
+		censusVO.setMainMargCLFemale((Long)details[95]);
+		censusVO.setMainMargALPopulation((Long)details[96]);
+		censusVO.setMainMargALMale((Long)details[97]);
+		censusVO.setMainMargALFemale((Long)details[98]);
+		censusVO.setMainMargHHPopulation((Long)details[99]);
+		censusVO.setMainMargHHMale((Long)details[100]);
+		censusVO.setMainMargHHFemale((Long)details[101]);
+		censusVO.setMainMargOWPopulation((Long)details[102]);
+		censusVO.setMainMargOWMale((Long)details[103]);
+		censusVO.setMainMargOWFemale((Long)details[104]);
+		censusVO.setWpr((Double)details[105]);
+
+		return censusVO;
+		}
+		catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.setCompleteCensusDetailsToVO().... ");
+			log.error("Exception raised please check the log for details"+ex);
+			return null;
+		}
+		
+	}
+	 /**
+	 * 
+	 * This Method will give Complete Census Details  for Villages in the Tehsil if it is partial
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Long stateId
+	 * @param Long districtId
+	 * @param Long dcmId
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public CensusVO getVillageWiseCompleteCensusDetailsForPartialTehsil(Long stateId,Long districtId,Long dcmId,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into constituencyPageService.getVillageWiseCompleteCensusDetailsForPartialTehsil() Method .....");
+		}
+			
+		//Here we are getting String as return type which contains comma separeted Village ids 
+		String villageIdStr = getVillageIdsOfAPartialTehsil(dcmId);
+		
+		if((villageIdStr != null) && !(villageIdStr.trim().isEmpty()) )
+		{
+		int noOfParts = findNoOfParts(villageIdStr);
+		
+		List<Object[]> villCensus = censusDAO.findCensusDetailsForAPartialMandal(stateId,districtId,censusYear,IConstants.CENSUS_VILLAGE_LEVEL,villageIdStr);
+		
+		if(villCensus != null && villCensus.size() > 0)
+		{
+			Object [] details = villCensus.get(0);
+			CensusVO censusVO = new CensusVO();
+			censusVO = setSumCompleteCensusDetailsToVO(details,noOfParts);
+			return censusVO;
+		}
+	   }
+	  }catch(Exception ex)
+		{
+		  log.debug("Exception Occured In the constituencyPageService.getVillageWiseCompleteCensusDetailsForPartialTehsil().... ");
+		  log.error("Exception raised please check the log for details "+ex);
+		  return null;
+		}
+		return null;
+  }
+	 /**
+	 * 
+	 * This Method will give Total Number of Tokens(VillageIds/WardIds) in Given String which contains comma separated Ids
+	 * @author kamalakar Dandu
+	 * @param String 
+	 * @return int
+	 */
+	
+	public int findNoOfParts(String str)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into constituencyPageService.findNoOfParts() Method .....");
+		}
+		if(str.length() > 0)
+		{
+			StringTokenizer st = new StringTokenizer(str,","); 
+			int tokens = st.countTokens();
+			return tokens;
+		}
+		}catch(Exception ex)
+		{
+		  log.debug("Exception Occured In the constituencyPageService.findNoOfParts().... ");
+		  log.error("Exception raised please check the log for details "+ex);
+		  return 0;
+		}
+		return 0;
+	}
+	 /**
+	 * 
+	 * This Method will Set the Data to Census VO when we pass Object[] Array and Divides the Percentages.
+	 * 
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @param int
+	 * @return CensusVO
+	 * 
+	 */
+	public CensusVO setSumCompleteCensusDetailsToVO(Object[] details,int parts)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered isPartial Block of constituencyPageService.setSumCompleteCensusDetailsToVO() Method .....");
+		}
+		
+		if(details == null || parts == 0 || details.length == 0)
+		{
+			return null;
+		}
+		
+		CensusVO censusVO = new CensusVO();
+		
+		censusVO.setHouseHolds((Long)details[0]);
+		censusVO.setTotalPopulation((Long)details[1]);
+		censusVO.setMalePopulation((Long)details[2]);
+		censusVO.setFemalePopulation((Long)details[3]);
+		censusVO.setPopulationUnderSix((Long)details[4]);
+		censusVO.setMaleUnderSix((Long)details[5]);
+		censusVO.setFemaleUnderSix((Long)details[6]);
+		censusVO.setPopulationSC((Long)details[7]);
+		censusVO.setMaleSC((Long)details[8]);
+		censusVO.setFemaleSC((Long)details[9]);
+		censusVO.setPopulationST((Long)details[10]);
+		censusVO.setMaleST((Long)details[11]);
+		censusVO.setFemaleST((Long)details[12]);
+		censusVO.setPopulationLiterates((Long)details[13]);
+		censusVO.setMaleLiterates((Long)details[14]);
+		censusVO.setFemaleLiterates((Long)details[15]);
+		censusVO.setPopulationIlliterates((Long)details[16]);
+		censusVO.setMaleIlliterates((Long)details[17]);
+		censusVO.setFemaleIlliterates((Long)details[18]);
+		censusVO.setWorkingPopulation((Long)details[19]);
+		censusVO.setWorkingMale((Long)details[20]);
+		censusVO.setWorkingFemale((Long)details[21]);
+		censusVO.setMainWorkPopulation((Long)details[22]);
+		censusVO.setMainWorkMale((Long)details[23]);
+		censusVO.setMainWorkFemale((Long)details[24]);
+		censusVO.setMainCLPopulation((Long)details[25]);
+		censusVO.setMainCLMale((Long)details[26]);
+		censusVO.setMainCLFemale((Long)details[27]);
+		censusVO.setMainALPopulation((Long)details[28]);
+		censusVO.setMainALMale((Long)details[29]);
+		censusVO.setMainALFemale((Long)details[30]);
+		censusVO.setMainHHPopulation((Long)details[31]);
+		censusVO.setMainHHMale((Long)details[32]);
+		censusVO.setMainHHFemale((Long)details[33]);
+		censusVO.setMainOTPopulation((Long)details[34]);
+		censusVO.setMainOTMale((Long)details[35]);
+		censusVO.setMainOTFemale((Long)details[36]);
+		censusVO.setMargWorkPopulation((Long)details[37]);
+		censusVO.setMargWorkMale((Long)details[38]);
+		censusVO.setMargWorkFemale((Long)details[39]);
+		censusVO.setMargCLPopulation((Long)details[40]);
+		censusVO.setMargCLMale((Long)details[41]);
+		censusVO.setMargCLFemale((Long)details[42]);
+		censusVO.setMargALPopulation((Long)details[43]);
+		censusVO.setMargALMale((Long)details[44]);
+		censusVO.setMargALFemale((Long)details[45]);
+		censusVO.setMargHHPopulation((Long)details[46]);
+		censusVO.setMargHHMale((Long)details[47]);
+		censusVO.setMargHHFemale((Long)details[48]);
+		censusVO.setMargOTPopulation((Long)details[49]);
+		censusVO.setMargOTMale((Long)details[50]);
+		censusVO.setMargOTFemale((Long)details[51]);
+		censusVO.setNonWorkingPopulation((Long)details[52]);
+		censusVO.setNonWorkingMale((Long)details[53]);
+		censusVO.setNonWorkingFemale((Long)details[54]);
+		censusVO.setSexRatio((Double)details[55]/parts);
+		censusVO.setSexRatioSC((Double)details[56]/parts);
+		censusVO.setSexRatioST((Double)details[57]/parts);
+		censusVO.setHouseHoldsSize((Double)details[58]/parts);
+		censusVO.setPercentageSC((Double)details[59]/parts);
+		censusVO.setPercentageST((Double)details[60]/parts);
+		censusVO.setSexRatioUnderSix((Double)details[61]/parts);
+		censusVO.setMaleLiteratureRate((Double)details[62]/parts);
+		censusVO.setFemaleLiteratureRate((Double)details[63]/parts);
+		censusVO.setGenderGap((Double)details[64]/parts);
+		censusVO.setPopLiteraturePercentage((Double)details[65]/parts);
+		censusVO.setMaleLiteraturePercentage((Double)details[66]/parts);
+		censusVO.setFemaleLiteraturePercentage((Double)details[67]/parts);
+		censusVO.setTotalPopPercentage((Double)details[68]/parts);
+		censusVO.setTotalWorkingPopPercentage((Double)details[69]/parts);
+		censusVO.setTotalWorkingMalePercentage((Double)details[70]/parts);
+		censusVO.setTotalWorkingFemalePercentage((Double)details[71]/parts);
+		censusVO.setTotalMainPopPercentage((Double)details[72]/parts);
+		censusVO.setTotalMainMalePercentage((Double)details[73]/parts);
+		censusVO.setTotalMainFemalePercentage((Double)details[74]/parts);
+		censusVO.setTotalMargPopPercentage((Double)details[75]/parts);
+		censusVO.setTotalMargMalePercentage((Double)details[76]/parts);
+		censusVO.setTotalMargFemalePercentage((Double)details[77]/parts);
+		censusVO.setNonWorkingPopPercentage((Double)details[78]/parts);
+		censusVO.setNonWorkingMalePercentage((Double)details[79]/parts);
+		censusVO.setNonWorkingFemalePercentage((Double)details[80]/parts);
+		censusVO.setPopCLPercentage((Double)details[81]/parts);
+		censusVO.setMaleCLPercentage((Double)details[82]/parts);
+		censusVO.setFemaleCLPercentage((Double)details[83]/parts);
+		censusVO.setPopALPercentage((Double)details[84]/parts);
+		censusVO.setMaleALPercentage((Double)details[85]/parts);
+		censusVO.setFemaleALPercentage((Double)details[86]/parts);
+		censusVO.setPopHHPercentage((Double)details[87]/parts);
+		censusVO.setMaleHHPercentage((Double)details[88]/parts);
+		censusVO.setFemaleHHPercentage((Double)details[89]/parts);
+		censusVO.setPopOWPercentage((Double)details[90]/parts);
+		censusVO.setMaleOWPercentage((Double)details[91]/parts);
+		censusVO.setFemaleOWPercentage((Double)details[92]/parts);
+		censusVO.setMainMargCLPopulation((Long)details[93]);
+		censusVO.setMainMargCLMale((Long)details[94]);
+		censusVO.setMainMargCLFemale((Long)details[95]);
+		censusVO.setMainMargALPopulation((Long)details[96]);
+		censusVO.setMainMargALMale((Long)details[97]);
+		censusVO.setMainMargALFemale((Long)details[98]);
+		censusVO.setMainMargHHPopulation((Long)details[99]);
+		censusVO.setMainMargHHMale((Long)details[100]);
+		censusVO.setMainMargHHFemale((Long)details[101]);
+		censusVO.setMainMargOWPopulation((Long)details[102]);
+		censusVO.setMainMargOWMale((Long)details[103]);
+		censusVO.setMainMargOWFemale((Long)details[104]);
+		censusVO.setWpr((Double)details[105]/parts);
+		
+		return censusVO;
+		}
+		catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.setSumCompleteCensusDetailsToVO().... ");
+			log.error("Exception raised please check the log for details "+ex);
+			return null;
+		}
+	}
+	
+	public List<CensusVO> getCompleteCensusDetailsOfATownInAPartialTehsil(Long delimitationConstituencyId,Long mandalId,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into constituencyPageService.getCensusDetailsOfATowmInAPartialTehsil() Method .....");
+		}
+		//Here we are getting Latest towns for Delimitation Constituency
+		List<Object[]> towns = getLatestTownsForATehsil(delimitationConstituencyId,mandalId);
+		
+		if(towns != null && towns.size() > 0)
+		{
+			List<CensusVO> townCensusVOList = new ArrayList<CensusVO>();
+			for(Object[] param:towns)
+			{
+				//Here we are getting Census Details For a town
+				CensusVO  censusVO = getCompleteCensusDetailsForATown(param,censusYear);
+				
+				//If census is not present to the town then it retuns null,that we are ommitting
+				if(censusVO != null)
+				townCensusVOList.add(censusVO);
+			}
+			
+			return townCensusVOList;
+		}
+	}catch(Exception ex)
+	{
+		log.debug("Exception Occured In the constituencyPageService.getCensusDetailsOfATowmInAPartialTehsil().... ");
+		log.error("Exception raised please check the log for details "+ex);
+		return null;
+	}
+		return null;
+		
+		
+	}
+	/**
+	 * This Method will give Census Details  for A Town when we pass Object Array which contains Town Id and Census Year.
+	 * @author kamalakar Dandu
+	 * @param Object[] 
+	 * @param Long censusYear
+	 * @return CensusVO
+	 * 
+	 */
+	public CensusVO getCompleteCensusDetailsForATown(Object[] params,Long censusYear)
+	{
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Entered Into constituencyPageService.getCompleteCensusDetailsForATown() Method .....");
+			}	
+			
+			//we are setting the Location Details
+			Long dctId = (Long)params[0];
+			Long townshipId = (Long)params[1];
+			boolean isPartial  = params[2].toString().equalsIgnoreCase("1");
+			
+			Township township = townshipDAO.get(townshipId);
+			Long districtId =  township.getTehsil().getDistrict().getDistrictId();
+			Long stateId =  township.getTehsil().getDistrict().getState().getStateId();
+			
+			if(isPartial)
+			{
+				if(log.isDebugEnabled()){
+					log.debug("Entered isPartial Block of constituencyPageService.getCensusDetailsForATown() Method .....");
+				}
+				
+				//Here we are getting String as return type which contains comma separeted ward ids 
+				String wardIdStr = getWardIdsOfAPartialTownship(dctId);
+				int noOfParts = findNoOfParts(wardIdStr);
+				if((wardIdStr != null) && (!wardIdStr.isEmpty()))
+				{
+				//Here we are getting census details of the total wards group By   
+				List<Object[]> wardCensus = censusDAO.findCompleteCensusDetailsForAPartialTown(stateId,districtId,censusYear,IConstants.WARD,wardIdStr);
+					
+				if(wardCensus != null && wardCensus.size() > 0)
+				{
+					return setSumCompleteCensusDetailsToVO(wardCensus.get(0),noOfParts);
+				}
+				
+			   }
+			}
+			else
+			{
+				if(log.isDebugEnabled()){
+					log.debug("The Town is full in the Constituency and Entered to partial false Block of constituencyPageService.getCensusDetailsForATown() Method .....");
+				}
+				//Here we are getting census details of the Township
+				List<Object[]> list = censusDAO.findTownshipWiseCompleteCensusDetails(stateId,districtId,townshipId,censusYear,IConstants.TOWN);
+				if(list != null && list.size() > 0)
+				{
+				   return  setCompleteCensusDetailsToVO(list.get(0));
+				}
+		  }
+			
+		  return null;
+		}catch(Exception ex)
+		{
+			log.debug("Exception Occured In the constituencyPageService.getCompleteCensusDetailsForATown().... ");
+			log.error("Exception raised please check the log for details "+ex);
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * This Method add List of census Details to a single VO
+	 * 
+	 * @author kamalakar Dandu
+	 * @param List<CensusVO>
+	 * @return CensusVO
+	 * 
+	 *  
+	 */
+	public CensusVO addCompleteCensusDataToSingleVO(List<CensusVO> censusVOList)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.addCompleteCensusDataToSingleVO() method ......");
+		}
+		if(censusVOList.size() == 0)
+			return null;
+		else
+		{
+			CensusVO censusVO = new CensusVO();
+			
+			int count = 0;		
+			for(CensusVO cenVO:censusVOList)
+			{
+				++count;
+				censusVO.setHouseHolds((censusVO.getHouseHolds()== null ? 0:censusVO.getHouseHolds())+ cenVO.getHouseHolds());
+				censusVO.setTotalPopulation((censusVO.getTotalPopulation()== null ? 0:censusVO.getTotalPopulation())+ cenVO.getTotalPopulation());
+				censusVO.setMalePopulation((censusVO.getMalePopulation()== null ? 0:censusVO.getMalePopulation())+cenVO.getMalePopulation());
+				censusVO.setFemalePopulation((censusVO.getFemalePopulation()== null ? 0:censusVO.getFemalePopulation())+cenVO.getFemalePopulation());
+				censusVO.setPopulationUnderSix((censusVO.getPopulationUnderSix()== null ? 0:censusVO.getPopulationUnderSix())+cenVO.getPopulationUnderSix());
+				censusVO.setMaleUnderSix((censusVO.getMaleUnderSix()== null ? 0:censusVO.getMaleUnderSix())+cenVO.getMaleUnderSix());
+				censusVO.setFemaleUnderSix((censusVO.getFemaleUnderSix()== null ? 0:censusVO.getFemaleUnderSix())+cenVO.getFemaleUnderSix());
+				censusVO.setPopulationSC((censusVO.getPopulationSC()== null ? 0:censusVO.getPopulationSC())+cenVO.getPopulationSC());
+				censusVO.setMaleSC((censusVO.getMaleSC()== null ? 0:censusVO.getMaleSC())+cenVO.getMaleSC());
+				censusVO.setFemaleSC((censusVO.getFemaleSC()== null ? 0:censusVO.getFemaleSC())+cenVO.getFemaleSC());
+				censusVO.setPopulationST((censusVO.getPopulationST()== null ? 0:censusVO.getPopulationST())+cenVO.getPopulationST());
+				censusVO.setMaleST((censusVO.getMaleST()== null ? 0:censusVO.getMaleST())+cenVO.getMaleST());
+				censusVO.setFemaleST((censusVO.getFemaleST()== null ? 0:censusVO.getFemaleST())+cenVO.getFemaleST());
+				censusVO.setPopulationLiterates((censusVO.getPopulationLiterates()== null ? 0:censusVO.getPopulationLiterates())+cenVO.getPopulationLiterates());
+				censusVO.setMaleLiterates((censusVO.getMaleLiterates()== null ? 0:censusVO.getMaleLiterates())+cenVO.getMaleLiterates());
+				censusVO.setFemaleLiterates((censusVO.getFemaleLiterates()== null ? 0:censusVO.getFemaleLiterates())+cenVO.getFemaleLiterates());
+				censusVO.setPopulationIlliterates((censusVO.getPopulationIlliterates()== null ? 0:censusVO.getPopulationIlliterates())+cenVO.getPopulationIlliterates());
+				censusVO.setMaleIlliterates((censusVO.getMaleIlliterates()== null ? 0:censusVO.getMaleIlliterates())+cenVO.getMaleIlliterates());
+				censusVO.setFemaleIlliterates((censusVO.getFemaleIlliterates()== null ? 0:censusVO.getFemaleIlliterates())+cenVO.getFemaleIlliterates());
+				censusVO.setWorkingPopulation((censusVO.getWorkingPopulation()== null ? 0:censusVO.getWorkingPopulation())+cenVO.getWorkingPopulation());
+				censusVO.setWorkingMale((censusVO.getWorkingMale()== null ? 0:censusVO.getWorkingMale())+cenVO.getWorkingMale());
+				censusVO.setWorkingFemale((censusVO.getWorkingFemale()== null ? 0:censusVO.getWorkingFemale())+cenVO.getWorkingFemale());
+				censusVO.setMainWorkPopulation((censusVO.getMainWorkPopulation()== null ? 0:censusVO.getMainWorkPopulation())+cenVO.getMainWorkPopulation());
+				censusVO.setMainWorkMale((censusVO.getMainWorkMale()== null ? 0:censusVO.getMainWorkMale())+cenVO.getMainWorkMale());
+				censusVO.setMainWorkFemale((censusVO.getMainWorkFemale()== null ? 0:censusVO.getMainWorkFemale())+cenVO.getMainWorkFemale());
+				censusVO.setMainCLPopulation((censusVO.getMainCLPopulation()== null ? 0:censusVO.getMainCLPopulation())+cenVO.getMainCLPopulation());
+				censusVO.setMainCLMale((censusVO.getMainCLMale()== null ? 0:censusVO.getMainCLMale())+cenVO.getMainCLMale());
+				censusVO.setMainCLFemale((censusVO.getMainCLFemale()== null ? 0:censusVO.getMainCLFemale())+cenVO.getMainCLFemale());
+				censusVO.setMainALPopulation((censusVO.getMainALPopulation()== null ? 0:censusVO.getMainALPopulation())+cenVO.getMainALPopulation());
+				censusVO.setMainALMale((censusVO.getMainALMale()== null ? 0:censusVO.getMainALMale())+cenVO.getMainALMale());
+				censusVO.setMainALFemale((censusVO.getMainALFemale()== null ? 0:censusVO.getMainALFemale())+cenVO.getMainALFemale());
+				censusVO.setMainHHPopulation((censusVO.getMainHHPopulation()== null ? 0:censusVO.getMainHHPopulation())+cenVO.getMainHHPopulation());
+				censusVO.setMainHHMale((censusVO.getMainHHMale()== null ? 0:censusVO.getMainHHMale())+cenVO.getMainHHMale());
+				censusVO.setMainHHFemale((censusVO.getMainHHFemale()== null ? 0:censusVO.getMainHHFemale())+cenVO.getMainHHFemale());
+				censusVO.setMainOTPopulation((censusVO.getMainOTPopulation()== null ? 0:censusVO.getMainOTPopulation())+cenVO.getMainOTPopulation());
+				censusVO.setMainOTMale((censusVO.getMainOTMale()== null ? 0:censusVO.getMainOTMale())+cenVO.getMainOTMale());
+				censusVO.setMainOTFemale((censusVO.getMainOTFemale()== null ? 0:censusVO.getMainOTFemale())+cenVO.getMainOTFemale());
+				censusVO.setMargWorkPopulation((censusVO.getMargWorkPopulation()== null ? 0:censusVO.getMargWorkPopulation())+cenVO.getMargWorkPopulation());
+				censusVO.setMargWorkMale((censusVO.getMargWorkMale()== null ? 0:censusVO.getMargWorkMale())+cenVO.getMargWorkMale());
+				censusVO.setMargWorkFemale((censusVO.getMargWorkFemale()== null ? 0:censusVO.getMargWorkFemale())+cenVO.getMargWorkFemale());
+				censusVO.setMargCLPopulation((censusVO.getMargCLPopulation()== null ? 0:censusVO.getMargCLPopulation())+cenVO.getMargCLPopulation());
+				censusVO.setMargCLMale((censusVO.getMargCLMale()== null ? 0:censusVO.getMargCLMale())+cenVO.getMargCLMale());
+				censusVO.setMargCLFemale((censusVO.getMargCLFemale()== null ? 0:censusVO.getMargCLFemale())+cenVO.getMargCLFemale());
+				censusVO.setMargALPopulation((censusVO.getMargALPopulation()== null ? 0:censusVO.getMargALPopulation())+cenVO.getMargALPopulation());
+				censusVO.setMargALMale((censusVO.getMargALMale()== null ? 0:censusVO.getMargALMale())+cenVO.getMargALMale());
+				censusVO.setMargALFemale((censusVO.getMargALFemale()== null ? 0:censusVO.getMargALFemale())+cenVO.getMargALFemale());
+				censusVO.setMargHHPopulation((censusVO.getMargHHPopulation()== null ? 0:censusVO.getMargHHPopulation())+cenVO.getMargHHPopulation());
+				censusVO.setMargHHMale((censusVO.getMargHHMale()== null ? 0:censusVO.getMargHHMale())+cenVO.getMargHHMale());
+				censusVO.setMargHHFemale((censusVO.getMargHHFemale()== null ? 0:censusVO.getMargHHFemale())+cenVO.getMargHHFemale());
+				censusVO.setMargOTPopulation((censusVO.getMargOTPopulation()== null ? 0:censusVO.getMargOTPopulation())+cenVO.getMargOTPopulation());
+				censusVO.setMargOTMale((censusVO.getMargOTMale()== null ? 0:censusVO.getMargOTMale())+cenVO.getMargOTMale());
+				censusVO.setMargOTFemale((censusVO.getMargOTFemale()== null ? 0:censusVO.getMargOTFemale())+cenVO.getMargOTFemale());
+				censusVO.setNonWorkingPopulation((censusVO.getNonWorkingPopulation()== null ? 0:censusVO.getNonWorkingPopulation())+cenVO.getNonWorkingPopulation());
+				censusVO.setNonWorkingMale((censusVO.getNonWorkingMale()== null ? 0:censusVO.getNonWorkingMale())+cenVO.getNonWorkingMale());
+				censusVO.setNonWorkingFemale((censusVO.getNonWorkingFemale()== null ? 0:censusVO.getNonWorkingFemale())+cenVO.getNonWorkingFemale());
+				censusVO.setSexRatio((censusVO.getSexRatio()== null ? 0.0:censusVO.getSexRatio())+cenVO.getSexRatio());
+				censusVO.setSexRatioSC((censusVO.getSexRatioSC()== null ? 0.0:censusVO.getSexRatioSC())+cenVO.getSexRatioSC());
+				censusVO.setSexRatioST((censusVO.getSexRatioST()== null ? 0.0:censusVO.getSexRatioST())+cenVO.getSexRatioST());
+				censusVO.setHouseHoldsSize((censusVO.getHouseHoldsSize()== null ? 0.0:censusVO.getHouseHoldsSize())+cenVO.getHouseHoldsSize());
+				censusVO.setPercentageSC((censusVO.getPercentageSC()== null ? 0.0:censusVO.getPercentageSC())+cenVO.getPercentageSC());
+				censusVO.setPercentageST((censusVO.getPercentageST()== null ? 0.0:censusVO.getPercentageST())+cenVO.getPercentageST());
+				censusVO.setSexRatioUnderSix((censusVO.getSexRatioUnderSix()== null ? 0.0:censusVO.getSexRatioUnderSix())+cenVO.getSexRatioUnderSix());
+				censusVO.setMaleLiteratureRate((censusVO.getMaleLiteratureRate()== null ? 0.0:censusVO.getMaleLiteratureRate())+cenVO.getMaleLiteratureRate());
+				censusVO.setFemaleLiteratureRate((censusVO.getFemaleLiteratureRate()== null ? 0.0:censusVO.getFemaleLiteratureRate())+cenVO.getFemaleLiteratureRate());
+				censusVO.setGenderGap((censusVO.getGenderGap()== null ? 0.0:censusVO.getGenderGap())+cenVO.getGenderGap());
+				censusVO.setPopLiteraturePercentage((censusVO.getPopLiteraturePercentage()== null ? 0.0:censusVO.getPopLiteraturePercentage())+cenVO.getPopLiteraturePercentage());
+				censusVO.setMaleLiteraturePercentage((censusVO.getMaleLiteraturePercentage()== null ? 0.0:censusVO.getMaleLiteraturePercentage())+cenVO.getMaleLiteraturePercentage());
+				censusVO.setFemaleLiteraturePercentage((censusVO.getFemaleLiteraturePercentage()== null ? 0.0:censusVO.getFemaleLiteraturePercentage())+cenVO.getFemaleLiteraturePercentage());
+				censusVO.setTotalPopPercentage((censusVO.getTotalPopPercentage()== null ? 0.0:censusVO.getTotalPopPercentage())+cenVO.getTotalPopPercentage());
+				censusVO.setTotalWorkingPopPercentage((censusVO.getTotalWorkingPopPercentage()== null ? 0.0:censusVO.getTotalWorkingPopPercentage())+cenVO.getTotalWorkingPopPercentage());
+				censusVO.setTotalWorkingMalePercentage((censusVO.getTotalWorkingMalePercentage()== null ? 0.0:censusVO.getTotalWorkingMalePercentage())+cenVO.getTotalWorkingMalePercentage());
+				censusVO.setTotalWorkingFemalePercentage((censusVO.getTotalWorkingFemalePercentage()== null ? 0.0:censusVO.getTotalWorkingFemalePercentage())+cenVO.getTotalWorkingFemalePercentage());
+				censusVO.setTotalMainPopPercentage((censusVO.getTotalMainPopPercentage()== null ? 0.0:censusVO.getTotalMainPopPercentage())+cenVO.getTotalMainPopPercentage());
+				censusVO.setTotalMainMalePercentage((censusVO.getTotalMainMalePercentage()== null ? 0.0:censusVO.getTotalMainMalePercentage())+cenVO.getTotalMainMalePercentage());
+				censusVO.setTotalMainFemalePercentage((censusVO.getTotalMainFemalePercentage()== null ? 0.0:censusVO.getTotalMainFemalePercentage())+cenVO.getTotalMainFemalePercentage());
+				censusVO.setTotalMargPopPercentage((censusVO.getTotalMargPopPercentage()== null ? 0.0:censusVO.getTotalMargPopPercentage())+cenVO.getTotalMargPopPercentage());
+				censusVO.setTotalMargMalePercentage((censusVO.getTotalMargMalePercentage()== null ? 0.0:censusVO.getTotalMargMalePercentage())+cenVO.getTotalMargMalePercentage());
+				censusVO.setTotalMargFemalePercentage((censusVO.getTotalMargFemalePercentage()== null ? 0.0:censusVO.getTotalMargFemalePercentage())+cenVO.getTotalMargFemalePercentage());
+				censusVO.setNonWorkingPopPercentage((censusVO.getNonWorkingPopPercentage()== null ? 0.0:censusVO.getNonWorkingPopPercentage())+cenVO.getNonWorkingPopPercentage());
+				censusVO.setNonWorkingMalePercentage((censusVO.getNonWorkingMalePercentage()== null ? 0.0:censusVO.getNonWorkingMalePercentage())+cenVO.getNonWorkingMalePercentage());
+				censusVO.setNonWorkingFemalePercentage((censusVO.getNonWorkingFemalePercentage()== null ? 0.0:censusVO.getNonWorkingFemalePercentage())+cenVO.getNonWorkingFemalePercentage());
+				censusVO.setPopCLPercentage((censusVO.getPopCLPercentage()== null ? 0.0:censusVO.getPopCLPercentage())+cenVO.getPopCLPercentage());
+				censusVO.setMaleCLPercentage((censusVO.getMaleCLPercentage()== null ? 0.0:censusVO.getMaleCLPercentage())+cenVO.getMaleCLPercentage());
+				censusVO.setFemaleCLPercentage((censusVO.getFemaleCLPercentage()== null ? 0.0:censusVO.getFemaleCLPercentage())+cenVO.getFemaleCLPercentage());
+				censusVO.setPopALPercentage((censusVO.getPopALPercentage()== null ? 0.0:censusVO.getPopALPercentage())+cenVO.getPopALPercentage());
+				censusVO.setMaleALPercentage((censusVO.getMaleALPercentage()== null ? 0.0:censusVO.getMaleALPercentage())+cenVO.getMaleALPercentage());
+				censusVO.setFemaleALPercentage((censusVO.getFemaleALPercentage()== null ? 0.0:censusVO.getFemaleALPercentage())+cenVO.getFemaleALPercentage());
+				censusVO.setPopHHPercentage((censusVO.getPopHHPercentage()== null ? 0.0:censusVO.getPopHHPercentage())+cenVO.getPopHHPercentage());
+				censusVO.setMaleHHPercentage((censusVO.getMaleHHPercentage()== null ? 0.0:censusVO.getMaleHHPercentage())+cenVO.getMaleHHPercentage());
+				censusVO.setFemaleHHPercentage((censusVO.getFemaleHHPercentage()== null ? 0.0:censusVO.getFemaleHHPercentage())+cenVO.getFemaleHHPercentage());
+				censusVO.setPopOWPercentage((censusVO.getPopOWPercentage()== null ? 0.0:censusVO.getPopOWPercentage())+cenVO.getPopOWPercentage());
+				censusVO.setMaleOWPercentage((censusVO.getMaleOWPercentage()== null ? 0.0:censusVO.getMaleOWPercentage())+cenVO.getMaleOWPercentage());
+				censusVO.setFemaleOWPercentage((censusVO.getFemaleOWPercentage()== null ? 0.0:censusVO.getFemaleOWPercentage())+cenVO.getFemaleOWPercentage());
+				censusVO.setMainMargCLPopulation((censusVO.getMainMargCLPopulation()== null ? 0:censusVO.getMainMargCLPopulation())+cenVO.getMainMargCLPopulation());
+				censusVO.setMainMargCLMale((censusVO.getMainMargCLMale()== null ? 0:censusVO.getMainMargCLMale())+cenVO.getMainMargCLMale());
+				censusVO.setMainMargCLFemale((censusVO.getMainMargCLFemale()== null ? 0:censusVO.getMainMargCLFemale())+cenVO.getMainMargCLFemale());
+				censusVO.setMainMargALPopulation((censusVO.getMainMargALPopulation()== null ? 0:censusVO.getMainMargALPopulation())+cenVO.getMainMargALPopulation());
+				censusVO.setMainMargALMale((censusVO.getMainMargALMale()== null ? 0:censusVO.getMainMargALMale())+cenVO.getMainMargALMale());
+				censusVO.setMainMargALFemale((censusVO.getMainMargALFemale()== null ? 0:censusVO.getMainMargALFemale())+cenVO.getMainMargALFemale());
+				censusVO.setMainMargHHPopulation((censusVO.getMainMargHHPopulation()== null ? 0:censusVO.getMainMargHHPopulation())+cenVO.getMainMargHHPopulation());
+				censusVO.setMainMargHHMale((censusVO.getMainMargHHMale()== null ? 0:censusVO.getMainMargHHMale())+cenVO.getMainMargHHMale());
+				censusVO.setMainMargHHFemale((censusVO.getMainMargHHFemale()== null ? 0:censusVO.getMainMargHHFemale())+cenVO.getMainMargHHFemale());
+				censusVO.setMainMargOWPopulation((censusVO.getMainMargOWPopulation()== null ? 0:censusVO.getMainMargOWPopulation())+cenVO.getMainMargOWPopulation());
+				censusVO.setMainMargOWMale((censusVO.getMainMargOWMale()== null ? 0:censusVO.getMainMargOWMale())+cenVO.getMainMargOWMale());
+				censusVO.setMainMargOWFemale((censusVO.getMainMargOWFemale()== null ? 0:censusVO.getMainMargOWFemale())+cenVO.getMainMargOWFemale());
+				censusVO.setWpr((censusVO.getWpr()== null ? 0.0:censusVO.getWpr())+cenVO.getWpr());
+				
+			}
+			return setPercentageOfCensusVO(censusVO,count);		
+		}
+	}catch(Exception e){
+		  log.debug("Exception Occured In the constituencyPageService.addCompleteCensusDataToSingleVO() method .........");
+		  log.error("Exception raised please check the log for details "+e);
+		  return null;
+	  }
+	}
+	
+	/**
+	 * This Method sets the percentage of Census Details of a Constituency.
+	 * @author kamalakar Dandu
+	 * @param CensusVO censusVO
+	 * @param int count
+	 * @return CensusVO
+	 */
+	public CensusVO setPercentageOfCensusVO(CensusVO censusVO,int count)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.setPercentageOfCensusVO() method ......");
+		}
+		censusVO.setSexRatioSC(censusVO.getSexRatioSC()/count);
+		censusVO.setSexRatioST(censusVO.getSexRatioST()/count);
+		censusVO.setHouseHoldsSize(censusVO.getHouseHoldsSize()/count);
+		censusVO.setPercentageSC(censusVO.getPercentageSC()/count);
+		censusVO.setPercentageST(censusVO.getPercentageST()/count);
+		censusVO.setSexRatioUnderSix(censusVO.getSexRatioUnderSix()/count);
+		censusVO.setMaleLiteratureRate(censusVO.getMaleLiteratureRate()/count);
+		censusVO.setFemaleLiteratureRate(censusVO.getFemaleLiteratureRate()/count);
+		censusVO.setGenderGap(censusVO.getGenderGap()/count);
+		censusVO.setPopLiteraturePercentage(censusVO.getPopLiteraturePercentage()/count);
+		censusVO.setMaleLiteraturePercentage(censusVO.getMaleLiteraturePercentage()/count);
+		censusVO.setFemaleLiteraturePercentage(censusVO.getFemaleLiteraturePercentage()/count);
+		censusVO.setTotalPopPercentage(censusVO.getTotalPopPercentage()/count);
+		censusVO.setTotalWorkingPopPercentage(censusVO.getTotalWorkingPopPercentage()/count);
+		censusVO.setTotalWorkingMalePercentage(censusVO.getTotalWorkingMalePercentage()/count);
+		censusVO.setTotalWorkingFemalePercentage(censusVO.getTotalWorkingFemalePercentage()/count);
+		censusVO.setTotalMainPopPercentage(censusVO.getTotalMainPopPercentage()/count);
+		censusVO.setTotalMainMalePercentage(censusVO.getTotalMainMalePercentage()/count);
+		censusVO.setTotalMainFemalePercentage(censusVO.getTotalMainFemalePercentage()/count);
+		censusVO.setTotalMargPopPercentage(censusVO.getTotalMargPopPercentage()/count);
+		censusVO.setTotalMargMalePercentage(censusVO.getTotalMargMalePercentage()/count);
+		censusVO.setTotalMargFemalePercentage(censusVO.getTotalMargFemalePercentage()/count);
+		censusVO.setNonWorkingPopPercentage(censusVO.getNonWorkingPopPercentage()/count);
+		censusVO.setNonWorkingMalePercentage(censusVO.getNonWorkingMalePercentage()/count);
+		censusVO.setNonWorkingFemalePercentage(censusVO.getNonWorkingFemalePercentage()/count);
+		censusVO.setPopCLPercentage(censusVO.getPopCLPercentage()/count);
+		censusVO.setMaleCLPercentage(censusVO.getMaleCLPercentage()/count);
+		censusVO.setFemaleCLPercentage(censusVO.getFemaleCLPercentage()/count);
+		censusVO.setPopALPercentage(censusVO.getPopALPercentage()/count);
+		censusVO.setMaleALPercentage(censusVO.getMaleALPercentage()/count);
+		censusVO.setFemaleALPercentage(censusVO.getFemaleALPercentage()/count);
+		censusVO.setPopHHPercentage(censusVO.getPopHHPercentage()/count);
+		censusVO.setMaleHHPercentage(censusVO.getMaleHHPercentage()/count);
+		censusVO.setFemaleHHPercentage(censusVO.getFemaleHHPercentage()/count);
+		censusVO.setPopOWPercentage(censusVO.getPopOWPercentage()/count);
+		censusVO.setMaleOWPercentage(censusVO.getMaleOWPercentage()/count);
+		censusVO.setFemaleOWPercentage(censusVO.getFemaleOWPercentage()/count);
+		censusVO.setWpr(censusVO.getWpr()/count);
+		
+		return censusVO;
+		
+		}catch(Exception e){
+			  log.debug("Exception Occured In the constituencyPageService.setPercentageOfCensusVO() method .........");
+			  log.error("Exception raised please check the log for details "+e);
+			  return null;
+	  }
+	}
+	
+	/**
+	 * This Method Save the Census Data to Constituency_Census_Details
+	 * @author kamalakar Dandu
+	 * @param CensusVO censusVO
+	 * @param Long constituencyId
+	 * @param Long censusYear
+	 * @return CensusVO
+	 */
+	
+	public String saveCensusToConstituencyCensusDetails(final CensusVO censusVO,final Long constituencyId,final Long censusYear)
+	{
+			transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status)
+				{
+					ConstituencyCensusDetails constituencyCensusDetails = new ConstituencyCensusDetails();
+					Long stateId = constituencyDAO.getStateIdByConstituencyId(constituencyId).get(0);
+								
+					try{
+						constituencyCensusDetails.setStateId(stateId);
+						constituencyCensusDetails.setConstituencyId(constituencyId);
+						constituencyCensusDetails.setLevel(IConstants.CONSTITUENCY);
+						constituencyCensusDetails.setYear(censusYear);
+						constituencyCensusDetails.setTru(IConstants.TOTAL);
+						constituencyCensusDetails.setHouseHolds(censusVO.getHouseHolds());
+						constituencyCensusDetails.setTotalPopulation(censusVO.getTotalPopulation());
+						constituencyCensusDetails.setTotalMalePopulation(censusVO.getMalePopulation());
+						constituencyCensusDetails.setTotalFemalePopulation(censusVO.getFemalePopulation());
+						constituencyCensusDetails.setPopulationUnderSix(censusVO.getPopulationUnderSix());
+						constituencyCensusDetails.setMaleUnderSix(censusVO.getMaleUnderSix());
+						constituencyCensusDetails.setFemaleUnderSix(censusVO.getFemaleUnderSix());
+						constituencyCensusDetails.setPopulationSC(censusVO.getPopulationSC());
+						constituencyCensusDetails.setMaleSC(censusVO.getMaleSC());
+						constituencyCensusDetails.setFemaleSC(censusVO.getFemaleSC());
+						constituencyCensusDetails.setPopulationST(censusVO.getPopulationST());
+						constituencyCensusDetails.setMaleST(censusVO.getMaleST());
+						constituencyCensusDetails.setFemaleST(censusVO.getFemaleST());
+						constituencyCensusDetails.setPopulationLiterates(censusVO.getPopulationLiterates());
+						constituencyCensusDetails.setMaleLiterates(censusVO.getMaleLiterates());
+						constituencyCensusDetails.setFemaleLiterates(censusVO.getFemaleLiterates());
+						constituencyCensusDetails.setPopulationIlliterates(censusVO.getPopulationIlliterates());
+						constituencyCensusDetails.setMaleIlliterates(censusVO.getMaleIlliterates());
+						constituencyCensusDetails.setFemaleIlliterates(censusVO.getFemaleIlliterates());
+						constituencyCensusDetails.setWorkingPopulation(censusVO.getWorkingPopulation());
+						constituencyCensusDetails.setWorkingMale(censusVO.getWorkingMale());
+						constituencyCensusDetails.setWorkingFemale(censusVO.getWorkingFemale());
+						constituencyCensusDetails.setMainWorkPopulation(censusVO.getMainWorkPopulation());
+						constituencyCensusDetails.setMainWorkMale(censusVO.getMainWorkMale());
+						constituencyCensusDetails.setMainWorkFemale(censusVO.getMainWorkFemale());
+						constituencyCensusDetails.setMainCLPopulation(censusVO.getMainCLPopulation());
+						constituencyCensusDetails.setMainCLMale(censusVO.getMainCLMale());
+						constituencyCensusDetails.setMainCLFemale(censusVO.getMainCLFemale());
+						constituencyCensusDetails.setMainALPopulation(censusVO.getMainALPopulation());
+						constituencyCensusDetails.setMainALMale(censusVO.getMainALMale());
+						constituencyCensusDetails.setMainALFemale(censusVO.getMainALFemale());
+						constituencyCensusDetails.setMainHHPopulation(censusVO.getMainHHPopulation());
+						constituencyCensusDetails.setMainHHMale(censusVO.getMainHHMale());
+						constituencyCensusDetails.setMainHHFemale(censusVO.getMainHHFemale());
+						constituencyCensusDetails.setMainOTPopulation(censusVO.getMainOTPopulation());
+						constituencyCensusDetails.setMainOTMale(censusVO.getMainOTMale());
+						constituencyCensusDetails.setMainOTFemale(censusVO.getMainOTFemale());
+						constituencyCensusDetails.setMargWorkPopulation(censusVO.getMargWorkPopulation());
+						constituencyCensusDetails.setMargWorkMale(censusVO.getMargWorkMale());
+						constituencyCensusDetails.setMargWorkFemale(censusVO.getMargWorkFemale());
+						constituencyCensusDetails.setMargCLPopulation(censusVO.getMargCLPopulation());
+						constituencyCensusDetails.setMargCLMale(censusVO.getMargCLMale());
+						constituencyCensusDetails.setMargCLFemale(censusVO.getMargCLFemale());
+						constituencyCensusDetails.setMargALPopulation(censusVO.getMargALPopulation());
+						constituencyCensusDetails.setMargALMale(censusVO.getMargALMale());
+						constituencyCensusDetails.setMargALFemale(censusVO.getMargALFemale());
+						constituencyCensusDetails.setMargHHPopulation(censusVO.getMargHHPopulation());
+						constituencyCensusDetails.setMargHHMale(censusVO.getMargHHMale());
+						constituencyCensusDetails.setMargHHFemale(censusVO.getMargHHFemale());
+						constituencyCensusDetails.setMargOTPopulation(censusVO.getMargHHPopulation());
+						constituencyCensusDetails.setMargOTMale(censusVO.getMargHHMale());
+						constituencyCensusDetails.setMargOTFemale(censusVO.getMargHHFemale());
+						constituencyCensusDetails.setNonWorkingPopulation(censusVO.getNonWorkingPopulation());
+						constituencyCensusDetails.setNonWorkingMale(censusVO.getNonWorkingMale());
+						constituencyCensusDetails.setNonWorkingFemale(censusVO.getNonWorkingFemale());
+						constituencyCensusDetails.setSexRatio(censusVO.getSexRatio());
+						constituencyCensusDetails.setSexRatioSC(censusVO.getSexRatioSC());
+						constituencyCensusDetails.setSexRatioST(censusVO.getSexRatioST());
+						constituencyCensusDetails.setSexRatioUnderSix(censusVO.getSexRatioUnderSix());
+						constituencyCensusDetails.setHouseHoldsSize(censusVO.getHouseHoldsSize());
+						constituencyCensusDetails.setPercentageSC(censusVO.getPercentageSC());
+						constituencyCensusDetails.setPercentageST(censusVO.getPercentageST());
+						constituencyCensusDetails.setMaleLiteratureRate(censusVO.getMaleLiteratureRate());
+						constituencyCensusDetails.setFemaleLiteratureRate(censusVO.getFemaleLiteratureRate());
+						constituencyCensusDetails.setGenderGap(censusVO.getGenderGap());
+						constituencyCensusDetails.setPopLiteraturePercentage(censusVO.getPopLiteraturePercentage());
+						constituencyCensusDetails.setMaleLiteraturePercentage(censusVO.getMaleLiteraturePercentage());
+						constituencyCensusDetails.setFemaleLiteraturePercentage(censusVO.getFemaleLiteraturePercentage());
+						constituencyCensusDetails.setTotalPopPercentage(censusVO.getTotalPopPercentage());
+						constituencyCensusDetails.setTotalWorkingPopPercentage(censusVO.getTotalWorkingPopPercentage());
+						constituencyCensusDetails.setTotalWorkingMalePercentage(censusVO.getTotalWorkingMalePercentage());
+						constituencyCensusDetails.setTotalWorkingFemalePercentage(censusVO.getTotalWorkingFemalePercentage());
+						constituencyCensusDetails.setTotalMainPopPercentage(censusVO.getTotalMainPopPercentage());
+						constituencyCensusDetails.setTotalMainMalePercentage(censusVO.getTotalMainMalePercentage());
+						constituencyCensusDetails.setTotalMainFemalePercentage(censusVO.getTotalMainFemalePercentage());
+						constituencyCensusDetails.setTotalMargPopPercentage(censusVO.getTotalMargPopPercentage());
+						constituencyCensusDetails.setTotalMargMalePercentage(censusVO.getTotalMargMalePercentage());
+						constituencyCensusDetails.setTotalMargFemalePercentage(censusVO.getTotalMargFemalePercentage());
+						constituencyCensusDetails.setNonWorkingPopPercentage(censusVO.getNonWorkingPopPercentage());
+						constituencyCensusDetails.setNonWorkingMalePercentage(censusVO.getNonWorkingMalePercentage());
+						constituencyCensusDetails.setNonWorkingFemalePercentage(censusVO.getNonWorkingFemalePercentage());
+						constituencyCensusDetails.setPopCLPercentage(censusVO.getPopCLPercentage());
+						constituencyCensusDetails.setMaleCLPercentage(censusVO.getMaleCLPercentage());
+						constituencyCensusDetails.setFemaleCLPercentage(censusVO.getFemaleCLPercentage());
+						constituencyCensusDetails.setPopALPercentage(censusVO.getPopALPercentage());
+						constituencyCensusDetails.setMaleALPercentage(censusVO.getMaleALPercentage());
+						constituencyCensusDetails.setFemaleALPercentage(censusVO.getFemaleALPercentage());
+						constituencyCensusDetails.setPopHHPercentage(censusVO.getPopHHPercentage());
+						constituencyCensusDetails.setMaleHHPercentage(censusVO.getMaleHHPercentage());
+						constituencyCensusDetails.setFemaleHHPercentage(censusVO.getFemaleHHPercentage());
+						constituencyCensusDetails.setPopOWPercentage(censusVO.getPopOWPercentage());
+						constituencyCensusDetails.setMaleOWPercentage(censusVO.getMaleOWPercentage());
+						constituencyCensusDetails.setFemaleOWPercentage(censusVO.getFemaleOWPercentage());
+						constituencyCensusDetails.setMainMargCLPopulation(censusVO.getMainMargCLPopulation());
+						constituencyCensusDetails.setMainMargCLMale(censusVO.getMainMargCLMale());
+						constituencyCensusDetails.setMainMargCLFemale(censusVO.getMainMargCLFemale());
+						constituencyCensusDetails.setMainMargALPopulation(censusVO.getMainMargALPopulation());
+						constituencyCensusDetails.setMainMargALMale(censusVO.getMainMargALMale());
+						constituencyCensusDetails.setMainMargALFemale(censusVO.getMainMargALFemale());
+						constituencyCensusDetails.setMainMargHHPopulation(censusVO.getMainMargHHPopulation());
+						constituencyCensusDetails.setMainMargHHMale(censusVO.getMainMargHHMale());
+						constituencyCensusDetails.setMainMargHHFemale(censusVO.getMainMargHHFemale());
+						constituencyCensusDetails.setMainMargOWPopulation(censusVO.getMainMargOWPopulation());
+						constituencyCensusDetails.setMainMargOWMale(censusVO.getMainMargOWMale());
+						constituencyCensusDetails.setMainMargOWFemale(censusVO.getMainMargOWFemale());
+						constituencyCensusDetails.setWpr(censusVO.getWpr());
+						
+						constituencyCensusDetails = constituencyCensusDetailsDAO.save(constituencyCensusDetails);
+																		
+					 }catch(Exception ex){
+						ex.printStackTrace();
+						log.error("Exception Raised :" + ex);
+					}
+					return constituencyCensusDetails;
+					
+				}
+			});
+		return IConstants.SUCCESS;
+    	}
+	
 }

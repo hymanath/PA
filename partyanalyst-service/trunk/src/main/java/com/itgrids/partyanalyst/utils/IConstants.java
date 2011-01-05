@@ -321,6 +321,7 @@ public interface IConstants {
     public static final String AVAILABLE = "AVAILABLE";
     public static final String NOT_AVAILABLE = "NOT_AVAILABLE";
     
+    public static final String SUCCESS = "Success";
     public static final String SUCCESSFULLY_SAVED = "SUCCESSFULLY_SAVED";
     public static final String BOOTH = "BOOTH";
     public static final String MP_CONSTITUENCY = "MP CONSTITUENCY";
@@ -353,6 +354,7 @@ public interface IConstants {
     public static final String FAMILY_MEMBERS = "FAMILY MEMBERS"; 
     public static final String PROBLEM_DISCUSSION = "PROBLEM_DISCUSSION";
     public static final String MUNCPAL_CORP = "MUNCIPALITY/CORPORATION";
+    public static final String TOTAL = "Total";    
     
       
 }

@@ -99,4 +99,20 @@ public interface IConstituencyPageService {
 	
 	public List<CensusVO> setCensusVO(List<CensusVO> censusVOList,ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO);
 	
+	public boolean checkForConstituencyExistance(Long ConstituencyId);
+	
+	public List<Object[]> findConstituencyWiseCensusDetails(Long constituencyId,Long censusYear);
+	
+	public CensusVO getCompleteCensusDetailsForATehsil(Object[] params,Long censusYear,Long delimitationConstituencyId);
+	
+	public CensusVO setCompleteCensusDetailsToVO(Object[] details);
+	
+	public CensusVO getVillageWiseCompleteCensusDetailsForPartialTehsil(Long stateId,Long districtId,Long dcmId,Long censusYear);
+	
+	public int findNoOfParts(String str);
+	
+	public CensusVO setSumCompleteCensusDetailsToVO(Object[] details,int parts);
+	
+	public List<CensusVO> getCompleteCensusDetailsOfATownInAPartialTehsil(Long delimitationConstituencyId,Long mandalId,Long censusYear);
+	
 }
