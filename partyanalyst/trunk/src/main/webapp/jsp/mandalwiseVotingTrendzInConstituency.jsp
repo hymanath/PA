@@ -796,6 +796,69 @@
 					
 			 }
 
+
+			 //All Parties Performance chart
+			  function getAllPartiesPerformanceInteractiveChart(results,divId)
+			 {
+
+				 if(results == null)
+					 return;
+
+				 var chartColumns = results[0].partiesList;
+				 var chartRows = results[0].electionList;
+
+				 var data = new google.visualization.DataTable();
+				 var colorArray = new Array(); 
+				 var colorStatic = new Array('#088A85','#00FFFF','#B45F04','#585858','#AEB404','#ADE8E0','#C4D296','#E5C55A','#F7C37E','#9C8AE2','#B4045F','#D0A9F5','#CBBEAB','#BCE5BF','#FAE2BD','#95B8E5','#120B0B','#800B0B','#1FCB9D','#90446A');
+
+				  data.addColumn('string', 'Party');
+				  //for columns
+				  for(var i in chartColumns){
+				   var colData = chartColumns[i].name;
+				   data.addColumn('number', colData);
+
+				   if(chartColumns[i].name == 'TDP'){
+					   colorArray.push('#C7005D');
+				   }
+				   else if(chartColumns[i].name == 'TRS'){
+					    colorArray.push('#F5A9F2');
+				   }else if(chartColumns[i].name == 'INC'){
+					    colorArray.push('#2A00D2');
+				   }else if(chartColumns[i].name == 'BJP'){
+					    colorArray.push('#FE9A2E');
+				   }else if(chartColumns[i].name == 'PRP'){
+					    colorArray.push('#74DF00');
+				   }
+				   else{
+                       colorArray.push(colorStatic[i]);
+				   }
+
+				  }
+		   
+				  //for rows
+				  for(var j in chartRows)
+				  {
+					  var array = new Array();
+					  array.push(chartRows[j].name);
+                      
+					  for(var k in results)
+					  {
+						 					  
+						  if(results[k].electionWiseResults[j].percent != -1)
+						      array.push(results[k].electionWiseResults[j].percent);
+						  else
+							  array.push(0);
+
+					  }
+					  
+					  data.addRow(array);
+				  }
+				  var ctitle = 'All Parties Performance Chart'; 
+				  new google.visualization.LineChart(document.getElementById(divId)).
+				  draw(data, {curveType: "function",width: 800, height: 450,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+					
+			 }
+
 			 function getMandalResultsInteractiveChartForPrevYear(results,divId)
 			 {
 				 
@@ -1363,7 +1426,8 @@
 		}
 		
 		function buildVotesSharingData(jsObj,results)
-		{			
+		{	
+			
 			votesShareData = results;
             var chartName = '';
 
@@ -1471,15 +1535,16 @@
 			var headDivEl = document.getElementById("headDiv");
 			headDivEl.innerHTML = '';
 			var headDivElStr='';
-			headDivElStr += 'Parties Performance in '+jsObj.constiName+' Assembly Constituencey Limits In Different Elections';
+			headDivElStr += 'Parties Performance in '+jsObj.constiName+' Assembly Constituency Limits In Different Elections';
 			if(headDivEl)	 			
 			{
 				headDivEl.innerHTML = headDivElStr;            	
 			}
 			var chartDivElmt = document.getElementById("constitutencyResultsChart");
-			var imgStr = '';
+			/*var imgStr = '';
 			imgStr+='<img width="750" src="charts/'+chartName+'" border="none" />';		
-			chartDivElmt.innerHTML = imgStr;
+			chartDivElmt.innerHTML = imgStr;*/
+			getAllPartiesPerformanceInteractiveChart(results,"constitutencyResultsChart");
 
 			choicesArr = jsObj.choices;
 			
