@@ -35,9 +35,21 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	public List findCensusDetailsForAMandal(Long stateId,Long districtId,Long tehsilId,int year,String Level);
 	
 	public List findAllRevenueVillagesInfoInMandal(Long year, Long mandalId, String levels);
+	
 	public List findMandalWiseCensusDetails(Long stateId,Long districtId,Long tehsilId,Long year,String level);
+	
 	public List findCensusDetailsForAPartialMandal(Long stateId,Long districtId,Long year,String level,String villageIds);
+	
 	public List<Object[]> findTownshipWiseCensusDetails(Long stateId,Long districtId,Long townshipId,Long year,String level);
+	
 	public List findCensusDetailsForAPartialTown(Long stateId,Long districtId,Long year,String level,String wardIds);
+	
+	public List<Object[]> findMandalWiseCompleteCensusDetails(Long stateId,Long districtId,Long tehsilId,Long year,String level);
+	
+	public List<Object[]> findCompleteCensusDetailsForAPartialMandal(Long stateId,Long districtId,Long year,String level,String villageIds);
+	
+	public List<Object[]> findCompleteCensusDetailsForAPartialTown(Long stateId,Long districtId,Long year,String level,String wardIds);
+	
+	public List<Object[]> findTownshipWiseCompleteCensusDetails(Long stateId,Long districtId,Long townshipId,Long year,String level);
 	
 }
