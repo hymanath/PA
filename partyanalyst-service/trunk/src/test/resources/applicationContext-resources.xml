@@ -185,11 +185,16 @@
 				<value>com.itgrids.partyanalyst.model.ApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="constituencyCensusDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="delimitationBlockDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationBlockDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />

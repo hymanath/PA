@@ -97,7 +97,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testFindDelimitationConstituencyByConstituencyIDForCensus()
 	{
-	  List<Object> list = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(235l, 2009l, 2001l);
+	  List<Object> list = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(235l, 2009l);
 	  
 	  if(list != null)
 	  System.out.println(list.size());

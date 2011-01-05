@@ -113,7 +113,7 @@ IDelimitationConstituencyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object> findDelimitationConstituencyByConstituencyIDForCensus(
-			Long constituencyID,Long delimitationYear,Long censusYear) {
+			Long constituencyID,Long delimitationYear) {
 		Object[] params = {constituencyID,delimitationYear};
 		return getHibernateTemplate().find("select model.delimitationConstituencyID from DelimitationConstituency model "+
 				"where model.constituency.constituencyId =? and model.year = ? ", params);

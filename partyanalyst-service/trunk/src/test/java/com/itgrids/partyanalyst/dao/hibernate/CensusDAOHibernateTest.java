@@ -96,10 +96,10 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 			
 	}
 	*/
-	/*
+/*
    public void testFindMandalWiseCensusDetails()
    {
-	   List<Object[]> list = censusDAO.findMandalWiseCensusDetails(1l,19l,854l,2001l,"TEHSIL");
+	   List<Object[]> list = censusDAO.findMandalWiseCensusDetails(1l,3l,1115l,2001l,"TEHSIL");
 	   System.out.println(list.size());
 	   
 	   Object[] obj = list.get(0);
@@ -111,9 +111,9 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   System.out.println("Illiterates ----"+obj[4]);
 	   System.out.println("Working People---"+obj[5]);
 	   System.out.println("Non Working People---"+obj[6]);
-   }
-   
-   @SuppressWarnings("unchecked")
+   }*/
+
+ /*  @SuppressWarnings("unchecked")
    public void testFindCensusDetailsForAPartialMandal()
    {
 	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialMandal(1l,19l,2001l,"VILLAGE","21547,21548,21549,21550");
@@ -123,8 +123,8 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   {
 		   System.out.println(y.toString());
 	   }
-   }
-   
+   }*/
+  /* 
    public void testFindTownshipWiseCensusDetails()
    {
 	   List<Object[]> list = censusDAO.findTownshipWiseCensusDetails(1l,19l,21664l,2001l,"TOWN");
@@ -141,7 +141,7 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   System.out.println("Non Working People---  "+obj[6]);
    }*/
    
-  @SuppressWarnings("unchecked")
+  /*@SuppressWarnings("unchecked")
    public void testFindCensusDetailsForAPartialTown()
    {
 	   List<Object[]> list = censusDAO.findCensusDetailsForAPartialTown(1l,19l,2001l,"WARD","2957,2958");
@@ -155,6 +155,58 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	   System.out.println("Illiterates ----       "+obj[4]);
 	   System.out.println("Working People---      "+obj[5]);
 	   System.out.println("Non Working People---  "+obj[6]);
-   }
-  
+   }*/
+   
+  /* public void testFindMandalWiseCompleteCensusDetails()
+   {
+	   List<Object[]> list = censusDAO.findMandalWiseCompleteCensusDetails(1l,19l,844l,2001l,"TEHSIL");
+	   
+	   System.out.println(list.size());
+	   Object[] arr = list.get(0);
+	   int i= 0;
+	   for(Object obj:arr)
+	   {
+		   System.out.println("========== "+ ++i +")"+ obj.toString());
+	   }
+   }*/
+	
+	/* @SuppressWarnings("unchecked")
+	   public void testFindCompleteCensusDetailsForAPartialMandal()
+	   {
+		   List<Object[]> list = censusDAO.findCompleteCensusDetailsForAPartialMandal(1l,19l,2001l,"VILLAGE","21547,21548,21549,21550");
+		   System.out.println(list.size());
+		   Object[] obj = list.get(0);
+		   
+		   int i=0;
+		   for(Object y:obj)
+		   {
+			   System.out.println("======"+ ++i +")"+y.toString());
+		   }
+	   }*/
+	   
+	  /* @SuppressWarnings("unchecked")
+	   public void testFindCompleteCensusDetailsForAPartialTown()
+	   {
+		   List<Object[]> list = censusDAO.findCompleteCensusDetailsForAPartialTown(1l,19l,2001l,"WARD","2957,2958");
+		   System.out.println(list.size());
+		   
+		   int i = 0;
+		   for(Object obj:list.get(0))
+		   {
+			   System.out.println("======"+ ++i +")"+obj.toString());
+		   }
+	   }*/
+	   
+	   public void testFindTownshipWiseCompleteCensusDetails()
+	   {
+		   List<Object[]> list = censusDAO.findTownshipWiseCompleteCensusDetails(1l,19l,21664l,2001l,"TOWN");
+		   System.out.println(list.size());
+		   
+		   int i = 0;
+		   for(Object obj : list.get(0))
+		   {
+			   System.out.println("======"+ ++i +")"+obj.toString());
+		   }
+		   
+	   }
 }

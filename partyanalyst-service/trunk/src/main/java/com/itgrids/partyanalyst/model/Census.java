@@ -93,10 +93,10 @@ public class Census extends BaseModel implements java.io.Serializable {
 	private Double sexRatio;
 	private Double sexRatioSC;
 	private Double sexRatioST;
-	private Double sexRatioUnderSix;
 	private Double houseHoldsSize;
 	private Double percentageSC;
 	private Double percentageST;
+	private Double sexRatioUnderSix;
 	private Double maleLiteratureRate;
 	private Double femaleLiteratureRate;
 	private Double genderGap;
