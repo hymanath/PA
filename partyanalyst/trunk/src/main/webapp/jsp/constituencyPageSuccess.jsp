@@ -1631,7 +1631,7 @@ function getCensusDetailsForAConstituency(constituencyId,index,text)
 
 function buildCensusChartForAConstituency(myResults)
 {
-	if(myResults.censusVO.length == 0)
+	if(myResults.censusVO == null || myResults.censusVO.length == 0)
 	{
 		showCensusError();
 		hideCensusAjaxImage();
