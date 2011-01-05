@@ -1810,7 +1810,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		partywiseVotesDetailsForMandal.setChartName(chartName);
 		ChartProducer.createLineChartWithThickness("Different Parties Performance In All Elections Of "+tehsilName+" Mandal", 
 		"Elections", "Percentages",createDataSetForMandal(partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults(), partiesInChart), 
-		chartPath,400,950,ChartUtils.getLineChartColors(partiesInChart),true);
+		chartPath,400,800,ChartUtils.getLineChartColors(partiesInChart),true);
 		
 		int i=0;
 		for(PartyResultVO party:partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults()){
