@@ -153,11 +153,12 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		query.append(" update CandidateResult model set model.marginVotesPercentage = ? ,model.marginVotes  = ? where");
 		query.append(" model.nomination.nominationId = (select model1.nominationId from Nomination model1 where ");
 		query.append(" model1.constituencyElection.election.electionYear = ?");
-		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
-			query.append(" and model1.constituencyElection.constituency.electionScope.electionType.electionType = ?");	
-		}else if(electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE)){
+		
+		 if(electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.GREATER_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
 			query.append(" and model1.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");	
-		}
+		 else
+			query.append(" and model1.constituencyElection.constituency.electionScope.electionType.electionType = ?");
+		 
 		query.append(" and model1.constituencyElection.constituency.constituencyId = ?");
 		query.append(" and model1.candidate.candidateId = ?)");		
 		Query queryObject = getSession().createQuery(query.toString());
