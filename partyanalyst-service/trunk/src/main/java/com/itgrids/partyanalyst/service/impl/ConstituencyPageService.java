@@ -3927,6 +3927,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(log.isDebugEnabled()){
 			log.debug("In the constituencyPageService.setPercentageOfCensusVO() method ......");
 		}
+		censusVO.setSexRatio(censusVO.getSexRatio()/count);
 		censusVO.setSexRatioSC(censusVO.getSexRatioSC()/count);
 		censusVO.setSexRatioST(censusVO.getSexRatioST()/count);
 		censusVO.setHouseHoldsSize(censusVO.getHouseHoldsSize()/count);
