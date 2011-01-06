@@ -861,7 +861,6 @@
 
 			 function getMandalResultsInteractiveChartForPrevYear(results,divId)
 			 {
-				 
 				 var chartColumns = results.candidateNamePartyAndStatus;
 				 var chartRows = results.constituencyOrMandalWiseElectionVO;
 
@@ -1001,8 +1000,7 @@
                                             
 											//Interactive chart code
                                            /* displayHideChartDiv("presentMandalwiseIChart");*/
-												getMandalResultsInteractiveChart(myResults,"presentMandalwiseIChart","2009");
-												
+										    getMandalResultsInteractiveChart(myResults,"presentMandalwiseIChart","2009");
 												if(mandalIds != null)
 												{
 													getMandalsAndPartiesResults();
