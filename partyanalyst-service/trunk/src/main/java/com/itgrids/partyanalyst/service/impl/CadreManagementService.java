@@ -4171,13 +4171,18 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				else if(cadreLevelId == 4)
 					SearchCriteria = "and model.currentAddress.constituency.constituencyId = "+cadreLocationId.toString();
 				else if(cadreLevelId == 5)
-					SearchCriteria = "and model.currentAddress.tehsil.tehsilId = "+cadreLocationId.toString();
+					SearchCriteria = "and model.currentAddress.tehsil.tehsilId = "+cadreLocationId.toString().substring(1);
 				else if(cadreLevelId == 6)
-					SearchCriteria = "and model.currentAddress.hamlet.hamletId = "+cadreLocationId.toString();
+					SearchCriteria = "and model.currentAddress.hamlet.hamletId = "+cadreLocationId.toString().substring(1);
 				else if(cadreLevelId == 7)
-					SearchCriteria = "and model.currentAddress.localElectionBody.localElectionBodyId = "+cadreLocationId.toString();
+				{	
+					Long assemblyLocalId = Long.parseLong(cadreLocationId.toString().substring(1));
+					List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalId);
+					Long localId = (Long)localElectionBodies.get(0);
+					SearchCriteria = "and model.currentAddress.localElectionBody.localElectionBodyId = "+localId.toString();
+				}
 				else if(cadreLevelId == 8)
-					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString();
+					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString().substring(1);
 				else if(cadreLevelId == 9)
 					SearchCriteria = "and model.currentAddress.booth.boothId = "+cadreLocationId.toString();
 			}
