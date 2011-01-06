@@ -265,7 +265,8 @@
 		var selectedElectionArr;	
 		var docOpener = window.opener;
 		var mandalNamesArr = null;
-		
+		var recentAssemblyElecId = '${recentAssemblyElecId}';
+				
 		var constType;
 		localizationObj = docOpener.localizationObj;
 		<c:forEach var="staticParties" items="${staticPartiesList}">
@@ -2242,7 +2243,7 @@
 		
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
-            var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
+			var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
 			var divEl = document.getElementById("madalwiseVotesRange");
 
 			if(imageDivEl && divEl)
@@ -2420,7 +2421,7 @@
 				mdlwiseVotersDetailsStr+='<TR>';				
 				mdlwiseVotersDetailsStr+='<TD align="left" style="text-align:left;"><A class="mandalvotersAnc" href="javascript:{}" title="Displays Parties Performane in All Elections Mandalwise" onclick="getMandalwiseVotesShare('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+','+constituencyId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\')">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</A></TD>';
 				mdlwiseVotersDetailsStr+='<TD align="center">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</TD>';
-				mdlwiseVotersDetailsStr+='<TD align="center"><A href="javascript:{}" class="mandalvotersAnc" title="Displays Parties Performane in All Elections Revenue Mandalwise" onclick="openwin('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\',\'Assembly\',\'2009\',\'3\')">Analyze</A></TD>';
+				mdlwiseVotersDetailsStr+='<TD align="center"><A href="javascript:{}" class="mandalvotersAnc" title="Displays Parties Performane in All Elections Revenue Mandalwise" onclick="openwin('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\',\'Assembly\',\'2009\','+recentAssemblyElecId+')">Analyze</A></TD>';
 				mdlwiseVotersDetailsStr+='</TR>';
 	
 				var mandalObj={
