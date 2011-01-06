@@ -743,7 +743,7 @@
 
 
 			  //mandalwise google charts
-			  function getMandalResultsInteractiveChart(results,divId)
+			  function getMandalResultsInteractiveChart(results,divId,year)
 			 {
 				 var chartColumns = results.candidateNamePartyAndStatus;
 				 var chartRows = results.constituencyOrMandalWiseElectionVO;
@@ -790,7 +790,7 @@
 					  
 					  data.addRow(array);
 				  }
-				  var ctitle = 'Mandal Wise Election Results For ' + constituencyName + ' In ' + results.electionType +' 2009'; 
+				  var ctitle = 'Mandal Wise Election Results For ' + constituencyName + ' In ' + results.electionType + " "+ year; 
 				  new google.visualization.LineChart(document.getElementById(divId)).
 				  draw(data, {curveType: "function",width: 800, height: 450,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
 					
@@ -1001,7 +1001,7 @@
                                             
 											//Interactive chart code
                                            /* displayHideChartDiv("presentMandalwiseIChart");*/
-												getMandalResultsInteractiveChart(myResults,"presentMandalwiseIChart");
+												getMandalResultsInteractiveChart(myResults,"presentMandalwiseIChart","2009");
 												
 												if(mandalIds != null)
 												{
@@ -1037,7 +1037,7 @@
 													
 													//Interactive chart code
 													/*displayHideChartDiv("present2010MandalwiseIChart");*/
-													getMandalResultsInteractiveChart(myResults,"present2010MandalwiseIChart");
+													getMandalResultsInteractiveChart(myResults,"present2010MandalwiseIChart","2010");
 												}
 											}
 											
@@ -1101,16 +1101,16 @@
 											}
 										}if(jsObj.task == "getUrbanRuralResults") 
 										{
-											/*var elmt = document.getElementById("electionPageAjaxImgDiv");
+											var elmt = document.getElementById("electionPageAjaxImgDiv");
 											if(elmt)
 												elmt.style.display = 'none';
-											buildResultsForUrbanRural(jsObj,myResults);*/
-											var elmt = document.getElementById("electionPageAjaxImgDiv");
+											buildResultsForUrbanRural(jsObj,myResults);
+											/*var elmt = document.getElementById("electionPageAjaxImgDiv");
 											if(elmt)
 												elmt.style.display = 'none';
 											if(myResults!= null){
 											 showChartData(jsObj, myResults);
-											}
+											}*/
 										}
 										
 										 
@@ -1671,7 +1671,7 @@
 		}
 
 		function showChartData(jsObj, results)
-		{			
+		{		
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -2223,16 +2223,16 @@
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;
+			//var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;*/
 			
-			/*if(constType == 'null')
+			if(constType == 'null')
 			{									
 				var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;
 				
 			} else 
 			{
 				var url = "<%=request.getContextPath()%>/getUrbanRuralResultsAjaxAction.action?"+rparam;
-			}*/
+			}
 			
 			callAjax(jsObj, url);
 					
@@ -2512,6 +2512,7 @@
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
 			str1 += '<input type="button" value="De-select All" onclick="DeselectAllPartiesNYears()">';
 			if(constType == null)
+			//if(true)
 			{
 				str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\',\''+constType+'\',\'constituencyResults\',\'false\',\'null\', \'null\')" value="Show Results" />';
 			} else 
