@@ -16,11 +16,6 @@
 <META NAME="Description" CONTENT=" Party Analyst is a tool used by the political parties, media, and politicians. This product has different interfaces for Constituency Management, Cadre Management, Party Results, Cross Voting, Party Performance, Election Comparison, States election results, District election results, Constituency election results, MLA constituencies information, MP constituencies information, Latest news .This tool also provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 
 
-
-
-<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
-<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 <!-- Combo-handled YUI CSS files: --> 
@@ -38,7 +33,16 @@
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 <script type="text/Javascript" src="js/homePage/jquery.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
 
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 
 <script type="text/javascript">
 
@@ -226,7 +230,7 @@ localBodyString = '<%=localBody%>';
 					<ul class="first-of-type"> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >
-								<img id="indexHomeImg" width="28" height="25" src="images/icons/indexPage/pa_home.png" title="home"/>								
+								<!--<img id="indexHomeImg" width="28" height="25" src="images/icons/indexPage/pa_home.png" title="home"/>-->
 								HOME
 							</a> 
 						</li>
@@ -274,27 +278,159 @@ localBodyString = '<%=localBody%>';
        <!-- <div id="homePage_header">
         	<img height="180" width="960" src="images/icons/homePage_new/homePage_header.jpg"/>
         </div> -->
-        <div id="homePageContent_main">
-        	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <div id="homePageContent_main" style="height:auto;">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td width="70%" valign="top">
+					<img width="660" height="380" src="images/icons/homePage_new/homePage_Image.jpg">
+				</td>
+				<td width="30%" valign="top">
+					<!--<div>
+						<img width="280" height="65" src="images/icons/homePage_new/join_Disscussion.jpg">
+					</div>-->
+					<div id="accordion">
+						<h3><a href="#">View Your State</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#A0A5A7;">
+								<table>
+									<tr>
+										<td style="text-align:justify;padding-bottom:30px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
+									</tr>
+									<tr>
+										<td><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/></td>									
+									</tr>								
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+								<img width="70" height="25" src="images/icons/homePage_new/b1.jpg" onclick="navigateToStatePage()"></img>
+							</div>
+						</div>
+						<h3><a href="#">View Your District</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#A0A5A7;">
+								<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+								<table>
+									<tr>
+										<td style="text-align:justify;padding-bottom:5px;"> Select your district to view its election results in district level. </td>
+									</tr>
+									<tr>
+										<td><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtList_d')"/></td>
+									</tr>
+									<tr>
+										<td><%=distSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/></td>
+									</tr>
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+								<img width="70" height="25" src="images/icons/homePage_new/b2.jpg" onclick="navigateToDistrictPage()"></img>
+							</div>
+						</div>
+						<h3><a href="#">View Your Constituency</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#A0A5A7;">
+								<div id="alertMessage" style="color:red;font-weight:bold;"></div>
+								<table>
+									<tr>
+										<td colspan="4">Select Constituency Type</td>
+									</tr>	
+									<tr>
+										<td colspan="2"><input type="radio" checked="checked" name="a_radio" id="a_radio" onclick="hideUnhideSelectBox(this.id, 'constituency')"/><%=assembly%></td>
+										<td><input type="radio" name="a_radio" id="p_radio" onclick="hideUnhideSelectBox(this.id,'constituency')"/><%=parliament%></td>
+									</tr>
+								</table>
+								<table id="stateTable" style="display:none;">
+									<tr>
+										<td><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name" onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"/></td>
+									</tr>
+								</table>
+									
+								
+								<table id="constTable" style="display:none;">
+									<tr>
+										<td><%=constSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></td>
+									</tr>
+								</table>										
+							</div>
+							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpeg" onclick="navigateToConstituencyPage()"></img>
+							</div>
+						</div>
+						<h3><a href="#">View Local Bodies Election</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#A0A5A7;">
+								<table>								
+									<tr>
+										<td><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="statesList" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
+									</tr>
+									<tr>
+										<td><div id="localBodiesRadioDiv_label"><%=localBody%></div></td>
+									</tr>
+									<tr>
+										<td><div id="localBodiesRadioDiv_data"></div></td>									
+									</tr>
+									<tr>
+										<td><div id="localBodiesSelectDiv_label"></div></td>
+									</tr>
+									<tr>
+										<td><div id="localBodiesSelectDiv_data"></div></td>									
+									</tr>
+									<tr>
+										<td><div id="localBodies_errorDiv"></div></td>									
+									</tr>
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#a0a5a7;">
+								<img width="70" height="25" src="images/icons/homePage_new/b4.jpg" onclick="navigateToLocalBodyPage()"></img>
+							</div>
+						</div>
+					</div>
+				</td>
+			  </tr>
+			</table>
+        	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;">			  
               <tr>
                 <td width="30%" valign="top">
                 		
 						<!-- Product Feature Div start -->
 						<div class="productFeatureMain">							
 							 <div class="productFeatureHeader">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                  <tr>                                    
-                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
-                                    <td width="98%">
-                                        <div class="productFeatureHeaderBackground_center">
-                                            <span class="headerLabelSpan">
-                                            	Election Comparison  
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
-                                  </tr>
-                                </table>
+                               <table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center">
+											<span class="headerLabelSpan" style="position:relative;top:6px;">
+												<table cellspacing="0" cellpadding="0">
+													<tr>
+														<td align="left">Election Comparison</td>
+														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													</tr>
+												</table>
+												 
+											</span>
+										</div>
+									</td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+								  </tr>
+								</table>
                             </div>
 							<div class="productFeatureBody">
 								<table>
@@ -314,24 +450,42 @@ localBodyString = '<%=localBody%>';
 									</div>
 								</div>
                             </div>
-							
+							<div class="productFeatureFooter">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureFooterBackground_center">
+											
+										</div>
+									</td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
 						</div>
 
 						<div class="productFeatureMain">							
 							 <div class="productFeatureHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                  <tr>                                    
-                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
-                                    <td width="98%">
-                                        <div class="productFeatureHeaderBackground_center">
-                                            <span class="headerLabelSpan">
-                                            	Party Result
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
-                                  </tr>
-                                </table>
+								  <tr>                                    
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureHeaderBackground_center">
+											<span class="headerLabelSpan" style="position:relative;top:6px;">
+												<table cellspacing="0" cellpadding="0">												
+													<tr>
+														<td align="left">Party Results </td>
+														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													</tr>
+												</table>
+												 
+											</span>
+										</div>
+									</td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+								  </tr>
+								</table>
                             </div>
 							<div class="productFeatureBody">
 								<table>
@@ -350,6 +504,19 @@ localBodyString = '<%=localBody%>';
 									</div>
 								</div>
                             </div>
+							<div class="productFeatureFooter">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureFooterBackground_center">
+											
+										</div>
+									</td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
 						</div>
 
 
@@ -363,7 +530,7 @@ localBodyString = '<%=localBody%>';
 								<td width="1%"><img height="43" width="45" src="images/icons/homePage_new/newsContainerHead_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
-										<span class="headerLabelSpan" style="color:#3b3b3b">
+										<span class="headerLabelSpan headerLabelSpan1">
 											Latest Election Trendz
 										</span>
 									</div>
@@ -387,16 +554,22 @@ localBodyString = '<%=localBody%>';
                 	<div id="adDataDiv_main">
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+							  <tr>                                    
+								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 								<td width="98%">
-									<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">
-										<span class="headerLabelSpan" style="text-decoration:none;">
-											Search Criteria
+									<div class="productFeatureHeaderBackground_center">
+										<span class="headerLabelSpan" style="position:relative;top:6px;">
+											<table cellspacing="0" cellpadding="0">
+												<tr>
+													<td align="left">Quick Search </td>
+													<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+												</tr>
+											</table>
+											 
 										</span>
 									</div>
 								</td>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
 							  </tr>
 							</table>
 						</div>
@@ -427,7 +600,7 @@ localBodyString = '<%=localBody%>';
 								<td width="1%"><img height="41" width="45" src="images/icons/homePage_new/gift_header_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
-										<span class="headerLabelSpan" style="color:#3b3b3b">
+										<span class="headerLabelSpan headerLabelSpan1" style="color:#3b3b3b">
 											Gift Your Leader
 										</span>
 									</div>
@@ -458,21 +631,44 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan">
-												Leaders 
+												<table cellspacing="0" cellpadding="0">
+													<tr>
+														<td align="left">Know Your</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td align="left">Leaders</td>
+														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													</tr>
+												</table>
+												 
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
 								  </tr>
 								</table>
 							</div>							
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 								<div id="leadersNews"></div>								
-							</div>						
+							</div>	
+							<div class="productFeatureFooter">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureFooterBackground_center">
+											
+										</div>
+									</td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
 						</div>
 					</td>
 					<td width="33%">
@@ -480,21 +676,44 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img width="30" height="40" src="images/icons/homePage_new/news_head_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
-										<div class="productFeatureHeaderBackground_center" style="background-image:url('images/icons/homePage_new/news_Head_center.jpg');">
+										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan">
-												Top Stories 
+												<table cellspacing="0" cellpadding="0">
+													<tr>
+														<td align="left">Know Your</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td align="left">Nation</td>
+														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													</tr>
+												</table>
+												 
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img width="35" height="40" src="images/icons/homePage_new/1r.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
 								  </tr>
 								</table>
 							</div>
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 								<div id="topStories"></div>								
-							</div>						
+							</div>	
+							<div class="productFeatureFooter">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureFooterBackground_center">
+											
+										</div>
+									</td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
 						</div>
 					</td>
 					<td width="33%">
@@ -502,31 +721,55 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan">
-												Parties 
+												<table cellspacing="0" cellpadding="0">
+													<tr>
+														<td align="left">Know Your</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td align="left">Parties</td>
+														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													</tr>
+												</table>
+												 
 											</span>
 										</div>
 									</td>
-									<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
 								  </tr>
 								</table>
 							</div>
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 							<div id="partiesNews"></div>
+							
 								<!--<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
 										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
 								</iframe>-->
-							</div>						
+							</div>		
+							<div class="productFeatureFooter">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								  <tr>                                    
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="98%">
+										<div class="productFeatureFooterBackground_center">
+											
+										</div>
+									</td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+								  </tr>
+								</table>
+							</div>
 						</div>
 					</td>
 				</tr>
 			</table>
 		</div>
 
-        <div id="homePageLocationWidgets">
+        <!--<div id="homePageLocationWidgets">
         	<table width="100%" border="0" cellspacing="5" cellpadding="0">
               <tr>
                 <td width="24%">
@@ -701,7 +944,7 @@ localBodyString = '<%=localBody%>';
               </tr>
             </table>
 
-        </div>
+        </div>-->
 
 		<table>
 			<tr>
@@ -804,7 +1047,7 @@ localBodyString = '<%=localBody%>';
 								<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
 								<td width="98%">
 									<div class="electionTrendzHeaderBackground_center">
-										<span class="headerLabelSpan" style="color:#C66E17;top:13px;">
+										<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
 											Opinion Poll
 										</span>
 									</div>
