@@ -1697,6 +1697,9 @@
 
 			divEl.innerHTML = '';
 			divEl.innerHTML = '<img width="750" src="charts/'+chartName+'" border="none" />';
+
+			//interactive chart call for AC and PC
+			partyVotesSharing('-',["AC","PC"],0);
 		}
 		
 		function displaySelectionCriteria()
