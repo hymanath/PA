@@ -337,7 +337,7 @@ input.input_text
 .widgetsBody
 {
 	background-color:#E3EDF0;
-	height:180px;
+	height:227px;
 	padding:10px;
 	color:#FFFFFF;
 	font-weight:bold;
@@ -415,6 +415,13 @@ input.input_text
 }
 
 .productFeatureHeaderBackground_center
+{
+	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpg);
+	height:38px;
+	border-bottom:2px solid #D8D8D8;
+}
+
+.productFeatureHeaderBackground_center1
 {
 	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpg);
 	height:40px;
