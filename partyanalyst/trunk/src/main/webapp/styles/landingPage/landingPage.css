@@ -416,20 +416,20 @@ input.input_text
 
 .productFeatureHeaderBackground_center
 {
-	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpg);
+	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpeg);
 	height:38px;
 	border-bottom:2px solid #D8D8D8;
 }
 
 .productFeatureHeaderBackground_center1
 {
-	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpg);
+	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpeg);
 	height:40px;
 }
 
 .productFeatureFooterBackground_center
 {
-	background-image:url(../../images/icons/homePage_new/white_footer_image_center.jpg);
+	background-image:url(../../images/icons/homePage_new/white_footer_image_center.jpeg);
 	height:25px;
 }
 
@@ -1147,7 +1147,7 @@ text-decoration:none;
 
 .ui-state-active,.ui-state-default
 {
-	background-image:url('../../images/icons/homePage_new/accordianHeader.jpg');
+	background-image:url('../../images/icons/homePage_new/accordianHeader.jpeg');
 }
 
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited
@@ -1159,4 +1159,9 @@ text-decoration:none;
 {
 	padding:3px;
 	padding-left:2.2em;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited 
+{
+	color:#DBA231;
 }

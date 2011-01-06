@@ -37,7 +37,7 @@
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
 
-<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 
@@ -195,7 +195,7 @@ localBodyString = '<%=localBody%>';
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="homePageContainer">
-		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
+		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpeg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
                     <td style="vertical-align:top;width:540px;">
@@ -282,7 +282,7 @@ localBodyString = '<%=localBody%>';
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td width="70%" valign="top">
-					<img width="660" height="380" src="images/icons/homePage_new/homePage_Image.jpg">
+					<img width="660" height="380" src="images/icons/homePage_new/homePage_Image.jpeg">
 				</td>
 				<td width="30%" valign="top">
 					
@@ -412,21 +412,22 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan" style="position:relative;top:6px;">
 												<table cellspacing="0" cellpadding="0">
 													<tr>
 														<td align="left">Election Comparison</td>
-														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+														<td style="padding:2px 0px 0px 8px">
+														<img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
 											</span>
 										</div>
 									</td>
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 								  </tr>
 								</table>
                             </div>
@@ -451,13 +452,13 @@ localBodyString = '<%=localBody%>';
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureFooterBackground_center">
 											
 										</div>
 									</td>
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -467,21 +468,21 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center">
 											<span class="headerLabelSpan" style="position:relative;top:6px;">
 												<table cellspacing="0" cellpadding="0">												
 													<tr>
 														<td align="left">Party Results </td>
-														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
 											</span>
 										</div>
 									</td>
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 								  </tr>
 								</table>
                             </div>
@@ -505,13 +506,13 @@ localBodyString = '<%=localBody%>';
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureFooterBackground_center">
 											
 										</div>
 									</td>
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -553,21 +554,21 @@ localBodyString = '<%=localBody%>';
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>                                    
-								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 								<td width="98%">
 									<div class="productFeatureHeaderBackground_center">
 										<span class="headerLabelSpan" style="position:relative;top:6px;">
 											<table cellspacing="0" cellpadding="0">
 												<tr>
 													<td align="left">Quick Search </td>
-													<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+													<td style="padding:2px 0px 0px 8px"><img  width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 												</tr>
 											</table>
 											 
 										</span>
 									</div>
 								</td>
-								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+								<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 							  </tr>
 							</table>
 						</div>
@@ -629,7 +630,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
@@ -640,14 +641,14 @@ localBodyString = '<%=localBody%>';
 													</tr>
 													<tr>
 														<td align="left">Leaders</td>
-														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
 											</span>
 										</div>
 									</td>
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>							
@@ -657,13 +658,13 @@ localBodyString = '<%=localBody%>';
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureFooterBackground_center">
 											
 										</div>
 									</td>
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -674,7 +675,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
@@ -685,14 +686,14 @@ localBodyString = '<%=localBody%>';
 													</tr>
 													<tr>
 														<td align="left">Nation</td>
-														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
 											</span>
 										</div>
 									</td>
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -702,13 +703,13 @@ localBodyString = '<%=localBody%>';
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureFooterBackground_center">
 											
 										</div>
 									</td>
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -719,7 +720,7 @@ localBodyString = '<%=localBody%>';
 							 <div class="productFeatureHeader">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
@@ -730,14 +731,14 @@ localBodyString = '<%=localBody%>';
 													</tr>
 													<tr>
 														<td align="left">Parties</td>
-														<td style="padding:2px 0px 0px 8px"><img src="images/icons/homePage_new/widgetHeaderIcon.jpg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
 											</span>
 										</div>
 									</td>
-									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpg"/></td>
+									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
@@ -751,13 +752,13 @@ localBodyString = '<%=localBody%>';
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
 									<td width="98%">
 										<div class="productFeatureFooterBackground_center">
 											
 										</div>
 									</td>
-									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpg"/></td>
+									<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
 								  </tr>
 								</table>
 							</div>
