@@ -3103,11 +3103,20 @@ public class StaticDataService implements IStaticDataService {
 		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
 		int flag=0,lostFlag=1;
 		try{
-			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)  || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) ) {
+				
+				if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE))
+					if(electionLevel.equalsIgnoreCase("stateWiseZptc"))
+						electionLevel = IConstants.STATE_LEVEL;
+				
+				if(electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE))
+					if(electionLevel.equalsIgnoreCase("stateWiseMptc"))
+						electionLevel = IConstants.STATE_LEVEL;
+				
 				if(partyId==0l){					
-					candidateDetailsVO = getCandidatesInfoForAnElectionType(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);					
+					candidateDetailsVO = getCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,locationId,stateId,startIndex,maxResult,order,columnName);					
 				}else{
-					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(IConstants.ASSEMBLY_ELECTION_TYPE,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId,startIndex,maxResult,order,columnName);
+					candidateDetailsVO = getCandidatesWinnerInfoForAnElectionTypes(electionType,electionYear,resultsCategory,electionLevel,locationId,partyId,stateId,startIndex,maxResult,order,columnName);
 				}
 			}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 				if(partyId==0l){
@@ -5541,7 +5550,7 @@ public class StaticDataService implements IStaticDataService {
 				smallestValue.add(nextValue);				
 				votesRange+=nextValue;
 			}
-			System.out.println(smallestValue);			
+		//	System.out.println(smallestValue);			
 			List smallValue = new ArrayList(smallestValue);
 			
 			if(smallValue != null && smallValue.size() > 0){

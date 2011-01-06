@@ -758,5 +758,10 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List list = nominationDAO.getAllCandidateDetails("2005", 0l,1l, IConstants.MUNCIPLE_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,0l,0,20,"asc","model.candidate.lastname");
 		System.out.println(list.size());
 	}*/
+	
+	public void testData(){
+		
+	//	List list = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(constituencyId, "2001", "ZPTC", rank)
+	}
 }
 	
