@@ -1571,6 +1571,7 @@ function buildCensusSelect(myResult)
 	
 	var cenvar = '';
 	cenvar += '<table>';
+	cenvar += '<tr>';
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 	{
 		cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
@@ -1592,7 +1593,12 @@ function buildCensusSelect(myResult)
 	cenvar += '</select>';
 	cenvar += '</th>'
 	cenvar += '<td><div id="censusAjaxImgDiv" align="center" style="display:none;"><img width="16" height="16" src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+	cenvar += '</tr>';
+	cenvar += '<tr>';
+	cenvar += '<th>(In the graph Census Details are in Percentages, these Percentages Calculated Over Total Population)';
+	cenvar += '</tr>';
 	cenvar += '</table>';
+
 
 	censelectEle.innerHTML = cenvar;
 }
