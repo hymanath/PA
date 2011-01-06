@@ -99,6 +99,7 @@ import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidatePartyInfoVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
+import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparatorMandal;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparatorTotVoters;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1414,6 +1415,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 		
 		constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
+		Collections.sort(constituencyElectionResults,new ConstituencyOrMandalVOComparatorMandal());
 		constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyElectionResults);
 	
 		return constituencyRevenueVillagesVO;
@@ -1875,7 +1877,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Collections.sort(candidateNamePartyAndStatus, new CandidatePartyInfoVOComparator());
 			finalVOReturn.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
 			
-			Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparatorTotVoters());
+			//Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparatorTotVoters());
+			Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparatorMandal());
 			finalVOReturn.setConstituencyOrMandalWiseElectionVO(constituencyOrMandalWiseElectionVO);
 		}catch (Exception e) {
 			log.debug("Exception Occured While Processing Mandal Data");
