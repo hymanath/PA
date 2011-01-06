@@ -6711,5 +6711,22 @@ public class StaticDataService implements IStaticDataService {
 		
 		return str; 
 	}
+	
+	/**
+	 * Returns Recent Assembly election Id Happened In A State
+	 * Main Election Is Considered
+	 */
+	public Long getRecentAssemblyMainElectionIdInAState(Long stateId){
+		
+		Long electionId = 0L;
+		List electionLst = electionDAO.findLatestElectionAssemblyElectionIdForState(IConstants.ASSEMBLY_ELECTION_TYPE, stateId, IConstants.ELECTION_SUBTYPE_MAIN);
+		if(electionLst != null && electionLst.size() > 0){
+			
+			Object[] values = (Object[])electionLst.get(0);
+			electionId = (Long)values[1];
+		}
+		
+	 return electionId;
+	}
 }
 
