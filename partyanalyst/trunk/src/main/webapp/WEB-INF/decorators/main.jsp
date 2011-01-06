@@ -283,7 +283,7 @@
 	</div>
 	
 	<script type="text/javascript">
-		buildLogoImage();
+		//buildLogoImage();
 	</script>
 </body>
 </html>

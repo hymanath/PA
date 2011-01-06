@@ -321,12 +321,12 @@ input.input_text
 
 .headerLabelSpan
 {
-	color:#FFFFFF;
+	/*color:#FFFFFF;*/
 	font-size:13px;
 	font-weight:bold;
-	left:10px;
+	/*left:10px;
 	position:relative;
-	top:10px;
+	top:10px;*/
 }
 
 .widgetsMain
@@ -416,21 +416,28 @@ input.input_text
 
 .productFeatureHeaderBackground_center
 {
-	background-image:url(../../images/icons/homePage_new/blue_header_center.jpg);
+	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpg);
 	height:40px;
+}
+
+.productFeatureFooterBackground_center
+{
+	background-image:url(../../images/icons/homePage_new/white_footer_image_center.jpg);
+	height:25px;
 }
 
 .productFeatureBody
 {
 	background-color:#FFFFFF;
-	border-bottom:1px solid #B3C1CE;
-	border-left:1px solid #B3C1CE;
-	border-right:1px solid #B3C1CE;
+	/*border-bottom:1px solid #B3C1CE;*/
+	border-left:2px solid #D8D8D8;
+	border-right:2px solid #D8D8D8;
 	color:#12283A;
 	line-height:16px;
 	padding:5px;
 	text-align:justify;
 }
+
 
 .productFeatureMain
 {
@@ -469,13 +476,20 @@ input.input_text
 
 #adDataMain_body
 {
-	border-left:1px solid #808B8E;
-	border-bottom:1px solid #808B8E;
-	border-right:1px solid #808B8E;
+	border-bottom:2px solid #D8D8D8;
+	border-left:2px solid #D8D8D8;
+	border-right:2px solid #D8D8D8;
 	height:290px;
 	padding-left:10px;
 }
 
+.headerLabelSpan1
+{
+	color:#3b3b3b;
+	position:relative;
+	top:12px;
+	left:5px;
+}
 .adData_head
 {
 	border-bottom:1px solid #ADADAD;
@@ -670,8 +684,8 @@ a:hover
 #indexNavContainer
 {
 	height:30px;
-	border-bottom:1px solid black;
-	border-top:1px solid black;
+	border-bottom:1px solid #b80a00;
+	border-top:1px solid #b80a00;
 }
 
 #indexNavContainer .yuimenubar
@@ -1122,4 +1136,20 @@ text-decoration:none;
 	background-color:#F00;
 	position:absolute;
 	z-index:5;
+}
+
+.ui-state-active,.ui-state-default
+{
+	background-image:url('../../images/icons/homePage_new/accordianHeader.jpg');
+}
+
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited
+{
+	color:#FFFFFF;
+}
+
+.ui-accordion-icons .ui-accordion-header a
+{
+	padding:3px;
+	padding-left:2.2em;
 }

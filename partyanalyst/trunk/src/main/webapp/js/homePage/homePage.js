@@ -12,7 +12,8 @@ var localBodyString = '';
 
 function initializeHomePage()
 {
-	buildLogoImage();	
+	//buildLogoImage();	
+	$( "#accordion" ).accordion();
 	buildElectionTrendzTabView();
 
 	var stateEl = document.getElementById("stateList_res");
@@ -38,7 +39,7 @@ function buildPartiesNews()
     "format" : "300x250",
 	"queryList" : [
           {
-            "title" : "Parties",
+            "title" : "",
             "q" : "INC, TDP, TRS, PRP"
           }	
      ],
@@ -56,7 +57,7 @@ function buildleadersNews()
     "format" : "300x250",
 	"queryList" : [
           {
-            "title" : "Leaders",
+            "title" : "",
             "q" : "Chandra Babu Naidu, Y S Jagan"
           }	
      ],
@@ -74,7 +75,7 @@ function buildTopStoriesNews()
     "format" : "300x250",
 	"queryList" : [
           {
-            "title" : "Nation",            
+            "title" : "",            
 			"topic" :  "n",
 			"ned"   : "in"
           }	
