@@ -776,7 +776,7 @@ function buildProblemPostingWindow()
 	
 	if(userType == "PARTY_ANALYST_USER" || userType == "FREE_USER")
 	{		
-		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindow()">POST</a></div>';
+		str+='<div id="problemPostingButtonDiv"><a type="button" id="postButton" value = "Post" onclick="openAddNewProblemWindowForConstituency()">POST</a></div>';
 	}
 	else
 	{    
