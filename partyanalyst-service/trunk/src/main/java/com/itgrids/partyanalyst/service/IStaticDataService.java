@@ -279,4 +279,6 @@ public interface IStaticDataService {
 		public String removeSpecialCharectersFromString(String formatString);
 		
 		public DistrictWisePartyResultVO getElectionResultsForDistrict(Long electionScopeId, Long districtId);
+		
+		public Long getRecentAssemblyMainElectionIdInAState(Long stateId);
 }
