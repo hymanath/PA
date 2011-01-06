@@ -1570,18 +1570,18 @@ function buildCensusSelect(myResult)
 	var censelectEle = document.getElementById("censusSelectDiv");
 	
 	var cenvar = '';
-	cenvar += '<table>';
+	cenvar += '<table align="center">';
 	cenvar += '<tr>';
 	if('${constituencyDetails.constituencyType}' == 'Assembly')
 	{
-		cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:</th>';
+		cenvar += '<th>To Compare Mandal Wise Election Results With Census, Select Any Census Parameter:';
 	}
 
 	if('${constituencyDetails.constituencyType}' == 'Parliament')
 	{
-		cenvar += '<th>To Compare Assembly Wise Election Results With Census, Select Any Census Parameter:</th>';
+		cenvar += '<th>To Compare Assembly Wise Election Results With Census, Select Any Census Parameter:';
 	}
-	cenvar += '<th>';
+	cenvar += '&nbsp;&nbsp;&nbsp;&nbsp;';
 	cenvar += '<select id="censusSelect" class = "selectWidth" onchange = "getCensusDetailsForAConstituency(\'${constituencyId}\',this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 	cenvar += '<option value=\'0\'>Select Census</option>';
 	cenvar += '<option value=\'1\'>SC Population</option>';
