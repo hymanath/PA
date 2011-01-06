@@ -5724,13 +5724,13 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> parties = Collections.synchronizedList(getStaticParties());
 		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
 		for(SelectOptionVO party:parties)
-			if(!"'CPI','CPM','AIMIM'".contains(party.getName()))
+			if(!"'AIMIM'".contains(party.getName()))
 				partiesInMandal.add(party);
 		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
 		List electionsInMandal = villageBoothElectionDAO.findPolledVotesInAllElectionsOfMandalByRevenueVillages(tehsilId);
 		for(Object[] values:(List<Object[]>)electionsInMandal)
 			elections.add(new SelectOptionVO((Long)values[0], (values[1]+" "+values[2])));
-		partiesInMandal.add(new SelectOptionVO(0l, "Others"));
+		//partiesInMandal.add(new SelectOptionVO(0l, "Others"));
 		mandalVO.setPartiesInMandal(partiesInMandal);
 		mandalVO.setElectionsInMandal(elections);
 		return mandalVO;
@@ -5871,7 +5871,7 @@ public class StaticDataService implements IStaticDataService {
 			
 			List<PartyResultVO> party = new ArrayList<PartyResultVO>(0);	
 			
-			String[] partiesList = {"TRS","INC","TDP","BJP","PRP"};
+			String[] partiesList = {"TRS","INC","TDP","BJP","PRP","CPI","CPM"};
 			
 						
 			String elecYearAndType = ""; 
