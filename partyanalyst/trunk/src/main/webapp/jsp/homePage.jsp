@@ -292,17 +292,17 @@ localBodyString = '<%=localBody%>';
 							<div class="widgetsBody" style="background-color:#A0A5A7;">
 								<table>
 									<tr>
-										<td style="text-align:justify;padding-bottom:30px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
+										<td style="text-align:justify;padding-bottom:30px;line-height:25px;"> Select your state to view its Assembly, Parliament, Local Bodies election results. </td>
 									</tr>
 									<tr>
-										<td><%=stateSelect%></td>
+										<td style="height:40px;"><%=stateSelect%></td>
 									</tr>
 									<tr>
 										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/></td>									
 									</tr>								
 								</table>
 							</div>
-							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+							<div class="widgetsFooter" style="background-color:#A0A5A7;height:37px;">
 								<img width="70" height="25" src="images/icons/homePage_new/b1.jpg" onclick="navigateToStatePage()"></img>
 							</div>
 						</div>
@@ -312,7 +312,7 @@ localBodyString = '<%=localBody%>';
 								<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
 								<table>
 									<tr>
-										<td style="text-align:justify;padding-bottom:5px;"> Select your district to view its election results in district level. </td>
+										<td style="text-align:justify;padding-bottom:5px;line-height:25px;"> Select your district to view its election results in district level. </td>
 									</tr>
 									<tr>
 										<td><%=stateSelect%></td>
@@ -328,7 +328,7 @@ localBodyString = '<%=localBody%>';
 									</tr>
 								</table>
 							</div>
-							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+							<div class="widgetsFooter" style="background-color:#A0A5A7;height:37px;">
 								<img width="70" height="25" src="images/icons/homePage_new/b2.jpg" onclick="navigateToDistrictPage()"></img>
 							</div>
 						</div>
@@ -364,7 +364,7 @@ localBodyString = '<%=localBody%>';
 									</tr>
 								</table>										
 							</div>
-							<div class="widgetsFooter" style="background-color:#A0A5A7;">
+							<div class="widgetsFooter" style="background-color:#A0A5A7;height:37px;">
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpeg" onclick="navigateToConstituencyPage()"></img>
 							</div>
 						</div>
@@ -395,7 +395,7 @@ localBodyString = '<%=localBody%>';
 									</tr>
 								</table>
 							</div>
-							<div class="widgetsFooter" style="background-color:#a0a5a7;">
+							<div class="widgetsFooter" style="background-color:#a0a5a7;height:37px;">
 								<img width="70" height="25" src="images/icons/homePage_new/b4.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
