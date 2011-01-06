@@ -349,38 +349,38 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		}			
 	}*/
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void testFindCadreForSMS()
 	{
 		//String s = "and model.currentAddress.state.stateId = 1";
-		String s = "and model.currentAddress.district.districtId = 19";
+		//String s = "and model.currentAddress.district.districtId = 19";
 		//String s = "and model.currentAddress.constituency.constituencyId = 231";
-		//String s = "and model.currentAddress.tehsil.tehsilId = 870";
+		//String s = "and model.currentAddress.tehsil.tehsilId = 861";
 		//String s = "and model.currentAddress.hamlet.hamletId = 2094";
-		//String s = "and model.currentAddress.localElectionBody.localElectionBodyId = 562";
+		String s = "and model.currentAddress.localElectionBody.localElectionBodyId = 478";
 		//String s = "and model.currentAddress.ward.constituencyId = 8147";
 		//String s = "and model.currentAddress.booth.boothId = 69082";
-		String cadreType="and model.memberType = 'Active'";
+		//String cadreType="and model.memberType = 'Active'";
 		//String cadreType="and model.memberType = 'Normal'";
-		//String cadreType="";
+		String cadreType="";
 		String sortOption = null;
 		String order = null;
 		
-		//sortOption = " model.firstName ";
+		sortOption = " model.firstName ";
 		//sortOption = " model.mobile ";
 		//sortOption = " model.cadreLevel.level ";
 		//sortOption = " model.memberType ";
 		//sortOption = " model.education.qualification ";
 		//sortOption = " model.occupation.occupation ";
-		sortOption = " model.casteCategory.category ";
+		//sortOption = " model.casteCategory.category ";
 		
-		//order = " asc ";
-		order = " desc ";
+		order = " asc ";
+		//order = " desc ";
 		
 		String socialStr = new String();
 		String genderStr = new String();
 				
-		socialStr =" and (model.casteCategory.socialCategoryId = 1 or model.education.eduQualificationId = 1 or model.occupation.occupationId = 1)";
+		//socialStr =" and (model.casteCategory.socialCategoryId = 1 or model.education.eduQualificationId = 1 or model.occupation.occupationId = 1)";
 		
 		genderStr = " and model.gender like 'Male'";
 		
@@ -398,7 +398,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr);
 		System.out.println(y.get(0).toString());
 		
-	}*/
+	}
  /*	@SuppressWarnings("unchecked")
 	public void testFindNormalCadre()
 	{
@@ -431,11 +431,11 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testFindCadresByCadreLevelByUserIDInALocation()
+	/*public void testFindCadresByCadreLevelByUserIDInALocation()
 	{
 		List<Cadre> result = cadreDAO.findCadresByCadreLevelByUserIDInALocation("STATE", 1L, IConstants.CADRE_MEMBER_TYPE_ACTIVE, "constituency", "constituencyId", 232L);
 		System.out.println(result.size());
-	}
+	}*/
 	
 }
 	
