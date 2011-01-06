@@ -127,6 +127,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ConstituencyRevenueVillagesVO chartResultVO;
 	private List<PartyElectionVotersVO> partiesElecsResults;
 	private String windowType;
+	private Long recentAssemblyElecId;
+	
 
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
@@ -236,6 +238,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+
+	/**
+	 * @return the recentAssemblyElecId
+	 */
+	public Long getRecentAssemblyElecId() {
+		return recentAssemblyElecId;
+	}
+
+	/**
+	 * @param recentAssemblyElecId the recentAssemblyElecId to set
+	 */
+	public void setRecentAssemblyElecId(Long recentAssemblyElecId) {
+		this.recentAssemblyElecId = recentAssemblyElecId;
 	}
 
 	public HttpServletResponse getResponse() {
@@ -564,6 +580,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
 		staticPartiesList = mandalVO.getPartiesInMandal();
 		//votesSharing = staticDataService.getPartyVotesShareInConstituency(Long.parseLong(constiId),1);
+		
+		this.recentAssemblyElecId = staticDataService.getRecentAssemblyMainElectionIdInAState(1L); //1L is AP state ID
+		
 		return SUCCESS;
 	}   
 	
