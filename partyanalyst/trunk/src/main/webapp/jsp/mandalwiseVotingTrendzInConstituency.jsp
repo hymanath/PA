@@ -1429,6 +1429,9 @@
 			
 			votesShareData = results;
             var chartName = '';
+            var crossVotingDataChartAjaxImgDivEl =  document.getElementById("crossVotingDataChartAjaxImgDiv");
+			if(crossVotingDataChartAjaxImgDivEl)
+				crossVotingDataChartAjaxImgDivEl.style.display = 'none';
 
 			if(results[0] != null)
 			{
@@ -1692,7 +1695,7 @@
 			headDivEl.innerHTML = '';
             headDivEl.innerHTML = str;
             
-			var mainDivElmt = document.getElementById("crossVotingData_Graph_Div");
+			var mainDivElmt = document.getElementById("crossVotingData_Graph_Div");            
 			var divEl = document.getElementById("constitutencyResultsChart");
 			mainDivElmt.style.display = 'block';
 
@@ -1790,6 +1793,9 @@
 		}				
 		function getMandalVotingTrendz(distId,constId,constName)
 		{
+			var mandalVotingTrendzAjaxImageEl = document.getElementById("mandalVotingTrendzAjaxImage");
+			if(mandalVotingTrendzAjaxImageEl)
+				mandalVotingTrendzAjaxImageEl.style.display = 'block';
 			var jsObj=
 			{
 					districtId:distId,
@@ -1952,9 +1958,17 @@
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:left"></div>';
             str += '<div id="constituencyMainDetails_Div" style="margin-bottom:10px;padding:10px;"></div>';
 			str += '<div id="crossVotingData_Graph_Div" style="display:none;">';
-			str += '<table width="100%">';
+			str += '<table width="100%" border="0">';
 			str += '<tr>';
 			str += '<td width="50%" style="vertical-align:top;"><div id="partyVotesSharingDetailsDiv"><div id="votersShareData_main"></div><div id="votersShareCheckBox"></div></div></td>';
+			str += '</tr>';
+			str += '<tr>';
+			str += '<td align="center">';
+			str += '<DIV id="crossVotingDataChartAjaxImgDiv" style="display:none">';
+			str += '<DIV>Please Wait..</DIV>';
+			str += '<IMG src="images/icons/barloader.gif"/>';
+			str += '</DIV>';
+			str += '</td>';
 			str += '</tr>';
 			str += '<tr>';
 			str += '<td width="50%" style="vertical-align:top;"><div id="constitutencyResultsChart"></div></td>';
@@ -2034,7 +2048,7 @@
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
 			str += '	<div id="allPartiesResultsChartsPanel"></div>';
-			str += '	<div id="mandalsListInConstituency"></div>';	
+			str += '	<div id="mandalsListInConstituency"></div>';									
 			str += '	<div id="mandalVotingTrendzData"></div>';			
 			str += '</div>';
 			
@@ -2243,7 +2257,8 @@
 		
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
-			var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
+			
+            var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
 			var divEl = document.getElementById("madalwiseVotesRange");
 
 			if(imageDivEl && divEl)
@@ -2416,6 +2431,7 @@
 			mdlwiseVotersDetailsStr+='	<TH>%</TH>';
 			mdlwiseVotersDetailsStr+='	<TH>Analyze</TH>';
 			mdlwiseVotersDetailsStr+='</TR>';
+
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
 			{				
 				mdlwiseVotersDetailsStr+='<TR>';				
@@ -2542,6 +2558,10 @@
 			
 			if(results[0].biElectionResultsVO != null )
 			{
+				var mandalVotingTrendzAjaxImageEl = document.getElementById("mandalVotingTrendzAjaxImage");
+				if(mandalVotingTrendzAjaxImageEl)
+					mandalVotingTrendzAjaxImageEl.style.display = 'none';
+					
 				bodyElmt.innerHTML = '';
 				var str = '';
 				str += '<table width="100%" height="150" cellspacing = "5" cellpadding="5" border="0">';
@@ -2696,6 +2716,10 @@
 						
 		} else if(urbanConstResults != null)
 		{
+			var mandalVotingTrendzAjaxImageEl = document.getElementById("mandalVotingTrendzAjaxImage");
+			if(mandalVotingTrendzAjaxImageEl)
+				mandalVotingTrendzAjaxImageEl.style.display = 'none';
+			
 			bodyElmt.innerHTML = '';
 			mandalIds = null;
 			var urbanStr = '';
@@ -3383,7 +3407,9 @@
 				callAjax(jsObj, url);
 		}
 		function partyVotesSharing(all,allChoices,flag){
-					
+			var crossVotingDataChartAjaxImgDivEl =  document.getElementById("crossVotingDataChartAjaxImgDiv");
+			if(crossVotingDataChartAjaxImgDivEl)
+				crossVotingDataChartAjaxImgDivEl.style.display = 'block';		
 			var getAllData = all;
 			var getSelectedChoices = allChoices;
 			var jsObj = {
@@ -3487,6 +3513,10 @@
 	</div>	
 	<div id="visualization"></div>
 	<div id="visualizationOne"></div>
+	<DIV id="mandalVotingTrendzAjaxImage" style="display:none;text-align:center;">
+	<DIV>Please Wait..</DIV>
+	<IMG src="images/icons/barloader.gif"/>
+	</DIV>
 	<div id="votingTrendzInfoMain"></div>
 	<div class="rounded" >	
 		<table width="98%">
