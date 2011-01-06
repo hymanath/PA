@@ -250,21 +250,16 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			log.debug(stateID);
 			try{
 				
-				if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
+			/*	if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
 					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),0,0,null,null);					
-				}else{
+				}else{*/
 					int startIndex = new Long(request.getParameter("startIndex").toString()).intValue();
 					
 					int maxResult = new Long(request.getParameter("results").toString()).intValue();
 					String order = request.getParameter("dir").toString();
-					String columnName = request.getParameter("sort").toString();
-					System.out.println("============================");
-					System.out.println("============================");
-					System.out.println(startIndex+"\t"+maxResult+"\t"+order+"\t"+columnName);
-					System.out.println("============================");
-					System.out.println("============================");
+					String columnName = request.getParameter("sort").toString();					
 					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),startIndex,maxResult,order,columnName);
-				}	
+			//	}	
 			}catch(Exception e){
 				e.printStackTrace();
 				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
