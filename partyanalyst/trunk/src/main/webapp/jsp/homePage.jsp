@@ -285,9 +285,7 @@ localBodyString = '<%=localBody%>';
 					<img width="660" height="380" src="images/icons/homePage_new/homePage_Image.jpg">
 				</td>
 				<td width="30%" valign="top">
-					<!--<div>
-						<img width="280" height="65" src="images/icons/homePage_new/join_Disscussion.jpg">
-					</div>-->
+					
 					<div id="accordion">
 						<h3><a href="#">View Your State</a></h3>
 						<div style="padding:0px;">
@@ -633,7 +631,7 @@ localBodyString = '<%=localBody%>';
 								  <tr>                                    
 									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
-										<div class="productFeatureHeaderBackground_center">
+										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
 												<table cellspacing="0" cellpadding="0">
 													<tr>
@@ -678,7 +676,7 @@ localBodyString = '<%=localBody%>';
 								  <tr>                                    
 									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
-										<div class="productFeatureHeaderBackground_center">
+										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
 												<table cellspacing="0" cellpadding="0">
 													<tr>
@@ -723,7 +721,7 @@ localBodyString = '<%=localBody%>';
 								  <tr>                                    
 									<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpg"/></td>
 									<td width="98%">
-										<div class="productFeatureHeaderBackground_center">
+										<div class="productFeatureHeaderBackground_center1">
 											<span class="headerLabelSpan">
 												<table cellspacing="0" cellpadding="0">
 													<tr>
