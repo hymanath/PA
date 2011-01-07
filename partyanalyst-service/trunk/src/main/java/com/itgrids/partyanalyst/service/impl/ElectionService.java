@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -16,13 +17,13 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CensusVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.service.IElectionService;
-import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class ElectionService implements IElectionService{
 	
@@ -33,6 +34,7 @@ public class ElectionService implements IElectionService{
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
+	private IStaticDataService staticDataService;
 	private final static Logger log = Logger.getLogger(ElectionService.class);
 
 	public IElectionDAO getElectionDAO() {
@@ -92,6 +94,14 @@ public class ElectionService implements IElectionService{
 	public void setConstituencyCensusDetailsDAO(
 			IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO) {
 		this.constituencyCensusDetailsDAO = constituencyCensusDetailsDAO;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	public List<CensusVO> getConstituencyCensusDetails(int selectIndex)
@@ -229,5 +239,36 @@ public class ElectionService implements IElectionService{
 			return null;
 		}
 	  }
+	
+	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(
+			String electionYear, List<Long> constituencyIds){
+		
+		List<ConstituencyElectionResultsVO> constituenciesResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(
+				electionYear, constituencyIds);
+		Set<String> allParties = new HashSet<String>(0);
+		Set<String> partiesInConstituency = null;
+		for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
+			partiesInConstituency = new HashSet<String>();
+			for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
+				partiesInConstituency.add(partyInfo.getPartyName());
+				allParties.add(partyInfo.getPartyName());
+			}
+			constiInfo.setParticipatedParties(partiesInConstituency);
+		}
+		
+		PartyResultsVO partyInfo = null;
+		for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+			for(String partyName:allParties)
+				if(!constiInfo.getParticipatedParties().contains(partyName)){
+					partyInfo = new PartyResultsVO();
+					partyInfo.setPartyName(partyName);
+					constiInfo.getPartyResultsVO().add(partyInfo);
+				}
+		
+		for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+			Collections.sort(constiInfo.getPartyResultsVO(), new PartyResultsVOComparator());
+		
+		return constituenciesResults;
+	}
 
 }

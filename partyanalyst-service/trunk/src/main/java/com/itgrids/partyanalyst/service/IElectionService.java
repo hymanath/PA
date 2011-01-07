@@ -3,8 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 
 public interface IElectionService {
 	
@@ -31,5 +30,8 @@ public interface IElectionService {
 	public List<String> getElectionYears(Long electionType);*/
 	
 	public List<CensusVO> getConstituencyCensusDetails(int selectIndex);
+	
+	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(
+			String electionYear, List<Long> constituencyIds);
 	
 }
