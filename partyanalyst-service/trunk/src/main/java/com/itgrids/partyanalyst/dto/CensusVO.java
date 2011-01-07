@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 public class CensusVO implements Serializable{
@@ -52,7 +53,9 @@ public class CensusVO implements Serializable{
 	private String locationName;
 	private List<String> censusFields; 
 	private Long censusSelectedIndex;
-	
+	private String range;
+	private List<Long>locationIds;
+
 	private String level;
 	private Long houseHolds;
 	private Long populationUnderSix;
@@ -128,12 +131,6 @@ public class CensusVO implements Serializable{
 	private Double totalMargMalePercentage;
 	private Double totalMargFemalePercentage;
 	private Double nonWorkingPopPercentage;
-	public Long getConstituencyId() {
-		return constituencyId;
-	}
-	public void setConstituencyId(Long constituencyId) {
-		this.constituencyId = constituencyId;
-	}
 	private Double nonWorkingMalePercentage;
 	private Double nonWorkingFemalePercentage;
 	private Double popCLPercentage;
@@ -151,7 +148,6 @@ public class CensusVO implements Serializable{
 	private Long mainMargCLPopulation;
 	private Long mainMargCLMale;
 	private Long mainMargCLFemale;
-	
 	private Long mainMargALPopulation;
 	private Long mainMargALMale;
 	private Long mainMargALFemale;
@@ -164,6 +160,12 @@ public class CensusVO implements Serializable{
 	private Double wpr;
 	
 	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 	
 	public Long getMainMargALPopulation() {
 		return mainMargALPopulation;
@@ -224,6 +226,18 @@ public class CensusVO implements Serializable{
 	}
 	public void setWpr(Double wpr) {
 		this.wpr = wpr;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public List<Long> getLocationIds() {
+		return locationIds;
+	}
+	public void setLocationIds(List<Long> locationIds) {
+		this.locationIds = locationIds;
 	}
 	public Double getPopOWPercentage() {
 		return popOWPercentage;

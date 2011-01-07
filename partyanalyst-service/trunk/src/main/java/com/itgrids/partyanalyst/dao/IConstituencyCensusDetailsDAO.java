@@ -11,5 +11,7 @@ public interface IConstituencyCensusDetailsDAO extends GenericDao<ConstituencyCe
 	public List<Object[]> findConstituencyWiseCensusDetails(Long stateId,Long constituencyId,Long year);
 	
 	public List<Long> checkForConstituencyExistance(Long constituencyId);
+	
+	public List<Object[]> getConstituencyIdsAndPercentages(String censusParam);
 
 }
