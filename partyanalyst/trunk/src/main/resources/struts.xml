@@ -1940,6 +1940,21 @@
 			<param name="root">constituencyRevenueVillagesVO</param>				
 			</result>
        </action>
-                
+       
+        <action name="censusReportAction" class="censusReportAction">
+		    <result name="success">/jsp/censusReportPage.jsp</result>	
+        </action> 
+         
+        <action name="getCensusInfoInAStateAction" class="censusReportAction" method="getCensusInfoInAState">
+        	<result type="json" name="success">
+			<param name="root">censusRange</param>				
+			</result>
+       	</action>
+       	<action name="getPartiesPerformanceInCensusReportAction" class="censusReportAction" method="getPartiesPerformanceInCensusReport">
+        	<result type="json" name="success">
+			<param name="root">chartName</param>				
+			</result>
+       	</action>   
+       	   
 	</package>
 </struts>

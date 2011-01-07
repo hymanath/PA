@@ -573,4 +573,8 @@
 	    <property name="genericUploadService" ref="genericUploadService" />
     </bean>
     
+    <bean id="censusReportAction" class="com.itgrids.partyanalyst.web.action.CensusReportAction" singleton="false">
+    	<property name="staticDataService" ref="staticDataService" />
+    	<property name="electionService" ref="electionService" />    		    
+    </bean>    
 </beans>		

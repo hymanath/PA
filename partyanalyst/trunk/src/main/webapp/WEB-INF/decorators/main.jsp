@@ -102,7 +102,8 @@
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 	            { text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
 	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
-				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
+				{ text: "Census Report", url: "censusReportAction.action" }
 	        ]     
 	    }, 
 	    { 
