@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -129,19 +130,18 @@ public class ElectionService implements IElectionService{
 		
 		List<Object[]>list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusStr);
 		
-		Map<String,List<Long>> resultMap = new HashMap<String,List<Long>>();
+		Map<String,List<Long>> resultMap = new LinkedHashMap<String,List<Long>>();
 		
-		List<Long> idsList = new ArrayList<Long>(0);
-		resultMap.put("0-10", idsList);
-		resultMap.put("10-20", idsList);
-		resultMap.put("20-30", idsList);
-		resultMap.put("30-40", idsList);
-		resultMap.put("40-50", idsList);
-		resultMap.put("50-60", idsList);
-		resultMap.put("60-70", idsList);
-		resultMap.put("70-80", idsList);
-		resultMap.put("80-90", idsList);
-		resultMap.put("90-100", idsList);
+		resultMap.put("0-10", new ArrayList<Long>(0));
+		resultMap.put("10-20", new ArrayList<Long>(0));
+		resultMap.put("20-30", new ArrayList<Long>(0));
+		resultMap.put("30-40", new ArrayList<Long>(0));
+		resultMap.put("40-50", new ArrayList<Long>(0));
+		resultMap.put("50-60", new ArrayList<Long>(0));
+		resultMap.put("60-70", new ArrayList<Long>(0));
+		resultMap.put("70-80", new ArrayList<Long>(0));
+		resultMap.put("80-90", new ArrayList<Long>(0));
+		resultMap.put("90-100", new ArrayList<Long>(0));
 		
 		for(Object[] obj:list)
 		{
@@ -150,74 +150,74 @@ public class ElectionService implements IElectionService{
 			
 			if(percentage > 0 && percentage <= 10)
 			{
-				idsList = resultMap.get("0-10");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("0-10", idsList);
+				List<Long> idsListNew = resultMap.get("0-10");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("0-10", idsListNew);
 			}else if(percentage > 10 && percentage <= 20)
 			{
-				idsList = resultMap.get("10-20");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("10-20", idsList);
+				List<Long> idsListNew = resultMap.get("10-20");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("10-20", idsListNew);
 			}else if(percentage > 20 && percentage <= 30)
 			{
-				idsList = resultMap.get("20-30");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("20-30", idsList);
+				List<Long> idsListNew = resultMap.get("20-30");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("20-30", idsListNew);
 			}else if(percentage > 30 && percentage <= 40)
 			{
-				idsList = resultMap.get("30-40");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("30-40", idsList);
+				List<Long> idsListNew = resultMap.get("30-40");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("30-40", idsListNew);
 			}else if(percentage > 40 && percentage <= 50)
 			{
-				idsList = resultMap.get("40-50");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("40-50", idsList);
+				List<Long> idsListNew = resultMap.get("40-50");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("40-50", idsListNew);
 			}else if(percentage > 50 && percentage <= 60)
 			{
-				idsList = resultMap.get("50-60");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("50-60", idsList);
+				List<Long> idsListNew = resultMap.get("50-60");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("50-60", idsListNew);
 			}else if(percentage > 60 && percentage <= 70)
 			{
-				idsList = resultMap.get("60-70");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("60-70", idsList);
+				List<Long> idsListNew = resultMap.get("60-70");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("60-70", idsListNew);
 			}else if(percentage > 70 && percentage <= 80)
 			{
-				idsList = resultMap.get("70-80");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("70-80", idsList);
+				List<Long> idsListNew = resultMap.get("70-80");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("70-80", idsListNew);
 			}else if(percentage > 80 && percentage <= 90)
 			{
-				idsList = resultMap.get("80-90");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("80-90", idsList);
+				List<Long> idsListNew = resultMap.get("80-90");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("80-90", idsListNew);
 			}else if(percentage > 90 && percentage <= 100)
 			{
-				idsList = resultMap.get("90-100");
-				if(idsList == null)
-					idsList = new ArrayList<Long>();
-				idsList.add(constituencyId);
-				resultMap.put("90-100", idsList);
+				List<Long> idsListNew = resultMap.get("90-100");
+				if(idsListNew == null)
+					idsListNew = new ArrayList<Long>();
+				idsListNew.add(constituencyId);
+				resultMap.put("90-100", idsListNew);
 			}
 		}
 		 
