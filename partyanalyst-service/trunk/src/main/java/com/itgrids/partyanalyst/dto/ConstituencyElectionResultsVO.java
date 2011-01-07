@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class ConstituencyElectionResultsVO extends ResultStatus{
 
@@ -40,7 +41,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private Boolean resultsFlag;
 	private String chartName;
 	private List<SelectOptionVO> partiesList;
-	
+	private Set<String> participatedParties;
 	
 	//getters and setters
 	public Long getElectionId() {
@@ -200,6 +201,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setPartiesList(List<SelectOptionVO> partiesList) {
 		this.partiesList = partiesList;
+	}
+	public Set<String> getParticipatedParties() {
+		return participatedParties;
+	}
+	public void setParticipatedParties(Set<String> participatedParties) {
+		this.participatedParties = participatedParties;
 	}
 	
 }
