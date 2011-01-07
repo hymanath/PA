@@ -5230,6 +5230,7 @@ public class StaticDataService implements IStaticDataService {
 					partyResultsVO.setPartyId(new Long(values[3].toString()));
 					partyResultsVO.setPartyName(values[2].toString());
 					partyResultsVO.setPercentage(values[0].toString());
+					partyResultsVO.setVotesPercent(new BigDecimal(values[0].toString()));
 					partyResultsVO.setVotesEarned(((Double)values[1]).longValue());
 					partyResultsVO.setValidVotes(((Double)values[6]).longValue());
 					partyResultsInConstituency.add(partyResultsVO);
