@@ -174,9 +174,9 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			sb.append(jArray.get(i)).append(",");
 		}
 		
-		constituencyElectionResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
+		constituencyElectionResults = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
 		
-		chartName = createResultsLineChart(constituencyElectionResults, sb, year);
+		//chartName = createResultsLineChart(constituencyElectionResults, sb, year);
 		return Action.SUCCESS;	
 	
 	}
