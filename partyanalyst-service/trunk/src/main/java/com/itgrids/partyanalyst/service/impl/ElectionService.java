@@ -200,12 +200,15 @@ public class ElectionService implements IElectionService{
 				resultMap.put("90-100", idsList);
 			}
 		}
-		
+		 
+		CensusVO censusVO = null;
 		for(Map.Entry<String,List<Long>> entry : resultMap.entrySet())
 		{
-			CensusVO censusVO = new CensusVO();
+			censusVO = new CensusVO();
 			censusVO.setRange(entry.getKey());
 			censusVO.setLocationIds(entry.getValue());
+			censusVO.setCount(entry.getValue().size());
+			
 			censusVOlist.add(censusVO);
 		}
 			return censusVOlist;
