@@ -26,4 +26,9 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 		return getHibernateTemplate().find("select model.constituencyId from ConstituencyCensusDetails model where model.constituencyId = ?",constituencyId);	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyIdsAndPercentages(String censusParam) {
+		return getHibernateTemplate().find("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model");	
+	}
+	
 }
