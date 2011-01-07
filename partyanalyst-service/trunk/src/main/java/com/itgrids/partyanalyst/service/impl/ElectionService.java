@@ -121,7 +121,17 @@ public class ElectionService implements IElectionService{
 		
 		Map<String,List<Long>> resultMap = new HashMap<String,List<Long>>();
 		
-		List<Long> idsList = null;
+		List<Long> idsList = new ArrayList<Long>(0);
+		resultMap.put("0-10", idsList);
+		resultMap.put("10-20", idsList);
+		resultMap.put("20-30", idsList);
+		resultMap.put("30-40", idsList);
+		resultMap.put("40-50", idsList);
+		resultMap.put("50-60", idsList);
+		resultMap.put("60-70", idsList);
+		resultMap.put("70-80", idsList);
+		resultMap.put("80-90", idsList);
+		resultMap.put("90-100", idsList);
 		
 		for(Object[] obj:list)
 		{
@@ -151,14 +161,14 @@ public class ElectionService implements IElectionService{
 				resultMap.put("20-30", idsList);
 			}else if(percentage > 30 && percentage <= 40)
 			{
-				idsList = resultMap.get("30-10");
+				idsList = resultMap.get("30-40");
 				if(idsList == null)
 					idsList = new ArrayList<Long>();
 				idsList.add(constituencyId);
-				resultMap.put("30-10", idsList);
+				resultMap.put("30-40", idsList);
 			}else if(percentage > 40 && percentage <= 50)
 			{
-				idsList = resultMap.get("40-10");
+				idsList = resultMap.get("40-50");
 				if(idsList == null)
 					idsList = new ArrayList<Long>();
 				idsList.add(constituencyId);
