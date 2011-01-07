@@ -55,7 +55,8 @@ public class CensusVO implements Serializable{
 	private Long censusSelectedIndex;
 	private String range;
 	private List<Long>locationIds;
-
+    private Integer count;
+	
 	private String level;
 	private Long houseHolds;
 	private Long populationUnderSix;
@@ -1013,5 +1014,11 @@ public class CensusVO implements Serializable{
 	}
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
+	}
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 }
