@@ -55,6 +55,7 @@
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
