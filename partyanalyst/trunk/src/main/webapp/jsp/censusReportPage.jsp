@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <title>Census Report</title>
 
@@ -97,7 +98,7 @@
 	
 	var rangeResults = [];
 	var	yearValue = '';
-
+    google.load("visualization", "1", {packages:["corechart"]});
 	function getCensusDetails()
 	{
 		var censusElmt = document.getElementById("censusSelect");
@@ -183,13 +184,71 @@
 	function buildPerformanceGraph(results)
 	{
 		var elmt = document.getElementById("performanceGraphDiv");
-
-		var str = '';
+        
+		
+		/*var str = '';
 		str += '<div id="performanceGraphDiv_head" class="dataHeaderDiv"> All Parties Performance Graph </div>';
 		str += '<div id="performanceGraphDiv_body"><img src="charts/'+results+'"></div>';
 
-		elmt.innerHTML = str ;
+		elmt.innerHTML = str ;*/
+		getCensusDataInteractiveChart(results,"performanceGraphDiv");
+
+
 	}
+
+	 //mandalwise google charts
+	 function getCensusDataInteractiveChart(results,divId)
+	 {
+		 var chartColumns = results[0].partyResultsVO;
+		 var chartRows = results;
+
+		 var data = new google.visualization.DataTable();
+		 var colorArray = new Array(); 
+		 var colorStatic = new Array('#088A85','#00FFFF','#B45F04','#585858','#AEB404','#ADE8E0','#C4D296','#E5C55A','#F7C37E','#9C8AE2','#B4045F','#D0A9F5','#CBBEAB','#BCE5BF','#FAE2BD','#95B8E5','#120B0B','#800B0B','#1FCB9D','#90446A');
+
+		  data.addColumn('string', 'Party');
+		  //for columns
+		  for(var i in chartColumns){
+		   var colData = chartColumns[i].partyName;
+		   data.addColumn('number', colData);
+
+		   if(chartColumns[i].partyName == 'TDP'){
+			   colorArray.push('#C7005D');
+		   }
+		   else if(chartColumns[i].partyName == 'TRS'){
+				colorArray.push('#F5A9F2');
+		   }else if(chartColumns[i].partyName == 'INC'){
+				colorArray.push('#2A00D2');
+		   }else if(chartColumns[i].partyName == 'BJP'){
+				colorArray.push('#FE9A2E');
+		   }else if(chartColumns[i].partyName == 'PRP'){
+				colorArray.push('#74DF00');
+		   }
+		   else{
+			   colorArray.push(colorStatic[i]);
+		   }
+
+		  }
+
+		  //for rows
+		  for(var j in chartRows)
+		  {
+			  var array = new Array();
+			  array.push(chartRows[j].constituencyName);
+
+			  var partyRes = chartRows[j].partyResultsVO;
+			  
+			  for(var k in partyRes){
+				array.push(partyRes[k].votesPercent);
+			  }
+			  
+			  data.addRow(array);
+		  }
+		  var ctitle = 'All Parties Performance Graph'; 
+		  new google.visualization.LineChart(document.getElementById(divId)).
+		  draw(data, {curveType: "function",width: 800, height: 450,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:14,lineWidth:2,hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:35}});
+			
+	 }
 
 	function censusAjaxCall(jsObj,url){
 	var myResults;
