@@ -341,6 +341,7 @@ input.input_text
 	padding:10px;
 	color:#FFFFFF;
 	font-weight:bold;
+	line-height:25px;
 }
 
 #electionTrendzWidgetHeader

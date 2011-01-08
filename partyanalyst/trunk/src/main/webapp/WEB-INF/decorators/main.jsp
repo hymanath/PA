@@ -180,17 +180,17 @@
 				<td style="vertical-align:top;">
 					<table width="100%" style="width:100%">
 						<tr>
-							<th id="loginarea">
+							<th id="loginarea" style="color:#FFFFFF">
 								<c:if test="${sessionScope.loginStatus != null && sessionScope.loginStatus == 'out'}">        		
 									<c:out value="Welcome, ${sessionScope.UserName} | "/>
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >Home</a> | 
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/homePage.action" >Home</a> | 
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 								</c:if>		
 								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action?url=${pageContext.request.servletPath}?&${pageContext.request.queryString}" >Login</a> | 
-									<a class="loginStatusAnc" style="color:#163447" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action?url=${pageContext.request.servletPath}?&${pageContext.request.queryString}" >Login</a> | 
+									<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 								</c:if>		
 							</th>
 						</tr>
