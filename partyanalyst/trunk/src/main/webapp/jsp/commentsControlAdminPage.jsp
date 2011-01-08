@@ -508,6 +508,6 @@ function showAllNewPostedReasons()
 		<script type="text/javascript">
 			showAllNewPostedReasons();			
 		</script>
-	</div>
+	
 </body>
 </html>

@@ -61,6 +61,7 @@
 	<link  rel="stylesheet" type="text/css" href="styles/homePage/homePage.css"/>
 		
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 <style type="text/css">
 

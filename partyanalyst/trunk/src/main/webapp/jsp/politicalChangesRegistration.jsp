@@ -32,7 +32,7 @@
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
-	
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 		
 	
 <style type="text/css">

@@ -109,8 +109,17 @@
 									<legend class="l2">Delimitation Census Upload</legend>
 									<h4>Upload Delimitation Mapping Data For Constituencies :<a href="<s:url action="delimitationMappingsUpload"/>"><b>&nbsp;Start Mapping</b></a></h4>
 									</fieldset>
-								</td>	
-							</tr>
+								</td></tr>
+							<tr>
+                                <td>
+                                    <fieldset class="f2">
+                                    <legend class="l2">Problem Approval Admin</legend>
+                                    <h4>Approval/Reject Recently Posted problem :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
+                                    </fieldset>
+                                </td>
+                           </tr>
+									
+							
 						</table>
 				</fieldset>
 			</td>
