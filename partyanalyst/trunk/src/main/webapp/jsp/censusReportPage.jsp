@@ -12,6 +12,7 @@
 <!-- Combo-handled YUI JS files: --> 
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 
 <title>Census Report</title>
 
@@ -99,25 +100,37 @@
 	var rangeResults = [];
 	var	yearValue = '';
     google.load("visualization", "1", {packages:["corechart"]});
+	
 	function getCensusDetails()
 	{
 		var censusElmt = document.getElementById("censusSelect");
 		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
+		var districtElmt = document.getElementById("districtList");
+		var reportLevel = '';
 
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
-		var stateValue = stateElmt.options[stateElmt.selectedIndex].text;
-
-
+		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+		var districtId = stateElmt.options[stateElmt.selectedIndex].value;
+		var stRadioEle = document.getElementById("stRadioId");
+		var diRadioEle = document.getElementById("diRadioId");
+		
+		if(stRadioEle.checked == true)
+			reportLevel = stRadioEle.value;
+		else if(diRadioEle.checked == true)
+			reportLevel = diRadioEle.value;			
+		
 		var jsObj=
 		{
-				stateId:stateValue,
-				censusText:censusText,
-				censusValue:censusValue,
-				yearValue:yearValue,
-				task:"getCensusDetails"					
+				stateId		: stateId,
+				districtId	: districtId,
+				censusText	: censusText,
+				censusValue	: censusValue,
+				yearValue	: yearValue,
+				reportLevel : reportLevel,
+				task		: "getCensusDetails"					
 		}; 
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -137,7 +150,7 @@
 		str += 'Assembly Constituencies Results in '+jsObj.yearValue+' for '+jsObj.censusText;
 		str += '</div>';
 		str += '<div id="censusPopulationRange_body">';
-		str += '<table id="censusPopulationRange_body_table_outer">';
+		str += '<table id="censusPopulationRange_body_table_outer" border="0">';
 		str += '<tr>';
 		str += '<td>';
 		for(var i=0; i<results.length; i++)
@@ -146,7 +159,7 @@
 			{
 				str += '</td><td>';
 			}
-			str += '<table id="censusPopulationRange_body_table_inner">';
+			str += '<table id="censusPopulationRange_body_table_inner" border="0">';
 			str += '<tr>';
 			str += '<th><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<th>'+results[i].range+'</th>';
@@ -181,19 +194,98 @@
 		censusAjaxCall(jsObj,url);
 	}
 	
-	function buildPerformanceGraph(results)
+	function buildPerformanceTable(results)
 	{
 		var elmt = document.getElementById("performanceGraphDiv");
-        
-		
-		/*var str = '';
-		str += '<div id="performanceGraphDiv_head" class="dataHeaderDiv"> All Parties Performance Graph </div>';
-		str += '<div id="performanceGraphDiv_body"><img src="charts/'+results+'"></div>';
+        var str = '';
+        str += '<div style="padding:10px;font-weight:bold;font-size:12px;color:#707070;">Constituencywise Performance</div>';	
+        str += '<div id="partyResultsTableDiv">';
+        str += '<table border="0" id="partyResultsTable">';
+         for(var j in results.constituenciesResults)
+        {
+        	str += '<tr>';
+        	str += '<td>'+results.constituenciesResults[j].constituencyName+'</td>';
+        	for(var k in results.constituenciesResults[j].partyResultsVO)
+            	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
+        			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].percentage+'</td>';
+        		else
+        			str += '<td></td>';
+        	str += '</tr>';
+        }
+        str += '</table>';
+        str += '</div>';
+      //  str += '<div style="padding:10px;font-weight:bold;font-size:12px;color:#707070;">Constituencywise Performance</div>';
+        elmt.innerHTML = str;
+		//getCensusDataInteractiveChart(results,"performanceGraphDiv");
+		var tableDiv = document.getElementById("partyResultsTable");
+    	var str = '';
+    	var divEl = document.getElementById("partyResultsTableDiv");
+    	
+    		
+   		 var myColumnDefs = new Array();
+   		 var myFields = new Array();
 
-		elmt.innerHTML = str ;*/
-		getCensusDataInteractiveChart(results,"performanceGraphDiv");
+   		var constHead = {
+	 			key:"Constituency",
+	 			lable: "Constituency",
+	 			sortable:true
+		   }
+   		var constValue = {key:"Constituency"}   		 
+		myColumnDefs.push(constHead);
+		myFields.push(constValue);
+		    		 
 
+    		 for(var l in results.allPartiesList){
+    			var obj1 = {
+    						key:results.allPartiesList[l],
+    						label:results.allPartiesList[l],
+    						sortable:true
+    					}
+    			var obj2 = {
+ 						key:results.allPartiesList[l]    						
+ 					}
+    			myColumnDefs.push(obj1);
+    			myFields.push(obj2);    			
+    		 }			
+    		 	
+    		 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+    					.get("partyResultsTable")); 
+    		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+    		 myDataSource.responseSchema = { 
+    								            fields:myFields    
+    								        };
+    		 if(results.constituenciesResults.length > 10)
+    	        {
+    				var myConfigs = { 
+    					    paginator : new YAHOO.widget.Paginator({ 
+    				        rowsPerPage    : 10 
+    					    }) 
+    						};
+    	        }        
+    		var villageDataTable = new YAHOO.widget.DataTable("partyResultsTableDiv",myColumnDefs, myDataSource, myConfigs);
+    		var headingEl = document.getElementById("heading");
+    		headingEl.innerHTML = 'Partywise Performance';
+    		var localLeadersColumnDefs = [ 
 
+    								{key:"partyName", label:"Party", sortable:true},         
+    								{key:"seatsParticipated", label: "Seats Participated", sortable:true},
+    			    	            {key:"totalSeatsWon", label: "Seats Won", sortable:true},
+    			    	            {key:"avgPercentage", label: "Average Percentage", sortable:true}    			    	            		    				
+    			    	        ]; 
+    		var localLeadersDataSource = new YAHOO.util.DataSource(results.partyResultsList); 
+    			localLeadersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+    			localLeadersDataSource.responseSchema = { 
+    	            fields: [{key:"partyName"},{key:"seatsParticipated", parser:"number"},{key:"totalSeatsWon", parser:"number"},{key:"avgPercentage", parser:"number"}] 
+    	        };
+    			if(results.partyResultsList.length > 10)
+    	        {	
+    	        var myConfigs = { 
+    					    paginator : new YAHOO.widget.Paginator({ 
+    				        rowsPerPage    : 10 
+    					    }) 
+    						};
+    	        }	    	        
+    		var localLeadersDataTable =  new YAHOO.widget.DataTable("partyResultsDiv", localLeadersColumnDefs, localLeadersDataSource,myConfigs);
 	}
 
 	 //mandalwise google charts
@@ -264,7 +356,7 @@
 									buildPopulationRange(jsObj,myResults);
 								} 
 								else if(jsObj.task == "getPartiesPerformanceInCensusReport")
-									buildPerformanceGraph(myResults);
+									buildPerformanceTable(myResults);
 								
 						}
 						catch (e)
@@ -282,8 +374,15 @@
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
-
-
+	function hideDistrictSelect()
+	{
+		document.getElementById("districtList").disabled= true; 
+	}
+	
+	function showDistrictSelect()
+	{
+		document.getElementById("districtList").disabled= false; 
+	}
 </script>
 
 </head>
@@ -300,14 +399,30 @@
 			</table>
 		</div>
 		<div>
+		<table>	
+		<tr>
+			<th>Please Select Report Level :&nbsp;&nbsp;</th>
+			<td><input  id="stRadioId" type="radio" name="location" value="state" onclick="hideDistrictSelect()" checked="checked"></input></td>
+			<th>State Wise Report</th>
+			<td><input  id="diRadioId" type="radio" name="location" value="district" onclick="showDistrictSelect()"></input></td>
+			<th>District Wise Report</th>
+		</tr>
+		</table>
+		
 		<table id="censusReport_body_input_table">
+			
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name" />		
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name" headerKey="0" headerValue="Select State"  onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+				</td>
+
+				<th>District</th>
+				<td>
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district_s" id="districtList" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District" />	
 				</td>
 			
-				<th>Select Year</th>
+				<th>Year</th>
 				<td>
 					<select id="yearSelect">
 						<option>2009</option>
@@ -315,7 +430,7 @@
 					</select>
 				</td>
 			
-				<th>Select Census</th>
+				<th>Census Type</th>
 				<td>
 					<select onchange="getCensusDetails()" class="selectWidth" id="censusSelect">
 						<option value="0">Select</option>
@@ -332,9 +447,13 @@
 		</div>
 		<div id="censusPopulationRange">
 		</div>
-		<div id="performanceGraphDiv">
-		</div>
+		<div style="width:800px;overflow-y : auto;margin:30px;"><div id="performanceGraphDiv"  class="yui-skin-sam"></div></div>
+		<div id="heading" style="margin:30px;padding:10px;font-weight:bold;font-size:12px;color:#707070;"></div>
+		<div class="yui-skin-sam" style="margin:30px;"><div id="partyResultsDiv"></div></div>
 		</div>
 	</div>
+	<script>
+	hideDistrictSelect();
+	</script>
 </body>
 </html>
