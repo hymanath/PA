@@ -24,6 +24,9 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	private Set<String> partiesParticipated;
 	private String electionPieChart;
 	private String preElecChart;
+	private List<ConstituencyElectionResultsVO> constituenciesResults;
+	private List<String> allPartiesList;
+	private List<PartyResultsVO> partyResultsList;
 	
 	public Long getElectionId() {
 		return electionId;
@@ -81,6 +84,26 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	}
 	public void setPreElecChart(String preElecChart) {
 		this.preElecChart = preElecChart;
+	}
+	
+	public List<ConstituencyElectionResultsVO> getConstituenciesResults() {
+		return constituenciesResults;
+	}
+	public void setConstituenciesResults(
+			List<ConstituencyElectionResultsVO> constituenciesResults) {
+		this.constituenciesResults = constituenciesResults;
+	}
+	public List<String> getAllPartiesList() {
+		return allPartiesList;
+	}
+	public void setAllPartiesList(List<String> allPartiesList) {
+		this.allPartiesList = allPartiesList;
+	}
+	public List<PartyResultsVO> getPartyResultsList() {
+		return partyResultsList;
+	}
+	public void setPartyResultsList(List<PartyResultsVO> partyResultsList) {
+		this.partyResultsList = partyResultsList;
 	}
 	@Override
 	public boolean equals(Object obj){

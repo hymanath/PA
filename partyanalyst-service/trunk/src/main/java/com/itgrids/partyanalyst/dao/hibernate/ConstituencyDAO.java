@@ -389,5 +389,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {wardName,localBodyId};
 		return getHibernateTemplate().find("select model.constituencyId from Constituency model where model.name = ? and model.localElectionBody.localElectionBodyId = ?",params);
 	}
-
+	
+	public void flushAndclearSession(){
+		getSession().flush();
+		getSession().clear();
+	}
+	
 }

@@ -125,4 +125,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getWardIdByWardNameAndLocalBodyId(String wardName,Long localBodyId);
+	
+	public void flushAndclearSession();
+	
 }

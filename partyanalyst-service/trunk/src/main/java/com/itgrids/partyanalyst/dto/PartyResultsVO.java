@@ -21,6 +21,7 @@ public class PartyResultsVO {
 	private Long votesEarned;
 	private Long validVotes;
 	private String percentage;
+	private String avgPercentage;
 	private BigDecimal votesPercent;
 	private int totalSeatsWon;
 	private Long totalPolledVotes;
@@ -35,12 +36,15 @@ public class PartyResultsVO {
 	public Long getPartyId() {
 		return partyId;
 	}
+	
 	public void setPartyId(Long partyId) {
 		this.partyId = partyId;
 	}
+	
 	public String getPartyName() {
 		return partyName;
 	}
+	
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
 	}
@@ -48,37 +52,48 @@ public class PartyResultsVO {
 	public String getPartyFlag() {
 		return partyFlag;
 	}
+	
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
 	}
+	
 	public int getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
+	
 	public void setTotalSeatsWon(int totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
+	
 	public List<ConstituencyWisePartyInfoVO> getConstituencyWisePatiesInfoVOs() {
 		return constituencyWisePatiesInfoVOs;
 	}
+	
 	public void setConstituencyWisePatiesInfoVOs(
 			List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs) {
 		this.constituencyWisePatiesInfoVOs = constituencyWisePatiesInfoVOs;
 	}
+	
 	public int getSeatsParticipated() {
 		return seatsParticipated;
 	}
+	
 	public void setSeatsParticipated(int seatsParticipated) {
 		this.seatsParticipated = seatsParticipated;
 	}
+	
 	public Long getVotesEarned() {
 		return votesEarned;
 	}
+	
 	public void setVotesEarned(Long votesEarned) {
 		this.votesEarned = votesEarned;
 	}
+	
 	public String getPercentage() {
 		return percentage;
 	}
+	
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
@@ -90,27 +105,35 @@ public class PartyResultsVO {
 	public void setTotalPolledVotes(Long totalPolledVotes) {
 		this.totalPolledVotes = totalPolledVotes;
 	}
+	
 	public Long getCandidateId() {
 		return candidateId;
 	}
+	
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
 	}
+	
 	public String getCandidateName() {
 		return candidateName;
 	}
+	
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
 	}
+	
 	public Long getValidVotes() {
 		return validVotes;
 	}
+	
 	public void setValidVotes(Long validVotes) {
 		this.validVotes = validVotes;
 	}
+	
 	public Long getRank() {
 		return rank;
 	}
+	
 	public void setRank(Long rank) {
 		this.rank = rank;
 	}
@@ -127,29 +150,45 @@ public class PartyResultsVO {
 	public int hashCode(){
 		return this.partyId.hashCode();
 	}
+	
 	public void setBallotVotesPercentage(String ballotVotesPercentage) {
 		this.ballotVotesPercentage = ballotVotesPercentage;
 	}
+	
 	public String getBallotVotesPercentage() {
 		return ballotVotesPercentage;
 	}
+	
 	public void setBallotVotes(Long ballotVotes) {
 		this.ballotVotes = ballotVotes;
 	}
+	
 	public Long getBallotVotes() {
 		return ballotVotes;
 	}
+	
 	public String getDiffPercent() {
 		return diffPercent;
 	}
+	
 	public void setDiffPercent(String diffPercent) {
 		this.diffPercent = diffPercent;
 	}
+	
 	public BigDecimal getVotesPercent() {
 		return votesPercent;
 	}
+	
 	public void setVotesPercent(BigDecimal votesPercent) {
 		this.votesPercent = votesPercent;
+	}
+	
+	public String getAvgPercentage() {
+		return avgPercentage;
+	}
+	
+	public void setAvgPercentage(String avgPercentage) {
+		this.avgPercentage = avgPercentage;
 	}
 	
 }
