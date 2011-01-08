@@ -34,5 +34,7 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	
 	public List getLatestConstituenciesByElectionTypeInState(Long electionTypeId, Long stateId);
 	public List<Object> findDelimitationConstituencyByConstituencyIDForCensus(Long constituencyID,Long delimitationYear);
+	
+	public List<Long> getLatestConstituenciesForDistrictBasedOnYear(Long districtId,Long year);
 
 }

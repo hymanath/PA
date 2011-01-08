@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
 
 public class ElectionService implements IElectionService{
@@ -37,6 +39,7 @@ public class ElectionService implements IElectionService{
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	private IStaticDataService staticDataService;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private final static Logger log = Logger.getLogger(ElectionService.class);
 
 	public IElectionDAO getElectionDAO() {
@@ -80,6 +83,15 @@ public class ElectionService implements IElectionService{
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
 	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
 		return boothConstituencyElectionDAO;
 	}
@@ -106,7 +118,7 @@ public class ElectionService implements IElectionService{
 		this.staticDataService = staticDataService;
 	}
 
-	public List<CensusVO> getConstituencyCensusDetails(int selectIndex)
+	public List<CensusVO> getConstituencyCensusDetails(Integer selectIndex,Long stateId,Long districtId,Long year,String level)
 	{
 		try
 		{
@@ -115,6 +127,7 @@ public class ElectionService implements IElectionService{
 			}
 		String censusStr = null;
 		List<CensusVO> censusVOlist = new ArrayList<CensusVO>();
+		List<Object[]>list = new ArrayList<Object[]>();
 		
 		if(selectIndex == 1)
 			censusStr = "model.percentageSC";
@@ -129,7 +142,17 @@ public class ElectionService implements IElectionService{
 		else if(selectIndex == 6)
 			censusStr = "model.nonWorkingPopPercentage";
 		
-		List<Object[]>list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusStr);
+		if(level.equalsIgnoreCase(IConstants.STATE_STR))
+		{
+			list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusStr,stateId);
+		}
+		
+		if(level.equalsIgnoreCase(IConstants.DISTRICT_STR))
+		{
+			List<Long>constituencyIds = delimitationConstituencyDAO.getLatestConstituenciesForDistrictBasedOnYear(districtId,year);
+			
+			list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(censusStr,constituencyIds);
+		}
 		
 		Map<String,List<Long>> resultMap = new LinkedHashMap<String,List<Long>>();
 		
@@ -299,6 +322,10 @@ public class ElectionService implements IElectionService{
 				for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
 					partiesInConstituency.add(partyInfo.getPartyName());
 					allParties.add(partyInfo.getPartyName());
+					if(partyInfo.getPartyName().length() == 0){
+						System.out.println("RRREEEE"+constiInfo.getConstituencyName());
+					}
+						
 				}
 				constiInfo.setParticipatedParties(partiesInConstituency);
 			}

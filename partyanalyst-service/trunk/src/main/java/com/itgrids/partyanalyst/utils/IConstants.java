@@ -354,7 +354,9 @@ public interface IConstants {
     public static final String FAMILY_MEMBERS = "FAMILY MEMBERS"; 
     public static final String PROBLEM_DISCUSSION = "PROBLEM_DISCUSSION";
     public static final String MUNCPAL_CORP = "MUNCIPALITY/CORPORATION";
-    public static final String TOTAL = "Total";    
+    public static final String TOTAL = "Total";
+    public static final String STATE_STR = "state";   
+    public static final String DISTRICT_STR = "district"; 
     
       
 }

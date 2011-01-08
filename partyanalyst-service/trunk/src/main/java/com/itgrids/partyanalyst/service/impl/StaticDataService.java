@@ -5190,7 +5190,7 @@ public class StaticDataService implements IStaticDataService {
 		List<PartyResultsVO> partyResultsInConstituency = null;
 		
 		try{
-			List resultsList= nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
+			List resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
 			
 			for(int i=0; i<resultsList.size();i++)
 			{
@@ -5214,6 +5214,7 @@ public class StaticDataService implements IStaticDataService {
 				Double validVotes = new Double(0);
 				Long indPartyId = new Long(0);
 				String indPartyName ="";
+				boolean indipendentExists = false;
 				for(Object[] values:partyResults)
 				{
 					String partyName = (String)values[2];
@@ -5225,6 +5226,7 @@ public class StaticDataService implements IStaticDataService {
 						log.debug("Inside independent party");
 						log.debug("votesEarned after increment:"+votesEarned);
 						log.debug("validVotes after increment:"+validVotes);
+						indipendentExists = true;
 					}
 					else{
 					partyResultsVO = new PartyResultsVO();
@@ -5242,17 +5244,24 @@ public class StaticDataService implements IStaticDataService {
 					log.debug("Inside ind party setting method");
 					log.debug("votesEarned:"+votesEarned);
 					log.debug("validVotes:"+validVotes);
-					Double votesPercent = new BigDecimal((votesEarned*100)/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					Double votesPercent = 0d;
+					if(validVotes > 0)
+						votesPercent = new BigDecimal((votesEarned*100)/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					else 
+						System.out.println("votesEarned:" +votesEarned+"validVotes:"+validVotes+"Constituency:"+constituencyElectionResults.getConstituencyName());
 					log.debug("caliculated votesPercent:"+votesPercent);
-					PartyResultsVO partyResultVO = new PartyResultsVO();
-					partyResultVO.setPartyId(indPartyId);
-					partyResultVO.setPartyName(indPartyName);
-					partyResultVO.setVotesEarned(votesEarned.longValue());
-					partyResultVO.setValidVotes(validVotes.longValue());
-					partyResultVO.setPercentage(votesPercent.toString());
-					log.debug("Party:"+partyResultVO.getPartyName());
-					log.debug("Votes Percentage:"+partyResultVO.getPercentage());
-					partyResultsInConstituency.add(partyResultVO);
+					if(indipendentExists){
+						PartyResultsVO partyResultVO = new PartyResultsVO();
+						partyResultVO.setPartyId(indPartyId);
+						partyResultVO.setPartyName(indPartyName);
+						partyResultVO.setVotesEarned(votesEarned.longValue());
+						partyResultVO.setValidVotes(validVotes.longValue());
+						partyResultVO.setPercentage(votesPercent.toString());
+						log.debug("Party:"+partyResultVO.getPartyName());
+						log.debug("Votes Percentage:"+partyResultVO.getPercentage());
+						partyResultsInConstituency.add(partyResultVO);
+					}
+
 				}
 				constituencyElectionResults.setPartyResultsVO(partyResultsInConstituency);
 				assemblyElectionResults.add(constituencyElectionResults);
