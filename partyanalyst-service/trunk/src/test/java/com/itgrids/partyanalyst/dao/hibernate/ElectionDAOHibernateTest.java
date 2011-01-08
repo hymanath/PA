@@ -177,13 +177,18 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list);
 	}*/
 	
-	public void testFindLatestElectionIdForElectionType(){
+	/*public void testFindLatestElectionIdForElectionType(){
 		List list = electionDAO.findLatestElectionIdForElectionType(IConstants.ASSEMBLY_ELECTION_TYPE, IConstants.ELECTION_SUBTYPE_MAIN,1l);
 		System.out.println(list);
 		System.out.println(list.size());
 		Object[] obj = (Object[] )list.get(0);
 		System.out.println(obj[0]);
 		System.out.println(obj[1]);
+	}*/
+	
+	public void testFindByElectionScopeIdElectionYear(){
+		Election election = electionDAO.findByElectionScopeIdElectionYear(2l, "2009", null);
+		System.out.println(election);
 	}
 	
 }
