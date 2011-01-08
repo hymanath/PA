@@ -40,6 +40,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private String task;
 	private IElectionService electionService;
 	private List<CensusVO> censusRange;
+	private ElectionDataVO electionDataVO;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResults;
 	String chartName = null;
 	private ServletContext context;
@@ -115,6 +116,14 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		this.states = states;
 	}
 
+	public ElectionDataVO getElectionDataVO() {
+		return electionDataVO;
+	}
+
+	public void setElectionDataVO(ElectionDataVO electionDataVO) {
+		this.electionDataVO = electionDataVO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
@@ -148,9 +157,13 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
-		Integer censusId = jObj.getInt("censusValue");
+		Integer censusId    = jObj.getInt("censusValue");
+		Long stateId        = jObj.getLong("stateId");
+		Long districtId     = jObj.getLong("districtId");
+		String reportLevel  = jObj.getString("reportLevel");
+		Long year           = jObj.getLong("yearValue");
 		
-		censusRange = electionService.getConstituencyCensusDetails(censusId);
+		censusRange = electionService.getConstituencyCensusDetails(censusId,stateId,districtId,year,reportLevel);
 		
 		return Action.SUCCESS;
 	}
@@ -175,7 +188,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			sb.append(jArray.get(i)).append(",");
 		}
 		
-		ElectionDataVO electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
 		constituencyElectionResults = electionDataVO.getConstituenciesResults();
 		
 		//chartName = createResultsLineChart(constituencyElectionResults, sb, year);
