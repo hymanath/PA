@@ -118,4 +118,11 @@ IDelimitationConstituencyDAO {
 		return getHibernateTemplate().find("select model.delimitationConstituencyID from DelimitationConstituency model "+
 				"where model.constituency.constituencyId =? and model.year = ? ", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getLatestConstituenciesForDistrictBasedOnYear(Long districtId,Long year){
+	    Object[] params = {districtId,year};
+		return getHibernateTemplate().find("select model.constituency.constituencyId from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =? order by model.constituency.name",params);
+	}
 }

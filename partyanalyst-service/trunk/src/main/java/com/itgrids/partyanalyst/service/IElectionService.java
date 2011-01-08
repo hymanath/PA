@@ -29,7 +29,7 @@ public interface IElectionService {
 	
 	public List<String> getElectionYears(Long electionType);*/
 	
-	public List<CensusVO> getConstituencyCensusDetails(int selectIndex);
+	public List<CensusVO> getConstituencyCensusDetails(Integer selectIndex,Long stateId,Long districtId,Long year,String level);
 	
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds);

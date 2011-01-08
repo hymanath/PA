@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
@@ -27,8 +28,20 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getConstituencyIdsAndPercentages(String censusParam) {
-		return getHibernateTemplate().find("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model");	
+	public List<Object[]> getConstituencyIdsAndPercentages(String censusParam,Long stateId) {
+		return getHibernateTemplate().find("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model where model.stateId = ?",stateId);	
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyIdsAndPercentagesOfADistrict(String censusParam,List<Long> constituencyIds)
+	{
+		StringBuilder query = new StringBuilder();
+		query.append("select model.constituencyId, "+ censusParam +" from ConstituencyCensusDetails model ");
+		query.append("where model.constituencyId in(:constituencyIds)");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		
+		return queryObject.list();
+	}
 }

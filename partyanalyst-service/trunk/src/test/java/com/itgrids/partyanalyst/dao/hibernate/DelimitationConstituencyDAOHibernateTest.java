@@ -95,12 +95,23 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testFindDelimitationConstituencyByConstituencyIDForCensus()
+	/*public void testFindDelimitationConstituencyByConstituencyIDForCensus()
 	{
 	  List<Object> list = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(235l, 2009l);
 	  
 	  if(list != null)
 	  System.out.println(list.size());
 	 
+	}*/
+	public void testGetLatestConstituenciesForDistrictBasedOnYear()
+	{
+		List<Long>list =  delimitationConstituencyDAO.getLatestConstituenciesForDistrictBasedOnYear(1l,2004l);
+		System.out.println(list.size());
+		
+		for(Long id:list)
+		{
+			System.out.println("   ======"+id);
+		}
 	}
+	
 }
