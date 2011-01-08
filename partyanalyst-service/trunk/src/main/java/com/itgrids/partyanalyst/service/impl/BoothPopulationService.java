@@ -195,6 +195,9 @@ public class BoothPopulationService implements IBoothPopulationService{
 						year, constituencyVO, isValidate);
 				constituencyVO.setBoothsIdentified(Long.parseLong(boothDataUploadVO.getBooths().size()+""));
 				finalResult.add(constituencyVO);
+				
+				constituencyDAO.flushAndclearSession();
+				
 			}
 			
 		}catch(Exception ex){
@@ -421,6 +424,9 @@ public class BoothPopulationService implements IBoothPopulationService{
 						boothresults, constituencyVO, isValidate);
 				
 				finalResult.add(constituencyVO);
+				
+				constituencyDAO.flushAndclearSession();
+				
 			}
 			
 		}catch(IndexOutOfBoundsException ex){

@@ -29,7 +29,6 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.MPTCElectionResultVO;
 import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.Candidate;
