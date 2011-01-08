@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
@@ -174,7 +175,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			sb.append(jArray.get(i)).append(",");
 		}
 		
-		constituencyElectionResults = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
+		ElectionDataVO electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
+		constituencyElectionResults = electionDataVO.getConstituenciesResults();
 		
 		//chartName = createResultsLineChart(constituencyElectionResults, sb, year);
 		return Action.SUCCESS;	
