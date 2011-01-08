@@ -3234,7 +3234,7 @@ public class StaticDataService implements IStaticDataService {
 					List nominationList = nominationDAO.getCountOfAllLocalBodyCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,null,0l);
 					List candidateList = nominationDAO.getCountOfAllLocalBodyCandidates(electionYear,locationId,stateId,electionType,winnerCandidateRank,electionLevel,IConstants.WINNER_CANDIDATES,"Candidates",0l);
 					Long count = new Long(nominationList.get(0).toString())- new Long(candidateList.get(0).toString());
-					System.out.println("Count--->"+count);					
+					//System.out.println("Count--->"+count);					
 					if(count!=0l){
 						if(electionLevel.equalsIgnoreCase(IConstants.STATE_LEVEL)){
 							//for Local election Bodys												
@@ -3407,8 +3407,7 @@ public class StaticDataService implements IStaticDataService {
 		List successorCandidateResult = null;
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
 		CandidateDetailsVO details = new CandidateDetailsVO();
-		List<CandidateDetailsVO> allCandidates = new ArrayList<CandidateDetailsVO>(0);
-		List<CandidateDetailsVO> winnerCandidate = new ArrayList<CandidateDetailsVO>(0);
+		List<CandidateDetailsVO> allCandidates = new ArrayList<CandidateDetailsVO>(0);		
 		List<CandidateDetailsVO> successorCandidate = new ArrayList<CandidateDetailsVO>(0);
 		int lostFlag=1;
 		try{
@@ -3604,7 +3603,7 @@ public class StaticDataService implements IStaticDataService {
 					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
 				}
 				if(parms[2]!= null){
-					candidateDetailsVo.setVotesEarned(parms[7].toString());
+					candidateDetailsVo.setVotesEarned(new Float(parms[7].toString()).longValue()+"");
 				}else{
 					candidateDetailsVo.setVotesEarned("--");
 				}
@@ -3634,7 +3633,7 @@ public class StaticDataService implements IStaticDataService {
 				if(parms[10]==null)
 					candidateDetailsVo.setVotesDifference(0.0f);
 				else
-					candidateDetailsVo.setVotesDifference(new Float(parms[10].toString())+0.0f);
+					candidateDetailsVo.setVotesDifference(new Float(parms[10].toString()));
 				candidateDetailsVo.setCandidateId(new Long(parms[14].toString()));
 				data.add(candidateDetailsVo);
 			}
@@ -3691,7 +3690,8 @@ public class StaticDataService implements IStaticDataService {
 									marginVotesPercentage = votesPercentage.toString();
 								}
 								Long rank = new Long(parms[4].toString());
-								if(rank!=1){
+								
+								if(rank!=1){									
 									int count = candidateResultDAO.updateMarginVotesAndPercentage(marginVotesPercentage,marginVotes,electionYear,electionType,constituencyId,candidateId);
 								}				
 								//System.out.println("marginVotesPercentage--->"+marginVotesPercentage+"constituencyId-->"+constituencyId+"  candidateId--->"+candidateId);
@@ -3760,7 +3760,8 @@ public class StaticDataService implements IStaticDataService {
 						marginVotesPercentage = votesPercentage.toString();
 					}
 					
-					int count = candidateResultDAO.updateMarginVotesAndPercentage(marginVotesPercentage,marginVotes,electionYear,electionType,constituencyId,candidateId);
+					int count = candidateResultDAO.updateMarginVotesAndPercentage(marginVotesPercentage,marginVotes,electionYear,electionType,constituencyId,candidateId);	
+					
 					//System.out.println("marginVotesPercentage--->"+marginVotesPercentage+"constituencyId-->"+constituencyId+"  candidateId--->"+candidateId);
 					}
 				}
