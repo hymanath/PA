@@ -1049,15 +1049,20 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		if(log.isDebugEnabled())
 			log.debug("Inside getAllRegionScopesForModule() method in RegionServiceDataImp service");
 		List<SelectOptionVO> scopes = new ArrayList<SelectOptionVO>(0);
-		List result = moduleDetailsDAO.findModuleIdByModuleName(IConstants.ADD_NEW_PROBLEM);
-		Long  moduleId = Long.parseLong(result.get(0).toString());
-		List allScopes = moduleRegionScopesDAO.findRegionScopesForModuleByState(moduleId, stateId);
-		if(allScopes != null && allScopes.size()>0)
-			for(int i = 0;i<allScopes.size();i++)
-			{
-				Object[] obj = (Object[])allScopes.get(i);
-				scopes.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),obj[1].toString()));				
-			}
+		try{
+			List result = moduleDetailsDAO.findModuleIdByModuleName(IConstants.ADD_NEW_PROBLEM);
+			Long  moduleId = Long.parseLong(result.get(0).toString());
+			List allScopes = moduleRegionScopesDAO.findRegionScopesForModuleByState(moduleId, stateId);
+			if(allScopes != null && allScopes.size()>0)
+				for(int i = 0;i<allScopes.size();i++)
+				{
+					Object[] obj = (Object[])allScopes.get(i);
+					scopes.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),obj[1].toString()));				
+				}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return scopes;
 	}
