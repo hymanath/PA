@@ -77,12 +77,7 @@
 	#performanceGraphDiv
 	{
 		margin-top:30;
-	}
-	
-	#censusPopulationRange_body_table_outer td
-	{
-		padding:10px;
-	}
+	}	
 
 	#censusPopulationRange_body_table_inner th
 	{
@@ -93,6 +88,29 @@
 	{
 		padding:5px;
 	}
+	
+	.censusWidgetHeader
+	{
+		background-image:url("images/icons/districtPage/header_body.png");
+		height:36px;
+	}
+	
+	.censusWidgetHeader_span
+	{
+		position:relative;
+		top:10px;
+	}
+	
+	#partyResultsTableDiv_main {
+		border-bottom:1px solid #E0E0D6;
+		border-left:1px solid #E0E0D6;
+		border-right:1px solid #E0E0D6;
+		overflow:auto;
+		padding:10px;
+		width:868px;
+}
+
+	
 </style>
 
 <script type="text/javascript">
@@ -146,9 +164,16 @@
 			return;
 
 		var str = '';
-		str += '<div id="censusPopulationRange_head" class="dataHeaderDiv">';
-		str += 'Assembly Constituencies Results in '+jsObj.yearValue+' for '+jsObj.censusText;
+		str += '<div id="partyResultsTableDiv_head" style="font-weight:bold;font-size:12px;color:#707070;">';
+		str += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
+		str += '<tr>';
+		str += '<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+		str += '<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">No of Assembly Constituencies in '+jsObj.yearValue+' for '+jsObj.censusText+'(Range of Percentages)</span></div></td>';
+		str += '<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>';
+		str += '</tr>';
+		str += '</table>';		
 		str += '</div>';
+		str += '<div id="partyResultsTableDiv_main" style="padding:10px;">';		
 		str += '<div id="censusPopulationRange_body">';
 		str += '<table id="censusPopulationRange_body_table_outer" border="0">';
 		str += '<tr>';
@@ -174,7 +199,7 @@
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
-
+		str += '</div>';
 		elmt.innerHTML = str;
 	}
 	
@@ -198,13 +223,23 @@
 	{
 		var elmt = document.getElementById("performanceGraphDiv");
         var str = '';
-        str += '<div style="padding:10px;font-weight:bold;font-size:12px;color:#707070;">Constituencywise Performance</div>';	
+        str += '<div id="partyResultsTableDiv_head" style="font-weight:bold;font-size:12px;color:#707070;">';
+		str += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
+		str += '<tr>';
+		str += '<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+		str += '<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Constituencywise Performance</span></div></td>';
+		str += '<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>';
+		str += '</tr>';
+		str += '</table>';		
+		str += '</div>';
+		str += '<div id="partyResultsTableDiv_main" style="padding:10px;">';			
         str += '<div id="partyResultsTableDiv">';
         str += '<table border="0" id="partyResultsTable">';
          for(var j in results.constituenciesResults)
         {
         	str += '<tr>';
         	str += '<td>'+results.constituenciesResults[j].constituencyName+'</td>';
+        	str += '<td>'+results.constituenciesResults[j].districtName+'</td>';
         	for(var k in results.constituenciesResults[j].partyResultsVO)
             	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
         			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].percentage+'</td>';
@@ -214,9 +249,28 @@
         }
         str += '</table>';
         str += '</div>';
-      //  str += '<div style="padding:10px;font-weight:bold;font-size:12px;color:#707070;">Constituencywise Performance</div>';
+        str += '</div>';      
         elmt.innerHTML = str;
-		//getCensusDataInteractiveChart(results,"performanceGraphDiv");
+
+		var resultsEl = document.getElementById("presults");
+		 
+		var headStr = '';
+		headStr += '<div id="partyResultsTableDiv_head" style="font-weight:bold;font-size:12px;color:#707070;">';
+		headStr += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
+		headStr += '<tr>';
+		headStr += '<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>';
+		headStr += '<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Partywise Performance</span></div></td>';
+		headStr += '<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>';
+		headStr += '</tr>';
+		headStr += '</table>';		
+		headStr += '</div>';
+		headStr += '<div id="partyResultsTableDiv_main" style="padding:10px;">';
+		headStr += '<div style="margin:15px;"><div class="yui-skin-sam" style="margin:30px;"><div id="partyResultsDiv"></div></div></div>';
+		headStr += '</div>';
+
+		resultsEl.innerHTML = headStr;
+		
+		
 		var tableDiv = document.getElementById("partyResultsTable");
     	var str = '';
     	var divEl = document.getElementById("partyResultsTableDiv");
@@ -230,9 +284,18 @@
 	 			lable: "Constituency",
 	 			sortable:true
 		   }
-   		var constValue = {key:"Constituency"}   		 
+   		var constValue = {key:"Constituency"}   
+
+   		var distHead = {
+	 			key:"District",
+	 			lable: "District",
+	 			sortable:true
+		   }
+   		var distValue = {key:"District"} 		 
 		myColumnDefs.push(constHead);
 		myFields.push(constValue);
+		myColumnDefs.push(distHead);
+		myFields.push(distValue);
 		    		 
 
     		 for(var l in results.allPartiesList){
@@ -263,8 +326,7 @@
     						};
     	        }        
     		var villageDataTable = new YAHOO.widget.DataTable("partyResultsTableDiv",myColumnDefs, myDataSource, myConfigs);
-    		var headingEl = document.getElementById("heading");
-    		headingEl.innerHTML = 'Partywise Performance';
+
     		var localLeadersColumnDefs = [ 
 
     								{key:"partyName", label:"Party", sortable:true},         
@@ -388,17 +450,9 @@
 </head>
 <body>
 	<div id="censusReport_main">
-	<div id="censusReportHeading"> Census Report </div>
-		<div id="censusReport_body">
-		<div id="censusReport_body_heading">
-			<table id="censusReport_body_heading_table">
-				<tr>
-					<td><img src="images/icons/infoicon.png"/></td>
-					<td>Select the following options to view the census report.</td>
-				</tr>
-			</table>
-		</div>
-		<div>
+	<div id="censusReportHeading"> Elections Vs Census Report </div>
+		<div id="censusReport_body">		
+		<div style="margin:15px;">
 		<table>	
 		<tr>
 			<th>Please Select Report Level :&nbsp;&nbsp;</th>
@@ -437,7 +491,7 @@
 						<option value="1">SC Population</option>
 						<option value="2">ST Population</option>
 						<option value="3">Literates</option>
-						<option value="4">illiterates</option>
+						<option value="4">Illiterates</option>
 						<option value="5">Working People</option>
 						<option value="6">Non Working People</option>
 					</select>
@@ -445,11 +499,10 @@
 			</tr>
 		</table>
 		</div>
-		<div id="censusPopulationRange">
+		<div style="margin:15px;"><div id="censusPopulationRange"></div>
 		</div>
-		<div style="width:800px;overflow-y : auto;margin:30px;"><div id="performanceGraphDiv"  class="yui-skin-sam"></div></div>
-		<div id="heading" style="margin:30px;padding:10px;font-weight:bold;font-size:12px;color:#707070;"></div>
-		<div class="yui-skin-sam" style="margin:30px;"><div id="partyResultsDiv"></div></div>
+		<div id="presults" style="margin:15px;"></div>
+		<div style="margin:15px;"><div id="performanceGraphDiv"  class="yui-skin-sam"></div></div>
 		</div>
 	</div>
 	<script>
