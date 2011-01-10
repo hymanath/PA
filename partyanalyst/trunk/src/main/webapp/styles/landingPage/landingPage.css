@@ -329,6 +329,16 @@ input.input_text
 	top:10px;*/
 }
 
+.headerLabelSpan2
+{
+	color:#FFFFFF;
+	font-size:13px;
+	font-weight:bold;
+	left:10px;
+	position:relative;
+	top:10px;
+}
+
 .widgetsMain
 {
 	/*margin-bottom:10px;*/
@@ -425,6 +435,12 @@ input.input_text
 .productFeatureHeaderBackground_center1
 {
 	background-image:url(../../images/icons/homePage_new/white_header_image_center.jpeg);
+	height:40px;
+}
+
+.productFeatureHeaderBackground_center2
+{
+	background-image:url(../../images/icons/homePage_new/blue_header_center.jpg);
 	height:40px;
 }
 
