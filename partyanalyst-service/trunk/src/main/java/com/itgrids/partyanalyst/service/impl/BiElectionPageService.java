@@ -3095,8 +3095,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 			else
 				partyResultVO.setPartyName(values[6]+" IN "+values[2]+" "+values[1]);
 			partyResultVO.setConstituencyName(values[4].toString());
-			partyResultVO.setVotesPercent(new BigDecimal((Long)values[7]*100.0/elecVillagePVMap.get(values[0]+"_"+values[3]))
-																				.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			Long data = elecVillagePVMap.get(values[0]+"_"+values[3]);
+			if(data!=0){
+				partyResultVO.setVotesPercent(new BigDecimal((Long)values[7]*100.0/data).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			}else{
+				partyResultVO.setVotesPercent("0.0");
+			}
+			
 			partiesResultsVO.add(partyResultVO);
 		}
 	}	
