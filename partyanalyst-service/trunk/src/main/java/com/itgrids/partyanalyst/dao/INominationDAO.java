@@ -393,4 +393,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getCountOfAllLocalBodyCandidates(String electionYear,Long locationId,Long stateId,String electionType,
 			Long rank,String locationType,String candidateType,String candidateDetails,Long partyId);
+	
+	public List findElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(
+			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
+			List<Long> districtIds, String query );
 }

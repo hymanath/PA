@@ -27,6 +27,8 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	private List<ConstituencyElectionResultsVO> constituenciesResults;
 	private List<String> allPartiesList;
 	private List<PartyResultsVO> partyResultsList;
+	private Set<SelectOptionVO> districts;
+	private Set<SelectOptionVO> parties;
 	
 	public Long getElectionId() {
 		return electionId;
@@ -104,6 +106,18 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	}
 	public void setPartyResultsList(List<PartyResultsVO> partyResultsList) {
 		this.partyResultsList = partyResultsList;
+	}
+	public Set<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+	public void setDistricts(Set<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+	public Set<SelectOptionVO> getParties() {
+		return parties;
+	}
+	public void setParties(Set<SelectOptionVO> parties) {
+		this.parties = parties;
 	}
 	@Override
 	public boolean equals(Object obj){
