@@ -70,7 +70,9 @@
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
 	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
-	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"}	                       
+	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
+	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
+				{ text: "Elections Vs Census", url: "censusReportAction.action" }                      
 	        ] 
 	    }, 
 	    { 
@@ -101,9 +103,7 @@
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 	            { text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
-				{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
-				{ text: "Census Report", url: "censusReportAction.action" }
+	            { text: "Karnataka", url: "statePageAction.action?stateId=12" }
 	        ]     
 	    }, 
 	    { 
@@ -136,8 +136,7 @@
 						itemdata: [ 
 							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
-							{ text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" }
+							{ text: "Karnataka", url: "statePageAction.action?stateId=12" }
 						]     
 					}, 
 					{ 
