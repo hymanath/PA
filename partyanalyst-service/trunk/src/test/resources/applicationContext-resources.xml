@@ -186,6 +186,7 @@
 				<value>com.itgrids.partyanalyst.model.UserApprovalDetails</value>
 				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
+				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
 		 </list>
 		</property>
 	</bean>
@@ -820,7 +821,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	
-	
+	<bean id="problemCompleteLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemCompleteLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+		
 	<bean id="boothMapperService" class="com.itgrids.partyanalyst.service.impl.BoothMapperService" >
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
