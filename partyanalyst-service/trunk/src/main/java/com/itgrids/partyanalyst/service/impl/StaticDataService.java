@@ -5198,6 +5198,8 @@ public class StaticDataService implements IStaticDataService {
 				constituencyElectionResults = new ConstituencyElectionResultsVO();
 				constituencyElectionResults.setConstituencyId(new Long(obj[5].toString()));
 				constituencyElectionResults.setConstituencyName(obj[4].toString());
+				constituencyElectionResults.setDistrictId((Long)obj[8]);
+				constituencyElectionResults.setDistrictName(obj[9].toString());
 				partyResults = constuencywisePartyResultsMap.get(constituencyElectionResults);
 				if(partyResults==null){
 					partyResults = new ArrayList<Object[]>();

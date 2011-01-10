@@ -1649,10 +1649,38 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Query queryObject = getSession().createQuery("select model.candidateResult.votesPercengate, model.candidateResult.votesEarned, " + 
 				"model.party.shortName, model.party.partyId, model.constituencyElection.constituency.name, " +
 				"model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituencyElectionResult.validVotes, " + 
-				"model.candidateResult.rank from Nomination model where model.constituencyElection.election.electionYear =? and " +
-				"model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+				"model.candidateResult.rank, model.constituencyElection.constituency.district.districtId, " +
+				"model.constituencyElection.constituency.district.districtName from Nomination model where " +
+				"model.constituencyElection.election.electionYear =? and " +
+				"model.constituencyElection.constituency.constituencyId in (:constituencyIds) " +
+				"order by model.constituencyElection.constituency.district.districtName");
 		queryObject.setParameter(0,electionYear);
 		queryObject.setParameterList("constituencyIds",constituencyIds);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(
+			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
+			List<Long> districtIds, String query ) {
+		Query queryObject = getSession().createQuery("select model.candidateResult.votesPercengate, model.candidateResult.votesEarned, " + 
+				"model.party.shortName, model.party.partyId, model.constituencyElection.constituency.name, " +
+				"model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituencyElectionResult.validVotes, " + 
+				"model.candidateResult.rank, model.constituencyElection.constituency.district.districtId, " +
+				"model.constituencyElection.constituency.district.districtName from Nomination model where " +
+				"model.constituencyElection.election.electionYear =? " +
+				"and model.constituencyElection.constituency.constituencyId in (:constituencyIds) "+query+
+				" order by model.constituencyElection.constituency.district.districtName");
+		queryObject.setParameter(0,electionYear);
+		queryObject.setParameterList("constituencyIds",constituencyIds);
+		if(partyIds.size() > 0 && districtIds.size() > 0){
+			queryObject.setParameterList("partyIds",partyIds);
+			queryObject.setParameterList("districtIds",districtIds);
+		}else if(partyIds.size() > 0)
+			queryObject.setParameterList("partyIds",partyIds);
+		else if(districtIds.size() > 0)
+			queryObject.setParameterList("districtIds",districtIds);
+			
 		return queryObject.list();
 
 	}
