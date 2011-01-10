@@ -213,8 +213,8 @@ h3 {
 					  <tr>
 						<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 						<td width="98%">
-							<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">
-								<span class="headerLabelSpan" style="text-decoration:none;">
+							<div class="productFeatureHeaderBackground_center2" style="text-decoration:none;">
+								<span class="headerLabelSpan2" style="text-decoration:none;">
 									Give Comments 
 								</span>
 							</div>
@@ -263,8 +263,8 @@ h3 {
 	<tr>
 	<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
 	<td width="98%">
-	<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">
-	<span class="headerLabelSpan" style="text-decoration:none;">Reply To Above Discussions</span>
+	<div class="productFeatureHeaderBackground_center2" style="text-decoration:none;">
+	<span class="headerLabelSpan2" style="text-decoration:none;">Reply To Above Discussions</span>
 	</div>
 	</td>
 	<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>

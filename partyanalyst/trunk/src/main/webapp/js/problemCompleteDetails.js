@@ -49,8 +49,8 @@ function showProblemDetails(result)
 	str+='<tr>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>';
 	str+='<td width="98%">';
-	str+='<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">';
-	str+='<span class="headerLabelSpan" style="text-decoration:none;">Problem Complete Details</span>';
+	str+='<div class="productFeatureHeaderBackground_center2" style="text-decoration:none;">';
+	str+='<span class="headerLabelSpan2" style="text-decoration:none;">Problem Complete Details</span>';
 	str+='</div>';
 	str+='</td>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_right.jpg"/></td>';
@@ -117,10 +117,10 @@ function showProblemAllComments(results)
 	str+='<tr>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>';
 	str+='<td width="98%">';
-	str+='<div class="productFeatureHeaderBackground_center" style="text-decoration:none;">';
+	str+='<div class="productFeatureHeaderBackground_center2" style="text-decoration:none;">';
 	str+='<table border="0" width="100%" style="color:white;margin:2px;">';
 	str+='<tr>';
-	str+='<td width="85%"><span class="headerLabelSpan" style="text-decoration:none;position:static;">Previous Posts</span></td>';	
+	str+='<td width="85%"><span class="headerLabelSpan2" style="text-decoration:none;position:static;">Previous Posts</span></td>';	
 	str+='<td width="1%"><img title="No Of People Accepted" height="20" title="Accepted" width="20" src="images/icons/accept.png"/>';
 	str+='</td>';
 	if(results.acceptedCount == null)
