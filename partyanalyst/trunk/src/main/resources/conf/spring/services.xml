@@ -682,6 +682,7 @@
 	<bean name="delimitationMappingsUploadService" class="com.itgrids.partyanalyst.service.impl.DelimitationMappingsUploadService">
 	    <property name="countryDAO" ref="countryDAO" />
 	    <property name="stateDAO" ref="stateDAO" />
+	    <property name="blockDAO" ref="blockDAO" />
 	    <property name="districtDAO" ref="districtDAO" />
 	    <property name="constituencyDAO" ref="constituencyDAO" />
 	    <property name="townshipDAO" ref="townshipDAO" />
