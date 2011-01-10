@@ -528,4 +528,9 @@
 	<bean id="userProblemApprovalDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="problemCompleteLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemCompleteLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
