@@ -28,6 +28,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBlockDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationBlockDAO;
@@ -45,8 +46,10 @@ import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.DelimitationMappingUploadVO;
 import com.itgrids.partyanalyst.dto.MandalSubRegionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Block;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
+import com.itgrids.partyanalyst.model.DelimitationBlock;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyTown;
@@ -70,6 +73,7 @@ public class DelimitationMappingsUploadService implements
 
 	private IWardDAO wardDAO;
 	private IStateDAO stateDAO;
+	private IBlockDAO blockDAO;
 	private ITehsilDAO tehsilDAO;
 	private ICountryDAO countryDAO;
 	private IDistrictDAO districtDAO;
@@ -157,6 +161,20 @@ public class DelimitationMappingsUploadService implements
 	 */
 	public void setDelimitationYear(String delimitationYear) {
 		this.delimitationYear = delimitationYear;
+	}
+
+	/**
+	 * @return the blockDAO
+	 */
+	public IBlockDAO getBlockDAO() {
+		return blockDAO;
+	}
+
+	/**
+	 * @param blockDAO the blockDAO to set
+	 */
+	public void setBlockDAO(IBlockDAO blockDAO) {
+		this.blockDAO = blockDAO;
 	}
 
 	/**
@@ -844,6 +862,7 @@ public class DelimitationMappingsUploadService implements
 				continue;
 			}
 			
+			//check for state details in row
 			Boolean isState  = checkForState(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,stateName);
 			if(isState){
 				stateObj = getStateObjectByStateName(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,stateName);
@@ -851,6 +870,8 @@ public class DelimitationMappingsUploadService implements
 				regionLevelMap.put(IConstants.STATE, stateName);
 				continue;
 			}
+			
+			//check for district details in row
 			Boolean isDistrict = checkForDistrict(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,districtName,districtObj);
 			if(isDistrict){
 				districtObj = getDistrictObjectByDistrictNameAndState(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,districtName,stateObj.getStateId());
@@ -858,6 +879,8 @@ public class DelimitationMappingsUploadService implements
 				regionLevelMap.put(IConstants.DISTRICT, districtName);
 				continue;
 			}
+			
+			//check for constituency details in row
 			Boolean isConstituency = checkForConstituency(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),sheetRow,constituencyName,constituencyObj,districtObj.getDistrictId(),stateObj.getStateId());
 			if(isConstituency){
 				
@@ -899,6 +922,7 @@ public class DelimitationMappingsUploadService implements
 				}
 			}
 			
+			//Map Regions to VO
 			Map<String,String> regionMap = mapSubRegionsDetailsToConstituency(excelHeaderInfo.get(IConstants.REGION_LEVEL),excelHeaderInfo.get(IConstants.REGION_NAME),excelHeaderInfo.get(IConstants.SCOPE),sheetRow,stateObj,districtObj,constituencyObj,mandalsMap,townsMap);
 			
 			if(regionMap.containsKey(IConstants.MANDAL))
@@ -909,7 +933,8 @@ public class DelimitationMappingsUploadService implements
 				recentVillage = regionMap.get(IConstants.VILLAGE);
 			else if(regionMap.containsKey(IConstants.WARD))
 				recentWard = regionMap.get(IConstants.WARD);
-			
+			else if(regionMap.containsKey(IConstants.BLOCK))
+				recentBlock = regionMap.get(IConstants.BLOCK);
 			
 		}
 	}
@@ -1030,7 +1055,47 @@ public class DelimitationMappingsUploadService implements
 			
 		}else if(levelCell.getRichStringCellValue().toString().equalsIgnoreCase(IConstants.BLOCK)){
 			
-			//need to be build
+			this.recentBlock = regionNameCell.getRichStringCellValue().toString();
+			regionMap.put(IConstants.BLOCK,this.recentBlock);
+			SelectOptionVO block = new SelectOptionVO(1L,this.recentBlock);
+			
+           	//get recent town data		
+			MandalSubRegionsVO townRegion = townsMap.get(this.recentTown);
+			Map<String,List<SelectOptionVO>> blocksInWards = townRegion.getBlocksInWards();
+			
+			//if blocks map is empty
+			if(blocksInWards == null || blocksInWards.isEmpty()){
+				
+				List<SelectOptionVO> blocksLst = new ArrayList<SelectOptionVO>();
+				
+				blocksInWards = new HashMap<String,List<SelectOptionVO>>();
+				blocksLst.add(block);
+				
+				blocksInWards.put(this.recentWard, blocksLst);
+				
+			}else{
+				
+				//if blocks for ward exists
+				if(blocksInWards.containsKey(this.recentWard)){
+					
+					List<SelectOptionVO> blocksLst = blocksInWards.get(this.recentWard);
+					blocksLst.add(block);
+					blocksInWards.put(this.recentWard, blocksLst);
+					
+				}
+				//if blocks with ward doesn't exist
+				else {
+					
+					List<SelectOptionVO> blocksLst = new ArrayList<SelectOptionVO>();
+					blocksLst.add(block);
+					
+					blocksInWards.put(this.recentWard, blocksLst);
+				}
+				
+			}
+			townRegion.setBlocksInWards(blocksInWards);
+			townsMap.put(this.recentTown, townRegion);
+			
 		}
 		
 	 return regionMap;
@@ -1184,13 +1249,14 @@ public class DelimitationMappingsUploadService implements
 	 * @param delimitationTown
 	 * @param wardsList
 	 */
-	private void saveDelimitationWardDetails(DelimitationConstituencyTown delimitationTown,List<SelectOptionVO> wardsList) throws Exception{
+	private void saveDelimitationWardDetails(DelimitationConstituencyTown delimitationTown,List<SelectOptionVO> wardsList,Map<String,List<SelectOptionVO>> blocksInWards) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered Block To Save Delimitation Ward Info ..");
 		
          for(SelectOptionVO ward:wardsList){
 			
+        	Boolean hasBlocks = false;
 			Ward wardObj = null;
 			List<Ward> wardList = wardDAO.findByWardNameAndTownship(ward.getName(), delimitationTown.getTownship().getTownshipId());
 			
@@ -1202,7 +1268,16 @@ public class DelimitationMappingsUploadService implements
 				throw new Exception("No Ward Exits With Name :" + ward.getName() + " In " + delimitationTown.getTownship().getTownshipName() + " Township");
 			}
 			
-			//check and save delimitation village details
+			//check and save blocks for wards
+			if(blocksInWards != null && !blocksInWards.isEmpty() && blocksInWards.containsKey(wardObj.getWardName())){
+				
+				List<SelectOptionVO> blocksList = blocksInWards.get(wardObj.getWardName());
+				checkAndSaveBlocksInAWard(wardObj,blocksList);
+				hasBlocks = true;
+			}
+			
+			
+			//check and save delimitation ward details
 			@SuppressWarnings("unused")
 			DelimitationWard delimWardObj = null;
 			List<DelimitationWard> delimitationWard = delimitationWardDAO.findByDelimitationConstituenyTownAndWard(delimitationTown.getDelimitationConstituencyTownId(), wardObj.getWardId());
@@ -1215,8 +1290,108 @@ public class DelimitationMappingsUploadService implements
 				DelimitationWard delimWardObject = new DelimitationWard();
 				delimWardObject.setDelimitationConstituencyTown(delimitationTown);
 				delimWardObject.setWard(wardObj);
+				if(hasBlocks)
+					delimWardObject.setIsPartial(1L);
 				
-				delimitationWardDAO.save(delimWardObject);
+				delimWardObject = delimitationWardDAO.save(delimWardObject);
+				
+				//check and save delimitation blocks for wards
+				if(blocksInWards != null && !blocksInWards.isEmpty() && blocksInWards.containsKey(wardObj.getWardName())){
+					
+					List<SelectOptionVO> blocksList = blocksInWards.get(wardObj.getWardName());
+					checkAndSaveDelimitationBlocksInAWard(wardObj.getWardId(),wardObj.getWardName(),delimWardObject,blocksList);
+					
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param ward
+	 * @param blocksList
+	 */
+	private void checkAndSaveBlocksInAWard(Ward ward, List<SelectOptionVO> blocksList) throws Exception{
+		
+		if(blocksList != null && blocksList.size() > 0){
+			
+			for(SelectOptionVO block:blocksList){
+				
+				
+				Boolean isAvailable = checkForBlockExistence(ward.getWardId(),block.getName().trim());
+				
+				if(!isAvailable){
+					Block blockObj = new Block();
+					blockObj.setBlockName(block.getName().trim());
+					blockObj.setWard(ward);
+					
+					blockDAO.save(blockObj);
+				}
+				
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Check Wheather block exists or not
+	 */
+	private Boolean checkForBlockExistence(Long wardId,String blockName) throws Exception{
+		
+		Boolean isAvailable = false;
+		List blockLst = blockDAO.findByWardIdAndBlockName(wardId, blockName);
+		
+		if(blockLst != null && blockLst.size() > 0){
+			
+			Object count = (Object)blockLst.get(0);
+			Long countVal = (Long)count;
+			
+			if(countVal > 0)
+				isAvailable = true;
+		}
+	 return isAvailable;
+	}
+	
+	/**
+	 * 
+	 * @param wardId
+	 * @param delimWardObj
+	 * @param blocksList
+	 * @throws Exception
+	 */
+	private void checkAndSaveDelimitationBlocksInAWard(Long wardId,String wardName,DelimitationWard delimWardObj,List<SelectOptionVO> blocksList) throws Exception{
+		
+		if(!wardId.equals(0L) && delimWardObj != null && blocksList != null && blocksList.size() > 0){
+			
+			for(SelectOptionVO block:blocksList){
+				
+				List<Block> blocksLst = blockDAO.findBlockByWardIdAndBlockName(wardId, block.getName().trim());
+				Block blockObj = null;
+				
+				if(blocksLst == null || blocksLst.size() > 1){
+					throw new Exception("Zero Or More Blocks Exists By Name :" + block + " In Ward " + wardName);
+				}
+				else if(blocksLst.size() == 1){
+					blockObj = blocksLst.get(0);
+				}
+				
+				List<DelimitationBlock> delimBlocks = delimitationBlockDAO.findByDelimitationWardIdAndBlock(delimWardObj.getDelimitationWardId(), blockObj.getBlockId());
+				
+				if(delimBlocks == null || delimBlocks.size() > 1){
+					throw new Exception("Zero Or More Delimitation Blocks Exists By Name :" + block + " In Ward " + wardName);
+				}else if(delimBlocks.size() == 1){
+					
+					log.debug("Delimitation Blocks Exists For Block :" + block + " In Ward " + wardName);
+				}else{
+					
+					DelimitationBlock delimBlock = new DelimitationBlock();
+					delimBlock.setBlock(blockObj);
+					delimBlock.setDelimitationWard(delimWardObj);
+					delimBlock.setDescription("");
+					
+					delimitationBlockDAO.save(delimBlock);
+					
+				}
 			}
 		}
 	}
@@ -1285,7 +1460,7 @@ public class DelimitationMappingsUploadService implements
 				
 				//check for villages
 				if(townData.getVillagesList() != null && townData.getVillagesList().size() > 0){
-					saveDelimitationWardDetails(delimitationTown,townData.getVillagesList());
+					saveDelimitationWardDetails(delimitationTown,townData.getVillagesList(),townData.getBlocksInWards());
 				}
 							
 			}
