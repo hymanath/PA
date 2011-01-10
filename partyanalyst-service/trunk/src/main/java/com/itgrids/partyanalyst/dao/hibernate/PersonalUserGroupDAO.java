@@ -27,10 +27,22 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	}
 	
 	
+	/*
+	 * Modified by Ravi.
+	 * Reason:- Groups created through constituency management page are being appearing
+	 * in user groups.
+	 * Please check the previous versions to know the exact modifications.
+	 *
+	 * */
+	//Starts from here...
 	@SuppressWarnings("unchecked")
 	public List<PersonalUserGroup> getAllMyGroupsByUserId(Long userId){		
-		return getHibernateTemplate().find("from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId = null and model.parentGroupId = null"  ,userId);
+		return getHibernateTemplate().find("from PersonalUserGroup model where" +
+				" model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId = null " +
+				" and model.parentGroupId = null and model.staticLocalGroup.staticLocalGroupId = null " +
+				" and model.localGroupRegion.localGroupRegionId = null "  ,userId);
 	}
+	//Ends here...
 	
 	@SuppressWarnings("unchecked")
 	public List findSubGroupsCountInSystemGroupsByUserId(Long userId)
