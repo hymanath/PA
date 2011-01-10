@@ -113,7 +113,7 @@
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
-		var districtId = stateElmt.options[stateElmt.selectedIndex].value;
+		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		
