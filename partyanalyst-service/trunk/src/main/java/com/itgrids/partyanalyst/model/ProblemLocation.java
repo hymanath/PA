@@ -39,7 +39,9 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	private RegionScopes problemImpactLevel;
 	private Long problemImpactLevelValue;
 	private ProblemAndProblemSource problemAndProblemSource;
-	private ProblemClassification problemClassification;
+	private ProblemClassification problemClassification;	
+	private ProblemCompleteLocation problemCompleteLocation;
+
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0); 
 	
 	private Date updatedDate;
@@ -60,7 +62,8 @@ public class ProblemLocation extends BaseModel implements Serializable{
 			ProblemAndProblemSource problemAndProblemSource,
 			Set<ProblemHistory> problemHistories,
 			RegionScopes problemImpactLevel,
-			Long problemImpactLevelValue,Date updatedDate) {
+			Long problemImpactLevelValue,Date updatedDate,
+			ProblemCompleteLocation problemCompleteLocation) {
 		this.hamlet = hamlet;
 		this.ward = ward;
 		this.township = township;
@@ -70,6 +73,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.problemImpactLevel = problemImpactLevel;
 		this.problemImpactLevelValue = problemImpactLevelValue;
 		this.updatedDate = updatedDate;
+		this.problemCompleteLocation = problemCompleteLocation;
 	}
 
 	@Id
@@ -182,6 +186,18 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.updatedDate = updatedDate;
 	}
 	
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "problem_complete_location_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemCompleteLocation getProblemCompleteLocation() {
+		return problemCompleteLocation;
+	}
+
+	public void setProblemCompleteLocation(
+			ProblemCompleteLocation problemCompleteLocation) {
+		this.problemCompleteLocation = problemCompleteLocation;
+	}
 	
 	
 }
