@@ -1249,7 +1249,7 @@ var userGrpsObj={
 	function showGroupCreationConfirmation(results,jsObj)
 	{
 		
-		var groupAlreadyExists = results.userGroupDetailsVO.rs.resultPartial;
+		var groupAlreadyExists = results.userGroupDetailsVO.rs.isResultPartial;
 		var confirmDivEl = document.getElementById("confirmMsg");
 		var groupName;
 		var groupNameTextEl = document.getElementById("groupNameText");
@@ -1297,6 +1297,7 @@ var userGrpsObj={
 			}
 		} else 
 		{
+			alert("2");
 			groupName= jsObj.groupName;
 			confirmDivEl.innerHTML = groupName+" <%=groupAlreadyExists%>" ;
 			confirmDivEl.style.color = "red";
