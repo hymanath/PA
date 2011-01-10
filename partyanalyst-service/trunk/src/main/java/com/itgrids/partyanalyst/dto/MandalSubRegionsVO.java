@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sai Krishna
@@ -27,6 +28,7 @@ public class MandalSubRegionsVO implements Serializable {
 	private String mandalForTown;
 	
 	private List<SelectOptionVO> villagesList;
+	private Map<String,List<SelectOptionVO>> blocksInWards;
 
 	/**
 	 * @return the mandalId
@@ -96,6 +98,20 @@ public class MandalSubRegionsVO implements Serializable {
 	 */
 	public void setMandalForTown(String mandalForTown) {
 		this.mandalForTown = mandalForTown;
+	}
+
+	/**
+	 * @return the blocksInWards
+	 */
+	public Map<String, List<SelectOptionVO>> getBlocksInWards() {
+		return blocksInWards;
+	}
+
+	/**
+	 * @param blocksInWards the blocksInWards to set
+	 */
+	public void setBlocksInWards(Map<String, List<SelectOptionVO>> blocksInWards) {
+		this.blocksInWards = blocksInWards;
 	} 
 
 }
