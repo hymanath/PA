@@ -39,12 +39,13 @@ public class UserApprovalDetails extends BaseModel implements Serializable {
 	private AnanymousUser user;
 	private ApprovalDetails approvalDetails;
 	private Set<UserProblemApproval> userApprovalDetails = new HashSet<UserProblemApproval>(0);
-	public UserApprovalDetails() {		
+	
+	public UserApprovalDetails() {
+		
 	}
 
 	public UserApprovalDetails(Long userApprovalDetailsId, AnanymousUser user,
 			ApprovalDetails approvalDetails) {
-		
 		this.userApprovalDetailsId = userApprovalDetailsId;
 		this.user = user;
 		this.approvalDetails = approvalDetails;
