@@ -1188,9 +1188,9 @@ public class DelimitationMappingsUploadService implements
 					delimMandal.setTehsil(tehsilObj);
 					Boolean isPartial = mandalData.getIsPartial();
 					if(isPartial)
-					    delimMandal.setIsPartial("1");
+					    delimMandal.setIsPartial("0");
 					else
-						delimMandal.setIsPartial("0");
+						delimMandal.setIsPartial("1");
 					delimitationMandal = delimitationConstituencyMandalDAO.save(delimMandal);
 				}
 				
