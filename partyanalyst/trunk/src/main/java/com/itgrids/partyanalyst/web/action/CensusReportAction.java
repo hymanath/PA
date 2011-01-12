@@ -182,13 +182,14 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		StringBuilder sb = new StringBuilder();
 		String year = jObj.getString("yearValue");
 		JSONArray jArray = jObj.getJSONArray("idsList");
+		Integer selectedIndex = jObj.getInt("selectedIndex");
 		
 		for (int i = 0; i < jArray.length(); i++) {
 			locationIds.add(new Long(jArray.get(i).toString()));
 			sb.append(jArray.get(i)).append(",");
 		}
 		
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds);
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds, selectedIndex);
 		constituencyElectionResults = electionDataVO.getConstituenciesResults();
 		
 		//chartName = createResultsLineChart(constituencyElectionResults, sb, year);
