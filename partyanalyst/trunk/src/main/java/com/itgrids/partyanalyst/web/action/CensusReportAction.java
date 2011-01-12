@@ -129,15 +129,6 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		
 	}
 	
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	
 	public String execute()
 	{
 		states = new ArrayList<SelectOptionVO>();		
@@ -173,7 +164,6 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
