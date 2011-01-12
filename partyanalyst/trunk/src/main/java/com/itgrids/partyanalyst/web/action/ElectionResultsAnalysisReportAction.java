@@ -582,14 +582,8 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			Long stateId = new Long(jObj.getString("stateId"));
 			
 			Long countryId = 1l;
-			String electionType = null;
-			
-			if(elecType.equalsIgnoreCase("Parliament"))
-				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
-			else 
-				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-			
-			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, electionType, countryId);
+						
+			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, elecType, countryId);
 			if(electionScope != null){
 				electionYears = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
 			}
