@@ -42,6 +42,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private String chartName;
 	private List<SelectOptionVO> partiesList;
 	private Set<String> participatedParties;
+	private Double censusReportPercent = 0.0;
 	
 	//getters and setters
 	public Long getElectionId() {
@@ -207,6 +208,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setParticipatedParties(Set<String> participatedParties) {
 		this.participatedParties = participatedParties;
+	}
+	public Double getCensusReportPercent() {
+		return censusReportPercent;
+	}
+	public void setCensusReportPercent(Double censusReportPercent) {
+		this.censusReportPercent = censusReportPercent;
 	}
 	
 }
