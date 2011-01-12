@@ -159,7 +159,7 @@ public interface IStaticDataService {
 	//>>>>>Party Related Methods End
 
 	//>>>>>ConstituencyElection Related Methods Start
-		public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds); 
+		public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds, List constituenciesResults); 
 
 		public MandalAllElectionDetailsVO getAllMuncipalElectionDetails(Long muncipalityId,String candidateDetailsType,Long partyId,String electionType);
 		

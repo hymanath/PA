@@ -32,6 +32,7 @@ public interface IElectionService {
 	public List<CensusVO> getConstituencyCensusDetails(Integer selectIndex,Long stateId,Long districtId,Long year,String level);
 	
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
-			String electionYear, List<Long> constituencyIds, Integer selected);
+			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
+			List<Long> districtIds, Boolean isAll);
 	
 }
