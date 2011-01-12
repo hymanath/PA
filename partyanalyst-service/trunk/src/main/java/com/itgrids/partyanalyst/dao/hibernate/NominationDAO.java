@@ -762,8 +762,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(String constituencyId,String electionYear,String electionType,Long rank,Long partyId){
-		Object[] params = {electionYear,electionType,rank};		
+	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankForLocalBodys(List<Long> constituencyId,String electionYear,String electionType,Long rank,Long partyId){
+			
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.candidate.candidateId,");
 		sb.append(" model.candidate.lastname,");
@@ -778,17 +778,21 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		sb.append(" model.constituencyElection.constituency.name,");	
 		sb.append(" model.constituencyElection.election.electionYear,");
 		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType");		
-		sb.append(" from Nomination model where model.constituencyElection.constituency.constituencyId in ( :constituencyId )");
-		sb.append(" and model.constituencyElection.election.electionYear = ? ");
+		sb.append(" from Nomination model where");
+		
+		sb.append(" model.constituencyElection.election.electionYear = ? ");
 		sb.append(" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
-		sb.append(" and model.candidateResult.rank = ? order by model.candidateResult.rank");
+		sb.append(" and model.candidateResult.rank = ? ");
+		
 		
 		if(partyId!=0l){
 			sb.append(" and model.party.partyId = ?");
 		}
+		sb.append(" and model.constituencyElection.constituency.constituencyId in ( :constituencyId )");
+		sb.append("order by model.candidateResult.rank");
 		Query queryObject = getSession().createQuery(sb.toString());
 		
-		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameterList("constituencyId", constituencyId);
 		queryObject.setParameter(0, electionYear);
 		queryObject.setParameter(1, electionType);
 		queryObject.setParameter(2, rank);		
