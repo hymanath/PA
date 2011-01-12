@@ -17,5 +17,5 @@ import com.itgrids.partyanalyst.dto.DelimitationMappingUploadVO;
  */
 public interface IDelimitationMappingsUploadService {
 
-	public DelimitationMappingUploadVO fetchDelimitationDataFromExcel(File excelFile,String delimitationYear,String country);
+	public DelimitationMappingUploadVO fetchDelimitationDataFromExcel(File excelFile,String delimitationYear,String country,Boolean isValidate);
 }
