@@ -78,6 +78,7 @@
 	
 	var constituencyResults,createGroupDialog;
 	var parliamentResult;
+	var censusResult;
 	var tehsilElections={
 			zptcElectionYears:[],
 			mptcElectionYears:[]
@@ -120,10 +121,14 @@
 									constituencyResults = myResults;
 									buildCensusSelect(constituencyResults);
 									buildConstituencyElecResultsDataTable("number");
+									buiidElecResultRadioSelect();
+									buildConstituencyElectionResultsDataTable("number");
 								}
 								else if(jsObj.task == "getCensusDetailsForAConstituency")
 								{
+									censusResult = myResults;
 									buildCensusChartForAConstituency(myResults);
+									buiidCensusRadioSelect();	buildConstituencyElectionResultsDataTableWithCensus(myResults,"number")
 								}
 								else if(jsObj.task == "getConstituencyElections")
 								{		
@@ -579,7 +584,16 @@ function buildConstituencyElecResultsDataTable(value){
 	var elecYear = constituencyResults.electionYear;
 	var elecTyp = constituencyResults.electionType;
     getInteractiveChart(chartResultDiv,constituencyResults.constituencyOrMandalWiseElectionVO,constituencyResults.candidateNamePartyAndStatus,elecTyp,conName,elecYear);
-	
+		
+	var imgElmt = document.getElementById('AjaxImgDiv');
+	if(imgElmt.style.display == "block")
+	{
+          imgElmt.style.display = "none";
+	}
+}
+
+function buildConstituencyElectionResultsDataTable(value)
+{
 	var resultDiv = document.getElementById("resultsDataTableDiv");	
 	var str = '';
 	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
@@ -691,14 +705,137 @@ function buildConstituencyElecResultsDataTable(value){
 		str += '</table>';		
 		extraInfoDiv.innerHTML = str;		
 	 }
-	 
-	var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
-	var imgElmt = document.getElementById('AjaxImgDiv');
-	if(imgElmt.style.display == "block")
-	{
-          imgElmt.style.display = "none";
-	}
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
 }
+
+function buildConstituencyElectionResultsDataTableWithCensus(myResults,value)
+{ 
+	var constType = '${constituencyDetails.constituencyType}';
+	var resultDiv = document.getElementById("resultsDataTableDiv");	
+	var selectedIndex = myResults.censusVO[0].censusSelectedIndex;
+	
+	var str = '';
+	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
+	str += '<table id = "elecResTable">';
+
+	for(var i in myResults.constituencyOrMandalWiseElectionVO)
+	{
+		str += '<tr>';
+			
+		if(constType == 'Assembly')
+		{	
+			str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+myResults.constituencyOrMandalWiseElectionVO[i].locationId+'&MANDAL_NAME='+myResults.constituencyOrMandalWiseElectionVO[i].locationName+'">'+myResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		}
+		else if(constType == 'Parliament')
+			str += '<td><a href="constituencyPageAction.action?constituencyId='+myResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+myResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		
+		if(value == 'number')
+		{
+			if(selectedIndex == 1)
+				str += '<td>'+myResults.censusVO[i].populationSC+'</td>';
+			else if(selectedIndex == 2)
+				str += '<td>'+myResults.censusVO[i].populationST+'</td>';
+			else if(selectedIndex == 3)
+				str += '<td>'+myResults.censusVO[i].literates+'</td>';
+			else if(selectedIndex == 4)
+				str += '<td>'+myResults.censusVO[i].illiterates+'</td>';
+			else if(selectedIndex == 5)
+				str += '<td>'+myResults.censusVO[i].workingPeople+'</td>';
+			else if(selectedIndex == 6)
+				str += '<td>'+myResults.censusVO[i].nonWorkingPeople+'</td>';
+
+		}
+		else
+		{
+			if(selectedIndex == 1)
+				str += '<td>'+myResults.censusVO[i].populationSCPercentage+'</td>';
+			else if(selectedIndex == 2)
+				str += '<td>'+myResults.censusVO[i].populationSTPercentage+'</td>';
+			else if(selectedIndex == 3)
+				str += '<td>'+myResults.censusVO[i].literatesPercentage+'</td>';
+			else if(selectedIndex == 4)
+				str += '<td>'+myResults.censusVO[i].illiteratesPercentage+'</td>';
+			else if(selectedIndex == 5)
+				str += '<td>'+myResults.censusVO[i].workingPeoplePercentage+'</td>';
+			else if(selectedIndex == 6)
+				str += '<td>'+myResults.censusVO[i].nonWorkingPeoplePercentage+'</td>';
+		}
+
+		for(var j in myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs)
+		{
+			if(value == 'number')
+				str += '<td>'+myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
+			else
+				str += '<td>'+myResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesPercentage+'</td>';
+		}
+			str += '</tr>';
+	}		
+	str += '</table>';
+	str += '</div>';
+	resultDiv.innerHTML = str;
+
+	 var myColumnDefs = new Array();
+	 var myFields = new Array();
+	 
+	 if(constType == 'Assembly'){
+		 var villageHead = {
+		 			key:"Mandal",
+		 			lable: "Mandal",
+		 			sortable:true
+			   }
+
+		 var villageValue = {key:"Mandal"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+	 }else{
+		 var villageHead = {
+		 			key:"Assembly Constituency",
+		 			lable: "Assembly Constituency",
+		 			sortable:true
+			   }
+
+		 var villageValue = {key:"Assembly Constituency"}
+	
+		 myColumnDefs.push(villageHead);
+		 myFields.push(villageValue);
+	 }
+	 
+	 var cenObj1 = {
+			key:myResults.censusVO[0].censusFields[0],
+			label:myResults.censusVO[0].censusFields[0],
+			sortable:true
+	    }
+	
+	 var cenObj2 = {
+			 key:myResults.censusVO[0].censusFields[0],
+			 parser:"number"
+		}
+		myColumnDefs.push(cenObj1);
+		myFields.push(cenObj2);
+	 for(var i in myResults.candidateNamePartyAndStatus){
+		var obj1 = {
+					key:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					label:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					sortable:true
+				}
+		var obj2 = {
+					key:myResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+					parser:"number"
+				}
+		myColumnDefs.push(obj1);
+		myFields.push(obj2);
+	 }
+
+	 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("elecResTable")); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+	 myDataSource.responseSchema = { 
+							            fields:myFields    
+							       };
+
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
+} 
+
 
 function getInteractiveChart(chartResultDiv,constituencyResults,partiesList,constiType,constiName,electionYear)
 {
@@ -1005,11 +1142,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 				<div id="mandalOrConstiElecResultDiv">
 				<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
 				<div id="electionResultsInConstituencyDiv"></div>
-				<table><tr>
-						<td id="labelRadio"><b>Select The Format You Want :</b></td>
-						<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
-						<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)"/>By Percentage </td>
-				</tr></table>			
+				<div id="labelRadioDiv"></div>			
 				<div id="resultsDataTableDiv"></div>
 				<div id="missingDataInfoDiv"></div>
 				</div>
@@ -1634,6 +1767,35 @@ function getCensusDetailsForAConstituency(constituencyId,index,text)
 	var url = "<%=request.getContextPath()%>/getCensusDetailsForAConstituency.action?"+rparam;
 	callAjax(jsObj, url);
 }
+function buiidCensusRadioSelect()
+{
+	var cenRadioselectEle = document.getElementById("labelRadioDiv");
+	
+	var cenRadiovar = '';
+
+	cenRadiovar += '<table><tr>';
+	cenRadiovar += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
+	cenRadiovar += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)">By Votes </td>';
+	cenRadiovar += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTableWithCensus(censusResult,this.value)"/>By Percentage </td>';
+	cenRadiovar += '</tr></table>';
+
+	cenRadioselectEle.innerHTML = cenRadiovar;
+}
+
+function buiidElecResultRadioSelect()
+{
+	var ElecResultselectEle = document.getElementById("labelRadioDiv");
+	
+	var selectEle = '';
+
+	selectEle += '<table><tr>';
+	selectEle += '<td id="labelRadio"><b>Select The Format You Want :</b></td>';
+	selectEle += '<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElectionResultsDataTable(this.value)">By Votes </td>';
+	selectEle += '<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElectionResultsDataTable(this.value)"/>By Percentage </td>';
+	selectEle += '</tr></table>';
+
+	ElecResultselectEle.innerHTML = selectEle;
+}
 
 function buildCensusChartForAConstituency(myResults)
 {
@@ -1705,8 +1867,16 @@ function buildCensusChartForAConstituency(myResults)
 		  data.addRow(array);
 	  }
     var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
-	ctitle = "Assembly Constituency Wise Election Results V/S Census Chart For '${constituencyDetails.constituencyName}'";
 
+	if('${constituencyDetails.constituencyType}' == 'Assembly')
+	{
+		ctitle = "Mandal Wise Election Results V/S Census Chart For '${constituencyDetails.constituencyName}'";
+	}
+	if('${constituencyDetails.constituencyType}' == 'Parliament')
+	{
+		ctitle = "Assembly Constituency Wise Election Results V/S Census Chart For '${constituencyDetails.constituencyName}'";
+	}
+	
 	var staticColors = setStaticColorsForInteractiveChartsForCensusAndPartiesArray(partiesArray);
     
 	 if(chartRows.length == 1)
@@ -1736,6 +1906,7 @@ function buildCensusChartForAConstituency(myResults)
 		}
 	 }
    hideCensusAjaxImage();
+   removeCensusNotAvailableErrorMessage();
   }
 
 }
@@ -1758,6 +1929,17 @@ function showCensusError(myResult)
 	cenvar += '<th>Census Data not avaliable for this Constituency.</th>';
 	cenvar += '</table>';
 	cenErrorEle.innerHTML = cenvar;
+	cenErrorEle.style.display = '';
+}
+
+function removeCensusNotAvailableErrorMessage()
+{
+	var cenErrorEle = document.getElementById("censusErrorMsgDiv");
+
+	if(cenErrorEle)
+	{
+		cenErrorEle.style.display = "none";
+	}
 }
 function showDetailedElectionResult(id)
 {
