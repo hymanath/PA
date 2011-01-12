@@ -1954,6 +1954,12 @@
         	<result type="json" name="success">
 			<param name="root">electionDataVO</param>				
 			</result>
+       	</action>  
+       	
+       	<action name="getPartiesPerformanceInCensusReportByDistrictOrPartiesAction" class="censusReportAction" method="getPartiesPerformanceInCensusReportByDistrictOrParties">
+        	<result type="json" name="success">
+			<param name="root">electionDataVO</param>				
+			</result>
        	</action>   
        	   
 	</package>

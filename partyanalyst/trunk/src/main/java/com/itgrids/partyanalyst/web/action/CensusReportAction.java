@@ -1,36 +1,26 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class CensusReportAction extends ActionSupport implements ServletRequestAware,ServletContextAware {
+public class CensusReportAction extends ActionSupport implements ServletRequestAware {
 
 	private HttpServletRequest request;
 	private List<SelectOptionVO> states;
@@ -43,13 +33,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private ElectionDataVO electionDataVO;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResults;
 	String chartName = null;
-	private ServletContext context;
 	
 	private static final Logger log = Logger.getLogger(BiElectionAction.class);
-	
-	public void setServletContext(ServletContext context) {
-		this.context = context;		
-	}
 	
 	public String getChartName() {
 		return chartName;
@@ -129,11 +114,18 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		
 	}
 	
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
 	public String execute()
 	{
 		states = new ArrayList<SelectOptionVO>();		
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));
-		
 		setYears(getStaticDataService().getElectionYears(2L, false));
 		
 		return Action.SUCCESS;
@@ -144,7 +136,6 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		try {
 			jObj = new JSONObject(getTask());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -167,56 +158,55 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
-		List<Long> locationIds = new ArrayList<Long>();
-		
+		List<Long> locationIds = new ArrayList<Long>();		
 		StringBuilder sb = new StringBuilder();
-		String year = jObj.getString("yearValue");
+		String electionYear = jObj.getString("yearValue");
 		JSONArray jArray = jObj.getJSONArray("idsList");
-		Integer selectedIndex = jObj.getInt("selectedIndex");
 		
 		for (int i = 0; i < jArray.length(); i++) {
 			locationIds.add(new Long(jArray.get(i).toString()));
 			sb.append(jArray.get(i)).append(",");
 		}
-		
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(year, locationIds, selectedIndex);
-		constituencyElectionResults = electionDataVO.getConstituenciesResults();
-		
-		//chartName = createResultsLineChart(constituencyElectionResults, sb, year);
-		return Action.SUCCESS;	
-	
-	}
-	
-	public String createResultsLineChart(List<ConstituencyElectionResultsVO> asseblyDetails,StringBuilder sb, String year)
-	{
-		String chartName = null;
-		try{
-		
- 		String lineChartName = "bielections in _" +sb+"_forYear_"+year+".png";
-        String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
-        String title = "";
-        Set<String> partiesInChart = new LinkedHashSet<String>();
-		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,600,920, ChartUtils.getLineChartColors(partiesInChart),true);
-		chartName = lineChartName;
-	
-		}catch(Exception ex){
-			ex.printStackTrace();
-			log.debug("Exception Raised :" + ex);
-		}
-		return chartName;
-		
-	}
-	
-	private CategoryDataset createDataSetForGraph(List<ConstituencyElectionResultsVO> asseblyDetails, Set<String> partiesInChart){
-		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(ConstituencyElectionResultsVO consti:asseblyDetails)
-			for(PartyResultsVO category:consti.getPartyResultsVO())
-			{
-				partiesInChart.add(category.getPartyName());
-				dataset.addValue(new BigDecimal(category.getPercentage()),category.getPartyName(),consti.getConstituencyName());
-			}
-		return dataset;
-	}
 
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, null, null, true);
+		
+		return Action.SUCCESS;
+
+	}
+	
+	public String getPartiesPerformanceInCensusReportByDistrictOrParties()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		List<Long> locationIds = new ArrayList<Long>();
+		List<Long> districtIds = new ArrayList<Long>();
+		List<Long> partyIds = new ArrayList<Long>();
+		StringBuilder sb = new StringBuilder();
+		String electionYear = jObj.getString("yearValue");
+		Boolean isAll = jObj.getBoolean("isAll");
+		JSONArray jArray = jObj.getJSONArray("idsList");
+		JSONArray jDistrictIds = jObj.getJSONArray("districtIds");
+		JSONArray jPartyIds = jObj.getJSONArray("partyIds");
+		
+		for (int i = 0; i < jArray.length(); i++) {
+			locationIds.add(new Long(jArray.get(i).toString()));
+			sb.append(jArray.get(i)).append(",");
+		}
+
+		for (int i = 0; i < jDistrictIds.length(); i++) 
+			districtIds.add(new Long(jDistrictIds.get(i).toString()));
+			
+		for (int i = 0; i < jPartyIds.length(); i++) 
+			partyIds.add(new Long(jPartyIds.get(i).toString()));
+			
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, isAll);
+		
+		return Action.SUCCESS;
+
+	}
 	
 }

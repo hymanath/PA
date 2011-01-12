@@ -390,8 +390,8 @@ public class BiElectionAction extends ActionSupport implements
 			for(SelectOptionVO obj:biElectionDistrictVO.getConstituenciesList())
 				constituencyIdsList.add(obj.getId());						
 		}
-		biElectionAssemblyConstPresentYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
-		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PREVIOUS_ELECTION_YEAR, constituencyIdsList);
+		biElectionAssemblyConstPresentYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList, null);
+		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PREVIOUS_ELECTION_YEAR, constituencyIdsList, null);
 		
 		if(biElectionAssemblyConstPresentYearResults != null && biElectionAssemblyConstPresentYearResults.size()>0){
 			presentYearResultsChartName = createResultsLineChart(biElectionAssemblyConstPresentYearResults,sb, IConstants.PRESENT_ELECTION_YEAR);
@@ -403,7 +403,7 @@ public class BiElectionAction extends ActionSupport implements
 			enlargedPreviousYearResultsChartName = enlargedCreateResultsLineChart(biElectionAssemblyConstPreviousYearResults,sb, IConstants.PREVIOUS_ELECTION_YEAR);
 		}
 			
-		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
+		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList, null);
 		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		electionYear = IConstants.PRESENT_ELECTION_YEAR;
 		electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
