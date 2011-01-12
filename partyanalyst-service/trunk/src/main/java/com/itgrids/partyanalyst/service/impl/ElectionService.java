@@ -125,22 +125,9 @@ public class ElectionService implements IElectionService{
 			if(log.isDebugEnabled()){
 				log.debug("In the ElectionService.getConstituencyCensusDetails().. Call");
 			}
-		String censusStr = null;
+		String censusStr = getCensusStructureBySelectedIndex(selectIndex);
 		List<CensusVO> censusVOlist = new ArrayList<CensusVO>();
 		List<Object[]>list = new ArrayList<Object[]>();
-		
-		if(selectIndex == 1)
-			censusStr = "model.percentageSC";
-		else if(selectIndex == 2)
-			censusStr = "model.percentageST";
-		else if(selectIndex == 3)
-			censusStr = "model.popLiteraturePercentage";
-		else if(selectIndex == 4)
-			censusStr = "(100-model.popLiteraturePercentage)";
-		else if(selectIndex == 5)
-			censusStr = "model.totalWorkingPopPercentage";
-		else if(selectIndex == 6)
-			censusStr = "model.nonWorkingPopPercentage";
 		
 		if(level.equalsIgnoreCase(IConstants.STATE_STR))
 		{
@@ -268,16 +255,17 @@ public class ElectionService implements IElectionService{
 	 * Returns Party Wise Constituencies Grouped Results For An Election 
 	 */
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
-			String electionYear, List<Long> constituencyIds){
+			String electionYear, List<Long> constituencyIds, Integer selected){
 		
 		ElectionDataVO electionDataVO = new ElectionDataVO();
 		List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
 		List<ConstituencyElectionResultsVO> constituenciesResults = null;
 		List<String> allPartiesList = null;
+		Map<PartyResultsVO, List<Object[]>> partyWithResults = new HashMap<PartyResultsVO, List<Object[]>>();
+		Map<Long, Double> constituencyWithPercentMap = new HashMap<Long, Double>();
 		
 		try {
 			List resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);
-			Map<PartyResultsVO, List<Object[]>> partyWithResults = new HashMap<PartyResultsVO, List<Object[]>>();
 			
 			PartyResultsVO partyResultsVO = null;
 			List<Object[]> partyResults = null;
@@ -331,19 +319,29 @@ public class ElectionService implements IElectionService{
 			}
 			
 			PartyResultsVO partyInfo = null;
-			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
 				for(String partyName:allParties)
 					if(!constiInfo.getParticipatedParties().contains(partyName)){
 						partyInfo = new PartyResultsVO();
 						partyInfo.setPartyName(partyName);
 						constiInfo.getPartyResultsVO().add(partyInfo);
 					}
-			
+			}
+
 			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
 				Collections.sort(constiInfo.getPartyResultsVO(), new PartyResultsVOComparator());
 			
 			allPartiesList = new ArrayList<String>(allParties);
 			Collections.sort(allPartiesList);
+
+			//Setting Census Structure Percentages For Each Constituency
+			List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(getCensusStructureBySelectedIndex(selected),constituencyIds);
+			
+			for(Object[] obj:list)
+				constituencyWithPercentMap.put((Long)obj[0], (Double)obj[1]);
+			
+			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+				constiInfo.setCensusReportPercent(constituencyWithPercentMap.get(constiInfo.getConstituencyId()));
 			
 		} catch (Exception e) {
 			
@@ -354,6 +352,23 @@ public class ElectionService implements IElectionService{
 		electionDataVO.setPartyResultsList(partyResultsList);
 		
 		return electionDataVO;
+	}
+	
+	public String getCensusStructureBySelectedIndex(Integer selectIndex){
+		String censusStr = "";
+		if(selectIndex == 1)
+			censusStr = "model.percentageSC";
+		else if(selectIndex == 2)
+			censusStr = "model.percentageST";
+		else if(selectIndex == 3)
+			censusStr = "model.popLiteraturePercentage";
+		else if(selectIndex == 4)
+			censusStr = "(100-model.popLiteraturePercentage)";
+		else if(selectIndex == 5)
+			censusStr = "model.totalWorkingPopPercentage";
+		else
+			censusStr = "model.nonWorkingPopPercentage";
+		return censusStr;
 	}
 
 }
