@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,6 +29,9 @@ public class DelimitationMappingUploadVO extends ResultStatus implements
 	private Integer currentSheet = 0;
 	private Integer currentRow = 0;
 	private Boolean exceptionEncounterStatus;
+	
+	private List<DelimitationUploadValidationVO> delimitationUploadValidationVO;
+	
 	/**
 	 * @return the delimitationYear
 	 */
@@ -100,6 +104,19 @@ public class DelimitationMappingUploadVO extends ResultStatus implements
 	public void setExceptionEncounterStatus(Boolean exceptionEncounterStatus) {
 		this.exceptionEncounterStatus = exceptionEncounterStatus;
 	}
-	
+	/**
+	 * @return the delimitationUploadValidationVO
+	 */
+	public List<DelimitationUploadValidationVO> getDelimitationUploadValidationVO() {
+		return delimitationUploadValidationVO;
+	}
+	/**
+	 * @param delimitationUploadValidationVO the delimitationUploadValidationVO to set
+	 */
+	public void setDelimitationUploadValidationVO(
+			List<DelimitationUploadValidationVO> delimitationUploadValidationVO) {
+		this.delimitationUploadValidationVO = delimitationUploadValidationVO;
+	}
+		
     
 }
