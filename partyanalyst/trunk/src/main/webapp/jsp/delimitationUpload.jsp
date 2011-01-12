@@ -69,14 +69,114 @@
 				<td> <s:file name="filePath" label="Upload  File Path" /></td>
 			</tr>			
 			<tr>
+			
+				<td colspan="2"><s:checkbox name="isValidate" id="isValidate" label="Validate Data"/></td>
 				<td colspan="2" align="center"><s:submit name="upload" value="Upload" align="center"/></td>
 			</tr>
 			
 		</table>
 	</s:form>
 
+	
 	<c:if test="${delimitationMappingUploadVO != null}">
 
+	<c:if test="${isValidate == 'true'}">
+        
+		<BR><BR>
+		<H2>Validation Results ...</H2><BR><BR>
+		
+		<c:forEach var="validation" items="${delimitationMappingUploadVO.delimitationUploadValidationVO}" varStatus="status">
+
+		
+          
+          <table border="0">
+		    
+			<tr>
+			   <td><h4>State </h4></td>
+			   <td style="color:Blue;font-size:12px;"><c:out value="${validation.state}" /></td>
+			</tr>
+			<tr>
+
+			   <td><h4>District </h4></td>
+			   <td style="color:Blue;font-size:12px;"><c:out value="${validation.district}" /></td>
+			</tr>
+			<tr>
+
+			   <td><h4>Constituency </h4></td>
+			   <td style="color:Blue;font-size:12px;"><c:out value="${validation.constituency}" /></td>
+            </tr>
+			<tr>
+			   <td colspan="2" style="font-size:14px;" align="center">Existing Mandals </td>
+			   <td colspan="2" style="font-size:14px;" align="center"> Mandals In Sheet </td>
+			</tr>
+			<tr>
+			   <td colspan="2">
+			       <table border="2" cellspacing="2">
+				      <tr>
+					      <td><h4> Mandal </h4></td>
+						  <td><h4> Is Partial </h4></td>
+					  </tr>
+				      <c:forEach var="existing" items="${validation.existingMandals}" varStatus="status">
+					    <tr>
+						  
+						  <c:if test="${existing.name == 'N/A'}">
+						  <td style="color:red;font-size:14px;"><c:out value="${existing.name}" /></td>
+                          </c:if>
+
+						  <c:if test="${existing.name != 'N/A'}">
+						  <td style="color:green;font-size:14px;"><c:out value="${existing.name}" /></td>
+                          </c:if>
+
+
+						  <c:if test="${existing.id == 0}">
+						   <td align="center"><c:out value="full" /></td>
+						  </c:if>
+						  <c:if test="${existing.id == 1}">
+						   <td align="center"><c:out value="part" /></td>
+						  </c:if>
+						</tr>
+					  </c:forEach>
+				   </table>
+			   </td>
+		
+			    <td colspan="2">
+			       <table border="2" cellspacing="2">
+				      <tr>
+					      <td><h4> Mandal </h4></td>
+						  <td><h4> Is Partial </h4></td>
+					  </tr>
+				      <c:forEach var="toSave" items="${validation.mandalsToSave}" varStatus="status">
+					    <tr>
+
+						  <c:if test="${toSave.name == 'N/A'}">
+						  <td style="color:red;font-size:14px;"><c:out value="${toSave.name}" /></td>
+                          </c:if>
+
+						  <c:if test="${toSave.name != 'N/A'}">
+						  <td style="color:green;font-size:14px;"><c:out value="${toSave.name}" /></td>
+                          </c:if>
+
+						  <c:if test="${toSave.id == 0}">
+						   <td align="center"><c:out value="full" /></td>
+						  </c:if>
+						  <c:if test="${toSave.id == 1}">
+						   <td align="center"><c:out value="part" /></td>
+						  </c:if>
+						</tr>
+					  </c:forEach>
+				   </table>
+			   </td>
+			 </tr>
+			 
+		  </table>
+
+		  <h3>....................................................................................................</h3>
+        </c:forEach>
+    </c:if>
+
+	
+
+   <c:if test="${isValidate == 'false' || isValidate == null}">
 	<c:if test="${delimitationMappingUploadVO.exceptionEncountered == null}">
 		    
 		   <BR><BR>
@@ -130,5 +230,6 @@
 
 	  </c:if>
 	</c:if>
+  </c:if>
 	</body>
 </html>
