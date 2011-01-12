@@ -45,6 +45,7 @@ public class DelimitationMappingsUploadAction extends ActionSupport implements
 	private String country;
 	private String censusYear;
 	private String delimitationYear;
+	private String isValidate;
 	
 	private IDelimitationMappingsUploadService delimitationMappingsUploadService;
 	private DelimitationMappingUploadVO delimitationMappingUploadVO;
@@ -185,9 +186,27 @@ public class DelimitationMappingsUploadAction extends ActionSupport implements
 
 	}
 	
+	/**
+	 * @return the isValidate
+	 */
+	public String getIsValidate() {
+		return isValidate;
+	}
+
+	/**
+	 * @param isValidate the isValidate to set
+	 */
+	public void setIsValidate(String isValidate) {
+		this.isValidate = isValidate;
+	}
+
 	public String execute(){
 		
-		delimitationMappingUploadVO = delimitationMappingsUploadService.fetchDelimitationDataFromExcel(filePath, delimitationYear, country);
+		Boolean validate = false;
+		if(isValidate.equalsIgnoreCase("true"))
+			validate = true;
+		
+		delimitationMappingUploadVO = delimitationMappingsUploadService.fetchDelimitationDataFromExcel(filePath, delimitationYear, country,validate);
 		delimitationMappingUploadVO.setDelimitationYear(this.delimitationYear);
 		
 		if(delimitationMappingUploadVO != null){
