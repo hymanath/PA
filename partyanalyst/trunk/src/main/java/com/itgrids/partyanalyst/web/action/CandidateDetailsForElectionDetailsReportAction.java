@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,9 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,6 +24,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(CandidateDetailsForElectionDetailsReportAction.class);
+	
 	private HttpServletRequest request;
 	private String electionId;
 	private String stateID;
@@ -35,11 +34,22 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	private String task = null;
 	JSONObject jObj = null;
 	private CandidateDetailsVO candidateDetailsVO;
-	private CandidateDetailsVO statesListObj;
-	private IStaticDataService staticDataService; 
+	private CandidateDetailsVO statesListObj;	
 	private List<SelectOptionVO> partiesList;
 	private List<SelectOptionVO> districtsList;	
 	
+	private IStaticDataService staticDataService; 
+	private IElectionAnalyzeService electionAnalyzeService;
+	
+	public IElectionAnalyzeService getElectionAnalyzeService() {
+		return electionAnalyzeService;
+	}
+
+	public void setElectionAnalyzeService(
+			IElectionAnalyzeService electionAnalyzeService) {
+		this.electionAnalyzeService = electionAnalyzeService;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -258,7 +268,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 					int maxResult = new Long(request.getParameter("results").toString()).intValue();
 					String order = request.getParameter("dir").toString();
 					String columnName = request.getParameter("sort").toString();					
-					candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),startIndex,maxResult,order,columnName);
+					candidateDetailsVO = electionAnalyzeService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID),startIndex,maxResult,order,columnName);
 			//	}	
 			}catch(Exception e){
 				e.printStackTrace();
