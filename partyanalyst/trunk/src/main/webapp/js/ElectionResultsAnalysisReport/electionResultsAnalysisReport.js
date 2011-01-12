@@ -512,7 +512,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='</div>';
 
 	contentStr+='<div id="lostPositionAnalysisBody" class="positionAnalysisBodyClass">';
-		contentStr+='<table width="100%" style="width:100%">';
+		contentStr+='<table width="100%" style="width:50%">';
 		contentStr+='<tr>';
 		contentStr+='<td style="vertical-align:top;">';
 		contentStr+='<div id="lostPositionAnalysis_BasicData">';
