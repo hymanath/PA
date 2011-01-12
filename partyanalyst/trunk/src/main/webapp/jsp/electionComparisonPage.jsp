@@ -38,7 +38,7 @@ table.CandidateElectionResultsTable td {
 }
 .selectWidth
 {
-	width:160px;
+	width:200px;
 }
 </style>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
@@ -333,10 +333,10 @@ var yearsPopulation={
 			<tr>
 				<th align="left"><%=electionYear%></th>
 				<td align="left">
-					<select id="electionYearSelect1" style="width:80px;" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)"  name="electionId1">
+					<select id="electionYearSelect1" style="width:98px;" onchange = "populateElectionYearsForSecondElectionYearsSelectBox(this.options[this.selectedIndex].text)"  name="electionId1">
 						<option value="0">Select Year</option>
 					</select>
-					<select id="electionYearSelect2" style="width:80px;" name="electionId2">
+					<select id="electionYearSelect2" style="width:98px;" name="electionId2">
 						<option value="0">Select Year </option>
 					</select>
 				</td>
