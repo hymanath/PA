@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.DelimitationMappingUploadVO;
+import com.itgrids.partyanalyst.dto.DelimitationUploadValidationVO;
 import com.itgrids.partyanalyst.dto.MandalSubRegionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Block;
@@ -526,7 +527,7 @@ public class DelimitationMappingsUploadService implements
 	 * @return delimitationMappingUploadVO - status representing the persisted data
 	 */
 	public DelimitationMappingUploadVO fetchDelimitationDataFromExcel(
-			File excelFile,String delimitationYear,String country) {
+			File excelFile,String delimitationYear,String country,final Boolean isValidate) {
 		
 		if(log.isDebugEnabled())
 			log.debug("Started Executing 'fetchDelimitationDataFromExcel' Method ..");
@@ -535,37 +536,40 @@ public class DelimitationMappingsUploadService implements
 		this.uploadFile = excelFile;
 		this.delimitationYear = delimitationYear;
 		
-		DelimitationMappingUploadVO delimitationMappingUploadVO = (DelimitationMappingUploadVO)transactionTemplate.execute(new TransactionCallback() {
+		/*DelimitationMappingUploadVO delimitationMappingUploadVO = (DelimitationMappingUploadVO)transactionTemplate.execute(new TransactionCallback() {
 
-			public Object doInTransaction(TransactionStatus txstatus) {
+			public Object doInTransaction(TransactionStatus txstatus) {*/
 				
 				DelimitationMappingUploadVO mappingsUploadVO = new DelimitationMappingUploadVO();
+				List<DelimitationUploadValidationVO> delimValidations = new ArrayList<DelimitationUploadValidationVO>();
+				mappingsUploadVO.setDelimitationUploadValidationVO(delimValidations);
+				
 				try{
 					
 					obtainHSSFWorkbookForUploadExcel();
-					readExcelAndPersistData(mappingsUploadVO);
+					readExcelAndPersistData(mappingsUploadVO,isValidate);
 					
 				}catch(Exception exc){
 					exc.printStackTrace();
 					log.error("Exception Occured in Delimitation Mappings Saving Process :"+ exc);
-					txstatus.setRollbackOnly();
+					//txstatus.setRollbackOnly();
 					mappingsUploadVO.setExceptionEncountered(exc);
 					mappingsUploadVO.setExceptionMsg(exc.getMessage());
 					return mappingsUploadVO;
 				}
-			 return mappingsUploadVO;
+			/* return mappingsUploadVO;
 			}
 			
-		});
+		});*/
 		
-	 return delimitationMappingUploadVO;
+	 return mappingsUploadVO;
 	}
 	
 	/**
 	 * Reads the data from Excel Sheets and persist the data to Database
 	 * @param delimitationMappingUploadVO
 	 */
-	public void readExcelAndPersistData(DelimitationMappingUploadVO delimitationMappingUploadVO) throws Exception{
+	public void readExcelAndPersistData(DelimitationMappingUploadVO delimitationMappingUploadVO,Boolean isValidate) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered Into Block To Read Excel Data For Persisting ..");
@@ -585,7 +589,7 @@ public class DelimitationMappingsUploadService implements
 			Integer headerRow = getHeaderInfoFromSheet(currentSheet,excelHeaderInfo);
 			
 			//read sheet and saving the mapping details to VO
-			checkAndInsertDelimitationMappingsData(headerRow,sheetIndex,currentSheet,excelHeaderInfo,delimitationMappingUploadVO);
+			checkAndInsertDelimitationMappingsData(headerRow,sheetIndex,currentSheet,excelHeaderInfo,delimitationMappingUploadVO,isValidate);
 			
 		}
 		
@@ -806,7 +810,7 @@ public class DelimitationMappingsUploadService implements
 	 * @param excelHeaderInfo
 	 * @param delimitationMappingUploadVO
 	 */
-	private void checkAndInsertDelimitationMappingsData(Integer headerRow,Integer sheetNo,HSSFSheet currentSheet,Map<String,Integer> excelHeaderInfo,DelimitationMappingUploadVO delimitationMappingUploadVO) throws Exception{
+	private void checkAndInsertDelimitationMappingsData(Integer headerRow,Integer sheetNo,HSSFSheet currentSheet,Map<String,Integer> excelHeaderInfo,DelimitationMappingUploadVO delimitationMappingUploadVO,Boolean isValidate) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Starting The Reading Process Inside checkAndInsertDelimitationMappingsData Method ..");
@@ -835,7 +839,10 @@ public class DelimitationMappingsUploadService implements
 			
 			//last row
 			if(row == totalRowsInSheet+1){
-				saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
+				
+				List<DelimitationUploadValidationVO> delimitationValidations = delimitationMappingUploadVO.getDelimitationUploadValidationVO();
+				delimitationValidations.add(saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj,isValidate));
+				delimitationMappingUploadVO.setDelimitationUploadValidationVO(delimitationValidations);
 				
 				//delimitationMappingUploadVO.getMappedConstituencies().add(constituencyName);
 				Set<String> mappedConstituencies = delimitationMappingUploadVO.getMappedConstituencies();
@@ -897,7 +904,10 @@ public class DelimitationMappingsUploadService implements
 				}else{
 					 
 					//saving the mapped regions for a constituency
-					saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj);
+					List<DelimitationUploadValidationVO> delimitationValidations = delimitationMappingUploadVO.getDelimitationUploadValidationVO();
+					delimitationValidations.add(saveConstituencyMappingDetails(mandalsMap,townsMap,stateObj,districtObj,constituencyObj,isValidate));
+					delimitationMappingUploadVO.setDelimitationUploadValidationVO(delimitationValidations);
+					
 					mandalsMap = new HashMap<String,MandalSubRegionsVO>();
 					townsMap   =  new HashMap<String,MandalSubRegionsVO>();
 					
@@ -1109,36 +1119,64 @@ public class DelimitationMappingsUploadService implements
 	 * @param districtObj
 	 * @param constituencyObj
 	 */
-	private void saveConstituencyMappingDetails(Map<String,MandalSubRegionsVO> mandalsMap,Map<String,MandalSubRegionsVO> townsMap,
-			State stateObj,District districtObj,Constituency constituencyObj) throws Exception{
+	private DelimitationUploadValidationVO saveConstituencyMappingDetails(final Map<String,MandalSubRegionsVO> mandalsMap,final Map<String,MandalSubRegionsVO> townsMap,
+			final State stateObj,final District districtObj,final Constituency constituencyObj,Boolean isValidate) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Started Persisting The Mapped Details For "+constituencyObj.getName() + " .. ");
 		
-		DelimitationConstituency delimitationConsti = null;
-		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyObj.getConstituencyId(), new Long(this.delimitationYear));
+		final String delimitationYear = this.delimitationYear;
+		final DelimitationYear delimYearObj = this.delimitationYearObj;
+		final Boolean isValidat = isValidate;
 		
-		if(delimitationConstituency != null && delimitationConstituency.size() > 1){
-			throw new Exception("More Than One Delimitation Mapping Constituency Exists for " + constituencyObj.getName());
-		}
-		//DelimitationConstituency is available
-		else if(delimitationConstituency != null && delimitationConstituency.size() == 1){
-			delimitationConsti = delimitationConstituency.get(0);
-		}
-		//save DelimitationConstituency Details
-		else{
-			DelimitationConstituency delimconsti = new DelimitationConstituency();
-			delimconsti.setConstituency(constituencyObj);
-			delimconsti.setYear(new Long(this.delimitationYear));
-			delimconsti.setDelimitationYear(this.delimitationYearObj);
-			delimitationConsti = delimitationConstituencyDAO.save(delimconsti);
-		}
+		DelimitationUploadValidationVO delimitationUploadValidationVO = (DelimitationUploadValidationVO)transactionTemplate.execute(new TransactionCallback(){
+			
+			public Object doInTransaction(TransactionStatus txstatus){
 		
-		//save delimitation constituency mandal and its sub region details
-		checkAndSaveDelimitationConstituencyMandalAndSubRegions(stateObj,districtObj,constituencyObj,mandalsMap,delimitationConsti);
+				DelimitationUploadValidationVO delimitationUploadVO = new DelimitationUploadValidationVO();
+				
+				try{
+					
+				DelimitationConstituency delimitationConsti = null;
+				List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyObj.getConstituencyId(), new Long(delimitationYear));
+				
+				if(delimitationConstituency != null && delimitationConstituency.size() > 1){
+					throw new Exception("More Than One Delimitation Mapping Constituency Exists for " + constituencyObj.getName());
+				}
+				//DelimitationConstituency is available
+				else if(delimitationConstituency != null && delimitationConstituency.size() == 1){
+					delimitationConsti = delimitationConstituency.get(0);
+				}
+				//save DelimitationConstituency Details
+				else{
+					DelimitationConstituency delimconsti = new DelimitationConstituency();
+					delimconsti.setConstituency(constituencyObj);
+					delimconsti.setYear(new Long(delimitationYear));
+					delimconsti.setDelimitationYear(delimYearObj);
+					delimitationConsti = delimitationConstituencyDAO.save(delimconsti);
+				}
+				
+				//save delimitation constituency mandal and its sub region details
+				checkAndSaveDelimitationConstituencyMandalAndSubRegions(stateObj,districtObj,constituencyObj,mandalsMap,delimitationConsti,delimitationUploadVO,isValidat);
+				
+				//save delimitation constituency mandal and its sub region details
+				if(!isValidat)
+				checkAndSaveDelimitationConstituencyTownsAndSubRegions(stateObj,districtObj,constituencyObj,townsMap,delimitationConsti);
+				
+				}catch(Exception ex){
+					
+					log.error("Exception Raised While Saving Data : " + ex);
+					txstatus.setRollbackOnly();
+										
+				 return delimitationUploadVO;
+				}
+				
+			 return delimitationUploadVO;
+			}
 		
-		//save delimitation constituency mandal and its sub region details
-		checkAndSaveDelimitationConstituencyTownsAndSubRegions(stateObj,districtObj,constituencyObj,townsMap,delimitationConsti);
+		});
+		
+	 return delimitationUploadValidationVO;
 	}
 	
 	/**
@@ -1150,11 +1188,15 @@ public class DelimitationMappingsUploadService implements
 	 * @param delimitationConstituency
 	 */
 	private void checkAndSaveDelimitationConstituencyMandalAndSubRegions(State stateObj,District districtObj,Constituency constituencyObj,
-			Map<String,MandalSubRegionsVO> mandalsMap,DelimitationConstituency delimitationConstituency) throws Exception{
+			Map<String,MandalSubRegionsVO> mandalsMap,DelimitationConstituency delimitationConstituency,DelimitationUploadValidationVO delimitationUploadVO,Boolean isValidate) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Saving Mandal And Its Sub Regions Delimitation Details ..");
 		
+		delimitationUploadVO.setState(stateObj.getStateName());
+		delimitationUploadVO.setDistrict(districtObj.getDistrictName());
+		delimitationUploadVO.setConstituency(constituencyObj.getName());
+				
 		if(!mandalsMap.isEmpty() && mandalsMap.size() > 0){
 			
 			Set<String> mandalNames = mandalsMap.keySet();
@@ -1174,32 +1216,109 @@ public class DelimitationMappingsUploadService implements
 				}
 				
 				//Check And Insert Delimitation Constituency Tehsil
-				List<DelimitationConstituencyMandal> delimConstiMandalList = delimitationConstituencyMandalDAO.findDelConstMandalByDelConstID(delimitationConstituency.getDelimitationConstituencyID(), tehsilObj.getTehsilId());
-				DelimitationConstituencyMandal delimitationMandal = null;
-				
-				if(delimConstiMandalList != null && delimConstiMandalList.size() > 1){
-					throw new Exception("More Than One Delimitation Constituency Mandal Exists for " + mandal +" Mandal In " + districtObj.getDistrictName() + " District");
-				}else if(delimConstiMandalList != null && delimConstiMandalList.size() ==1){
-					delimitationMandal = delimConstiMandalList.get(0);
+				if(!isValidate){
+					List<DelimitationConstituencyMandal> delimConstiMandalList = delimitationConstituencyMandalDAO.findDelConstMandalByDelConstID(delimitationConstituency.getDelimitationConstituencyID(), tehsilObj.getTehsilId());
+					DelimitationConstituencyMandal delimitationMandal = null;
+					
+					if(delimConstiMandalList != null && delimConstiMandalList.size() > 1){
+						throw new Exception("More Than One Delimitation Constituency Mandal Exists for " + mandal +" Mandal In " + districtObj.getDistrictName() + " District");
+					}else if(delimConstiMandalList != null && delimConstiMandalList.size() == 1){
+						delimitationMandal = delimConstiMandalList.get(0);
+					}else{
+						
+						DelimitationConstituencyMandal delimMandal = new DelimitationConstituencyMandal();
+						delimMandal.setDelimitationConstituency(delimitationConstituency);
+						delimMandal.setTehsil(tehsilObj);
+						Boolean isPartial = mandalData.getIsPartial();
+						if(isPartial)
+						    delimMandal.setIsPartial(getStringFromAsciiChar(0));
+						else
+							delimMandal.setIsPartial(getStringFromAsciiChar(1));
+						delimitationMandal = delimitationConstituencyMandalDAO.save(delimMandal);
+					}
+					
+					//check for villages
+					if(mandalData.getVillagesList() != null && mandalData.getVillagesList().size() > 0){
+						saveDelimitationVillagesDetails(delimitationMandal,mandalData.getVillagesList());
+					}
 				}else{
 					
-					DelimitationConstituencyMandal delimMandal = new DelimitationConstituencyMandal();
-					delimMandal.setDelimitationConstituency(delimitationConstituency);
-					delimMandal.setTehsil(tehsilObj);
-					Boolean isPartial = mandalData.getIsPartial();
-					if(isPartial)
-					    delimMandal.setIsPartial("0");
-					else
-						delimMandal.setIsPartial("1");
-					delimitationMandal = delimitationConstituencyMandalDAO.save(delimMandal);
-				}
-				
-				//check for villages
-				if(mandalData.getVillagesList() != null && mandalData.getVillagesList().size() > 0){
-					saveDelimitationVillagesDetails(delimitationMandal,mandalData.getVillagesList());
+					validateDelimitationTehsilsData(delimitationConstituency.getDelimitationConstituencyID(), tehsilObj.getTehsilId(),delimitationUploadVO,mandalData);
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Returns String from Given Ascii Character
+	 * @param i
+	 * @return
+	 */
+	private String getStringFromAsciiChar(int i){
+		
+		String aChar = new Character((char) i).toString();
+		
+	 return aChar;
+	}
+	
+	
+	/**
+	 * validate Delimitation mandals data before uploading 
+	 * @param delimConstituencyId
+	 * @param tehsilId
+	 * @param delimitationUploadVO
+	 */
+	private void validateDelimitationTehsilsData(Long delimConstituencyId,Long tehsilId,DelimitationUploadValidationVO delimitationUploadVO,MandalSubRegionsVO mandalData){
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered Block To Validate Delimitation Mandals Data ..");
+		
+		//Existing Mandal
+		List<DelimitationConstituencyMandal> delimConstiMandalList = delimitationConstituencyMandalDAO.findDelConstMandalByDelConstID(delimConstituencyId, tehsilId);
+		List<SelectOptionVO> existingMandals = null;
+		List<SelectOptionVO> mandalsToSave = null;
+		existingMandals = delimitationUploadVO.getExistingMandals();
+		mandalsToSave = delimitationUploadVO.getMandalsToSave();
+		
+		if(delimConstiMandalList != null && delimConstiMandalList.size() > 0){
+			
+			for(DelimitationConstituencyMandal dcm:delimConstiMandalList){
+				
+				Long isPartial = 0L;
+				if(dcm.getIsPartial().equalsIgnoreCase("0"))
+					isPartial = 1L;
+				SelectOptionVO option = new SelectOptionVO(isPartial,dcm.getTehsil().getTehsilName());
+				if(existingMandals == null || existingMandals.size() == 0)
+					existingMandals = new ArrayList<SelectOptionVO>();
+					
+				existingMandals.add(option);			
+				delimitationUploadVO.setExistingMandals(existingMandals);
+								
+			}
+			
+		}else{
+				
+			SelectOptionVO option = new SelectOptionVO(0L,"N/A");
+						
+			if(existingMandals == null || existingMandals.size() == 0)
+				existingMandals = new ArrayList<SelectOptionVO>();
+				
+			existingMandals.add(option);			
+			delimitationUploadVO.setExistingMandals(existingMandals);
+		}
+		
+		//Mandal To Save
+		Long isPartial = 0L;
+		if(mandalData.getIsPartial())
+			isPartial = 1L;
+		SelectOptionVO option = new SelectOptionVO(isPartial,mandalData.getMandalName());
+		
+		if(mandalsToSave == null || mandalsToSave.size() == 0)
+			mandalsToSave = new ArrayList<SelectOptionVO>();
+		
+		mandalsToSave.add(option);
+		delimitationUploadVO.setMandalsToSave(mandalsToSave);
+		
 	}
 	
 	/**
