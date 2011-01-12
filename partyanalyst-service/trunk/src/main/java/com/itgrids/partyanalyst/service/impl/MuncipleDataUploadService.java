@@ -344,6 +344,7 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 				constituency = wardsInMuncipalityMap.get(IConstants.MUNCIPLE_WARD+"-"+wardNo);
 			
 				if(constituency == null){
+					constituencyDAO.flushAndclearSession();
 					constituency = new Constituency();
 					constituency.setName(IConstants.MUNCIPLE_WARD+"-"+wardNo);
 					constituency.setLocalElectionBody(localElectionBody);
