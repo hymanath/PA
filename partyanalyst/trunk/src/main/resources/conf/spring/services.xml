@@ -740,8 +740,16 @@
 	    <property name="userRelationDAO" ref="userRelationDAO" />
 	    <property name="socialCategoryDAO" ref="socialCategoryDAO" />
 	    <property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />
-	    <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />
-	     
+	    <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO" />	     
+	</bean>
+	
+	<bean name="electionAnalyzeService" class="com.itgrids.partyanalyst.service.impl.ElectionAnalyzeService" >
+		 <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+		 <property name="nominationDAO" ref="nominationDAO" />
+		 <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		 <property name="transactionTemplate" ref="transactionTemplate" />
+		 <property name="candidateResultDAO" ref="candidateResultDAO" />
+		 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
 
 </beans>		
