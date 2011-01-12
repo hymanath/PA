@@ -718,11 +718,15 @@ function callAjax(param,jsObj,url){
 		callAjax(param,jsObj,url);
 	}
 	
-
+	if('${windowTask}' == "partyElectionResultsAnalysisPopup")
+	{
+		getConstituencyResults();
+	}
 	if('${windowTask}' == "partyElectionResultsPopup")
 	{
 		getConstituencyResults();
 	}
+	
 	else if('${windowTask}' == "mainPartyMarginCountAnalysisPopup")
 	{
 		getMainPartyMarginCountAnalysis('${clickIndex}','${resultStatus}');
