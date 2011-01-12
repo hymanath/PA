@@ -354,7 +354,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"sum(model.constituencyElectionResult.totalVotesPolled),"+
 				"sum(model.constituencyElectionResult.totalVotes) from ConstituencyElection model "+
 				"where model.constituency.localElectionBody.localElectionBodyId = ? and model.election.electionId = ? "+
-				"and model.constituency.constituencyId = ?",params);
+				"and model.constituency.constituencyId = ? group by model.constituency.constituencyId",params);
 	}
 	
 	public List getLatestReservationZone(List<Long> constituencyIds,Long electionYear){
