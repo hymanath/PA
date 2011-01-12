@@ -66,7 +66,13 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private static final Logger log = Logger.getLogger(AnalysisReportService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 
-	
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
+	}
 	public IPartyDAO getPartyDAO() {
 		return partyDAO;
 	}
@@ -826,7 +832,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
 			 				  
 			 marginNominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category,stateId,districtId);
-			 log.error(" ................... Margin Values List :" + marginNominationIds.size());	 
+			 log.warn(" ................... Margin Values List :" + marginNominationIds.size());	 
 				  //get analyzed constituencies
 				  if(!marginNominationIds.isEmpty()){
 					Set entries = marginNominationIds.entrySet();
@@ -888,7 +894,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				  }
 		 }
 		 catch(Exception ex){
-			// ex.printStackTrace();
+			 ex.printStackTrace();
 			 VotesMarginAnalysisVO votesMarginAnalysis = new VotesMarginAnalysisVO();
 			 resultStatus.setExceptionEncountered(ex);
 			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -1359,12 +1365,6 @@ public class AnalysisReportService implements IAnalysisReportService {
 	  return electionBasicCommentsVOList;
 	}
 
-	public ICandidateResultDAO getCandidateResultDAO() {
-		return candidateResultDAO;
-	}
-
-	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
-		this.candidateResultDAO = candidateResultDAO;
-	}
+	
 
 }
