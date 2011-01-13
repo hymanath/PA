@@ -34,7 +34,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private List<ConstituencyElectionResultsVO> constituencyElectionResults;
 	String chartName = null;
 	
-	private static final Logger log = Logger.getLogger(BiElectionAction.class);
+	private static final Logger log = Logger.getLogger(CensusReportAction.class);
 	
 	public String getChartName() {
 		return chartName;

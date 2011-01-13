@@ -1967,6 +1967,17 @@
 			<param name="root">electionDataVO</param>				
 			</result>
        	</action>   
-       	   
+       	
+       	<action name="constituencyWiseCensusMappingAction" class="constituencyWiseCensusMappingAction">
+		   <result name="input">/jsp/constituencyWiseCensusMapping.jsp</result>
+           <result name="success">/jsp/constituencyWiseCensusMapping.jsp</result>
+        </action>
+       	  
+      	<action name="doConstituencyWiseCensusMappingAction" class="constituencyWiseCensusMappingAction" method="censusMappingAjaxHandler">
+       		<result type="json" name="success">
+			<param name="root">censusVO</param>				
+		</result>
+		
+       	</action>
 	</package>
 </struts>
