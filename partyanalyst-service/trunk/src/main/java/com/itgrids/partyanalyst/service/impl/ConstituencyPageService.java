@@ -3024,46 +3024,23 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					}
 				}
 				else
-				{
-					List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(assembly.getId(),delimitationYear);
+				{ 												
+					CensusVO censusMainVO = getCompleteCensusDetailsForAnAssemblyConstituency(assembly.getId(),delimitationYear,censusYear);
+
+					String result = saveCensusToConstituencyCensusDetails(censusMainVO,assembly.getId(),censusYear);
 					
-					if(delimConstList != null && delimConstList.size() > 0 )
+					if(result.equalsIgnoreCase(IConstants.SUCCESS))
 					{
-						Long delimitationConstituencyId = (Long) delimConstList.get(0);
+						List<Object[]> cenList = findConstituencyWiseCensusDetails(assembly.getId(),censusYear);
 						
-						List<CensusVO> censusVOList = new ArrayList<CensusVO>();
-						
-						List<Object[]> delimConMandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(delimitationConstituencyId);
-						
-						if(delimConMandals != null && delimConMandals.size() > 0)
+						if(cenList != null && cenList.size() > 0)
 						{
-							//Here we are getting census details to each tehsil in the Constituency.
-							for(Object[] params:delimConMandals)
-							{
-								CensusVO  censusVO = getCompleteCensusDetailsForATehsil(params,censusYear,delimitationConstituencyId);
-								
-								//If census is not present to the Tehsil then it retuns null,that we are ommitting
-								if(censusVO != null)
-								censusVOList.add(censusVO);
-							}
+							CensusVO censusVO = setCensusDetailsToVO(cenList.get(0));
+							censusVO.setLocationName(assembly.getName());
+							censusVO.setLocationId(assembly.getId());
+							censusVOParliament.add(censusVO);
 						}
-												
-						CensusVO censusMainVO = addCompleteCensusDataToSingleVO(censusVOList);
-						String result = saveCensusToConstituencyCensusDetails(censusMainVO,assembly.getId(),censusYear);
-						
-						if(result.equalsIgnoreCase(IConstants.SUCCESS))
-						{
-							List<Object[]> cenList = findConstituencyWiseCensusDetails(assembly.getId(),censusYear);
-							
-							if(cenList != null && cenList.size() > 0)
-							{
-								CensusVO censusVO = setCensusDetailsToVO(cenList.get(0));
-								censusVO.setLocationName(assembly.getName());
-								censusVO.setLocationId(assembly.getId());
-								censusVOParliament.add(censusVO);
-							}
-						}
-					 }
+					}
 				}
 			}
 			return calculateCensusPercentage(censusVOParliament);
@@ -4112,8 +4089,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						constituencyCensusDetails = constituencyCensusDetailsDAO.save(constituencyCensusDetails);
 																		
 					 }catch(Exception ex){
-						ex.printStackTrace();
 						log.error("Exception Raised :" + ex);
+						return null;
 					}
 					return constituencyCensusDetails;
 					
@@ -4121,5 +4098,120 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			});
 		return IConstants.SUCCESS;
     	}
+	
+	public CensusVO getCompleteCensusDetailsForAnAssemblyConstituency(Long constituencyId,Long delimitationYear,Long censusYear)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.getCompleteCensusDetailsForAnAssemblyConstituency() method ......");
+		}
+		
+		List<Object> delimConstList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDForCensus(constituencyId,delimitationYear);
+		
+		if(delimConstList != null && delimConstList.size() > 0 )
+		{
+			Long delimitationConstituencyId = (Long) delimConstList.get(0);
+			
+			List<CensusVO> censusVOList = new ArrayList<CensusVO>();
+			
+			List<Object[]> delimConMandals = delimitationConstituencyMandalDAO.getLatestMandalsForAConstituency(delimitationConstituencyId);
+			
+			if(delimConMandals != null && delimConMandals.size() > 0)
+			{
+				//Here we are getting census details to each tehsil in the Constituency.
+				for(Object[] params:delimConMandals)
+				{
+					CensusVO  censusVO = getCompleteCensusDetailsForATehsil(params,censusYear,delimitationConstituencyId);
+					
+					//If census is not present to the Tehsil then it retuns null,that we are ommitting
+					if(censusVO != null)
+					censusVOList.add(censusVO);
+				}
+			}
+			
+			if(censusVOList != null && censusVOList.size() > 0)
+			{
+				return addCompleteCensusDataToSingleVO(censusVOList);
+			}
+		}
+		return null;
+		}catch(Exception e){
+			  log.debug("Exception Occured In the constituencyPageService.getCompleteCensusDetailsForAnAssemblyConstituency() method .........");
+			  log.error("Exception raised please check the log for details "+e);
+			  return null;
+		  }
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public CensusVO mapConstituencyWiseCensusDetails(Long stateId,Long districtId,Long delimitationYear,Long censusYear,String mappingLevel)
+	{
+		try
+		{
+		if(log.isDebugEnabled()){
+			log.debug("In the constituencyPageService.mapConstituencyWiseCensusDetails() method ......");
+		}
+		
+		List<Object[]> constituencyList = new ArrayList<Object[]>(0);
+		CensusVO resultVO = new CensusVO();
+		
+		if(mappingLevel.equalsIgnoreCase(IConstants.STATE))
+			constituencyList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInState(2l,stateId);
+		
+		else if(mappingLevel.equalsIgnoreCase(IConstants.DISTRICT) && districtId != null)
+			constituencyList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInDistrict(2l,districtId);
+		
+		List<SelectOptionVO> exists = new ArrayList<SelectOptionVO>(0);
+		List<SelectOptionVO> unmap = new ArrayList<SelectOptionVO>(0);
+		List<SelectOptionVO> map = new ArrayList<SelectOptionVO>(0);
+		
+		for(Object[] details:constituencyList)
+		{
+			Long constituencyId     = (Long) details[0];
+			String constituencyName = details[1].toString();
+			
+			boolean isExists = checkForConstituencyExistance(constituencyId);
+			
+			if(isExists)
+			{
+				if(log.isDebugEnabled()){
+					log.debug(constituencyName+" is already existed in the Constituency census Deatails Table");
+				}
+				exists.add(new SelectOptionVO(constituencyId,constituencyName));
+			}
+			else
+			{
+				CensusVO censusMainVO = getCompleteCensusDetailsForAnAssemblyConstituency(constituencyId,delimitationYear,censusYear);
+
+				String result = saveCensusToConstituencyCensusDetails(censusMainVO,constituencyId,censusYear);
+				
+				if(result.equalsIgnoreCase(IConstants.SUCCESS))
+				{
+					if(log.isDebugEnabled()){
+						log.debug(constituencyName+" is saved in the Constituency census Deatails Table");
+					}
+					map.add(new SelectOptionVO(constituencyId,constituencyName));
+				}
+				else
+				{
+					log.debug(constituencyName+" is not saved in the Constituency census Deatails Table");
+					unmap.add(new SelectOptionVO(constituencyId,constituencyName));
+				}
+			}
+			
+			resultVO.setExistedConstituencies(exists);
+			resultVO.setMapeedConstituencies(map);
+			resultVO.setUnMapeedConstituencies(unmap);
+		}
+		
+		return resultVO;
+		
+		}catch(Exception e){
+			  log.debug("Exception Occured In the constituencyPageService.mapConstituencyWiseCensusDetails() method .........");
+			  log.error("Exception raised please check the log for details "+e);
+			  return null;
+	   }
+	}
 	
 }
