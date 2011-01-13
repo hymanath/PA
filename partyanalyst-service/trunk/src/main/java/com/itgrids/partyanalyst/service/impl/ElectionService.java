@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -125,22 +126,9 @@ public class ElectionService implements IElectionService{
 			if(log.isDebugEnabled()){
 				log.debug("In the ElectionService.getConstituencyCensusDetails().. Call");
 			}
-		String censusStr = null;
+		String censusStr = getCensusStructureBySelectedIndex(selectIndex);
 		List<CensusVO> censusVOlist = new ArrayList<CensusVO>();
 		List<Object[]>list = new ArrayList<Object[]>();
-		
-		if(selectIndex == 1)
-			censusStr = "model.percentageSC";
-		else if(selectIndex == 2)
-			censusStr = "model.percentageST";
-		else if(selectIndex == 3)
-			censusStr = "model.popLiteraturePercentage";
-		else if(selectIndex == 4)
-			censusStr = "(100-model.popLiteraturePercentage)";
-		else if(selectIndex == 5)
-			censusStr = "model.totalWorkingPopPercentage";
-		else if(selectIndex == 6)
-			censusStr = "model.nonWorkingPopPercentage";
 		
 		if(level.equalsIgnoreCase(IConstants.STATE_STR))
 		{
@@ -262,14 +250,31 @@ public class ElectionService implements IElectionService{
 			log.error("Exception raised please check the log for details"+ex);
 			return null;
 		}
-	  }
+	}
+	
+	public String getCensusStructureBySelectedIndex(Integer selectIndex){
+		String censusStr = "";
+		if(selectIndex == 1)
+			censusStr = "model.percentageSC";
+		else if(selectIndex == 2)
+			censusStr = "model.percentageST";
+		else if(selectIndex == 3)
+			censusStr = "model.popLiteraturePercentage";
+		else if(selectIndex == 4)
+			censusStr = "(100-model.popLiteraturePercentage)";
+		else if(selectIndex == 5)
+			censusStr = "model.totalWorkingPopPercentage";
+		else
+			censusStr = "model.nonWorkingPopPercentage";
+		return censusStr;
+	}
 	
 	/**
 	 * Returns Party Wise Constituencies Grouped Results For An Election 
 	 */
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
-			List<Long> districtIds, Boolean isAll){
+			List<Long> districtIds, Boolean isAll, Integer selected){
 		
 		ElectionDataVO electionDataVO = new ElectionDataVO();
 		List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
@@ -279,6 +284,9 @@ public class ElectionService implements IElectionService{
 		Set<SelectOptionVO> parties = new HashSet<SelectOptionVO>();
 		List resultsList = null;
 		StringBuilder query = new StringBuilder();
+		Map<Long, Double> constituencyWithPercentMap = new HashMap<Long, Double>();
+		Map<PartyResultsVO, List<Object[]>> partyWithResults = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
+		
 		try {
 			
 			getDistrictsAndParties(districts, parties, constituencyIds, electionYear);
@@ -297,7 +305,6 @@ public class ElectionService implements IElectionService{
 					return null;
 			}
 				
-			Map<PartyResultsVO, List<Object[]>> partyWithResults = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
 			
 			PartyResultsVO partyResultsVO = null;
 			List<Object[]> partyResults = null;
@@ -360,6 +367,15 @@ public class ElectionService implements IElectionService{
 			
 			allPartiesList = new ArrayList<String>(allParties);
 			Collections.sort(allPartiesList);
+			
+			//Setting Census Structure Percentages For Each Constituency
+			List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(getCensusStructureBySelectedIndex(selected),constituencyIds);
+			
+			for(Object[] obj:list)
+				constituencyWithPercentMap.put((Long)obj[0], (Double)obj[1]);
+			
+			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+				constiInfo.setCensusReportPercent(constituencyWithPercentMap.get(constiInfo.getConstituencyId()));
 			
 		} catch (Exception e) {
 			

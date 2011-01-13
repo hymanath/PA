@@ -80,11 +80,20 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		System.out.println(result);
 	}*/
 	
-	public void testFindParliamentConstituenciesByDistrictId()
+	/*public void testFindParliamentConstituenciesByDistrictId()
 	{
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(19L, IConstants.DELIMITATION_YEAR);
 		
 		System.out.println(list.size());
+	}*/
+	
+	public void testFindLatestParliamentForAssembly()
+	{
+		
+		List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(232L);
+		
+		System.out.println(list.size());
 	}
+	
 	
 }
