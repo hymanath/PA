@@ -39,6 +39,8 @@ var districtId = '';
 var districtName = '';
 var constituencyId = '';
 var constituencyName = '';
+var parliamentConstId = '';
+var parliamentConstName = '';
 
 var districtConnectCount = '';
 var constituencyConnectCount = '';
@@ -719,7 +721,7 @@ function buildPeopleYouMayKnowContent()
 }
 
 function showPostedProblems(jsObj,results)
-{
+{	
 	var elmt = document.getElementById("postedProblems_main");
 	
 	if(results == null || results.length == 0)
@@ -862,15 +864,33 @@ function buildProblemsDatatable(commentsArray,divId)
 	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  
 }
 
+function openAddReasonWindow(taskType)
+{
+	var browser1 = window.open("analyzeConstituencyPopupAction.action?redirectLoc=ANALYZECONSTITUENCYPOPUP&constituencyId="+constituencyId+"&parliamentConstiId="+parliamentConstId+"&parliamentConstiName="+parliamentConstName+"&constituencyName="+constituencyName+"&userId="+loginUserId+"&taskType="+taskType,"analyzeConstituencyPopup","scrollbars=yes,height=800,width=700,left=200,top=200");				 
+	browser1.focus();
+}
+
 function showPostedReasons(jsObj,results)
 {
 	var elmt = document.getElementById("postedReasons_main");
+	var approvedReasonsCount = 0;
+	var rejectedReasonsCount = 0;
+	var notConsideredReasonsCount = 0;
+	var totalPostedReasonsCount = 0;
+	var postedReasonsCountByOtherUsers = 0;
+	var postedReasonsByLoggedInUser = 0;
+
 	
-	if(results == null || results.length == 0)
+	if(results != null)
 	{
-		results = [];
+		approvedReasonsCount = results.approvedReasonsCount;
+		rejectedReasonsCount = results.rejectedReasonsCount;
+		notConsideredReasonsCount = results.notConsideredReasonsCount;
+		totalPostedReasonsCount = results.totalPostedReasonsCount;
+		postedReasonsCountByOtherUsers = results.postedReasonsCountByOtherUsers;
+		postedReasonsByLoggedInUser = totalPostedReasonsCount - postedReasonsCountByOtherUsers;
 	}		
-	else
+	/*else
 	{
 		for(var i=0; i<results.length; i++)
 		{
@@ -881,30 +901,43 @@ function showPostedReasons(jsObj,results)
 			else if(results[i].isApproved == null)
 				postedNotConsideredReasons.push(results[i]);
 		}
-	}
+	}*/
 	var str = '';
-	str += '<div class="tabContainerHeading">Total posted reasons - '+results.length+'</div>';
+	str += '<div class="tabContainerHeading">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<td align="left"> Total posted reasons - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+	str += '<td align="left"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
+	str += '<td align="left"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';
+	str += '<td align="right">';
+	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')">Add Reasons</a>';
+	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
 	str += '<div style="padding:5px;">';
+	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;"> Reasons Status Details Posted By User </div>';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Reasons Approved</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'approved\')">'+postedApprovedReasons.length+'</a> </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'Approved\')">'+approvedReasonsCount+'</a> </td>';
 	str += '</tr>';
 
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Reasons Rejected</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'rejected\')">'+postedRejectedReasons.length+'</a> </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'rejected\')">'+rejectedReasonsCount+'</a> </td>';
 	str += '</tr>';
 
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Reasons Not Considered</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'notConsidered\')">'+postedNotConsideredReasons.length+' </a></td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'NotConsidered\')">'+notConsideredReasonsCount+' </a></td>';
 	str += '</tr>';
 
 	str += '</table>';
@@ -944,10 +977,100 @@ function openDialogOfReasons(type)
 			hide: "explode"
 		});
 
-	buildCommentsDatatable(reasons,"reasonsDataTable");
+	//buildCommentsDatatable(reasons,"reasonsDataTable");
+	buildCommentsDatatable(type);
 }
 
-function buildCommentsDatatable(commentsArray,divId)
+function buildCommentsDatatable(type)
+{
+	var resultsColumnDefs = [ {
+		key : "candidate",
+		label : "Candidate",
+		sortable : true
+	}, {
+		key : "partyName",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "electionYear",
+		label : "Year",
+		sortable : true
+	}, {
+		key : "rank",
+		label : "Status",
+		sortable : true
+	}, {
+		key : "commentDesc",
+		label : "Reason",
+		sortable : true
+	}, {
+		key : "commentedBy",
+		label : "Posted By",
+		sortable : true
+	} , {
+		key : "commentedOn",
+		label : "Posted On",
+		sortable : true
+	} , {
+		key : "constituencyName",
+		label : "Constituency",
+		sortable : true
+	} , {
+		key : "electionType",
+		label : "Election",
+		sortable: true
+		
+	} ];
+	
+	var dataSource = new YAHOO.util.DataSource("getAllPostedReasonsDataAction.action?type="+type+"&"); 
+	dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
+	dataSource.responseSchema = { 
+		resultsList: "candidateComments", 
+		fields : [ {
+			key : "candidate"
+		}, {
+			key : "partyName"
+		}, {
+			key : "electionYear",parser:"number"
+		}, {
+			key : "rank"
+		}, {
+			key : "commentDesc"
+		} , {
+			key : "commentedBy"
+		} , {
+			key : "commentedOn"
+		} , {
+			key : "constituencyName"
+		},  {
+			key : "electionType"
+		}],
+		metaFields: {
+			totalRecords: "commentsCount" // Access to value in the server response
+		}         
+	};
+
+	var myConfigs = {
+				initialRequest: "sort=candidate&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+				dynamicData: true, // Enables dynamic server-driven data
+				sortedBy : {key:"candidate", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+				paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+	};
+	
+	var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("reasonsDataTable", 
+			resultsColumnDefs, dataSource, myConfigs);
+	
+	votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
+			oPayload.totalRecords = oResponse.meta.totalRecords;
+			return oPayload;
+	}	
+
+	return {
+		oDS: dataSource,
+		oDT: votersByLocBoothDataTable
+	};
+}
+/*function buildCommentsDatatable(commentsArray,divId)
 {
 	var resultsDataSource = new YAHOO.util.DataSource(commentsArray);
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
@@ -1021,7 +1144,7 @@ function buildCommentsDatatable(commentsArray,divId)
 			    }) 
 				};	
 	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  
-}
+}*/
 
 function getAllPostedReasonsForUser()
 {	

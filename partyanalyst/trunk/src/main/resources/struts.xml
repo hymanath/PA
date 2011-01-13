@@ -1654,7 +1654,13 @@
 		
 		<action name="getAllPostedReasonsStatusUserAction" class="connectPeopleAction" method="getAllPostedReasonsStatusUser">
 			<result type="json" name="success">
-				<param name="root">candidateCommentsVO</param>				
+				<param name="root">commentVO</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllPostedReasonsDataAction" class="connectPeopleAction" method="getAllPostedReasonsData">
+			<result type="json" name="success">
+				<param name="root">userComments</param>				
 			</result>		
 		</action>
 		
