@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.CustomMessage;
@@ -673,7 +674,23 @@ public class AnanymousUserService implements IAnanymousUserService {
 				if(log.isDebugEnabled())
 					log.fatal(" Exists more than one user with same user id = "+userId.get(0));
 			}
+			
+			/*
+			 * 
+			 * This block is used to get parliament Constituency Id & Name of the user
+			 */
+			
+			List parliamentDetails = null;
+			if(dataTransferVO.getConstituencyId() != null && dataTransferVO.getConstituencyId().longValue() != 0)
+				parliamentDetails =  delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(dataTransferVO.getConstituencyId());
+			
+			if(parliamentDetails.size() != 0)
+			{
+				params = (Object[])parliamentDetails.get(0);
 				
+				dataTransferVO.setParliamentConstId((Long)params[0]);
+				dataTransferVO.setParliamentConstName(params[1].toString());
+			}
 			
 			/*
 			 * This block is used to get the connected users count in logged in user location  
@@ -1197,14 +1214,60 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return registrationVO;
 	}
 	
-	
-	public List<CandidateCommentsVO> getAllPostedReasonsByUserId(Long registrationId)
+	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long registrationId)
 	{
+		CandidateCommentsVO commentsVO = new CandidateCommentsVO();
+		commentsVO.setApprovedReasonsCount(0L);
+		commentsVO.setRejectedReasonsCount(0L);
+		commentsVO.setNotConsideredReasonsCount(0L);
+		commentsVO.setTotalPostedReasonsCount(0L);
+		
+		try 
+		{	
+			List comments = commentCategoryCandidateDAO.getPostedReasonsCountByFreeUserId(registrationId);
+			if(comments != null && comments.size() > 0)
+			{
+				for (int i = 0; i < comments.size(); i++) {
+					Object[] params = (Object[])comments.get(i);
+					
+					if(params[1] == null)
+						commentsVO.setNotConsideredReasonsCount((Long)params[0]);					
+					else if(params[1].toString().equalsIgnoreCase("false"))
+						commentsVO.setRejectedReasonsCount((Long)params[0]);
+					else if(params[1].toString().equalsIgnoreCase("true"))
+						commentsVO.setApprovedReasonsCount((Long)params[0]);
+				}				
+			}
+			
+			List commentsCount = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(registrationId);
+			
+			if(commentsCount != null && commentsCount.size() == 1)
+			{
+				commentsVO.setPostedReasonsCountByOtherUsers((Long)commentsCount.get(0));				
+			}
+			
+			commentsVO.setTotalPostedReasonsCount(commentsVO.getApprovedReasonsCount()+ commentsVO.getRejectedReasonsCount() + commentsVO.getNotConsideredReasonsCount() + commentsVO.getPostedReasonsCountByOtherUsers());
+			
+			return commentsVO;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return commentsVO;
+		}
+		
+		
+	}
+	
+	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType)
+	{		
+		String columnInModel = getColumnNameFromModel(columnName);
+		UserCommentsInfoVO userComments = new UserCommentsInfoVO();
+		
 		List<CandidateCommentsVO> commentsList = null;
 		
 		try 
 		{	
-			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId);
+			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId, startIndex, results, order, columnInModel, reasonType);
 			
 			if(comments != null || comments.size() > 0)
 			{
@@ -1232,15 +1295,41 @@ public class AnanymousUserService implements IAnanymousUserService {
 				}
 			}	
 			
-			return commentsList; 
+			userComments.setCandidateComments(commentsList);
+			userComments.setCommentsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
+			
+			return userComments; 
 			
 		}
 		catch (Exception e)
 		{
-			return commentsList; 
+			return userComments; 
 		}		
 	}
 	
+	private String getColumnNameFromModel(String columnName) {
+		
+		String dbColumnName = "";
+		if(columnName.equalsIgnoreCase("candidate"))
+			dbColumnName = "model.nomination.candidate.lastname";
+		else if(columnName.equalsIgnoreCase("partyName"))
+			dbColumnName = "model.nomination.party.shortName";
+		else if(columnName.equalsIgnoreCase("electionYear"))
+			dbColumnName = "model.nomination.constituencyElection.election.electionYear";
+		else if(columnName.equalsIgnoreCase("rank"))
+			dbColumnName = "model.nomination.candidateResult.rank";
+		else if(columnName.equalsIgnoreCase("commentDesc"))
+			dbColumnName = "model.commentData.commentDesc";
+		else  if(columnName.equalsIgnoreCase("commentedOn"))
+			dbColumnName = "model.commentData.commentDate";
+		else  if(columnName.equalsIgnoreCase("constituencyName"))
+			dbColumnName = "model.nomination.constituencyElection.constituency.name";
+		else  if(columnName.equalsIgnoreCase("electionType"))
+			dbColumnName = "model.nomination.constituencyElection.election.electionScope.electionType.electionType";
+		
+		return dbColumnName;
+	}
+
 	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId)
 	{
 		List<ProblemDetailsVO> problemList = null;

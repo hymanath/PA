@@ -164,10 +164,31 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 	}
 	 */	
 	
-	public void testGetPostedReasonsByFreeUserId()
+	/*public void testGetPostedReasonsByFreeUserId()
 	{
-		List list = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(2L);
+		List list = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(2L, 0, 3, "asc", "model.commentData.commentDesc");
 		
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetPostedReasonsCountByFreeUserId()
+	{
+		List list = commentCategoryCandidateDAO.getPostedReasonsCountByFreeUserId(2L);
+		
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetPostedReasonsCountOtherThanLoginUserId()
+	{
+		List list = commentCategoryCandidateDAO.getPostedReasonsCountOtherThanLoginUserId(2L);
+		
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetTotalPostedReasonsCountByFreeUserId()
+	{
+		Long count = commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(2L);
+		System.out.println(count);
 	}
+	
 }

@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 
 public interface IAnanymousUserService {
 
@@ -35,8 +36,10 @@ public interface IAnanymousUserService {
 	
 	public RegistrationVO getDetailsOfUserByUserId(Long registrationId);
 	
-	public List<CandidateCommentsVO> getAllPostedReasonsByUserId(Long registrationId);
+	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
 	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId);
 	
-}
+	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long registrationId);
+	
+}	
