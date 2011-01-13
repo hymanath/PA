@@ -117,10 +117,15 @@
                                     <h4>Approval/Reject Recently Posted problem :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
                                     </fieldset>
                                 </td>
+
+								<td>
+                                    <fieldset class="f2">
+                                    <legend class="l2">Constituency Wise Census Mapping</legend>
+                                    <h4>To Map the Census Details For Constituencies :<a href="<s:url action="constituencyWiseCensusMappingAction"/>"><b>&nbsp;&nbsp;Start Mapping</b></a></h4>
+                                    </fieldset>
+                                </td>
                            </tr>
-									
-							
-						</table>
+                        </table>
 				</fieldset>
 			</td>
 		</tr>
