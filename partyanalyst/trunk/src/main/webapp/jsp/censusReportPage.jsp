@@ -155,6 +155,13 @@
 		left:300px;
 	}
 
+	.censusPopulationRange_body_table_inner_head th
+	{
+		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		padding:5px;
+		color:#64420F;
+	}
+
 </style>
 
 <script type="text/javascript">
@@ -206,23 +213,48 @@
 	function buildPopulationRange(jsObj,results)
 	{
 		var elmt = document.getElementById("censusPopulationRangeData");
+		var spanElmt = document.getElementById("censusPopulationRange_head_span");
+		var rangeElmt = document.getElementById("censusPopulationRange");
+		var censusPopulationRange_footerEl = document.getElementById("censusPopulationRange_footer");
+
+		if(rangeElmt && rangeElmt.style.display == "none")
+			rangeElmt.style.display = "block"
+
 		rangeResults = results;
 		if(!elmt)
 			return;
+		
+		var hStr = '';
+		hStr += 'Assembly Constituencies Results in '+jsObj.yearValue+' Vs '+jsObj.censusText+' % range In Total Population';;
+		if(spanElmt)
+			spanElmt.innerHTML = hStr;
 
 		var str = '';
-		str += '<div id="censusPopulationRange_head" class="dataHeaderDiv">';
-		str += 'Assembly Constituencies Results in '+jsObj.yearValue+' for '+jsObj.censusText;
-		str += '</div>';
+		//str += '<div id="censusPopulationRange_head" class="dataHeaderDiv">';
+		//str += 'Assembly Constituencies Results in '+jsObj.yearValue+' Vs '+jsObj.censusText+' In Total Population';
+		//str += '</div>';
 		str += '<div id="censusPopulationRange_body">';
 		str += '<table id="censusPopulationRange_body_table_outer" border="0">';
 		str += '<tr>';
 		str += '<td>';
+		str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
+		str += '<tr>';		
+		str += '<th width="72px">Range(%)</th>';
+		str += '<th>Count</th>';
+		str += '</tr>';	
+		str += '</table>';		
 		for(var i=0; i<results.length; i++)
 		{
 			if(i==5)
 			{
-				str += '</td><td>';
+				str += '</td>';				
+				str += '<td>';
+				str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
+				str += '<tr>';				
+				str += '<th width="72px">Range(%)</th>';
+				str += '<th>Count</th>';
+				str += '</tr>';	
+				str += '</table>';
 			}
 			str += '<table class="censusPopulationRange_body_table_inner" border="0">';
 			str += '<tr>';
@@ -241,7 +273,10 @@
 		str += '</div>';
 
 		elmt.innerHTML = str;
-		
+		var countStr = '';
+		countStr += '<b>Total Number of Constituencies Considered: </B>';
+		countStr += ''+results[0].totalConstituencies+'';
+		censusPopulationRange_footerEl.innerHTML = countStr;
 
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
@@ -286,7 +321,7 @@
 		censusAjaxCall(jsObj,url);
 	}
 	
-	function showPartyResultsByFilter()
+	function showPartyResultsByFilter(censusType,range)
 	{
 		var elmts = document.getElementsByName("partyResultsRadio");
 		var districtSpanElmt = document.getElementById("district_selectElmt");
@@ -340,6 +375,8 @@
 		}
 
 		var jsObj = {
+						censusType:censusType,
+						range:range,
 						idsList:constiIds,
 						checkedValue:checkedValue,
 						districtIds:districtIds,
@@ -409,7 +446,7 @@
 		for(var i=0; i<results.parties.length; i++)
 			optionStr += '<option value="'+results.parties[i].id+'">'+results.parties[i].name+'</option>';
 		optionStr += '</select></div></td>';
-		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter()"></td>';
+		optionStr += '<td valign="top"><input type="button" value="View" onclick="showPartyResultsByFilter(\''+jsObj.censusType+'\',\''+jsObj.range+'\')"></td>';
 		optionStr += '</tr>';
 		optionStr += '</table>';
 		optionStr += '<div id="partyResultsTable_errorDiv" style="color:red;font-size:11px;"></div>';
@@ -529,6 +566,7 @@
 		var data = new google.visualization.DataTable();
         data.addRows(partyResultsList.length);
 
+
 		if(graphType == "seats")
 		{
 			data.addColumn('string', 'Party');
@@ -550,10 +588,8 @@
 			}
 		}
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('graphDiv'));
-        chart.draw(data, {width: 400, height: 240, title: 'Party Results',
-                          hAxis: {title: 'Party', titleTextStyle: {color: 'red'}}
-                         });
+		var chart = new google.visualization.PieChart(document.getElementById('graphDiv'));
+        chart.draw(data, {width: 450, height: 250, title: 'Party Results'});
 
 	}
 
@@ -663,7 +699,7 @@
 			<table id="censusReport_body_heading_table">
 				<tr>
 					<td><img src="images/icons/infoicon.png"/></td>
-					<td>Select the following options to view the census report.</td>
+					<td>Select the following options to view Election Results </td>
 				</tr>
 			</table>
 		</div>
@@ -683,7 +719,7 @@
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+					<s:select theme="simple" cssClass="selectBoxWidth" headerKey = "0" headerValue="Select State" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
 				</td>
 
 				<th>District</th>
@@ -714,13 +750,28 @@
 			</tr>
 		</table>
 		</div>
-		<div id="censusPopulationRange">
-			<table>
-				<tr>
-					<td valign="top"><div id="censusPopulationRangeData"></div></td>
-					<td valign="top"><div id="censusPopulationRangeGraph"></div></td>
-				</tr>
-			</table>
+		<div id="censusPopulationRange" style="display:none;">
+			<div id="censusPopulationRange_head">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<tr>
+						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td><div class="censusWidgetMainHeader"><span id="censusPopulationRange_head_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
+						<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+						</tr>
+					</tr>
+				</table>
+			</div>
+			<div id="censusPopulationRange_body" class="mainWidgetsBody ">
+				<table width="100%">					
+					<tr>
+						<td valign="top" width="50%"><div id="censusPopulationRangeData"></div></td>
+						<td valign="top" width="50%"><div id="censusPopulationRangeGraph"></div></td>
+					</tr>
+				</table>
+			<div id="censusPopulationRange_footer" style="margin-left:15px;"></div>	
+			</div>
+			
 		</div>
 
 		
@@ -730,7 +781,7 @@
 					<tr>
 						<tr>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="censusWidgetMainHeader"><span id="censusWidgetMainHeader_span" class="censusWidgetHeader_span"></span></div></td>
+						<td><div class="censusWidgetMainHeader"><span id="censusWidgetMainHeader_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
 						<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
 						</tr>
 					</tr>
