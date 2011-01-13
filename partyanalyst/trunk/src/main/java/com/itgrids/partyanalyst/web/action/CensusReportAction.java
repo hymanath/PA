@@ -168,7 +168,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			sb.append(jArray.get(i)).append(",");
 		}
 
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, null, null, true);
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, null, null, true, 0);
 		
 		return Action.SUCCESS;
 
@@ -203,7 +203,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		for (int i = 0; i < jPartyIds.length(); i++) 
 			partyIds.add(new Long(jPartyIds.get(i).toString()));
 			
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, isAll);
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, isAll, 0);
 		
 		return Action.SUCCESS;
 
