@@ -93,5 +93,11 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	
 	public List getAllOpenedComments(Date fromDate, Date toDate);
 	
-	public List getPostedReasonsByFreeUserId(Long registrationId);
+	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
+	
+	public List getPostedReasonsCountByFreeUserId(Long registrationId);
+	
+	public List getPostedReasonsCountOtherThanLoginUserId(Long registrationId);
+	
+	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId);
 }

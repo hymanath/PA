@@ -349,6 +349,8 @@ public interface IConstants {
 	public static final String TOWN = "TOWN"; 
     
     public static final String APPROVED = "Approved"; 
+    public static final String OTHERUSERS = "OtherUsers";
+    public static final String NOTCONSIDERED = "NotConsidered";
     public static final String NAME = "NAME"; 
     public static final String CADRE = "CADRE"; 
     public static final String FAMILY_MEMBERS = "FAMILY MEMBERS"; 

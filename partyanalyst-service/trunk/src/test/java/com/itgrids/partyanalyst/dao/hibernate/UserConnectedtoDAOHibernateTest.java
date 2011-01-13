@@ -62,7 +62,7 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		return listOfUserIds;
 	}*/
 	
-	public void testGetCountOfAllConnectedPeopleForUser()
+	/*public void testGetCountOfAllConnectedPeopleForUser()
 	{
 		List<Long> senderId = new ArrayList<Long>();
 		senderId.add(1L);
@@ -71,6 +71,12 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		String userId = userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(senderId);
 		
 		System.out.println(userId);
+	}*/
+	
+	public void test(){
+		char c = '0';
+		System.out.println("");
 	}
+	
 	
 }

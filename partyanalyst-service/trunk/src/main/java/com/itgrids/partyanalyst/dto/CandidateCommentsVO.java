@@ -35,7 +35,43 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private String electionType;
 	private String electionYear;
 	private String isApproved;
+	private Long approvedReasonsCount;
+	private Long rejectedReasonsCount;
+	private Long notConsideredReasonsCount;
+	private Long totalPostedReasonsCount;
+	private Long postedReasonsCountByOtherUsers;
 	
+	public Long getPostedReasonsCountByOtherUsers() {
+		return postedReasonsCountByOtherUsers;
+	}
+	public void setPostedReasonsCountByOtherUsers(
+			Long postedReasonsCountByOtherUsers) {
+		this.postedReasonsCountByOtherUsers = postedReasonsCountByOtherUsers;
+	}
+	public Long getTotalPostedReasonsCount() {
+		return totalPostedReasonsCount;
+	}
+	public void setTotalPostedReasonsCount(Long totalPostedReasonsCount) {
+		this.totalPostedReasonsCount = totalPostedReasonsCount;
+	}
+	public Long getApprovedReasonsCount() {
+		return approvedReasonsCount;
+	}
+	public void setApprovedReasonsCount(Long approvedReasonsCount) {
+		this.approvedReasonsCount = approvedReasonsCount;
+	}
+	public Long getRejectedReasonsCount() {
+		return rejectedReasonsCount;
+	}
+	public void setRejectedReasonsCount(Long rejectedReasonsCount) {
+		this.rejectedReasonsCount = rejectedReasonsCount;
+	}
+	public Long getNotConsideredReasonsCount() {
+		return notConsideredReasonsCount;
+	}
+	public void setNotConsideredReasonsCount(Long notConsideredReasonsCount) {
+		this.notConsideredReasonsCount = notConsideredReasonsCount;
+	}
 	public String getIsApproved() {
 		return isApproved;
 	}

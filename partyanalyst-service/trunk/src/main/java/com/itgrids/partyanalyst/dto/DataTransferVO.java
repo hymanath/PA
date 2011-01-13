@@ -39,8 +39,26 @@ public class DataTransferVO extends ResultStatus{
 	private String constituencyUsersCount;
 	private String totalResultsCount;
 	private String connectedPeopleCount;
+	private Long parliamentConstId;
+	private String parliamentConstName;
 	
 	
+	public Long getParliamentConstId() {
+		return parliamentConstId;
+	}
+
+	public void setParliamentConstId(Long parliamentConstId) {
+		this.parliamentConstId = parliamentConstId;
+	}
+
+	public String getParliamentConstName() {
+		return parliamentConstName;
+	}
+
+	public void setParliamentConstName(String parliamentConstName) {
+		this.parliamentConstName = parliamentConstName;
+	}
+
 	public String getConnectedPeopleCount() {
 		return connectedPeopleCount;
 	}

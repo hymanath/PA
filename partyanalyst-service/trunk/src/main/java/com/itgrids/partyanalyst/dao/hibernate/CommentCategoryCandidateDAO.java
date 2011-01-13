@@ -15,6 +15,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCategoryCandidate, Long>
 		implements ICommentCategoryCandidateDAO {
@@ -351,8 +352,8 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return queryObject.list();
 	}*/
 	
-	public List getPostedReasonsByFreeUserId(Long registrationId)
-	{		
+	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType)
+	{	
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.commentData, ");			
 		query.append(" model.nomination.candidate.candidateId,");
@@ -361,15 +362,58 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		query.append(" model.nomination.constituencyElection.constituency.name, ");
 		query.append(" model.nomination.candidateResult.rank, ");
 		query.append(" model.nomination.constituencyElection.election.electionScope.electionType.electionType, ");
-		query.append(" model.nomination.constituencyElection.election.electionYear");	
+		query.append(" model.nomination.constituencyElection.election.electionYear");
+		query.append(" from CommentCategoryCandidate model ");
 		
+		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
+			query.append(" where model.freeUser.userId is not null ");
+		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append(" where model.freeUser.userId = ? ");
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+			query.append(" where model.freeUser.userId != ? ");
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved = '"+IConstants.TRUE+"' ");
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved = '"+IConstants.FALSE+"' ");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append(" where model.freeUser.userId = ? and model.commentData.isApproved is null");		
+		
+			
+			
+		query.append(" order by "+columnName+" "+order);
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+			queryObject.setParameter(0, registrationId);
+		queryObject.setFirstResult(startIndex);		
+		queryObject.setMaxResults(results);
+		
+		return queryObject.list();
+	}
+	
+	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId)
+	{	
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(*) ");		
 		query.append(" from CommentCategoryCandidate model ");
 		query.append(" where model.freeUser.userId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, registrationId);
-		queryObject.setMaxResults(100);
-		
-		return queryObject.list();
+				
+		return (Long)queryObject.uniqueResult();
+	}
+	
+	public List getPostedReasonsCountByFreeUserId(Long registrationId)
+	{
+		return getHibernateTemplate().find("select count(model.commentCategoryCandidateId), model.commentData.isApproved "+
+				"from CommentCategoryCandidate model where model.freeUser.userId = ? group by model.commentData.isApproved",registrationId);
+	}
+	
+	public List getPostedReasonsCountOtherThanLoginUserId(Long registrationId)
+	{
+		return getHibernateTemplate().find("select count(*) "+
+				"from CommentCategoryCandidate model where model.freeUser.userId != ? and model.freeUser.userId != null",registrationId);
 	}
 }

@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -51,18 +50,7 @@ public class ConstituencyCensusDetailsDAOHibernateTest extends BaseDaoTestCase{
 		//String censusParam = "(100-model.popLiteraturePercentage)";
 		String censusParam = "model.totalWorkingPopPercentage";
 		//String censusParam = "model.nonWorkingPopPercentage";
-		//List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusParam,1l);
-		
-		List<Long> ids = new ArrayList<Long>();
-		ids.add(1l);
-		ids.add(2l);
-		ids.add(3l);
-		ids.add(4l);
-		ids.add(5l);
-		ids.add(6l);
-		ids.add(7l);
-		
-		List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(censusParam,ids);
+		List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusParam, 1l);
 		
 		System.out.println(list.size());
 		for(Object[] obj: list)

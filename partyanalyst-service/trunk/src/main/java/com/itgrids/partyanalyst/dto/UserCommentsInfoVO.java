@@ -1,12 +1,32 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class UserCommentsInfoVO extends ResultStatus{
 
 	private Double commentScore = 0.0d;
 	private String comment;
 	private String commentCategory;
 	private Long commentCategoryId;
+	private List<CandidateCommentsVO> candidateComments;
+	private Long commentsCount;
 	
+	public List<CandidateCommentsVO> getCandidateComments() {
+		return candidateComments;
+	}
+
+	public void setCandidateComments(List<CandidateCommentsVO> candidateComments) {
+		this.candidateComments = candidateComments;
+	}
+
+	public Long getCommentsCount() {
+		return commentsCount;
+	}
+
+	public void setCommentsCount(Long commentsCount) {
+		this.commentsCount = commentsCount;
+	}
+
 	public Double getCommentScore() {
 		return commentScore;
 	}
