@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -57,7 +58,25 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private NavigationVO messageTypes;
 	private ConstituenciesStatusVO constituenciesStatusVO;
 	private IStaticDataService staticDataService;
+	private CandidateCommentsVO commentVO;
+	private UserCommentsInfoVO userComments;
 	
+	public UserCommentsInfoVO getUserComments() {
+		return userComments;
+	}
+
+	public void setUserComments(UserCommentsInfoVO userComments) {
+		this.userComments = userComments;
+	}
+
+	public CandidateCommentsVO getCommentVO() {
+		return commentVO;
+	}
+
+	public void setCommentVO(CandidateCommentsVO commentVO) {
+		this.commentVO = commentVO;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -546,10 +565,44 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 			return IConstants.NOT_LOGGED_IN;
 		}
 		
-		candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
+		commentVO = ananymousUserService.getAllPostedReasonsCountByUserId(user.getRegistrationID());
+		
 		return Action.SUCCESS;
 	}
 	
+	public String getAllPostedReasonsData()
+	{
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer results = Integer.parseInt(request.getParameter("results"));
+		String order = request.getParameter("dir");
+		String columnName = request.getParameter("sort");
+		String type = request.getParameter("type");
+		String reasonType = "";
+		
+		if(IConstants.TOTAL.equalsIgnoreCase(type))
+			reasonType = IConstants.TOTAL;
+		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
+			reasonType = IConstants.LOGGED_USER;
+		else if (IConstants.OTHERUSERS.equalsIgnoreCase(type))
+			reasonType = IConstants.OTHERUSERS;
+		else if (IConstants.APPROVED.equalsIgnoreCase(type))
+			reasonType = IConstants.APPROVED;
+		else if (IConstants.REJECTED.equalsIgnoreCase(type)) 
+			reasonType = IConstants.REJECTED;
+		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
+			reasonType = IConstants.NOTCONSIDERED;
+		
+		
+		
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		userComments = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
+		//candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
+		
+		return Action.SUCCESS;
+	}
 	public String getAllPostedProblemsByUser()
 	{
 		try {

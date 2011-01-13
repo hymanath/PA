@@ -156,6 +156,8 @@
 		districtName = '${dataTransferVO.districtName}';
 		constituencyId = '${dataTransferVO.constituencyId}';
 		constituencyName = '${dataTransferVO.constituencyName}';
+		parliamentConstId =	'${dataTransferVO.parliamentConstId}';
+		parliamentConstName = '${dataTransferVO.parliamentConstName}';
 
 		districtConnectCount = '${dataTransferVO.districtUsersCount}';
 		constituencyConnectCount = '${dataTransferVO.constituencyUsersCount}';
