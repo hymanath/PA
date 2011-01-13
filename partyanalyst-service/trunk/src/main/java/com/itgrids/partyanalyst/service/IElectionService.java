@@ -33,6 +33,6 @@ public interface IElectionService {
 	
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
-			List<Long> districtIds, Boolean isAll);
+			List<Long> districtIds, Boolean isAll, Integer selected);
 	
 }
