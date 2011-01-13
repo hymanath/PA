@@ -103,7 +103,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	  System.out.println(list.size());
 	 
 	}*/
-	public void testGetLatestConstituenciesForDistrictBasedOnYear()
+	/*public void testGetLatestConstituenciesForDistrictBasedOnYear()
 	{
 		List<Long>list =  delimitationConstituencyDAO.getLatestConstituenciesForDistrictBasedOnYear(1l,2004l);
 		System.out.println(list.size());
@@ -112,6 +112,34 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		{
 			System.out.println("   ======"+id);
 		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetLatestConstituenciesByElectionTypeInDistrict()
+	{
+		List<Object[]>list =  delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInState(2l,1l);
+		
+		System.out.println("--------------"+list.size());
+		for(Object[] obj : list)
+		{
+			System.out.println("constituencyId == "+obj[0]+"=====constituency name"+obj[1]);
+		}
+		
+		Long y = 0l;
+		int total = 0;
+		for(int i=1;i<=23;i++)
+		{
+			
+			List<Object[]>list2 =  delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeInDistrict(2l,++y);
+			
+			total += list2.size();
+			System.out.println(i+"--------------"+list2.size());
+			for(Object[] obj : list2)
+			{
+				System.out.println("constituencyId == "+obj[0]+"=====constituency name"+obj[1]);
+			}
+		}
+		System.out.println("==========="+total+"================");
 	}
 	
 }

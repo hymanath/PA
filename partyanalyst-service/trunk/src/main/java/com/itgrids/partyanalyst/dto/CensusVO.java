@@ -55,6 +55,9 @@ public class CensusVO implements Serializable{
 	private String range;
 	private List<Long>locationIds;
     private Integer count;
+    private List<SelectOptionVO> mapeedConstituencies;
+    private List<SelectOptionVO> unMapeedConstituencies;
+    private List<SelectOptionVO> existedConstituencies;
 	
 	private String level;
 	private Long houseHolds;
@@ -1019,6 +1022,25 @@ public class CensusVO implements Serializable{
 	}
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	public List<SelectOptionVO> getMapeedConstituencies() {
+		return mapeedConstituencies;
+	}
+	public void setMapeedConstituencies(List<SelectOptionVO> mapeedConstituencies) {
+		this.mapeedConstituencies = mapeedConstituencies;
+	}
+	public List<SelectOptionVO> getUnMapeedConstituencies() {
+		return unMapeedConstituencies;
+	}
+	public void setUnMapeedConstituencies(
+			List<SelectOptionVO> unMapeedConstituencies) {
+		this.unMapeedConstituencies = unMapeedConstituencies;
+	}
+	public List<SelectOptionVO> getExistedConstituencies() {
+		return existedConstituencies;
+	}
+	public void setExistedConstituencies(List<SelectOptionVO> existedConstituencies) {
+		this.existedConstituencies = existedConstituencies;
 	}
 	public Long getTotalConstituencies() {
 		return totalConstituencies;
