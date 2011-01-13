@@ -158,7 +158,7 @@ public class CensusVO implements Serializable{
 	private Long mainMargOWMale;
 	private Long mainMargOWFemale;
 	private Double wpr;
-	
+	private Long totalConstituencies;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -1019,5 +1019,11 @@ public class CensusVO implements Serializable{
 	}
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	public Long getTotalConstituencies() {
+		return totalConstituencies;
+	}
+	public void setTotalConstituencies(Long totalConstituencies) {
+		this.totalConstituencies = totalConstituencies;
 	}
 }

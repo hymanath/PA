@@ -234,15 +234,19 @@ public class ElectionService implements IElectionService{
 		}
 		 
 		CensusVO censusVO = null;
+		Long constituenciesCount = 0l;
 		for(Map.Entry<String,List<Long>> entry : resultMap.entrySet())
 		{
 			censusVO = new CensusVO();
 			censusVO.setRange(entry.getKey());
 			censusVO.setLocationIds(entry.getValue());
 			censusVO.setCount(entry.getValue().size());
-			
+			constituenciesCount += entry.getValue().size();
 			censusVOlist.add(censusVO);
 		}
+		
+		censusVOlist.get(0).setTotalConstituencies(constituenciesCount);
+		
 			return censusVOlist;
 		}catch(Exception ex)
 		{
