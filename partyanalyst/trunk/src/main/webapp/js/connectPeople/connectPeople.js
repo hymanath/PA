@@ -33,6 +33,7 @@ var commentsInfo = {
 						  };
 
 var loginUserId = '';
+var loginUserName = '';
 var stateId = '';
 var stateName = '';
 var districtId = '';
@@ -633,7 +634,7 @@ function buildQuickRegionAccessContent()
 	cStr += '	<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
 	cStr += '	<tr>';
 	cStr += '		<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
-	cStr += '		<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>View connected people </span></div></td>';
+	cStr += '		<td width="125px"><div style="padding: 11px; width: 255px;" class="districtPageRoundedHeaders_center"><span>People Registered To Your Location</span></div></td>';
 	cStr += '		<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
 	cStr += '	</tr>';
 	cStr += '	</table>';
@@ -642,13 +643,13 @@ function buildQuickRegionAccessContent()
 	cStr += '<table id="regionAccessTable">';
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>People Registered To '+constituencyName+' Constituency</th>';
+	cStr += '<th>To '+constituencyName+' Constituency</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
 	cStr += '</tr>';
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>People Registered To '+districtName+' District</th>';
+	cStr += '<th>To '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
 	cStr += '</tr>';	
@@ -720,6 +721,12 @@ function buildPeopleYouMayKnowContent()
 	elmt.innerHTML = str;
 }
 
+function openAddNewProblemWindowForDashBoard()
+{	
+	var browser1 = window.open("addNewProblemAction.action?requestSrc=4&constituencyId="+constituencyId,"addNewProblemInConstituency","scrollbars=yes,height=600,width=600,left=200,top=200");				 
+	browser1.focus();
+}
+
 function showPostedProblems(jsObj,results)
 {	
 	var elmt = document.getElementById("postedProblems_main");
@@ -742,7 +749,14 @@ function showPostedProblems(jsObj,results)
 	}
 
 	var str = '';
-	str += '<div class="tabContainerHeading">Total posted problems - '+results.length+'</div>';
+	str += '<div class="tabContainerHeading">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<td width="75%">Total posted problems - '+results.length+'</td>';
+	str += '<td width="25%" align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
 	str += '<div style="padding:5px;">';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
@@ -950,23 +964,24 @@ function openDialogOfReasons(type)
 {
 	var reasons = new Array();
 	var title = '';
-	if(type == "approved")
+	if(type == "Total")
 	{
 		reasons = postedApprovedReasons;
-		title = 'Approved Reasons';
+		title = 'Reasons Posted By All Users';
 	}
-	else if(type == "rejected")
+	else if(type == "LOGGED_USER")
 	{
 		reasons = postedRejectedReasons;
-		title = 'Rejected Reasons';
+		title = 'Reasons Posted By '+loginUserName;
 	}
-	else if(type == "notConsidered")
+	else if(type == "OtherUsers")
 	{
 		reasons = postedNotConsideredReasons;
-		title = 'Not Considered Reasons';
+		title = 'Reasons Posted By Other Users';
 	}
-	
-	title = 'Total '+type+' reasons';
+	else 
+		title = 'Total '+type+' reasons';
+
 	$( "#jQueryPopup" ).dialog({
 			title:title,
 			autoOpen: true,
