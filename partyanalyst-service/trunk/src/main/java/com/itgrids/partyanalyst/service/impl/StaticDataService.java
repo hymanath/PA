@@ -3092,15 +3092,6 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * This method gets all the important parties in the state.
@@ -4329,42 +4320,45 @@ public class StaticDataService implements IStaticDataService {
 			candidateElectionResult.setElectionType(electionType);
 			candidateElectionResult.setElectionYear(electionYear);
 			candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>(0);
-			for(TeshilPartyInfoVO resultIterator : result){
-				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
-				partyInfo.setPartyName(resultIterator.getPartyName());
-				partyInfo.setVotesPercentage(resultIterator.getPercentageOfVotesWonByParty().toString());
-				
-				List resu = null;
-				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-					resu = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
-			    else
-				   resu = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
-				List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(resu.get(0).toString()),resultIterator.getPartyId());
-				partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
-				//System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
-				if(!resultIterator.getPartyName().equalsIgnoreCase("PRP")){
-					if(flag==1){
-						if((IConstants.BYE_ELECTIONS_STATIC_PARTIES.contains(resultIterator.getPartyName()))){
+			if(result!=null && result.size()!=0){
+				for(TeshilPartyInfoVO resultIterator : result){
+					CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
+					partyInfo.setPartyName(resultIterator.getPartyName());
+					partyInfo.setVotesPercentage(resultIterator.getPercentageOfVotesWonByParty().toString());
+					
+					List resu = null;
+					if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+						resu = electionDAO.findElectionIdByParliamentElectionTypeAndYear(electionType, electionYear);
+				    else
+					   resu = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
+					List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(resu.get(0).toString()),resultIterator.getPartyId());
+					partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
+					//System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
+					if(!resultIterator.getPartyName().equalsIgnoreCase("PRP")){
+						if(flag==1){
+							if((IConstants.BYE_ELECTIONS_STATIC_PARTIES.contains(resultIterator.getPartyName()))){
+								candidateElectionResultsVO.add(partyInfo);
+							}
+						}else{
 							candidateElectionResultsVO.add(partyInfo);
 						}
-					}else{
-						candidateElectionResultsVO.add(partyInfo);
 					}
 				}
-			}
-			Double votesRange=0d;
-			Set smallestValue = new TreeSet();
-			String lowerRange="0";
-			for(int i=0;i<candidateElectionResultsVO.size();i++){
-				Double nextValue = Double.parseDouble(candidateElectionResultsVO.get(i).getVotesPercentage().toString());				
-				smallestValue.add(nextValue);				
-				votesRange+=nextValue;
-			}
-			List smallValue = new ArrayList(smallestValue);
-			if(smallValue.get(0)!=null){
-				lowerRange = smallValue.get(0).toString();
-			}
-			candidateElectionResult.setVotesShareRange(lowerRange+"-"+smallValue.get(smallValue.size()-1));
+				Double votesRange=0d;
+				Set smallestValue = new TreeSet();
+				String lowerRange="0";
+				for(int i=0;i<candidateElectionResultsVO.size();i++){
+					Double nextValue = Double.parseDouble(candidateElectionResultsVO.get(i).getVotesPercentage().toString());				
+					smallestValue.add(nextValue);				
+					votesRange+=nextValue;
+				}
+				List smallValue = new ArrayList(smallestValue);
+				
+				if(smallValue.get(0)!=null){
+					lowerRange = smallValue.get(0).toString();
+				}
+				candidateElectionResult.setVotesShareRange(lowerRange+"-"+smallValue.get(smallValue.size()-1));
+			}			
 			candidateElectionResult.setCandidateElectionResultsVO(candidateElectionResultsVO);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -5061,11 +5055,15 @@ public class StaticDataService implements IStaticDataService {
 			Boolean rflag = false;
 			int j=0;
 			for(int i=0;i<headingInfo.size();i++){
-				if(headingInfo.get(i).getName().equalsIgnoreCase("2009 AC") && headingInfo.get(i+1).getName().equalsIgnoreCase("2009 PC")){
-					rflag = true;
-					j=i;
-				    break;	
-				}
+				if(headingInfo.get(i).getName().equalsIgnoreCase("2009 AC")){
+					if(headingInfo.size()>(i+1)){
+						if(headingInfo.get(i+1).getName().equalsIgnoreCase("2009 PC")){
+							rflag = true;
+							j=i;
+						    break;	
+						}
+					}
+				} 
 			}
 			if(rflag == true){
 				SelectOptionVO jval1 = headingInfo.get(j+1);
