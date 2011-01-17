@@ -333,3 +333,8 @@
 {
 	height:340px;
 }
+
+.tabContainerHeading a
+{
+	font-weight:normal;
+}
