@@ -60,7 +60,16 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private IStaticDataService staticDataService;
 	private CandidateCommentsVO commentVO;
 	private UserCommentsInfoVO userComments;
+	private String loginUserName;
 	
+	public String getLoginUserName() {
+		return loginUserName;
+	}
+
+	public void setLoginUserName(String loginUserName) {
+		this.loginUserName = loginUserName;
+	}
+
 	public UserCommentsInfoVO getUserComments() {
 		return userComments;
 	}
@@ -267,6 +276,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");	
 		List<Long> userId = new ArrayList<Long>(0);
 		loginUserId = user.getRegistrationID();
+		loginUserName = user.getFirstName()+" "+user.getLastName();
 		userId.add(loginUserId);
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);

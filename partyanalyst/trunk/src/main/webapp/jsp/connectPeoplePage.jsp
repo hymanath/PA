@@ -150,7 +150,7 @@
 	<script type="text/javascript"> 
 		
 		loginUserId = '${loginUserId}';
-		loginUserName = 'Logged In User';		
+		loginUserName = '${loginUserName}';		
 		stateId = '${dataTransferVO.stateId}';
 		stateName = '${dataTransferVO.stateName}';
 		districtId = '${dataTransferVO.districtId}';
