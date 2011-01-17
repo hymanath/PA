@@ -55,6 +55,9 @@ public class CensusVO implements Serializable{
 	private String range;
 	private List<Long>locationIds;
     private Integer count;
+    private Long seatsWon;
+    private Long seatsParticipated;
+    private BigDecimal avgPercent;
     private List<SelectOptionVO> mapeedConstituencies;
     private List<SelectOptionVO> unMapeedConstituencies;
     private List<SelectOptionVO> existedConstituencies;
@@ -1048,4 +1051,23 @@ public class CensusVO implements Serializable{
 	public void setTotalConstituencies(Long totalConstituencies) {
 		this.totalConstituencies = totalConstituencies;
 	}
+	public Long getSeatsWon() {
+		return seatsWon;
+	}
+	public void setSeatsWon(Long seatsWon) {
+		this.seatsWon = seatsWon;
+	}
+	public Long getSeatsParticipated() {
+		return seatsParticipated;
+	}
+	public void setSeatsParticipated(Long seatsParticipated) {
+		this.seatsParticipated = seatsParticipated;
+	}
+	public BigDecimal getAvgPercent() {
+		return avgPercent;
+	}
+	public void setAvgPercent(BigDecimal avgPercent) {
+		this.avgPercent = avgPercent;
+	}
+
 }

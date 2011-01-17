@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 
 public interface IElectionService {
 	
@@ -33,6 +34,9 @@ public interface IElectionService {
 	
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
-			List<Long> districtIds, Boolean isAll, Integer selected);
+			List<Long> districtIds, Integer selected, Boolean isAll, Boolean includeConstiInfo);
+	
+	public ResultWithExceptionVO getPartywiseConstituenciesResultsForCensusInfo(Integer selectIndex,Long stateId,Long districtId,
+			Long year,String level, Long partyId);
 	
 }

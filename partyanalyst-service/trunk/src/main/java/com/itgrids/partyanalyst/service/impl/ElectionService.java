@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -278,7 +279,7 @@ public class ElectionService implements IElectionService{
 	 */
 	public ElectionDataVO findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
-			List<Long> districtIds, Boolean isAll, Integer selected){
+			List<Long> districtIds, Integer selected, Boolean isAll, Boolean includeConstiInfo){
 		
 		ElectionDataVO electionDataVO = new ElectionDataVO();
 		List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
@@ -292,8 +293,6 @@ public class ElectionService implements IElectionService{
 		Map<PartyResultsVO, List<Object[]>> partyWithResults = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
 		
 		try {
-			
-			getDistrictsAndParties(districts, parties, constituencyIds, electionYear);
 			
 			if(constituencyIds != null && constituencyIds.size() > 0 && isAll)
 				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);
@@ -344,45 +343,50 @@ public class ElectionService implements IElectionService{
 				partyResultsList.add(partyResultsVO);
 			}
 			
-			constituenciesResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(
-					electionYear, constituencyIds, resultsList);
-			Set<String> allParties = new HashSet<String>(0);
-			Set<String> partiesInConstituency = null;
-			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
-				partiesInConstituency = new HashSet<String>();
-				for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
-					partiesInConstituency.add(partyInfo.getPartyName());
-					allParties.add(partyInfo.getPartyName());
+			if(includeConstiInfo){
+				
+				getDistrictsAndParties(districts, parties, constituencyIds, electionYear);
+				
+				constituenciesResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(
+						electionYear, constituencyIds, resultsList);
+				Set<String> allParties = new HashSet<String>(0);
+				Set<String> partiesInConstituency = null;
+				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
+					partiesInConstituency = new HashSet<String>();
+					for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
+						partiesInConstituency.add(partyInfo.getPartyName());
+						allParties.add(partyInfo.getPartyName());
+					}
+					constiInfo.setParticipatedParties(partiesInConstituency);
 				}
-				constiInfo.setParticipatedParties(partiesInConstituency);
+				
+				PartyResultsVO partyInfo = null;
+				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+					for(String partyName:allParties)
+						if(!constiInfo.getParticipatedParties().contains(partyName)){
+							partyInfo = new PartyResultsVO();
+							partyInfo.setPartyName(partyName);
+							constiInfo.getPartyResultsVO().add(partyInfo);
+						}
+				
+				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+					Collections.sort(constiInfo.getPartyResultsVO(), new PartyResultsVOComparator());
+				
+				allPartiesList = new ArrayList<String>(allParties);
+				Collections.sort(allPartiesList);
+				
+				//Setting Census Structure Percentages For Each Constituency
+				List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(getCensusStructureBySelectedIndex(selected),constituencyIds);
+				
+				for(Object[] obj:list)
+					constituencyWithPercentMap.put((Long)obj[0], (Double)obj[1]);
+				
+				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
+					constiInfo.setCensusReportPercent(constituencyWithPercentMap.get(constiInfo.getConstituencyId()));
 			}
 			
-			PartyResultsVO partyInfo = null;
-			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
-				for(String partyName:allParties)
-					if(!constiInfo.getParticipatedParties().contains(partyName)){
-						partyInfo = new PartyResultsVO();
-						partyInfo.setPartyName(partyName);
-						constiInfo.getPartyResultsVO().add(partyInfo);
-					}
-			
-			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
-				Collections.sort(constiInfo.getPartyResultsVO(), new PartyResultsVOComparator());
-			
-			allPartiesList = new ArrayList<String>(allParties);
-			Collections.sort(allPartiesList);
-			
-			//Setting Census Structure Percentages For Each Constituency
-			List<Object[]> list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(getCensusStructureBySelectedIndex(selected),constituencyIds);
-			
-			for(Object[] obj:list)
-				constituencyWithPercentMap.put((Long)obj[0], (Double)obj[1]);
-			
-			for(ConstituencyElectionResultsVO constiInfo:constituenciesResults)
-				constiInfo.setCensusReportPercent(constituencyWithPercentMap.get(constiInfo.getConstituencyId()));
-			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		electionDataVO.setDistricts(districts);
@@ -402,6 +406,31 @@ public class ElectionService implements IElectionService{
 			districts.add(new SelectOptionVO((Long)values[8], values[9].toString()));
 			parties.add(new SelectOptionVO((Long)values[3], values[2].toString()));
 		}
+	}
+	
+	public ResultWithExceptionVO getPartywiseConstituenciesResultsForCensusInfo(Integer selectIndex,Long stateId,Long districtId,
+			Long year,String level, Long partyId){
+		ResultWithExceptionVO resultWithExceptionVO = new ResultWithExceptionVO();
+		List<CensusVO> censusByPercent = getConstituencyCensusDetails(selectIndex, stateId, districtId, year, level);
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(partyId);
+		ElectionDataVO electionDataVO = null;
+		
+		for(CensusVO census:censusByPercent){
+			if(census.getLocationIds().size() == 0)
+				continue;
+			electionDataVO = findAssemblyConstituenciesResultsByConstituencyIds(year.toString(), census.getLocationIds(), partyIds, 
+					new ArrayList<Long>(), 0, false, false);
+			if(electionDataVO.getPartyResultsList().size() == 1){
+				census.setSeatsParticipated(new Long(electionDataVO.getPartyResultsList().get(0).getSeatsParticipated()));
+				census.setSeatsWon(new Long(electionDataVO.getPartyResultsList().get(0).getTotalSeatsWon()));
+				census.setAvgPercent(new BigDecimal(electionDataVO.getPartyResultsList().get(0).getAvgPercentage()));
+			}
+				
+		}
+		
+		resultWithExceptionVO.setFinalResult(censusByPercent);
+		return resultWithExceptionVO;
 	}
 
 }
