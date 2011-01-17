@@ -1473,10 +1473,10 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		    	censusVOList = constituencyPageService.getCensusDetailsForAParliamentConstituency(constituencyId,Long.parseLong(electionYear),delimitationYear,censusYear);
 		    	constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(constituencyId,electionYear,false);
 		    	
-		    	if(censusVOList != null && constituencyRevenueVillagesVO != null && censusVOList.size() >0 && constituencyRevenueVillagesVO.getMissingConstituencies().size() > 0)
+		    	/*if(censusVOList != null && constituencyRevenueVillagesVO != null && censusVOList.size() >0 && constituencyRevenueVillagesVO.getMissingConstituencies().size() > 0)
 		    	{
 		    		censusVOList = constituencyPageService.removeMissingConstituencies(censusVOList,constituencyRevenueVillagesVO);
-		    	}
+		    	}*/
 		    	censusVO = constituencyPageService.setCensusVO(censusVOList,constituencyRevenueVillagesVO);
 		    	
 		    	List<String> censusFieldList = new ArrayList<String>();
