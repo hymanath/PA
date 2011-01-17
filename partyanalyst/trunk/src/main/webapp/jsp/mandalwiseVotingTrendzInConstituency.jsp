@@ -61,6 +61,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/indexPage/indexPage.css">
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
+	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
+
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
