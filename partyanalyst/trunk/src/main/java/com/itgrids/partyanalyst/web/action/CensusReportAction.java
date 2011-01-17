@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -131,6 +134,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String getCensusInfoInAState()
 	{
 		try {
@@ -145,7 +149,13 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		String reportLevel  = jObj.getString("reportLevel");
 		Long year           = jObj.getLong("yearValue");
 		
-		censusRange = electionService.getConstituencyCensusDetails(censusId,stateId,districtId,year,reportLevel);
+		if("censusByParty".equalsIgnoreCase(jObj.getString("task"))){
+			Long partyId = jObj.getLong("partyId");
+			censusRange = (List<CensusVO>)electionService.getPartywiseConstituenciesResultsForCensusInfo(censusId,stateId,districtId,year,
+					reportLevel, partyId).getFinalResult();	
+		}
+		else
+			censusRange = electionService.getConstituencyCensusDetails(censusId,stateId,districtId,year,reportLevel);
 		
 		return Action.SUCCESS;
 	}
@@ -158,6 +168,15 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		
+		if("getPartiesByState".equalsIgnoreCase(jObj.getString("task"))){
+			electionDataVO = new ElectionDataVO();
+			Long stateId = jObj.getLong("stateId");
+			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
+			Collections.sort(parties, new SelectOptionVOComparator());
+			electionDataVO.setParties(new HashSet<SelectOptionVO>(parties));
+			return Action.SUCCESS;
+		}
+		
 		List<Long> locationIds = new ArrayList<Long>();		
 		StringBuilder sb = new StringBuilder();
 		String electionYear = jObj.getString("yearValue");
@@ -167,8 +186,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			locationIds.add(new Long(jArray.get(i).toString()));
 			sb.append(jArray.get(i)).append(",");
 		}
-
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, null, null, true, 0);
+		
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, null, null, 0, true, true);
 		
 		return Action.SUCCESS;
 
@@ -203,7 +222,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		for (int i = 0; i < jPartyIds.length(); i++) 
 			partyIds.add(new Long(jPartyIds.get(i).toString()));
 			
-		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, isAll, 0);
+		electionDataVO = electionService.findAssemblyConstituenciesResultsByConstituencyIds(electionYear, locationIds, partyIds, districtIds, 
+				0, isAll, true);
 		
 		return Action.SUCCESS;
 
