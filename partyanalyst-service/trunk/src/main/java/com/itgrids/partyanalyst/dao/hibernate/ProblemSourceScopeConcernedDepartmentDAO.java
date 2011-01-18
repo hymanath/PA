@@ -29,7 +29,7 @@ public class ProblemSourceScopeConcernedDepartmentDAO extends GenericDaoHibernat
 	@SuppressWarnings("unchecked")
 	public List<ProblemSourceScopeConcernedDepartment> findDepartmentsByScope(String problemScope) {
 		
-		return getHibernateTemplate().find("from ProblemSourceScopeConcernedDepartment model where model.problemSourceScope.scope = ?", problemScope);
+		return getHibernateTemplate().find("from ProblemSourceScopeConcernedDepartment model where model.problemSourceScope.scope = ? order by model.department", problemScope);
 	}
 	
 }
