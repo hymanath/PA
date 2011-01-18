@@ -14,6 +14,7 @@ public class ProblemDetailsVO {
 	private String existingFrom;
 	private String locationType;
 	private String isApproved;
+	private Long problemHistoryId;
 	
 	public String getIsApproved() {
 		return isApproved;
@@ -75,6 +76,12 @@ public class ProblemDetailsVO {
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+	public void setProblemHistoryId(Long problemHistoryId) {
+		this.problemHistoryId = problemHistoryId;
+	}
+	public Long getProblemHistoryId() {
+		return problemHistoryId;
 	}
 	
 }
