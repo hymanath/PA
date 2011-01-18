@@ -38,5 +38,6 @@ public interface IProblemManagementService {
 	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue);
 	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId);
 	public Date getCurrentDateAndTime();
+	public List<SelectOptionVO> getAllDepartmentScopes();
 		
 }
