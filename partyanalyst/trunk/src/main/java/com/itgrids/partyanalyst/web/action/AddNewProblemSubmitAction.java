@@ -375,6 +375,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			problemBeanVO.setProblemPostedBy(IConstants.PARTY_ANALYST_USER);
 		else
 			problemBeanVO.setProblemPostedBy(IConstants.FREE_USER);
+		problemBeanVO.setIsParliament(isParliament);
 		/*problemBeanVO.setState(getState());
 		problemBeanVO.setDistrict(getDistrict());
 		problemBeanVO.setConstituency(getConstituency());
