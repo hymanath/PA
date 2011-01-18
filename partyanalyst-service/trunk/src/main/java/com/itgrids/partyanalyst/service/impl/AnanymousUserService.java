@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1329,14 +1330,93 @@ public class AnanymousUserService implements IAnanymousUserService {
 		
 		return dbColumnName;
 	}
-
-	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId)
+	
+	
+	public ProblemDetailsVO getPostedProblemsCount(Long registrationId)
 	{
-		List<ProblemDetailsVO> problemList = null;
+		ProblemDetailsVO problemVO = new ProblemDetailsVO() ;
+		problemVO.setNotConsideredProblemsCount(0L);
+		problemVO.setApprovedProblemsCount(0L);
+		problemVO.setRejectedProblemsCount(0L);
+		problemVO.setPostedProblemsCountByOtherUsers(0L);
+		problemVO.setTotalPostedProblemsCount(0L);
+		problemVO.setPostedProblemsCountByLoggedInUsers(0L);
 		
+		try {
+			List problems = problemHistoryDAO.getAllPostedProblemCount(registrationId);
+			
+			if(problems != null && problems.size() > 0)
+			{
+				for (int i = 0; i < problems.size(); i++) {
+					Object[] params = (Object[])problems.get(i);
+					
+					if(params[1].toString().equalsIgnoreCase("false"))
+						problemVO.setNotConsideredProblemsCount(((Long)params[0]));					
+					else if(params[1].toString().equalsIgnoreCase("true"))
+						problemVO.setApprovedProblemsCount((Long)params[0]);
+					else 
+						problemVO.setRejectedProblemsCount((Long)params[0]);
+				}	
+				
+				List commentsCount = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(registrationId);
+				
+				if(commentsCount != null && commentsCount.size() == 1)
+				{
+					problemVO.setPostedProblemsCountByOtherUsers((Long)commentsCount.get(0));				
+				}
+				problemVO.setTotalPostedProblemsCount(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers());
+				problemVO.setPostedProblemsCountByLoggedInUsers(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return problemVO;
+	}
+	
+	
+	public String getProblemTableColoumnName(String coloumnType)
+	{
+		String dbColoumnName = "";
+		
+		if(coloumnType.equalsIgnoreCase("definition"))
+			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.problem";
+		else if(coloumnType.equalsIgnoreCase("description"))
+			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.description";
+		else if(coloumnType.equalsIgnoreCase("existingFrom"))
+			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.existingFrom";
+		else if(coloumnType.equalsIgnoreCase("identifiedDate"))
+			dbColoumnName = "model.problemLocation.problemAndProblemSource.problem.identifiedOn";
+		else if(coloumnType.equalsIgnoreCase("locationType"))
+			dbColoumnName = "model.problemLocation.problemImpactLevelValue";
+		
+		return dbColoumnName;
+	}
+	public ProblemBeanVO getAllPostedProblemsByUserId(Long registrationId, Integer startIndex, Integer results, 
+			String order, String columnName, String reasonType)
+	{
+		String dbColoumnName = getProblemTableColoumnName(columnName);
+		List<ProblemDetailsVO> problemList = null;
+		ProblemBeanVO problemDetailsVO = new ProblemBeanVO();
+		Long totalRecords = 0l;
+		/*
+		 * Problem
+				
+			Description
+				
+			Existing From
+				
+			Posted On
+				
+			Location
+				
+			Location Type*/
 		try
 		{			
-			List problems = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(registrationId);
+			List problems = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(registrationId, startIndex, results, order, dbColoumnName, reasonType);
+			totalRecords = problemHistoryDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(registrationId, reasonType);
 			
 			if(problems != null && problems.size() > 0 )
 			{
@@ -1385,12 +1465,14 @@ public class AnanymousUserService implements IAnanymousUserService {
 				}
 			}
 			
-			return problemList;
-			
+		
 		} catch (Exception e) {
-			
-			return problemList;
+			e.printStackTrace();
 		}
+		
+		problemDetailsVO.setProblemsCount(totalRecords);
+		problemDetailsVO.setProblemsInfo(problemList);
+		return problemDetailsVO;
 		
 	}
 }

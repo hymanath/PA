@@ -70,6 +70,8 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String acceptedCount;
 	private String rejectedCount;
 	private List<ApprovalInfoVO> problemApproovals;
+	private List<ProblemDetailsVO> problemsInfo;
+	private Long problemsCount;
     	
 	public String getPostedDate() {
 		return postedDate;
@@ -556,6 +558,22 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setProblemApproovals(List<ApprovalInfoVO> problemApproovals) {
 		this.problemApproovals = problemApproovals;
+	}
+
+	public List<ProblemDetailsVO> getProblemsInfo() {
+		return problemsInfo;
+	}
+
+	public void setProblemsInfo(List<ProblemDetailsVO> problemsInfo) {
+		this.problemsInfo = problemsInfo;
+	}
+
+	public Long getProblemsCount() {
+		return problemsCount;
+	}
+
+	public void setProblemsCount(Long problemsCount) {
+		this.problemsCount = problemsCount;
 	}
 	
 	

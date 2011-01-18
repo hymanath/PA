@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.Date;
+import java.util.List;
+
 
 public class ProblemDetailsVO {
 
@@ -14,8 +15,52 @@ public class ProblemDetailsVO {
 	private String existingFrom;
 	private String locationType;
 	private String isApproved;
+	private Long approvedProblemsCount;
+	private Long rejectedProblemsCount;
+	private Long notConsideredProblemsCount;
+	private Long totalPostedProblemsCount;
+	private Long postedProblemsCountByOtherUsers;
+	private Long postedProblemsCountByLoggedInUsers;
 	private Long problemHistoryId;
 	
+	public Long getApprovedProblemsCount() {
+		return approvedProblemsCount;
+	}
+	public void setApprovedProblemsCount(Long approvedProblemsCount) {
+		this.approvedProblemsCount = approvedProblemsCount;
+	}
+	public Long getRejectedProblemsCount() {
+		return rejectedProblemsCount;
+	}
+	public void setRejectedProblemsCount(Long rejectedProblemsCount) {
+		this.rejectedProblemsCount = rejectedProblemsCount;
+	}
+	public Long getNotConsideredProblemsCount() {
+		return notConsideredProblemsCount;
+	}
+	public void setNotConsideredProblemsCount(Long notConsideredProblemsCount) {
+		this.notConsideredProblemsCount = notConsideredProblemsCount;
+	}
+	public Long getTotalPostedProblemsCount() {
+		return totalPostedProblemsCount;
+	}
+	public void setTotalPostedProblemsCount(Long totalPostedProblemsCount) {
+		this.totalPostedProblemsCount = totalPostedProblemsCount;
+	}
+	public Long getPostedProblemsCountByOtherUsers() {
+		return postedProblemsCountByOtherUsers;
+	}
+	public void setPostedProblemsCountByOtherUsers(
+			Long postedProblemsCountByOtherUsers) {
+		this.postedProblemsCountByOtherUsers = postedProblemsCountByOtherUsers;
+	}
+	public Long getPostedProblemsCountByLoggedInUsers() {
+		return postedProblemsCountByLoggedInUsers;
+	}
+	public void setPostedProblemsCountByLoggedInUsers(
+			Long postedProblemsCountByLoggedInUsers) {
+		this.postedProblemsCountByLoggedInUsers = postedProblemsCountByLoggedInUsers;
+	}
 	public String getIsApproved() {
 		return isApproved;
 	}

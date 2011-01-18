@@ -238,7 +238,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testFindProblemCompleteInfo(){
+	/*public void testFindProblemCompleteInfo(){
 		
 		List list1 = problemHistoryDAO.findProblemCompleteInfo(59l);
 		System.out.println(list1.size());
@@ -262,12 +262,22 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}
-	
-	public void testgetAllPostedProblemsByAnanymousUserId(){
+	*/
+	/*public void testgetAllPostedProblemsByAnanymousUserId(){
 		
-		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L);
+		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "asc", "model.problemLocation.problemAndProblemSource.problem.problem", IConstants.TOTAL);
 		System.out.println(list1.size());
-	}
+	}*/
 	
+	/*public void testGetAllpostedProblemCountOtherThanLoggedInUser()
+	{
+		List list = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(2L);
+		System.out.println(list.get(0));
+	}*/
+	
+	public void testGetAllRecordsCountForPostedProblemsByAnanymousUserId(){
+		Long count = problemHistoryDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(2L, IConstants.TOTAL);
+		System.out.println("Total "+count);
+	}
 	
 }

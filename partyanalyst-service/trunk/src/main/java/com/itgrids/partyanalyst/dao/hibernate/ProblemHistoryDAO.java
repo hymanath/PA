@@ -437,19 +437,95 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 	}
 	
+	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long registrationId, String reasonType){
+
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(*) from ProblemHistory model ");
+		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null ");
+		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? ");
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+			queryObject.setParameter(0, registrationId);
+		
+		return (Long)queryObject.uniqueResult();
+		
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.dao.IProblemHistoryDAO#getAllPostedProblemsByAnanymousUserId(java.lang.Long)
 	 * DAO Method that retrieves all problems data posted by a Ananymous user
 	 */
-	public List getAllPostedProblemsByAnanymousUserId(Long registrationId)
+	public List getAllPostedProblemsByAnanymousUserId(Long registrationId, Integer startIndex, Integer results, 
+			String order, String columnName, String reasonType)
 	{
-		return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId,"+
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.problemLocation.problemAndProblemSource.problem.problemId, ");
+		query.append("model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.identifiedOn, ");
+		query.append("model.problemLocation.problemAndProblemSource.problem.year,model.problemLocation.problemAndProblemSource.problem.problem, ");
+		query.append("model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue, ");
+		query.append("model.problemLocation.problemImpactLevel.scope,model.isApproved, model.problemHistoryId from ProblemHistory model ");
+		
+		if(reasonType.equalsIgnoreCase(IConstants.TOTAL))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId is not null ");
+		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? ");			
+		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId != ? ");
+		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.TRUE+"'");			
+		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.REJECTED+"'");
+		else if(reasonType.equalsIgnoreCase(IConstants.NOTCONSIDERED))
+			query.append("where model.problemLocation.problemAndProblemSource.externalUser.userId = ? and model.isApproved = '"+IConstants.FALSE+"'");	
+		
+		
+		
+		query.append(" order by "+columnName+" "+order);
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		if(!IConstants.TOTAL.equalsIgnoreCase(reasonType))
+			queryObject.setParameter(0, registrationId);
+		queryObject.setFirstResult(startIndex);		
+		queryObject.setMaxResults(results);
+		
+		return queryObject.list();
+		/*return getHibernateTemplate().find("select model.problemLocation.problemAndProblemSource.problem.problemId,"+
 				" model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
 				" model.problemLocation.problemAndProblemSource.problem.year,model.problemLocation.problemAndProblemSource.problem.problem,"+
 				" model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue,"+				
-				" model.problemLocation.problemImpactLevel.scope,model.isApproved, model.problemHistoryId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
-				"externalUser.userId = ? ",registrationId);
+				" model.problemLocation.problemImpactLevel.scope,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
+				"externalUser.userId = ? ",registrationId);*/
+	}
+	
+	public List getAllPostedProblemCount(Long registrationId)
+	{		
+		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId), "+
+				"model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId = ? "+
+				"group by model.isApproved",registrationId);
+	}
+	
+	public List getAllPostedProblemCountOtherThanLoggedInUser(Long registrationId)
+	{		
+		/*return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId), "+
+				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ?",registrationId);*/
+		
+		return getHibernateTemplate().find("select count(distinct model.problemLocation.problemAndProblemSource.problem.problemId) "+
+				"from ProblemHistory model where model.problemLocation.problemAndProblemSource.externalUser.userId != ? "+
+				"",registrationId);
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -38,8 +39,10 @@ public interface IAnanymousUserService {
 	
 	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
-	public List<ProblemDetailsVO> getAllPostedProblemsByUserId(Long registrationId);
+	public ProblemBeanVO getAllPostedProblemsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
 	public CandidateCommentsVO getAllPostedReasonsCountByUserId(Long registrationId);
+	
+	public ProblemDetailsVO getPostedProblemsCount(Long registrationId);
 	
 }	
