@@ -140,8 +140,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationVillageDAO delimitationVillageDAO;
 	private IDelimitationWardDAO delimitationWardDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
+	private List<SelectOptionVO> skippedMandals = new ArrayList<SelectOptionVO>(0);
 	
 		
+	public List<SelectOptionVO> getSkippedMandals() {
+		return skippedMandals;
+	}
+
+	public void setSkippedMandals(List<SelectOptionVO> skippedMandals) {
+		this.skippedMandals = skippedMandals;
+	}
+
 	public IDelimitationVillageDAO getDelimitationVillageDAO() {
 		return delimitationVillageDAO;
 	}
@@ -3088,7 +3097,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}catch(Exception ex)
 		{
 			log.debug("Exception Occured In the constituencyPageService.removeMissingConstituencies() method ........");
-			log.error("Exception raised please check the log for details"+ex);
+			log.error("Exception raised please check the log for details "+ex);
 			return null;
 		}
 	}
@@ -3457,8 +3466,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 		int noOfParts = findNoOfParts(villageIdStr);
 		
-		List<Object[]> villCensus = censusDAO.findCensusDetailsForAPartialMandal(stateId,districtId,censusYear,IConstants.CENSUS_VILLAGE_LEVEL,villageIdStr);
-		
+		List<Object[]> villCensus = censusDAO.findCompleteCensusDetailsForAPartialMandal(stateId,districtId,censusYear,IConstants.CENSUS_VILLAGE_LEVEL,villageIdStr);
+
 		if(villCensus != null && villCensus.size() > 0)
 		{
 			Object [] details = villCensus.get(0);
@@ -4127,6 +4136,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					//If census is not present to the Tehsil then it retuns null,that we are ommitting
 					if(censusVO != null)
 					censusVOList.add(censusVO);
+					
+					else
+					{
+						skippedMandals.add(new SelectOptionVO((Long)params[1],params[2].toString()));
+					}
 				}
 			}
 			
@@ -4183,13 +4197,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			else
 			{
 				CensusVO censusMainVO = getCompleteCensusDetailsForAnAssemblyConstituency(constituencyId,delimitationYear,censusYear);
-
-				String result = saveCensusToConstituencyCensusDetails(censusMainVO,constituencyId,censusYear);
 				
-				if(result.equalsIgnoreCase(IConstants.SUCCESS))
+				if(censusMainVO != null)
 				{
+					String result = saveCensusToConstituencyCensusDetails(censusMainVO,constituencyId,censusYear);
+				
 					if(log.isDebugEnabled()){
-						log.debug(constituencyName+" is saved in the Constituency census Deatails Table");
+					log.debug(constituencyName+" is saved in the Constituency census Deatails Table");
 					}
 					map.add(new SelectOptionVO(constituencyId,constituencyName));
 				}
@@ -4203,6 +4217,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			resultVO.setExistedConstituencies(exists);
 			resultVO.setMapeedConstituencies(map);
 			resultVO.setUnMapeedConstituencies(unmap);
+		}
+		
+		if(skippedMandals != null && skippedMandals.size() > 0 && log.isDebugEnabled())
+		{
+			for(SelectOptionVO result : skippedMandals)
+			{
+				log.debug("-------------------------  Skipped Mandals -----------------------");
+				log.debug("== Mandal ID -- "+result.getId()+"     == Mandal Name--"+result.getName() +"  ");
+				log.debug("------------------------------------------------------------------");
+			}
 		}
 		
 		return resultVO;

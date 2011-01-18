@@ -150,7 +150,9 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Object[]> findActiveCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
 	public List<Object[]> findNormalCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String sortOption,String order,Integer startIndex,Integer maxResult);
 	public List<Object[]> findNormalCadre(Long registrationId);
-	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String sortOption,String order,Integer startIndex,Integer maxResult);
-	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr);
+	
+	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr, String sortOption,String order,Integer startIndex,Integer maxResult);
+	
+	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr);
 	
 }
