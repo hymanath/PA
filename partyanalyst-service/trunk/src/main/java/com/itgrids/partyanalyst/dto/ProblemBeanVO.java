@@ -70,6 +70,8 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String acceptedCount;
 	private String rejectedCount;
 	private List<ApprovalInfoVO> problemApproovals;
+	private Boolean isParliament;
+	private Long pConstituencyId;
 	private List<ProblemDetailsVO> problemsInfo;
 	private Long problemsCount;
     	
@@ -559,6 +561,25 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	public void setProblemApproovals(List<ApprovalInfoVO> problemApproovals) {
 		this.problemApproovals = problemApproovals;
 	}
+
+	public Boolean getIsParliament() {
+		return isParliament;
+	}
+
+	public void setIsParliament(Boolean isParliament) {
+		this.isParliament = isParliament;
+	}
+
+	public Long getPConstituencyId() {
+		return pConstituencyId;
+	}
+
+	public void setPConstituencyId(Long constituencyId) {
+		pConstituencyId = constituencyId;
+	}
+	
+	
+	
 
 	public List<ProblemDetailsVO> getProblemsInfo() {
 		return problemsInfo;
