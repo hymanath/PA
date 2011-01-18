@@ -427,7 +427,8 @@ public class ProblemManagementReportService implements
 				Long impactLevel = problemInfo.getProblemLocation().getProblemImpactLevel().getRegionScopesId();
 				problemBeanVO.setProblem(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
 				problemBeanVO.setDescription(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
-				problemBeanVO.setReportedDate(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn().toString());
+				Date reportedDate = problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+				problemBeanVO.setReportedDate(sdf.format(reportedDate));
 				problemBeanVO.setExistingFrom(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom().toString());
 				
 				switch (impactLevel.intValue()) {
@@ -486,14 +487,8 @@ public class ProblemManagementReportService implements
 	            	{
 	            		locationStr = booth.getTehsil().getTehsilName() + ", "+booth.getTehsil().getTehsilName()+setConstDistStateTOResult(booth.getTehsil().getTehsilId());	            		           		
 	            	}else if(booth.getLocalBody() != null)
-	            	{
-	            		/*if(booth.getBoothLocalBodyWard() != null)
-	            		{
-	            			locationStr = booth.getBoothLocalBodyWard().getLocalBodyWard().getName();
-	            		}*/
-	            		
-	            		locationStr = booth.getLocalBody().getName()+booth.getLocalBody().getDistrict().getDistrictName()+booth.getLocalBody().getDistrict().getState().getStateName();
-	            		
+	            	{            		            		
+	            		locationStr = booth.getLocalBody().getName()+booth.getLocalBody().getDistrict().getDistrictName()+booth.getLocalBody().getDistrict().getState().getStateName();	            		
 	            	}
 	            	
 	            	break;
@@ -504,8 +499,10 @@ public class ProblemManagementReportService implements
 				
 				problemBeanVO.setStatus(problemInfo.getProblemStatus().getStatus());
 				
-				if("3".equalsIgnoreCase(status.toString()))
+				if("4".equalsIgnoreCase(status.toString())){
 					problemBeanVO.setDepartment(((AssignedProblemProgress)problemInfo.getAssignedProblemProgresses().toArray()[0]).getProblemSourceScopeConcernedDepartment().getDepartment());
+					problemBeanVO.setDesignation(((AssignedProblemProgress)problemInfo.getAssignedProblemProgresses().toArray()[0]).getDesignation());
+				}					
 						
 				problemBeanVOList.add(problemBeanVO);
 			}
