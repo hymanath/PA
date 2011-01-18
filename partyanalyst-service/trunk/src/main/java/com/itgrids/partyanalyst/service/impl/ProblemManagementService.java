@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemClassification;
+import com.itgrids.partyanalyst.model.ProblemCompleteLocation;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemImpactLevel;
@@ -416,6 +417,7 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemAndProblemSource problemAndProblemSource = null;
 				ProblemLocation problemLocation = null;
 				ProblemHistory problemHistory = null;
+				ProblemCompleteLocation problemCompleteLocation = null;
 				
 				try{					
 					//InformationSource problemSource = informationSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
@@ -431,6 +433,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemLocation = new ProblemLocation();
 					problemAndProblemSource = new ProblemAndProblemSource();	
 					problemHistory = new ProblemHistory();
+					problemCompleteLocation = new ProblemCompleteLocation();
 					
 					problem.setProblem(problemBeanVO.getProblem());
 					problem.setDescription(problemBeanVO.getDescription());
@@ -453,7 +456,43 @@ public class ProblemManagementService implements IProblemManagementService {
 						problemAndProblemSource.setExternalUser(externalUser);
 						problemHistory.setIsApproved(IConstants.FALSE);
 					}
-							
+					
+					problemCompleteLocation.setState(stateDAO.get(new Long(problemBeanVO.getState())));
+					if(problemBeanVO.getIsParliament())
+						problemCompleteLocation.setParliamentConstituency(constituencyDAO.get(problemBeanVO.getPConstituencyId()));
+					if(!problemBeanVO.getIsParliament())
+						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
+					if(problemBeanVO.getDistrict() != null && !"0".equals(problemBeanVO.getDistrict()))
+						problemCompleteLocation.setDistrict(districtDAO.get(new Long(problemBeanVO.getDistrict())));
+					if(problemBeanVO.getConstituency() != null && !"0".equals(problemBeanVO.getConstituency()))
+						problemCompleteLocation.setConstituency(constituencyDAO.get(new Long(problemBeanVO.getConstituency())));
+					if(problemBeanVO.getTehsil() != null && !"0".equals(problemBeanVO.getTehsil()))
+					{
+						if(IConstants.RURAL_TYPE.equals(problemBeanVO.getTehsil().substring(0,1)))
+							problemCompleteLocation.setTehsil(tehsilDAO.get(new Long(problemBeanVO.getTehsil().substring(1))));
+						else if(IConstants.RURAL_TYPE.equals(problemBeanVO.getTehsil().substring(0,1)))
+						{
+							Long assemblyLocalElectionBodyId = new Long(problemBeanVO.getTehsil().substring(1));
+							List localElectionBodyIdsList = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(assemblyLocalElectionBodyId);
+							Object object = (Object)localElectionBodyIdsList.get(0);
+							problemCompleteLocation.setLocalElectionBody(localElectionBodyDAO.get((Long)object));							
+						}
+					} 
+					if(problemBeanVO.getVillage() != null && !"0".equals(problemBeanVO.getVillage()))
+					{
+						if(IConstants.RURAL_TYPE.equals(problemBeanVO.getVillage().substring(0,1)))
+							problemCompleteLocation.setHamlet(hamletDAO.get(new Long(problemBeanVO.getVillage())));
+						else if(IConstants.RURAL_TYPE.equals(problemBeanVO.getVillage().substring(0,1)))
+						{
+							problemCompleteLocation.setWard(constituencyDAO.get(new Long(problemBeanVO.getVillage())));
+						}
+					}	
+					
+					if(problemBeanVO.getBooth() != null && !"0".equals(problemBeanVO.getBooth()))
+						problemCompleteLocation.setBooth(boothDAO.get(new Long(problemBeanVO.getBooth())));
+					
+					
+					
 					/*
 					if(problemSource.getInformationSource().equals(IConstants.CALL_CENTER) || problemSource.getInformationSource().equals(IConstants.EXTERNAL_PERSON))
 					{
@@ -473,12 +512,12 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemLocation.setProblemImpactLevel(problemImpactLevel);
 					problemLocation.setProblemImpactLevelValue(getProblemImpactValue(problemBeanVO.getProblemImpactLevelId(),problemBeanVO.getProblemImpactLevelValue()));
 					problemLocation.setProblemAndProblemSource(problemAndProblemSource);
+					problemLocation.setProblemCompleteLocation(problemCompleteLocation);
 					problemHistory.setProblemLocation(problemLocationDAO.save(problemLocation));
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
 					problemHistory.setDateUpdated(getCurrentDateAndTime());
 					problemHistory = problemHistoryDAO.save(problemHistory);				
-					
-					System.out.println("problemHistory.getProblemHistoryId()----"+problemHistory.getProblemHistoryId());
+										
 					problemBeanFromDB.setProblemHistoryId(problemHistory.getProblemHistoryId());
 					problemBeanFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
 					problemBeanFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
@@ -487,10 +526,10 @@ public class ProblemManagementService implements IProblemManagementService {
 					Date eDateOfAddNewProb = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
 					problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 					problemBeanFromDB.setExistingFrom(sdf.format(eDateOfAddNewProb));
-					//problemBeanFromDB.setHamlet(problemHistory.getProblemLocation().getHamlet().getHamletName());
+					
 					problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
 					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getRegionScopesId());
-					//Long impactValue = getProblemImpactValue(problemLocation.getProblemImpactLevelValue());
+					
 					problemBeanFromDB.setProblemImpactLevelValue(getProblemImpactValue(problemImpactLevel.getRegionScopesId(),problemLocation.getProblemImpactLevelValue()));
 					problemBeanFromDB.setIsApproved(problemHistory.getIsApproved());
 					
@@ -541,7 +580,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		ProblemsOfUserVO problemsOfUserVO = new ProblemsOfUserVO();
 		List<ProblemBeanVO> problemBeanVOs = null;
 		ResultStatus resultStatus = new ResultStatus();
-		List<SelectOptionVO> problemRegionScopes = new ArrayList<SelectOptionVO>();
+		
 		List<SelectOptionVO> problemTypes = new ArrayList<SelectOptionVO>();
 		if(log.isDebugEnabled()){
 			log.debug("Entered Into getProblemsForUser  Method.....");
@@ -550,16 +589,8 @@ public class ProblemManagementService implements IProblemManagementService {
 			List<ProblemHistory> problemHistories = problemHistoryDAO.findProblemLocationsByUserId(registrationId, statusId); 
 			if(problemHistories.size() > 0){
 				problemBeanVOs = getUserProblems(problemHistories);
-			}
+			}		
 			
-			List<ProblemSourceScope> regionScopes = problemSourceScopeDAO.getAll();
-			if(log.isDebugEnabled()){
-				log.debug("Total Classifications:"+regionScopes.size());
-			}
-			for(ProblemSourceScope problemSourceScope:regionScopes){
-				SelectOptionVO proSelectOptionVO = new SelectOptionVO(problemSourceScope.getProblemSourceScopeId(),	problemSourceScope.getScope());
-				problemRegionScopes.add(proSelectOptionVO);
-			}
 			List<ProblemClassification> problemClassificationList = problemClassificationDAO.getAll();
 			
 			if(log.isDebugEnabled()){
@@ -569,10 +600,24 @@ public class ProblemManagementService implements IProblemManagementService {
 				SelectOptionVO problemClassificationVO = new SelectOptionVO(problemClassification.getProblemClassificationId(), problemClassification.getClassification());
 				problemTypes.add(problemClassificationVO);
 			}
-			problemsOfUserVO.setProblemRegionScopes(problemRegionScopes);
+			problemsOfUserVO.setProblemRegionScopes(getAllDepartmentScopes());
 			problemsOfUserVO.setProblemsByUser(problemBeanVOs);
 			problemsOfUserVO.setProblemTypes(problemTypes);
 		return problemsOfUserVO;
+	}
+	
+	public List<SelectOptionVO> getAllDepartmentScopes()
+	{
+		List<SelectOptionVO> problemRegionScopes = new ArrayList<SelectOptionVO>();
+		List<ProblemSourceScope> regionScopes = problemSourceScopeDAO.getAll();
+		if(log.isDebugEnabled()){
+			log.debug("Total Classifications:"+regionScopes.size());
+		}
+		for(ProblemSourceScope problemSourceScope:regionScopes){
+			SelectOptionVO proSelectOptionVO = new SelectOptionVO(problemSourceScope.getProblemSourceScopeId(),	problemSourceScope.getScope());
+			problemRegionScopes.add(proSelectOptionVO);
+		}
+		return problemRegionScopes;
 	}
 	
 	/**
@@ -760,8 +805,11 @@ public class ProblemManagementService implements IProblemManagementService {
 		try{
 		List<ProblemSourceScopeConcernedDepartment> deptsByScope = problemSourceScopeConcernedDepartmentDAO.findDepartmentsByScope(problemScope);
 		if(deptsByScope == null){log.debug("No Departments have been retrieved for the selected scope");}
+		
 		for(ProblemSourceScopeConcernedDepartment problemSourceScopeConcnedDept:deptsByScope)
 			departmentsByScope.add(new SelectOptionVO(problemSourceScopeConcnedDept.getProblemSourceScopeConcernedDepartmentId(),problemSourceScopeConcnedDept.getDepartment()));
+		if(departmentsByScope.size()>0)
+			departmentsByScope.add(0, new SelectOptionVO(0l,"Select Department"));
 		}catch (Exception e){
 			log.debug("Exception Encountered", e);
 		}

@@ -17,6 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -46,14 +47,20 @@ import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -90,6 +97,7 @@ public class ProblemManagementReportService implements
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IProblemLocationDAO problemLocationDAO;
 	private IProblemManagementService problemManagementService;
+	private IBoothDAO boothDAO;
 	
 	public IProblemLocationDAO getProblemLocationDAO() {
 		return problemLocationDAO;
@@ -291,47 +299,7 @@ public class ProblemManagementReportService implements
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
-	/**
-	 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
-	 * selected hamlet by location-wise,department-wise as well as  status-wise.
-	 * @author Ravi Kiran.Y
-	 */
-		public List<ProblemBeanVO> getHamletProblemsInfo(Long hamletId,Long registrationId,String taskType){
-			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
-			
-			if(log.isDebugEnabled())
-				log.debug("Entered into getHamletProblemsInfo() method....");
-			try{
-		/*
-		 * Modified in order to remove hard coding of status
-		 * Please check previous version to know exact modifications
-		 * @Author Ravi Kiran.Y
-		 * @Date 29-09-10
-		 * Starts from here.. 	
-		 */
-			//if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){	
-			if(taskType!=null && taskType!=""){
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByHamletId(hamletId,taskType);
-			}
-		//Ends here..
-			else{
-					result = problemHistoryDAO.findProblemsForALocationsByHamletId(hamletId);
-				}
-			if(result == null){
-				if(log.isDebugEnabled())
-					log.debug("0 rows have been retrived......");
-			}
-			else{
-				problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
-			}
-			}catch(Exception e){
-				e.printStackTrace();
-				if(log.isDebugEnabled())
-					log.debug("Exception Raised--->"+e);
-				return null;				
-			}
-			return problemBeanVO;
-		}
+	
 
 		/**
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
@@ -352,7 +320,7 @@ public class ProblemManagementReportService implements
 				if(taskType!=null && taskType!=""){
 			//Ends here...
 				try{
-					result = problemHistoryDAO.findProblemsByStatusForALocationsByTehsilId(tehsilId,taskType);
+					//result = problemHistoryDAO.findProblemsByStatusForALocationsByTehsilId(tehsilId,taskType,registrationId);
 				}catch(Exception e){
 					e.printStackTrace();
 					System.out.println("Exception Raised--->"+e);
@@ -361,14 +329,14 @@ public class ProblemManagementReportService implements
 			}
 			else{
 				try{
-				result = problemHistoryDAO.findProblemsForALocationsByTehsilId(tehsilId);
+				//result = problemHistoryDAO.findProblemsForALocationsByTehsilId(tehsilId,registrationId);
 				}catch(Exception e){
 						e.printStackTrace();
 						System.out.println("Exception Raised--->"+e);
 					return null;			
 				}
 			}
-			problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
+			//problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
 			}catch(Exception e){
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
@@ -382,42 +350,171 @@ public class ProblemManagementReportService implements
 		 * selected Constituency by location-wise,department-wise as well as  status-wise.
 		 * @author Ravi Kiran.Y
 		 */
-		public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType, String constituencyType) {
-			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
-			String tehsilIds = "";
+		public List<ProblemBeanVO> getProblemsInfoBasedOnLocation(Long locationId,Long userId,Long status, Long regionScope,Long deptId) {
+			List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>();			
+			String model = null,idToCompare = null;			
 			try{
+				Long id = locationId;
+				String locationStr = "";
+				switch (regionScope.intValue()) {
+	            case 2:  
+	        	{
+	        		model = "state";
+					idToCompare = "stateId";
+	        		break;
+	        	}
+	            case 3:
+	            {
+	            	model = "district";
+					idToCompare = "districtId";
+	            	break;
+	            }
+	            case 4:
+	            case 8:
+	            {
+	            	model = "constituency";
+					idToCompare = "constituencyId";				
+	            	break;
+	            }
+	            case 5: 
+	            {
+	            	model = "tehsil";
+					idToCompare = "tehsilId";
+					id = new Long(locationId.toString().substring(1));
+	            	break;
+	            }            
+	            case 6:
+	            {
+	            	model = "hamlet";
+					idToCompare = "hamletId";
+					id = new Long(locationId.toString().substring(1));
+	            	break;
+	            }
+	            case 7:	            	
+	            {
+	            	model = "localElectionBody";
+					idToCompare = "localElectionBodyId";
+					//retrieve local election body id from assembly local election body
+					List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
+					Object object = (Object)localElectionBodies.get(0);
+					id = (Long)object;					
+	            	break;
+	            }
+	            case 9:
+	            {
+	            	model = "booth";
+					idToCompare = "boothId";
+	            	break;
+	            }	            
+	            default: System.out.println("Invalid Scope.");break;
+	        }					
 				
-			/*
-			 * Modified in order to remove hard coding of status
-			 * Please check previous version to know exact modifications
-			 * @Author Ravi Kiran.Y
-			 * @Date 29-09-10
-			 * Starts from here.. 	
-			 */
+			List<ProblemHistory> result = problemHistoryDAO.findProblemsForSelectedSearchOptions(id,status,userId,model,idToCompare,deptId);
 				
-			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituencyType))
-				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(IConstants.MLA, constituencyId);
-			else
-				tehsilIds = getCommaSeperatedTehsilIdsForAccessType(IConstants.MP,constituencyId);
+			ProblemBeanVO problemBeanVO = null;
+			for(ProblemHistory problemInfo:result){
+				problemBeanVO = new ProblemBeanVO();
+				Long impactValue = problemInfo.getProblemLocation().getProblemImpactLevelValue();
+				Long impactLevel = problemInfo.getProblemLocation().getProblemImpactLevel().getRegionScopesId();
+				problemBeanVO.setProblem(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+				problemBeanVO.setDescription(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+				problemBeanVO.setReportedDate(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn().toString());
+				problemBeanVO.setExistingFrom(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom().toString());
 				
-			if(taskType!=null && taskType!="" && tehsilIds.trim().length() > 0){
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);				
+				switch (impactLevel.intValue()) {
+	            case 2:  
+	        	{
+	        		State state = stateDAO.get(impactValue);
+	        		locationStr = state.getStateName();
+	        		break;
+	        	}
+	            case 3:
+	            {
+	            	District district = districtDAO.get(impactValue);
+	            	locationStr = district.getDistrictName() + ", "+ district.getState().getStateName() ;	            	
+	            	break;
+	            }
+	            case 4: {
+	            	Constituency constituency = constituencyDAO.get(impactValue);
+					
+					if(IConstants.PARLIAMENT_ELECTION_TYPE.equals(constituency.getElectionScope().getElectionType().getElectionType()))
+					{	
+						locationStr = constituency.getName()+ " " +constituency.getState().getStateName();						
+					} else 
+					{
+						locationStr = constituency.getName()+", "+ constituency.getDistrict().getDistrictName()+"(Dt.)"+","+constituency.getState().getStateName();						
+					}				
+	            	break;
+	            }
+	            case 5: 
+	            {
+	            	Tehsil tehsil = tehsilDAO.get(impactValue);
+	            	locationStr = tehsil.getTehsilName()+ setConstDistStateTOResult(tehsil.getTehsilId());
+					break;
+	            }            
+	            case 6:
+	            {
+	            	Hamlet hamlet = hamletDAO.get(impactValue);
+	            	locationStr = hamlet.getHamletName()+ setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
+	            	break;
+	            }
+	            case 7:
+	            {
+	            	LocalElectionBody localBody = localElectionBodyDAO.get(impactValue);
+	            	locationStr = localBody.getName()+", "+localBody.getDistrict().getDistrictName()+"(Dt.)"+", " +localBody.getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 8:
+	            {
+	            	Constituency ward = constituencyDAO.get(impactValue);
+	            	locationStr = ward.getName()+", "+ ward.getLocalElectionBody().getName()+", "+ward.getLocalElectionBody().getDistrict().getDistrictName()+", "+ ward.getLocalElectionBody().getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 9:
+	            {
+	            	Booth booth = boothDAO.get(impactValue);
+	            	if(booth.getTehsil()!= null)
+	            	{
+	            		locationStr = booth.getTehsil().getTehsilName() + ", "+booth.getTehsil().getTehsilName()+setConstDistStateTOResult(booth.getTehsil().getTehsilId());	            		           		
+	            	}else if(booth.getLocalBody() != null)
+	            	{
+	            		/*if(booth.getBoothLocalBodyWard() != null)
+	            		{
+	            			locationStr = booth.getBoothLocalBodyWard().getLocalBodyWard().getName();
+	            		}*/
+	            		
+	            		locationStr = booth.getLocalBody().getName()+booth.getLocalBody().getDistrict().getDistrictName()+booth.getLocalBody().getDistrict().getState().getStateName();
+	            		
+	            	}
+	            	
+	            	break;
+	            }
+	            default: System.out.println("Invalid Scope.");break;
+	        }
+				problemBeanVO.setProblemLocation(locationStr);
+				
+				problemBeanVO.setStatus(problemInfo.getProblemStatus().getStatus());
+				
+				if("3".equalsIgnoreCase(status.toString()))
+					problemBeanVO.setDepartment(((AssignedProblemProgress)problemInfo.getAssignedProblemProgresses().toArray()[0]).getProblemSourceScopeConcernedDepartment().getDepartment());
+						
+				problemBeanVOList.add(problemBeanVO);
 			}
-			/**
-			 * modification ends here...
-			 */
-			
-			else{
-				if(tehsilIds.trim().length() > 0)
-					result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
-			}
-			problemBeanVO = populateProblemInfo(result,registrationId,taskType,null);
+				
 			}catch(Exception e){
 				e.printStackTrace();
-				System.out.println("Exception Raised--->"+e);
-			return null;			
-		}		
-			return problemBeanVO;
+				System.out.println("Exception Raised--->"+e);					
+			}		
+			return problemBeanVOList;
+		}
+		
+		private String setConstDistStateTOResult(Long tehsilId)
+		{
+			List stateDistConstMandal = delimitationConstituencyMandalDAO.getStateDistConstituencyMandalByMandalID(tehsilId);
+			Object[] objVO = (Object[]) stateDistConstMandal.get(0);
+			String str = objVO[1].toString()+objVO[3].toString()+objVO[5].toString();
+			
+			return str;
 		}
 		
 		/**
@@ -426,7 +523,7 @@ public class ProblemManagementReportService implements
 		 * @author Ravi Kiran.Y
 		 */
 		@SuppressWarnings("unchecked")
-		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,String taskType,String status){
+		public List<ProblemBeanVO> populateProblemInfo(List list,Long registrationId,Long taskType,String status){
 			
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
 			List<Registration> regUser = new ArrayList<Registration>();
@@ -552,11 +649,11 @@ public class ProblemManagementReportService implements
 					 */
 					if(taskType==null){
 					//Ends here..
-						if(taskType.equalsIgnoreCase(departmentName)){
+						/*if(taskType.equalsIgnoreCase(departmentName)){
 							if( !(problemBean.getDepartment().equalsIgnoreCase("Not Assigned."))){
 								problemBeanVO.add(problemBean);
 							}
-						}
+						}*/
 					}
 					else{
 						problemBeanVO.add(problemBean);	
@@ -1037,7 +1134,7 @@ public class ProblemManagementReportService implements
 			return locationwiseProblemStatusInfoVO;
 		}
 		
-		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,String status) {
+		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,Long status) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
 				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
@@ -1049,7 +1146,7 @@ public class ProblemManagementReportService implements
 			 * @Date 29-09-10
 			 * Starts from here.. 	
 			 */
-			if(status!=null && status!=""){
+			if(status!=null && status!=0){
 				//result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(registrationId,status);
 			}
@@ -1589,6 +1686,5 @@ public class ProblemManagementReportService implements
 				stateResult.addAll(districtResult);
 			}		
 			return stateResult;
-		}
-		
+		}		
 }

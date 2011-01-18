@@ -269,6 +269,11 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list1.size());
 	}*/
 	
+	public void testFindProblemsForSelectedSearchOptions(){
+		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l);
+		System.out.println(list1.size());
+	}
+	
 	/*public void testGetAllpostedProblemCountOtherThanLoggedInUser()
 	{
 		List list = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(2L);
