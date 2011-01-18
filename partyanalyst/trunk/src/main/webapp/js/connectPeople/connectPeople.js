@@ -649,7 +649,7 @@ function buildQuickRegionAccessContent()
 	cStr += '</tr>';
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>People Registered To '+districtName+' District</th>';
+	cStr += '<th>To '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
 	cStr += '</tr>';	
@@ -731,7 +731,7 @@ function showPostedProblems(jsObj,results)
 {	
 	var elmt = document.getElementById("postedProblems_main");
 	
-	if(results == null || results.length == 0)
+	/*if(results == null || results.length == 0)
 	{
 		results = [];
 	}		
@@ -746,14 +746,28 @@ function showPostedProblems(jsObj,results)
 			else if(results[i].isApproved == "false")
 				postedNotConsideredProblems.push(results[i]);
 		}
-	}
+	}*/
 
 	var str = '';
 	str += '<div class="tabContainerHeading">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td width="75%">Total posted problems - '+results.length+'</td>';
-	str += '<td width="25%" align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
+	if(results.totalPostedProblemsCount == 0)
+		str += '<td width="180px">Total posted problems - '+results.totalPostedProblemsCount+'</td>';
+	else
+		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
+
+	if(results.postedProblemsCountByLoggedInUsers == 0)
+		str += '<td width="90px">By User - >'+results.postedProblemsCountByLoggedInUsers+'</td>';
+	else
+		str += '<td width="90px">By User - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
+
+	if(results.postedProblemsCountByOtherUsers == 0)
+		str += '<td width="90px">By Others - '+results.postedProblemsCountByOtherUsers+'</td>';
+	else
+		str += '<td width="90px">By Others - <a href="javascript:{}" onclick="openDialogOfProblems(\'OtherUsers\')">'+results.postedProblemsCountByOtherUsers+'</a></td>';
+
+	str += '<td align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
 	str += '</tr>';
 	str += '</table>';
 	str += '</div>';
@@ -763,21 +777,21 @@ function showPostedProblems(jsObj,results)
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Problems Approved</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'approved\')">'+postedApprovedProblems.length+'</a> </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'approved\')">'+results.approvedProblemsCount+'</a> </td>';
 	str += '</tr>';
 
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Problems Rejected</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'rejected\')">'+postedRejectedProblems.length+'</a> </td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'rejected\')">'+results.rejectedProblemsCount+'</a> </td>';
 	str += '</tr>';
 
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Problems Not Considered</th>';
 	str += '<td> - </td>';
-	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'notConsidered\')">'+postedNotConsideredProblems.length+' </a></td>';
+	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'notConsidered\')">'+results.notConsideredProblemsCount+' </a></td>';
 	str += '</tr>';
 
 	str += '</table>';
@@ -786,45 +800,28 @@ function showPostedProblems(jsObj,results)
 	elmt.innerHTML = str;
 }
 
-function showProblemCompleteDetails(problemHistoryId)
-{
-	$( "#jQueryPopup" ).dialog("close");
-	window.location.replace("problemCompleteDetailsAction.action?problemHistoryId="+problemHistoryId);
-}
-
 function openDialogOfProblems(type)
 {
 	var reasons = new Array();
 	var title = '';
-	if(type == "approved")
+	if(type == "Total")
 	{
-		//reasons = postedApprovedProblems;
-		for(var i in postedApprovedProblems)
-		{
-			var obj = {
-					definition: '<a href="javascript:{}" title="Click To View Problem Complete Details" onclick="showProblemCompleteDetails('+postedApprovedProblems[i].problemHistoryId+')">'+postedApprovedProblems[i].definition+'</a>', 
-					description: postedApprovedProblems[i].description,
-					existingFrom: postedApprovedProblems[i].existingFrom, 
-					identifiedDate: postedApprovedProblems[i].identifiedDate,
-					location: postedApprovedProblems[i].location, 
-					locationType: postedApprovedProblems[i].locationType					 	
-			};
-			reasons.push(obj);
-		}
-		title = 'Approved Reasons';
+		reasons = postedApprovedProblems;
+		title = 'Total Posted Problems';
 	}
-	else if(type == "rejected")
+	else if(type == "LOGGED_USER")
 	{
 		reasons = postedRejectedProblems;
-		title = 'Rejected Reasons';
+		title = 'Problems Posted By User';
 	}
-	else if(type == "notConsidered")
+	else if(type == "OtherUsers")
 	{
 		reasons = postedNotConsideredProblems;
-		title = 'Not Considered Reasons';
+		title = 'Problems Posted By Other Users';
 	}
-	
-	title = 'Total '+type+' problems';
+	else
+		title = 'Total '+type+' problems';
+
 	$( "#jQueryPopup" ).dialog({
 			title:title,
 			autoOpen: true,
@@ -835,12 +832,111 @@ function openDialogOfProblems(type)
 			hide: "explode"
 		});
 
-	buildProblemsDatatable(reasons,"reasonsDataTable");
+	buildProblemsDatatable(type);
 }
 
-function buildProblemsDatatable(commentsArray,divId)
+function openProblemLocationWindow(problemId)
 {
-	var resultsDataSource = new YAHOO.util.DataSource(commentsArray);
+	$( "#jQueryPopup" ).dialog("close");
+	window.location.replace("problemCompleteDetailsAction.action?problemHistoryId="+problemId);
+}
+
+function buildProblemsDatatable(type)
+{
+	var resultsColumnDefs = [ {
+		key : "problemHistoryId",
+		label : "Problem Id",
+		hidden:true
+	}, {
+		key : "isApproved",
+		label : "Approved Status",
+		hidden:true
+	}, {
+		key : "definition",
+		label : "Problem",
+		formatter:"myCustom",
+		sortable : true
+	}, {
+		key : "description",
+		label : "Description",
+		sortable : true
+	}, {
+		key : "existingFrom",
+		label : "Existing From",
+		sortable : true
+	}, {
+		key : "identifiedDate",
+		label : "Posted On",
+		sortable : true
+	}, {
+		key : "location",
+		label : "Location",
+		sortable : true
+	}, {
+		key : "locationType",
+		label : "Location Type",
+		sortable : true
+	}  ];
+	
+	 this.myCustomFormatter = function(elLiner, oRecord, oColumn, oData) {
+		 if(oRecord.getData("isApproved") == "true") { 
+			elLiner.innerHTML = '<a href="javascript:{}" onclick="openProblemLocationWindow('+oRecord.getData("problemHistoryId")+')">'+oRecord.getData("definition")+'</a>'; 		 
+		 }
+		 else
+			elLiner.innerHTML = ''+oRecord.getData("definition")+''; 
+		
+	}; 
+
+	YAHOO.widget.DataTable.Formatter.myCustom = this.myCustomFormatter;
+
+	var dataSource = new YAHOO.util.DataSource("getAllPostedProblemsDataAction.action?type="+type+"&"); 
+	dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
+	dataSource.responseSchema = { 
+		resultsList: "problemsInfo", 
+		fields : [ {
+			key : "problemHistoryId"
+		},{
+			key : "isApproved"
+		},{
+			key : "definition"
+		}, {
+			key : "description"
+		}, {
+			key : "existingFrom"
+		}, {
+			key : "identifiedDate"
+		}, {
+			key : "location"
+		} , {
+			key : "locationType"
+		}],
+		metaFields: {
+			totalRecords: "problemsCount" // Access to value in the server response
+		}         
+	};
+
+	var myConfigs = {
+				initialRequest: "sort=definition&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+				dynamicData: true, // Enables dynamic server-driven data
+				sortedBy : {key:"definition", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+				paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
+	};
+	
+	var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("reasonsDataTable", 
+			resultsColumnDefs, dataSource, myConfigs);
+	
+	votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
+			oPayload.totalRecords = oResponse.meta.totalRecords;
+			return oPayload;
+	}	
+
+	return {
+		oDS: dataSource,
+		oDT: votersByLocBoothDataTable
+	};
+
+
+	/*var resultsDataSource = new YAHOO.util.DataSource(commentsArray);
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSource.responseSchema = {
 		fields : [ {
@@ -893,7 +989,7 @@ function buildProblemsDatatable(commentsArray,divId)
 			    pageLinks: 20
 			    }) 
 				};	
-	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  
+	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,myConfigs);  */
 }
 
 function openAddReasonWindow(taskType)
@@ -938,9 +1034,9 @@ function showPostedReasons(jsObj,results)
 	str += '<div class="tabContainerHeading">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td align="left"> Total posted reasons - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
-	str += '<td align="left"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
-	str += '<td align="left"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';
+	str += '<td align="left" width="180px"> Total posted reasons - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+	str += '<td align="left" width="90px"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
+	str += '<td align="left" width="90px"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';
 	str += '<td align="right">';
 	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')">Add Reasons</a>';
 	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';

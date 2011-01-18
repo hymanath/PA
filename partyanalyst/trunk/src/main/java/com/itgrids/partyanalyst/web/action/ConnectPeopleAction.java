@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -54,14 +55,23 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private Long loginUserId;
 	private String message;	
 	private List<CandidateCommentsVO> candidateCommentsVO;
-	private List<ProblemDetailsVO> problemDetailsVO;
+	private ProblemBeanVO problemDetailsVO;
 	private NavigationVO messageTypes;
 	private ConstituenciesStatusVO constituenciesStatusVO;
 	private IStaticDataService staticDataService;
 	private CandidateCommentsVO commentVO;
 	private UserCommentsInfoVO userComments;
 	private String loginUserName;
+	private ProblemDetailsVO problemDetails;
 	
+	public ProblemDetailsVO getProblemDetails() {
+		return problemDetails;
+	}
+
+	public void setProblemDetails(ProblemDetailsVO problemDetails) {
+		this.problemDetails = problemDetails;
+	}
+
 	public String getLoginUserName() {
 		return loginUserName;
 	}
@@ -111,11 +121,11 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		this.messageTypes = messageTypes;
 	}
 
-	public List<ProblemDetailsVO> getProblemDetailsVO() {
+	public ProblemBeanVO getProblemDetailsVO() {
 		return problemDetailsVO;
 	}
 
-	public void setProblemDetailsVO(List<ProblemDetailsVO> problemDetailsVO) {
+	public void setProblemDetailsVO(ProblemBeanVO problemDetailsVO) {
 		this.problemDetailsVO = problemDetailsVO;
 	}
 
@@ -562,6 +572,52 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return SUCCESS;
 	}
 	
+	
+	public String getPostedProblemsCount()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		
+		problemDetails = ananymousUserService.getPostedProblemsCount(user.getRegistrationID());
+		return Action.SUCCESS;
+	}
+	
+	public String getAllPostedProblemsData()
+	{		
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		Integer results = Integer.parseInt(request.getParameter("results"));
+		String order = request.getParameter("dir");
+		String columnName = request.getParameter("sort");
+		String type = request.getParameter("type");
+		String reasonType = "";
+		
+		if(IConstants.TOTAL.equalsIgnoreCase(type))
+			reasonType = IConstants.TOTAL;
+		else if (IConstants.LOGGED_USER.equalsIgnoreCase(type))
+			reasonType = IConstants.LOGGED_USER;
+		else if (IConstants.OTHERUSERS.equalsIgnoreCase(type))
+			reasonType = IConstants.OTHERUSERS;
+		else if (IConstants.APPROVED.equalsIgnoreCase(type))
+			reasonType = IConstants.APPROVED;
+		else if (IConstants.REJECTED.equalsIgnoreCase(type)) 
+			reasonType = IConstants.REJECTED;
+		else if (IConstants.NOTCONSIDERED.equalsIgnoreCase(type))
+			reasonType = IConstants.NOTCONSIDERED;
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		
+		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID(), 
+				startIndex, results, order, columnName, reasonType);
+		return Action.SUCCESS;
+	}
+	
 	public String getAllPostedReasonsStatusUser()
 	{		
 		try {
@@ -611,22 +667,6 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		userComments = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID(), startIndex, results, order, columnName, reasonType);
 		//candidateCommentsVO = ananymousUserService.getAllPostedReasonsByUserId(user.getRegistrationID());
 		
-		return Action.SUCCESS;
-	}
-	public String getAllPostedProblemsByUser()
-	{
-		try {
-			jObj = new JSONObject(getTask());			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user==null){
-			return IConstants.NOT_LOGGED_IN;
-		}
-		
-		problemDetailsVO = ananymousUserService.getAllPostedProblemsByUserId(user.getRegistrationID());
 		return Action.SUCCESS;
 	}
 	
