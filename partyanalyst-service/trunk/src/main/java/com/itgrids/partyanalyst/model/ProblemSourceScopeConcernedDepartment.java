@@ -89,7 +89,7 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 		this.problemSourceScope = problemSourceScope;
 	}
 
-	@Column(name = "department", length = 50)
+	@Column(name = "department", length = 150)
 	public String getDepartment() {
 		return department;
 	}
