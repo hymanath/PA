@@ -224,6 +224,7 @@ public interface IConstants {
     public static final String NEW_CONSTITUENCY = "NC";
     
     //Entitlements
+    public static final String ADMIN_PAGE = "ADMIN_PAGE";
     public static final String CONSTITUENCY_PAGE = "CONSTITUENCY_PAGE";
     public static final String CONSTITUENCY_PAGE_COMPLETE_VIEW = "CONSTITUENCY_PAGE_COMPLETE_VIEW";
     public static final String MANDAL_VOTING_TRENDZ = "MANDAL_VOTING_TRENDZ";
