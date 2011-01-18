@@ -352,12 +352,12 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	@SuppressWarnings("unchecked")
 	public void testFindCadreForSMS()
 	{
-		//String s = "and model.currentAddress.state.stateId = 1";
+		String s = "and model.currentAddress.state.stateId = 1";
 		//String s = "and model.currentAddress.district.districtId = 19";
 		//String s = "and model.currentAddress.constituency.constituencyId = 231";
 		//String s = "and model.currentAddress.tehsil.tehsilId = 861";
 		//String s = "and model.currentAddress.hamlet.hamletId = 2094";
-		String s = "and model.currentAddress.localElectionBody.localElectionBodyId = 478";
+		//String s = "and model.currentAddress.localElectionBody.localElectionBodyId = 478";
 		//String s = "and model.currentAddress.ward.constituencyId = 8147";
 		//String s = "and model.currentAddress.booth.boothId = 69082";
 		//String cadreType="and model.memberType = 'Active'";
@@ -386,16 +386,23 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 		//String s = " and model.cadreLevel.cadreLevelID = 2";
 		
+		String name = "k";
+		
 		String mobileStr=" and length(model.mobile) > 0";
 		
-		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,sortOption,order,0,20);
+		String cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
+		
+		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,sortOption,order,0,20);
 		
 		for(Long y:x)
 		{
 			System.out.println(cadreDAO.get(y).getCadreId());
+			System.out.println(cadreDAO.get(y).getFirstName());
+			System.out.println(cadreDAO.get(y).getLastName());
+			System.out.println(cadreDAO.get(y).getMiddleName());
 		}
 		
-		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr);
+		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr);
 		System.out.println(y.get(0).toString());
 		
 	}
