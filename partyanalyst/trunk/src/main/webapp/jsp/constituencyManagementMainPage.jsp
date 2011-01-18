@@ -2923,7 +2923,7 @@
 		if(EditClassifyProbsDialog)
 			EditClassifyProbsDialog.destroy();
 		EditClassifyProbsDialog = new YAHOO.widget.Dialog("editClassifiedProbsDiv",
-				{ width : "400px", 
+				{ width : "600px", 
 	              fixedcenter : false, 
 	              visible : true,  
 	              constraintoviewport : true, 
