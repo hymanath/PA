@@ -352,7 +352,8 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return queryObject.list();
 	}*/
 	
-	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType)
+	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, 
+			String order, String columnName, String reasonType)
 	{	
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.commentData, ");			
