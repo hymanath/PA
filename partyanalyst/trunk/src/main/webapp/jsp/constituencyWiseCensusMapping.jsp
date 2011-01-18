@@ -112,7 +112,7 @@ function censusAjaxCall(jsObj,url){
 								if(jsObj.task == "doConstituencyWiseCensusMapping")
 								{	
 									hideAjaxImage();
-									//buildResultTable(myResults);
+									buildResultTable(myResults);
 								} 
 																
 						}
@@ -156,84 +156,85 @@ function hideAjaxImage()
 
 function buildResultTable(myResults)
 {
-	console.log(myResults);
 	if(myResults == null)
 	{
 		return;
 	}
 	else
 	{
-		debugger;
 		var resultDivElmt = document.getElementById("mappingResultDiv");
 
 		var resultVar = '';
 
-		resultVar += '<span><b>----------Mapping Results---------</b> </span><BR><BR>';
+		resultVar += '<h2 style="color:blue;"><span><b>-----------Mapping Results----------</b> </span></h2><h3><BR><BR>';
 
 		if(myResults.mapeedConstituencies != null && myResults.mapeedConstituencies.length > 0)
 		{
-			resultVar += '<span><b>----------Mapped Constituencies---------</b> </span><BR><BR>';
+			resultVar += '<span><b style="color:green;">----------Mapped Constituencies---------</b> </span><BR><BR>';
 
-			resultVar += '<table border="0" align="center">';
+			resultVar += '<table border="1" align="center" width="50%">';
 			resultVar += '<tr>';
 			resultVar += '	<th>SNO</th>';
 			resultVar += '	<th>Constituency Id</th>';
 			resultVar += '	<th>Constituency Name</th>';
 			resultVar += '</tr>';
 
+			var sn = 0;
 			for(var i in myResults.mapeedConstituencies)
 			{
 				resultVar += '<tr>';
-				resultVar += '<td>'+j+'</td>';
+				resultVar += '<td>'+ ++sn +'</td>';
 				resultVar += '<td>'+myResults.mapeedConstituencies[i].id+'</td>';
 				resultVar += '<td>'+myResults.mapeedConstituencies[i].name+'</td>';
 				resultVar += '</tr>';
 			}
-			resultVar += '</table>';
+			resultVar += '</table><BR><BR>';
 		}
 
 		if(myResults.unMapeedConstituencies != null && myResults.unMapeedConstituencies.length > 0)
 		{
-			resultVar += '<span><b>----------Un Mapped Constituencies---------</b> </span><BR><BR>';
+			resultVar += '<span><b style="color:red;">----------Un Mapped Constituencies---------</b> </span><BR><BR>';
 
-			resultVar += '<table border="0" align="center">';
+			resultVar += '<table border="1" align="center" width="50%">';
 			resultVar += '<tr>';
 			resultVar += '	<th>SNO</th>';
 			resultVar += '	<th>Constituency Id</th>';
 			resultVar += '	<th>Constituency Name</th>';
 			resultVar += '</tr>';
-
+			
+			var sn = 0;
 			for(var j in myResults.unMapeedConstituencies)
 			{
 				resultVar += '<tr>';
-				resultVar += '<td>'+j+'</td>';
+				resultVar += '<td>'+ ++sn +'</td>';
 				resultVar += '<td>'+myResults.unMapeedConstituencies[j].id+'</td>';
 				resultVar += '<td>'+myResults.unMapeedConstituencies[j].name+'</td>';
 				resultVar += '</tr>';
 			}
-			resultVar += '</table>';
+			resultVar += '</table><BR><BR>';
 		}
 
 		if(myResults.existedConstituencies != null && myResults.existedConstituencies.length > 0)
 		{
-			resultVar += '<span><b>----------Un Mapped Constituencies---------</b> </span><BR><BR>';
+			resultVar += '<span><b style="color:blue;">----------Already Existed Constituencies---------</b> </span><BR><BR>';
 
-			resultVar += '<table border="0" align="center">';
+			resultVar += '<table border="2" align="center" width="50%">';
 			resultVar += '<tr>';
 			resultVar += '	<th>SNO</th>';
 			resultVar += '	<th>Constituency Id</th>';
 			resultVar += '	<th>Constituency Name</th>';
 			resultVar += '</tr>';
 
+			var sn = 0;
 			for(var k in myResults.existedConstituencies)
 			{
 				resultVar += '<tr>';
-				resultVar += '<td>'+j+'</td>';
+				resultVar += '<td>'+ ++sn +'</td>';
 				resultVar += '<td>'+myResults.existedConstituencies[k].id+'</td>';
 				resultVar += '<td>'+myResults.existedConstituencies[k].name+'</td>';
 				resultVar += '</tr>';
 			}
-			resultVar += '</table>';
+			resultVar += '</table><BR><BR>';
 		}
 
 		resultDivElmt.innerHTML = resultVar;
