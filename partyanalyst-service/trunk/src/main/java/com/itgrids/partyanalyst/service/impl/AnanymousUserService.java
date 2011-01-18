@@ -1380,7 +1380,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					
 					problem.setLocationType(params[7].toString());
 					problem.setIsApproved(params[8].toString());
-					
+					problem.setProblemHistoryId((Long)params[9]);
 					problemList.add(problem);
 				}
 			}
