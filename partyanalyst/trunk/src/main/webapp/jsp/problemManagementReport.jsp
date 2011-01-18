@@ -263,38 +263,143 @@ var problemDetails={
 
 var type="",createGroupDialog,problemLocationId; 
 
+function showProblemsReport(results, jsObj){
+	assignToProblemsArray = new Array();
+
+			for(var i in results)
+			{
+				var problemObj= {
+						 problem: results[i].problem,
+						 description: results[i].description,
+						 existingFrom: results[i].existingFrom,
+						 status: results[i].status,						 
+						 problemLocation: results[i].problemLocation,
+						 department: results[i].department,
+						 designation: results[i].designation						 						
+					};				
+				assignToProblemsArray.push(problemObj);
+				problemDetails.problemArray=assignToProblemsArray;	
+			}
+			var emptyArr = new Array();
+		    if(results.length == 0)
+			{	
+		    	problemDetails.problemArray = emptyArr;				
+			}
+			if(jsObj.subTask == '')
+			{
+				initializeResultsTable();
+			} else 
+			{
+				showProblemsReportWithDepartments();
+			}
+					
+}
+function showProblemsReportWithDepartments()
+{
+	var resultsDataSource = new YAHOO.util.DataSource(problemDetails.problemArray);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "problem"
+		}, 	{
+			key : "description"
+		}, {
+			key : "existingFrom"
+		}, {
+			key : "status"
+		}, {
+			key : "problemLocation"
+		}, {
+			key : "department"
+		}, {
+			key : "designation"
+		}]   
+	};	
+
+	var resultsColumnDefs = [ {
+		key : "problem",
+		label : "Problem",
+		sortable : true
+	}, {
+		key : "description",
+		label : "Description",
+		sortable : true,
+		resizable:true
+	}, {
+		key : "existingFrom",
+		label : "Reported Date",
+		sortable : true
+	}, {
+		key : "status",
+		label : "Problem Status",
+		sortable : true
+	}, {
+		key : "problemLocation",
+		label : "Problem Location",
+		sortable : true
+	}, {
+		key : "department",
+		label : "Department",
+		sortable : true
+	}, {
+		key : "designation",
+		label : "Designation",
+		sortable : true
+	}];	
+	if(problemDetails.problemArray.length>25)
+	{
+		var myConfigs = {		
+				paginator : new YAHOO.widget.Paginator({
+				    rowsPerPage: 25,
+				    template: "{PageLinks} Show {RowsPerPageDropdown} per page",
+				    rowsPerPageOptions: [25,50,75,100], 
+				    pageLinks: 25 
+				    }),   
+				};	
+	}
+
+
+
+	var myDataTable = new YAHOO.widget.DataTable("problemInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);
+	myDataTable.subscribe("linkClickEvent" ,function(oArgs){
+		elLinkInDataTable = oArgs.target;
+		record = this.getRecord(elLinkInDataTable);
+		column = this.getColumn(elLinkInDataTable);
+		record.setData(column);
+		//buildMoreDetailsPopUp();	
+		problemLocationId = record._oData.problemLocationId;
+		var jsObj=
+		{
+				locationId:problemLocationId,
+				task:"getProblemDetails"						
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/problemManagementHistoryResults.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
+	});
+}
+
 function initializeResultsTable() {
 
 var resultsDataSource = new YAHOO.util.DataSource(problemDetails.problemArray);
 resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 resultsDataSource.responseSchema = {
 	fields : [ {
-		key : "name"
-	}, {
+		key : "problem"
+	}, 	{
 		key : "description"
-	},{
-		key : "postedPersonName"
-	},  {
-		key : "hamlet"
 	}, {
 		key : "existingFrom"
 	}, {
 		key : "status"
-	}, {
-		key : "department"
-	}, {
-		key : "departmentConcernedPersonName"
-	}, {
-		key : "updatedDate"
-	},{
-		key : "comments"
-	},{
-		key : "MoreDetails"
+	},  {
+		key : "problemLocation"
 	}]   
 };	
 
 var resultsColumnDefs = [ {
-	key : "name",
+	key : "problem",
 	label : "Problem",
 	sortable : true
 }, {
@@ -302,40 +407,31 @@ var resultsColumnDefs = [ {
 	label : "Description",
 	sortable : true,
 	resizable:true
-},{
-	key : "postedPersonName",
-	label : "Reported By",
-	sortable : true
-	},{
-	key : "hamlet",
-	label : "Location",
-	sortable : true
 }, {
 	key : "existingFrom",
 	label : "Reported Date",
-	sortable : true
-}, {
-	key : "department",
-	label : "Department",
 	sortable : true
 }, {
 	key : "status",
 	label : "Problem Status",
 	sortable : true
 }, {
-	key : "MoreDetails",
-	label : "View Details",
+	key : "problemLocation",
+	label : "Problem Location",
 	sortable : true
-} ];	
+}];	
+if(problemDetails.problemArray.length>25)
+{
+	var myConfigs = {		
+			paginator : new YAHOO.widget.Paginator({
+			    rowsPerPage: 25,
+			    template: "{PageLinks} Show {RowsPerPageDropdown} per page",
+			    rowsPerPageOptions: [25,50,75,100], 
+			    pageLinks: 25 
+			    }),   
+			};	
+}
 
-var myConfigs = {		
-paginator : new YAHOO.widget.Paginator({
-    rowsPerPage: 25,
-    template: "{PageLinks} Show {RowsPerPageDropdown} per page",
-    rowsPerPageOptions: [25,50,75,100], 
-    pageLinks: 25 
-    }),   
-};
 
 
 var myDataTable = new YAHOO.widget.DataTable("problemInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);
@@ -556,8 +652,8 @@ var callback = {
 					fillDeptSelect(myResults);			
 				}if(jsObj.task == "getProblemsBySelection")
 				{
-					showProblemsReport(myResults);			
-				}
+					showProblemsReport(myResults,jsObj);			
+				}				
 				
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
@@ -594,43 +690,6 @@ function fillDeptSelect(results)
 	tableEl.style.display = '';
 	
 }
-function showProblemsReport(results){
-	assignToProblemsArray = new Array();
-
-			for(var i in results)
-			{
-				var problemObj= {
-						 name:results[i].name,
-						 description:results[i].description,
-						 postedPersonName:results[i].postedPersonName,
-						 hamlet:results[i].hamlet,
-						 existingFrom:results[i].existingFrom,
-						 status:results[i].status,
-						 department:results[i].department,
-						 departmentConcernedPersonName:results[i].departmentConcernedPersonName,
-						 updatedDate:results[i].updatedDate,
-						 comments:results[i].comments,
-						 email:results[i].email,
-						 phone:results[i].phone,
-						 mobile:results[i].mobile,
-						 address:results[i].address,
-						 contactNo:results[i].contactNo,
-						 designation:results[i].designation,
-						 designation:results[i].designation,
-						 problemLocationId:results[i].problemLocationId,
-						 MoreDetails:'<a href="#">More Details..</a>'						
-					};
-				
-				assignToProblemsArray.push(problemObj);
-				problemDetails.problemArray=assignToProblemsArray;	
-			}
-			var emptyArr = new Array();
-		    if(results.length == 0)
-			{	
-		    	problemDetails.problemArray = emptyArr;				
-			}
-			initializeResultsTable();		
-}
 
 function showProbRegionsSelect()
 {
@@ -638,6 +697,7 @@ function showProbRegionsSelect()
 	var statusSpanEl = document.getElementById("statusSpan");
 	var deptRegionSpanEl = document.getElementById("deptRegionSpan");
 	var tableEl = document.getElementById("deptsSelectTable");
+	var problemInfoDivBodyEl = document.getElementById("problemInfoDivBody");
 	if(probRegionSpanEl.style.display == 'none')
 		probRegionSpanEl.style.display = 'block';
 	if(statusSpanEl.style.display == 'block')
@@ -647,6 +707,7 @@ function showProbRegionsSelect()
 	tableEl.style.display = 'none';	
 	var errorDivEl = document.getElementById("errorDiv");
 	errorDivEl.innerHTML = '';	
+	problemInfoDivBodyEl.innerHTML = '';
 }
 
 function showProbStatusSelect()
@@ -657,6 +718,7 @@ function showProbStatusSelect()
 	var tableEl = document.getElementById("deptsSelectTable");
 	var locationsTableEl = document.getElementById("locationsTable");
 	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv");
+	var problemInfoDivBodyEl = document.getElementById("problemInfoDivBody");
 	if(statusSpanEl.style.display == 'none')
 		statusSpanEl.style.display = 'block';
 	if(probRegionSpanEl.style.display == 'block')
@@ -668,6 +730,7 @@ function showProbStatusSelect()
 	problemLocationOptionsDivEl.style.display = 'none';
 	var errorDivEl = document.getElementById("errorDiv");
 	errorDivEl.innerHTML = '';	
+	problemInfoDivBodyEl.innerHTML = '';
 }
 function showDeptRegionsSelect()
 {
@@ -676,6 +739,7 @@ function showDeptRegionsSelect()
 	var deptRegionSpanEl = document.getElementById("deptRegionSpan");
 	var locationsTableEl = document.getElementById("locationsTable");
 	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv");
+	var problemInfoDivBodyEl = document.getElementById("problemInfoDivBody");
 	if(deptRegionSpanEl.style.display == 'none')
 		deptRegionSpanEl.style.display = 'block';
 	if(statusSpanEl.style.display == 'block')
@@ -686,7 +750,7 @@ function showDeptRegionsSelect()
 	problemLocationOptionsDivEl.style.display = 'none';	
 	var errorDivEl = document.getElementById("errorDiv");
 	errorDivEl.innerHTML = '';
-	
+	problemInfoDivBodyEl.innerHTML = '';	
 }
 
 function getDepartmentsByScope(scope)
@@ -885,7 +949,7 @@ function setLocationValue(value, source)
 	}
 	
 }
-//wkg
+
 function getProblems()
 {
 	var problemOptionEl = document.getElementsByName("problemOption");
@@ -900,6 +964,7 @@ function getProblems()
 	var selectedDept;
 	var selectedProblemScope;
 	var selectedSortOption;
+	var subTask = '';
 	var errorDivEl = document.getElementById("errorDiv");
 	errorDivEl.innerHTML = '';
 	for(var i = 0; i<problemOptionEl.length; i++)
@@ -922,8 +987,7 @@ function getProblems()
 	{
 		selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
 		selectedLocation = hiddenEl.value;
-		alert(selectedLocation);
-		alert(selectedProblemScope);
+		
 		if(selectedLocation == '' && selectedProblemScope == 0)
 		{
 			errorDivEl.innerHTML = 'Invalid Problem Region Level and Location';
@@ -937,11 +1001,14 @@ function getProblems()
 			errorDivEl.innerHTML = 'Invalid Problem Region Level';
 			return;
 		}
-		if(selectedSortOption == 'departmentwise')	
-			selectedStatus = 3;
-		else 
+		if(selectedSortOption == 'departmentwise')
+		{
+			selectedStatus = 4;
+			subTask = 'department';
+		} else 
 			selectedStatus = 0;
 		selectedDept = 0;
+		
 	} else if(selectedOption == 'status')
 	{
 		selectedStatus = statusListEl.options[statusListEl.selectedIndex].value;
@@ -956,9 +1023,10 @@ function getProblems()
 	} else if(selectedOption == 'department')
 	{
 		selectedDept = deptsSelectFieldEl.options[deptsSelectFieldEl.selectedIndex].value;
-		selectedStatus = 3;	
+		selectedStatus = 4;	
 		selectedProblemScope = 0;
-		selectedLocation = 0;			
+		selectedLocation = 0;
+		subTask = 'department';			
 	}
 	
 	var jsObj=
@@ -967,7 +1035,8 @@ function getProblems()
 			selectedStatus: selectedStatus,
 			selectedDept: selectedDept,
 			selectedProblemScope: selectedProblemScope,
-			task:"getProblemsBySelection"
+			task:"getProblemsBySelection",
+			subTask: subTask
 									
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1071,7 +1140,7 @@ function getProblems()
 <div id="buildId"></div>
 </div>
 <div class="yui-skin-sam">
-	<div id="problemInfoDivBody" ></div>
+	<div id="problemInfoDivBody" style="margin:15px;"></div>
 </div>
 <input type="hidden" id="problemLocation" name="problemLocationId"/>
 </body>
