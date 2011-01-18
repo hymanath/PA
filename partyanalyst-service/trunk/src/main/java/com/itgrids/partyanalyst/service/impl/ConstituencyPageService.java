@@ -820,8 +820,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					votesEarned = (Long)values[8];
 					polledVotes = (Long)values[9];
 					revenueVillageParty.setVotesEarned(votesEarned);
-					revenueVillageParty.setVotesPercentage(new BigDecimal((votesEarned*100.0)/polledVotes)
+					if(polledVotes > 0)
+						revenueVillageParty.setVotesPercentage(new BigDecimal((votesEarned*100.0)/polledVotes)
 												.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+					else
+						revenueVillageParty.setVotesPercentage("0.0");
 					revenueVillageParties.add(revenueVillageParty);
 				}
 				
