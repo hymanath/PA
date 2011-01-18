@@ -17,6 +17,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -65,6 +67,17 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private Long accessValue;
 	private List<SelectOptionVO> statesList, districtsList, constituenciesList; 
 	private IInfluencingPeopleService influencingPeopleService;
+	private List<SelectOptionVO> statusList;
+	private List<SelectOptionVO> problemScopes;
+	private List<SelectOptionVO> deptScopes;
+	private IProblemManagementService problemManagementService;
+	private Long scope;
+	private List<SelectOptionVO> stateList;
+	private List<SelectOptionVO> districtList;
+	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> pConstituencyList;
+	private List<SelectOptionVO> mandalList;
+	
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -218,16 +231,126 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	public void setInfluencingPeopleService(
 			IInfluencingPeopleService influencingPeopleService) {
 		this.influencingPeopleService = influencingPeopleService;
+	}	
+	
+	public List<SelectOptionVO> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<SelectOptionVO> statusList) {
+		this.statusList = statusList;
+	}
+	public List<SelectOptionVO> getProblemScopes() {
+		return problemScopes;
+	}
+	public void setProblemScopes(List<SelectOptionVO> problemScopes) {
+		this.problemScopes = problemScopes;
+	}	
+	
+	public List<SelectOptionVO> getDeptScopes() {
+		return deptScopes;
+	}
+	public void setDeptScopes(List<SelectOptionVO> deptScopes) {
+		this.deptScopes = deptScopes;
+	}
+	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}	
+	
+	public Long getScope() {
+		return scope;
+	}
+	public void setScope(Long scope) {
+		this.scope = scope;
+	}	
+	
+	public List<SelectOptionVO> getStateList() {
+		return stateList;
+	}
+	public void setStateList(List<SelectOptionVO> stateList) {
+		this.stateList = stateList;
+	}
+	public List<SelectOptionVO> getDistrictList() {
+		return districtList;
+	}
+	public void setDistrictList(List<SelectOptionVO> districtList) {
+		this.districtList = districtList;
+	}
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+	public List<SelectOptionVO> getPConstituencyList() {
+		return pConstituencyList;
+	}
+	public void setPConstituencyList(List<SelectOptionVO> constituencyList) {
+		pConstituencyList = constituencyList;
+	}
+	public List<SelectOptionVO> getMandalList() {
+		return mandalList;
+	}
+	public void setMandalList(List<SelectOptionVO> mandalList) {
+		this.mandalList = mandalList;
 	}
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long stateId = 0l;
+		stateList = new ArrayList<SelectOptionVO>();
+		districtList = new ArrayList<SelectOptionVO>();
+		constituencyList = new ArrayList<SelectOptionVO>();
+		mandalList = new ArrayList<SelectOptionVO>();
+		
 			
 		if(user==null)
 			return ERROR;
-		
+		accessType = user.getAccessType();
+		accessValue = new Long(user.getAccessValue());
+		if("MLA".equals(accessType))
+		{
+			log.debug("Access Type = MLA ****");
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);	
+			stateList = regionServiceDataImp.getStatesByCountry(1l);			
+			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());  			
+			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
+			
+			stateId = list.get(0).getId();
+			setScope(4l);
+		}
+		else if("STATE".equals(accessType)){
+			log.debug("Access Type = State ****");			
+			stateId = accessValue;	
+			setScope(2l);
+			stateList = regionServiceDataImp.getStatesByCountry(1l);			
+			
+		}else if("DISTRICT".equals(accessType)){
+			log.debug("Access Type = District ****");			
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+			stateId = list.get(0).getId();
+			setScope(3l);
+			stateList = regionServiceDataImp.getStatesByCountry(1l);			
+			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());			
+			
+		} else if("MP".equals(accessType)){
+			List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+			stateId = list.get(0).getId();	
+			setScope(4l);
+			stateList = regionServiceDataImp.getStatesByCountry(1l);
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+			pConstituencyList = staticDataService.getConstituenciesByElectionTypeAndStateId(1l,stateId).getConstituencies();
+						
+		}
+		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM, stateId);
+		statusList = problemManagementReportService.getAllProblemStatusInfo();
+		deptScopes = problemManagementService.getAllDepartmentScopes();
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
@@ -260,12 +383,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				result = staticDataService.getHamletsForTownship(new Long(jObj.getLong("locationId")));
 				result.add(0,new SelectOptionVO(0l,"Select Hamlet"));
 			}
-			else if(jObj.getString("task").equals("findVoters")){
-				taskType =  jObj.getString("taskType");
-				locationId = new Long(jObj.getLong("locationId"));
-				status = findTaskType(taskType);
-				problemBean = problemManagementReportService.getHamletProblemsInfo(new Long(locationId), user.getRegistrationID(),status);
-			}
+			
 			else if(jObj.getString("task").equals("findTownshipVoters")){
 				taskType =  jObj.getString("taskType");
 				locationId = new Long(jObj.getLong("locationId"));
@@ -277,13 +395,21 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				locationId = new Long(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
 				//Should Be Refactored For Constituency Type Bellow
-				problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status, IConstants.ASSEMBLY_ELECTION_TYPE);
+				//problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status, IConstants.ASSEMBLY_ELECTION_TYPE);
 			}else if(jObj.getString("task").equals("getParties")){
 				result = staticDataService.getStaticParties();
 			}else if(jObj.getString("task").equals("getPositions")){
 				result = influencingPeopleService.getAllInfluencePeoplePositions();
 			}else if(jObj.getString("task").equals("getInfluencingRange")){
 				result = influencingPeopleService.getInfluenceRange();
+			}else if(jObj.getString("task").equals("getProblemsBySelection")){
+				
+				Long locationId =  jObj.getLong("selectedLocation");
+				Long selectedStatus = jObj.getLong("selectedStatus");
+				Long selectedDept = jObj.getLong("selectedDept");
+				Long selectedProblemScope = jObj.getLong("selectedProblemScope");
+				
+				problemBean = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept);
 			}
 		}
 				
