@@ -68,6 +68,7 @@ function buildPoliticalChanges() {
 }
 
 function showProblemsStatusCount(results) {
+	
 	var problemStats_bodyEl = document.getElementById("problems_outline_Div");
 	var chartName = results.problemsStatusChartName;
 	var barChartName = results.lineChartPath;
@@ -95,7 +96,7 @@ function showProblemsStatusCount(results) {
 				+ '</TD><TD align="left"><DIV class="'
 				+ results.problemsCountByStatus[i].status
 				+ '"></DIV></TD><TD align="left"><A href="javascript:{}" onclick="getProblemsByStatusInLocations(\''
-				+ results.problemsCountByStatus[i].status + '\')">'
+				+ results.problemsCountByStatus[i].statusId + '\')">'
 				+ results.problemsCountByStatus[i].count + '</A></TD>';
 		if (i != 0 && i % 2 == 0)
 			problemStats_bodyElContent += '</tr><tr>';
