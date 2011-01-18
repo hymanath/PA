@@ -1664,9 +1664,15 @@
 			</result>		
 		</action>
 		
-		<action name="getAllPostedProblemsByUserAction" class="connectPeopleAction" method="getAllPostedProblemsByUser">
+		<action name="getAllPostedProblemsDataAction" class="connectPeopleAction" method="getAllPostedProblemsData">
 			<result type="json" name="success">
 				<param name="root">problemDetailsVO</param>				
+			</result>		
+		</action>
+		
+		<action name="getAllPostedProblemsByUserAction" class="connectPeopleAction" method="getPostedProblemsCount">
+			<result type="json" name="success">
+				<param name="root">problemDetails</param>				
 			</result>		
 		</action>		
 		
