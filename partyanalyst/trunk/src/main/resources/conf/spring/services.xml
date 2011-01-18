@@ -540,6 +540,7 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
 		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="boothDAO" ref="boothDAO" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
