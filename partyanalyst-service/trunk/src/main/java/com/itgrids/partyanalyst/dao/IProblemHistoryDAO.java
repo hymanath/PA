@@ -10,17 +10,17 @@ import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
-	public List findProblemsForALocationsByHamletId(Long hamletId);
+	//public List findProblemsForALocationsByHamletId(Long hamletId, Long userId);
 	
 	public List findProblemsForALocationsByTehsilId(Long tehsilId);
 	
-	public List findProblemsForALocationsByConstituencyId(String constituencyIds);
+	//public List findProblemsForALocationsByConstituencyId(String constituencyIds, Long userId);
 	
-	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status);
+	//public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status, Long userId);
 	
 	public List findProblemsByStatusForALocationsByTehsilId(Long tehsilId,String status);
 	
-	public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds,String status);
+	//public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds,String status);
 	
 	public List<ProblemHistory> findProblemLocationsByUserId(Long registrationId, Long statusId);
 	
@@ -72,7 +72,7 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List findProblemsByStatusDateAndLocation(Long userId, Long statusId, Date fromDate, Date toDate);
 	
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, String status);
+	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, Long status);
 	
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByConstituencyId(Long userId);
@@ -80,8 +80,10 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	@SuppressWarnings("unchecked")
 	public List findProblemCompleteInfo(Long problemHistoryId);	
 	
+	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId);
 	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long registrationId, String reasonType);
 	
+
 	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemsByAnanymousUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType);
 	
