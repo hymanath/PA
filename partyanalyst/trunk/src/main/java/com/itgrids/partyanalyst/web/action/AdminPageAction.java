@@ -30,9 +30,9 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	public String execute(){
 		HttpSession session = request.getSession();
 		if(session.getAttribute(IConstants.USER) == null && 
-				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CROSS_VOTING_REPORT))
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
 			return ERROR;
 		return SUCCESS;
 	}
