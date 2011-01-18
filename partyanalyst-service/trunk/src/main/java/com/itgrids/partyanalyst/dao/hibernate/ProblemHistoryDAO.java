@@ -24,18 +24,21 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"and model.problemStatus.problemStatusId = ? order by model.problemLocation.problemAndProblemSource.problem.identifiedOn desc",params);
 	}
 	
-
-
+	
 	@SuppressWarnings("unchecked")
-	public List findProblemsForALocationsByHamletId(Long hamletId){
-		
+	public List findProblemsForALocationsByHamletId(Long hamletId,Long userId){
+		Object [] params = {hamletId, userId,IConstants.VILLAGE};
 		String query = buildCommonQuery();
 		
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);		
-		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and model.isDelete is null");
+		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel in ( ");
+		conditionQuery.append(" select model1.regionScopesId from RegionScopes model1 where model1.scope = ?) ");
+		conditionQuery.append(" and model.isDelete is null");
 		
-		return getHibernateTemplate().find(conditionQuery.toString(),hamletId);
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,16 +52,20 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find(conditionQuery.toString(),tehsilId);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List findProblemsForALocationsByConstituencyId(String constituencyIds) {
+	/*@SuppressWarnings("unchecked")
+	public List findProblemsForALocationsByConstituencyId(String constituencyIds,Long userId) {
+		Object[] params = {userId,IConstants.CONSTITUENCY};
 		
-		String query = buildCommonQuery();
-		
+		String query = buildCommonQuery();		
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.isDelete is null");
-		return getHibernateTemplate().find(conditionQuery.toString());
-	}
+		conditionQuery.append(" where model.problemLocation.problemImpactLevelValue in (  " + constituencyIds +") and");	
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel.scope = ? and");
+		conditionQuery.append(" model.isDelete is null");
+		
+		return getHibernateTemplate().find(conditionQuery.toString(),params);
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByConstituencyId(Long userId) {
@@ -71,18 +78,23 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		return getHibernateTemplate().find(conditionQuery.toString());
 	}
 
-	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status) {
-		Object[] params = {hamletId,status};
+	/*@SuppressWarnings("unchecked")
+	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status,Long userId) {
+		Object[] params = {hamletId,status,userId,IConstants.VILLAGE};
 		
 		String query = buildCommonQuery();
 		
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? and model.isDelete is null");
+		conditionQuery.append(" where model.problemLocation.problemImpactLevelValue = ? and ");
+		conditionQuery.append(" model.problemStatus.status = ? and ");
+		conditionQuery.append(" model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
+		conditionQuery.append(" model.problemLocation.problemImpactLevel in ( ");
+		conditionQuery.append(" select model1.regionScopesId from RegionScopes model1 where model1.scope = ?) and");
+		conditionQuery.append(" model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
-
+*/
 	@SuppressWarnings("unchecked")
 	public List findProblemsByStatusForALocationsByTehsilId(Long tehsilId,String status) {
 		Object[] params = {tehsilId,status};
@@ -95,24 +107,49 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds, String status) {
-		String query = buildCommonQuery();
+	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId) {
+				
+		StringBuilder conditionQuery = new StringBuilder();
+		conditionQuery.append(" from ProblemHistory model ");
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and");
 		
-		StringBuilder conditionQuery = new StringBuilder();		
-		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +") and model.problemStatus.status = ? and model.isDelete is null");
-		return getHibernateTemplate().find(conditionQuery.toString(),status);
+		if(model != null && idToCompare != null)
+			conditionQuery.append("  model.problemLocation.problemCompleteLocation."+ model +"."+idToCompare+" = ? and");		
+				
+		if(status!= null && status!= 0l && !status.equals(""))
+			conditionQuery.append(" model.problemStatus.problemStatusId = ? and ");	
+		
+		if(deptId!=0l){
+			conditionQuery.append(" model.problemHistoryId in ( select model2.problemHistory.problemHistoryId from ");			
+			conditionQuery.append(" AssignedProblemProgress model2 where model2.problemSourceScopeConcernedDepartment.problemSourceScopeConcernedDepartmentId = ? ) and ");
+		}
+		
+		conditionQuery.append(" model.isDelete is null");
+		
+		Query queryObject = getSession().createQuery(conditionQuery.toString());
+		queryObject.setLong(0,userId);
+		int i = 1;
+		if(locationId != 0l)
+			queryObject.setLong(i++,locationId);
+				
+		if(status!=null && status != 0l && !status.equals(""))
+		queryObject.setLong(i++,status);	
+		
+		if(deptId!=0l)
+			queryObject.setLong(i,deptId);
+		return queryObject.list();
 	}	
 	
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, String status) {
+	public List findProblemsByStatusForALocationsByConstituencyId(Long userId, Long status) {
 		Object[] params = {userId,status};
 		String query = buildCommonQueryForProblems();
 		StringBuilder conditionQuery = new StringBuilder();		
 		conditionQuery.append(query);
-		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemStatus.status = ? and model.isDelete is null");
+		conditionQuery.append(" where model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemStatus.problemStatusId = ? and model.isDelete is null");
 		return getHibernateTemplate().find(conditionQuery.toString(),params);
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List findCompleteProblems(Long problemLocationId) {
