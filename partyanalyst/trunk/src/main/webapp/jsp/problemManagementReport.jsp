@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Problem Management Report</title>
+<title>Problems Search</title>
 
 
 
@@ -38,8 +38,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-
-
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
@@ -114,11 +113,13 @@
 		font-size:20px;
 		color:salmon;
 		text-align:center;
+		margin:10px;
+		text-decoration:underline;
 		}
 
 		#problemHeading
 		{
-		margin-left:45px;
+		margin-left:15px;
 		text-align:left;
 		}
 		#radioLocationHeader
@@ -191,6 +192,39 @@
 		  text-align:center;
 		  width:100%;
 		}
+		#headerImageCenterDiv {
+		background-image:url(images/icons/constituencyManagement/header_body_blue.png);
+		height:30px;
+		text-align:center;
+		width:250px;		
+		}
+		#headerImageCenterSpan {
+		color:#FFFFFF;
+		font-size:14px;
+		font-weight:bold;
+		position:relative;
+		top:6px;
+		}
+		#mainDIV
+		{
+		-moz-border-radius-bottomleft:6px;
+		-moz-border-radius-bottomright:6px;
+		-moz-border-radius-topleft:6px;
+		-moz-border-radius-topright:6px;
+		background-color:#B2BDC4;
+		border:1px solid #B2BDC4;		
+		padding-top:20px;
+		width:96%;
+		}
+		th {
+		color:#113D5B;
+		font-size:11px;
+		padding:6px;
+		text-align:left;
+		vertical-align:top;
+		width:122px;
+		}
+		
 	</style>   	
 
 </head>
@@ -200,10 +234,12 @@ var Localization = { <%
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 			String STATE = rb.getString("STATE");
 			String DISTRICT = rb.getString("DISTRICT");
+			String ACONSTITUENCY = rb.getString("ACONSTITUENCY");
 			String CONSTITUENCY = rb.getString("CONSTITUENCY");
+			String PCONSTITUENCY = rb.getString("PCONSTITUENCY");
 			String MANDAL  = rb.getString("MANDAL");
 			String VILLAGE = rb.getString("VILLAGE");
-			String HAMLET   = rb.getString("HAMLET");
+			String HAMLET   = rb.getString("HAMLET");			
   %> }
 
 	
@@ -254,20 +290,6 @@ resultsDataSource.responseSchema = {
 		key : "comments"
 	},{
 		key : "MoreDetails"
-	},{
-		key : "email"
-	},{
-		key : "phone"
-	},{
-		key : "mobile"
-	},{
-		key : "address"
-	},{
-		key : "contactNo"
-	},{
-		key : "designation"
-	},{
-		key : "problemLocationId"
 	}]   
 };	
 
@@ -282,7 +304,7 @@ var resultsColumnDefs = [ {
 	resizable:true
 },{
 	key : "postedPersonName",
-	label : "Source",
+	label : "Reported By",
 	sortable : true
 	},{
 	key : "hamlet",
@@ -290,7 +312,7 @@ var resultsColumnDefs = [ {
 	sortable : true
 }, {
 	key : "existingFrom",
-	label : "Identified Date",
+	label : "Reported Date",
 	sortable : true
 }, {
 	key : "department",
@@ -298,70 +320,20 @@ var resultsColumnDefs = [ {
 	sortable : true
 }, {
 	key : "status",
-	label : "Status",
+	label : "Problem Status",
 	sortable : true
 }, {
 	key : "MoreDetails",
 	label : "View Details",
 	sortable : true
-}, {
-	key : "departmentConcernedPersonName",
-	label : "Official",
-	sortable : true,
-	hidden:true	
-}, {
-	key : "updatedDate",
-	label : "Updated Date",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "comments",
-	label : "Comments",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "email",
-	label : "Email",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "phone",
-	label : "Phone",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "mobile",
-	label : "Mobile",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "address",
-	label : "Address",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "contactNo",
-	label : "ContactNo",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "designation",
-	label : "Designation",
-	sortable : true,
-	hidden:true		
-}, {
-	key : "problemLocationId",
-	label : "LocationId",
-	sortable : true,
-	hidden:true		
 } ];	
 
 var myConfigs = {		
 paginator : new YAHOO.widget.Paginator({
-    rowsPerPage: 5,
+    rowsPerPage: 25,
     template: "{PageLinks} Show {RowsPerPageDropdown} per page",
-    rowsPerPageOptions: [5,10,15,20], 
-    pageLinks: 5 
+    rowsPerPageOptions: [25,50,75,100], 
+    pageLinks: 25 
     }),   
 };
 
@@ -575,50 +547,18 @@ var callback = {
     success : function( o ) {
 		try {												
 				myResults = YAHOO.lang.JSON.parse(o.responseText);		
-				if(jsObj.task == "getStates")
-				{
-					showStatesInSelectOption(myResults)
-				}			
-				if(jsObj.task == "getDistricts")
-				{
-					showDistrictsInSelectOption(myResults)
-				}	
-				if(jsObj.task == "getConstituencies")
-				{
-					showConstituenciesInSelectOption(myResults)
-				}		
-				if(jsObj.task == "getMandals")
-				{
-					showMandalsInSelectOption(myResults)
-				}		
-				if(jsObj.task == "getTowhships")
-				{
-					showTowhshipsInSelectOption(myResults)
-				}
-				if(jsObj.task == "getVillages")
-				{
-					showVillagesInSelectOption(myResults);
-				}
-				if(jsObj.task == "getVillages")
-				{
-					showVillagesInSelectOption(myResults);
-				}
-				if(jsObj.task == "findVoters")
-				{
-					showProblemsReport(myResults);	
-				}  
-				if(jsObj.task == "findTownshipVoters")
-				{
-					showProblemsReport(myResults);		
-				}
-				if(jsObj.task == "findConstituencyVoters")
-				{
-					showProblemsReport(myResults);			
-				}
 				if(jsObj.task == "getProblemDetails")
 				{
 					showProblemsHistoryReport(myResults);			
 				}
+				if(jsObj.task == "departmentsByScope")
+				{
+					fillDeptSelect(myResults);			
+				}if(jsObj.task == "getProblemsBySelection")
+				{
+					showProblemsReport(myResults);			
+				}
+				
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
@@ -630,6 +570,29 @@ var callback = {
     };
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function fillDeptSelect(results)
+{
+	var tableEl = document.getElementById("deptsSelectTable");
+	var selectEl = document.getElementById("deptsSelectField");
+	clearOptionsListForSelectElmtId("deptsSelectField");
+	for(var i in results.probConcernedDepts)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results.probConcernedDepts[i].id;
+		opElmt.text=results.probConcernedDepts[i].name;
+	
+		try
+			{
+			selectEl.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+			selectEl.add(opElmt); // IE only
+		}
+	}
+	tableEl.style.display = '';
+	
 }
 function showProblemsReport(results){
 	assignToProblemsArray = new Array();
@@ -668,551 +631,439 @@ function showProblemsReport(results){
 			}
 			initializeResultsTable();		
 }
-		
 
-
-
-function getStateList(id)
-{	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getStates"						
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+function showProbRegionsSelect()
+{
+	var probRegionSpanEl = document.getElementById("probRegionSpan");
+	var statusSpanEl = document.getElementById("statusSpan");
+	var deptRegionSpanEl = document.getElementById("deptRegionSpan");
+	var tableEl = document.getElementById("deptsSelectTable");
+	if(probRegionSpanEl.style.display == 'none')
+		probRegionSpanEl.style.display = 'block';
+	if(statusSpanEl.style.display == 'block')
+		statusSpanEl.style.display = 'none';
+	if(deptRegionSpanEl.style.display == 'block')
+		deptRegionSpanEl.style.display = 'none';
+	tableEl.style.display = 'none';	
+	var errorDivEl = document.getElementById("errorDiv");
+	errorDivEl.innerHTML = '';	
 }
 
-function getDistrictsList(id)
+function showProbStatusSelect()
 {
-	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getDistricts"						
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+	var statusSpanEl = document.getElementById("statusSpan");
+	var probRegionSpanEl = document.getElementById("probRegionSpan");
+	var deptRegionSpanEl = document.getElementById("deptRegionSpan");
+	var tableEl = document.getElementById("deptsSelectTable");
+	var locationsTableEl = document.getElementById("locationsTable");
+	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv");
+	if(statusSpanEl.style.display == 'none')
+		statusSpanEl.style.display = 'block';
+	if(probRegionSpanEl.style.display == 'block')
+		probRegionSpanEl.style.display = 'none';
+	if(deptRegionSpanEl.style.display == 'block')
+		deptRegionSpanEl.style.display = 'none';
+	tableEl.style.display = 'none';	
+	locationsTableEl.style.display = 'none';
+	problemLocationOptionsDivEl.style.display = 'none';
+	var errorDivEl = document.getElementById("errorDiv");
+	errorDivEl.innerHTML = '';	
 }
-function getConstituencyList(id)
+function showDeptRegionsSelect()
 {
-	var jsObj=
-		{
-				locationId:id,
-				task:"getConstituencies"					
-		};
+	var statusSpanEl = document.getElementById("statusSpan");
+	var probRegionSpanEl = document.getElementById("probRegionSpan");
+	var deptRegionSpanEl = document.getElementById("deptRegionSpan");
+	var locationsTableEl = document.getElementById("locationsTable");
+	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv");
+	if(deptRegionSpanEl.style.display == 'none')
+		deptRegionSpanEl.style.display = 'block';
+	if(statusSpanEl.style.display == 'block')
+		statusSpanEl.style.display = 'none';
+	if(probRegionSpanEl.style.display == 'block')
+		probRegionSpanEl.style.display = 'none';
+	locationsTableEl.style.display = 'none';
+	problemLocationOptionsDivEl.style.display = 'none';	
+	var errorDivEl = document.getElementById("errorDiv");
+	errorDivEl.innerHTML = '';
 	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-function getMandalList(id)
-{	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getMandals"						
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-
-function getTownshipsForMandal(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"getTowhships"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
 }
 
-function getVillagesForMandal(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"getVillages"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+function getDepartmentsByScope(scope)
+{	  
+  var jsObj={
+	scope: scope,
+	task: "departmentsByScope"
+	};
+  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+  var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+rparam;		
+  callAjax(rparam,jsObj,url);		  
 }
 
-function getHamletForTownship(id)
+function populateLocations(val,source)
 {
-	var jsObj=
-		{
-				locationId:id,
-				task:"getHamlets"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-} 	
-
-function getVotersForConstituency(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"findConstituencyVoters",
-				taskType:type						
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-
-function getVotersForTownships(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"findTownshipVoters",
-				taskType:type						
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-} 
-
-
-function getHamlet(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"findVoters",
-				taskType:type						
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-} 		
-
-function showStatesInSelectOption(results) 
-{
-	var selectedElmt = document.getElementById("stateId");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
+	if(val == 0)
 	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-function showDistrictsInSelectOption(results) 
-{
-	var selectedElmt = document.getElementById("districtField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-function removeSelectElements(elmt)
-{
-	if(!elmt)
+		alert("Select valid Problem Scope");
 		return;
-
-	var len=elmt.length;			
-	for(i=len-1;i>=0;i--)
+	}
+	var row1El = document.getElementById("row1");
+	var row2El = document.getElementById("row2");
+	var row3El = document.getElementById("row3");
+	var row4El = document.getElementById("row4");
+	var row5El = document.getElementById("row5");
+	var row6El = document.getElementById("row6");
+	var hiddenEl = document.getElementById("problemLocation");
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s"); 
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var selectedConst = 0;
+	var selectedDistrict = 0;
+	var locationsTableEl = document.getElementById("locationsTable");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var pConstituencyFieldEl = document.getElementById("pConstituencyField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
+	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv"); 
+	row1El.style.display = 'none';
+	row2El.style.display = 'none';
+	row3El.style.display = 'none';
+	row4El.style.display = 'none';
+	row5El.style.display = 'none';
+	row6El.style.display = 'none';
+	hiddenEl.value='';
+	problemLocationOptionsDivEl.style.display = 'block';
+	if(districtFieldEl && districtFieldEl.options.length > 0)
+		selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;	
+	if(constituencyFieldEl.options.length > 0)
+		 selectedConst = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
+	
+	if(locationsTableEl.style.display == 'none')
+		locationsTableEl.style.display = '';
+	var value = val;
+	if(value == 1)
 	{
-		elmt.remove(i);
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		
+	} else if(value == 2)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+	} else if(value == 3)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';					
+	} else if(value == 4)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';			
+	} else if(value == 5)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 6)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 7)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';				
+	} else if(value == 8)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			 
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';
+		if(row5El.style.display == 'none')
+			row5El.style.display = '';			
+	} else if(value == 9)
+	{
+		if(row1El.style.display == 'none')
+			row1El.style.display = '';			
+		if(row2El.style.display == 'none')
+			row2El.style.display = '';
+		if(row3El.style.display == 'none')
+			row3El.style.display = '';
+		if(row4El.style.display == 'none')
+			row4El.style.display = '';			
+	}		 
+}
+
+var accessType = "${accessType}";
+var scope = '${scope}';
+function setLocationValue(value, source)
+{
+	if(value == '0')
+	{
+		alert("Please Select Valid Location");
+		return;
 	}	
-}
-function showConstituenciesInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("constituencyField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
+	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var stateFieldEl = document.getElementById("stateField_s");
+	var districtFieldEl = document.getElementById("districtField_s");
+	var constituencyFieldEl = document.getElementById("constituencyField_s");
+	var mandalFieldEl = document.getElementById("mandalField_s");
+	var hamletFieldEl = document.getElementById("hamletField_s");
+	var boothFieldEl = document.getElementById("boothField_s");
 
+	hiddenEl.value = '';
+	var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	if(stateFieldEl.options.length > 0)
+		var selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value;
+	if(districtFieldEl.options.length > 0)
+		var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;
+	if(constituencyFieldEl.options.length > 0)
+		 var selectedConstituency = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
+	if(mandalFieldEl.options.length > 0)
+		var selectedMandal = mandalFieldEl.options[mandalFieldEl.selectedIndex].value;
+	if(hamletFieldEl.options.length > 0)
+		var selectedHamlet = hamletFieldEl.options[hamletFieldEl.selectedIndex].value;
+	if(boothFieldEl.options.length > 0)
+		var selectedBooth = boothFieldEl.options[boothFieldEl.selectedIndex].value;
+	if(source == 'onChange'){
 
-function showMandalsInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("mandalField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
+		if(scopeLevelElVal == 2 && selectedState != 0)
+		{	
+			hiddenEl.value = selectedState;
+		}	
+		if(scopeLevelElVal == 3 && selectedDistrict != 0)
+		{
+			hiddenEl.value = selectedDistrict;
+		}		
+		if(scopeLevelElVal == 4 && selectedConstituency != 0)
+		{
+			hiddenEl.value = selectedConstituency;
+		}	
+		if((scopeLevelElVal == 5 || scopeLevelElVal == 7) && selectedMandal != 0)
+		{
+			hiddenEl.value = selectedMandal;
+		}	
+		if((scopeLevelElVal == 6 || scopeLevelElVal == 8) && selectedHamlet != 0)
+		{
+			hiddenEl.value = selectedHamlet;
+		}	
+		if(scopeLevelElVal == 9 && selectedBooth != 0)
+		{
+			hiddenEl.value = selectedBooth;
+		}				
+		
+	} else if(source == 'onLoad'){
+		return;
+	}
 	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
 }
-function showTowhshipsInSelectOption(results)
+//wkg
+function getProblems()
 {
-	var selectedElmt = document.getElementById("villageField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
+	var problemOptionEl = document.getElementsByName("problemOption");
+	var problemLocationOptionEl = document.getElementsByName("problemLocationOption");
+	var hiddenEl = document.getElementById("problemLocation");
+	var statusListEl = document.getElementById("statusList");
+	var deptsSelectFieldEl = document.getElementById("deptsSelectField");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedLocation;
+	var selectedOption = '';
+	var selectedStatus;
+	var selectedDept;
+	var selectedProblemScope;
+	var selectedSortOption;
+	var errorDivEl = document.getElementById("errorDiv");
+	errorDivEl.innerHTML = '';
+	for(var i = 0; i<problemOptionEl.length; i++)
+	{
+		if(problemOptionEl[i].checked == true)
+			selectedOption = problemOptionEl[i].value;
+	}
+	if(selectedOption == '')
+	{
+		errorDivEl.innerHTML = 'Select A Problem Search Option';
+		return;
+	}
+	for(var j = 0; j<problemLocationOptionEl.length; j++)
+	{
+		if(problemLocationOptionEl[j].checked == true)
+			selectedSortOption = problemLocationOptionEl[j].value;
+	}
 	
-	try
+	if(selectedOption == 'location')
 	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-
-function showVillagesInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("hamletField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-function clearContents(){
-	
-	var areaSelection;
-	areaSelection = document.getElementById("areaTypes");
-	areaSelection.innerHTML = "";
-	var locationSelectBox;
-	locationSelectBox = document.getElementById("buildId");
-	locationSelectBox.innerHTML = "";
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	areaType();
-}
-function clearContent()
-{
-	var areaSelection;
-	areaSelection = document.getElementById("areaTypes");
-	areaSelection.innerHTML = "";
-	var locationSelectBox;
-	locationSelectBox = document.getElementById("buildId");
-	locationSelectBox.innerHTML = "";
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	var areaTypess;
-	areaTypess = document.getElementById("areaTypess");
-	areaTypess.innerHTML = "";
-}
-function areaType()
-{	
-	type="";
-	clearContent();
-	var areaTypes;
-	areaTypes = document.getElementById("areaTypes");
-	removeSelectElements(areaTypes);
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='Select Type of area to generate the report';
-	hr+='<table>';
-	hr+='<tr><td><input  type="radio" name="locationType" value="location" onclick="populateConstituencyLocations()" > Constituency</input></td>';		
-	hr+='<td><input  type="radio" name="locationType" value="status" onclick="populateMandalLocations()"> Mandal</input></td>';
-	hr+='<td><input  type="radio" name="locationType" value="department" onclick="populateHamletLocations()"> Hamlet</input></td></tr></table>';
-	hr+='';
-	areaTypes.innerHTML = hr;
-}
-function areaTypes(typeId)
-{
-	if(typeId=="new"){
-		type=typeId;
-	}
-	else if(typeId=="classify"){
-		type=typeId;
-	}
-	else if(typeId=="assigned"){
-		type=typeId;
-	}
-	else if(typeId=="progress"){
-		type=typeId;
-	}
-	else if(typeId=="pending"){
-		type=typeId;
-	}
-	else if(typeId=="fixed"){
-		type=typeId;
-	}
-	else if(typeId=="deo"){
-		type=typeId;
-	}
-	else if(typeId=="collectorate"){
-		type=typeId;
-	}
-	else if(typeId=="mro"){
-		type=typeId;
-	}
-	else if(typeId=="VILLAGE SECRETARY"){
-		type=typeId;
-	}
-	else{
-		type="";
+		selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+		selectedLocation = hiddenEl.value;
+		alert(selectedLocation);
+		alert(selectedProblemScope);
+		if(selectedLocation == '' && selectedProblemScope == 0)
+		{
+			errorDivEl.innerHTML = 'Invalid Problem Region Level and Location';
+			return;			
+		} else if(selectedLocation == '')
+		{
+			errorDivEl.innerHTML = 'Invalid Problem Location';
+			return;
+		} else if( selectedProblemScope == 0)
+		{
+			errorDivEl.innerHTML = 'Invalid Problem Region Level';
+			return;
 		}
-	var locationSelectBox;
-	locationSelectBox = document.getElementById("buildId");
-	locationSelectBox.innerHTML = "";
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	var areaTypess;
-	var areaTypess;
-	areaTypess = document.getElementById("areaTypess");
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='Select location to generate the report';
-	hr+='<table>';
-	hr+='<tr><td><input  type="radio" name="locationTypes" value="constituency" onclick="populateConstituencyLocations()" > Constituency</input></td>';		
-	hr+='<td><input  type="radio" name="locationTypes" value="mandal" onclick="populateMandalLocations()"> Mandal</input></td>';
-	hr+='<td><input  type="radio" name="locationTypes" value="hamlet" onclick="populateHamletLocations()"> Hamlet</input></td></tr></table>';
-	hr+='';
-	areaTypess.innerHTML = hr;
-}
-function statusType()
-{
-	var statusTypeId = statusTypeId;
-	clearContent();
-	var areaTypess;
-	areaTypess = document.getElementById("areaTypes");
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='Select a Status to generate the report';
-	hr+='<table>';
-	hr+='<tr><td><input  type="radio" name="locationStatus" value="new" onclick="areaTypes(this.value)"> New</input></td>';		
-	hr+='<td><input  type="radio" name="locationStatus" value="classify" onclick="areaTypes(this.value)"> Classify</input></td>';
-	hr+='<td><input  type="radio" name="locationStatus" value="assigned" onclick="areaTypes(this.value)"> Assigned</input></td>';
-	hr+='<tr><td><input  type="radio" name="locationStatus" value="progress" onclick="areaTypes(this.value)"> Progress</input></td>';		
-	hr+='<td><input  type="radio" name="locationStatus" value="pending" onclick="areaTypes(this.value)"> Pending</input></td>';
-	hr+='<td><input  type="radio" name="locationStatus" value="fixed" onclick="areaTypes(this.value)"> Fixed</input></td>';	
-	hr+='</tr></table>';
-	hr+='';
-	areaTypess.innerHTML = hr;
-}
-
-function departmentType(departmentTypeId)
-{
-	var departmentTypeId = departmentTypeId;
-	clearContent();
-	var areaTypess;
-	areaTypess = document.getElementById("areaTypes");
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='Select a Department to generate the report';
-	hr+='<table>';
-	hr+='<tr><td><input  type="radio" name="departmentLocation" value="deo" onclick="areaTypes(this.value)"> DEO</input></td>';		
-	hr+='<td><input  type="radio" name="departmentLocation" value="collectorate" onclick="areaTypes(this.value)"> COLLECTORATE</input></td>';
-	hr+='<td><input  type="radio" name="departmentLocation" value="mro" onclick="areaTypes(this.value)"> MRO</input></td>';
-	hr+='<td><input  type="radio" name="departmentLocation" value="VILLAGE SECRETARY" onclick="areaTypes(this.value)"> VILAGE SECRETARY</input></td>';		
-	hr+='</tr></table>';
-	hr+='';
-	areaTypess.innerHTML = hr;
-}
-
-function populateHamletLocations()
-{
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	var hel;
-	hel = document.getElementById("buildId");
-	var hr='';
-	getStateList(this.value);
-	hr+='<br/><br/>';
-	hr+='<table><tr>';
-	hr+='<td><%=STATE%></td>';
-	hr+='<td>';
-	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistrictsList(this.value)"/>';
-	hr+='</td>';	
-	hr+='<td><%=DISTRICT%></td>';
-	hr+='<td>';
-	hr+='<select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.options[this.selectedIndex].value,false)"/>';			
-	hr+='</select>';
-	hr+='</td>';
-		
-	hr+='<td><%=CONSTITUENCY%></td>';
-		
-	hr+='<td>';
-	hr+='<select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.options[this.selectedIndex].value,false)"/>';
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr>';
-	hr+='<tr>';	
-	hr+='<td><%=MANDAL%></td>';
-		
-	hr+='<td>';
-	hr+='<select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.options[this.selectedIndex].value,false)"/>';
-				
-	hr+='</select>';
-	hr+='</td>';
-		
-	hr+='<td><%=VILLAGE%></td>';
-		
-	hr+='<td>';
-	hr+='<select class="selectWidth" id="villageField" name="village" onchange="getVillagesForMandal(this.options[this.selectedIndex].value,false)"/>';
-				
-	hr+='</select>';
-	hr+='</td>';
-		
-	hr+='<td><%=HAMLET%></td>';
-	hr+='<td>';
-	hr+='<select class="selectWidth" id="hamletField" name="hamlet" onchange="getHamlet(this.options[this.selectedIndex].value)"/>';	
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr></table>';
-	hr+='<br/><br/>';
-	hel.innerHTML = hr;
-}
-function populateMandalLocations()
-{
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	var hel;
-	hel = document.getElementById("buildId");
-	var hr='';
-	getStateList(this.value);
-	hr+='<br/><br/>';
-	hr+='<table><tr>';
-	hr+='<td><%=STATE%></td>';
-	hr+='<td>';
-	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistrictsList(this.value)"/>';
-	hr+='</td>';	
-	hr+='<td><%=DISTRICT%></td>';
-	hr+='<td>';
-	hr+='<select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.options[this.selectedIndex].value,false)"/>';			
-	hr+='</select>';
-	hr+='</td>';
-		
-	hr+='<td><%=CONSTITUENCY%></td>';
-		
-	hr+='<td>';
-	hr+='<select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.options[this.selectedIndex].value,false)"/>';
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr>';
-	hr+='<tr>';	
-	hr+='<td><%=MANDAL%></td>';
-		
-	hr+='<td>';
-	hr+='<select id="mandalField" class="selectWidth" name="mandal" onchange="getVotersForTownships(this.options[this.selectedIndex].value)"/>';
-				
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr></table>';
-	hr+='<br/><br/>';
-	hel.innerHTML = hr;
-}
-function populateConstituencyLocations()
-{
-	var dataTable;
-	dataTable = document.getElementById("problemInfoDivBody");
-	dataTable.innerHTML = "";
-	var hel;
-	hel = document.getElementById("buildId");
-	var hr='';
-	getStateList(this.value);
-	hr+='<br/><br/>';
-	hr+='<table><tr>';
-	hr+='<td><%=STATE%></td>';
-	hr+='<td>';
-	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistrictsList(this.value)"/>';
-	hr+='</td>';	
-	hr+='<td><%=DISTRICT%></td>';
-	hr+='<td>';
-	hr+='<select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.options[this.selectedIndex].value,false)"/>';			
-	hr+='</select>';
-	hr+='</td>';		
-	hr+='<td><%=CONSTITUENCY%></td>';		
-	hr+='<td>';
-	hr+='<select id="constituencyField" class="selectWidth" name="constituency"  onchange="getVotersForConstituency(this.options[this.selectedIndex].value)"/>';
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr></table>';
-	hr+='<br/><br/>';
-	hel.innerHTML = hr;
+		if(selectedSortOption == 'departmentwise')	
+			selectedStatus = 3;
+		else 
+			selectedStatus = 0;
+		selectedDept = 0;
+	} else if(selectedOption == 'status')
+	{
+		selectedStatus = statusListEl.options[statusListEl.selectedIndex].value;
+		if( selectedStatus == -1)
+		{
+			errorDivEl.innerHTML = 'Invalid Problem Status';
+			return;
+		}
+		selectedDept = 0;
+		selectedProblemScope = 0;
+		selectedLocation = 0;
+	} else if(selectedOption == 'department')
+	{
+		selectedDept = deptsSelectFieldEl.options[deptsSelectFieldEl.selectedIndex].value;
+		selectedStatus = 3;	
+		selectedProblemScope = 0;
+		selectedLocation = 0;			
+	}
 	
+	var jsObj=
+	{
+			selectedLocation: selectedLocation,
+			selectedStatus: selectedStatus,
+			selectedDept: selectedDept,
+			selectedProblemScope: selectedProblemScope,
+			task:"getProblemsBySelection"
+									
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
+	callAjax(rparam,jsObj,url);	
 }
 </script>
 
   
 <body >
 
-<div id="mainDIV" class="yui-skin-sam">
-<div class="problemHeader">Problem Management Report</div><br/><br/>
-<div id="problemHeading">Find Problems By </div>
-<div id="radioLocationHeader">
-<table><tr>
-<td><input  type="radio" name="location" value="location" onclick="areaType()"> Location</input></td>		
-<td><input  type="radio" name="location" value="status" onclick="statusType()"> Status </input></td>
-<td><input  type="radio" name="location" value="department" onclick="departmentType()"> Department</input></td>
+<div class="yui-skin-sam">
+<center>
+	<div style="margin:15px;color:white;">
+		<table border="0" cellpadding="0" cellspacing="0">          
+			<tr>
+			   <td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
+			   <td><div id="headerImageCenterDiv"><span id="headerImageCenterSpan">Problems Search</span></div></td>
+			   <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
+			 </tr>
+		</table>
+	</div>
+</center>
+<div id="mainDIV">
+<div id="problemHeading">Search Problems By </div>
+<div>
+<table border="0" width="100%" style="margin-left:5px;"><tr>
+<th><input  type="radio" name="problemOption" value="location" onclick="showProbRegionsSelect()"/>Problem Location</th>	
+<td width="16%"><span id="probRegionSpan" style="display:none;"><s:select theme="simple" cssClass="selectWidth" id="scopeLevel" name="regionScope" list="problemScopes" headerKey="0" headerValue = "Select Problem Region Level" listKey = "id" listValue="name" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')" /></span></td>	
+<th><input type="radio" name="problemOption" value="status" onclick="showProbStatusSelect()"/>Problem Status </th>
+<td width="16%"><span id="statusSpan" style="display:none;"><s:select theme="simple" cssClass="selectWidth" id="statusList" name="probStatus" headerKey="-1" headerValue = "Select Problem Status" list="statusList" listKey = "id" listValue="name" /></span></td>	
+<th><input  type="radio" name="problemOption" value="department" onclick="showDeptRegionsSelect()"/> Department</th>
+<td width="16%"><span id="deptRegionSpan" style="display:none;"><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" onchange="getDepartmentsByScope(this.options[this.selectedIndex].text)" /></span></td>
 </tr></table>
+<table border="0" id="deptsSelectTable" width="100%" style="display:none;margin-left:5px;">
+<tr>
+<th style="width:135px;">Select A Department:</th>
+<td>
+<span><select name="dept" id="deptsSelectField"></select></span>
+</td>
+</tr>
+</table>
+<div style="text-align:left;margin-left:10px;">
+
+	<table id="locationsTable" border="0" style="margin-left:10px;display:none;">
+	<c:if test="${accessType != 'MP'}">
+		<tr id="row1" style="display:none;">
+			<th style="width:195px;"><%=STATE%><font class="requiredFont">*</font></th>
+			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','problemSearch','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>
+		<tr id="row2" style="display:none;">
+			<th style="width:195px;"><%=DISTRICT%><font class="requiredFont"> * </font></th>
+			<td><s:select id="districtField_s" theme="simple" cssClass="selectWidth" name="district" headerKey="0" headerValue="Select Location" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'problemSearch','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>
+	</c:if>
+	<c:if test="${accessType == 'MP'}">
+		<tr id="row1" style="display:none;">
+			<th style="width:195px;"><%=STATE%><font class="requiredFont">*</font></th>
+			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','problemSearch','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>
+		<TR id="row2" style="display:none;">	
+			<Th style="width:195px;"><%=PCONSTITUENCY%></Th>
+			<TD><s:select id="pConstituencyField_s" theme="simple" cssClass="selectWidth" name="pConstituencyId" list="pConstituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" value="defaultPConstituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'assembliesInParliament','problemSearch','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></TD>
+		</TR>
+	</c:if>
+		<tr id="row3" style="display:none;">
+			<th style="width:195px;"><%=ACONSTITUENCY%><font class="requiredFont"> * </font></th>
+			<td><s:select id="constituencyField_s" theme="simple" cssClass="selectWidth" name="constituency" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'problemSearch','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>								
+		<tr id="row4" style="display:none;">
+			<th style="width:195px;"><%=MANDAL%><font class="requiredFont"> * </font></th>
+			<td><s:select id="mandalField_s" theme="simple" cssClass="selectWidth" name="mandal" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'problemSearch','currentAdd','null','constituencyField_s', 'row6', 'row5');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>					
+		<tr id="row5" style="display:none;">
+			<th style="width:195px;"><%=HAMLET%><font class="requiredFont"> * </font></th>
+			<td><s:select id="hamletField_s" theme="simple" cssClass="selectWidth" name="village" list="{}" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'problemSearch','mandalField_s');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+		</tr>	
+		<tr id="row6" style="display:none;">
+			<th style="width:195px;">Booth No</th>
+			<td><s:select theme="simple" id="boothField_s" cssClass="selectWidth" name="booth" list="{}" listKey="id" listValue="name" onchange="setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><input type="button" id="pBoothDetailsPanel" value="View Booths Details" onclick="showBoothsCompleteDetails('boothField_s', 'mandalField_s')"/></td>
+		</tr>
+	</TABLE>
+	</div>
+	<div style="text-align:left;margin-left:10px;display:none;" id="problemLocationOptionsDiv">
+	<table border="0">
+		<tr>
+			<td><input  type="radio" name="problemLocationOption" value="all" onclick="showProbRegionsSelect()" checked="true"/>All Problems</td>
+			<td><input  type="radio" name="problemLocationOption" value="departmentwise" onclick="showProbRegionsSelect()"/>Departmentswise</td>
+			<td><input  type="radio" name="problemLocationOption" value="cadrewise" onclick="showProbRegionsSelect()"/>Cadre Problems</td>
+		</tr>
+	</table>
+	</div>
+	<div id="errorDiv"></div>
+	<input type="button" class="btnClass" onclick="getProblems()" value="Search"/>
+	</div>
 <div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
 </div>
 <div id="areaTypes"></div>
@@ -1220,9 +1071,9 @@ function populateConstituencyLocations()
 <div id="buildId"></div>
 </div>
 <div class="yui-skin-sam">
-<div id="problemInfoDivBody" >
+	<div id="problemInfoDivBody" ></div>
 </div>
-</div>
+<input type="hidden" id="problemLocation" name="problemLocationId"/>
 </body>
 
 </html>
