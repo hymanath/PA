@@ -33,7 +33,6 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long problemCompleteLocationId;
-	private Country country;	
 	private State state;
 	private District district;
 	private Constituency constituency;
@@ -54,8 +53,7 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 			District district, Constituency constituency,Constituency parliamentConstituency, Tehsil tehsil,
 			Township township, Hamlet hamlet,LocalElectionBody localElectionBody,Constituency ward,Booth booth) {
 		super();
-		this.problemCompleteLocationId = problemCompleteLocationId;
-		this.country = country;
+		this.problemCompleteLocationId = problemCompleteLocationId;		
 		this.state = state;
 		this.district = district;
 		this.constituency = constituency;
@@ -77,16 +75,6 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 
 	public void setProblemCompleteLocationId(Long problemCompleteLocationId) {
 		this.problemCompleteLocationId = problemCompleteLocationId;
-	}
-	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "country_id")
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
