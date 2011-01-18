@@ -786,13 +786,31 @@ function showPostedProblems(jsObj,results)
 	elmt.innerHTML = str;
 }
 
+function showProblemCompleteDetails(problemHistoryId)
+{
+	$( "#jQueryPopup" ).dialog("close");
+	window.location.replace("problemCompleteDetailsAction.action?problemHistoryId="+problemHistoryId);
+}
+
 function openDialogOfProblems(type)
 {
 	var reasons = new Array();
 	var title = '';
 	if(type == "approved")
 	{
-		reasons = postedApprovedProblems;
+		//reasons = postedApprovedProblems;
+		for(var i in postedApprovedProblems)
+		{
+			var obj = {
+					definition: '<a href="javascript:{}" title="Click To View Problem Complete Details" onclick="showProblemCompleteDetails('+postedApprovedProblems[i].problemHistoryId+')">'+postedApprovedProblems[i].definition+'</a>', 
+					description: postedApprovedProblems[i].description,
+					existingFrom: postedApprovedProblems[i].existingFrom, 
+					identifiedDate: postedApprovedProblems[i].identifiedDate,
+					location: postedApprovedProblems[i].location, 
+					locationType: postedApprovedProblems[i].locationType					 	
+			};
+			reasons.push(obj);
+		}
 		title = 'Approved Reasons';
 	}
 	else if(type == "rejected")
