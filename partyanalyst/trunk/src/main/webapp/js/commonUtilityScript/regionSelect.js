@@ -770,24 +770,27 @@ function getCadresResults(btnType)
 	if(includeSenderElmtCheck && includeSenderElmtCheck.checked == true)
 		SENDERNAME = senderNameTextElmt.value;
 
+	var CADRENAME = "";
+
 	var jsObj=
 		{		
-			reportLevel:REPORTLEVEL,
-			reportLocationValue:REPORTLOCATIONVALUE,
-			socialStatus:SOCIALSTATUS,
-			socialStatusArray:SOCIALSTATUSARRAY,
-			cadreType:CADRETYPE,
-			searchType:SEARCHTYPE,
-			gender: genderOption,
-			searchCriteria:SEARCHCRITERIA,
-			searchCriteriaArray:SEARCHCRITERIAARRAY,
-			searchCriteriaValue:SEARCHCRITERIAVALUE,
-			performSearch:PERFORMSEARCH,
-			txtAreaValue:SMSTEXTAREAVALUE,
-			includeCadreName:SMSINCLUDECADRENAME,
-			taskType:btnType,
-			senderName:SENDERNAME,
-			task:"cadreSearch"		
+			reportLevel         : REPORTLEVEL,
+			reportLocationValue : REPORTLOCATIONVALUE,
+			socialStatus        : SOCIALSTATUS,
+			socialStatusArray   : SOCIALSTATUSARRAY,
+			cadreType			: CADRETYPE,
+			cadreName			: CADRENAME,
+			searchType			: SEARCHTYPE,
+			gender				: genderOption,
+			searchCriteria		: SEARCHCRITERIA,
+			searchCriteriaArray	: SEARCHCRITERIAARRAY,
+			searchCriteriaValue	: SEARCHCRITERIAVALUE,
+			performSearch		: PERFORMSEARCH,
+			txtAreaValue		: SMSTEXTAREAVALUE,
+			includeCadreName	: SMSINCLUDECADRENAME,
+			taskType			: btnType,
+			senderName			: SENDERNAME,
+			task				:"cadreSearch"		
 		}
 	
 	
