@@ -448,7 +448,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.description,model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
 				" model.problemLocation.problemAndProblemSource.problem.year,model.problemLocation.problemAndProblemSource.problem.problem,"+
 				" model.problemLocation.problemAndProblemSource.problem.existingFrom,model.problemLocation.problemImpactLevelValue,"+				
-				" model.problemLocation.problemImpactLevel.scope,model.isApproved from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
+				" model.problemLocation.problemImpactLevel.scope,model.isApproved, model.problemHistoryId from ProblemHistory model where model.problemLocation.problemAndProblemSource."+
 				"externalUser.userId = ? ",registrationId);
 	}
 	
