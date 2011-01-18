@@ -99,6 +99,15 @@ public class ProblemManagementReportService implements
 	private IProblemManagementService problemManagementService;
 	private IBoothDAO boothDAO;
 	
+	
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 	public IProblemLocationDAO getProblemLocationDAO() {
 		return problemLocationDAO;
 	}
