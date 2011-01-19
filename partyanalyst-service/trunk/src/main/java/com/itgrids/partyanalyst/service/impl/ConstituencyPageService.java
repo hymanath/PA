@@ -3506,6 +3506,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		{
 			StringTokenizer st = new StringTokenizer(str,","); 
 			int tokens = st.countTokens();
+			
+			if(log.isDebugEnabled())
+				log.debug("Exited from constituencyPageService.findNoOfParts() Method .....");
 			return tokens;
 		}
 		}catch(Exception ex)
@@ -3531,7 +3534,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		try
 		{
 		if(log.isDebugEnabled()){
-			log.debug("Entered isPartial Block of constituencyPageService.setSumCompleteCensusDetailsToVO() Method .....");
+			log.debug("Entered into constituencyPageService.setSumCompleteCensusDetailsToVO() Method .....");
 		}
 		
 		if(details == null || parts == 0 || details.length == 0)
