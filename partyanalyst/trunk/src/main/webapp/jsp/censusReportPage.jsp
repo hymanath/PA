@@ -206,7 +206,8 @@
 		var districtId = stateElmt.options[stateElmt.selectedIndex].value;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
-		
+		var partyResultsPerformance_mainEl =  document.getElementById("partyResultsPerformance_main");
+		partyResultsPerformance_mainEl.style.display = 'none';
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
 		else if(diRadioEle.checked == true)
@@ -295,7 +296,7 @@
 			str += '<td class="newTh" align="center"><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<td class="newTh" align="center">'+resultByRanges[i].range+'</th>';
 			if(resultByRanges[i].count != 0)
-				str += '<td align="center"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\',\''+jsObj.yearValue+'\')">'+resultByRanges[i].count+'</a></td>';
+				str += '<td align="center"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+resultByRanges[i].count+'</a></td>';
 			else
 				str += '<td align="center">'+resultByRanges[i].count+'</td>';
 
@@ -392,7 +393,7 @@
 			str += '<th width="10px"><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<th width="50px">'+results[i].range+'</th>';
 			if(results[i].count != 0)
-				str += '<td><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\',\''+jsObj.yearValue+'\')">'+results[i].count+'</a></td>';
+				str += '<td><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+results[i].count+'</a></td>';
 			else
 				str += '<td>'+results[i].count+'</td>';
 			str += '</tr>';	
@@ -500,7 +501,7 @@
 	}
 
 		
-	function viewPerformanceGraph(index,censusType,year)
+	function viewPerformanceGraph(index,censusType,censusTypeId,year)
 	{
 		var elmt = document.getElementById("partyResultsPerformance_main");
 
@@ -517,6 +518,7 @@
 				display:true,
 				range:range,
 				censusType:censusType,
+				censusTypeId: censusTypeId,
 				year:year,	
 				task:"getPartiesPerformanceInCensusReport"					
 		}; 
@@ -664,6 +666,7 @@
         	str += '<tr>';
         	str += '<td>'+results.constituenciesResults[j].constituencyName+'</td>';
         	str += '<td>'+results.constituenciesResults[j].districtName+'</td>';
+        	str += '<td>'+results.constituenciesResults[j].censusReportPercent+'</td>';
         	for(var k in results.constituenciesResults[j].partyResultsVO)
             	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
         			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].percentage+'</td>';
@@ -695,12 +698,20 @@
 	 			sortable:true
 		   }
    		var distValue = {key:"District"}
-   		 		 
+
+   		var censusTypeHead = {
+   		   		key: "censusReportPercent",
+   		   		label:jsObj.censusType + " %"
+   		   		}
+   		var censusTypeValue = {key:"censusReportPercent"} 
+   				 
 		myColumnDefs.push(constHead);
 		myFields.push(constValue);
 		myColumnDefs.push(distHead);
 		myFields.push(distValue);
-
+		myColumnDefs.push(censusTypeHead);
+		myFields.push(censusTypeValue);
+		
     		 for(var l in results.allPartiesList){
     			var obj1 = {
     						key:results.allPartiesList[l],
@@ -962,12 +973,10 @@
 			<div id="censusPopulationRange_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-						<tr>
-						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
-						<td><div class="censusWidgetMainHeader"><span id="censusPopulationRange_head_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
-						<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
-						</tr>
-					</tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="censusWidgetMainHeader"><span id="censusPopulationRange_head_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
+					<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>					
 				</table>
 			</div>
 			<div id="censusPopulationRange_body" class="mainWidgetsBody ">
@@ -986,16 +995,14 @@
 		</div>
 
 		
-		<div id="partyResultsPerformance_main" class="yui-skin-sam" style="display:none;">
+		<div id="partyResultsPerformance_main" class="yui-skin-sam" style="display:none;margin-top:10px;">
 			<div id="partyResultsPerformance_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-						<tr>
 						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 						<td><div class="censusWidgetMainHeader"><span id="censusWidgetMainHeader_span" class="censusWidgetHeader_span" style="top:11px;"></span></div></td>
 						<td width="5px"><img src="images/icons/districtPage/header_right.gif"/></td>
-						</tr>
-					</tr>
+					</tr>					
 				</table>
 			</div>
 			<div id="partyResultsPerformance_body" class="mainWidgetsBody">
@@ -1004,11 +1011,9 @@
 					<div id="partyResultsDiv_head">
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
-								<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
 								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Party Wise Performance</span></div></td>
-								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
-								</tr>
+								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>								
 							</tr>
 						</table>
 					</div>
@@ -1025,12 +1030,10 @@
 					<div id="performanceGraphDiv_head">
 						<table width="100%" cellpadding="0" cellspacing="0">
 							<tr>
-								<tr>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
 								<td><div class="censusWidgetHeader"><span class="censusWidgetHeader_span">Constituency Wise Performance</span></div></td>
 								<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
-								</tr>
-							</tr>
+							</tr>							
 						</table>
 					</div>
 					<div id="performanceGraphDiv_body" class="mainWidgetsBody" style="width:856px;overflow:auto;">
