@@ -4233,6 +4233,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				log.debug("== Mandal ID -- "+result.getId()+"     == Mandal Name--"+result.getName() +"  ");
 				log.debug("------------------------------------------------------------------");
 			}
+			skippedMandals = new ArrayList<SelectOptionVO>(0);
 		}
 		
 		return resultVO;
