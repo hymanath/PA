@@ -203,11 +203,12 @@
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
-		var districtId = stateElmt.options[stateElmt.selectedIndex].value;
+		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		var partyResultsPerformance_mainEl =  document.getElementById("partyResultsPerformance_main");
 		partyResultsPerformance_mainEl.style.display = 'none';
+		
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
 		else if(diRadioEle.checked == true)
@@ -474,7 +475,7 @@
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
-		var districtId = stateElmt.options[stateElmt.selectedIndex].value;
+		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		
