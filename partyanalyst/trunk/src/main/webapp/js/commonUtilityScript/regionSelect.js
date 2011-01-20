@@ -764,13 +764,12 @@ function getCadresResults(btnType)
 
 	var includeSenderElmtCheck = document.getElementById("smsIncludeSenderName");
 	var senderNameTextElmt = document.getElementById("senderNameText");
+	var CADRENAME = document.getElementById("cadreNameText").value;
 
 	var SENDERNAME = '';
 
 	if(includeSenderElmtCheck && includeSenderElmtCheck.checked == true)
 		SENDERNAME = senderNameTextElmt.value;
-
-	var CADRENAME = "";
 
 	var jsObj=
 		{		

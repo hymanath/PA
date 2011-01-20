@@ -436,7 +436,18 @@ function populateLocations(val,source)
 				<tr>
 					<td colspan="2"><div id="errorMsgDiv"></div></td>
 				</tr>
+			</table>	
 
+			<table width="100%" class="cadreSearchInputTable">	
+				<tr>
+					<th style="width:210px;padding-left:17px;">Search By Cadre Name&nbsp;&nbsp;(optinal)</th>
+					<td>
+						<input type="text" id="cadreNameText"/>
+					</td>
+			    </tr>
+			</table>
+    
+			<table width="100%" class="cadreSearchInputTable">
 				<tr>
 					<th align="left"><font color="#FF0000"> * </font> ${windowTask} Based On</th>                
 					<td align="left">
