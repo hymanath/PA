@@ -31,9 +31,7 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	 *            the property value to match
 	 * @return List<ConstituencyElectionResult> found by query
 	 */
-	/*public List<ConstituencyElectionResult> findByProperty(String propertyName,
-			Object value);*/
-
+	
 	public List<ConstituencyElectionResult> findByTotalVotes(Object totalVotes);
 
 	public List<ConstituencyElectionResult> findByValidVotes(Object validVotes);
@@ -57,16 +55,12 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	public List<ConstituencyElectionResult> findByElectionTypeId_Year_StateId_DistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);
 	
 	public List<ConstituencyElectionResult> findByElectionTypeAndYearAndCountry(Long electionTypeId,String year,Long countryId);
-	
-	/*public List findByElectionTypeIdAndYearAndStateId(Long electionTypeId, String electionYear, Long stateId);
-	
-	public List findByElectionTypeIdAndYearAndCountryId(Long electionTypeId,String year,Long countryId);
-	
-	public List findByElectionTypeIdYearStateIdDistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);*/
 
 	public List getTotalVotesAndValidVotesForMPTCZPTC(Long tehsilId,
 			String electionType, String electionYear);
 	
 	public List<ConstituencyElectionResult> findByConstituency(Long constituencyId);
+	
+	public List<Object[]> findTotalVotersAndValidVotesByYearAndConstituencyIds(List<Long> constituencyIds, String year);
 
 }

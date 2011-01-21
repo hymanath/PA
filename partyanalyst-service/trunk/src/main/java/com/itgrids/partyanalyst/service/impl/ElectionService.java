@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
@@ -42,6 +43,8 @@ public class ElectionService implements IElectionService{
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	private IStaticDataService staticDataService;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	
 	private final static Logger log = Logger.getLogger(ElectionService.class);
 
 	public IElectionDAO getElectionDAO() {
@@ -118,6 +121,15 @@ public class ElectionService implements IElectionService{
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
+	}
+
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
 	}
 
 	public List<CensusVO> getConstituencyCensusDetails(Integer selectIndex,Long stateId,Long districtId,Long year,String level)
@@ -248,7 +260,10 @@ public class ElectionService implements IElectionService{
 		
 		censusVOlist.get(0).setTotalConstituencies(constituenciesCount);
 		
-			return censusVOlist;
+		for(CensusVO census:censusVOlist)
+			census.setVotingPercent(findAverageVotingPercentageInConstituenciesInAYear(census.getLocationIds(), year.toString()));
+		
+		return censusVOlist;
 		}catch(Exception ex)
 		{
 			log.debug("Exception Occured In the ElectionService.getConstituencyCensusDetails().... ");
@@ -433,4 +448,26 @@ public class ElectionService implements IElectionService{
 		return resultWithExceptionVO;
 	}
 
+	/**
+	 * Finds Average Voting Percentage For List Of Constituencies 
+	 * @param constituenciesIds
+	 * @param year
+	 * @return
+	 */
+	public String findAverageVotingPercentageInConstituenciesInAYear(List<Long> constituenciesIds, String year){
+		try{
+			if(constituenciesIds.size() == 0)
+				return null;
+			List<Object[]> validVotesAndVoters = constituencyElectionResultDAO.findTotalVotersAndValidVotesByYearAndConstituencyIds(constituenciesIds, year);
+			Double totalVotes = (Double)validVotesAndVoters.get(0)[0];
+			Double validVotes = (Double)validVotesAndVoters.get(0)[1];
+			if(totalVotes > 0)
+				return new BigDecimal(validVotes*100/totalVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "0.0";
+	}
 }
