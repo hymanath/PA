@@ -12,28 +12,28 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserApprovalDetailsDAOHibernateTest extends BaseDaoTestCase {
 	
-	private IUserApprovalDetailsDAO UserApprovalDetailsDAO;
+	private IUserApprovalDetailsDAO userApprovalDetailsDAO;
 
+			
 	public IUserApprovalDetailsDAO getUserApprovalDetailsDAO() {
-		
-		return UserApprovalDetailsDAO;
+		return userApprovalDetailsDAO;
 	}
 
 	public void setUserApprovalDetailsDAO(
-			IUserApprovalDetailsDAO UserApprovalDetailsDAO) {
-		
-		
-		this.UserApprovalDetailsDAO = UserApprovalDetailsDAO;
-	}	
-		
+			IUserApprovalDetailsDAO userApprovalDetailsDAO) {
+		this.userApprovalDetailsDAO = userApprovalDetailsDAO;
+	}
+
+
+
 	@SuppressWarnings("unchecked")
 	public void testfindUserApprovalStatusbetweendates()throws Exception
 	{  
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 					
 		System.out.println("details");
-		List<Object[]> list = UserApprovalDetailsDAO. findUserApprovalStatusbetweendates(sdf.parse("2011/01/13"),
-				sdf.parse("2011/01/13"));				
+		List<Object[]> list = userApprovalDetailsDAO. findUserApprovalStatusbetweendates(sdf.parse("2011/1/21"),
+				sdf.parse("2011/1/21"));				
 			System.out.println("size"+list.size());
 		for(Object[] obj : list)
 		{
