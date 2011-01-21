@@ -90,7 +90,6 @@ public class ApprovalDetails extends BaseModel implements Serializable {
 		this.userApprovalDetails = userApprovalDetails;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "posted_Date", length = 10)		
 	public Date getPostedDate() {
 		return postedDate;
