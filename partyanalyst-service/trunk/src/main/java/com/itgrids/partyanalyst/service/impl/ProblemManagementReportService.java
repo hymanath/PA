@@ -429,7 +429,8 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setDescription(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
 				Date reportedDate = problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 				problemBeanVO.setReportedDate(sdf.format(reportedDate));
-				problemBeanVO.setExistingFrom(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom().toString());
+				Date existingFrom = problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
+				problemBeanVO.setExistingFrom(sdf.format(existingFrom));
 				
 				switch (impactLevel.intValue()) {
 	            case 2:  
@@ -452,32 +453,32 @@ public class ProblemManagementReportService implements
 						locationStr = constituency.getName()+ " " +constituency.getState().getStateName();						
 					} else 
 					{
-						locationStr = constituency.getName()+", "+ constituency.getDistrict().getDistrictName()+"(Dt.)"+","+constituency.getState().getStateName();						
+						locationStr = constituency.getName()+", "+ constituency.getDistrict().getDistrictName()+"(Dt.)"+", "+constituency.getState().getStateName();						
 					}				
 	            	break;
 	            }
 	            case 5: 
 	            {
 	            	Tehsil tehsil = tehsilDAO.get(impactValue);
-	            	locationStr = tehsil.getTehsilName()+ setConstDistStateTOResult(tehsil.getTehsilId());
+	            	locationStr = tehsil.getTehsilName()+ " (Mandal), "+ setConstDistStateTOResult(tehsil.getTehsilId());
 					break;
 	            }            
 	            case 6:
 	            {
 	            	Hamlet hamlet = hamletDAO.get(impactValue);
-	            	locationStr = hamlet.getHamletName()+ setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
+	            	locationStr = hamlet.getHamletName()+"(Village, )" +setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
 	            	break;
 	            }
 	            case 7:
 	            {
 	            	LocalElectionBody localBody = localElectionBodyDAO.get(impactValue);
-	            	locationStr = localBody.getName()+", "+localBody.getDistrict().getDistrictName()+"(Dt.)"+", " +localBody.getDistrict().getState().getStateName();
+	            	locationStr = localBody.getName()+ "-" +localBody.getElectionType().getElectionType() +", "+localBody.getDistrict().getDistrictName()+"(Dt.)"+", " +localBody.getDistrict().getState().getStateName();
 	            	break;
 	            }
 	            case 8:
 	            {
 	            	Constituency ward = constituencyDAO.get(impactValue);
-	            	locationStr = ward.getName()+", "+ ward.getLocalElectionBody().getName()+", "+ward.getLocalElectionBody().getDistrict().getDistrictName()+", "+ ward.getLocalElectionBody().getDistrict().getState().getStateName();
+	            	locationStr = ward.getName()+", "+ ward.getLocalElectionBody().getName()+"-" +ward.getLocalElectionBody().getElectionType().getElectionType()+ ", "+ward.getLocalElectionBody().getDistrict().getDistrictName()+", "+ ward.getLocalElectionBody().getDistrict().getState().getStateName();
 	            	break;
 	            }
 	            case 9:
@@ -518,7 +519,7 @@ public class ProblemManagementReportService implements
 		{
 			List stateDistConstMandal = delimitationConstituencyMandalDAO.getStateDistConstituencyMandalByMandalID(tehsilId);
 			Object[] objVO = (Object[]) stateDistConstMandal.get(0);
-			String str = objVO[1].toString()+objVO[3].toString()+objVO[5].toString();
+			String str = objVO[3].toString()+ " (Dt.), " + objVO[1].toString();
 			
 			return str;
 		}
