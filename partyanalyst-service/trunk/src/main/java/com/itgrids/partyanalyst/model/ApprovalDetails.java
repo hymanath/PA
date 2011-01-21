@@ -37,17 +37,19 @@ public class ApprovalDetails extends BaseModel implements Serializable {
 	private String isApproved;
 	private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
 	private Date postedDate;
+	private String isAdminApproved;
 	
 	public ApprovalDetails() {		
 	}
 
 	public ApprovalDetails(Long approvalDetailsId, String reason,
-			String isApproved, Date postedDate) {
+			String isApproved, Date postedDate,String isAdminApproved) {
 		
 		this.approvalDetailsId = approvalDetailsId;
 		this.reason = reason;
 		this.isApproved = isApproved;
 		this.postedDate = postedDate;
+		this.isAdminApproved=isAdminApproved;
 	}
 
 	@Id
@@ -88,6 +90,7 @@ public class ApprovalDetails extends BaseModel implements Serializable {
 		this.userApprovalDetails = userApprovalDetails;
 	}
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "posted_Date", length = 10)		
 	public Date getPostedDate() {
 		return postedDate;
@@ -95,5 +98,16 @@ public class ApprovalDetails extends BaseModel implements Serializable {
 	
 	public void setPostedDate(Date postedDate) {
 		this.postedDate = postedDate;
-	}	
+	}
+
+	@Column(name ="is_admin_approved", length = 10)
+	public String getIsAdminApproved() {
+		return isAdminApproved;
+	}
+
+	public void setIsAdminApproved(String isAdminApproved) {
+		this.isAdminApproved = isAdminApproved;
+	}
+	
+	
 }
