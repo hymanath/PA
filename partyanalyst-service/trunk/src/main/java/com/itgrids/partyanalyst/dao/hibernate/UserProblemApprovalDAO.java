@@ -34,7 +34,7 @@ public List findApprovalInfoForProblem(Long problemHistoryId) {
 public List findApprovalInfoForProblem(Long problemHistoryId, int startIndex, int maxResult) {
 	Query queryObject = getSession().createQuery("select model.userApprovalDetails.user.userId, model.userApprovalDetails.user.name, model.userApprovalDetails.user.lastName," +
 			" model.userApprovalDetails.approvalDetails.reason, model.userApprovalDetails.approvalDetails.isApproved, model.userApprovalDetails.approvalDetails.postedDate from UserProblemApproval model" +
-			" where model.problemHistory.problemHistoryId = ? order by date(model.userApprovalDetails.approvalDetails.postedDate) desc");
+			" where model.problemHistory.problemHistoryId = ? and model.userApprovalDetails.approvalDetails.isAdminApproved = 'true' order by date(model.userApprovalDetails.approvalDetails.postedDate) desc");
 	
 	queryObject.setLong(0, problemHistoryId);
 	queryObject.setFirstResult(startIndex);
