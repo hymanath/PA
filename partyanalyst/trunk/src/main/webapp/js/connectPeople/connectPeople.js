@@ -581,19 +581,19 @@ function getAllRequestMessagesForUser(){
 
 function buildQuickRegionAccessContent()
 {	
-	var profElmt = document.getElementById("connectPeople_editProfile_center");
+	//var profElmt = document.getElementById("connectPeople_editProfile_center");
 	var qElmt = document.getElementById("connectPeople_quickAccess_center");
 	var connectCountElmt = document.getElementById("connectPeople_count_center");
 	
-	if(!profElmt || !qElmt || !connectCountElmt)
+	if(!qElmt || !connectCountElmt)
 		return;
 
-	var pStr = '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
-	profElmt.innerHTML = pStr;
+	/*var pStr = '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
+	profElmt.innerHTML = pStr;*/
 
 	var str = '';
 	str += '<div id="regionAccessDiv_main">';
-	str += '<div id="regionAccessDiv_head">';
+	/*str += '<div id="regionAccessDiv_head">';
 	str += '<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
 	str += '<tr>';
 	str += '	<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
@@ -601,24 +601,24 @@ function buildQuickRegionAccessContent()
 	str += '	<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
 	str += '</tr>';
 	str += '</table>';
-	str += '</div>';
-	str += '<div id="regionAccessDiv_body" class="regionBodyClass">';
+	str += '</div>';*/
+	str += '<div id="regionAccessDiv_body" >';
 	str += '<table id="regionAccessTable">';
 	str += '<tr>';
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '<th>View Your State</th>';
+	str += '<th>State</th>';
 	str += '<td> - </td>';
 	str += '<td><a href="statePageAction.action?stateId='+stateId+'">'+stateName+'</a></td>';
 	str += '</tr>';
 	str += '<tr>';
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '<th>View Your District</th>';
+	str += '<th>District</th>';
 	str += '<td> - </td>';
 	str += '<td><a href="districtPageAction.action?districtId='+districtId+'&districtName='+districtName+'">'+districtName+'</a></td>';
 	str += '</tr>';
 	str += '<tr>';
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	str += '<th>View Your Constituency</th>';
+	str += '<th>Constituency</th>';
 	str += '<td> - </td>';
 	str += '<td><a href="constituencyPageAction.action?districtId='+districtId+'&constituencyId='+constituencyId+'">'+constituencyName+'</a></td>';
 	str += '</tr>';
@@ -630,7 +630,7 @@ function buildQuickRegionAccessContent()
 
 	var cStr = '';
 	cStr += '<div id="connectCountDiv_main">';
-	cStr += '<div id="connectCountDiv_head">';
+	/*cStr += '<div id="connectCountDiv_head">';
 	cStr += '	<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">';
 	cStr += '	<tr>';
 	cStr += '		<td width="10px"><img height="36" width="30" src="images/icons/districtPage/header_left.gif"></td>';
@@ -638,8 +638,8 @@ function buildQuickRegionAccessContent()
 	cStr += '		<td><img height="36" width="5" src="images/icons/districtPage/header_right.gif"></td>';
 	cStr += '	</tr>';
 	cStr += '	</table>';
-	cStr += '</div>';
-	cStr += '<div id="connectCountDiv_body" class="regionBodyClass">';	
+	cStr += '</div>';*/
+	cStr += '<div id="connectCountDiv_body" >';	
 	cStr += '<table id="regionAccessTable">';
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
@@ -670,7 +670,7 @@ function buildPeopleYouMayKnowContent()
 	
 	var str = '';	
 	str += '<div id="peopleMayKnow_main">';
-	str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;</div>';
+	//str += '<div id="peopleMayKnow_head"> People You may Know &nbsp;&nbsp;&nbsp;&nbsp;</div>';
 	str += '<div id="peopleMayKnow_body">';
 	str += '	<div class="peopleMayKnow_data">';
 	str += '	<table width="100%" class="peopleMayKnow_data_table">';
@@ -758,7 +758,7 @@ function showPostedProblems(jsObj,results)
 		str += '<td width="180px">Total posted problems - <a href="javascript:{}" onclick="openDialogOfProblems(\'Total\')">'+results.totalPostedProblemsCount+'</a></td>';
 
 	if(results.postedProblemsCountByLoggedInUsers == 0)
-		str += '<td width="90px">By User - >'+results.postedProblemsCountByLoggedInUsers+'</td>';
+		str += '<td width="90px">By User - '+results.postedProblemsCountByLoggedInUsers+'</td>';
 	else
 		str += '<td width="90px">By User - <a href="javascript:{}" onclick="openDialogOfProblems(\'LOGGED_USER\')">'+results.postedProblemsCountByLoggedInUsers+'</a></td>';
 
@@ -1309,4 +1309,7 @@ function initializeConnectPeople()
 	buildConnectionsContentForUser();
 	buildPeopleYouMayKnowContent();
 	buildQuickRegionAccessContent();
+
+	
+	$( "#connectedPeopleAccordian" ).accordion();
 }

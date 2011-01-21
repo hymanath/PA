@@ -189,13 +189,13 @@
 
 #connectPeople_PeopleMayKnow_center
 {
-	height:335px;
+	/*height:335px;*/
 }
 
 #peopleMayKnow_main
 {
-	border:2px solid #D6E7EC;	
-	height:320px;
+	/*border:2px solid #D6E7EC;	
+	height:320px;*/
 }
 
 #peopleMayKnow_head
@@ -305,6 +305,7 @@
 #connectPeople_quickAccess_center
 {
 	position:relative;
+	height:250px;
 }
 
 #regionAccessTable th
@@ -337,4 +338,12 @@
 .tabContainerHeading a
 {
 	font-weight:normal;
+}
+
+
+/* New Dash Borad Styles*/
+
+div#constituencyRightContentOuter a:hover
+{
+	text-decoration:none;
 }
