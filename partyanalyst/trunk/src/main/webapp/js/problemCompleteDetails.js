@@ -106,7 +106,7 @@ function showProblemAllComments(results)
 {
 	var showAllPostsDivEl = document.getElementById("showAllPostsDiv");
 	var str = '';
-	if(results.problemApproovals.length == 0)
+	if(results.problemApproovals == null || results.problemApproovals.length == 0)
 	{
 		str+='<div id="description">No Previous Posts</div><hr>';
 		showAllPostsDivEl.innerHTML = str;
