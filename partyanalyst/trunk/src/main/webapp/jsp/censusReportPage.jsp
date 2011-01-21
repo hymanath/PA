@@ -180,6 +180,12 @@
 		background-color:#EEF0F2;
 		padding:5px;
 	}
+	#censusReporterror_Div
+	{
+		color:red;
+		font-size:12px;
+		text-align:center;
+	}
 </style>
 
 <script type="text/javascript">
@@ -198,6 +204,8 @@
 		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
 		var districtElmt = document.getElementById("districtList");
+		var errorElmt = document.getElementById("censusReporterror_Div");
+
 		var reportLevel = '';
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
@@ -208,12 +216,19 @@
 		var diRadioEle = document.getElementById("diRadioId");
 		var partyResultsPerformance_mainEl =  document.getElementById("partyResultsPerformance_main");
 		partyResultsPerformance_mainEl.style.display = 'none';
-		
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
 		else if(diRadioEle.checked == true)
 			reportLevel = diRadioEle.value;			
 		
+		if(stateId == 0)
+		{
+			errorElmt.innerHTML = "Please Select State";
+			return;
+		}
+		else
+			errorElmt.innerHTML = "";
+
 		var jsObj=
 		{
 				stateId		: stateId,
@@ -256,8 +271,8 @@
 				data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
 			}
 		}
-		var chart = new google.visualization.PieChart(document.getElementById('censusPopulationRangeGraph_body'));
-		chart.draw(data, {width: 360, height: 250, title: 'Constituencies Count Based On Range'});
+		var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
+		chart.draw(data, {width: 360, height: 250, pointSize: 4, title: 'Constituencies Count Based On Range'});
 	}
 
 	function buildPartyResultsByRanges(jsObj,resultByRanges)
@@ -265,16 +280,20 @@
 		partyResultsByRanges = resultByRanges;
 		var elmt = document.getElementById("censusPopulationRangeData");
 		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
+		
+		var electionResultsMainDiv = document.getElementById("partyResultsPerformance_main");
+		if(electionResultsMainDiv.style.display == "block")
+			electionResultsMainDiv.style.display = "none";
 
 		var gStr = '';
 		gStr += '<table class="graphHeadTable">';
 		gStr += '<tr>';
 		gStr += '<th>Constituencies Count</th>';
-		gStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';
-		gStr += '<th><input type="radio" name="graphRadioName" value="percentage" onclick="getPartyResultsByRanges(this.value)">By Percentage</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="percentage" onclick="getPartyResultsByRanges(this.value)">By Percentage</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';		
 		gStr += '</tr>';
 		gStr += '</table>';
-		//graphHeadElmt.innerHTML = gStr;
+		graphHeadElmt.innerHTML = gStr;
 
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
@@ -289,6 +308,7 @@
 		str += '<th>CP*</th>';
 		str += '<th>Seats Won*</th>';
 		str += '<th>Avg %</th>';
+		str += '<th>Voting %</th>';
 		str += '</tr>';	
 		//str += '</table>';		
 		for(var i=0; i<resultByRanges.length; i++)
@@ -315,6 +335,11 @@
 				str += '<td align="center">'+resultByRanges[i].avgPercent+'</td>';
 			else 
 				str += '<td align="center">--</td>';
+
+			if(resultByRanges[i].votingPercent != null)
+				str += '<td align="center">'+resultByRanges[i].votingPercent+'</td>';
+			else
+				str += '<td align="center">--</td>';
 		
 			str += '</tr>';						
 		}
@@ -328,17 +353,17 @@
 
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
-        data.addColumn('number', 'Constituencies');
+        data.addColumn('number', 'Percentage');
         data.addRows(resultByRanges.length);
 
 		for(var i=0; i<resultByRanges.length; i++)
-		{
-			data.setValue(i, 0, resultByRanges[i].range);
-	        data.setValue(i, 1, parseInt(resultByRanges[i].count));
+		{			
+				data.setValue(i, 0, resultByRanges[i].range);
+				data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));		
 		}
 
-        var chart = new google.visualization.PieChart(document.getElementById('censusPopulationRangeGraph_body'));
-        chart.draw(data, {width: 360, height: 250, title: 'Constituencies Count Based On Range'});
+        var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
+        chart.draw(data, {width: 450, height: 250,pointSize: 4, title: 'Constituencies Count Based On Range'});
 	}
 
 	function buildPopulationRange(jsObj,results)
@@ -347,7 +372,9 @@
 		var spanElmt = document.getElementById("censusPopulationRange_head_span");
 		var rangeElmt = document.getElementById("censusPopulationRange");
 		var censusPopulationRange_footerEl = document.getElementById("censusPopulationRange_footer");
-		var censusPopulationHead = document.getElementById("censusPopulationRange_body_head");
+		var censusPopulationHead = document.getElementById("censusPopulationRange_body_head");		
+		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
+		graphHeadElmt.innerHTML = '';
 
 		var cpStr = '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body_head\')">View Party wise Results By Census Percentage Range</a></div>';
 		censusPopulationHead.innerHTML = cpStr;
@@ -373,7 +400,8 @@
 		str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
 		str += '<tr>';		
 		str += '<th width="72px">Range(%)</th>';
-		str += '<th>Count</th>';
+		str += '<th width="40px">Count</th>';
+		str += '<th width="60px">Voting %</th>';
 		str += '</tr>';	
 		str += '</table>';		
 		for(var i=0; i<results.length; i++)
@@ -385,7 +413,8 @@
 				str += '<table class="censusPopulationRange_body_table_inner_head" border="0">';
 				str += '<tr>';				
 				str += '<th width="72px">Range(%)</th>';
-				str += '<th>Count</th>';
+				str += '<th width="40px">Count</th>';
+				str += '<th width="60px">Voting %</th>';
 				str += '</tr>';	
 				str += '</table>';
 			}
@@ -394,9 +423,14 @@
 			str += '<th width="10px"><img src="images/icons/districtPage/listIcon.png"></th>';
 			str += '<th width="50px">'+results[i].range+'</th>';
 			if(results[i].count != 0)
-				str += '<td><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+results[i].count+'</a></td>';
+				str += '<td width="30px"><a href="javascript:{}" onclick="viewPerformanceGraph('+i+',\''+jsObj.censusText+'\','+jsObj.censusValue+',\''+jsObj.yearValue+'\')">'+results[i].count+'</a></td>';
 			else
-				str += '<td>'+results[i].count+'</td>';
+				str += '<td width="30px">'+results[i].count+'</td>';
+
+			if(results[i].votingPercent != null)
+				str += '<td width="50px">'+results[i].votingPercent+'</td>';
+			else
+				str += '<td width="50px"> -- </td>';
 			str += '</tr>';	
 			str += '</table>';			
 		}
@@ -409,7 +443,7 @@
 		var countStr = '';
 		countStr += '<b>Total Number of Constituencies Considered: </B>';
 		countStr += ''+results[0].totalConstituencies+'';
-		censusPopulationRange_footerEl.innerHTML = countStr;
+		censusPopulationRange_footerEl.innerHTML = countStr;		
 
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
@@ -503,11 +537,24 @@
 
 		
 	function viewPerformanceGraph(index,censusType,censusTypeId,year)
-	{
+	{		
 		var elmt = document.getElementById("partyResultsPerformance_main");
-
 		if(elmt && elmt.style.display == "none")
 			elmt.style.display = "block";
+		
+
+		var mainHeaderSpanElmt = document.getElementById("censusWidgetMainHeader_span");
+		if(mainHeaderSpanElmt)
+			mainHeaderSpanElmt.innerHTML = '';
+		
+		var partyWiseElmt = document.getElementById("partyResultsDataDiv");
+		partyWiseElmt.innerHTML = '<img src="images/icons/barloader.gif" class="ajaxImgClass">';
+		var partyResultsGraphElmt = document.getElementById("partyResultsGraphDiv");
+		partyResultsGraphElmt.innerHTML = '';
+
+
+		var constituencyWiseElmt = document.getElementById("performanceGraphDiv_body");
+		constituencyWiseElmt.innerHTML = '<img src="images/icons/barloader.gif" class="ajaxImgClass">';
 
 		var idsList = rangeResults[index].locationIds;
 		var range = rangeResults[index].range;
@@ -969,6 +1016,7 @@
 				</td>
 			</tr>
 		</table>
+		<div id="censusReporterror_Div"></div>
 		</div>
 		<div id="censusPopulationRange" style="display:none;">
 			<div id="censusPopulationRange_head">

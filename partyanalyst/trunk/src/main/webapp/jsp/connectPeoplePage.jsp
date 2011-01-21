@@ -68,14 +68,24 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
+
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
 <!-- JQuery files (End) -->
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
+<script type="text/javascript" src="js/cncSearch.js"> </script>
 
 <link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">	
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
 
 </head>
@@ -109,12 +119,69 @@
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-							<div id="connectPeople_editProfile_center" class="yui-skin-sam">
+							<!-- Accordian Start-->
+							<div id="connectedPeopleAccordian">
+								<h3><a href="#">View Your Location Details</a></h3>
+								<div style="padding:0px;height:250px;">
+									<div id="connectPeople_quickAccess_center" class="yui-skin-sam" style="margin-top:10px;">									 
+									</div>	
+								</div>
+								<h3><a href="#">People In Your Location</a></h3>
+								<div style="padding:0px;height:250px;">
+									<div id="connectPeople_count_center" class="yui-skin-sam" style="margin-top:10px;">											
+									</div>	
+								</div>
+								<h3><a href="#">People You May Know</a></h3>
+								<div style="padding:0px;height:250px;">
+									<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
+											 
+									</div>	
+								</div>
 							</div>
-							<div id="connectPeople_quickAccess_center" class="yui-skin-sam" style="margin-top:10px;">									 
-							</div>	
-							<div id="connectPeople_count_center" class="yui-skin-sam" style="margin-top:10px;">											
-							</div>	
+							<!-- Accordian End-->
+							
+							<!-- CNC Search Start -->
+							<!--<div id="adDataDiv_main">
+								<div id="adDataMain_header">
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									  <tr>                                    
+										<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
+										<td width="98%">
+											<div class="productFeatureHeaderBackground_center">
+												<span class="headerLabelSpan" style="position:relative;top:6px;">
+													<table cellspacing="0" cellpadding="0">
+														<tr>
+															<td align="left">Quick Search </td>
+															<td style="padding:2px 0px 0px 8px"><img  width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														</tr>
+													</table>
+													 
+												</span>
+											</div>
+										</td>
+										<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
+									  </tr>
+									</table>
+								</div>
+								<div id="adDataMain_body">
+									<div class="adData_main">										
+										<div class="adData_body">
+											<table>
+											<tr>
+											<td><jsp:include page="../jsp/cncSearch.jsp"/></td>
+											</tr>
+											</table>						
+										</div>																	
+									</div>
+								</div>
+							</div> -->
+							
+							<!-- CNC Search End -->
+
+							<!--<div id="connectPeople_editProfile_center" class="yui-skin-sam">
+							</div>-->
+							
+							
 					</div>
 				</td>
 			</tr>
@@ -133,9 +200,7 @@
 										</div>
 									</td>
 									<td width="30%" valign="top">
-										<div id="connectPeople_PeopleMayKnow_center" class="yui-skin-sam">
-											 
-										</div>
+										
 									</td>
 								</tr>
 							</table>							
