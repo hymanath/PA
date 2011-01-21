@@ -15,9 +15,7 @@ import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
-import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -155,6 +153,8 @@ public class DataApprovalService implements IDataApprovalService {
 						approvalDetails.setIsApproved(approvalInfoVO.getIsApproved());
 						approvalDetails.setReason(approvalInfoVO.getReason());
 						approvalDetails.setPostedDate(problemManagementService.getCurrentDateAndTime());
+						System.out.println("DAte is ::::::::::::::::::::::::::::"+problemManagementService.getCurrentDateAndTime());
+						approvalDetails.setIsAdminApproved(null);
 						userApprovalDetails.setUser(ananymousUserDAO.get(approvalInfoVO.getUserId()));
 						userApprovalDetails.setApprovalDetails(approvalDetails);
 						
@@ -232,14 +232,12 @@ public class DataApprovalService implements IDataApprovalService {
 			log.debug("userApprovalDetailsbetweenDates(String fromDate,String toDate)");
 				
 		List<ApprovalInfoVO> approval = new ArrayList<ApprovalInfoVO>(0);
-		
-		Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
-		Date SecondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+		SimpleDateFormat yearFormatSdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 		
 		try {
 			
 			
-			List result=userApprovalDetailsDAO.findUserApprovalStatusbetweendates(firstDate,SecondDate);
+			List result=userApprovalDetailsDAO.findUserApprovalStatusbetweendates(yearFormatSdf.parse(fromDate),yearFormatSdf.parse(toDate));
 			
 			if(log.isInfoEnabled())
 				log.info("userapprovaldetailsSize:"+result.size());
