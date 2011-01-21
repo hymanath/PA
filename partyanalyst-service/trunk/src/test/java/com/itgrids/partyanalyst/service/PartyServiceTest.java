@@ -4,7 +4,6 @@ package com.itgrids.partyanalyst.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +21,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyPositionDetailVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
-import com.itgrids.partyanalyst.dto.PartyPostionInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -32,8 +30,6 @@ import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.impl.PartyService;
-import com.itgrids.partyanalyst.service.IPartyService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.MockData;
 public class PartyServiceTest {
 
@@ -96,7 +92,6 @@ public class PartyServiceTest {
 		EasyMock.expect(constituencyElectionResultDAO.findByElectionTypeId_Year_StateId(electionType, year, new Long(1))).andReturn(elecResults);
 		EasyMock.expect(constituencyElectionResultDAO.findByElectionTypeId_Year_StateId(electionType, prevYear, new Long(1))).andReturn(elecResults);
 		EasyMock.replay(constituencyElectionResultDAO);
-		service.setConstituencyElectionResultDAO(constituencyElectionResultDAO);
 				
 		if(hasAlliances) {
 			EasyMock.expect(staticDataService.getAllianceParties(year, new Long(2), new Long(11))).andReturn(allianceParties);
@@ -374,7 +369,7 @@ public class PartyServiceTest {
 		//Assert.assertNotNull(voObject);
 		Assert.assertEquals(4, voObject.getOppPartyPositionInfoList().size());
 	}
-	
+
 	@Test
 	public void testGetNthPositionPartyDetails(){
 		Election election = new Election(1L);
@@ -401,8 +396,7 @@ public class PartyServiceTest {
 		
 		List<PartyPositionDisplayVO> actualResult = service.getNthPositionPartyDetails(1L, 1L, null, 2009L, 1L, true, 5,"3");
 		Assert.assertEquals(1, actualResult.size());
-		
-		
+
 	}
 
 }

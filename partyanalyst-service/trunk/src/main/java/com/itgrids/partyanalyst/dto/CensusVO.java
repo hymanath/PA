@@ -164,6 +164,7 @@ public class CensusVO implements Serializable{
 	private Long mainMargOWMale;
 	private Long mainMargOWFemale;
 	private Double wpr;
+	private String votingPercent;
 	private Long totalConstituencies;
 	
 	public Long getConstituencyId() {
@@ -1069,5 +1070,12 @@ public class CensusVO implements Serializable{
 	public void setAvgPercent(BigDecimal avgPercent) {
 		this.avgPercent = avgPercent;
 	}
+	public String getVotingPercent() {
+		return votingPercent;
+	}
+	public void setVotingPercent(String votingPercent) {
+		this.votingPercent = votingPercent;
+	}
+	
 
 }

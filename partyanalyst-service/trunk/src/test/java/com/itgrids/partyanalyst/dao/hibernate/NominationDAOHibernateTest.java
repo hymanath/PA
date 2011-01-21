@@ -647,7 +647,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetTotalValidVotesAndEarnedVotesInAConstituency(){
 		
@@ -660,7 +660,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		 System.out.println(" Total Constituency Valid Votes :" + (Double)params[1]);
 		}
 		
-	}
+	}*/
 	
 	/*public void testfindByCandidateLastName(){
 	//String[] names = {"reddy","jagan"};
@@ -759,9 +759,18 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}*/
 	
-	public void testData(){
-		
-	//	List list = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(constituencyId, "2001", "ZPTC", rank)
+	public void testFindElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(){
+		List<Long> partyIds = new ArrayList<Long>(0);
+		List<Long> districtIds = new ArrayList<Long>(0);
+		List<Long> constiIds = new ArrayList<Long>(0);
+		districtIds.add(19l);
+		partyIds.add(361l);
+		constiIds.add(20l);
+		String query = " and model.constituencyElection.constituency.district.districtId in (:districtIds)  "+ 
+				" and model.party.partyId in (:partyIds)";
+		List list = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria("2009", constiIds, 
+				partyIds, districtIds, query);
+		System.out.println(list.size());
 	}
 }
 	
