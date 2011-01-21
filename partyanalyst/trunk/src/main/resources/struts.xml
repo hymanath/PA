@@ -1934,7 +1934,7 @@
         	<result type="json" name="success">
 			<param name="root">rs</param>				
 			</result>
-        </action>     
+        </action>  
         <action name="problemCommentsAction" class="problemCompleteDetailsAction" method="ajaxCallHandler">
 		    <result type="json" name="success">
 		    	<param name="root">problemBeanVO</param>	
@@ -1952,6 +1952,20 @@
 			<param name="root">constituencyRevenueVillagesVO</param>				
 			</result>
        </action>
+       
+       <action name="problemApprovalAdminAction" class="problemApprovalAdminAction">
+        	<result name="success">/jsp/problemApprovalAdmin.jsp</result>           
+        </action>
+        <action name="approvalsToScrutinizeAction" class="problemApprovalAdminAction" method="dataApprovalajaxCallHandler">
+        	<result type="json" name="success">
+        	<param name="root">approvalInfovo</param>
+        	</result>
+        </action> 
+        <action name="problemApprovalControlAction" class="problemApprovalAdminAction" method="problemcontrolApprovals">  
+             <result type="json" name="success">
+             <param name="root">approvalInfovo</param> 
+             </result>
+         </action>        
        
         <action name="censusReportAction" class="censusReportAction">
 		    <result name="success">/jsp/censusReportPage.jsp</result>	
@@ -1986,4 +2000,4 @@
 		
        	</action>
 	</package>
-</struts>
+</struts>      

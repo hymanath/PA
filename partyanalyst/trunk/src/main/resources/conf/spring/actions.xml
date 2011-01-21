@@ -379,7 +379,6 @@
 	</bean>
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
-			<property name="electionAnalyzeService" ref="electionAnalyzeService" />
 	</bean>
 	<bean id="alliancePartiesPageAction" class="com.itgrids.partyanalyst.web.action.AlliancePartiesPageAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
@@ -577,6 +576,9 @@
 	
 	<bean id="genericUploadAction" class="com.itgrids.partyanalyst.web.action.GenericUploadAction" singleton="false">
 	    <property name="genericUploadService" ref="genericUploadService" />
+    </bean>
+    <bean id="problemApprovalAdminAction" class="com.itgrids.partyanalyst.web.action.ProblemApprovalAdminAction" singleton="false">
+        <property name="dataApprovalService" ref="dataApprovalService"/>
     </bean>
     
     <bean id="censusReportAction" class="com.itgrids.partyanalyst.web.action.CensusReportAction" singleton="false">
