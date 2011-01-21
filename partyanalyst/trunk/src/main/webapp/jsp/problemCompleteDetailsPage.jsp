@@ -52,11 +52,7 @@ function callAjax(jsObj,url)
 							if(jsObj.task == "getProblemCompleteDetails")
 							{										
 								showProblemDetails(myResults, jsObj);
-							}								
-							/*if(jsObj.task == "getProblemAllComments")
-							{
-								showProblemAllComments(myResults);
-							}*/
+							}						
 							
 						}catch (e) {   
 						  // 	alert("Invalid JSON result" + e);   
@@ -207,6 +203,8 @@ h3 {
 		<td width="70%">
 			<div id="problemDetails"></div>			
 		</td>
+		
+		<c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
 		<td width="30%" valign="top">
 				<div id="approveProblem" style="height:100px;">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -254,11 +252,12 @@ h3 {
 					</div>							
 				</div>
 				
-		</td>		
+		</td>
+		</c:if>		
 	</tr>	
 </table>
 <div id="showAllPostsDiv" style="margin-top:10px;margin-bottom:10px;"></div>
-
+<c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 	<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>
@@ -284,17 +283,18 @@ h3 {
 									<td><input type="button" value="POST" onclick="submitHandler('FollowUp')"></td>									
 								</tr>
 							</table>
-						</c:if>
-						<c:if test="${sessionScope.loginStatus != 'out'}">
-						<s:form action="loginInputAction" method="POST">
-						<input type="hidden" name="redirectLoc" value="PROBLEM_DISCUSSION" />
-						<input type="hidden" name="problemHistoryId" value="${problemHistoryId}" />
-						<input type="hidden" name="logInStatus" value="${logInStatus}" />
-						<p style="margin-top:10px;">Registered Users please Login to follow up in this discussion forum</p>
-						<input type="submit" Value="Login"/>						
-						</s:form>
-						</c:if>
+	</c:if>
+	<c:if test="${sessionScope.loginStatus != 'out'}">
+	<s:form action="loginInputAction" method="POST">
+	<input type="hidden" name="redirectLoc" value="PROBLEM_DISCUSSION" />
+	<input type="hidden" name="problemHistoryId" value="${problemHistoryId}" />
+	<input type="hidden" name="logInStatus" value="${logInStatus}" />
+	<p style="margin-top:10px;">Registered Users please Login to follow up in this discussion forum</p>
+	<input type="submit" Value="Login"/>						
+	</s:form>
+	</c:if>
 </div>
+</c:if>
 </div>
 
 <script type="text/javascript">
