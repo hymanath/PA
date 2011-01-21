@@ -703,7 +703,9 @@
     	<property name="problemHistoryDAO" ref="problemHistoryDAO" />
     	<property name="ananymousUserDAO" ref="ananymousUserDAO" />
     	<property name="userProblemApprovalDAO" ref="userProblemApprovalDAO" />
-    	<property name="problemManagementService" ref="problemManagementService" />    	
+    	<property name="problemManagementService" ref="problemManagementService" /> 
+    	<property name="userApprovalDetailsDAO" ref="userApprovalDetailsDAO" /> 
+    	<property name="approvalDetailsDAO" ref="approvalDetailsDAO" />  	
 	</bean>
 	
 	<bean name="genericUploadService" class="com.itgrids.partyanalyst.service.impl.GenericUploadService">
