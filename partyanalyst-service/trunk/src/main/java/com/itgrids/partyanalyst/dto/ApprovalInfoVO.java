@@ -19,7 +19,16 @@ public class ApprovalInfoVO implements Serializable {
 	private Long totalNoRejectance;
 	private String lastUpdate;
 	private String userName;
+	private String postedDate;
+	private String approvalDetailsId;
+	private int count;
 	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public Long getUserId() {
 		return userId;
 	}
@@ -74,6 +83,22 @@ public class ApprovalInfoVO implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public void setPostedDate(String postedDate) {
+		this.postedDate = postedDate;
+	}
+	public String getPostedDate() {
+		return postedDate;
+	}
+	public void setApprovalDetailsId(String approvalDetailsId) {
+		
+		this.approvalDetailsId = approvalDetailsId;
+		
+		}
+	public String getApprovalDetailsId()
+	{
+		return approvalDetailsId;
+	}
+	
 	
 	
 	

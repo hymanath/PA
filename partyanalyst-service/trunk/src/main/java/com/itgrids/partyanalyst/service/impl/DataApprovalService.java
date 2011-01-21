@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,10 +11,13 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IUserApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ApprovalDetailsDAO;
 import com.itgrids.partyanalyst.dto.ApprovalInfoVO;
+import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+
 public class DataApprovalService implements IDataApprovalService {
 
 	private static final Logger log = Logger.getLogger("DataApprovalService.class");
@@ -35,9 +37,30 @@ public class DataApprovalService implements IDataApprovalService {
 	private IProblemHistoryDAO problemHistoryDAO;
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IUserProblemApprovalDAO userProblemApprovalDAO; 
+	private IUserApprovalDetailsDAO userApprovalDetailsDAO; ; 
 	private ApprovalInfoVO approvalInfoVO;
 	private IProblemManagementService  problemManagementService;
+	private IApprovalDetailsDAO approvalDetailsDAO;
 	
+	
+
+	public IApprovalDetailsDAO getApprovalDetailsDAO() {
+		return approvalDetailsDAO;
+	}
+
+	public void setApprovalDetailsDAO(IApprovalDetailsDAO approvalDetailsDAO) {
+		this.approvalDetailsDAO = approvalDetailsDAO;
+	}
+
+	public IUserApprovalDetailsDAO getUserApprovalDetailsDAO() {
+		return userApprovalDetailsDAO;
+	}
+
+	public void setUserApprovalDetailsDAO(
+			IUserApprovalDetailsDAO userApprovalDetailsDAO) {
+		this.userApprovalDetailsDAO = userApprovalDetailsDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -61,7 +84,7 @@ public class DataApprovalService implements IDataApprovalService {
 	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
 		this.ananymousUserDAO = ananymousUserDAO;
 	}
-
+    
 	public IUserProblemApprovalDAO getUserProblemApprovalDAO() {
 		return userProblemApprovalDAO;
 	}
@@ -202,5 +225,81 @@ public class DataApprovalService implements IDataApprovalService {
 		return problemBeanVO;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ApprovalInfoVO> userApprovalDetailsbetweenDates(String fromDate,String toDate)
+	{
+		if(log.isDebugEnabled())
+			log.debug("userApprovalDetailsbetweenDates(String fromDate,String toDate)");
+				
+		List<ApprovalInfoVO> approval = new ArrayList<ApprovalInfoVO>(0);
+		
+		Date firstDate = DateService.convertStringToDate(fromDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+		Date SecondDate = DateService.convertStringToDate(toDate, IConstants.DATE_PATTERN_YYYY_MM_DD);
+		
+		try {
+			
+			
+			List result=userApprovalDetailsDAO.findUserApprovalStatusbetweendates(firstDate,SecondDate);
+			
+			if(log.isInfoEnabled())
+				log.info("userapprovaldetailsSize:"+result.size());
+			
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			
+			if(result != null && result.size()>0)
+			{
+				for(int i=0;i<result.size();i++)
+				{
+					ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
+					Object[] parms = (Object[])result.get(i);
+					
+					approvalInfoVO.setReason(parms[0].toString());
+					
+					approvalInfoVO.setIsApproved(parms[1].toString());
+					
+					String postedDate = sdf.format((Date)parms[2]);
+					approvalInfoVO.setPostedDate(postedDate);
+					
+					approvalInfoVO.setUserName(parms[3].toString()+" "+parms[4].toString());
+					
+					approvalInfoVO.setApprovalDetailsId(parms[5].toString());
+					
+					approval.add(approvalInfoVO);				
+				}
+			
+			}
+			
+			
+		} catch (Exception e) {
+			if(log.isDebugEnabled())
+				log.error("dataIteration problem in try block");
+			e.printStackTrace();			
+		}
+			return approval;
+}
 	
+	
+	public List<ApprovalInfoVO> scrutinizePostedApprovals(List<Long> approvalDetailsIds,String approvedStatus) 
+	{
+		if(log.isDebugEnabled())
+			log.debug("userApprovalDetailsbetweenDates(String fromDate,String toDate)");
+				
+		List<ApprovalInfoVO> approval = new ArrayList<ApprovalInfoVO>(0);
+				
+		try {
+			
+			ApprovalInfoVO approvalInfoVO = new ApprovalInfoVO();
+			
+			int count =  approvalDetailsDAO.updateSetIsApprovedStatusToPostedProblems(approvalDetailsIds, approvedStatus);
+			approvalInfoVO.setCount(count);
+			
+		    }
+				catch (Exception e) {
+					if(log.isDebugEnabled())
+						log.error("error occured while scrutinizing the approvals");
+					e.printStackTrace();
+			
+		}
+				return approval;
+	}
 }
