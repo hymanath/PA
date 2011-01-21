@@ -223,6 +223,9 @@ function callAjax(jsObj,url)
 					if(jsObj.task == "getAllApprovalsBetweenDates") 
 					{	
 						showNewPostedReasons(jsObj,results);		
+					}else if(jsObj.task == "controlSelectedApprovals")
+					{
+						getAllApprovalsBetweenDates("getAllNewPostedReasons");
 					}
 					
 			}catch (e) {   		
@@ -265,12 +268,12 @@ function getAllApprovalsBetweenDates(option)
 {
 	var startDate = '';
 	var endDate = '';
-	if(option == 'getAllApprovalsBetweenDates')
+	if(option == 'getAllNewPostedReasons')
 	{
 		startDate = year+'/'+month+'/'+day;
 		endDate = year+'/'+month+'/'+day;
 	
-	} else 
+	} else if(option == 'getAllApprovalsBetweenDates')
 	{
 		startDate = document.getElementById("identifiedFromText").value;
 		endDate = document.getElementById("reportedFromText").value;
@@ -371,7 +374,7 @@ function showAllNewPostedReasons()
 	str += '		<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal(\'reportedFromText_Div\',\'reportedFromText\',\'9/2010\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>';
 	str += '	</td>';
 	str += '	<td>';
-	str += '	<input type="button" class="buttonClass" value="view" onclick="getAllApprovalsBetweenDates()">';
+	str += '	<input type="button" class="buttonClass" value="view" onclick="getAllApprovalsBetweenDates(\'getAllApprovalsBetweenDates\')">';
 	str += '	</td>';
 	str += '</tr>';
 	str += '</table>';
@@ -426,11 +429,9 @@ function showAllNewPostedReasons()
 	
 	</div>
 
-		<script type="text/javascript">
-		//getAllApprovalsBetweenDates();
-		showAllNewPostedReasons();
-
-		</script>
+	<script type="text/javascript">	
+		showAllNewPostedReasons();	
+	</script>
 	
 </body>
 </html>
