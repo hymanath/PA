@@ -57,6 +57,7 @@
 		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
 	
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
@@ -103,8 +104,7 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="partyDAO" ref="partyDAO" />
-		<property name="districtDAO" ref="districtDAO" />
-		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
+		<property name="districtDAO" ref="districtDAO" />		
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
