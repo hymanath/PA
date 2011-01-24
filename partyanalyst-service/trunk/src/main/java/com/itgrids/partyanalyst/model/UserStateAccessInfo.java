@@ -26,7 +26,7 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long userStateAccessInfoId;
-	private UserGroups userGroup;
+	private Registration user;
 	private State state ;
 	
 	public UserStateAccessInfo(){
@@ -34,10 +34,10 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	}
 	
 	public UserStateAccessInfo(Long userStateAccessInfoId,
-			UserGroups userGroup, State state) {
+			Registration user, State state) {
 		super();
 		this.userStateAccessInfoId = userStateAccessInfoId;
-		this.userGroup = userGroup;
+		this.user = user;
 		this.state = state;
 	}
 
@@ -53,17 +53,17 @@ public class UserStateAccessInfo extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_group_id")
+	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserGroups getUserGroup() {
-		return userGroup;
+	public Registration getUser() {
+		return user;
 	}
 
-	public void setUserGroup(UserGroups userGroup) {
-		this.userGroup = userGroup;
+	public void setUser(Registration user) {
+		this.user = user;
 	}
-
+	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "state_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)

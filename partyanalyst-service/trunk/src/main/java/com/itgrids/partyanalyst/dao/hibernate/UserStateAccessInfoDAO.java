@@ -15,7 +15,7 @@ public class UserStateAccessInfoDAO extends GenericDaoHibernate<UserStateAccessI
 	
 	public List findByUser(Long userId){
 		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName " +
-				"from UserStateAccessInfo model where model.userGroup.userGroupId = ?", userId);
+				"from UserStateAccessInfo model where model.user.registrationId = ?", userId);
 	}
 
 }
