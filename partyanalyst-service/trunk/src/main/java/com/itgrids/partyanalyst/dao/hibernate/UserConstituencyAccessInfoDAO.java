@@ -16,6 +16,6 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 	public List findByUser(Long userId){
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, " +
 				"model.constituency.electionScope.electionType.electionType " +
-				"from UserConstituencyAccessInfo model where model.userGroup.userGroupId = ?", userId);
+				"from UserConstituencyAccessInfo model where model.user.registrationId = ?", userId);
 	}
 }

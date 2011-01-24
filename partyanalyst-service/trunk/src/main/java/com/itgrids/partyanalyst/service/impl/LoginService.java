@@ -208,13 +208,14 @@ public class LoginService implements ILoginService{
 			
 			for(UserGroupRelation groupRelation:userGroups){
 				groupEntitlements = groupRelation.getUserGroup().getUserGroupEntitlement();
-				getUserAccessInfo(groupRelation.getUserGroup().getUserGroupId(), countries, states, districts, assemblies, parliaments);
 				for(UserGroupEntitlement userGroupEntitlement:groupEntitlements){
 					entitlementsModel = userGroupEntitlement.getGroupEntitlement().getGroupEntitlementRelations();
 					for(GroupEntitlementRelation entitlement:entitlementsModel)
 						entitlements.add(entitlement.getEntitlement().getEntitlementType());
 				}
 			}
+			
+			getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
 			
 			regVO.setEntitlements(entitlements);
 			regVO.setCountries(countries);
@@ -231,14 +232,14 @@ public class LoginService implements ILoginService{
 	
 	}
 	
-	private void getUserAccessInfo(Long userGroupId, Set<SelectOptionVO> countries,
+	private void getUserAccessInfo(Long userId, Set<SelectOptionVO> countries,
 			Set<SelectOptionVO> states, Set<SelectOptionVO> districts,
 			Set<SelectOptionVO> assemblies, Set<SelectOptionVO> parliaments){
 		
-		getListFromRawdata(userCountryAccessInfoDAO.findByUser(userGroupId), countries);
-		getListFromRawdata(userStateAccessInfoDAO.findByUser(userGroupId), states);
-		getListFromRawdata(userDistrictAccessInfoDAO.findByUser(userGroupId), districts);
-		List rawData = userConstituencyAccessInfoDAO.findByUser(userGroupId);
+		getListFromRawdata(userCountryAccessInfoDAO.findByUser(userId), countries);
+		getListFromRawdata(userStateAccessInfoDAO.findByUser(userId), states);
+		getListFromRawdata(userDistrictAccessInfoDAO.findByUser(userId), districts);
+		List rawData = userConstituencyAccessInfoDAO.findByUser(userId);
 		
 		if(rawData.size() > 0)
 			for(Object[] values:(List<Object[]>)rawData){

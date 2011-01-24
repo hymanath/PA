@@ -24,7 +24,7 @@ public class UserConstituencyAccessInfo extends BaseModel{
 
 	private static final long serialVersionUID = 1L;
 	private Long userConstituencyAccessInfoId;
-	private UserGroups userGroup;
+	private Registration user;
 	private Constituency constituency ;
 	
 	public UserConstituencyAccessInfo(){
@@ -32,10 +32,10 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	}
 	
 	public UserConstituencyAccessInfo(Long userConstituencyAccessInfoId,
-			UserGroups userGroup, Constituency constituency) {
+			Registration user, Constituency constituency) {
 		super();
 		this.userConstituencyAccessInfoId = userConstituencyAccessInfoId;
-		this.userGroup = userGroup;
+		this.user = user;
 		this.constituency = constituency;
 	}
 
@@ -51,16 +51,16 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_group_id")
+	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserGroups getUserGroup() {
-		return userGroup;
+	public Registration getUser() {
+		return user;
 	}
 
-	public void setUserGroup(UserGroups userGroup) {
-		this.userGroup = userGroup;
-	}	
+	public void setUser(Registration user) {
+		this.user = user;
+	}
 
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "constituency_id")
@@ -69,7 +69,7 @@ public class UserConstituencyAccessInfo extends BaseModel{
 	public Constituency getConstituency() {
 		return constituency;
 	}
-
+	
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
 	}
