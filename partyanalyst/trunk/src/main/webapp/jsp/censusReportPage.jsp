@@ -749,7 +749,8 @@
 
    		var censusTypeHead = {
    		   		key: "censusReportPercent",
-   		   		label:jsObj.censusType + " %"
+   		   		label:jsObj.censusType + " %",
+   		   		sortable:true
    		   		}
    		var censusTypeValue = {key:"censusReportPercent"} 
    				 
