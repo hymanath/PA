@@ -315,7 +315,12 @@
 		}
 		
 		str += '<div id="parliamentChartDiv"><img src="charts/'+parliamentResult.chartPath+'"></div>';
-		detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
+		
+		// Parliament Detailed Chart is disabled.
+		// Modified by sai
+
+		/*detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult.detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';	*/
+		
 		str += '<div id="parliamentElecResDiv" style="margin-top:20px;">';
 		str += '<table id = "parliamentElecResTable">';
 		for(var j in parliamentResult.constituencyOrMandalWiseElectionVO){
@@ -554,7 +559,11 @@ function buildConstituencyElecResultsDataTable(value){
 		var elecYear = electionSelect.options[electionSelect.selectedIndex].text;
 		str += "<table><tr>";
 		str += '<td><input type="button" class="button" value="Know About Parliament(s)" onclick="getParliamentResults('+elecYear+')"/></td>';
-		str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';
+
+		// Detailed Chart is disabled for Assembly.
+		// modified by sai
+		/*str += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Assembly"></div></td>';*/
+
 		str += '<td><div><a class="button" style="color:#FFFFFF;text-decoration:none;" href="municipalWardsAssemblyBoothsMapperAction.action?windowTask=update&constituencyId='+constituencyId+'">Map Municipal/Corp/GMC to Assembly</a></div></td>';
 		str += "</tr></table>";
 		parliamentButtonDiv.innerHTML = str;		
@@ -568,13 +577,19 @@ function buildConstituencyElecResultsDataTable(value){
 		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart"></div></td>';
 		details.innerHTML = detailsDIV;
 	}
+	
 	if(counter>=1){
-		var details = document.getElementById("detailsDiv");
+		
+		// Parliament Detailed Chart is disabled.
+		// Modified by sai
+
+		/*var details = document.getElementById("detailsDiv");
 		var detailsDIV = '';
 		detailsDIV += '<table><tr>';
 		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Parliament"></div></td>';
-		details.innerHTML = detailsDIV;
+		details.innerHTML = detailsDIV;*/
 	}
+
 	var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
 	var chart = '';
 	chart += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
