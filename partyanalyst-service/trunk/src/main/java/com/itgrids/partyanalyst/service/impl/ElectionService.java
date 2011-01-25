@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -300,8 +301,8 @@ public class ElectionService implements IElectionService{
 		List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
 		List<ConstituencyElectionResultsVO> constituenciesResults = null;
 		List<String> allPartiesList = null;
-		Set<SelectOptionVO> districts = new HashSet<SelectOptionVO>();
-		Set<SelectOptionVO> parties = new HashSet<SelectOptionVO>();
+		Set<SelectOptionVO> districts = new TreeSet<SelectOptionVO>();
+		Set<SelectOptionVO> parties = new TreeSet<SelectOptionVO>();
 		List resultsList = null;
 		StringBuilder query = new StringBuilder();
 		Map<Long, Double> constituencyWithPercentMap = new HashMap<Long, Double>();
@@ -421,6 +422,7 @@ public class ElectionService implements IElectionService{
 			districts.add(new SelectOptionVO((Long)values[8], values[9].toString()));
 			parties.add(new SelectOptionVO((Long)values[3], values[2].toString()));
 		}
+		
 	}
 	
 	public ResultWithExceptionVO getPartywiseConstituenciesResultsForCensusInfo(Integer selectIndex,Long stateId,Long districtId,

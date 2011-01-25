@@ -36,6 +36,7 @@
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
 			</props>
 		</property>
 		<property name="annotatedClasses">
@@ -376,6 +377,20 @@
 	<bean id="userMappingsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserMappingsHistoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean name="Pattern3" class="com.itgrids.partyanalyst.excel.CsvReaderNew" />
+	<bean name="Pattern2" class="com.itgrids.partyanalyst.excel.CsvReader2004" />
+	<bean name="Pattern1" class="com.itgrids.partyanalyst.excel.CsvReader" />
+	
+	<bean name="excelReader" class="com.itgrids.partyanalyst.excel.ExcelReaderFactory">
+		<property name="excelReaders">
+			<map>
+				<entry key="Pattern1" value-ref="Pattern1"/>
+				<entry key="Pattern2" value-ref="Pattern2"/>
+				<entry key="Pattern3" value-ref="Pattern3"/>
+			</map>
+		</property>
+	</bean>
 	<!-- 
 	<bean id="cadreService" class="com.itgrids.partyanalyst.service.CadreManagementService">
 	<property name="cadreDAO" ref="cadreDAO" />
@@ -429,8 +444,20 @@
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
-    <bean id="excelToDBServiice" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
-    	<property name="excelDAO" ref="excelDAO" /> 
+    <bean id="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
+    	<property name="electionTypeDAO" ref="electionTypeDAO" />
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
     </bean>
     <bean id="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService">
     	<property name="tehsilDAO" ref="tehsilDAO" />
