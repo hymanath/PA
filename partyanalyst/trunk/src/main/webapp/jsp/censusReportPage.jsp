@@ -268,7 +268,8 @@
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				data.setValue(i, 0, resultByRanges[i].range);
-				data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
+				//data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
+				data.setValue(i, 1, resultByRanges[i].avgPercent);
 			}
 		}
 		var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
@@ -359,7 +360,7 @@
 		for(var i=0; i<resultByRanges.length; i++)
 		{			
 				data.setValue(i, 0, resultByRanges[i].range);
-				data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));		
+				data.setValue(i, 1, resultByRanges[i].avgPercent);		
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
@@ -849,7 +850,7 @@
 			for(var i=0; i<partyResultsList.length; i++)
 			{
 				data.setValue(i, 0, ""+partyResultsList[i].partyName);
-				data.setValue(i, 1, parseInt(partyResultsList[i].avgPercentage));
+				data.setValue(i, 1, parseFloat(partyResultsList[i].avgPercentage));
 			}
 		}
 
