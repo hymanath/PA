@@ -781,14 +781,13 @@
     		 myDataSource.responseSchema = { 
     								            fields:myFields    
     								        };
-    		 if(results.constituenciesResults.length > 10)
-    	        {
-    				var myConfigs = { 
-    					    paginator : new YAHOO.widget.Paginator({ 
-    				        rowsPerPage    : 10 
-    					    }) 
-    						};
-    	        }        
+		    
+			var myConfigs = { 					
+					paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 10 
+					}) 
+					};
+    	               
     		var villageDataTable = new YAHOO.widget.DataTable("performanceGraphDiv_body",myColumnDefs, myDataSource, myConfigs);
     		
     		
@@ -804,14 +803,13 @@
     			localLeadersDataSource.responseSchema = { 
     	            fields: [{key:"partyName"},{key:"seatsParticipated", parser:"number"},{key:"totalSeatsWon", parser:"number"},{key:"avgPercentage", parser:"number"}] 
     	        };
-    			if(results.partyResultsList.length > 10)
-    	        {	
+    			
     	        var myConfigs = { 
     					    paginator : new YAHOO.widget.Paginator({ 
     				        rowsPerPage    : 10 
     					    }) 
     						};
-    	        }	    	        
+    	       	    	        
     		var localLeadersDataTable =  new YAHOO.widget.DataTable("partyResultsDataDiv", localLeadersColumnDefs, localLeadersDataSource,myConfigs);
 			
 			var gStr = '';
