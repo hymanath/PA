@@ -213,7 +213,6 @@
 		-moz-border-radius-topright:6px;
 		background-color:#B2BDC4;
 		border:1px solid #B2BDC4;		
-		padding-top:20px;
 		width:96%;
 		}
 		th {
