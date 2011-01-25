@@ -77,7 +77,9 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> pConstituencyList;
 	private List<SelectOptionVO> mandalList;
-	
+	private Long defaultStateId = 0l;
+	private Long defaultDistrictId = 0l;
+	private Long defaultConstituencyId = 0l;	
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -297,7 +299,49 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	}
 	public void setMandalList(List<SelectOptionVO> mandalList) {
 		this.mandalList = mandalList;
+	}	
+	
+	public Long getDefaultStateId() {
+		return defaultStateId;
 	}
+	
+	public void setDefaultStateId(Long defaultStateId) {
+		this.defaultStateId = defaultStateId;
+	}
+	
+	public Long getDefaultDistrictId() {
+		return defaultDistrictId;
+	}
+	
+	public void setDefaultDistrictId(Long defaultDistrictId) {
+		this.defaultDistrictId = defaultDistrictId;
+	}
+	
+	public Long getDefaultConstituencyId() {
+		return defaultConstituencyId;
+	}
+	
+	public void setDefaultConstituencyId(Long defaultConstituencyId) {
+		this.defaultConstituencyId = defaultConstituencyId;
+	}
+	
+	public Long getDefaultRegionScope() {
+		return this.scope;
+	}	
+	
+	public Long getDefaultState() {
+		return this.defaultStateId;
+	}
+	
+	public Long getDefaultDistrict() {
+		return this.defaultDistrictId;
+	}	
+
+	public Long getDefaultConstituency() {
+		return this.defaultConstituencyId;
+	}	
+
+	
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
@@ -323,12 +367,16 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(list.get(1).getId());
 			
 			stateId = list.get(0).getId();
+			setDefaultStateId(stateId);
+			setDefaultDistrictId(list.get(1).getId());
+			setDefaultConstituencyId(list.get(2).getId());
 			setScope(4l);
 		}
 		else if("STATE".equals(accessType)){
 			log.debug("Access Type = State ****");			
 			stateId = accessValue;	
 			setScope(2l);
+			setDefaultStateId(stateId);
 			stateList = regionServiceDataImp.getStatesByCountry(1l);			
 			
 		}else if("DISTRICT".equals(accessType)){
@@ -337,7 +385,10 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			stateId = list.get(0).getId();
 			setScope(3l);
 			stateList = regionServiceDataImp.getStatesByCountry(1l);			
-			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());			
+			districtList = regionServiceDataImp.getDistrictsByStateID(list.get(0).getId());
+			setDefaultStateId(stateId);
+			setDefaultDistrictId(list.get(1).getId());
+			
 			
 		} else if("MP".equals(accessType)){
 			List<SelectOptionVO> list = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
