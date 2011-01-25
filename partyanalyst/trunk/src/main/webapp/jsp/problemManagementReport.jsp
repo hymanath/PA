@@ -224,6 +224,13 @@
 		vertical-align:top;
 		width:122px;
 		}
+		.tdClass
+		{
+			color:#113D5B;
+			font-size:11px;
+			padding:6px;
+			text-align:left;				
+		}
 		
 	</style>   	
 
@@ -262,7 +269,17 @@ var problemDetails={
 
 
 var type="",createGroupDialog,problemLocationId; 
-
+function executeOnload()
+{
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedScopeLevel = scopeLevelEl.options[scopeLevelEl.selectedIndex].value; 
+	if(selectedScopeLevel != 0)
+	{
+		showProbRegionsSelect();
+		populateLocations(selectedScopeLevel, 'onLoad');
+		getProblems();
+	}
+}
 function showProblemsReport(results, jsObj){
 	assignToProblemsArray = new Array();
 
@@ -805,6 +822,37 @@ function populateLocations(val,source)
 	if(locationsTableEl.style.display == 'none')
 		locationsTableEl.style.display = '';
 	var value = val;
+	if(source == 'onLoad')
+	{
+		setLocationValue(accessValue,'onLoad')
+	} else if(source == 'onChange')
+	{	
+		hiddenEl.value='';
+		if(accessType == 'COUNTRY')
+		{
+			stateFieldEl.selectedIndex = '0';
+			districtFieldEl.selectedIndex = '0';
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+		} else if(accessType == 'STATE')
+		{
+			districtFieldEl.selectedIndex = '0';
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';					
+		} else if(accessType == 'DISTRICT' || accessType == 'MP')
+		{
+			constituencyFieldEl.selectedIndex = '0';
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+			getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel')
+		} else if(accessType == 'MLA')
+		{
+			mandalFieldEl.selectedIndex = '0';
+			hamletFieldEl.selectedIndex = '0';
+		}
+	}
 	if(value == 1)
 	{
 		if(row1El.style.display == 'none')
@@ -887,6 +935,7 @@ function populateLocations(val,source)
 
 var accessType = "${accessType}";
 var scope = '${scope}';
+var accessValue = "${accessValue}";
 function setLocationValue(value, source)
 {
 	if(value == '0')
@@ -945,7 +994,8 @@ function setLocationValue(value, source)
 		}				
 		
 	} else if(source == 'onLoad'){
-		return;
+		hiddenEl.value = value
+		
 	}
 	
 }
@@ -1043,9 +1093,7 @@ function getProblems()
 	var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
 	callAjax(rparam,jsObj,url);	
 }
-</script>
-
-  
+</script>  
 <body >
 
 <div class="yui-skin-sam">
@@ -1061,41 +1109,43 @@ function getProblems()
 	</div>
 </center>
 <div id="mainDIV">
-<div id="problemHeading">Search Problems By </div>
+<div id="problemHeading"></div>
 <div>
-<table border="0" width="100%" style="margin-left:5px;"><tr>
-<th><input  type="radio" name="problemOption" value="location" onclick="showProbRegionsSelect()"/>Problem Location</th>	
-<td width="16%"><span id="probRegionSpan" style="display:none;"><s:select theme="simple" cssClass="selectWidth" id="scopeLevel" name="regionScope" list="problemScopes" headerKey="0" headerValue = "Select Problem Region Level" listKey = "id" listValue="name" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')" /></span></td>	
-<th><input type="radio" name="problemOption" value="status" onclick="showProbStatusSelect()"/>Problem Status </th>
-<td width="16%"><span id="statusSpan" style="display:none;"><s:select theme="simple" cssClass="selectWidth" id="statusList" name="probStatus" headerKey="-1" headerValue = "Select Problem Status" list="statusList" listKey = "id" listValue="name" /></span></td>	
-<th><input  type="radio" name="problemOption" value="department" onclick="showDeptRegionsSelect()"/> Department</th>
-<td width="16%"><span id="deptRegionSpan" style="display:none;"><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" onchange="getDepartmentsByScope(this.options[this.selectedIndex].text)" /></span></td>
-</tr></table>
-<table border="0" id="deptsSelectTable" width="100%" style="display:none;margin-left:5px;">
+
+<table border="0" width="98%" cellpadding="2"  style="margin:15px;">
 <tr>
-<th style="width:135px;">Select A Department:</th>
-<td>
-<span><select name="dept" id="deptsSelectField"></select></span>
-</td>
+<td>Search Problems By:</td>
+<td class="tdClass"><input  type="radio" name="problemOption" value="location" checked="true" onclick="showProbRegionsSelect()"/>Problem Location</td>		
+<td class="tdClass"><input type="radio" name="problemOption" value="status" onclick="showProbStatusSelect()"/>Problem Status </td>	
+<td class="tdClass"><input  type="radio" name="problemOption" value="department" onclick="showDeptRegionsSelect()"/> Department</td>
 </tr>
 </table>
 <div style="text-align:left;margin-left:10px;">
 
-	<table id="locationsTable" border="0" style="margin-left:10px;display:none;">
+	<table id="probRegionSpan" border="0" style="margin-left:10px;display:none;">
+	<tr>
+		<th style="width:195px;">Problem Impacted Region</th>	
+		<td ><s:select theme="simple" cssClass="selectWidth" value="defaultRegionScope" id="scopeLevel" name="regionScope" list="problemScopes" headerKey="0" headerValue = "Select Problem Region Level" listKey = "id" listValue="name" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')" /></td>
+	</tr>	
+	</table>
+	<table id="locationsTable" border="0" style="margin-left:10px;margin-top:5px;display:none;">
+	<tr>
+		<th colspan="2">Select Problem Location</th>
+	</tr>
 	<c:if test="${accessType != 'MP'}">
 		<tr id="row1" style="display:none;">
 			<th style="width:195px;"><%=STATE%><font class="requiredFont">*</font></th>
-			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','problemSearch','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" value="defaultState" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','problemSearch','districtField_s','currentAdd', 'null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 		</tr>
 		<tr id="row2" style="display:none;">
 			<th style="width:195px;"><%=DISTRICT%><font class="requiredFont"> * </font></th>
-			<td><s:select id="districtField_s" theme="simple" cssClass="selectWidth" name="district" headerKey="0" headerValue="Select Location" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'problemSearch','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><s:select id="districtField_s" theme="simple" value="defaultDistrict"  cssClass="selectWidth" name="district" headerKey="0" headerValue="Select Location" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'problemSearch','constituencyField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 		</tr>
 	</c:if>
 	<c:if test="${accessType == 'MP'}">
 		<tr id="row1" style="display:none;">
 			<th style="width:195px;"><%=STATE%><font class="requiredFont">*</font></th>
-			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" name="state" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','problemSearch','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><s:select id="stateField_s" theme="simple" cssClass="selectWidth" value="defaultState" name="state" list="stateList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'parliamentsInState','problemSearch','pConstituencyField_s','currentAdd','null');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 		</tr>
 		<TR id="row2" style="display:none;">	
 			<Th style="width:195px;"><%=PCONSTITUENCY%></Th>
@@ -1104,7 +1154,7 @@ function getProblems()
 	</c:if>
 		<tr id="row3" style="display:none;">
 			<th style="width:195px;"><%=ACONSTITUENCY%><font class="requiredFont"> * </font></th>
-			<td><s:select id="constituencyField_s" theme="simple" cssClass="selectWidth" name="constituency" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'problemSearch','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
+			<td><s:select id="constituencyField_s" theme="simple" value="defaultConstituency" cssClass="selectWidth" name="constituency" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Location" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'problemSearch','mandalField_s','currentAdd');setLocationValue(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
 		</tr>								
 		<tr id="row4" style="display:none;">
 			<th style="width:195px;"><%=MANDAL%><font class="requiredFont"> * </font></th>
@@ -1130,6 +1180,31 @@ function getProblems()
 		</tr>
 	</table>
 	</div>
+	<div style="text-align:left;margin-left:10px;">
+	<table id="statusSpan" width="98%" border="0" style="margin-left:10px;display:none;">
+	<tr>
+		<th style="width:195px;">Problem Status</th>	
+		<td ><s:select theme="simple" cssClass="selectWidth" id="statusList" name="probStatus" headerKey="-1" headerValue = "Select Problem Status" list="statusList" listKey = "id" listValue="name" /></td>
+	</tr>	
+	</table>
+	</div>
+	<div style="text-align:left;margin-left:10px;">
+	<table id="deptRegionSpan" width="98%" border="0" style="margin-left:10px;display:none;">
+	<tr>
+		<th style="width:195px;">Department Scope</th>	
+		<td><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" onchange="getDepartmentsByScope(this.options[this.selectedIndex].text)" /></td>
+	</tr>		
+	</table>
+	<table border="0" id="deptsSelectTable" width="98%" style="display:none;margin-left:10px;">
+	<tr>
+		<th style="width:195px;">Department</th>
+		<td>
+		<select name="dept" id="deptsSelectField" style="width:250px;"></select>
+		</td>
+	</tr>
+	</table>
+	
+	</div>
 	<div id="errorDiv"></div>
 	<input type="button" class="btnClass" onclick="getProblems()" value="Search"/>
 	</div>
@@ -1143,6 +1218,10 @@ function getProblems()
 	<div id="problemInfoDivBody" style="margin:15px;"></div>
 </div>
 <input type="hidden" id="problemLocation" name="problemLocationId"/>
+<div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
+<script type="text/javascript">
+executeOnload();
+</script>
 </body>
 
 </html>
