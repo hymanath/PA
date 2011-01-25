@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -173,7 +173,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			Long stateId = jObj.getLong("stateId");
 			List<SelectOptionVO> parties = staticDataService.getStaticPartiesListForAState(stateId);
 			Collections.sort(parties, new SelectOptionVOComparator());
-			electionDataVO.setParties(new HashSet<SelectOptionVO>(parties));
+			electionDataVO.setParties(new LinkedHashSet<SelectOptionVO>(parties));
 			return Action.SUCCESS;
 		}
 		
