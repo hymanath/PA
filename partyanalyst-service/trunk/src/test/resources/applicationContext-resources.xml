@@ -187,11 +187,16 @@
 				<value>com.itgrids.partyanalyst.model.UserProblemApproval</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
 				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
+				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="cadreProblemDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="constituencyCensusDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
