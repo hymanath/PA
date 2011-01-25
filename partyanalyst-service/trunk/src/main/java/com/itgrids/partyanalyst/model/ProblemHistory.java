@@ -47,6 +47,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0); 
 	private Set<ProblemFundSource> problemFundSources = new HashSet<ProblemFundSource>(0);
+	private Set<CadreProblemDetails> cadreProblemDetails =  new HashSet<CadreProblemDetails>();
 	
 	public ProblemHistory(){
 		
@@ -192,6 +193,16 @@ public class ProblemHistory extends BaseModel implements Serializable{
 
 	public void setIsApproved(String isApproved) {
 		this.isApproved = isApproved;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemHistory")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreProblemDetails> getCadreProblemDetails() {
+		return cadreProblemDetails;
+	}
+
+	public void setCadreProblemDetails(Set<CadreProblemDetails> cadreProblemDetails) {
+		this.cadreProblemDetails = cadreProblemDetails;
 	}
 	
 	
