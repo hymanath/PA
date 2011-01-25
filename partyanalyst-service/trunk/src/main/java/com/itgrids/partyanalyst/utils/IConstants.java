@@ -359,7 +359,9 @@ public interface IConstants {
     public static final String MUNCPAL_CORP = "MUNCIPALITY/CORPORATION";
     public static final String TOTAL = "Total";
     public static final String STATE_STR = "state";   
-    public static final String DISTRICT_STR = "district"; 
+    public static final String DISTRICT_STR = "district";
+    public static final String CADRE_PERSONAL = "PERSONAL";
+    public static final String CADRE_ASSIGNED = "ASSIGNED";
     
       
 }
