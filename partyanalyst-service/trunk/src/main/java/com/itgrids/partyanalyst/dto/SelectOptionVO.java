@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 
-public class SelectOptionVO implements Serializable {
+public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
@@ -33,7 +33,6 @@ public class SelectOptionVO implements Serializable {
 		if(id==null)
 			id = -1L;
 		if(obj instanceof SelectOptionVO){
-
 			SelectOptionVO vo = (SelectOptionVO) obj;
 			return this.id.equals(vo.getId());
 		}
@@ -46,4 +45,15 @@ public class SelectOptionVO implements Serializable {
 			id = -1L;
 		return this.id.intValue();
 	}
+
+	@Override
+	public int compareTo(SelectOptionVO obj) {
+		if(obj instanceof SelectOptionVO){
+			SelectOptionVO vo = (SelectOptionVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
+	}
+	
 }
