@@ -74,11 +74,13 @@ public class Cadre extends BaseModel{
 	 private String fatherOrSpouseName;
 	 private String noOfFamilyMembers;
 	 private String noOfVoters;
+	 private String exactDateOfBirth;
 	 private Set<CadreLanguageEfficiency> cadreLanguageEfficiency = new HashSet<CadreLanguageEfficiency>();
 	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
-	 private String exactDateOfBirth;
+	 	
+	 
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -470,5 +472,5 @@ public class Cadre extends BaseModel{
 	public void setPresentRespInParty(String presentRespInParty) {
 		this.presentRespInParty = presentRespInParty;
 	}
-	
+
  }

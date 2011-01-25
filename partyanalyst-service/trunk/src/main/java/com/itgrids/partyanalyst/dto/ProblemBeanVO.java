@@ -74,7 +74,16 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long pConstituencyId;
 	private List<ProblemDetailsVO> problemsInfo;
 	private Long problemsCount;
+	private Long cadreId;
     	
+	public Long getCadreId() {
+		return cadreId;
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+
 	public String getPostedDate() {
 		return postedDate;
 	}
