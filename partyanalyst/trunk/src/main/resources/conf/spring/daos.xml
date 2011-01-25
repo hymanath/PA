@@ -4,7 +4,11 @@
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-
+	
+	<bean id="cadreProblemDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="constituencyCensusDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyCensusDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
