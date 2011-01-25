@@ -59,9 +59,9 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	private String defaultConstId;
 	public Boolean isParliament;
 	private Long pConstituencyId;
+	private Long cadreId;
 	
 		
-	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -213,12 +213,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	
 	public void setProbSource(String probSource) {
 		this.probSource = probSource;
+		this.problemBeanVO.setProbSourceId(Long.parseLong(probSource));
 	}
 
 	public String getName() {
 		return name;
 	}
 	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Complained Person Name field should not contain special characters and numbers", shortCircuit = true)
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -226,6 +228,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getMobile() {
 		return mobile;
 	}
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -354,6 +358,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		pConstituencyId = constituencyId;
 	}
 	
+	public Long getCadreId() {
+		return 	this.problemBeanVO.getCadreId();
+	}
+
+	public void setCadreId(Long cadreId) {
+		this.problemBeanVO.setCadreId(cadreId);
+	}
+
 	public Long getDefaultPConstituency()
 	{
 		return pConstituencyId; 
@@ -387,15 +399,14 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		//problemBeanVO.setProblemImpactLevelId(getProblemScope());
 		//problemBeanVO.setProblemImpactLevelValue(getProblemLocationId());
 		
-		/*problemBeanVO.setProbSourceId(new Long(getProbSource()));
-		if(problemBeanVO.getProbSourceId() != 1L)
+		if(problemBeanVO.getProbSourceId() == 2L || problemBeanVO.getProbSourceId() == 3L)
 		{
 			problemBeanVO.setName(getName());
 			problemBeanVO.setMobile(getMobile());
 			problemBeanVO.setPhone(getPhone());
 			problemBeanVO.setEmail(getEmail());			
 			problemBeanVO.setAddress(getAddress());
-		}*/
+		}
 		
 		//problemBeanVO.setProblemStatusId(getStatus());
 		
@@ -412,5 +423,38 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		 
 		return SUCCESS;
 	}
+	
+	public void validate()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user.getUserStatus().equals(IConstants.PARTY_ANALYST_USER))
+		{
+			if(problemBeanVO.getProbSourceId() == 0)
+				addFieldError("sourceInput","Please Select Problem Source.");
+			
+			if(problemBeanVO.getProbSourceId() == 2 || problemBeanVO.getProbSourceId() == 3)
+			{
+				if(getName() == null || getName().trim().length() == 0)
+					addFieldError("nameInput","Please Enter Name in Complained Person Details.");
+				if(getMobile() == null || getMobile().trim().length() == 0)
+					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");
+				if(getMobile() != null && getMobile().trim().length() > 0 && (getMobile().trim().length() < 10 ||
+						getMobile().trim().length() > 12))
+					addFieldError("mobileLenInput","Invalid Mobile Number.");
+				if(getAddress() == null || getAddress().trim().length() == 0)
+					addFieldError("addressInput","Please Enter Address in Complained Person Details.");
+			}
+			
+			if(problemBeanVO.getProbSourceId() == 4 && (problemBeanVO.getCadreId() == null ||
+					problemBeanVO.getCadreId() == 0l))
+			{
+				addFieldError("cadreInput","Please Select Cadre From cadre Search.");
+			}
+		}
+		
+		user = null;
+	 }
 
 }
