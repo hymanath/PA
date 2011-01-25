@@ -65,6 +65,7 @@
 var accessValue = '${sessionScope.USER.accessValue}';
 var accessType = '${sessionScope.USER.accessType}';
 var winTask = '${windowTask}';
+var isProblemAdding = <%=request.getParameter("addProblem")%>;
 
 function populateLocations(val,source)
 {	
@@ -84,17 +85,8 @@ function populateLocations(val,source)
 	var hamletFieldEl = document.getElementById("hamletField_s");		
 	var boothFieldEl = document.getElementById("boothField_s");
 	
-	/*
-	if(source != 'onLoad')
-	{
-		clearOptionsListForSelectElmtId("stateField_s");
-		clearOptionsListForSelectElmtId("districtField_s");
-		clearOptionsListForSelectElmtId("constituencyField_s");
-		clearOptionsListForSelectElmtId("mandalField_s");
-		clearOptionsListForSelectElmtId("hamletField_s");
-		getLocationHierarchies(1, "statesInCountry", "cadreSearch", "stateField_s", null, null, null);
-	}*/	
-	if(source == 'onChange')
+		
+ if(source == 'onChange')
 {
 	if(accessType == 'COUNTRY')
 	{
@@ -235,159 +227,43 @@ function populateLocations(val,source)
 			 
 }
 
-/*
-function populateLocations(val,source)
-{	
-	REPORTLEVEL = val;
-	var row1El = document.getElementById("row1");
-	var row2El = document.getElementById("row2");
-	var row3El = document.getElementById("row3");
-	var row4El = document.getElementById("row4");
-	var row5El = document.getElementById("row5");
-	var row6El = document.getElementById("row6");
-	//var boothNoTextEl = document.getElementById("boothNoText");
-	//var hiddenEl = document.getElementById("cadreLevelValue");
-	var stateFieldEl = document.getElementById("stateField_s");
-	var districtFieldEl = document.getElementById("districtField_s");
-	var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
-	var constituencyFieldEl = document.getElementById("constituencyField_s");
-	var mandalFieldEl = document.getElementById("mandalField_s");
-	var hamletFieldEl = document.getElementById("hamletField_s");
-	var mandalField_sVal;	
-	row1El.style.display = 'none';
-	row2El.style.display = 'none';
-	row3El.style.display = 'none';
-	row4El.style.display = 'none';
-	row5El.style.display = 'none';
-	row6El.style.display = 'none';	
-	if(source == 'onChange')
-	{	
-		//hiddenEl.value='';
-		if(accessType == 'COUNTRY')
-		{
-			stateFieldEl.selectedIndex = '0';
-			districtFieldEl.selectedIndex = '0';
-			constituencyFieldEl.selectedIndex = '0';
-			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';
-		} else if(accessType == 'STATE')
-		{
-			districtFieldEl.selectedIndex = '0';
-			constituencyFieldEl.selectedIndex = '0';
-			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';
-		} else if(accessType == 'DISTRICT' || accessType == 'MP')
-		{
-			constituencyFieldEl.selectedIndex = '0';
-			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';
-			getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel')
-		} else if(accessType == 'MLA')
-		{
-			mandalFieldEl.selectedIndex = '0';
-			hamletFieldEl.selectedIndex = '0';
-		}						
-	} else if(source == "onLoad")
-		{
-			//setCadreValue(accessValue,'onChange');
-			if(val == 9)
-			{
-				mandalField_sVal = mandalFieldEl.options[mandalFieldEl.selectedIndex].text;
-				var flag = mandalField_sVal.search("Greater Municipal Corp");
-				if(flag == '-1')
-				{
-					if(row6El.style.display == 'none')
-						row6El.style.display = '';						
-				} else {
-					if(row5El.style.display == 'none')
-						row5El.style.display = '';
-					if(row6El.style.display == 'none')
-						row6El.style.display = '';
-				}
-			}
-		}	
-			
-	var value = val;
-	if(value == 1)
+function getCadreId(selectEle)
+{
+	if(selectEle.checked == true && isProblemAdding != null && isProblemAdding == true)
 	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		
-	} else if(value == 2)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			
-	} else if(value == 3)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';					
-	} else if(value == 4)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';			
-	} else if(value == 5)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';
-		if(row4El.style.display == 'none')
-			row4El.style.display = '';				
-	} else if(value == 6)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';
-		if(row4El.style.display == 'none')
-			row4El.style.display = '';
-		if(row5El.style.display == 'none')
-			row5El.style.display = '';			
-	} else if(value == 7)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';
-		if(row4El.style.display == 'none')
-			row4El.style.display = '';				
-	} else if(value == 8)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			 
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';
-		if(row4El.style.display == 'none')
-			row4El.style.display = '';
-		if(row5El.style.display == 'none')
-			row5El.style.display = '';			
-	} else if(value == 9)
-	{
-		if(row1El.style.display == 'none')
-			row1El.style.display = '';			
-		if(row2El.style.display == 'none')
-			row2El.style.display = '';
-		if(row3El.style.display == 'none')
-			row3El.style.display = '';
-		if(row4El.style.display == 'none')
-			row4El.style.display = '';			
-	}	 
+		deSelectCheckBox();
+		selectEle.checked = true;
+	}
+	else
+	  return;
 }
-*/
+
+function setCadreIdToProblem()
+{
+	var elements = document.getElementsByName("cadreResult_check");
+	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
+    var cid = null;
+
+	for(var i=0; i<elements.length; i++)
+	{
+		if(elements[i].checked == false)
+			continue;
+		
+		cid  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
+	}
+	if(cid == null)
+	{
+		errorSpanElmt.innerHTML = '<font style="color:red;">Please Select Cadre to Add the Problem</font>';
+		return;
+	}
+	else if(cid != null)
+	{
+		errorSpanElmt.innerHTML = '';
+		window.opener.setSelectedCadre(cid);
+		window.close();
+	}
+ }
+
 </script>
 <style>
 .btnClass
@@ -659,6 +535,8 @@ function populateLocations(val,source)
 			<div id="searchResult"></div>
 		</div>
 		<div id="searchResultsDiv_footer" style="text-align:center;"></div>
+		<div id="cadreProblemSelectErrorDiv" style="text-align:center;"><span id="addSelectedCadreErrorMsg"></span></div>
+		<div id="cadreProblemSelectDiv" style="text-align:center;"></div>
 	</div>
 
 	<script type="text/javascript">		
@@ -760,7 +638,7 @@ function buildCadreSearchResultDataTable(rparam)
 	var id= oRecord.getData("cadreId");
 	var mobile= oRecord.getData("mobile");
 	var firstName= oRecord.getData("firstName");
-	elLiner.innerHTML="<input type='checkbox' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
+	elLiner.innerHTML="<input type='checkbox' onClick='getCadreId(this)' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
 				
   };
   
@@ -849,8 +727,18 @@ function showCadreSearchResults(searchCount)
 	footerElmt.innerHTML = fStr;
 	footerElmt.style.display = '';
 	}
-
+	
+	if(isProblemAdding != null && isProblemAdding == true)
+	{
+		footerElmt.style.display = 'none';
+		
+		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
+		var cadreProbStr = '';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreIdToProblem()" value="Add Selected cadre"/></span>';
+		cadreProbDivEle.innerHTML = cadreProbStr;
+	}
 }
+
 
 <!--  cadre search  --- end> 
 </script>

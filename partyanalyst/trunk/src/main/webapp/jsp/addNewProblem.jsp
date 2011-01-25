@@ -83,6 +83,14 @@ var userType = '${sessionScope.UserType}';
 var accessType = '${sessionScope.USER.accessType}';
 var accessValue = '${problemLocation}';
 var scope = '${scope}';
+var isSaved = '${isSuccessfullyInserted}';
+var userType = '${sessionScope.UserType}';
+
+function setSelectedCadre(cadreId)
+{
+	var cadreInputIdEle = document.getElementById("cadreInputId");
+	cadreInputIdEle.value = cadreId;
+}
 
 function incrementHidden()
 {
@@ -121,6 +129,82 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
+
+function getComplainedPersonDetails(name)
+{	
+	var personDetailsDivEle = document.getElementById("personDetailsDiv");
+	
+	if(isSaved == 'true')
+	{
+	  document.getElementById("personNameField").value = '';
+	  document.getElementById("mobileField").value = '';	document.getElementById("telephoneNoField").value = '';	document.getElementById("emailField").value = '';
+	  document.getElementById("addressField").value = '';	
+
+	  isSaved = false;
+	}
+		
+	if(name =='External Person' || name=='Call Center')
+	{			
+		personDetailsDivEle.style.display = 'block';
+	}else
+	{	
+		personDetailsDivEle.style.display = 'none';
+	}
+
+	if(name == 'Cadre')
+	{
+		var cadreEle = document.getElementById("cadreInputId");
+		var cadreDivEle = document.getElementById("cadreDiv");
+
+		var cadreDivVar = '';
+		
+		cadreDivVar += '<table align="center">';
+		cadreDivVar += '<tr><td></td><td>';
+		cadreDivVar += '<input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>';
+		cadreDivVar += '</tr></table>';
+		cadreDivEle.innerHTML = cadreDivVar;
+		cadreDivEle.style.display = 'block';
+	}
+	else
+	{
+		var cadreDivEl = document.getElementById("cadreDiv");
+		cadreDivEl.style.display = 'none';
+	}
+}
+
+function getCadreDetails(type)
+{	
+	var urlStr = "cadreSearchAction.action?windowTask=Search&addProblem=true";
+	var cadreSearchForProblem = window.open(urlStr,"cadreSearchAndSMSPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");	
+	cadreSearchForProblem.focus();
+}
+
+function hideProblemSourceRow()
+{
+	var userTypeSelectBoxEle = document.getElementById("userTypeSelectBox");
+	if(userType == 'FreeUser')
+	{
+		var problemSourceRowEle = document.getElementById("problemSourceRowId");
+		problemSourceRowEle.style.display = 'none';
+	}
+	else if(userType == 'PartyAnalyst' && isSaved == 'true')
+	{
+		userTypeSelectBoxEle.value = 0;
+	}
+
+	if(userType == 'PartyAnalyst' && isSaved != 'true')
+	{
+		var selected =userTypeSelectBoxEle.options[userTypeSelectBoxEle.selectedIndex].value; 
+		if(selected == 2 || selected == 3)
+		{
+			var personDetailsDivEl = document.getElementById("personDetailsDiv");
+			personDetailsDivEl.style.display = 'block';
+		}
+		if(selected == 4)
+			userTypeSelectBoxEle.value = 0;
+	}
+}
+
 </script>
 </head>
 <body onload="executeOnload()" class="bodyStyle">
@@ -268,18 +352,17 @@ function limitText(limitField, limitCount, limitNum)
 						</TABLE>									
 					</td>
 				</tr>
-				<!--<tr>
+				<tr id="problemSourceRowId">
 					<td><s:label for="problemSourceField" id="problemSourceLabel"  value="%{getText('problemSource')}" /><font class="requiredFont">*</font></td>
 					<td style="padding-left:15px;"> 
-						<select name="probSource" id="probSource" onchange="getPersonDetails(this.options[this.selectedIndex].text);">
-							<c:forEach var="probSource"  items="${sessionScope.problemSources}" >
-									<option value='${probSource.id}'>${probSource.name}</option>
-								</c:forEach>
-						</select>
+					
+					<s:select id="userTypeSelectBox" list="#session.informationSourcesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Problem Source" name="ProbSource" class="selectWidth" onchange="getComplainedPersonDetails(this.options[this.selectedIndex].text)"/>
+
 					</td>
 				</tr>													
-			--></table>			
-			<div id="personDetailsDiv" style="display: none;">
+			</table>
+			<div id="cadreDiv"></div>
+			<div id="personDetailsDiv" style="display:none;">
 				<table class="personDetailsTable">
 					<tr class="accessDivHead">
 						<th align="left" colspan="2"><u>Complained Person Details</u></th>
@@ -317,7 +400,7 @@ function limitText(limitField, limitCount, limitNum)
 		<input type="hidden" name="defaultConstId" value="${defaultConstituency}">
 		<input type="hidden" name="defaultScopeId" value="${defaultScope}">
 		<input type="hidden" name="isParliament" value="${isParliament}">	
-		
+		<input type="hidden" id="cadreInputId" name="cadreId">
 			<table>
 				<tr>
 					<td><div style="margin-left:225px;"><s:submit name="Save" value="Save" cssClass="button"></s:submit></div></td>
@@ -333,6 +416,7 @@ function limitText(limitField, limitCount, limitNum)
 
 <script type="text/javascript">
 getCurrentDate();
+hideProblemSourceRow();
 </script>
 </body>
 </html>
