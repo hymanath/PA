@@ -432,8 +432,11 @@
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="boothDAO" ref="boothDAO" />
-		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />		
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />	
+		<property name="cadreDAO" ref="cadreDAO" />	
+		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
    </bean>
+   
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="partyDAO" ref="partyDAO" />
