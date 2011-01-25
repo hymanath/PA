@@ -47,6 +47,7 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	private IStaticDataService staticDataService;
 	private IProblemManagementService problemManagementService;
 	private CadreManagementService cadreManagementService;
+	private List<SelectOptionVO> problemSourcesList;
 	
 	private String requestSrc;
 	private Long stateId = 0l;
@@ -300,6 +301,14 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 	{
 		return pConstituencyId; 
 	}
+	
+	public List<SelectOptionVO> getProblemSourcesList() {
+		return problemSourcesList;
+	}
+
+	public void setProblemSourcesList(List<SelectOptionVO> problemSourcesList) {
+		this.problemSourcesList = problemSourcesList;
+	}
 
 	public String execute () throws Exception 
 	{
@@ -311,6 +320,8 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		mandalList = new ArrayList<SelectOptionVO>();
 		wardsOrHamletsList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
+		problemSourcesList = new ArrayList<SelectOptionVO>(0);
+		
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
@@ -323,6 +334,10 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		session.setAttribute(ISessionConstants.WARDS_OR_HAMLETS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.IMPACTED_REGIONS, problemScopes);
 		*/
+		
+		problemSourcesList = staticDataService.getAllInformationSources();
+		session.setAttribute(ISessionConstants.INFO_SOURCES,problemSourcesList);
+		
 		try{
 		if("FreeUser".equals(session.getAttribute("UserType")))
 		{	
@@ -494,6 +509,5 @@ public class AddNewProblemAction extends ActionSupport implements ServletRequest
 		}
 	 return null;
 	}
-	
 
 }
