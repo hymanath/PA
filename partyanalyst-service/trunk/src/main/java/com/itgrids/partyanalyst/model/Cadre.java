@@ -79,6 +79,7 @@ public class Cadre extends BaseModel{
 	 private Set<CadreFamilyMemberInfo> cadreFamilyMemberInfo = new HashSet<CadreFamilyMemberInfo>();
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
+	 private Set<CadreProblemDetails> cadreProblemDetails =  new HashSet<CadreProblemDetails>();
 	 	
 	 
 	 @Id
@@ -471,6 +472,16 @@ public class Cadre extends BaseModel{
 	 */
 	public void setPresentRespInParty(String presentRespInParty) {
 		this.presentRespInParty = presentRespInParty;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreProblemDetails> getCadreProblemDetails() {
+		return cadreProblemDetails;
+	}
+
+	public void setCadreProblemDetails(Set<CadreProblemDetails> cadreProblemDetails) {
+		this.cadreProblemDetails = cadreProblemDetails;
 	}
 
  }
