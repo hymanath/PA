@@ -46,7 +46,7 @@ function openKnowMoreWindow()
 			draggable:false,
 			buttons: {
 						"Close": function() {
-								$(this).dialog("close"); }
+								$(this).dialog("destroy"); }
 					 }
 		});
 	$(".ui-dialog-titlebar").hide();
