@@ -631,6 +631,37 @@ input.input_text
 	padding:5px;	
 }
 
+#homePage_Image_Header
+{
+	background-image:url(../../images/icons/homePage_new/homePage_Image.jpeg);
+	width:660px;
+	height:380px;
+}
+
+/*.ui-draggable .ui-dialog-titlebar
+{
+	display:none;
+}*/
+
+.know_more_data_main
+{
+	border-bottom:1px solid #E8E3E0;
+	margin-bottom:10px;
+}
+.know_more_data_head
+{
+	color:#814C24;
+	font-size:15px;
+	font-weight:bold;
+	margin:5px 0;
+	text-decoration:underline;
+}
+
+.know_more_data_body
+{
+	line-height:20px;
+	text-align:justify;
+}
 /* indexPage styles*/
 
 

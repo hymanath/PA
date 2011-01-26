@@ -1,9 +1,11 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -77,10 +79,13 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
 
 <!-- JQuery files (End) -->
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 <script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
-<script type="text/javascript" src="js/cncSearch.js"> </script>
+<script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 <link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
@@ -88,6 +93,9 @@
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link rel="stylesheet" type="text/css" href="styles/connectPeople/connectPeople.css">
 
+<script type="text/javascript">
+	google.load("elements", "1", {packages : ["newsshow"]});
+</script>
 </head>
 <body>
 	<div id="connectPeoplePopup_outer" class="yui-skin-sam">
@@ -105,10 +113,55 @@
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-						
+							
+							<div id="connectPeople_profile_center" class="yui-skin-sam">
+								<table width="100%">
+									<tr>
+										<td width="20%" valign="top">
+											<img height="100" width="90" style="border:1px solid #ADADAD;" src="images/icons/indexPage/human.jpg">
+										</td>
+										<td width="60%" valign="top" align="left">
+											<div id="profileUserName">${loginUserName}</div>
+											<div id="connectPeople_editProfile_center" class="yui-skin-sam">
+											</div>
+										</td>
+										<td width="20%" valign="top">
+											<div class="connectPeople_profile_center_linksDiv">
+												<table>
+													<tr>
+														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('analyze')">Add Reasons</a></td>
+													</tr>
+												</table>												
+											</div>
+											<div class="connectPeople_profile_center_linksDiv">
+												<table>
+													<tr>
+														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('viewResults')">View Reasons</a></td>
+													</tr>
+												</table>												
+											</div>
+											<div class="connectPeople_profile_center_linksDiv">
+												<table>
+													<tr>
+														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>
+													</tr>
+												</table>												
+											</div>
+										</td>
+									</tr>
+									
+								</table>
+							</div>
 							<div id="connectPeople_messages_center" class="yui-skin-sam">
 											 
 							</div>
+
+							<!--<div id="connectPeople_connect_center" class="yui-skin-sam">
+											 
+							</div>-->
 					</div>
 
 					
@@ -141,7 +194,7 @@
 							<!-- Accordian End-->
 							
 							<!-- CNC Search Start -->
-							<!--<div id="adDataDiv_main">
+							<!--<div id="adDataDiv_main" style="margin:10px 0px 10px 0px;">
 								<div id="adDataMain_header">
 									<table width="100%" border="0" cellspacing="0" cellpadding="0">
 									  <tr>                                    
@@ -166,18 +219,39 @@
 								<div id="adDataMain_body">
 									<div class="adData_main">										
 										<div class="adData_body">
-											<table>
-											<tr>
-											<td><jsp:include page="../jsp/cncSearch.jsp"/></td>
-											</tr>
-											</table>						
+											
 										</div>																	
 									</div>
 								</div>
-							</div> -->
+							</div>-->
 							
 							<!-- CNC Search End -->
+							
 
+							<!-- Opinion Poll Start-->
+								<div id="pollsWidgetMain" style="margin:10px 0px 10px 0px;">
+									<div id="pollsWidgetHeader">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
+											<td width="98%">
+												<div class="electionTrendzHeaderBackground_center">
+													<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
+														Opinion Poll
+													</span>
+												</div>
+											</td>
+											<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
+										  </tr>
+										</table>	
+									 </div>
+									<div id="pollsWidgetBody" class="yui-skin-sam" style="height:260px;">
+									</div>
+									<div id="pollsWidgetFooter">
+										
+									</div>
+								</div>
+							<!-- Opinion Poll End-->
 							<!--<div id="connectPeople_editProfile_center" class="yui-skin-sam">
 							</div>-->
 							
@@ -192,18 +266,149 @@
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>							
-							<table width="100%">
+							<table width="100%" style="position:relative;">
 								<tr>
-									<td width="70%" valign="top">
-										<div id="connectPeople_connect_center" class="yui-skin-sam">
-											 
+									<td width="33%">
+										<div class="productFeatureMain">							
+											 <div class="productFeatureHeader">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureHeaderBackground_center1">
+															<span class="headerLabelSpan">
+																<table cellspacing="0" cellpadding="0">
+																	<tr>
+																		<td align="left">Know Your</td>
+																		<td></td>
+																	</tr>
+																	<tr>
+																		<td align="left">Leaders</td>
+																		<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+																	</tr>
+																</table>
+																 
+															</span>
+														</div>
+													</td>
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>							
+											<div class="productFeatureBody" style="overflow:hidden;width:295px;height:250px;">
+												<div id="leadersNews"></div>								
+											</div>	
+											<div class="productFeatureFooter">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureFooterBackground_center">
+															
+														</div>
+													</td>
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>
 										</div>
 									</td>
-									<td width="30%" valign="top">
-										
+									<td width="33%">
+										<div class="productFeatureMain">							
+											 <div class="productFeatureHeader">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureHeaderBackground_center1">
+															<span class="headerLabelSpan">
+																<table cellspacing="0" cellpadding="0">
+																	<tr>
+																		<td align="left">Know Your</td>
+																		<td></td>
+																	</tr>
+																	<tr>
+																		<td align="left">Nation</td>
+																		<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+																	</tr>
+																</table>
+																 
+															</span>
+														</div>
+													</td>
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>
+											<div class="productFeatureBody" style="overflow:hidden;width:295px;height:250px;">
+												<div id="topStories"></div>								
+											</div>	
+											<div class="productFeatureFooter">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureFooterBackground_center">
+															
+														</div>
+													</td>
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>
+										</div>
+									</td>
+									<td width="33%">
+										<div class="productFeatureMain">							
+											 <div class="productFeatureHeader">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureHeaderBackground_center1">
+															<span class="headerLabelSpan">
+																<table cellspacing="0" cellpadding="0">
+																	<tr>
+																		<td align="left">Know Your</td>
+																		<td></td>
+																	</tr>
+																	<tr>
+																		<td align="left">Parties</td>
+																		<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+																	</tr>
+																</table>
+																 
+															</span>
+														</div>
+													</td>
+													<td width="8px"><img width="8" height="40" src="images/icons/homePage_new/white_header_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>
+											<div class="productFeatureBody" style="overflow:hidden;width:295px;height:250px;">
+											<div id="partiesNews"></div>
+											
+												<!--<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
+														src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
+												</iframe>-->
+											</div>		
+											<div class="productFeatureFooter">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0">
+												  <tr>                                    
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_left.jpeg"/></td>
+													<td width="98%">
+														<div class="productFeatureFooterBackground_center">
+															
+														</div>
+													</td>
+													<td width="12px"><img width="12" height="25" src="images/icons/homePage_new/white_footer_image_right.jpeg"/></td>
+												  </tr>
+												</table>
+											</div>
+										</div>
 									</td>
 								</tr>
-							</table>							
+							</table>					
 					</div>
 				</td>
 			</tr>
@@ -213,7 +418,7 @@
 	</div>
 
 	<script type="text/javascript"> 
-		
+
 		loginUserId = '${loginUserId}';
 		loginUserName = '${loginUserName}';		
 		stateId = '${dataTransferVO.stateId}';
@@ -260,7 +465,7 @@
 							constituencyName:'${unKnownPeople.constituencyName}',
 							district:'${unKnownPeople.district}',
 							state:'${unKnownPeople.state}',
-							status:'${unKnownPeople.status}',
+							status:'${unKnownPeople.status}'
 						};
 			peopleYouMayKnowInfo.peopleYouMayKnow.push(obj);
 		</c:forEach>

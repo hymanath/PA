@@ -90,6 +90,11 @@ function initializeTabView()
 		label: tabLable,
 		content: '<div id="inboxMessages_main"></div>'
 	}));
+
+	myTabs.addTab( new YAHOO.widget.Tab({
+		label: "Connections",
+		content: '<div id="connectPeople_connect_center"></div>'
+	}));
 	
 
 	myTabs.appendTo("connectPeople_messages_center");
@@ -581,15 +586,15 @@ function getAllRequestMessagesForUser(){
 
 function buildQuickRegionAccessContent()
 {	
-	//var profElmt = document.getElementById("connectPeople_editProfile_center");
+	var profElmt = document.getElementById("connectPeople_editProfile_center");
 	var qElmt = document.getElementById("connectPeople_quickAccess_center");
 	var connectCountElmt = document.getElementById("connectPeople_count_center");
 	
 	if(!qElmt || !connectCountElmt)
 		return;
 
-	/*var pStr = '<div style="text-align:right;margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a><img style="border: 0px none ; text-decoration: none;" src="images/icons/edit.png"></div>';
-	profElmt.innerHTML = pStr;*/
+	var pStr = '<div style="margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a></div>';
+	profElmt.innerHTML = pStr;
 
 	var str = '';
 	str += '<div id="regionAccessDiv_main">';
@@ -1309,7 +1314,10 @@ function initializeConnectPeople()
 	buildConnectionsContentForUser();
 	buildPeopleYouMayKnowContent();
 	buildQuickRegionAccessContent();
-
+	buildPolls();
+	buildleadersNews();
+	buildTopStoriesNews();
+	buildPartiesNews();
 	
 	$( "#connectedPeopleAccordian" ).accordion();
 }
