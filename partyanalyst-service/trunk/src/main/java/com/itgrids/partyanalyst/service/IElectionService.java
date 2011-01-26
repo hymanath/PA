@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IElectionService {
 	
@@ -38,5 +39,7 @@ public interface IElectionService {
 	
 	public ResultWithExceptionVO getPartywiseConstituenciesResultsForCensusInfo(Integer selectIndex,Long stateId,Long districtId,
 			Long year,String level, Long partyId);
+	
+	public List<SelectOptionVO> getAllCensusParameters();
 	
 }
