@@ -14,6 +14,7 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.ICensusParameterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.CensusParameter;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -45,6 +47,7 @@ public class ElectionService implements IElectionService{
 	private IStaticDataService staticDataService;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private ICensusParameterDAO censusParameterDAO;
 	
 	private final static Logger log = Logger.getLogger(ElectionService.class);
 
@@ -126,6 +129,14 @@ public class ElectionService implements IElectionService{
 
 	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
 		return constituencyElectionResultDAO;
+	}
+
+	public ICensusParameterDAO getCensusParameterDAO() {
+		return censusParameterDAO;
+	}
+
+	public void setCensusParameterDAO(ICensusParameterDAO censusParameterDAO) {
+		this.censusParameterDAO = censusParameterDAO;
 	}
 
 	public void setConstituencyElectionResultDAO(
@@ -471,5 +482,20 @@ public class ElectionService implements IElectionService{
 		}
 		
 		return "0.0";
+	}
+	
+	public List<SelectOptionVO> getAllCensusParameters(){
+		
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		List<CensusParameter> list = censusParameterDAO.getAll();
+		
+		for(CensusParameter censusParameter:list)
+		{
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(censusParameter.getCensusParameterId());
+			selectOption.setName(censusParameter.getParameterName());
+			selectOptionVOList.add(selectOption);
+		}
+			return selectOptionVOList;
 	}
 }
