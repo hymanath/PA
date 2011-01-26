@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -127,9 +128,17 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 
 	public String execute()
 	{
+		HttpSession session = request.getSession();
+		session = request.getSession();
+		
 		states = new ArrayList<SelectOptionVO>();		
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));
 		setYears(getStaticDataService().getElectionYears(2L, false));
+		
+		List<SelectOptionVO> censusParamList = new ArrayList<SelectOptionVO>(0);
+		
+		censusParamList = electionService.getAllCensusParameters();
+		session.setAttribute("censusParamList",censusParamList);
 		
 		return Action.SUCCESS;
 	}

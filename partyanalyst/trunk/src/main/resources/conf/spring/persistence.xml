@@ -175,6 +175,7 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyCensusDetails</value>
 				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
 				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
+				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
 			</list>
 		</property>
 	</bean>

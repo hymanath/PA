@@ -5,6 +5,10 @@
 
 <beans>
 	
+	<bean id="censusParameterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusParameterDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="cadreProblemDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
