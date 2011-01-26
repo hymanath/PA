@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -3920,28 +3921,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		censusVO.setSexRatioSC(censusVO.getSexRatioSC()/count);
 		censusVO.setSexRatioST(censusVO.getSexRatioST()/count);
 		censusVO.setHouseHoldsSize(censusVO.getHouseHoldsSize()/count);
-		censusVO.setPercentageSC(censusVO.getPercentageSC()/count);
-		censusVO.setPercentageST(censusVO.getPercentageST()/count);
+		censusVO.setPercentageSC(roundTwoDecimals(censusVO.getPopulationSC()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setPercentageST(roundTwoDecimals(censusVO.getPopulationST()*(100.0)/censusVO.getTotalPopulation()));
 		censusVO.setSexRatioUnderSix(censusVO.getSexRatioUnderSix()/count);
 		censusVO.setMaleLiteratureRate(censusVO.getMaleLiteratureRate()/count);
 		censusVO.setFemaleLiteratureRate(censusVO.getFemaleLiteratureRate()/count);
 		censusVO.setGenderGap(censusVO.getGenderGap()/count);
-		censusVO.setPopLiteraturePercentage(censusVO.getPopLiteraturePercentage()/count);
-		censusVO.setMaleLiteraturePercentage(censusVO.getMaleLiteraturePercentage()/count);
-		censusVO.setFemaleLiteraturePercentage(censusVO.getFemaleLiteraturePercentage()/count);
-		censusVO.setTotalPopPercentage(censusVO.getTotalPopPercentage()/count);
-		censusVO.setTotalWorkingPopPercentage(censusVO.getTotalWorkingPopPercentage()/count);
-		censusVO.setTotalWorkingMalePercentage(censusVO.getTotalWorkingMalePercentage()/count);
-		censusVO.setTotalWorkingFemalePercentage(censusVO.getTotalWorkingFemalePercentage()/count);
-		censusVO.setTotalMainPopPercentage(censusVO.getTotalMainPopPercentage()/count);
-		censusVO.setTotalMainMalePercentage(censusVO.getTotalMainMalePercentage()/count);
-		censusVO.setTotalMainFemalePercentage(censusVO.getTotalMainFemalePercentage()/count);
+		censusVO.setPopLiteraturePercentage(roundTwoDecimals(censusVO.getPopulationLiterates()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setMaleLiteraturePercentage(roundTwoDecimals(censusVO.getMaleLiterates()*(100.0)/censusVO.getMalePopulation()));
+		censusVO.setFemaleLiteraturePercentage(roundTwoDecimals(censusVO.getFemaleLiterates()*(100.0)/censusVO.getFemalePopulation()));
+		censusVO.setTotalPopPercentage(roundTwoDecimals(censusVO.getTotalPopulation()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setTotalWorkingPopPercentage(roundTwoDecimals(censusVO.getWorkingPopulation()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setTotalWorkingMalePercentage(roundTwoDecimals(censusVO.getWorkingMale()*(100.0)/censusVO.getMalePopulation()));
+		censusVO.setTotalWorkingFemalePercentage(roundTwoDecimals(censusVO.getWorkingFemale()*(100.0)/censusVO.getFemalePopulation()));
+		censusVO.setTotalMainPopPercentage(roundTwoDecimals(censusVO.getMainWorkPopulation()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setTotalMainMalePercentage(roundTwoDecimals(censusVO.getMainWorkMale()*(100.0)/censusVO.getMalePopulation()));
+		censusVO.setTotalMainFemalePercentage(roundTwoDecimals(censusVO.getMainWorkFemale()*(100.0)/censusVO.getFemalePopulation()));
 		censusVO.setTotalMargPopPercentage(censusVO.getTotalMargPopPercentage()/count);
 		censusVO.setTotalMargMalePercentage(censusVO.getTotalMargMalePercentage()/count);
 		censusVO.setTotalMargFemalePercentage(censusVO.getTotalMargFemalePercentage()/count);
-		censusVO.setNonWorkingPopPercentage(censusVO.getNonWorkingPopPercentage()/count);
-		censusVO.setNonWorkingMalePercentage(censusVO.getNonWorkingMalePercentage()/count);
-		censusVO.setNonWorkingFemalePercentage(censusVO.getNonWorkingFemalePercentage()/count);
+		censusVO.setNonWorkingPopPercentage(roundTwoDecimals(censusVO.getNonWorkingPopulation()*(100.0)/censusVO.getTotalPopulation()));
+		censusVO.setNonWorkingMalePercentage(roundTwoDecimals(censusVO.getNonWorkingMale()*(100.0)/censusVO.getMalePopulation()));
+		censusVO.setNonWorkingFemalePercentage(roundTwoDecimals(censusVO.getNonWorkingFemale()*(100.0)/censusVO.getFemalePopulation()));
 		censusVO.setPopCLPercentage(censusVO.getPopCLPercentage()/count);
 		censusVO.setMaleCLPercentage(censusVO.getMaleCLPercentage()/count);
 		censusVO.setFemaleCLPercentage(censusVO.getFemaleCLPercentage()/count);
@@ -4238,5 +4239,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			  return null;
 	   }
 	}
+	
+	Double roundTwoDecimals(Double d) 
+	{
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		return Double.valueOf(twoDForm.format(d));
+    }
 	
 }
