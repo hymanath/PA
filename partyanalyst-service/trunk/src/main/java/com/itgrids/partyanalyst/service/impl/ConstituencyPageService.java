@@ -3034,7 +3034,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				{ 												
 					CensusVO censusMainVO = getCompleteCensusDetailsForAnAssemblyConstituency(assembly.getId(),delimitationYear,censusYear);
 
-					String result = saveCensusToConstituencyCensusDetails(censusMainVO,assembly.getId(),censusYear);
+					String result = saveCensusToConstituencyCensusDetails(censusMainVO,assembly.getId(),censusYear,IConstants.FALSE);
 					
 					if(result.equalsIgnoreCase(IConstants.SUCCESS))
 					{
@@ -3975,12 +3975,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * @return CensusVO
 	 */
 	
-	public String saveCensusToConstituencyCensusDetails(final CensusVO censusVO,final Long constituencyId,final Long censusYear)
+	public String saveCensusToConstituencyCensusDetails(final CensusVO censusVO,final Long constituencyId,final Long censusYear,final String update)
 	{
 			transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status)
 				{
-					ConstituencyCensusDetails constituencyCensusDetails = new ConstituencyCensusDetails();
+					ConstituencyCensusDetails constituencyCensusDetails = null;
+					
+					if(update.equalsIgnoreCase(IConstants.TRUE) && checkForConstituencyExistance(constituencyId))
+						constituencyCensusDetails = constituencyCensusDetailsDAO.getCensusConstituencyByConstituencyId(constituencyId).get(0);
+					
+					else
+						constituencyCensusDetails = new ConstituencyCensusDetails();
+					
 					Long stateId = constituencyDAO.getStateIdByConstituencyId(constituencyId).get(0);
 								
 					try{
@@ -4160,7 +4167,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public CensusVO mapConstituencyWiseCensusDetails(Long stateId,Long districtId,Long delimitationYear,Long censusYear,String mappingLevel)
+	public CensusVO mapConstituencyWiseCensusDetails(Long stateId,Long districtId,Long delimitationYear,Long censusYear,String mappingLevel,String update)
 	{
 		try
 		{
@@ -4188,7 +4195,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			boolean isExists = checkForConstituencyExistance(constituencyId);
 			
-			if(isExists)
+			if(isExists && update.equalsIgnoreCase(IConstants.FALSE))
 			{
 				if(log.isDebugEnabled()){
 					log.debug(constituencyName+" is already existed in the Constituency census Deatails Table");
@@ -4201,7 +4208,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				
 				if(censusMainVO != null)
 				{
-					String result = saveCensusToConstituencyCensusDetails(censusMainVO,constituencyId,censusYear);
+					String result = saveCensusToConstituencyCensusDetails(censusMainVO,constituencyId,censusYear,update);
 				
 					if(log.isDebugEnabled()){
 					log.debug(constituencyName+" is saved in the Constituency census Deatails Table");

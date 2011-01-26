@@ -115,6 +115,8 @@ public interface IConstituencyPageService {
 	
 	public List<CensusVO> getCompleteCensusDetailsOfATownInAPartialTehsil(Long delimitationConstituencyId,Long mandalId,Long censusYear);
 	
-	public CensusVO mapConstituencyWiseCensusDetails(Long stateId,Long districtId,Long delimitationYear,Long censusYear,String mappingLevel);
+	public CensusVO mapConstituencyWiseCensusDetails(Long stateId,Long districtId,Long delimitationYear,Long censusYear,String mappingLevel,String update);
+	
+	public String saveCensusToConstituencyCensusDetails(final CensusVO censusVO,final Long constituencyId,final Long censusYear,final String update);
 	
 }
