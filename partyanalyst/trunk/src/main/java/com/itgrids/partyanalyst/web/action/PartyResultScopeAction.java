@@ -85,10 +85,22 @@ public class PartyResultScopeAction {
 			System.out.println("Search criteria = State");				
 			List<SelectOptionVO> stateNames=new ArrayList<SelectOptionVO>();			
 			SelectOptionVO stateSelectOptionVO1 = new SelectOptionVO();
+			SelectOptionVO stateSelectOptionVO2 = new SelectOptionVO();
+			SelectOptionVO stateSelectOptionVO3 = new SelectOptionVO();
+			
 			stateSelectOptionVO1.setId(new Long(1));
 			stateSelectOptionVO1.setName("Andhra Pradesh");
 			
-			stateNames.add(stateSelectOptionVO1);		
+			stateSelectOptionVO3.setId(new Long(12));
+			stateSelectOptionVO3.setName("Karnataka");
+			
+			stateSelectOptionVO2.setId(new Long(24));
+			stateSelectOptionVO2.setName("Tamil Nadu");
+			
+			
+			stateNames.add(stateSelectOptionVO1);
+			stateNames.add(stateSelectOptionVO2);
+			stateNames.add(stateSelectOptionVO3);
 			setNamesList(stateNames);			
 		}		
 		else if (jObj.getString("reportLevel").equalsIgnoreCase("District") && jObj.getString("selected")!="null")
