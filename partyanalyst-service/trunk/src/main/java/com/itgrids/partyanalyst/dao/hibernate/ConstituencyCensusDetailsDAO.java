@@ -44,4 +44,10 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 		
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyCensusDetails> getCensusConstituencyByConstituencyId(Long constituencyId)
+	{
+		return getHibernateTemplate().find(" from ConstituencyCensusDetails model where model.constituencyId = ? ",constituencyId);	
+	}
 }

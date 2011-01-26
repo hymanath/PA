@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
+import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 
 public class ConstituencyCensusDetailsDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -42,7 +43,7 @@ public class ConstituencyCensusDetailsDAOHibernateTest extends BaseDaoTestCase{
 			}
 		}
 	}*/
-	public void testGetConstituencyIdsAndPercentages()
+	/*public void testGetConstituencyIdsAndPercentages()
 	{
 		//String censusParam = "model.percentageSC";
 		//String censusParam = "model.percentageST";
@@ -58,6 +59,14 @@ public class ConstituencyCensusDetailsDAOHibernateTest extends BaseDaoTestCase{
 			System.out.print("==Constituency Id --"+obj[0].toString());
 			System.out.println("==percentage      --"+obj[1].toString());
 		}
+	}*/
+	
+	public void testGetCensusConstituencyByConstituencyId()
+	{
+		List<ConstituencyCensusDetails> list = constituencyCensusDetailsDAO.getCensusConstituencyByConstituencyId(1l);
+		
+		ConstituencyCensusDetails constituencyCensusDetails = list.get(0);
+		
+		System.out.println(constituencyCensusDetails.getTru());
 	}
-	 
 }
