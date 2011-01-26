@@ -31,8 +31,17 @@
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
-<script type="text/Javascript" src="js/homePage/jquery.js"></script>
+
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
@@ -40,8 +49,10 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
-
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+
+<!-- JQuery files (End) -->
+
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 
 <script type="text/javascript">
@@ -194,6 +205,7 @@ localBodyString = '<%=localBody%>';
 <body>
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
+	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
 	<div id="homePageContainer">
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
             <table  width="100%" id="headerTable">
@@ -282,7 +294,11 @@ localBodyString = '<%=localBody%>';
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td width="70%" valign="top">
-					<img width="660" height="380" src="images/icons/homePage_new/homePage_Image.jpeg">
+					<div id="homePage_Image_Header">
+						<div style="padding:325px 30px 10px 0;text-align:right;">
+							<img style="cursor:pointer" onclick="openKnowMoreWindow()" width="140" height="30" src="images/icons/homePage_new/learn_more.jpeg">
+						</div>
+					</div>					
 				</td>
 				<td width="30%" valign="top">
 					

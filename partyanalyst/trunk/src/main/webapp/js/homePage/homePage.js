@@ -33,6 +33,81 @@ function initializeHomePage()
 	buildPartiesNews();
 }
 
+function openKnowMoreWindow()
+{	
+	$( "#knowMore_window" ).dialog({
+			title:false,
+			autoOpen: true,
+			show: "blind",
+			width: 700,
+			minHeight:550,
+			modal: true,
+			hide: "explode",
+			draggable:false,
+			buttons: {
+						"Close": function() {
+								$(this).dialog("close"); }
+					 }
+		});
+	$(".ui-dialog-titlebar").hide();
+
+
+	var elmt = document.getElementById("knowMore_window_inner");
+
+	var str = '';
+	str += '<div class="know_more_data_main">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td valign="top"><img width="120" height="100" src="images/usergroups/group-of-people.jpg"></td>';
+	str += '<td valign="top">';
+	str += '<div class="know_more_data_head">Know Your Constituency, Party and Leader</div>';
+	str += '<div class="know_more_data_body">Your Constituency, Your Party and Your Leader...None can understand them better than you. No matter in which part of the globe you are, your heart longs remains rooted in your village, your people and your constituency. </div>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+
+	str += '<div class="know_more_data_main">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td valign="top"><img width="120" height="100" src="images/icons/homePage_new/connect_people.jpg"></td>';
+	str += '<td valign="top">';
+	str += '<div class="know_more_data_head">Connect To Your Locality People</div>';
+	str += '<div class="know_more_data_body">PartyAnalyst.com offers you a platform for you to connect with people having similar concerns. You can log on to connect with the people from your constituency, to discuss with them the problems plaguing the place, to share with them your views about the political scenario of the constituency.</div>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+
+	str += '<div class="know_more_data_main">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td valign="top"><img width="120" height="100" src="images/icons/homePage_new/connect_share.jpg"></td>';
+	str += '<td valign="top">';
+	str += '<div class="know_more_data_head">Discuss, Interact and Convey</div>';
+	str += '<div class="know_more_data_body">Apart from helping you in connecting with people from your constituency, this platform also helps you take part in a wider discussion about the prospects of individual candidates and political parties. Your postings can have a definite impact on the candidates and the political parties.</div>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+
+	str += '<div style="margin-bottom:5px;">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td valign="top"><img width="120" height="100" src="images/icons/homePage_new/const_problems.jpg"></td>';
+	str += '<td valign="top">';
+	str += '<div class="know_more_data_head">Post Your Constituency Problems</div>';
+	str += '<div class="know_more_data_body">You can also make use of this platform to post the problems faced by the people of your village, your mandal and your constituency. You can also affirm or condemn the views posted by others. </div>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+
+	if(elmt)
+		elmt.innerHTML = str;
+
+}
+
 function buildPartiesNews()
 {
 	var options = {

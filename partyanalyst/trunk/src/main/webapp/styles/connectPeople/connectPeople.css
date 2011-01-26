@@ -1,7 +1,7 @@
 
 #connectPeoplePage_main
 {
-	padding:10px;	
+	padding:2px;	
 	background-color:#E4EDF0;
 }
 
@@ -20,8 +20,13 @@
 
 #connectPeople_connect_center
 {
-	/*background-color:#ECECEC;*/
+	/*background-color:#ECECEC;
+	-moz-border-radius:10px 10px 10px 10px;
+	border:1px solid #808080;*/
 	height:250px;
+	margin:10px 0;
+	padding:5px;
+	position:relative;
 }
 
 #connectPeople_leftNav_list
@@ -42,7 +47,7 @@
 #connectPeople_messages_center .yui-content 
 {
 	background-color:#FFFFFF;
-	height:307px;
+	height:515px;
 	border:1px solid #808080;
 	-moz-border-radius:10px 10px 10px 10px;
 }
@@ -332,7 +337,7 @@
 
 #constituencyRightContentOuter
 {
-	height:340px;
+	height:auto;
 }
 
 .tabContainerHeading a
@@ -346,4 +351,42 @@
 div#constituencyRightContentOuter a:hover
 {
 	text-decoration:none;
+}
+
+.rounded
+{
+	margin:0px;
+	padding:5px;
+}
+
+#pollsWidgetMain
+{
+	position:relative;
+}
+
+.headerLabelSpan
+{
+	position:relative;
+	top:5px;
+	left:4px;
+}
+
+#profileUserName
+{
+	color:#755113;
+	font-size:18px;
+	font-weight:bold;
+}
+
+#connectPeople_profile_center
+{
+	position:relative;
+	margin:10px 0px 10px 0px;
+}
+
+.connectPeople_profile_center_linksDiv
+{
+	background-color:#EAEFF2;
+	margin:5px;
+	padding:5px;
 }
