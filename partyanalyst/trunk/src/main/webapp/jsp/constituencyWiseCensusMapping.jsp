@@ -65,8 +65,10 @@ function doCensusMapping()
 	var yearElmt = document.getElementById("yearSelect");
 	var stRadioEle = document.getElementById("stRadioId");
 	var diRadioEle = document.getElementById("diRadioId");
+	var modifyCheckEle = document.getElementById("modifyCheckboxId");
 
 	var reportLevel = '';
+	var modifycheck = '';
 
 	var yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 	var stateId = stateElmt.options[stateElmt.selectedIndex].value;
@@ -82,7 +84,12 @@ function doCensusMapping()
 
 	else if(reportLevel == 'district' && (stateId == 0 || districtId == 0))
 		return;
-	
+
+	if(modifyCheckEle.checked == true)
+		modifycheck = 'true';
+	else
+		modifycheck = 'false';
+
 	ShowAjaxImage();
 	
 	var jsObj=
@@ -91,6 +98,7 @@ function doCensusMapping()
 			districtId	: districtId,
 			yearValue	: yearValue,
 			reportLevel : reportLevel,
+			modify		: modifycheck,
 			task		: "doConstituencyWiseCensusMapping"					
 	}; 
 
@@ -280,6 +288,12 @@ function buildResultTable(myResults)
 					<option>2001</option>
 				</select>
 			</td>
+		</tr>
+	</table>
+	<table>
+	<tr style="margin-left:15px;">
+		<td><input type="checkbox" id="modifyCheckboxId"/></td>
+		<th>Modify Existing Data</th>
 		</tr>
 	</table>
 

@@ -91,9 +91,10 @@ public class ConstituencyWiseCensusMappingAction extends ActionSupport implement
 		Long stateId        = jObj.getLong("stateId");
 		Long districtId     = jObj.getLong("districtId");
 		String reportLevel  = jObj.getString("reportLevel");
-		Long censusYear           = jObj.getLong("yearValue");
+		Long censusYear     = jObj.getLong("yearValue");
+		String modify       = jObj.getString("modify");
 		
-		censusVO = constituencyPageService.mapConstituencyWiseCensusDetails(stateId,districtId,2009l,censusYear,reportLevel);
+		censusVO = constituencyPageService.mapConstituencyWiseCensusDetails(stateId,districtId,2009l,censusYear,reportLevel,modify);
 		
 		return SUCCESS;
 	}
