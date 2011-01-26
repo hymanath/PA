@@ -52,7 +52,7 @@
 	#censusReport_body_input_table th
 	{
 		padding:10px;
-		width:80px;
+		width:75px;
 	}
 
 	#censusReport_body_input_table td
@@ -185,6 +185,11 @@
 		color:red;
 		font-size:12px;
 		text-align:center;
+	}
+
+	.selectWidth
+	{
+		width:140px;
 	}
 </style>
 
@@ -993,7 +998,7 @@
 				<td>
 					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district_s" id="districtList" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District" />	
 				</td>
-			
+				
 				<th>Year</th>
 				<td>
 					<select id="yearSelect">
@@ -1001,18 +1006,8 @@
 						<option>2004</option>
 					</select>
 				</td>
-			
 				<th>Census Type</th>
-				<td>
-					<select onchange="getCensusDetails()" class="selectWidth" id="censusSelect">
-						<option value="0">Select</option>
-						<option value="1">SC Population</option>
-						<option value="2">ST Population</option>
-						<option value="3">Literates</option>
-						<option value="4">illiterates</option>
-						<option value="5">Working People</option>
-						<option value="6">Non Working People</option>
-					</select>
+				<td><s:select theme="simple" cssClass="selectWidth" id="censusSelect" label="Select Census Parameter" name="censusParam" list="#session.censusParamList" listKey="id" listValue="name"  headerKey = "0" headerValue = "Select" onchange="getCensusDetails()"/>
 				</td>
 			</tr>
 		</table>
