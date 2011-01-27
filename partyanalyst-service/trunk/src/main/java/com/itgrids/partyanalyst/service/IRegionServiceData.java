@@ -55,4 +55,8 @@ public interface IRegionServiceData {
 	
 	public String getRegionNameByRegionId(Long regionId,String regionType);
 	public List<SelectOptionVO> getParliamentConstituenciesByDistrict(Long district);	
+	
+	public Boolean checkForHamletsAvailability(Long locationId);
+	public Boolean checkForAreaRuralType(Long locationId);
+	
 }
