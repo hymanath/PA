@@ -41,7 +41,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex) {
+	public List<Object> getAllUsersInSelectedLocations(List<Long> locationIds,String locationType,Long retrivalCount,Long startIndex,String nameString) {
 		StringBuilder query = new StringBuilder();
 		query.append("select model.name,model.lastName,model.userId,model.constituency.name,model.constituency.constituencyId ");
 		query.append(" from AnanymousUser model where ");
@@ -52,7 +52,7 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		}else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
 			query.append("model.constituency.constituencyId in (:locationIds)");
 		}	
-		query.append("order by model.userId desc");
+		query.append("and model.name like '"+nameString+"%' order by model.userId desc");
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("locationIds", locationIds);
 		queryObject.setFirstResult(startIndex.intValue());
