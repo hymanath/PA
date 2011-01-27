@@ -23,7 +23,7 @@ public class PartyResultsVO {
 	private String percentage;
 	private String avgPercentage;
 	private BigDecimal votesPercent;
-	private int totalSeatsWon;
+	private Integer totalSeatsWon;
 	private Long totalPolledVotes;
 	private Long rank;
 	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
@@ -57,14 +57,14 @@ public class PartyResultsVO {
 		this.partyFlag = partyFlag;
 	}
 	
-	public int getTotalSeatsWon() {
+	public Integer getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
-	
-	public void setTotalSeatsWon(int totalSeatsWon) {
+
+	public void setTotalSeatsWon(Integer totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
-	
+
 	public List<ConstituencyWisePartyInfoVO> getConstituencyWisePatiesInfoVOs() {
 		return constituencyWisePatiesInfoVOs;
 	}
