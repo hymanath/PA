@@ -38,4 +38,7 @@ public interface IHamletDAO extends GenericDao<Hamlet, Long> {
 	public List findHamletsByTehsilId(Long tehsilId);
 	
 	public List<Long> findHamletsByTehsilIds(List<Long> tehsilIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findByTehsilIdAndHamletId(Long hamletId,Long tehsilId);
 }
