@@ -315,6 +315,8 @@ public class ElectionService implements IElectionService{
 		Set<SelectOptionVO> districts = new TreeSet<SelectOptionVO>();
 		Set<SelectOptionVO> parties = new TreeSet<SelectOptionVO>();
 		List resultsList = null;
+		List constiResults = null;
+		Double totalVotesEarned = 0d;
 		StringBuilder query = new StringBuilder();
 		Map<Long, Double> constituencyWithPercentMap = new HashMap<Long, Double>();
 		Map<PartyResultsVO, List<Object[]>> partyWithResults = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
@@ -351,22 +353,29 @@ public class ElectionService implements IElectionService{
 			}
 			
 			int seatsWon = 0;
-			Double percentageTotals = 0.0;
+			
+			if(constituencyIds.size() > 0)
+				constiResults = constituencyElectionResultDAO.findTotalVotersAndValidVotesByYearAndConstituencyIds(constituencyIds, electionYear);
+			
 			for(Map.Entry<PartyResultsVO, List<Object[]>> entry:partyWithResults.entrySet()){
 				seatsWon = 0;
 				partyResultsVO = entry.getKey();
 				partyResults = entry.getValue();
-				percentageTotals = 0.0;
+				totalVotesEarned = 0d;
 				for(Object[] results:partyResults){
-					percentageTotals += Double.parseDouble(results[0].toString());
+					totalVotesEarned += Double.parseDouble(results[1].toString());
 					if("1".equalsIgnoreCase(results[7].toString()))
 						seatsWon++;	
 				}
+				
 				partyResultsVO.setSeatsParticipated(partyResults.size());
 				partyResultsVO.setTotalSeatsWon(seatsWon);
-				if(partyResults.size() > 0)
-					partyResultsVO.setAvgPercentage(new BigDecimal(percentageTotals/partyResults.size()).
+				
+				if(constiResults != null && constiResults.size() > 0 && partyResults.size() > 0 &&
+						((Double)((Object[])constiResults.get(0))[1]).intValue() > 0)
+					partyResultsVO.setAvgPercentage(new BigDecimal(totalVotesEarned*(100.0)/(Double)((Object[])constiResults.get(0))[1]).
 							setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				
 				partyResultsList.add(partyResultsVO);
 			}
 			
@@ -448,7 +457,7 @@ public class ElectionService implements IElectionService{
 			if(census.getLocationIds().size() == 0)
 				continue;
 			electionDataVO = findAssemblyConstituenciesResultsByConstituencyIds(year.toString(), census.getLocationIds(), partyIds, 
-					new ArrayList<Long>(), 0, false, false);
+					new ArrayList<Long>(), selectIndex, false, false);
 			if(electionDataVO.getPartyResultsList().size() == 1){
 				census.setSeatsParticipated(new Long(electionDataVO.getPartyResultsList().get(0).getSeatsParticipated()));
 				census.setSeatsWon(new Long(electionDataVO.getPartyResultsList().get(0).getTotalSeatsWon()));
