@@ -452,7 +452,16 @@ public class CadreManagementService {
 				if (IConstants.RURAL_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
 				{
 					currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
-					currentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+					
+					Boolean isHamlet = checkForHamlet(new Long(cadreInfo.getMandal().substring(1)),new Long(cadreInfo.getVillage().substring(1)));
+					
+					//if location details are hamlet
+					if(isHamlet)
+					    currentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+					//if location details are township
+					else
+						currentAddress.setTownship(townshipDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+					
 					currentAddress.setLocalElectionBody(null);
 					currentAddress.setWard(null);
 					//cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
@@ -509,7 +518,17 @@ public class CadreManagementService {
 					if (IConstants.RURAL_TYPE.equals(cadreInfo.getPmandal().substring(0,1)))
 					{
 						permanentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getPmandal().substring(1))));
-						permanentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getPvillage().substring(1))));
+						
+						
+						Boolean isHamlet = checkForHamlet(new Long(cadreInfo.getMandal().substring(1)),new Long(cadreInfo.getVillage().substring(1)));
+						
+						//if location details are hamlet
+						if(isHamlet)
+							permanentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getPvillage().substring(1))));
+						//if location details are township
+						else
+							permanentAddress.setTownship(townshipDAO.get(new Long(cadreInfo.getVillage().substring(1))));
+						
 						permanentAddress.setLocalElectionBody(null);
 						permanentAddress.setWard(null);
 					}
@@ -647,6 +666,17 @@ public class CadreManagementService {
 		return cadreObj;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	private Boolean checkForHamlet(Long tehsilId,Long hamletId){
+		
+		List hamletData = hamletDAO.findByTehsilIdAndHamletId(hamletId, tehsilId);
+		
+		if(hamletData != null && hamletData.size() > 0)
+			return true;
+		
+	 return false;
+	}
 	/*private void processAddressValues(String villageFlag, Long id, Cadre cadre,
 			UserAddress address) {
 		if (IConstants.HAMLET_TYPE.equalsIgnoreCase(villageFlag)) {
