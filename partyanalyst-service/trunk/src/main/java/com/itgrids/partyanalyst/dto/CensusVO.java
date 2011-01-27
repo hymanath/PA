@@ -164,6 +164,7 @@ public class CensusVO implements Serializable{
 	private Long mainMargOWMale;
 	private Long mainMargOWFemale;
 	private Double wpr;
+	private String partyName;
 	private String votingPercent;
 	private Long totalConstituencies;
 	
@@ -1075,6 +1076,12 @@ public class CensusVO implements Serializable{
 	}
 	public void setVotingPercent(String votingPercent) {
 		this.votingPercent = votingPercent;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
 	}
 	
 
