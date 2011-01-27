@@ -506,6 +506,35 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return tehsilsList;
 	}
+	
+	/**
+	 * Checks Wheather Mandal has hamlets or not
+	 * @author Sai Krishna
+	 */
+	@SuppressWarnings("unchecked")
+	public Boolean checkForHamletsAvailability(Long locationId){
+		
+		Long id = new Long(locationId.toString().substring(1));
+		List resultsList = hamletDAO.findHamletsByTehsilId(id);
+		
+		if(resultsList != null && resultsList.size() > 0)
+			return true;
+		
+	 return false;
+	}
+	
+	/**
+	 * Check wheather the area type is rural
+	 * @author Sai Krishna
+	 */
+	public Boolean checkForAreaRuralType(Long locationId){
+		
+		String areaFlag = locationId.toString().substring(0,1);
+		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE))
+			return false;
+		
+	 return true;
+	}
 
 	/**
 	 * This method retrieves all hamlets if the location is of type Rural and all wards if the location is of type Urban 
@@ -553,6 +582,12 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		} else if(areaFlag.equalsIgnoreCase(IConstants.RURAL_TYPE))
 		{
 			List resultsList = hamletDAO.findHamletsByTehsilId(id);
+			
+			//If hamlets data is not available then go with townships
+			if(resultsList == null || resultsList.size() == 0){
+				resultsList = townshipDAO.findTownshipsByTehsilId(id);
+			}
+			
 			for(int i = 0; i<resultsList.size();i++)
 			{
 				Object[] obj = (Object[])resultsList.get(i);
