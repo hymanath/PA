@@ -152,7 +152,7 @@
 	.ajaxImgClass
 	{
 		position:relative;
-		left:300px;
+		left:10px;
 	}
 
 	.censusPopulationRange_body_table_inner_head th
@@ -554,13 +554,13 @@
 			mainHeaderSpanElmt.innerHTML = '';
 		
 		var partyWiseElmt = document.getElementById("partyResultsDataDiv");
-		partyWiseElmt.innerHTML = '<span><b>Your Request is Processing, Please Wait....</b> </span>		<img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass">';
+		partyWiseElmt.innerHTML = '<center><span><b>Your Request is Processing, Please Wait....</b> </span>		<img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass"></center>';
 		var partyResultsGraphElmt = document.getElementById("partyResultsGraphDiv");
 		partyResultsGraphElmt.innerHTML = '';
 
 
 		var constituencyWiseElmt = document.getElementById("performanceGraphDiv_body");
-		constituencyWiseElmt.innerHTML = '<span><b>Your Request is Processing, Please Wait....</b> </span><img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass">';
+		constituencyWiseElmt.innerHTML = '<center><span><b>Your Request is Processing, Please Wait....</b> </span><img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass"></center>';
 
 		var idsList = rangeResults[index].locationIds;
 		var range = rangeResults[index].range;
