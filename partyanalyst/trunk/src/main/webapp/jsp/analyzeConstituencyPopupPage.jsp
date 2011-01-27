@@ -255,7 +255,7 @@ body
 	var displayBody;
 	var userName = '${sessionScope.UserName}';
 	
-	var previousScore = [];
+	var previousScore;
 
 	function incrementHidden()
 	{
@@ -289,7 +289,7 @@ body
 								}
 								else if(jsObj.task == "addNewComment")
 								{
-									updatePreviousCommentsDataTable(myResults);
+									updatePreviousCommentsDataTable(jsObj,myResults);
 								}
 								else if(jsObj.task == "getCommentsResults")
 								{
@@ -352,7 +352,7 @@ body
 		callAjax(jsObj,url);	
 	}
 
-	function handleAddCommentsSubmit(id,category,constituencyId)
+	function handleAddCommentsSubmit(id,category,constituencyId,candidate,constituency,party,rank)
 	{
 		var commentVal = document.getElementById("commentText").value; 
 		var postedByVal = document.getElementById("commentPostedByText").value;
@@ -453,16 +453,20 @@ body
 								category: category,
 								commentCategoryId: commentCategoryId,
 								reasonSeverityvalue: reasonSeverityvalue, 
+								candidateName:candidate,
+								constituencyName:constituency,
+								partyName:party,
+								rank:rank,
 								task:"addNewComment"				
 							  }	 						
 						var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-						var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+						var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;								
 						callAjax(jsObj,url);	
 						alertMessageEl.innerHTML = '';
 					}
 				},
 				Cancel: function() {
-					$(this).dialog("close");					
+					$(this).dialog("destroy");					
 				}
 			}
 		});
@@ -608,7 +612,7 @@ body
 		if(rank == 1)
 			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Wining in '+year+' '+electionType+' Elections </H3></TD>';
 		else
-			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Losing in '+year+' '+electionType+' Elections </H3></TD>';
+			str+='<TD><H3 style="width:585px;">Add Reasons For '+candidateName+' Lost in '+year+' '+electionType+' Elections </H3></TD>';
 
 		str+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		str+='</TR>';
@@ -655,7 +659,7 @@ body
 		str+='</DIV>';
 		//str+='</FIELDSET>';
 		
-		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Post"/>';
+		str+='<DIV style="text-align:right;margin-top:10px;margin-bottom:10px;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+',\''+candidateName+'\',\''+constituencyName+'\',\''+partyName+'\',\''+rank+'\')" value="Post"/>';
 		str+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="closeCurrentWindow()" value="Exit"/></DIV>';
 		str+='</div>';
 		str+='</div>';
@@ -700,7 +704,7 @@ body
 		}
 	}
 	
-	function updatePreviousCommentsDataTable(results)
+	function updatePreviousCommentsDataTable(jsObj,results)
 	{
 		var dtArray = new Array();
 		var commentVal = document.getElementById("commentText"); 
@@ -720,7 +724,8 @@ body
 			};
 
 			dtArray.push(newCommentDataObj);
-			buildPreviousCommentsDataTable(dtArray);		
+			//buildPreviousCommentsDataTable(dtArray);		
+			showExistingComments(jsObj.candidateId,jsObj.candidateName,jsObj.category,jsObj.constituencyId,jsObj.constituencyName,jsObj.partyName,jsObj.rank);
 			
 		} else
 		{
@@ -732,7 +737,8 @@ body
 					date: results.candidateCommentsSaved.commentedOn  		
 			};
 			
-			previousCommentsDataTable.addRow(newCommentDataObj,0);
+			//previousCommentsDataTable.addRow(newCommentDataObj,0);
+			showExistingComments(jsObj.candidateId,jsObj.candidateName,jsObj.category,jsObj.constituencyId,jsObj.constituencyName,jsObj.partyName,jsObj.rank);
 		}
 		commentVal.value='';
 		postedByVal.value='';
@@ -749,7 +755,8 @@ body
 		var candidateName = jsObj.candidateName;
 		var commentsData = new Array();	
 		var year = jsObj.year;
-		candidateName
+
+		previousScore = new Array();
 		
 		var contentStr = '';
 		contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
@@ -758,7 +765,7 @@ body
 		if(jsObj.rank == 1)
 			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Winning in '+year+' '+electionType+' elections</H3></TD>';
 		else
-			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Losing in '+year+' '+electionType+' elections</H3></TD>';
+			contentStr+='<TD><H3 style="width:585px;">Reasons For '+candidateName+' Lost in '+year+' '+electionType+' elections</H3></TD>';
 		contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	

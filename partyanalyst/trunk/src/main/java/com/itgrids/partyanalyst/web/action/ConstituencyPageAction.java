@@ -783,12 +783,12 @@ public class ConstituencyPageAction extends ActionSupport implements
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
    		Long startIndex = 0L;
-   		
+   		String nameString = "";
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
    		if(user==null){
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex);	
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex,nameString);	
    		}else{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex);
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);
    		}
    		
    		//	Free User
