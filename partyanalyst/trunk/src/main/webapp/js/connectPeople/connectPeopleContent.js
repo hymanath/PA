@@ -243,7 +243,7 @@ function showAllConnectPeopleWindow(locationId,locationName,userLoginId,location
 			title:"People Connected to "+locationName+" "+locationType,
 			autoOpen: true,
 			show: "blind",
-			width: 500,
+			width: 700,
 			minHeight:400,
 			modal: true,
 			hide: "explode"
@@ -354,7 +354,9 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	for(var status=0; status<connectStatus.length;status++)
 		str += '<option value="'+connectStatus[status].id+'">'+connectStatus[status].name+'</option>';
 	str += '</select></th>';
-	str += '<tr>';
+	str += '<th>By Name</th>'; 
+	str += '<td><input type="text" id="connectStatusTextBox" onkeyup="getAllConnectedUsersByFilterView(\''+jsObj.locationType+'\')"></td>';
+	str += '</tr>';
 	str += '</table>';
 	
 	str += '</div>';	
@@ -663,8 +665,9 @@ function showAllConnectedUsersStatus(jsObj,results)
 
 function getAllConnectedUsersByFilterView(locationType)
 {
+	
 	var connectConstiSelectElmtValue = '';
-	var connectConstiArray = new Array();
+	var connectConstiArray = new Array();	
 	
 	if(locationType == "DISTRICT")
 	{
@@ -689,11 +692,13 @@ function getAllConnectedUsersByFilterView(locationType)
 	var connectStatusSelectElmtValue = connectStatusSelectElmt.options[connectStatusSelectElmt.selectedIndex].value;
 	var connectStatusSelectElmtText  = connectStatusSelectElmt.options[connectStatusSelectElmt.selectedIndex].text;
 	
-	
+	var textElmt = document.getElementById("connectStatusTextBox");
+	var textValue = textElmt.value;	
 
 	var jsObj ={
 				constituencyIds:connectConstiArray,				
 				statusText:connectStatusSelectElmtText,
+				nameString:textValue,
 				task:"getAllConnectedUsersByFilterView"
 			 };
 	

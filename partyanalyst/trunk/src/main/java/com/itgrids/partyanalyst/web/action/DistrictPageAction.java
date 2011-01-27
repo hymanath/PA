@@ -459,10 +459,11 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long startIndex = 0L;
+		String nameString = "";
 		if(user==null){
-			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex);
+			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,0l,IConstants.ALL,startIndex,nameString);
 		}else{
-			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex);		
+			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,IConstants.DISTRICT_LEVEL,IConstants.MAX_ANONYMOUS_USER_DISPLAY,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);		
 		}
 		//Free User
 		

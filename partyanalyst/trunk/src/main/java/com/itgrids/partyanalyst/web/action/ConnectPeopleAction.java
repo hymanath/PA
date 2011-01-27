@@ -410,7 +410,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		Long locationId = new Long(jObj.getString("locationId"));
 		Long userId = new Long(jObj.getString("userId"));
 		String locationType = jObj.getString("locationType");
-		
+		String nameString = ""; 
 		String locationTypeConst = null;
 		if(locationType.equalsIgnoreCase("DISTRICT"))
 			locationTypeConst = IConstants.DISTRICT_LEVEL;
@@ -420,7 +420,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> listOfDistricts = new ArrayList<Long>();
 		listOfDistricts.add(locationId);
 		
-		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex);
+		userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfDistricts,locationTypeConst,results,userId,IConstants.ALL,startIndex,nameString);
 		
 		return Action.SUCCESS;
 	}
@@ -489,7 +489,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		String districtName = jObj.getString("districtName");		
 		Long userId = new Long(jObj.getString("userId"));	*/
 		String statusText = jObj.getString("statusText");
-		
+		String nameString  = jObj.getString("nameString");
 		JSONArray constituencyIds = jObj.getJSONArray("constituencyIds");		
 		List<Long> listOfConstituencies = new ArrayList<Long>();
 		
@@ -518,9 +518,9 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		
 		
 		if(user==null){
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,status,startIndex);	
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,0l,status,startIndex,nameString);	
    		}else{
-   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),status,startIndex);
+   			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,results,user.getRegistrationID(),status,startIndex,nameString);
    		}
    		
 		return Action.SUCCESS;

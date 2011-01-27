@@ -65,12 +65,12 @@ function initializeTabView()
 
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
+		content: '<div id="postedDiv_main" style="text-align:left;"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
 		active: true
 	}));
 
 	var str = '';
-	str += '<div id="storyBoard_main">';
+	str += '<div id="storyBoard_main" style="text-align:left;">';
 	str += '<div id="storyBoard_header_Div"></div>';
 	str += '<div id="storyBoard_body_Div"></div>';
 	str += '<div id="storyBoard_fotter_Div"></div>';
@@ -88,12 +88,12 @@ function initializeTabView()
 	
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: tabLable,
-		content: '<div id="inboxMessages_main"></div>'
+		content: '<div id="inboxMessages_main" style="text-align:left;"></div>'
 	}));
 
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: "Connections",
-		content: '<div id="connectPeople_connect_center"></div>'
+		content: '<div id="connectPeople_connect_center" style="text-align:left;"></div>'
 	}));
 	
 
@@ -645,19 +645,19 @@ function buildQuickRegionAccessContent()
 	cStr += '	</table>';
 	cStr += '</div>';*/
 	cStr += '<div id="connectCountDiv_body" >';	
-	cStr += '<table id="regionAccessTable">';
+	cStr += '<table id="regionAccessTable">';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>To '+constituencyName+' Constituency</th>';
-	cStr += '<td> - </td>';
-	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
-	cStr += '</tr>';
-	cStr += '<tr>';
-	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
-	cStr += '<th>To '+districtName+' District</th>';
+	cStr += '<th>From '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
 	cStr += '</tr>';	
+	cStr += '<tr>';
+	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
+	cStr += '<th>From '+constituencyName+' Constituency</th>';
+	cStr += '<td> - </td>';
+	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
+	cStr += '</tr>';
 	cStr += '</table>';
 	cStr += '</div>';
 	cStr += '</div>';
