@@ -554,13 +554,13 @@
 			mainHeaderSpanElmt.innerHTML = '';
 		
 		var partyWiseElmt = document.getElementById("partyResultsDataDiv");
-		partyWiseElmt.innerHTML = '<img src="images/icons/barloader.gif" class="ajaxImgClass">';
+		partyWiseElmt.innerHTML = '<span><b>Your Request is Processing, Please Wait....</b> </span>		<img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass">';
 		var partyResultsGraphElmt = document.getElementById("partyResultsGraphDiv");
 		partyResultsGraphElmt.innerHTML = '';
 
 
 		var constituencyWiseElmt = document.getElementById("performanceGraphDiv_body");
-		constituencyWiseElmt.innerHTML = '<img src="images/icons/barloader.gif" class="ajaxImgClass">';
+		constituencyWiseElmt.innerHTML = '<span><b>Your Request is Processing, Please Wait....</b> </span><img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass">';
 
 		var idsList = rangeResults[index].locationIds;
 		var range = rangeResults[index].range;
@@ -1064,7 +1064,9 @@
 					<div id="partyResultsDiv_body" class="mainWidgetsBody">
 						<table width="100%">
 							<tr>
-								<td><div id="partyResultsDataDiv"><img class="ajaxImgClass" src="images/icons/barloader.gif"></img></div></td>
+								<td><div id="partyResultsDataDiv"><center>
+								<span><b>Your Request is Processing, Please Wait....</b> </span>
+								<img class="ajaxImgClass" src="images/icons/goldAjaxLoad.gif"></img></center></div></td>
 								<td><div id="partyResultsGraphDiv"></div></td>
 							</tr>
 						</table>
@@ -1080,8 +1082,9 @@
 							</tr>							
 						</table>
 					</div>
-					<div id="performanceGraphDiv_body" class="mainWidgetsBody" style="width:856px;overflow:auto;">
-						<img class="ajaxImgClass" src="images/icons/barloader.gif"></img>
+					<div id="performanceGraphDiv_body" class="mainWidgetsBody" style="width:856px;overflow:auto;"><center>
+					<span><b>Your Request is Processing, Please Wait....</b> </span>
+						<img class="ajaxImgClass" src="images/icons/goldAjaxLoad.gif"></img></center>
 					</div>
 				</div>
 			</div>
