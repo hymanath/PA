@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.CensusWisePartyResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -36,6 +37,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private List<CensusVO> censusRange;
 	private ElectionDataVO electionDataVO;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResults;
+	private List<CensusWisePartyResultsVO> allPartiesResults;
 	String chartName = null;
 	
 	private static final Logger log = Logger.getLogger(CensusReportAction.class);
@@ -126,6 +128,15 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		this.request = request;
 	}
 
+	public List<CensusWisePartyResultsVO> getAllPartiesResults() {
+		return allPartiesResults;
+	}
+
+	public void setAllPartiesResults(
+			List<CensusWisePartyResultsVO> allPartiesResults) {
+		this.allPartiesResults = allPartiesResults;
+	}
+
 	public String execute()
 	{
 		HttpSession session = request.getSession();
@@ -167,6 +178,25 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 			censusRange = electionService.getConstituencyCensusDetails(censusId,stateId,districtId,year,reportLevel);
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getCensusInfoForAllPartiesInAState()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Integer censusId    = jObj.getInt("censusValue");
+		Long stateId        = jObj.getLong("stateId");
+		Long districtId     = jObj.getLong("districtId");
+		String reportLevel  = jObj.getString("reportLevel");
+		Long year           = jObj.getLong("yearValue");
+		
+		allPartiesResults = electionService.findAllPartiesInfoByCensusRanges(censusId, stateId, districtId, year, reportLevel);
+		
+		return SUCCESS;
 	}
 	
 	public String getPartiesPerformanceInCensusReport()
