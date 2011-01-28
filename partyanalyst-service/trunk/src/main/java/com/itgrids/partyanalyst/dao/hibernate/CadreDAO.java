@@ -630,11 +630,22 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findHamletCadresByMandal(Long mandalID, Long userID,
 			String cadreType) {
 		Object[] params = {mandalID,userID, cadreType};
 		List  results = getHibernateTemplate().find("Select model.currentAddress.hamlet.hamletId, model.currentAddress.hamlet.hamletName, count(model.currentAddress.hamlet.hamletId) from Cadre model " +
 				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.hamlet.hamletId order by model.currentAddress.hamlet.hamletName", params); 
+		return results;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findTownshipCadresByMandal(Long mandalID, Long userID,
+			String cadreType) {
+		Object[] params = {mandalID,userID, cadreType};
+		List  results = getHibernateTemplate().find("Select model.currentAddress.township.townshipId, model.currentAddress.township.townshipName, count(model.currentAddress.township.townshipId) from Cadre model " +
+				"where model.currentAddress.tehsil.tehsilId=? and model.registration.registrationId = ? and model.memberType = ? group by model.currentAddress.township.townshipId order by model.currentAddress.township.townshipName", params); 
 		return results;
 		
 	}
@@ -668,6 +679,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID,hamletID,cadreType};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.currentAddress.hamlet.hamletId=? and model.memberType = ?", params); 
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByTownship(Long townshipId, Long userID, String cadreType){
+		Object[] params = {userID,townshipId,cadreType};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.currentAddress.township.townshipId = ? and model.memberType = ?", params); 
 		return results;
 	}
 
