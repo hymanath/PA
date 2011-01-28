@@ -58,6 +58,7 @@ public class CensusVO implements Serializable{
     private Long seatsWon;
     private Long seatsParticipated;
     private BigDecimal avgPercent;
+    private BigDecimal pConstavgPercent;
     private List<SelectOptionVO> mapeedConstituencies;
     private List<SelectOptionVO> unMapeedConstituencies;
     private List<SelectOptionVO> existedConstituencies;
@@ -1082,6 +1083,12 @@ public class CensusVO implements Serializable{
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public BigDecimal getPConstavgPercent() {
+		return pConstavgPercent;
+	}
+	public void setPConstavgPercent(BigDecimal constavgPercent) {
+		pConstavgPercent = constavgPercent;
 	}
 	
 

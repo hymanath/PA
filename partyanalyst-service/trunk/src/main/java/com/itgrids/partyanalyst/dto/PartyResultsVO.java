@@ -22,6 +22,7 @@ public class PartyResultsVO {
 	private Long validVotes;
 	private String percentage;
 	private String avgPercentage;
+	private String pConstavgPercentage;
 	private BigDecimal votesPercent;
 	private Integer totalSeatsWon;
 	private Long totalPolledVotes;
@@ -189,6 +190,14 @@ public class PartyResultsVO {
 	
 	public void setAvgPercentage(String avgPercentage) {
 		this.avgPercentage = avgPercentage;
+	}
+
+	public String getPConstavgPercentage() {
+		return pConstavgPercentage;
+	}
+
+	public void setPConstavgPercentage(String constavgPercentage) {
+		pConstavgPercentage = constavgPercentage;
 	}
 	
 }

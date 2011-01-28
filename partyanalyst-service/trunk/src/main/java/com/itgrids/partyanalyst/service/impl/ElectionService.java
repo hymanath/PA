@@ -147,14 +147,25 @@ public class ElectionService implements IElectionService{
 		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
 	}
 
-	public IPartyDAO getPartyDAO() {
+    public IPartyDAO getPartyDAO() {
 		return partyDAO;
 	}
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
-
+	
+	/**
+	 * This method give Constituency Ids in the range with 10 width based on census parameter.
+	 * @author kamalakar Dandu
+	 * @param Integer selectIndex
+	 * @param Long stateId
+	 * @param Long districtId
+ 	 * @param Long year
+	 * @param String level
+	 * @return List<CensusVO>
+	 * 
+	 */
 	public List<CensusVO> getConstituencyCensusDetails(Integer selectIndex,Long stateId,Long districtId,Long year,String level)
 	{
 		try
@@ -166,6 +177,7 @@ public class ElectionService implements IElectionService{
 		List<CensusVO> censusVOlist = new ArrayList<CensusVO>();
 		List<Object[]>list = new ArrayList<Object[]>();
 		
+		//Here we are getting Constituency Ids in the State/District.
 		if(level.equalsIgnoreCase(IConstants.STATE_STR))
 		{
 			list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentages(censusStr,stateId);
@@ -178,6 +190,7 @@ public class ElectionService implements IElectionService{
 			list = constituencyCensusDetailsDAO.getConstituencyIdsAndPercentagesOfADistrict(censusStr,constituencyIds);
 		}
 		
+		//Here we are putting Constituency Ids in HashMap with selected range.
 		Map<String,List<Long>> resultMap = new LinkedHashMap<String,List<Long>>();
 		
 		resultMap.put("0-10", new ArrayList<Long>(0));
@@ -271,6 +284,8 @@ public class ElectionService implements IElectionService{
 		 
 		CensusVO censusVO = null;
 		Long constituenciesCount = 0l;
+		
+		//Here we are setting data to List<CensusVO> from HashMap.
 		for(Map.Entry<String,List<Long>> entry : resultMap.entrySet())
 		{
 			censusVO = new CensusVO();
@@ -283,6 +298,7 @@ public class ElectionService implements IElectionService{
 		
 		censusVOlist.get(0).setTotalConstituencies(constituenciesCount);
 		
+		//Here we are setting Voting Percentage.
 		for(CensusVO census:censusVOlist)
 			census.setVotingPercent(findAverageVotingPercentageInConstituenciesInAYear(census.getLocationIds(), year.toString()));
 		
@@ -295,6 +311,11 @@ public class ElectionService implements IElectionService{
 		}
 	}
 	
+	/**
+	 * Here we are building Query dynamically.
+	 * @param selectIndex
+	 * @return String
+	 */
 	public String getCensusStructureBySelectedIndex(Integer selectIndex){
 		String censusStr = "";
 		if(selectIndex == 1)
@@ -328,6 +349,7 @@ public class ElectionService implements IElectionService{
 		List resultsList = null;
 		List constiResults = null;
 		Double totalVotesEarned = 0d;
+		Double totalValidVotes = 0d;
 		StringBuilder query = new StringBuilder();
 		Map<Long, Double> constituencyWithPercentMap = new HashMap<Long, Double>();
 		Map<PartyResultsVO, List<Object[]>> partyWithResults = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
@@ -375,6 +397,7 @@ public class ElectionService implements IElectionService{
 				totalVotesEarned = 0d;
 				for(Object[] results:partyResults){
 					totalVotesEarned += Double.parseDouble(results[1].toString());
+					totalValidVotes += Double.parseDouble(results[6].toString());
 					if("1".equalsIgnoreCase(results[7].toString()))
 						seatsWon++;	
 				}
@@ -386,7 +409,8 @@ public class ElectionService implements IElectionService{
 						((Double)((Object[])constiResults.get(0))[1]).intValue() > 0)
 					partyResultsVO.setAvgPercentage(new BigDecimal(totalVotesEarned*(100.0)/(Double)((Object[])constiResults.get(0))[1]).
 							setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				
+				if(totalValidVotes > 0)
+					partyResultsVO.setPConstavgPercentage(new BigDecimal(totalVotesEarned*(100.0)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				partyResultsList.add(partyResultsVO);
 			}
 			
@@ -474,6 +498,7 @@ public class ElectionService implements IElectionService{
 				census.setSeatsParticipated(new Long(electionDataVO.getPartyResultsList().get(0).getSeatsParticipated()));
 				census.setSeatsWon(new Long(electionDataVO.getPartyResultsList().get(0).getTotalSeatsWon()));
 				census.setAvgPercent(new BigDecimal(electionDataVO.getPartyResultsList().get(0).getAvgPercentage()));
+				census.setPConstavgPercent(new BigDecimal(electionDataVO.getPartyResultsList().get(0).getPConstavgPercentage()));
 			}
 				
 		}
