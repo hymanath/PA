@@ -1770,6 +1770,7 @@ public class CadreManagementService {
 		Tehsil tehsilCA = currentAddress.getTehsil();
 		//Township townshipCA = currentAddress.getTownship();
 		Hamlet hamletCA = currentAddress.getHamlet();
+		Township townshipCA = currentAddress.getTownship();
 		LocalElectionBody localBodyCA = currentAddress.getLocalElectionBody();
 		Constituency wardCA = currentAddress.getWard();
 		
@@ -1791,8 +1792,16 @@ public class CadreManagementService {
 		if(tehsilCA != null){
 			cadreInfo.setMandal(IConstants.RURAL_TYPE+tehsilCA.getTehsilId().toString());
 			cadreInfo.setMandalName(tehsilCA.getTehsilName());
-			cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletCA.getHamletId().toString());
-			cadreInfo.setVillageName(hamletCA.getHamletName()+" (V)");
+			
+			if(hamletCA != null){
+				cadreInfo.setVillage(IConstants.RURAL_TYPE+hamletCA.getHamletId().toString());
+				cadreInfo.setVillageName(hamletCA.getHamletName()+" (V)");
+			}
+			else if(townshipCA != null){
+				cadreInfo.setVillage(IConstants.RURAL_TYPE+townshipCA.getTownshipId().toString());
+				cadreInfo.setVillageName(townshipCA.getTownshipName()+ " " + townshipCA.getTownshipType());
+			}
+			
 		}else if(localBodyCA != null){
 			Long assemblyLocalId = (Long)assemblyLocalElectionBodyDAO.findAssemblyLocalElectionBodyByLocalBodyAndConstituency(localBodyCA.getLocalElectionBodyId(),constituencyCA.getConstituencyId()).get(0);
 			cadreInfo.setMandal(IConstants.URBAN_TYPE+assemblyLocalId);
@@ -1835,6 +1844,8 @@ public class CadreManagementService {
 			Tehsil tehsilOA = officialAddress.getTehsil();
 			//Township townshipOA = officialAddress.getTownship();
 			Hamlet hamletOA = officialAddress.getHamlet();
+			Township townshipOA = officialAddress.getTownship();
+			
 			LocalElectionBody localBodyOA = officialAddress.getLocalElectionBody();
 			Constituency wardOA = officialAddress.getWard();
 			Booth boothOA = officialAddress.getBooth();
@@ -1857,8 +1868,14 @@ public class CadreManagementService {
 			if(tehsilOA != null){
 				cadreInfo.setPmandal(IConstants.RURAL_TYPE+tehsilOA.getTehsilId().toString());
 				cadreInfo.setPmandalName(tehsilOA.getTehsilName()+" Mandal");
-				cadreInfo.setPvillage(hamletOA.getHamletId().toString());
-				cadreInfo.setPvillageName(hamletOA.getHamletName());
+				
+				if(hamletOA != null){
+					cadreInfo.setPvillage(hamletOA.getHamletId().toString());
+					cadreInfo.setPvillageName(hamletOA.getHamletName());
+				}else if(townshipOA != null){
+					cadreInfo.setPvillage(townshipOA.getTownshipId().toString());
+					cadreInfo.setPvillageName(townshipOA.getTownshipName() + " " + townshipOA.getTownshipType());
+				}
 			}else if(localBodyOA != null){
 				Long assemblyLocalBodyId = (Long)assemblyLocalElectionBodyDAO.findAssemblyLocalElectionBodyByLocalBodyAndConstituency(localBodyOA.getLocalElectionBodyId(),constituencyOA.getConstituencyId()).get(0); 
 				cadreInfo.setPmandal(IConstants.URBAN_TYPE+assemblyLocalBodyId);
@@ -2367,6 +2384,9 @@ public class CadreManagementService {
 		if (IConstants.RURAL_TYPE.equals(id.substring(0,1)))
 		{
 			cadresList = cadreDAO.findCadresByHamlet(new Long(id.substring(1)), userID,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+			
+			if(cadresList == null || cadresList.size() == 0)
+				cadresList = cadreDAO.findCadresByTownship(new Long(id.substring(1)), userID,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
 		}
 		if (IConstants.URBAN_TYPE.equals(id.substring(0,1)))
 		{
@@ -3589,9 +3609,16 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	 * @param userId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getMandalAllHamletsCadres(Long mandalId, Long userId)
 	{
 		List hamletCadres = cadreDAO.findHamletCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		
+		//For non Hamlet regions (Township)
+		if(hamletCadres == null || hamletCadres.size() == 0){
+			hamletCadres = cadreDAO.findTownshipCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		}
+		
 		int size = hamletCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for (int i = 0; i < size; i++) {
@@ -3839,10 +3866,17 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	 * @param userId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getMandalAllHamletsCadresCount(Long mandalId, Long userId)
 	{
 		
 		List hamletCadres = cadreDAO.findHamletCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		
+		//For non Hamlet regions (Township)
+		if(hamletCadres == null || hamletCadres.size() == 0){
+			hamletCadres = cadreDAO.findTownshipCadresByMandal(mandalId, userId,IConstants.CADRE_MEMBER_TYPE_ACTIVE);
+		}
+		
 		int size = hamletCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		Long count = 0l;
@@ -4383,8 +4417,13 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		
 		if(cadre.getCurrentAddress().getWard() != null)
 			address += cadre.getCurrentAddress().getWard().getName()+" ";
-		else
-			address += cadre.getCurrentAddress().getHamlet().getHamletName()+"(V) ";
+		else{
+			
+			if(cadre.getCurrentAddress().getHamlet() != null)
+				address += cadre.getCurrentAddress().getHamlet().getHamletName()+"(V) ";
+			else if(cadre.getCurrentAddress().getTownship() != null)
+				address += cadre.getCurrentAddress().getTownship().getTownshipName()+"( " + cadre.getCurrentAddress().getTownship().getTownshipType() + " )";
+		}
 	
 		if(cadre.getCurrentAddress().getLocalElectionBody() != null)
 			address += cadre.getCurrentAddress().getLocalElectionBody().getName()+" ";
