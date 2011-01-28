@@ -155,4 +155,9 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	
 	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr);
 	
+	@SuppressWarnings("unchecked")
+	public List findTownshipCadresByMandal(Long mandalID, Long userID,String cadreType);
+	
+	public List<Cadre> findCadresByTownship(Long townshipId, Long userID, String cadreType);
+	
 }
