@@ -279,19 +279,17 @@
 		}
 		var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
 		chart.draw(data, {width: 360, height: 250, pointSize: 4, title: 'Constituencies Count Based On Range'});
-	}
+	}	
 
-	function buildPartyResultsByRanges(jsObj,resultByRanges)
+	function buildAllPartyCensusResults(jsObj,results)
 	{
-		partyResultsByRanges = resultByRanges;
-		var elmt = document.getElementById("censusPopulationRangeData");
-		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
+		if(results.length == 0)
+			return;
 		
-		var electionResultsMainDiv = document.getElementById("partyResultsPerformance_main");
-		if(electionResultsMainDiv.style.display == "block")
-			electionResultsMainDiv.style.display = "none";
+		partyResultsByRanges = resultByRanges;
+		var graphHeadElmt = document.getElementById("censusPopulationRangeGraph_head");
 
-		var gStr = '';
+		/*var gStr = '';
 		gStr += '<table class="graphHeadTable">';
 		gStr += '<tr>';
 		gStr += '<th>Constituencies Count</th>';
@@ -299,7 +297,37 @@
 		gStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';		
 		gStr += '</tr>';
 		gStr += '</table>';
-		graphHeadElmt.innerHTML = gStr;
+		graphHeadElmt.innerHTML = gStr;*/
+
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Range');
+		for(var i=0; i<results[0].partiesResults.length; i++)
+	        data.addColumn('number', results[0].partiesResults[i].partyName);
+    
+		data.addRows(results.length);
+
+		for(var i=0; i<results.length; i++)
+		{			
+				data.setValue(i, 0, results[i].range);
+				for(var j=0; j<results[i].partiesResults.length; j++)
+					data.setValue(i, j+1, results[i].partiesResults[j].votesPercent);		
+		}
+
+        var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
+        chart.draw(data, {width: 450, height: 250,pointSize: 4, title: 'Constituencies Count Based On Range'});
+	}
+
+	function buildPartyResultsByRanges(jsObj,resultByRanges)
+	{
+		
+		var elmt = document.getElementById("censusPopulationRangeData");
+		
+		
+		var electionResultsMainDiv = document.getElementById("partyResultsPerformance_main");
+		if(electionResultsMainDiv.style.display == "block")
+			electionResultsMainDiv.style.display = "none";
+
+		
 
 		var str = '';
 		//str += '<div><a href="javascript:{}" onclick="callAjaxForPartiesSelectBox(\'censusPopulationRange_body\')">View Party wise Results By Census Percentage Range</a></div>';
@@ -357,19 +385,7 @@
 
 		elmt.innerHTML = str;
 
-		var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Range');
-        data.addColumn('number', 'Percentage');
-        data.addRows(resultByRanges.length);
-
-		for(var i=0; i<resultByRanges.length; i++)
-		{			
-				data.setValue(i, 0, resultByRanges[i].range);
-				data.setValue(i, 1, resultByRanges[i].avgPercent);		
-		}
-
-        var chart = new google.visualization.LineChart(document.getElementById('censusPopulationRangeGraph_body'));
-        chart.draw(data, {width: 450, height: 250,pointSize: 4, title: 'Constituencies Count Based On Range'});
+		
 	}
 
 	function buildPopulationRange(jsObj,results)
@@ -502,7 +518,44 @@
 		divEle.innerHTML = str;
 		
 		var elmt = document.getElementById("partySelectElmt");
+		getAllPartiesCensusResults();
 		getAjaxResultForPartyResultsByRanges(elmt.options[0].value);
+	}
+
+	function getAllPartiesCensusResults()
+	{
+		var censusElmt = document.getElementById("censusSelect");
+		var yearElmt = document.getElementById("yearSelect");
+		var stateElmt = document.getElementById("stateList");
+		var districtElmt = document.getElementById("districtList");
+		var reportLevel = '';
+		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
+		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
+		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
+		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
+		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
+		var stRadioEle = document.getElementById("stRadioId");
+		var diRadioEle = document.getElementById("diRadioId");
+		
+		if(stRadioEle.checked == true)
+			reportLevel = stRadioEle.value;
+		else if(diRadioEle.checked == true)
+			reportLevel = diRadioEle.value;			
+
+		var jsObj=
+		{
+				stateId		: stateId,
+				districtId	: districtId,
+				censusText	: censusText,
+				censusValue	: censusValue,
+				yearValue	: yearValue,
+				reportLevel : reportLevel,
+				task		: "allPartyCensusResults"					
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCensusInfoForAllPartiesAction.action?"+rparam;						
+		censusAjaxCall(jsObj,url);
 	}
 
 	function getAjaxResultForPartyResultsByRanges(partyId){
@@ -933,6 +986,8 @@
 									buildPerformanceTable(jsObj,myResults);
 								else if(jsObj.task == "getPartiesByState")
 									buildPartiesSelectBox(jsObj.divId, myResults.parties);
+								else if(jsObj.task == "allPartyCensusResults")
+									buildAllPartyCensusResults(jsObj,myResults);
 								else if(jsObj.task == "censusByParty")
 									buildPartyResultsByRanges(jsObj,myResults);
 						}
