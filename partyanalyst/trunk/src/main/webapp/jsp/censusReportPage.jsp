@@ -342,6 +342,7 @@
 		str += '<th>CP*</th>';
 		str += '<th>Seats Won*</th>';
 		str += '<th>Avg %</th>';
+		str += '<th>CP*-Avg%</th>';
 		str += '<th>Voting %</th>';
 		str += '</tr>';	
 		//str += '</table>';		
@@ -367,6 +368,11 @@
 
 			if(resultByRanges[i].avgPercent != null)
 				str += '<td align="center">'+resultByRanges[i].avgPercent+'</td>';
+			else 
+				str += '<td align="center">--</td>';
+			
+			if(resultByRanges[i].PConstavgPercent != null)
+				str += '<td align="center">'+resultByRanges[i].PConstavgPercent+'</td>';
 			else 
 				str += '<td align="center">--</td>';
 
