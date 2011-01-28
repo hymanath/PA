@@ -109,7 +109,7 @@ public class PartyResultScopeAction {
 				String selectedVal=jObj.getString("selected");
 				
 
-				List<SelectOptionVO> districtNames= regionServiceDataImp.getDistrictsByStateID(new Long(1));	
+				List<SelectOptionVO> districtNames= regionServiceDataImp.getDistrictsByStateID(new Long(selectedVal));	
 					
 				
 				setNamesList(districtNames);								
