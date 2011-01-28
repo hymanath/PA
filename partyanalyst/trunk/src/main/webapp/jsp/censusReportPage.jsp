@@ -234,6 +234,9 @@
 		else
 			errorElmt.innerHTML = "";
 
+		if(censusValue == 0)
+			return;
+		
 		var jsObj=
 		{
 				stateId		: stateId,
