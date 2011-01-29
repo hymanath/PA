@@ -715,7 +715,10 @@ function showProbRegionsSelect()
 	var tableEl = document.getElementById("deptsSelectTable");
 	var problemInfoDivBodyEl = document.getElementById("problemInfoDivBody");
 	var locationsTableEl = document.getElementById("locationsTable");
-
+	var problemLocationOptionsDivEl = document.getElementById("problemLocationOptionsDiv");
+	
+	if(problemLocationOptionsDivEl.style.display == 'none')
+		problemLocationOptionsDivEl.style.display = 'block';
 	if(locationsTableEl.style.display == 'none')
 		locationsTableEl.style.display = 'block';
 	if(probRegionSpanEl.style.display == 'none')
