@@ -479,7 +479,11 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				Long selectedDept = jObj.getLong("selectedDept");
 				Long selectedProblemScope = jObj.getLong("selectedProblemScope");
 				
-				problemBean = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept);
+				if(selectedDept != null && selectedDept > 0L)
+					problemBean = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), 3L,  selectedProblemScope, selectedDept);
+				else if(selectedDept == null || selectedDept == 0L)
+					problemBean = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept);
+				
 			} else if(jObj.getString("task").equals("getProblemsGroupedBySelection")){
 				
 				Long locationId =  jObj.getLong("selectedLocation");
