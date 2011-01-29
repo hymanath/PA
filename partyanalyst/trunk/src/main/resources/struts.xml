@@ -2003,8 +2003,13 @@
       	<action name="doConstituencyWiseCensusMappingAction" class="constituencyWiseCensusMappingAction" method="censusMappingAjaxHandler">
        		<result type="json" name="success">
 			<param name="root">censusVO</param>				
-		</result>
-		
+		</result>		
        	</action>
+       	<action name="getProblemsGroupedByDeptOrCadreAction" class="problemManagementReportAction">
+			<result type="json" name="success">
+				<param name="root">problemsGropedByDeptOrCadre</param>				
+			</result> 
+		</action>
+       	
 	</package>
 </struts>      
