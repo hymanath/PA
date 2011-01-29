@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -13,34 +12,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
-import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
-import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -95,6 +91,7 @@ public class BiElectionAction extends ActionSupport implements
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
 	private List<SelectOptionVO> partiesList;
+	private EntitlementsHelper entitlementsHelper;
 
 	public String getEnlargedPresentYearResultsChartName() {
 		return enlargedPresentYearResultsChartName;
@@ -365,7 +362,24 @@ public class BiElectionAction extends ActionSupport implements
 		return partiesList;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.BIEELECTION_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.BIEELECTION_ENTITLEMENT))
+			return ERROR;
+		
 		log.debug(" Inside Action ..");
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;

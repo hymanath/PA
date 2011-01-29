@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -12,8 +11,9 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
-import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -39,6 +39,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 	private String taskType = null;
 	private List<SelectOptionVO> result;
     private IRegionServiceData regionServiceDataImp;
+    private EntitlementsHelper entitlementsHelper;
     
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
@@ -95,8 +96,23 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public String execute() throws Exception
 	{
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
+			return ERROR;
+		
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());

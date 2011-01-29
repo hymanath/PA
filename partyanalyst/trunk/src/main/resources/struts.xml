@@ -56,7 +56,9 @@
 			<result type="redirect" name="problemManagementAdminAction">problemManagementAdminAction.action</result>
 			<result type="redirect" name="userEntitlementAction">userEntitlementAction.action</result>
 			<result type="redirect" name="analyzeConstituencyPopup">analyzeConstituencyPopupAction.action</result>
-						
+			<result type="redirect" name="CONSTITUENCY_RESULTS_ENTITLEMENT">constituencyElectionReportAction.action</result>
+			<result type="redirect" name="BIEELECTION_ENTITLEMENT">biElectionAction.action</result>
+			<result type="redirect" name="CENSUS_REPORT_ENTITLEMENT">censusReportAction.action</result>
 			
 			<result type="chain" name="redirectUrl">${url}</result>
 			
@@ -644,7 +646,8 @@
 		
 		<action name="cadreManagementAction" class="cadreManagementAction">
 			<result name="success">/jsp/cadreManagementMainPage.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=cadreManagementAction</result>						
+			<result name="input">/jsp/loginForm.jsp?src=cadreManagementAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>			
 		</action>
 		
 		<action name="createEventAction" class="createEventAction">
@@ -663,7 +666,8 @@
 		
 		<action name="initailConstituencyManagementAction" class="initailConstituencyManagementAction">
 			<result name="success">/jsp/constituencyManagementReport.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>		
+			<result name="input">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
 		
 		<action name="problemDetailsByStatusAction" class="initailConstituencyManagementAction" method="getProblemDetailsByStatus">
@@ -773,7 +777,8 @@
 		
 		<action name="problemManagementReportAction" class="problemManagementReportAction">
 			<result name="success">/jsp/problemManagementReport.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=problemManagementReportAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=problemManagementReportAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="problemManagementReportAjaxAction" class="problemManagementReportAction">
@@ -802,7 +807,8 @@
 
 		<action name="userGroupAction" class="userGroupAction">
 			<result name="success">/jsp/userGroups.jsp</result>
-			<result name="error">/jsp/loginForm.jsp?src=userGroupAction</result>		
+			<result name="input">/jsp/loginForm.jsp?src=userGroupAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
 		
 		<action name="townshipPageAction" class="townshipPageAction">
@@ -830,7 +836,9 @@
 		</action>	
 		
 		<action name="constituencyElectionReportAction" class="constituencyElectionReportAction">
-			<result name="success">/jsp/constituencyReportPage.jsp</result>					
+			<result name="success">/jsp/constituencyReportPage.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=CONSTITUENCY_RESULTS_ENTITLEMENT</result>		
 		</action>
 		
 		<action name="userGroupBasicInfoAction" class="userGroupAction" method="getUserGroupsBasicInfo">
@@ -1221,7 +1229,8 @@
         </action>
 		 <action name="biElectionAction" class="biElectionAction">
 			<result name="success">/jsp/biElectionResultPage.jsp</result>
-			<result name="error">/jsp/biElectionResultErrorPage.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=BIEELECTION_ENTITLEMENT</result>	
 		</action>
 		
 		<action name="influencingPeopleRegistration" class="influencingPeopleRegistration">
@@ -1968,7 +1977,9 @@
          </action>        
        
         <action name="censusReportAction" class="censusReportAction">
-		    <result name="success">/jsp/censusReportPage.jsp</result>	
+		    <result name="success">/jsp/censusReportPage.jsp</result>
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		   	<result name="input">/jsp/loginForm.jsp?src=CENSUS_REPORT_ENTITLEMENT</result>	
         </action> 
          
         <action name="getCensusInfoInAStateAction" class="censusReportAction" method="getCensusInfoInAState">

@@ -18,9 +18,12 @@ import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.CensusWisePartyResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,6 +42,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private List<ConstituencyElectionResultsVO> constituencyElectionResults;
 	private List<CensusWisePartyResultsVO> allPartiesResults;
 	String chartName = null;
+	private EntitlementsHelper entitlementsHelper;
 	
 	private static final Logger log = Logger.getLogger(CensusReportAction.class);
 	
@@ -137,10 +141,24 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		this.allPartiesResults = allPartiesResults;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute()
 	{
 		HttpSession session = request.getSession();
 		session = request.getSession();
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CENSUS_REPORT_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CENSUS_REPORT_ENTITLEMENT))
+			return ERROR;
 		
 		states = new ArrayList<SelectOptionVO>();		
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));

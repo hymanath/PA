@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -82,6 +83,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private Long defaultDistrictId = 0l;
 	private Long defaultConstituencyId = 0l;
 	private List<ProblemClassificationVO> problemsGropedByDeptOrCadre;
+	private EntitlementsHelper entitlementsHelper;
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -350,6 +352,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			List<ProblemClassificationVO> problemsGropedByDeptOrCadre) {
 		this.problemsGropedByDeptOrCadre = problemsGropedByDeptOrCadre;
 	}
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
@@ -361,9 +369,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
 		
-			
-		if(user==null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT))
 			return ERROR;
+		
 		accessType = user.getAccessType();
 		accessValue = new Long(user.getAccessValue());
 		if("MLA".equals(accessType))
