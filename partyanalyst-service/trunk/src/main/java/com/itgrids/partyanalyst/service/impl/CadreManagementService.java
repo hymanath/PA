@@ -369,8 +369,10 @@ public class CadreManagementService {
 				setLanguageEfficiency(cadreObj,cadreLang_Hin, IConstants.LANGUAGE_HINDI, task);
 				if (IConstants.USER_TYPE_PARTY.equals(cadreInfoToSave.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfoToSave.getUserPartyName())) {
 					log.debug("inside bjp party block");
-					setCadreSkillsInfo(cadreObj, cadreInfoToSave.getSkills(), task);
-					setParticipatedTrainingCamps(cadreObj, cadreInfoToSave.getTrainingCamps(), task);
+					if(cadreInfoToSave.getSkills() != null && cadreInfoToSave.getSkills().size() > 0)
+						setCadreSkillsInfo(cadreObj, cadreInfoToSave.getSkills(), task);
+					if(cadreInfoToSave.getTrainingCamps() != null && cadreInfoToSave.getTrainingCamps().size() > 0)
+						setParticipatedTrainingCamps(cadreObj, cadreInfoToSave.getTrainingCamps(), task);
 				}
 			}
 			rs.setResultCode(ResultCodeMapper.SUCCESS);
