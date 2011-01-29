@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemClassificationVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -17,6 +18,8 @@ public interface IProblemManagementReportService {
 	public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long registrationId,String taskType);
 	
 	public List<ProblemBeanVO> getProblemsInfoBasedOnLocation(Long locationId,Long userId,Long status, Long regionScope,Long deptId);
+	
+	public List<ProblemClassificationVO> getProblemsInfoBasedOnLocation(Long locationId,Long userId,Long status, Long regionScope,Long deptId,Boolean groupCadre,Boolean groupDept);
 	
 	public List<ProblemHistoryVO> getCompleteDetailsForAProblem(Long problemLocationId);
 	
