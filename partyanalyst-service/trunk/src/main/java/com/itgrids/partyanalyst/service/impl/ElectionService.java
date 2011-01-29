@@ -561,6 +561,7 @@ public class ElectionService implements IElectionService{
 				partyResultsVO.setPartyName(censusVO.getPartyName());
 				partyResultsVO.setTotalSeatsWon(censusVO.getSeatsWon() != null?censusVO.getSeatsWon().intValue():null);
 				partyResultsVO.setVotesPercent(censusVO.getAvgPercent());
+				partyResultsVO.setPConstavgPercentage(censusVO.getPConstavgPercent()== null?null:censusVO.getPConstavgPercent().toString());
 				partyResult = censusInfoMap.get(censusVO.getRange());
 				if(partyResult == null)
 					partyResult = new ArrayList<PartyResultsVO>();
