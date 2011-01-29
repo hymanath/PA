@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -42,6 +43,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemClassificationVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -49,6 +51,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.CadreProblemDetails;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
@@ -353,6 +356,306 @@ public class ProblemManagementReportService implements
 		}
 			return problemBeanVO;
 		}
+		
+		/**
+		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
+		 * selected Constituency by location-wise,department-wise as well as  status-wise by grouping problems
+		 * based on department or cadre.
+		 * @author Sai Krishna
+		 */
+		public List<ProblemClassificationVO> getProblemsInfoBasedOnLocation(Long locationId,Long userId,Long status, Long regionScope,Long deptId,Boolean groupCadre,Boolean groupDept) {
+			
+			
+			if(log.isDebugEnabled())
+				log.debug(" Started Executing Method getProblemsInfoBasedOnLocation ..");
+			
+			List<ProblemClassificationVO> problemsDetilsList = new ArrayList<ProblemClassificationVO>();
+			ProblemClassificationVO exceptionResult = new ProblemClassificationVO();
+			
+			try{
+				
+				Map<String,List<ProblemBeanVO>> problemsListByClassification = new HashMap<String,List<ProblemBeanVO>>();
+				String model = null,idToCompare = null;
+				Long id = 0L;
+				
+				//Obtaining problem location details
+				Map<String,String> locationDetailsMap = getProblemLocationDetails(regionScope,locationId);
+				if(!locationDetailsMap.isEmpty()){
+					
+					model       = locationDetailsMap.get(IConstants.MODEL);
+					idToCompare = locationDetailsMap.get(IConstants.MODEL_ID);
+					id          = Long.parseLong(locationDetailsMap.get(IConstants.ID));
+					
+				}
+				
+				
+				//Get Problems By Input Parameters
+				List<ProblemHistory> result = problemHistoryDAO.findProblemsForSelectedSearchOptions(id,status,userId,model,idToCompare,deptId,groupCadre,groupDept);
+				
+				//Get Problems By Classification
+				problemsListByClassification = getProblemsMapByClassification(result,groupCadre,groupDept);
+				
+				//Process the map and set to vo
+				if(!problemsListByClassification.isEmpty()){
+					
+					Set<String> classificationList = problemsListByClassification.keySet();
+					for(String classification:classificationList){
+						
+						ProblemClassificationVO problemClassificatn = new ProblemClassificationVO();
+						
+						problemClassificatn.setClassificationType(classification);
+						problemClassificatn.setProblemsList(problemsListByClassification.get(classification));
+						
+						problemsDetilsList.add(problemClassificatn);
+					}
+				}
+				
+			}catch(Exception ex){
+				
+			   log.error("Exception Raised In getProblemsInfoBasedOnLocation Method :" + ex);
+			   
+			   exceptionResult.setExceptionEncountered(ex);
+			   exceptionResult.setExceptionMsg(ex.getMessage());
+			   exceptionResult.setResultCode(ResultCodeMapper.FAILURE);
+			   
+			   ex.printStackTrace();
+			}
+					
+		 return problemsDetilsList;
+		}
+		
+		private Map<String,List<ProblemBeanVO>> getProblemsMapByClassification(List<ProblemHistory> problemHistoryList,Boolean groupCadre,Boolean groupDept) throws Exception{
+			
+			if(log.isDebugEnabled())
+				log.debug(" Classifying The Problems ..");
+			
+			Map<String,List<ProblemBeanVO>> problemClassificationMap = new HashMap<String,List<ProblemBeanVO>>();
+			String locationStr = "";
+			
+			//Process The ProblemsHistory List
+			for(ProblemHistory problemInfo:problemHistoryList){
+				
+				String category = "";
+				ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+				Long impactValue = problemInfo.getProblemLocation().getProblemImpactLevelValue();
+				Long impactLevel = problemInfo.getProblemLocation().getProblemImpactLevel().getRegionScopesId();
+				problemBeanVO.setProblem(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+				problemBeanVO.setDescription(problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription());
+				Date reportedDate = problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+				problemBeanVO.setReportedDate(sdf.format(reportedDate));
+				Date existingFrom = problemInfo.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom();
+				problemBeanVO.setExistingFrom(sdf.format(existingFrom));
+				
+				switch (impactLevel.intValue()) {
+	            case 2:  
+	        	{
+	        		State state = stateDAO.get(impactValue);
+	        		locationStr = state.getStateName();
+	        		break;
+	        	}
+	            case 3:
+	            {
+	            	District district = districtDAO.get(impactValue);
+	            	locationStr = district.getDistrictName() + ", "+ district.getState().getStateName() ;	            	
+	            	break;
+	            }
+	            case 4: {
+	            	Constituency constituency = constituencyDAO.get(impactValue);
+					
+					if(IConstants.PARLIAMENT_ELECTION_TYPE.equals(constituency.getElectionScope().getElectionType().getElectionType()))
+					{	
+						locationStr = constituency.getName()+ " " +constituency.getState().getStateName();						
+					} else 
+					{
+						locationStr = constituency.getName()+", "+ constituency.getDistrict().getDistrictName()+"(Dt.)"+", "+constituency.getState().getStateName();						
+					}				
+	            	break;
+	            }
+	            case 5: 
+	            {
+	            	Tehsil tehsil = tehsilDAO.get(impactValue);
+	            	locationStr = tehsil.getTehsilName()+ " (Mandal), "+ setConstDistStateTOResult(tehsil.getTehsilId());
+					break;
+	            }            
+	            case 6:
+	            {
+	            	Hamlet hamlet = hamletDAO.get(impactValue);
+	            	locationStr = hamlet.getHamletName()+"(Village, )" +setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
+	            	break;
+	            }
+	            case 7:
+	            {
+	            	LocalElectionBody localBody = localElectionBodyDAO.get(impactValue);
+	            	locationStr = localBody.getName()+ "-" +localBody.getElectionType().getElectionType() +", "+localBody.getDistrict().getDistrictName()+"(Dt.)"+", " +localBody.getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 8:
+	            {
+	            	Constituency ward = constituencyDAO.get(impactValue);
+	            	locationStr = ward.getName()+", "+ ward.getLocalElectionBody().getName()+"-" +ward.getLocalElectionBody().getElectionType().getElectionType()+ ", "+ward.getLocalElectionBody().getDistrict().getDistrictName()+", "+ ward.getLocalElectionBody().getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 9:
+	            {
+	            	Booth booth = boothDAO.get(impactValue);
+	            	if(booth.getTehsil()!= null)
+	            	{
+	            		locationStr = booth.getTehsil().getTehsilName() + ", "+booth.getTehsil().getTehsilName()+setConstDistStateTOResult(booth.getTehsil().getTehsilId());	            		           		
+	            	}else if(booth.getLocalBody() != null)
+	            	{            		            		
+	            		locationStr = booth.getLocalBody().getName()+booth.getLocalBody().getDistrict().getDistrictName()+booth.getLocalBody().getDistrict().getState().getStateName();	            		
+	            	}
+	            	
+	            	break;
+	            }
+	            default: System.out.println("Invalid Scope.");break;
+	        }
+				problemBeanVO.setProblemLocation(locationStr);
+				
+				problemBeanVO.setStatus(problemInfo.getProblemStatus().getStatus());
+				
+				
+				if(groupDept){
+					
+					problemBeanVO.setDepartment(((AssignedProblemProgress)problemInfo.getAssignedProblemProgresses().toArray()[0]).getProblemSourceScopeConcernedDepartment().getDepartment());
+					problemBeanVO.setDesignation(((AssignedProblemProgress)problemInfo.getAssignedProblemProgresses().toArray()[0]).getDesignation());
+					
+					category = problemBeanVO.getDepartment().trim();
+				}
+				
+				if(groupCadre){
+					
+					problemBeanVO.setCadreName(((CadreProblemDetails)problemInfo.getCadreProblemDetails().toArray()[0]).getCadre().getLastName());
+					problemBeanVO.setCadreId(((CadreProblemDetails)problemInfo.getCadreProblemDetails().toArray()[0]).getCadre().getCadreId());
+					
+					category = problemBeanVO.getCadreName().trim();
+				}
+								
+						
+				//Set Data TO Map
+				if(problemClassificationMap.isEmpty() || !problemClassificationMap.containsKey(category)){
+					
+					List<ProblemBeanVO> problemsVOList = new ArrayList<ProblemBeanVO>();
+					problemsVOList.add(problemBeanVO);
+					
+					problemClassificationMap.put(category, problemsVOList);
+					
+				}else if(problemClassificationMap.containsKey(category)){
+					
+					List<ProblemBeanVO> problemsVOList = problemClassificationMap.get(category);
+					problemsVOList.add(problemBeanVO);
+					
+					problemClassificationMap.put(category, problemsVOList);
+				}
+
+			}
+			
+			
+		 return problemClassificationMap;
+		}
+		
+		/**
+		 * Method Gets Problem Location Details And Sets To Map
+		 * @param regionScope
+		 * @return
+		 */
+		@SuppressWarnings("unchecked")
+		private Map<String,String> getProblemLocationDetails(Long regionScope,Long locationId) throws Exception{
+			
+			if(log.isDebugEnabled())
+				log.debug(" Obtaining Problem Location Details ..");
+			
+			Map<String,String> locationDetailsMap = new HashMap<String,String>();
+			String model = null,idToCompare = null;
+			Long id = locationId;
+			
+			locationDetailsMap.put(IConstants.ID, id.toString());
+			
+			switch (regionScope.intValue()) {
+	            case 2:  
+	        	{
+	        		model = "state";
+					idToCompare = "stateId";
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					
+					break;
+	        	}
+	            case 3:
+	            {
+	            	model = "district";
+					idToCompare = "districtId";
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					
+	            	break;
+	            }
+	            case 4:
+	            case 8:
+	            {
+	            	model = "constituency";
+					idToCompare = "constituencyId";
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					
+	            	break;
+	            }
+	            case 5: 
+	            {
+	            	model = "tehsil";
+					idToCompare = "tehsilId";
+					id = new Long(locationId.toString().substring(1));
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					
+	            	break;
+	            }            
+	            case 6:
+	            {
+	            	model = "hamlet";
+					idToCompare = "hamletId";
+					id = new Long(locationId.toString().substring(1));
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					locationDetailsMap.put(IConstants.ID, id.toString());
+					
+	            	break;
+	            }
+	            case 7:	            	
+	            {
+	            	model = "localElectionBody";
+					idToCompare = "localElectionBodyId";
+					//retrieve local election body id from assembly local election body
+					List localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
+					Object object = (Object)localElectionBodies.get(0);
+					id = (Long)object;	
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					locationDetailsMap.put(IConstants.ID, id.toString());
+					
+	            	break;
+	            }
+	            case 9:
+	            {
+	            	model = "booth";
+					idToCompare = "boothId";
+					
+					locationDetailsMap.put(IConstants.MODEL, model);
+					locationDetailsMap.put(IConstants.MODEL_ID, idToCompare);
+					
+	            	break;
+	            }	            
+	            default: System.out.println("Invalid Scope.");break;
+           }
+			
+		 return locationDetailsMap;
+		}
 
 		/**
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
@@ -418,7 +721,7 @@ public class ProblemManagementReportService implements
 	            default: System.out.println("Invalid Scope.");break;
 	        }					
 				
-			List<ProblemHistory> result = problemHistoryDAO.findProblemsForSelectedSearchOptions(id,status,userId,model,idToCompare,deptId);
+			List<ProblemHistory> result = problemHistoryDAO.findProblemsForSelectedSearchOptions(id,status,userId,model,idToCompare,deptId,false,false);
 				
 			ProblemBeanVO problemBeanVO = null;
 			for(ProblemHistory problemInfo:result){
