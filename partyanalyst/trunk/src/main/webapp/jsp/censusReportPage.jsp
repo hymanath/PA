@@ -240,9 +240,6 @@
 		else
 			errorElmt.innerHTML = "";
 
-		if(censusValue == 0)
-			return;
-		
 		var jsObj=
 		{
 				stateId		: stateId,
@@ -286,6 +283,18 @@
 				data.setValue(i, 1, resultByRanges[i].avgPercent);
 			}
 		}
+		else if(value == "cpAvg")
+		{
+			data.addColumn('string', 'Range');
+			data.addColumn('number', 'CP*-Avg');
+			for(var i=0; i<resultByRanges.length; i++)
+			{
+				data.setValue(i, 0, resultByRanges[i].range);
+				//data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
+				data.setValue(i, 1, resultByRanges[i].PConstavgPercent);
+			}
+		}
+
 		var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
 		chart.draw(data, {width: 450, height: 350, pointSize: 4, title: 'Constituencies Count Based On Range'});
 	}	
@@ -293,7 +302,7 @@
 	function getAllPartyResultsByRanges(value)
 	{
 		var results = allPartyResultsByRanges;
-
+		
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
 		for(var i=0; i<results[0].partiesResults.length; i++)
@@ -306,9 +315,9 @@
 			partiesArray.push(results[0].partiesResults[i].partyName);
 
 		var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
-
+	
 		if(value == "seats")
-		{
+		{			
 			for(var i=0; i<results.length; i++)
 			{			
 					data.setValue(i, 0, results[i].range);
@@ -317,13 +326,22 @@
 			}			
 		}
 		else if(value == "percentage")
-		{	
+		{				
 			for(var i=0; i<results.length; i++)
 			{			
 					data.setValue(i, 0, results[i].range);
 					for(var j=0; j<results[i].partiesResults.length; j++)
 						data.setValue(i, j+1, results[i].partiesResults[j].votesPercent);		
 			}
+		}
+		else if(value == "cpAvg")
+		{			
+			for(var i=0; i<results.length; i++)
+			{			
+					data.setValue(i, 0, results[i].range);
+					for(var j=0; j<results[i].partiesResults.length; j++)
+						data.setValue(i, j+1, parseFloat(results[i].partiesResults[j].PConstavgPercentage));		
+			}			
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('allPartyCensusResults_body'));
@@ -341,8 +359,9 @@
 		gStr += '<table class="graphHeadTable">';
 		gStr += '<tr>';
 		gStr += '<th>Constituencies Count</th>';
-		gStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="percentage" onclick="getAllPartyResultsByRanges(this.value)">By Percentage</input></th>';
-		gStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getAllPartyResultsByRanges(this.value)">By Seats Won</input></th>';		
+		gStr += '<th><input type="radio" name="graphRadioName1" checked="checked" value="percentage" onclick="getAllPartyResultsByRanges(this.value)">By Percentage</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName1" value="seats" onclick="getAllPartyResultsByRanges(this.value)">By Seats Won</input></th>';
+		gStr += '<th><input type="radio" name="graphRadioName1" value="cpAvg" onclick="getAllPartyResultsByRanges(this.value)">By CP* Avg</input></th>';
 		gStr += '</tr>';
 		gStr += '</table>';
 		graphHeadElmt.innerHTML = gStr;
@@ -416,7 +435,8 @@
 		rStr += '<tr>';
 		rStr += '<th>Constituencies Count</th>';
 		rStr += '<th><input type="radio" name="graphRadioName" checked="checked" value="percentage" onclick="getPartyResultsByRanges(this.value)">By Percentage</input></th>';
-		rStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';		
+		rStr += '<th><input type="radio" name="graphRadioName" value="seats" onclick="getPartyResultsByRanges(this.value)">By Seats Won</input></th>';	
+		rStr += '<th><input type="radio" name="graphRadioName" value="cpAvg" onclick="getPartyResultsByRanges(this.value)">By CP* - Avg </input></th>';	
 		rStr += '</tr>';
 		rStr += '</table>';
 		radioElmt.innerHTML = rStr;
