@@ -231,6 +231,25 @@
 			text-align:left;				
 		}
 		
+		.problemData_main
+		{
+			border:1px solid #ADADAD;
+			margin-top: 15px;
+		}
+		.problemData_head
+		{
+			background-color: #B2BDC4;
+			border-bottom: 1px solid #ADADAD;
+			color: #FFFFFF;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 5px;
+			text-align: left;
+		}
+		.problemData_body
+		{
+			padding: 10px;
+		}
 	</style>   	
 
 </head>
@@ -669,7 +688,11 @@ var callback = {
 				}if(jsObj.task == "getProblemsBySelection")
 				{
 					showProblemsReport(myResults,jsObj);			
-				}				
+				}	
+				if(jsObj.task == "getProblemsGroupedBySelection")
+				{
+					showProblemsByDepartment(myResults,jsObj);
+				}
 				
 		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
@@ -683,6 +706,92 @@ var callback = {
 
 YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function showProblemsByDepartment(results,jsObj)
+{	
+	var elmt = document.getElementById("problemInfoDivBody");
+
+	var str = '';
+	for(var i=0; i<results.length; i++)
+	{
+		str += '<div id="problemsData_main_'+i+'" class="problemData_main">';
+		str += '<div id="problemsData_head_'+i+'" class="problemData_head">Problems In '+results[i].classificationType+' Department</div>';
+		str += '<div id="problemsData_body_'+i+'" class="problemData_body"><img src=""></img></div>';
+		str += '</div>';
+	}	
+
+	elmt.innerHTML = str;
+
+	for(var i=0; i<results.length; i++)
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(results[i].problemsList);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "problem"
+			}, 	{
+				key : "description"
+			}, {
+				key : "existingFrom"
+			}, {
+				key : "status"
+			}, {
+				key : "problemLocation"
+			}, {
+				key : "department"
+			}, {
+				key : "designation"
+			}]   
+		};	
+
+		var resultsColumnDefs = [ {
+			key : "problem",
+			label : "Problem",
+			sortable : true
+		}, {
+			key : "description",
+			label : "Description",
+			sortable : true,
+			resizable:true
+		}, {
+			key : "existingFrom",
+			label : "Reported Date",
+			sortable : true
+		}, {
+			key : "status",
+			label : "Problem Status",
+			sortable : true
+		}, {
+			key : "problemLocation",
+			label : "Problem Location",
+			sortable : true
+		}, {
+			key : "department",
+			label : "Department",
+			sortable : true
+		}, {
+			key : "designation",
+			label : "Designation",
+			sortable : true
+		}];	
+		if(results[i].problemsList.length>10)
+		{
+			var myConfigs = {		
+					paginator : new YAHOO.widget.Paginator({
+						rowsPerPage: 10,
+						template: "{PageLinks} Show {RowsPerPageDropdown} per page",
+						rowsPerPageOptions: [25,50,75,100], 
+						pageLinks: 25 
+						}),   
+					};	
+		}
+
+
+
+		var myDataTable = new YAHOO.widget.DataTable("problemsData_body_"+i,resultsColumnDefs, resultsDataSource,myConfigs);
+	}
+}
+
 function fillDeptSelect(results)
 {
 	var tableEl = document.getElementById("deptsSelectTable");
