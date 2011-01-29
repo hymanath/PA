@@ -278,7 +278,7 @@
 	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
-		<property name="entitlementsHelper" ref="entitlementsHelper" />				
+		<property name="entitlementsHelper" ref="entitlementsHelper" />		
 	</bean>
 	
 	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">	
@@ -304,6 +304,7 @@
 		<property name="constituencyManagementService" ref="constituencyManagementService" />
 		<property name="userGroupService" ref="userGroupService" />
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			
@@ -329,7 +330,8 @@
 	</bean>
 	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
 		<property name="userGroupService" ref="userGroupService"/>
-		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	<bean id="revenueVillageReportAction" class="com.itgrids.partyanalyst.web.action.RevenueVillageReportAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"/>
@@ -345,7 +347,8 @@
 		<property name="staticDataService" ref="staticDataService"/>
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 		<property name="influencingPeopleService" ref="influencingPeopleService"/>
-		<property name="problemManagementService" ref="problemManagementService"/>			
+		<property name="problemManagementService" ref="problemManagementService"/>
+		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 	<bean id="townshipPageAction" class="com.itgrids.partyanalyst.web.action.TownshipPageAction" singleton="false">			
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"></property>
@@ -360,6 +363,7 @@
 	<bean id="constituencyElectionReportAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+			<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>	
 	<bean id="villageBoothElectionMapAction" class="com.itgrids.partyanalyst.web.action.VillageBoothElectionMapAction" singleton="false">
 			<property name="villageBoothDataPopulationService" ref="villageBoothDataPopulationService" />
@@ -430,6 +434,7 @@
 	    <property name="biElectionPageService" ref="biElectionPageService" />
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="constituencyPageService" ref="constituencyPageService"/>
+	    <property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	<bean id="addNewProblemAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />
@@ -583,6 +588,7 @@
     
     <bean id="censusReportAction" class="com.itgrids.partyanalyst.web.action.CensusReportAction" singleton="false">
     	<property name="staticDataService" ref="staticDataService" />
-    	<property name="electionService" ref="electionService" />    		    
+    	<property name="electionService" ref="electionService" />
+    	<property name="entitlementsHelper" ref="entitlementsHelper" />		    
     </bean>    
 </beans>		

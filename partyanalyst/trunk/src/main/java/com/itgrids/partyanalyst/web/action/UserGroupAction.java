@@ -2,18 +2,9 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +14,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -32,9 +22,9 @@ import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
-import com.itgrids.partyanalyst.service.impl.UserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -63,6 +53,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private Long remainingSms;
 	private ISmsService smsCountrySmsService;
 	private SmsResultVO resultVo ;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public SmsResultVO getResultVo() {
 		return resultVo;
@@ -183,6 +174,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		this.userGroupDetailsVO = userGroupDetailsVO;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute() throws Exception
 	{	
 		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
@@ -192,8 +191,12 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		}		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user==null)
-			return ERROR;	
+		
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.USER_GROUPS_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.USER_GROUPS_ENTITLEMENT))
+			return ERROR;
 		
 		Long userID = user.getRegistrationID();
 		
@@ -201,7 +204,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 				
 		return SUCCESS;		
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public String ajaxCallHandler()
 	{

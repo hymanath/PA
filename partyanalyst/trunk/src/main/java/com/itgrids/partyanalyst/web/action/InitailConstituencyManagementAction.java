@@ -3,13 +3,11 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyManagementDataVO;
@@ -22,9 +20,9 @@ import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.UserGroupBasicInfoVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -59,6 +57,7 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	private List<UserGroupMembersInfoVO> userGroupMembersInfoVO;
 	private ConstituencyManagementDataVO constituencyManagementDataVO;
 	private IInfluencingPeopleService influencingPeopleService;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public IInfluencingPeopleService getInfluencingPeopleService() {
 		return influencingPeopleService;
@@ -206,6 +205,14 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		this.problemsList = problemsList;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
@@ -213,7 +220,10 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(user == null)
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CONSTITUENCY_MANAGEMENT_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_MANAGEMENT_ENTITLEMENT))
 			return ERROR;
 				
 		accessType = user.getAccessType();
