@@ -394,7 +394,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List list = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(380l, 18l, 24l);
 		System.out.println(list.size());
 	}*/
-	/*
+	
 	@SuppressWarnings("unchecked")
 	public void testFindElectionResultsForAllPartiesInAssemblyConstituencies()
 	{
@@ -403,17 +403,17 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		constituencyIds.add(8L);
 		constituencyIds.add(362L);
 		
-		List list1 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2004",constituencyIds);
+		List list1 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2004",constituencyIds,"0.75");
 		for(Object[] values:(List<Object[]>)list1)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
 			System.out.println("____________________________________________________________________________");
-		List list2 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2009",constituencyIds);
+		List list2 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2009",constituencyIds,"0.75");
 		for(Object[] values1:(List<Object[]>)list2)
 			System.out.println(values1[0]+"\t"+values1[1]+"\t"+values1[2]+"\t"+values1[3]+"\t"+values1[4]+"\t"+values1[5]);
 
 		
-	}*/
-		
+	}
+	
 	/*@SuppressWarnings("unchecked")
 	public void testFindWinningCandidatesDetailsInBiElectionContituencies()
 	{
@@ -759,7 +759,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(){
+	/*public void testFindElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(){
 		List<Long> partyIds = new ArrayList<Long>(0);
 		List<Long> districtIds = new ArrayList<Long>(0);
 		List<Long> constiIds = new ArrayList<Long>(0);
@@ -771,6 +771,6 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List list = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria("2009", constiIds, 
 				partyIds, districtIds, query);
 		System.out.println(list.size());
-	}
+	}*/
 }
 	

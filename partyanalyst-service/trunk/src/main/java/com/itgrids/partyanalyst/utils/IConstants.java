@@ -362,10 +362,10 @@ public interface IConstants {
     public static final String DISTRICT_STR = "district";
     public static final String CADRE_PERSONAL = "PERSONAL";
     public static final String CADRE_ASSIGNED = "ASSIGNED";
+    public static final String VOTES_PERCENTAGE_CONCERNED = "0.5";
     
     public static final String ID = "ID";
     public static final String MODEL = "MODEL";
     public static final String MODEL_ID = "MODEL_ID";
-    
-      
+          
 }

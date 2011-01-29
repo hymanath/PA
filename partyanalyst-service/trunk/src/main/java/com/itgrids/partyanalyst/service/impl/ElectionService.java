@@ -342,10 +342,12 @@ public class ElectionService implements IElectionService{
 		
 		ElectionDataVO electionDataVO = new ElectionDataVO();
 		List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
+		List<PartyResultsVO> partyResultsVOList = null;
 		List<ConstituencyElectionResultsVO> constituenciesResults = null;
 		List<String> allPartiesList = null;
 		Set<SelectOptionVO> districts = new TreeSet<SelectOptionVO>();
 		Set<SelectOptionVO> parties = new TreeSet<SelectOptionVO>();
+		Map<String,Double> pariisMap = new HashMap<String, Double>();
 		List resultsList = null;
 		List constiResults = null;
 		Double totalVotesEarned = 0d;
@@ -357,7 +359,7 @@ public class ElectionService implements IElectionService{
 		try {
 			
 			if(constituencyIds != null && constituencyIds.size() > 0 && isAll)
-				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);
+				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds,IConstants.VOTES_PERCENTAGE_CONCERNED);
 			else{
 				if(districtIds != null && districtIds.size() > 0)
 					query.append(" and model.constituencyElection.constituency.district.districtId in (:districtIds)");
@@ -411,7 +413,12 @@ public class ElectionService implements IElectionService{
 							setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				if(totalValidVotes > 0)
 					partyResultsVO.setPConstavgPercentage(new BigDecimal(totalVotesEarned*(100.0)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				partyResultsList.add(partyResultsVO);
+				
+				if(Double.parseDouble(partyResultsVO.getAvgPercentage()) > Double.parseDouble(IConstants.VOTES_PERCENTAGE_CONCERNED))
+				{
+					partyResultsList.add(partyResultsVO);
+					pariisMap.put(partyResultsVO.getPartyName(), Double.parseDouble(partyResultsVO.getAvgPercentage()));
+				}
 			}
 			
 			if(includeConstiInfo){
@@ -424,11 +431,18 @@ public class ElectionService implements IElectionService{
 				Set<String> partiesInConstituency = null;
 				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
 					partiesInConstituency = new HashSet<String>();
+					partyResultsVOList = new ArrayList<PartyResultsVO>();
 					for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
+						if(pariisMap.get(partyInfo.getPartyName()) == null)
+							continue;
+						else
+							partyResultsVOList.add(partyInfo);
+							
 						partiesInConstituency.add(partyInfo.getPartyName());
 						allParties.add(partyInfo.getPartyName());
 					}
 					constiInfo.setParticipatedParties(partiesInConstituency);
+					constiInfo.setPartyResultsVO(partyResultsVOList);
 				}
 				
 				PartyResultsVO partyInfo = null;
@@ -472,7 +486,7 @@ public class ElectionService implements IElectionService{
 	private void getDistrictsAndParties(Set<SelectOptionVO> districts,
 			Set<SelectOptionVO> parties, List<Long> constituencyIds,
 			String electionYear) {
-		List resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);
+		List resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds,IConstants.VOTES_PERCENTAGE_CONCERNED);
 		for(Object[] values:(List<Object[]>)resultsList){
 			districts.add(new SelectOptionVO((Long)values[8], values[9].toString()));
 			parties.add(new SelectOptionVO((Long)values[3], values[2].toString()));
