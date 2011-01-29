@@ -2025,10 +2025,12 @@ public class CadreManagementService {
 			if (IConstants.USER_TYPE_PARTY.equals(cadre.getRegistration().getUserType()) && IConstants.BJP.equals(cadre.getRegistration().getParty().getShortName())) {
 										
 					//set party committee and designation and duration
-					cadreInfo.setDesignation(cadre.getDesignation().getPartyWkgCommitteeDesignationId());
-					cadreInfo.setDesignationStr(cadre.getDesignation().getDesignation());
-					cadreInfo.setPartyCommitteeName(cadre.getDesignation().getPartyWorkingCommittee().getCommitteeName());
-					cadreInfo.setPartyCommittee(cadre.getDesignation().getPartyWorkingCommittee().getPartyWorkingCommitteeId());
+				    if(cadre.getDesignation() !=  null){
+						cadreInfo.setDesignation(cadre.getDesignation().getPartyWkgCommitteeDesignationId());
+						cadreInfo.setDesignationStr(cadre.getDesignation().getDesignation());
+						cadreInfo.setPartyCommitteeName(cadre.getDesignation().getPartyWorkingCommittee().getCommitteeName());
+						cadreInfo.setPartyCommittee(cadre.getDesignation().getPartyWorkingCommittee().getPartyWorkingCommitteeId());
+				    }
 					if(cadre.getEffectiveDate() != null)
 						cadreInfo.setEffectiveDate(sdf.format(cadre.getEffectiveDate()));
 					if(cadre.getEndingDate() != null)
