@@ -270,7 +270,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testFindProblemsForSelectedSearchOptions(){
-		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l);
+		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l,false,false);
 		System.out.println(list1.size());
 	}
 	
