@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemClassificationVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -79,7 +80,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private List<SelectOptionVO> mandalList;
 	private Long defaultStateId = 0l;
 	private Long defaultDistrictId = 0l;
-	private Long defaultConstituencyId = 0l;	
+	private Long defaultConstituencyId = 0l;
+	private List<ProblemClassificationVO> problemsGropedByDeptOrCadre;
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -339,9 +341,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 
 	public Long getDefaultConstituency() {
 		return this.defaultConstituencyId;
-	}	
-
+	}
 	
+	public List<ProblemClassificationVO> getProblemsGropedByDeptOrCadre() {
+		return problemsGropedByDeptOrCadre;
+	}
+	public void setProblemsGropedByDeptOrCadre(
+			List<ProblemClassificationVO> problemsGropedByDeptOrCadre) {
+		this.problemsGropedByDeptOrCadre = problemsGropedByDeptOrCadre;
+	}
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
@@ -461,6 +469,16 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				Long selectedProblemScope = jObj.getLong("selectedProblemScope");
 				
 				problemBean = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept);
+			} else if(jObj.getString("task").equals("getProblemsGroupedBySelection")){
+				
+				Long locationId =  jObj.getLong("selectedLocation");
+				Long selectedStatus = jObj.getLong("selectedStatus");
+				Long selectedDept = jObj.getLong("selectedDept");
+				Long selectedProblemScope = jObj.getLong("selectedProblemScope");
+				Boolean groupByDept= jObj.getBoolean("groupByDept");
+				Boolean groupByCadre = jObj.getBoolean("groupByCadre");
+				
+				problemsGropedByDeptOrCadre = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept,groupByCadre,groupByDept);
 			}
 		}
 				
