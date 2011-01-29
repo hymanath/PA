@@ -4092,7 +4092,7 @@ public class StaticDataService implements IStaticDataService {
 		
 		try{
 			if(resultsList == null)
-				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
+				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds,IConstants.VOTES_PERCENTAGE_CONCERNED);	
 			
 			for(int i=0; i<resultsList.size();i++)
 			{

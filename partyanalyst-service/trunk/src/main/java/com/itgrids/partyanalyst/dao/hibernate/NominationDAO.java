@@ -1649,16 +1649,17 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsForAllPartiesInAssemblyConstituencies(
-			String electionYear, List<Long> constituencyIds) {
+			String electionYear, List<Long> constituencyIds,String percentage) {
 		Query queryObject = getSession().createQuery("select model.candidateResult.votesPercengate, model.candidateResult.votesEarned, " + 
 				"model.party.shortName, model.party.partyId, model.constituencyElection.constituency.name, " +
 				"model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituencyElectionResult.validVotes, " + 
 				"model.candidateResult.rank, model.constituencyElection.constituency.district.districtId, " +
 				"model.constituencyElection.constituency.district.districtName from Nomination model where " +
-				"model.constituencyElection.election.electionYear =? and " +
+				"model.constituencyElection.election.electionYear =? and model.candidateResult.votesPercengate > ? and " +
 				"model.constituencyElection.constituency.constituencyId in (:constituencyIds) " +
 				"order by model.constituencyElection.constituency.district.districtName");
 		queryObject.setParameter(0,electionYear);
+		queryObject.setParameter(1,percentage);
 		queryObject.setParameterList("constituencyIds",constituencyIds);
 		return queryObject.list();
 	}

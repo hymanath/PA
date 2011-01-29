@@ -267,7 +267,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List findPCElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(
 			Long constituencyId, Long electionId, Long partyId);
-	public List findElectionResultsForAllPartiesInAssemblyConstituencies(String electionYear, List<Long> constituencyIds); 
+	public List findElectionResultsForAllPartiesInAssemblyConstituencies(String electionYear, List<Long> constituencyIds,String percentage); 
 	public List findWinningCandidatesDetailsInContituencies(String electionYear, List<Long> constituencyIds);
 	public List findOppositionCandidateVotesPercentageInConstituencies(String electionYear, List<Long> constituencyIds);
 	
@@ -397,4 +397,5 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List findElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
 			List<Long> districtIds, String query );
+	
 }
