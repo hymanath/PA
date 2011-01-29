@@ -80,7 +80,7 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	@SuppressWarnings("unchecked")
 	public List findProblemCompleteInfo(Long problemHistoryId);	
 	
-	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId);
+	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId,Boolean groupCadre,Boolean groupDept);
 	public Long getAllRecordsCountForPostedProblemsByAnanymousUserId(Long registrationId, String reasonType);
 	
 

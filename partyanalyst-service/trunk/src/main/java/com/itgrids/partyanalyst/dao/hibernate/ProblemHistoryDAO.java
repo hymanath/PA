@@ -107,7 +107,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId) {
+	public List<ProblemHistory> findProblemsForSelectedSearchOptions(Long locationId, Long status, Long userId,String model,String idToCompare,Long deptId,Boolean groupCadre,Boolean groupDept) {
 				
 		StringBuilder conditionQuery = new StringBuilder();
 		conditionQuery.append(" from ProblemHistory model ");
@@ -125,6 +125,18 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		}
 		
 		conditionQuery.append(" model.isDelete is null");
+		
+		// To Group Problems By Cadre
+		if(groupCadre){
+			conditionQuery.append(" and model.problemHistoryId in ( select model2.problemHistory.problemHistoryId from ");
+		    conditionQuery.append(" AssignedProblemProgress model2 order by model2.problemSourceScopeConcernedDepartment.problemSourceScopeConcernedDepartmentId )");
+		}
+		
+		// To Group Problems By Department
+		if(groupDept){
+			conditionQuery.append(" and model.problemHistoryId in ( select model2.problemHistory.problemHistoryId from ");
+			conditionQuery.append(" CadreProblemDetails model2 order by model2.cadre.cadreId )");
+		}
 		
 		Query queryObject = getSession().createQuery(conditionQuery.toString());
 		queryObject.setLong(0,userId);
