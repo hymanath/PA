@@ -75,6 +75,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private List<ProblemDetailsVO> problemsInfo;
 	private Long problemsCount;
 	private Long cadreId;
+	private String cadreName;
     	
 	public Long getCadreId() {
 		return cadreId;
@@ -604,6 +605,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setProblemsCount(Long problemsCount) {
 		this.problemsCount = problemsCount;
+	}
+
+	public String getCadreName() {
+		return cadreName;
+	}
+
+	public void setCadreName(String cadreName) {
+		this.cadreName = cadreName;
 	}
 	
 	
