@@ -473,12 +473,14 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				
 				Long locationId =  jObj.getLong("selectedLocation");
 				Long selectedStatus = jObj.getLong("selectedStatus");
-				Long selectedDept = jObj.getLong("selectedDept");
+				//Long selectedDept = jObj.getLong("selectedDept");
 				Long selectedProblemScope = jObj.getLong("selectedProblemScope");
 				Boolean groupByDept= jObj.getBoolean("groupByDept");
 				Boolean groupByCadre = jObj.getBoolean("groupByCadre");
 				
-				problemsGropedByDeptOrCadre = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, selectedDept,groupByCadre,groupByDept);
+				//problemsGropedByDeptOrCadre = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), selectedStatus,  selectedProblemScope, 0L,groupByCadre,groupByDept);
+				
+				problemsGropedByDeptOrCadre = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), 3L,  selectedProblemScope, 0L,groupByCadre,groupByDept);
 			}
 		}
 				
