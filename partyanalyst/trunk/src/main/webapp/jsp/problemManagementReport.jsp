@@ -1015,6 +1015,8 @@ function getProblems()
 	var selectedSortOption;
 	var subTask = '';
 	var errorDivEl = document.getElementById("errorDiv");
+	var groupByDept = false;
+	var groupByCadre = false;
 	errorDivEl.innerHTML = '';
 	for(var i = 0; i<problemOptionEl.length; i++)
 	{
@@ -1054,6 +1056,23 @@ function getProblems()
 		{
 			selectedStatus = 4;
 			subTask = 'department';
+			groupByDept = true;
+			var jsObj=
+			{
+					selectedLocation: selectedLocation,
+					selectedStatus: selectedStatus,
+					selectedDept: selectedDept,
+					selectedProblemScope: selectedProblemScope,
+					task:"getProblemsGroupedBySelection",
+					subTask: subTask,
+					groupByDept: groupByDept,
+					groupByCadre: groupByCadre
+											
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getProblemsGroupedByDeptOrCadreAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);	
+			return;
 		} else 
 			selectedStatus = 0;
 		selectedDept = 0;
