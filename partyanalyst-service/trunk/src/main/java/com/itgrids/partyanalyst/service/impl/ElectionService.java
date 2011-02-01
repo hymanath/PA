@@ -397,6 +397,7 @@ public class ElectionService implements IElectionService{
 				partyResultsVO = entry.getKey();
 				partyResults = entry.getValue();
 				totalVotesEarned = 0d;
+				totalValidVotes = 0d;
 				for(Object[] results:partyResults){
 					totalVotesEarned += Double.parseDouble(results[1].toString());
 					totalValidVotes += Double.parseDouble(results[6].toString());
