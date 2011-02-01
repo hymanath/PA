@@ -956,9 +956,9 @@
     						key:results.allPartiesList[l],
     						label:results.allPartiesList[l],
     						sortable:true
-    					}
+						}
     			var obj2 = {
- 						key:results.allPartiesList[l]    						
+ 						key:results.allPartiesList[l]
  					}
     			myColumnDefs.push(obj1);
     			myFields.push(obj2);    			
@@ -968,7 +968,7 @@
     					.get("partyResultsTable")); 
     		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
     		 myDataSource.responseSchema = { 
-    								            fields:myFields    
+    								            fields:myFields     
     								        };
 		    
 			var myConfigs = { 					
@@ -985,12 +985,13 @@
     								{key:"partyName", label:"Party", sortable:true},         
     								{key:"seatsParticipated", label: "Seats Participated", sortable:true},
     			    	            {key:"totalSeatsWon", label: "Seats Won", sortable:true},
-    			    	            {key:"avgPercentage", label: "Average Percentage", sortable:true}    			    	            		    				
+    			    	            {key:"avgPercentage", label: "Avg %", sortable:true},
+									{key:"PConstavgPercentage", label: "PC-Avg %", sortable:true}
     			    	        ]; 
     		var localLeadersDataSource = new YAHOO.util.DataSource(results.partyResultsList); 
     			localLeadersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
     			localLeadersDataSource.responseSchema = { 
-    	            fields: [{key:"partyName"},{key:"seatsParticipated", parser:"number"},{key:"totalSeatsWon", parser:"number"},{key:"avgPercentage", parser:"number"}] 
+    	            fields: [{key:"partyName"},{key:"seatsParticipated", parser:"number"},{key:"totalSeatsWon", parser:"number"},{key:"avgPercentage", parser:"number"},{key:"PConstavgPercentage"}] 
     	        };
     			
     	        var myConfigs = { 
