@@ -905,6 +905,7 @@
         	str += '<td>'+results.constituenciesResults[j].constituencyName+'</td>';
         	str += '<td>'+results.constituenciesResults[j].districtName+'</td>';
         	str += '<td>'+results.constituenciesResults[j].censusReportPercent+'</td>';
+			str += '<td>'+results.constituenciesResults[j].votingPercentage+'</td>';
         	for(var k in results.constituenciesResults[j].partyResultsVO)
             	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
         			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].percentage+'</td>';
@@ -943,6 +944,13 @@
    		   		sortable:true
    		   		}
    		var censusTypeValue = {key:"censusReportPercent"} 
+
+		var votingPerHead = {
+	 			key:"VotingPer",
+	 			label:"Voting %",
+	 			sortable:true
+		   }
+   		var votingPerValue = {key:"VotingPer"}
    				 
 		myColumnDefs.push(constHead);
 		myFields.push(constValue);
@@ -950,6 +958,8 @@
 		myFields.push(distValue);
 		myColumnDefs.push(censusTypeHead);
 		myFields.push(censusTypeValue);
+		myColumnDefs.push(votingPerHead);
+		myFields.push(votingPerValue);
 		
     		 for(var l in results.allPartiesList){
     			var obj1 = {
@@ -1178,7 +1188,7 @@
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" headerKey = "0" headerValue="Select State" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
 				</td>
 
 				<th>District</th>
