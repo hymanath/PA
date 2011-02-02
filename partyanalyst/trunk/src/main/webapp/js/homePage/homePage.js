@@ -58,7 +58,8 @@ function openKnowMoreWindow()
 	str += '<div class="know_more_data_main">';
 	str += '<table>';
 	str += '<tr>';
-	str += '<td valign="top"><img width="120" height="100" src="images/usergroups/group-of-people.jpg"></td>';
+	str += '<td valign="top">';
+	str += '<img width="115" height="100" style="padding:2px;border:1px solid #767676;-moz-border-radius:8px;" src="images/usergroups/group-of-people.jpg"></td>';
 	str += '<td valign="top">';
 	str += '<div class="know_more_data_head">Know Your Constituency, Party and Leader</div>';
 	str += '<div class="know_more_data_body">Your Constituency, Your Party and Your Leader...None can understand them better than you. No matter in which part of the globe you are, your heart longs remains rooted in your village, your people and your constituency. </div>';
