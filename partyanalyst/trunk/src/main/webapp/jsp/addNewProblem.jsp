@@ -86,12 +86,32 @@ var scope = '${scope}';
 var isSaved = '${isSuccessfullyInserted}';
 var userType = '${sessionScope.UserType}';
 
-function setSelectedCadre(cadreId)
+function setSelectedCadre(cadreId,cadreName)
 {
 	var cadreInputIdEle = document.getElementById("cadreInputId");
 	cadreInputIdEle.value = cadreId;
+
+	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
+	var cadreVar ='';
+	cadreVar +='<table align="center">';
+	cadreVar +='<tr><th>Selected Cadre is :</th>';
+	cadreVar +='<th>';
+	cadreVar += cadreName;
+	cadreVar +='</th>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td></tr>';
+	//<a href=\"getCadreInfoAction.action?windowTask=cadreInfoPopup&cadreId=';
+	//cadreVar += cadreId;
+	//cadreVar +='>show details</a></td></tr>';
+	cadreVar +='</table>';
+	cadreDetailsDivEle.innerHTML = cadreVar;
+	cadreDetailsDivEle.style.display = 'block';
 }
 
+function showCadreDetails(cadreId)
+{
+	var showCadreDetailsBrowser = window.open("<s:url action="getCadreInfoAction.action"/>?windowTask=cadreInfoPopup&cadreId="+cadreId,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	showCadreDetailsBrowser.focus();
+}
 function incrementHidden()
 {
 	<%
@@ -133,7 +153,10 @@ function limitText(limitField, limitCount, limitNum)
 function getComplainedPersonDetails(name)
 {	
 	var personDetailsDivEle = document.getElementById("personDetailsDiv");
+	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
 	
+	cadreDetailsDivEle.style.display='none';
+
 	if(isSaved == 'true')
 	{
 	  document.getElementById("personNameField").value = '';
@@ -362,6 +385,7 @@ function hideProblemSourceRow()
 				</tr>													
 			</table>
 			<div id="cadreDiv"></div>
+			<div id="cadreDetailsDiv" style="display:none;"></div>
 			<div id="personDetailsDiv" style="display:none;">
 				<table class="personDetailsTable">
 					<tr class="accessDivHead">
