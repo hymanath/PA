@@ -243,6 +243,8 @@ function setCadreIdToProblem()
 	var elements = document.getElementsByName("cadreResult_check");
 	var errorSpanElmt = document.getElementById("addSelectedCadreErrorMsg");
     var cid = null;
+	var cMobile = null;
+	var cName = null;
 
 	for(var i=0; i<elements.length; i++)
 	{
@@ -250,6 +252,8 @@ function setCadreIdToProblem()
 			continue;
 		
 		cid  = elements[i].value.substring(0,elements[i].value.indexOf('_'));
+		cMobile = elements[i].value.substring(elements[i].value.indexOf('_')+1,elements[i].value.lastIndexOf('_'));
+		cName = elements[i].value.substring(elements[i].value.lastIndexOf('_')+1,elements[i].value.length);
 	}
 	if(cid == null)
 	{
@@ -259,7 +263,7 @@ function setCadreIdToProblem()
 	else if(cid != null)
 	{
 		errorSpanElmt.innerHTML = '';
-		window.opener.setSelectedCadre(cid);
+		window.opener.setSelectedCadre(cid,cName);
 		window.close();
 	}
  }
