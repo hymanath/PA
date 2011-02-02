@@ -3709,8 +3709,11 @@
 	<div id="cadreSMSGroupsMainDiv">
 		
 		<div id="cadreGroupsMainDiv"  class="yui-skin-sam">
-			<div id="cadreGroupsHeadDiv" class=".yui-widget-hd">Associate Groups</div>
-			<div id="cadreGroupsBodyDiv" style="height: 130px;">Associate groups</div>
+			<div id="cadreGroupsHeadDiv" class=".yui-widget-hd">Upload Your Cadre</div>
+			<div id="cadreGroupsBodyDiv">Cadre Upload feature enables you to upload cadre details by submitting the Excel file containing cadres.</div>
+            <div id="cadreGroupsFooterDiv">
+			   <span><a href="genericModuleDataUpload.action" id="sendSMSAnc">Start Upload</a></span>
+			</div>
 		</div>
 		<div id="cadreSMSMainDiv">
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
