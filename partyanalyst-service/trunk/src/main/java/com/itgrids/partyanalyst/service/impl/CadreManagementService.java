@@ -1983,13 +1983,24 @@ public class CadreManagementService {
 			cadreInfo.setLanguageOptions_Hindi(languageOptions_Hindi);
 
 		}
-		cadreInfo.setEducation(cadre.getEducation().getEduQualificationId());
-		cadreInfo.setEducationStr(cadre.getEducation().getQualification());
-		cadreInfo.setProfession(cadre.getOccupation().getOccupationId());
-		cadreInfo.setProfessionStr(cadre.getOccupation().getOccupation());
+		
+		Long  edu= 0L;
+		cadreInfo.setEducation(edu = cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId() : null);
+		String eduStr = "";
+		cadreInfo.setEducationStr(eduStr = cadre.getEducation() != null ? cadre.getEducation().getQualification() : "");
+		Long professn = 0L;
+		cadreInfo.setProfession(professn = cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId() : null);
+		String profsnStr = "";
+		cadreInfo.setProfessionStr(profsnStr = cadre.getOccupation() != null ? cadre.getOccupation().getOccupation() : "");
+		
+		if(cadre.getAnnualIncome() != null)
 		cadreInfo.setIncome(new Long(cadre.getAnnualIncome().longValue()).toString());
-		cadreInfo.setSocialStatus(cadre.getCasteCategory().getSocialCategoryId());
-		cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
+		
+		if(cadre.getCasteCategory() != null){
+			cadreInfo.setSocialStatus(cadre.getCasteCategory().getSocialCategoryId());
+			cadreInfo.setCasteCategoryStr(cadre.getCasteCategory().getCategory());
+		}
+		
 		cadreInfo.setMemberType(cadre.getMemberType());
 		if (IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadre.getMemberType())) {
 			String level = cadre.getCadreLevel().getLevel();
