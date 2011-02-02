@@ -832,7 +832,7 @@ public class GenericUploadDataService implements IGenericUploadDataService {
 				return uploadResultsVO.getWardId();
 			
 			else if(uploadResultsVO.getCadreLevel().equalsIgnoreCase(IConstants.BOOTH))
-				return uploadResultsVO.getWardId();
+				return uploadResultsVO.getBoothId();
 			
 			else if(uploadResultsVO.getCadreLevel().equalsIgnoreCase("MUNCIPAL-CORP-GMC") ||
 					uploadResultsVO.getCadreLevel().equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
