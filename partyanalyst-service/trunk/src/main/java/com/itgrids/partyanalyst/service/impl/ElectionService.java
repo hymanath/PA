@@ -433,6 +433,10 @@ public class ElectionService implements IElectionService{
 				for(ConstituencyElectionResultsVO constiInfo:constituenciesResults){
 					partiesInConstituency = new HashSet<String>();
 					partyResultsVOList = new ArrayList<PartyResultsVO>();
+					List<Long> conList = new ArrayList<Long>();
+					conList.add(constiInfo.getConstituencyId());
+					List<Object[]> voting = constituencyElectionResultDAO.findTotalVotersAndValidVotesByYearAndConstituencyIds(conList, electionYear);
+					constiInfo.setVotingPercentage(new BigDecimal((Double)voting.get(0)[1]*(100.0)/(Double)voting.get(0)[0]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					for(PartyResultsVO partyInfo:constiInfo.getPartyResultsVO()){
 						if(pariisMap.get(partyInfo.getPartyName()) == null)
 							continue;
