@@ -116,14 +116,15 @@
 	}
 
 	
-	#cadreSMSBodyDiv
+	#cadreSMSBodyDiv,#cadreGroupsBodyDiv
 	{
 		height:90px;
 		line-height:20px;
 		padding:5px;
 		text-align:justify;
 	}
-	#cadreSMSFooterDiv
+    
+	#cadreSMSFooterDiv,#cadreGroupsFooterDiv
 	{
 		padding:5px;
 		text-align:right;		
