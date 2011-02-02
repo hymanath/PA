@@ -44,9 +44,7 @@ function buildAutoSuggest()
 		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;max-height:250px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
-	
-	var myInputEl = document.getElementById("myInput");
-	myInputEl.focus();
+
 }
 function getXmlHttpObj()
 {	
