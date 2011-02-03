@@ -54,6 +54,25 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 <!-- YUI Dependency files (End) -->
+	
+	<!-- JQuery files (Start) -->
+	<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+	<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
+
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
+	<!-- JQuery files (End) -->
 
 	<script type="text/javascript" src="js/cadreReport/cadreReport.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/cadreReport/cadreReport.css"></link>

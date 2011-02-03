@@ -113,10 +113,27 @@ function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 {
 	var contentStr = '';
 	contentStr +='<div style="text-align:left;color:#707070;font-size:12px;font-family:verdana;font-weight:bold;">'+title+'</div>';
-	contentStr +='<div id="cadreDiv"></div>';
-	cadreDetailsPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
+	contentStr +='<div id="cadreDiv_outer" class="yui-skin-sam"><div id="cadreDiv"></div></div>';
+
+	var elmt = document.getElementById("cadreDetailsPopup");
+	if(elmt)
+		elmt.innerHTML = contentStr;
+
+	$( "#cadreDetailsPopup" ).dialog({
+			title:"Cadres Details",
+			autoOpen: true,
+			show: "blind",
+			width: 1000,
+			minHeight:400,
+			modal: true,
+			hide: "explode"
+		});
+	
+	
+
+	/*cadreDetailsPanel = new YAHOO.widget.Dialog("cadreDetailsPopup", {             
 		
-	 fixedcenter : true, 
+	 fixedcenter : false, 
 	 visible : true,  
 	 constraintoviewport : true, 
 	 iframe :true,
@@ -127,7 +144,7 @@ function getCadrePopup(myColumnDefs,myDataSource,configs, title)
 	 
 	 cadreDetailsPanel.setHeader("Cadres Details");
 	 cadreDetailsPanel.setBody(contentStr);
-	 cadreDetailsPanel.render();
+	 cadreDetailsPanel.render();*/
 
 	   var myDataTable = new YAHOO.widget.DataTable("cadreDiv",
 				myColumnDefs, myDataSource,configs);
