@@ -468,7 +468,7 @@ public class CadreManagementService {
 					currentAddress.setWard(null);
 					//cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
 				}
-				if(!cadreInfo.getBooth().equals("0"))
+				if(cadreInfo.getBooth() != null && !cadreInfo.getBooth().equals("0"))
 				{
 					currentAddress.setBooth(boothDAO.get(new Long(cadreInfo.getBooth())));
 				}
@@ -4090,126 +4090,6 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			System.gc();
 		}
 	}
-	
-	
-	/*public List<CadreInfo> getCadreDetailsForSMS(Long userId, PartyCadreDetailsVO cadreInputVO,String sort, String order,Integer startIndex,Integer maxResult)
-	{
-		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
-		
-		if (userId != null && cadreInputVO != null) {
-			
-			Long cadreLevelId = cadreInputVO.getCadreLevelId();//country-1,state-2,distric-3,con-4,man-5,vil-6,M-C-G-7,wa-8,bo-9
-			Long cadreLocationId = cadreInputVO.getCadreLocationId();
-			String cdType = cadreInputVO.getCadreType();
-			String searchType = cadreInputVO.getSearchType();
-			String SearchCriteria = null ;
-			String cadreType = null;
-			String sortOption = null;
-			String cadreTypeSelect = null;
-			
-			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
-			{
-				if(cadreLevelId == 2)
-					SearchCriteria = "and model.currentAddress.state.stateId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 3)
-					SearchCriteria = "and model.currentAddress.district.districtId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 4)
-					SearchCriteria = "and model.currentAddress.constituency.constituencyId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 5)
-					SearchCriteria = "and model.currentAddress.tehsil.tehsilId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 6)
-					SearchCriteria = "and model.currentAddress.hamlet.hamletId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 7)
-					SearchCriteria = "and model.currentAddress.localElectionBody.localElectionBodyId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 8)
-					SearchCriteria = "and model.currentAddress.ward.constituencyId = "+cadreLocationId.toString();
-				else if(cadreLevelId == 9)
-					SearchCriteria = "and model.currentAddress.booth.boothId = "+cadreLocationId.toString();
-			}
-			
-			if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
-				SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
-				
-			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL))
-			{
-				cadreType = " and model.memberType = 'Normal' ";
-			}
-			else if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_ACTIVE))
-			{
-				cadreType = " and model.memberType = 'Active' ";
-			}
-			else if(cdType.equalsIgnoreCase(IConstants.ALL))
-			{
-				cadreType = " ";
-			}
-			
-			if(sort.equalsIgnoreCase("firstName"))
-				sortOption = " model.firstName "; 
-			else if(sort.equalsIgnoreCase("mobile"))
-				sortOption = " model.mobile ";
-			else if(sort.equalsIgnoreCase("strCadreLevel"))
-				sortOption = " model.cadreLevel.level ";
-			else if(sort.equalsIgnoreCase("memberType"))
-				sortOption = " model.memberType ";
-			else if(sort.equalsIgnoreCase("educationStr"))
-				sortOption = " model.education.qualification ";
-			else if(sort.equalsIgnoreCase("professionStr"))
-				sortOption = " model.occupation.occupation ";
-			else if(sort.equalsIgnoreCase("casteCategoryStr"))
-				sortOption = " model.casteCategory.category ";
-			
-			List<Object[]> result = null;
-			List<Object[]> result2 = null;
-			
-			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_ACTIVE) || cdType.equalsIgnoreCase(IConstants.ALL))
-			{
-				result = cadreDAO.findActiveCadreForSMS(userId,cadreType,SearchCriteria,sortOption,order,startIndex,maxResult);
-			}
-			
-			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL) || cdType.equalsIgnoreCase(IConstants.ALL))
-			{
-				result2 = cadreDAO.findActiveCadreForSMS(userId,cadreType,SearchCriteria,sortOption,order,startIndex,maxResult);
-			}
-			for(Object[] params:result)
-			{
-				CadreInfo cadreInfo = new CadreInfo();
-				
-				cadreInfo.setCadreId(params[0] != null ? params[0].toString() :"");
-				cadreInfo.setFirstName(params[1] != null ? params[1].toString() :"");
-				cadreInfo.setLastName(params[2] != null ? params[2].toString() :"");
-				cadreInfo.setMobile(params[3] != null ? params[3].toString() :"");
-				cadreInfo.setMemberType(params[5] != null ? params[5].toString() :"");
-				cadreInfo.setEducationStr(params[6] != null ? params[6].toString() :"");
-				cadreInfo.setProfessionStr(params[7] != null ? params[7].toString() :"");
-				cadreInfo.setCasteCategoryStr(params[8] != null ? params[8].toString() :"");
-				cadreInfo.setStrCadreLevel(params[9] != null ? params[9].toString() :"");
-				
-				if(cadreInfo.getMobile().length() != 0)
-				cadreInfoList.add(cadreInfo);
-			}
-			
-			for(Object[] params:result2)
-			{
-				CadreInfo cadreInfo = new CadreInfo();
-				
-				cadreInfo.setCadreId(params[0] != null ? params[0].toString() :"");
-				cadreInfo.setFirstName(params[1] != null ? params[1].toString() :"");
-				cadreInfo.setLastName(params[2] != null ? params[2].toString() :"");
-				cadreInfo.setMobile(params[3] != null ? params[3].toString() :"");
-				cadreInfo.setMemberType(params[5] != null ? params[5].toString() :"");
-				cadreInfo.setEducationStr(params[6] != null ? params[6].toString() :"");
-				cadreInfo.setProfessionStr(params[7] != null ? params[7].toString() :"");
-				cadreInfo.setCasteCategoryStr(params[8] != null ? params[8].toString() :"");
-				
-				if(cadreInfo.getMobile().length() != 0)
-				cadreInfoList.add(cadreInfo);
-			}
-		}
-		
-		return cadreInfoList;
-	}
-*/
-	
 	
 	public List<CadreInfo> getCadreDetailsForSMS(Long userId, PartyCadreDetailsVO cadreInputVO,String windowTask,String sort, String order,Integer startIndex,Integer maxResult)
 	{
