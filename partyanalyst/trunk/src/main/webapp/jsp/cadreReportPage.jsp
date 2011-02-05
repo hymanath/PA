@@ -576,7 +576,7 @@
 				if(result != null && result>0)
 				{
 					alert("Cadre Details Successfully Deleted!");
-					cadreDetailsPanel.hide();
+					//cadreDetailsPanel.hide();
 					window.location.reload(true);
 				}
 					
