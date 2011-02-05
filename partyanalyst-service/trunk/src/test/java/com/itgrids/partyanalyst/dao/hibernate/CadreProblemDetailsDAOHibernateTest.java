@@ -13,8 +13,14 @@ public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
 		this.cadreProblemDetailsDAO = cadreProblemDetailsDAO;
 	}
 	
-	public void test(){
+	/*public void test(){
 		cadreProblemDetailsDAO.getAll();		
+	}*/
+	
+	public void testDeleteProblemDetailsByCadre()
+	{
+		int i = cadreProblemDetailsDAO.deleteProblemDetailsByCadre(43l);
+		System.out.println(i);
 	}
 
 }
