@@ -92,5 +92,18 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getAllPostedProblemCountOtherThanLoggedInUser(Long registrationId);
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getRecentPostedProblemsForAUserByCount(Long userId,Long problemStatusId,Integer startIndex,Integer maxResults);
+	
+	public Long getRecentPostedProblemsCountForAUserByProblemStatus(Long userId,Long problemStatusId);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsPostedForAUserInBetweenDates(Long userId,Long statusId,Integer startIndex,Integer maxResults);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsPostedForAUserInBetweenMonths(Long userId,Long statusId,Integer startIndex,Integer maxResults);
+	
+	
 
 }
