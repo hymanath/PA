@@ -1044,8 +1044,7 @@ function showSMSResults(jsObj,results)
 
 	if(!headElmt || !bodySearchElmt || !bodySMSElmt || !footerElmt)
 		return;
-	
-	
+		
 	headElmt.innerHTML = 'SMS Results';
 
 	if(results != null && results.resultStatus != null)
@@ -1586,26 +1585,55 @@ function openRegistrationForm(cadreId)
 	browser2.focus();				
 }
 
-function deleteCadre(cadreId)
+function deleteCadre(cadreId,place)
 {
 	var ask = confirm("Do You want to delete");
 	if (ask ==  true)
 	  {
 		var jsObj = {
 				id: cadreId,
-				task: "deleteCadre"
+				task: "deleteCadre",
+				place:place
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-			var url = "<%=request.getContextPath()%>/deleteCadreInfoAjaxAction.action?"+rparam; 
+			var url = "deleteCadreInfoAjaxAction.action?"+rparam; 
 			deleteCadreAjax(rparam,jsObj,url);	  	
 	  }
 	else
 	  {
 	  		return;	
 	  }
-	
 }
 
+function deleteCadreAjax(param,jsObj,url){
+		var myResults;
+		var callback = {			
+ 		               success : function( o ) 
+						  {
+							try {												
+									if(o.responseText)
+									myResults = YAHOO.lang.JSON.parse(o.responseText);
+									
+									if(jsObj.place == "search")
+									{
+										showConfirm(myResults);
+										getCadresResults("search");
+									}
+								}
+							catch (e)
+								{   
+								   	alert("Invalid JSON result" + e);   
+								}	  
+				              },
+				               scope : this,
+				               failure : function( o ) {
+				                		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+				                         }
+				               };
+
+				YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		}
+	
 function enableSenderName()
 {
 	var elmt = document.getElementById("senderNameText");
@@ -1613,4 +1641,25 @@ function enableSenderName()
 		elmt.disabled = false;
 	else
 		elmt.disabled = true;
+}
+
+function showConfirmation(result)
+{
+	if(result != null && result>0)
+	{
+		alert("Cadre Details Successfully Deleted!");
+		cadreDetailsPanel.hide();
+		window.location.reload(true);
+	}
+		
+}
+
+function showConfirm(result)
+{
+	if(result != null && result>0)
+	{
+		alert("Cadre Details Successfully Deleted!");
+		return;
+	}
+		
 }
