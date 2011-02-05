@@ -47,14 +47,6 @@ public class Cadre extends BaseModel{
 	 private String gender;
 	 private String email;
 	 private String mobile;
-	 private State state;
-	 private District district;
-	 private Constituency constituency;
-	 private Tehsil tehsil;
-	 //private Long villageId;
-	 private Township village;
-	 private Long boothId;
-	 private Hamlet hamlet = null;
 	 
 	 //new fields
 	 private Date dateOfBirth;
@@ -164,59 +156,9 @@ public class Cadre extends BaseModel{
 		this.mobile = mobile;
 	 }
 	
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "state_id")
-	 public State getState() {
-		return this.state;
-	 }
 	
-	 public void setState(State state) {
-		this.state = state;
-	 }
-		
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "district_id")
-	 public District getDistrict() {
-		return this.district;
-	 }
-	 public void setDistrict(District district) {
-		this.district = district;
-	 }
-
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "constituency_id")
-	 public Constituency getConstituency(){
-		 return constituency;
-	 }
 	 
-	 public void setConstituency(Constituency constituency){
-		 this.constituency = constituency;
-	 }
 	 
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "mandal_id")
-	 public Tehsil getTehsil() {
-		return this.tehsil;
-	 }
-	 public void setTehsil(Tehsil tehsil) {
-	 	this.tehsil = tehsil;
-	 }
-	 
-	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "village_id")
-	 public Township getVillage() {
-		return village;
-	 }
-	 public void setVillage(Township village) {
-		this.village = village;
-	 }
-	 @Column(name = "booth_id", length = 15)
-	 public Long getBoothId() {
-		return boothId;
-	 }
-	 public void setBoothId(Long boothId) {
-		this.boothId = boothId;
-	 }
 	 @Column(name = "cadre_level_value", length = 15)
 	public Long getCadreLevelValue() {
 		return cadreLevelValue;
@@ -226,18 +168,6 @@ public class Cadre extends BaseModel{
 		this.cadreLevelValue = cadreLevelValue;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "hamlet_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Hamlet getHamlet() {
-		return hamlet;
-	}
-
-	public void setHamlet(Hamlet hamlet) {
-		this.hamlet = hamlet;
-	}
-	
 	//new attributes
 	@Column(name = "date_of_birth", length = 10)
 	public Date getDateOfBirth() {

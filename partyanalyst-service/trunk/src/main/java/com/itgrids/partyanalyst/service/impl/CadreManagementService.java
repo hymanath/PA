@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
 import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
+import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -131,6 +132,7 @@ public class CadreManagementService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
 	private IBoothDAO boothDAO;
+	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -274,6 +276,15 @@ public class CadreManagementService {
 
 	public ILanguageDAO getLanguageDAO() {
 		return languageDAO;
+	}
+
+	public ICadreProblemDetailsDAO getCadreProblemDetailsDAO() {
+		return cadreProblemDetailsDAO;
+	}
+
+	public void setCadreProblemDetailsDAO(
+			ICadreProblemDetailsDAO cadreProblemDetailsDAO) {
+		this.cadreProblemDetailsDAO = cadreProblemDetailsDAO;
 	}
 
 	public void setLanguageDAO(ILanguageDAO languageDAO) {
@@ -874,6 +885,7 @@ public class CadreManagementService {
 		{
 			Integer rows = cadreFamilyMemberInfoDAO.deleteFamilyMemberDetailsByCadre(cadreId);
 		}	
+		cadreProblemDetailsDAO.deleteProblemDetailsByCadre(cadreId);
 		Integer deletedRow = cadreDAO.deleteByCadreId(cadreId);
 		return deletedRow;
 	}
