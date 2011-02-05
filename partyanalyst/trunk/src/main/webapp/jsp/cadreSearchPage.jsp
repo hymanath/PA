@@ -615,7 +615,7 @@ function buildCadreSearchResultDataTable(rparam)
   {
 	var user = oData;
 	var id= oRecord.getData("cadreId");
-	elLiner.innerHTML ="<a href=\"cadreRegisterPageAction.action?cadreId="+id+"&windowTask=update_existing><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='openRegistrationForm("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/edit.png'></a>";
 		
   };
 
@@ -623,7 +623,7 @@ function buildCadreSearchResultDataTable(rparam)
   {
 	var user = oData;
 	var id= oRecord.getData("cadreId");
-	elLiner.innerHTML ="<a onclick='deleteCadre("+id+")'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='deleteCadre("+id+",\"search\")'><img style='text-decoration: none; border: 0px none;' src='images/icons/delete.png'></a>";
 		
   };
 
@@ -632,8 +632,7 @@ function buildCadreSearchResultDataTable(rparam)
 	var fname = oData;
 	var id= oRecord.getData("cadreId");
 	var lname= oRecord.getData("lastName");
-	elLiner.innerHTML ="<a href=\"getCadreInfoAction.action?windowTask=cadreInfoPopup&cadreId="+id+"> "+fname+" "+lname+" </a>";
-		
+	elLiner.innerHTML ="<a href='javascript:{}' onclick='getCadreInfo("+id+")'>"+fname+" "+lname+" </a>";
   };
 
   YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
@@ -696,6 +695,20 @@ function buildCadreSearchResultDataTable(rparam)
     	};
 	}
 
+function getCadreInfo(cadreId)
+{
+	var urlStr = "getCadreInfoAction.action?windowTask=cadreInfoPopup&cadreId="+cadreId;
+	var cadreViewBrowser = window.open(urlStr,"cadreInfoPopup","scrollbars=yes,height=600,width=600,left=200,top=50");	
+	cadreViewBrowser.focus();
+}
+
+function openRegistrationForm(cadreId)
+{
+	var task = "update_existing";
+	var urlStr = "cadreRegisterPageAction.action?cadreId="+cadreId+"&windowTask="+task;
+	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
+	updateBrowser.focus();				
+}
 
 function showCadreSearchResults(searchCount)
  {
@@ -726,7 +739,7 @@ function showCadreSearchResults(searchCount)
 	var fStr = '';
 	fStr += '<span><input type="button" class="btnClass" onclick="selectCheckBox()" value="Select All"/></span>';
 	fStr += '<span><input type="button" class="btnClass" onclick="deSelectCheckBox()" value="DeSelect All"/></span>';
-	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span>';
+	fStr += '<span><input type="button" class="btnClass" onclick="sendCadreSMS()" value="Send SMS"/></span><BR><BR><BR>';
 	fStr += '<span id="smsStatusTextSpan"></span>';
 	footerElmt.innerHTML = fStr;
 	footerElmt.style.display = '';
@@ -738,7 +751,7 @@ function showCadreSearchResults(searchCount)
 		
 		var cadreProbDivEle = document.getElementById("cadreProblemSelectDiv");
 		var cadreProbStr = '';
-		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreIdToProblem()" value="Add Selected cadre"/></span>';
+		cadreProbStr += '<span><input type="button" class="btnClass" onclick="setCadreIdToProblem()" value="Add Selected cadre"/><BR><BR></span>';
 		cadreProbDivEle.innerHTML = cadreProbStr;
 	}
 }
