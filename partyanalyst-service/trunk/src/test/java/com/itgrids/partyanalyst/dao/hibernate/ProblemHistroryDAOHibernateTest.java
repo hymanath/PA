@@ -1,16 +1,19 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
@@ -268,7 +271,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		List list1 = problemHistoryDAO.getAllPostedProblemsByAnanymousUserId(2L, 0, 5, "asc", "model.problemLocation.problemAndProblemSource.problem.problem", IConstants.TOTAL);
 		System.out.println(list1.size());
 	}*/
-	
+	/*
 	public void testFindProblemsForSelectedSearchOptions(){
 		List list1 = problemHistoryDAO.findProblemsForSelectedSearchOptions(1l, 0l, 1l, "state", "stateId", 0l,false,false);
 		System.out.println(list1.size());
@@ -279,10 +282,67 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		List list = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(2L);
 		System.out.println(list.get(0));
 	}*/
-	
+	/*
 	public void testGetAllRecordsCountForPostedProblemsByAnanymousUserId(){
 		Long count = problemHistoryDAO.getAllRecordsCountForPostedProblemsByAnanymousUserId(2L, IConstants.TOTAL);
 		System.out.println("Total "+count);
 	}
+	
+	
+	@Test
+	public void  testFindProblemsGroupesByDepartment(){
+		
+		List<ProblemHistory> pblmHistory = problemHistoryDAO.findProblemsForSelectedSearchOptions(19L, 3L, 1L, "district", "districtId", 0L, false, true);
+		
+		System.out.println(" Total Problems " + pblmHistory.size());
+	}*/
+	/*
+	@Test
+	public void testLatestProblemsForUser(){
+		
+		List<ProblemHistory> problemsList = problemHistoryDAO.getRecentPostedProblemsForAUserByCount(1L, 1L,0, 5) ;
+		
+		for(ProblemHistory ph:problemsList){
+			
+			System.out.println(" Date :" + ph.getDateUpdated());
+		}
+		
+		
+	}
+	
+	@Test
+	public void testProblemsForAUserCount(){
+		
+		Long count = problemHistoryDAO.getRecentPostedProblemsCountForAUserByProblemStatus(1L, 2L);
+		
+		System.out.println(" Total Problems :" + count);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetProblemsOfUserBetweenDates(){
+		
+		List countValues = problemHistoryDAO.getProblemsPostedForAUserInBetweenMonths(1L, 1L, 0, 5);
+		
+		if(countValues != null && countValues.size() > 0){
+			
+			Iterator lstItr = countValues.listIterator();
+			while(lstItr.hasNext()){
+				
+				Object[] value = (Object[])lstItr.next();
+				
+				Long problemsCount = (Long)value[0];
+				Integer postedDate    = (Integer)value[1];
+				
+				String month = new DateFormatSymbols().getMonths()[postedDate-1];
+
+				
+				System.out.println(" Month :" + month + " -- > " + problemsCount);
+				
+			}
+		}
+	}*/
+
 	
 }
