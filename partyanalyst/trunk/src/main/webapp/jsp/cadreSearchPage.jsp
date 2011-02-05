@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cadre Search</title>
+<title>Cadre ${windowTask}</title>
 
 <!-- YUI Dependency files (Start) -->
 
