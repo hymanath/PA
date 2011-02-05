@@ -336,6 +336,7 @@
 		<property name="cadreFamilyMemberInfoDAO" ref="cadreFamilyMemberInfoDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="boothDAO" ref="boothDAO" />
+		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 							   	  	
 	</bean>
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
