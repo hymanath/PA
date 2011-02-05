@@ -102,7 +102,13 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List getProblemsPostedForAUserInBetweenDates(Long userId,Long statusId,Integer startIndex,Integer maxResults);
 	
 	@SuppressWarnings("unchecked")
+	public List getProblemsPostedForAUserInBetweenDates(Long userId,Integer startIndex,Integer maxResults);
+	
+	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenMonths(Long userId,Long statusId,Integer startIndex,Integer maxResults);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsPostedForAUserInBetweenMonths(Long userId,Integer startIndex,Integer maxResults);
 	
 	
 
