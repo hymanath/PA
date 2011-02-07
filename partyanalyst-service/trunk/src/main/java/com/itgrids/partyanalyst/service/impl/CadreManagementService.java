@@ -26,6 +26,8 @@ import com.itgrids.partyanalyst.dao.ICadreLanguageEfficiencyDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
+import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
@@ -66,6 +68,8 @@ import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
 import com.itgrids.partyanalyst.model.CadreLanguageEfficiency;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.CadreParticipatedTrainingCamps;
+import com.itgrids.partyanalyst.model.CadreRole;
+import com.itgrids.partyanalyst.model.CadreRoleRelation;
 import com.itgrids.partyanalyst.model.CadreSkills;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
@@ -133,6 +137,8 @@ public class CadreManagementService {
 	private ICadreFamilyMemberInfoDAO cadreFamilyMemberInfoDAO;
 	private IBoothDAO boothDAO;
 	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
+	private ICadreRoleDAO cadreRoleDAO;
+	private ICadreRoleRelationDAO cadreRoleRelationDAO;
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -249,6 +255,14 @@ public class CadreManagementService {
 		this.cadreSkillsDAO = cadreSkillsDAO;
 	}
 
+	public ICadreRoleRelationDAO getCadreRoleRelationDAO() {
+		return cadreRoleRelationDAO;
+	}
+
+	public void setCadreRoleRelationDAO(ICadreRoleRelationDAO cadreRoleRelationDAO) {
+		this.cadreRoleRelationDAO = cadreRoleRelationDAO;
+	}
+
 	public ICadreParticipatedTrainingCampsDAO getCadreParticipatedTrainingCampsDAO() {
 		return cadreParticipatedTrainingCampsDAO;
 	}
@@ -357,6 +371,14 @@ public class CadreManagementService {
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
 	}
+	
+	public ICadreRoleDAO getCadreRoleDAO() {
+		return cadreRoleDAO;
+	}
+
+	public void setCadreRoleDAO(ICadreRoleDAO cadreRoleDAO) {
+		this.cadreRoleDAO = cadreRoleDAO;
+	}
 
 	public ResultStatus saveCader(CadreInfo cadreInfoToSave, List<Long> skills, String task) {
 		
@@ -378,6 +400,9 @@ public class CadreManagementService {
 				log.debug(" ... " + cadreInfoToSave.getLanguageOptions_English());
 				setLanguageEfficiency(cadreObj,cadreLang_Eng, IConstants.LANGUAGE_ENGLISH, task);
 				setLanguageEfficiency(cadreObj,cadreLang_Hin, IConstants.LANGUAGE_HINDI, task);
+				
+				setCadreRolesInfo(cadreObj, cadreInfoToSave.getCadreRoles());
+				
 				if (IConstants.USER_TYPE_PARTY.equals(cadreInfoToSave.getUserType()) && IConstants.BJP.equalsIgnoreCase(cadreInfoToSave.getUserPartyName())) {
 					log.debug("inside bjp party block");
 					if(cadreInfoToSave.getSkills() != null && cadreInfoToSave.getSkills().size() > 0)
@@ -690,22 +715,7 @@ public class CadreManagementService {
 		
 	 return false;
 	}
-	/*private void processAddressValues(String villageFlag, Long id, Cadre cadre,
-			UserAddress address) {
-		if (IConstants.HAMLET_TYPE.equalsIgnoreCase(villageFlag)) {
-			Hamlet hamlet = hamletDAO.get(id);
-
-			cadre.setHamlet(hamlet);
-			cadre.setVillage(hamlet.getTownship());
-			address.setHamlet(hamlet);
-			address.setTownship(hamlet.getTownship());
-
-		} else {
-			cadre.setVillage(townshipDAO.get(id));
-			address.setTownship(townshipDAO.get(id));
-		}
-	}
-*/
+	
 	private void setCadreSkillsInfo(final Cadre cadreObj, final List<Long> skills, String task) {
 		log.debug("inside cadre skills block");
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -745,6 +755,67 @@ public class CadreManagementService {
 				}				
 			}
 		});					
+	}
+	
+	private void setCadreRolesInfo(final Cadre cadre, final List<Long> cadreRoles) {
+		log.debug("inside setCadreRolesInfo method ");
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+			
+				try{
+					cadreRoleRelationDAO.deleteRolesByCadreId(cadre.getCadreId());
+					
+					if(cadreRoles != null && cadreRoles.size() > 0)
+					{
+						for(Long role:cadreRoles)
+						{
+							CadreRoleRelation cadreRoleRelation = new CadreRoleRelation();
+							CadreRole cadreRole = cadreRoleDAO.get(role);
+							cadreRoleRelation.setCadreRole(cadreRole);
+							cadreRoleRelation.setCadre(cadre);
+							cadreRoleRelationDAO.save(cadreRoleRelation);
+						}
+					}
+					
+				} catch(Exception e){
+					status.setRollbackOnly();
+					log.debug(e);
+					if(log.isDebugEnabled()){
+						log.debug("Exception Raised while setCadreRolesInfo() method::", e);
+					}					
+					e.printStackTrace();
+				}				
+			}
+		});					
+	}
+	
+
+	private List<SelectOptionVO> getRolesByCadreId(Long cadreId)
+	{
+		if(log.isDebugEnabled()){
+			log.debug(" Entered into getRolesByCadreId() method with cadre Id-"+cadreId);
+		}
+		try{
+			List<Object[]> rolesList = cadreRoleRelationDAO.getRolesByCadreId(cadreId);
+			List<SelectOptionVO> voList = null;
+			if(rolesList != null && rolesList.size() > 0)
+			{
+				voList = new ArrayList<SelectOptionVO>(0);
+				SelectOptionVO selectOptionVO = null;
+				for(Object[] params:rolesList)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					voList.add(selectOptionVO);
+				}
+			}
+			return voList;
+		}catch(Exception ex)
+		{
+			log.debug("Exception Raised in getRolesByCadreId() method::", ex);
+			return null;
+		}
 	}
 
 	private void setParticipatedTrainingCamps(final Cadre cadreObj, final List<Long> trainingCamps, String task) {
@@ -886,6 +957,7 @@ public class CadreManagementService {
 			Integer rows = cadreFamilyMemberInfoDAO.deleteFamilyMemberDetailsByCadre(cadreId);
 		}	
 		cadreProblemDetailsDAO.deleteProblemDetailsByCadre(cadreId);
+		cadreRoleRelationDAO.deleteRolesByCadreId(cadreId);
 		Integer deletedRow = cadreDAO.deleteByCadreId(cadreId);
 		return deletedRow;
 	}
@@ -1996,6 +2068,20 @@ public class CadreManagementService {
 
 		}
 		
+		List<SelectOptionVO> rolesList = getRolesByCadreId(cadre.getCadreId());
+		if(rolesList != null && rolesList.size() > 0)
+		{
+			List<Long> rolesIdsList = new ArrayList<Long>(0);
+			List<String> rolesStrList = new ArrayList<String>(0);
+			for(SelectOptionVO selectOptionVO : rolesList)
+			{
+				rolesIdsList.add(selectOptionVO.getId());
+				rolesStrList.add(selectOptionVO.getName());
+			}
+			cadreInfo.setCadreRoles(rolesIdsList);
+			cadreInfo.setCadreRolesStr(rolesStrList);
+		}
+		
 		Long  edu= 0L;
 		cadreInfo.setEducation(edu = cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId() : null);
 		String eduStr = "";
@@ -2684,6 +2770,23 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			}
 		}
 		return cadreSkillsList;			
+	}
+	
+	public List<SelectOptionVO> getCadreRoles()
+	{
+		List<SelectOptionVO> cadreRolesList = new ArrayList<SelectOptionVO>(0);
+		List<Object[]> rolesList = cadreRoleDAO.getCadreRoles(); 
+		if(rolesList != null && rolesList.size() > 0){
+			cadreRolesList = new ArrayList<SelectOptionVO>();
+			for(Object[] params : rolesList)
+			{
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId((Long)params[0]);
+				selectOptionVO.setName(params[1].toString());
+				cadreRolesList.add(selectOptionVO);
+			}
+		}
+		return cadreRolesList;			
 	}
 
 		
@@ -4342,4 +4445,5 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		return address;
 		
 	}
+
 }
