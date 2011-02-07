@@ -72,6 +72,7 @@ public class Cadre extends BaseModel{
 	 private Set<CadreParticipatedTrainingCamps> cadreParticipatedTrainingCamps = new HashSet<CadreParticipatedTrainingCamps>();
 	 private Set<CadreSkills> cadreSkills =  new HashSet<CadreSkills>();
 	 private Set<CadreProblemDetails> cadreProblemDetails =  new HashSet<CadreProblemDetails>();
+	 private Set<CadreRoleRelation> cadreRoleRelation =  new HashSet<CadreRoleRelation>();
 	 	
 	 
 	 @Id
@@ -412,6 +413,16 @@ public class Cadre extends BaseModel{
 
 	public void setCadreProblemDetails(Set<CadreProblemDetails> cadreProblemDetails) {
 		this.cadreProblemDetails = cadreProblemDetails;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cadre")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CadreRoleRelation> getCadreRoleRelation() {
+		return cadreRoleRelation;
+	}
+
+	public void setCadreRoleRelation(Set<CadreRoleRelation> cadreRoleRelation) {
+		this.cadreRoleRelation = cadreRoleRelation;
 	}
 
  }
