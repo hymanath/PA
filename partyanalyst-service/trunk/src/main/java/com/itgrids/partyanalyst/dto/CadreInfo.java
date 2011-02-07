@@ -96,6 +96,8 @@ public class CadreInfo implements Serializable{
 	private String educationStr;
 	private String casteCategoryStr;
 	private List<Long> skills;
+	private List<Long> cadreRoles;
+	private List<String> cadreRolesStr;
 	private String[] cadreSkillsNames;
 	private List<SelectOptionVO> selectedTrainingCamps = new ArrayList<SelectOptionVO>();
 	private String[] cadreParticipatedCampNames;
@@ -729,6 +731,18 @@ public class CadreInfo implements Serializable{
 	}
 	public void setCadreLevelBooth(String cadreLevelBooth) {
 		this.cadreLevelBooth = cadreLevelBooth;
+	}
+	public List<Long> getCadreRoles() {
+		return cadreRoles;
+	}
+	public void setCadreRoles(List<Long> cadreRoles) {
+		this.cadreRoles = cadreRoles;
+	}
+	public List<String> getCadreRolesStr() {
+		return cadreRolesStr;
+	}
+	public void setCadreRolesStr(List<String> cadreRolesStr) {
+		this.cadreRolesStr = cadreRolesStr;
 	}
 	
 	
