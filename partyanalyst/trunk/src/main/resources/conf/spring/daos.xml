@@ -5,6 +5,14 @@
 
 <beans>
 	
+	<bean id="cadreRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="cadreRoleRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="censusParameterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusParameterDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
