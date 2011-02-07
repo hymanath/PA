@@ -46,7 +46,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	* Lists used to populate select dropdown
 	*
 	**/
-	private List<SelectOptionVO> relationshipList, languagesList, eduStatus, occupationsList, socialStatus, cadreLevelsList,partyCommitteesList, designationsList, cadreSkillsList,partyTrainingCampsList ;
+	private List<SelectOptionVO> relationshipList, languagesList, eduStatus, occupationsList, socialStatus, cadreLevelsList,partyCommitteesList, designationsList, cadreSkillsList,partyTrainingCampsList,cadreRolesList ;
 	/**
 	 * services used in this action
 	 */
@@ -397,6 +397,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
 		relationshipList = cadreManagementService.getAllRelationships();
+		cadreRolesList = new ArrayList<SelectOptionVO>(0);
+		
+		cadreRolesList = cadreManagementService.getCadreRoles(); 
 		//all states in country
 		stateList_o = regionServiceDataImp.getStatesByCountry(1l);
 		stateList_o.add(0,new SelectOptionVO(0l,"Select State"));
@@ -600,7 +603,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session.setAttribute(ISessionConstants.PARTY_COMMITTEES_FLAG, partyCommittees_flag);
 		//session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS, new ArrayList<SelectOptionVO>());
 		session.setAttribute(ISessionConstants.CADRE_SKILLS_FLAG, cadreSkills_flag);
-		session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS_FLAG, partyTrainingCamps_flag);		
+		session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS_FLAG, partyTrainingCamps_flag);
+		session.setAttribute(ISessionConstants.CADRE_ROLES_LIST,cadreRolesList);
 				
 		return Action.SUCCESS;
 	}
