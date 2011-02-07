@@ -101,6 +101,7 @@ public class CadreRegisterAction extends ActionSupport implements
 	private String firstFamilyMemberDOB,secondFamilyMemberDOB,thirdFamilyMemberDOB;
 	private ResultStatus rs; 
 	private List<Long> skills;
+	private List<Long> cadreRoles;
 	private List<Long> trainingCamps;
 	private List<String> languageOptions_English;
 	private List<String> languageOptions_Hindi;
@@ -511,6 +512,14 @@ public class CadreRegisterAction extends ActionSupport implements
 	public void setSkills(List<Long> skills) {
 		this.cadreInfo.setSkills(skills);
 	}	
+
+	public List<Long> getCadreRoles() {
+		return cadreInfo.getCadreRoles();
+	}
+
+	public void setCadreRoles(List<Long> cadreRoles) {
+		this.cadreInfo.setCadreRoles(cadreRoles);
+	}
 
 	public List<String> getLanguageOptions_English() {
 		return cadreInfo.getLanguageOptions_English();
