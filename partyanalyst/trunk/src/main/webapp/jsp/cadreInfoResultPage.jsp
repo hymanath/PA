@@ -470,6 +470,19 @@ function buildCadreInfo(jsObj,results)
 	str += '			<th>:</th>';
 	str += '			<td>'+results.strCadreLevel+'-'+results.strCadreLevelValue+'</td>';
 	str += '		</tr>';
+
+	if(results.cadreRolesStr != null && results.cadreRolesStr.length > 0)
+	{
+	str += '		<tr>';
+	str += '			<th style="width:125px">Cadre Roles</th>';
+	str += '			<th>:</th>';
+
+		for(var k in results.cadreRolesStr)
+		{
+			str += '<td>'+results.cadreRolesStr[k]+'</td>';
+		}
+	str += '		</tr>';
+	}
 		if(results.partyCommitteeName != null)
 		{		
 			str += '		<tr>';

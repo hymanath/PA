@@ -1013,6 +1013,23 @@
 	<fieldset>
 		<legend><strong>Cadre Level Details</strong></legend>
 		<table class="cadreDetailsTable">
+		<tr>
+			<th><u>Cadre Roles</u></th>
+		</tr>
+		<tr>
+			<td colspan="5">
+				<table>
+					<tr>
+						<td><s:checkboxlist list="#session.CadreRolesList"  name="cadreRoles" listKey="id" listValue="name"></s:checkboxlist></td>
+					</tr>	
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th><u>Level Details</u></th>
+		</tr>
+		</table>
+		<table class="cadreDetailsTable">
 			<tr>
 				<td width="200"><s:label for="cadreTypeField" id="cadreTypeLabel"  value="%{getText('memberType')}" /><font class="requiredFont"> * </font></td>
 				<td align="left">
