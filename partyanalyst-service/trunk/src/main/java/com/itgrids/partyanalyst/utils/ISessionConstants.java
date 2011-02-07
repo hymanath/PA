@@ -80,4 +80,6 @@ public interface ISessionConstants {
 	
 	public static final String USER_GROUP_CATEGORIES = "USER_GROUP_CATEGORIES";
 	public static final String USER_GROUP_SCOPES = "USER_GROUP_SCOPES";
+	public static final String CADRE_ROLES_LIST = "CadreRolesList";
+	
 }
