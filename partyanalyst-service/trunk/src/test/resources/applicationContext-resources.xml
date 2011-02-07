@@ -190,11 +190,21 @@
 				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
 				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
 				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
+				<value>com.itgrids.partyanalyst.model.CadreRole</value>
+				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="cadreRoleRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="cadreRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="censusParameterDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusParameterDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
