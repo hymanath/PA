@@ -4396,6 +4396,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 	
 	String getCadreLevelValueStr(String level,Long Value)
 	{
+		try{
 		String levelStr = new String(level+"-");
 		
 		if(level.equalsIgnoreCase(IConstants.STATE_LEVEL))
@@ -4415,6 +4416,9 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			levelStr += boothDAO.get(Value).getPartName();
 		
 		return levelStr;
+		}catch(Exception ex){
+			return "";
+		}
 	}
 	
 	String setAddress(Cadre cadre)
