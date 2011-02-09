@@ -582,7 +582,7 @@ function getRegionsForAccessLevel(accessValue,regionElmtId)
 }
 
 function getCadresResults(btnType)
-{	 
+{	
 	var elmt = document.getElementById("errorMsgDiv");
 	var locationValue = '';
 	if(!elmt)
@@ -771,6 +771,13 @@ function getCadresResults(btnType)
 	if(includeSenderElmtCheck && includeSenderElmtCheck.checked == true)
 		SENDERNAME = senderNameTextElmt.value;
 
+	var taskName = '';
+
+	if(isProblemAdding != null && isProblemAdding == true)
+		taskName = "problemAdding";
+	else
+		taskName = "cadreSearch";
+	
 	var jsObj=
 		{		
 			reportLevel         : REPORTLEVEL,
@@ -789,7 +796,7 @@ function getCadresResults(btnType)
 			includeCadreName	: SMSINCLUDECADRENAME,
 			taskType			: btnType,
 			senderName			: SENDERNAME,
-			task				:"cadreSearch"		
+			task				: taskName	
 		}
 	
 	
