@@ -285,6 +285,7 @@ public interface IConstants {
 	public static final String PROBLEM_MANAGEMENT_LOGIN = "PM_LOGIN";
 	public static final String PARTY_ANALYST_USER = "PARTY_ANALYST_USER";
 	public static final String FREE_USER = "FREE_USER";
+	public static final String SUB_USER = "subUser";
 	public static final String POLITICIAN = "POLITICIAN";
 	public static final String COUNTRY = "COUNTRY";
 	public static final String STATE = "STATE";
@@ -377,5 +378,7 @@ public interface IConstants {
     public static final String ID = "ID";
     public static final String MODEL = "MODEL";
     public static final String MODEL_ID = "MODEL_ID";
+    
+    public static final String SELECT_USER_MESSAGE = "select a user";
           
 }

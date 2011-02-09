@@ -7,23 +7,34 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.BaseDTO;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.AnanymousUser;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationService implements IRegistrationService{
 	
-	IRegistrationDAO registrationDAO;
-	IPartyDAO partyDAO;
-	
+	private IRegistrationDAO registrationDAO;
+	private IPartyDAO partyDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IStateDAO stateDAO;
+	private IAnanymousUserDAO ananymousUserDAO;
+	private IAnanymousUserService ananymousUserService;
 	BaseDTO requestStatus = new BaseDTO();
 	private Long userID = null;
 
@@ -31,6 +42,47 @@ public class RegistrationService implements IRegistrationService{
 	private static final Logger log = Logger.getLogger(RegistrationService.class);
 	
 	
+	
+	public IAnanymousUserService getAnanymousUserService() {
+		return ananymousUserService;
+	}
+
+	public void setAnanymousUserService(IAnanymousUserService ananymousUserService) {
+		this.ananymousUserService = ananymousUserService;
+	}
+
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
+
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO){
 		this.registrationDAO = registrationDAO;
 	}
@@ -56,13 +108,18 @@ public class RegistrationService implements IRegistrationService{
 		this.requestStatus.setRequestStatus(requestStatus);
 	}
 	
-	public String saveRegistration(RegistrationVO values){
+	public String saveRegistration(RegistrationVO values,String userType){
 		Registration reg = new Registration();		
-		
+		String dob = values.getDateOfBirth();
 		reg = convertIntoModel(values);
 				
 		if(checkUserName(values.getUserName())!= true){
-		reg = registrationDAO.save(reg);
+			if(userType.equalsIgnoreCase(IConstants.PARTY_ANALYST_USER)){
+				saveDataInToAnonymousTable(reg,dob);
+				reg = registrationDAO.save(reg);
+			}else{
+				reg = registrationDAO.save(reg);
+			}		
 		//requestStatus = BaseDTO.SUCCESS;
 		setUserID(reg.getRegistrationId());
 		requestStatus.setRequestStatus(BaseDTO.SUCCESS);
@@ -74,46 +131,93 @@ public class RegistrationService implements IRegistrationService{
 		return requestStatus.getRequestStatus();
 	}
 	
+	public void saveDataInToAnonymousTable(Registration reg,String dob){
+		AnanymousUser userDetails = new AnanymousUser();
+		try{
+				userDetails.setName(reg.getFirstName());				
+				userDetails.setGender(reg.getGender());
+				userDetails.setUsername(reg.getUserName());
+				userDetails.setPassword(reg.getPassword());
+				Date date =null;		
+				SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+				date= format.parse(dob);		
+				userDetails.setDateofbirth(date);
+				userDetails.setEmail(reg.getEmail());
+				userDetails.setPhone(reg.getPhone());
+				userDetails.setMobile(reg.getMobile());
+				userDetails.setAddress(reg.getAddress());				
+				userDetails.setPincode(reg.getPincode());
+				userDetails.setLastName(reg.getLastName());
+			if(reg.getAccessType().equalsIgnoreCase(IConstants.STATE)){
+				userDetails.setState(stateDAO.get(new Long(reg.getAccessValue().toString())));
+				userDetails.setDistrict(null);
+				userDetails.setConstituency(null);
+			}else if(reg.getAccessType().equalsIgnoreCase(IConstants.DISTRICT)){
+				userDetails.setState(districtDAO.get(new Long(reg.getAccessValue().toString())).getState());
+				userDetails.setDistrict(districtDAO.get(new Long(reg.getAccessValue())));
+				userDetails.setConstituency(null);
+			}else if(reg.getAccessType().equalsIgnoreCase(IConstants.MP)){
+				userDetails.setState(constituencyDAO.get(new Long(reg.getAccessValue().toString())).getState());
+				userDetails.setDistrict(null);
+				userDetails.setConstituency(constituencyDAO.get(new Long(reg.getAccessValue())));
+			}else if(reg.getAccessType().equalsIgnoreCase(IConstants.MLA)){
+				userDetails.setState(constituencyDAO.get(new Long(reg.getAccessValue().toString())).getState());
+				userDetails.setDistrict(constituencyDAO.get(new Long(reg.getAccessValue().toString())).getDistrict());
+				userDetails.setConstituency(constituencyDAO.get(new Long(reg.getAccessValue())));
+			}
+			ananymousUserDAO.save(userDetails);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	public boolean checkUserName(String userName){
 		boolean finalStatus = false;
 		List<Registration> regCheck = new ArrayList<Registration>();
 		regCheck = registrationDAO.findByUserName(userName);
 		if(regCheck.size()>0){
 			finalStatus = true;
+			/*ResultStatus resultStatus = ananymousUserService.checkForUserNameAvalilability(userName);
+			if(resultStatus.getResultCode()==ResultCodeMapper.FAILURE){
+				finalStatus = false;
+			}*/
 		}
 		return finalStatus;		
 		
 	}
 	
 	
+	
 	public Registration convertIntoModel(RegistrationVO values){
-		Registration reg = new Registration();  	 
-		reg.setFirstName(values.getFirstName());	
-		reg.setMiddleName(values.getMiddleName());
-		reg.setLastName(values.getLastName());
-		reg.setGender(values.getGender());
-		reg.setUserName(values.getUserName());
-		reg.setPassword(values.getPassword());
-		reg.setParty(partyDAO.get(values.getParty()));
-		SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
-		Date date =null;
-		try{
-			date= format.parse(values.getDateOfBirth());
+		Registration reg = new Registration();  
+		try{ 
+			reg.setFirstName(values.getFirstName());	
+			reg.setMiddleName(values.getMiddleName());
+			reg.setLastName(values.getLastName());
+			reg.setGender(values.getGender());
+			reg.setUserName(values.getUserName());
+			reg.setPassword(values.getPassword());
+			reg.setParty(partyDAO.get(values.getParty()));
+			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			Date date =null;		
+			date= format.parse(values.getDateOfBirth());		
+			reg.setDateOfBirth(date);
+			reg.setEmail(values.getEmail());
+			reg.setPhone(values.getPhone());
+			reg.setMobile(values.getMobile());
+			reg.setAddress(values.getAddress());
+			reg.setCountry(values.getCountry());
+			reg.setPincode(values.getPincode());
+			reg.setAccessType(values.getAccessType());
+			reg.setAccessValue(values.getAccessValue());
+			reg.setUserType(values.getUserType());
+			if(values.getParentUserId() != null)
+				reg.setParentUser(registrationDAO.get(values.getParentUserId()));
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		reg.setDateOfBirth(date);
-		reg.setEmail(values.getEmail());
-		reg.setPhone(values.getPhone());
-		reg.setMobile(values.getMobile());
-		reg.setAddress(values.getAddress());
-		reg.setCountry(values.getCountry());
-		reg.setPincode(values.getPincode());
-		reg.setAccessType(values.getAccessType());
-		reg.setAccessValue(values.getAccessValue());
-		reg.setUserType(values.getUserType());
-		if(values.getParentUserId() != null)
-			reg.setParentUser(registrationDAO.get(values.getParentUserId()));
 		return reg;
 	}
 	
@@ -134,7 +238,7 @@ public class RegistrationService implements IRegistrationService{
 			
 			SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(0l);
-			selectOption.setName("select a user");
+			selectOption.setName(IConstants.SELECT_USER_MESSAGE);
 			listOfUser.add(selectOption);
 			
 			List result =  registrationDAO.getAllRegisteredUsers();
