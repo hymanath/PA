@@ -359,6 +359,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		PartyCadreDetailsVO partyCadreDetailsVO = new PartyCadreDetailsVO();
 		
 		partyCadreDetailsVO.setCadreName(jObj.getString("cadreName").trim());
+		partyCadreDetailsVO.setTaskName(jObj.getString("task").trim());
 		
 		if(jObj.getString("cadreType").equalsIgnoreCase("all"))
 			partyCadreDetailsVO.setCadreType(IConstants.ALL);
