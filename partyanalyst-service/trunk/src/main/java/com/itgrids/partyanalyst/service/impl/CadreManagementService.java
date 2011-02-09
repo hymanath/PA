@@ -4217,6 +4217,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String cdType         = cadreInputVO.getCadreType();
 			String searchType     = cadreInputVO.getSearchType();
 			String name           = cadreInputVO.getCadreName();
+			String taskName 	  = cadreInputVO.getTaskName();
 			String SearchCriteria = new String();
 			String cadreType      = new String();
 			String sortOption     = new String();
@@ -4229,6 +4230,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String genderStr = new String();
 			String mobileStr = new String();
 			String cadreNameStr = null;
+			String roleStr = null;
 		
 			if(searchType.equalsIgnoreCase(IConstants.LOCATION_BASED))
 			{
@@ -4339,7 +4341,12 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			else
 				cadreNameStr = " ";
 			
-			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr).get(0);
+			if(taskName.equalsIgnoreCase(IConstants.CADRE_SEARCH))
+				roleStr = " ";
+			else if(taskName.equalsIgnoreCase(IConstants.PROBLEM_ADDING))
+				roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
+			 
+			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr).get(0);
 			
 			if(maxResult < 0)
 			{
@@ -4350,7 +4357,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreInfoListTotal;
 			}
 			
-			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,sortOption,order,startIndex,maxResult);
+			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,roleStr,sortOption,order,startIndex,maxResult);
 			
 			for(Long id:cadreIds)
 			{

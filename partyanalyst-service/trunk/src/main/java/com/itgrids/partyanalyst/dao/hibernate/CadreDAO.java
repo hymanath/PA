@@ -856,10 +856,10 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr, String sortOption,String order,Integer startIndex,Integer maxResult)
+	public List<Long> findCadreForSMS(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr, String sortOption,String order,Integer startIndex,Integer maxResult)
 	{
 		StringBuffer queryBuffer = new StringBuffer("select model.cadreId ");
-		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr+" "+cadreNameStr+" "+" order by "+sortOption+" " +order);
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr+" "+cadreNameStr+" "+roleStr+" "+" order by "+sortOption+" " +order);
 		
 		Query queryObject = getSession().createQuery(queryBuffer.toString());
 		
@@ -870,10 +870,10 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr)
+	public List<Long> findTotalCadreCountForSms(Long registrationId,String cadreType,String searchCriteria,String SocailStatus,String genderStr,String mobileStr,String cadreNameStr,String roleStr)
 	{
 		StringBuffer queryBuffer = new StringBuffer("select count(model.cadreId) ");
-		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr+" "+cadreNameStr);
+		queryBuffer.append("from Cadre model where model.registration.registrationId = "+registrationId+" "+cadreType+" "+searchCriteria+" "+SocailStatus+" "+genderStr+" "+mobileStr+" "+cadreNameStr+" "+roleStr);
 		
 		Query queryObject = getSession().createQuery(queryBuffer.toString());
 		
