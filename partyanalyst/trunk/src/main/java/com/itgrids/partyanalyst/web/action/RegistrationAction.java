@@ -66,7 +66,7 @@ public class RegistrationAction extends ActionSupport implements
 	{
 		String requestStatus = null;
 		Long userId = null;
-		if("subUser".equalsIgnoreCase(registrationType))
+		if(IConstants.SUB_USER.equalsIgnoreCase(registrationType))
 		{
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -80,11 +80,11 @@ public class RegistrationAction extends ActionSupport implements
 			else if(regVO.getAccessType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 				regVO.setAccessType(IConstants.MP);
 				
-			requestStatus = registrationService.saveRegistration(regVO);
+			requestStatus = registrationService.saveRegistration(regVO,IConstants.SUB_USER);
 		}
 		else
 		{			
-			requestStatus = registrationService.saveRegistration(regVO);
+			requestStatus = registrationService.saveRegistration(regVO,IConstants.PARTY_ANALYST_USER);
 		}
 		
 		if( !"SUCCESS".equalsIgnoreCase(requestStatus)){	
