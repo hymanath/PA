@@ -5,7 +5,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 
 public interface IRegistrationService {
 
-	 public String saveRegistration(RegistrationVO regData);
+	 public String saveRegistration(RegistrationVO values,String userType);
 
 	 public EntitlementVO getAllRegisterdUsers();
 	 
