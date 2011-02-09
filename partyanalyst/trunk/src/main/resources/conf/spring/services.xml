@@ -162,6 +162,11 @@
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="partyDAO" ref="partyDAO" />
+		<property name="stateDAO" ref="stateDAO" />		
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="ananymousUserService" ref="ananymousUserService" />		
 	</bean>
 	<bean name="constituencySearchService" class="com.itgrids.partyanalyst.service.impl.ConstituencySearchService" >
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -173,8 +178,7 @@
 		<property name="partyRebelCandidateDAO" ref="partyRebelCandidateDAO" />
 		<property name="electionDAO" ref="electionDAO" />
 	</bean>	
-	
-	
+		
 	<bean name="basePartyResultsServiceImpl" class="com.itgrids.partyanalyst.service.impl.BasePartyResultsServiceImpl" abstract="true">
 		<property name="electionDAO" ref="electionDAO" />		                                       
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
@@ -339,7 +343,7 @@
 		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 		<property name="cadreRoleDAO" ref="cadreRoleDAO" />
 		<property name="cadreRoleRelationDAO" ref="cadreRoleRelationDAO" />
-							   	  	
+						   	  		
 	</bean>
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
