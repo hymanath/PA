@@ -773,9 +773,9 @@ function getCadresResults(btnType)
 
 	var taskName = '';
 
-	if(isProblemAdding != null && isProblemAdding == true)
+	/*if(isProblemAdding != null && isProblemAdding == true)
 		taskName = "problemAdding";
-	else
+	else*/
 		taskName = "cadreSearch";
 	
 	var jsObj=
