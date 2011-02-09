@@ -22,6 +22,7 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	private String cadreDOB;
 	private Long cadreAge;
 	private String cadreName;
+	private String taskName;
 	
 	private List<CadreCategoryVO> cadreCasteCategory;
 	private List<CadreCategoryVO> cadreOccupation;
@@ -112,6 +113,12 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	}
 	public void setCadreName(String cadreName) {
 		this.cadreName = cadreName;
+	}
+	public String getTaskName() {
+		return taskName;
+	}
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 }

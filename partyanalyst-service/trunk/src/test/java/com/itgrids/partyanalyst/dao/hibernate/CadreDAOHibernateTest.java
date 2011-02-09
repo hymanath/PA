@@ -392,7 +392,9 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 		String cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
 		
-		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,sortOption,order,0,20);
+		String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
+		
+		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr,sortOption,order,0,20);
 		
 		for(Long y:x)
 		{
@@ -402,7 +404,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(cadreDAO.get(y).getMiddleName());
 		}
 		
-		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr);
+		List<Long> y = cadreDAO.findTotalCadreCountForSms(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr);
 		System.out.println(y.get(0).toString());
 		
 	}

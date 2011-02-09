@@ -247,6 +247,8 @@ public interface IConstants {
     public static final String CADRE_CREATE = "CADRE_CREATE";
     public static final String CADRE_UPDATE = "CADRE_UPDATE";
     public static final String CADRE_DELETE = "CADRE_DELETE";
+    public static final String CADRE_SEARCH = "cadreSearch";
+    public static final String PROBLEM_ADDING = "problemAdding";
     public static final String CONSTITUENCY_MANAGEMENT_ENTITLEMENT = "CONSTITUENCY_MANAGEMENT_ENTITLEMENT";
     public static final String PROBLEM_MANAGEMENT_ENTITLEMENT = "PROBLEM_MANAGEMENT_ENTITLEMENT";
     public static final String USER_GROUPS_ENTITLEMENT = "USER_GROUPS_ENTITLEMENT";
