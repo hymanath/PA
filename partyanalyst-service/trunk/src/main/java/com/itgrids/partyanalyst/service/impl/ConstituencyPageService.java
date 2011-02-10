@@ -1140,7 +1140,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			votersInfoInTowns.add(votersInfoInTown);
 		}
 		
-		votersInfoInTowns.addAll(0, votersWithDelimitationInfoVO.getVotersInfoForMandalVO());
+		if(votersWithDelimitationInfoVO.getVotersInfoForMandalVO()!=null)
+			votersInfoInTowns.addAll(0, votersWithDelimitationInfoVO.getVotersInfoForMandalVO());
+		
 		votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoInTowns);
 		return true;
 	}
