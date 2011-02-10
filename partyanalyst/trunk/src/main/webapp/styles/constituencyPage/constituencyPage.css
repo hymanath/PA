@@ -119,7 +119,8 @@ background-color:#E4EDF0;
 
 #constituencyPageProfileInfoDiv_Body
 {
-	height:80px;
+	/* Modified by ravi since in rajam constituency reservation zone is coming down the div 10/02/2011 */
+	height:100px; 
 }
 
 #constituencyInfoDiv
