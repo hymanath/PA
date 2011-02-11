@@ -2409,8 +2409,10 @@
 			problemMgmtTabs.getTab(5).addListener('click',handleFixedIssTabClick);			
 	}
 
-	function redirectToNewWindowForAddingInfluencingPeople(){
-		var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
+	function redirectToNewWindowForAddingInfluencingPeople(type,id){
+		//var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
+		//browser1.focus();
+		var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
 		browser1.focus();
 	}
 				
@@ -2420,7 +2422,7 @@
 		 var ipContent = '';
 		 ipContent+='<div id="ipTabContent">';		 	
 		 ipContent+='<div id="dataTableDiv"></div>';
-		 ipContent+='<div style="text-align:right;margin-top:10px;"><input type="button" class="linkButton" value="Add Influencing People" onclick="redirectToNewWindowForAddingInfluencingPeople()"></div>';
+		 ipContent+='<div style="text-align:right;margin-top:10px;"><input type="button" class="linkButton" value="Add Influencing People" onclick="redirectToNewWindowForAddingInfluencingPeople(\'new\',0)"></div>';
 		 ipContent+='<div id = "smsDiv"></div>';
 		 ipContent+='</div>';	
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
