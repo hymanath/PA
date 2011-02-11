@@ -236,6 +236,26 @@ localBodyString = '<%=localBody%>';
                 </tr>
             </table>		
         </div>	
+		
+		<!-- Note Data Div (Start)-->
+		<div id="noteDataDiv">
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="5%">
+						<div id="noteDataDiv_head"><span id="noteDataDiv_head_span">Note</span></div>
+					</td>
+					<td width="95%">
+						<div id="noteDataDiv_body">
+							<marquee onmouseover="this.stop()" onmouseout="this.start()" scrollamount="4">
+								This product is not ready to use presently and it will be very soon.The users registered presently may lose their login credentials. 
+							</marquee>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>		
+		<!-- Note Data Div (End)-->
+
         <div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
 			<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
@@ -286,7 +306,7 @@ localBodyString = '<%=localBody%>';
 				</div> 
 			</div> 
 		</div>
-
+		
        <!-- <div id="homePage_header">
         	<img height="180" width="960" src="images/icons/homePage_new/homePage_header.jpg"/>
         </div> -->
@@ -624,8 +644,9 @@ localBodyString = '<%=localBody%>';
 							  </tr>
 							</table>	
 						 </div>
-						<div id="giftWidgetBody" class="yui-skin-sam">
-							<font color="#184165" style="font-weight:bold;">Got Inspired!</font> Gift PartyAnalyst to your favourite leader.To get more details mail us 
+						<div id="giftWidgetBody" class="yui-skin-sam" style="height:140px;">							
+							View how <font color="#184165" style="font-weight:bold;">PartyAnalyst.com</font> platform is useful to your leader or party, if you got inspired with that gift to him or let them know about this.<br/>
+							To get more details mail us 
 							at <font color="#184165" style="font-weight:bold;">info@itgrids.com</font> or <a class="newsHeadLink" href="landing.action">click here</a> for more details. 						
 						</div>
 						<div id="giftWidgetFooter">
