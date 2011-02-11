@@ -1112,6 +1112,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List beforeDelimGMCs = boothDAO.findVotersInfoForConstituencyInAnYearByLocalElectionBodyWard(constituencyId, 
 				year, IConstants.GREATER_ELECTION_TYPE);
 		
+		if(beforeDelimGMCs!= null && beforeDelimGMCs.size()!=0){
+			votersWithDelimitationInfoVO.setType("Wards");
+		}else{
+			votersWithDelimitationInfoVO.setType("");
+		}
 		if(beforeDelimLocalBodies.size() == 0 && beforeDelimGMCs.size() == 0){
 			return false;
 		}

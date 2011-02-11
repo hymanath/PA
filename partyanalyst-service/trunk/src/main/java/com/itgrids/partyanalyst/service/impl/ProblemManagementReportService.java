@@ -1929,7 +1929,7 @@ public class ProblemManagementReportService implements
 						
 					}
 				}
-				if(urbanConstituencies!=null && urbanConstituencies.size()!=0){
+				if(urbanConstituencies!=null && urbanConstituencies.size()!=0 && ruralConstituencies!=null && ruralConstituencies.size()!=0){
 					List<Long> localElectionBodyIds = assemblyLocalElectionBodyDAO.getAllLocalElectionBodiesForAConstituencyForLatestElectionYear(ruralConstituencies);
 					if(localElectionBodyIds!=null && localElectionBodyIds.size()!=0){
 						localElectionBodyResult = getAllAcceptedProblemsInALocalElectionBody(localElectionBodyIds,IConstants.MUNICIPAL_CORP_GMC);
