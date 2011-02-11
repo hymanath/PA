@@ -956,7 +956,7 @@
 							
 							<DIV class="yui-skin-sam" style="text-align:right;"><div id="localPoliticalChangesRegistration"></DIV>
 
-							<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing Persons" class="linkButton" />
+							<input type="button" style="margin-right:10px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople('new',0)" value="Add Influencing People" class="linkButton" />
 							</DIV>
 					
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
