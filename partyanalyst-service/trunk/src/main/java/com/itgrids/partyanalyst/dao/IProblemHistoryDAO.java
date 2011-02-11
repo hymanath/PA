@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
@@ -101,15 +102,36 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenDates(Long userId,Long statusId,Integer startIndex,Integer maxResults);
 	
+	public Long getProblemsCountPostedByAUserInBetweenMonths(Long userId, Long problemStatusId);
+	
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenDates(Long userId,Integer startIndex,Integer maxResults);
 	
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenMonths(Long userId,Long statusId,Integer startIndex,Integer maxResults);
 	
+	public Long getProblemsCountPostedByAUserInBetweenDates(Long userId, Long problemStatusId);
+	
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenMonths(Long userId,Integer startIndex,Integer maxResults);
 	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByAUserInBetweenDates(Long userId);
 	
-
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByAUserInBetweenMonths(Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByUserInDifferentLifeCycleStages(Long userId);
+	
+	public List<ProblemHistory> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(Long userId, Integer startIndex, Integer maxResults);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(Long userId, Integer startIndex, Integer maxResults);
+	
+	public Long getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(Long userId);
+	
+	public List<ProblemHistory> getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate, Integer startIndex, Integer maxResults);
+	
+	public Long getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Date startDate,Date endDate);
 }

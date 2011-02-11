@@ -614,6 +614,17 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 	 return resultsCount;
 	}
+	
+	public Long getProblemsCountPostedByAUserInBetweenDates(
+			Long userId, Long problemStatusId) {
+		
+		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemStatus.problemStatusId = "+problemStatusId+ " and "+
+				"model.isDelete is null or model.isDelete = 'false' group by date(model.dateUpdated) order by dateUpdated desc").iterate().next() );
+		
+	 return resultsCount;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenDates(Long userId,
@@ -637,6 +648,17 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	 return queryObject.list();
 	}
 	
+	public Long getProblemsCountPostedByAUserInBetweenMonths(
+			Long userId, Long problemStatusId) {
+		
+		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.problemStatus.problemStatusId = "+problemStatusId+ " and "+
+				"model.isDelete is null or model.isDelete = 'false' group by month(model.dateUpdated) order by dateUpdated desc").iterate().next() );
+		
+	 return resultsCount;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List getProblemsPostedForAUserInBetweenMonths(Long userId,
@@ -644,7 +666,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		StringBuilder query = new StringBuilder();
 		
-		query.append("select count(model.problemHistoryId),month(model.dateUpdated) from ProblemHistory model where ");
+		query.append("select count(model.problemHistoryId),month(model.dateUpdated),year(model.dateUpdated) from ProblemHistory model where ");
 		query.append("model.problemLocation.problemAndProblemSource.user.registrationId= ? ");
 		query.append("and model.problemStatus.problemStatusId = ? and model.isDelete is null ");
 		query.append("or model.isDelete = 'false' group by month(model.dateUpdated) order by model.dateUpdated desc");
@@ -687,7 +709,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
         StringBuilder query = new StringBuilder();
 		
-		query.append("select count(model.problemHistoryId),month(model.dateUpdated),model.problemStatus.status ");
+		query.append("select count(model.problemHistoryId),month(model.dateUpdated),model.problemStatus.status,year(model.dateUpdated) ");
 		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.");
 		query.append("user.registrationId= ? and model.isDelete is null or model.isDelete = 'false' ");
 		query.append("group by model.problemStatus.problemStatusId,month(model.dateUpdated) order by model.dateUpdated desc");
@@ -701,6 +723,130 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 	 return queryObject.list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByAUserInBetweenDates(
+			Long userId){
 		
+		return getHibernateTemplate().find("select distinct date(model.dateUpdated) from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByAUserInBetweenMonths(
+			Long userId) {
+		
+		return getHibernateTemplate().find("select distinct month(model.dateUpdated) from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc");
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountPostedByUserInDifferentLifeCycleStages(
+			Long userId) {
+		
+		return getHibernateTemplate().find("select count(model.problemHistoryId),model.problemStatus.problemStatusId,"+
+				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problemSource.informationSourceId,"+
+				"model.problemLocation.problemAndProblemSource.problemSource.informationSource from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and model.problemStatus.status "+
+				"in ("+IConstants.PROBLEMS_LIFE_CYCLE+") and model.isDelete is null or model.isDelete = 'false' group by "+
+				"model.problemStatus.status,model.problemLocation.problemAndProblemSource.problemSource.informationSource "+
+				"order by model.problemStatus.problemStatusId");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getProblemsPostedByUserInDifferentLifeCycleStagesByDate(
+			Long userId,Integer startIndex,Integer maxResults) {
+		
+		Criteria criteria = getSession().createCriteria(ProblemHistory.class)
+        .createAlias("probSource.user", "user")
+        .createAlias("problemLocation", "probLoc")
+        .createAlias("problemStatus", "probStatus")
+        .createAlias("probLoc.problemAndProblemSource", "probSource")
+        .add(Expression.eq("user.registrationId", userId))
+        
+        .add(Restrictions.or(
+		        Restrictions.eq( "isDelete", "false" ),
+		        Restrictions.isNull("isDelete")))
+        
+        .setMaxResults(maxResults)
+        .setFirstResult(startIndex)
+        .addOrder(Order.desc("dateUpdated"));
+
+     return criteria.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(
+			Long userId, Integer startIndex, Integer maxResults) {
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("select model.problemLocation.problemAndProblemSource.problem.problemId,"+
+				"model.problemHistoryId,model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+	            "model.problemLocation.problemAndProblemSource.problem.identifiedOn,"+
+	            "model.problemLocation.problemAndProblemSource.problem.existingFrom,"+
+	            "model.problemLocation.problemAndProblemSource.problemSource.informationSource,"+
+	            "model.problemStatus.status,model.problemLocation.problemImpactLevel from "+
+	            "ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId= ? "+
+	            "and model.isDelete is null or model.isDelete = 'false' order by model.dateUpdated desc");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setParameter(0, userId);
+				
+		queryObject.setFirstResult(startIndex);		
+		queryObject.setMaxResults(maxResults);
+		
+	 return queryObject.list();
+	}
+	
+	public Long getProblemsPostedByUserInDifferentLifeCycleStagesByRecentDate(Long userId){
+		
+		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
+				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
+				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc").iterate().next() );
+		
+	 return resultsCount;
+	}
+
+	public Long getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(
+			Long userId, Date startDate, Date endDate) {
+		
+		
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(
+			Long userId,Long statusId, Date startDate, Date endDate, Integer startIndex,
+			Integer maxResults) {
+		
+		StringBuilder query = new StringBuilder();
+		
+		query.append("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? ");
+		//If problems by problem status 
+		if(statusId != null && !statusId.equals(0L))
+			query.append("and model.problemStatus.problemStatusId = "+statusId+ " ");
+		
+		query.append("and model.isDelete is null or model.isDelete = 'false' and ");
+		query.append("date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
+		query.append("order by model.dateUpdated desc");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setParameter(0, userId);
+		queryObject.setParameter(1, startDate);
+		queryObject.setParameter(2, endDate);
+				
+		queryObject.setFirstResult(startIndex);		
+		queryObject.setMaxResults(maxResults);
+		
+
+     return queryObject.list();
+	}
+				
 }
