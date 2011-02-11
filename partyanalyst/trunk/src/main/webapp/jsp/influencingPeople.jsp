@@ -240,7 +240,7 @@ function executeOnload()
 		if(selectedeffectedRange != '0')
 		populateLocations(selectedeffectedRange, 'onLoad');	
 	
-
+	document.getElementById("genderMale").checked = true;
 }
 
 function cleanOptionsList(string)
@@ -553,7 +553,7 @@ getSelectOptionVOList(this.value,"getStates","COUNTRY");
  		<td class="tdstyle" width="100px"><s:label for="wardOrHamlet" id="wardOrHamletLabel"  value="%{getText('wardOrHamlet')}" /><font class="required"> * </font></td>
 		<td><s:select id="villageField_add" cssClass="regionSelect" name="wardOrHamlet" list="#session.villagesList" listKey="id" listValue="name" onchange="getBoothsInWard('currentAdd','constituencyField_add','boothField',this.options[this.selectedIndex].value,'cadreReg','mandalField_add');"headerKey="0" headerValue="Select Village"></s:select></td>
 		<td class="tdstyle"><s:label for="pinCodeField" id="pinCodeLabel" value="%{getText('pincode')}" /></td>
-		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="10"/></td>
+		<td><s:textfield id="pinCodeField_add" name="pincode" maxlength="6"/></td>
 	</tr>
 	<tr>
 		<th colspan="4" width="15px" class="tdstyle" style="color:#0000AA;"><u>Booth details are not compulsory</u></th>
