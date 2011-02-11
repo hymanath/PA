@@ -67,6 +67,7 @@
 		<div id="navMenu_main" class="pageContentDivs">
 			<div id="navMenu_links">
 				<ul id="topLinksNav">					
+					<li><a href="homePage.action" class="navLinksAnc">Home</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Pricing</a></li>						
 					<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
