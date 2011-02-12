@@ -223,8 +223,8 @@ public class CadreRegisterAction extends ActionSupport implements
 		return cadreInfo.getMobile();
 	}
 
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number...", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
 		this.cadreInfo.setMobile(mobile);
 	}
