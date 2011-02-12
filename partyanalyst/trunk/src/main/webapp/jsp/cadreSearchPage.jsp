@@ -344,37 +344,37 @@ function setCadreIdToProblem()
 						
 							<table  width="100%" >
 								<tr id="row1" style="display:none;">
-									<td width="200"><s:label for="stateField_s" id="stateLabel" theme="simple" value="%{getText('STATE')}" /></td>
+									<td width="200"><s:label for="stateField_s" id="stateLabel" theme="simple" value="%{getText('STATE')}" /><font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="stateField_s" cssClass="regionSelect" theme="simple" list="stateList" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','cadreSearch','districtField_s','cadreSearch', 'null')"></s:select>
 									</td>
 								</tr>
 								<tr id="row2" style="display:none;">
-									<td width="200"><s:label for="districtField_s" id="districtLabel" theme="simple" value="%{getText('DISTRICT')}" /></td>
+									<td width="200"><s:label for="districtField_s" id="districtLabel" theme="simple" value="%{getText('DISTRICT')}" /><font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="districtField_s" cssClass="regionSelect" theme="simple" list="districtList" listKey="id" listValue="name" onchange="getSubRegionsInDistrict(this.options[this.selectedIndex].value,'cadreSearch','constituencyField_s','cadreSearch')"></s:select>
 									</td>
 								</tr>
 								<tr id="row3" style="display:none;">
-									<td width="200"><s:label for="constituencyField_s" id="constituencyLabel" theme="simple"  value="%{getText('CONSTITUENCY')}"/></td>
+									<td width="200"><s:label for="constituencyField_s" id="constituencyLabel" theme="simple"  value="%{getText('CONSTITUENCY')}"/><font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="constituencyField_s" theme="simple" cssClass="regionSelect" list="constituencyList" listKey="id" listValue="name" onchange="getSubRegionsInConstituency(this.options[this.selectedIndex].value,'cadreSearch','mandalField_s','cadreSearch')"></s:select>
 									</td>
 								</tr>								
 								<tr id="row4" style="display:none;">
-									<td width="200"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /></td>
+									<td width="200"><s:label for="mandalField" id="mandalLabel" theme="simple"  value="%{getText('subRegions')}" /><font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="mandalField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'cadreSearch','null','cadreSearch','constituencyField_s','row6', 'row5')"></s:select>
 									</td>
 								</tr>					
 								<tr id="row5" style="display:none;">
-									<td width="200"><s:label for="hamletField_s" id="mandalLabel" theme="simple"  value="%{getText('wardOrHamlet')}" /></td>
+									<td width="200"><s:label for="hamletField_s" id="mandalLabel" theme="simple"  value="%{getText('wardOrHamlet')}" /><font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="hamletField_s" cssClass="regionSelect" onchange="getBoothsInWard('cadreSearch','constituencyField_s','boothField_s',this.options[this.selectedIndex].value,'cadreSearch','mandalField_s')" list="{}" theme="simple" listKey="id" listValue="name"></s:select>
 									</td>
 								</tr>
 								<tr id="row6" style="display:none;">
-									<td width="200">Booth No</td>
+									<td width="200">Booth No<font color="#FF0000"> * </font></td>
 									<td>
 										<s:select id="boothField_s" cssClass="regionSelect" theme="simple" list="{}" listKey="id" listValue="name"></s:select>
 									</td>
