@@ -398,7 +398,7 @@ function setLocationValue(value,source)
 	<c:if  test="${resultStatus == 'failure'}">
 	<div id="successMsg" style="color:red;" style="color:green;">Error Raised while saving data please check log for details</div>
 	</c:if>
-	<s:form action="saveLocalGroupAction" method="GET" theme="simple" name="form">
+	<s:form action="saveLocalGroupAction" method="POST" theme="simple" name="form">
    <FIELDSET class="fieldsetEle">
 	<LEGEND style="font-size:12px;"><strong>Local Group Details</strong></LEGEND>
 	<table class="formTableStyle" cellpadding="0" cellspacing="0" border="0" align="left">
@@ -482,7 +482,7 @@ function setLocationValue(value,source)
 
 <FIELDSET class="fieldsetEle">
 <LEGEND style="font-size:12px;"><strong>Group Scope Details</strong></LEGEND>
-<table class="formTableStyle" width="100%" height="64" cellpadding="0" cellspacing="0" border="0" align="left">
+<table class="formTableStyle" width="100%" height="64" cellpadding="0" cellspacing="0" border="0" align="center">
  	 <tr>
 	    <td class="tdstyle">Group Scope<font class="required">*</font></td>
 		<td><s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" value="defaultGroupScope" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
@@ -490,7 +490,7 @@ function setLocationValue(value,source)
 	   <c:if test="${sessionScope.USER.accessType != 'MP'}">	 								
 			<tr id="row1" style="display:none;">
 				<td class="tdstyle"><s:label for="stateField_s" id="stateLabel"  value="%{getText('STATE')}" /><font class="required"> * </font></td>
-				<td><s:select id="stateField" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','userGroupReg','districtField','currentAdd', 'null')"></s:select></td>
+				<td><s:select id="stateField_s" cssClass="selectWidth" name="scopeState" list="#session.statesList" listKey="id" listValue="name" value="defaultState" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','userGroupReg','districtField','currentAdd', 'null')"></s:select></td>
 			</tr>
 			<tr id="row2" style="display:none;">
 				<td class="tdstyle"><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}"/><font class="required"> * </font></td>
@@ -557,6 +557,6 @@ function setLocationValue(value,source)
  
 </body>
 <script type="text/javascript">
-populateLocations(${defaultGroupScope},'onChange');
+populateLocations(${defaultGroupScope},'onLoad');
 </script>
 </html>
