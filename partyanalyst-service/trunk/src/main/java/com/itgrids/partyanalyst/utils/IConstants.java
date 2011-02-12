@@ -375,6 +375,11 @@ public interface IConstants {
     public static final String CADRE_ASSIGNED = "ASSIGNED";
     public static final String VOTES_PERCENTAGE_CONCERNED = "0.5";
     
+    public static final String PROBLEMS_BY_DATE = "PROBLEMS_BY_DATE";
+    public static final String PROBLEMS_BY_MONTH = "PROBLEMS_BY_MONTH";
+    
+    public static final String PROBLEMS_LIFE_CYCLE = "'NEW','PROGRESS','PENDING','FIXED'";
+    
     public static final String ID = "ID";
     public static final String MODEL = "MODEL";
     public static final String MODEL_ID = "MODEL_ID";
