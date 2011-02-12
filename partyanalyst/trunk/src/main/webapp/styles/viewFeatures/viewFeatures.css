@@ -138,3 +138,21 @@ body
 {
 	text-align:right;
 }
+
+.contentPopup_main
+{
+
+}
+
+.contentPopup_head
+{
+
+}
+
+.contentPopup_body
+{
+	text-align:justify;
+	color:#732AB2;
+	font-weight:bold;
+	font-size:12px;
+}
