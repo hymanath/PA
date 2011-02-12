@@ -916,8 +916,13 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				Long regionId = (Long)params[1];
 				
 				ConstituencyManagementSubRegionWiseOverviewVO subRegionWiseOverviewVO = new ConstituencyManagementSubRegionWiseOverviewVO();
-				subRegionWiseOverviewVO.setSubRegionId(regionId);
-				subRegionWiseOverviewVO.setSubRegionName(getRegionNameBasedOnScope(regionType,regionId.toString()));
+				if(new Long(regionId).intValue()!=0){
+					subRegionWiseOverviewVO.setSubRegionId(regionId);
+					subRegionWiseOverviewVO.setSubRegionName(getRegionNameBasedOnScope(regionType,regionId.toString()));
+				}else{
+					subRegionWiseOverviewVO.setSubRegionId(0l);
+					subRegionWiseOverviewVO.setSubRegionName("");
+				}
 				subRegionWiseOverviewVO.setSubRegionType(regionType);
 				subRegionWiseOverviewVO.setCountValue(countVal);
 				
@@ -995,9 +1000,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				String regionId = (String)values[1];
 				
 				influenceScopeDetails.setCountValue(countVal);
-				influenceScopeDetails.setInfluenceScopeRegionId(new Long(regionId));
-				influenceScopeDetails.setInfluenceScopeRegion(getRegionNameBasedOnScope(infScope,regionId));
-				
+				if(new Long(regionId).intValue()!=0){
+					influenceScopeDetails.setInfluenceScopeRegionId(new Long(regionId));
+					influenceScopeDetails.setInfluenceScopeRegion(getRegionNameBasedOnScope(infScope,regionId));	
+				}else{
+					influenceScopeDetails.setInfluenceScopeRegionId(0l);
+					influenceScopeDetails.setInfluenceScopeRegion("");	
+				}
+								
 				influenceScopeDetailsVO.add(influenceScopeDetails);
 			}
 		}
