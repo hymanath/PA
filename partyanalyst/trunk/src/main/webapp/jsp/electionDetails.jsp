@@ -233,13 +233,13 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	  if(staticColors != null && staticColors.length > 0)
 	  {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 	  else
 	  {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -322,13 +322,13 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 	   if(staticColors != null && staticColors.length > 0)
 	   {
 		  new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,colors:staticColors,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	   }
 	   else
 	  {
          new google.visualization.LineChart(districtWiseGraphEl).
-			  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+			  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
 			  });
 	  }
 		
@@ -390,7 +390,7 @@ function getInteractiveChartBySeatsWonForADistrict(results,districtN)
 	  else
          ctitle = 'All Parties District Wise Election Results By Seats Won';
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+	  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
@@ -450,7 +450,7 @@ function getInteractiveChartBySeatsWonForADistrict(results,districtN)
 	  else
          ctitle = 'All Parties District Wise Election Results By Votes Percent';
 	  new google.visualization.LineChart(districtWiseGraphEl).
-	  draw(data, {curveType: "function",width: 870, height: 550,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
+	  draw(data, {curveType: "function",width: 870, height: 550, pointSize: 4,title:ctitle,hAxis: {textStyle:{fontSize:'10'},slantedText:true, slantedTextAngle:75, titleTextStyle: {color: 'red'}}
       });
 		
  }
@@ -735,12 +735,12 @@ function showPartyResultsWithoutAlliance(chartId)
 	if(staticColors != null && staticColors.length > 0)
 	{
 	   var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
-					chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+					chart.draw(data, {curveType: "function",width: 600, height: 350, pointSize: 4,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
 	}
 	else
 	{
 		var chart = new google.visualization.LineChart(document.getElementById("withoutAllianceDiv_graph"));      
-					chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
+					chart.draw(data, {curveType: "function",width: 600, height: 350, pointSize: 4,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
 	}
 	
 	buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
@@ -920,13 +920,13 @@ function showInteractiveAllianceCharts(index,allianceGroupName)
 	if(staticColors != null && staticColors.length > 0)
 	{
       var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
-				chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+				chart.draw(data, {curveType: "function",width: 600, height: 350, pointSize: 4,title:"",colors:staticColors,titleColor:'red' ,titleFontSize:18,lineWidth:3});
 	}
 	else
 	{
 
     var chart = new google.visualization.LineChart(document.getElementById("panelChartDiv"));      
-				chart.draw(data, {curveType: "function",width: 600, height: 350,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
+				chart.draw(data, {curveType: "function",width: 600, height: 350, pointSize: 4,title:"",titleColor:'red' ,titleFontSize:18,lineWidth:3});
 	}
    
 }
