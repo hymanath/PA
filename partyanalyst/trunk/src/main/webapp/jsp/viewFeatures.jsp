@@ -54,6 +54,25 @@
 
 <!-- YUI Dependency files (End) -->
 
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
+
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
+<!-- JQuery files (End) -->
+
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
 <link href="styles/landingPage/landingPage.css" rel="stylesheet" type="text/css" />
 <link href="styles/viewFeatures/viewFeatures.css" rel="stylesheet" type="text/css" />
@@ -62,13 +81,14 @@
 
 </head>
 <body>
+   <div id="jQueryPopup"><div id="jQueryPopup_content"></div></div>
    <div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
    <div id="viewFeatures_main">
 		<div id="navMenu_main" class="pageContentDivs">
 			<div id="navMenu_links">
 				<ul id="topLinksNav">					
 					<li><a href="homePage.action" class="navLinksAnc">Home</a></li>
-					<li><a href="javascript:{}" class="navLinksAnc">Pricing</a></li>						
+					<li><a href="javascript:{}" onclick="showDetailsPopup('Pricing')" class="navLinksAnc">Pricing</a></li>						
 					<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>

@@ -262,6 +262,13 @@
 		var radioEls = document.getElementsByName("dobOption");
 		var ageTextEl = document.getElementById("ageTextEl");
 		var dobTextEl =  document.getElementById("dobText");
+
+		if(source == 'onLoad' && currentTask == 'new')
+		{
+			if(radioEls[0].checked == false && radioEls[1].checked == false)
+			radioEls[0].checked = true;
+		}
+
 		for(i = 0; i< radioEls.length; i++)
 		{
 			if(radioEls[i].checked == true && radioEls[i].value == 'Date Of Birth')
@@ -546,7 +553,7 @@
 		var firstFamilyMemberNameIdEl = document.getElementById("firstFamilyMemberNameId");
 		firstFamilyMemberNameIdEl.focus();
 	}
-
+	
 </script>
 <style type="text/css">
 	
@@ -839,13 +846,13 @@
 		<table class="cadreDetailsTable" width="100%" border="0">
 			<tr>
 				<td width="165px"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
-				<td align="left" width="165px"><s:textfield id="mobileField" name="mobile" maxlength="12" size="25" />  </td>
+				<td align="left" width="165px"><s:textfield id="mobileField" name="mobile" maxlength="11" size="25" />  </td>
 				<td width="165px"><s:label for="telePhoneField" id="telePhoneLabel"  value="%{getText('telephoneNo')}" /></td>
-				<td align="left" width="165px"><s:textfield id="telePhoneField" name="telephone" maxlength="10" size="25" />  </td>
+				<td align="left" width="165px"><s:textfield id="telePhoneField" name="telephone" maxlength="12" size="25" />  </td>
 			</tr>
 			<tr>
 				<td width="165px"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
-				<td align="left" colspan="3"><s:textfield id="emailField" name="email" size="25"/>  </td>
+				<td align="left" colspan="3"><s:textfield id="emailField" name="email" size="25" maxlength="40"/>  </td>
 			</tr>
 			<tr>
 				<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="%{getText('currAdd')}" /></u></th>
@@ -1003,7 +1010,7 @@
 			<td align="left"><s:select id="professionField" cssClass="regionSelect" name="profession"list="#session.occupationsList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Occupation"></s:select></td>
 		</tr>				
 		<tr>
-			<td><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
+			<td width="135"><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 			<td align="left"><s:textfield id="incomeField" name="income" size="25" maxlength="8"/></td>
 			<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
 			<td style="padding-left: 10px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
