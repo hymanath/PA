@@ -1,6 +1,53 @@
 
 var popupPanel=null;
 
+function showDetailsPopup(dataType)
+{
+	var str = '';
+	str += getContent(dataType);
+
+	var elmt = document.getElementById("jQueryPopup_content");
+	elmt.innerHTML = str;
+
+	$( "#jQueryPopup" ).dialog({
+			title	:dataType+" Details",
+			autoOpen: true,
+			show	: "blind",
+			width	: 400,
+			minHeight:300,
+			modal	: true,
+			hide	: "blind"
+		});
+}
+
+
+function getContent(type)
+{
+	var str = '';
+	if(type == "Pricing")
+	{
+		str += '<div class="contentPopup_main">';
+		str += '<div class="contentPopup_body">';
+		str += '<table>';
+		str += '<tr><th colspan=2>For Pricing Information Contact Us @</th></tr>';
+		str += '<tr><th>Phone :</th><td>+91-40-40124153</td></tr>';
+		str += '<tr><th>Mail :</th><td>info@itgrids.com</td></tr>';
+		str += '</table>';
+
+		str += '<table align="center">';
+		str += '<tr><td><img src="images/icons/homePage_new/itgrids_logo.gif" style="padding:20px;"></td></tr>';
+		str += '</table>';
+
+		str +=' </div>';
+		str += '</div>';
+
+
+	}
+
+	return str;
+}
+
+
 
 function landingPageAjaxCall(jsObj,url)
 {			
