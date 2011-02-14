@@ -403,13 +403,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 		List<Object> result = new ArrayList<Object>();		
 		Long startIndex = 0L;
 		String nameString = "";
+		List<Long> userIds = new ArrayList<Long>();
 		try{
 			resultStatusForSaving = saveCommunicationDataBetweenUsers(senderId,recipeintId,messageType,subject);
 			dataTransferVO.setResultStatusForComments(resultStatusForSaving);
-			
+			userIds.add(loginId);
 			result = ananymousUserDAO.getAllUsersInSelectedLocations(locationIds, locationType,retrivalCount,startIndex,nameString);			
 			candidateDetails = setFriendsListForAUser(result,loginId,IConstants.ALL);		
 			dataTransferVO.setCandidateVO(candidateDetails);
+			
+			dataTransferVO.setTotalResultsCount(ananymousUserDAO.getAllUsersCountInSelectedLocations(locationIds, locationType));
+			dataTransferVO.setConnectedPeopleCount(userConnectedtoDAO.getCountOfAllConnectedPeopleForUser(userIds));
 			
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -849,7 +853,41 @@ public class AnanymousUserService implements IAnanymousUserService {
 	return dataTransferVO;
 	} 
 	
-	
+	/**
+	 * This method is used to get all the connected people for a user.
+	 * 
+	 * @author Ravi Kiran.Y
+	 * @version 1.0,14-2-11.
+	 * 
+	 * @param userId
+	 * @return DataTransferVO
+	 */
+	public DataTransferVO getAllPeopleConnectedPeopleForUser(List<Long> userId){
+		List<CandidateVO> resultVO = new ArrayList<CandidateVO>(); 
+		ResultStatus resultStatus = new ResultStatus();
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		try{
+			DataTransferVO dataVo = getAllPeopleConnectedPeopleForUserBasedOnLevelsOfConnection(userId,1,IConstants.COMPLETE_DETAILS);
+			ResultStatus resultStatusForConnectedPeople = new ResultStatus(); 
+			if(dataVo.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.FAILURE);
+			}else{
+				resultVO = dataVo.getCandidateVO();				
+				resultStatusForConnectedPeople.setResultCode(ResultCodeMapper.SUCCESS);
+				dataTransferVO.setConnectedPeople(resultVO);
+			}
+			dataTransferVO.setResultStatusForConnectedPeople(resultStatusForConnectedPeople);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			resultStatus.setResultPartial(false);
+		}catch(Exception e){
+			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			dataTransferVO.setResultStatus(resultStatus);	
+		}
+		return dataTransferVO;
+	}
 	/**
 	 * This method is used to get all connected/not connected people for the user/users based on the level specified.
 	 * 
