@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -120,6 +121,11 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	public List<State> findByCountryId(Long countryId){
 		return getHibernateTemplate().find("from State model where model.country.countryId=?", countryId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<State> findByCountryIdForSearch(Long countryId){
+		return getHibernateTemplate().find("from State model where model.country.countryId=? and model.stateId in ("+IConstants.STATES_FOR_SEARCH_FUNCTIONALITY+") ", countryId);
+	}
 
 
 	@SuppressWarnings("unchecked")
@@ -127,7 +133,7 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId = ?",countryId);
 	}
 
-
+ 
 	@SuppressWarnings("unchecked")
 	public List findStateIdByNameAndCountryId(String stateName, Long countryId) {
 		Object[] params = {stateName,countryId};

@@ -276,7 +276,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}
-	
+	*/
 
 	//String searchText, String ids
 	@Test
@@ -284,9 +284,12 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	{
 		String state = "and model.state.stateId = 1";	
 		Object obj=constituencyDAO.totalSearchCount("v",1l,"");
-		System.out.println(obj);
+		System.out.println(state);
 	
-	}*/
+	}
+	public static void main(String args[]){
+		
+	System.out.println("tested---");}
+	}
 	
-	
-}
+

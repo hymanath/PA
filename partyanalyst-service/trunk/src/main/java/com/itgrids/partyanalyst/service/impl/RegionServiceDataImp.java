@@ -269,7 +269,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		return result;
 	}
-
+	
+	public List<SelectOptionVO> getStatesByCountryForSearch(Long countryID){
+		List<State> states = stateDAO.findByCountryIdForSearch(countryID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(State state : states){
+			result.add(new SelectOptionVO(state.getStateId(),state.getStateName()));
+		}
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getStatesByCountryFromBooth(Long countryID){
 		List list = boothConstituencyElectionDAO.getStatesByCountryFromBooth(countryID);
