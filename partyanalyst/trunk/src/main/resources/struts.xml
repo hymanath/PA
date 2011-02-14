@@ -355,6 +355,9 @@
 			<result name="success">/jsp/registration.jsp</result>
 		</action>
 		
+		
+		
+		
 		<action name="subUserRegPageAction" class="userAction" method="subUserRegistration">
 			<result name="success">/jsp/registration.jsp</result>
 		</action>	
@@ -1652,6 +1655,12 @@
 		<action name="updateUserStatusAction" class="connectPeopleAction" method="updateUserStatus">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		
+		<action name="getLatestFriendsList" class="connectPeopleAction" method="getConnectedPeopleForUser">
+			<result type="json" name="success">
+				<param name="root">connectedUsers</param>				
 			</result>		
 		</action>
 		

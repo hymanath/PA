@@ -51,7 +51,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private IAnanymousUserService ananymousUserService;
 	private ResultStatus resultStatus;
 	private DataTransferVO userDetails;
-	private DataTransferVO dataTransferVO;
+	private DataTransferVO dataTransferVO,connectedUsers;
 	private Long loginUserId;
 	private String message;	
 	private List<CandidateCommentsVO> candidateCommentsVO;
@@ -64,6 +64,14 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private String loginUserName;
 	private ProblemDetailsVO problemDetails;
 	
+	public DataTransferVO getConnectedUsers() {
+		return connectedUsers;
+	}
+
+	public void setConnectedUsers(DataTransferVO connectedUsers) {
+		this.connectedUsers = connectedUsers;
+	}
+
 	public ProblemDetailsVO getProblemDetails() {
 		return problemDetails;
 	}
@@ -299,6 +307,21 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getConnectedPeopleForUser()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		List<Long> userId = new ArrayList<Long>(0);
+		userId.add(user.getRegistrationID());
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}		
+		connectedUsers = ananymousUserService.getAllPeopleConnectedPeopleForUser(userId);
+		return Action.SUCCESS;
+	}
+	
+	
 	public String updateUserStatus() throws Exception
 	{
 		String param;

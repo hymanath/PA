@@ -65,7 +65,7 @@ function initializeTabView()
 
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main" style="text-align:left;"><div id="postedReasons_main"></div><div id="postedProblems_main"></div></div>',
+		content: '<div id="postedDiv_main" style="text-align:left;"><div id="postedProblems_main"></div><div id="postedReasons_main"></div></div>',
 		active: true
 	}));
 
@@ -77,7 +77,7 @@ function initializeTabView()
 	str += '</div>';
 
 	myTabs.addTab( new YAHOO.widget.Tab({
-		label: 'Story Board',
+		label: 'Pending Requests',
 		content: str,
 		active: false
 	}));
@@ -226,6 +226,73 @@ function markMessageAsRead(msgId)
 	var url = "updateReadMessageInDBAction.action?"+rparam;					
 	callAjax(jsObj,url);
 }
+
+function getFriendsListForUser(results)
+{
+	var elmt = document.getElementById("connectPeople_connect_center");
+
+	if(!elmt)
+		return;
+	
+	var str = '';
+
+	if(results.resultCode != "0")
+	{
+		str += '<div> Data could not be retrived due to some technical difficulties</div>';
+		elmt.innerHTML = str;
+		return;
+	}
+	else if(arrData.length == "")
+	{
+		str += '<div> There are no connections established till now.</div>';
+		elmt.innerHTML = str;
+		return;
+	}
+	console.log("connectedPeople.length--->"+connectedPeople.length);
+	str += '<div id="connection_main_head">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td width="40px"><img src="images/icons/indexPage/group_icon.png"></td>';
+	str += '<td>You have total '+connectedPeople.length+' connections.</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
+	str += '<div id="connecttion_main_body">';
+	str += '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
+	str += '<tr>';
+	str += '<td width="30%" valign="top">';
+	str += '<div id="connection_main_search">';
+	str += '</div>';
+	str += '</td>';
+	str += '<td width="70%" valign="top">';
+	str += '<div id="connection_main_data">';
+	for(var i=0; i<connectedPeople.length; i++)
+	{
+		str += '<div>';
+		str += '<table>';
+		str += '<tr>';
+		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
+		str += '</tr>';
+		str += '<tr>';		
+		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
+		str += '</tr>';	
+		str += '<tr>';		
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
+		str += '</tr>';	
+		str += '</table>';
+		str += '</div>';
+	}
+	str += '</div>';
+	str += '</td>';
+	str += '</tr>';	
+	str += '</table>';
+	str += '</div>';
+	
+
+	elmt.innerHTML = str;
+}
+
 
 function buildConnectionsContentForUser()
 {
@@ -382,6 +449,16 @@ function closeMessagePopup()
 		elmt.innerHTML = '<div id="connectPeopleMessagePopup"></div>';
 }
 
+function getLatestFriendsList()
+{	
+	var jsObj ={	
+			task:"getLatestFriendsList"
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLatestFriendsList.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 
 function callAjax(jsObj,url){
 	var results;	
@@ -402,6 +479,12 @@ function callAjax(jsObj,url){
 					{
 						showStatus(results);						
 						getAllRequestMessagesForUser();
+						getLatestFriendsList();
+						
+					}
+					else if(jsObj.task == "getLatestFriendsList")
+					{
+						getFriendsListForUser(results);				
 					}
 					else if(jsObj.task == "rejectRequest")
 					{
