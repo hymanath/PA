@@ -45,4 +45,5 @@ public interface IAnanymousUserService {
 	
 	public ProblemDetailsVO getPostedProblemsCount(Long registrationId);
 	
+	public DataTransferVO getAllPeopleConnectedPeopleForUser(List<Long> userId);
 }	
