@@ -170,10 +170,10 @@ h3 {
 			Constituency Type
 		</th>	
 		<td align="left" class="middle">		
-			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect()" checked="checked"/>MLA
+			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect();getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');" checked="checked"/>MLA
 		</td>
 		<td align="left" class="edge">	
-			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect()"/>MP	
+			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect();getStates(1,'stateSelect','siteSearch','stateSelect','current','null');"/>MP	
 		</td>		
 	</tr>
 	<tr>
