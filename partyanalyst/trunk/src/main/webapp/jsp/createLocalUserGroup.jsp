@@ -482,7 +482,7 @@ function setLocationValue(value,source)
 
 <FIELDSET class="fieldsetEle">
 <LEGEND style="font-size:12px;"><strong>Group Scope Details</strong></LEGEND>
-<table class="formTableStyle" width="100%" height="64" cellpadding="0" cellspacing="0" border="0" align="center">
+<table class="formTableStyle" height="64" cellpadding="0" cellspacing="0" border="0" align="left">
  	 <tr>
 	    <td class="tdstyle">Group Scope<font class="required">*</font></td>
 		<td><s:select id="scopeLevel" name="groupScopeId" cssStyle="width:150px;" list="#session.USER_GROUP_SCOPES" listKey="id" listValue="name" value="defaultGroupScope" headerKey = "0" headerValue = "Select Scope" onchange="populateLocations(this.options[this.selectedIndex].value,'onChange')"></s:select></td>
@@ -529,7 +529,7 @@ function setLocationValue(value,source)
 			<td><s:select id="mandalField" cssClass="selectWidth" name="scopeMandal" list="#session.mandalsList" listKey="id" listValue="name" onchange="getSubRegionsInTehsilOrLocalElecBody(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text,'userGroupReg','null','cadreLevel','constituencyField', 'row6', 'row5')"></s:select></td>
 	    </tr>
 		 <tr id="row5" style="display:none;" >
-			
+			<td class="tdstyle" width="105px"><s:label for="hamletField_s" id="villageLabel"  value="Village/Ward/Division"/><font class="required"> * </font></td>
 			<td><s:select id="hamletField_s" cssClass="selectWidth" name="scopeVillage" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Location" onchange="getBoothsInWard('cadreLevel','constituencyField','boothField_s',this.options[this.selectedIndex].value,'userGroupReg','mandalField')"></s:select></td>
 	     </tr>
 		 <tr id="row6" style="display:none;">
@@ -540,7 +540,7 @@ function setLocationValue(value,source)
 	</FIELDSET>
 	<table class="formTableStyle" width="100%">	
 		<tr>
-		<td width="500"></td>
+		<td width="300"></td>
 		 <td><div align="right">
 			<s:submit cssClass="button" cssStyle="width:130px;" value="Save Group" name="Save"></s:submit>
 			</div>
