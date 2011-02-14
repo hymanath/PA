@@ -142,14 +142,26 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			e.printStackTrace();
 		}	
 		log.debug("Task::"+jObj.getString("task"));
-		if(jObj.getString("task").equalsIgnoreCase("statesInCountry"))
-		{
-			//to fetch all states in country
-			List<SelectOptionVO> states = getRegionServiceDataImp().getStatesByCountry(1l); 
-			states.add(0, new SelectOptionVO(0l,"Select Location"));
-			setRegionsList(states);
+		   
+			if(jObj.getString("task").equalsIgnoreCase("statesInCountry"))
+			{
+				//to fetch states in country
+				List<SelectOptionVO> states= getRegionServiceDataImp().getStatesByCountryForSearch(1l); 
+				states.add(0, new SelectOptionVO(0l,"Select Location"));
+				setRegionsList(states);
+			   
+			}	
+
+			else if(jObj.getString("task").equalsIgnoreCase("stateSelect"))
+			{
+				//to fetch states in country
+				List<SelectOptionVO> states= getRegionServiceDataImp().getStatesByCountry(1l); 
+				states.add(0, new SelectOptionVO(0l,"Select Location"));
+				setRegionsList(states);
 			
-		} else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
+			}
+
+		 else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
 		{
 			//to fetch all districts in state
 			Long stateId = jObj.getLong("id");
