@@ -619,7 +619,7 @@ function buildQuickRegionAccessContent()
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th>District</th>';
 	str += '<td> - </td>';
-	str += '<td><a href="districtPageAction.action?districtId='+districtId+'&districtName='+districtName+'">'+districtName+'</a></td>';
+	str += '<td><a href="districtPageAction.action?districtId='+districtId+'&districtName='+districtName+'">'+districtName+'</a></td>';	
 	str += '</tr>';
 	str += '<tr>';
 	str += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
@@ -651,12 +651,14 @@ function buildQuickRegionAccessContent()
 	cStr += '<th>From '+districtName+' District</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+districtId+'\',\''+districtName+'\',\''+loginUserId+'\',\'DISTRICT\')">'+districtConnectCount+'</a></td>';
+	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';	
 	cStr += '<tr>';
 	cStr += '<td><img height="5" width="7" src="images/icons/districtPage/listIcon.png"></td>';
 	cStr += '<th>From '+constituencyName+' Constituency</th>';
 	cStr += '<td> - </td>';
 	cStr += '<td><a href="javascript:{}" onclick="showAllConnectPeopleWindow(\''+constituencyId+'\',\''+constituencyName+'\',\''+loginUserId+'\',\'CONSTITUENCY\')">'+constituencyConnectCount+'</a></td>';
+	cStr += '<td><img width="25" height="20" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></td>';
 	cStr += '</tr>';
 	cStr += '</table>';
 	cStr += '</div>';
@@ -783,17 +785,13 @@ function showPostedProblems(jsObj,results)
 	str += '<th align="left">Problems Approved</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'approved\')">'+results.approvedProblemsCount+'</a> </td>';
-	str += '</tr>';
-
-	str += '<tr>';
-	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	
+	str += '<td></td>';
 	str += '<th align="left">Problems Rejected</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'rejected\')">'+results.rejectedProblemsCount+'</a> </td>';
-	str += '</tr>';
-
-	str += '<tr>';
-	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	
+	str += '<td></td>';
 	str += '<th align="left">Problems Not Considered</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'notConsidered\')">'+results.notConsideredProblemsCount+' </a></td>';
@@ -1039,7 +1037,7 @@ function showPostedReasons(jsObj,results)
 	str += '<div class="tabContainerHeading">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td align="left" width="180px"> Total posted reasons - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+	str += '<td align="left" width="211px"> Total Political reasons posted - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
 	str += '<td align="left" width="90px"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
 	str += '<td align="left" width="90px"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';
 	str += '<td align="right">';
@@ -1047,7 +1045,7 @@ function showPostedReasons(jsObj,results)
 	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';
 	str += '</td>';
 	str += '</tr>';
-	str += '</table>';
+	str += '</table>'; 
 	str += '</div>';
 	str += '<div style="padding:5px;">';
 	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;"> Reasons Status Details Posted By User </div>';
@@ -1057,17 +1055,13 @@ function showPostedReasons(jsObj,results)
 	str += '<th align="left">Reasons Approved</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'Approved\')">'+approvedReasonsCount+'</a> </td>';
-	str += '</tr>';
-
-	str += '<tr>';
-	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	
+	str += '<td></td>';
 	str += '<th align="left">Reasons Rejected</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'rejected\')">'+rejectedReasonsCount+'</a> </td>';
-	str += '</tr>';
-
-	str += '<tr>';
-	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
+	
+	str += '<td></td>';
 	str += '<th align="left">Reasons Not Considered</th>';
 	str += '<td> - </td>';
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'NotConsidered\')">'+notConsideredReasonsCount+' </a></td>';
