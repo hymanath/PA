@@ -67,7 +67,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 					candidateName.append(values[2]).append(" ");
 				if(values[3] != null)
 					candidateName.append(values[3]);
-				candidateNamesAndIds.add(new SelectOptionVO((Long)values[0], candidateName.toString().trim()));
+				candidateNamesAndIds.add(new SelectOptionVO((Long)values[0], candidateName.toString().trim().toUpperCase()));
 			}
 			candidateNamesAndIdsList = candidateNamesAndIds;
 		}else

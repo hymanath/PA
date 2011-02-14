@@ -385,5 +385,7 @@ public interface IConstants {
     public static final String MODEL_ID = "MODEL_ID";
     
     public static final String SELECT_USER_MESSAGE = "select a user";
+    
+    public static final String STATES_FOR_SEARCH_FUNCTIONALITY = "1,12,24";
           
 }

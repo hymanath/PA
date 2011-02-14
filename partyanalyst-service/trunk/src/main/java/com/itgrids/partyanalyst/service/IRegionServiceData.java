@@ -59,4 +59,6 @@ public interface IRegionServiceData {
 	public Boolean checkForHamletsAvailability(Long locationId);
 	public Boolean checkForAreaRuralType(Long locationId);
 	
+	public List<SelectOptionVO> getStatesByCountryForSearch(Long countryID);
+	
 }

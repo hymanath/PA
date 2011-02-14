@@ -44,7 +44,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 				Object[] values = (Object[]) constituencies.get(i);
 				constituencyId = (Long)values[0];
 				constituencyName = (String)values[1];
-				constituencyNamesAndIdsList.add(new SelectOptionVO(constituencyId, constituencyName));
+				constituencyNamesAndIdsList.add(new SelectOptionVO(constituencyId, constituencyName.toUpperCase()));
 			}
 		}else{
 			System.out.println("Entered into else for constituencySearchResult");
