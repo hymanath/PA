@@ -212,13 +212,17 @@
 	function getCensusDetails()
 	{
 		var censusElmt = document.getElementById("censusSelect");
+		
+		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
+		if(censusValue == 0)
+			return;
+
 		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
 		var districtElmt = document.getElementById("districtList");
 		var errorElmt = document.getElementById("censusReporterror_Div");
 
 		var reportLevel = '';
-		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
 		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
@@ -258,14 +262,23 @@
 	
 	function getPartyResultsByRanges(value)
 	{
-		var resultByRanges = partyResultsByRanges;	
-		var data = new google.visualization.DataTable();
-		data.addRows(resultByRanges.length);		
+		var resultByRangesVar = partyResultsByRanges;
+		var resultByRanges = new Array()
 
+		for(var i=0; i<resultByRangesVar.length; i++)
+		{
+			if(resultByRangesVar[i].avgPercent != null && resultByRangesVar[i].avgPercent > 0)
+				resultByRanges.push(resultByRangesVar[i])
+		}
+
+		var data = new google.visualization.DataTable();
+		data.addRows(resultByRanges.length);	
+		
 		if(value == "seats")
 		{	
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Seats Won');
+				
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				data.setValue(i, 0, resultByRanges[i].range);
@@ -276,10 +289,10 @@
 		{
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Percentage');
+			
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				data.setValue(i, 0, resultByRanges[i].range);
-				//data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
 				data.setValue(i, 1, resultByRanges[i].avgPercent);
 			}
 		}
@@ -287,10 +300,10 @@
 		{
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'CP*-Avg');
+		
 			for(var i=0; i<resultByRanges.length; i++)
 			{
 				data.setValue(i, 0, resultByRanges[i].range);
-				//data.setValue(i, 1, parseInt(resultByRanges[i].avgPercent));
 				data.setValue(i, 1, resultByRanges[i].PConstavgPercent);
 			}
 		}
@@ -301,7 +314,18 @@
 	
 	function getAllPartyResultsByRanges(value)
 	{
-		var results = allPartyResultsByRanges;
+		var resultsVar = allPartyResultsByRanges;
+		var results = new Array();
+
+		for(var i=0;i<resultsVar.length; i++)
+		{
+			var flag = null;
+			for(var j=0;j<resultsVar[i].partiesResults.length;j++)
+				if(resultsVar[i].partiesResults[j].votesPercent != null && resultsVar[i].partiesResults[j].votesPercent > 0)
+					flag = "true";
+			if(flag == "true")
+				results.push(resultsVar[i]);
+		}
 		
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
@@ -320,9 +344,10 @@
 		{			
 			for(var i=0; i<results.length; i++)
 			{			
-					data.setValue(i, 0, results[i].range);
-					for(var j=0; j<results[i].partiesResults.length; j++)
-						data.setValue(i, j+1, results[i].partiesResults[j].totalSeatsWon);		
+				data.setValue(i, 0, results[i].range);
+				
+				for(var j=0; j<results[i].partiesResults.length; j++)
+					data.setValue(i, j+1, results[i].partiesResults[j].totalSeatsWon);
 			}			
 		}
 		else if(value == "percentage")
@@ -330,17 +355,19 @@
 			for(var i=0; i<results.length; i++)
 			{			
 					data.setValue(i, 0, results[i].range);
+					
 					for(var j=0; j<results[i].partiesResults.length; j++)
-						data.setValue(i, j+1, results[i].partiesResults[j].votesPercent);		
-			}
+						data.setValue(i, j+1,results[i].partiesResults[j].votesPercent);		
+				}
 		}
 		else if(value == "cpAvg")
 		{			
 			for(var i=0; i<results.length; i++)
 			{			
-					data.setValue(i, 0, results[i].range);
-					for(var j=0; j<results[i].partiesResults.length; j++)
-						data.setValue(i, j+1, parseFloat(results[i].partiesResults[j].PConstavgPercentage));		
+				data.setValue(i, 0, results[i].range);
+
+				for(var j=0; j<results[i].partiesResults.length; j++)
+					data.setValue(i, j+1, parseFloat(results[i].partiesResults[j].PConstavgPercentage));	
 			}			
 		}
 
@@ -376,14 +403,26 @@
         data.addColumn('string', 'Range');
 		for(var i=0; i<results[0].partiesResults.length; i++)
 	        data.addColumn('number', results[0].partiesResults[i].partyName);
-    
-		data.addRows(results.length);
-
+		
+		var resultsVar = new Array();
 		for(var i=0; i<results.length; i++)
+		{
+			var flag = null;
+			for(var j=0;j<results[i].partiesResults.length;j++)
+				if(results[i].partiesResults[j].votesPercent != null && results[i].partiesResults[j].votesPercent > 0)
+					flag = "true";
+			if(flag == "true")
+				resultsVar.push(results[i]);
+		}
+		
+		data.addRows(resultsVar.length);
+
+		for(var i=0; i<resultsVar.length; i++)
 		{			
-				data.setValue(i, 0, results[i].range);
-				for(var j=0; j<results[i].partiesResults.length; j++)
-					data.setValue(i, j+1, results[i].partiesResults[j].votesPercent);		
+			data.setValue(i, 0, resultsVar[i].range);
+			
+			for(var j=0; j<resultsVar[i].partiesResults.length; j++)
+				data.setValue(i, j+1,resultsVar[i].partiesResults[j].votesPercent);		
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('allPartyCensusResults_body'));
@@ -506,12 +545,20 @@
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
         data.addColumn('number', 'Percentage');
-        data.addRows(resultByRanges.length);
-
+		
+		var resultByRangesVar = new Array();
 		for(var i=0; i<resultByRanges.length; i++)
+		{
+			if(resultByRanges[i].avgPercent != null && resultByRanges[i].avgPercent > 0)
+				resultByRangesVar.push(resultByRanges[i]);
+		}
+        
+		data.addRows(resultByRangesVar.length);
+
+		for(var i=0; i<resultByRangesVar.length; i++)
 		{			
-				data.setValue(i, 0, resultByRanges[i].range);
-				data.setValue(i, 1, resultByRanges[i].avgPercent);		
+				data.setValue(i, 0, resultByRangesVar[i].range);
+				data.setValue(i, 1, resultByRangesVar[i].avgPercent);		
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
@@ -1200,7 +1247,7 @@
 				<td>
 					<select id="yearSelect">
 						<option>2009</option>
-						<option>2004</option>
+					<!--<option>2004</option>  -->
 					</select>
 				</td>
 				<th>Census Type</th>
@@ -1294,6 +1341,7 @@
 	</div>
 	<script>
 	hideDistrictSelect();
+	getLocationHierarchies(1,'districtsInState','influencingPeopleReg','districtList','currentAdd');
 	</script>
 </body>
 </html>
