@@ -468,7 +468,7 @@ function connectUserSetPeople()
 				connectUserIds:users,
 				connectMessage:connectMsg,
 				userId:connectUserLoginId,
-				locationType:connetLocationType,
+				locationType:"CONSTITUENCY",
 				task:"connectUserSet"
 			 };
 	
