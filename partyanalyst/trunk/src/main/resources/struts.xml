@@ -2030,12 +2030,18 @@
 				<param name="root">problemsGropedByDeptOrCadre</param>				
 			</result> 
 		</action>
-				
+		         
 		<action name="genericModuleDataUpload" class="com.itgrids.partyanalyst.web.action.GenericUploadDataAction" method="execute" >
 			<result name="success" >/jsp/genericUpload.jsp</result> 
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
-       	
+		
+		 <action name="problemAssigningAction" class="problemAssigningAction" >
+        	<result name="input">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
+         	<result name="success">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
+         	<result name="error">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
+        </action>
+        		       	
 	</package>
 </struts>      
