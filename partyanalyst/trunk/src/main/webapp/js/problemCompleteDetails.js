@@ -146,7 +146,7 @@ function showProblemAllComments(results)
 	}
 	str+='<th width="10%">Total Posts:';
 	str+='</th>';
-	str+='<th width="1%">'+results.totalPosts+'';
+	str+='<th width="1%">'+results.totalResultsCount+'';
 	str+='</th>';	
 	str+='</tr>';
 	str+='</table>';
