@@ -957,8 +957,8 @@ public class CadreRegisterAction extends ActionSupport implements
 			}*/
 			
 						
-			if(cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0
-					&& cadreInfo.getEndingDate() != null)
+			if(cadreInfo.getEffectiveDate()!=null && cadreInfo.getEndingDate()!=null && cadreInfo.getEffectiveDate().length() != 0 && cadreInfo.getEndingDate().length()!= 0
+					)
 			{
 			try
 			{
