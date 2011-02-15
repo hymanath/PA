@@ -208,9 +208,9 @@ public class DataApprovalService implements IDataApprovalService {
 			{
 				for(int i=0;i<postsCount.size();i++){
 					Object[] params = (Object[])postsCount.get(i);
-					if("Accept".equals(params[2].toString()))
+					if(IConstants.ACCEPT.equals(params[2].toString()))
 						problemBeanVO.setAcceptedCount(params[1].toString());
-					else if("Reject".equals(params[2].toString()))
+					else if(IConstants.REJECT.equals(params[2].toString()))
 						problemBeanVO.setRejectedCount(params[1].toString());				
 					totalPostsCount += (Long)params[0]; 							
 				}
