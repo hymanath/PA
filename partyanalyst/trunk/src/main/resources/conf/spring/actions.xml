@@ -6,6 +6,9 @@
 <beans>
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
+	<bean id="problemAssigningAction" class="com.itgrids.partyanalyst.web.action.ProblemAssigningAction" singleton="false">
+	</bean>
+	
 	<bean id="constituencyWiseCensusMappingAction" class="com.itgrids.partyanalyst.web.action.ConstituencyWiseCensusMappingAction" singleton="false">
 	 	<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
