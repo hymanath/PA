@@ -28,6 +28,8 @@ public class ProblemManagementDataVO extends ResultStatus {
 	private List<ProblemBeanVO> fixedProblems;
 	private ResultStatus resultStatus;
 	
+	private Long totalResultsCount;
+	
 	public ProblemsOfUserVO getProblemsOfUserVO() {
 		return problemsOfUserVO;
 	}
@@ -106,5 +108,13 @@ public class ProblemManagementDataVO extends ResultStatus {
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
+	}
+
+	public Long getTotalResultsCount() {
+		return totalResultsCount;
+	}
+
+	public void setTotalResultsCount(Long totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
 	}	
 }
