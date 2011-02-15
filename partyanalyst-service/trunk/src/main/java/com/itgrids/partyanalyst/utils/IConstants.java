@@ -387,5 +387,8 @@ public interface IConstants {
     public static final String SELECT_USER_MESSAGE = "select a user";
     
     public static final String STATES_FOR_SEARCH_FUNCTIONALITY = "1,12,24";
+    
+    public static final String ACCEPT = "Accept";
+    public static final String REJECT = "Reject";
           
 }
