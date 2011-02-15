@@ -8,6 +8,10 @@ public class ProblemsOfUserVO {
 		private List<SelectOptionVO> problemRegionScopes;
 		private List<SelectOptionVO> problemTypes;
 		
+		private Long totalResultsCount;
+		
+		private ResultStatus resultStatus;
+		
 		public ProblemsOfUserVO(){
 			
 		}
@@ -40,6 +44,22 @@ public class ProblemsOfUserVO {
 
 		public void setProblemTypes(List<SelectOptionVO> problemTypes) {
 			this.problemTypes = problemTypes;
+		}
+
+		public ResultStatus getResultStatus() {
+			return resultStatus;
+		}
+
+		public void setResultStatus(ResultStatus resultStatus) {
+			this.resultStatus = resultStatus;
+		}
+
+		public Long getTotalResultsCount() {
+			return totalResultsCount;
+		}
+
+		public void setTotalResultsCount(Long totalResultsCount) {
+			this.totalResultsCount = totalResultsCount;
 		}
 
 }

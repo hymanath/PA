@@ -46,7 +46,6 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		return this.id.intValue();
 	}
 
-	@Override
 	public int compareTo(SelectOptionVO obj) {
 		if(obj instanceof SelectOptionVO){
 			SelectOptionVO vo = (SelectOptionVO) obj;
