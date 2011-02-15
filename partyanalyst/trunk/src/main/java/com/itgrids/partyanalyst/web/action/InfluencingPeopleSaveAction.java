@@ -1,14 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.eclipse.jdt.core.dom.ThisExpression;
-
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -21,9 +17,6 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class InfluencingPeopleSaveAction extends ActionSupport implements ServletRequestAware{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
