@@ -92,7 +92,7 @@ function showConfirmation(results, obj)
 	var str = '';
 	if(results.resultCode == 0)
 	{
-		str ="You have Successfully posted your comment!";
+		str ="Your comment has been queued for moderation by the Moderator and will be published after approval.!";
 		
 	} else if(results.resultCode == 1)
 	{
@@ -229,7 +229,7 @@ h3 {
 							<div id="alertDiv" style="color:red;font-weight:bold;margin:2px;"></div>	
 							<table style="margin-top:10px;">
 							<tr>
-								<td><label>Comment</label></td>
+								<td><label>Comment <span style="font-weight:bold;color:red;font-size: 18px;">*</span></label></td>
 								<td><textarea id="rasonText" name="reasonText" onkeyup="clearError()"></textarea></td>
 							</tr>
 							</table>												
@@ -274,7 +274,7 @@ h3 {
 							<div id="alertDiv1" style="color:red;font-weight:bold;margin:2px;"></div>	
 							<table style="margin-top:10px;">
 							<tr>
-								<td><label>Comment</label></td>
+								<td><label>Comment <span style="font-weight:bold;color:red;">*</span></label></td>
 								<td><textarea id="rasonText1" cols="100" name="reasonText" onkeyup="clearError()"></textarea></td>
 							</tr>
 							</table>												
