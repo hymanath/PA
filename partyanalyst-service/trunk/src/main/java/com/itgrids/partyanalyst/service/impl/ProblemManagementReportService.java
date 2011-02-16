@@ -37,8 +37,6 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -65,6 +63,7 @@ import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
@@ -101,8 +100,16 @@ public class ProblemManagementReportService implements
 	private IProblemLocationDAO problemLocationDAO;
 	private IProblemManagementService problemManagementService;
 	private IBoothDAO boothDAO;
+	private IDataApprovalService dataApprovalService;
 	
-	
+	public IDataApprovalService getDataApprovalService() {
+		return dataApprovalService;
+	}
+
+	public void setDataApprovalService(IDataApprovalService dataApprovalService) {
+		this.dataApprovalService = dataApprovalService;
+	}
+
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -1657,6 +1664,9 @@ public class ProblemManagementReportService implements
 			List<ProblemBeanVO> problemBeanVO = null;
 			NavigationVO carryingObject = null;
 			ResultStatus resultStatus = new ResultStatus();
+			Long problemHistoryId = 0l;
+			String acceptCount,rejectCount;
+			String problemDesc;
 			try{
 				carryingObject = new NavigationVO();
 				problemBeanVO = new ArrayList<ProblemBeanVO>();		
@@ -1664,13 +1674,23 @@ public class ProblemManagementReportService implements
 					for(int i=0;i<list.size();i++){
 						Object[] parms = (Object[])list.get(i);
 						ProblemBeanVO resultStorage = new ProblemBeanVO();
-						resultStorage.setProblem(parms[0].toString());
+						problemDesc = parms[0].toString(); 						
+						resultStorage.setProblem(problemDesc.length()>35 ? problemDesc.substring(0,35).concat("..."):problemDesc);
 						resultStorage.setDescription(parms[1].toString());
 						resultStorage.setImpactLevel(parms[2].toString());
 						resultStorage.setPostedDate(parms[4].toString());
 						resultStorage.setName(parms[5].toString());
 						resultStorage.setProblemId((Long)parms[6]);
-						resultStorage.setProblemHistoryId((Long)parms[7]);
+						
+						problemHistoryId = (Long)parms[7];
+						
+						resultStorage.setProblemHistoryId(problemHistoryId);	
+						
+						acceptCount = dataApprovalService.getCountOfPosts(problemHistoryId).getAcceptedCount();
+						rejectCount = dataApprovalService.getCountOfPosts(problemHistoryId).getRejectedCount();
+						resultStorage.setAcceptedCount(acceptCount==null?"0":acceptCount);
+						resultStorage.setRejectedCount(rejectCount==null?"0":rejectCount);
+						
 						problemBeanVO.add(resultStorage);
 					}
 				}

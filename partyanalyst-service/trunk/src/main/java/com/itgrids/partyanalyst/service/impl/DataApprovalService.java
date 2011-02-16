@@ -180,15 +180,49 @@ public class DataApprovalService implements IDataApprovalService {
 		
 		return rs;
 	}
+	
+	
+	/**
+	 * This method can be used to get total number of accepted and rejected votes count for a problem.
+	 * @author Ravi Kiran.Y
+	 * @version 1.0, 16/02/11
+	 * @param problemHistoryId
+	 * @return
+	 */
+	public ProblemBeanVO getCountOfPosts(Long problemHistoryId){
+		ProblemBeanVO problemBeanVO  = new ProblemBeanVO();
+		Long totalPostsCount = 0l;			
+		try{
+			List postsCount = userProblemApprovalDAO.findCountOfPosts(problemHistoryId);
+			if(postsCount != null && postsCount.size()>0)
+			{
+				for(int i=0;i<postsCount.size();i++){
+					Object[] params = (Object[])postsCount.get(i);
+					if(IConstants.ACCEPT.equals(params[2].toString()))
+						problemBeanVO.setAcceptedCount(params[1].toString());
+					else if(IConstants.REJECT.equals(params[2].toString()))
+						problemBeanVO.setRejectedCount(params[1].toString());				
+					totalPostsCount += (Long)params[0]; 							
+				}
+			}
+			problemBeanVO.setTotalResultsCount(totalPostsCount.toString());
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return problemBeanVO;
+	}
 
+	
 	@SuppressWarnings("unchecked")
 	public ProblemBeanVO getAllProblemComments(Long problemHistoryId, int startIndex, int maxResult) throws Exception {
 		List<ApprovalInfoVO> approvals = new ArrayList<ApprovalInfoVO>(0);
 		ProblemBeanVO problemBeanVO  = new ProblemBeanVO();
+		ProblemBeanVO count = new ProblemBeanVO();
 		try{
-			List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId, startIndex,maxResult);	
-			List postsCount = userProblemApprovalDAO.findCountOfPosts(problemHistoryId);
-			Long totalPostsCount = 0l;			
+			List result = userProblemApprovalDAO.findApprovalInfoForProblem(problemHistoryId, startIndex,maxResult);
+			count = getCountOfPosts(problemHistoryId);
+			
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 			if(result != null && result.size()>0)
 			{
@@ -204,18 +238,9 @@ public class DataApprovalService implements IDataApprovalService {
 				}
 			
 			}
-			if(postsCount != null && postsCount.size()>0)
-			{
-				for(int i=0;i<postsCount.size();i++){
-					Object[] params = (Object[])postsCount.get(i);
-					if(IConstants.ACCEPT.equals(params[2].toString()))
-						problemBeanVO.setAcceptedCount(params[1].toString());
-					else if(IConstants.REJECT.equals(params[2].toString()))
-						problemBeanVO.setRejectedCount(params[1].toString());				
-					totalPostsCount += (Long)params[0]; 							
-				}
-			}
-			problemBeanVO.setTotalResultsCount(totalPostsCount.toString());
+			problemBeanVO.setAcceptedCount(count.getAcceptedCount());
+			problemBeanVO.setRejectedCount(count.getRejectedCount());	
+			problemBeanVO.setTotalResultsCount(count.getTotalResultsCount().toString());
 			problemBeanVO.setProblemApproovals(approvals);
 		} catch(Exception e)
 		{
