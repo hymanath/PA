@@ -690,7 +690,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			if(dataTransferVO.getConstituencyId() != null && dataTransferVO.getConstituencyId().longValue() != 0)
 				parliamentDetails =  delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(dataTransferVO.getConstituencyId());
 			
-			if(parliamentDetails.size() != 0)
+			if(parliamentDetails !=null && parliamentDetails.size() != 0)
 			{
 				params = (Object[])parliamentDetails.get(0);
 				
