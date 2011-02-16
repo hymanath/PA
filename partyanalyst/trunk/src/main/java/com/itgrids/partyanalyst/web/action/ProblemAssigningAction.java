@@ -1,20 +1,29 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProblemAssigningAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = -2691859423522316985L;
 	private HttpServletRequest request;
+	JSONObject jObj = null;
+	private String task;
 	private Long probHistoryId;
 	private Long cadreId;
 	private Long dept;
 	private Long problemType;
 	private Long problemResolvingRegionId;
+	private List<SelectOptionVO> deptScopesList;
 	
 	public HttpServletRequest getRequest() {
 		return request;
@@ -69,6 +78,22 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 	}
 	
 	
+	public List<SelectOptionVO> getDeptScopesList() {
+		return deptScopesList;
+	}
+
+	public void setDeptScopesList(List<SelectOptionVO> deptScopesList) {
+		this.deptScopesList = deptScopesList;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public String execute() throws Exception{
 		
 		System.out.println("========================");
@@ -82,5 +107,29 @@ public class ProblemAssigningAction extends ActionSupport implements ServletRequ
 		return SUCCESS;
 	}
 	
-
-}
+	public String ajaxCallHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		deptScopesList = new ArrayList<SelectOptionVO>(0);
+		
+		if(jObj.getString("task").equalsIgnoreCase("getProblemResolvingDeptScopes"))
+		{
+			//Here retrive the dept scopes
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getDepartmentCategories"))
+		{
+			//here retrive the Department Categories
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getDepartments"))
+		{
+			//here retrive the Departments
+		}
+		
+		return SUCCESS;
+	}
+	
+ }

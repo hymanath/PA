@@ -2,11 +2,28 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Problem Details</title>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+ 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 <style type="text/css">
 
@@ -40,7 +57,7 @@ font-size:12px;
 padding:5px;
 }
 
-.problemDetailsTable td
+.problemDetailsTable td,th
 {
 	text-align:left;
 }
@@ -64,10 +81,16 @@ background-repeat:repeat;
 color:#FFFFFF;
 float:left;
 }
+
+.requiredFont {
+color:red;
+margin-left:5px;
+}
 </style>
 
 <script type="text/javascript">
- var problemCompleteDetailsVO = '${problemCompleteDetailsVO}';
+ var status = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
+ 
  var pHistoryId = <%=request.getParameter("pHistoryId")%>;
 
 function getCadreDetails()
@@ -107,6 +130,48 @@ function doExecuteOnLoad()
 	probHisEle.value = pHistoryId;
 }
 
+function showProbStatusDetails()
+{ 
+	var AssignTabEle = document.getElementById("probAssigningTabId");
+	AssignTabEle.style.display = "block";
+}
+
+function getProblemDepartments(selected,task)
+{
+	var jsObj=
+		{
+			selected : selected,
+			task	 : task
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemDepartmentsAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function callAjax(jsObj,url)
+{
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+						}
+						catch(e)
+						{   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o )
+					 {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+					 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
 </script>
 </head>
 <body class="bodyStyle">
@@ -121,7 +186,19 @@ function doExecuteOnLoad()
 	</TR>
 </TABLE>
 </CENTER>
-
+<DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
+<DIV>
+<table>
+	<tr>
+		<td colspan="2">
+			<div style="color: red;">
+				<s:actionerror />
+				<s:fielderror />
+			</div>
+		</td>
+	</tr>
+</table>
+</DIV>
 <DIV style="width:550px;">
 <FIELDSET>
 <LEGEND>Problem Details</LEGEND>
@@ -153,41 +230,63 @@ function doExecuteOnLoad()
 </FIELDSET>
 </DIV>
 
+<DIV id="assigningButtonDiv">
+
+<Table align="center">
+	<TR>
+		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO ${problemCompleteDetailsVO.problemBasicDetails.problemStatus}' class="button" onclick="showProbStatusDetails();getProblemDepartments('getProblemResolvingDeptScopes')"/></td> 
+	</TR>
+<Table>
+</DIV>
+
+<form method="post" action="problemAssigningAction.action">
+<table width="100%" id="probAssigningTabId" style="display:none;">
+<tr><td>
+<DIV id="problemAssigningDiv">
 <FIELDSET>
-<LEGEND>Problem Moving</LEGEND>
-<form method="post" action="problemAssigningAction">
-<TABLE align="left"  width="100%">
-<tr>
-	<td width="200px"><b>Problem Resolving Region</b></td>
-	<td><s:select id="scopeLevel" cssClass="selectWidth" name="problemResolvingRegionId" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope"></s:select></td>
-</tr>
-<tr>
-	<td><b>Problem Type</b></td>
-	<td>
-		<s:select id="problemTypeId" cssClass="selectWidth" name="problemType" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select>
-	</td>
-</TR>
+<LEGEND>Problem Details</LEGEND>
+<TABLE>
+	<tr>
+		<th width="225px"><s:label for="scopeLevel" id="wardOrHamletLabel" theme="simple" value="Problem Resolving Dept Scope"/></th>
+		<td><s:select id="scopeLevel" cssClass="selectWidth" name="problemResolvingRegionId" theme="simple" list="#session.impactedRegionsList" onChange="getProblemDepartments(this.options[this.selectedIndex],'getDepartmentCategories')"listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope"></s:select></td>
+	</tr>
 
-<tr>
-	<td><b>Assign To Any Dept</b></td>
-	<td>
-		<s:select id="deptId" cssClass="selectWidth" name="dept" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Dept"></s:select>
-	</td>
-</TR>
+	<tr>
+		<th><s:label for="problemTypeId" id="wardOrHamletLabel"  theme="simple" value="Department Category"/></th>
+		<td>
+			<s:select id="problemTypeId" cssClass="selectWidth" name="problemType" theme="simple" onChange="getProblemDepartments(this.options[this.selectedIndex],'getDepartments')" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select>
+		</td>
+	</Tr>
 
-<tr>
-	<td width="150px"><b>Assign To Any Cadre</b></td>
-	<td><input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>
-</tr>
-<input type="hidden" id="cadreInputId" name="cadreId"/>
-<input type="hidden" id="probHistoryId" name="probHistoryId"/>
-<s:submit name="Save"/>
-</form>
-</TABLE>
-<table>
-<tr><div id="cadreDetailsDiv" style="display:none;"></div></tr>
+	<tr>
+		<th><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Select Department"/></th>
+		<td>
+			<s:select id="deptId" cssClass="selectWidth" name="dept" theme="simple" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Dept"></s:select>
+		</td>
+	</tr>
+
+	<tr>
+		<th width="150px"><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Assign To Any Cadre"/></th>
+		<td><input type="button" style="width:120px;height:30px;" value="Get Cadre" class="button" onclick="getCadreDetails()"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><s:submit name="Save" theme="simple" /></td>
+	</tr>
+	<tr>
+		<div id="cadreDetailsDiv" style="display:none;" theme="simple" ></div></tr>
+	</tr>
+
+	<input type="hidden" id="cadreInputId" name="cadreId"/>
+	<input type="hidden" id="probHistoryId" name="probHistoryId"/>
+	</form>
+	
 </table>
 </FIELDSET>
+</DIV>
+</td></tr>
+</table>
+
 <script>
 doExecuteOnLoad();
 </script>
