@@ -4,13 +4,16 @@ import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -26,6 +29,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	private static final Logger log = Logger.getLogger(CandidateDetailsForElectionDetailsReportAction.class);
 	
 	private HttpServletRequest request;
+	private HttpSession session;
 	private String electionId;
 	private String stateID;
 	private String electionType;
@@ -40,7 +44,33 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	
 	private IStaticDataService staticDataService; 
 	private IElectionAnalyzeService electionAnalyzeService;
+	private EntitlementsHelper entitlementsHelper;
+	private Boolean reasonPostingEntitlement;
 	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public Boolean getReasonPostingEntitlement() {
+		return reasonPostingEntitlement;
+	}
+
+	public void setReasonPostingEntitlement(Boolean reasonPostingEntitlement) {
+		this.reasonPostingEntitlement = reasonPostingEntitlement;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public IElectionAnalyzeService getElectionAnalyzeService() {
 		return electionAnalyzeService;
 	}
@@ -164,6 +194,14 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 
 	public String execute () throws Exception 
 	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		
+		if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.REASONS_POSTING))
+			reasonPostingEntitlement = true;
+		else
+			reasonPostingEntitlement = false;
+		
 		statesListObj = staticDataService.getAllStatesInCountry();
 		districtsList = staticDataService.getDistricts(new Long(stateID));
 		districtsList.add(0, new SelectOptionVO(0l,"Select A District"));
