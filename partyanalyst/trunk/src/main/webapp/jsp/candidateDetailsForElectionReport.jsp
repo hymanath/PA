@@ -58,14 +58,37 @@
 		height:28px;
 		width:110px;
 	} 
+
+	#accessContent_body
+	{
+		font-size:16px;
+		color:#3D3A32;
+	}
+
+	.contactUsTable th
+	{
+		padding:5px;
+		color:#20435A;
+		text-align:left;
+	}
+
+	.contactUsTable td
+	{
+		padding:5px;
+		text-align:left;
+	}
+
 </style>
 
-<SCRIPT type="text/javascript"><!--
+<SCRIPT type="text/javascript">
+
 var electionType = '${electionType}';
 var electionId = '${electionId}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
+var reasonPostingEntitlement = ${reasonPostingEntitlement};
+
 var participatedCandidatesDetailsDataTable,previousCommentsDataTable;
 var candidateDetailsObj={
 		candidateDetailsArr:[],
@@ -616,7 +639,7 @@ function buildDataTable(rparam)
 		var candidateId = oRecord.getData("candidateId");	
 		var rank = oRecord.getData("rank");	
 		var partyName = oRecord.getData("partyName");		
-		elLiner.innerHTML ='<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateId+'\',\''+candidateName+'\',\'candidate\',\''+rank+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+partyName+'\',\''+1+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>';			
+		elLiner.innerHTML ='<A href="javascript:{}" title="Click To View/Add Reasons" onclick="checkForEntitlement(\''+candidateId+'\',\''+candidateName+'\',\'candidate\',\''+rank+'\',\''+constituencyId+'\',\''+constituencyName+'\',\''+partyName+'\',\''+1+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>';			
 	  };
 	  
 	var candidateDetails = [ 
@@ -737,7 +760,7 @@ function showCandidates(results,jsObj)
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
 					moreDetails: '<A href="javascript:{}" title="Click To View Detailed Election Results" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
-					comments: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\',\''+jsObj.task+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
+					comments: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="checkForEntitlement(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\',\''+jsObj.task+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
 					commentsCount: candidateDetails[i].commentsCount+" Reasons"
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
@@ -753,6 +776,47 @@ function showCandidates(results,jsObj)
 		{errorEl.style.display = 'block'}
 		//buildParticipatedCandidatesDetailsDataTable(emptyArray);
 	}	
+}
+
+function checkForEntitlement(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status)
+{
+
+	var elmt = document.getElementById('commentsDialogDiv');
+
+	if(reasonPostingEntitlement)
+		showCommentsDialog(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status);
+	else
+	{
+		addCommentsDialog = $( "#commentsDialogDiv" ).dialog({
+			title:"Access Info",
+			autoOpen: true,
+			show: "blind",
+			width: 450,
+			minHeight:200,
+			modal: true,
+			hide: "explode"
+		});
+
+		var str = '';
+		str += '<div>';		
+		str += '<div id="accessContent_body">';
+		str += "<p style='color:red'>Sorry! You don't have access to post reason</p>";
+		str += '<p style="text-decoration:underline;">For access privileges please contact us at:</p>';
+		str += '<table class="contactUsTable">';
+		str += '<tr>';
+		str += '<th valign="top">Email<th>';
+		str += '<td valign="top">info@itgrids.com<br/>a.dakavaram@itgrids.com</td>';
+		str += '</tr>';		
+		str += '<tr>';
+		str += '<th valign="top">Mobile<th>';
+		str += '<td valign="top">+91-9676696760</td>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+		
+		elmt.innerHTML = str;
+	}
 }
 
 function showTehsilCandidatesByDistrictWise(results,jsObj){

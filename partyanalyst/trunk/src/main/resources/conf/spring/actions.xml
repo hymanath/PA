@@ -387,6 +387,7 @@
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="electionAnalyzeService" ref="electionAnalyzeService" />
+			<property name="entitlementsHelper" ref="entitlementsHelper" />			
 	</bean>
 	<bean id="alliancePartiesPageAction" class="com.itgrids.partyanalyst.web.action.AlliancePartiesPageAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
