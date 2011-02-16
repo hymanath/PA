@@ -60,7 +60,9 @@
 		<pattern>/cadreRegisterPopupAction*</pattern>
 		<pattern>/cadreRegisterPagePopupAction*</pattern>
 		<pattern>/analyzeConstituencyPopupAction*</pattern>
-		<pattern>/problemDetailsAndStatusAction*</pattern>								
+		<pattern>/problemDetailsAndStatusAction*</pattern>							
+		<pattern>/problemAssigningAction*</pattern>
+
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
