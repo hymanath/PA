@@ -390,3 +390,10 @@ div#constituencyRightContentOuter a:hover
 	margin:5px;
 	padding:5px;
 }
+
+.messageStyles
+{
+	color: #1B7AB0;
+	font-size: 12px;
+	font-weight: bold;
+}
