@@ -125,6 +125,7 @@
 											<div id="connectPeople_editProfile_center" class="yui-skin-sam">
 											</div>
 										</td>
+								<c:if test="${sessionScope.UserType != 'PartyAnalyst'}"> 
 										<td width="20%" valign="top">
 											<div class="connectPeople_profile_center_linksDiv">
 												<table>
@@ -151,6 +152,7 @@
 												</table>												
 											</div>
 										</td>
+								</c:if>
 									</tr>
 									
 								</table>
@@ -421,6 +423,7 @@
 
 		loginUserId = '${loginUserId}';
 		loginUserName = '${loginUserName}';		
+		userType = '${UserType}';		
 		stateId = '${dataTransferVO.stateId}';
 		stateName = '${dataTransferVO.stateName}';
 		districtId = '${dataTransferVO.districtId}';

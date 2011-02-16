@@ -34,6 +34,7 @@ var commentsInfo = {
 
 var loginUserId = '';
 var loginUserName = '';
+var userType = '';
 var stateId = '';
 var stateName = '';
 var districtId = '';
@@ -136,7 +137,7 @@ function buildInboxMessagesForUser()
 		str += '<td>There are 0 messages.</td>';
 		str += '</tr></table>';
 		str += '</div>';		
-		str += '<div id="messagesContent">';
+		str += '<div id="messagesContent" class="messageStyles">';
 		str += 'No messages has been sent to you.';
 		str += '</div>';	
 		elmt.innerHTML = str;
@@ -239,13 +240,13 @@ function getFriendsListForUser(results)
 
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
-		str += '<div> asdf Data could not be retrived due to some technical difficulties</div>';
+		str += '<div> Data could not be retrived due to some technical difficulties</div>';
 		elmt.innerHTML = str;
 		return;
 	}
 	else if(results.connectedPeople == "")
 	{
-		str += '<div> asdf There are no connections established till now.</div>';
+		str += '<div>There are no connections established till now.</div>';
 		elmt.innerHTML = str;
 		return;
 	}
@@ -309,13 +310,13 @@ function buildConnectionsContentForUser()
 
 	if(arrStatus.resultCode != "0")
 	{
-		str += '<div> Data could not be retrived due to some technical difficulties</div>';
+		str += '<div class="messageStyles"> Data could not be retrived due to some technical difficulties</div>';
 		elmt.innerHTML = str;
 		return;
 	}
 	else if(arrData.length == 0)
 	{
-		str += '<div> There are no connections established till now.</div>';
+		str += '<div class="messageStyles"> There are no connections established till now.</div>';
 		elmt.innerHTML = str;
 		return;
 	}
@@ -857,7 +858,9 @@ function showPostedProblems(jsObj,results)
 	else
 		str += '<td width="90px">By Others - <a href="javascript:{}" onclick="openDialogOfProblems(\'OtherUsers\')">'+results.postedProblemsCountByOtherUsers+'</a></td>';
 
-	str += '<td align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
+	if(userType != "PartyAnalyst")
+		str += '<td align="right"><a href="javascript:{}" onclick="openAddNewProblemWindowForDashBoard()">Post Problem</a></td>';
+
 	str += '</tr>';
 	str += '</table>';
 	str += '</div>';
@@ -1120,12 +1123,24 @@ function showPostedReasons(jsObj,results)
 	str += '<div class="tabContainerHeading">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<td align="left" width="211px"> Total Political reasons posted - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
-	str += '<td align="left" width="90px"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
-	str += '<td align="left" width="90px"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';
+	
+	if(userType != "PartyAnalyst"){
+		str += '<td align="left" width="211px"> Total Political reasons posted - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+		str += '<td align="left" width="90px"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
+		str += '<td align="left" width="90px"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
+	}else{
+		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
+		str += '<td align="left" width="90px"> By User - '+postedReasonsByLoggedInUser+'</td>';
+		str += '<td align="left" width="90px"> By Others - '+postedReasonsCountByOtherUsers+'</td>';	
+	}
+	
 	str += '<td align="right">';
-	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')">Add Reasons</a>';
-	str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';
+
+	if(userType != "PartyAnalyst"){		
+		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'analyze\')">Add Reasons</a>';
+		str += '	<a href="javascript:{}" onclick="openAddReasonWindow(\'viewResults\')">View Reasons</a>';
+	}
+	
 	str += '</td>';
 	str += '</tr>';
 	str += '</table>'; 
