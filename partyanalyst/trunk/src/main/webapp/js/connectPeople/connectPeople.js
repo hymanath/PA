@@ -229,6 +229,7 @@ function markMessageAsRead(msgId)
 
 function getFriendsListForUser(results)
 {
+	
 	var elmt = document.getElementById("connectPeople_connect_center");
 
 	if(!elmt)
@@ -236,24 +237,24 @@ function getFriendsListForUser(results)
 	
 	var str = '';
 
-	if(results.resultCode != "0")
+	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
-		str += '<div> Data could not be retrived due to some technical difficulties</div>';
+		str += '<div> asdf Data could not be retrived due to some technical difficulties</div>';
 		elmt.innerHTML = str;
 		return;
 	}
-	else if(arrData.length == "")
+	else if(results.connectedPeople == "")
 	{
-		str += '<div> There are no connections established till now.</div>';
+		str += '<div> asdf There are no connections established till now.</div>';
 		elmt.innerHTML = str;
 		return;
 	}
-	console.log("connectedPeople.length--->"+connectedPeople.length);
+	
 	str += '<div id="connection_main_head">';
 	str += '<table>';
 	str += '<tr>';
 	str += '<td width="40px"><img src="images/icons/indexPage/group_icon.png"></td>';
-	str += '<td>You have total '+connectedPeople.length+' connections.</td>';
+	str += '<td>You have total '+results.connectedPeople.length+' connections.</td>';
 	str += '</tr>';
 	str += '</table>';	
 	str += '</div>';
@@ -266,19 +267,19 @@ function getFriendsListForUser(results)
 	str += '</td>';
 	str += '<td width="70%" valign="top">';
 	str += '<div id="connection_main_data">';
-	for(var i=0; i<connectedPeople.length; i++)
+	for(var i=0; i<results.connectedPeople.length; i++)
 	{
 		str += '<div>';
 		str += '<table>';
 		str += '<tr>';
 		str += '<td rowspan="3"><img height="50" width="55" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
-		str += '<td valign="top">'+arrData[i].candidateName+'</td>';
+		str += '<td valign="top">'+results.connectedPeople[i].candidateName+'</td>';
 		str += '</tr>';
 		str += '<tr>';		
-		str += '<td valign="top">'+arrData[i].constituencyName+'</td>';
+		str += '<td valign="top">'+results.connectedPeople[i].constituencyName+'</td>';
 		str += '</tr>';	
 		str += '<tr>';		
-		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
+		str += '<td valign="top" align="left"><a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')">Send a Message</a></td>';
 		str += '</tr>';	
 		str += '</table>';
 		str += '</div>';
@@ -479,8 +480,7 @@ function callAjax(jsObj,url){
 					{
 						showStatus(results);						
 						getAllRequestMessagesForUser();
-						getLatestFriendsList();
-						
+						getLatestFriendsList();						
 					}
 					else if(jsObj.task == "getLatestFriendsList")
 					{
