@@ -216,9 +216,9 @@
 	    <div id="biElectionPage_header">
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
-				<td><img border="none" src="images/icons/statePage/header_left.png"></td>
+				<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
 				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bye-Elections - 2010 Analysis</span></div></td>
-				<td><img border="none" src="images/icons/statePage/header_right.png"></td>
+				<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 			</tr>
 		</table>
 	    </div>

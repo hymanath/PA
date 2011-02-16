@@ -143,13 +143,13 @@
 	}
 	#mainHeadingDiv
 	{
-		background-image:url(images/icons/statePage/header_body.png);
+		background-image:url(images/icons/electionResultsAnalysisReport/mid.png);
 		color:highlight;
 		font-family:verdana;
 		font-size:16px;
 		font-weight:bold;
-		height:27px;
-		padding:4px;
+		height:20px;
+		padding:5px;
 		color: #000000;
 	}
 	
@@ -1846,10 +1846,10 @@ function createCoulmnChart()
 <center>
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
-		<td valign="top"><img border="none" src="images/icons/statePage/header_left.png"></td>
+		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
 		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
 		<c:if test="${allianceCheck == 'false'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
-		<td valign="top"><img border="none" src="images/icons/statePage/header_right.png"></td>
+		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 	</tr>
 </tbody></table>
 
