@@ -279,7 +279,7 @@
 															<span class="headerLabelSpan">
 																<table cellspacing="0" cellpadding="0">
 																	<tr>
-																		<td align="left">Know Your</td>
+																		<td align="left">News About</td>
 																		<td></td>
 																	</tr>
 																	<tr>
@@ -324,7 +324,7 @@
 															<span class="headerLabelSpan">
 																<table cellspacing="0" cellpadding="0">
 																	<tr>
-																		<td align="left">Know Your</td>
+																		<td align="left">News About</td>
 																		<td></td>
 																	</tr>
 																	<tr>
@@ -369,7 +369,7 @@
 															<span class="headerLabelSpan">
 																<table cellspacing="0" cellpadding="0">
 																	<tr>
-																		<td align="left">Know Your</td>
+																		<td align="left">News About</td>
 																		<td></td>
 																	</tr>
 																	<tr>

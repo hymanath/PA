@@ -631,7 +631,7 @@ function buildDataTable(rparam)
 	       							{key:"marginVotesPercentage", label: "Margin Votes %",sortable:true},
 	       							{key:"details", label: "More Details",formatter:YAHOO.widget.DataTable.moreDetails},
 	       							{key:"commentsCount", label: "Comments Count",formatter:YAHOO.widget.DataTable.commentsCount},
-	       							{key:"comments", label: "comments",formatter:YAHOO.widget.DataTable.comments}
+	       							{key:"comments", label: "Reasons",formatter:YAHOO.widget.DataTable.comments}
 	       		    	        ]; 
 	       	var candidateDetailsDataSource = new YAHOO.util.DataSource("candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden+"&"); 
 	       	candidateDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
@@ -861,6 +861,10 @@ function handleAddCommentsSubmit(id,category,constituencyId)
 	var constituencyId;
 	var commentCategoryId;
 	var alertMessageEl = document.getElementById("alertMessage"); 
+
+	var reasonSeverityElmt = document.getElementById("slider-value");
+	var reasonSeverityvalue = reasonSeverityElmt.innerHTML;
+
 	if(category == "candidate")
 	{
 		var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
@@ -900,6 +904,7 @@ function handleAddCommentsSubmit(id,category,constituencyId)
 				postedBy: postedByVal,
 				category: category,
 				commentCategoryId: commentCategoryId,
+				reasonSeverityvalue:reasonSeverityvalue,
 				task:"addNewComment"				
 			  }	 
 			
@@ -915,7 +920,7 @@ function handleAddCommentsSubmit(id,category,constituencyId)
 function handleAddCommentsCancel(task,status)
 {
 	allCandidates();
-	addCommentsDialog.hide();
+	addCommentsDialog.dialog("destroy");	
 }
 
 

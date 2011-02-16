@@ -5,7 +5,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 {	
 	var elmt = document.getElementById('commentsDialogDiv');
 
-	$( "#commentsDialogDiv" ).dialog({
+	addCommentsDialog = $( "#commentsDialogDiv" ).dialog({
 			title:"Add/View Your Reasons",
 			autoOpen: true,
 			show: "blind",
