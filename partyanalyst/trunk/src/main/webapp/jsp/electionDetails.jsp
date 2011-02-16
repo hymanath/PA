@@ -1736,9 +1736,9 @@ callAjax(rparam,jsObj,url);
 <DIV id="sampleDiv"></DIV>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD><TD valign="top">
+<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none" style="margin-top:15px;" /></TD><TD valign="top">
 <c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" style="margin-top:15px;" border="none"/>
 </TD>
 </TR>
 </TABLE>

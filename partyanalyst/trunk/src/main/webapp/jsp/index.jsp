@@ -111,7 +111,7 @@
 				<div id="dashBoardCenterlayout_header">		
 					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
 					<tr>
-					<td style="width:35px;"><img src="images/icons/indexPage/swasthic_left.png"/></td>
+					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
 					<td class="centerSwasthicImage" style="vertical-align: middle;">	
 						<table width="100%" style="width:100%;">
 							<tr>
@@ -124,7 +124,7 @@
 						</table>						
 
 					</td>
-					<td style="width:35px;"><img src="images/icons/indexPage/swasthic_right.png"/></td>					
+					<td style="width:3px;"><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>					
 					</table>
 				</div>
 				<div id="dashBoardCenterlayout_body">
