@@ -139,8 +139,17 @@ function buildDistrictLevelProblemWindow()
 		{
 			var data = problemsInfo[i];			
 			str+='<div class="problemDataDivClass">';
-			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png" style="margin-right:5px;"></img></span>';
-			str+='<span><a class="districtAnc" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
+			str+='<table>';
+			str+='	<tr>';
+			str+='		<td width="80%">';
+			str+='			<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png" style="margin-right:5px;"></img></span>';
+			str+='			<span>';
+			str+='				<a class="districtAnc" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.problem+'</a></span>';
+			str+='		</td>';
+			str+='		<td width="10%"><img width="20" height="20" title="Accepted Votes" src="images/icons/accept.png"/></td><td style="font-weight:bold;font-size:13px">'+data.acceptedCount+'</td>';	
+			str+='      <td><img width="20" height="20" src="images/icons/reject.png" title="Rejected Votes"/></td><td style="font-weight:bold;font-size:13px">'+data.rejectedCount+'</td>';		
+			str+='	</tr>';
+			str+='</table>';
 			str+='</div>';
 			str+='<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>';
 		}
