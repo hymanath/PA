@@ -2042,6 +2042,13 @@
          	<result name="success">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
          	<result name="error">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>
         </action>
-        		       	
+        
+        <action name="getProblemDepartmentsAjaxAction" class="problemAssigningAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">deptScopesList</param>				
+			</result>		
+		</action>
+		  
+             		       	
 	</package>
 </struts>      
