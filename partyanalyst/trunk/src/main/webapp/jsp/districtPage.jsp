@@ -1311,9 +1311,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		<td width="67%">
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
-						<td><img border="none" width="40" height="35" src="images/icons/statePage/header_left.png"></td>
+						<td><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
 						<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${districtName}" /> District Details</div></span></td>
-						<td><img border="none" width="40" height="35" src="images/icons/statePage/header_right.png"></td>
+						<td><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 					</tr>
 				</table>
 		</td>
