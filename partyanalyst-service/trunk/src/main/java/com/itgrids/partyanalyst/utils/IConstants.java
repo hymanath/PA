@@ -390,5 +390,7 @@ public interface IConstants {
     
     public static final String ACCEPT = "Accept";
     public static final String REJECT = "Reject";
+    
+    public static final String REASONS_POSTING = "REASONS_POSTING";
           
 }
