@@ -463,14 +463,27 @@ function connectUserSetPeople()
 
 	var connectTextAreaElmt = document.getElementById("AllConnectUserMsg");
 	var connectMsg = connectTextAreaElmt.value;
-	var jsObj ={
+	
+	if(connetLocationType=="DISTRICT"){
+		var jsObj ={
+				connetLocationId:districtId,				
+				connectUserIds:users,
+				connectMessage:connectMsg,
+				userId:connectUserLoginId,
+				locationType:connetLocationType,
+				task:"connectUserSet"
+			 };
+	}else{
+		var jsObj ={
 				connetLocationId:connetLocationId,				
 				connectUserIds:users,
 				connectMessage:connectMsg,
 				userId:connectUserLoginId,
-				locationType:"CONSTITUENCY",
+				locationType:connetLocationType,
 				task:"connectUserSet"
 			 };
+	}
+	
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "connectToUserSetAction.action?"+rparam;					
