@@ -470,6 +470,9 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		if(user!=null && user.getUserStatus() != null && user.getUserStatus().toString().equalsIgnoreCase(IConstants.FREE_USER)){
 			userDetails.setLoginStatus("true");
 			userDetails.setUserId(user.getRegistrationID());
+		}else if(user!=null && user.getUserStatus() != null){
+			userDetails.setLoginStatus("true");
+			userDetails.setUserId(user.getRegistrationID());
 		}else{
 			userDetails.setLoginStatus("false");
 		}
