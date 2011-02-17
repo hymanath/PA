@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.GenericException;
 
 public interface IStaticDataService {
 
@@ -273,7 +274,7 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getLocationsHirarchyByType(String type,Long id);
 		
-		public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType);
+		public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType) throws GenericException;
 		
 		public String removeSpecialCharectersFromString(String formatString);
 		

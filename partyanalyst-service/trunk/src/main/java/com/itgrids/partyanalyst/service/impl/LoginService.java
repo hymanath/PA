@@ -250,12 +250,19 @@ public class LoginService implements ILoginService{
 			}
 	}
 	
+	/**
+	 * This method can be used to get all the default entitlements for a user.
+	 * 
+	 */
 	public List<String> getDefaultEntitlements(String defaultEntitlementsGroup){
 		List<String> defaultEntitlements = new ArrayList<String>();
-		List<GroupEntitlementRelation> entitlementRelations = groupEntitlementDAO.getfindGroupEntitlementsByGroupName(IConstants.DEFAULT_ENTITLEMENTS_GROUP);
-		for(GroupEntitlementRelation relation:entitlementRelations)
-			defaultEntitlements.add(relation.getEntitlement().getEntitlementType());
-		
+		try{
+			List<GroupEntitlementRelation> entitlementRelations = groupEntitlementDAO.getfindGroupEntitlementsByGroupName(defaultEntitlementsGroup);
+			for(GroupEntitlementRelation relation:entitlementRelations)
+				defaultEntitlements.add(relation.getEntitlement().getEntitlementType());
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
 		return defaultEntitlements;
 	}
 	

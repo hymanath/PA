@@ -94,6 +94,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
+import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -125,6 +126,7 @@ import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
 import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
+import com.itgrids.partyanalyst.utils.GenericException;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyElectionResultComparator;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
@@ -3696,15 +3698,15 @@ public class StaticDataService implements IStaticDataService {
 	}	
 
 	@SuppressWarnings("unchecked")
-	public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType){
+	public List<TeshilPartyInfoVO> getLocalElectionPartyDetails(List result,String latestMuncipalElectionYear,String electionType) throws GenericException{
 		BigDecimal percentage = new BigDecimal(0.0);		 
 		 Float totalValidVotes=0f;
 		 Long winningCandidateRank=1l;
 		 List<TeshilPartyInfoVO> allMuncipalities = new ArrayList<TeshilPartyInfoVO>(0);		 
 		 if(result==null){
-			 throw new NullPointerException("Failed to retrive data..");
+			 throw new GenericException("Failed to retrive data..");
 		 }else if(result.size()==0){
-			 throw new NullPointerException("Data Not Available..");
+			 throw new GenericException("Data Not Available..");
 		 }	
 		 ListIterator it = result.listIterator();
 		 while(it.hasNext()){
@@ -3725,9 +3727,9 @@ public class StaticDataService implements IStaticDataService {
 		     Map<String,Long> winningSeats =  new HashMap<String,Long>(0);
 			 List partyInfo = nominationDAO.findSeatsWonByAPartyInMuncipalityForAnElectionYear(muncipalityId,latestMuncipalElectionYear,electionType,winningCandidateRank);
 			 if(partyInfo==null){
-				 throw new NullPointerException("Failed to retrive data..");
+				 throw new GenericException("Failed to retrive data..");
 			 }else if(partyInfo.size()==0){
-				 throw new NullPointerException("Data Not Available..");
+				 throw new GenericException("Data Not Available..");
 			 }	
 			 ListIterator partyIds = partyInfo.listIterator();
 			 while(partyIds.hasNext()){
@@ -3736,9 +3738,9 @@ public class StaticDataService implements IStaticDataService {
 			 }				 		
 			 List allPartyInfo = nominationDAO.getPartysInfoForAMuncipalityForAnElectionYear(electionType,muncipalityId,latestMuncipalElectionYear);
 			 if(allPartyInfo==null){
-				 throw new NullPointerException("Failed to retrive data..");
+				 throw new GenericException("Failed to retrive data..");
 			 }else if(allPartyInfo.size()==0){
-				 throw new NullPointerException("Data Not Available..");
+				 throw new GenericException("Data Not Available..");
 			 }				
 			 ListIterator partyId = allPartyInfo.listIterator();
 			 while(partyId.hasNext()){
@@ -3787,9 +3789,9 @@ public class StaticDataService implements IStaticDataService {
 				successorCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,successorRank);
 				winningCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,winnerRank);
 				 if(successorCandidate==null || winningCandidate==null ){
-					 throw new NullPointerException("Failed to retrive data..");
+					 throw new GenericException("Failed to retrive data..");
 				 }else if(successorCandidate.size()==0 || winningCandidate.size()==0){
-					 throw new NullPointerException("Data Not Available..");
+					 throw new GenericException("Data Not Available..");
 				 }	
 				allVotersDetails = populateElectionsData(winningCandidate,successorCandidate,0,1,IConstants.MUNCIPLE_ELECTION_TYPE);				
 				mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);					
@@ -3798,9 +3800,9 @@ public class StaticDataService implements IStaticDataService {
 				successorCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,successorRank);
 				winningCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,winnerRank);
 				if(allCandidates==null || successorCandidate==null || winningCandidate==null ){
-					 throw new NullPointerException("Failed to retrive data..");
+					 throw new GenericException("Failed to retrive data..");
 				 }else if(allCandidates.size()==0 ||successorCandidate.size()==0 || winningCandidate.size()==0){
-					 throw new NullPointerException("Data Not Available..");
+					 throw new GenericException("Data Not Available..");
 				 }
 				winningCandidateVotersDetails = populateElectionsData(winningCandidate,successorCandidate,flag,1,IConstants.MUNCIPLE_ELECTION_TYPE);
 				allVotersDetails = populateElectionsDataForAllCandidates(winningCandidate,allCandidates,1,IConstants.MUNCIPLE_ELECTION_TYPE);
@@ -3812,9 +3814,9 @@ public class StaticDataService implements IStaticDataService {
 				successorCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,successorRank);
 				winningCandidate = getMuncipalityLevelElectionCandidateDetailsForAConstituency(electionType,muncipalityId,electionYear,candidateDetailsType,partyId,winnerRank);
 				 if(successorCandidate==null || winningCandidate==null ){
-					 throw new NullPointerException("Failed to retrive data..");
+					 throw new GenericException("Failed to retrive data..");
 				 }else if(successorCandidate.size()==0 || winningCandidate.size()==0){
-					 throw new NullPointerException("Data Not Available..");
+					 throw new GenericException("Data Not Available..");
 				 }	
 				allVotersDetails = populateElectionsData(winningCandidate,successorCandidate,0,1,IConstants.MUNCIPLE_ELECTION_TYPE);				
 				mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);		
@@ -3822,9 +3824,9 @@ public class StaticDataService implements IStaticDataService {
 			else if(candidateDetailsType.equalsIgnoreCase("all")){	
 				List result = nominationDAO.getAllPartiesForAMuncipality(electionType,muncipalityId,electionYear);
 				if(result==null){
-					 throw new NullPointerException("Failed to retrive data..");
+					 throw new GenericException("Failed to retrive data..");
 				 }else if(result.size()==0){
-					 throw new NullPointerException("Data Not Available..");
+					 throw new GenericException("Data Not Available..");
 				 }
 				ListIterator li = result.listIterator();
 				List<SelectOptionVO> allPartiesInMuncipality = new ArrayList<SelectOptionVO>(0);
@@ -5526,7 +5528,7 @@ public class StaticDataService implements IStaticDataService {
 				return sources;
 			}
 			else{
-				throw new Exception("Data Not Available");
+				throw new GenericException("Data Not Available");
 			}
 			
 		}catch(Exception e){
