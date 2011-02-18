@@ -9,8 +9,16 @@ public class UserCommentsInfoVO extends ResultStatus{
 	private String commentCategory;
 	private Long commentCategoryId;
 	private List<CandidateCommentsVO> candidateComments;
-	private Long commentsCount;
+	private Long totalResultsCount;
 	
+	public Long getTotalResultsCount() {
+		return totalResultsCount;
+	}
+
+	public void setTotalResultsCount(Long totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
+	}
+
 	public List<CandidateCommentsVO> getCandidateComments() {
 		return candidateComments;
 	}
@@ -19,13 +27,7 @@ public class UserCommentsInfoVO extends ResultStatus{
 		this.candidateComments = candidateComments;
 	}
 
-	public Long getCommentsCount() {
-		return commentsCount;
-	}
-
-	public void setCommentsCount(Long commentsCount) {
-		this.commentsCount = commentsCount;
-	}
+	
 
 	public Double getCommentScore() {
 		return commentScore;
