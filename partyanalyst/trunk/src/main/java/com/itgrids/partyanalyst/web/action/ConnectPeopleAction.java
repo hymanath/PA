@@ -611,7 +611,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public String getAllPostedProblemsData()
 	{		
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("results"));
+		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
 		String order = request.getParameter("dir");
 		String columnName = request.getParameter("sort");
 		String type = request.getParameter("type");
@@ -662,7 +662,7 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	public String getAllPostedReasonsData()
 	{
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
-		Integer results = Integer.parseInt(request.getParameter("results"));
+		Integer results = Integer.parseInt(request.getParameter("resultsCount"));
 		String order = request.getParameter("dir");
 		String columnName = request.getParameter("sort");
 		String type = request.getParameter("type");
