@@ -18,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -71,7 +72,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IUserProfileOptsDAO userProfileOptsDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	private IProblemHistoryDAO problemHistoryDAO;
+	private ICommentDataCategoryDAO commentDataCategoryDAO;
 	
+	public ICommentDataCategoryDAO getCommentDataCategoryDAO() {
+		return commentDataCategoryDAO;
+	}
+
+	public void setCommentDataCategoryDAO(
+			ICommentDataCategoryDAO commentDataCategoryDAO) {
+		this.commentDataCategoryDAO = commentDataCategoryDAO;
+	}
+
 	public IProblemHistoryDAO getProblemHistoryDAO() {
 		return problemHistoryDAO;
 	}
@@ -1329,14 +1340,16 @@ public class AnanymousUserService implements IAnanymousUserService {
 					comment.setConstituencyName(params[4].toString());
 					comment.setRank((Long)params[5]);
 					comment.setElectionType(params[6].toString());
-					comment.setElectionYear(params[7].toString());					
+					comment.setElectionYear(params[7].toString());		
+					
+					comment.setCommentCategory(commentDataCategoryDAO.get(commentData.getCommentDataCategory().getCommentDataCategoryId()).getCommentDataCategoryType());
 					
 					commentsList.add(comment);					
 				}
 			}	
 			
 			userComments.setCandidateComments(commentsList);
-			userComments.setCommentsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
+			userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
 			
 			return userComments; 
 			
@@ -1509,7 +1522,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			e.printStackTrace();
 		}
 		
-		problemDetailsVO.setProblemsCount(totalRecords);
+		problemDetailsVO.setTotalResultsCount(totalRecords.toString());
 		problemDetailsVO.setProblemsInfo(problemList);
 		return problemDetailsVO;
 		
