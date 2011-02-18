@@ -120,18 +120,18 @@
 										<td width="20%" valign="top">
 											<img height="100" width="90" style="border:1px solid #ADADAD;" src="images/icons/indexPage/human.jpg">
 										</td>
-										<td width="60%" valign="top" align="left">
+										<td width="55%" valign="top" align="left">
 											<div id="profileUserName">${loginUserName}</div>
 											<div id="connectPeople_editProfile_center" class="yui-skin-sam">
 											</div>
 										</td>
 								<c:if test="${sessionScope.UserType != 'PartyAnalyst'}"> 
-										<td width="20%" valign="top">
+										<td width="25%" valign="top">
 											<div class="connectPeople_profile_center_linksDiv">
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddReasonWindow('analyze')">Add Reasons</a></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('analyze')">Add Political Reasons</a></td>
 													</tr>
 												</table>												
 											</div>
@@ -139,7 +139,7 @@
 												<table>
 													<tr>
 														<td><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
-														<td><a href="javascript:{}" onclick="openAddReasonWindow('viewResults')">View Reasons</a></td>
+														<td><a href="javascript:{}" onclick="openAddReasonWindow('viewResults')">View Political Reasons</a></td>
 													</tr>
 												</table>												
 											</div>

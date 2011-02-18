@@ -33,7 +33,8 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/> 
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
-		<property name="problemHistoryDAO" ref="problemHistoryDAO" />	
+		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
+		<property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />			
 		
 	</bean>  
 	

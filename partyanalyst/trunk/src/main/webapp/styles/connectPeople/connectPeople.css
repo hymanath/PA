@@ -47,7 +47,7 @@
 #connectPeople_messages_center .yui-content 
 {
 	background-color:#FFFFFF;
-	height:515px;
+	height:715px;
 	border:1px solid #808080;
 	-moz-border-radius:10px 10px 10px 10px;
 }
@@ -396,4 +396,48 @@ div#constituencyRightContentOuter a:hover
 	color: #1B7AB0;
 	font-size: 12px;
 	font-weight: bold;
+}
+
+#postedDiv_head
+{
+	text-align:right;
+	padding:10px;
+}
+
+#postedDiv_head .yui-button button, #postedDiv_head .yui-button a, #postedDiv_head .yui-button a:visited
+{
+	font-size:11px;
+	font-weight:bold;
+	padding:5px 10px;
+}
+
+.postedDiv_dataInfo_main
+{
+	border:1px solid #D0CCC4;
+	margin:10px 0;
+	padding:5px;
+}
+
+.postedDiv_dataInfo_head
+{
+	border-bottom:1px solid #E8E5DE;
+	color:#413821;
+	font-size:13px;
+	font-weight:bold;
+	margin-bottom:5px;
+	padding-bottom:5px;
+}
+
+.postedDiv_dataInfo_table th
+{
+	padding:5px;
+	text-align:left;
+	color:#322C24;
+}
+
+.postedDiv_dataInfo_table td
+{
+	padding:5px;
+	text-align:left;
+	color:#273241;
 }

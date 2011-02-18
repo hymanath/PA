@@ -66,7 +66,7 @@ function initializeTabView()
 
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: 'Posted Reasons/Problems',
-		content: '<div id="postedDiv_main" style="text-align:left;"><div id="postedProblems_main"></div><div id="postedReasons_main"></div></div>',
+		content: '<div id="postedDiv_main" style="text-align:left;"></div>',
 		active: true
 	}));
 
@@ -820,7 +820,7 @@ function openAddNewProblemWindowForDashBoard()
 
 function showPostedProblems(jsObj,results)
 {	
-	var elmt = document.getElementById("postedProblems_main");
+	var elmt = document.getElementById("postedDiv_body_countInfo");
 	
 	/*if(results == null || results.length == 0)
 	{
@@ -891,7 +891,7 @@ function showPostedProblems(jsObj,results)
 
 function openDialogOfProblems(type)
 {
-	var reasons = new Array();
+	/*var reasons = new Array();
 	var title = '';
 	if(type == "Total")
 	{
@@ -919,9 +919,62 @@ function openDialogOfProblems(type)
 			minHeight:400,
 			modal: true,
 			hide: "explode"
-		});
+		});*/
 
-	buildProblemsDatatable(type);
+	//buildProblemsDatatable(type);
+
+	var jsObj ={				
+			task:"getAllPostedProblems_paginator"
+		 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getAllPostedProblemsDataAction.action?"+rparam+"&type="+type+"&sort=definition&dir=asc";	
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:5,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllPostedProblems_paginator(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+}
+
+function showAllPostedProblems_paginator(jsObj,results)
+{
+	var elmt = document.getElementById("postedDiv_body_dataInfo");
+
+	var str = '';
+	for(var i=0; i<results.problemsInfo.length; i++)
+	{
+		var data = results.problemsInfo[i];
+		
+		str += '<div class="postedDiv_dataInfo_main">';
+		str += '<div class="postedDiv_dataInfo_head">'+data.definition+'</div>';
+		str += '<div class="postedDiv_dataInfo_body">';
+		str += '<table class="postedDiv_dataInfo_table">';
+		str += '<tr>';
+		str += '<th>Description : </th>';
+		str += '<td colspan="5">'+data.description+'</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th>Location : </th>';
+		str += '<td>'+data.location+'</td>';
+		str += '<th>Existing From: </th>';
+		str += '<td>'+data.existingFrom+'</td>';
+		str += '<th>Identified Date : </th>';
+		str += '<td>'+data.identifiedDate+'</td>';
+		str += '</tr>';		
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+	}
+	str += '<div class="custom_paginator_class"></div>';
+
+	elmt.innerHTML = str;
 }
 
 function openProblemLocationWindow(problemId)
@@ -1005,7 +1058,7 @@ function buildProblemsDatatable(type)
 	};
 
 	var myConfigs = {
-				initialRequest: "sort=definition&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+				initialRequest: "sort=definition&dir=asc&startIndex=0&resultsCount=20", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
 				sortedBy : {key:"definition", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 				paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
@@ -1089,7 +1142,7 @@ function openAddReasonWindow(taskType)
 
 function showPostedReasons(jsObj,results)
 {
-	var elmt = document.getElementById("postedReasons_main");
+	var elmt = document.getElementById("postedDiv_body_countInfo");
 	var approvedReasonsCount = 0;
 	var rejectedReasonsCount = 0;
 	var notConsideredReasonsCount = 0;
@@ -1173,7 +1226,7 @@ function showPostedReasons(jsObj,results)
 
 function openDialogOfReasons(type)
 {
-	var reasons = new Array();
+	/*var reasons = new Array();
 	var title = '';
 	if(type == "Total")
 	{
@@ -1201,11 +1254,70 @@ function openDialogOfReasons(type)
 			minHeight:400,
 			modal: true,
 			hide: "explode"
-		});
+		});*/
 
 	//buildCommentsDatatable(reasons,"reasonsDataTable");
-	buildCommentsDatatable(type);
+	var jsObj ={				
+				task:"getAllPostedReasons_paginator"
+			 };
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	var url = "getAllPostedReasonsDataAction.action?"+rparam+"&type="+type+"&sort=candidate&dir=asc";	
+
+	custom_paginator.paginator({
+		startIndex:0,
+		resultsCount:5,
+		jsObj:jsObj,
+		ajaxCallURL:url,
+		paginatorElmt:"custom_paginator_class",
+		callBackFunction:function(){
+			showAllPostedReasons_paginator(jsObj,results);
+		}
+	});
+	custom_paginator.initialize();
+
+	//buildCommentsDatatable(type);
 }
+
+function showAllPostedReasons_paginator(jsObj,results)
+{
+	
+	var elmt = document.getElementById("postedDiv_body_dataInfo");
+
+	var str = '';
+	for(var i=0; i<results.candidateComments.length; i++)
+	{
+		var data = results.candidateComments[i];
+		var status;
+		if(data.rank == 1)
+			status = "winning";
+		else 
+			status = "losing";
+		str += '<div class="postedDiv_dataInfo_main">';
+		str += '<div class="postedDiv_dataInfo_head">Political Reason for '+data.candidate+' '+status+' in '+data.constituencyName+' '+data.electionType+' constituency</div>';
+		str += '<div class="postedDiv_dataInfo_body">';
+		str += '<table class="postedDiv_dataInfo_table">';
+		str += '<tr>';
+		str += '<th>Political Reason : </th>';
+		str += '<td>'+data.commentCategory+'</td>';
+		str += '<th>Posted By : </th>';
+		str += '<td>'+data.commentedBy+'</td>';
+		str += '<th>Posted On : </th>';
+		str += '<td>'+data.commentedOn+'</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th>Description : </th>';
+		str += '<td colspan="5">'+data.commentDesc+'</td>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+	}
+	str += '<div class="custom_paginator_class"></div>';
+
+	elmt.innerHTML = str;
+}
+
 
 function buildCommentsDatatable(type)
 {
@@ -1277,13 +1389,13 @@ function buildCommentsDatatable(type)
 	};
 
 	var myConfigs = {
-				initialRequest: "sort=candidate&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+				initialRequest: "sort=candidate&dir=asc&startIndex=0&resultsCount=20", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
 				sortedBy : {key:"candidate", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 				paginator: new YAHOO.widget.Paginator({ rowsPerPage:20 }) // Enables pagination 
 	};
 	
-	var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("reasonsDataTable", 
+	var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("postedDiv_body_dataInfo", 
 			resultsColumnDefs, dataSource, myConfigs);
 	
 	votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {		
@@ -1396,12 +1508,48 @@ function getAllPostedProblemsForUser()
 	callAjax(jsObj,url);
 }
 
+function buildReasonsProblemsTabContent()
+{
+	var elmt = document.getElementById("postedDiv_main");
+
+	var str = '';
+	str += '<div id="postedDiv_head">';	
+	str += '<input id="radio1" type="radio" name="radiofield1" value="Political Reasons" checked="checked">';
+	str += '<input id="radio2" type="radio" name="radiofield1" value="Problems">';	
+	str += '</div>';
+	str += '<div id="postedDiv_body">';
+	str += '<div id="postedDiv_body_countInfo"></div>';
+	str += '<div id="postedDiv_body_dataInfo"></div>';
+	str += '</div>';
+
+	elmt.innerHTML = str;
+	
+	var oButtonGroup1 = new YAHOO.widget.ButtonGroup("postedDiv_head");
+	var onButtonClick = function(e)
+	{
+		if(e.target.innerHTML == "Problems")
+		{
+			getAllPostedProblemsForUser();
+			openDialogOfProblems('Total');
+		}
+		else if(e.target.innerHTML == "Political Reasons")
+		{
+			getAllPostedReasonsForUser();			
+			openDialogOfReasons('Total');
+		}
+	};
+	oButtonGroup1.on("click", onButtonClick);
+
+	getAllPostedReasonsForUser();
+	openDialogOfReasons('Total');
+}
+
 function initializeConnectPeople()
 {
 	initializeTabView();	
 	getAllRequestMessagesForUser();
-	getAllPostedReasonsForUser();
-	getAllPostedProblemsForUser();
+	buildReasonsProblemsTabContent();
+	
 	buildInboxMessagesForUser();
 	buildConnectionsContentForUser();
 	buildPeopleYouMayKnowContent();
