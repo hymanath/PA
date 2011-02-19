@@ -15,7 +15,7 @@ function initializeHomePage()
 	//buildLogoImage();	
 	$( "#accordion" ).accordion();
 	buildElectionTrendzTabView();
-
+	buildHOmePageImageSlider();
 	var stateEl = document.getElementById("stateList_res");
 	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 
@@ -31,6 +31,65 @@ function initializeHomePage()
 	buildleadersNews();
 	buildTopStoriesNews();
 	buildPartiesNews();
+}
+
+function buildHOmePageImageSlider()
+{
+	var elmt = document.getElementById("homePage_Image_Header");
+
+	var str = '';
+	str += '<ul>';
+	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg1.png"></li>';
+	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg2.png"></li>';
+	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg3.png"></li>';
+	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg4.png"></li>';
+	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg5.png"></li>';
+	str += '</ul>';
+
+	elmt.innerHTML = str;
+	
+	var navArray = ['1','2','3','4','5'];
+	$("#homePage_Image_Header").sudoSlider({ 
+			numeric: false,
+			fade: true,
+			speed:'5000',
+			auto:true,
+			crossFade: false,
+			updateBefore:true,
+			prevNext: true,
+			startSlide: 1,
+			updateBefore: true,			
+			numericText:navArray
+	   });
+	
+	$(".prevBtn").mouseover(function(){
+	  $(".prevBtn").css("display","block");
+	});
+
+	$(".prevBtn").mouseout(function(){
+	  $(".prevBtn").css("display","none");
+	});
+
+	$(".nextBtn").mouseover(function(){
+	  $(".nextBtn").css("display","block");
+	});
+
+	$(".nextBtn").mouseout(function(){
+	  $(".nextBtn").css("display","none");
+	});
+		
+}
+
+function showNavImages()
+{
+	$(".prevBtn").show();
+	$(".nextBtn").show();
+}
+
+function hideNavImages()
+{
+	$(".prevBtn").hide();
+	$(".nextBtn").hide();
 }
 
 function openKnowMoreWindow()

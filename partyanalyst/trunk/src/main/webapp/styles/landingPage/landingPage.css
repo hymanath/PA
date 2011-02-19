@@ -662,6 +662,36 @@ input.input_text
 	line-height:20px;
 	text-align:justify;
 }
+
+
+#homePage_Image_Header {
+    width:660px;
+}
+#homePage_Image_Header img{
+    border:none;
+}
+#homePage_Image_Header ul, #homePage_Image_Header li{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#homePage_Image_Header li { 
+    width:696px;
+    overflow:hidden; 
+}
+
+.prevBtn, .nextBtn 
+{
+	display:none;
+	top:350px;
+	left:110px;
+}
+
+.nextBtn 
+{
+	left:711px;
+}
+
 /* indexPage styles*/
 
 
