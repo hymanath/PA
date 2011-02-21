@@ -679,16 +679,17 @@ input.input_text
     overflow:hidden; 
 }
 
-.prevBtn, .nextBtn 
+#controls
 {
-	display:none;
-	top:350px;
-	left:110px;
+	left:10px;
+	position:relative;
+	top:-40px;
 }
 
-.nextBtn 
+.controls li a
 {
-	left:711px;
+	height:10px;
+	padding:0 5px;
 }
 
 /* indexPage styles*/
