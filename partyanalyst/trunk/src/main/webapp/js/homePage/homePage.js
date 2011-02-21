@@ -39,57 +39,28 @@ function buildHOmePageImageSlider()
 
 	var str = '';
 	str += '<ul>';
-	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg1.png"></li>';
-	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg2.png"></li>';
-	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg3.png"></li>';
-	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg4.png"></li>';
-	str += '<li onmouseover="showNavImages()" onmouseout="hideNavImages()"><img src="images/icons/homePage_new/slideImg5.png"></li>';
+	str += '<li><img src="images/icons/homePage_new/slideImg1.png"></li>';
+	str += '<li><img src="images/icons/homePage_new/slideImg2.png"></li>';
+	str += '<li><img src="images/icons/homePage_new/slideImg3.png"></li>';
+	str += '<li><img src="images/icons/homePage_new/slideImg4.png"></li>';
+	str += '<li><img src="images/icons/homePage_new/slideImg5.png"></li>';
 	str += '</ul>';
 
 	elmt.innerHTML = str;
 	
-	var navArray = ['1','2','3','4','5'];
+	var navArray = ['','','','',''];
 	$("#homePage_Image_Header").sudoSlider({ 
-			numeric: false,
+			numeric: true,
 			fade: true,
 			speed:'5000',
 			auto:true,
 			crossFade: false,
 			updateBefore:true,
-			prevNext: true,
+			prevNext: false,
 			startSlide: 1,
 			updateBefore: true,			
 			numericText:navArray
 	   });
-	
-	$(".prevBtn").mouseover(function(){
-	  $(".prevBtn").css("display","block");
-	});
-
-	$(".prevBtn").mouseout(function(){
-	  $(".prevBtn").css("display","none");
-	});
-
-	$(".nextBtn").mouseover(function(){
-	  $(".nextBtn").css("display","block");
-	});
-
-	$(".nextBtn").mouseout(function(){
-	  $(".nextBtn").css("display","none");
-	});
-		
-}
-
-function showNavImages()
-{
-	$(".prevBtn").show();
-	$(".nextBtn").show();
-}
-
-function hideNavImages()
-{
-	$(".prevBtn").hide();
-	$(".nextBtn").hide();
 }
 
 function openKnowMoreWindow()
