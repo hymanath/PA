@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.CadreProblemDetails;
@@ -7,5 +9,7 @@ import com.itgrids.partyanalyst.model.CadreProblemDetails;
 public interface ICadreProblemDetailsDAO extends GenericDao<CadreProblemDetails, Long>{
 	
 	public Integer deleteProblemDetailsByCadre(Long cadreId);
+	
+	public List getCadreDetailsByProblemHistoryId(Long problemHistoryId);
 
 }

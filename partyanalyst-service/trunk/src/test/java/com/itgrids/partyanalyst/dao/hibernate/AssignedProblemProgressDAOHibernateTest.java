@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
@@ -38,7 +40,7 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 	public void testDept(){
 		List result =  assignedProblemProgressDAO.findProblemsForAHamletByHistoryId(538l);			
 		assertEquals(1, result.size());
-	}*/
+	}
 	
 	public void testGetAssignedProblemsProgressByLocation(){
 		List list = assignedProblemProgressDAO.getAssignedProblemsProgressByLocation(1l);
@@ -48,5 +50,30 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 		System.out.println(list.size());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetAssignedProblemProgressByRecentUpdate(){
+		
+		List<AssignedProblemProgress> result = assignedProblemProgressDAO.getProblemRecentUpdatesByProblemId(34L);
+		
+		System.out.println(" Result :" + result.size());
+		
+		for(AssignedProblemProgress res:result){
+			
+			System.out.println(" Id :" + res.getAssignedProblemProgressId());
+			System.out.println(" Id :" + res.getAssignedProblemProgressId() + " On :" + res.getPerformedDate().toString());
+			
+			Date today = new Date();
+			
+			long diffDate = today.getTime() - res.getPerformedDate().getTime();
+			
+			System.out.println((diffDate / (1000 * 60 * 60 * 24)));
+			
+			
+		}
+		
+		
 	}
 }

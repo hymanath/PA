@@ -18,11 +18,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 /**
  * ProblemSourceScope Entity
  * @author<a href="r.sivakumar@itgrids.com" >Sivakumar</a>
@@ -36,8 +39,10 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long problemSourceScopeId;
 	private String scope;
+	private State state;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0);
 	private Set<ProblemSourceScopeConcernedDepartment> departments = new HashSet<ProblemSourceScopeConcernedDepartment>();
+	private Set<DepartmentOrganisation> departmentOrganisation = new HashSet<DepartmentOrganisation>(0);
 	
 	public ProblemSourceScope(){
 		
@@ -47,10 +52,12 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 		this.problemSourceScopeId = problemSourceScopeId;
 	}
 
-	public ProblemSourceScope(String scope, Set<ProblemHistory> problemHistories, Set<ProblemSourceScopeConcernedDepartment> departments) {
+	public ProblemSourceScope(String scope, Set<ProblemHistory> problemHistories, Set<ProblemSourceScopeConcernedDepartment> departments,
+			Set<DepartmentOrganisation> departmentOrganisation) {
 		this.scope = scope;
 		this.problemHistories = problemHistories;
 		this.departments = departments;
+		this.departmentOrganisation = departmentOrganisation;
 	}
 
 	@Id
@@ -73,6 +80,17 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 		this.scope = scope;
 	}
 
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "state_id")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSourceScope")
 	public Set<ProblemHistory> getProblemHistories() {
 		return problemHistories;
@@ -90,5 +108,15 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 	public void setDepartments(
 			Set<ProblemSourceScopeConcernedDepartment> departments) {
 		this.departments = departments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSourceScope")
+	public Set<DepartmentOrganisation> getDepartmentOrganisation() {
+		return departmentOrganisation;
+	}
+
+	public void setDepartmentOrganisation(
+			Set<DepartmentOrganisation> departmentOrganisation) {
+		this.departmentOrganisation = departmentOrganisation;
 	}
 }

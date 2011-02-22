@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemClassificationVO;
+import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -71,4 +72,5 @@ public interface IProblemManagementReportService {
 	
 	public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType);
 	
+		
 }

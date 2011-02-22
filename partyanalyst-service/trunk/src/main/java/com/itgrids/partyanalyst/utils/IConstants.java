@@ -391,6 +391,22 @@ public interface IConstants {
     public static final String ACCEPT = "Accept";
     public static final String REJECT = "Reject";
     
-    public static final String REASONS_POSTING = "REASONS_POSTING";
+    public static final String CADRE_ADD = "CADRE_ADD";
+    public static final String CADRE_MODIFY = "CADRE_MODIFY";
+      
+    public static final String DEPARTMENT_ADD = "DEPARTMENT_ADD";
+    public static final String DEPARTMENT_MODIFY = "DEPARTMENT_MODIFY";
+    public static final String DEPARTMENT_DELETE = "DEPARTMENT_DELETE";
+    
+    public static final String PROBLEM_TYPE_ADD = "PROBLEM_TYPE_ADD";
+    public static final String PROBLEM_TYPE_MODIFY = "PROBLEM_TYPE_MODIFY";
+
           
+    public static final String PROBLEM_STATUS_ADD = "PROBLEM_STATUS_ADD";
+    public static final String PROBLEM_STATUS_MODIFY = "PROBLEM_STATUS_MODIFY";
+    
+    public static final String PROBLEM_COMMENTS_ADD = "PROBLEM_COMMENTS_ADD";
+    public static final String PROBLEM_COMMENTS_MODIFY = "PROBLEM_COMMENTS_MODIFY";
+        
+        
 }

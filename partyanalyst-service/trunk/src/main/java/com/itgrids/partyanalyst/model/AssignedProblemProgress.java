@@ -35,6 +35,13 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 	private Date performedDate;
 	private ProblemHistory problemHistory; 
 	private ProblemSourceScopeConcernedDepartment problemSourceScopeConcernedDepartment;
+	private ProblemCompleteLocation departmentLocation;
+	private DepartmentOrganisation departmentOrganisation;
+	private ProblemClassification problemClassification;
+	private Cadre cadre;
+	private String isCadreAssigned;
+	private ProblemActivity problemActivity;
+	private String comments;
 	
 	public AssignedProblemProgress(){
 		
@@ -48,12 +55,20 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 			String progressLevel,
 			Date performedDate,
 			ProblemHistory problemHistory,
-			ProblemSourceScopeConcernedDepartment problemSourceScopeConcernedDepartment) {
+			ProblemSourceScopeConcernedDepartment problemSourceScopeConcernedDepartment,
+			DepartmentOrganisation departmentOrganisation,
+			ProblemClassification problemClassification,
+			ProblemActivity problemActivity,
+			String comments) {
 		this.description = description;
 		this.progressLevel = progressLevel;
 		this.performedDate = performedDate;
 		this.problemHistory = problemHistory;
 		this.problemSourceScopeConcernedDepartment = problemSourceScopeConcernedDepartment;
+		this.departmentOrganisation = departmentOrganisation;
+		this.problemClassification = problemClassification;
+		this.problemActivity = problemActivity;
+		this.comments = comments;
 	}
 
 	@Id
@@ -85,8 +100,7 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 		this.progressLevel = progressLevel;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "performed_date", length = 50)
+	@Column(name = "performed_date", length = 10)
 	public Date getPerformedDate() {
 		return performedDate;
 	}
@@ -146,6 +160,86 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 
 	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_location_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemCompleteLocation getDepartmentLocation() {
+		return departmentLocation;
+	}
+
+	public void setDepartmentLocation(ProblemCompleteLocation departmentLocation) {
+		this.departmentLocation = departmentLocation;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cadre_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Cadre getCadre() {
+		return cadre;
+	}
+
+	public void setCadre(Cadre cadre) {
+		this.cadre = cadre;
+	}
+
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_organisation_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public DepartmentOrganisation getDepartmentOrganisation() {
+		return departmentOrganisation;
+	}
+
+	public void setDepartmentOrganisation(
+			DepartmentOrganisation departmentOrganisation) {
+		this.departmentOrganisation = departmentOrganisation;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "classification_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemClassification getProblemClassification() {
+		return problemClassification;
+	}
+
+	public void setProblemClassification(ProblemClassification problemClassification) {
+		this.problemClassification = problemClassification;
+	}
+
+	@Column(name = "is_cadre_assigned", length = 10)
+	public String getIsCadreAssigned() {
+		return isCadreAssigned;
+	}
+
+	public void setIsCadreAssigned(String isCadreAssigned) {
+		this.isCadreAssigned = isCadreAssigned;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "activity_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemActivity getProblemActivity() {
+		return problemActivity;
+	}
+
+	public void setProblemActivity(ProblemActivity problemActivity) {
+		this.problemActivity = problemActivity;
+	}
+
+	@Column(name = "comments", length = 350)
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	

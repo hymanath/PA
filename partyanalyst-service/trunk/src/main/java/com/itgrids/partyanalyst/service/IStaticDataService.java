@@ -282,5 +282,14 @@ public interface IStaticDataService {
 		
 		public Long getRecentAssemblyMainElectionIdInAState(Long stateId);
 		
+        public Long getStateIdForUserByAccessValue(Long userId);
+		
+		public Long getStateIdByUserAccessTypeAndValue(String userAccessType,String userAccessValue) throws Exception;
+		
+		public List<SelectOptionVO> getAllProblemStatus();
+		
+		public List<SelectOptionVO> getDefaultProblemStatus(String statusValues);
+		
 		public List<Long> getStaticPartiesAsList();
+        
 }

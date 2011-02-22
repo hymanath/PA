@@ -53,6 +53,8 @@ import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultWithAllianceDAO;
+import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -115,6 +117,8 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
+import com.itgrids.partyanalyst.model.ProblemStatus;
+import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SocialCategory;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
@@ -176,7 +180,26 @@ public class StaticDataService implements IStaticDataService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
 	private IElectionAnalyzeService electionAnalyzeService;
+	private IProblemStatusDAO problemStatusDAO;
 	
+	public IProblemStatusDAO getProblemStatusDAO() {
+		return problemStatusDAO;
+	}
+
+	public void setProblemStatusDAO(IProblemStatusDAO problemStatusDAO) {
+		this.problemStatusDAO = problemStatusDAO;
+	}
+
+	private IRegistrationDAO registrationDAO;
+	
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
@@ -3119,7 +3142,7 @@ public class StaticDataService implements IStaticDataService {
 			return null;
 		}
 	}
-	
+		
 	/**
 	 * This method gets all the important parties in the state.
 	 */
@@ -5670,6 +5693,117 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	 return electionId;
+	}
+
+	/**
+	 * Method To Get StateId for the User Access Value
+	 * @author Sai Krishna
+	 * @param userId
+	 * @return stateId
+	 */
+	public Long getStateIdForUserByAccessValue(Long userId){
+		
+		Long stateId = 0L;
+		
+		try{
+			
+			if(log.isInfoEnabled())
+				log.info("Getting User Object By User Id ..");
+			
+			Registration user = registrationDAO.get(userId);
+			
+			String userAccessType  = user.getAccessType();
+			String userAccessValue = user.getAccessValue();
+			
+			stateId = getStateIdByUserAccessTypeAndValue(userAccessType,userAccessValue);
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.error("Exception Raised :" + ex);
+		}
+			
+	 return stateId;
+	}
+	
+	/**
+	 * @param userAccessType
+	 * @param userAccessValue
+	 * @return
+	 * @throws Exception
+	 */
+	public Long getStateIdByUserAccessTypeAndValue(String userAccessType,String userAccessValue) throws Exception{
+		
+		Long stateId = 0L;
+		
+		if(userAccessType != null && userAccessType != "" && userAccessValue != null && userAccessValue != ""){
+			
+			if(userAccessType.equalsIgnoreCase(IConstants.STATE)){
+				
+				//Access Type is state
+				stateId = Long.parseLong(userAccessValue);
+				
+			}else if(userAccessType.equalsIgnoreCase(IConstants.DISTRICT)){
+				
+				//Access Type is District
+				District district = districtDAO.get(Long.parseLong(userAccessValue));
+				stateId = district.getState().getStateId();
+				
+			}else if(userAccessType.equalsIgnoreCase(IConstants.MLA) || userAccessType.equalsIgnoreCase(IConstants.MP)){
+				
+				//Access Type is Constituency (MLA / MP)
+				Constituency constituency = constituencyDAO.get(Long.parseLong(userAccessValue));
+				stateId = constituency.getState().getStateId();
+				
+			}
+		}
+		
+	 return stateId;
+	}
+	
+	public List<SelectOptionVO> getAllProblemStatus()
+	{
+		List<SelectOptionVO> problemStatusList = new ArrayList<SelectOptionVO>();
+		try{
+			List<ProblemStatus> problemStatus = problemStatusDAO.getAll();			
+			if(problemStatus.size() > 0)
+			{
+				for(ProblemStatus staus:problemStatus)
+				{
+					problemStatusList.add(new SelectOptionVO(staus.getProblemStatusId(),staus.getStatus()));
+				}
+				return problemStatusList;
+			}			
+			else{
+				throw new Exception("Data Not Available");
+			}
+			
+		}catch(Exception e){
+			log.debug(e);
+			e.printStackTrace();			
+			return null;
+		}					
+	}
+	
+	/**
+	 * Method To Return Problem Status
+	 */
+	public List<SelectOptionVO> getDefaultProblemStatus(String statusValues){
+		
+		List<SelectOptionVO> problemStatus = new ArrayList<SelectOptionVO>();
+		
+		List defaultProblemStatusLst = problemStatusDAO.getDefaultProblemStatus(statusValues);
+		if(defaultProblemStatusLst != null && defaultProblemStatusLst.size() > 0){
+			
+			Iterator lstItr = defaultProblemStatusLst.listIterator();
+			while(lstItr.hasNext()){
+				
+				Object[] values = (Object[])lstItr.next();
+				
+				problemStatus.add(new SelectOptionVO((Long)values[0],(String)values[1]));
+			}
+		}
+		
+	 return problemStatus;
 	}
 }
 

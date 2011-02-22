@@ -25,6 +25,8 @@ public class ProblemCompleteDetailsVO implements Serializable{
 	private List<ProblemStatusDataVO> problemLifeCycleData;
 	private ProblemStatusChangeFactorsVO statusActionInputs;
 	
+	private String problemStatusLabel;
+	
 	private ResultStatus resultStatus;
 
 	public ProblemBeanVO getProblemBasicDetails() {
@@ -60,6 +62,14 @@ public class ProblemCompleteDetailsVO implements Serializable{
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public String getProblemStatusLabel() {
+		return problemStatusLabel;
+	}
+
+	public void setProblemStatusLabel(String problemStatusLabel) {
+		this.problemStatusLabel = problemStatusLabel;
 	}
 
 }

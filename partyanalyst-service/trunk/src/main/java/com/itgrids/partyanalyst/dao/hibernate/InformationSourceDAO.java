@@ -26,5 +26,11 @@ public class InformationSourceDAO extends GenericDaoHibernate<InformationSource,
 		return getHibernateTemplate().find("from InformationSource model where model.informationSource = ?",sourceType);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getAllInformationSourceDetails() {
+		
+		return getHibernateTemplate().find("select model.informationSourceId,model.informationSource from InformationSource model order by model.informationSourceId");
+	}
+
 	
 }

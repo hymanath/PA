@@ -55,5 +55,39 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 				"model.problemHistory.problemLocation.problemLocationId = ? and model.problemHistory.isDelete is null " +
 				"group by model.problemHistory.problemHistoryId ",problemLocationId);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getAssignedProblemProgressbyHistoryId(
+			Long problemHistoryId) {
+		
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemHistoryId = ?",problemHistoryId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getProblemDifferentStagesByByProblemId(
+			Long problemId) {
+		
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ?",problemId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getProblemRecentUpdatesByProblemId(Long problemId) {
+		
+		Object[] params = {problemId,problemId};
+		return getHibernateTemplate().find("select model from AssignedProblemProgress model "+
+				"where model.performedDate = (select max(model.performedDate) from AssignedProblemProgress model " +
+				"where model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ?) and "+
+				"model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ?",params);				
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getProblemAllActivitiesByProblemId(
+			Long problemId) {
+		
+		return getHibernateTemplate().find("from AssignedProblemProgress model where "+
+				"model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ? "+
+				"order by model.performedDate desc",problemId);	
+	}
+
+		
 }

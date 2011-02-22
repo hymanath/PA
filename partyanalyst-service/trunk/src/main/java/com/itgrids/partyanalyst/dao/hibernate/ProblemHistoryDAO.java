@@ -792,7 +792,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	            "model.problemLocation.problemAndProblemSource.problemSource.informationSource,"+
 	            "model.problemStatus.status,model.problemLocation.problemImpactLevel from "+
 	            "ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId= ? "+
-	            "and model.isDelete is null or model.isDelete = 'false' order by model.dateUpdated desc");
+	            "and model.isDelete is null or model.isDelete = 'false' order by date(model.dateUpdated) desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
@@ -808,16 +808,53 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(model.problemHistoryId) from ProblemHistory model where "+
 				"model.problemLocation.problemAndProblemSource.user.registrationId = "+userId+" and "+
-				"model.isDelete is null or model.isDelete = 'false' order by dateUpdated desc").iterate().next() );
+				"model.isDelete is null or model.isDelete = 'false' order by date(dateUpdated) desc").iterate().next() );
 		
 	 return resultsCount;
 	}
 
-	public Long getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(
-			Long userId, Date startDate, Date endDate) {
+	@SuppressWarnings("unchecked")
+	public List getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate){
 		
+		StringBuilder query = new StringBuilder();
+				
+		query.append("select count(model.problemHistoryId) from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? ");
+		//If problems by problem status 
+		if(statusId != null && !statusId.equals(0L))
+			query.append("and model.problemStatus.problemStatusId = "+statusId+ " ");
 		
-		return null;
+		if(startDate != null && endDate != null){
+			query.append("and date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
+			
+		}
+		else{
+			if(startDate != null)
+				query.append("and date(model.dateUpdated) == ? ");
+						
+			if(endDate != null)
+				query.append("and date(model.dateUpdated) == ? ");
+				
+		}
+		
+		query.append("and model.isDelete is null or model.isDelete = 'false' ");
+		query.append("order by date(model.dateUpdated) desc");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+				
+		queryObject.setParameter(0, userId);
+		
+		if(startDate != null && endDate != null){
+			queryObject.setParameter(1, startDate);
+			queryObject.setParameter(2, endDate);
+		}else{
+			if(startDate != null)
+				queryObject.setParameter(1, startDate);
+			if(endDate != null)
+				queryObject.setParameter(2, endDate);				
+		}
+		
+						
+     return queryObject.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -832,21 +869,44 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		if(statusId != null && !statusId.equals(0L))
 			query.append("and model.problemStatus.problemStatusId = "+statusId+ " ");
 		
-		query.append("and model.isDelete is null or model.isDelete = 'false' and ");
-		query.append("date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
-		query.append("order by model.dateUpdated desc");
+		if(startDate != null && endDate != null){
+			query.append("and date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? ");
+			
+		}
+		else{
+			if(startDate != null)
+				query.append("and date(model.dateUpdated) == ? ");
+						
+			if(endDate != null)
+				query.append("and date(model.dateUpdated) == ? ");
+				
+		}
+		
+		query.append("and model.isDelete is null or model.isDelete = 'false' ");
+		query.append("order by date(model.dateUpdated) desc");
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		
 		queryObject.setParameter(0, userId);
-		queryObject.setParameter(1, startDate);
-		queryObject.setParameter(2, endDate);
-				
+		
+		if(startDate != null && endDate != null){
+			queryObject.setParameter(1, startDate);
+			queryObject.setParameter(2, endDate);
+		}else{
+			if(startDate != null)
+				queryObject.setParameter(1, startDate);
+			if(endDate != null)
+				queryObject.setParameter(2, endDate);				
+		}
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(maxResults);
-		
-
+				
      return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getProblemHistoryBasedOnId(Long historyId){
+		
+		return getHibernateTemplate().find("from ProblemHistory model where model.problemHistoryId = ?",historyId);
 	}
 				
 }

@@ -82,4 +82,9 @@ public interface ISessionConstants {
 	public static final String USER_GROUP_SCOPES = "USER_GROUP_SCOPES";
 	public static final String CADRE_ROLES_LIST = "CadreRolesList";
 	
+	public static final String STATES_PROB 			= "statesListForProb";
+	public static final String DISTRICTS_PROB 		= "districtsListForProb";
+	public static final String CONSTITUENCIES_PROB	= "costituenciesListForProb";
+	public static final String MANDALS_PROB 		= "mandalsListForProb";
+	public static final String VILLAGES_PROB 		= "villagesListForProb";
 }

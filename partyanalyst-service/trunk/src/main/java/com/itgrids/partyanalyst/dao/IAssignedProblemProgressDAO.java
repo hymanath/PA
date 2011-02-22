@@ -23,5 +23,13 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 
 	public List getAssignedProblemsProgressByLocation(Long problemLocationId);
 
+	public List<AssignedProblemProgress> getAssignedProblemProgressbyHistoryId(Long problemHistoryId);
+	
+	public List<AssignedProblemProgress> getProblemDifferentStagesByByProblemId(Long problemId);
+	
+	@SuppressWarnings("unchecked")
+	public List getProblemRecentUpdatesByProblemId(Long problemId);
+	
+	public List<AssignedProblemProgress> getProblemAllActivitiesByProblemId(Long problemId);
 	
 }

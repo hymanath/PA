@@ -133,5 +133,8 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public List<ProblemHistory> getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate, Integer startIndex, Integer maxResults);
 	
-	public Long getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Date startDate,Date endDate);
+	@SuppressWarnings("unchecked")
+	public List getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate);
+	
+	public List<ProblemHistory> getProblemHistoryBasedOnId(Long historyId);
 }
