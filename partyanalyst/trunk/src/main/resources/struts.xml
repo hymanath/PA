@@ -2049,6 +2049,45 @@
 			</result>		
 		</action>
 		  
-             		       	
-	</package>
+             
+        <action name="partyStrengthAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthAction">
+			<result name="success" >/jsp/partyStrengths.jsp</result> 
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/partyStrengths.jsp</result>
+		</action>
+				
+		<action name="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction">
+			<result name="success" >/jsp/partyStrengths.jsp</result> 
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/partyStrengths.jsp</result>
+			
+			 <interceptor-ref name="exception"/>
+			 <interceptor-ref name="alias"/>
+			 <interceptor-ref name="servletConfig"/>
+			 <interceptor-ref name="prepare"/>
+			 <interceptor-ref name="i18n"/>
+			 <interceptor-ref name="chain"/>
+			 <interceptor-ref name="debugging"/>
+			 <interceptor-ref name="profiling"/>
+			 <interceptor-ref name="scopedModelDriven"/>
+			 <interceptor-ref name="modelDriven"/>
+			 <interceptor-ref name="fileUpload"/>
+			 <interceptor-ref name="checkbox"/>
+			 <interceptor-ref name="staticParams"/>
+			 <interceptor-ref name="actionMappingParams"/>
+			 <interceptor-ref name="params">
+			 <param name="excludeParams">dojo\..*,^struts\..*</param>
+			 </interceptor-ref>
+			 <interceptor-ref name="conversionError"/>
+			 <interceptor-ref name="validation">
+			 <param name="excludeMethods">input,back,cancel,browse</param>
+			 </interceptor-ref>
+			 <interceptor-ref name="workflow">
+			<param name="excludeMethods">input,back,cancel,browse</param>
+			 </interceptor-ref>		
+			  
+			 <interceptor-ref name="basicStack"/>
+		</action>
+		       	
+	</package> 
 </struts>      

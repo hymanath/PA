@@ -5,6 +5,14 @@
 
 <beans>
 	
+	
+	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>  
+	
 	<bean name="userEntitlementService" class="com.itgrids.partyanalyst.service.impl.UserEntitlementService" >
 		<property name="entitlementDAO" ref="entitlementDAO" />
 		<property name="groupEntitlementDAO" ref="groupEntitlementDAO" />

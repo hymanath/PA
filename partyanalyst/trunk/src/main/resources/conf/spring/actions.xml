@@ -6,6 +6,17 @@
 <beans>
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
+	
+	<bean id="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction" singleton="false">
+		<property name="partyStrengthService" ref="partyStrengthService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>	
+	
+	<bean id="partyStrengthAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthAction" singleton="false">
+		<property name="partyStrengthService" ref="partyStrengthService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>	
+	
 	<bean id="problemAssigningAction" class="com.itgrids.partyanalyst.web.action.ProblemAssigningAction" singleton="false">
 	</bean>
 	
