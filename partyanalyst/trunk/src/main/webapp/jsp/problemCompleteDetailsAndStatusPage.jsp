@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -8,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Problem Details</title>
+<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
@@ -17,6 +19,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
  
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
@@ -24,6 +27,29 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+
+
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
+<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
+
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
+<!-- JQuery files (End) -->
 
 <style type="text/css">
 
@@ -88,12 +114,148 @@ font-family:verdana;
 font-weight:bold;
 text-align:left;
 }
+
+.problemStagesTable
+{
+	text-align : center;
+}
+
+/*New Styles*/
+
+#problemContentData_main
+{
+	padding:10px;
+}
+
+#problemContentData_details_main
+{
+	margin-top:20px;
+}
+
+#problemContentData_details_head
+{
+	background-color:#EEF4F6;
+	color:#445762;
+	font-size:13px;
+	font-weight:bold;
+	padding:5px;
+}
+#problemContentData_details_body
+{
+	position:absolute;
+	background-color:#EBEDEE;
+	width:92%;
+	margin:0px 10px 0px 10px;
+}
+
+.problemDetailsTable th
+{
+	padding:10px;
+	border-bottom:1px solid #ADADAD;
+}
+
+.problemDetailsTable td
+{
+	padding:10px;
+	border-bottom:1px solid #ADADAD;
+}
+
+.statusData_table td
+{
+	padding:5px;
+}
+
+.statusData_table_label
+{
+	border-right:1px solid #E0E3E9;
+}
+
+.statusData_table_data
+{
+	border-bottom:1px solid #E0E3E9;
+}
+
+.statusData_table_links
+{
+	font-size:11px;
+	color:#332824;
+}
+
+
+#problemContentData_status_main
+{
+	margin:20px 0 10px;
+}
+
+.changeAnc
+{
+	color:#466376;
+	font-size:11px;
+	text-decoration:none;
+	margin:0px 20px 0px 5px;
+}
+
+.changeAnc:hover
+{
+	text-decoration:underline;
+}
+
+.problemStatusDataDiv_main
+{
+	margin:10px 0px 10px 0px;
+	padding:5px;
+	background-color:#EEF4F6;
+}
+
+.statusData_table_inner th
+{
+	color:#0156B7;
+	font-size:11px;
+}
+
+.activitiesContentDiv_main
+{
+	margin: 10px 0;
+	background-color: #EEF4F6;
+}
+
+.activitiesContentDiv_head
+{
+	padding: 5px;
+	font-weight: bold;
+	color: #0156B7;
+	font-size:11px;
+	border-bottom: 1px solid #E0E3E9;
+}
+
+.activitiesContentDiv_body
+{
+	padding: 5px;
+}
+
+.activitiesContent_table th
+{
+	padding:5px;
+	color: #4A4731;
+}
+
+.activitiesContent_table td
+{
+	padding:5px;
+}
+
+.labelSpan
+{
+	text-decoration:underline;
+}
+
 </style>
 
 <script type="text/javascript">
  var status = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
  
  var pHistoryId = <%=request.getParameter("pHistoryId")%>;
+ var problemStatus = '${problemCompleteDetailsVO.problemBasicDetails.problemStatus}';
 
 function limitText(limitField, limitCount, limitNum)
 {		
@@ -109,9 +271,15 @@ function limitText(limitField, limitCount, limitNum)
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 }
-
-function getCadreDetails()
+var cadreClickType;
+function getCadreDetails(clickType)
 {	
+	cadreClickType = clickType; 
+	if(clickType == "Delete")
+	{
+		addCadreToProblem(0);
+		return;
+	}
 	var urlStr = "cadreSearchAction.action?windowTask=Search&addProblem=true";
 	var cadreSearchForProblem = window.open(urlStr,"cadreSearchAndSMSPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");	
 	cadreSearchForProblem.focus();
@@ -122,18 +290,41 @@ function setSelectedCadre(cadreId,cadreName)
 	var cadreInputIdEle = document.getElementById("cadreInputId");
 	cadreInputIdEle.value = cadreId;
 
-	var cadreDetailsDivEle = document.getElementById("cadreDetailsDiv");
+	var cadreDetailsDivEle = document.getElementById("selectedCadreDiv");
 	var cadreVar ='';
 	cadreVar +='<table align="center">';
 	cadreVar +='<tr><th>Selected Cadre is :</th>';
 	cadreVar +='<th>';
 	cadreVar += cadreName;
 	cadreVar +='</th>';
-	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td></tr>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="show details" class="button" onclick="showCadreDetails(\''+cadreId+'\')"/></td>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Proceed" class="button" onclick="addCadreToProblem(\''+cadreId+'\')"/></td>';
+	cadreVar +='<td><input type="button" style="width:90px;height:25px;" value="Remove" class="button" onclick="clearCadreDiv()"/></td></tr>';
 	cadreVar +='</table>';
 	cadreDetailsDivEle.innerHTML = cadreVar;
 	cadreDetailsDivEle.style.display = 'block';
 }
+
+function addCadreToProblem(cadreId)
+{
+	var jsObj = {
+				pHistoryId:pHistoryId,
+				cadreId:cadreId,
+				cadreClickType:cadreClickType,
+				task:"addCadreToProblem"
+			};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "addCadreToProblemAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function clearCadreDiv()
+{
+	var cadreDetailsDivEle = document.getElementById("selectedCadreDiv");
+	cadreDetailsDivEle.innerHTML = '';
+}
+
 
 function showCadreDetails(cadreId)
 {
@@ -145,6 +336,21 @@ function doExecuteOnLoad()
 {
 	var probHisEle = document.getElementById("probHistoryId");
 	probHisEle.value = pHistoryId;
+	setStatusToChange(problemStatus,null);
+}
+
+function setStatusToChange(probStatus,pValue)
+{
+	if(probStatus == 'NEW' || probStatus == 'PENDING')
+	{
+		document.getElementById("statusToChangeId").value='PROGRESS';
+	}
+	else if(probStatus == 'PROGRESS')
+	{
+		if(pValue == 'PENDING')
+			document.getElementById("statusToChangeId").value='PROGRESS';
+	}
+
 }
 
 function showProbStatusDetails()
@@ -155,10 +361,18 @@ function showProbStatusDetails()
 
 function getProblemDepartments(selected,task)
 {
-	var jsObj=
+	var deptCatId = '';
+	if(task == 'getDepartments')
+	{
+		var deptCatEle = document.getElementById("resolvingDeptScopeId");
+         deptCatId = deptCatEle.options[deptCatEle.selectedIndex].value;
+	}
+		var jsObj=
 		{
-			selected : selected,
-			task	 : task
+			scopeId		 : selected,
+			task		 : task,
+			deptCategoryId :  deptCatId
+			
 		}
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -172,7 +386,45 @@ function callAjax(jsObj,url)
 				   success : function( o ) {
 						try
 						{
-							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							myResults = YAHOO.lang.JSON.parse(o.responseText);
+							if(jsObj.task == "getProblemResolvingDeptScopes")
+							{
+								clearOptionsListForSelectElmtId('resolvingDeptScopeId');
+								fillOptionsForSelectedElmt('resolvingDeptScopeId', myResults);
+							}
+							else if(jsObj.task == "getProblemType")
+							{
+								clearOptionsListForSelectElmtId('problemTypeId');
+								fillOptionsForSelectedElmt('problemTypeId', myResults);
+							}
+							else if(jsObj.task == "getDepartmentCategories")
+							{
+								clearOptionsListForSelectElmtId('deptId');
+								fillOptionsForSelectedElmt('deptId', myResults);
+							}
+							else if(jsObj.task == "getDepartments")
+							{
+								clearOptionsListForSelectElmtId('deptId');
+								fillOptionsForSelectedElmt('deptId', myResults);
+							}
+							else if(jsObj.task == "getProblemPresentStatus")
+							{
+								buildProblemPresentStatus(jsObj,myResults);
+							}
+							else if(jsObj.task == "getProblemRecentActivities")
+							{
+								buildProblemRecentActivities(jsObj,myResults);
+							}
+							else if(jsObj.task == "changeProbClassification")
+							{
+								getProblemPresentStatus(pHistoryId);
+								getProblemActivities(pHistoryId);	
+							}
+							else if(jsObj.task == "changeProbClassification" || jsObj.task == "addCadreToProblem" || jsObj.task == "changeDepartmentForProblem" || jsObj.task == "PostCommentsToProblem")
+							{
+								getProblemPresentStatus(pHistoryId);
+								getProblemActivities(pHistoryId);	
+							}
 						}
 						catch(e)
 						{   
@@ -187,6 +439,556 @@ function callAjax(jsObj,url)
 				   };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildProblemRecentActivities(jsObj,results)
+{
+	var elmt = document.getElementById("problemContentData_activities_dataDiv");
+    
+	var bodyElmt = document.getElementById("problemContentData_activities_body");
+	if(results == null || results.length == 0)
+	{
+       bodyElmt.innerHTML = '';
+	   return;
+	}
+
+	var str = '';
+	for(var i=0; i<results.length; i++)
+	{
+		str += '<div class="activitiesContentDiv_main">';
+		str += '		<div class="activitiesContentDiv_head">';
+		str += '			<table>';
+		str += '			<tr>';
+		str += '			<td><img src="images/icons/constituencyManagement/calendar.jpeg"></td>';
+		str += '			<td> On '+results[i].updatedDate+'</td>';
+		str += '			</tr>';
+		str += '			</table>';		
+		str += '		</div>';
+		str += '		<div class="activitiesContentDiv_body">';
+		str += '			<table class="activitiesContent_table">';
+		str += '				<tr>';
+		str += '					<th>Activity</th>';
+		str += '					<td colspan="5">'+results[i].activityHapened+'</td>';
+		str += '				</tr>';
+		if(results[i].cadre != null)
+		{
+		str += '				<tr>';
+		str += '					<th>Cadre</th>';		
+		str += '					<td colspan="5">'+results[i].cadre+'</td>';
+		str += '				</tr>';
+		}
+		if(results[i].departmentOrganisation != null && results[i].department != null && results[i].deptLocation == null)
+		{
+			str += '				<tr>';
+			str += '					<th colspan="6"><span class="labelSpan">Department</span></th>';
+			str += '				</tr>';
+			str += '				<tr>';
+			str += '					<th>Name</th>';
+			if(results[i].departmentOrganisation == "" || results[i].departmentOrganisation == null)
+				str += '					<td> Not Assigned</td>';
+			else
+				str += '					<td>'+results[i].departmentOrganisation+'</td>';
+
+			str += '					<th>Category</th>';
+			if(results[i].department == "" || results[i].department == null)
+				str += '					<td> Not Assigned</td>';
+			else
+				str += '					<td>'+results[i].department+'</td>';
+
+			str += '					<th>Location</th>';
+			if(results[i].deptLocation == "" || results[i].deptLocation == null)
+				str += '					<td> Not Assigned</td>';
+			else
+				str += '					<td>'+results[i].deptLocation+'</td>';
+			
+			str += '				</tr>';
+		}
+		if(results[i].probClassification != null)
+		{
+			str += '				<tr>';
+			str += '					<th>Problem Type</th>';
+			str += '					<td>'+results[i].probClassification+'</td>';
+			str += '				</tr>';
+		}
+		if(results[i].problemStatus != null)
+		{
+			str += '				<tr>';
+			str += '					<th>Problem Status</th>';
+			str += '					<td>'+results[i].problemStatus+'</td>';
+			str += '				</tr>';
+		}
+		str += '				<tr>';
+		str += '					<th>Comments</th>';
+		if(results[i].comments == "" || results[i].comments == null)
+			str += '					<td colspan="5"> -- </td>';
+		else			
+			str += '					<td colspan="5">'+results[i].comments+'</td>';
+		str += '				</tr>';
+		str += '			</table>';
+		str += '		</div>';
+		str += '	</div>';
+	}
+
+	elmt.innerHTML = str;
+}
+
+function clearDepartmentDiv()
+{
+	var elmt = document.getElementById("deleteDepartmentConfirmDiv");
+	elmt.innerHTML = '';
+}
+
+function DeleteDepartment()
+{
+	var jsObj =
+		{
+			pHistoryId:pHistoryId,
+			deptScopeId:0,
+			deptId:0,
+			regionId:0,
+			status:"Delete",
+			task:"changeDepartmentForProblem"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemDepartmentAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function handleDepartmentChange(type)
+{	
+	if(type == "Delete")
+	{
+		var elmt = document.getElementById("deleteDepartmentConfirmDiv");
+
+		var str = '';
+		str += '<table>';
+		str += '<tr>';
+		str += '<td>Do you want to delete department</td>';
+		str += '<td><input type="button" class="button" value="Delete" onclick="DeleteDepartment()"/></td>';
+		str += '<td><input type="button" class="button" value="No" onclick="clearDepartmentDiv()"/></td>';
+		str += '</tr>';
+		str += '</table>';		
+
+		elmt.innerHTML = str;
+
+
+	}
+
+	getProblemDepartments(0,'getProblemResolvingDeptScopes');
+	$( "#departmentPanel_main" ).dialog({
+		title:"",
+		autoOpen: true,
+		show: "blind",
+		width: 550,
+		minHeight:300,
+		modal: true,
+		hide: "explode"
+	});
+
+var elmt = document.getElementById("departmentPanel_content");
+if(!elmt)
+	return;
+
+var str = '';
+str += '<DIV id="problemAssigningDiv">';
+str += '<TABLE>';
+str += '	<tr>';
+str += '		<th width="225px">';
+str += '		<s:label for="resolvingDeptScopeId" id="resolvingDeptScope" theme="simple" value="Problem Resolving Dept Scope"/>';
+str += '		</th>';
+str += '		<td>';
+str += '		<select id="resolvingDeptScopeId" class="selectWidth" name="resolvingDeptScope" onchange="javascript:{getProblemDepartments(this.options[this.selectedIndex].value,\'getDepartmentCategories\');populateDeptLocations(this.options[this.selectedIndex].value);}">';
+str += '<option value="0">Select Problem Scope</option>';
+str += '</select></td>';
+str += '	</tr>';
+str += '	<tr>';
+str += '		<th><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Select Department"/></th>';
+str += '		<td>';
+str += '			<select id="deptId" class="selectWidth" name="dept">';
+str += '				<option value="0">Select Dept</option>';
+str += '			</select>';
+str += '		</td>';
+str += '	</tr>';
+str += '	<tr id="deptAreaHeadId" style="display:none;">';
+str += '		<th id="thId" colspan="4"><u>Problem Resolving Dept Area</u></th>';
+str += '	</tr>';
+str += '	<tr id="row1" style="display:none;">';
+str += '	<th><s:label for="stateId" id="stateLabelId" theme="simple" value="Select State"/><font class="requiredFont"> * </font></th>';
+str += '		<td>';
+str += '		<select id="StateId" class="selectWidth" name="state" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'districtsInState\',\'influencingPeopleReg\',\'DistrictId\', \'currentAdd\');">';
+<c:forEach var="options" items="${statesListForProb}">
+	str += '		<option value="${options.id}">${options.name}</option>';
+</c:forEach>
+str += '		</select>';
+str += '		</td>';
+str += '	</tr>';
+
+str += '	<tr id="row2" style="display:none;">';
+str += '		<th><s:label for="districtId" id="districtLabelId" theme="simple" value="Select District"/><font class="requiredFont"> * </font></th>';
+str += '		<td>';
+str += '		<select id="DistrictId" cssClass="selectWidth" name="district" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'influencingPeopleReg\',\'ConstituencyId\',\'currentAdd\');">';
+<c:forEach var="options" items="${districtsListForProb}">
+	str += '		<option value="${options.id}">${options.name}</option>';
+</c:forEach>
+str += '		</select>';
+str += '		</td>';
+str += '	</tr>';
+
+str += '	<tr id="row3" style="display:none;">';
+str += '		<th><s:label for="constituencyId" id="constituencyLabelId" theme="simple" value="Select Constituency"/><font class="requiredFont"> * </font></th>';
+str += '		<td>';
+str += '		<select id="ConstituencyId" class="selectWidth" name="constituency" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'influencingPeopleReg\',\'MandalId\',\'currentAdd\', \'null\')">';
+<c:forEach var="options" items="${costituenciesListForProb}">
+	str += '		<option value="${options.id}">${options.name}</option>';
+</c:forEach>
+str += '		</select>';
+str += '		</td>';
+str += '	</tr>';
+
+str += '	<tr id="row4" style="display:none;">';
+str += '		<th><s:label for="mandalId" id="mandalLabelId" theme="simple" value="Select Mandal/CORP/GMC"/><font class="requiredFont"> * </font></th>';
+str += '		<td>';
+str += '			<select id="MandalId" class="selectWidth" name="mandal" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'influencingPeopleReg\',\'VillageId\',\'currentAdd\');">';
+<c:forEach var="options" items="${mandalsListForProb}">
+	str += '		<option value="${options.id}">${options.name}</option>';
+</c:forEach>
+str += '			</select>';
+str += '		</td>';
+str += '	</tr>';
+
+str += '	<tr id="row5" style="display:none;">';
+str += '		<th><s:label for="villageId" id="villageLabelId" theme="simple" value="Select village"/><font class="requiredFont"> * </font></th>';
+str += '		<td>';
+str += '		<select id="VillageId" class="selectWidth" name="village">';
+<c:forEach var="options" items="${villagesListForProb}">
+	str += '		<option value="${options.id}">${options.name}</option>';
+</c:forEach>
+str += '		</select>';
+str += '		</td>';
+str += '	</tr>';
+str += '</table>';
+str += '</DIV>';
+
+str += '<div id="errorMsgDiv" style="text-align:right;padding:10px;color:red;">';
+str += '</div>';
+
+str += '<div style="text-align:right;padding:10px;">';
+str += '<input type="button" class="button" style="float:none;" value="Proceed" onclick="saveDepartmentToProblem(\''+type+'\')"/>';
+str += '</div>';
+
+elmt.innerHTML = str;
+}
+
+function saveDepartmentToProblem(type)
+{
+	var errorDiv = document.getElementById("errorMsgDiv");
+	
+	var deptScopeElmt = document.getElementById("resolvingDeptScopeId");
+	var deptScopeElmtValue = deptScopeElmt.options[deptScopeElmt.selectedIndex].value;
+	var deptScopeElmtText = deptScopeElmt.options[deptScopeElmt.selectedIndex].text;
+
+	var deptNameElmt = document.getElementById("deptId");
+	var deptNameElmtValue = deptNameElmt.options[deptNameElmt.selectedIndex].value;
+
+	var regionElmt;
+	var regionElmtValue;
+	
+	if(deptScopeElmtValue == "0")
+	{
+		errorDiv.innerHTML = "Please select Dept Scope";
+		return;
+	}
+	else if(deptNameElmtValue == "0")
+	{
+		errorDiv.innerHTML = "Please select Department";
+		return;
+	}
+
+	regionElmt = document.getElementById(deptScopeElmtText+"Id");
+	regionElmtValue = regionElmt.options[regionElmt.selectedIndex].value;		
+
+	if(regionElmtValue == "0")
+	{
+		errorDiv.innerHTML = "Please Resolving Department Area";
+		return;
+	}
+
+	if(deptScopeElmtValue != "0" && deptNameElmtValue != "0" && regionElmtValue != "0")
+	{
+		errorDiv.innerHTML = "";
+	}
+
+	var jsObj =
+		{
+			pHistoryId:pHistoryId,
+			deptScopeId:deptScopeElmtValue,
+			deptId:deptNameElmtValue,
+			regionId:regionElmtValue,
+			status:type,
+			task:"changeDepartmentForProblem"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemDepartmentAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+	
+}
+
+function buildProblemPresentStatus(jsObj,results)
+{
+	var elmt = document.getElementById("problemContentData_status_dataDiv");
+
+	var str = '';	
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/constituencyManagement/calendar.jpeg"></td>';
+	str += '						<th>Posted On</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data">This problem is posted on '+results.postedDate+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">Duration : '+results.diffDays+' Days </td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/usergroups/system_grps.png"></td>';
+	str += '						<th>Posted By</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data">Problem posted by '+results.postedBy+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">Name : '+results.postedByName+' </td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="3" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>';
+	str += '						<th>Department</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	if(results.department == "" || results.department == null)
+		str += '			<td class="statusData_table_data">Currently not assigned to any department</td>';
+	else
+		str += '			<td class="statusData_table_data">Currently assigned to '+results.department+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';	
+	str += '			<td class="statusData_table_links">';
+	if(results.department == "" || results.department == null)
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="handleDepartmentChange(\'Assign\')" class="changeAnc">Assign</a>';
+	else
+	{
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="handleDepartmentChange(\'Change\')" class="changeAnc">Change</a>';
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="handleDepartmentChange(\'Delete\')" class="changeAnc">Remove</a>';
+	}
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '		<td><div id="deleteDepartmentConfirmDiv"></div></td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="3" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>';
+	str += '						<th>Problem Type</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	if(results.probClassification == "" || results.probClassification == null)
+		str += '			<td class="statusData_table_data">Currently not assigned to any problem Type</td>';
+	else
+		str += '			<td class="statusData_table_data">Currently assigned to '+results.probClassification+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';	
+	str += '			<td class="statusData_table_links">';
+	if(results.probClassification == "" || results.probClassification == null)
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" class="changeAnc" onclick="showProbClassification(\'Assign\')">Assign</a>';
+	else
+	{
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" class="changeAnc" onclick="showProbClassification(\'Change\')">Change</a>';		
+	}
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td id="probClassification_row" style="display:none;">';
+	str += '			Select Type <select id="probClassification" style="margin:0px 20px 0px 10px;padding:2px;">';
+	str += '				<option>Social</option>';
+	str += '				<option>Economical</option>';
+	str += '				<option>Personal</option>';
+	str += '			</select>';
+	str += '			<input type="button" style="width:90px;height:25px;float:none;" value="Proceed" class="button" onclick="changeProbClassification()"/>';
+	str += '			<input type="button" style="width:90px;height:25px;float:none;" value="Remove" class="button" onclick="hideProbClassification()"/></td></tr>';
+	str += '			</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="3" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/usergroups/icon_groups.png"></td>';
+	str += '						<th>Cadre</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	if(results.cadre == "" || results.cadre == null)
+		str += '			<td class="statusData_table_data">This problem has not been assigned to any cadre</td>';
+	else
+		str += '			<td class="statusData_table_data">This problem has been assigned to '+results.cadre+'</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">';
+	if(results.cadre == "" || results.cadre == null)
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" class="changeAnc" onclick="getCadreDetails(\'Assign\')">Assign</a>';
+	else
+	{
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="getCadreDetails(\'Change\')" class="changeAnc">Change</a>';
+		str += '<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="getCadreDetails(\'Delete\')" class="changeAnc">Remove</a>';
+	}
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '		<td><div id="selectedCadreDiv"></div></td>';			
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>';
+	str += '						<th>Status</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data">This problem is under progress stage</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">';
+	str += '				Move to ';
+	str += '				<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="changeProblemStatus(\'Progress\')" class="changeAnc">Progress</a>';
+	str += '				<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="changeProblemStatus(\'Pending\')" class="changeAnc">Pending</a>';
+	str += '				<img src="images/icons/districtPage/listIcon.png"/><a href="javascript:{}" onclick="changeProblemStatus(\'Fixed\')" class="changeAnc">Fixed</a>';
+	str += '			</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+	str += '<div class="problemStatusDataDiv_main">';
+	str += '	<table class="statusData_table" width="100%">';	
+	str += '		<tr>';
+	str += '			<td rowspan="2" width="20%" class="statusData_table_label">';
+	str += '				<table width="100%" class="statusData_table_inner">';
+	str += '					<tr>';
+	str += '						<td width="25%"><img src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>';
+	str += '						<th>Post Comment</th>';
+	str += '					</tr>';
+	str += '				</table>';								
+	str += '			</td>';
+	str += '			<td class="statusData_table_data">';
+	str += '				<textarea rows="3" cols="45" onkeyup="limitText(\'descTextArea\',\'maxcount\',500)" id="descTextArea" theme="simple" name="comments"></textarea>';
+	str += '				<input type="button" style="float:none" class="button" value="Post" onclick="postCommentForProblem()">'
+	str += '			</td>';
+	str += '		</tr>';
+	str += '		<tr>';
+	str += '			<td class="statusData_table_links">';
+	str += '			<table style="width:65%;">';
+	str += '				<tr>';
+	str += '				<td style="width:50%;"><div id="remainChars"><span id="maxcount">500 </span> <span>chars remaining..</span></div></td>';
+	str += '				<td style="width:50%;"><div>Should not exceed 500 chars</div></td>';
+	str += '				</tr></table>';	
+	str += '			</td>';
+	str += '		</tr>';
+	str += '	</table>';
+	str += '</div>';
+	
+	elmt.innerHTML = str;
+}
+
+function postCommentForProblem()
+{
+	var elmt = document.getElementById("descTextArea");
+	var textAreaValue = elmt.value;
+	
+	var jsObj = {
+					pHistoryId:pHistoryId,
+					comments:textAreaValue,
+					task:"PostCommentsToProblem"
+				};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "postCommentsToProblemAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function showProbClassification()
+{
+	var elmt = document.getElementById("probClassification_row");
+	elmt.style.display = "block";
+}
+
+function hideProbClassification()
+{
+	var elmt = document.getElementById("probClassification_row");
+	elmt.style.display = "none";
+}
+
+function changeProbClassification()
+{
+	var elmt = document.getElementById("probClassification");
+	var typeValue = elmt.options[elmt.selectedIndex].text;
+	var jsObj = {
+					typeValue:typeValue,
+					pHistoryId:pHistoryId,
+					status:'Change',
+					task:"changeProbClassification"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProbClassificationAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function changeProblemStatus(status)
+{
+	var jsObj = {
+					status:status,
+					pHistoryId:pHistoryId,
+					task:"changeProblemStatus"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "changeProblemStatusAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
 }
 
 function populateDeptLocations(index)
@@ -226,6 +1028,49 @@ function populateDeptLocations(index)
 
 }
 
+function getProblemPresentStatus(pHistoryId)
+{
+	var jsObj = {
+					pHistoryId:pHistoryId,
+					task:"getProblemPresentStatus"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemPresentStatusAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+
+function getProblemActivities(pHistoryId)
+{
+	var jsObj = {
+					pHistoryId:pHistoryId,
+					task:"getProblemRecentActivities"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemRecentActivitiesAjaxAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function initializePage()
+{
+	var detailsButton = new YAHOO.widget.Button("detailsButton");
+	detailsButton.on("click",function (){
+		$('#problemContentData_details_body').slideToggle();
+	});
+
+	getProblemPresentStatus(pHistoryId);
+	getProblemActivities(pHistoryId);
+}
+
+var statesListForProb = [];
+var districtsListForProb = [];
+var costituenciesListForProb = [];
+var mandalsListForProb = [];
+var villagesListForProb = [];
+
+
 </script>
 </head>
 <body class="bodyStyle">
@@ -240,6 +1085,81 @@ function populateDeptLocations(index)
 	</TR>
 </TABLE>
 </CENTER>
+<div id="departmentPanel_main"><div id="departmentPanel_content"></div></div>
+<div id="problemContentData_main">
+	<!-- Problem Details Start -->
+	<div id="problemContentData_details_main">
+		<div id="problemContentData_details_head">
+			<table width="100%">
+				<tr>
+					<th>${problemCompleteDetailsVO.problemBasicDetails.problem}</th>
+					<td class="yui-skin-sam" align="right"><input id="detailsButton" type="button" value="Details"/></td>					
+				</tr>
+			</table>
+			
+		</div>
+		<div id="problemContentData_details_body" style="display:none;">
+			<TABLE width="100%" class="problemDetailsTable" align="left" cellpadding="0" cellspacing="0">							
+
+				<tr>
+					<th width="20%" valign="top">Location</th>
+					<td valign="top">:</td>
+					<td valign="top">${problemCompleteDetailsVO.problemBasicDetails.problemLocation}</td>
+				</tr>
+				<tr>
+					<th width="20%" valign="top">Existing From</th>
+					<td valign="top">:</td>
+					<td valign="top">${problemCompleteDetailsVO.problemBasicDetails.existingFrom}</td>
+				</tr>
+
+				<tr>
+					<th width="20%" valign="top">Posted Date</th>
+					<td valign="top">:</td>
+					<td valign="top">${problemCompleteDetailsVO.problemBasicDetails.reportedDate}</td>
+				</tr>
+
+				<tr>
+					<th width="20%" valign="top">Description </th>
+					<td valign="top">:</td>
+					<td valign="top">${problemCompleteDetailsVO.problemBasicDetails.description}</td>
+				</tr>
+			</TABLE>
+		</div>
+	</div>
+	<!-- Problem Details End -->
+	
+	<!-- Problem Status End -->
+	<div id="problemContentData_status_main">
+		<div id="problemContentData_status_head">			
+		</div>
+		<div id="problemContentData_status_body">
+			<FIELDSET>
+			<LEGEND>Problem Status</LEGEND>
+			<div id="problemContentData_status_dataDiv">
+				
+			</div>
+			</FIELDSET>
+		</div>
+	</div>
+	<!-- Problem Status End -->
+	
+	<!-- Problem Activities End -->
+	<div id="problemContentData_activities_main">
+		<div id="problemContentData_activities_head">			
+		</div>
+		<div id="problemContentData_activities_body">
+			<fieldset>
+				<legend>Activities</legend>
+				<div id="problemContentData_activities_dataDiv">
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<!-- Problem Activities End -->
+
+</div>
+
+<!--
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
 <DIV>
 <table>
@@ -253,74 +1173,67 @@ function populateDeptLocations(index)
 	</tr>
 </table>
 </DIV>
-<DIV style="width:550px;">
-<FIELDSET>
-<LEGEND>Problem Details</LEGEND>
 
-<TABLE class="problemDetailsTable" align="left">
-<tr>
-	<td width="100px;"><b>Problem </td><td>:</td></b>
-	<td><b>This is the Problem</b></td>
-</tr>
-<tr>
-	<td width="100px;"><b>Description </td><td>:</td></b>
-	<td><b>This is the Problem Description</b></td>
-</tr>
 
-<tr>
-	<td width="100px;"><b>Location</td><td>:</td></b>
-	<td><b>Andhra Pradesh, Nellore, Ananthasagaram</b></td>
-</tr>
-<tr>
-	<td width="100px;"><b>Existing From</td><td>:</td></b>
-	<td><b>2010-11-01</b></td>
-</tr>
 
-<tr>
-	<td width="100px;"><b>Posted Date</td><td>:</td></b>
-	<td><b>2011-02-11 18:30:22.0</b></td>
-</tr>
-</TABLE>
-</FIELDSET>
-</DIV>
 
 <DIV id="assigningButtonDiv">
-
+<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'NEW'}">
 <Table align="center">
 	<TR>
-		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO ${problemCompleteDetailsVO.problemBasicDetails.problemStatus}' class="button" onclick="showProbStatusDetails();getProblemDepartments(0,'getProblemResolvingDeptScopes');getProblemDepartments(0,'getProblemTypes')"/></td> 
+		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO PROGRESS' class="button" onclick="showProbStatusDetails();getProblemDepartments(0,'getProblemResolvingDeptScopes');getProblemDepartments(0,'getProblemType')"/></td> 
 	</TR>
 <Table>
-</DIV>
+</c:if>
+
+<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'PENDING'}">
+<Table align="center">
+	<TR>
+		<td><input type="button" style="width:160px;height:30px;" value='MOVE TO PROGRESS' class="button" onclick="showProbStatusDetails();getProblemDepartments(0,'getProblemResolvingDeptScopes');getProblemDepartments(0,'getProblemType')"/></td> 
+	</TR>
+<Table>
+</c:if>
+
+<c:if test="${problemCompleteDetailsVO.problemBasicDetails.problemStatus  == 'PROGRESS'}">
+<Table align="center">
+	<TR>
+		<th><input type="radio" name="probProgress" id="pendingRadioId" value="PENDING" onclick="showProbStatusDetails();setStatusToChange('PROGRESS',this.value)">Move TO Pending</input>
+		</th>
+		<th><input type="radio" name="probProgress" id="fixedRadioId" value="FIXED" onclick="showProbStatusDetails();setStatusToChange('PROGRESS',this.value)">Move TO Fixed</input>
+		</th>
+	</TR>
+</c:if>
+
+</DIV>-->
 
 <form method="post" action="problemAssigningAction.action">
-<table width="100%" id="probAssigningTabId" style="display:none;">
+<table width="100%" id="probAssigningTabId" style="display:block;">
 <tr><td>
-<DIV id="problemAssigningDiv">
+<!--<DIV id="problemAssigningDiv">
 <FIELDSET>
 <LEGEND>Problem Details</LEGEND>
 <TABLE>
 	<tr>
 		<th width="225px"><s:label for="problemTypeId" id="problemTypeLabelId" theme="simple" value="Problem Type"/></th>
-		<td><s:select id="problemTypeId" cssClass="selectWidth" name="problemType" theme="simple" list="#session.impactedRegionsList" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type" onChange="populateDeptLocations(this.options[this.selectedIndex].value);"></s:select></td>
+		<td><s:select id="problemTypeId" cssClass="selectWidth" name="problemType" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select></td>
 	</tr>
 
 	<tr>
 		<th width="225px"><s:label for="resolvingDeptScopeId" id="resolvingDeptScope" theme="simple" value="Problem Resolving Dept Scope"/></th>
-		<td><s:select id="resolvingDeptScopeId" cssClass="selectWidth" name="resolvingDeptScope" theme="simple" list="#session.impactedRegionsList" onChange="getProblemDepartments(this.options[this.selectedIndex],'getDepartmentCategories')"listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope"></s:select></td>
+		<td><s:select id="resolvingDeptScopeId" cssClass="selectWidth" name="resolvingDeptScope" theme="simple" list="{}" onChange="getProblemDepartments(this.options[this.selectedIndex].value,'getDepartmentCategories');populateDeptLocations(this.options[this.selectedIndex].value);" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Scope"></s:select></td>
 	</tr>
 
 	<tr>
 		<th><s:label for="deptCategoryId" id="deptCategoryLabelId"  theme="simple" value="Department Category"/></th>
 		<td>
-			<s:select id="deptCategoryId" cssClass="selectWidth" name="deptCategory" theme="simple" onChange="getProblemDepartments(this.options[this.selectedIndex],'getDepartments')" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select>
+			<s:select id="deptCategoryId" cssClass="selectWidth" name="deptCategory" theme="simple" onChange="getProblemDepartments(this.options[this.selectedIndex].value,'getDepartments')" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Problem Type"></s:select>
 		</td>
 	</Tr>
 
 	<tr>
 		<th><s:label for="problemTypeId" id="wardOrHamletLabel" theme="simple" value="Select Department"/></th>
 		<td>
-			<s:select id="deptId" cssClass="selectWidth" name="dept" theme="simple" list="{'01:social','02:Personal'}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Dept"></s:select>
+			<s:select id="deptId" cssClass="selectWidth" name="dept" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Dept"></s:select>
 		</td>
 	</tr>
 
@@ -331,43 +1244,43 @@ function populateDeptLocations(index)
 	<tr id="row1" style="display:none;">
 		<th><s:label for="stateId" id="stateLabelId" theme="simple" value="Select State"/><font class="requiredFont"> * </font></th>
 		<td>
-			<s:select id="stateId" cssClass="selectWidth" name="state" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select State"></s:select>
+			<s:select id="stateId" cssClass="selectWidth" name="state" theme="simple" list="#session.statesListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtId','currentAdd');"></s:select>
 		</td>
 	</tr>
 
 	<tr id="row2" style="display:none;">
 		<th><s:label for="districtId" id="districtLabelId" theme="simple" value="Select District"/><font class="requiredFont"> * </font></th>
 		<td>
-			<s:select id="districtId" cssClass="selectWidth" name="district" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select District"></s:select>
+			<s:select id="districtId" cssClass="selectWidth" name="district" theme="simple" list="#session.districtsListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'constituenciesInDistrict','influencingPeopleReg','constituencyId','currentAdd');"></s:select>
 		</td>
 	</tr>
 
 	<tr id="row3" style="display:none;">
 		<th><s:label for="constituencyId" id="constituencyLabelId" theme="simple" value="Select Constituency"/><font class="requiredFont"> * </font></th>
 		<td>
-			<s:select id="constituencyId" cssClass="selectWidth" name="constituency" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Constituency"></s:select>
+			<s:select id="constituencyId" cssClass="selectWidth" name="constituency" theme="simple" list="#session.costituenciesListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'subRegionsInConstituency','influencingPeopleReg','mandalId','currentAdd', 'null');"></s:select>
 		</td>
 	</tr>
 
 	<tr id="row4" style="display:none;">
 		<th><s:label for="mandalId" id="mandalLabelId" theme="simple" value="Select Mandal/CORP/GMC"/><font class="requiredFont"> * </font></th>
 		<td>
-			<s:select id="mandalId" cssClass="selectWidth" name="mandal" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Mandal/CORP/GMC"></s:select>
+			<s:select id="mandalId" cssClass="selectWidth" name="mandal" theme="simple" list="#session.mandalsListForProb" listKey="id" listValue="name" onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'hamletsOrWardsInRegion','influencingPeopleReg','villageId','currentAdd');" ></s:select>
 		</td>
 	</tr>
 
 	<tr id="row5" style="display:none;">
 		<th><s:label for="villageId" id="villageLabelId" theme="simple" value="Select village"/><font class="requiredFont"> * </font></th>
 		<td>
-			<s:select id="villageId" cssClass="selectWidth" name="village" theme="simple" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue = "Select Village"></s:select>
+			<s:select id="villageId" cssClass="selectWidth" name="village" theme="simple" list="#session.villagesListForProb" listKey="id" listValue="name" ></s:select>
 		</td>
 	</tr>
 
 </table>
 </FIELDSET>
-</DIV>
+</DIV>-->
 </td></tr>
-
+<!--
 <tr><td>
 	<div>
 		<table>
@@ -388,7 +1301,7 @@ function populateDeptLocations(index)
 		<table>
 			<tr>
 				<th width="100px;" theme="simple">Comments</th>
-				<td style="padding-left: 15px;"><s:textarea rows="3" cols="45" id="descTextArea" theme="simple"  onkeyup="limitText('descTextArea','maxcount',500)"  name="description"/></td>
+				<td style="padding-left: 15px;"><s:textarea rows="3" cols="45" id="descTextArea" theme="simple"  onkeyup="limitText('descTextArea','maxcount',500)"  name="comments"/></td>
 			</tr>	
 		</table>
 		<table style="width:100%;"><tr>
@@ -410,12 +1323,16 @@ function populateDeptLocations(index)
 		</table>
 	</div>
 </td></tr>
+-->
 </table>
 <input type="hidden" id="cadreInputId" name="cadreId"/>
 <input type="hidden" id="probHistoryId" name="probHistoryId"/>
+<input type="hidden" id="statusToChangeId" name="statusToChange"/>
+<input type="hidden" id="isSubmitId" name="isSubmit" value="true"/>
 </form>
 <script>
 doExecuteOnLoad();
+initializePage();
 </script>
 </body>
 </html>

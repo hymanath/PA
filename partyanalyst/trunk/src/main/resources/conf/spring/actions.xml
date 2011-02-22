@@ -18,6 +18,7 @@
 	</bean>	
 	
 	<bean id="problemAssigningAction" class="com.itgrids.partyanalyst.web.action.ProblemAssigningAction" singleton="false">
+	    <property name="problemManagementService" ref="problemManagementService" />
 	</bean>
 	
 	<bean id="constituencyWiseCensusMappingAction" class="com.itgrids.partyanalyst.web.action.ConstituencyWiseCensusMappingAction" singleton="false">
@@ -328,7 +329,10 @@
 	</bean>
 	
 	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
-		<property name="problemManagementService" ref="problemManagementService"></property>			
+		<property name="problemManagementService" ref="problemManagementService"></property>
+		<property name="regionServiceDataImp" ref="regionServiceDataImp"></property>
+		<property name="cadreManagementService" ref="cadreManagementService"></property>
+		<property name="staticDataService" ref="staticDataService"></property>			
 	</bean>
 	<bean id="voterInfoAction" class="com.itgrids.partyanalyst.web.action.VoterInfoAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"></property>	
