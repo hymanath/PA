@@ -44,229 +44,25 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 	<!-- YUI Dependency files (End) -->
-	
-	<style type="text/css">
-		#constituencyMgmtHeaderDiv
-		{
-			color:BurlyWood;
-			font-family:Verdana;
-			font-size:17px;
-			font-weight:bold;
-			margin-bottom:20px;
-			text-decoration:underline;
-		}
-					
-		#constituencyMgmtBodyDiv
-		{
-			height:900px;			
-		}
-			
-		.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav 
-		{
-			text-align:left;
-			font-weight:bold;
-		}
-		.yui-skin-sam .yui-dt th
-		{
-			background-image:url(images/YUI-images/sprite.png)
-		}
-		
-		#yui-dt0-th-Categorize
-		{
-			background-color:blue;
-		}
 
-		#statisticalDataMainDiv
-		{
-			background-color:#EDF5FF;
-			border:2px solid #99A8B7;
-			height:97%;
-			text-align:left;
-			width:99%;
-		}
-		#statisticalDataHeadDiv
-		{
-			padding:5px;
-			background-color:#B2C2D2;
-		}
-		#statisticalDataBodyDiv
-		{
-			padding:5px;
-		}
-		#newProblemTabContentDiv_footer, #classifiedTabContentDiv_footer, #assignedIssuesTabContentDiv_footer, #pendingTabContentDiv_footer, #progressTabContentDiv_footer
-		{
-			margin-right:20px;
-			text-align:right;
-			padding:5px;
-		}
-		.editInfo
-		{
-			text-align:left;
-			padding:5px;
-			font-weight: bold;
-			color: #707070;
-		}
-		#problemMgmtMainDiv
-		{
-			height:1000px;
-		}
-		.selectWidth
-		{
-			width:160px;
-		}
-		#ajaxImgSpan
-		{
-			margin-top:10px;
-			display:none;
-		}
-		.yui-skin-sam .yui-dt table 
-		{
-			width:100%;
-		}
-		.requiredFont
-		{
-		color:red;
-		margin-left:5px;
-		}
-		.tinyDateCal
-		{
-		position:absolute;
-		}
-		.newProbdialog
-		{
-			background-color:#EDF5FF;
-		}
-		#alertMessage,#NewIssuesAlertMessage, #clsfdIssuesAlertMsg,#assignedIssuesAlertMsg, #progressedIssAlertMsg,#pendingIssAlertMsg, #locationAlertMsg
-		{
-			text-align:left;
-			font-weight:bold;
-			color:red;
-			margin:8px;
-		}
-		#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
-		{
-			width:100px;
-		}
-		
-		#distEPapersTabContent_body
-		{
-			width:50%;
-		}		
-		#pendingTabContentDiv
-		{
-			width: 900px;
-			overflow-x:auto;
-		}
-		
-		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd 
-		{			
-			border:none;
-		}
-		
-		a:hover {
-			text-decoration:underline;
-		}
-		a {
-			color:#0D5CAB;
-			text-decoration:none;
-		} 	
-		
-		#leftLayoutMain a
-		{
-			margin-left:21px;			
-		}
-					
-		.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
-			color:#808080;
-			cursor:pointer;
-			font-weight:bold;
-			margin-left:1px;
-			text-decoration:none;
-		}
-		.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
-			cursor:pointer;
-			margin-left:2px;
-			text-decoration:none;
-			background: #ECF1F5;
-		}
-		.section_title {
-			border-bottom:1px dotted #B9B9B9;
-			color:#0D5CAB;
-			font-size:14px;
-			font-weight:bold;
-			margin-bottom:5px;
-			padding:5px 0;
-			text-transform:uppercase;
-		}
-		
-		
-		.yui-skin-sam .yui-panel {
-				background:#EFF3F7 none repeat scroll 0 0;
-				border:1px solid #96B4D3;
-				position:relative;
-				z-index:1;
-		}
-		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
-				background:none;
-				border-color:none;
-				border-style:none;
-				text-align:left;
-				padding:4px;
-		}
-		.yui-skin-sam .yui-panel .hd {
-				background:transparent url(images/icons/aqua-hd-bg.gif) repeat-x scroll 0 0;
-				color:#628C2A;
-				font-size:93%;
-				font-weight:bold;
-				line-height:2;
-				padding:0 10px;
-				text-align:center;
-		}
-		fieldset {
-			border:4px solid #CFD6DF;
-			margin-bottom:10px;
-			padding:10px;	
-		}
-		legend {
-			background-color:#567AAF;
-			color:#FFFFFF;
-			font-size:12px;
-			padding:5px;
-			margin: 10px;
-		}
-		.requiredFont
-		{
-			color:red;
-			margin-left:5px;
-		}
-		.button {
-			background:none repeat scroll 0 0 #335291;
-			color:#FFFFFF;
-			font-weight:bold;
-			padding:5px;
-		}
-		.confirmationMessage  {
-			color:green;
-			font-weight:bold;
-			padding:5px;
-			text-align:left;
-		}
-		.linkButton {
-			background-image:url("images/icons/electionResultsReport/linkBtn.png");
-			border-left:1px solid #9999CC;
-			border-right:1px solid #9999CC;
-			color:#FFFFFF;
-			font-size:12px;
-			font-weight:bold;
-			margin-left:10px;
-			padding:5px;
-			text-decoration:none;
-		}
-		
-		
-	</style>
+	<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jQuery/development-bundle/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
+	<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
+
+	
+	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+	<link rel="stylesheet" type="text/css" href="styles/problemManagement/problemManagement.css">	
+	
+	<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
+	<script type="text/javascript" src="js/problemManagement/problemManagement.js"></script>
+	
+
 
 <script type="text/javascript">
+	
 	var accessType = '${accessType}';
 	
 	var Localization = { <%
@@ -430,16 +226,6 @@
 						collapse: false,
 						scroll: false,						
 						animate: false
-					},
-					{
-						position: 'bottom',
-						body: 'statisticalDataMainDiv',
-						resize: false,
-						gutter: '5px',
-						collapse: false,
-						scroll: false,						
-						animate: false,		
-						height: '150'
 					}
 	    ] 
 		}); 
@@ -1441,20 +1227,7 @@
 		    return todaysDateTime = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear()+" "+currentTime;
 		    
 	}
-	
-	function getNewProblemsForUser()
-	{	
-		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';
-		var jsObj= 
-		{
-			task:"newProblemsByUserID"
-		}
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+param+"&hidden="+hidden;
-		callAjax(param,jsObj,url);		
-	}
-	
+		
 	function updateNewProblemData(results)
 	{	
 		
@@ -1514,8 +1287,14 @@
 			problemsMainObj.probTypesArr = assignToProbTypeArr;
 		}		
 		buildNewProblemsDataTable();		
-		}
+	}
+
+
 	
+	function openProblemDetailsWindow(pHistoryId)
+	{
+		var problemWindow = window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+	}
 	
 	function handleRecommLetrsTabClick()
 	{
@@ -2349,7 +2128,7 @@
 												type: "link",  
 												label: "<%=addNewProb%>",
 												href: "javascript:{}",
-												container: "newProblemTabContentDiv_footer"  
+												container: "newProblemDiv_button"  
 												});
 
 			addProblemButton.on("click", openAddNewProblemWindow); 
@@ -2409,10 +2188,8 @@
 			problemMgmtTabs.getTab(5).addListener('click',handleFixedIssTabClick);			
 	}
 
-	function redirectToNewWindowForAddingInfluencingPeople(type,id){
-		//var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
-		//browser1.focus();
-		var browser1 = window.open("<s:url action="influencingPeopleAction.action"/>?windowTask="+type+"&influencingPersonId="+id,"influencingPeopleAction","scrollbars=yes,height=630,width=620,left=300,top=10");
+	function redirectToNewWindowForAddingInfluencingPeople(){
+		var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
 		browser1.focus();
 	}
 				
@@ -2422,7 +2199,7 @@
 		 var ipContent = '';
 		 ipContent+='<div id="ipTabContent">';		 	
 		 ipContent+='<div id="dataTableDiv"></div>';
-		 ipContent+='<div style="text-align:right;margin-top:10px;"><input type="button" class="linkButton" value="Add Influencing People" onclick="redirectToNewWindowForAddingInfluencingPeople(\'new\',0)"></div>';
+		 ipContent+='<div style="text-align:right;margin-top:10px;"><input type="button" class="linkButton" value="Add Influencing People" onclick="redirectToNewWindowForAddingInfluencingPeople()"></div>';
 		 ipContent+='<div id = "smsDiv"></div>';
 		 ipContent+='</div>';	
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
@@ -3771,19 +3548,169 @@
 </script>
 </head>
 <body>
-<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
-<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">PROBLEM MANAGEMENT</div>
-</c:if>
-<c:if test="${reportResult == 'CONSTITUENCY_MANAGEMENT'}">
-<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">CONSTITUENCY MANAGEMENT</div>
-</c:if>
+
+<div id="problemManagementDiv_main">
+
+	<div id="problemManagementDiv_head">
+		<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
+		<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">PROBLEM MANAGEMENT</div>
+		</c:if>
+		<c:if test="${reportResult == 'CONSTITUENCY_MANAGEMENT'}">
+		<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">CONSTITUENCY MANAGEMENT</div>
+		</c:if>
+	</div>
+	<div id="problemManagementDiv_body">
+		<div id="statisticalDataMainDiv">
+			<div id="statisticalDataHeadDiv">
+				<table width="100%" cellspacing="0" cellpadding="0">
+					<tr>
+						<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"></td>
+						<td>
+							<div class="containerHeadLabelDivClass" id="problem_stats_head_label">
+								<span class="containerHeadLabelDivClass_span">Statistical Data</span>
+							</div>
+						</td>
+						<td width="1px"><img src="images/icons/constituencyManagement/header_right_blue.png"></td>
+					</tr>
+				</table>
+			</div>
+			<div id="statisticalDataBodyDiv">
+				<div id="statisticalDataBodyDiv_Outer" class="rounded" style="margin:0px;"> 						
+					<div class="corner topLeft"></div>
+					<div class="corner topRight"></div>
+					<div class="corner bottomLeft"></div>
+					<div class="corner bottomRight"></div> 
+
+					<div id="statisticalDataBodyDiv_main" class="contentDivClass">
+						<div id="statisticalDataBodyDiv_head"></div>
+						<div id="statisticalDataBodyDiv_body"></div>
+						<div id="statisticalDataBodyDiv_footer"></div>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div id="problemMgmtData_main">
+			<div id="problemMgmtData_head">
+				
+			</div>
+			<div id="problemMgmtData_body">
+				<table width="100%">
+					<tr>
+						<td width="70%" valign="top">
+							<div id="problemsDataDiv_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+								<div id="problemsDataDiv_main" class="contentDivClass">									
+									<div id="problemsDataDiv_head">
+										<div>
+											<table width="100%">
+												<tr>
+													<th width="88%">
+														<div id="problemsDataDiv_head_label" style="color:#4B74C6;  font-family: Comic Sans MS; font-size: 14px;">Select Options To Filter Results</div>
+													</th>
+													<td width="12%">
+														<div id="problemsDataDiv_head_button" class="yui-skin-sam"></div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div id="problemFilterOptions" style="display:none;"> 
+											<table width="100%" class="problemFilterOptions_table">									
+												<tr>
+													<th align="center">DATE </th>
+													<td colspan="2">
+														<table>
+														<tr>															
+															<!--<td><font class="requiredFont"> * </font></td>	-->
+															<td>
+																<input type="text" value=""  READONLY="READONLY" name ="occuredDate" id="identifiedFromText" size="15"/>
+																<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
+															</td>
+															<td valign="top">
+																<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+															</td>				
+															
+															<!-- <td><font class="requiredFont"> * </font></td>-->
+															<td>
+																<input type="text" READONLY="READONLY" name ="reportedDate" id="reportedFromText" size="15"/>
+																<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>
+															</td>				
+															<td valign="top">
+																<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','9/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="calendarWidth" border="0"/></a>
+															</td>
+															
+														</tr>
+														</table>											
+													</td>
+												</tr>
+												<tr>
+													<th align="center">STATUS </th>
+													<td colspan="2">
+													<s:select theme="simple" id="statusSelectElmt" list="problemStatus" headerKey="0" headerValue="All" listKey="id" listValue="name"/>								</td>
+													
+													<td>
+														<input type="button" class="buttonClass" value="view" onclick="pMgmt_Obj.getAllProblemsByFilter()">
+														
+													</td>
+												</tr>
+												  <td colspan="3"> <div id="busyCursorDiv" style="text-align:center;display:none;"><IMG src="images/icons/goldAjaxLoad.gif"/></div></td>
+												<tr>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div id="problemsDataDiv_body">
+									
+									</div>
+									<div id="problemsDataDiv_footer"></div>									
+								</div>
+							</div>	
+						</td>
+						<td width="30%" valign="top">
+							<div id="classifiedProblemsDiv_Outer" class="rounded" style="margin:0px;"> 						
+								<div class="corner topLeft"></div>
+								<div class="corner topRight"></div>
+								<div class="corner bottomLeft"></div>
+								<div class="corner bottomRight"></div> 
+								<div id="newProblemsDataDiv_main" class="contentDivClass">									
+									<div id="newProblemDiv_main">
+										<div id="newProblemDiv_head">
+											<table width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>
+													<td><div class="widgetCenterDiv"><span class="widgetCenterSpan">New Problem</span></div></td>
+													<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>
+												</tr>
+											</table>
+										</div>
+										<div id="newProblemDiv_body">
+											Post your problem or log a complaint regarding your constituency
+											<div id="newProblemDiv_button" class="yui-skin-sam" style="padding:10px;text-align:right;">
+											</div>
+										</div>
+										
+									</div>								
+								</div>
+							</div>	
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="problemMgmtData_footer">
+			
+			</div>			
+		</div>
+	</div>
+</div>
+
+
+
 <div id="constituencyMgmtMainDiv">	
 	<div id="alertMessage" style="display: none;"><%=constMgmtAlertMessage%></div>
 	<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
-	<div id="statisticalDataMainDiv">
-		<div id="statisticalDataHeadDiv"> Statistical Data </div>
-		<div id="statisticalDataBodyDiv"> Statistical Data Content</div>
-	</div>
+	
 	<div id="problemMgmtMainDiv"></div>
 	
 	<div id="errorMessageDIV" class="yui-skin-sam">
@@ -3792,6 +3719,24 @@
 	</div>
 </div>
 <script type="text/javascript">
+
+/* New Layout (Start)
+=====================
+*/
+
+<c:forEach var="status"  items="${problemStatus}" >
+	var ob={
+				id:'${status.id}',
+				value:'${status.name}'
+			};
+	pMgmt_Obj.problemStatus.push(ob);	
+</c:forEach>
+
+pMgmt_Obj.initialize();
+
+/* New Layout (End)
+=====================
+*/
 
 <c:forEach var="state"  items="${stateList}" >
 	var ob={
@@ -3845,15 +3790,15 @@ locationDetails.parliamentConstituency.push(ob);
 
 </c:forEach>
 getTodayDateTime();
-buildConstituencyLayout();
-buildOuterTabView();
-buildProblemMgmtTabView();
-buildConstMgmtTabView();
-buildClassifiedDataTable();
-buildAssignedIssuesDataTable();
-buildProgressDataTable();
-buildPendingDataTable();
-buildFixedDataTable();
+//buildConstituencyLayout();
+//buildOuterTabView();
+//buildProblemMgmtTabView();
+//buildConstMgmtTabView();
+//buildClassifiedDataTable();
+//buildAssignedIssuesDataTable();
+//buildProgressDataTable();
+//buildPendingDataTable();
+//buildFixedDataTable();
 </script>
 <span id="ajaxImgSpan"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></span>
 </body>

@@ -178,6 +178,8 @@
 				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
 				<value>com.itgrids.partyanalyst.model.CadreRole</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
+				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation</value>
+				<value>com.itgrids.partyanalyst.model.ProblemActivity</value>
 			</list>
 		</property>
 	</bean>

@@ -1,0 +1,446 @@
+
+#constituencyMgmtHeaderDiv
+{
+	color:BurlyWood;
+	font-family:Verdana;
+	font-size:17px;
+	font-weight:bold;
+	margin-bottom:20px;
+	text-decoration:underline;
+}
+			
+#constituencyMgmtBodyDiv
+{
+	/*height:900px;*/			
+}
+	
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav 
+{
+	text-align:left;
+	font-weight:bold;
+}
+.yui-skin-sam .yui-dt th
+{
+	background-image:url(images/YUI-images/sprite.png)
+}
+
+#yui-dt0-th-Categorize
+{
+	background-color:blue;
+}
+
+#statisticalDataMainDiv
+{
+	background-color:#EDF5FF;
+	text-align:left;
+	width:100%;
+}
+#statisticalDataHeadDiv
+{
+	background-color:#B2C2D2;
+}
+#statisticalDataBodyDiv
+{
+	padding:5px;
+}
+#newProblemTabContentDiv_footer, #classifiedTabContentDiv_footer, #assignedIssuesTabContentDiv_footer, #pendingTabContentDiv_footer, #progressTabContentDiv_footer
+{
+	margin-right:20px;
+	text-align:right;
+	padding:5px;
+}
+.editInfo
+{
+	text-align:left;
+	padding:5px;
+	font-weight: bold;
+	color: #707070;
+}
+#problemMgmtMainDiv
+{
+	/*height:1000px;*/
+}
+.selectWidth
+{
+	width:160px;
+}
+#ajaxImgSpan
+{
+	margin-top:10px;
+	display:none;
+}
+.yui-skin-sam .yui-dt table 
+{
+	width:100%;
+}
+.requiredFont
+{
+color:red;
+margin-left:5px;
+}
+.tinyDateCal
+{
+position:absolute;
+}
+.newProbdialog
+{
+	background-color:#EDF5FF;
+}
+#alertMessage,#NewIssuesAlertMessage, #clsfdIssuesAlertMsg,#assignedIssuesAlertMsg, #progressedIssAlertMsg,#pendingIssAlertMsg, #locationAlertMsg
+{
+	text-align:left;
+	font-weight:bold;
+	color:red;
+	margin:8px;
+}
+#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
+{
+	width:100px;
+}
+
+#distEPapersTabContent_body
+{
+	width:50%;
+}		
+#pendingTabContentDiv
+{
+	width: 900px;
+	overflow-x:auto;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd 
+{			
+	border:none;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+a {
+	color:#0D5CAB;
+	text-decoration:none;
+} 	
+
+#leftLayoutMain a
+{
+	margin-left:21px;			
+}
+			
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
+	color:#808080;
+	cursor:pointer;
+	font-weight:bold;
+	margin-left:1px;
+	text-decoration:none;
+}
+.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
+	cursor:pointer;
+	margin-left:2px;
+	text-decoration:none;
+	background: #ECF1F5;
+}
+.section_title {
+	border-bottom:1px dotted #B9B9B9;
+	color:#0D5CAB;
+	font-size:14px;
+	font-weight:bold;
+	margin-bottom:5px;
+	padding:5px 0;
+	text-transform:uppercase;
+}
+
+
+.yui-skin-sam .yui-panel {
+		background:#EFF3F7 none repeat scroll 0 0;
+		border:1px solid #96B4D3;
+		position:relative;
+		z-index:1;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+		background:none;
+		border-color:none;
+		border-style:none;
+		text-align:left;
+		padding:4px;
+}
+.yui-skin-sam .yui-panel .hd {
+		background:transparent url(images/icons/aqua-hd-bg.gif) repeat-x scroll 0 0;
+		color:#628C2A;
+		font-size:93%;
+		font-weight:bold;
+		line-height:2;
+		padding:0 10px;
+		text-align:center;
+}
+fieldset {
+	border:4px solid #CFD6DF;
+	margin-bottom:10px;
+	padding:10px;	
+}
+legend {
+	background-color:#567AAF;
+	color:#FFFFFF;
+	font-size:12px;
+	padding:5px;
+	margin: 10px;
+}
+.requiredFont
+{
+	color:red;
+	margin-left:5px;
+}
+.button {
+	background:none repeat scroll 0 0 #335291;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+.confirmationMessage  {
+	color:green;
+	font-weight:bold;
+	padding:5px;
+	text-align:left;
+}
+.linkButton {
+	background-image:url("images/icons/electionResultsReport/linkBtn.png");
+	border-left:1px solid #9999CC;
+	border-right:1px solid #9999CC;
+	color:#FFFFFF;
+	font-size:12px;
+	font-weight:bold;
+	margin-left:10px;
+	padding:5px;
+	text-decoration:none;
+}
+
+/* New Problem Management Styles*/
+
+#problemManagementDiv_main
+{
+	padding:10px;
+}
+
+.containerHeadLabelDivClass 
+{
+background-image:url("../../images/icons/constituencyManagement/header_body_blue.png");
+background-repeat:repeat;
+color:#1A496E;
+font-weight:bold;
+height:30px;
+text-align:left;
+}
+
+#statisticalDataBodyDiv
+{
+	border-bottom:1px solid #75A0C2;
+	border-left:1px solid #75A0C2;
+	border-right:1px solid #75A0C2;	
+}
+
+.containerHeadLabelDivClass_span
+{
+	position:relative;
+	top:9px;
+	left:5px;
+}
+
+#statisticalDataBodyDiv_main
+{
+	width:100%;
+}
+
+#problemMgmtData_main
+{
+	margin-top:20px;
+	border:1px solid #75A0C2;
+	padding:2px;
+}
+
+#problemMgmtData_head
+{
+	background-image:url("../../images/icons/constituencyManagement/header_body_blue.png");
+	border:1px solid #75A0C2;
+	height:30px;
+	-moz-border-radius:4px;
+}
+
+#problemMgmtData_body
+{
+	background-color:#E4EDF0;
+}
+
+.contentDivClass
+{
+	position:relative;
+}
+
+/*#problemMgmtData_main .ui-widget-header 
+{
+	background-image:url("../../images/icons/constituencyManagement/header_body_blue.png");
+	border:1px solid #75A0C2;
+	padding:0px;
+}
+
+#problemMgmtData_main #pmTabs 
+{
+	border:1px solid #75A0C2;
+}
+
+
+.ui-tabs .ui-tabs-panel
+{
+	padding:5px;
+	background-color:#E4EDF0;
+}
+
+#problemMgmtData_main .ui-tabs .ui-tabs-nav li.ui-tabs-selected
+{
+	background-color:#E4EDF0;
+	background-image:none;
+}
+
+#problemMgmtData_main .ui-tabs .ui-tabs-nav li 
+{
+	background-color:#FFFFFF;
+	background-image:none;
+	margin-right:0.5em;	
+}
+
+#problemMgmtData_main .ui-tabs .ui-tabs-nav li a
+{
+	color:#1A496E;
+	font-weight:bold;
+	width:90px;
+}*/
+
+.tabContent_Head
+{
+	background-color:#EEF4F6;
+	padding:5px;
+	text-align:right;
+}
+
+#newProblems_body
+{
+	text-align:left;
+	padding:10px;
+}
+
+.newProblemData_main
+{
+	background-image:url("../../images/icons/constituencyManagement/bodyWidget_bg.jpg");
+	border:1px solid #D8DEDF;
+	height:185px;
+	padding:5px;
+	color:#273543;
+	margin-bottom: 10px;
+}
+
+.problem_title
+{
+	color:#846C42;
+	font-size:13px;
+	font-weight:bold;
+	height:20px;
+}
+
+.problem_desc
+{
+    font-family: verdana;
+    font-size: 13px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.problem_desc_loc
+{
+    font-family: verdana;
+    font-size: 13px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.problem_title
+{
+    font-family: verdana;
+    font-size: 14px;
+	text-decoration:none;
+	color:#846C42;
+}
+
+.widgetCenterDiv
+{
+	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
+	height:30px;
+}
+
+.widgetCenterSpan
+{
+    color: #4B74C6;
+    font-family: comic Sans MS;
+    font-size: 14px;
+    font-weight: bold;
+    left: 10px;
+    position: relative;
+    top: 8px;
+}
+
+#newProblemDiv_body
+{
+    font-family: comic Sans MS;
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	color:#273543;
+	line-height:20px;
+	padding:10px;
+	text-align:justify;
+}
+
+#statisticalDataBodyDiv_head
+{
+	background-color:#EEF4F6;
+	padding:10px;	
+}
+
+#statisticalDataBodyDiv_head_table th
+{
+	width:125px;	
+	color:#1A496E;
+}
+
+#statisticalDataBodyDiv_head_table td
+{
+	color:#273543;
+}
+
+#problemsDataDiv_head
+{
+	background-color:#EEF4F6;
+	margin-bottom:15px;
+	padding:5px;
+}
+
+.problemFilterOptions_table th
+{
+	padding:2px;
+	text-align:left;
+}
+.problemFilterOptions_table td
+{
+	padding:2px;
+	text-align:left;
+}
+
+.statsData_table th
+{
+	padding:5px;
+	width:60px;
+	color:#2C4A5E;
+}
+
+.statsData_table td
+{
+	padding:5px;
+	width:50px;
+}

@@ -549,4 +549,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="departmentOrganisationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentOrganisationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemActivityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

@@ -707,6 +707,32 @@
 			<result type="json" name="success"><param name="root">problemManagementDataVO</param></result>		
 		</action>
 		
+		<action name="problemManagementActionByFilterView" class="problemManagementAction" method="getProblemsByFilterView">
+			<result type="json" name="success"><param name="root">problemManagementDataVO</param></result>		
+		</action>		
+		
+		<action name="problemDetailsAndStatusAction" class="problemManagementAction" method="getProblemDetailsAndStatus">
+			<result name="success">/jsp/problemCompleteDetailsAndStatusPage.jsp</result>	
+		</action>
+		
+		<action name="getProblemPresentStatusAjaxAction" class="problemManagementAction" method="getProblemPresentStatus">
+			<result type="json" name="success">
+			   <param name="root">problemStatusDataVO</param>
+			</result>	
+		</action>	
+		
+		<action name="getProblemRecentActivitiesAjaxAction" class="problemManagementAction" method="getProblemRecentActivities">
+			<result type="json" name="success">
+			   <param name="root">problemStatusDataVOList</param>
+			</result>	
+		</action>
+				
+		<action name="problemsOverViewGraphDataAction" class="problemManagementAction" method="getProblemsPostedDataByUserToBuildCharts">
+			<result type="json" name="success">
+			   <param name="root">problemManagementChartVO</param>
+			</result>		
+		</action>
+		
 		<action name="userSubscribePartyImpDates" class="createEventAction" method="subscribePartyImpDates">
 			<result type="json" name="success">
 				<param name="root">userSubscribeImpDates</param>				
@@ -2048,6 +2074,24 @@
 				<param name="root">deptScopesList</param>				
 			</result>		
 		</action>
+		
+		<action name="changeProblemStatusAjaxAction" class="problemAssigningAction" method="changeProblemStatus">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		
+		<action name="changeProbClassificationAjaxAction" class="problemAssigningAction" method="changeProbClassification">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		
+		<action name="addCadreToProblemAjaxAction" class="problemAssigningAction" method="addCadreToProblem">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
 		  
              
         <action name="partyStrengthAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthAction">
@@ -2088,6 +2132,15 @@
 			  
 			 <interceptor-ref name="basicStack"/>
 		</action>
-		       	
+		<action name="changeProblemDepartmentAjaxAction" class="problemAssigningAction" method="addDepartmentToProblem">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>
+		<action name="postCommentsToProblemAjaxAction" class="problemAssigningAction" method="postCommentsToProblem">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>				
+			</result>		
+		</action>       	
 	</package> 
 </struts>      

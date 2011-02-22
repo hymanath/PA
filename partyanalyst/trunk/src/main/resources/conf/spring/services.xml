@@ -109,6 +109,8 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="informationSourceDAO" ref="informationSourceDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="problemStatusDAO" ref="problemStatusDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -453,6 +455,11 @@
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />	
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="departmentOrganisationDAO" ref="departmentOrganisationDAO" />
+		<property name="problemCompleteLocationDAO" ref="problemCompleteLocationDAO" />
+		<property name="problemActivityDAO" ref="problemActivityDAO" />
+		
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -562,7 +569,6 @@
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="boothDAO" ref="boothDAO" />
-		<property name="dataApprovalService" ref="dataApprovalService" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
