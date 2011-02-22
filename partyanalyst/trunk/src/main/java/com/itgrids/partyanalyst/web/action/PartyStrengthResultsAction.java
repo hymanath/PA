@@ -34,8 +34,15 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 	
 	private ElectionInfoVO electionInfo;
 	
+	private int errorCode;
 		
 	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
 	public List<SelectOptionVO> getPartyListWithOutAll() {
 		return partyListWithOutAll;
 	}
@@ -131,6 +138,10 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 		if(party.equalsIgnoreCase("-1")){
 			addFieldError("party","Select Party");
 		}
+		
+		if(hasFieldErrors())
+			errorCode = 1;
+		
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0,new SelectOptionVO(0l,"All"));
 	}

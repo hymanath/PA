@@ -177,7 +177,8 @@
 						</tr>
 					</table>
 				</s:form>				
-			</div>		
+			</div>	
+	<c:if test="${errorCode == '0'}">	
 			<div id="data_body" class="yui-skin-sam">	
 					<div id="dataTableDiv">
 						<table  id="dataSortingTable" border="1">	
@@ -258,6 +259,7 @@
 						</table>	
 					</div>	
 			</div>	
+</c:if>
 		</div>
 </body>
 </html>
