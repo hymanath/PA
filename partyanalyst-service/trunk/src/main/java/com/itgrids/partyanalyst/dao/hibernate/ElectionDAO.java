@@ -394,5 +394,18 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				"and model1.elecSubtype = ? and model1.electionScope.state.stateId = ? ) and model.electionScope.state.stateId = ?", params);
 	}
 	
+	
+	public List<Long> getAllElectionYearsBasedOnElectionType(String electionType,String type,Long stateId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.electionYear from Election model ");
+		sb.append(" where model.electionScope.electionType.electionType = ? and model.electionScope.state.stateId = ?");
+		sb.append(" and model.elecSubtype = ? order by model.electionYear desc");
+		
+		Query queryObject = getSession().createQuery(sb.toString());
+		queryObject.setString(0,electionType);
+		queryObject.setLong(1,stateId);
+		queryObject.setString(2,type);
+		return queryObject.list();
+	}
 
 }

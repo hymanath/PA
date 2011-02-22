@@ -18,6 +18,38 @@ public class ElectionInfoVO {
     private String localBodyChartName;
     private String electionType;
         
+    private ConstituencyElectionResults requiredConstituenciesInfo;
+    private ConstituencyElectionResults remainingConstituenciesInfo;
+    private ConstituencyElectionResults latestConstituenciesInfo;
+    
+    
+	public ConstituencyElectionResults getRequiredConstituenciesInfo() {
+		return requiredConstituenciesInfo;
+	}
+
+	public void setRequiredConstituenciesInfo(
+			ConstituencyElectionResults requiredConstituenciesInfo) {
+		this.requiredConstituenciesInfo = requiredConstituenciesInfo;
+	}
+
+	public ConstituencyElectionResults getRemainingConstituenciesInfo() {
+		return remainingConstituenciesInfo;
+	}
+
+	public void setRemainingConstituenciesInfo(
+			ConstituencyElectionResults remainingConstituenciesInfo) {
+		this.remainingConstituenciesInfo = remainingConstituenciesInfo;
+	}
+
+	public ConstituencyElectionResults getLatestConstituenciesInfo() {
+		return latestConstituenciesInfo;
+	}
+
+	public void setLatestConstituenciesInfo(
+			ConstituencyElectionResults latestConstituenciesInfo) {
+		this.latestConstituenciesInfo = latestConstituenciesInfo;
+	}
+
 	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
 	}

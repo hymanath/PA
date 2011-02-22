@@ -10,8 +10,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 *@author <a href="mailto:sai.basetti@gmail.com">Sai Krishna</a>
 *@author <a href="mailto:sriharigopalnalam@gmail.com">Srihari</a>
 */
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -376,6 +375,24 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"where constituency.constituencyId = ?",constituencyId);
 		
 	}
+	
+	
+	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model),model.constituency.constituencyId,model.constituency.name from ConstituencyElection model");			
+		query.append(" where  model.election.electionId in ( select model2.electionId from Election model2 where");	
+		query.append(" model2.electionScope.state.stateId = ? and model2.electionScope.electionType.electionType = ? and model2.elecSubtype = ? ) ");
+		query.append(" group by model.constituency.constituencyId  order by count(model) desc");	
+		
+		Query queryObject = getSession().createQuery(query.toString());		
+		queryObject.setLong(0,stateId);	
+		queryObject.setString(1,electionType);
+		queryObject.setString(2,electionSubType);	
+		
+		return queryObject.list();		
+	}
+	
+	
 	
 }
 

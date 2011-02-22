@@ -3,40 +3,26 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Assert;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResults;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
-import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
-import com.itgrids.partyanalyst.dto.MandalInfoVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
-import com.itgrids.partyanalyst.model.Candidate;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.PartyRebelCandidate;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
@@ -393,7 +379,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	/*public void testFindElectionResultsForACandidateForAnElectionInAConstituency(){
 		List list = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(380l, 18l, 24l);
 		System.out.println(list.size());
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void testFindElectionResultsForAllPartiesInAssemblyConstituencies()
@@ -413,8 +399,6 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 
 		
 	}
-	
-	/*@SuppressWarnings("unchecked")
 	public void testFindWinningCandidatesDetailsInBiElectionContituencies()
 	{
 		List<Long> constituencyIds = new ArrayList<Long>();
@@ -757,9 +741,9 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		 
 		List list = nominationDAO.getAllCandidateDetails("2005", 0l,1l, IConstants.MUNCIPLE_ELECTION_TYPE,1l,IConstants.STATE_LEVEL,IConstants.WINNER_CANDIDATES,0l,0,20,"asc","model.candidate.lastname");
 		System.out.println(list.size());
-	}*/
+	}
 	
-	/*public void testFindElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(){
+	public void testFindElectionResultsForAllPartiesInAssemblyConstituenciesByCriteria(){
 		List<Long> partyIds = new ArrayList<Long>(0);
 		List<Long> districtIds = new ArrayList<Long>(0);
 		List<Long> constiIds = new ArrayList<Long>(0);
@@ -772,5 +756,123 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 				partyIds, districtIds, query);
 		System.out.println(list.size());
 	}*/
+	
+
+	public void testData(){
+		List<Long> constituencyIds =  new ArrayList<Long>(0);
+		constituencyIds.add(1l);
+		constituencyIds.add(2l);
+		constituencyIds.add(72l);
+		
+		List<Long> partyIds =  new ArrayList<Long>(0);
+		partyIds.add(885L);
+		partyIds.add(871L);
+		partyIds.add(72L);
+		partyIds.add(265L);
+		partyIds.add(163L);
+		
+		List listResult = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
+		getAllElectionData(constituencyIds,nominationDAO.getAllPartyResults(constituencyIds,partyIds),IConstants.ALL);
+		/*List list = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
+		for(int i=0; i<list.size(); i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]);
+		}*/
+	}
+	
+public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result,String type){
+		
+ 		Long tempX = 0l,tempY = 0l,tempZ = 0l;
+ 		
+ 		List<Long> uniqueItems = new ArrayList<Long>(0); 	
+ 		List<PartiesDetailsVO> partyDetails = new ArrayList<PartiesDetailsVO>(0);  		
+ 		Set<Long> linkedSet = new LinkedHashSet<Long>(0);
+ 		Map<SelectOptionVO,List<PartiesDetailsVO>> map = new HashMap<SelectOptionVO,List<PartiesDetailsVO>>(0);
+ 		
+ 		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
+ 		ResultStatus resultStatus = new ResultStatus();
+ 		String previousConstituencyName = new String();
+ 		try{ 			
+ 			if(result!=null && result.size()>0){
+	 			for(int i=0; i<result.size(); i++){
+	 				Object[] parms = (Object[])result.get(i);
+	 				Long constituencyId = (Long)parms[0];
+	 				linkedSet.add(constituencyId);
+	 				if(tempX==0l){
+	 					tempZ = tempY = tempX = constituencyId;
+	 					previousConstituencyName = parms[3].toString();
+	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
+	 				}else{	 				
+	 					if(tempX.intValue()==constituencyId.intValue()){
+	 						tempZ = constituencyId;
+	 						previousConstituencyName = parms[3].toString();
+	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
+	 					}else{
+	 						tempX = constituencyId; 
+	 						map.put(new SelectOptionVO(tempZ,previousConstituencyName), partyDetails);
+	 						partyDetails = new ArrayList<PartiesDetailsVO>(0);
+	 						tempZ = constituencyId;
+	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
+	 					}
+	 				} 				
+	 			}
+	 			uniqueItems.addAll(linkedSet);
+	 			partyDetails.clear();
+	 			Long lastId = uniqueItems.get(uniqueItems.size()-1);
+	 			String conName = new String();
+	 			for(int i=0; i<result.size(); i++){
+	 				Object[] parms = (Object[])result.get(i);
+	 				if(new Long(parms[0].toString()).intValue()==lastId){
+	 					conName = parms[3].toString();
+	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
+	 				}
+	 			}
+	 			map.put(new SelectOptionVO(lastId,conName), partyDetails); 		
+	 			constituencyElectionResults.setPartiesDetailsVOMap(map);
+	 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
+ 			}	
+ 		}catch(Exception e){
+ 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+ 			resultStatus.setExceptionEncountered(e); 			
+ 			e.printStackTrace();
+ 		}finally{
+ 			tempX = null;
+ 			tempY = null;
+ 			tempZ = null; 
+ 			uniqueItems = null;
+ 			partyDetails = null;
+ 			linkedSet = null;
+ 		}
+ 		constituencyElectionResults.setResultStatus(resultStatus);
+ 		return constituencyElectionResults;
+ 	}
+ 	
+ 	/**
+ 	 * This method is used to set Party related information data in to a DTO.
+ 	 * @param parms
+ 	 * @param type
+ 	 * @return
+ 	 */
+ 	public PartiesDetailsVO setDataIntoPartiesDetailsVO(Object[] parms,String type){
+ 		PartiesDetailsVO partyDetails = new PartiesDetailsVO();
+ 		try{
+ 		/*	if(type.equalsIgnoreCase(IConstants.ALL)){
+ 				partyDetails.setElectionYear(parms[0].toString()); 					
+ 				partyDetails.setVotesEarned(new BigDecimal(parms[2].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 				partyDetails.setPartyId((Long)parms[3]);
+ 				partyDetails.setPartyName(parms[4].toString());
+ 				partyDetails.setCandidateName(parms[5].toString());
+ 			}else{*/
+ 				partyDetails.setConstituencyId((Long)parms[0]);
+ 				partyDetails.setCount((Long)parms[1]);
+ 				partyDetails.setPartyName(parms[2].toString());
+ 				partyDetails.setConstituencyName(parms[3].toString());
+ 			//} 			
+	 	}catch(Exception e){
+			e.printStackTrace();
+		}
+	 	return partyDetails;
+ 	}
+	
 }
 	

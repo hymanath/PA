@@ -281,4 +281,6 @@ public interface IStaticDataService {
 		public DistrictWisePartyResultVO getElectionResultsForDistrict(Long electionScopeId, Long districtId);
 		
 		public Long getRecentAssemblyMainElectionIdInAState(Long stateId);
+		
+		public List<Long> getStaticPartiesAsList();
 }

@@ -398,4 +398,13 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 			String electionYear, List<Long> constituencyIds, List<Long> partyIds, 
 			List<Long> districtIds, String query );
 	
+	/*@SuppressWarnings("unchecked")
+	public List getConstituenciesHavingMaxSpan(Long stateId,String electionSubType);*/
+	
+	
+	public List getAllElectionYearsForAConstituency(List<Long> constituencyIds);
+	
+	public List getAllPartyResults(List<Long> constituencyIds,List<Long> partyIds);
+	
+	public List getPartyResultsForAParty(List<Long> constituencyIds,Long partyId);
 }
