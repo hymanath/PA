@@ -23,11 +23,17 @@ import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+/**
+ *  @author Ravi Kiran.Y
+ *  @version 20-02-11
+ *  The purpose of this class is to provide services to caluculate
+ *  the strengths and weakness of all the parties or a particular
+ *  party that had participated in a constituency or a list of
+ *  constituency's.
+ */
 public class PartyStrengthService implements IPartyStrengthService {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 4250832773268698296L;
 	
 	
@@ -38,6 +44,8 @@ public class PartyStrengthService implements IPartyStrengthService {
 	private INominationDAO nominationDAO;
 	private IStaticDataService staticDataService;
 	
+	
+	//Getters and Setters for Instance Variables.
 	
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -80,7 +88,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 * @param selectedNoOfYears
 	 * @param electionScopeId
 	 * @param electionSubType
-	 * @return
+	 * @return PartiesStrenghInfoVO
 	 */
 	public PartiesStrenghInfoVO segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
 		
@@ -118,22 +126,37 @@ public class PartyStrengthService implements IPartyStrengthService {
 	}
 	
 	
+	/**
+	 * This method can be used to get all the election years based on election type in a state.
+	 * @author Y.Ravi Kiran 
+	 * @param electionType
+	 * @param stateId
+	 * @return List<Long>
+	 */
  	public List<Long> getAllElectionYears(String electionType,Long stateId){
  		List<Long> allYears = electionDAO.getAllElectionYearsBasedOnElectionType(electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
  		return allYears;
  	}
  	
+ 	
+ 	/**
+ 	 * This method can be used to know the strengths and weakness of parties in a constituency
+ 	 * @author Y.Ravi Kiran 
+	 * @param electionType
+	 * @param stateId	 
+	 * @param electionYearsCount
+	 * @param type
+	 * @param partyId
+	 * @return List<Long>
+ 	 */
  	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,String type,Long partyId){
  		List<Long> requiredConstituencies = new ArrayList<Long>(0);
 		List<Long> latestConstituencies = new ArrayList<Long>(0);
 		List<Long> remianingConstituencies = new ArrayList<Long>(0);
 		List<Long> selectedParties = new ArrayList<Long>(0);
 		ElectionInfoVO resultVo = new ElectionInfoVO();
-		ResultStatus resultStatus = new ResultStatus();	
-		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
+		ResultStatus resultStatus = new ResultStatus();			
 		try{
-			//List<Long> allYears = getAllElectionYears(electionType,stateId);
-	 
 			PartiesStrenghInfoVO partiesStrenghInfoVO = segregateAllConstituencies(electionYearsCount,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
 	 
 			latestConstituencies = partiesStrenghInfoVO.getLatestConstituencies();
@@ -182,6 +205,13 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return resultVo;
  	}
  	
+ 	/**
+ 	 * This method can be used to get the strength of a party in that particular constituency.
+ 	 * @author Y.Ravi Kiran 
+	 * @param constituencyIds
+	 * @param result
+	 * @return ConstituencyElectionResults
+ 	 */
  	public ConstituencyElectionResults setElectionDataInToVo(List<Long> constituencyIds,List result){
  		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
  		ResultStatus resultStatus = new ResultStatus();
@@ -216,6 +246,13 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	
  	
+	/**
+ 	 * This method can be used to get the strength of all the party's that are participated in particular constituency.
+ 	 * @author Y.Ravi Kiran 
+	 * @param constituencyIds
+	 * @param result
+	 * @return ConstituencyElectionResults
+ 	 */
  	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result){
 		
  		Long tempX = 0l,tempY = 0l,tempZ = 0l;
@@ -311,69 +348,5 @@ public class PartyStrengthService implements IPartyStrengthService {
 		}
 	 	return partyDetails;
  	}
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	/*
- 	public void getWinnersForAConstituency(PartiesStrenghInfoVO partiesStrenghInfoVO,String party){
- 		List<Long> requiredConstituencies = partiesStrenghInfoVO.getRequiredConstituencies();
-		List<Long> latestConstituencies = partiesStrenghInfoVO.getLatestConstituencies();
-		List<Long> remianingConstituencies = partiesStrenghInfoVO.getRemianingConstituencies();
-		
-		getPartiesDataForLatestConstituencies(latestConstituencies,party);
- 	}
- 	
- 	
- 	
- 	public void getPartiesDataForLatestConstituencies(List<Long> latestConstituencies,String party){
- 		
- 	}
- 	
- 	
- 	
- 	public ConstituencyElectionResults getOriginalData(List<Long> constituencyIds){
-		Map<SelectOptionVO,List<PartiesDetailsVO>> map = getAllElectionData(constituencyIds).getPartiesDetailsVOMap();
-		
-		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
-		
-		for(Map.Entry<SelectOptionVO,List<PartiesDetailsVO>> partiesDetails : map.entrySet()){
-			
-						
-			ListIterator<PartiesDetailsVO> result = partiesDetails.getValue().listIterator();			
-			
-			
-			Map<Long,SelectOptionVO> partyAndCount = new HashMap<Long,SelectOptionVO>(0); // contains party id , party name ,count
-			
-			while(result.hasNext()){
-				PartiesDetailsVO vo = result.next();
-				Long key = vo.getPartyId();
-				if(partyAndCount.containsKey(key)){					
-					String partyName = partyAndCount.get(key).getName();
-					Long inc = partyAndCount.get(key).getId();					
-					partyAndCount.put(key, new SelectOptionVO(inc++,partyName));
-				}else{
-					partyAndCount.put(key, new SelectOptionVO(0l,vo.getPartyName()));
-				}				
-			}			
-			constituencyElectionResults.setPartyResults(partyAndCount);
-		}
-		
-		return constituencyElectionResults;
-	}*/
+
 }
