@@ -72,7 +72,8 @@
 	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
-				{ text: "Elections Vs Census", url: "censusReportAction.action" }                      
+				{ text: "Elections Vs Census", url: "censusReportAction.action" },     
+	            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }                      
 	        ] 
 	    }, 
 	    { 
@@ -128,7 +129,8 @@
 						id: "partyanalysis",  
 				        itemdata: [	            
 				            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
-				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" }	                       
+				            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },
+				            { text: "Party Strengths/Weakness", url: "partyStrengthAction.action" }       	                       
 				        ]    
 					},
 					{ 
