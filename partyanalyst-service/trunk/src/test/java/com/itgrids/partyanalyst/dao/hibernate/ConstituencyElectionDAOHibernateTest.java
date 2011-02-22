@@ -212,8 +212,8 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testGetConstituenciesHavingMaxSpan()
 	{
-		segregateAllConstituencies(6l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
-		
+		//segregateAllConstituencies(6l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
+		segregateAllConstituencies(6l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 	}
 	
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
