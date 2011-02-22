@@ -114,12 +114,10 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 	public String execute(){
 		
 		partyList = staticDataService.getStaticParties();
-		partyList.add(0,new SelectOptionVO(0l,"All"));
+		partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
-		
-		//electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,5l,"All",0L);
-		
+				
 		electionInfo = partyStrengthService.getPartiesData(electionType,new Long(state.toString()),new Long(electionYears.toString()),electionType,new Long(party.toString()));
 		
 		return Action.SUCCESS;
