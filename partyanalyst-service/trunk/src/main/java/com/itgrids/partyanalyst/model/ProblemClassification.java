@@ -1,14 +1,21 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "problem_classification")
@@ -22,6 +29,8 @@ public class ProblemClassification extends BaseModel{
 	private Long problemClassificationId;
 	private String classification;
 	private String description;
+	
+	private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>();
 	
 	public ProblemClassification(){
 		
@@ -63,6 +72,16 @@ public class ProblemClassification extends BaseModel{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemClassification")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<AssignedProblemProgress> getProblemProgress() {
+		return problemProgress;
+	}
+
+	public void setProblemProgress(Set<AssignedProblemProgress> problemProgress) {
+		this.problemProgress = problemProgress;
 	}
 	
 	

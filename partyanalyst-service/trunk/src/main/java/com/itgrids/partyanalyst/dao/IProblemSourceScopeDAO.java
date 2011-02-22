@@ -12,4 +12,6 @@ public interface IProblemSourceScopeDAO extends GenericDao<ProblemSourceScope, L
 
 	public List<ProblemSourceScope> findBySourceScope(String problemSourceScope);
 	
+	public List<ProblemSourceScope> findByStateId(Long stateId);
+	
 }

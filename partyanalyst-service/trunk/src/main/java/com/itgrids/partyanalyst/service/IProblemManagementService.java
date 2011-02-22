@@ -11,8 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
+import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
+import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IProblemManagementService {
@@ -38,6 +42,49 @@ public interface IProblemManagementService {
 	public String getLocationDetails(Long problemImpactLevelId,Long problemImpactLevelValue);
 	public ProblemBeanVO getProblemCompleteInfo(Long problemHistoryId);
 	public Date getCurrentDateAndTime();
-	public List<SelectOptionVO> getAllDepartmentScopes();
-		
+	public List<SelectOptionVO> getAllDepartmentScopes(Long stateId);
+	
+	public ProblemsOfUserVO getProblemsForAUserBasedOnStatusAndCount(Long userId,Long statusId,Integer startIndex,Integer maxIndex);
+	
+	public ProblemManagementChartVO getProblemsDataForAUserToBuildChart(Long userId,Long statusId,Integer startIndex,Integer maxIndex,String type);
+	
+	public ProblemManagementChartVO getProblemsDataForAUserToBuildChart(Long userId,Integer startIndex,Integer maxIndex,String type);
+	
+	public ProblemManagementChartVO getOverallProblemsCountInDifferentLifeCycleStagesPostedByUser(Long userId);
+	
+	public ProblemsOfUserVO getUserProblemsInDifferentStagesByDate(Long userId,Integer startIndex,Integer maxResults);
+	
+	public ProblemsOfUserVO getUserProblemsInDifferentStagesByFilters(Long userId,Long statusId,Date startDate,Date endDate,Integer startIndex,Integer maxResults);
+	
+	public ProblemCompleteDetailsVO getProblemCompleteInformationByProblemHistory(Long problemHistoryId);
+	
+	public List<SelectOptionVO> getDepartmentScopesForAnUser(Long userId);
+	
+	public List<SelectOptionVO> getProblemsDefaultClassifications();
+	
+	public List<SelectOptionVO> getDepartmentCategorysForAProblemScope(Long scopeId);
+	
+	public List<SelectOptionVO> getDepartmentOrganisationsForADeptOfScope(Long deptId,Long scopeId);
+	
+	public ResultStatus changePostedProblemStatusForAnUser(Long problemHistoryId,Long classificationId,Long scopeId,Long departmentId,Long cadreId,Long problemDeptLocId,String comments,String statusToChange);
+	
+	public ProblemStatusDataVO getProblemRecentDetailsByProblemHistoryId(Long problemHistoryId);
+	
+	public List<ProblemStatusDataVO> getAllProblemRecentActivityDetails(Long problemHistoryId);
+	
+	public ResultStatus updateProblemClassification(Long problemHistoryId,Long classificationId,String status);	
+	
+	public ResultStatus updateProblemStatus(Long problemHistoryId,Long statusId,String status);
+	
+	public ResultStatus updateAssignedCadre(Long problemHistoryId,Long cadreId,String status);
+	
+	public ResultStatus updateProblemComments(Long problemHistoryId,String comments,String status);
+	
+	public ResultStatus updateProblemDepartment(Long problemHistoryId,Long departmentId,Long scopeId,Long regionId,String status);
+	
+	public ResultStatus updateProblemClassificationData(Long problemHistoryId,String classification,String type);
+	
+	public ResultStatus updateProblemStatusData(Long problemHistoryId,String status);
+	
+	public List<SelectOptionVO> getDepartmentsForADepartmentResolvingAreaScope(Long scopeId);
 }

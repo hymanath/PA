@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.appfuse.dao.BaseDaoTestCase;
@@ -33,6 +36,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.utils.IConstants;
 public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
@@ -316,14 +320,14 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		Long count = problemHistoryDAO.getRecentPostedProblemsCountForAUserByProblemStatus(1L, 2L);
 		
 		System.out.println(" Total Problems :" + count);
-	}
+	}*/
 	
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetProblemsOfUserBetweenDates(){
 		
-		List countValues = problemHistoryDAO.getProblemsPostedForAUserInBetweenMonths(1L, 1L, 0, 5);
+		List countValues = problemHistoryDAO.getProblemsPostedForAUserInBetweenDates(9L, 0, 5);
 		
 		if(countValues != null && countValues.size() > 0){
 			
@@ -333,16 +337,87 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 				Object[] value = (Object[])lstItr.next();
 				
 				Long problemsCount = (Long)value[0];
-				Integer postedDate    = (Integer)value[1];
+				Date postedDate    = (Date)value[1];
+				//Integer year = (Integer)value[2];
+				String Status = (String)value[2];
 				
-				String month = new DateFormatSymbols().getMonths()[postedDate-1];
+				//String month = new DateFormatSymbols().getMonths()[postedDate-1];
 
 				
-				System.out.println(" Month :" + month + " -- > " + problemsCount);
+				System.out.println(" Month :" + postedDate + " In -- > " + Status +" -->"+ problemsCount);
 				
 			}
 		}
 	}*/
-
 	
-}
+	/*@SuppressWarnings("unchecked")
+	@Test
+	public void testGetProblemsOfUserBetweenDates(){
+		
+		List countValues = problemHistoryDAO.getProblemsPostedForAUserInBetweenMonths(1L, 0, 10);
+		
+        if(countValues != null && countValues.size() > 0){
+			
+			Iterator lstItr = countValues.listIterator();
+			while(lstItr.hasNext()){
+				
+				Object[] value = (Object[])lstItr.next();
+				
+				Long problemsCount = (Long)value[0];
+				Integer postedDate    = (Integer)value[1];
+				String status      = (String)value[2];
+				Integer year = (Integer)value[3];
+				
+				String month = new DateFormatSymbols().getMonths()[postedDate-1];
+					
+				System.out.println(" Month :" + month + " -- > " + "Year -->"+ year.toString() + " -->" + problemsCount + " Status : " + status);
+				
+			}
+		}
+		
+		List count = problemHistoryDAO.getProblemsCountPostedByAUserInBetweenMonths(1L);
+		
+		
+		for(int i=0;i<count.size();i++){
+		Object val = (Object)count.get(i);
+		
+		  System.out.println(" Date :" + (Integer) val);
+		}
+		System.out.println(" count :" + count.size());
+		
+		
+	}*/
+
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetProblemsForAnUserByStatus() throws Exception{
+		
+		
+		 DateFormat format = 
+			 new SimpleDateFormat("yyyy-MM-dd");
+		 Date startDate = 
+			 (Date)format.parse("2011-02-10");
+		 Date endDate = 
+			 (Date)format.parse("2011-02-11");
+		 
+		 List<ProblemHistory> problemHistoryLst = problemHistoryDAO.getDifferentLifeCycleProblemsOfAUserPostedBetweenDates(1L,0L,startDate,endDate, 0, 10);
+		 
+		if(problemHistoryLst != null){
+			
+			int i=1;
+			for(ProblemHistory pbHistory:problemHistoryLst){
+				
+				Problem problem = pbHistory.getProblemLocation().getProblemAndProblemSource().getProblem();
+				
+				System.out.println( i++ + ".) Problem : " + problem.getProblem());
+				System.out.println(" Updated date :" + pbHistory.getDateUpdated());
+				System.out.println(" Problem Status : " + pbHistory.getProblemStatus().getStatus());
+				System.out.println("...............................................................");
+			}
+		}
+	    
+	}
+	
+}	
+

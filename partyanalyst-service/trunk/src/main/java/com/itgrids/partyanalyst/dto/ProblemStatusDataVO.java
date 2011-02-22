@@ -20,6 +20,9 @@ public class ProblemStatusDataVO extends ResultStatus implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long problemId;
+	private String problem;
+	private String problemDesc;
 	private String problemStatus;
 	private String updatedDate;
 	private String department;
@@ -30,6 +33,15 @@ public class ProblemStatusDataVO extends ResultStatus implements Serializable{
 	private String phoneNo;
 	private String cadre;
 	private String comments;
+	private String postedBy;
+	private String postedByName;
+	private String postedDate;
+	private String existingFrom;
+	private String problemLocation;
+	private String probClassification;
+	private long diffDays;
+	
+	private String activityHapened;
 	
 	
 	public String getProblemStatus() {
@@ -92,6 +104,72 @@ public class ProblemStatusDataVO extends ResultStatus implements Serializable{
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-
+	public String getProblem() {
+		return problem;
+	}
+	public void setProblem(String problem) {
+		this.problem = problem;
+	}
+	public String getProblemDesc() {
+		return problemDesc;
+	}
+	public void setProblemDesc(String problemDesc) {
+		this.problemDesc = problemDesc;
+	}
+	public String getPostedBy() {
+		return postedBy;
+	}
+	public void setPostedBy(String postedBy) {
+		this.postedBy = postedBy;
+	}
+	public String getPostedDate() {
+		return postedDate;
+	}
+	public void setPostedDate(String postedDate) {
+		this.postedDate = postedDate;
+	}
+	public String getExistingFrom() {
+		return existingFrom;
+	}
+	public void setExistingFrom(String existingFrom) {
+		this.existingFrom = existingFrom;
+	}
+	public String getProblemLocation() {
+		return problemLocation;
+	}
+	public void setProblemLocation(String problemLocation) {
+		this.problemLocation = problemLocation;
+	}
+	public Long getProblemId() {
+		return problemId;
+	}
+	public void setProblemId(Long problemId) {
+		this.problemId = problemId;
+	}
+	public String getActivityHapened() {
+		return activityHapened;
+	}
+	public void setActivityHapened(String activityHapened) {
+		this.activityHapened = activityHapened;
+	}
+	public String getProbClassification() {
+		return probClassification;
+	}
+	public void setProbClassification(String probClassification) {
+		this.probClassification = probClassification;
+	}
+	public String getPostedByName() {
+		return postedByName;
+	}
+	public void setPostedByName(String postedByName) {
+		this.postedByName = postedByName;
+	}
+	public long getDiffDays() {
+		return diffDays;
+	}
+	public void setDiffDays(long diffDays) {
+		this.diffDays = diffDays;
+	}
+	
 	
 }

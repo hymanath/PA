@@ -37,6 +37,7 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 	private String department;
 	private String description;
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0);
+	private Set<DepartmentOrganisation> departmentOrganisation = new HashSet<DepartmentOrganisation>(0);
 	
 	public ProblemSourceScopeConcernedDepartment(){
 		
@@ -48,11 +49,12 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 	
 	public ProblemSourceScopeConcernedDepartment(Set<AssignedProblemProgress> assignedProblemProgresses,
 			ProblemSourceScope problemSourceScope, String department,
-			String description) {
+			String description,Set<DepartmentOrganisation> departmentOrganisation) {
 		this.assignedProblemProgresses = assignedProblemProgresses;
 		this.problemSourceScope = problemSourceScope;
 		this.department = department;
 		this.description = description;
+		this.departmentOrganisation = departmentOrganisation;
 	}
 
 	@Id
@@ -105,6 +107,16 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemDepartmentCategory")
+	public Set<DepartmentOrganisation> getDepartmentOrganisation() {
+		return departmentOrganisation;
+	}
+
+	public void setDepartmentOrganisation(
+			Set<DepartmentOrganisation> departmentOrganisation) {
+		this.departmentOrganisation = departmentOrganisation;
 	}
 	
 	

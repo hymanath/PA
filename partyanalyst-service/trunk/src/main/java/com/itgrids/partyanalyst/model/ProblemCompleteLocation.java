@@ -8,6 +8,9 @@
 
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -44,6 +48,9 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 	private Constituency ward;
 	private Booth booth;
 	
+	private Set<ProblemLocation> problemLocation = new HashSet<ProblemLocation>(0);
+	private Set<AssignedProblemProgress> problemProgress = new HashSet<AssignedProblemProgress>(0);
+	
 	
 	public ProblemCompleteLocation() {
 		super();		
@@ -51,7 +58,8 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 
 	public ProblemCompleteLocation(Long problemCompleteLocationId, Country country, State state,
 			District district, Constituency constituency,Constituency parliamentConstituency, Tehsil tehsil,
-			Township township, Hamlet hamlet,LocalElectionBody localElectionBody,Constituency ward,Booth booth) {
+			Township township, Hamlet hamlet,LocalElectionBody localElectionBody,Constituency ward,Booth booth,
+			Set<AssignedProblemProgress> problemProgress) {
 		super();
 		this.problemCompleteLocationId = problemCompleteLocationId;		
 		this.state = state;
@@ -64,6 +72,7 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 		this.localElectionBody = localElectionBody;
 		this.ward = ward;
 		this.booth = booth;
+		this.problemProgress = problemProgress;
 	}
 
 	@Id
@@ -175,6 +184,24 @@ public class ProblemCompleteLocation implements java.io.Serializable {
 
 	public void setBooth(Booth booth) {
 		this.booth = booth;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemCompleteLocation")
+	public Set<ProblemLocation> getProblemLocation() {
+		return problemLocation;
+	}
+
+	public void setProblemLocation(Set<ProblemLocation> problemLocation) {
+		this.problemLocation = problemLocation;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departmentLocation")
+	public Set<AssignedProblemProgress> getProblemProgress() {
+		return problemProgress;
+	}
+
+	public void setProblemProgress(Set<AssignedProblemProgress> problemProgress) {
+		this.problemProgress = problemProgress;
 	}
 	
 }

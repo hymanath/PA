@@ -22,4 +22,9 @@ public class ProblemSourceScopeDAO extends GenericDaoHibernate<ProblemSourceScop
 	public List<ProblemSourceScope> findBySourceScope(String problemSourceScope) {
 		return getHibernateTemplate().find("from ProblemSourceScope model where model.scope = ?",problemSourceScope);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemSourceScope> findByStateId(Long stateId){
+		return getHibernateTemplate().find("from ProblemSourceScope model where model.state.stateId = ?",stateId);
+	}
 }

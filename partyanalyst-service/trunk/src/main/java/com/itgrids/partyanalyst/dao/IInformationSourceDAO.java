@@ -16,4 +16,7 @@ import com.itgrids.partyanalyst.model.InformationSource;
 public interface IInformationSourceDAO extends GenericDao<InformationSource, Long> {
 
 	public List<InformationSource> getInformationSourceByType(String sourceType);
+	
+	@SuppressWarnings("unchecked")
+	public List getAllInformationSourceDetails();
 }

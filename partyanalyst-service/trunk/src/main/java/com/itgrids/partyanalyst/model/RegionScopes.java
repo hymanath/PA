@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -39,6 +40,7 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 	private Long regionScopesId;
 	private String scope;
 	private String description;
+	
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
 	
 	public RegionScopes() {
@@ -87,11 +89,6 @@ public class RegionScopes extends BaseModel implements java.io.Serializable {
 	public void setModuleRegionScopes(Set<ModuleRegionScopes> moduleRegionScopes) {
 		this.moduleRegionScopes = moduleRegionScopes;
 	}
-	
-	
-	
-	
-	
-	
 
+	
 }

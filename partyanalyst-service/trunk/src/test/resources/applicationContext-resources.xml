@@ -192,6 +192,8 @@
 				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
 				<value>com.itgrids.partyanalyst.model.CadreRole</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
+				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation</value>
+				<value>com.itgrids.partyanalyst.model.ProblemActivity</value>
 		 </list>
 		</property>
 	</bean>
@@ -942,5 +944,13 @@
     	<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
     	<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
+	
+	<bean id="departmentOrganisationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DepartmentOrganisationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="problemActivityDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemActivityDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 	
 </beans>

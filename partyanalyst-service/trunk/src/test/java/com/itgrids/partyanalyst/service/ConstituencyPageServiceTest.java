@@ -70,7 +70,7 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 		constituencyPageService.getConstituencyElecResults(403l, "2004",true);
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		List<String> list = new ArrayList<String>();
 		
@@ -82,5 +82,14 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 		constituencyPageService.getCensusDetailsForAssemblyConstituency(231l,2009l,2001l);
 		
 	}
-
+*/
+	public static void main(String args[])
+	{
+		Long a = 0l;
+		long b = 0l;
+		if(a==b)
+			System.out.println("== true");
+		if(a.equals(b))
+			System.out.println("equals true");
+	}
 }
