@@ -136,9 +136,9 @@
 							<th align="left">Election Type</td>
 							<td align="left">
 								<select id="electionTypeSelect" name="electionType" class = "selectWidth">
-									<option value="0">Select Election Type</option>
-									<option value="1">Parliament</option>
-									<option value="2">Assembly</option>
+									<option value="0">Select Election Type</option>									
+									<option value="Assembly">Assembly</option>
+									<option value="Parliament">Parliament</option>
 								</select>
 							</td>
 						</tr>
@@ -169,7 +169,7 @@
 						<tr>
 							<th align="left">Select Party</th>
 							<td align="left">														
-								<s:select theme="simple" name="party" id="partyList" cssClass = "selectWidth" list="partyList" headerKey="0" headerValue="Select Party" listKey="id" listValue="name" />
+								<s:select theme="simple" name="party" id="partyList" cssClass = "selectWidth" list="partyList" headerKey="-1" headerValue="Select Party" listKey="id" listValue="name" />
 							</td>
 						</tr>
 						<tr>
@@ -178,84 +178,85 @@
 					</table>
 				</s:form>				
 			</div>		
-			
-			<div id="dataTableDiv">
-				<table  id="dataSortingTable" border="1">	
-				<tr>
-					<th> Constituency Name</th>					
-					<th> INC </th>
-					<th> TDP </th>
-					<th> TRS </th>
-					<th> CPI </th>
-					<th> CPM </th>
-					<th> AIMIM </th>
-					<th> BJP </th>
-					<th> PRP </th>
-				</tr>					
-						<c:forEach var="details" varStatus="stat" items="${electionInfo.requiredConstituenciesInfo.partiesStrengthsInfoVO}">	
-							<tr>
-								<td>
-									${details.constituencyName}
-								</td>
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-									<td>
-										<c:if test="${partyResults.partyName == 'INC'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>
-									</td>
+			<div id="data_body" class="yui-skin-sam">	
+					<div id="dataTableDiv">
+						<table  id="dataSortingTable" border="1">	
+						<tr>
+							<th> Constituency Name</th>					
+							<th> INC </th>
+							<th> TDP </th>
+							<th> TRS </th>
+							<th> CPI </th>
+							<th> CPM </th>
+							<th> AIMIM </th>
+							<th> BJP </th>
+							<th> PRP </th>
+						</tr>					
+								<c:forEach var="details" varStatus="stat" items="${electionInfo.requiredConstituenciesInfo.partiesStrengthsInfoVO}">	
+									<tr>
+										<td>
+											${details.constituencyName}
+										</td>
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
+											<td>
+												<c:if test="${partyResults.partyName == 'INC'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>
+											</td>
+										</c:forEach>
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">											
+											<td>
+												<c:if test="${partyResults.partyName == 'TDP'}">
+													${partyResults.partyName} ${partyResults.count}
+												</c:if>	
+											</td>
+										</c:forEach>	
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
+											<td>	
+												<c:if test="${partyResults.partyName == 'TRS'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>
+											</td>	
+										</c:forEach>
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
+											<td>	
+												<c:if test="${partyResults.partyName == 'CPI'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>
+											</td>		
+										</c:forEach>	
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
+											<td>
+												<c:if test="${partyResults.partyName == 'CPM'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>	
+											</td>
+										</c:forEach>
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
+											<td> 
+												<c:if test="${partyResults.partyName == 'AIMIM'}">
+													${partyResults.partyName} ${partyResults.count}
+												</c:if>	
+											</td>
+										</c:forEach>	
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
+											<td>
+												<c:if test="${partyResults.partyName == 'BJP'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>	
+											</td>
+										</c:forEach>	
+										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
+											<td>
+												<c:if test="${partyResults.partyName == 'PRP'}">
+													 ${partyResults.partyName} ${partyResults.count}
+												</c:if>	
+											</td>
+										</c:forEach>
+									</tr>
 								</c:forEach>
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">											
-									<td>
-										<c:if test="${partyResults.partyName == 'TDP'}">
-											${partyResults.partyName} ${partyResults.count}
-										</c:if>	
-									</td>
-								</c:forEach>	
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-									<td>	
-										<c:if test="${partyResults.partyName == 'TRS'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>
-									</td>	
-								</c:forEach>
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
-									<td>	
-										<c:if test="${partyResults.partyName == 'CPI'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>
-									</td>		
-								</c:forEach>	
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-									<td>
-										<c:if test="${partyResults.partyName == 'CPM'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>	
-									</td>
-								</c:forEach>
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
-									<td> 
-										<c:if test="${partyResults.partyName == 'AIMIM'}">
-											${partyResults.partyName} ${partyResults.count}
-										</c:if>	
-									</td>
-								</c:forEach>	
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-									<td>
-										<c:if test="${partyResults.partyName == 'BJP'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>	
-									</td>
-								</c:forEach>	
-								<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-									<td>
-										<c:if test="${partyResults.partyName == 'PRP'}">
-											 ${partyResults.partyName} ${partyResults.count}
-										</c:if>	
-									</td>
-								</c:forEach>
-							</tr>
-						</c:forEach>
-				</table>	
+						</table>	
+					</div>	
 			</div>	
 		</div>
 </body>

@@ -32,7 +32,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private IStaticDataService staticDataService; 
 	private IPartyStrengthService partyStrengthService;
 	
-	private List<SelectOptionVO> partyList,partyListWithOutAll;
+	private List<SelectOptionVO> partyList,partyListWithOutAll,electionTypes;
 	private String electionType;
 	private String state;
 	private String electionYears;
@@ -42,7 +42,12 @@ public class PartyStrengthAction extends ActionSupport implements
 	private ElectionInfoVO electionInfo;
 	
 		
-	
+	public List<SelectOptionVO> getElectionTypes() {
+		return electionTypes;
+	}
+	public void setElectionTypes(List<SelectOptionVO> electionTypes) {
+		this.electionTypes = electionTypes;
+	}
 	public List<SelectOptionVO> getPartyListWithOutAll() {
 		return partyListWithOutAll;
 	}
