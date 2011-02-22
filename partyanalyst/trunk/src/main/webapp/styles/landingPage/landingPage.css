@@ -679,19 +679,18 @@ input.input_text
     overflow:hidden; 
 }
 
-#controls
+#homePage_Image_Header_main #controls
 {
 	left:10px;
 	position:relative;
 	top:-40px;
 }
 
-.controls li a
+#homePage_Image_Header_main .controls li a
 {
 	height:10px;
 	padding:0 5px;
 }
-
 /* indexPage styles*/
 
 
