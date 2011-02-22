@@ -314,11 +314,13 @@ localBodyString = '<%=localBody%>';
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td width="70%" valign="top">
-					<div id="homePage_Image_Header">
-						<div style="padding:325px 30px 10px 0;text-align:right;">
-							<img style="cursor:pointer" onclick="openKnowMoreWindow()" width="140" height="30" src="images/icons/homePage_new/learn_more.jpeg">
-						</div>
-					</div>					
+					<div id="homePage_Image_Header_main">
+						<div id="homePage_Image_Header">
+							<div style="padding:325px 30px 10px 0;text-align:right;">
+								<img style="cursor:pointer" onclick="openKnowMoreWindow()" width="140" height="30" src="images/icons/homePage_new/learn_more.jpeg">
+							</div>
+						</div>					
+					</div>
 				</td>
 				<td width="30%" valign="top">
 					
