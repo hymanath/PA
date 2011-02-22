@@ -16,7 +16,9 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,String type,Long partyId);
 	
-	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result,String type);
+	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result);
 	
-	public PartiesDetailsVO setDataIntoPartiesDetailsVO(Object[] parms,String type);
+	public ConstituencyElectionResults setElectionDataInToVo(List<Long> constituencyIds,List result);
+	
+	public PartiesDetailsVO setDataIntoPartiesDetailsVO(Object[] parms);
 }

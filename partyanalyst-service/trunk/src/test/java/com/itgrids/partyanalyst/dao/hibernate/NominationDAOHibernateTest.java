@@ -773,6 +773,8 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		
 		List listResult = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
 		getAllElectionData(constituencyIds,nominationDAO.getAllPartyResults(constituencyIds,partyIds),IConstants.ALL);
+		
+		
 		/*List list = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
 		for(int i=0; i<list.size(); i++){
 			Object[] parms = (Object[])list.get(i);
