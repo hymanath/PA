@@ -420,7 +420,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		}
 		problemScopes = regionServiceDataImp.getAllRegionScopesForModule(IConstants.ADD_NEW_PROBLEM, stateId);
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
-		deptScopes = problemManagementService.getAllDepartmentScopes();
+		deptScopes = problemManagementService.getAllDepartmentScopes(0L);
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());

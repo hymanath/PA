@@ -84,6 +84,15 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private SmsResultVO smsResultVO;
 	private List<RegionSelectOptionVO> regionSelectOptionVO;
 	private InfluencingPeopleBeanVO influencingPersonVO;
+	private List<SelectOptionVO> problemStatus;
+
+	public List<SelectOptionVO> getProblemStatus() {
+		return problemStatus;
+	}
+
+	public void setProblemStatus(List<SelectOptionVO> problemStatus) {
+		this.problemStatus = problemStatus;
+	}
 
 	public InfluencingPeopleBeanVO getInfluencingPersonVO() {
 		return influencingPersonVO;
@@ -503,7 +512,11 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
-	
+		
+		//problemStatus = staticDataService.getAllProblemStatus(); 
+		
+		problemStatus = staticDataService.getDefaultProblemStatus(IConstants.PROBLEMS_LIFE_CYCLE);
+			
 		if(cmTask != null){
 		if(cmTask.equalsIgnoreCase(IConstants.PROBLEMS_MANAGEMENT))
 			reportResult = IConstants.PROBLEMS_MANAGEMENT;
