@@ -118,7 +118,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	public String execute(){
 		
 		partyList = staticDataService.getStaticParties();
-		partyList.add(0,new SelectOptionVO(0l,"All"));
+		partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
 		
