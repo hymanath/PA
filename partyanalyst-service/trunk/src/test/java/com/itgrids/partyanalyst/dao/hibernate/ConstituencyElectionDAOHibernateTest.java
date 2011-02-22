@@ -3,10 +3,12 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -190,7 +192,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			Object[] params = (Object[])list.get(i);
 			System.out.println(params[0] + " \t" + params[1]+ " \t" + params[2]);	
 		}
-	}*/
+	}
 	
 	public void testfindAllElectionsByConstituencyId()
 	{
@@ -205,6 +207,49 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				Object[] params = (Object[])list.get(i);
 				System.out.println(params[0] + " \t" + params[1]);	
 			}
+		}
+	}*/
+	
+	public void testGetConstituenciesHavingMaxSpan()
+	{
+		segregateAllConstituencies(6l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
+		
+	}
+	
+	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
+		
+		List<Long> requiredConstituencies = new ArrayList<Long>(0);
+		List<Long> latestConstituencies = new ArrayList<Long>(0);
+		List<Long> remianingConstituencies = new ArrayList<Long>(0);
+		ListIterator it = null;
+		
+		try{
+			List result = constituencyElectionDAO.getConstituenciesHavingMaxSpan(electionSubType,electionType,stateId);	
+			if(result!=null && result.size()>0){
+				it = result.listIterator();
+				while(it.hasNext()){
+					Object[] parms = (Object[]) it.next();
+					
+					Long count = (Long)parms[0];
+					
+						System.out.print(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
+						if(count >= selectedNoOfYears && count!=1l){
+							System.out.print("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]);
+							requiredConstituencies.add((Long)parms[1]);
+						}else if(count==1){
+							latestConstituencies.add((Long)parms[1]);
+						}else{
+							remianingConstituencies.add((Long)parms[1]);
+						}
+					
+					System.out.println();
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			it = null;
 		}
 	}
 }

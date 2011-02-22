@@ -131,4 +131,7 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	@SuppressWarnings("unchecked")
 	public List findConstituencyByDistrictAndStateIdsForLocalBodys(Long districtId,Long stateId,String electionYear,String electionType);
+	
+	@SuppressWarnings("unchecked")
+	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId);
 }

@@ -3120,6 +3120,27 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
+	/**
+	 * This method gets all the important parties in the state.
+	 */
+	public List<Long> getStaticPartiesAsList(){
+		try{
+			List<Long> list = new ArrayList<Long>();
+			log.debug("Making partyDAO.findByShortNames() DAO call...");
+			List<Party> parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
+			for(Party party : parties){				
+				list.add(party.getPartyId());
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.debug("Exception raised in getStaticParties() method of Static Data Service ");
+			}
+			return null;
+		}
+	}
+	
 	
 	/**
 	 * This method return all parties that have participated in that particular election year.
