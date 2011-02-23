@@ -541,6 +541,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="stateRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="stateRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDistrictDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="userProblemApprovalDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserProblemApprovalDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
