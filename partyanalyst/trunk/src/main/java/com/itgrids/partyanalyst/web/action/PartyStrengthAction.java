@@ -51,7 +51,9 @@ public class PartyStrengthAction extends ActionSupport implements
 	List<SelectOptionVO> states;
 	List<Long> years;
 	
-	
+	public List<SelectOptionVO> getStates() {
+		return states;
+	}
 	public List<Long> getYears() {
 		return years;
 	}
@@ -173,7 +175,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	}
 	
 
-	public String getStates(){
+	public String getStatesData(){
 		if(task != null){
 			try {
 				jObj = new JSONObject(getTask());	

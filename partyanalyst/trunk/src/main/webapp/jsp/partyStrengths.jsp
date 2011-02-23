@@ -162,7 +162,7 @@
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getStatesAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+		callAjax(jsObj,url);
 	}
 
 	function buildStates(results)
@@ -269,12 +269,7 @@
 										</td>
 										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
 											<td>
-												<c:if test="${partyResults.count == '0'}">
-													0
-												</c:if>	
-												<c:if test="${partyResults.count != '0'}">
-													 ${partyResults.count}
-												</c:if>	
+												 ${partyResults.count}												
 											</td>	
 										</c:forEach>
 									</tr>
