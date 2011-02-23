@@ -12,6 +12,7 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="stateDAO" ref="stateDAO" />
 	</bean>
 	
 	<bean name="userEntitlementService" class="com.itgrids.partyanalyst.service.impl.UserEntitlementService" >
