@@ -176,6 +176,8 @@
 				<value>com.itgrids.partyanalyst.model.ProblemCompleteLocation</value>
 				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
 				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
+				<value>com.itgrids.partyanalyst.model.StateRegion</value>
+				<value>com.itgrids.partyanalyst.model.StateRegionDistrict</value>
 				<value>com.itgrids.partyanalyst.model.CadreRole</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
 				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation</value>
