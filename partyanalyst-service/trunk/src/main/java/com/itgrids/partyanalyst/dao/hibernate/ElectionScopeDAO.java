@@ -94,6 +94,12 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 				                  "model.country.countryId = ?",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getAllStatesAndTheirIds(String electionType){
+		return getHibernateTemplate().find("select distinct model.state.stateId,model.state.stateName " +
+				"from ElectionScope model where model.electionType.electionType = ?",electionType);
+	}
+	
 }
  
 

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -15,7 +16,7 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 	public void setElectionScopeDAO(ElectionScopeDAO electionScopeDAO){
 		this.electionScopeDAO = electionScopeDAO;
 	}
-	
+	/*
 	@Test
 	public void testFindByTypeIdCountryIdStateId(){
 		List<ElectionScope> actualResult =electionScopeDAO.findByTypeIdCountryIdStateId(new Long(1),new Long(1),new Long(1));
@@ -23,7 +24,7 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 		//Assert.assertEquals(new Long(2), actualResult.get(0).getElectionScopeId());
 	}
 
-	/*@Test
+	@Test
 	public void testStates(){
 		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(2l);
 		assertEquals(2l,electionScopes.size());
@@ -43,4 +44,13 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 	}*/
+	
+	public void testGetData(){
+		
+		List list = electionScopeDAO.getAllStatesAndTheirIds(IConstants.ASSEMBLY_ELECTION_TYPE);
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[0]+"\t\t"+parms[1]);
+		}
+	}
 }
