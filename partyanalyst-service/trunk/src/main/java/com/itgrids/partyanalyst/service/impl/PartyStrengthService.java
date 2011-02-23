@@ -130,7 +130,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				while(it.hasNext()){
 					Object[] parms = (Object[]) it.next();
 					Long count = (Long)parms[0];					
-					if(count >= selectedNoOfYears && count!=1l){
+					if(count.intValue() == selectedNoOfYears.intValue() && count!=1l){
 						requiredConstituencies.add((Long)parms[1]);
 					}else if(count.intValue()==1){
 						latestConstituencies.add((Long)parms[1]);
@@ -491,6 +491,15 @@ public class PartyStrengthService implements IPartyStrengthService {
 			e.printStackTrace();
 		}
 	 	return partyDetails;
+ 	}
+ 	
+ 	
+ 	public List<SelectOptionVO> getAllPartiesData(String electionType,Long stateId){
+ 		
+ 		List<SelectOptionVO> partiesList = staticDataService.getStaticParties();
+ 		partiesList.add(new SelectOptionVO(0l,"All Parties"));
+ 		
+ 		return 	partiesList;
  	}
 
 }

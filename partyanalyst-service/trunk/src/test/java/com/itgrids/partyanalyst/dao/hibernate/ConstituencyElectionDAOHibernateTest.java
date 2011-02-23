@@ -213,7 +213,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetConstituenciesHavingMaxSpan()
 	{
 		//segregateAllConstituencies(6l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
-		segregateAllConstituencies(6l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
+		segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 	}
 	
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
@@ -231,18 +231,14 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 					Object[] parms = (Object[]) it.next();
 					
 					Long count = (Long)parms[0];
-					
-						System.out.print(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
-						if(count >= selectedNoOfYears && count!=1l){
-							System.out.print("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]);
+						if(count.intValue() == selectedNoOfYears.intValue() && count!=1l){
+							System.out.println("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 							requiredConstituencies.add((Long)parms[1]);
 						}else if(count==1){
 							latestConstituencies.add((Long)parms[1]);
 						}else{
 							remianingConstituencies.add((Long)parms[1]);
 						}
-					
-					System.out.println();
 				}
 			}
 			
