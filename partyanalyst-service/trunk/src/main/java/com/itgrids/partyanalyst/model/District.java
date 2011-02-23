@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +59,8 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Set<Tehsil> tehsils = new HashSet<Tehsil>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
+	private StateRegionDistrict stateRegionDistrict;
+	
 
 	// Constructors
 
@@ -74,7 +77,8 @@ public class District extends BaseModel implements java.io.Serializable {
 	public District(Long districtId, String districtName,
 			String districtCapital, Double area, Double population,  State state,
 			Long districtCode, Date startDate, Date deformDate,
-			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<LocalGroupRegion> localGroupRegion) {
+			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<LocalGroupRegion> localGroupRegion,
+			StateRegionDistrict stateRegionDistrict) {
 		this.districtId = districtId;
 		this.state = state;
 		this.districtName = districtName;
@@ -88,6 +92,8 @@ public class District extends BaseModel implements java.io.Serializable {
 		this.tehsils = tehsils;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
 		this.localGroupRegion = localGroupRegion;
+		this.stateRegionDistrict = stateRegionDistrict;
+		
 	}
 
 	// Property accessors
@@ -215,4 +221,13 @@ public class District extends BaseModel implements java.io.Serializable {
 	public void setLocalGroupRegion(Set<LocalGroupRegion> localGroupRegion) {
 		this.localGroupRegion = localGroupRegion;
 	}
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "district")
+	public StateRegionDistrict getStateRegionDistrict() {
+		return stateRegionDistrict;
+	}
+
+	public void setStateRegionDistrict(StateRegionDistrict stateRegionDistrict) {
+		this.stateRegionDistrict = stateRegionDistrict;
+	}
+	
 }
