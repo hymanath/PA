@@ -167,10 +167,8 @@
 
 	function buildStates(results)
 	{
+			
 				
-		var ajaxImgElmt = document.getElementById("selectStateId");
-		ajaxImgElmt.style.display = "block";
-		
 		var showStates = document.getElementById("showStates");
 		var populateStates='';
 		populateStates+='<select id="tehsilParties" style="width:80px;" onchange="partyWiseCandidateDetails(this.options[this.selectedIndex].value)">';
@@ -221,7 +219,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th align="left" style="display:none;" id="selectStateId">Select State</th>
+							<th align="left" id="selectStateId">Select State</th>
 							<td align="left">						
 								<div id="showStates"></div>
 							</td>
