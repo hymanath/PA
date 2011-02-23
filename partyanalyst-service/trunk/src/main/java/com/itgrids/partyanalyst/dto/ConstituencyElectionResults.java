@@ -19,11 +19,18 @@ public class ConstituencyElectionResults {
 	private ResultStatus resultStatus;	
 	private Map<Long,SelectOptionVO> partyResults;
 	private List<PartiesStrengthsInfoVO> partiesStrengthsInfoVO;
-
+	private List<SelectOptionVO> allPartiesData;
+	
 	//getters and setters
 
 	public ConstituencyElectionResultVO getElectionResultForParty() {
 		return electionResultForParty;
+	}
+	public List<SelectOptionVO> getAllPartiesData() {
+		return allPartiesData;
+	}
+	public void setAllPartiesData(List<SelectOptionVO> allPartiesData) {
+		this.allPartiesData = allPartiesData;
 	}
 	public List<PartiesStrengthsInfoVO> getPartiesStrengthsInfoVO() {
 		return partiesStrengthsInfoVO;

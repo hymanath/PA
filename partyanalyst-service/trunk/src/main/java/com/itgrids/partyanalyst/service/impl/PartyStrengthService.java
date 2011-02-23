@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartiesDetailsVOComparator;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 /**
  *  @author Ravi Kiran.Y
@@ -171,7 +172,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 * @param electionYearsCount
 	 * @param type
 	 * @param partyId
-	 * @return List<Long>
+	 * @return ElectionInfoVO
  	 */
  	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,Long partyId){
  		List<Long> requiredConstituencies = new ArrayList<Long>(0);
@@ -272,24 +273,26 @@ public class PartyStrengthService implements IPartyStrengthService {
 		return constituencyElectionResults;
  	}
  	
- 	public List<Long> getCountOfElectionYears(Long stateId,String electionType){
- 		List<Long> years = new ArrayList<Long>();
- 		List allYears ;
+ 	public List<SelectOptionVO> getCountOfElectionYears(Long stateId,String electionType){
+ 		List<SelectOptionVO> ids = new ArrayList<SelectOptionVO>(0);
+ 		List allYears = new ArrayList();
  		Long count=0l;
  		try{
+ 			
  			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
  				 allYears = electionDAO.getCountOfElectionYears(stateId,electionType);
  			}else{
  				 allYears = electionDAO.getCountOfElectionYearsForParliament(stateId,electionType);
  			}	 		
 	 		count = new Long(allYears.get(0).toString());
+	 		ids.add(0,new SelectOptionVO(0l,"Select Year"));	 		
 	 		for(Long i=count;i>0;i--){
-	 			years.add(i);
+	 			ids.add(new SelectOptionVO(new Long(i),i.toString()));
 	 		}
  		}catch(Exception e){
  			e.printStackTrace();
  		}
- 		return years;
+ 		return ids;
  	}
  	
  	
@@ -297,6 +300,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	public List<SelectOptionVO> getAllStatesHavinElectionData(String electionType){
  		List<SelectOptionVO> ids = new ArrayList<SelectOptionVO>(0);
  		try{
+ 			ids.add(0,new SelectOptionVO(0l,"Select State"));	 
  			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
  				List list = electionScopeDAO.getAllStatesAndTheirIds(electionType);
  	 			for(int i=0;i<list.size();i++){
@@ -341,6 +345,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  		
  		
  		List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
+ 		Collections.sort(staticParties,new SelectOptionVOComparator());
+ 		constituencyElectionResults.setAllPartiesData(staticParties);
  		
  		List<SelectOptionVO> tempParties = new ArrayList<SelectOptionVO>(0);
  		Map<Long,String> map = new HashMap<Long,String>();
@@ -406,6 +412,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 			PartiesStrengthsInfoVO resultVo = new PartiesStrengthsInfoVO();
 				resultVo.setConstituencyId(tempZ);
 				resultVo.setConstituencyName(previousConstituencyName);
+				partyDetails = generateTempData(partyIds,map,partyDetails,tempZ,previousConstituencyName);
 				resultVo.setPartyResults(partyDetails);	 
 				partiesStrengthsInfoVO.add(resultVo);
 	 			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
