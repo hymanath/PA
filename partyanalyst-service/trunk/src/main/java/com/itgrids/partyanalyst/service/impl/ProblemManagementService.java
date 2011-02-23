@@ -3111,8 +3111,16 @@ public class ProblemManagementService implements IProblemManagementService {
 				ResultStatus rs = new ResultStatus();
 				try{
 					
+					ProblemStatus problemStatus = problemStatusDAO.get(statusId);
 					ProblemHistory problemHistory = problemHistoryDAO.get(problemHistoryId);
 					Problem problem = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem();
+					
+					//check for previous status
+					if(problemHistory.getProblemStatus().getStatus().equalsIgnoreCase(problemStatus.getStatus())){
+						rs.setExceptionMsg("Already  In same status, please change status ..");
+						return rs;
+					}
+						
 					
 					problemHistory.setIsApproved("true");
 					problemHistory.setIsDelete("true");
@@ -3125,7 +3133,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					newProbHistory.setDateUpdated(getCurrentDateAndTime());
 					newProbHistory.setIsApproved("true");
 					newProbHistory.setProblemSourceScope(problemHistory.getProblemSourceScope());
-					newProbHistory.setProblemStatus(problemStatusDAO.get(statusId));
+					newProbHistory.setProblemStatus(problemStatus);
 					newProbHistory.setComments(problemHistory.getComments());
 					
 					newProbHistory = problemHistoryDAO.save(newProbHistory);
