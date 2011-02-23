@@ -180,7 +180,19 @@ public class PartyStrengthService implements IPartyStrengthService {
 		List<Long> remianingConstituencies = new ArrayList<Long>(0);
 		List<Long> selectedParties = new ArrayList<Long>(0);
 		ElectionInfoVO resultVo = new ElectionInfoVO();
-		ResultStatus resultStatus = new ResultStatus();			
+		ResultStatus resultStatus = new ResultStatus();		
+		
+		List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
+ 		Collections.sort(staticParties,new SelectOptionVOComparator());
+ 		
+ 		for(int i=0;i<staticParties.size();i++){ 
+			if(staticParties.get(i).getId().intValue() == partyId.intValue())
+				resultVo.setPartyName(staticParties.get(i).getName());
+ 		}
+ 		
+ 		if(resultVo.getPartyName()== null ||  resultVo.getPartyName()== "")
+ 			resultVo.setPartyName("All Parties");
+ 		
 		try{
 			PartiesStrenghInfoVO partiesStrenghInfoVO = segregateAllConstituencies(electionYearsCount,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
 	 
@@ -329,7 +341,6 @@ public class PartyStrengthService implements IPartyStrengthService {
  	 */
  	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result){
 		
- 		
  			 		
  		List<PartiesStrengthsInfoVO> partiesStrengthsInfoVO = new ArrayList<PartiesStrengthsInfoVO>();
  		 		
@@ -364,7 +375,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms));
 	 					map2.put(constituencyId,partyDetails);	
 	 				}		 			
-		 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
+		 			
 	 			}	
  			}	
  			for(Map.Entry<Long,List<PartiesDetailsVO>> resultIterator : map2.entrySet()){
@@ -379,6 +390,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  			}
  			
  			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
+ 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
  		}catch(Exception e){
  			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
  			resultStatus.setExceptionEncountered(e); 			
