@@ -193,12 +193,16 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	*/
 	
 	
-	public void testGetAllElectionYears(){
+	/*public void testGetAllElectionYears(){
 		List<Long> allYears = electionDAO.getAllElectionYearsBasedOnElectionType(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 		for(int i=0;i<allYears.size();i++){			
 			System.out.println(allYears.get(i));
 		}
-	}
+	}*/
 	
+	public void testData(){
+		List allYears = electionDAO.getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(allYears.get(0).toString());
+	}
 }
 

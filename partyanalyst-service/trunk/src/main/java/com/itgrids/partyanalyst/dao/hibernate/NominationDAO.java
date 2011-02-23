@@ -2443,7 +2443,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List getAllPartyResults(List<Long> constituencyIds,List<Long> partyIds){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,count(model.party.partyId),model.party.shortName,");
-		query.append(" model.constituencyElection.constituency.name from Nomination model");			
+		query.append(" model.constituencyElection.constituency.name,model.party.partyId from Nomination model");			
 		query.append(" where model.constituencyElection.constituency.constituencyId in (:constituencyIds) and");
 		query.append(" model.candidateResult.rank = 1 and model.party.partyId in ");
 		query.append("(:partyIds) group by model.constituencyElection.constituency.constituencyId,model.party.partyId order by model.constituencyElection.constituency.constituencyId ");	
@@ -2459,7 +2459,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List getPartyResultsForAParty(List<Long> constituencyIds,Long partyId){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,count(model.party.partyId),model.party.shortName,");
-		query.append(" model.constituencyElection.constituency.name from Nomination model");			
+		query.append(" model.constituencyElection.constituency.name,model.party.partyId from Nomination model");			
 		query.append(" where model.party.partyId = ? and model.constituencyElection.constituency.constituencyId in (:constituencyIds) and");
 		query.append(" model.candidateResult.rank = 1  group by model.constituencyElection.constituency.constituencyId,model.party.partyId order by model.constituencyElection.constituency.constituencyId");	
 		
