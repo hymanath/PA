@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -200,9 +201,24 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testData(){
-		List allYears = electionDAO.getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
-		System.out.println(allYears.get(0).toString());
+	public void testGetData(){
+		List<Long> years = getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(years);
 	}
+	
+	public List<Long> getCountOfElectionYears(Long stateId,String electionType){
+ 		List<Long> years = new ArrayList<Long>();
+ 		Long count=0l;
+ 		try{
+	 		List allYears = electionDAO.getCountOfElectionYears(stateId,electionType);
+	 		count = new Long(allYears.get(0).toString());
+	 		for(Long i=count;i>0;i--){
+	 			years.add(i);
+	 		}
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 		}
+ 		return years;
+ 	}
 }
 
