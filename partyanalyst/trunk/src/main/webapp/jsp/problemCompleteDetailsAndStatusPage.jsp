@@ -185,6 +185,7 @@ text-align:left;
 #problemContentData_status_main
 {
 	margin:20px 0 10px;
+	padding-top:130px;
 }
 
 .changeAnc
@@ -1056,12 +1057,17 @@ function getProblemActivities(pHistoryId)
 function initializePage()
 {
 	var detailsButton = new YAHOO.widget.Button("detailsButton");
-	detailsButton.on("click",function (){
+	/*detailsButton.on("click",function (){
 		$('#problemContentData_details_body').slideToggle();
-	});
+	});*/
 
+    sliderFunc();
 	getProblemPresentStatus(pHistoryId);
 	getProblemActivities(pHistoryId);
+}
+
+function sliderFunc(){
+		$('#problemContentData_details_body').slideToggle();
 }
 
 var statesListForProb = [];
@@ -1093,7 +1099,7 @@ var villagesListForProb = [];
 			<table width="100%">
 				<tr>
 					<th>${problemCompleteDetailsVO.problemBasicDetails.problem}</th>
-					<td class="yui-skin-sam" align="right"><input id="detailsButton" type="button" value="Details"/></td>					
+					<!--<td class="yui-skin-sam" align="right"><input id="detailsButton" type="button" value="Details"/></td>-->					
 				</tr>
 			</table>
 			
