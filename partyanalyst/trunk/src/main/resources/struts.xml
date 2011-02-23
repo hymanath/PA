@@ -2111,6 +2111,12 @@
 			</result>		
 		</action>		
 		
+		<action name="populateDefaultDetailsAjaxAction" class="partyStrengthAction" method="getElectionDetails">
+			<result type="json" name="success">
+				<param name="root">electionInfo</param>				
+			</result>		
+		</action>		
+		
 		<action name="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction">
 			<result name="success" >/jsp/partyStrengths.jsp</result> 
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
