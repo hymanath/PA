@@ -25,6 +25,7 @@ import javax.persistence.TemporalType;
 
 import com.itgrids.partyanalyst.model.EPaper;
 import com.itgrids.partyanalyst.model.ModuleRegionScopes;
+import com.itgrids.partyanalyst.model.StateRegion;
 
 /**
  * State entity. 
@@ -59,6 +60,7 @@ public class State implements java.io.Serializable {
 	private String stateFlower;
 	private String isoCode;
 	private Set<EPaper> epaper = new HashSet<EPaper>(0);
+	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
 	// Constructors
 
 	/** 
@@ -83,7 +85,8 @@ public class State implements java.io.Serializable {
 			Date yearEstablished, String stateLanguage, String stateSymbol,
 			String stateSong, String stateAnimal, String stateBird,
 			String stateTree, String stateSport, String stateDance,
-			String stateFlower, String isoCode,Set<EPaper> epaper) {
+			String stateFlower, String isoCode,Set<EPaper> epaper,
+			Set<StateRegion> stateRegion) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -102,6 +105,8 @@ public class State implements java.io.Serializable {
 		this.stateFlower = stateFlower;
 		this.isoCode = isoCode;
 		this.epaper = epaper;
+		this.stateRegion =stateRegion;
+		
 	}
 
 	// Property Accessors
@@ -317,5 +322,14 @@ public class State implements java.io.Serializable {
 
 	public void setEpaper(Set<EPaper> epaper) {
 		this.epaper = epaper;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	public Set<StateRegion> getStateRegion() {
+		return stateRegion;
+	}
+
+	public void setStateRegion(Set<StateRegion> stateRegion) {
+		this.stateRegion = stateRegion;
 	}
 }
