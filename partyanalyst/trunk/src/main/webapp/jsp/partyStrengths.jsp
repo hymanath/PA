@@ -21,6 +21,22 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 
+<!--CSS files (default YUI Sam Skin) -->
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+ 
+<!--JS files Dependencies -->
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <title>Party Strengths</title>
@@ -42,6 +58,31 @@
 </style>
 
 <script type="text/javascript">
+
+	function callAjax(jsObj,url){
+	var results;	
+	var callback = {			
+	    success : function( o ) {
+			try {							
+				"",					
+					results = YAHOO.lang.JSON.parse(o.responseText);		
+					if(jsObj.task == "getStatesAjaxAction")
+					{					
+							buildStates(results);					
+					}						
+					
+			}catch (e) {   		
+			   // 	alert("Invalid JSON result" + e);   
+			}  
+	    },
+	    scope : this,
+	    failure : function( o ) {
+	     		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	              }
+	    };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
 
 	function initializeResultsTable() {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -101,10 +142,47 @@
 			key : "PRP",
 			label : "PRP"	
 		}];
-	
-	
-		var myDataTable = new YAHOO.widget.DataTable("dataTableDiv",resultsColumnDefs, resultsDataSource);  
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
+
+
+	function getStates(selectedElmt)
+	{
+		var jsObj=
+		{		
+				electionType :selectedElmt,		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getStatesAjaxAction.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
+	}
+
+	function buildStates(results)
+	{
+				
+		var ajaxImgElmt = document.getElementById("selectStateId");
+		ajaxImgElmt.style.display = "block";
+		
+		var showStates = document.getElementById("showStates");
+		var populateStates='';
+		populateStates+='<select id="tehsilParties" style="width:80px;" onchange="partyWiseCandidateDetails(this.options[this.selectedIndex].value)">';
+		for(var i in results)
+		{
+			populateStates+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
+		}
+		populateStates+='</select>';
+		showStates.innerHTML = populateStates;
+	}
+
+	
 </script>
 
 
@@ -135,7 +213,7 @@
 						<tr>
 							<th align="left">Election Type</td>
 							<td align="left">
-								<select id="electionTypeSelect" name="electionType" class = "selectWidth">
+								<select id="electionTypeSelect" name="electionType" class = "selectWidth" onchange="getStates(this.options[this.selectedIndex].value)">
 									<option value="0">Select Election Type</option>									
 									<option value="Assembly">Assembly</option>
 									<option value="Parliament">Parliament</option>
@@ -143,17 +221,15 @@
 							</td>
 						</tr>
 						<tr>
-							<th align="left">Select State</th>
-							<td align="left">
-								<select id="electionTypeSelect" name="state"  class = "selectWidth">
-									<option value="0">Select</option>
-									<option value="1">Andhra Pradesh</option>									
-								</select>
+							<th align="left" style="display:none;" id="selectStateId">Select State</th>
+							<td align="left">						
+								<div id="showStates"></div>
 							</td>
 						</tr>
 						<tr>
-							<th align="left">Select Years</th>
+							<th align="left">Select Frequency of Years</th>
 							<td align="left">
+							
 								<select id="electionYears" name="electionYears" class = "selectWidth">
 									<option value="0">Select</option>
 									<option value="7">7</option>	
@@ -178,20 +254,15 @@
 					</table>
 				</s:form>				
 			</div>	
-	<c:if test="${errorCode == '0'}">	
+	<c:if test="${errorCode == '0'}">		
 			<div id="data_body" class="yui-skin-sam">	
 					<div id="dataTableDiv">
 						<table  id="dataSortingTable" border="1">	
 						<tr>
-							<th> Constituency Name</th>					
-							<th> INC </th>
-							<th> TDP </th>
-							<th> TRS </th>
-							<th> CPI </th>
-							<th> CPM </th>
-							<th> AIMIM </th>
-							<th> BJP </th>
-							<th> PRP </th>
+							<th> Constituency Name</th>		
+							<c:forEach var="partyName" varStatus="stat" items="${partyListWithOutAll}">											
+								<th> ${partyName.name} </th>
+							</c:forEach>
 						</tr>					
 								<c:forEach var="details" varStatus="stat" items="${electionInfo.requiredConstituenciesInfo.partiesStrengthsInfoVO}">	
 									<tr>
@@ -200,66 +271,20 @@
 										</td>
 										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
 											<td>
-												<c:if test="${partyResults.partyName == 'INC'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>
-											</td>
-										</c:forEach>
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">											
-											<td>
-												<c:if test="${partyResults.partyName == 'TDP'}">
-													${partyResults.partyName} ${partyResults.count}
+												<c:if test="${partyResults.count == '0'}">
+													0
 												</c:if>	
-											</td>
-										</c:forEach>	
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-											<td>	
-												<c:if test="${partyResults.partyName == 'TRS'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>
+												<c:if test="${partyResults.count != '0'}">
+													 ${partyResults.count}
+												</c:if>	
 											</td>	
-										</c:forEach>
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
-											<td>	
-												<c:if test="${partyResults.partyName == 'CPI'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>
-											</td>		
-										</c:forEach>	
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-											<td>
-												<c:if test="${partyResults.partyName == 'CPM'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>	
-											</td>
-										</c:forEach>
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">	
-											<td> 
-												<c:if test="${partyResults.partyName == 'AIMIM'}">
-													${partyResults.partyName} ${partyResults.count}
-												</c:if>	
-											</td>
-										</c:forEach>	
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-											<td>
-												<c:if test="${partyResults.partyName == 'BJP'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>	
-											</td>
-										</c:forEach>	
-										<c:forEach var="partyResults" varStatus="stat" items="${details.partyResults}">
-											<td>
-												<c:if test="${partyResults.partyName == 'PRP'}">
-													 ${partyResults.partyName} ${partyResults.count}
-												</c:if>	
-											</td>
 										</c:forEach>
 									</tr>
 								</c:forEach>
 						</table>	
 					</div>	
-			</div>	
-</c:if>
+			</div>
+</c:if>	
 		</div>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -112,12 +115,23 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 
 
 	public String execute(){
-		
+		String partyName = new String();
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
-		partyListWithOutAll = staticDataService.getStaticParties();
-				
+		for(int i=0;i<partyList.size();i++){
+			if(partyList.get(i).getId().equals(new Long(party)));
+			   partyName = partyList.get(i).getName();
+		}
+		if(party.equalsIgnoreCase("0")){
+			partyListWithOutAll = staticDataService.getStaticParties();
+			Collections.sort(partyListWithOutAll,new SelectOptionVOComparator());
+		}
+		else{
+			partyListWithOutAll = new ArrayList<SelectOptionVO>();
+			partyListWithOutAll.add(new SelectOptionVO(new Long(party),partyName));
+		}
+			
 		electionInfo = partyStrengthService.getPartiesData(electionType,new Long(state.toString()),new Long(electionYears.toString()),electionType,new Long(party.toString()));
 		
 		return Action.SUCCESS;

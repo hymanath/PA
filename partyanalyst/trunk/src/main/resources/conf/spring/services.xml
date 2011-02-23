@@ -11,7 +11,8 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="staticDataService" ref="staticDataService" />
-	</bean>  
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+	</bean>
 	
 	<bean name="userEntitlementService" class="com.itgrids.partyanalyst.service.impl.UserEntitlementService" >
 		<property name="entitlementDAO" ref="entitlementDAO" />
@@ -569,6 +570,7 @@
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="boothDAO" ref="boothDAO" />
+		<property name="dataApprovalService" ref="dataApprovalService" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
