@@ -79,16 +79,34 @@
 						buildStates(results);					
 					}
 					if(jsObj.task == "getDefaultDetails")
-					{					
-						buildDefaultDetails(results);	
-						initializeResultsTable(results);				
+					{	
+						buildDefaultDetails(results);
+						if(results.partyName=="All Parties"){
+							initializeResultsTable(results);
+						}else{
+							initializeResultsTable2(results);
+						}	
+			
+						buildDefaultDetailsForNewConstituencies(results);
+						if(results.partyName=="All Parties"){
+							initializeResultsTableForNewConstituencies(results);
+						}else{
+							initializeResultsTable2ForNewConstituencies(results);
+						}	
+
+						buildDefaultDetailsForRemianingConstituencies(results);
+						if(results.partyName=="All Parties"){
+							initializeResultsTableForRemianingConstituencies(results);
+						}else{
+							initializeResultsTable2ForRemianingConstituencies(results);
+						}																					
 					}
 					if(jsObj.task == "getAllElectionsAjaxAction")
 					{					
 						buildElectionYears(results);			
 					}
 					if(jsObj.task == "getAllPartiesData")
-					{					
+					{										
 						buildAllPartiesData(results);			
 					}						
 					
@@ -187,7 +205,269 @@
 		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
 
+	function initializeResultsTable2(results) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("dataTableId"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "Won Seats"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "Won Seats",
+			label : "Won Seats",
+			sortable : true,
+			 resizeable:true
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
 
+
+	function initializeResultsTableForRemianingConstituencies(results) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("dataTableId_remainingConstituencies"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "AIMIM"
+			}, {   
+				key : "BJP"
+			}, {
+				key : "CPI"
+			}, {
+				key : "CPM"
+			}, {
+				key : "INC"
+			}, {
+				key : "PRP"
+			}, {
+				key : "TDP"
+			}, {
+				key : "TRS"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "AIMIM",
+			label : "AIMIM",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "BJP",
+			label : "BJP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "CPI",
+			label : "CPI",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "CPM",
+			label : "CPM",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "INC",
+			label : "INC",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "PRP",
+			label : "PRP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TDP",
+			label : "TDP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TRS",
+			label : "TRS",
+			sortable : true,
+			 resizeable:true	
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv_remainingConstituencies",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
+
+	function initializeResultsTable2ForRemianingConstituencies(results) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("dataTableId_remainingConstituencies"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "Won Seats"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "Won Seats",
+			label : "Won Seats",
+			sortable : true,
+			 resizeable:true
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv_remainingConstituencies",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
+
+	function initializeResultsTableForNewConstituencies(results) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("dataTableId_latestConstituencies"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "AIMIM"
+			}, {   
+				key : "BJP"
+			}, {
+				key : "CPI"
+			}, {
+				key : "CPM"
+			}, {
+				key : "INC"
+			}, {
+				key : "PRP"
+			}, {
+				key : "TDP"
+			}, {
+				key : "TRS"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "AIMIM",
+			label : "AIMIM",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "BJP",
+			label : "BJP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "CPI",
+			label : "CPI",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "CPM",
+			label : "CPM",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "INC",
+			label : "INC",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "PRP",
+			label : "PRP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TDP",
+			label : "TDP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TRS",
+			label : "TRS",
+			sortable : true,
+			 resizeable:true	
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv_latestConstituencies",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
+
+	function initializeResultsTable2ForNewConstituencies(results) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("dataTableId"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "Won Seats"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "Won Seats",
+			label : "Won Seats",
+			sortable : true,
+			 resizeable:true
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
 	function getStates(selectedElmt)
 	{
 		electionType = selectedElmt;
@@ -227,7 +507,6 @@
 		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
-
 	function buildAllPartiesData(results)
 	{		
 		var allPartiesData = document.getElementById("partySelectTd");
@@ -280,8 +559,67 @@
 		var partiesData = results.requiredConstituenciesInfo;
 
 		var str='';
+		str+='Required Constituencies Details';
 		str+='<div id="dataTableMainDiv">';
 		str+='	<table id="dataTableId">';
+		
+		for(var i =0;i<data.length;i++)
+		{			
+			str+='	<tr>';
+			str+='		<td>'+data[i].constituencyName+'</td>';
+			for(var j =0;j<data[i].partyResults.length;j++)
+			{
+				str+='	<td>'+data[i].partyResults[j].count+'</td>';
+			}
+			str+='	</tr>'
+		}
+		str+='	</table>';
+		str+='</div>';
+		
+		dataTable.innerHTML = str;
+	}
+
+	function buildDefaultDetailsForNewConstituencies(results)
+	{
+		var dataTable = document.getElementById("dataTableBuildForNewConstituencies");
+
+		var data = results.latestConstituenciesInfo.partiesStrengthsInfoVO;
+
+		var partiesData = results.latestConstituenciesInfo;
+
+		var str='';
+		str+='New Constituencies Details';
+		str+='<div id="dataTableMainDiv_latestConstituencies">';
+		str+='	<table id="dataTableId_latestConstituencies">';
+		
+		for(var i =0;i<data.length;i++)
+		{			
+			str+='	<tr>';
+			str+='		<td>'+data[i].constituencyName+'</td>';
+			for(var j =0;j<data[i].partyResults.length;j++)
+			{
+				str+='	<td>'+data[i].partyResults[j].count+'</td>';
+			}
+			str+='	</tr>'
+		}
+		str+='	</table>';
+		str+='</div>';
+		
+		dataTable.innerHTML = str;
+	}
+
+	function buildDefaultDetailsForRemianingConstituencies(results)
+	{
+		var dataTable = document.getElementById("dataTableBuildForRemainingConstituencies");
+		
+		var data = results.remainingConstituenciesInfo.partiesStrengthsInfoVO;
+
+		var partiesData = results.remainingConstituenciesInfo;
+
+		var str='';
+		str+='Remaining Constituencies Details';
+		str+='<div id="dataTableMainDiv_remainingConstituencies">';
+		str+='	<table id="dataTableId_remainingConstituencies">';
 		
 		for(var i =0;i<data.length;i++)
 		{			
@@ -320,18 +658,19 @@
 		var stateSelect = document.getElementById("stateSelect").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
 		var partySelect = document.getElementById("partySelect").value;
-		
+				
 		getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect);	
 	}
 
 	function getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect)
 	{
+				
 		var jsObj=
 		{	
 				stateId : stateSelect,
 				electionType : electionTypeSelect,	
 				electionYears : electionYearsSelect,
-				party : partySelect,
+				party : partySelect,				
 				task:"getDefaultDetails"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -411,11 +750,13 @@
 		 			<td align="left">
 		 				<div id="errorMessage"></div>
 		 			</td>
-		 		</tr>
+		 		</tr> 
 			</table>
 			
-			<div id="dataTableBuild" class="yui-skin-sam">
-			</div>
+			<div id="dataTableBuild" class="yui-skin-sam"></div>
+			<div id="dataTableBuildForNewConstituencies" class="yui-skin-sam"></div>
+			<div id="dataTableBuildForRemainingConstituencies" class="yui-skin-sam"></div>
+			
 		</div>
 		
 <script type="text/javascript">

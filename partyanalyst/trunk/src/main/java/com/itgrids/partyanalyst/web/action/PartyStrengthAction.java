@@ -254,6 +254,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			
 			jObj = new JSONObject(getTask());	
 			electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId);
+			
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
