@@ -408,6 +408,8 @@ public interface IConstants {
     
     public static final String PROBLEM_COMMENTS_ADD = "PROBLEM_COMMENTS_ADD";
     public static final String PROBLEM_COMMENTS_MODIFY = "PROBLEM_COMMENTS_MODIFY";
+    
+    public static final String REASONS_POSTING = "REASONS_POSTING";
         
         
 }
