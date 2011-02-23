@@ -27,4 +27,5 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public List<SelectOptionVO> getCountOfElectionYears(Long stateId,String electionType);
 	
+	public List<SelectOptionVO> getAllPartiesData(String electionType,Long stateId);
 }
