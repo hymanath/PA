@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -41,7 +43,43 @@ public class PartyStrengthAction extends ActionSupport implements
 	
 	private ElectionInfoVO electionInfo;
 	
-		
+	private int errorCode = 0;
+	
+	private String task = null;
+	JSONObject jObj = null;
+	
+	List<SelectOptionVO> states;
+	List<Long> years;
+	
+	
+	public List<Long> getYears() {
+		return years;
+	}
+	public void setYears(List<Long> years) {
+		this.years = years;
+	}
+	public void setStates(List<SelectOptionVO> states) {
+		this.states = states;
+	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public JSONObject getJObj() {
+		return jObj;
+	}
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}	
+	
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
 	}
@@ -124,14 +162,45 @@ public class PartyStrengthAction extends ActionSupport implements
 		
 		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,5l,"All",0L);
 		
-		System.out.println("electionType---->"+electionType);
+				
+		/*System.out.println("electionType---->"+electionType);
 		System.out.println("electionYears---->"+electionYears);
 		System.out.println("state---->"+state);
 		System.out.println("partyRadio---->"+partyRadio);
-		System.out.println("party---->"+party);		
+		System.out.println("party---->"+party);	*/	
 		
 		return Action.SUCCESS;
 	}
 	
 
+	public String getStates(){
+		if(task != null){
+			try {
+				jObj = new JSONObject(getTask());	
+						
+				states = partyStrengthService.getAllStatesHavinElectionData(jObj.getString("electionType"));	
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}		
+		return SUCCESS;  
+	}
+	
+	public String getAllElections(){
+		if(task != null){
+			try {
+				jObj = new JSONObject(getTask());	
+				
+				Long stateId = new Long(jObj.getString("stateId"));	
+				String electionType = jObj.getString("electionType");	
+				
+				years = partyStrengthService.getCountOfElectionYears(stateId,electionType);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}		
+		return SUCCESS;  
+	}
 }

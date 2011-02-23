@@ -2073,8 +2073,8 @@
 			<result type="json" name="success">
 				<param name="root">deptScopesList</param>				
 			</result>		
-		</action>
-		
+		</action>		 
+		 
 		<action name="changeProblemStatusAjaxAction" class="problemAssigningAction" method="changeProblemStatus">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
@@ -2091,15 +2091,26 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
 			</result>		
-		</action>
-		  
-             
+		</action>		 
+		 
         <action name="partyStrengthAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthAction">
 			<result name="success" >/jsp/partyStrengths.jsp</result> 
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/partyStrengths.jsp</result>
 		</action>
 				
+		<action name="getStatesAjaxAction" class="partyStrengthAction" method="getStates">
+			<result type="json" name="success">
+				<param name="root">states</param>				
+			</result>		
+		</action>		
+		
+		<action name="getAllElectionsAjaxAction" class="partyStrengthAction" method="getAllElections">
+			<result type="json" name="success">
+				<param name="root">years</param>				
+			</result>		
+		</action>		
+		
 		<action name="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction">
 			<result name="success" >/jsp/partyStrengths.jsp</result> 
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
@@ -2141,6 +2152,6 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				
 			</result>		
-		</action>       	
+		</action>        
 	</package> 
 </struts>      
