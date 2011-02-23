@@ -59,19 +59,14 @@
 	 	 padding-bottom: 13px;
 	}
 	
-	.yui-skin-sam yui-dt
-	{
-		font-family: verdana,arial,sans-serif;
-		font-size:11px;
-		color:#333333;
-		border-width: 1px;
-		border-color: #666666;
-		border-collapse: collapse;
-	}
+
 </style>
 
 <script type="text/javascript">
 
+	var electionType;
+	var selectedStateElmts;
+	
 	function callAjax(jsObj,url){
 	var results;	
 	var callback = {			
@@ -81,12 +76,20 @@
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getStatesAjaxAction")
 					{					
-							buildStates(results);					
+						buildStates(results);					
 					}
 					if(jsObj.task == "getDefaultDetails")
 					{					
-							buildDefaultDetails(results);	
-							initializeResultsTable(results);				
+						buildDefaultDetails(results);	
+						initializeResultsTable(results);				
+					}
+					if(jsObj.task == "getAllElectionsAjaxAction")
+					{					
+						buildElectionYears(results);			
+					}
+					if(jsObj.task == "getAllPartiesData")
+					{					
+						buildAllPartiesData(results);			
 					}						
 					
 			}catch (e) {   		
@@ -131,39 +134,48 @@
 		var resultsColumnDefs = [ {
 			key : "constituencyName",
 			label : "Constituency Name",
-			sortable : true
+			sortable : true,
+			 resizeable:true
 		}, {
 			key : "AIMIM",
 			label : "AIMIM",
-			sortable : true
+			sortable : true,
+			 resizeable:true
 		}, {
 			key : "BJP",
 			label : "BJP",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}, {
 			key : "CPI",
 			label : "CPI",
-			sortable : true	
+			sortable : true,
+			 resizeable:true
 		}, {
 			key : "CPM",
 			label : "CPM",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}, {
 			key : "INC",
 			label : "INC",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}, {
 			key : "PRP",
 			label : "PRP",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}, {
 			key : "TDP",
 			label : "TDP",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}, {
 			key : "TRS",
 			label : "TRS",
-			sortable : true	
+			sortable : true,
+			 resizeable:true	
 		}];
 		
 		var paginatorConfig = {
@@ -178,6 +190,7 @@
 
 	function getStates(selectedElmt)
 	{
+		electionType = selectedElmt;
 		var jsObj=
 		{		
 				electionType :selectedElmt,		
@@ -190,6 +203,7 @@
 
 	function getFrequencyOfYears(selectedState)
 	{		
+		selectedStateElmts = selectedState;
 		var jsObj=
 		{		
 				stateId : selectedState,
@@ -201,35 +215,54 @@
 		callAjax(jsObj,url);
 	}
 
+	function getParties()
+	{
+		var jsObj=
+		{		
+				stateId : selectedStateElmts,
+				electionType :electionType,		
+				task:"getAllPartiesData"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+	function buildAllPartiesData(results)
+	{		
+		var allPartiesData = document.getElementById("partySelectTd");
+		
+		var populateAllPartiesData='';
+		populateAllPartiesData+='<select id="partySelect" style="width:130px;">';
+		for(var i in results)
+		{
+			populateAllPartiesData+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
+		}
+		populateAllPartiesData+='</select>';
+		allPartiesData.innerHTML = populateAllPartiesData;
+	}
+	
 	
 	function buildElectionYears(results)
-	{
-		var selectStateDIV = document.getElementById("selectElectionsDIV");
-		var str='';
-		str+='Select Election Years';
-		selectStateDIV.innerHTML = str;
+	{		 		
+		var showElections = document.getElementById("electionTypeTd");
 		
-		 		
-		var showElections = document.getElementById("showElections");
 		var populateElections='';
-		populateElections+='<select id="states" style="width:154px;">';
+		populateElections+='<select id="electionYearsSelect" style="width:130px;" onchange="getParties()">';
 		for(var i in results)
 		{
 			populateElections+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
 		}
 		populateElections+='</select>';
 		showElections.innerHTML = populateElections;
-
-		var selectPartyDIV = document.getElementById("selectPartyDIV");
-		selectPartyDIV.style.display = 'block';
 	}
+
 	
 	function buildStates(results)
-	{	
-		
-		var showStates = document.getElementById("showStates");
+	{			
+		var showStates = document.getElementById("stateTd");
 		var populateStates='';
-		populateStates+='<select id="tehsilParties" style="width:80px;" onchange="partyWiseCandidateDetails(this.options[this.selectedIndex].value)">';
+		populateStates+='<select id="stateSelect" style="width:130px;" onchange="getFrequencyOfYears(this.options[this.selectedIndex].value)">';
 		for(var i in results)
 		{
 			populateStates+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
@@ -247,7 +280,7 @@
 		var partiesData = results.requiredConstituenciesInfo;
 
 		var str='';
-		str+='<div id="dataTableMainDiv" class="yui-skin-sam">';
+		str+='<div id="dataTableMainDiv">';
 		str+='	<table id="dataTableId">';
 		
 		for(var i =0;i<data.length;i++)
@@ -279,7 +312,31 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "populateDefaultDetailsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
+	}
 
+	function validateAndForwardToAction(elmt)
+	{		
+		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
+		var stateSelect = document.getElementById("stateSelect").value;
+		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
+		var partySelect = document.getElementById("partySelect").value;
+		
+		getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect);	
+	}
+
+	function getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect)
+	{
+		var jsObj=
+		{	
+				stateId : stateSelect,
+				electionType : electionTypeSelect,	
+				electionYears : electionYearsSelect,
+				party : partySelect,
+				task:"getDefaultDetails"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "populateDefaultDetailsAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
 	}
 </script>
 
@@ -311,42 +368,53 @@
 						<tr>
 							<th align="left">Election Type</td>
 							<td align="left">
-								<select id="electionTypeSelect" name="electionType" class = "selectWidth" onchange="getStates(this.options[this.selectedIndex].value)">																
-									<option value="Assembly">Assembly</option>									
+								<select id="electionTypeSelect" name="electionType"  style="width:130px;"  onchange="getStates(this.options[this.selectedIndex].value)">
+									<option value="Assembly">Assembly</option>		
+									<option value="Parliament">Parliament</option>									
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<th align="left" id="selectStateId">Select State</th>
-							<td align="left">
-								<select id="stateSelect" name="stateType" class = "selectWidth">																
-										<option value="Andhra Pradesh">Andhra Pradesh</option>									
+							<td align="left" id="stateTd">
+								<select id="stateSelect" name="state" class = "selectWidth">																
+										<option value="1">Andhra Pradesh</option>									
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th align="left">Select Frequency of Years</th>
-							<td align="left">
-								<select id="electionTypeSelect" name="electionType" class = "selectWidth" onchange="getStates(this.options[this.selectedIndex].value)">																
-									<option value="5">5</option>									
+							<th align="left">No of Previous Election Years</th>
+							<td align="left" id="electionTypeTd">
+								<select id="electionYearsSelect" name="electionYears" class = "selectWidth">																
+									<option value="7">7</option>									
 								</select>								
 							</td>
 						</tr>
 						<tr>
 							<th align="left">Select Party</th>
-							<td align="left">														
-								<select id="electionTypeSelect" name="electionType" class = "selectWidth" onchange="getStates(this.options[this.selectedIndex].value)">																
+							<td align="left" id="partySelectTd">												
+								<select id="partySelect" name="party" class = "selectWidth">																
 									<option value="0">All Party</option>									
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td> <input type="submit" value="Submit"></td>
+							<td> 
+								<input id="viewReportButton" type="button" onClick="return validateAndForwardToAction(this)"  value="View Report"/>
+							</td>
 						</tr>
 					</table>
 				</s:form>				
 			</div>	
-			<div id="dataTableBuild">
+			<table>
+				<tr>
+		 			<td align="left">
+		 				<div id="errorMessage"></div>
+		 			</td>
+		 		</tr>
+			</table>
+			
+			<div id="dataTableBuild" class="yui-skin-sam">
 			</div>
 		</div>
 		
