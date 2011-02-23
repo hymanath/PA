@@ -160,7 +160,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
 		
-		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,5l,"All",0L);
+		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,5l,0L);
 		
 				
 		/*System.out.println("electionType---->"+electionType);
@@ -202,5 +202,22 @@ public class PartyStrengthAction extends ActionSupport implements
 			}
 		}		
 		return SUCCESS;  
+	}
+	
+	public String getElectionDetails(){
+		if(task != null){
+			try {
+				Long stateId = new Long(jObj.getString("stateId"));	
+				String electionType = jObj.getString("electionType");	
+				Long countOfElectionYears  = new Long(jObj.getString("electionYears"));
+				Long partyId = new Long(jObj.getString("party"));	
+				
+				jObj = new JSONObject(getTask());	
+				electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}		
+		return SUCCESS;  		
 	}
 }
