@@ -21,8 +21,17 @@ public class ElectionInfoVO {
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
+    private String partyName;
     
-    
+  
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
 	public ConstituencyElectionResults getRequiredConstituenciesInfo() {
 		return requiredConstituenciesInfo;
 	}
