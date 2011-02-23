@@ -305,7 +305,7 @@
 		{	
 				stateId : '1',
 				electionType : 'Assembly',	
-				electionYears : '5',
+				electionYears : '7',
 				party : 0,
 				task:"getDefaultDetails"				
 		};
