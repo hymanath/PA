@@ -274,9 +274,14 @@ public class PartyStrengthService implements IPartyStrengthService {
  	
  	public List<Long> getCountOfElectionYears(Long stateId,String electionType){
  		List<Long> years = new ArrayList<Long>();
+ 		List allYears ;
  		Long count=0l;
  		try{
-	 		List allYears = electionDAO.getCountOfElectionYears(stateId,electionType);
+ 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+ 				 allYears = electionDAO.getCountOfElectionYears(stateId,electionType);
+ 			}else{
+ 				 allYears = electionDAO.getCountOfElectionYearsForParliament(stateId,electionType);
+ 			}	 		
 	 		count = new Long(allYears.get(0).toString());
 	 		for(Long i=count;i>0;i--){
 	 			years.add(i);

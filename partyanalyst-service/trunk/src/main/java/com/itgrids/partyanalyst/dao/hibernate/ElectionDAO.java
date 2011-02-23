@@ -413,4 +413,10 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select count(model) from Election model " +
 				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? ", params);
 	}
+	
+	public List getCountOfElectionYearsForParliament(Long stateId,String electionType){
+		Object[] params = {electionType};
+		return getHibernateTemplate().find("select count(model) from Election model " +
+				"where model.electionScope.electionType.electionType = ? ", params);
+	}
 }
