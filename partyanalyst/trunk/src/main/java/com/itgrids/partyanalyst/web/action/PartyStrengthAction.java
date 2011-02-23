@@ -35,7 +35,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private IStaticDataService staticDataService; 
 	private IPartyStrengthService partyStrengthService;
 	
-	private List<SelectOptionVO> partyList,partyListWithOutAll,electionTypes;
+	private List<SelectOptionVO> partyList,partyListWithOutAll,electionTypes,allParties,states,years;
 	private String electionType;
 	private String state;
 	private String electionYears;
@@ -49,10 +49,16 @@ public class PartyStrengthAction extends ActionSupport implements
 	
 	private String task = null;
 	JSONObject jObj = null;
+		
+
+	//Getters and Setters
 	
-	List<SelectOptionVO> states;
-	List<SelectOptionVO> years;
-	
+	public List<SelectOptionVO> getAllParties() {
+		return allParties;
+	}
+	public void setAllParties(List<SelectOptionVO> allParties) {
+		this.allParties = allParties;
+	}
 	public List<SelectOptionVO> getStates() {
 		return states;
 	}
@@ -248,6 +254,27 @@ public class PartyStrengthAction extends ActionSupport implements
 			
 			jObj = new JSONObject(getTask());	
 			electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId);
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  		
+	}
+	
+	public String getAllPartiesMatchingCriteria(){
+		
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			Long stateId = new Long(jObj.getString("stateId"));	
+			String electionType = jObj.getString("electionType");
+			
+			allParties = partyStrengthService.getAllPartiesData(electionType,stateId);
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
