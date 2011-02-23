@@ -173,7 +173,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 * @param partyId
 	 * @return List<Long>
  	 */
- 	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,String type,Long partyId){
+ 	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,Long partyId){
  		List<Long> requiredConstituencies = new ArrayList<Long>(0);
 		List<Long> latestConstituencies = new ArrayList<Long>(0);
 		List<Long> remianingConstituencies = new ArrayList<Long>(0);
