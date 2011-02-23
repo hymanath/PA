@@ -130,7 +130,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				while(it.hasNext()){
 					Object[] parms = (Object[]) it.next();
 					Long count = (Long)parms[0];					
-					if(count.intValue() == selectedNoOfYears.intValue() && count!=1l){
+					if(count.intValue() >= selectedNoOfYears.intValue() && count!=1l){
 						requiredConstituencies.add((Long)parms[1]);
 					}else if(count.intValue()==1){
 						latestConstituencies.add((Long)parms[1]);
@@ -329,26 +329,19 @@ public class PartyStrengthService implements IPartyStrengthService {
  	 */
  	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result){
 		
- 		Long tempX = 0l,tempZ = 0l;
  		
- 		String previousConstituencyName = new String();
- 		String conName = new String(); 
- 		
- 		List<Long> uniqueItems = new ArrayList<Long>(0); 	
- 		Set<Long> linkedSet = new LinkedHashSet<Long>(0);
- 		
- 		List<PartiesDetailsVO> partyDetails = new ArrayList<PartiesDetailsVO>(0);  		 		
+ 			 		
  		List<PartiesStrengthsInfoVO> partiesStrengthsInfoVO = new ArrayList<PartiesStrengthsInfoVO>();
  		 		
  		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
  		ResultStatus resultStatus = new ResultStatus();
  		
- 		
  		List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
  		Collections.sort(staticParties,new SelectOptionVOComparator());
  		constituencyElectionResults.setAllPartiesData(staticParties);
- 		
- 		List<SelectOptionVO> tempParties = new ArrayList<SelectOptionVO>(0);
+ 		Map<Long,String> map1 = new HashMap<Long,String>();
+ 		Map<Long,List<PartiesDetailsVO>> map2 = new HashMap<Long,List<PartiesDetailsVO>>();
+ 		List<PartiesDetailsVO> partyDetails = new ArrayList<PartiesDetailsVO>(0);  	
  		Map<Long,String> map = new HashMap<Long,String>();
  		
  		List<Long> partyIds = new ArrayList<Long>();
@@ -356,78 +349,42 @@ public class PartyStrengthService implements IPartyStrengthService {
 			partyIds.add(staticParties.get(i).getId());
 			map.put(staticParties.get(i).getId(), staticParties.get(i).getName());
 		}
- 		try{ 	
- 			
+ 		try{  			
  			if(result!=null && result.size()>0){
 	 			for(int i=0; i<result.size(); i++){
 	 				Object[] parms = (Object[])result.get(i);
 	 				Long constituencyId = (Long)parms[0];
-	 				linkedSet.add(constituencyId);
-	 				tempParties.add(new SelectOptionVO((Long)parms[4],parms[2].toString()));
-	 				if(tempX==0l){
-	 					tempZ = tempX = constituencyId;
-	 					previousConstituencyName = parms[3].toString();
+	 				map1.put(constituencyId, parms[3].toString());
+	 				if(map2.containsKey(constituencyId)){
+	 					partyDetails = map2.get(constituencyId);
 	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms));
-	 				}else{	 				
-	 					if(tempX.intValue()==constituencyId.intValue()){
-	 						tempZ = constituencyId;
-	 						previousConstituencyName = parms[3].toString();
-	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms));
-	 					}else{
-	 						tempX = constituencyId; 
-	 						
-	 						PartiesStrengthsInfoVO resultVo = new PartiesStrengthsInfoVO();
-	 						resultVo.setConstituencyId(tempZ);
-	 						resultVo.setConstituencyName(previousConstituencyName);
-	 						
-	 						Collections.sort(partyDetails, new PartiesDetailsVOComparator());		
-	 						
-	 						
-	 						//System.out.println(partyDetails.size());
-	 						partyDetails = generateTempData(partyIds,map,partyDetails,tempZ,previousConstituencyName);
-	 						
-	 						//System.out.print(staticParties.size()+"\t\t"+partyDetails.size()+"\t\t");	 						
-	 						
-	 						resultVo.setPartyResults(partyDetails);	 
-	 						
-	 						partiesStrengthsInfoVO.add(resultVo);	 	
-	 									 						
-	 						partyDetails = new ArrayList<PartiesDetailsVO>(0);
-	 						tempZ = constituencyId;
-	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms));
-	 					}
-	 				} 				
-	 			}
-	 			uniqueItems.addAll(linkedSet);
-	 			partyDetails.clear();
-	 			Long lastId = uniqueItems.get(uniqueItems.size()-1);
-	 			
-	 			for(int i=0; i<result.size(); i++){
-	 				Object[] parms = (Object[])result.get(i);
-	 				if(new Long(parms[0].toString()).intValue()==lastId){
-	 					conName = parms[3].toString();
+	 					map2.put(constituencyId,partyDetails);	
+	 				}else{
+	 					partyDetails = new ArrayList<PartiesDetailsVO>(0);
 	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms));
-	 				}
-	 			}
-	 			PartiesStrengthsInfoVO resultVo = new PartiesStrengthsInfoVO();
-				resultVo.setConstituencyId(tempZ);
-				resultVo.setConstituencyName(previousConstituencyName);
-				partyDetails = generateTempData(partyIds,map,partyDetails,tempZ,previousConstituencyName);
-				resultVo.setPartyResults(partyDetails);	 
-				partiesStrengthsInfoVO.add(resultVo);
-	 			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
-	 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
+	 					map2.put(constituencyId,partyDetails);	
+	 				}		 			
+		 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
+	 			}	
  			}	
+ 			for(Map.Entry<Long,List<PartiesDetailsVO>> resultIterator : map2.entrySet()){
+ 				Long constId = resultIterator.getKey();
+ 				String conName = map1.get(constId);
+ 				List<PartiesDetailsVO> dataObtained = generateTempData(partyIds,map,resultIterator.getValue(),resultIterator.getKey(),conName);
+ 				PartiesStrengthsInfoVO infoVo = new PartiesStrengthsInfoVO();
+ 				infoVo.setConstituencyId(constId);
+ 				infoVo.setConstituencyName(conName);
+ 				infoVo.setPartyResults(dataObtained);
+ 				partiesStrengthsInfoVO.add(infoVo);
+ 			}
+ 			
+ 			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
  		}catch(Exception e){
  			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
  			resultStatus.setExceptionEncountered(e); 			
  			e.printStackTrace();
  		}finally{
- 			tempX = null;
- 			tempZ = null; 
- 			uniqueItems = null;
  			partyDetails = null;
- 			linkedSet = null;
  		}
  		constituencyElectionResults.setResultStatus(resultStatus);
  		return constituencyElectionResults;
