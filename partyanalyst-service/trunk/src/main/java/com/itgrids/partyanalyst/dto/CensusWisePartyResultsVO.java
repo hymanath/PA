@@ -6,7 +6,16 @@ public class CensusWisePartyResultsVO {
 
 	private String range;
 	private List<PartyResultsVO> partiesResults;
+	private Long count;
 	
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
 	public String getRange() {
 		return range;
 	}
@@ -22,7 +31,5 @@ public class CensusWisePartyResultsVO {
 	public void setPartiesResults(List<PartyResultsVO> partiesResults) {
 		this.partiesResults = partiesResults;
 	}
-	
-	
 	
 }
