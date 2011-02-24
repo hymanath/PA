@@ -572,7 +572,10 @@ public class ElectionService implements IElectionService{
 		Map<String, List<PartyResultsVO>> censusInfoMap = new LinkedHashMap<String, List<PartyResultsVO>>();
 		List<PartyResultsVO> partyResult = null;
 		PartyResultsVO partyResultsVO = null;
+		List<CensusVO> censusVOList = null;
 		CensusWisePartyResultsVO censusWisePartyResultsVO = null;
+		Map<String,Long> resultMap = null;
+		
 		for(SelectOptionVO party:parties){
 			censusForParty = (List<CensusVO>)getPartywiseConstituenciesResultsForCensusInfo(selectIndex, stateId, districtId, year, level, party.getId()).getFinalResult();
 			for(CensusVO censusVO:censusForParty){
@@ -588,10 +591,18 @@ public class ElectionService implements IElectionService{
 				censusInfoMap.put(censusVO.getRange(), partyResult);
 			}
 		}
+		censusVOList = getConstituencyCensusDetails(selectIndex,stateId,districtId,year,level);
+		resultMap = new LinkedHashMap<String,Long>(0);
+		
+		for(CensusVO censusVO:censusVOList)
+		{
+			resultMap.put(censusVO.getRange(),censusVO.getCount().longValue());
+		}
 		
 		for(Map.Entry<String, List<PartyResultsVO>> entrySet:censusInfoMap.entrySet()){
 			censusWisePartyResultsVO = new CensusWisePartyResultsVO();
 			censusWisePartyResultsVO.setRange(entrySet.getKey());
+			censusWisePartyResultsVO.setCount(resultMap.get(entrySet.getKey()));
 			censusWisePartyResultsVO.setPartiesResults(entrySet.getValue());
 			censusInfo.add(censusWisePartyResultsVO);
 		}
