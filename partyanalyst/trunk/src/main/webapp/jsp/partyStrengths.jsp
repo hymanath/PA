@@ -80,26 +80,38 @@
 					}
 					if(jsObj.task == "getDefaultDetails")
 					{	
-						buildDefaultDetails(results);
-						if(results.partyName=="All Parties"){
-							initializeResultsTable(results);
+						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO==" "){
+							showRequiredConstituenciesErrorMessage();
 						}else{
-							initializeResultsTable2(results);
-						}	
-			
-						buildDefaultDetailsForNewConstituencies(results);
-						if(results.partyName=="All Parties"){
-							initializeResultsTableForNewConstituencies(results);
+							buildDefaultDetails(results);
+							if(results.partyName=="All Parties"){
+								initializeResultsTable(results);
+							}else{
+								initializeResultsTable2(results);
+							}
+						}
+							
+						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null || results.latestConstituenciesInfo.partiesStrengthsInfoVO==" "){
+							showLatestConstituenciesErrorMessage();
 						}else{
-							initializeResultsTable2ForNewConstituencies(results);
-						}	
-
-						buildDefaultDetailsForRemianingConstituencies(results);
-						if(results.partyName=="All Parties"){
-							initializeResultsTableForRemianingConstituencies(results);
+							buildDefaultDetailsForNewConstituencies(results);
+							if(results.partyName=="All Parties"){
+								initializeResultsTableForNewConstituencies(results);
+							}else{
+								initializeResultsTable2ForNewConstituencies(results);
+							}	
+						}
+						
+						if(results.remainingConstituenciesInfo.partiesStrengthsInfoVO==null || results.remainingConstituenciesInfo.partiesStrengthsInfoVO==" "){
+							showRemainingConstituenciesErrorMessage();
 						}else{
-							initializeResultsTable2ForRemianingConstituencies(results);
-						}																					
+							buildDefaultDetailsForRemianingConstituencies(results);
+							if(results.partyName=="All Parties"){
+								initializeResultsTableForRemianingConstituencies(results);
+							}else{
+								initializeResultsTable2ForRemianingConstituencies(results);
+							}	
+						}																			
 					}
 					if(jsObj.task == "getAllElectionsAjaxAction")
 					{					
@@ -123,6 +135,32 @@
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function showRequiredConstituenciesErrorMessage(){
+
+		var elmt = document.getElementById("dataTableBuild");
+		elmt.innerHTML = "";
+		
+		var str='';
+		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
+		elmt.innerHTML = str;
+	}
+
+	function showLatestConstituenciesErrorMessage(){
+
+		var elmt = document.getElementById("dataTableBuildForNewConstituencies");
+		var str='';
+		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
+		elmt.innerHTML = str;
+	}
+
+	function showRemainingConstituenciesErrorMessage(){
+
+		var elmt = document.getElementById("dataTableBuildForRemainingConstituencies");
+		var str='';
+		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
+		elmt.innerHTML = str;
+	}
+	
 	function initializeResultsTable(results) {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get("dataTableId"));
@@ -213,7 +251,7 @@
 			fields : [ {
 				key : "constituencyName"
 			}, {
-				key : "Won Seats"
+				key : "count"
 			}]
 		};
 	
@@ -223,7 +261,7 @@
 			sortable : true,
 			 resizeable:true
 		}, {
-			key : "Won Seats",
+			key : "count",
 			label : "Won Seats",
 			sortable : true,
 			 resizeable:true
@@ -438,13 +476,13 @@
 
 	function initializeResultsTable2ForNewConstituencies(results) {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get("dataTableId"));
+				.get("dataTableId_latestConstituencies"));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 		resultsDataSource.responseSchema = {
 			fields : [ {
 				key : "constituencyName"
 			}, {
-				key : "Won Seats"
+				key : "count"
 			}]
 		};
 	
@@ -454,7 +492,7 @@
 			sortable : true,
 			 resizeable:true
 		}, {
-			key : "Won Seats",
+			key : "count",
 			label : "Won Seats",
 			sortable : true,
 			 resizeable:true
@@ -466,7 +504,7 @@
 	    })
 		};
 		
-		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+		var myDataTable = new YAHOO.widget.DataTable("dataTableMainDiv_latestConstituencies",resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
 	function getStates(selectedElmt)
 	{
@@ -722,7 +760,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th align="left">No of Previous Election Years</th>
+							<th align="left">No.of Election Years To Compare</th>
 							<td align="left" id="electionTypeTd">
 								<select id="electionYearsSelect" name="electionYears" class = "selectWidth">																
 									<option value="7">7</option>									
