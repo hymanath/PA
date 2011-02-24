@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IStateRegionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
@@ -62,9 +63,20 @@ public class ElectionReportService implements IElectionReportService {
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
+	private IStateRegionDAO stateRegionDAO;
 	
 	private final static Logger log = Logger.getLogger(ElectionReportService.class);
 	
+	
+	
+	public IStateRegionDAO getStateRegionDAO() {
+		return stateRegionDAO;
+	}
+
+	public void setStateRegionDAO(IStateRegionDAO stateRegionDAO) {
+		this.stateRegionDAO = stateRegionDAO;
+	}
+
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
