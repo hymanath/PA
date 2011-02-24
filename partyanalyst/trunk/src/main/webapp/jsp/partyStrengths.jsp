@@ -164,16 +164,26 @@
 		var str='';
 		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
 		elmt.innerHTML = str;
+
+		//required_const_main
 	}
 
 	function hideLatestConstituenciesDiv(){
 		var elmt = document.getElementById("dataTableBuildForNewConstituencies");
-		elmt.sty.display = 'none';
+		var str='';	
+		elmt.innerHTML = str;
+
+		var elmt2 = document.getElementById("new_const_main");
+		elmt2.innerHTML = str;
 	}
 
 	function hideRemainingConstituenciesDiv(){
 		var elmt = document.getElementById("dataTableBuildForRemainingConstituencies");
-		elmt.sty.display = 'none';
+		var str='';	
+		elmt.innerHTML = str;
+
+		var elmt2 = document.getElementById("remaining_const_main");
+		elmt2.innerHTML = str;
 	}
 	
 	function initializeResultsTable(results,tableId,divId) {
@@ -337,6 +347,7 @@
 		
 		var populateAllPartiesData='';
 		populateAllPartiesData+='<select id="partySelect" style="width:130px;">';
+		populateAllPartiesData+='<option value="0">All Parties</option>';
 		for(var i in results)
 		{
 			populateAllPartiesData+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
@@ -352,7 +363,8 @@
 		
 		var populateElections='';
 		populateElections+='<select id="electionYearsSelect" style="width:130px;" onchange="getParties()">';
-		for(var i in results)
+		
+		for(var i in results)  
 		{
 			populateElections+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
 		}
@@ -595,75 +607,81 @@
 			 <table>
 			 	<tr>
 			 		<td>
-						<div id="required_const_head">
-							<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
-								<tr>
-									<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('required_const_body')"> Required Constituencies Details :</a></span></div></td>
-									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
-								</tr>
-							</table>
-						</div>
-						<div id="required_const_body">
-								<div id="newConstAncSpan" class="mandalNamesDiv">		
-								<table>
+			 			<div id="required_const_main">	
+							<div id="required_const_head">
+								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
-										<td>
-											<div id="dataTableBuild" class="yui-skin-sam" align="left"></div>
-										</td> 
+										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('required_const_body')"> Required Constituencies Details :</a></span></div></td>
+										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
-							</div>						
-						</div>
-					</td>
-				</tr>
-				
-				<tr>
-			 		<td>		
-						<div id="new_const_head">
-							<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
-								<tr>
-									<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('new_const_body')" > New Constituencies Details :</a></span></div></td>
-									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
-								</tr>
-							</table>
-						</div>
-						<div id="new_const_body">
-								<div id="newConstAncSpan" class="mandalNamesDiv">		
-								<table>
-									<tr>
-										<td>
-											<div id="dataTableBuildForNewConstituencies" class="yui-skin-sam" align="left"></div>
-										</td> 
-									</tr>
-								</table>
-							</div>						
+							</div>
+							<div id="required_const_body">
+									<div id="newConstAncSpan" class="mandalNamesDiv">		
+									<table>
+										<tr>
+											<td>
+												<div id="dataTableBuild" class="yui-skin-sam" align="left"></div>
+											</td> 
+										</tr>
+									</table>
+								</div>						
+							</div>
 						</div>
 					</td>
 				</tr>
 				
 				<tr>
 			 		<td>
-						<div id="remaining_const_head">
-							<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
-								<tr>
-									<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-									<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('remaining_const_body')"> Remaining Constituencies Details :</a></span></div></td>
-									<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
-								</tr>
-							</table>
-						</div>
-						<div id="remaining_const_body">
-								<div id="newConstAncSpan" class="mandalNamesDiv">		
-								<table>
+			 			<div id="new_const_main">		
+							<div id="new_const_head">
+								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
-										<td>
-											<div id="dataTableBuildForRemainingConstituencies" class="yui-skin-sam" align="left"></div>
-										</td> 
+										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('new_const_body')" > New Constituencies Details :</a></span></div></td>
+										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
-							</div>						
+							</div>
+							<div id="new_const_body">
+									<div id="newConstAncSpan" class="mandalNamesDiv">		
+									<table>
+										<tr>
+											<td>
+												<div id="dataTableBuildForNewConstituencies" class="yui-skin-sam" align="left"></div>
+											</td> 
+										</tr>
+									</table>
+								</div>						
+							</div>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+			 		<td>
+			 			<div id="remaining_const_main">	
+							<div id="remaining_const_head">
+								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
+									<tr>
+										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('remaining_const_body')"> Remaining Constituencies Details :</a></span></div></td>
+										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
+									</tr>
+								</table>
+							</div>
+							<div id="remaining_const_body">
+									<div id="newConstAncSpan" class="mandalNamesDiv">		
+									<table>
+										<tr>
+											<td>
+												<div id="dataTableBuildForRemainingConstituencies" class="yui-skin-sam" align="left"></div>
+											</td> 
+										</tr>
+									</table>
+								</div>						
+							</div>
 						</div>
 					</td>
 				</tr>
