@@ -168,21 +168,15 @@ public class PartyStrengthAction extends ActionSupport implements
 	public String execute(){
 		
 		partyList = staticDataService.getStaticParties();
-		partyList.add(0,new SelectOptionVO(0l,"All Parties"));
+		//partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
 		
-		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,5l,0L);
+		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,7l,0L);
 		
 		states = partyStrengthService.getAllStatesHavinElectionData(IConstants.ASSEMBLY_ELECTION_TYPE);	
 		
 		years = partyStrengthService.getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
-		
-		/*System.out.println("electionType---->"+electionType);
-		System.out.println("electionYears---->"+electionYears);
-		System.out.println("state---->"+state);
-		System.out.println("partyRadio---->"+partyRadio);
-		System.out.println("party---->"+party);	*/	
 		
 		return Action.SUCCESS;
 	}
