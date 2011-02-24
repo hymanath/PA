@@ -43,8 +43,7 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/> 
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
-		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
-		<property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />			
+		<property name="problemHistoryDAO" ref="problemHistoryDAO" />	
 		
 	</bean>  
 	
@@ -56,6 +55,9 @@
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="opinionPollDAO" ref="opinionPollDAO" /> 
 		<property name="questionsRepositoryDAO" ref="questionsRepositoryDAO" /> 
+		<property name="feedbackCommentDAO" ref="feedbackCommentDAO" /> 
+		<property name="feedbackTaskDAO" ref="feedbackTaskDAO" /> 
+		<property name="feedbackDAO" ref="feedbackDAO" /> 
 	</bean>
 	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
