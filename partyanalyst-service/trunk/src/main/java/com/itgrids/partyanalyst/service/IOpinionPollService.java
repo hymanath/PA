@@ -5,6 +5,8 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserFeedbackVO;
+import com.itgrids.partyanalyst.model.FeedBack;
 
 
 public interface IOpinionPollService {
@@ -20,4 +22,11 @@ public interface IOpinionPollService {
 	public QuestionsOptionsVO getQuestionAndPercentageOfVotesForChoices(Long opinionPollQuestionId);
 
 	public OpinionPollVO getDetailsOfTheLatestOpinionPoll();
+	
+	public String saveUserFeedback(UserFeedbackVO feedbackVO);
+	
+	public List<SelectOptionVO> getAllValuesFromFeedbackComment();
+
+	public List<SelectOptionVO> getAllValuesFromFeedbackTask();
 }
+
