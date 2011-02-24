@@ -12,17 +12,27 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IFeedbackCommentDAO;
+import com.itgrids.partyanalyst.dao.IFeedbackDAO;
+import com.itgrids.partyanalyst.dao.IFeedbackTaskDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
 import com.itgrids.partyanalyst.dao.IQuestionsRepositoryDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.QuestionsOptionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserFeedbackVO;
+import com.itgrids.partyanalyst.model.CensusParameter;
+import com.itgrids.partyanalyst.model.FeedBack;
+import com.itgrids.partyanalyst.model.FeedBackComment;
+import com.itgrids.partyanalyst.model.FeedBackTask;
 import com.itgrids.partyanalyst.model.OpinionPoll;
 import com.itgrids.partyanalyst.model.OpinionPollQuestionOptions;
 import com.itgrids.partyanalyst.model.OpinionPollQuestions;
@@ -40,7 +50,9 @@ public class OpinionPollService implements IOpinionPollService {
 	private IQuestionsRepositoryDAO questionsRepositoryDAO;
 	private IOpinionPollDAO opinionPollDAO;
 	private IRegistrationDAO registrationDAO;
-	
+	private IFeedbackCommentDAO feedbackCommentDAO;
+	private IFeedbackTaskDAO feedbackTaskDAO;
+	private IFeedbackDAO feedbackDAO;
 	
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
@@ -99,6 +111,30 @@ public class OpinionPollService implements IOpinionPollService {
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+	
+	public IFeedbackCommentDAO getFeedbackCommentDAO() {
+		return feedbackCommentDAO;
+	}
+
+	public void setFeedbackCommentDAO(IFeedbackCommentDAO feedbackCommentDAO) {
+		this.feedbackCommentDAO = feedbackCommentDAO;
+	}
+
+	public IFeedbackTaskDAO getFeedbackTaskDAO() {
+		return feedbackTaskDAO;
+	}
+
+	public void setFeedbackTaskDAO(IFeedbackTaskDAO feedbackTaskDAO) {
+		this.feedbackTaskDAO = feedbackTaskDAO;
+	}
+
+	public IFeedbackDAO getFeedbackDAO() {
+		return feedbackDAO;
+	}
+
+	public void setFeedbackDAO(IFeedbackDAO feedbackDAO) {
+		this.feedbackDAO = feedbackDAO;
 	}
 
 	
@@ -357,5 +393,50 @@ public class OpinionPollService implements IOpinionPollService {
 			return isSaved;
 			
 		}
+	 
+	public String saveUserFeedback(UserFeedbackVO feedbackVO) 
+	{
+		FeedBack feedBack =  new FeedBack();
+		
+		feedBack.setComment(feedbackVO.getComment());
+		feedBack.setResponseCategory(feedbackVO.getResponseCategory());
+		feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
+		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
+		feedBack.setFeedBackComment(feedbackCommentDAO.get(feedbackVO.getCommentType()));
+		feedbackDAO.save(feedBack);
+		
+		return "SUCCESS";
+	}
 	
+	public List<SelectOptionVO> getAllValuesFromFeedbackComment()
+	{
+		List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>(0);
+		List<FeedBackComment> list = feedbackCommentDAO.getAll();
+		for(FeedBackComment feedbackComment:list)
+		{
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(feedbackComment.getFeedBackCommentId());
+			selectOption.setName(feedbackComment.getCommentType());
+			selectOptionVOList.add(selectOption);
+		}
+			return selectOptionVOList;
+	
+	}
+    
+	public List<SelectOptionVO> getAllValuesFromFeedbackTask()
+	{
+		List<SelectOptionVO> selectOptionVOList=new ArrayList<SelectOptionVO>(0);
+		List<FeedBackTask> list = feedbackTaskDAO.getAll();
+		for(FeedBackTask feedbackTask:list)
+		{
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(feedbackTask.getFeedBackTaskId());
+			selectOption.setName(feedbackTask.getFeedBackTaskName());
+			selectOptionVOList.add(selectOption);
+		}
+			return selectOptionVOList;
+	}
+
+
 }
+
