@@ -77,6 +77,27 @@ public class District extends BaseModel implements java.io.Serializable {
 	public District(Long districtId, String districtName,
 			String districtCapital, Double area, Double population,  State state,
 			Long districtCode, Date startDate, Date deformDate,
+			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
+			Set<LocalGroupRegion> localGroupRegion) {
+		this.districtId = districtId;
+		this.state = state;
+		this.districtName = districtName;
+		this.districtCapital = districtCapital;
+		this.area = area;
+		this.population = population;
+		this.districtCode = districtCode;
+		this.startDate = startDate;
+		this.deformDate = deformDate;
+		this.constituencies = constituencies;
+		this.tehsils = tehsils;
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
+		this.localGroupRegion = localGroupRegion;		
+		
+	}
+
+	public District(Long districtId, String districtName,
+			String districtCapital, Double area, Double population,  State state,
+			Long districtCode, Date startDate, Date deformDate,
 			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult,Set<LocalGroupRegion> localGroupRegion,
 			StateRegionDistrict stateRegionDistrict) {
 		this.districtId = districtId;
@@ -95,7 +116,6 @@ public class District extends BaseModel implements java.io.Serializable {
 		this.stateRegionDistrict = stateRegionDistrict;
 		
 	}
-
 	// Property accessors
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
