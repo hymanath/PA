@@ -301,6 +301,16 @@
            <result name="success">/jsp/csvUpload.jsp</result>
         </action>
         
+        <action name="userFeedbackAction" class="userFeedbackAction">
+          <result name="success">/jsp/userFeedback.jsp</result>
+        </action>
+        
+         <action name="userFeedbackSubmitAction" class="userFeedbackSubmitAction">
+        	<result name="input">/jsp/userFeedback.jsp</result>
+           <result name="success">/jsp/userFeedback.jsp</result>
+           <result name="error">/jsp/userFeedback.jsp</result>
+        </action>
+        
         <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction">
 			<result name="success" type="json" >
 				<param name="root">namesList</param>
