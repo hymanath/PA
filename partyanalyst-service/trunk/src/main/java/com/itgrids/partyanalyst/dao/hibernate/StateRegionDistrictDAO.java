@@ -24,6 +24,13 @@ IStateRegionDistrictDAO {
 				
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getDistrictsInARegion(Long regionId){
+		
+		return getHibernateTemplate().find("select model.district.districtId,model.district.districtName from "+
+				"StateRegionDistrict model where model.stateRegion.stateRegionId = ?",regionId);
 	}
+	
+}
 
 

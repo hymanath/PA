@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
@@ -81,6 +82,19 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName, model.totalConstiParticipated, " +
 				"model.totalSeatsWon, model.votesPercentage, model.completeVotesPercent from PartyElectionDistrictResult model " +
 				"where model.party.partyId = ? and model.election.electionId = ? and model.district.state.stateId = ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findPartyResultsForARegionInState(List<Long> districtIds,Long electionId){
+		
+		Query queryObject = getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.totalSeatsWon) from "+
+				"PartyElectionDistrictResult model where model.election.electionId = ? and model.district.districtId in (:districtIds) "+
+				"group by model.party.partyId order by sum(model.totalSeatsWon)");
+		
+		queryObject.setParameter(0,electionId);
+		queryObject.setParameterList("districtIds",districtIds);
+		return queryObject.list();
+		
 	}
 
 }
