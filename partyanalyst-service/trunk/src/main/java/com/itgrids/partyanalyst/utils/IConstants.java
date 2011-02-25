@@ -412,4 +412,9 @@ public interface IConstants {
     public static final String REASONS_POSTING = "REASONS_POSTING";
         
         
+    public static final String REQUIRED_CONSTITUENCIES = "REQUIRED_CONSTITUENCIES";
+    
+    public static final String REMAINING_CONSTITUENCIES = "REMAINING_CONSTITUENCIES";
+    
+    public static final String LATEST_CONSTITUENCIES = "LATEST_CONSTITUENCIES";
 }
