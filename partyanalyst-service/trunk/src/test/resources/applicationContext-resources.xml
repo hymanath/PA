@@ -191,6 +191,8 @@
 				<value>com.itgrids.partyanalyst.model.CadreProblemDetails</value>
 				<value>com.itgrids.partyanalyst.model.CensusParameter</value>
 				<value>com.itgrids.partyanalyst.model.CadreRole</value>
+				<value>com.itgrids.partyanalyst.model.StateRegion</value>
+				<value>com.itgrids.partyanalyst.model.StateRegionDistrict</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoleRelation</value>
 				<value>com.itgrids.partyanalyst.model.DepartmentOrganisation</value>
 				<value>com.itgrids.partyanalyst.model.ProblemActivity</value>
@@ -941,6 +943,14 @@
     	<property name="electionDAO" ref="electionDAO" />
     	<property name="boothDAO" ref="boothDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+	
+	<bean id="stateRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="stateRegionDistrictDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateRegionDistrictDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 	<bean id="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService" >
