@@ -88,7 +88,11 @@ function callAjax(param,jsObj,url){
 							try {												
 									if(o.responseText)
 										myResults = YAHOO.lang.JSON.parse(o.responseText);
-									if(jsObj.task == "elctionsBasicInfo")
+									if(jsObj.task == "getRegionWisePartyElectionResults")
+									{
+										buildRegionWiseElectionsResultsGraph(jsObj,myResults);
+									}
+									else if(jsObj.task == "elctionsBasicInfo")
 									{										
 										showElectionBasicInfo(myResults);											
 									} else if(jsObj.task == "getResultForAnElection")
@@ -114,6 +118,18 @@ function callAjax(param,jsObj,url){
 											subRegionsDiv.innerHTML='';
 										}
 
+										if(myResults.hasRegions == true){
+
+											var elmtDiv = document.getElementById("stateRegionsDiv");
+
+											var str = '';
+
+											str+='<input type="radio" name="regions" value="overall" checked="checked" title="Select to view overall results" onclick="showOverallResults()">Overall';
+											str+='<input type="radio" name="regions" value="region" title="Select to view region wise results" onclick="showRegionWiseResults()">Region Wise';
+
+											elmtDiv.innerHTML = str;
+										}
+
 									}  									
 								}
 							catch (e) {   
@@ -129,7 +145,28 @@ function callAjax(param,jsObj,url){
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function buildRegionWiseElectionsResultsGraph(jsObj,results)
+{
+	
+}
 
+function showOverallResults()
+{
+   getResultsForAnElection(stateID,electionType,year);
+}
+
+function showRegionWiseResults()
+{
+	var jsObj = {
+				electionId:electionId,
+				stateID:stateID,
+				task:"getRegionWisePartyElectionResults",
+			};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/regionWisePartyElectionResultsAjaxAction.action?"+param;
+	callAjax(param,jsObj,url);
+
+}
 
 function showDistrictWiseResultsLineGraph(results)
 {
@@ -1750,6 +1787,8 @@ callAjax(rparam,jsObj,url);
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="statewiseGraph">
+ <DIV id="stateRegionsDiv"></DIV>
+
 <DIV id="graphImage" class="yui-skin-sam"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" >
