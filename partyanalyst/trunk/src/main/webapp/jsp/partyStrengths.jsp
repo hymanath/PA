@@ -44,7 +44,7 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
-<title>Party Strengths</title>
+<title>Party Strengths and Weakness</title>
 <style type="text/css">
 	table.CandidateElectionResultsTable{
 		font-family: verdana,arial,sans-serif;
@@ -64,7 +64,7 @@
 	    border-bottom: 1px solid #E0E0D6;
 	    border-left: 1px solid #E0E0D6;
 	    border-right: 1px solid #E0E0D6;
-	    height: 346px;
+	  
 	    overflow: auto;
 	}
 	
@@ -74,13 +74,21 @@
 	    font-size: 19px;
 	    font-weight: bold;
 	    text-align: center;
+	    padding-bottom: 29px;
+    	padding-top: 22px;
+	}
+	.tdStyle
+	{
+		font-weight:bold;
+		color:#808080;
+		font-size:12px;
 	}
 </style>
 
 <script type="text/javascript">
 
-	var electionType;
-	var selectedStateElmts;
+	var electionType='Assembly';
+	var selectedStateElmts=1;
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -117,7 +125,7 @@
 						}else{
 							buildDefaultDetailsForNewConstituencies(results);
 							if(results.partyName=="All Parties"){
-								initializeResultsTable(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
+								initializeResultsTableWithoutOthers(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
 							}else{
 								initializeResultsTable2(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
 							}
@@ -128,7 +136,7 @@
 						}else{
 							buildDefaultDetailsForRemianingConstituencies(results);
 							if(results.partyName=="All Parties"){
-								initializeResultsTable(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies");
+								initializeResultsTableWithoutOthers(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies");
 							}else{
 								initializeResultsTable2(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies");
 							}	
@@ -144,12 +152,12 @@
 					}						
 					
 			}catch (e) {   		
-			   // 	alert("Invalid JSON result" + e);   
+			    	//alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     		//	alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
@@ -187,6 +195,95 @@
 	}
 	
 	function initializeResultsTable(results,tableId,divId) {
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get(tableId));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "constituencyName"
+			}, {
+				key : "AIMIM"
+			}, {   
+				key : "BJP"
+			}, {
+				key : "CPI"
+			}, {
+				key : "CPM"
+			}, {
+				key : "INC"
+			}, {
+				key : "PRP"
+			}, {
+				key : "TDP"
+			}, {
+				key : "TRS"
+			}, {
+				key : "others"
+			}]
+		};
+	
+		var resultsColumnDefs = [ {
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "AIMIM",
+			label : "AIMIM",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "BJP",
+			label : "BJP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "CPI",
+			label : "CPI",
+			sortable : true,
+			 resizeable:true
+		}, {
+			key : "CPM",
+			label : "CPM",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "INC",
+			label : "INC",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "PRP",
+			label : "PRP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TDP",
+			label : "TDP",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "TRS",
+			label : "TRS",
+			sortable : true,
+			 resizeable:true	
+		}, {
+			key : "others",
+			label : "Others",
+			sortable : true,
+			 resizeable:true	
+		}];
+		
+		var paginatorConfig = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
+		};
+		
+		var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
+	}
+
+	function initializeResultsTableWithoutOthers(results,tableId,divId) {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get(tableId));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -267,7 +364,7 @@
 		
 		var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
-
+	
 	function initializeResultsTable2(results,tableId,divId) {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get(tableId));
@@ -329,6 +426,19 @@
 		callAjax(jsObj,url);
 	}
 
+	function getDefaultFrequencyOfYears()
+	{	
+		var jsObj=
+		{		
+				stateId : 1,
+				electionType : 'Assembly',		
+				task:"getAllElectionsAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
 	function getParties()
 	{
 		var jsObj=
@@ -341,12 +451,26 @@
 		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
+
+	function getDefaultParties()
+	{
+		var jsObj=
+		{		
+				stateId : 1,
+				electionType :'Assembly',		
+				task:"getAllPartiesData"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
 	function buildAllPartiesData(results)
 	{		
 		var allPartiesData = document.getElementById("partySelectTd");
 		
 		var populateAllPartiesData='';
-		populateAllPartiesData+='<select id="partySelect" style="width:130px;">';
+		populateAllPartiesData+='<select id="partySelect" style="width:130px;" onClick="return validateAndForwardToAction(this)">';
 		populateAllPartiesData+='<option value="0">All Parties</option>';
 		for(var i in results)
 		{
@@ -362,11 +486,16 @@
 		var showElections = document.getElementById("electionTypeTd");
 		
 		var populateElections='';
-		populateElections+='<select id="electionYearsSelect" style="width:130px;" onchange="getParties()">';
+		populateElections+='<select id="electionYearsSelect" style="width:50px;" onchange="getParties()">';
 		
 		for(var i in results)  
 		{
-			populateElections+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
+			if(results[i].id==7){
+				populateElections+='<option value="'+results[i].id+'" selected="selected">'+results[i].name+'</option>';
+			}else{
+				populateElections+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
+			}
+			
 		}
 		populateElections+='</select>';
 		showElections.innerHTML = populateElections;
@@ -413,6 +542,12 @@
 		str+='</div>';
 		
 		dataTable.innerHTML = str;
+
+		var count = document.getElementById("requiredConstituenciesCount");
+		var countElmt = '';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'required_const_body\')"> Required Constituencies Details :</a></span>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		count.innerHTML = countElmt;
 	}
 
 	function buildDefaultDetailsForNewConstituencies(results)
@@ -442,6 +577,12 @@
 		str+='</div>';
 		
 		dataTable.innerHTML = str;
+
+		var count = document.getElementById("newConstituenciesCount");
+		var countElmt = '';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'new_const_body\')" > New Constituencies Details :</a></span>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		count.innerHTML = countElmt;
 	}
 
 	function buildDefaultDetailsForRemianingConstituencies(results)
@@ -471,6 +612,12 @@
 		str+='</div>';
 		
 		dataTable.innerHTML = str;
+
+		var count = document.getElementById("delimitationConstituenciesCount");
+		var countElmt = '';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'remaining_const_body\')"> Delimitation Constituencies Details :</a></span> ';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.remainingConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		count.innerHTML = countElmt;
 	}
 	
 	function populateDefaultDetails()
@@ -500,7 +647,8 @@
 
 	function getElectionDetailsForSelectedCriteria(electionTypeSelect,stateSelect,electionYearsSelect,partySelect)
 	{
-				
+		var elmt = document.getElementById("busyImage");
+		elmt.style.display = 'block';		
 		var jsObj=
 		{	
 				stateId : stateSelect,
@@ -534,7 +682,7 @@
 				<table>
 					<tr>
 						<td colspan="2" id="headingDiv">
-							<span style="margin: 0px; text-align: center;">Party Strengths</span>
+							<span style="margin: 0px; text-align: center;">Party Strengths and Weakness</span>
 						</td>
 					</tr>
 				</table>
@@ -550,45 +698,44 @@
 					</tr>
 				</table>
 				<s:form name="partyStrengthResultsAction" action="partyStrengthResultsAction" method="POST">
-					<table id="partyStrenghtsTable" width="367px;">						
+					<table id="partyStrenghtsTable" width="97%;">						
 						<tr>
-							<th align="left">Election Type</td>
+							<td align="left" class="tdStyle">Election Type</td>
 							<td align="left">
 								<select id="electionTypeSelect" name="electionType"  style="width:130px;"  onchange="getStates(this.options[this.selectedIndex].value)">
 									<option value="Assembly">Assembly</option>		
 									<option value="Parliament">Parliament</option>									
 								</select>
 							</td>
-						</tr>
-						<tr>
-							<th align="left" id="selectStateId">Select State</th>
+						
+							<td align="left" id="selectStateId" class="tdStyle">Select State</td>
 							<td align="left" id="stateTd">
 								<select id="stateSelect" name="state" class = "selectWidth">																
 										<option value="1">Andhra Pradesh</option>									
 								</select>
 							</td>
-						</tr>
-						<tr>
-							<th align="left">No.of Election Years To Compare</th>
+						
+							<td align="left" class="tdStyle">No.of Previous Election Years</td>
 							<td align="left" id="electionTypeTd">
 								<select id="electionYearsSelect" name="electionYears" class = "selectWidth">																
 									<option value="7">7</option>									
 								</select>								
 							</td>
-						</tr>
-						<tr>
-							<th align="left">Select Party</th>
+						
+							<td align="left" class="tdStyle">Select Party</td>
 							<td align="left" id="partySelectTd">												
 								<select id="partySelect" name="party" class = "selectWidth">																
 									<option value="0">All Party</option>									
 								</select>
 							</td>
 						</tr>
+						
 						<tr>
-							<td> 
-								<input id="viewReportButton" type="button" onClick="return validateAndForwardToAction(this)"  value="View Report"/>
+							<td colspan="8">
+								<hr/>
 							</td>
 						</tr>
+						
 					</table>
 				</s:form>				
 			</div>	
@@ -612,7 +759,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
 										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('required_const_body')"> Required Constituencies Details :</a></span></div></td>
+										<td><div class="districtPageRoundedHeaders_center"> <div id="requiredConstituenciesCount"></div></div></td>
 										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
@@ -639,7 +786,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
 										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('new_const_body')" > New Constituencies Details :</a></span></div></td>
+										<td><div class="districtPageRoundedHeaders_center"> <div id="newConstituenciesCount"></div></div></td>
 										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
@@ -666,7 +813,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
 										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center"><span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow('remaining_const_body')"> Remaining Constituencies Details :</a></span></div></td>
+										<td><div class="districtPageRoundedHeaders_center"><div id="delimitationConstituenciesCount"></div></div></td>
 										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
@@ -691,6 +838,9 @@
 		
 <script type="text/javascript">
 	populateDefaultDetails();
+	getStates(1);
+	getDefaultFrequencyOfYears();
+	getDefaultParties();
 </script>
 
 </body>
