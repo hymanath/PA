@@ -89,7 +89,7 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		
 		Query queryObject = getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.totalSeatsWon) from "+
 				"PartyElectionDistrictResult model where model.election.electionId = ? and model.district.districtId in (:districtIds) "+
-				"group by model.party.partyId order by sum(model.totalSeatsWon)");
+				"group by model.party.partyId order by sum(model.totalSeatsWon) desc");
 		
 		queryObject.setParameter(0,electionId);
 		queryObject.setParameterList("districtIds",districtIds);
