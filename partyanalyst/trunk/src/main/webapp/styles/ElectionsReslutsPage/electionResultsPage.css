@@ -201,6 +201,15 @@ margin:1px;
 	font-weight: bold;
 }
 
+#stateRegionsDiv
+{
+    font-family: verdana;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: right;
+}
+
 
 
 
