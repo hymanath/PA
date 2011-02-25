@@ -477,12 +477,6 @@ public class OpinionPollService implements IOpinionPollService {
 			return selectOptionVOList;
 	}
 
-	@Override
-	public List<UserFeedbackVO> getAllDetailsForToday() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/*public List<UserFeedbackVO> getAllDetailsForToday(){
 		
 		List<UserFeedbackVO> userFeedbackVO= new ArrayList<UserFeedbackVO>(0);
