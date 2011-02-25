@@ -60,7 +60,9 @@ public class State implements java.io.Serializable {
 	private String stateFlower;
 	private String isoCode;
 	private Set<EPaper> epaper = new HashSet<EPaper>(0);
+	
 	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
+	
 	// Constructors
 
 	/** 

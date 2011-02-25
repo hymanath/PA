@@ -73,6 +73,7 @@ public class State implements java.io.Serializable {
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<ModuleRegionScopes> moduleRegionScopes = new HashSet<ModuleRegionScopes>(0);
 	private Set<ProblemSourceScope> problemSourceScope = new HashSet<ProblemSourceScope>(0);
+	private Set<StateRegion> stateRegion = new HashSet<StateRegion>(0);
 	
 	// Constructors
 
@@ -385,6 +386,15 @@ public class State implements java.io.Serializable {
 
 	public void setProblemSourceScope(Set<ProblemSourceScope> problemSourceScope) {
 		this.problemSourceScope = problemSourceScope;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	public Set<StateRegion> getStateRegion() {
+		return stateRegion;
+	}
+
+	public void setStateRegion(Set<StateRegion> stateRegion) {
+		this.stateRegion = stateRegion;
 	}
 
 

@@ -11,8 +11,14 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
+import com.itgrids.partyanalyst.dto.PartyResultsInRegionVO;
+
 public interface IStateRegionService {
 	
  public boolean getStateRegionAvailability(Long stateId);
+ 
+ public List<PartyResultsInRegionVO> getRegionWisePartyResultsInState(Long stateId,Long electionId);
  
 }
