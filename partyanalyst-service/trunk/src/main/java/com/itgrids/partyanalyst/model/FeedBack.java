@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +35,9 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	private String responseCategory;
 	private FeedBackComment feedBackComment;
 	private FeedBackTask feedBackTask;
+	private Date postedDate;
+	private String status;
+	private AnanymousUser ananymousUser;
 
 	/** default constructor */
 	public FeedBack() {
@@ -42,13 +47,16 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public FeedBack(Long feedbackId, String comment, Registration registration,
 			String responseCategory, FeedBackComment feedBackComment,
-			FeedBackTask feedBackTask) {
+			FeedBackTask feedBackTask,Date postedDate,String status,AnanymousUser ananymousUser) {
 		this.feedbackId = feedbackId;
 		this.comment = comment;
 		this.registration = registration;
 		this.feedBackComment = feedBackComment;
 		this.feedBackTask = feedBackTask;
 		this.responseCategory = responseCategory;
+		this.ananymousUser = ananymousUser;
+		this.status = status;
+		this.postedDate = postedDate;
 
 	}
 
@@ -113,9 +121,40 @@ public class FeedBack extends BaseModel implements java.io.Serializable {
 	public void setFeedBackTask(FeedBackTask feedBackTask) {
 		this.feedBackTask = feedBackTask;
 	}
+    
+	@Column(name = "posted_date", length = 10)
+	public Date getPostedDate() {
+		return postedDate;
+	}
+
+	public void setPostedDate(Date date) {
+		this.postedDate = date;
+	}
+	
+	 @Column(name="status" ,length=10)
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
 	}
 
+	public void setAnanymousUser(AnanymousUser ananymousUser) {
+		this.ananymousUser = ananymousUser;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ananymous_user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AnanymousUser getAnanymousUser() {
+		return ananymousUser;
+	}
+
+	
 }
