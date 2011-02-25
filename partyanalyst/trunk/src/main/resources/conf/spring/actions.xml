@@ -398,11 +398,12 @@
 	<bean id="electionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.ElectionDetailsReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 			<property name="staticDataService" ref="staticDataService" />
+			<property name="stateRegionService" ref="stateRegionService" />
 	</bean>
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 			<property name="electionAnalyzeService" ref="electionAnalyzeService" />
-			<property name="entitlementsHelper" ref="entitlementsHelper" />	      
+			<property name="entitlementsHelper" ref="entitlementsHelper" />		  
 	</bean>
 	<bean id="alliancePartiesPageAction" class="com.itgrids.partyanalyst.web.action.AlliancePartiesPageAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
@@ -611,12 +612,12 @@
     	<property name="electionService" ref="electionService" />
     	<property name="entitlementsHelper" ref="entitlementsHelper" />		    
     </bean>    
-    
-    <bean id="userFeedbackAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackAction" singleton="false">
-	 <property name="opinionPollService" ref="opinionPollService" />
+      
+      <bean id="userFeedbackAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackAction" singleton="false">
+	 	<property name="opinionPollService" ref="opinionPollService" />
 	 </bean>
 	
 	<bean id="userFeedbackSubmitAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackSubmitAction" singleton="false">
-	<property name="opinionPollService" ref="opinionPollService" />
+		<property name="opinionPollService" ref="opinionPollService" />
 	</bean>
 </beans>		
