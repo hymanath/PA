@@ -38,6 +38,8 @@ public class ElectionResultsReportVO implements Serializable {
 	List<SelectOptionVO> partiesDistLevel;
 	List<DistrictWisePartyPositionsVO> partyResultsforDistWiseChart;
 	
+	private Boolean hasRegions;
+	
 	
     //getters and setters
 	public String getState() {
@@ -183,6 +185,14 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setPartyResultsforDistWiseChart(
 			List<DistrictWisePartyPositionsVO> partyResultsforDistWiseChart) {
 		this.partyResultsforDistWiseChart = partyResultsforDistWiseChart;
+	}
+
+	public Boolean getHasRegions() {
+		return hasRegions;
+	}
+
+	public void setHasRegions(Boolean hasRegions) {
+		this.hasRegions = hasRegions;
 	}
 	
 	
