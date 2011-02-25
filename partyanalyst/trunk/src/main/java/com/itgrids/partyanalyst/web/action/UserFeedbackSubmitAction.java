@@ -100,9 +100,8 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		feedbackVO.setUserId(user.getRegistrationID());
-		
-		result = opinionPollService.saveUserFeedback(feedbackVO);
-		
+		feedbackVO.setUserType(user.getUserStatus());
+			result = opinionPollService.saveUserFeedback(feedbackVO);
        	return SUCCESS;
 			
 	}
