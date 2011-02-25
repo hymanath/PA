@@ -58,6 +58,8 @@
 		<property name="feedbackCommentDAO" ref="feedbackCommentDAO" /> 
 		<property name="feedbackTaskDAO" ref="feedbackTaskDAO" /> 
 		<property name="feedbackDAO" ref="feedbackDAO" /> 
+		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
+		<property name="problemManagementService" ref="problemManagementService" /> 
 	</bean>
 	
 	<bean name="electionService" class="com.itgrids.partyanalyst.service.impl.ElectionService" >
