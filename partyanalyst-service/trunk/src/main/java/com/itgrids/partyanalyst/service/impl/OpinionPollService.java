@@ -5,13 +5,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackCommentDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IFeedbackTaskDAO;
@@ -21,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IOpinionPollQuestionsDAO;
 import com.itgrids.partyanalyst.dao.IOpinionPollResultDAO;
 import com.itgrids.partyanalyst.dao.IQuestionsRepositoryDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AnanymousUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FeedbackDAO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
@@ -39,10 +43,13 @@ import com.itgrids.partyanalyst.model.OpinionPollQuestions;
 import com.itgrids.partyanalyst.model.OpinionPollResult;
 import com.itgrids.partyanalyst.model.QuestionsRepository;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class OpinionPollService implements IOpinionPollService {
 
+	
+	private static final Logger log = Logger.getLogger("OpinionPollService.class");
 	private TransactionTemplate transactionTemplate;
 	private IOpinionPollQuestionsDAO opinionPollQuestionsDAO;
 	private IOpinionPollResultDAO opinionPollResultDAO;
@@ -50,9 +57,14 @@ public class OpinionPollService implements IOpinionPollService {
 	private IQuestionsRepositoryDAO questionsRepositoryDAO;
 	private IOpinionPollDAO opinionPollDAO;
 	private IRegistrationDAO registrationDAO;
+	private IAnanymousUserDAO ananymousUserDAO;
 	private IFeedbackCommentDAO feedbackCommentDAO;
 	private IFeedbackTaskDAO feedbackTaskDAO;
 	private IFeedbackDAO feedbackDAO;
+	private IProblemManagementService problemManagementService;
+	GregorianCalendar calendar = new GregorianCalendar();
+	SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
+		
 	
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
@@ -61,7 +73,15 @@ public class OpinionPollService implements IOpinionPollService {
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
+     
+	public IAnanymousUserDAO getAnanymousUserDAO() {
+		return ananymousUserDAO;
+	}
 
+	public void setAnanymousUserDAO(IAnanymousUserDAO ananymousUserDAO) {
+		this.ananymousUserDAO = ananymousUserDAO;
+	}
+	
 	public IQuestionsRepositoryDAO getQuestionsRepositoryDAO() {
 		return questionsRepositoryDAO;
 	}
@@ -139,6 +159,15 @@ public class OpinionPollService implements IOpinionPollService {
 
 	
 		
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
 	public QuestionsOptionsVO saveSelectionResultOfThePoll(final Long opinionPollQuestionId,final Long opinionPollQuestionOptionsId){
 		
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -400,9 +429,20 @@ public class OpinionPollService implements IOpinionPollService {
 		
 		feedBack.setComment(feedbackVO.getComment());
 		feedBack.setResponseCategory(feedbackVO.getResponseCategory());
-		feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
-		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
+		
 		feedBack.setFeedBackComment(feedbackCommentDAO.get(feedbackVO.getCommentType()));
+		feedBack.setStatus(IConstants.NEW);
+		feedBack.setPostedDate(problemManagementService.getCurrentDateAndTime());
+		
+		if(feedbackVO.getUserType().equalsIgnoreCase(IConstants.PARTY_ANALYST_USER))
+			
+			feedBack.setRegistration(registrationDAO.get(feedbackVO.getUserId()));
+		
+		else if(feedbackVO.getUserType().equalsIgnoreCase(IConstants.FREE_USER))
+			
+			feedBack.setAnanymousUser(ananymousUserDAO.get(feedbackVO.getUserId()));
+		
+		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
 		feedbackDAO.save(feedBack);
 		
 		return "SUCCESS";
@@ -437,6 +477,30 @@ public class OpinionPollService implements IOpinionPollService {
 			return selectOptionVOList;
 	}
 
+	@Override
+	public List<UserFeedbackVO> getAllDetailsForToday() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-}
-
+	/*public List<UserFeedbackVO> getAllDetailsForToday(){
+		
+		List<UserFeedbackVO> userFeedbackVO= new ArrayList<UserFeedbackVO>(0);
+		
+		List<FeedBack> feedbackList = feedbackDAO.getAll();
+		for(FeedBack feedback : feedbackList){
+			
+	        UserFeedbackVO feedbackVO=new UserFeedbackVO();
+	        
+	        feedbackVO.setComment(feedback.getComment());
+	        feedbackVO.setPosteddate(feedback.getPostedDate());
+	        feedbackVO.setResponseCategory(feedback.getResponseCategory());
+	        feedbackVO.setStatus(feedback.getStatus());
+	        feedbackVO.setUserName(feedback.getRegistration().getUserName());
+	        
+	        userFeedbackVO.add(feedbackVO);
+		}
+	        return userFeedbackVO;
+		}*/
+		
+	}
