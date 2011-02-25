@@ -2196,7 +2196,7 @@ public class StaticDataService implements IStaticDataService {
 					Object[] obj = (Object[])constiList.get(i);
 					SelectOptionVO constituencyData = new SelectOptionVO();
 					constituencyData.setId((Long) obj[0]);
-					constituencyData.setName((String) obj[1]);
+					constituencyData.setName(obj[1].toString().toUpperCase());
 					
 					constituenciesList.add(constituencyData);
 				}			
