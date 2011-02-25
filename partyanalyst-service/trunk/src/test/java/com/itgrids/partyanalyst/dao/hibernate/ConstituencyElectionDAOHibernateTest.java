@@ -212,8 +212,8 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testGetConstituenciesHavingMaxSpan()
 	{
-		//segregateAllConstituencies(6l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
-		segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
+		segregateAllConstituencies(7l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
+		//segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 	}
 	
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
@@ -229,8 +229,10 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				it = result.listIterator();
 				while(it.hasNext()){
 					Object[] parms = (Object[]) it.next();
-					
-					Long count = (Long)parms[0];
+					if(parms[2].toString().equalsIgnoreCase("CHENNUR")){
+						System.out.println("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]);
+					}
+					/*Long count = (Long)parms[0];
 						if(count.intValue() == selectedNoOfYears.intValue() && count!=1l){
 							System.out.println("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 							requiredConstituencies.add((Long)parms[1]);
@@ -238,7 +240,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 							latestConstituencies.add((Long)parms[1]);
 						}else{
 							remianingConstituencies.add((Long)parms[1]);
-						}
+						}*/
 				}
 			}
 			
