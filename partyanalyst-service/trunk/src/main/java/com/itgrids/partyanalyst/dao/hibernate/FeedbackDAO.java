@@ -17,9 +17,9 @@ public class FeedbackDAO extends GenericDaoHibernate<FeedBack, Long> implements 
 	
 	@SuppressWarnings("unchecked")
 	public List<FeedBack> findByFeedbackId(Long feedbackId) {
-		return getHibernateTemplate().find(" from feedBack model where model.feedbackId = ?", feedbackId);
+		return getHibernateTemplate().find(" from FeedBack model where model.feedbackId = ?", feedbackId);
 	}
-    /*@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<FeedBack> findCommentTypeAndTaskByFeedBackId(Long feedBackId){
     	
     	return getHibernateTemplate().find("select  model.feedBackComment.commentType and model.feedBackTask.feedBackTaskName where feedbackId = ?" , feedBackId);
