@@ -791,6 +791,8 @@
 
 	<bean name="stateRegionService" class="com.itgrids.partyanalyst.service.impl.StateRegionService" >
 		 <property name="stateRegionDAO" ref="stateRegionDAO" />		 
+		 <property name="stateRegionDistrictDAO" ref="stateRegionDistrictDAO" />
+		 <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 	</bean>
 </beans>		
 		
