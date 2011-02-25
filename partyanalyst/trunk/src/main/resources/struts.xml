@@ -2173,8 +2173,13 @@
 		</action>
 		<action name="postCommentsToProblemAjaxAction" class="problemAssigningAction" method="postCommentsToProblem">
 			<result type="json" name="success">
-				<param name="root">resultStatus</param>				
+				<param name="root">resultStatus</param>							
 			</result>		
 		</action>        
+		<action name="regionWisePartyElectionResultsAjaxAction" class="electionDetailsReportAction" method="getRegionWisePartyElectionResults">
+			<result type="json" name="success">
+				<param name="root">partyResultsInRegionVO</param>							
+			</result>		
+		</action>  
 	</package> 
 </struts>      
