@@ -238,8 +238,8 @@ public class StateRegionService implements IStateRegionService {
 				
 				Object[] values= (Object[])lstItr.next();
 				
-				Long districtId     = (Long)values[1];
-				String districtName = (String)values[0];
+				Long districtId     = (Long)values[0];
+				String districtName = (String)values[1];
 				
 				districtsInRegion.add(districtId);
 				
