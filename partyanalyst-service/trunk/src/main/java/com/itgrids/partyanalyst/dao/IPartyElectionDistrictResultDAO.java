@@ -36,5 +36,5 @@ public interface IPartyElectionDistrictResultDAO extends GenericDao<PartyElectio
 	public List getAllElectionResultsInDistrict(Long electionTypeId, Long districtId);
 	
 	@SuppressWarnings("unchecked")
-	public List findPartyResultsForARegionInState(List<Long> districtIds,Long electionId);
+	public List findPartyResultsForARegionInState(List<Long> districtIds,Long electionId, List<Long> partyIds);
 }
