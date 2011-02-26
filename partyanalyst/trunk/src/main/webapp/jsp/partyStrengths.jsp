@@ -106,6 +106,9 @@
 						
 						var main_container_div_elmt = document.getElementById("main_container_div");						
 						main_container_div_elmt.style.display = 'block';
+
+						var elmt = document.getElementById("busyImage");
+						elmt.style.display = 'none';
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null){
 							showRequiredConstituenciesErrorMessage();
@@ -113,11 +116,11 @@
 							buildDefaultDetails(results);
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv");
+	
+								buildOverViewDataTable(results); 
 							}else{
 								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");
 							}
-							var elmt = document.getElementById("busyImage");
-							elmt.style.display = 'none';
 						}
 							
 						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null){
@@ -164,6 +167,40 @@
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function buildOverViewDataTable(results)
+	{
+		
+		var elmt = document.getElementById("overViewDiv");
+		var str='';
+		var partiesDetails = results.requiredConstituenciesInfo.partiesDetailsVO;
+		var customLength = partiesDetails[0].partyDetails;
+		str += '<table>';
+		str += '	<tr>';
+		str += '		<td> PartyName ';
+		for(var i=1;i<customLength.length;i++){
+			str += '		<td>'+i+'</td>';
+		}
+		str += '		</td>';
+		str += '	</tr>';
+
+
+		
+		for(var k=0;k<partiesDetails.length;k++){
+			str += '	<tr>';	
+				str += '		<td>'+partiesDetails[k].partyName+'</td>';
+				for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
+					str += '	<td>'+partiesDetails[k].partyDetails[j].name+'</td>';
+				}
+			str += '	</tr>';
+		}
+		
+		str += '</table>';
+		
+		elmt.innerHTML =  str;
+		
+	} 
+
+	
 	function showRequiredConstituenciesErrorMessage(){
 
 		var elmt = document.getElementById("dataTableBuild");
@@ -545,7 +582,7 @@
 
 		var count = document.getElementById("requiredConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'required_const_body\')"> Required Constituencies Details :</a></span>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide or show the table" onclick="hideOrShow(\'required_const_body\')"> Required Constituencies Details: </a></span>';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
@@ -580,7 +617,7 @@
 
 		var count = document.getElementById("newConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'new_const_body\')" > New Constituencies Details :</a></span>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies Details: </a></span>';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
@@ -615,7 +652,7 @@
 
 		var count = document.getElementById("delimitationConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" onclick="hideOrShow(\'remaining_const_body\')"> Delimitation Constituencies Details :</a></span> ';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" title="click here to hide and show the table" href="javascript:{}" onclick="hideOrShow(\'remaining_const_body\')"> Delimitation Constituencies Details: </a></span> ';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.remainingConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
@@ -750,6 +787,8 @@
 				<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 			</div>
 			
+			<div id="overViewDiv"></div>
+			
 			<div id="main_container_div" style="display:none;margin-left:50px;" align="left">
 			 <table>
 			 	<tr>
@@ -838,7 +877,7 @@
 		
 <script type="text/javascript">
 	populateDefaultDetails();
-	getStates(1);
+	getStates('Assembly');
 	getDefaultFrequencyOfYears();
 	getDefaultParties();
 </script>
