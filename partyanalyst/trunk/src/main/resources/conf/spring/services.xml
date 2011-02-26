@@ -796,6 +796,7 @@
 		 <property name="stateRegionDAO" ref="stateRegionDAO" />		 
 		 <property name="stateRegionDistrictDAO" ref="stateRegionDistrictDAO" />
 		 <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
+		 <property name="staticDataService" ref="staticDataService" />
 	</bean>
 </beans>		
 		
