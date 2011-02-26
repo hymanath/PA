@@ -15,6 +15,7 @@ public class PartyInfoVO implements Serializable{
 	private String partyLongName;
 	private Long seatsParticipated = new Long(0);
 	private Long seatsWin;
+	private Float averageSeatsWon; 
 	private BigDecimal percentageOfVotes;
 	private Long partyTotalVotes = new Long(0);
 	private Long validVotes = 0l;
@@ -48,6 +49,14 @@ public class PartyInfoVO implements Serializable{
 		return seatsWin;
 	}
 	
+	public Float getAverageSeatsWon() {
+		return averageSeatsWon;
+	}
+
+	public void setAverageSeatsWon(Float averageSeatsWon) {
+		this.averageSeatsWon = averageSeatsWon;
+	}
+
 	public void setSeatsWin(Long seatsWin) {
 		this.seatsWin = seatsWin;
 	}
