@@ -758,123 +758,14 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	}*/
 	
 
-	public void testData(){
-		List<Long> constituencyIds =  new ArrayList<Long>(0);
-		constituencyIds.add(1l);
-		constituencyIds.add(2l);
-		constituencyIds.add(72l);
-		
-		List<Long> partyIds =  new ArrayList<Long>(0);
-		partyIds.add(885L);
-		partyIds.add(871L);
-		partyIds.add(72L);
-		partyIds.add(265L);
-		partyIds.add(163L);
-		
-		List listResult = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
-		getAllElectionData(constituencyIds,nominationDAO.getAllPartyResults(constituencyIds,partyIds),IConstants.ALL);
-		
-		
-		/*List list = nominationDAO.getAllPartyResults(constituencyIds,partyIds);
+	public void testGetData(){
+		List<String> electionYears =  new ArrayList<String>();
+		electionYears.add("2009");
+		List list = nominationDAO.getAllPartiesStrengths(IConstants.ASSEMBLY_ELECTION_TYPE,1l,electionYears,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.ALL_PARTIES,0l);
 		for(int i=0; i<list.size(); i++){
 			Object[] parms = (Object[])list.get(i);
-			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]);
-		}*/
-	}
-	
-public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result,String type){
-		
- 		Long tempX = 0l,tempY = 0l,tempZ = 0l;
- 		
- 		List<Long> uniqueItems = new ArrayList<Long>(0); 	
- 		List<PartiesDetailsVO> partyDetails = new ArrayList<PartiesDetailsVO>(0);  		
- 		Set<Long> linkedSet = new LinkedHashSet<Long>(0);
- 		Map<SelectOptionVO,List<PartiesDetailsVO>> map = new HashMap<SelectOptionVO,List<PartiesDetailsVO>>(0);
- 		
- 		ConstituencyElectionResults constituencyElectionResults = new ConstituencyElectionResults();
- 		ResultStatus resultStatus = new ResultStatus();
- 		String previousConstituencyName = new String();
- 		try{ 			
- 			if(result!=null && result.size()>0){
-	 			for(int i=0; i<result.size(); i++){
-	 				Object[] parms = (Object[])result.get(i);
-	 				Long constituencyId = (Long)parms[0];
-	 				linkedSet.add(constituencyId);
-	 				if(tempX==0l){
-	 					tempZ = tempY = tempX = constituencyId;
-	 					previousConstituencyName = parms[3].toString();
-	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
-	 				}else{	 				
-	 					if(tempX.intValue()==constituencyId.intValue()){
-	 						tempZ = constituencyId;
-	 						previousConstituencyName = parms[3].toString();
-	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
-	 					}else{
-	 						tempX = constituencyId; 
-	 						map.put(new SelectOptionVO(tempZ,previousConstituencyName), partyDetails);
-	 						partyDetails = new ArrayList<PartiesDetailsVO>(0);
-	 						tempZ = constituencyId;
-	 						partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
-	 					}
-	 				} 				
-	 			}
-	 			uniqueItems.addAll(linkedSet);
-	 			partyDetails.clear();
-	 			Long lastId = uniqueItems.get(uniqueItems.size()-1);
-	 			String conName = new String();
-	 			for(int i=0; i<result.size(); i++){
-	 				Object[] parms = (Object[])result.get(i);
-	 				if(new Long(parms[0].toString()).intValue()==lastId){
-	 					conName = parms[3].toString();
-	 					partyDetails.add(setDataIntoPartiesDetailsVO(parms,type));
-	 				}
-	 			}
-	 			map.put(new SelectOptionVO(lastId,conName), partyDetails); 		
-	 			constituencyElectionResults.setPartiesDetailsVOMap(map);
-	 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
- 			}	
- 		}catch(Exception e){
- 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
- 			resultStatus.setExceptionEncountered(e); 			
- 			e.printStackTrace();
- 		}finally{
- 			tempX = null;
- 			tempY = null;
- 			tempZ = null; 
- 			uniqueItems = null;
- 			partyDetails = null;
- 			linkedSet = null;
- 		}
- 		constituencyElectionResults.setResultStatus(resultStatus);
- 		return constituencyElectionResults;
- 	}
- 	
- 	/**
- 	 * This method is used to set Party related information data in to a DTO.
- 	 * @param parms
- 	 * @param type
- 	 * @return
- 	 */
- 	public PartiesDetailsVO setDataIntoPartiesDetailsVO(Object[] parms,String type){
- 		PartiesDetailsVO partyDetails = new PartiesDetailsVO();
- 		try{
- 		/*	if(type.equalsIgnoreCase(IConstants.ALL)){
- 				partyDetails.setElectionYear(parms[0].toString()); 					
- 				partyDetails.setVotesEarned(new BigDecimal(parms[2].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
- 				partyDetails.setPartyId((Long)parms[3]);
- 				partyDetails.setPartyName(parms[4].toString());
- 				partyDetails.setCandidateName(parms[5].toString());
- 			}else{*/
- 				partyDetails.setConstituencyId((Long)parms[0]);
- 				partyDetails.setCount((Long)parms[1]);
- 				partyDetails.setPartyName(parms[2].toString());
- 				partyDetails.setConstituencyName(parms[3].toString());
- 			//} 			
-	 	}catch(Exception e){
-			e.printStackTrace();
+			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 		}
-	 	return partyDetails;
- 	}
-	
+	}
 }
 	

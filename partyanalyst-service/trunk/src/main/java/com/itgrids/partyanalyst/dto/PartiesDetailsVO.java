@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class PartiesDetailsVO implements Serializable {
 
@@ -18,6 +20,29 @@ public class PartiesDetailsVO implements Serializable {
 	private Long constituencyId;
 	private String constituencyName;
 	
+	private List<SelectOptionVO>  details;
+	private Map<Long,Long>  partyStrenghCount;
+
+	private List<SelectOptionVO>  partyDetails;
+
+	public List<SelectOptionVO> getPartyDetails() {
+		return partyDetails;
+	}
+	public void setPartyDetails(List<SelectOptionVO> partyDetails) {
+		this.partyDetails = partyDetails;
+	}
+	public Map<Long, Long> getPartyStrenghCount() {
+		return partyStrenghCount;
+	}
+	public void setPartyStrenghCount(Map<Long, Long> partyStrenghCount) {
+		this.partyStrenghCount = partyStrenghCount;
+	}
+	public List<SelectOptionVO> getDetails() {
+		return details;
+	}
+	public void setDetails(List<SelectOptionVO> details) {
+		this.details = details;
+	}
 	public String getConstituencyName() {
 		return constituencyName;
 	}
