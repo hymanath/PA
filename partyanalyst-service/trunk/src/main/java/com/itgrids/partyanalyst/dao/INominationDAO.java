@@ -409,4 +409,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getPartyResultsForAParty(List<Long> constituencyIds,Long partyId);
 	
 	public List getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfoForIND(Long localBodyId,Long partyId,Long electionId);
+		
+	public List getAllPartiesStrengths(String electionType,Long stateId,List<String> electionYears,String electionSubType,String partyType,Long partyId);
 }
