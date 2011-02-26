@@ -22,8 +22,17 @@ public class ElectionInfoVO {
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
     private String partyName;
-    
+    private Long selectedYearsCount;
   
+  
+	public Long getSelectedYearsCount() {
+		return selectedYearsCount;
+	}
+
+	public void setSelectedYearsCount(Long selectedYearsCount) {
+		this.selectedYearsCount = selectedYearsCount;
+	}
+
 	public String getPartyName() {
 		return partyName;
 	}
