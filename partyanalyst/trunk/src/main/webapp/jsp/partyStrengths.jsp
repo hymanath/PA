@@ -114,10 +114,10 @@
 							showRequiredConstituenciesErrorMessage();
 						}else{
 							buildDefaultDetails(results);
+							buildOverViewDataTable(results); 
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv");
-	
-								buildOverViewDataTable(results); 
+								initializeTable();
 							}else{
 								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");
 							}
@@ -155,12 +155,12 @@
 					}						
 					
 			}catch (e) {   		
-			    	//alert("Invalid JSON result" + e);   
+			    	alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
@@ -174,21 +174,19 @@
 		var str='';
 		var partiesDetails = results.requiredConstituenciesInfo.partiesDetailsVO;
 		var customLength = partiesDetails[0].partyDetails;
-		str += '<table>';
-		str += '	<tr>';
+		str += '<table id="overView_Table">';
+		/*	str += '	<tr>';
 		str += '		<td> PartyName ';
 		for(var i=1;i<customLength.length;i++){
 			str += '		<td>'+i+'</td>';
 		}
 		str += '		</td>';
-		str += '	</tr>';
-
-
+		str += '	</tr>';*/
 		
 		for(var k=0;k<partiesDetails.length;k++){
 			str += '	<tr>';	
 				str += '		<td>'+partiesDetails[k].partyName+'</td>';
-				for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
+				for(var j=1;j<partiesDetails[k].partyDetails.length;j++){
 					str += '	<td>'+partiesDetails[k].partyDetails[j].name+'</td>';
 				}
 			str += '	</tr>';
@@ -201,6 +199,75 @@
 	} 
 
 	
+		function initializeTable(){
+			
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("overView_Table"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [  {
+				key : "partyName"
+			},{
+				key : "1"
+			}, {
+				key : "2"
+			}, {
+				key : "3"
+			}, {
+				key : "4"
+			}, {
+				key : "5"
+			}, {
+				key : "6"
+			}, {
+				key : "7"
+			}]
+		};
+	
+		var resultsColumnDefs = [  {
+			key : "partyName",
+			label : "Party Name",
+			sortable : true
+		},{
+			key : "1",
+			label : "1",
+			sortable : true
+		}, {
+			key : "2",
+			label : "2",
+			sortable : true	
+		} , {
+			key : "3",
+			label : "3",
+			sortable : true
+		}, {
+			key : "4",
+			label : "4",
+			sortable : true
+		}, {
+			key : "5",
+			label : "5",
+			sortable : true
+		}, {
+			key : "6",
+			label : "6",
+			sortable : true
+		}, {
+			key : "7",
+			label : "7",
+			sortable : true
+		} ];
+	
+		var paginatorConfig = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10
+		    })
+		};
+				
+		var myDataTable = new YAHOO.widget.DataTable("overViewDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
+		 
+	}	
+	
 	function showRequiredConstituenciesErrorMessage(){
 
 		var elmt = document.getElementById("dataTableBuild");
@@ -209,8 +276,6 @@
 		var str='';
 		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
 		elmt.innerHTML = str;
-
-		//required_const_main
 	}
 
 	function hideLatestConstituenciesDiv(){
@@ -538,6 +603,56 @@
 		showElections.innerHTML = populateElections;
 	}
 
+	function showAllPartiesAllElectionResultsChart(myResults)
+	{
+	   var chartColumns = myResults[0].partiesList;
+	  
+	     var data = new google.visualization.DataTable();
+		 data.addColumn('string', 'Party');
+
+	     var partiesArray = new Array();
+	     //for chart columns
+		 for(var i in chartColumns)
+		 {
+		   var colData = chartColumns[i].name;
+		   data.addColumn('number', colData);
+
+		   partiesArray.push(chartColumns[i].name);
+		 }
+
+	      //for chart rows
+		  for(var j in myResults)
+		  {
+			  var array = new Array();
+			  var year = myResults[j].electionYear+" "+myResults[j].electionType;
+			  array.push(year);
+
+			  for(var k in myResults[j].partyResultsVO)
+			  {
+				  var percentage = myResults[j].partyResultsVO[k].votesPercent;
+	              array.push(percentage);
+			  }
+			 
+			  data.addRow(array);
+		  }
+
+		  var ctitle = 'All Parties Performance In Different Elections'; 
+		  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
+
+	      //static colors for parties
+	      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
+
+		  if(staticColors != null && staticColors.length > 0)
+		  {
+			  new google.visualization.LineChart(chartResultDiv).
+				  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+		  }
+		  else
+		  {
+	          new google.visualization.LineChart(chartResultDiv).
+				  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
+		  }
+	}
 	
 	function buildStates(results)
 	{			
@@ -582,8 +697,8 @@
 
 		var count = document.getElementById("requiredConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide or show the table" onclick="hideOrShow(\'required_const_body\')"> Required Constituencies Details: </a></span>';
-		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> :'+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
 
@@ -617,8 +732,8 @@
 
 		var count = document.getElementById("newConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies Details: </a></span>';
-		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies for 2009 election</a></span>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> :'+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
 
@@ -652,8 +767,8 @@
 
 		var count = document.getElementById("delimitationConstituenciesCount");
 		var countElmt = '';
-		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" title="click here to hide and show the table" href="javascript:{}" onclick="hideOrShow(\'remaining_const_body\')"> Delimitation Constituencies Details: </a></span> ';
-		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;">'+results.remainingConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" title="click here to hide and show the table" href="javascript:{}" onclick="hideOrShow(\'remaining_const_body\')"> Delimitation Constituencies Details</a>  </span> ';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.remainingConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
 	
@@ -787,7 +902,14 @@
 				<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 			</div>
 			
-			<div id="overViewDiv"></div>
+			<div id="main_overViewDiv" style="margin-left:60px;" align="left">
+				<table>
+					<tr>
+						<td class="yui-skin-sam"><div id="overViewDiv" ></div></td>
+					</tr>
+				</table>				
+			</div>
+			
 			
 			<div id="main_container_div" style="display:none;margin-left:50px;" align="left">
 			 <table>
