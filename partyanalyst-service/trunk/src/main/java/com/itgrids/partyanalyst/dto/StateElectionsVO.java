@@ -16,11 +16,33 @@ public class StateElectionsVO {
 	private String electionType;
 	private String electionSubtype;
 	private String year;
-	List<PartyWiseResultVO> partyResultsVO;
+	private List<PartyWiseResultVO> partyResultsVO;
+	private List<String> staticParties;
+	private List<PartyResultsInRegionVO> partyResultsInRegionVOLst;
+	private List<PartyInfoVO> partyAndAVGSeatsWon;
 	
+	public List<String> getStaticParties() {
+		return staticParties;
+	}
+	public void setStaticParties(List<String> staticParties) {
+		this.staticParties = staticParties;
+	}
+	public List<PartyResultsInRegionVO> getPartyResultsInRegionVOLst() {
+		return partyResultsInRegionVOLst;
+	}
+	public void setPartyResultsInRegionVOLst(
+			List<PartyResultsInRegionVO> partyResultsInRegionVOLst) {
+		this.partyResultsInRegionVOLst = partyResultsInRegionVOLst;
+	}
 	//getters and setters
 	public Long getElectionId() {
 		return electionId;
+	}
+	public List<PartyInfoVO> getPartyAndAVGSeatsWon() {
+		return partyAndAVGSeatsWon;
+	}
+	public void setPartyAndAVGSeatsWon(List<PartyInfoVO> partyAndAVGSeatsWon) {
+		this.partyAndAVGSeatsWon = partyAndAVGSeatsWon;
 	}
 	public void setElectionId(Long electionId) {
 		this.electionId = electionId;
