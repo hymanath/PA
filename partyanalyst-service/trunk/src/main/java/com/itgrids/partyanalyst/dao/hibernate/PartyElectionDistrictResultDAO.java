@@ -85,14 +85,16 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findPartyResultsForARegionInState(List<Long> districtIds,Long electionId){
+	public List findPartyResultsForARegionInState(List<Long> districtIds,Long electionId, List<Long> partyIds){
 		
-		Query queryObject = getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.totalSeatsWon) from "+
-				"PartyElectionDistrictResult model where model.election.electionId = ? and model.district.districtId in (:districtIds) "+
+		Query queryObject = getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.totalSeatsWon)," +
+				"sum(model.totalConstiParticipated) from PartyElectionDistrictResult model where model.election.electionId = ? and " +
+				"model.district.districtId in (:districtIds) and  model.party.partyId in (:partyIds) " +
 				"group by model.party.partyId order by sum(model.totalSeatsWon) desc");
 		
 		queryObject.setParameter(0,electionId);
 		queryObject.setParameterList("districtIds",districtIds);
+		queryObject.setParameterList("partyIds",partyIds);
 		return queryObject.list();
 		
 	}
