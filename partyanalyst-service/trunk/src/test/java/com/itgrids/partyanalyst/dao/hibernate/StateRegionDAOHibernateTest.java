@@ -1,3 +1,11 @@
+/* 
+ * Copyright (c) 2011 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on February 17, 2011
+ */
+
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
