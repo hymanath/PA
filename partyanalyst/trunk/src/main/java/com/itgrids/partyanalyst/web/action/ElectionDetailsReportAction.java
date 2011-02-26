@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInRegionVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IStateRegionService;
@@ -59,17 +60,15 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private List<SelectOptionVO> electionYears;
 	private List<SelectOptionVO> partiesList;	
 	private IStateRegionService stateRegionService;	
-	private List<PartyResultsInRegionVO> partyResultsInRegionVO; 
+	private StateElectionsVO partyResultsInRegionVO; 
 	
-	public List<PartyResultsInRegionVO> getPartyResultsInRegionVO() {
+	public StateElectionsVO getPartyResultsInRegionVO() {
 		return partyResultsInRegionVO;
 	}
 
-	public void setPartyResultsInRegionVO(
-			List<PartyResultsInRegionVO> partyResultsInRegionVO) {
+	public void setPartyResultsInRegionVO(StateElectionsVO partyResultsInRegionVO) {
 		this.partyResultsInRegionVO = partyResultsInRegionVO;
 	}
-
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -756,6 +755,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		Long stateId = jObj.getLong("stateID");
 		
 		partyResultsInRegionVO = stateRegionService.getRegionWisePartyResultsInState(stateId, electionId);
+		
 		return Action.SUCCESS;
 	}
 
