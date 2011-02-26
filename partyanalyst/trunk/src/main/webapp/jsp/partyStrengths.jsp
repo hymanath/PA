@@ -60,7 +60,7 @@
 	 	 padding-bottom: 13px;
 	}
 	
-	#remaining_const_body, #new_const_body, #required_const_body  {
+	#remaining_const_body, #new_const_body, #required_const_body ,#overView_const_body {
 	    border-bottom: 1px solid #E0E0D6;
 	    border-left: 1px solid #E0E0D6;
 	    border-right: 1px solid #E0E0D6;
@@ -603,56 +603,7 @@
 		showElections.innerHTML = populateElections;
 	}
 
-	function showAllPartiesAllElectionResultsChart(myResults)
-	{
-	   var chartColumns = myResults[0].partiesList;
-	  
-	     var data = new google.visualization.DataTable();
-		 data.addColumn('string', 'Party');
-
-	     var partiesArray = new Array();
-	     //for chart columns
-		 for(var i in chartColumns)
-		 {
-		   var colData = chartColumns[i].name;
-		   data.addColumn('number', colData);
-
-		   partiesArray.push(chartColumns[i].name);
-		 }
-
-	      //for chart rows
-		  for(var j in myResults)
-		  {
-			  var array = new Array();
-			  var year = myResults[j].electionYear+" "+myResults[j].electionType;
-			  array.push(year);
-
-			  for(var k in myResults[j].partyResultsVO)
-			  {
-				  var percentage = myResults[j].partyResultsVO[k].votesPercent;
-	              array.push(percentage);
-			  }
-			 
-			  data.addRow(array);
-		  }
-
-		  var ctitle = 'All Parties Performance In Different Elections'; 
-		  var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
-
-	      //static colors for parties
-	      var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
-
-		  if(staticColors != null && staticColors.length > 0)
-		  {
-			  new google.visualization.LineChart(chartResultDiv).
-				  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,colors:staticColors,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
-		  }
-		  else
-		  {
-	          new google.visualization.LineChart(chartResultDiv).
-				  draw(data, {curveType: "function",width: 623, height: 400,title:ctitle,legend:"right",hAxis:{textStyle:{fontSize:11,fontName:"verdana"},slantedText:true,slantedTextAngle:40}});
-		  }
-	}
+	
 	
 	function buildStates(results)
 	{			
@@ -905,7 +856,29 @@
 			<div id="main_overViewDiv" style="margin-left:60px;" align="left">
 				<table>
 					<tr>
-						<td class="yui-skin-sam"><div id="overViewDiv" ></div></td>
+						<td class="yui-skin-sam">
+							<div id="overView_const_head">
+								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
+									<tr>
+										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
+										<td><div class="districtPageRoundedHeaders_center">Winning Position of different Parties in the last 7 election years</div></td>
+										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
+									</tr>
+								</table>
+							</div>
+							<div id="overView_const_body">
+									<div id="newConstAncSpan" class="mandalNamesDiv">		
+									<table>
+										<tr>
+											<td>
+												<div id="overViewDiv" class="yui-skin-sam" align="left"></div>
+											</td> 
+										</tr>
+									</table>
+								</div>						
+							</div>							
+						</td>
+						
 					</tr>
 				</table>				
 			</div>
