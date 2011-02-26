@@ -19,6 +19,12 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></SCRIPT>
+<link type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jQuery/development-bundle/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.tabs.js"></script>
+	<script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
 <!-- Local Files-->
 	<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -147,6 +153,98 @@ function callAjax(param,jsObj,url){
 
 function buildRegionWiseElectionsResultsGraph(jsObj,results)
 {
+	/**************************/
+	var chartSeries = new Array();
+	for(var i in results.partyResultsInRegionVOLst){
+		var seatsWon = new Array();
+		for(var j in results.partyResultsInRegionVOLst[i].partyResultsInRegion)
+			seatsWon.push(results.partyResultsInRegionVOLst[i].partyResultsInRegion[j].totalSeatsWon);
+
+		var obj = {
+				 type: 'column',
+		         name: results.partyResultsInRegionVOLst[i].regionName,
+		         data: seatsWon
+			  };
+		chartSeries.push(obj);
+	}
+
+	var avgSeatsWon = new Array();
+	for(var i in results.partyAndAVGSeatsWon)
+		avgSeatsWon.push(results.partyAndAVGSeatsWon[i].averageSeatsWon);
+
+	var obj = {
+			 type: 'spline',
+	         name: 'Average',
+	         data: avgSeatsWon
+		  };
+
+	chartSeries.push(obj);
+
+	var objForPie = {
+	         type: 'pie',
+	         name: 'Total Constituencys',
+	         data: [{
+	            name: 'Telangana',
+	            y: 119,
+	            color: "#4572A7" // Telangana's color
+	         }, {
+	            name: 'Andhra',
+	            y: 123,
+	            color: "#AA4643" // Andhra's color
+	         }, {
+	            name: 'Rayalaseema',
+	            y: 52,
+	            color: "#89A54E" // Rayalaseema's color
+	         }],
+	         center: [100, 80],
+	         size: 100,
+	         showInLegend: false,
+	         dataLabels: {
+	            enabled: false
+	         }
+	      };
+    
+	chartSeries.push(objForPie); 
+	/**************************/
+	
+	var chart;
+	$(document).ready(function() {
+	   chart = new Highcharts.Chart({
+	      chart: {
+	         renderTo: 'graphImage'
+	      },
+	      title: {
+	         text: 'Region Wise Parties Results In State'
+	      },
+	      xAxis: {
+	         categories: results.staticParties
+	      },
+	      tooltip: {
+	         formatter: function() {
+	            var s;
+	            if (this.point.name) { // the pie chart
+	               s = ''+
+	                  this.point.name +': '+ this.y +' Constituencies';
+	            } else {
+	               s = ''+
+	                  this.x  +': '+ this.y;
+	            }
+	            return s;
+	         }
+	      },
+	      labels: {
+	         items: [{
+	            html: 'Region Wise Constituencies',
+	            style: {
+	               left: '40px',
+	               top: '8px',
+	               color: 'black'            
+	            }
+	         }]
+	      },
+	      series: chartSeries
+	   });
+	});
 	
 }
 
