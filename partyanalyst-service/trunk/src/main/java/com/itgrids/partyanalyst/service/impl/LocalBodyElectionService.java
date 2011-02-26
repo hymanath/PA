@@ -28,7 +28,9 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.LocalBodyElectionResultsVO;
@@ -44,6 +46,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ILocalBodyElectionService;
@@ -64,6 +67,15 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	public ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	public IPartyDAO partyDAO;
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
 
 	public ILocalElectionBodyWardDAO getLocalElectionBodyWardDAO() {
 		return localElectionBodyWardDAO;
@@ -485,8 +497,15 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 		List<PartyElectionResultsInConstituencyVO> partyResultsList = null;
 		
         try{
+        	Party party = partyDAO.get(partyId);
+        	List highLevelResults = null;
+        	
         	List resultsList = nominationDAO.getWardWiseResultsForAPartyInALocalBodyElection(localBodyId, electionId, partyId);
-        	List highLevelResults = nominationDAO.getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfo(localBodyId, partyId, electionId);
+        	
+        	if(party.getShortName().equalsIgnoreCase(IConstants.IND))
+        		highLevelResults = nominationDAO.getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfoForIND(localBodyId, partyId, electionId);
+        	else
+        		highLevelResults = nominationDAO.getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfo(localBodyId, partyId, electionId);
         	
         	if(resultsList != null && resultsList.size() > 0)
 				partyResultsList = getLocalBodyELectionWardWiseResults(resultsList,highLevelResults);
