@@ -933,6 +933,8 @@ function showAllianceDetails(results)
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
 	var allianceGrpName;	
 	
+	allianceResultsDataTableEl.innerHTML = '';
+
 	for(var i in  allianceResultsArr){
 		var dtArray =  new Array();
 		var header = allianceResultsArr[i].allianceGroupName+" Alliance Details";
@@ -1887,7 +1889,7 @@ callAjax(rparam,jsObj,url);
 <DIV id="statewiseGraph">
  <DIV id="stateRegionsDiv"></DIV>
 
-<DIV id="graphImage" class="yui-skin-sam"></DIV>
+<DIV id="graphImage" class="yui-skin-sam" style="width:890px;overflow:hidden;margin:auto;"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" >
 		<TR>
