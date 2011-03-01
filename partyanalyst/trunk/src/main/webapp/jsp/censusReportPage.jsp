@@ -209,14 +209,28 @@
 
     google.load("visualization", "1", {packages:["corechart"]});
 	
+	function showAjaxImage()
+	{
+		var ajaxImageDivEle = document.getElementById("ajaxImageDiv");
+		ajaxImageDivEle.innerHTML = '<center><span><b>Your Request is Processing, Please Wait....</b> </span>		<img src="images/icons/goldAjaxLoad.gif" class="ajaxImgClass"></center>';
+		ajaxImageDivEle.style.display = 'block';
+	}
+	function hideAjaxImage()
+	{
+		var ajaxImageDivEle = document.getElementById("ajaxImageDiv");
+		ajaxImageDivEle.innerHTML = '';
+	}
+
 	function getCensusDetails()
 	{
+
 		var censusElmt = document.getElementById("censusSelect");
 		
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
 		if(censusValue == 0)
 			return;
-
+		
+		showAjaxImage();
 		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
 		var districtElmt = document.getElementById("districtList");
@@ -1169,6 +1183,7 @@
 								myResults = YAHOO.lang.JSON.parse(o.responseText);
 								if(jsObj.task == "getCensusDetails")
 								{	
+									hideAjaxImage();
 									buildPopulationRange(jsObj,myResults);
 								} 
 								else if(jsObj.task == "getPartiesPerformanceInCensusReport" || jsObj.task == "showPartyResultsByFilterView")
@@ -1240,7 +1255,7 @@
 
 				<th>District</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district_s" id="districtList" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District" />	
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district_s" id="districtList" list="{}" listKey="id" listValue="name" onchange="getCensusDetails()" headerKey="0" headerValue="Select District" />	
 				</td>
 				
 				<th>Year</th>
@@ -1257,6 +1272,7 @@
 		</table>
 		<div id="censusReporterror_Div"></div>
 		</div>
+		<div id="ajaxImageDiv" style="display:none;"></div>
 		<div id="censusPopulationRange" style="display:none;">
 			<div id="censusPopulationRange_head">
 				<table width="100%" cellpadding="0" cellspacing="0">
