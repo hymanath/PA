@@ -444,7 +444,7 @@
 										<div class="viewFeatures_QuickLinks_head">Support</div>
 										<div class="viewFeatures_QuickLinks_body">
 											<ul class="quickLinks_list">
-												<li><a href="userFeedbackAction">Feed Back</a></li>
+												<li><a href="userFeedbackAction.action">Feed Back</a></li>
 												<li><a href="javascript:{}">Support Us</a></li>
 											</ul>
 										</div>
