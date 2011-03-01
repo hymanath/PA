@@ -116,10 +116,11 @@
 							buildDefaultDetails(results);
 							buildOverViewDataTable(results); 
 							if(results.partyName=="All Parties"){
-								initializeResultsTable(results,"dataTableId","dataTableMainDiv");
-								initializeTable();
+								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");
+								initializeTable(results);
 							}else{
 								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");
+								initializeTable(results);
 							}
 						}
 							
@@ -128,7 +129,7 @@
 						}else{
 							buildDefaultDetailsForNewConstituencies(results);
 							if(results.partyName=="All Parties"){
-								initializeResultsTableWithoutOthers(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
+								initializeResultsTable(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies","without_others");
 							}else{
 								initializeResultsTable2(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
 							}
@@ -139,11 +140,11 @@
 						}else{
 							buildDefaultDetailsForRemianingConstituencies(results);
 							if(results.partyName=="All Parties"){
-								initializeResultsTableWithoutOthers(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies");
+								initializeResultsTable(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies","without_others");
 							}else{
 								initializeResultsTable2(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies");
 							}	
-						}																			
+						}																		
 					}
 					if(jsObj.task == "getAllElectionsAjaxAction")
 					{					
@@ -169,24 +170,21 @@
 
 	function buildOverViewDataTable(results)
 	{
+
+		var headerElmt = document.getElementById("messageDiv");
+		var tempStr ='';
+		tempStr+='Winning Position of different Parties in the last '+results.selectedYearsCount+' election years';
+		headerElmt.innerHTML = tempStr;
+
 		
 		var elmt = document.getElementById("overViewDiv");
 		var str='';
-		var partiesDetails = results.requiredConstituenciesInfo.partiesDetailsVO;
-		var customLength = partiesDetails[0].partyDetails;
+		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
 		str += '<table id="overView_Table">';
-		/*	str += '	<tr>';
-		str += '		<td> PartyName ';
-		for(var i=1;i<customLength.length;i++){
-			str += '		<td>'+i+'</td>';
-		}
-		str += '		</td>';
-		str += '	</tr>';*/
-		
 		for(var k=0;k<partiesDetails.length;k++){
 			str += '	<tr>';	
 				str += '		<td>'+partiesDetails[k].partyName+'</td>';
-				for(var j=1;j<partiesDetails[k].partyDetails.length;j++){
+				for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
 					str += '	<td>'+partiesDetails[k].partyDetails[j].name+'</td>';
 				}
 			str += '	</tr>';
@@ -199,73 +197,57 @@
 	} 
 
 	
-		function initializeTable(){
+	function initializeTable(results){
+
+		var partiesArray = new Array();
+		var columnDataArray = new Array();
+		
+		var resultsObj = {
+			key: "partyName"							
+		};
+		partiesArray.push(resultsObj);
+		
+		var columnObj ={
+			key : "partyName",
+			label : "Party Name",
+			sortable : true,
+			resizeable:true
+		};
+		columnDataArray.push(columnObj);
+		var j=0;
+		for(var i=0;i<results.selectedYearsCount;i++){
+			j = i+1;
+			var resultsObj = {
+					key: j+""							
+			};
+			partiesArray.push(resultsObj);
+
+			var allColumnObj ={
+				key : j+"",
+				label : j+"",
+				sortable : true,
+				resizeable:true
+			};
+			columnDataArray.push(allColumnObj);
+		}
 			
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get("overView_Table"));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+
 		resultsDataSource.responseSchema = {
-			fields : [  {
-				key : "partyName"
-			},{
-				key : "1"
-			}, {
-				key : "2"
-			}, {
-				key : "3"
-			}, {
-				key : "4"
-			}, {
-				key : "5"
-			}, {
-				key : "6"
-			}, {
-				key : "7"
-			}]
+			fields : partiesArray
 		};
 	
-		var resultsColumnDefs = [  {
-			key : "partyName",
-			label : "Party Name",
-			sortable : true
-		},{
-			key : "1",
-			label : "1",
-			sortable : true
-		}, {
-			key : "2",
-			label : "2",
-			sortable : true	
-		} , {
-			key : "3",
-			label : "3",
-			sortable : true
-		}, {
-			key : "4",
-			label : "4",
-			sortable : true
-		}, {
-			key : "5",
-			label : "5",
-			sortable : true
-		}, {
-			key : "6",
-			label : "6",
-			sortable : true
-		}, {
-			key : "7",
-			label : "7",
-			sortable : true
-		} ];
-	
+		var resultsColumnDefs = columnDataArray;
+		
 		var paginatorConfig = {
-		    paginator : new YAHOO.widget.Paginator({
-		        rowsPerPage: 10
-		    })
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10
+	    })
 		};
 				
 		var myDataTable = new YAHOO.widget.DataTable("overViewDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
-		 
 	}	
 	
 	function showRequiredConstituenciesErrorMessage(){
@@ -296,85 +278,64 @@
 		elmt2.innerHTML = str;
 	}
 	
-	function initializeResultsTable(results,tableId,divId) {
-		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get(tableId));
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "constituencyName"
-			}, {
-				key : "AIMIM"
-			}, {   
-				key : "BJP"
-			}, {
-				key : "CPI"
-			}, {
-				key : "CPM"
-			}, {
-				key : "INC"
-			}, {
-				key : "PRP"
-			}, {
-				key : "TDP"
-			}, {
-				key : "TRS"
-			}, {
-				key : "others"
-			}]
+	function initializeResultsTable(results,tableId,divId,type) {
+
+		var partiesArray = new Array();
+		var columnDataArray = new Array();
+		var allParties = results.allPartiesDetails.allPartiesData;
+
+		var resultsObj = {
+			key: "constituencyName"							
 		};
-	
-		var resultsColumnDefs = [ {
+		partiesArray.push(resultsObj);
+		
+		var columnObj ={
 			key : "constituencyName",
 			label : "Constituency Name",
 			sortable : true,
-			 resizeable:true
-		}, {
-			key : "AIMIM",
-			label : "AIMIM",
-			sortable : true,
-			 resizeable:true
-		}, {
-			key : "BJP",
-			label : "BJP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "CPI",
-			label : "CPI",
-			sortable : true,
-			 resizeable:true
-		}, {
-			key : "CPM",
-			label : "CPM",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "INC",
-			label : "INC",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "PRP",
-			label : "PRP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "TDP",
-			label : "TDP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "TRS",
-			label : "TRS",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "others",
-			label : "Others",
-			sortable : true,
-			 resizeable:true	
-		}];
+			resizeable:true
+		};
+		columnDataArray.push(columnObj);
+		
+		for(var i=0;i<allParties.length;i++){
+			var resultsObj = {
+					key: allParties[i].name							
+			};
+			partiesArray.push(resultsObj);
+
+			var allColumnObj ={
+				key : allParties[i].name,
+				label : allParties[i].name,
+				sortable : true,
+				resizeable:true
+			};
+			columnDataArray.push(allColumnObj);
+		}
+
+		if(type=="others"){
+			var resultsWithOthers = {
+				key: "others"							
+			};
+			partiesArray.push(resultsWithOthers);
+			
+			var columnObjWithOthers ={
+				key : "others",
+				label : "Others",
+				sortable : true,
+				resizeable:true
+			};
+			columnDataArray.push(columnObjWithOthers);
+		}
+		
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get(tableId));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+
+		resultsDataSource.responseSchema = {
+			fields : partiesArray
+		};
+	
+		var resultsColumnDefs = columnDataArray;
 		
 		var paginatorConfig = {
 	    paginator : new YAHOO.widget.Paginator({
@@ -385,87 +346,7 @@
 		var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}
 
-	function initializeResultsTableWithoutOthers(results,tableId,divId) {
-		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-				.get(tableId));
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "constituencyName"
-			}, {
-				key : "AIMIM"
-			}, {   
-				key : "BJP"
-			}, {
-				key : "CPI"
-			}, {
-				key : "CPM"
-			}, {
-				key : "INC"
-			}, {
-				key : "PRP"
-			}, {
-				key : "TDP"
-			}, {
-				key : "TRS"
-			}]
-		};
 	
-		var resultsColumnDefs = [ {
-			key : "constituencyName",
-			label : "Constituency Name",
-			sortable : true,
-			 resizeable:true
-		}, {
-			key : "AIMIM",
-			label : "AIMIM",
-			sortable : true,
-			 resizeable:true
-		}, {
-			key : "BJP",
-			label : "BJP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "CPI",
-			label : "CPI",
-			sortable : true,
-			 resizeable:true
-		}, {
-			key : "CPM",
-			label : "CPM",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "INC",
-			label : "INC",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "PRP",
-			label : "PRP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "TDP",
-			label : "TDP",
-			sortable : true,
-			 resizeable:true	
-		}, {
-			key : "TRS",
-			label : "TRS",
-			sortable : true,
-			 resizeable:true	
-		}];
-		
-		var paginatorConfig = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 10
-	    })
-		};
-		
-		var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,paginatorConfig);  
-	}
 	
 	function initializeResultsTable2(results,tableId,divId) {
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -649,7 +530,7 @@
 		var count = document.getElementById("requiredConstituenciesCount");
 		var countElmt = '';
 		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
-		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> :'+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.requiredConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
 
@@ -684,7 +565,7 @@
 		var count = document.getElementById("newConstituenciesCount");
 		var countElmt = '';
 		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies for 2009 election</a></span>';
-		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> :'+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
 	}
 
@@ -861,7 +742,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
 										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center">Winning Position of different Parties in the last 7 election years</div></td>
+										<td><div class="districtPageRoundedHeaders_center" id="messageDiv"></div></td>
 										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
