@@ -618,6 +618,12 @@
 	 </bean>
 	
 	<bean id="userFeedbackSubmitAction" class="com.itgrids.partyanalyst.web.action.UserFeedbackSubmitAction" singleton="false">
-		<property name="opinionPollService" ref="opinionPollService" />
+	<property name="opinionPollService" ref="opinionPollService" />
+     </bean>
+     
+     <bean id="feedbackAdminApprovalAction" class="com.itgrids.partyanalyst.web.action.FeedbackAdminApprovalAction" singleton="false">
+	<property name="opinionPollService" ref="opinionPollService" />
 	</bean>
-</beans>		
+</beans>	
+	
+	
