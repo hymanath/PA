@@ -269,10 +269,12 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long stateId = new Long(jObj.getString("stateId"));	
 			String electionType = jObj.getString("electionType");
 			
-			allParties = partyStrengthService.getAllPartiesData(electionType,stateId);
+			allParties = partyStrengthService.getAllPartiesData(stateId);
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
 		return SUCCESS;  		
 	}
+	
+	
 }
