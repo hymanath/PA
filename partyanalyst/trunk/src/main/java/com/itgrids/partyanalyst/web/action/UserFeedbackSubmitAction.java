@@ -10,6 +10,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserFeedbackVO;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class UserFeedbackSubmitAction extends ActionSupport implements ServletRequestAware{
 
@@ -48,7 +51,8 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 		return this.feedbackVO.getComment();
 	}
 	
-	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Your Comments",  shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Description should not contain special characters and numbers", shortCircuit = true)
 	public void setComment(String comment) {
 		this.feedbackVO.setComment(comment);
 	}
@@ -114,8 +118,8 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 		if(getCommentTask() == null || getCommentTask() <= 0 )
 			addFieldError("commentTask","Please select on which you want to comment");
 		
-		if(getComment() == null || getComment().length() <= 0 )
-			addFieldError("comment","Please Enter Your Comments");
+		/*if(getComment() == null || getComment().length() <= 0 )
+			addFieldError("comment","Please Enter Your Comments");*/
 	}
 }
 	
