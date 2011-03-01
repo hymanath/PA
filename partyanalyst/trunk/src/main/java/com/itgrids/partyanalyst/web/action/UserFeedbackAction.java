@@ -53,7 +53,7 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 	public void setOpinionPollService(OpinionPollService opinionPollService) {
 		this.opinionPollService = opinionPollService;
 	}
-	public String execute()
+	public String execute() throws  Exception 
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
