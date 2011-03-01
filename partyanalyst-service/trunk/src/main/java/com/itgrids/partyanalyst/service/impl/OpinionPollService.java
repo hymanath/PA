@@ -477,7 +477,7 @@ public class OpinionPollService implements IOpinionPollService {
 			return selectOptionVOList;
 	}
 
-	/*public List<UserFeedbackVO> getAllDetailsForToday(){
+	public List<UserFeedbackVO> getAllDetailsForToday(){
 		
 		List<UserFeedbackVO> userFeedbackVO= new ArrayList<UserFeedbackVO>(0);
 		
@@ -486,15 +486,48 @@ public class OpinionPollService implements IOpinionPollService {
 			
 	        UserFeedbackVO feedbackVO=new UserFeedbackVO();
 	        
+	        feedbackVO.setCommentId(feedback.getFeedbackId());
 	        feedbackVO.setComment(feedback.getComment());
 	        feedbackVO.setPosteddate(feedback.getPostedDate());
-	        feedbackVO.setResponseCategory(feedback.getResponseCategory());
 	        feedbackVO.setStatus(feedback.getStatus());
-	        feedbackVO.setUserName(feedback.getRegistration().getUserName());
+	        feedbackVO.setResponseCategory(feedback.getResponseCategory());
+	        feedbackVO.setKindOfComment(feedback.getFeedBackComment().getCommentType());
+	        feedbackVO.setTask(feedback.getFeedBackTask().getFeedBackTaskName());
 	        
+	        if(feedback.getRegistration()!=null){
+		         
+	        	feedbackVO.setUserName(feedback.getRegistration().getUserName());
+	        }
+	        else if(feedback.getAnanymousUser()!=null){
+	        	feedbackVO.setUserName(feedback.getAnanymousUser().getUsername());
+	        }
+	       
 	        userFeedbackVO.add(feedbackVO);
 		}
 	        return userFeedbackVO;
-		}*/
+		}
 		
+	    public Integer getAllApprovedDetails(List<Long> commentIdsList,String approveType)
+	    {
+	    	try
+	    	{
+	    		String actionType = null ;
+	    		
+	    		if(approveType.equalsIgnoreCase("approve"))
+	    			actionType = IConstants.APPROVED;
+	    	
+	    		else if(approveType.equalsIgnoreCase("reject"))
+	    			actionType = IConstants.REJECTED;
+
+	    		return  feedbackDAO.updateStatusToApproveOrReject(commentIdsList,actionType);
+	    	}
+	    	catch(Exception e){
+	    		return 0;
+	    	}
+	    }
+	
+	
+	
+	
+	
 	}
