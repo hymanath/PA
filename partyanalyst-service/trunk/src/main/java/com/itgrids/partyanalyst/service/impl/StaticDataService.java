@@ -3146,11 +3146,18 @@ public class StaticDataService implements IStaticDataService {
 	/**
 	 * This method gets all the important parties in the state.
 	 */
-	public List<Long> getStaticPartiesAsList(){
+	public List<Long> getStaticPartiesAsList(Long stateId){
+		List<Party> parties = null;
 		try{
 			List<Long> list = new ArrayList<Long>();
 			log.debug("Making partyDAO.findByShortNames() DAO call...");
-			List<Party> parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
+			if(stateId.intValue()==1){
+				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
+			}else if(stateId.intValue()==24){//tamilnadu
+				parties = partyDAO.findByShortNames(IConstants.STATIC_TAMIL_NADU_PARTIES);
+			}else if(stateId.intValue()==12){//karnataka
+				parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
+			}
 			for(Party party : parties){				
 				list.add(party.getPartyId());
 			}
