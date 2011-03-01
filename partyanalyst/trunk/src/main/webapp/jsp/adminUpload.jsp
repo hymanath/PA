@@ -124,6 +124,14 @@
                                     <h4>To Map the Census Details For Constituencies :<a href="<s:url action="constituencyWiseCensusMappingAction"/>"><b>&nbsp;&nbsp;Start Mapping</b></a></h4>
                                     </fieldset>
                                 </td>
+                                 
+                               <td>
+                                    <fieldset class="f2">
+                                    <legend class="l2">User Feedback Approval Admin</legend>
+                                    <h4>Accept/Reject Recently Posted Feedbacks:<a href="<s:url action="feedbackAdminApprovalAction"/>"><b>&nbsp;&nbsp;Approval</b></a></h4>
+                                    </fieldset>
+                                </td>
+                                 
                            </tr>
                         </table>
 				</fieldset>
