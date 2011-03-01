@@ -29,6 +29,8 @@ public interface IOpinionPollService {
 
 	public List<SelectOptionVO> getAllValuesFromFeedbackTask();
 	
-	/*public List<UserFeedbackVO> getAllDetailsForToday();*/
+	public List<UserFeedbackVO> getAllDetailsForToday();
+	
+	 public Integer getAllApprovedDetails(List<Long> commentId,String actionType);
 }
 
