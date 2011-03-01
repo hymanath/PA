@@ -377,25 +377,22 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	
-	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId){
+	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId,List<Long> elecIds){
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model),model.constituency.constituencyId,model.constituency.name from ConstituencyElection model");			
 		
-		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
-			query.append(" where model.election.electionId in ( select model2.electionId from Election model2 where");	
-			query.append(" model2.electionScope.state.stateId = ? and model2.electionScope.electionType.electionType = ? and model2.elecSubtype = ? ) ");
+		if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			query.append(" where model.election.electionId in (:elecIds) ");
 		}else{
-			query.append(" where model.constituency.state.stateId = ? and model.election.electionId in ");
-			query.append(" ( select model2.electionId from Election model2 where");	
-			query.append(" model2.electionScope.electionType.electionType = ? and model2.elecSubtype = ? ) ");
+			query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds) ");
 		}		
 		query.append(" group by model.constituency.constituencyId  order by count(model) desc");	
 		
 		Query queryObject = getSession().createQuery(query.toString());		
-		queryObject.setLong(0,stateId);	
-		queryObject.setString(1,electionType);
-		queryObject.setString(2,electionSubType);	
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
+			queryObject.setLong(0,stateId);	
 		
+		queryObject.setParameterList("elecIds", elecIds);
 		return queryObject.list();		
 	}
 	

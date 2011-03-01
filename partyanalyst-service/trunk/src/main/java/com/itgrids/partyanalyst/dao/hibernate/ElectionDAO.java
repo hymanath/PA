@@ -419,4 +419,24 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select count(model) from Election model " +
 				"where model.electionScope.electionType.electionType = ? ", params);
 	}
+	
+	public List<Long> getElectionYears(Long stateId,String electionType,String elecSubType){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.electionId from Election model ");
+		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			sb.append(" and model.electionScope.state.stateId = ?");
+		}
+		sb.append("  order by model.electionYear desc");
+
+		Query queryObject = getSession().createQuery(sb.toString());
+		queryObject.setString(0,electionType);
+		queryObject.setString(1,elecSubType);
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			queryObject.setLong(2,stateId);
+		
+		return queryObject.list();
+	}
 }

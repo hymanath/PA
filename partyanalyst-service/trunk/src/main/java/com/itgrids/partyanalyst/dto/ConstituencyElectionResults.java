@@ -22,11 +22,18 @@ public class ConstituencyElectionResults {
 	private List<SelectOptionVO> allPartiesData;
 	private Long totalNumberOfConstituencies;
 	private List<PartiesDetailsVO> partiesDetailsVO;
+	private Long selectedYearsCount;
 	
 	//getters and setters
 
 	public ConstituencyElectionResultVO getElectionResultForParty() {
 		return electionResultForParty;
+	}
+	public Long getSelectedYearsCount() {
+		return selectedYearsCount;
+	}
+	public void setSelectedYearsCount(Long selectedYearsCount) {
+		this.selectedYearsCount = selectedYearsCount;
 	}
 	public List<PartiesDetailsVO> getPartiesDetailsVO() {
 		return partiesDetailsVO;

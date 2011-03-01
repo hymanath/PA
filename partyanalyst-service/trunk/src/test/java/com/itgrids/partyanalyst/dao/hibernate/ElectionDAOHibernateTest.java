@@ -202,23 +202,10 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testGetData(){
-		List<Long> years = getCountOfElectionYears(1l,IConstants.PARLIAMENT_ELECTION_TYPE);
-		System.out.println(years);
+		List elecId = electionDAO.getElectionYears(1l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
+		System.out.println(elecId);
 	}
 	
-	public List<Long> getCountOfElectionYears(Long stateId,String electionType){
- 		List<Long> years = new ArrayList<Long>();
- 		Long count=0l;
- 		try{
-	 		List allYears = electionDAO.getCountOfElectionYearsForParliament(stateId,electionType);
-	 		count = new Long(allYears.get(0).toString());
-	 		for(Long i=count;i>0;i--){
-	 			years.add(i);
-	 		}
- 		}catch(Exception e){
- 			e.printStackTrace();
- 		}
- 		return years;
- 	}
+	
 }
 

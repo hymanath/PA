@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
@@ -290,6 +291,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getDefaultProblemStatus(String statusValues);
 		
-		public List<Long> getStaticPartiesAsList();
+		public List<Long> getStaticPartiesAsList(Long stateId);
         
 }

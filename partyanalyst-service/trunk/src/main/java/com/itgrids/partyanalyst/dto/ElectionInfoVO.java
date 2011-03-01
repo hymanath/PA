@@ -21,10 +21,21 @@ public class ElectionInfoVO {
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
+    
+    private ConstituencyElectionResults allPartiesDetails;
+    
+    
     private String partyName;
     private Long selectedYearsCount;
   
-  
+	public ConstituencyElectionResults getAllPartiesDetails() {
+		return allPartiesDetails;
+	}
+
+	public void setAllPartiesDetails(ConstituencyElectionResults allPartiesDetails) {
+		this.allPartiesDetails = allPartiesDetails;
+	}
+
 	public Long getSelectedYearsCount() {
 		return selectedYearsCount;
 	}
