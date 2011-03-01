@@ -2,16 +2,18 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class UserFeedbackVO extends ResultStatus implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	private Long commentId;
 	private Long commentType;
 	private Long taskName;
+	private String kindOfComment;
+	private String task;
 	private String comment;
 	private Long userId;
 	private String userType;
@@ -20,11 +22,17 @@ public class UserFeedbackVO extends ResultStatus implements Serializable{
 	private Date posteddate;
 	private String status;
 	
+	public Long getCommentId() {
+		return commentId;
+	}
+	public void setCommentId(Long commentId) {
+		this.commentId = commentId;
+	}
 	public Long getCommentType() {
 		return commentType;
 	}
-	public void setCommentType(Long commentType) {
-		this.commentType = commentType;
+	public void setCommentType(Long feedBackTask) {
+		this.commentType = feedBackTask;
 	}
 	public Long getTaskName() {
 		return taskName;
@@ -37,6 +45,18 @@ public class UserFeedbackVO extends ResultStatus implements Serializable{
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public String getKindOfComment() {
+		return kindOfComment;
+	}
+	public void setKindOfComment(String kindOfComment) {
+		this.kindOfComment = kindOfComment;
+	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
 	}
 	public Long getUserId() {
 		return userId;
