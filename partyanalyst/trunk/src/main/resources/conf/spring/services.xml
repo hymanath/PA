@@ -118,6 +118,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
+		<property name="partyStrengthService" ref="partyStrengthService" />		
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />

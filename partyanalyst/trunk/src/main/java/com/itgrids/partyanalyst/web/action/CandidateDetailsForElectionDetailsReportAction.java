@@ -201,15 +201,15 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			reasonPostingEntitlement = true;
 		else
 			reasonPostingEntitlement = false;
-		
+		Long stateId = new Long(stateID);
 		statesListObj = staticDataService.getAllStatesInCountry();
-		districtsList = staticDataService.getDistricts(new Long(stateID));
+		districtsList = staticDataService.getDistricts(stateId);
 		districtsList.add(0, new SelectOptionVO(0l,"Select A District"));
 		if (IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType) || 
 				IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType))
 		{
 			try{
-				partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport();
+				partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport(stateId);
 				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 			}catch(Exception e){
 				partiesList = null;

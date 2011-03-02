@@ -2136,7 +2136,11 @@
 				<param name="root">allParties</param>				
 			</result>		
 		</action>	
-			
+		<action name="getRequiredConstituenciesAjaxAction" class="partyStrengthAction" method="getRequiredConstituenciesAjaxAction">
+			<result type="json" name="success">
+				<param name="root">requiredConstituencyDetails</param>				
+			</result>		
+		</action>		
 		
 		<action name="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction">
 			<result name="success" >/jsp/partyStrengths.jsp</result> 
