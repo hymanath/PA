@@ -30,4 +30,6 @@ public interface IPartyStrengthService extends Serializable {
 	public List<SelectOptionVO> getAllPartiesData(Long stateId);
 	
 	public ConstituencyElectionResults getPartyStrengthsAndWeaknessDetails(String electionType,Long stateId,Long partieId,Long totalElectionYears);
+	
+	public List<PartiesDetailsVO> getAllConstituenciesData(String partyName,Long count);
 }
