@@ -35,6 +35,7 @@
 <!-- JQuery files (Start) -->
 <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script type="text/javascript" src="js/jQuery/floatObject.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
@@ -208,6 +209,43 @@ localBodyString = '<%=localBody%>';
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
+	<div class="floatingDiv_main">
+		<div id="floatingDiv_head">
+			<table width="100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="3px"><img src="images/icons/electionResultsAnalysisReport/first.png"></td>
+					<td>
+						<div class="floatingDiv_head_center">
+							<table>
+								<tr><td><img src="images/icons/electionResultsReport/notes.png"></td>
+								<th style="color:#523B23;">Feed Back</th></tr>
+							</table>
+						</div>					
+					</td>
+					<td width="3px"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>
+				</tr>
+			</table>
+		</div>
+		<div id="floatingDiv_body">
+			Post your feedback and suggestions for Party Analyst.
+		</div>
+		<div id="floatingDiv_footer">
+			<table width="30%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="3px"><img src="images/icons/cadreReport/bg_left.png"></td>
+					<td>
+						<div class="floatingDiv_footer_center">
+							<table>
+								<tr>
+								<th style="color:#FFFFFF;"><a id="floatingDiv_footer_anc" href="userFeedbackAction.action">Post</a></th></tr>
+							</table>
+						</div>					
+					</td>
+					<td width="3px"><img src="images/icons/cadreReport/bg_right.png"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<div id="homePageContainer">
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
             <table  width="100%" id="headerTable">

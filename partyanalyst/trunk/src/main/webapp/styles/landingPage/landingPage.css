@@ -691,6 +691,9 @@ input.input_text
 	height:10px;
 	padding:0 5px;
 }
+
+
+
 /* indexPage styles*/
 
 
@@ -826,6 +829,49 @@ a:hover
 	background-repeat:repeat-x;
 	color:#FFFFFF;
 	padding:10px 15px;
+}
+
+.floatingDiv_main
+{
+	-moz-border-radius:6px 6px 6px 6px;
+	background-color:#FFFFFF;
+	border:1px solid #ADADAD;
+	padding:2px;
+	position:absolute;
+	width:140px;
+	top:10px;right:10px;
+	z-index:100;
+}
+
+.floatingDiv_body
+{
+	line-height:18px;
+	padding:10px 5px;
+	text-align:justify;
+}
+
+.floatingDiv_head_center
+{
+	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
+	height:30px;
+}
+
+.floatingDiv_footer_center
+{
+	background-image:url("../../images/icons/cadreReport/bg_center.png");
+	height:25px;
+}
+
+#floatingDiv_footer
+{
+	float:right;
+	padding:5px;
+}
+
+#floatingDiv_footer_anc
+{
+	color: #FFFFFF;
+    text-decoration: none;
 }
 
 /*********************
