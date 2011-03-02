@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
+import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
@@ -41,7 +42,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private String electionYears;
 	private String partyRadio;
 	private String party;
-	
+	private List<PartiesDetailsVO> requiredConstituencyDetails;
 	private ElectionInfoVO electionInfo;
 	
 	private int errorCode = 0;
@@ -52,9 +53,16 @@ public class PartyStrengthAction extends ActionSupport implements
 		
 
 	//Getters and Setters
-	
+
 	public List<SelectOptionVO> getAllParties() {
 		return allParties;
+	}
+	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
+		return requiredConstituencyDetails;
+	}
+	public void setRequiredConstituencyDetails(
+			List<PartiesDetailsVO> requiredConstituencyDetails) {
+		this.requiredConstituencyDetails = requiredConstituencyDetails;
 	}
 	public void setAllParties(List<SelectOptionVO> allParties) {
 		this.allParties = allParties;
@@ -276,5 +284,24 @@ public class PartyStrengthAction extends ActionSupport implements
 		return SUCCESS;  		
 	}
 	
+	public String getRequiredConstituenciesAjaxAction(){
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			Long count = new Long(jObj.getString("count"));	
+			String partyName = jObj.getString("partyName");
+			
+			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(partyName,count);
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  
+	}
 	
 }

@@ -22,12 +22,12 @@ import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
-import com.itgrids.partyanalyst.dto.PartyResultsInRegionVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionReportService;
+import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStateRegionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -56,12 +56,23 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private ServletContext context;
 	private IElectionReportService electionReportService;
 	private IStaticDataService staticDataService;
+	private IPartyStrengthService partyStrengthService;
 	private HttpSession session;
 	private List<SelectOptionVO> electionYears;
 	private List<SelectOptionVO> partiesList;	
 	private IStateRegionService stateRegionService;	
 	private StateElectionsVO partyResultsInRegionVO; 
 	
+	
+	
+	public IPartyStrengthService getPartyStrengthService() {
+		return partyStrengthService;
+	}
+
+	public void setPartyStrengthService(IPartyStrengthService partyStrengthService) {
+		this.partyStrengthService = partyStrengthService;
+	}
+
 	public StateElectionsVO getPartyResultsInRegionVO() {
 		return partyResultsInRegionVO;
 	}
@@ -224,7 +235,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 				electionYears = staticDataService.getElectionIdsAndYearsInfo(
 						electionTypeId, new Long(stateID));
 				electionYears.add(0, new SelectOptionVO(0l, "Select Year"));
-				partiesList = staticDataService.getStaticParties();
+				partiesList = partyStrengthService.getAllPartiesData(new Long(stateID));
 				partiesList.add(0, new SelectOptionVO(0l, "Select A Party"));
 			} catch (Exception e) {
 				partiesList = null;
