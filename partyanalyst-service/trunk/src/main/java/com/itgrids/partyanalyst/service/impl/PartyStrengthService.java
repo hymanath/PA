@@ -140,7 +140,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				while(it.hasNext()){
 					Object[] parms = (Object[]) it.next();
 					Long count = (Long)parms[0];					
-					if(count.intValue() == selectedNoOfYears.intValue() && count!=1l){						
+					if(selectedNoOfYears==1 || (count.intValue() == selectedNoOfYears.intValue() && count!=1l)){						
 						requiredConstituencies.add((Long)parms[1]);
 					}else if(count.intValue()==1){
 						latestConstituencies.add((Long)parms[1]);
@@ -302,7 +302,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 					partiesStrengthsInfoVO.add(resultVo);
 					
 	 			}
-	 			constituencyElectionResults.setTotalNumberOfConstituencies(count);
+	 			constituencyElectionResults.setTotalNumberOfConstituencies(partiesStrengthsInfoVO.size()+0l);
  			}
 	 	}catch(Exception e){
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -420,7 +420,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 				partiesStrengthsInfoVO.add(infoVo); 
 				}			
  			}
- 			constituencyElectionResults.setTotalNumberOfConstituencies(new Long(map2.size()));
+ 			constituencyElectionResults.setTotalNumberOfConstituencies(partiesStrengthsInfoVO.size()+0l);//new Long(map2.size()));
  			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
  			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
  		}catch(Exception e){
@@ -677,4 +677,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return requiredList;
  	}
 		
+ 	public List<PartiesDetailsVO> getAllConstituenciesData(String partyName,Long count){
+ 		return null;
+ 	}
 }

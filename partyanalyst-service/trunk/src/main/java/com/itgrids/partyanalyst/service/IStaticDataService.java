@@ -116,7 +116,7 @@ public interface IStaticDataService {
 		
 		public Set<SelectOptionVO> getAllPartiesParticipatedInRevenueVillage(Long townshipId);
 		
-		public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport();
+		public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport(Long stateId);
 		
 		public ElectionResultPartyVO getElectionResultForAPartyInAnElection(Long electionId,Long partyId,Long rank);
 		

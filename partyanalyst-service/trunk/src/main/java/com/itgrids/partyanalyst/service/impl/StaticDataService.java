@@ -96,7 +96,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
-import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -124,6 +123,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
+import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidateElecResultVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
@@ -181,7 +181,17 @@ public class StaticDataService implements IStaticDataService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO; 
 	private IElectionAnalyzeService electionAnalyzeService;
 	private IProblemStatusDAO problemStatusDAO;
+	private IPartyStrengthService partyStrengthService;
 	
+	
+	public IPartyStrengthService getPartyStrengthService() {
+		return partyStrengthService;
+	}
+
+	public void setPartyStrengthService(IPartyStrengthService partyStrengthService) {
+		this.partyStrengthService = partyStrengthService;
+	}
+
 	public IProblemStatusDAO getProblemStatusDAO() {
 		return problemStatusDAO;
 	}
@@ -4040,10 +4050,10 @@ public class StaticDataService implements IStaticDataService {
 
 	
 	
-	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport() {
+	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport(Long stateId) {
 		try{
 			log.debug("Entered in to getStaticParties() method..");
-			List<SelectOptionVO> staticParties = getStaticParties();
+			List<SelectOptionVO> staticParties = partyStrengthService.getAllPartiesData(stateId);
 			SelectOptionVO bspPartyObj;  
 			SelectOptionVO indPartyObj;  
 			
