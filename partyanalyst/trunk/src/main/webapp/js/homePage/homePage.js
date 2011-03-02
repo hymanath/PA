@@ -14,6 +14,10 @@ function initializeHomePage()
 {
 	//buildLogoImage();	
 	$( "#accordion" ).accordion();
+
+
+	$(".floatingDiv_main").makeFloat({x:"current",y:"current"});
+
 	buildElectionTrendzTabView();
 	buildHOmePageImageSlider();
 	var stateEl = document.getElementById("stateList_res");
