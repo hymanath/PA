@@ -210,7 +210,6 @@ public class CadreRegisterAction extends ActionSupport implements
 		this.cadreInfo.setDobOption(dobOption);
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Select Date Of Birth")
 	public void setDateOfBirth(String dateOfBirth) {
 		this.cadreInfo.setDateOfBirth(dateOfBirth);
 	}
@@ -491,8 +490,8 @@ public class CadreRegisterAction extends ActionSupport implements
 	public String getAge() {
 		return this.cadreInfo.getAge();
 	}
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Enter Age", shortCircuit = true)
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([1-9][0-9]?)", message = "Age field accepts digits only")
+	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "([0-9][0-9]?)", message = "Age field accepts digits only")
 	public void setAge(String age) {
 		this.cadreInfo.setAge(age);
 	}	
@@ -928,6 +927,16 @@ public class CadreRegisterAction extends ActionSupport implements
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		String familyMbrsCount = cadreInfo.getNoOfFamilyMembers().trim(); 
 		String votersCount = cadreInfo.getNoOfVoters().trim();	
+		if(cadreInfo.getDobOption() != null)
+		{
+			if(cadreInfo.getDobOption().equalsIgnoreCase("Date Of Birth") && cadreInfo.getDateOfBirth() != null && cadreInfo.getDobOption().isEmpty())
+			{
+				addFieldError("dateOfBirth", "Please Enter Date Of Birth");
+			}
+			else if(cadreInfo.getDobOption().equalsIgnoreCase("Age") && cadreInfo.getAge() != null && cadreInfo.getDobOption().trim().isEmpty()){
+				 addFieldError("age", "please Enter Age");
+			}
+		}
 		if(familyMbrsCount.isEmpty() && !(votersCount.isEmpty()))
 			addFieldError("noOfFamilyMembers","Please Enter No of Family Members");
 		if(!(familyMbrsCount.isEmpty()) && votersCount.isEmpty())
