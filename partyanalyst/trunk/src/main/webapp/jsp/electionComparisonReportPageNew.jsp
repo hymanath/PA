@@ -1790,7 +1790,7 @@ function createCoulmnChart()
 			fourthPosWonYearOne += ${partyPositions.fourthPosWon};
 		</c:forEach>
 
-		data.setValue(0, 0, '2009');				
+		data.setValue(0, 0, years[0]);				
 		data.setValue(0, 1, totalSeatsWonYearOne);
 		data.setValue(0, 2, secondPosWonYearOne);
 		data.setValue(0, 3, thirdPosWonYearOne);
@@ -1808,7 +1808,7 @@ function createCoulmnChart()
 			fourthPosWonYearTwo += ${partyPositions.fourthPosWon};
 		</c:forEach>
 
-		data.setValue(1, 0, '2004');				
+		data.setValue(1, 0,  years[1]);				
 		data.setValue(1, 1, totalSeatsWonYearTwo);
 		data.setValue(1, 2, secondPosWonYearTwo);
 		data.setValue(1, 3, thirdPosWonYearTwo);
@@ -1817,7 +1817,7 @@ function createCoulmnChart()
 	</c:if>
 
 	<c:if test="${allianceCheck == 'false'}">
-		 data.setValue(0, 0, '2009');
+		 data.setValue(0, 0, years[0]);
 		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
 			data.setValue(0, 1, ${partyPositions.totalSeatsWon});
 			data.setValue(0, 2, ${partyPositions.secondPosWon});
@@ -1825,7 +1825,7 @@ function createCoulmnChart()
 			data.setValue(0, 4, ${partyPositions.fourthPosWon});
 		 </c:forEach>
 			
-		  data.setValue(1, 0, '2004');
+		  data.setValue(1, 0, years[1]);
 		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
 			data.setValue(1, 1, ${partyPositions.totalSeatsWon});
 			data.setValue(1, 2, ${partyPositions.secondPosWon});
@@ -1905,7 +1905,19 @@ function createCoulmnChart()
 									<div class="corner topRight"></div>
 									<div class="corner bottomLeft"></div>
 									<div class="corner bottomRight"></div> 
+                                    
+									<div id="overallResultsYearOneDiv" class="yui-skin-sam" style="position:relative">
+										 <div id="overallResultsYearOnePanel" class="panelOuterDiv" style="border:0px none;"></div>
+									</div>
+									<div id="commentsDiv">  <%=pc%> -- <%=participatedConsts%> |  <%=tc%> -- <%=tcDef%></div>
+									<div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div>
+							</div>
 
+							<div id="constituencyCenterContentOuter" class="rounded"> 						
+									<div class="corner topLeft"></div>
+									<div class="corner topRight"></div>
+									<div class="corner bottomLeft"></div>
+									<div class="corner bottomRight"></div> 
 									 <div id="overallResultsYearTwoDiv" class="yui-skin-sam" style="position:relative;">
 										 <div id="overallResultsYearTwoPanel" class="panelOuterDiv" style="border:0px none;"></div>
 									 </div>
@@ -1913,19 +1925,7 @@ function createCoulmnChart()
 									<div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div>
 							</div>
 							
-							<div id="constituencyCenterContentOuter" class="rounded"> 						
-									<div class="corner topLeft"></div>
-									<div class="corner topRight"></div>
-									<div class="corner bottomLeft"></div>
-									<div class="corner bottomRight"></div> 
-
-									<div id="overallResultsYearOneDiv" class="yui-skin-sam" style="position:relative">
-										 <div id="overallResultsYearOnePanel" class="panelOuterDiv" style="border:0px none;"></div>
-									</div>
-									<div id="commentsDiv">  <%=pc%> -- <%=participatedConsts%> |  <%=tc%> -- <%=tcDef%></div>
-									<div id="commentsDiv">  <%=pp%> -- <%=ppDef%>  |   <%=stateWise%> -- <%=stateWiseDef%>  |   <%=pnp%> -- <%=pnpDef%></div>
-							</div>
-						</td>
+					</td>
 						<td width="50%" valign="top">
 							<div id="constituencyCenterContentOuter" class="rounded" style="margin:0px;"> 						
 									<div class="corner topLeft"></div>
