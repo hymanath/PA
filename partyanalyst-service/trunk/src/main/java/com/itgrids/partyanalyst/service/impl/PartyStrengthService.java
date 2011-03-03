@@ -702,6 +702,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  				parties = partyDAO.findByShortNames(IConstants.STATIC_TAMIL_NADU_PARTIES);
  			}else if(stateId.intValue()==12){//karnataka
  				parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
+ 			}else{
+ 				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
  			}			
 			for(Party party : parties){
 				SelectOptionVO selectOptionVO = new SelectOptionVO();
