@@ -799,7 +799,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  				partyDetailsVo.setConstituencyName(parms[1].toString());
  				partyDetailsVo.setPartyName(parms[3].toString());
  				partyDetailsVo.setElectionYear(parms[4].toString()); 				
- 				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
  				partyDetailsVo.setCandidateName(parms[6].toString()); 
  				partyDetailsList.add(partyDetailsVo); 				
  			}
