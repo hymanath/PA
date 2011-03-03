@@ -296,8 +296,10 @@ public class PartyStrengthAction extends ActionSupport implements
 		try {
 			Long count = new Long(jObj.getString("count"));	
 			String partyName = jObj.getString("partyName");
-			
-			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(partyName,count);
+			String electionType = jObj.getString("electionType");
+			Long stateId = new Long(jObj.getString("stateId"));	
+			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
+			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,stateId,partyName,totalElectionYears,count);			
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
