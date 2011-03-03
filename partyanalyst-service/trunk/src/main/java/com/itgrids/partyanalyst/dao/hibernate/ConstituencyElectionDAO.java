@@ -380,18 +380,12 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId,List<Long> elecIds){
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model),model.constituency.constituencyId,model.constituency.name from ConstituencyElection model");			
-		
-		if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
-			query.append(" where model.election.electionId in (:elecIds) ");
-		}else{
-			query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds) ");
-		}		
+		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");		
 		query.append(" group by model.constituency.constituencyId  order by count(model) desc");	
 		
 		Query queryObject = getSession().createQuery(query.toString());		
-		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
-			queryObject.setLong(0,stateId);	
 		
+		queryObject.setLong(0,stateId);			
 		queryObject.setParameterList("elecIds", elecIds);
 		return queryObject.list();		
 	}
