@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -229,20 +230,31 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return resultVo;
  	}
  	 
+ 	/**
+ 	 * This method can can be used in order to get the details of all parties. 
+ 	 * @param resultVo
+ 	 * @param requiredConstituencies
+ 	 * @param latestConstituencies
+ 	 * @param remianingConstituencies
+ 	 * @param selectedParties
+ 	 * @param electionYearsCount
+ 	 * @param electionType
+ 	 * @param stateId
+ 	 */
  	public void getDataForAllParties(ElectionInfoVO resultVo,List<Long> requiredConstituencies,List<Long> latestConstituencies,List<Long> remianingConstituencies,List<Long> selectedParties,Long electionYearsCount,String electionType,Long stateId){
  	try{
  			if(requiredConstituencies.size()!=0) 			
- 				resultVo.setRequiredConstituenciesInfo(getAllElectionData(requiredConstituencies,nominationDAO.getAllPartyResults(requiredConstituencies,selectedParties),electionYearsCount,IConstants.REQUIRED_CONSTITUENCIES,electionType,stateId));
+ 				resultVo.setRequiredConstituenciesInfo(getAllElectionData(requiredConstituencies,nominationDAO.getAllPartyResults(requiredConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN),electionYearsCount,IConstants.REQUIRED_CONSTITUENCIES,electionType,stateId));
 			else
  				resultVo.setRequiredConstituenciesInfo(new ConstituencyElectionResults());
  			
  			if(latestConstituencies.size()!=0)
- 				resultVo.setLatestConstituenciesInfo(getAllElectionData(latestConstituencies,nominationDAO.getAllPartyResults(latestConstituencies,selectedParties),electionYearsCount,IConstants.LATEST_CONSTITUENCIES,electionType,stateId));	
+ 				resultVo.setLatestConstituenciesInfo(getAllElectionData(latestConstituencies,nominationDAO.getAllPartyResults(latestConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN),electionYearsCount,IConstants.LATEST_CONSTITUENCIES,electionType,stateId));	
 			else
 				resultVo.setLatestConstituenciesInfo(new ConstituencyElectionResults());
 
  			if(remianingConstituencies.size()!=0)	 				
- 				resultVo.setRemainingConstituenciesInfo(getAllElectionData(remianingConstituencies,nominationDAO.getAllPartyResults(remianingConstituencies,selectedParties),electionYearsCount,IConstants.REMAINING_CONSTITUENCIES,electionType,stateId));
+ 				resultVo.setRemainingConstituenciesInfo(getAllElectionData(remianingConstituencies,nominationDAO.getAllPartyResults(remianingConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN),electionYearsCount,IConstants.REMAINING_CONSTITUENCIES,electionType,stateId));
  			else
  				resultVo.setRemainingConstituenciesInfo(new ConstituencyElectionResults());
  		}catch(Exception e){
@@ -251,27 +263,41 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	
  	
+ 	/**
+ 	 * This method can can be used in order to get the details of a particular party. 
+ 	 * @param resultVo
+ 	 * @param requiredConstituencies
+ 	 * @param latestConstituencies
+ 	 * @param remianingConstituencies
+ 	 * @param selectedParties
+ 	 * @param electionYearsCount
+ 	 * @param electionType
+ 	 * @param stateId
+ 	 */
  	public void getDataForAParty(ElectionInfoVO resultVo,List<Long> requiredConstituencies,List<Long> latestConstituencies,List<Long> remianingConstituencies,List<Long> selectedParties,Long electionYearsCount,String electionType,Long stateId){
  	
  		try{
  			if(requiredConstituencies.size()!=0) 			
- 				resultVo.setRequiredConstituenciesInfo(setElectionDataInToVo(requiredConstituencies,nominationDAO.getAllPartyResults(requiredConstituencies,selectedParties)));
+ 				resultVo.setRequiredConstituenciesInfo(setElectionDataInToVo(requiredConstituencies,nominationDAO.getAllPartyResults(requiredConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN)));
 				else
  				resultVo.setRequiredConstituenciesInfo(new ConstituencyElectionResults());
  			
  			if(latestConstituencies.size()!=0)
- 				resultVo.setLatestConstituenciesInfo(setElectionDataInToVo(latestConstituencies,nominationDAO.getAllPartyResults(latestConstituencies,selectedParties)));	
+ 				resultVo.setLatestConstituenciesInfo(setElectionDataInToVo(latestConstituencies,nominationDAO.getAllPartyResults(latestConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN)));	
 				else
  				resultVo.setLatestConstituenciesInfo(new ConstituencyElectionResults());
  			
  			if(remianingConstituencies.size()!=0)	 				
- 				resultVo.setRemainingConstituenciesInfo(setElectionDataInToVo(remianingConstituencies,nominationDAO.getAllPartyResults(remianingConstituencies,selectedParties)));
+ 				resultVo.setRemainingConstituenciesInfo(setElectionDataInToVo(remianingConstituencies,nominationDAO.getAllPartyResults(remianingConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN)));
  			else
  				resultVo.setRemainingConstituenciesInfo(new ConstituencyElectionResults());
  		}catch(Exception e){
  			e.printStackTrace();
  		} 		
  	}
+ 	
+ 	
+ 	
  	
  	/**
  	 * This method can be used to get the strength of a party in that particular constituency.
@@ -314,6 +340,16 @@ public class PartyStrengthService implements IPartyStrengthService {
 		return constituencyElectionResults;
  	}
  	
+ 	
+ 	
+ 	/**
+ 	 * This method can be used to get number of election years that are present matching 
+ 	 * the criteria like stateId,electionType
+ 	 * @author Y.Ravi Kiran 
+	 * @param stateId
+	 * @param electionType
+	 * @return List<SelectOptionVO>
+ 	 */
  	public List<SelectOptionVO> getCountOfElectionYears(Long stateId,String electionType){
  		List<SelectOptionVO> ids = new ArrayList<SelectOptionVO>(0);
  		List allYears = new ArrayList();
@@ -338,6 +374,13 @@ public class PartyStrengthService implements IPartyStrengthService {
  	
  	
  	
+ 	
+ 	/**
+ 	 * This method can be used to get all the states based on the election type.
+ 	 * @author Y.Ravi Kiran 
+	 * @param electionType
+	 * @return List<SelectOptionVO>
+ 	 */
  	public List<SelectOptionVO> getAllStatesHavinElectionData(String electionType){
  		List<SelectOptionVO> ids = new ArrayList<SelectOptionVO>(0);
  		try{
@@ -359,6 +402,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		}
  		return ids;
  	}
+ 	
  	
  	
 	/**
@@ -435,6 +479,17 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	
  	
+ 	
+ 	/**
+ 	 * This method can be used to know all parties strengths and weakness based on the given inputs.
+ 	 * 
+ 	 * @author Y.Ravi Kiran 
+	 * @param electionType	
+	 * @param stateId
+	 * @param partieId
+	 * @param totalElectionYears
+	 * @return ConstituencyElectionResults
+ 	 */
  	public ConstituencyElectionResults getPartyStrengthsAndWeaknessDetails(String electionType,Long stateId,Long partieId,Long totalElectionYears){
  		Map<Long,PartiesDetailsVO> partyOverview = new HashMap<Long,PartiesDetailsVO>();
  		Map<Long,String> map = new HashMap<Long,String>();
@@ -455,7 +510,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  			} 			
  			if(partieId.intValue()==0){
  				selectedParties = staticDataService.getStaticPartiesAsList(stateId); 				
- 				result = nominationDAO.getAllPartyResults(allonstituencies,selectedParties);
+ 				result = nominationDAO.getAllPartyResults(allonstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN);
  				
  				List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
  		 		Collections.sort(staticParties,new SelectOptionVOComparator());
@@ -465,7 +520,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  					map.put(staticParties.get(i).getId(), staticParties.get(i).getName());
  				
  			}else{ 				
- 				result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId);
+ 				result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId,IConstants.ELECTION_SUBTYPE_MAIN);
  				List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
  		 		Collections.sort(staticParties,new SelectOptionVOComparator());
  		 		constituencyElectionResults.setAllPartiesData(staticParties);
@@ -541,7 +596,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	
  	
- 	public List<Long> getListOfElections(String electionType,Long stateId,Long totalElectionYears){
+ 	/*public List<Long> getListOfElections(String electionType,Long stateId,Long totalElectionYears){
  		Long count=0l;
  		List allYears = new ArrayList();
  		List<Long> ids = new ArrayList<Long>();
@@ -559,7 +614,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  			e.printStackTrace();
  		}	
  		return ids;
- 	}
+ 	}*/
  	
  	
  	public List<PartiesDetailsVO> generateTempData(List<Long> partyIds,Map<Long,String> map,List<PartiesDetailsVO> partyDetails,Long constId,String constName,Long selectedYearsCount,String type){
@@ -606,11 +661,9 @@ public class PartyStrengthService implements IPartyStrengthService {
 						vo.setConstituencyName(constName); 		
 						result.add(vo);
 					}		
-				}
-						
+				}						
 			//ends here...
-			
-			
+						
 	 	}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -677,7 +730,84 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return requiredList;
  	}
 		
- 	public List<PartiesDetailsVO> getAllConstituenciesData(String partyName,Long count){
- 		return null;
+ 	public List<PartiesDetailsVO> getAllConstituenciesData(String electionType,Long stateId,String partyName,Long totalElectionYears,Long resultCount){
+ 		List<PartiesDetailsVO> partyDetailsList = new ArrayList<PartiesDetailsVO>(0);
+ 		Map<Long,PartiesDetailsVO> partyOverview = new HashMap<Long,PartiesDetailsVO>();
+ 		Map<Long,List<Long>> details = new HashMap<Long,List<Long>>();
+ 		List<Long> allonstituencies = new ArrayList<Long>(0);
+		ListIterator it = null;		
+		List result = null;	
+		List<Long> requiredList = null;
+		List partieDetails;
+		Long partieId=0l;
+ 		try{ 
+ 			partieDetails = partyDAO.findPartyIdByShortName(partyName);
+ 			partieId = (Long)partieDetails.get(0);
+ 			requiredList = getElectionIds(stateId,electionType,IConstants.ELECTION_SUBTYPE_MAIN,totalElectionYears);
+ 			List constituencies = constituencyElectionDAO.getConstituenciesHavingMaxSpan(IConstants.ELECTION_SUBTYPE_MAIN,electionType,stateId,requiredList);				
+ 			it = constituencies.listIterator();
+ 			while(it.hasNext()){
+				Object[] parms = (Object[]) it.next();
+				allonstituencies.add((Long)parms[1]);			
+ 			}				
+			result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId,IConstants.ELECTION_SUBTYPE_MAIN);
+			 		 
+ 			for(int i=0; i<result.size(); i++){
+ 				Object[] parms = (Object[])result.get(i); 				
+ 				Long partyId = (Long)parms[4];
+ 				Long count = (Long)parms[1];
+ 				Long constId = (Long)parms[0];
+ 				
+				if(partyOverview.containsKey(partyId)){
+ 					PartiesDetailsVO partyOverviewDetails = partyOverview.get(partyId);
+ 					Map<Long,Long>  partyStrenghCount = partyOverviewDetails.getPartyStrenghCount(); 					
+						if(partyStrenghCount.containsKey(count)){	 	
+							Long temp = partyStrenghCount.get(count);							
+							partyStrenghCount.put(count,temp+=1);	
+ 					}else{
+ 						partyStrenghCount.put(count,1l);	 			
+ 					}	
+ 					partyOverviewDetails.setPartyStrenghCount(partyStrenghCount);
+ 				
+ 					List<Long> conIds = new ArrayList<Long>();
+ 					if(details.get(count)!=null){
+ 						conIds.addAll(details.get(count)); 						
+ 					}
+ 					conIds.add(constId);
+ 					details.put(count,conIds);
+ 					
+ 					partyOverview.put(partyId,partyOverviewDetails);	
+ 				}else{	 
+ 					PartiesDetailsVO partyDetailsVO = new PartiesDetailsVO(); 					
+ 					Map<Long,Long>  partyStrenghCount = new HashMap<Long,Long>();	 					
+ 					partyStrenghCount.put(count,1l);	 					
+ 					partyDetailsVO.setPartyStrenghCount(partyStrenghCount);	
+ 					
+ 					List<Long> conIds = new ArrayList<Long>();
+ 					conIds.add(constId);
+ 					details.put(count,conIds);
+ 					
+ 					partyOverview.put(partyId,partyDetailsVO);
+ 				}
+ 			}			
+ 		 	 
+ 			List<Long> conIds = details.get(resultCount);
+ 			List list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN);
+ 			for(int i=0; i<list.size(); i++){
+ 				Object[] parms = (Object[])list.get(i);
+ 				PartiesDetailsVO partyDetailsVo = new PartiesDetailsVO();
+ 				partyDetailsVo.setConstituencyName(parms[1].toString());
+ 				partyDetailsVo.setPartyName(parms[3].toString());
+ 				partyDetailsVo.setElectionYear(parms[4].toString()); 				
+ 				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+ 				partyDetailsVo.setCandidateName(parms[6].toString()); 
+ 				partyDetailsList.add(partyDetailsVo); 				
+ 			}
+ 			
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 		}
+ 		
+ 		return partyDetailsList;
  	}
 }

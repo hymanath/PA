@@ -25,14 +25,14 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	
-	public void testGetAllParties(){
-		List<Party> parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
+	/*public void testGetAllParties(){
+		List<Party> parties = partyDAO.findByShortNames("TRS");
 		for(Party result : parties){
 			System.out.println(result.getShortName());
 		}
 	//	Assert.assertEquals(2, parties.size());
 	}
-	/*
+	
 	@Test
 	public void testFindPartysInState(){
 		
@@ -57,4 +57,9 @@ public class PartyDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(" ID :" + optn.getId());
 		}
 	}*/
+	
+	public void testGetPartyIdByPartyName(){
+		List parties = partyDAO.findPartyIdByShortName("TRS");
+		System.out.println(parties.get(0));
+	}
 }
