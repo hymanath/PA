@@ -60,7 +60,7 @@
 	 	 padding-bottom: 13px;
 	}
 	
-	#remaining_const_body, #new_const_body, #required_const_body ,#overView_const_body {
+	#remaining_const_body, #new_const_body, #required_const_body  {
 	    border-bottom: 1px solid #E0E0D6;
 	    border-left: 1px solid #E0E0D6;
 	    border-right: 1px solid #E0E0D6;
@@ -83,12 +83,55 @@
 		color:#808080;
 		font-size:12px;
 	}
+	.detailReportHeader 
+	{
+	    background-image: url("images/icons/partyPerformance/detailReportHeading.png");
+	    color: #FBAD2B;
+	    font-family: Trebuchet MS;
+	    font-size: 13px;
+	    font-weight: bold;	
+	    margin-bottom:4px;
+	    padding: 5px 5px 6px 15px;
+	    width: 500px;
+	    height: 23px;
+	}
+	.partyStyle
+	{
+	    color: #FBAD2B;
+	    font-family: Trebuchet MS;
+	    font-size: 14px;
+	    font-weight: bold;
+	}
+	.viewAndHideDetails 
+	{
+	    color: #FFFFCC;
+	    cursor: pointer;
+	}
+	
+	.completePartyDetails {
+	    background-image: url("images/icons/partyPerformance/reportHeaders.png");
+	    font-size: 13px;
+	    font-weight: bold;
+	    height: 30px;
+	    margin-bottom: 10px;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	    padding-top: 5px;
+	    width: 790px;
+	}
+	.headerStyle
+	{
+		color:#247CD4;
+		font-weight:bold;
+		padding-left:18px;
+	}
 </style>
 
 <script type="text/javascript">
 
 	var electionType='Assembly';
 	var selectedStateElmts=1;
+	var selectedPartyId=7;
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -117,13 +160,13 @@
 							buildOverViewDataTable(results); 
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");
-								initializeTable(results);
+								//initializeTable(results);
 							}else{
 								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");
-								initializeTable(results);
+								//initializeTable(results);
 							}
 						}
-							
+						
 						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null){
 							hideLatestConstituenciesDiv();
 						}else{
@@ -156,46 +199,95 @@
 					}						
 					
 			}catch (e) {   		
-			    	alert("Invalid JSON result" + e);   
+			    	//alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     			alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	
 	function buildOverViewDataTable(results)
 	{
 
-		var headerElmt = document.getElementById("messageDiv");
+		var headerElmt = document.getElementById("headerDiv");
 		var tempStr ='';
-		tempStr+='Winning Position of different Parties in the last '+results.selectedYearsCount+' election years';
+		tempStr+='All Parties Strengths and Weakness Details';
 		headerElmt.innerHTML = tempStr;
 
-		
 		var elmt = document.getElementById("overViewDiv");
 		var str='';
-		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
-		str += '<table id="overView_Table">';
+		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;		
+		str += '<div id="mainDataDiv">';		
 		for(var k=0;k<partiesDetails.length;k++){
+			str += '  <div id="overviewOfPartiesDiv">';
+			str += '	<table id="CompleteDetailsTable">';
+			str += '		<tr>';	
+			str += '			<td><div id="mainDetails" class="detailReportHeader"> Winning Position of <b style="color:white;margin-left:4px;margin-right:4px;">'+partiesDetails[k].partyName+' Party </b>';
+			str += '			in the last <b style=" color: #69A74E;font-weight: bold;">'+results.selectedYearsCount+'</b> election years <b class="viewAndHideDetails"'; 
+			str += '			style="margin-left:27px;" id="hideOrShowId_'+partiesDetails[k].partyName+'" onclick="showData(\''+partiesDetails[k].partyName+'\')"> View Details</b></div></td>';
+			str += '		</tr>';	
+			str += '	</table>';	
+			str += '   </div">';
+			str += '   <div id="'+partiesDetails[k].partyName+'_DIV" style="display:none;">';			
+			str += '	<table>';			
+			str +='		<tr>';
+			str += '		<td class="headerStyle">Total No of Times Won </td>';
+			str += '		<td class="headerStyle">Constituencies Count </td>';				
+			str += '	</tr>';				
 			str += '	<tr>';	
-				str += '		<td>'+partiesDetails[k].partyName+'</td>';
-				for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
-					str += '	<td>'+partiesDetails[k].partyDetails[j].name+'</td>';
+			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
+				var size = partiesDetails[k].partyDetails[j].name;					
+				if(size!=0){					
+					str += '<td align="center">'+(j+1)+'</td>';
+					str += '<td align="center"><a onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color: #69A74E;font-weight: bold;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
 				}
-			str += '	</tr>';
+				str += '	</tr>';				
+			}			
+			str += '	</table>';			
+			str += '	</div>';
 		}
-		
-		str += '</table>';
-		
-		elmt.innerHTML =  str;
-		
+		str += ' </div">';		
+		elmt.innerHTML =  str;		
 	} 
 
+	function showData(partyName)
+	{
+		var divId = "hideOrShowId_"+partyName;
+		var elmt = document.getElementById(divId);		
+		elmt.innerHTML = "Hide Details";
+		
+		var data = document.getElementById(partyName+"_DIV");		
+		if(data.style.display=='block'){
+			data.style.display = 'none';
+		}else{
+			data.style.display = 'block';
+		}
+	}
+	
+	function getData(partyName,columnId){		
+
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+		browser1.focus();
+		 
+		/*var jsObj=
+		{		
+				electionType : electionType,
+				stateId : selectedStateElmts, 
+				partyName:partyName,
+				elecYears : selectedPartyId,
+				count:columnId,		
+				task:"getRequiredConstituenciesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getRequiredConstituenciesAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);*/
+	}
 	
 	function initializeTable(results){
 
@@ -264,7 +356,7 @@
 		var elmt = document.getElementById("dataTableBuildForNewConstituencies");
 		var str='';	
 		elmt.innerHTML = str;
-
+	
 		var elmt2 = document.getElementById("new_const_main");
 		elmt2.innerHTML = str;
 	}
@@ -273,7 +365,7 @@
 		var elmt = document.getElementById("dataTableBuildForRemainingConstituencies");
 		var str='';	
 		elmt.innerHTML = str;
-
+	
 		var elmt2 = document.getElementById("remaining_const_main");
 		elmt2.innerHTML = str;
 	}
@@ -422,8 +514,9 @@
 		callAjax(jsObj,url);
 	}
 	
-	function getParties()
+	function getParties(selectedParty)
 	{
+		selectedPartyId = selectedParty;
 		var jsObj=
 		{		
 				stateId : selectedStateElmts,
@@ -453,7 +546,7 @@
 		var allPartiesData = document.getElementById("partySelectTd");
 		
 		var populateAllPartiesData='';
-		populateAllPartiesData+='<select id="partySelect" style="width:130px;" onClick="return validateAndForwardToAction(this)">';
+		populateAllPartiesData+='<select id="partySelect" style="width:130px;" onChange="return validateAndForwardToAction(this)">';
 		populateAllPartiesData+='<option value="0">All Parties</option>';
 		for(var i in results)
 		{
@@ -469,7 +562,7 @@
 		var showElections = document.getElementById("electionTypeTd");
 		
 		var populateElections='';
-		populateElections+='<select id="electionYearsSelect" style="width:50px;" onchange="getParties()">';
+		populateElections+='<select id="electionYearsSelect" style="width:50px;" onchange="getParties(this.options[this.selectedIndex].value)">';
 		
 		for(var i in results)  
 		{
@@ -734,36 +827,18 @@
 				<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 			</div>
 			
-			<div id="main_overViewDiv" style="margin-left:60px;" align="left">
-				<table>
-					<tr>
-						<td class="yui-skin-sam">
-							<div id="overView_const_head">
-								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
-									<tr>
-										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center" id="messageDiv"></div></td>
-										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
-									</tr>
-								</table>
-							</div>
-							<div id="overView_const_body">
-									<div id="newConstAncSpan" class="mandalNamesDiv">		
-									<table>
-										<tr>
-											<td>
-												<div id="overViewDiv" class="yui-skin-sam" align="left"></div>
-											</td> 
-										</tr>
-									</table>
-								</div>						
-							</div>							
-						</td>
-						
-					</tr>
-				</table>				
-			</div>
-			
+			<table>
+				<tr>
+					<td>
+						<div id="headerDiv" align="left" class="completePartyDetails" style="margin-bottom:20px;"></div>
+					</td>
+		 		</tr> 
+		 		<tr>
+					<td>
+						<div id="overViewDiv" align="left" style="margin-left:28px;margin-bottom:20px;"></div>
+					</td>
+		 		</tr> 
+			</table>
 			
 			<div id="main_container_div" style="display:none;margin-left:50px;" align="left">
 			 <table>

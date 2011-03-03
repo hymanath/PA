@@ -7,6 +7,10 @@
 	<!-- Example of SAF2 action instantiated by Spring -->
 	
 	
+	<bean id="candidateStrenthsAction" class="com.itgrids.partyanalyst.web.action.CandidateStrenthsAction" singleton="false">
+		<property name="partyStrengthService" ref="partyStrengthService" />		
+	</bean>	
+	
 	<bean id="partyStrengthResultsAction" class="com.itgrids.partyanalyst.web.action.PartyStrengthResultsAction" singleton="false">
 		<property name="partyStrengthService" ref="partyStrengthService" />
 		<property name="staticDataService" ref="staticDataService" />

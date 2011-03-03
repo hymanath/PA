@@ -2112,6 +2112,13 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/partyStrengths.jsp</result>
 		</action>
+		
+		<action name="candidateStrenthsAction" class="com.itgrids.partyanalyst.web.action.CandidateStrenthsAction">
+			<result name="success" >/jsp/candidateStrengths.jsp</result> 
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/partyStrengths.jsp</result>
+		</action>
+		
 				
 		<action name="getStatesAjaxAction" class="partyStrengthAction" method="getStatesData">
 			<result type="json" name="success">

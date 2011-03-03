@@ -62,7 +62,7 @@
 		<pattern>/analyzeConstituencyPopupAction*</pattern>
 		<pattern>/problemDetailsAndStatusAction*</pattern>							
 		<pattern>/problemAssigningAction*</pattern>
-
+		<pattern>/candidateStrenthsAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
