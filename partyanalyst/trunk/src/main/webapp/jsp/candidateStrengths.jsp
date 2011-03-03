@@ -92,11 +92,11 @@
 			sortable : true
 		},{
 			key : "partyName",
-			label : "partyName",
+			label : "Party Name",
 			sortable : true
 		},{
 			key : "electionYear",
-			label : "electionYear",
+			label : "Election Year",
 			sortable : true
 		},{
 			key : "votesEarned",
