@@ -421,7 +421,7 @@ public class BiElectionAction extends ActionSupport implements
 		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		electionYear = IConstants.PRESENT_ELECTION_YEAR;
 		electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
-		partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport();
+		partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport(1l);
 		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 		return Action.SUCCESS;
 	}
