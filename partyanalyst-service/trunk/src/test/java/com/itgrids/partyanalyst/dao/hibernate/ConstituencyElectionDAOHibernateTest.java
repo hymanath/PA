@@ -208,15 +208,14 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(params[0] + " \t" + params[1]);	
 			}
 		}
-	}*/
-	
-	/*public void testGetConstituenciesHavingMaxSpan()
+	}
+	public void testGetConstituenciesHavingMaxSpan()
 	{
 		segregateAllConstituencies(7l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 		//segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
-	}*/
+	}
 	
-/*	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
+	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId){
 		
 		List<Long> requiredConstituencies = new ArrayList<Long>(0);
 		List<Long> latestConstituencies = new ArrayList<Long>(0);
@@ -250,4 +249,5 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			it = null;
 		}
 	}*/
+	
 }
