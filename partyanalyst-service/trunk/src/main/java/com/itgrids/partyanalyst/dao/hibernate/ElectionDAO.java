@@ -408,19 +408,39 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return queryObject.list();
 	}
 
-	public List getCountOfElectionYears(Long stateId,String electionType){
-		Object[] params = {stateId, electionType};
+	public List getCountOfElectionYears(Long stateId,String electionType,String elecSubType){
+		Object[] params = {stateId, electionType,elecSubType};
 		return getHibernateTemplate().find("select count(model) from Election model " +
-				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? ", params);
+				"where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ", params);
 	}
 	
-	public List getCountOfElectionYearsForParliament(Long stateId,String electionType){
-		Object[] params = {electionType};
+	public List getCountOfElectionYearsForParliament(Long stateId,String electionType,String elecSubType){
+		Object[] params = {electionType,elecSubType};
 		return getHibernateTemplate().find("select count(model) from Election model " +
-				"where model.electionScope.electionType.electionType = ? ", params);
+				"where model.electionScope.electionType.electionType = ?  and model.elecSubtype = ?", params);
 	}
 	
 	public List<Long> getElectionYears(Long stateId,String electionType,String elecSubType){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.electionYear from Election model ");
+		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			sb.append(" and model.electionScope.state.stateId = ?");
+		}
+		sb.append("  order by model.electionYear desc");
+
+		Query queryObject = getSession().createQuery(sb.toString());
+		queryObject.setString(0,electionType);
+		queryObject.setString(1,elecSubType);
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			queryObject.setLong(2,stateId);
+		
+		return queryObject.list();
+	}
+	
+	public List<Long> getElectionIds(Long stateId,String electionType,String elecSubType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionId from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
