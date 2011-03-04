@@ -258,7 +258,7 @@ function getStaticParties(id)
 	var url = "<%=request.getContextPath()%>/partiesAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function getBasicAnalysisDetails(id)
+function getBasicAnalysisDetails()
 {
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
 	if(elmt.style.display == 'none')
@@ -593,7 +593,7 @@ function openPartyPerformanceWindow(electionTypeId)
 
 						<TH>Year</TH>
 						<TD>
-						<s:select id="electionYearSelectEl" theme="simple" name="electionYearSelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getBasicAnalysisDetails(this.options[this.selectedIndex].value)" />	
+						<s:select id="electionYearSelectEl" theme="simple" name="electionYearSelectEl" cssClass="selectWidth" list="{}" listKey="id" listValue="name" onchange="getBasicAnalysisDetails()" />	
 
 						
 						</TD>
