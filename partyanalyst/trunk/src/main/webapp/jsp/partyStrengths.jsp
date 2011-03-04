@@ -152,12 +152,13 @@
 
 						var elmt = document.getElementById("busyImage");
 						elmt.style.display = 'none';
+
+						buildOverViewDataTable(results); 
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null){
-							showRequiredConstituenciesErrorMessage();
+							showRequiredConstituenciesErrorMessage(results);
 						}else{
-							buildDefaultDetails(results);
-							buildOverViewDataTable(results); 
+							buildDefaultDetails(results);							
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");
 								//initializeTable(results);
@@ -220,6 +221,28 @@
 		tempStr+='All Parties Strengths and Weakness Details';
 		headerElmt.innerHTML = tempStr;
 
+		var elecYears = results.allPartiesDetails.electionYears;
+		var elecElmt = document.getElementById("electionYearsDiv");
+		var elecYearsStr='';
+		elecYearsStr+='<table>';
+		elecYearsStr+='	<tr>';
+		elecYearsStr+='		<td>';
+		elecYearsStr+='			<b> Election Years Considered...</b>';
+		elecYearsStr+='		</td>';
+		elecYearsStr+='	</tr>';
+		elecYearsStr+='	<tr>';
+		elecYearsStr+='		<td>';
+		for(var n=0;n<elecYears.length;n++){			
+			if(elecYears.length!=(n+1))
+				elecYearsStr+=' <b style="color:red;"> '+elecYears[n]+' ,</b>';
+			else
+				elecYearsStr+=' <b style="color:red;"> '+elecYears[n]+'</b>';
+		}
+		elecYearsStr+='		</td>';
+		elecYearsStr+='	</tr>';
+		elecYearsStr+='</table>';
+		elecElmt.innerHTML = elecYearsStr;
+		
 		var elmt = document.getElementById("overViewDiv");
 		var str='';
 		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;		
@@ -245,7 +268,7 @@
 				var size = partiesDetails[k].partyDetails[j].name;					
 				if(size!=0){					
 					str += '<td align="center">'+(j+1)+'</td>';
-					str += '<td align="center"><a onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color: #69A74E;font-weight: bold;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
+					str += '<td align="center"><a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color: #69A74E;font-weight: bold;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
 				}
 				str += '	</tr>';				
 			}			
@@ -260,19 +283,21 @@
 	{
 		var divId = "hideOrShowId_"+partyName;
 		var elmt = document.getElementById(divId);		
-		elmt.innerHTML = "Hide Details";
+		
 		
 		var data = document.getElementById(partyName+"_DIV");		
 		if(data.style.display=='block'){
 			data.style.display = 'none';
+			elmt.innerHTML = "View Details";
 		}else{
 			data.style.display = 'block';
+			elmt.innerHTML = "Hide Details";
 		}
 	}
 	
 	function getData(partyName,columnId){		
 
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=600,width=800,left=200,top=200");
 		browser1.focus();
 		 
 		/*var jsObj=
@@ -342,7 +367,7 @@
 		var myDataTable = new YAHOO.widget.DataTable("overViewDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}	
 	
-	function showRequiredConstituenciesErrorMessage(){
+	function showRequiredConstituenciesErrorMessage(results){
 
 		var elmt = document.getElementById("dataTableBuild");
 		elmt.innerHTML = "";
@@ -350,6 +375,12 @@
 		var str='';
 		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
 		elmt.innerHTML = str;
+
+		var count = document.getElementById("requiredConstituenciesCount");
+		var countElmt = '';
+		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
+		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : 0 </b>';
+		count.innerHTML = countElmt;
 	}
 
 	function hideLatestConstituenciesDiv(){
@@ -600,8 +631,7 @@
 
 		var partiesData = results.requiredConstituenciesInfo;
 
-		var str='';
-		//str+='<b style="color:green;font-weight:bold;font-size:12px;"> Required Constituencies Details </b>';
+		var str='';		
 		str+='<div id="dataTableMainDiv">';
 		str+='	<table id="dataTableId">';
 		
@@ -833,6 +863,11 @@
 						<div id="headerDiv" align="left" class="completePartyDetails" style="margin-bottom:20px;"></div>
 					</td>
 		 		</tr> 
+		 		<tr>
+					<td>
+						<div id="electionYearsDiv" align="left" style="margin-bottom:20px;"></div>
+					</td>
+		 		</tr>
 		 		<tr>
 					<td>
 						<div id="overViewDiv" align="left" style="margin-left:28px;margin-bottom:20px;"></div>
