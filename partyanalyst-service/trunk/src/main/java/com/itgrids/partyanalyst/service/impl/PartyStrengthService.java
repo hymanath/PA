@@ -511,89 +511,101 @@ public class PartyStrengthService implements IPartyStrengthService {
  			if(partieId.intValue()==0){
  				selectedParties = staticDataService.getStaticPartiesAsList(stateId); 				
  				result = nominationDAO.getAllPartyResults(allonstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
- 				
- 				List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
- 		 		Collections.sort(staticParties,new SelectOptionVOComparator());
- 		 		constituencyElectionResults.setAllPartiesData(staticParties);
- 		 		 		
- 		 		for(int i=0;i<staticParties.size();i++) 					
- 					map.put(staticParties.get(i).getId(), staticParties.get(i).getName());
- 				
  			}else{ 				
- 				result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId,IConstants.ELECTION_SUBTYPE_MAIN);
- 				List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
- 		 		Collections.sort(staticParties,new SelectOptionVOComparator());
- 		 		constituencyElectionResults.setAllPartiesData(staticParties);
- 		 		 		
- 		 		for(int i=0;i<staticParties.size();i++) 					
- 					map.put(staticParties.get(i).getId(), staticParties.get(i).getName());
- 			}
- 			for(int i=0; i<result.size(); i++){
- 				Object[] parms = (Object[])result.get(i); 				
- 				Long partyId = (Long)parms[4];
- 				Long count = (Long)parms[1];
- 				if(count<=totalElectionYears){
-					if(partyOverview.containsKey(partyId)){
-	 					PartiesDetailsVO partyOverviewDetails = partyOverview.get(partyId);
-	 					Map<Long,Long>  partyStrenghCount = partyOverviewDetails.getPartyStrenghCount(); 					
-							if(partyStrenghCount.containsKey(count)){	 	
-								Long temp = partyStrenghCount.get(count);							
-								partyStrenghCount.put(count,temp+=1);	
-	 					}else{
-	 						partyStrenghCount.put(count,1l);	 			
-	 					}	
-	 					partyOverviewDetails.setPartyStrenghCount(partyStrenghCount);
-	 					
-	 					partyOverview.put(partyId,partyOverviewDetails);	
-	 				}else{	 
-	 					PartiesDetailsVO partyDetailsVO = new PartiesDetailsVO(); 					
-	 					Map<Long,Long>  partyStrenghCount = new HashMap<Long,Long>();	 					
-	 					partyStrenghCount.put(count,1l);	 					
-	 					partyDetailsVO.setPartyStrenghCount(partyStrenghCount);	 					
-	 					
-	 					partyOverview.put(partyId,partyDetailsVO);
-	 				}
- 				}
+ 				result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId,IConstants.ELECTION_SUBTYPE_MAIN);	
  			}
  			
- 			Map<Long,String> auxMap = new HashMap<Long,String>();
- 			
+ 			List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
+	 		Collections.sort(staticParties,new SelectOptionVOComparator());
+	 		constituencyElectionResults.setAllPartiesData(staticParties);
+		 		 		
+	 		for(int i=0;i<staticParties.size();i++) 					
+				map.put(staticParties.get(i).getId(), staticParties.get(i).getName());
+		 		
+		 	
+	 		partyOverview = caluculatePartiesStrength(partyOverview,result,totalElectionYears);
  			List<PartiesDetailsVO> partiesDetailsVO = new ArrayList<PartiesDetailsVO>();
- 			for(Map.Entry<Long,PartiesDetailsVO> resultIterator : partyOverview.entrySet()){
- 				PartiesDetailsVO partyVO = new PartiesDetailsVO();
- 				partyVO.setPartyId(resultIterator.getKey()); 				
- 				partyVO.setCount(resultIterator.getValue().getCount());
- 				partyVO.setDetails(resultIterator.getValue().getDetails());
- 				partyVO.setPartyName(map.get(resultIterator.getKey()));
- 				
- 				for(Long m=1l;m<=totalElectionYears;m++){
- 					auxMap.put(m,IConstants.FALSE);				
- 				}
- 				
- 				List<SelectOptionVO> seVo = new ArrayList<SelectOptionVO>();
- 				for(Map.Entry<Long,Long> resuIterator : resultIterator.getValue().getPartyStrenghCount().entrySet()){ 					
- 					seVo.add(new SelectOptionVO(resuIterator.getKey(),resuIterator.getValue().toString())); 
- 					auxMap.put(resuIterator.getKey(),IConstants.TRUE);	
- 				}
- 				for(Map.Entry<Long,String> resultData: auxMap.entrySet()){
- 					if(resultData.getValue().equalsIgnoreCase(IConstants.FALSE)){
- 						seVo.add(new SelectOptionVO(resultData.getKey(),"0")); 
- 					}		
- 				}
- 				Collections.sort(seVo,new SelectOptionVOByIdComparator());
- 				
- 				partyVO.setPartyDetails(seVo);
- 				partiesDetailsVO.add(partyVO);
- 			} 			
+ 			partiesDetailsVO = storeDataIntoVO(partyOverview,totalElectionYears,map);
  			constituencyElectionResults.setPartiesDetailsVO(partiesDetailsVO);
  			
  		}catch(Exception e){
  			e.printStackTrace();
- 		}
- 		
+ 		} 		
  		return constituencyElectionResults;
  	}
  	 	
+ 	
+	public Map<Long,PartiesDetailsVO> caluculatePartiesStrength(Map<Long,PartiesDetailsVO> partyOverview,List result,Long totalElectionYears){
+ 		try{
+ 			for(int i=0; i<result.size(); i++){
+				Object[] parms = (Object[])result.get(i); 				
+				Long partyId = (Long)parms[4];
+				Long count = (Long)parms[1];
+				if(count<=totalElectionYears){
+				if(partyOverview.containsKey(partyId)){
+ 					PartiesDetailsVO partyOverviewDetails = partyOverview.get(partyId);
+ 					Map<Long,Long>  partyStrenghCount = partyOverviewDetails.getPartyStrenghCount(); 					
+						if(partyStrenghCount.containsKey(count)){	 	
+							Long temp = partyStrenghCount.get(count);							
+							partyStrenghCount.put(count,temp+=1);	
+ 					}else{
+ 						partyStrenghCount.put(count,1l);	 			
+ 					}	
+ 					partyOverviewDetails.setPartyStrenghCount(partyStrenghCount);
+ 					
+ 					partyOverview.put(partyId,partyOverviewDetails);	
+ 				}else{	 
+ 					PartiesDetailsVO partyDetailsVO = new PartiesDetailsVO(); 					
+ 					Map<Long,Long>  partyStrenghCount = new HashMap<Long,Long>();	 					
+ 					partyStrenghCount.put(count,1l);	 					
+ 					partyDetailsVO.setPartyStrenghCount(partyStrenghCount);	 					
+ 					
+ 					partyOverview.put(partyId,partyDetailsVO);
+ 				}
+				}
+			}	
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 		}
+ 		return partyOverview;
+ 	}
+ 	
+ 	public List<PartiesDetailsVO> storeDataIntoVO(Map<Long,PartiesDetailsVO> partyOverview,Long totalElectionYears,Map<Long,String> map){
+ 		Map<Long,String> auxMap = new HashMap<Long,String>();
+ 		List<PartiesDetailsVO> partiesDetailsVO = new ArrayList<PartiesDetailsVO>();
+		
+ 		try{
+				for(Map.Entry<Long,PartiesDetailsVO> resultIterator : partyOverview.entrySet()){
+					PartiesDetailsVO partyVO = new PartiesDetailsVO();
+					partyVO.setPartyId(resultIterator.getKey()); 				
+					partyVO.setCount(resultIterator.getValue().getCount());
+					partyVO.setDetails(resultIterator.getValue().getDetails());
+					partyVO.setPartyName(map.get(resultIterator.getKey()));
+					
+					for(Long m=1l;m<=totalElectionYears;m++){
+						auxMap.put(m,IConstants.FALSE);				
+					}
+					
+					List<SelectOptionVO> seVo = new ArrayList<SelectOptionVO>();
+					for(Map.Entry<Long,Long> resuIterator : resultIterator.getValue().getPartyStrenghCount().entrySet()){ 					
+						seVo.add(new SelectOptionVO(resuIterator.getKey(),resuIterator.getValue().toString())); 
+						auxMap.put(resuIterator.getKey(),IConstants.TRUE);	
+					}
+					for(Map.Entry<Long,String> resultData: auxMap.entrySet()){
+						if(resultData.getValue().equalsIgnoreCase(IConstants.FALSE)){
+							seVo.add(new SelectOptionVO(resultData.getKey(),"0")); 
+						}		
+					}
+					Collections.sort(seVo,new SelectOptionVOByIdComparator());
+					
+					partyVO.setPartyDetails(seVo);
+					partiesDetailsVO.add(partyVO);
+				} 			
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return partiesDetailsVO;
+ 	}
  	
  	public List<PartiesDetailsVO> generateTempData(List<Long> partyIds,Map<Long,String> map,List<PartiesDetailsVO> partyDetails,Long constId,String constName,Long selectedYearsCount,String type){
  		List<PartiesDetailsVO> result = new ArrayList<PartiesDetailsVO>(0); 
