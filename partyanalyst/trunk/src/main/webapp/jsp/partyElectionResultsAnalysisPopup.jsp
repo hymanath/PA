@@ -450,8 +450,9 @@ function getCommentsClassifications(rank)
 			getMarginCountAnalysisForAnalyzedConstituencies('${clickIndex}','${resultStatus}');
 		else if(task == "getConstituencyStatusAnalysisCategoryForVotesMarginWindow")
 			getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
+		
+		$( "#commentsDialogDiv" ).dialog("destroy");
 
-		addCommentsDialog.hide();
 		//openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
 	}
 													
@@ -488,9 +489,15 @@ function getCommentsClassifications(rank)
 		var url = "<%=request.getContextPath()%>/constituencyStatusAnalysisCategoryForVotesMarginAjaxAction.action?"+param;
 		callAjax(param,jsObj,url);
 	}
+
+	function doUnload()
+	{
+		window.opener.getBasicAnalysisDetails();
+	}
+
 </SCRIPT>
 </HEAD>
-<BODY>
+<BODY onunload="doUnload()">
 	<CENTER>		
 		
 	<c:if test="${electionType != 'Parliament' && status =='analyzed'}">
@@ -536,7 +543,7 @@ function getCommentsClassifications(rank)
 
 	
 	<DIV id="analysisDetails"></DIV>
-	<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>
+	<DIV class = "yui-skin-sam" id="commentsDialogDiv"></DIV>
 	
 <SCRIPT type="text/javascript"> 
 
