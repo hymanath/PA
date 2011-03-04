@@ -959,15 +959,20 @@ function overallResultsForYearOne()
 	if(!elmt)
 		return;
 
+	var totalSeatsWonYearOne =0;
+ <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
+		totalSeatsWonYearOne += ${partyPositions.totalSeatsWon} 
+	 </c:forEach>
 
    var str='';
    str+='<div id="yearOneResults_head">';
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
 	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections </span></div></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearOne+' Elections <span>"Total Seats Won --'+totalSeatsWonYearOne+'"<span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
+	
 	str+='</table>';
     str += '</div>';
    str+='<div id="yearOneResults_body" class="yearsResults_body">';
@@ -1014,15 +1019,7 @@ function overallResultsForYearOne()
    }else{
 	   str+='<td align="center">'+"${partyPositions.fourthPosWon}"+'</td>';	   
    }  
-   
-
-   
-   
-  
-  
-  
-  
-   str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
+    str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
    str+='<td align="center">'+"${partyPositions.completeVotesPercent}"+'</td>';
    str+='</tr>';
    </c:forEach>
@@ -1039,13 +1036,15 @@ function overallResultsForYearTwo()
 	var elmt = document.getElementById("overallResultsYearTwoPanel");	
 	if(!elmt)
 		return;
-
+ var totalSeatsWonYearTwo =0;
+<c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
+		totalSeatsWonYearTwo += ${partyPositions.totalSeatsWon}</c:forEach>
 	var str='';
 	str+='<div id="yearTwoResults_head">';
 	str+='<table  border="0" cellpadding="0" cellspacing="0" style="width:100%;">';
 	str+='	<tr>';
 	str+='		<td width="10px"><img src="images/icons/districtPage/header_left.gif"/></td>';
-	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections </span></div></td>';
+	str+='		<td><div class="districtPageRoundedHeaders_center" style="padding:11px;width:462px;"><span>Complete Results for '+electionType+' '+electionObject.yearTwo+' Elections <span> "Total Seats Won --'+totalSeatsWonYearTwo+'"</span></span></div></td>';
 	str+='	<td><img src="images/icons/districtPage/header_right.gif"/></td>';
 	str+='	</tr>';
 	str+='</table>';
@@ -1585,7 +1584,7 @@ function displayComparedResults(jsObj,data)
 	
 	var str='';
 	str+='<div id="completeOneField">';	
-	str+='<legend>Complete Results For '+electionType+' '+data.yearOne+' Elections</legend>';
+	str+='<legend>Complete Results For '+electionType+' '+data.yearOne+' Elections'+data.positionsYearOne.totalSeatsWon+'</legend>';
 	str+='<table width="100%">';
 	str+='<tr>';
     str+='<td align="center"><%=party%></td>';
@@ -1616,7 +1615,7 @@ function displayComparedResults(jsObj,data)
 	str+='</div>';
 
 	str+='<div id="completeTwoField">';
-	str+='<legend>Complete Results For '+electionType+' '+data.yearTwo+' Elections</legend>';
+	str+='<legend>Complete Results For '+electionType+' '+data.yearTwo+' Elections'+data.positionsYearTwo.totalSeatsWon+'</legend>';
 	str+='<table width="100%">';
 	str+='<tr>';
     str+='<td align="center"><%=party%></td>';
