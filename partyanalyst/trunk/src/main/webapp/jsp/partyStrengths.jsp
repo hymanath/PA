@@ -92,7 +92,7 @@
 	    font-weight: bold;	
 	    margin-bottom:4px;
 	    padding: 5px 5px 6px 15px;
-	    width: 500px;
+	    width: 519px;
 	    height: 23px;
 	}
 	.partyStyle
@@ -179,7 +179,7 @@
 							}
 						}
 						
-						if(results.remainingConstituenciesInfo.partiesStrengthsInfoVO==null){
+						if(results.remainingConstituenciesInfo.partiesStrengthsInfoVO==null || results.remainingConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							hideRemainingConstituenciesDiv();
 						}else{
 							buildDefaultDetailsForRemianingConstituencies(results);
@@ -251,9 +251,17 @@
 			str += '  <div id="overviewOfPartiesDiv">';
 			str += '	<table id="CompleteDetailsTable">';
 			str += '		<tr>';	
-			str += '			<td><div id="mainDetails" class="detailReportHeader"> Winning Position of <b style="color:white;margin-left:4px;margin-right:4px;">'+partiesDetails[k].partyName+' Party </b>';
-			str += '			in the last <b style=" color: #69A74E;font-weight: bold;">'+results.selectedYearsCount+'</b> election years <b class="viewAndHideDetails"'; 
-			str += '			style="margin-left:27px;" id="hideOrShowId_'+partiesDetails[k].partyName+'" onclick="showData(\''+partiesDetails[k].partyName+'\')"> View Details</b></div></td>';
+			str += '			<td>';
+			str += '			<table id="mainDetails" class="detailReportHeader"> ';
+			str += '				<tr>';
+			str += '					<td style="color:white;margin-left:4px;margin-right:4px;">';
+			str += '							Winning Position of '+partiesDetails[k].partyName+' Party ';
+			str += '			in the last <b style=" color: #69A74E;font-weight: bold;">'+results.selectedYearsCount+'</b> election years <b class="viewAndHideDetails"';
+			str += '			</td>';
+			str += '			<td>'; 
+			str += '			<b style="margin-left:27px;" id="hideOrShowId_'+partiesDetails[k].partyName+'" onclick="showData(\''+partiesDetails[k].partyName+'\')"> View Details</b></td>';
+			str += '		</tr>';	
+			str += '	</table>';	
 			str += '		</tr>';	
 			str += '	</table>';	
 			str += '   </div">';
@@ -988,11 +996,11 @@
 	</div>
 		
 <script type="text/javascript">
-	//populateDefaultDetails();
+	populateDefaultDetails();
 	//getStates('Assembly');
 	//getDefaultFrequencyOfYears();
-	//getDefaultParties();
-	validateAndForwardToAction();
+	getDefaultParties();
+	//validateAndForwardToAction();
 </script>
 
 </body>
