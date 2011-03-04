@@ -133,9 +133,11 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List<Long> getAllElectionYearsBasedOnElectionType(String electionType,String type,Long stateId);
 	
-	public List getCountOfElectionYears(Long stateId,String electionType);
+	public List getCountOfElectionYears(Long stateId,String electionType,String electionSubType);
 	
-	public List getCountOfElectionYearsForParliament(Long stateId,String electionType);
+	public List getCountOfElectionYearsForParliament(Long stateId,String electionType,String electionSubType);
 	
 	public List<Long> getElectionYears(Long stateId,String electionType,String elecSubType);
+	
+	public List<Long> getElectionIds(Long stateId,String electionType,String elecSubType);
 }

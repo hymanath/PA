@@ -3167,6 +3167,8 @@ public class StaticDataService implements IStaticDataService {
 				parties = partyDAO.findByShortNames(IConstants.STATIC_TAMIL_NADU_PARTIES);
 			}else if(stateId.intValue()==12){//karnataka
 				parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
+			}else{
+				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
 			}
 			for(Party party : parties){				
 				list.add(party.getPartyId());
