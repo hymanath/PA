@@ -226,9 +226,11 @@ public class PartyStrengthAction extends ActionSupport implements
 		try {
 			jObj = new JSONObject(getTask());	
 			
-			Long stateId = new Long(jObj.getString("stateId"));	
+			Long stateId = 0l;
 			String electionType = jObj.getString("electionType");	
-			
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+				stateId =  new Long(jObj.getString("stateId"));	
+			}
 			years = partyStrengthService.getCountOfElectionYears(stateId,electionType);
 			
 		}catch(Exception e){

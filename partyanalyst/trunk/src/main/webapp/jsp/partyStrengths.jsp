@@ -268,7 +268,7 @@
 				var size = partiesDetails[k].partyDetails[j].name;					
 				if(size!=0){					
 					str += '<td align="center">'+(j+1)+'</td>';
-					str += '<td align="center"><a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color: #69A74E;font-weight: bold;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
+					str += '<td align="center"><a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
 				}
 				str += '	</tr>';				
 			}			
@@ -297,7 +297,7 @@
 	
 	function getData(partyName,columnId){		
 
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=600,width=800,left=200,top=200");
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();
 		 
 		/*var jsObj=
@@ -507,7 +507,17 @@
 	
 	function getStates(selectedElmt)
 	{
-		electionType = selectedElmt;
+		electionType = selectedElmt;		
+		var jsObj=
+		{	
+			stateId : 1,
+			electionType :electionType,		
+			task:"getAllElectionsAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+		
 		var jsObj=
 		{		
 				electionType :selectedElmt,		
@@ -530,8 +540,36 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
+
+		var jsObj=
+		{		
+				stateId : selectedState,
+				electionType :electionType,		
+				task:"getAllPartiesData"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+
+		validateAndForwardToAction();
 	}
 
+	function getParties(selectedParty)
+	{
+		selectedPartyId = selectedParty;
+		var jsObj=
+		{		
+				stateId : selectedStateElmts,
+				electionType :electionType,		
+				task:"getAllPartiesData"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+
+		validateAndForwardToAction();
+	}
+	
 	function getDefaultFrequencyOfYears()
 	{	
 		var jsObj=
@@ -545,20 +583,6 @@
 		callAjax(jsObj,url);
 	}
 	
-	function getParties(selectedParty)
-	{
-		selectedPartyId = selectedParty;
-		var jsObj=
-		{		
-				stateId : selectedStateElmts,
-				electionType :electionType,		
-				task:"getAllPartiesData"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
-		callAjax(jsObj,url);
-	}
-
 	function getDefaultParties()
 	{
 		var jsObj=
@@ -577,7 +601,7 @@
 		var allPartiesData = document.getElementById("partySelectTd");
 		
 		var populateAllPartiesData='';
-		populateAllPartiesData+='<select id="partySelect" style="width:130px;" onChange="return validateAndForwardToAction(this)">';
+		populateAllPartiesData+='<select id="partySelect" style="width:130px;" onChange="return validateAndForwardToAction()">';
 		populateAllPartiesData+='<option value="0">All Parties</option>';
 		for(var i in results)
 		{
@@ -606,6 +630,8 @@
 		}
 		populateElections+='</select>';
 		showElections.innerHTML = populateElections;
+
+		validateAndForwardToAction();
 	}
 
 	
@@ -742,7 +768,7 @@
 		callAjax(jsObj,url);
 	}
 
-	function validateAndForwardToAction(elmt)
+	function validateAndForwardToAction()
 	{		
 		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
 		var stateSelect = document.getElementById("stateSelect").value;
@@ -962,10 +988,11 @@
 	</div>
 		
 <script type="text/javascript">
-	populateDefaultDetails();
-	getStates('Assembly');
-	getDefaultFrequencyOfYears();
-	getDefaultParties();
+	//populateDefaultDetails();
+	//getStates('Assembly');
+	//getDefaultFrequencyOfYears();
+	//getDefaultParties();
+	validateAndForwardToAction();
 </script>
 
 </body>

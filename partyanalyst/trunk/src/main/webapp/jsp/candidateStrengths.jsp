@@ -59,6 +59,31 @@
 	    text-align: center;
 	}
 	
+	.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a 
+	{
+	    color: #000000;
+	    font-size: 13px;
+	    font-weight: bold;
+	    text-decoration: none;
+	    vertical-align: bottom;
+	}
+	
+	.yui-skin-sam .yui-dt table 
+	{
+	    border-collapse: separate;
+	    border-spacing: 0;
+	    font-family: arial;
+	    font-size: 13px;
+	}
+
+	.yui-skin-sam .yui-pg-container 
+	{
+	    display: block;
+	    font-size: 13px;
+	    margin: 4px 0;
+	    text-align: center;
+	    white-space: nowrap;
+	}
 </style>
 
 <script type="text/javascript">
@@ -74,11 +99,11 @@
 			},{
 				key : "constituencyName"
 			},{
-				key : "partyName"
-			},{
 				key : "electionYear"
 			}, {
 				key : "votesEarned"
+			},{
+				key : "moreDetails"
 			}]
 		};
 	
@@ -91,10 +116,6 @@
 			label : "Constituency Name",
 			sortable : true
 		},{
-			key : "partyName",
-			label : "Party Name",
-			sortable : true
-		},{
 			key : "electionYear",
 			label : "Election Year",
 			sortable : true
@@ -102,11 +123,24 @@
 			key : "votesEarned",
 			label : "Votes Earned",
 			sortable : true
+		},{
+			key : "moreDetails",
+			label : "More Details",
+			sortable : true
 		} ];
 	
-		
-		var myDataTable = new YAHOO.widget.DataTable("mainDataDiv",resultsColumnDefs,resultsDataSource);  
-		
+		var paginatorConfig = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10
+		    })
+		};				
+		var myDataTable = new YAHOO.widget.DataTable("mainDataDiv",resultsColumnDefs,resultsDataSource,paginatorConfig);
+	}
+
+	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+	{
+	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
 	}
 </script>
 
@@ -114,7 +148,7 @@
 </head>
 <body>
 		<div id="mainDiv">
-			<div id="headingDiv"> Complete Details </div>
+			<div id="headingDiv"> Complete Details of ${partyName} Party</div>
 			<div id="bodyDiv" class="yui-skin-sam" >
 				<div id="mainDataDiv">
 					<table id="mainDataTable">
@@ -125,15 +159,15 @@
 								</td>
 								<td>
 									${requiredConstituencyDetails.constituencyName}
-								</td>
-								<td>
-									<img src="<%=request.getContextPath()%>/images/party_flags/${requiredConstituencyDetails.partyName}" height="30" width="40"/>
-								</td>
+								</td>								
 								<td>
 									${requiredConstituencyDetails.electionYear}
 								</td>
 								<td>
 									${requiredConstituencyDetails.votesEarned}
+								</td>
+								<td>
+									<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${requiredConstituencyDetails.constituencyId}','${electionType}','${requiredConstituencyDetails.electionYear}')">view results</a>
 								</td>
 							</tr>
 						</c:forEach>
