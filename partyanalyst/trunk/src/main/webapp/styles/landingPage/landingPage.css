@@ -692,9 +692,85 @@ input.input_text
 	padding:0 5px;
 }
 
+#floatingDiv_relative_main
+{
+	float:right;
+	position:relative
+}
+
+#floatingDiv_absolute_main
+{
+	position:absolute;
+}
+
+.ui-dialog
+{
+	padding:0px;	
+}
+
+#feedback_window
+{
+	background-color:#C7CFD2;	
+}
+
+#feedback_window_inner
+{
+	background-color:#FFFFFF;	
+}
+
+#feedback_window_head
+{
+	background-color:#7898BC;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+#feedback_window_body
+{
+	background-color:#FFFFFF;
+	color:#3A4347;
+	padding:5px;
+}
+
+#feedBackNote_div
+{	
+	border-bottom:1px solid #695532;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+#feedbackTable th
+{
+	padding:5px;
+	text-align:left;
+	width:200px;
+}
+
+#feedbackTable td
+{
+	padding:5px;
+	text-align:left;
+}
+
+#feedback_window_footer
+{
+	text-align:right;
+	padding:5px;
+	background-color:#D6E5E9;
+}
+
+#feedback_window_errorMsg
+{
+	color:red;
+	font-size:11px;
+	text-align:left;
+}
 
 
-/* indexPage styles*/
+/*====================
+	indexPage styles
+======================*/
 
 
 
@@ -831,48 +907,7 @@ a:hover
 	padding:10px 15px;
 }
 
-.floatingDiv_main
-{
-	-moz-border-radius:6px 6px 6px 6px;
-	background-color:#FFFFFF;
-	border:1px solid #ADADAD;
-	padding:2px;
-	position:absolute;
-	width:140px;
-	top:10px;right:10px;
-	z-index:100;
-}
 
-.floatingDiv_body
-{
-	line-height:18px;
-	padding:10px 5px;
-	text-align:justify;
-}
-
-.floatingDiv_head_center
-{
-	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
-	height:30px;
-}
-
-.floatingDiv_footer_center
-{
-	background-image:url("../../images/icons/cadreReport/bg_center.png");
-	height:25px;
-}
-
-#floatingDiv_footer
-{
-	float:right;
-	padding:5px;
-}
-
-#floatingDiv_footer_anc
-{
-	color: #FFFFFF;
-    text-decoration: none;
-}
 
 /*********************
 	Dashboard Styles
