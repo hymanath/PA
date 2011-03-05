@@ -76,6 +76,8 @@ public class ConstituencyWiseCensusMappingAction extends ActionSupport implement
 	{
 		statesListForCensus = new ArrayList<SelectOptionVO>();		
 		statesListForCensus.add(new SelectOptionVO(1L,"Andhra Pradesh"));
+		statesListForCensus.add(new SelectOptionVO(24L,"Tamil Nadu"));
+		
 			
 		return Action.SUCCESS;
 	}
