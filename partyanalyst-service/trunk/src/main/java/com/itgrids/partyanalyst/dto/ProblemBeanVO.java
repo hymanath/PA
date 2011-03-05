@@ -22,6 +22,8 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long probSourceId;
 	private Long assignedProblemProgressId;
 	private Long probAssignedDeptId;
+	private Long departmentId;
+	private String deptName;
 	private String problem;
 	private String description;
 	private String state;
@@ -77,7 +79,26 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private Long cadreId;
 	private String cadreName;
 	private String problemStatus;
-    	
+	private String recentActivity;
+	private List<Object> statusList;
+	
+
+	public List<Object> getStatusList() {
+		return statusList;
+	}
+
+	public void setStatusList(List<Object> statusList) {
+		this.statusList = statusList;
+	}
+
+	public String getRecentActivity() {
+		return recentActivity;
+	}
+
+	public void setRecentActivity(String recentActivity) {
+		this.recentActivity = recentActivity;
+	}
+
 	public Long getCadreId() {
 		return cadreId;
 	}
@@ -622,6 +643,22 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setProblemStatus(String problemStatus) {
 		this.problemStatus = problemStatus;
+	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 	
 	
