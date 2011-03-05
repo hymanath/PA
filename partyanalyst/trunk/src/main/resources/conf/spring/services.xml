@@ -578,6 +578,7 @@
 		<property name="problemManagementService" ref="problemManagementService" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="dataApprovalService" ref="dataApprovalService" />
+		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />
