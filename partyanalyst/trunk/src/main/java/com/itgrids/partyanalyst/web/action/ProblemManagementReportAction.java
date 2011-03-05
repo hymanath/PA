@@ -84,7 +84,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private Long defaultConstituencyId = 0l;
 	private List<ProblemClassificationVO> problemsGropedByDeptOrCadre;
 	private EntitlementsHelper entitlementsHelper;
-		
+	private List<SelectOptionVO> probCountList;
 	public Long getProblemlocationId() {
 		return problemlocationId;
 	}
@@ -184,6 +184,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		this.locationwiseProblemStatusInfoVO = locationwiseProblemStatusInfoVO;
 	}
 	
+	public List<SelectOptionVO> getProbCountList() {
+		return probCountList;
+	}
+	public void setProbCountList(List<SelectOptionVO> probCountList) {
+		this.probCountList = probCountList;
+	}
 	public void setServletContext(ServletContext context) {
 		this.context = context;		
 	}	
@@ -670,6 +676,123 @@ public class ProblemManagementReportAction extends ActionSupport implements
            	
         return dataset;
     }
+	
+	public String getTotalProblemsCount()
+	{
+		session=request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getTotalProblemsCount"))
+		{
+			Long problemScope = jObj.getLong("selectedProblemScope");
+			Long locationId = jObj.getLong("selectedLocation");
+			probCountList = problemManagementReportService.getTotalProblemsCountForAnUserInARegion(user.getRegistrationID(),problemScope,locationId);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getStatusWiseProblems"))
+		{
+			Long problemScope = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			String status 	  = jObj.getString("status");
+			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUserInARegion(user.getRegistrationID(),problemScope,locationId,status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getTotalProblemsStatus"))
+		{
+			probCountList = problemManagementReportService.getTotalProblemsStatusForAnUser(user.getRegistrationID());
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getStatusWiseAllProblems"))
+		{
+			String status 	  = jObj.getString("status");
+			problemBean = problemManagementReportService.getStatusWiseProblemsForAnUser(user.getRegistrationID(),status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsCountInARegion"))
+		{
+			Long problemScope = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(user.getRegistrationID(),problemScope,locationId);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsInARegion"))
+		{
+			Long problemScope = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			String status 	  = jObj.getString("status");
+			String location   = jObj.getString("sLocation");
+			
+			if(location.equalsIgnoreCase("cadre"))
+				problemBean = problemManagementReportService.getCadreProblemsInARegion(user.getRegistrationID(),null,null,status);
+			else if(location.equalsIgnoreCase("place"))
+				problemBean = problemManagementReportService.getCadreProblemsInARegion(user.getRegistrationID(),problemScope,locationId,status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getCadreProblemsCountForAnUser"))
+		{
+			probCountList = problemManagementReportService.getCadreProblemsCountInARegion(user.getRegistrationID(),null,null);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsCountForAnUser"))
+		{
+			Long deptScopeId = jObj.getLong("deptScopeId");
+			problemBean = problemManagementReportService.getDeptWiseProblemsCountForAnUser(user.getRegistrationID(),deptScopeId);
+			
+			if(problemBean != null && problemBean.size() > 0)
+				problemBean.get(0).setProblemSourceScopeId(deptScopeId);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDepartmentWiseProblems"))
+		{
+			Long deptId 	= jObj.getLong("deptId");
+			String status 	= jObj.getString("status");
+			problemBean = problemManagementReportService.getDepartmentWiseProblemsBasedOnStatus(user.getRegistrationID(),deptId,status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getProblemsInADeptScopeBasedOnScope"))
+		{
+			Long scopeId 	= jObj.getLong("scopeId");
+			String status 	= jObj.getString("status");
+			problemBean = problemManagementReportService.getProblemsInADeptScopeBasedOnScope(user.getRegistrationID(),scopeId,status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsStatusInALocation"))
+		{
+			Long impactedRegionId = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			
+			problemBean = problemManagementReportService.getDeptWiseProblemsCountInALocation(user.getRegistrationID(),impactedRegionId,locationId);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDeptProblemsBasedOnStatusInARegion"))
+		{
+			Long impactedRegionId = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			String status 	= jObj.getString("status");
+			
+			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(user.getRegistrationID(),impactedRegionId,locationId,null,status);
+		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDeptWiseProblemsBasedOnStatusInARegion"))
+		{
+			Long impactedRegionId = jObj.getLong("selectedProblemScope");
+			Long locationId   = jObj.getLong("selectedLocation");
+			Long deptId 	= jObj.getLong("deptId");
+			String status 	= jObj.getString("status");
+			
+			problemBean = problemManagementReportService.getDeptProblemsBasedOnStatusInARegion(user.getRegistrationID(),impactedRegionId,locationId,deptId,status);
+		}
+		
+		return SUCCESS;
+	}
 }	
 		
 
