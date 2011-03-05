@@ -423,10 +423,12 @@ public class OpinionPollService implements IOpinionPollService {
 			
 		}
 	 
-	public String saveUserFeedback(UserFeedbackVO feedbackVO) 
+	public ResultStatus saveUserFeedback(UserFeedbackVO feedbackVO) 
 	{
+		ResultStatus rs = new ResultStatus();
 		FeedBack feedBack =  new FeedBack();
-		
+		try {
+			
 		feedBack.setComment(feedbackVO.getComment());
 		feedBack.setResponseCategory(feedbackVO.getResponseCategory());
 		
@@ -445,7 +447,21 @@ public class OpinionPollService implements IOpinionPollService {
 		feedBack.setFeedBackTask(feedbackTaskDAO.get(feedbackVO.getTaskName()));
 		feedbackDAO.save(feedBack);
 		
-		return "SUCCESS";
+		//saved successfully
+		rs.setExceptionMsg("Feedback Saved Successfully ..");
+		
+		}catch(Exception e){
+			
+			log.error("Exception Raised :" + e);
+			rs.setExceptionEncountered(e);
+			rs.setExceptionMsg(e.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+		 return rs;
+		}
+		
+		
+	 return rs;
 	}
 	
 	public List<SelectOptionVO> getAllValuesFromFeedbackComment()
