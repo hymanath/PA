@@ -19,6 +19,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -37,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -56,6 +58,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -100,6 +103,7 @@ public class ProblemManagementReportService implements
 	private IProblemLocationDAO problemLocationDAO;
 	private IProblemManagementService problemManagementService;
 	private IBoothDAO boothDAO;
+	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
 	private IDataApprovalService dataApprovalService;
 	
 	public IDataApprovalService getDataApprovalService() {
@@ -287,6 +291,15 @@ public class ProblemManagementReportService implements
 
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
+	}
+
+	public ICadreProblemDetailsDAO getCadreProblemDetailsDAO() {
+		return cadreProblemDetailsDAO;
+	}
+
+	public void setCadreProblemDetailsDAO(
+			ICadreProblemDetailsDAO cadreProblemDetailsDAO) {
+		this.cadreProblemDetailsDAO = cadreProblemDetailsDAO;
 	}
 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
@@ -2016,5 +2029,503 @@ public class ProblemManagementReportService implements
 				stateResult.addAll(districtResult);
 			}		
 			return stateResult;
-		}		
+		}
+		
+		public List<SelectOptionVO> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId)
+		{
+			try{
+				List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId, impactedRegionId, locationId);
+				
+				return getStatusWiseProblemsCount(params);
+				
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<SelectOptionVO> getTotalProblemsStatusForAnUser(Long userId)
+		{
+			try{
+				List<Object> params = problemHistoryDAO.getTotalProblemsStatusForAnUser(userId);
+				
+				return getStatusWiseProblemsCount(params);
+				
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<SelectOptionVO> getStatusWiseProblemsCount(List<Object> params)
+		{
+			try{
+				
+				List<SelectOptionVO> probCountList = new ArrayList<SelectOptionVO>(0);
+				Long New = 0l;
+				Long prog = 0l;
+				Long pending = 0l;
+				Long fixed = 0l;
+				Long total = 0l;
+				
+				for(Object status : params)
+				{
+					total++;
+					
+					if(status.toString().equalsIgnoreCase(IConstants.NEW))
+						New++;
+					else if(status.toString().equalsIgnoreCase(IConstants.PROGRESS))
+						prog++;
+					else if(status.toString().equalsIgnoreCase(IConstants.PENDING))
+						pending++;
+					else if(status.toString().equalsIgnoreCase(IConstants.FIXED))
+						fixed++;
+				}
+				
+				probCountList.add(new SelectOptionVO(New,IConstants.NEW));
+				probCountList.add(new SelectOptionVO(prog,IConstants.PROGRESS));
+				probCountList.add(new SelectOptionVO(pending,IConstants.PENDING));
+				probCountList.add(new SelectOptionVO(fixed,IConstants.FIXED));
+				probCountList.add(new SelectOptionVO(total,"Total"));
+				
+				return probCountList;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String status)
+		{
+			try{
+				String statusStr = " and model.problemStatus.status = '"+status+"' ";
+				if(status.equalsIgnoreCase("Total"))
+					statusStr = " ";
+				List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(userId, impactedRegionId, locationId, statusStr);
+				
+				return convetProblemHistotyToProblemBeanVO(list);
+				
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> getStatusWiseProblemsForAnUser(Long userId,String status)
+		{
+			try{
+			String statusStr = " and model.problemStatus.status = '"+status+"' ";
+			if(status.equalsIgnoreCase("Total"))
+				statusStr = " ";
+			List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(userId,statusStr);
+			
+			return convetProblemHistotyToProblemBeanVO(list);
+			
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		
+		public List<SelectOptionVO> getCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId)
+		{
+			try{
+				List<SelectOptionVO> probCountList = new ArrayList<SelectOptionVO>(0);
+				Long personal,assidned,total;
+				List<Object> cadreprob = null;
+				List<Object> cadreAssprob = null;
+				
+				if(impactedRegionId == null || locationId == null)
+				{
+					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountForAnUser(userId);
+					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountForAnUser(userId);
+				}
+				else
+				{
+					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(userId,impactedRegionId,locationId);
+					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountInARegion(userId,impactedRegionId,locationId);
+				}
+				if(cadreprob != null && cadreprob.size() > 0)
+					personal = (Long)cadreprob.get(0);
+				else
+					personal = 0l;
+				
+				
+				if(cadreAssprob != null && cadreAssprob.size() > 0)
+					assidned = (Long)cadreAssprob.get(0);
+				else
+					assidned = 0l;	
+				
+				total = personal + assidned;
+				
+				probCountList.add(new SelectOptionVO(personal,IConstants.CADRE_PERSONAL));
+				probCountList.add(new SelectOptionVO(assidned,IConstants.CADRE_ASSIGNED));
+				probCountList.add(new SelectOptionVO(total,"Total"));
+				
+				return probCountList;
+			}catch(Exception e){
+				return null;
+			}
+			
+		}
+		
+		public List<ProblemBeanVO> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status)
+		{
+			try{
+				List<ProblemHistory> cadreProblemsList = null;
+				List<ProblemHistory> cadreAssignedProblemsList = null;
+				List<ProblemHistory> totalProblemsList = new ArrayList<ProblemHistory>(0);
+				
+				if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL) || status.equalsIgnoreCase(IConstants.TOTAL))
+				{
+					if(impactedRegionId != null && locationId != null)
+						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsInARegion(userId,impactedRegionId,locationId);
+					else
+						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsForAnUser(userId);
+				}
+				
+				if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED) || status.equalsIgnoreCase(IConstants.TOTAL))
+				{
+					if(impactedRegionId != null && locationId != null)
+						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsInARegion(userId,impactedRegionId,locationId);
+					else
+						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsForAnUser(userId);
+				}
+				
+				if(cadreProblemsList != null && cadreProblemsList.size() > 0)
+					for(ProblemHistory problemHistory : cadreProblemsList)
+						totalProblemsList.add(problemHistory);
+				
+				if(cadreAssignedProblemsList != null && cadreAssignedProblemsList.size() > 0)
+					for(ProblemHistory problemHistory : cadreAssignedProblemsList)
+						totalProblemsList.add(problemHistory);
+				
+				return convetProblemHistotyToProblemBeanVO(totalProblemsList);
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> getDeptProblemsBasedOnStatusInARegion(Long userId,Long impactedRegionId,Long locationId,Long deptId,String status)
+		{
+			try{
+				
+				String statusStr = null;
+				String deptStr = null;
+				if(status.equalsIgnoreCase(IConstants.TOTAL))
+					statusStr = "";
+				else
+					statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'"; 
+				if(deptId != null && deptId.longValue() > 0)
+					deptStr = " and model.departmentOrganisation.departmentOrganisationId = "+deptId;
+				else
+					deptStr = "";
+				
+				List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				
+				if(progressIdList != null && progressIdList.size() > 0)
+				{
+					return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getProblemsBasedOnAssignedProblemProgressIdAndStatus(userId,progressIdList,deptStr,statusStr));
+				}
+				else
+					return null;
+			}catch(Exception e){
+				 log.error("Exception Raised In getDeptProblemsBasedOnStatusInARegion Method :" + e);
+				return null;
+			}
+		}
+		public List<ProblemBeanVO> getDeptWiseProblemsCountInALocation(Long userId,Long impactedRegionId,Long locationId)
+		{
+			try{
+				
+				List<Long> progressIdList = assignedProblemProgressDAO.getDeptWiseAssignedProblemProgressIds(userId,getDepartmentLocationString(impactedRegionId,locationId));
+				
+				List<Object[]> deptInfoList = assignedProblemProgressDAO.getProblemsStatusBasedOnAssignedProblemProgressId(userId,progressIdList);
+				
+				if(deptInfoList != null && deptInfoList.size() > 0)
+				{
+					List<ProblemBeanVO> beanVOList = new ArrayList<ProblemBeanVO>(0); 
+					
+					for(Object[] params : deptInfoList)
+					{
+						Object status = params[0];
+						Long id = (Long) params[1];
+						String deptName = params[2].toString();
+						boolean flag = true;
+						
+						for(ProblemBeanVO problemBeanVO:beanVOList)
+						{
+							if(id.equals(problemBeanVO.getDepartmentId()))
+							{
+								problemBeanVO.getStatusList().add(status);
+								flag = false;
+							}
+						}
+						
+						if(flag)
+						{
+							ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+							List<Object> objList = new ArrayList<Object>(0);
+							
+							problemBeanVO.setDepartmentId(id);
+							problemBeanVO.setDeptName(deptName);
+							objList.add(status);
+							problemBeanVO.setStatusList(objList);
+							beanVOList.add(problemBeanVO);
+						}
+					}
+					
+					for(ProblemBeanVO problemBeanVO : beanVOList)
+					{
+						problemBeanVO.setDepartments(getStatusWiseProblemsCount(problemBeanVO.getStatusList()));
+						problemBeanVO.setProblemsCount((long)problemBeanVO.getStatusList().size());
+					}
+					return beanVOList;
+				}
+				else
+					return null;
+			
+			}catch(Exception e){
+				return null;
+			}
+			
+		}
+		
+		public String getDepartmentLocationString(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String deptLocationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					deptLocationStr = " and model.departmentLocation.state.stateId = "+locationId+ " and model.departmentLocation.district.districtId is null ";
+				else if(regionId == 3)
+					deptLocationStr = " and model.departmentLocation.district.districtId = "+locationId+" and model.departmentLocation.constituency.constituencyId is null ";
+				else if(regionId == 4)
+					deptLocationStr = " and model.departmentLocation.constituency.constituencyId = "+locationId + " and model.departmentLocation.tehsil.tehsilId is null and model.departmentLocation.localElectionBody.localElectionBodyId is null ";
+				else if(regionId == 5)
+					deptLocationStr = " and model.departmentLocation.tehsil.tehsilId = "+locationId + " and model.departmentLocation.hamlet.hamletId is null ";
+				else if(regionId == 6)
+					deptLocationStr = " and model.departmentLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					deptLocationStr = " and model.departmentLocation.localElectionBody.localElectionBodyId = "+locationId + " and model.departmentLocation.ward.constituencyId is null ";
+				else if(regionId == 8)
+					deptLocationStr = " and model.departmentLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					deptLocationStr = " and model.departmentLocation.booth.boothId = "+locationId;
+				
+				return deptLocationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		public List<ProblemBeanVO> getDeptWiseProblemsCountForAnUser(Long userId,Long deptScopeId)
+		{
+			try{
+				List<SelectOptionVO> deptList = problemManagementService.getDepartmentsForADepartmentResolvingAreaScope(deptScopeId);
+				List<ProblemBeanVO> deptWiseProbList = null;
+				if(deptList != null && deptList.size() > 0)
+				{
+					deptWiseProbList = new ArrayList<ProblemBeanVO>(0);
+					ProblemBeanVO problemBeanVO = null;
+					
+					for(SelectOptionVO dept : deptList)
+					{
+						problemBeanVO = new ProblemBeanVO();
+						problemBeanVO.setDepartmentId(dept.getId());
+						problemBeanVO.setDeptName(dept.getName());
+						
+						List<Object> list = assignedProblemProgressDAO.getDepartmentWiseProblemStatus(userId,dept.getId());
+						
+						if(list != null && list.size() > 0)
+							problemBeanVO.setProblemsCount((long)(list.size()));
+						else
+							problemBeanVO.setProblemsCount(0l);
+						
+						problemBeanVO.setDepartments(getStatusWiseProblemsCount(list));
+						
+						deptWiseProbList.add(problemBeanVO);
+					}
+				}
+				return deptWiseProbList;
+			}catch(Exception e){
+				return null;
+			}
+			
+		}
+		
+		public List<ProblemBeanVO> getDepartmentWiseProblemsBasedOnStatus(Long userId,Long deptId,String status)
+		{
+			try{
+				String statusStr = null;
+				if(status.equalsIgnoreCase(IConstants.TOTAL))
+					statusStr = "";
+				else
+					statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'"; 
+				
+				return convetProblemHistotyToProblemBeanVO(assignedProblemProgressDAO.getDepartmentWiseProblemsBasedOnStatus(userId,deptId,statusStr));
+				
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> getProblemsInADeptScopeBasedOnScope(Long userId,Long scopeId,String status)
+		{
+			try{
+				List<SelectOptionVO> deptList = problemManagementService.getDepartmentsForADepartmentResolvingAreaScope(scopeId);
+				if(deptList != null && deptList.size() > 0)
+				{
+					List<ProblemBeanVO> totalProbList = new ArrayList<ProblemBeanVO>(0);
+					List<ProblemBeanVO> deptWiseProbList = null;
+					for(SelectOptionVO dept : deptList)
+					{
+						deptWiseProbList = getDepartmentWiseProblemsBasedOnStatus(userId,dept.getId(),status);
+						if(deptWiseProbList != null && deptWiseProbList.size() > 0)
+							for(ProblemBeanVO problemBeanVO : deptWiseProbList)
+								totalProbList.add(problemBeanVO);
+					}
+					return totalProbList;
+				}
+				else 
+					return null;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public List<ProblemBeanVO> convetProblemHistotyToProblemBeanVO(List<ProblemHistory> list)
+		{
+			try{
+				if(list != null && list.size() > 0)
+				{
+					List<ProblemBeanVO> problemBeanList = new ArrayList<ProblemBeanVO>(0);
+					
+					for(ProblemHistory problemHistory : list)
+					{
+						ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+						Problem problem = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem();
+						Set<AssignedProblemProgress> set = problemHistory.getAssignedProblemProgresses();
+						AssignedProblemProgress assignedProblemProgress = null;
+						
+						problemBeanVO.setProblem(problem.getProblem());
+						problemBeanVO.setDescription(problem.getDescription());
+						problemBeanVO.setReportedDate(problem.getIdentifiedOn() != null ? problem.getIdentifiedOn().toString() : "");
+						problemBeanVO.setProblemStatus(problemHistory.getProblemStatus().getStatus());
+						problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
+						
+						problemBeanVO.setProblemLocation(getProblemLocation(problemHistory.getProblemLocation().getProblemImpactLevel().getRegionScopesId(),
+											problemHistory.getProblemLocation().getProblemImpactLevelValue()));
+						
+						for(AssignedProblemProgress assigned : set)
+						{
+							if(assignedProblemProgress == null)
+								assignedProblemProgress = assigned;
+							else if(assignedProblemProgress.getAssignedProblemProgressId() < assigned.getAssignedProblemProgressId())
+								assignedProblemProgress = assigned;
+						}
+						if(assignedProblemProgress != null && assignedProblemProgress.getCadre() != null)
+						{
+							problemBeanVO.setCadreId(assignedProblemProgress.getCadre().getCadreId());
+							problemBeanVO.setCadreName(assignedProblemProgress.getCadre().getFirstName()+" "+
+									assignedProblemProgress.getCadre().getLastName());
+						}
+						if(assignedProblemProgress != null && assignedProblemProgress.getDepartmentOrganisation() != null)
+						{
+							problemBeanVO.setDepartment(assignedProblemProgress.getDepartmentOrganisation().getOrganisationName());
+						}
+						if(assignedProblemProgress != null && assignedProblemProgress.getProblemActivity() != null)
+						{
+							problemBeanVO.setRecentActivity(assignedProblemProgress.getProblemActivity().getComments());
+						}
+						if(assignedProblemProgress != null && assignedProblemProgress.getComments() != null)
+						{
+							problemBeanVO.setComments(assignedProblemProgress.getComments());
+						}
+						problemBeanList.add(problemBeanVO);
+					}
+					return problemBeanList;
+				}
+				else
+					return null;
+
+			}catch(Exception e)
+			{
+				return null;
+			}
+		}
+		
+		public String getProblemLocation(Long impactLevel,Long impactValue)
+		{
+			try{
+				String locationStr = "";
+				
+				switch (impactLevel.intValue()) {
+	            case 2:  
+	        	{
+	        		State state = stateDAO.get(impactValue);
+	        		locationStr = state.getStateName();
+	        		break;
+	        	}
+	            case 3:
+	            {
+	            	District district = districtDAO.get(impactValue);
+	            	locationStr = district.getDistrictName() + ", "+ district.getState().getStateName() ;	            	
+	            	break;
+	            }
+	            case 4: {
+	            	Constituency constituency = constituencyDAO.get(impactValue);
+					
+					if(IConstants.PARLIAMENT_ELECTION_TYPE.equals(constituency.getElectionScope().getElectionType().getElectionType()))
+					{	
+						locationStr = constituency.getName()+ " " +constituency.getState().getStateName();						
+					} else 
+					{
+						locationStr = constituency.getName()+", "+ constituency.getDistrict().getDistrictName()+"(Dt.)"+", "+constituency.getState().getStateName();						
+					}				
+	            	break;
+	            }
+	            case 5: 
+	            {
+	            	Tehsil tehsil = tehsilDAO.get(impactValue);
+	            	locationStr = tehsil.getTehsilName()+ " (Mandal), "+ setConstDistStateTOResult(tehsil.getTehsilId());
+					break;
+	            }            
+	            case 6:
+	            {
+	            	Hamlet hamlet = hamletDAO.get(impactValue);
+	            	locationStr = hamlet.getHamletName()+"(Village, )" +setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
+	            	break;
+	            }
+	            case 7:
+	            {
+	            	LocalElectionBody localBody = localElectionBodyDAO.get(impactValue);
+	            	locationStr = localBody.getName()+ "-" +localBody.getElectionType().getElectionType() +", "+localBody.getDistrict().getDistrictName()+"(Dt.)"+", " +localBody.getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 8:
+	            {
+	            	Constituency ward = constituencyDAO.get(impactValue);
+	            	locationStr = ward.getName()+", "+ ward.getLocalElectionBody().getName()+"-" +ward.getLocalElectionBody().getElectionType().getElectionType()+ ", "+ward.getLocalElectionBody().getDistrict().getDistrictName()+", "+ ward.getLocalElectionBody().getDistrict().getState().getStateName();
+	            	break;
+	            }
+	            case 9:
+	            {
+	            	Booth booth = boothDAO.get(impactValue);
+	            	if(booth.getTehsil()!= null)
+	            	{
+	            		locationStr = booth.getTehsil().getTehsilName() + ", "+booth.getTehsil().getTehsilName()+setConstDistStateTOResult(booth.getTehsil().getTehsilId());	            		           		
+	            	}else if(booth.getLocalBody() != null)
+	            	{            		            		
+	            		locationStr = booth.getLocalBody().getName()+booth.getLocalBody().getDistrict().getDistrictName()+booth.getLocalBody().getDistrict().getState().getStateName();	            		
+	            	}
+	            	
+	            	break;
+	            }
+	            default: System.out.println("Invalid Scope.");break;
+	        }
+			
+			return locationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
 }
