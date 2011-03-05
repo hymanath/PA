@@ -381,7 +381,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model),model.constituency.constituencyId,model.constituency.name from ConstituencyElection model");			
 		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");		
-		query.append(" group by model.constituency.constituencyId  order by count(model) desc");	
+		query.append(" and model.constituency.deformDate is null group by model.constituency.constituencyId  order by count(model) desc");	
 		
 		Query queryObject = getSession().createQuery(query.toString());		
 		

@@ -510,7 +510,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  			} 			
  			if(partieId.intValue()==0){
  				selectedParties = staticDataService.getStaticPartiesAsList(stateId); 				
- 				result = nominationDAO.getAllPartyResults(allonstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
+ 				result = nominationDAO.getAllPartyStrengthsResults(allonstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
  			}else{ 				
  				result = nominationDAO.getPartyResultsForAParty(allonstituencies,partieId,IConstants.ELECTION_SUBTYPE_MAIN);	
  			}
@@ -643,14 +643,14 @@ public class PartyStrengthService implements IPartyStrengthService {
 				if(selectedYearsCount.intValue()-totalCount<0){
 					return null;
 				}else{
-					if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES)){
+					//if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES)){
 						PartiesDetailsVO vo = new PartiesDetailsVO();
 						vo.setConstituencyId(constId);
 						vo.setCount(selectedYearsCount-totalCount);
 						vo.setPartyName(IConstants.OTHERS);
 						vo.setConstituencyName(constName); 		
 						result.add(vo);
-					}		
+					//}		
 				}						
 			//ends here...
 						
