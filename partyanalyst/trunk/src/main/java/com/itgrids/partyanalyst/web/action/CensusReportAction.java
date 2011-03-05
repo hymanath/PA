@@ -162,6 +162,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		
 		states = new ArrayList<SelectOptionVO>();		
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));
+		states.add(new SelectOptionVO(24L,"Tamil Nadu"));
 		setYears(getStaticDataService().getElectionYears(2L, false));
 		
 		List<SelectOptionVO> censusParamList = new ArrayList<SelectOptionVO>(0);
