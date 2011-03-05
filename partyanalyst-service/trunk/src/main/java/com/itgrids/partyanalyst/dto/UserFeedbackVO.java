@@ -19,6 +19,7 @@ public class UserFeedbackVO extends ResultStatus implements Serializable{
 	private String userType;
 	private String userName;
 	private String responseCategory;
+	private Long responseCategoryId;
 	private Date posteddate;
 	private String status;
 	
@@ -94,6 +95,13 @@ public class UserFeedbackVO extends ResultStatus implements Serializable{
 	public String getUserType() {
 		return userType;
 	}
+	public Long getResponseCategoryId() {
+		return responseCategoryId;
+	}
+	public void setResponseCategoryId(Long responseCategoryId) {
+		this.responseCategoryId = responseCategoryId;
+	}
+	
 	
 		
 }
