@@ -212,37 +212,31 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetConstituenciesHavingMaxSpan()
 	{
 		List<Long> elecIds = new ArrayList<Long>(0);
-		elecIds.add(2l);
-		elecIds.add(3l);
-		elecIds.add(34l);
-		
+		elecIds.add(4l);
+		elecIds.add(5l);
+		elecIds.add(23l);
+		elecIds.add(24l);
+		elecIds.add(25l);
+		elecIds.add(28l);
+		elecIds.add(29l);
+	
 	//	segregateAllConstituencies(7l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l);
 		segregateAllConstituencies(3l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN,1l,elecIds);
 	}
 	
+	/**
+	 * @param selectedNoOfYears
+	 * @param electionType
+	 * @param electionSubType
+	 * @param stateId
+	 * @param elecIds
+	 */
 	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId,List<Long> elecIds){
-		
-		List<Long> requiredConstituencies = new ArrayList<Long>(0);
-		List<Long> latestConstituencies = new ArrayList<Long>(0);
-		List<Long> remianingConstituencies = new ArrayList<Long>(0);
-		ListIterator it = null;
-		
 		try{
 			List result = constituencyElectionDAO.getConstituenciesHavingMaxSpan(electionSubType,electionType,stateId,elecIds);	
-			System.out.println(result.size());
-			if(result!=null && result.size()>0){
-				it = result.listIterator();
-				while(it.hasNext()){
-					Object[] parms = (Object[]) it.next();					
-						System.out.println("\t \t"+parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]);
-				}
-					
-			}
-			
+			System.out.println(result.size());			
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			it = null;
 		}
 	}
 	
