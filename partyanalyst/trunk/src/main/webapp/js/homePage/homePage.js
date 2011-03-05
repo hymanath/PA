@@ -14,9 +14,15 @@ function initializeHomePage()
 {
 	//buildLogoImage();	
 	$( "#accordion" ).accordion();
+	
+	$('#floatingDiv_absolute_main').addFloating(  
+	 {  
+		 targetRight: 10,  
+		 targetTop: 10,  
+		 snap: true  
+	 });  
 
-
-	$(".floatingDiv_main").makeFloat({x:"current",y:"current"});
+	
 
 	buildElectionTrendzTabView();
 	buildHOmePageImageSlider();
@@ -36,6 +42,128 @@ function initializeHomePage()
 	buildTopStoriesNews();
 	buildPartiesNews();
 }
+
+function showFeedBackFormPanel()
+{
+	/*$( "#feedback_window" ).dialog({
+			title:"Feed Back",
+			autoOpen: true,
+			show: "blind",
+			width: 700,
+			minHeight:550,
+			modal: false,
+			hide: "explode",
+			draggable:false
+		});*/
+	
+	$("#feedback_window").dialog({
+		resizable:false,
+		width: 600,
+		minHeight:350,
+		show:'slide',
+		modal:true
+	});
+	
+	
+	$(".ui-dialog-titlebar").hide();
+
+	var elmt = document.getElementById("feedback_window_inner");
+
+	var str = '';
+	str += '<div id="feedback_window_head">Feed Back</div>';
+	str += '<div id="feedback_window_body">';
+	str += '	<div id="feedBackNote_div">';
+	str += '		<table>';
+	str += '		<tr>';
+	str += '		<td><img src="images/icons/infoicon.png"></td>';
+	str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
+	str += '		</tr>';
+	str += '		</table>';
+	str += '	</div>';
+	str += '	<div id="feedBackForm_div">';
+	str += '		<table id="feedbackTable" width="100%">';
+	str += '		<tr>';
+	str += '		<th><font color="red">*</font> Select feedback type </th>';
+	str += '		<td>';
+	str += '			<input type="radio" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
+	str += '			<input type="radio" class="selectWidth" value="2" name="commentType"> Problem ';
+	str += '			<input type="radio" class="selectWidth" value="3" name="commentType"> Praise ';
+	str += '			<input type="radio" class="selectWidth" value="4" name="commentType"> Suggestion ';
+	str += '		</td>';
+	str += '		</tr>';
+
+	str += '		<tr>';
+	str += '		<th><font color="red">*</font>Feedback about</th>';
+	str += '		<td>';
+	str += '			<select>';
+	str += '			<option value="1">Web Site</option>';
+    str += '			<option value="2">Party Analysis </option>';
+    str += '			<option value="3">Constituency page</option>';
+	str += '			<option value="4">Politician Analysis</option>';
+    str += '			<option value="5">Search Analysis</option>';
+    str += '			<option value="6">Other</option>';
+	str += '			</select>';
+	str += '		</td>';
+	str += '		</tr>';
+
+	str += '		<tr>';
+	str += '		<th><font color="red">*</font>Feedback </th>';
+	str += '		<td>';
+	str += '			<textarea align="right" id="commentId" rows="5" cols="39" name="comment"></textarea>';
+	str += '		</td>';
+	str += '		</tr>';
+
+	str += '		<tr>';
+	str += '		<th><font color="red">*</font> Select Response type </th>';
+	str += '		<td>';
+	str += '		      <input type="radio" checked="checked" value="Early" name="responseCategory">Early ';
+	str += '		      <input type="radio" value="Late" name="responseCategory">Late';
+	str += '		</td>';
+	str += '		</tr>';
+
+	str += '		</table>';
+	str += '	</div>';
+	str += '</div>';
+	str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+	str += '	<table width="100%">';
+	str += '	<tr>';
+	str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+	str += '	<td width="35%" align="right">';
+	str += '		<input id="postButton" type="button" value="Post"></input>';
+	str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
+	str += '	</td>';
+	str += '	</tr>';
+	str += '	</table>';	
+	str += '</div>';
+		
+	elmt.innerHTML = str;
+
+	var oPushButton1 = new YAHOO.widget.Button("postButton");  
+	var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+	oPushButton1.on("click",function(){
+		postFeedbackAjaxCall();
+	});
+
+	oPushButton2.on("click",function(){
+		$("#feedback_window").dialog("destroy");
+	});
+
+}
+
+function postFeedbackAjaxCall()
+{
+	var errorElmt = document.getElementById("feedback_window_errorMsg");
+	
+	var feedBackElmt = document.getElementById("commentId");
+	feedBackElmtValue = feedBackElmt.value;
+
+	if(feedBackElmtValue == "")
+		errorElmt.innerHTML = "Feedback box cannot be empty";
+	else
+		errorElmt.innerHTML = "";
+}
+
 
 function buildHOmePageImageSlider()
 {
