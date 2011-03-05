@@ -9,6 +9,7 @@ var emptyArray = new Array();
 var selectedState = '';
 var selectedStateId = '';
 var localBodyString = '';
+var loginStatus = '';
 
 function initializeHomePage()
 {
@@ -45,6 +46,11 @@ function initializeHomePage()
 
 function showFeedBackFormPanel()
 {
+	if(loginStatus == "false")
+	{
+		alert("Please login to post your feedback");
+		return;
+	}
 	/*$( "#feedback_window" ).dialog({
 			title:"Feed Back",
 			autoOpen: true,
@@ -95,7 +101,7 @@ function showFeedBackFormPanel()
 	str += '		<tr>';
 	str += '		<th><font color="red">*</font>Feedback about</th>';
 	str += '		<td>';
-	str += '			<select>';
+	str += '			<select id="taskId">';
 	str += '			<option value="1">Web Site</option>';
     str += '			<option value="2">Party Analysis </option>';
     str += '			<option value="3">Constituency page</option>';
@@ -162,8 +168,80 @@ function postFeedbackAjaxCall()
 		errorElmt.innerHTML = "Feedback box cannot be empty";
 	else
 		errorElmt.innerHTML = "";
+	
+   var feedbackTypeElmt = document.getElementsByName("commentType");
+   var feedbackAboutElmt = document.getElementById("taskId");
+   var responseTypeElmt = document.getElementsByName("responseCategory");
+	
+	
+   var feedbackType = '';
+   var feedbackAbout = '';
+   var responseType = '';
+
+	feedbackAbout = feedbackAboutElmt.value;
+   for(var i=0; i<feedbackTypeElmt.length; i++)
+		 if(feedbackTypeElmt[i].checked==true)
+             feedbackType = feedbackTypeElmt[i].value;
+	
+	for(var j=0;j<responseTypeElmt.length;j++)
+		if(responseTypeElmt[j].checked == true)
+				responseType = responseTypeElmt[j].value;
+
+  var jObj=
+         {
+			feedback:feedBackElmtValue,
+			commentTypeId :feedbackType,
+			commentTaskId :feedbackAbout,
+			responseType :responseType,
+			task : "getComments"
+		 };
+		 
+	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+     var url = "userFeedbackSubmitAjaxAction.action?"+rparam;
+	 callHomePageAjax(jObj,url);
 }
 
+function callHomePageAjax(jsObj,url)
+{			
+	
+	var callback = {			
+				   success : function( o ) {
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.task == 'getComments')
+							{
+								showFeedBackStatus(myResults);
+							}		
+						}
+						catch(e)
+						{   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+function closewindow()
+{
+	$("#feedback_window").dialog("destroy");
+}
+function showFeedBackStatus(result)
+{
+	if(result.exceptionEncountered == null)
+	{
+		var errorElmt = document.getElementById("feedback_window_errorMsg");
+			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
+		
+		setTimeout("closewindow()",2000);
+	}
+}
 
 function buildHOmePageImageSlider()
 {
