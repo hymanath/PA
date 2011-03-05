@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -27,13 +28,33 @@ public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	@Test
+	/*@Test
 	@SuppressWarnings("unchecked")
 	public void testGetCadreProblemDetails(Long problemHistoryId){
 		
 		List results = cadreProblemDetailsDAO.getCadreDetailsByProblemHistoryId(107L);
 		
 		System.out.println(" Results :" + results.size());
+	}*/
+	
+/*	public void testGetCadreProblemsCountInARegion()
+	{
+		List<Object> list = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(1l,3l,19l);
+		System.out.println(list.get(0).toString());
+	}*/
+	
+	/*public void testGetCadreProblemsCountForAnUser()
+	{
+		List<Object> list = cadreProblemDetailsDAO.getCadreProblemsCountForAnUser(1l);
+		System.out.println(list.get(0).toString());
+	}*/
+	
+	public void testGetCadreProblemsInARegion()
+	{
+		List<ProblemHistory> list = cadreProblemDetailsDAO.getCadreProblemsInARegion(1l,3l,19l);
+		System.out.println(list.size());
 	}
+	
+	
 
 }

@@ -78,7 +78,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
 	}*/
 	
-	/*public void testmandalInfo()
+	public void testmandalInfo()
 	{
 		List votersList  = boothDAO.findVoterInformationByMandalIdsAndDelimitationYear("849,851,852,853,854,859,860,862","2004", 235l);
 		List<VotersInfoForMandalVO> votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
@@ -100,7 +100,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(obj.getMandalId()+" - "+obj.getMandalName()+" - "+obj.getTotalVoters()+" - "+obj.getTotalMaleVoters()+" - "+obj.getTotalMaleVoters());
 		}
-	}*/
+	}
 	
 	/*public void testFindbyConstituencyNameDistrictIdAndElectionYear(){
 		List list = boothDAO.findbyConstituencyNameDistrictIdAndElectionYear("Kavali", 19l, 2009l);
@@ -152,9 +152,9 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("id:"+values[0]+"\t"+"Part No:"+values[1]+"\t"+"const Id "+values[2]+"\t"+"local id:"+values[3]);
 	}*/
 	
-	public void testUpdateVillagesCoveredInfoInAConstituency() {
+	/*public void testUpdateVillagesCoveredInfoInAConstituency() {
 		int update = boothDAO.updateVillagesCoveredInfoInAConstituency(232l, "", "", 2009l);
 		System.out.println(update);
-	}
+	}*/
 	
 }

@@ -389,7 +389,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetProblemsForAnUserByStatus() throws Exception{
 		
@@ -417,7 +417,56 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	    
-	}
+	}*/
 	
+	/*public void testGetTotalProblemsCountForAnUserInARegion()
+	{
+		List list = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(1l,3l,19l);
+		System.out.println(list.size());
+	}*/
+	
+	
+	/*public void testGetStatusWiseProblemsForAnUserInARegion()
+	{
+		//String status = " and model.problemStatus.status = 'FIXED' ";
+		String status = "";
+		List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(1l,3l,19l,status);
+		
+		for(ProblemHistory problemHistory : list)
+		{
+			System.out.println(problemHistory.getProblemStatus().getStatus());
+			Set<AssignedProblemProgress> set = problemHistory.getAssignedProblemProgresses();
+			AssignedProblemProgress asp = null;
+			for(AssignedProblemProgress assignedProblemProgress : set)
+			{
+				if(asp == null)
+				asp = assignedProblemProgress;
+				else if(asp.getAssignedProblemProgressId() < assignedProblemProgress.getAssignedProblemProgressId())
+				asp = assignedProblemProgress;
+			}
+			if(asp != null && asp.getCadre() != null)
+				System.out.println("==========="+asp.getCadre().getFirstName()+"======="+asp.getAssignedProblemProgressId());
+			
+		}
+		
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetTotalProblemsStatusForAnUser()
+	{
+		List<Object> list = problemHistoryDAO.getTotalProblemsStatusForAnUser(1l);
+		System.out.println(list.size());
+		
+		for(Object obj:list)
+		{
+			System.out.println(obj.toString());
+		}
+	}
+	public void testGetStatusWiseProblemsForAnUser()
+	{
+		String status = "";
+		List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUser(1l,status);
+		System.out.println(list.size());
+	}
 }	
 
