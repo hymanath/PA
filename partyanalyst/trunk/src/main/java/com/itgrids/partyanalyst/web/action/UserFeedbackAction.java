@@ -11,10 +11,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserFeedbackVO;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
 import com.itgrids.partyanalyst.service.impl.OpinionPollService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -30,6 +32,17 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 	private HttpServletRequest request;
 	private HttpSession session;
 	private OpinionPollService opinionPollService;
+	private String task;
+	JSONObject jObj;
+	private UserFeedbackVO feedbackVO = new UserFeedbackVO();
+	private ResultStatus resultStatus;
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 			
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -50,13 +63,31 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 	public OpinionPollService getOpinionPollService() {
 		return opinionPollService;
 	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public JSONObject getJObj() {
+		return jObj;
+	}
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+	public UserFeedbackVO getFeedbackVO() {
+		return feedbackVO;
+	}
+	public void setFeedbackVO(UserFeedbackVO feedbackVO) {
+		this.feedbackVO = feedbackVO;
+	}
 	public void setOpinionPollService(OpinionPollService opinionPollService) {
 		this.opinionPollService = opinionPollService;
 	}
 	public String execute() throws  Exception 
 	{
-		session = request.getSession();
-		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		
 		
 		List<SelectOptionVO> feedbackTaskList = new ArrayList<SelectOptionVO>(0);
 	    feedbackTaskList =  opinionPollService.getAllValuesFromFeedbackTask();
@@ -67,5 +98,52 @@ public class UserFeedbackAction extends ActionSupport implements ServletRequestA
 				session.setAttribute("feedbackCommentList",feedbackCommentList);	
 		return SUCCESS;
 	}
+	
+public String ajaxCallHandler(){
+	
+	session = request.getSession();
+	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+	if(user==null){
+		return IConstants.NOT_LOGGED_IN;
+	}
+	
+		try
+		 {
+			jObj = new JSONObject(getTask());
+			String task = jObj.getString("task");
+			  if(task.equalsIgnoreCase("getComments"))
+			  {
+				    String comment = jObj.getString("feedback");
+				    Long commentType = jObj.getLong("commentTypeId");
+				    Long commentTask = jObj.getLong("commentTaskId");
+				    String responseCategory = jObj.getString("responseType");
+				    
+				    feedbackVO.setComment(comment);
+				    feedbackVO.setCommentType(commentType);				   
+				    feedbackVO.setTaskName(commentTask);
+				    feedbackVO.setResponseCategory(responseCategory);
+				    feedbackVO.setUserId(user.getRegistrationID());
+				    feedbackVO.setUserType(user.getUserStatus());
+				    
+				    resultStatus =  opinionPollService.saveUserFeedback(feedbackVO);
+		    
+		            if(resultStatus.getExceptionEncountered() != null)
+		            	return Action.ERROR;
+		            
+		 	  }
+		 }
+		catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		  return Action.SUCCESS;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
