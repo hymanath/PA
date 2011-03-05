@@ -305,8 +305,14 @@
           <result name="success">/jsp/userFeedback.jsp</result>
         </action>
         
-          <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
+         <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
           <result name="success">/jsp/feedbackAdminApproval.jsp</result>
+        </action>
+        
+         <action name="userFeedbackSubmitAjaxAction" class="userFeedbackAction" method="ajaxCallHandler">         	
+            <result type="json" name="success">
+            	<param name="root">resultStatus</param>
+            </result>
         </action>
         
          <action name="userFeedbackSubmitAction" class="userFeedbackSubmitAction">
