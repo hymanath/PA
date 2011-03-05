@@ -2190,18 +2190,55 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>							
 			</result>		
-		</action>        
+		</action>    
+		
+		<action name="getTotalProblemsCountInaRegionAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">probCountList</param>				
+			</result>		
+		</action>   
+		
+		<action name="getStatusWiseProblemsInaRegionAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">problemBean</param>				
+			</result>		
+		</action> 
+		
+		<action name="getTotalProblemsStatusForAnUserAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">probCountList</param>				
+			</result>		
+		</action>
+		
+		<action name="getStatusWiseProblemsForAnUserAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">problemBean</param>				
+			</result>		
+		</action>
+		
+		<action name="getCadreProblemsCountInARegionAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">probCountList</param>				
+			</result>		
+		</action>
+		
+		<action name="getCadreProblemsInARegionAction" class="problemManagementReportAction" method="getTotalProblemsCount">
+			<result type="json" name="success">
+				<param name="root">problemBean</param>				
+			</result>		
+		</action>
+		
 		<action name="regionWisePartyElectionResultsAjaxAction" class="electionDetailsReportAction" method="getRegionWisePartyElectionResults">
 			<result type="json" name="success">
 				<param name="root">partyResultsInRegionVO</param>							
 			</result>		
 		</action>  
-		     
+		
 		<action name="feedBackApprovalAjaxAction" class="feedbackAdminApprovalAction" method="feedBackApprovalAjaxCall">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>							
 			</result>		
 		</action>
-		
-	</package> 
-</struts>
+				            		       	
+	</package>
+</struts>      
