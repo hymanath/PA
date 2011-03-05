@@ -5,10 +5,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserFeedbackVO;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -22,11 +25,11 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 	private HttpSession session;
 	private String task = null;
 	private UserFeedbackVO feedbackVO = new UserFeedbackVO();
-	
+	JSONObject jObj;
+	private Long responseCategoryId;
 	private String result;
 	private IOpinionPollService opinionPollService;
 	
-
 	public UserFeedbackVO getFeedbackVO() {
 		return feedbackVO;
 	}
@@ -61,6 +64,12 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 	}
 	public void setResponseCategory(String responseCategory) {
 		this.feedbackVO.setResponseCategory(responseCategory);
+	}
+	public Long getResponseCategoryId() {
+		return this.feedbackVO.getResponseCategoryId();
+	}
+	public void setResponseCategoryId(Long responseCategoryId) {
+		this.feedbackVO.setResponseCategoryId(responseCategoryId);
 	}
 	public IOpinionPollService getOpinionPollService() {
 		return opinionPollService;
@@ -99,14 +108,25 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 	public void setResult(String result) {
 		this.result = result;
 	}
+	public JSONObject getJObj() {
+		return jObj;
+	}
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
 	public String execute () throws Exception 
 	{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		feedbackVO.setUserId(user.getRegistrationID());
 		feedbackVO.setUserType(user.getUserStatus());
-			result = opinionPollService.saveUserFeedback(feedbackVO);
-       	return SUCCESS;
+			ResultStatus result = opinionPollService.saveUserFeedback(feedbackVO);
+			
+			
+			if(result.getExceptionEncountered() != null)
+            	return Action.ERROR;
+            
+      return Action.SUCCESS;
 			
 	}
 	
@@ -121,6 +141,8 @@ public class UserFeedbackSubmitAction extends ActionSupport implements ServletRe
 		/*if(getComment() == null || getComment().length() <= 0 )
 			addFieldError("comment","Please Enter Your Comments");*/
 	}
+	
+
 }
 	
 	

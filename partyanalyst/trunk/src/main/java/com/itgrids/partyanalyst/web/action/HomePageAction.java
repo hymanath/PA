@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -43,6 +44,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> constituenciesList;
 	private IProblemManagementReportService problemManagementReportService;
 	private List<ProblemBeanVO> problemsList;
+	private String loginStatus;
+
+	public String getLoginStatus() {
+		return loginStatus;
+	}
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus = loginStatus;
+	}
 	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
@@ -160,14 +169,24 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 
 	public String execute()
 	{	
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user==null){
+			loginStatus = "false";
+		}
+		else{
+			loginStatus = "true";
+		}
+		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		return Action.SUCCESS;
 	}
 	
 	public String ajaxCallHandler()
 	{
-		session = request.getSession();
-				
+		
+		
 		String param = null;
 		param = getTask();
 		
