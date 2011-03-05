@@ -10,9 +10,11 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProblemProgress, Long> implements IAssignedProblemProgressDAO {
 
@@ -88,6 +90,99 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 				"model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ? "+
 				"order by model.performedDate desc",problemId);	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getProblemsByDepartmentScope(Long userId,Long deptScopeId)
+	{
+		Object[] params = {userId,deptScopeId};
+		
+		return getHibernateTemplate().find("from AssignedProblemProgress model where "+
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and " +
+				" model.problemSourceScopeConcernedDepartment.problemSourceScope.problemSourceScopeId = ? and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" select count(distinct model.problemHistory.problemHistoryId) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
+				" and model.cadre is not null ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAssignedCadreProblemsCountForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select count(distinct model.problemHistory.problemHistoryId) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
+				" and model.cadre is not null ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getAssignedCadreProblemsForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getDepartmentWiseProblemStatus(Long userId,Long deptOrgId)
+	{
+		Object[] params = {userId,deptOrgId};
+		return getHibernateTemplate().find(" select model.problemHistory.problemStatus.status from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.departmentOrganisation.departmentOrganisationId = ? group by model.problemHistory.problemHistoryId ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getDepartmentWiseProblemsBasedOnStatus(Long userId,Long deptOrgId,String statusStr)
+	{
+		Object[] params = {userId,deptOrgId};
+		return getHibernateTemplate().find(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.departmentOrganisation.departmentOrganisationId = ? "+ statusStr +" group by model.problemHistory.problemHistoryId ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getDeptWiseAssignedProblemProgressIds(Long userId,String deptLocationStr)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select max(model2.assignedProblemProgressId) from AssignedProblemProgress model2 where model2.problemHistory.problemHistoryId in (select model.problemHistory.problemHistoryId from AssignedProblemProgress model " +
+				" where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' "+deptLocationStr+" group by model.problemHistory.problemHistoryId) group by model2.problemHistory.problemHistoryId ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getProblemsStatusBasedOnAssignedProblemProgressId(Long userId,List<Long> progressIdList)
+	{
+		Query queryObject = getSession().createQuery(" select model.problemHistory.problemStatus.status,model.departmentOrganisation.departmentOrganisationId,model.departmentOrganisation.organisationName from AssignedProblemProgress model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.assignedProblemProgressId in(:progressIdList) ");
+		
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("progressIdList", progressIdList);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr)
+	{
+		Query queryObject = getSession().createQuery(" select model.problemHistory from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and " +
+				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.assignedProblemProgressId in(:progressIdList) "+deptStr+" "+ statusStr);
+		
+		queryObject.setParameter(0, userId);
+		queryObject.setParameterList("progressIdList", progressIdList);
+		return queryObject.list();
+	}
+	
 
 		
 }

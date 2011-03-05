@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.model.CadreProblemDetails;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDetails,Long> implements ICadreProblemDetailsDAO 
 {
@@ -29,4 +30,37 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 				"model where model.problemHistory.problemLocation.problemAndProblemSource.problem.problemId = ?",problemId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object> getCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" select count(model.problemHistory.problemHistoryId) from CadreProblemDetails model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and " +
+				" model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getCadreProblemsCountForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select count(model.problemHistory.problemHistoryId) from CadreProblemDetails model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" select model.problemHistory from CadreProblemDetails model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and " +
+				" model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getCadreProblemsForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select model.problemHistory from CadreProblemDetails model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and  model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+	}
 }
