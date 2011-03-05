@@ -137,4 +137,13 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List getDifferentLifeCycleProblemsCountOfAUserPostedBetweenDates(Long userId,Long statusId,Date startDate,Date endDate);
 	
 	public List<ProblemHistory> getProblemHistoryBasedOnId(Long historyId);
+	
+	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
+	
+	public List<Object> getTotalProblemsStatusForAnUser(Long userId);
+	
+	public List<ProblemHistory> getStatusWiseProblemsForAnUser(Long userId,String statusStr);
+	
 }
