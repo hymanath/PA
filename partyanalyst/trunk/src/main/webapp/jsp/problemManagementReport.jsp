@@ -41,8 +41,9 @@
 <script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js"></script>
 
 <!-- YUI Skin Sam -->
 
@@ -250,6 +251,78 @@
 		{
 			padding: 10px;
 		}
+		.widgetHeader
+		{
+			background-image:url("images/icons/districtPage/header_body.png");
+			height:36px;
+		}
+		.widgetHeaderSpan
+		{
+			left:10px;
+			position:relative;
+			top:11px;
+			color:#4B74C6;
+			font-weight:bold;
+		}
+
+		.problemDetailsBody
+		{
+			border-bottom:1px solid #E0E0D6;
+			border-left:1px solid #E0E0D6;
+			border-right:1px solid #E0E0D6;
+			padding:10px;
+		}
+
+		.yui-skin-sam 
+		{
+			font-weight:bold;
+		}
+		.yui-skin-sam .yui-dt th .yui-dt th a
+		{
+			background-image:url(images/YUI-images/sprite.png)
+		}
+		
+		#yui-dt0-th-Categorize
+		{
+			background-color:blue;
+		}
+		#stProblemDetails_body
+		{
+			border-bottom:1px solid #E0E0D6;
+			border-left:1px solid #E0E0D6;
+			border-right:1px solid #E0E0D6;
+			padding-top:5px;
+		}
+
+		.problemDetailsBody_table th
+		{
+			background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+			padding:4px;
+			color:#2C31C1;
+		}
+		.problemDetailsBody_table td
+		{
+			padding:4px;
+			width:25px;
+			font-weight : bold;
+			color:#C308F2;
+		}
+		.problemDetailsBody_table_img
+		{
+			padding-right:10px;
+		}
+		.anchorStyle
+		{
+			cursor:pointer;
+		}
+		
+		.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a {
+			color:#000000;
+			font-weight:bold;
+			text-decoration:none;
+			vertical-align:bottom;
+		}
+		
 	</style>   	
 
 </head>
@@ -267,7 +340,9 @@ var Localization = { <%
 			String HAMLET   = rb.getString("HAMLET");			
   %> }
 
-	
+
+ google.load("visualization", "1", {packages:["corechart"]});
+
 var locationDetails={
 		stateArr:[],
 		districtArr:[],
@@ -329,6 +404,22 @@ function showProblemsReport(results, jsObj){
 			}
 					
 }
+
+function getProblemDepartments(selected,task)
+{
+		var jsObj=
+		{
+			scopeId		 : selected,
+			task		 : task,
+			deptCategoryId :  ''
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getProblemDepartmentsAjaxAction.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+
 function showProblemsReportWithDepartments()
 {
 	var resultsDataSource = new YAHOO.util.DataSource(problemDetails.problemArray);
@@ -682,16 +773,82 @@ var callback = {
 				{
 					showProblemsHistoryReport(myResults);			
 				}
-				if(jsObj.task == "departmentsByScope")
+				else if(jsObj.task == "departmentsByScope")
 				{
 					fillDeptSelect(myResults);			
-				}if(jsObj.task == "getProblemsBySelection")
+				}
+				else if(jsObj.task == "getProblemsBySelection")
 				{
 					showProblemsReport(myResults,jsObj);			
 				}	
-				if(jsObj.task == "getProblemsGroupedBySelection")
+				else if(jsObj.task == "getProblemsGroupedBySelection")
 				{
 					showProblemsByDepartment(myResults,jsObj);
+				}
+				else if(jsObj.task == "getTotalProblemsCount")
+				{
+					buildProblemDetailsChart(myResults);
+					getProblems('Total');
+				}
+				else if(jsObj.task == "getStatusWiseProblems")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getTotalProblemsStatus")
+				{
+					buildStatusWiseProblemDetailsChart(myResults);
+				}
+				else if(jsObj.task == "getStatusWiseAllProblems")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getCadreProblemsCountInARegion")
+				{
+					buildCadreProblemDetailsChart(myResults);
+				}
+				else if(jsObj.task == "getCadreProblemsInARegion")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getCadreProblemsCountForAnUser")
+				{
+					buildCadreProblemDetailsChart(myResults);
+				}
+				else if(jsObj.task == "getDepartmentCategories")
+				{
+					fillDeptSelect(myResults);
+				}
+				else if(jsObj.task == "getDeptWiseProblemsCountForAnUser")
+				{
+					buildDepartmentWiseProblemsCountChart(myResults);
+					buildDepartmentWiseProblemsCountTable(myResults);
+					
+					if(myResults != null && myResults.length > 0)
+					getProblemsInADeptScopeBasedOnScope(myResults[0].problemSourceScopeId,'Total');
+				}
+				else if(jsObj.task == "getDepartmentWiseProblems")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getProblemsInADeptScopeBasedOnScope")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getDeptWiseProblemsStatusInALocation")
+				{
+					buildDepartmentWiseProblemsCountInARegionChart(myResults);
+					buildDepartmentWiseProblemsCountInARegionTable(myResults);
+					
+					if(myResults != null && myResults.length > 0)
+					getDeptProblemsBasedOnStatusInARegion('Total');
+				}
+				else if(jsObj.task == "getDeptProblemsBasedOnStatusInARegion")
+				{
+					buildResultDataTable(myResults);
+				}
+				else if(jsObj.task == "getDeptWiseProblemsBasedOnStatusInARegion")
+				{
+					buildResultDataTable(myResults);
 				}
 				
 		}catch (e) {   		
@@ -794,24 +951,9 @@ function showProblemsByDepartment(results,jsObj)
 
 function fillDeptSelect(results)
 {
+	clearOptionsListForSelectElmtId('deptsSelectField');
+	fillOptionsForSelectedElmt('deptsSelectField', results);
 	var tableEl = document.getElementById("deptsSelectTable");
-	var selectEl = document.getElementById("deptsSelectField");
-	clearOptionsListForSelectElmtId("deptsSelectField");
-	for(var i in results.probConcernedDepts)
-	{
-		var opElmt=document.createElement('option');
-		opElmt.value=results.probConcernedDepts[i].id;
-		opElmt.text=results.probConcernedDepts[i].name;
-	
-		try
-			{
-			selectEl.add(opElmt,null); // standards compliant
-			}
-		catch(ex)
-			{
-			selectEl.add(opElmt); // IE only
-		}
-	}
 	tableEl.style.display = '';
 	
 }
@@ -842,7 +984,7 @@ function showProbRegionsSelect()
 	problemInfoDivBodyEl.innerHTML = '';
 }
 
-function showProbStatusSelect()
+function showProbStatusSelect(cadStr)
 {
 	var statusSpanEl = document.getElementById("statusSpan");
 	var probRegionSpanEl = document.getElementById("probRegionSpan");
@@ -853,6 +995,8 @@ function showProbStatusSelect()
 	var problemInfoDivBodyEl = document.getElementById("problemInfoDivBody");
 	if(statusSpanEl.style.display == 'none')
 		statusSpanEl.style.display = 'block';
+	if(cadStr == 'cadre')
+		statusSpanEl.style.display = 'none'
 	if(probRegionSpanEl.style.display == 'block')
 		probRegionSpanEl.style.display = 'none';
 	if(deptRegionSpanEl.style.display == 'block')
@@ -864,6 +1008,7 @@ function showProbStatusSelect()
 	errorDivEl.innerHTML = '';	
 	problemInfoDivBodyEl.innerHTML = '';
 }
+
 function showDeptRegionsSelect()
 {
 	var statusSpanEl = document.getElementById("statusSpan");
@@ -1045,7 +1190,9 @@ function populateLocations(val,source)
 			row3El.style.display = '';
 		if(row4El.style.display == 'none')
 			row4El.style.display = '';			
-	}		 
+	}
+	
+	setLocationValue(val,'onChange');
 }
 
 var accessType = "${accessType}";
@@ -1115,7 +1262,574 @@ function setLocationValue(value, source)
 	
 }
 
-function getProblems()
+function clearReportBody()
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
+	var statusWiseProblemInfoDivBodyEle = document.getElementById("statusWiseProblemInfoDivBody");
+	
+	var str = '';
+	if(problemInfoDivBodyEle)
+		problemInfoDivBodyEle.innerHTML = str;
+
+	if(deptWiseProblemInfoDivBodyEle)
+		deptWiseProblemInfoDivBodyEle.innerHTML = str;
+
+	if(statusWiseProblemInfoDivBodyEle)
+		statusWiseProblemInfoDivBodyEle.innerHTML = str;
+}
+
+function buildDepartmentWiseProblemsCountInARegionTable(result)
+{
+	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
+	
+	if(!deptWiseProblemInfoDivBodyEle || result == null)
+		return
+
+	var str = '';
+
+	str +='<div id="deptProblemDetails_main" style="width:900px;">';
+	str +='	<div id="deptProblemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan">Status Wise problems Count In All Deaprtments</span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='	<div id="deptProblemDetails_body" class="problemDetailsBody">';
+	str +='		<table class="problemDetailsBody_table">';
+	
+	for(var i=0; i<result.length;i++)
+	{
+		str +='<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total</th>';
+		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'Total\')" class="anchorStyle" >'+result[i].departments[4].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th>';
+		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'NEW\')" class="anchorStyle" >'+result[i].departments[0].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Progress</th>';
+		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'PROGRESS\')" class="anchorStyle" >'+result[i].departments[1].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Pending</th>';
+		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'PENDING\')" class="anchorStyle" >'+result[i].departments[2].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed</th>';
+		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'FIXED\')" class="anchorStyle" >'+result[i].departments[3].id+'</a></td>';
+		str +='</tr>';
+	}
+
+	str +='		</table>';
+	str +=' </div>';
+	str +='</div>';
+
+	deptWiseProblemInfoDivBodyEle.innerHTML = str;
+	
+}
+
+function buildDepartmentWiseProblemsCountTable(result)
+{
+	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
+	
+	if(!deptWiseProblemInfoDivBodyEle || result == null)
+		return
+
+	var str = '';
+
+	str +='<div id="deptProblemDetails_main" style="width:900px;">';
+	str +='	<div id="deptProblemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan">Status Wise problems Count In All Deaprtments</span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='	<div id="deptProblemDetails_body" class="problemDetailsBody">';
+	str +='		<table class="problemDetailsBody_table">';
+	
+	for(var i=0; i<result.length;i++)
+	{
+		str +='<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total</th>';
+		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'Total\')" class="anchorStyle" >'+result[i].departments[4].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th>';
+		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'NEW\')" class="anchorStyle" >'+result[i].departments[0].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Progress</th>';
+		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'PROGRESS\')" class="anchorStyle" >'+result[i].departments[1].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Pending</th>';
+		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'PENDING\')" class="anchorStyle" >'+result[i].departments[2].id+'</a></td>';
+		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed</th>';
+		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'FIXED\')" class="anchorStyle" >'+result[i].departments[3].id+'</a></td>';
+		str +='</tr>';
+	}
+
+	str +='		</table>';
+	str +=' </div>';
+	str +='</div>';
+
+	deptWiseProblemInfoDivBodyEle.innerHTML = str;
+	
+}
+
+function buildDepartmentWiseProblemsCountInARegionChart(result)
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+	
+	if(!problemInfoDivBodyEle || result == null)
+		return
+    
+	var total = 0,newp = 0,prog = 0,pend = 0,fix = 0;
+
+	for(var i=0;i<result.length;i++)
+	{
+		total += result[i].problemsCount;
+
+		for(var j=0;j<result[i].departments.length;j++)
+		{
+			var name = result[i].departments[j].name;
+			var count = result[i].departments[j].id;
+
+			if(name == 'NEW')
+				newp += count;
+			else if(name == 'PROGRESS')
+				prog += count;
+			else if(name == 'PENDING')
+				pend += count;
+			else if(name == 'FIXED')
+				fix += count;
+		}
+	}
+
+	var str = '';
+
+	str +='<div id="problemDetails_main" >';
+	str +='	<div id="problemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan">Total Problems In All Departments - <a onClick="getDeptProblemsBasedOnStatusInARegion(\'Total\')" class="anchorStyle" > '+total+'</a></span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	
+	str +='	<div id="problemDetails_body" class="problemDetailsBody" >';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">New </th><td><a onClick="getDeptProblemsBasedOnStatusInARegion(\'NEW\')" class="anchorStyle" >'+newp+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Progress </th><td><a onClick="getDeptProblemsBasedOnStatusInARegion(\'PROGRESS\')" class="anchorStyle" >'+prog+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Pending </th><td><a onClick="getDeptProblemsBasedOnStatusInARegion(\'PENDING\')" class="anchorStyle" >'+pend+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Fixed </th><td><a onClick="getDeptProblemsBasedOnStatusInARegion(\'FIXED\')" class="anchorStyle" >'+fix+'</a></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='				</td></tr>';
+	str +='			<tr><div id="problemDetails_body_table"></tr>';
+	str +='		</table>';
+	str +='</div>';
+
+	str +='</div>';
+
+	problemInfoDivBodyEle.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+       
+		data.addColumn('string','Department');
+		data.addColumn('number','New');
+        data.addColumn('number','Progress');
+        data.addColumn('number','Pending');
+		data.addColumn('number','Fixed');
+
+		data.addRows(result.length);
+				
+		for(var i=0;i<result.length;i++)
+		{
+			data.setValue(i,0,result[i].deptName);
+			data.setValue(i,1,result[i].departments[0].id);
+			data.setValue(i,2,result[i].departments[1].id);
+			data.setValue(i,3,result[i].departments[2].id);
+			data.setValue(i,4,result[i].departments[3].id);
+		}
+		
+		var chart =  new google.visualization.ColumnChart(document.getElementById('problemDetails_body_table'));
+        chart.draw(data, {width: 800, height: 300, title: 'Department Wise Problems'}); 
+
+	return;
+}
+
+
+function buildDepartmentWiseProblemsCountChart(result)
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+	
+	if(!problemInfoDivBodyEle || result == null)
+		return
+    
+	var total = 0,newp = 0,prog = 0,pend = 0,fix = 0;
+
+	for(var i=0;i<result.length;i++)
+	{
+		total += result[i].problemsCount;
+
+		for(var j=0;j<result[i].departments.length;j++)
+		{
+			var name = result[i].departments[j].name;
+			var count = result[i].departments[j].id;
+
+			if(name == 'NEW')
+				newp += count;
+			else if(name == 'PROGRESS')
+				prog += count;
+			else if(name == 'PENDING')
+				pend += count;
+			else if(name == 'FIXED')
+				fix += count;
+		}
+	}
+
+	var str = '';
+
+	str +='<div id="problemDetails_main">';
+	str +='	<div id="problemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan">Total Problems In All Departments - <a onClick="getProblemsInADeptScopeBasedOnScope('+result[0].problemSourceScopeId+',\'Total\')" class="anchorStyle" > '+total+'</a></span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	
+	str +='	<div id="problemDetails_body" class="problemDetailsBody" >';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">New </th><td><a onClick="getProblemsInADeptScopeBasedOnScope('+result[0].problemSourceScopeId+',\'NEW\')" class="anchorStyle" >'+newp+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Progress </th><td><a onClick="getProblemsInADeptScopeBasedOnScope('+result[0].problemSourceScopeId+',\'PROGRESS\')" class="anchorStyle" >'+prog+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Pending </th><td><a onClick="getProblemsInADeptScopeBasedOnScope('+result[0].problemSourceScopeId+',\'PENDING\')" class="anchorStyle" >'+pend+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img">Fixed </th><td><a onClick="getProblemsInADeptScopeBasedOnScope('+result[0].problemSourceScopeId+',\'FIXED\')" class="anchorStyle" >'+fix+'</a></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='				</td></tr>';
+	str +='			<tr><div id="problemDetails_body_table"></tr>';
+	str +='		</table>';
+	str +='</div>';
+
+	str +='</div>';
+
+	problemInfoDivBodyEle.innerHTML = str;
+	
+	var data = new google.visualization.DataTable();
+       
+		data.addColumn('string','Department');
+		data.addColumn('number','New');
+        data.addColumn('number','Progress');
+        data.addColumn('number','Pending');
+		data.addColumn('number','Fixed');
+
+		data.addRows(result.length);
+				
+		for(var i=0;i<result.length;i++)
+		{
+			data.setValue(i,0,result[i].deptName);
+			data.setValue(i,1,result[i].departments[0].id);
+			data.setValue(i,2,result[i].departments[1].id);
+			data.setValue(i,3,result[i].departments[2].id);
+			data.setValue(i,4,result[i].departments[3].id);
+		}
+		
+		var chart =  new google.visualization.ColumnChart(document.getElementById('problemDetails_body_table'));
+        chart.draw(data, {width: 800, height: 300, title: 'Department Wise Problems'}); 
+                         
+	return;
+}
+
+function buildCadreProblemDetailsChart(result)
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+
+	if(!problemInfoDivBodyEle || result == null)
+		return;
+	var tot,personal,assigned;
+
+	for(var i=0;i<result.length;i++)
+	{
+		if(result[i].name == 'Total')
+			tot = result[i].id;
+		else if(result[i].name == 'PERSONAL')
+			personal = result[i].id;
+		else if(result[i].name == 'ASSIGNED')
+			assigned = result[i].id;
+	}
+
+	var str = '';
+	
+	str +='<div id="problemDetails_main" style="width:700px;" >';
+	str +='	<div id="problemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Total Cadre Problems - <a onClick="getCadreProblemsInaRegion(\'Total\')" class="anchorStyle">'+tot+'</a> </span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='	<div id="problemDetails_body" class="problemDetailsBody">';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top"  width="150px">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th><td><a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
+	str +='					</tr>';
+	str +='					</table>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='			<tr>';
+	str +='				<td valign="top">';
+	str +='					<div id="statusWiseProbGraphDiv">';
+	str +='					</div>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='</div>';
+	str +='</div>';
+
+	problemInfoDivBodyEle.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string');
+    data.addColumn('number');
+	data.addRows(4);
+
+	data.setValue(0, 0, " Personal ");
+	data.setValue(0, 1, personal);
+	data.setValue(1, 0, " Assigned ");
+	data.setValue(1, 1, assigned);
+	
+	var chart = new google.visualization.PieChart(document.getElementById('statusWiseProbGraphDiv'));
+        chart.draw(data, {width: 400, height: 250, title: 'Cadre Problems'});
+}
+
+
+function buildStatusWiseProblemDetailsChart(result)
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+
+	if(!problemInfoDivBodyEle || result == null)
+		return;
+	var tot,newp,prog,pend,fix;
+
+	for(var i=0;i<result.length;i++)
+	{
+		if(result[i].name == 'Total')
+			tot = result[i].id;
+		else if(result[i].name == 'NEW')
+			newp = result[i].id;
+		else if(result[i].name == 'PROGRESS')
+			prog = result[i].id;
+		else if(result[i].name == 'PENDING')
+			pend = result[i].id;
+		else if(result[i].name == 'FIXED')
+			fix = result[i].id;
+	}
+
+	var str = '';
+	
+	str +='<div id="problemDetails_main" style="width:550px;" >';
+	str +='	<div id="problemDetails_head">';
+	str +='		<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='			<tr>';
+	str +='			<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='			<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Total Problem Posted - '+tot+' </span></div></td>';
+	str +='			<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='	<div id="problemDetails_body" class="problemDetailsBody">';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top"  width="150px">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th><td><a onClick="getStatusWiseAllProblems(\'NEW\')" class="anchorStyle" >'+newp+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Progress</th><td><a onClick="getStatusWiseAllProblems(\'PROGRESS\')" class="anchorStyle">'+prog+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Pending</th><td><a onClick="getStatusWiseAllProblems(\'PENDING\')" class="anchorStyle" >'+pend+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed</th><td><a onClick="getStatusWiseAllProblems(\'FIXED\')" class="anchorStyle" >'+fix+'</td>';
+	str +='					</tr>';
+	str +='					</table>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='			<tr>';
+	str +='				<td valign="top">';
+	str +='					<div id="statusWiseProbGraphDiv">';
+	str +='					</div>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='</div>';
+	str +='</div>';
+
+	problemInfoDivBodyEle.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string');
+    data.addColumn('number');
+	data.addRows(4);
+
+	data.setValue(0, 0, " New ");
+	data.setValue(0, 1, newp);
+	data.setValue(1, 0, " Progress ");
+	data.setValue(1, 1, prog);
+	data.setValue(2, 0, " Pending ");
+	data.setValue(2, 1, pend);
+	data.setValue(3, 0, " Fixed ");
+	data.setValue(3, 1, fix);
+
+	var chart = new google.visualization.PieChart(document.getElementById('statusWiseProbGraphDiv'));
+        chart.draw(data, {width: 400, height: 250, title: 'Status Wise All Problems'});
+}
+
+function buildProblemDetailsChart(result)
+{
+	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
+
+	if(!problemInfoDivBodyEle || result == null)
+		return;
+	var tot,newp,prog,pend,fix;
+	
+	for(var i=0;i<result.length;i++)
+	{
+		if(result[i].name == 'Total')
+			tot = result[i].id;
+		else if(result[i].name == 'NEW')
+			newp = result[i].id;
+		else if(result[i].name == 'PROGRESS')
+			prog = result[i].id;
+		else if(result[i].name == 'PENDING')
+			pend = result[i].id;
+		else if(result[i].name == 'FIXED')
+			fix = result[i].id;
+	}
+	
+	var str = '';
+	
+	
+	str +='<div id="problemDetails_main">';
+	str +='<Table width="100%">';
+	str +='<tr><td valign="top">';
+	str +='	<div id="problemDetails_head">';
+	str +='<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='<tr>';
+	str +='<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Problem Details </span></div></td>';
+	str +='<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='</tr>';
+	str +='</table>';
+	str +=' </div>';
+	str +='	<div id="problemDetails_body" class="problemDetailsBody">';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top" width="150px">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total Problems</th><td><a onClick="getProblems(\'Total\')" class="anchorStyle">'+tot+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed Problems</th><td><a onClick="getProblems(\'FIXED\')" class="anchorStyle" >'+fix+'</a></td>';
+	str +='					</tr>';
+	str +='					</table>';
+	str +='				</td>';
+	str +='				</tr>'
+	str +='				<tr>'
+	str +='				<td valign="top">';
+	str +='					<div id="totalProbGraphDiv">';
+	str +='					</div>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='</div>';
+
+	str +='</td>';
+	str +='<td valign="top">';
+	
+	str +='<div id="problemStatusDetails_main">';
+	str +='	<div id="problemStatusDetails_head">';
+	str +='<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='<tr>';
+	str +='<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='<td><div class="widgetHeader"><span class="widgetHeaderSpan">Status Wise Problem Details </span></div></td>';
+	str +='<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='</tr>';
+	str +='</table>';
+	str +='</div>';
+	str +='	<div id="problemStatusDetails_body" class="problemDetailsBody">';
+	str +='		<table>';
+	str +='			<tr>';
+	str +='				<td valign="top"  width="150px">';
+	str +='					<table class="problemDetailsBody_table">';
+	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th><td><a onClick="getProblems(\'NEW\')" class="anchorStyle" >'+newp+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Progress</th><td><a onClick="getProblems(\'PROGRESS\')" class="anchorStyle">'+prog+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Pending</th><td><a onClick="getProblems(\'PENDING\')" class="anchorStyle" >'+pend+'</td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed</th><td><a onClick="getProblems(\'FIXED\')" class="anchorStyle" >'+fix+'</td>';
+	str +='					</tr>';
+	str +='					</table>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='			<tr>';
+	str +='				<td valign="top">';
+	str +='					<div id="statusWiseProbGraphDiv">';
+	str +='					</div>';
+	str +='				</td>';
+	str +='			</tr>';
+	str +='		</table>';
+	str +='	</div>';
+	str +='</td></tr>';
+	str +='</Table>';
+	str +='</div>';
+	
+	problemInfoDivBodyEle.innerHTML = str;
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Range');
+    data.addColumn('number', 'Constituencies');
+	data.addRows(2);
+
+	data.setValue(0, 0, "Total Problems");
+	data.setValue(0, 1, tot);
+	data.setValue(1, 0, "Fixed Problems");
+	data.setValue(1, 1, fix);
+
+	var chart = new google.visualization.PieChart(document.getElementById('totalProbGraphDiv'));
+        chart.draw(data, {width: 400, height: 250, title: 'Total Problems / Fixed Problems'});
+
+	var data = new google.visualization.DataTable();
+	data.addColumn('string');
+    data.addColumn('number');
+	data.addRows(4);
+
+	data.setValue(0, 0, " New ");
+	data.setValue(0, 1, newp);
+	data.setValue(1, 0, " Progress ");
+	data.setValue(1, 1, prog);
+	data.setValue(2, 0, " Pending ");
+	data.setValue(2, 1, pend);
+	data.setValue(3, 0, " Fixed ");
+	data.setValue(3, 1, fix);
+
+	var chart = new google.visualization.PieChart(document.getElementById('statusWiseProbGraphDiv'));
+        chart.draw(data, {width: 400, height: 250, title: 'Status Wise Problems'});
+
+}
+
+function getProblems(status)
 {
 	var problemOptionEl = document.getElementsByName("problemOption");
 	var problemLocationOptionEl = document.getElementsByName("problemLocationOption");
@@ -1126,14 +1840,18 @@ function getProblems()
 	var selectedLocation;
 	var selectedOption = '';
 	var selectedStatus;
+	var status;
 	var selectedDept;
 	var selectedProblemScope;
 	var selectedSortOption;
+	var task ='';
 	var subTask = '';
 	var errorDivEl = document.getElementById("errorDiv");
 	var groupByDept = false;
 	var groupByCadre = false;
+	var statusWise = '';
 	errorDivEl.innerHTML = '';
+	
 	for(var i = 0; i<problemOptionEl.length; i++)
 	{
 		if(problemOptionEl[i].checked == true)
@@ -1149,84 +1867,364 @@ function getProblems()
 		if(problemLocationOptionEl[j].checked == true)
 			selectedSortOption = problemLocationOptionEl[j].value;
 	}
-	
+
 	if(selectedOption == 'location')
 	{
 		selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
 		selectedLocation = hiddenEl.value;
 		
-		if(selectedLocation == '' && selectedProblemScope == 0)
+		if(selectedSortOption == 'all')
 		{
-			errorDivEl.innerHTML = 'Invalid Problem Region Level and Location';
-			return;			
-		} else if(selectedLocation == '')
-		{
-			errorDivEl.innerHTML = 'Invalid Problem Location';
-			return;
-		} else if( selectedProblemScope == 0)
-		{
-			errorDivEl.innerHTML = 'Invalid Problem Region Level';
-			return;
-		}
-		if(selectedSortOption == 'departmentwise')
-		{
-			selectedStatus = 4;
-			subTask = 'department';
-			groupByDept = true;
+
+			if(status != null)
+			{
+				statusWise = status;
+				task = "getStatusWiseProblems";
+			}
+			else
+			{
+				task = "getTotalProblemsCount";
+			}
+				
+
 			var jsObj=
 			{
-					selectedLocation: selectedLocation,
-					selectedStatus: selectedStatus,
-					selectedDept: selectedDept,
-					selectedProblemScope: selectedProblemScope,
-					task:"getProblemsGroupedBySelection",
-					subTask: subTask,
-					groupByDept: groupByDept,
-					groupByCadre: groupByCadre
-											
-			};
+				selectedProblemScope : selectedProblemScope,
+				selectedLocation	 : selectedLocation,
+					task			 : task,
+					status			 : statusWise
+
+			}
+
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getProblemsGroupedByDeptOrCadreAction.action?"+rparam;						
-			callAjax(rparam,jsObj,url);	
-			return;
-		} else 
-			selectedStatus = 0;
-		selectedDept = 0;
-		
-	} else if(selectedOption == 'status')
-	{
-		selectedStatus = statusListEl.options[statusListEl.selectedIndex].value;
-		if( selectedStatus == -1)
-		{
-			errorDivEl.innerHTML = 'Invalid Problem Status';
+			if(task == 'getTotalProblemsCount')
+			{
+				var url = "<%=request.getContextPath()%>/getTotalProblemsCountInaRegionAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+			}
+
+			if(task == 'getStatusWiseProblems')
+			{
+				var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+			}	
 			return;
 		}
-		selectedDept = 0;
-		selectedProblemScope = 0;
-		selectedLocation = 0;
-	} else if(selectedOption == 'department')
-	{
-		selectedDept = deptsSelectFieldEl.options[deptsSelectFieldEl.selectedIndex].value;
-		selectedStatus = 4;	
-		selectedProblemScope = 0;
-		selectedLocation = 0;
-		subTask = 'department';			
+
+		if(selectedSortOption == 'departmentwise')
+		{
+			var jsObj=
+			{
+				selectedProblemScope : selectedProblemScope,
+				selectedLocation	 : selectedLocation,
+					task			 : "getDeptWiseProblemsStatusInALocation",
+			}
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+
+			return;
+		}
+
+		if(selectedSortOption == 'cadrewise')
+		{
+			var jsObj=
+			{
+				selectedProblemScope : selectedProblemScope,
+				selectedLocation	 : selectedLocation,
+					task			 : "getCadreProblemsCountInARegion"
+			}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getCadreProblemsCountInARegionAction.action?"+rparam;	
+			callAjax(rparam,jsObj,url);
+
+			getCadreProblemsInaRegion('Total');
+			return;
+		}
 	}
+
+	if(selectedOption == 'status')
+	{
+		selectedStatus = statusListEl.options[statusListEl.selectedIndex].value;
+		var statusStr = statusListEl.options[statusListEl.selectedIndex].text;
+		
+		var jsObj=
+		{
+			task : "getTotalProblemsStatus"
+		}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getTotalProblemsStatusForAnUserAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+		getStatusWiseAllProblems(statusStr);
+		return;
+	}
+
+	if(selectedOption == 'cadre')
+	{
+		var jsObj=
+			{ 
+				task : "getCadreProblemsCountForAnUser"
+			}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getCadreProblemsCountInARegionAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+
+		getCadreProblemsInaRegion('Total');
+		return;
+
+	}
+	
+	if(selectedOption == 'department')
+	{
+		var deptScopeListId = document.getElementById("deptScopeList").value;
+		
+		if(deptScopeListId == 0)
+			return;
+
+		var jsObj=
+		{ 
+			deptScopeId : deptScopeListId,
+			task		: "getDeptWiseProblemsCountForAnUser"
+		}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+		return;
+	}
+}
+
+function getCadreProblemsInaRegion(cadreStatus)
+{
+	var	selectedOption = '';
+	var problemOptionEl = document.getElementsByName("problemOption");
+	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	var selectedLocation = hiddenEl.value;
+	var sLocation = '';
+	
+	for(var i = 0; i<problemOptionEl.length; i++)
+	{
+		if(problemOptionEl[i].checked == true)
+			selectedOption = problemOptionEl[i].value;
+	}
+
+	if(selectedOption == 'location')
+		sLocation = "place";
+	else if(selectedOption == 'cadre')
+		sLocation = "cadre";
+	var jsObj=
+		{
+			selectedProblemScope : selectedProblemScope,
+			selectedLocation	 : selectedLocation,
+				status			 : cadreStatus,
+				sLocation		 : sLocation,
+				task			 : "getCadreProblemsInARegion"
+		}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getCadreProblemsInARegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+	
+	return;
+}
+
+function getStatusWiseAllProblems(status)
+{
+	if(status == 'All')
+		status = 'Total';
+
+	var jsObj=
+		{
+			status : status,
+			task   : "getStatusWiseAllProblems"
+		}
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getStatusWiseProblemsForAnUserAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+
+		return;
+}
+
+function openProblemDetailsWindow(pHistoryId)
+{
+	var problemWindow = window.open("problemDetailsAndStatusAction.action?pHistoryId="+pHistoryId,"problemWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+}
+
+function getCadreInfo(cadreId)
+{
+	var urlStr = "getCadreInfoAction.action?windowTask=cadreInfoPopup&cadreId="+cadreId;
+	var cadreViewBrowser = window.open(urlStr,"cadreInfoPopup","scrollbars=yes,height=600,width=600,left=200,top=50");	
+	cadreViewBrowser.focus();
+}
+
+function getDeptWiseProblems(deptId,status)
+{
+	var jsObj=
+	{
+		status : status,
+		deptId : deptId,
+		task   : "getDepartmentWiseProblems"
+	}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+
+	return;
+}
+
+function getProblemsInADeptScopeBasedOnScope(scopeId,status)
+{
+	var jsObj=
+	{
+		status : status,
+		scopeId : scopeId,
+		task   : "getProblemsInADeptScopeBasedOnScope"
+	}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+
+	return;
+}
+
+function getDeptProblemsBasedOnStatusInARegion(status)
+{
+	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	var selectedLocation = hiddenEl.value;
 	
 	var jsObj=
 	{
-			selectedLocation: selectedLocation,
-			selectedStatus: selectedStatus,
-			selectedDept: selectedDept,
-			selectedProblemScope: selectedProblemScope,
-			task:"getProblemsBySelection",
-			subTask: subTask
-									
-	};
+		selectedProblemScope : selectedProblemScope,
+		selectedLocation	 : selectedLocation,
+			status			 : status,
+			task			 : "getDeptProblemsBasedOnStatusInARegion"
+	}
+
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
-	callAjax(rparam,jsObj,url);	
+	var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+
+	return;
 }
+
+function getDeptWiseProblemsBasedOnStatusInARegion(deptId,status)
+{
+	var hiddenEl = document.getElementById("problemLocation");
+	var scopeLevelEl = document.getElementById("scopeLevel");
+	var selectedProblemScope = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
+	var selectedLocation = hiddenEl.value;
+	
+	var jsObj=
+	{
+		selectedProblemScope : selectedProblemScope,
+		selectedLocation	 : selectedLocation,
+			status			 : status,
+			deptId			 : deptId,
+			task			 : "getDeptWiseProblemsBasedOnStatusInARegion",
+	}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getStatusWiseProblemsInaRegionAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+
+	return;
+}
+
+function buildResultDataTable(result)
+{
+	 var statusWiseProblemInfoDivBodyEle = document.getElementById("statusWiseProblemInfoDivBody");
+	 
+	 if(!statusWiseProblemInfoDivBodyEle || result == null)
+		 return;
+	
+	var str = '';
+
+	str += '<div id="stProblemDetails_head">';
+	str +='<table cellpadding="0" cellspacing="0" width="100%">';
+	str +='	<tr>';
+	str +='		<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
+	str +='		<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Problem Details </span></div></td>';
+	str +='		<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
+	str +='	</tr>';
+	str +='</table>';
+	str += '</div>';
+	str += '<div id="stProblemDetails_body" class="yui-skin-sam"></div>';
+
+	statusWiseProblemInfoDivBodyEle.innerHTML = str;
+
+	YAHOO.widget.DataTable.problemLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var problem = oData;
+		var pHId= oRecord.getData("problemHistoryId");
+		elLiner.innerHTML ="<a href='javascript:{}' onClick='openProblemDetailsWindow("+pHId+")'>"+problem+"</a>";
+			
+	};
+
+	YAHOO.widget.DataTable.cadreLink = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var cadreName = oData;
+		if(cadreName != null)
+		{
+			var cadreId= oRecord.getData("cadreId");
+			elLiner.innerHTML ="<a href='javascript:{}' onClick='getCadreInfo("+cadreId+")'>"+cadreName+"</a>";
+		}
+		else
+			elLiner.innerHTML ="Not Assigned";
+	};
+
+	YAHOO.widget.DataTable.comments = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var comments = oData;
+		if(comments != null)
+			elLiner.innerHTML =""+comments+"";
+		else
+			elLiner.innerHTML ="N/A";
+	};
+
+	YAHOO.widget.DataTable.department = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var comments = oData;
+		if(comments != null)
+			elLiner.innerHTML =""+comments+"";
+		else
+			elLiner.innerHTML ="Not Assigned";
+	};
+
+
+	  var myColumnDefs = [
+            {key:"problem",label:"Problem",sortable:true,formatter:YAHOO.widget.DataTable.problemLink},
+            {key:"description",label:"Description",sortable:true},
+            {key:"reportedDate",label:"Reported Date",formatter:YAHOO.widget.DataTable.formatDate, sortable:true},
+            {key:"problemStatus",label:"Status", sortable:true},
+			{key:"problemLocation",label:"Location"},
+     	    {key:"cadreName",label:"Cadre",sortable:true,formatter:YAHOO.widget.DataTable.cadreLink},
+            {key:"department",label:"Department", sortable:true,formatter:YAHOO.widget.DataTable.department},
+			{key:"recentActivity",label:"Recent Activity", sortable:true},
+			{key:"comments",label:"Comments", sortable:true,formatter:YAHOO.widget.DataTable.comments}
+			
+       ];
+
+	    var myDataSource = new YAHOO.util.DataSource(result);
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        myDataSource.responseSchema = {
+            fields: ["problem","description","reportedDate","problemStatus","problemLocation",
+				"cadreName","department","recentActivity","comments","problemHistoryId","cadreId"]
+        };
+
+		var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_body",
+                myColumnDefs, myDataSource);
+
+		return {
+            oDS: myDataSource,
+            oDT: myDataTable
+        };
+}
+
 </script>  
 <body >
 
@@ -1249,9 +2247,10 @@ function getProblems()
 <table border="0" width="98%" cellpadding="2"  style="margin:15px;">
 <tr>
 <td>Search Problems By:</td>
-<td class="tdClass"><input  type="radio" name="problemOption" value="location" checked="true" onclick="showProbRegionsSelect()"/>Problem Location</td>		
-<td class="tdClass"><input type="radio" name="problemOption" value="status" onclick="showProbStatusSelect()"/>Problem Status </td>	
-<td class="tdClass"><input  type="radio" name="problemOption" value="department" onclick="showDeptRegionsSelect()"/> Department</td>
+<td class="tdClass"><input  type="radio" name="problemOption" value="location" checked="true" onclick="clearReportBody();showProbRegionsSelect()"/>Problem Location</td>		
+<td class="tdClass"><input type="radio" name="problemOption" value="status" onclick="clearReportBody();showProbStatusSelect()"/>Problem Status </td>
+<td class="tdClass"><input type="radio" name="problemOption" value="cadre" onclick="clearReportBody();showProbStatusSelect('cadre')"/>Cadre</td>
+<td class="tdClass"><input  type="radio" name="problemOption" value="department" onclick="clearReportBody();showDeptRegionsSelect()"/> Department</td>
 </tr>
 </table>
 <div style="text-align:left;margin-left:10px;">
@@ -1308,9 +2307,9 @@ function getProblems()
 	<div style="text-align:left;margin-left:10px;display:none;" id="problemLocationOptionsDiv">
 	<table border="0">
 		<tr>
-			<td><input  type="radio" name="problemLocationOption" value="all" onclick="showProbRegionsSelect()" checked="true"/>All Problems</td>
-			<td><input  type="radio" name="problemLocationOption" value="departmentwise" onclick="showProbRegionsSelect()"/>Departmentswise</td>
-			<td><input  type="radio" name="problemLocationOption" value="cadrewise" onclick="showProbRegionsSelect()"/>Cadre Problems</td>
+			<td><input  type="radio" name="problemLocationOption" value="all" onclick="clearReportBody();showProbRegionsSelect()" checked="true"/>All Problems</td>
+			<td><input  type="radio" name="problemLocationOption" value="departmentwise" onclick="clearReportBody();showProbRegionsSelect()"/>Departmentswise</td>
+			<td><input  type="radio" name="problemLocationOption" value="cadrewise" onclick="clearReportBody();showProbRegionsSelect()"/>Cadre Problems</td>
 		</tr>
 	</table>
 	</div>
@@ -1326,14 +2325,14 @@ function getProblems()
 	<table id="deptRegionSpan" width="98%" border="0" style="margin-left:10px;display:none;">
 	<tr>
 		<th style="width:195px;">Department Scope</th>	
-		<td><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" onchange="getDepartmentsByScope(this.options[this.selectedIndex].text)" /></td>
+		<td><s:select cssClass="selectWidth" id="deptScopeList" theme="simple" name="depScope" list="deptScopes" headerKey="0" headerValue = "Select Department Level" listKey = "id" listValue="name" /></td>
 	</tr>		
 	</table>
 	<table border="0" id="deptsSelectTable" width="98%" style="display:none;margin-left:10px;">
 	<tr>
 		<th style="width:195px;">Department</th>
 		<td>
-		<select name="dept" id="deptsSelectField" style="width:250px;"></select>
+		<select name="dept" id="deptsSelectField" style="width:175px;"></select>
 		</td>
 	</tr>
 	</table>
@@ -1350,6 +2349,12 @@ function getProblems()
 </div>
 <div class="yui-skin-sam">
 	<div id="problemInfoDivBody" style="margin:15px;"></div>
+</div>
+<div class="yui-skin-sam">
+	<div id="deptWiseProblemInfoDivBody" style="margin:15px;"></div>
+</div>
+<div class="yui-skin-sam">
+	<div id="statusWiseProblemInfoDivBody" style="margin:15px;"></div>
 </div>
 <input type="hidden" id="problemLocation" name="problemLocationId"/>
 <div class="yui-skin-sam"><div id="boothDetailsPopup"></div></div>
