@@ -12,6 +12,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemProgress, Long> {
 
@@ -31,5 +32,25 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 	public List getProblemRecentUpdatesByProblemId(Long problemId);
 	
 	public List<AssignedProblemProgress> getProblemAllActivitiesByProblemId(Long problemId);
+	
+	public List<AssignedProblemProgress> getProblemsByDepartmentScope(Long userId,Long deptScopeId);
+	
+	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<Object> getAssignedCadreProblemsCountForAnUser(Long userId);
+	
+	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<ProblemHistory> getAssignedCadreProblemsForAnUser(Long userId);
+	
+	public List<Object> getDepartmentWiseProblemStatus(Long userId,Long deptOrgId);
+	
+	public List<ProblemHistory> getDepartmentWiseProblemsBasedOnStatus(Long userId,Long deptOrgId,String statusStr);
+	
+	public List<Long> getDeptWiseAssignedProblemProgressIds(Long userId,String deptLocationStr);
+	
+	public List<Object[]> getProblemsStatusBasedOnAssignedProblemProgressId(Long userId,List<Long> progressIdList);
+	
+	public List<ProblemHistory> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr);
 	
 }
