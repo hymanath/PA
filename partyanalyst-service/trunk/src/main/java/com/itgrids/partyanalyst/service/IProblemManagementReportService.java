@@ -72,5 +72,25 @@ public interface IProblemManagementReportService {
 	
 	public List<Object> getAllAcceptedProblemsInAState(List<Long> locationIds, String locationType);
 	
+	public List<SelectOptionVO> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<ProblemBeanVO> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
 		
+	public List<SelectOptionVO> getTotalProblemsStatusForAnUser(Long userId);
+	
+	public List<ProblemBeanVO> getStatusWiseProblemsForAnUser(Long userId,String status);
+	
+	public List<SelectOptionVO> getCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<ProblemBeanVO> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
+	
+	public List<ProblemBeanVO> getDeptWiseProblemsCountForAnUser(Long userId,Long deptScopeId);
+	
+	public List<ProblemBeanVO> getDepartmentWiseProblemsBasedOnStatus(Long userId,Long deptId,String status);
+	
+	public List<ProblemBeanVO> getProblemsInADeptScopeBasedOnScope(Long userId,Long scopeId,String status);
+	
+	public List<ProblemBeanVO> getDeptWiseProblemsCountInALocation(Long userId,Long impactedRegionId,Long locationId);
+	
+	public List<ProblemBeanVO> getDeptProblemsBasedOnStatusInARegion(Long userId,Long impactedRegionId,Long locationId,Long deptId,String status);
 }
