@@ -908,5 +908,39 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 		
 		return getHibernateTemplate().find("from ProblemHistory model where model.problemHistoryId = ?",historyId);
 	}
-				
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" select model.problemStatus.status from ProblemHistory model where " +
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemLocation.problemImpactLevel.regionScopesId = ? and " +
+				" model.problemLocation.problemImpactLevelValue = ? and model.isDelete is null and model.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String statusStr)
+	{
+		Object[] params = {userId,impactedRegionId,locationId};
+		return getHibernateTemplate().find(" from ProblemHistory model where " +
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemLocation.problemImpactLevel.regionScopesId = ? and " +
+				" model.problemLocation.problemImpactLevelValue = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getTotalProblemsStatusForAnUser(Long userId)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select model.problemStatus.status from ProblemHistory model where " +
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ?  and model.isDelete is null and model.isApproved = 'true' ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> getStatusWiseProblemsForAnUser(Long userId,String statusStr)
+	{
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" from ProblemHistory model where " +
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+	}
+	
 }
