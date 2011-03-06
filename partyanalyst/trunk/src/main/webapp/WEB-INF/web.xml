@@ -9,7 +9,7 @@
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:applicationContext*.xml</param-value>
+		<param-value>WEB-INF/classes/applicationContext.xml</param-value>
 	</context-param>
 
 	<!-- TilesIntegration -->
@@ -69,12 +69,5 @@
     	<load-on-startup>5</load-on-startup>
     </servlet>
     
-    
-    <!-- Welcome file lists -->
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>default.jsp</welcome-file>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
 
 </web-app>
