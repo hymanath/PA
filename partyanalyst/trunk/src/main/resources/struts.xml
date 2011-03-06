@@ -5,8 +5,11 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-	<package name="myPackage" extends="struts-default,json-default">
+	<package name="myPackage" extends="struts-default,json-default,action-default">
+	
+	
 
+    
 		<!-- TilesIntegration -->
 		<result-types>
 			<result-type name="tiles"
@@ -18,7 +21,7 @@
 			For each result that should go to a Tiles page, add a type attribute
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
-
+ 		<default-action-ref name="homePage" />
 		<action name="index" class="indexAction">
 			<result name="success">/jsp/index.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
