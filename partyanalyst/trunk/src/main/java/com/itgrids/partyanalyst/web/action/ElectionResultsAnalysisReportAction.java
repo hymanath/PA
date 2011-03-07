@@ -266,7 +266,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId);
-			parties = staticDataService.getStaticParties();
+			parties = staticDataService.getStaticPartiesListForAState(stateId);
 			parties.add(0, new SelectOptionVO(0l,"Select Party"));
 			
 			partyAnalysisReportVO.setPartiesList(parties);
