@@ -3117,7 +3117,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					
 					//check for previous status
 					if(problemHistory.getProblemStatus().getStatus().equalsIgnoreCase(problemStatus.getStatus())){
-						rs.setExceptionMsg("Already  In same status, please change status ..");
+						rs.setExceptionMsg("Already  In same status, Please select other status ..");
 						return rs;
 					}
 						
@@ -3137,6 +3137,7 @@ public class ProblemManagementService implements IProblemManagementService {
 					newProbHistory.setComments(problemHistory.getComments());
 					
 					newProbHistory = problemHistoryDAO.save(newProbHistory);
+					rs.setResultState(newProbHistory.getProblemHistoryId());
 					
                     AssignedProblemProgress assignedProblemProgress = new AssignedProblemProgress();
 					
@@ -3414,6 +3415,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		
 	 return departments;
 	}
+	
 	
 }
 
