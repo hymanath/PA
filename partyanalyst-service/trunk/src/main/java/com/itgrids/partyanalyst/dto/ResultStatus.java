@@ -18,6 +18,8 @@ public class ResultStatus implements Serializable{
     private String exceptionClass;
     private String exceptionMsg;
     
+    private Long resultState;
+    
     public int getResultCode() {
 		return resultCode;
 	}
@@ -47,6 +49,12 @@ public class ResultStatus implements Serializable{
 	}
 	public void setResultPartial(boolean isResultPartial) {
 		this.isResultPartial = isResultPartial;
+	}
+	public Long getResultState() {
+		return resultState;
+	}
+	public void setResultState(Long resultState) {
+		this.resultState = resultState;
 	}
     
     
