@@ -79,6 +79,7 @@ var Localization = { <%
 %> }
 var errotMsg = '<%=errorMsg%>';
 localBodyString = '<%=localBody%>';
+var loginStatus = '${loginStatus}';
 
 	<c:forEach var="state" items="${statesList}" >
 		var obj={
