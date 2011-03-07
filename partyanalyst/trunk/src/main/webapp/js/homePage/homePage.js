@@ -163,9 +163,13 @@ function postFeedbackAjaxCall()
 	
 	var feedBackElmt = document.getElementById("commentId");
 	feedBackElmtValue = feedBackElmt.value;
-
+   
 	if(feedBackElmtValue == "")
+	{	
 		errorElmt.innerHTML = "Feedback box cannot be empty";
+	    return; 
+	}
+	
 	else
 		errorElmt.innerHTML = "";
 	
@@ -240,6 +244,11 @@ function showFeedBackStatus(result)
 			errorElmt.innerHTML = "<font color='green'>Your FeedBack Submitted Successfully.</font>";
 		
 		setTimeout("closewindow()",2000);
+	}
+	else
+	{
+		var errorElmt = document.getElementById("feedback_window_errorMsg");
+			errorElmt.innerHTML = "<font color='red'>Sorry,Your FeedBack not Submitted.Please Try again.</font>";
 	}
 }
 
