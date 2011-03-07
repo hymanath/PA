@@ -9,7 +9,6 @@ var emptyArray = new Array();
 var selectedState = '';
 var selectedStateId = '';
 var localBodyString = '';
-var loginStatus = '';
 
 function initializeHomePage()
 {
