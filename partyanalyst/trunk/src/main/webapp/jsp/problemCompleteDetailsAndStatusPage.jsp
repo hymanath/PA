@@ -250,6 +250,11 @@ text-align:left;
 	text-decoration:underline;
 }
 
+#closeWindowDiv
+{
+  text-align: right;
+  margin-right:12px;
+}
 </style>
 
 <script type="text/javascript">
@@ -425,6 +430,26 @@ function callAjax(jsObj,url)
 							{
 								getProblemPresentStatus(pHistoryId);
 								getProblemActivities(pHistoryId);	
+							}else if(jsObj.task == "changeProblemStatus")
+							{
+                                if(myResults.resultState == null)
+								{
+                                   var statusDivElmt = document.getElementById("statusErrorDiv");
+								   if(statusDivElmt == null)
+									   return;
+
+								   var str = '';
+								   str+=' ' + myResults.exceptionMsg;
+
+                                   statusDivElmt.innerHTML = str;
+								}
+								else
+								{
+                                  pHistoryId = myResults.resultState;
+								  
+								  getProblemPresentStatus(pHistoryId);
+								  getProblemActivities(pHistoryId);
+								}
 							}
 						}
 						catch(e)
@@ -791,7 +816,7 @@ function buildProblemPresentStatus(jsObj,results)
 	if(results.department == "" || results.department == null)
 		str += '			<td class="statusData_table_data">Currently not assigned to any department</td>';
 	else
-		str += '			<td class="statusData_table_data">Currently assigned to '+results.department+'</td>';
+		str += '			<td class="statusData_table_data">Currently assigned to <font color="#FF8000"><B>'+results.departmentOrganisation+'</B></font></td>';
 	str += '		</tr>';
 	str += '		<tr>';	
 	str += '			<td class="statusData_table_links">';
@@ -893,7 +918,8 @@ function buildProblemPresentStatus(jsObj,results)
 	str += '					</tr>';
 	str += '				</table>';								
 	str += '			</td>';
-	str += '			<td class="statusData_table_data">This problem is under progress stage</td>';
+	str += '			<td class="statusData_table_data">This problem is under <font color="#FF8000"><B>'+results.problemStatus+'                               </B></font>stage</td>';
+	str += '               <div id = "statusErrorDiv"></div>';
 	str += '		</tr>';
 	str += '		<tr>';
 	str += '			<td class="statusData_table_links">';
@@ -1070,6 +1096,12 @@ function sliderFunc(){
 		$('#problemContentData_details_body').slideToggle();
 }
 
+function closeCompleteDetails()
+{
+   window.opener.document.location.reload(true);
+   window.close();
+}
+
 var statesListForProb = [];
 var districtsListForProb = [];
 var costituenciesListForProb = [];
@@ -1088,9 +1120,11 @@ var villagesListForProb = [];
 			<div class="problemReportHeader"><span style="margin-top:2px;">Problem Complete Details</span></div>
 		</TD>
 		<TD><img border="none" src="images/icons/cadreReport/bg_right.png"></TD>
+		
 	</TR>
 </TABLE>
 </CENTER>
+<div id="closeWindowDiv"><input type="button" value="Close" onClick=closeCompleteDetails() /></div>
 <div id="departmentPanel_main"><div id="departmentPanel_content"></div></div>
 <div id="problemContentData_main">
 	<!-- Problem Details Start -->
