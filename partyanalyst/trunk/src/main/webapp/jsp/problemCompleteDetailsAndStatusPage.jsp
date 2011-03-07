@@ -430,6 +430,18 @@ function callAjax(jsObj,url)
 							{
 								getProblemPresentStatus(pHistoryId);
 								getProblemActivities(pHistoryId);	
+
+								var deptElmt = document.getElementById("departmentAssignedStatusDiv");
+                                if(deptElmt != null)
+								{
+									if(myResults.exceptionEncountered == null)
+									{
+										var str = '';
+										str += 'Successfully Assigned To Department ..';
+										deptElmt.innerHTML = str;
+									}
+								}
+
 							}else if(jsObj.task == "changeProblemStatus")
 							{
                                 if(myResults.resultState == null)
@@ -470,7 +482,7 @@ function callAjax(jsObj,url)
 function buildProblemRecentActivities(jsObj,results)
 {
 	var elmt = document.getElementById("problemContentData_activities_dataDiv");
-    
+
 	var bodyElmt = document.getElementById("problemContentData_activities_body");
 	if(results == null || results.length == 0)
 	{
@@ -699,9 +711,11 @@ str += '</DIV>';
 str += '<div id="errorMsgDiv" style="text-align:right;padding:10px;color:red;">';
 str += '</div>';
 
+str += '<div id="departmentAssignedStatusDiv"></div>';
 str += '<div style="text-align:right;padding:10px;">';
 str += '<input type="button" class="button" style="float:none;" value="Proceed" onclick="saveDepartmentToProblem(\''+type+'\')"/>';
 str += '</div>';
+str += '<div id="departmentAssignedStatusDiv"></div>'
 
 elmt.innerHTML = str;
 }
