@@ -193,7 +193,7 @@ var pMgmt_Obj = {
 		// For legends (End)
 		
 		// For Coloumn Chart data (start)
-		for(var i=0; i<results.chartDataVO.length; i++)
+		for(var i=0; i<results.chartDataVO[0].chartValues.length; i++)
 		{
 			var loopLocalArray = [];
 			for(j=0; j<results.chartDataVO.length; j++)
@@ -203,7 +203,8 @@ var pMgmt_Obj = {
 			localArray.push(loopLocalArray);
 		}
 
-		for(var i=0; i<results.chartDataVO.length; i++)
+		
+		for(var i=0; i<results.chartDataVO[0].chartValues.length; i++)
 		{
 			var obj = {
 						type:'column',
@@ -215,7 +216,7 @@ var pMgmt_Obj = {
 		// For Coloumn Chart data (End)
 		
 		// For Spline Chart data (start)
-		var spineDataArr = [];
+		/*var spineDataArr = [];
 		for(var i=0; i<results.chartDataVO.length; i++)
 		{
 			spineDataArr.push(results.chartDataVO[i].avgCount);			
@@ -225,7 +226,7 @@ var pMgmt_Obj = {
 					name:'Average',
 					data:spineDataArr
 				  };
-		series.push(obj);
+		series.push(obj);*/
 		// For Spline Chart data (End)
 		
 		// For Pie Chart data (Start)
@@ -261,7 +262,8 @@ var pMgmt_Obj = {
 						renderTo: 'statisticalDataBodyDiv_body'
 					},
 					title: {
-						text: ''+results.chartTitle
+						//text: ''+results.chartTitle
+						text:'Overall Problems Information'
 					},
 					xAxis: {
 						categories: xAxisLabels
