@@ -132,6 +132,8 @@
 	var electionType='Assembly';
 	var selectedStateElmts=1;
 	var selectedPartyId=7;
+	var selectedPartyName;
+	var partyId;
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -197,8 +199,19 @@
 					if(jsObj.task == "getAllPartiesData")
 					{										
 						buildAllPartiesData(results);			
+					}
+					if(jsObj.task == "getAllAllianceYearsForAPartyAjaxAction")
+					{										
+						buildAllAllianceElectionYears(results);			
 					}						
-					
+					if(jsObj.task =="getExcludingAllianceDataAjaxAction")
+					{
+						buildExcludingAllianceData(results);	
+					}
+					if(jsObj.task =="getIncludingAllianceDataAjaxAction")
+					{
+						buildIncludingAllianceData(results);	
+					}
 			}catch (e) {   		
 			    	//alert("Invalid JSON result" + e);   
 			}  
@@ -210,6 +223,74 @@
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+
+	function buildExcludingAllianceData(results)
+	{
+		var partyName = results.partyName;
+		var partyDiv = document.getElementById(partyName+"DATA_DIV");
+		var str='';
+
+		var details = results.details;
+		str += '	<table>';				
+		str +='		<tr>';
+		str += '		<td class="headerStyle">Total No of Times Won </td>';
+		str += '		<td class="headerStyle">Constituencies Count </td>';				
+		str += '	</tr>';
+		for(var k=0;k<details.length;k++){
+			str += '	<tr>';
+			str += '		<td align="center">'+(k+1)+'</td>';
+			str += '		<td align="center"><a title="click here to view constituencies details" onChange="getData(\''+partyName+'\',\''+(k+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
+			str += '	</tr>';					
+		}
+		str += '	</table>';		
+		partyDiv.innerHTML = str;
+	}
+
+	function buildIncludingAllianceData(results)
+	{
+		var partyName = results.partyName;
+		var partyDiv = document.getElementById(partyName+"DATA_DIV");
+		var str='';
+
+		var details = results.details;
+		var partyId = results.partyId;
+		str += '	<table>';				
+		str +='		<tr>';
+		str += '		<td class="headerStyle">Total No of Times Won </td>';
+		str += '		<td class="headerStyle">Constituencies Count </td>';				
+		str += '	</tr>';
+		for(var k=0;k<details.length;k++){
+			str += '	<tr>';
+			str += '		<td align="center">'+(k+1)+'</td>';
+			str += '		<td align="center"><a title="click here to view constituencies details" onClick="getIncludingData(\''+partyName+'\',\''+(k+1)+'\',\''+partyId+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
+			str += '	</tr>';					
+		}
+		str += '	</table>';		
+		partyDiv.innerHTML = str;
+	}
+	function buildAllAllianceElectionYears(results)
+	{
+		var eleId = selectedPartyName+"_AlliancesYears";		
+		var divElement = document.getElementById(eleId);		
+		var details = results.details;	
+		var str='';
+		
+		if(details.length!=0){
+			str+='<select id="AlliancesYears" style="width:130px;" onClick="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';
+			str+='<option value="0">All Elections</option>';
+			for(var i in details)
+			{
+				str+='<option value="'+details[i].id+'">'+details[i].name+'</option>';
+			}
+			str+='</select>';
+		}else{
+			str+='<b style="color:red;font-weight:bold;">Has No Alliances </b>';
+			var partyNameDiv = results.partyName;
+			var partyDiv = document.getElementById(partyNameDiv+"_DIV");
+			partyDiv.innerHTML = '';
+		}
+		divElement.innerHTML = str;
 	}
 
 	
@@ -266,7 +347,15 @@
 			str += '	</table>';	
 			str += '   </div">';
 			str += '   <div id="'+partiesDetails[k].partyName+'_DIV" style="display:none;">';			
-			str += '	<table>';			
+			str += '	<table>';
+			str +='		<tr style="font-weight:bold;font-size:11px;">';
+			str += '		<td><input type="radio" name="alliance" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Excluding Alliance </input></td>';
+			str += '		<td><input type="radio" name="alliance" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Including Alliance </input></td>';					
+			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></td>';				
+			str += '	</tr>';		
+			str += '	</table>';
+			str += '	<div id="'+partiesDetails[k].partyName+'DATA_DIV">';		
+			str += '	<table>';				
 			str +='		<tr>';
 			str += '		<td class="headerStyle">Total No of Times Won </td>';
 			str += '		<td class="headerStyle">Constituencies Count </td>';				
@@ -282,11 +371,75 @@
 			}			
 			str += '	</table>';			
 			str += '	</div>';
+			str += '	</div>';
 		}
 		str += ' </div">';		
 		elmt.innerHTML =  str;		
 	} 
 
+	function getExcludingAllianceData(partyId,selectedPartyNamed)
+	{
+		var divId = selectedPartyNamed+"_AlliancesYears";
+		var elmet =  document.getElementById(divId);
+		elmet.innerHTML = '';
+		
+		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
+		var stateSelect = document.getElementById("stateSelect").value;
+		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
+		
+		var jsObj=
+		{		
+				electionType : electionTypeSelect,
+				stateId : stateSelect, 
+				partyName:partyId,
+				partyShortName:selectedPartyNamed,
+				elecYears : electionYearsSelect,
+				task:"getExcludingAllianceDataAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getExcludingAllianceDataAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);		
+	}
+	
+
+	function getIncludingAllianceData(electionId,partyId,partyName)
+	{
+		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
+		var stateSelect = document.getElementById("stateSelect").value;
+		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
+		
+		var jsObj=
+		{		
+				electionType : electionTypeSelect,
+				stateId : stateSelect, 
+				partyId:partyId,
+				electionId : electionId,
+				partyName :partyName,
+				elecYears : electionYearsSelect,
+				task:"getIncludingAllianceDataAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getIncludingAllianceDataAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+	function getAllAllianceYearsForAParty(partyId,partyName)
+	{		
+		var stateSelect = document.getElementById("stateSelect").value;
+		selectedPartyName = partyName;	
+		partyId = partyId;
+		var jsObj=
+		{	
+				stateId : selectedStateElmts, 
+				partyId:partyId,		
+				partyName:partyName,		
+				task:"getAllAllianceYearsForAPartyAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAllAllianceYearsForAPartyAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	
 	function showData(partyName)
 	{
 		var divId = "hideOrShowId_"+partyName;
@@ -303,23 +456,14 @@
 		}
 	}
 	
-	function getData(partyName,columnId){		
+	function getData(partyName,columnId){
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"excludingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();		
+	}
 
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"ConstituencyResults","scrollbars=yes,height=500,width=800,left=200,top=200");
-		browser1.focus();
-		 
-		/*var jsObj=
-		{		
-				electionType : electionType,
-				stateId : selectedStateElmts, 
-				partyName:partyName,
-				elecYears : selectedPartyId,
-				count:columnId,		
-				task:"getRequiredConstituenciesAjaxAction"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getRequiredConstituenciesAjaxAction.action?"+rparam;						
-		callAjax(jsObj,url);*/
+	function getIncludingData(partyName,columnId,partyId){		
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();		
 	}
 	
 	function initializeTable(results){

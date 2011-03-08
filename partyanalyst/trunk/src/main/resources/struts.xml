@@ -2247,7 +2247,24 @@
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>							
 			</result>		
+		</action>	
+		
+		<action name="getIncludingAllianceDataAjaxAction" class="partyStrengthAction" method="getIncludingAllianceDataAjaxAction">
+			<result type="json" name="success">
+				<param name="root">includingAlliance</param>				
+			</result>		
 		</action>
-				            		       	
+		
+		<action name="getExcludingAllianceDataAjaxAction" class="partyStrengthAction" method="getExcludingAllianceDataAjaxAction">
+			<result type="json" name="success">
+				<param name="root">excludingAlliance</param>				
+			</result>		
+		</action>
+			
+		<action name="getAllAllianceYearsForAPartyAjaxAction" class="partyStrengthAction" method="getAllAllianceYearsForAPartyAjaxAction">
+			<result type="json" name="success">
+				<param name="root">alliancesYears</param>							
+			</result>		
+		</action>	   		       	
 	</package>
 </struts>      

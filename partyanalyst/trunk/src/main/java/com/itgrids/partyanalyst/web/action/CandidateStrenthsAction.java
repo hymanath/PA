@@ -31,13 +31,31 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	private String partyName;
 	private Long elecYears;
 	private Long columnId;
+	private Long elecId;
+	private Long partyId;
 	
 	private IPartyStrengthService partyStrengthService;
 	
 	private List<PartiesDetailsVO> requiredConstituencyDetails;
 	
+	
+	
+	//Getters and Setters
+	
 	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
 		return requiredConstituencyDetails;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	public Long getElecId() {
+		return elecId;
+	}
+	public void setElecId(Long elecId) {
+		this.elecId = elecId;
 	}
 	public void setRequiredConstituencyDetails(
 			List<PartiesDetailsVO> requiredConstituencyDetails) {
@@ -92,14 +110,12 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	}
 
 	public String execute(){
-		http://localhost/PartyAnalyst/CandidateStrenthsAction.action?electionType=Assembly&selectedStateElmts=1&partyName=TRS&elecYears=7&columnId=1
-		/*Long count = new Long(jObj.getString("count"));	
-		String partyName = jObj.getString("partyName");
-		String electionType = jObj.getString("electionType");
-		Long stateId = new Long(jObj.getString("stateId"));	
-		Long totalElectionYears = new Long(jObj.getString("elecYears"));*/	
-		requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId);			
-
+		
+		if(partyId==null)
+			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId);	
+		else
+			requiredConstituencyDetails = partyStrengthService.getAllCandidatesDetailsForAllianceData(electionType,selectedStateElmts,partyId,elecYears,elecId,partyName,columnId);			
+		
 		return Action.SUCCESS;
 	}
 }
