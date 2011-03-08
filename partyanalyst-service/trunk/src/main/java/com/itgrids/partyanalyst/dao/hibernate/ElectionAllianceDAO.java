@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -25,6 +26,12 @@ IElectionAllianceDAO {
 		Object[] params = {electionYear, electionType};
 		return getHibernateTemplate().find("from ElectionAlliance as model where model.election.electionYear=? " +
 				"and model.election.electionScope.electionType.electionTypeId=? ",params); 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionAlliance> findByElectionId(Long electionId) {
+		Object[] params = {electionId};
+		return getHibernateTemplate().find("from ElectionAlliance as model where model.election.electionId = ?",params); 
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,5 +62,21 @@ IElectionAllianceDAO {
 		return getHibernateTemplate().find("from ElectionAlliance model where model.election.electionId = ? and" +
 				" model.state.stateId = ?",params);
 	}
+	
+	public List getAllAllianceElectionYearsForAParty(Long partyId,String electionSubType,Long stateId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.election.electionYear,model.election.electionId,model.election.electionScope.electionType.electionTypeId");
+		query.append(" from ElectionAlliance model where ");
+		query.append(" model.group.groupId in (select model2.group.groupId from AllianceGroup model2 where model2.party.partyId = ?)");	
+		query.append(" and model.election.elecSubtype = ? and model.state.stateId = ?");
+		query.append(" order by model.election.electionYear asc");	
+					
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setLong(0,partyId);		
+		queryObject.setString(1,electionSubType);	
+		queryObject.setLong(2,stateId);	
+		return queryObject.list();	
+	}
+	
 	
 }

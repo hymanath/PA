@@ -769,16 +769,20 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	}*/
 	
 	public void testGetData(){
+		
 		List<Long> constIds = new ArrayList<Long>(0);
-		constIds.add(18l);
-		constIds.add(21l);
-		constIds.add(40l);
-		List list = nominationDAO.getAllCandidateDetailsForAConstituency(constIds,885l,IConstants.ELECTION_SUBTYPE_MAIN);
+		constIds.add(261l);
+		constIds.add(284l);
+		constIds.add(23l);
+		constIds.add(2l);
+		
+		
+		List list = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,885l,2l);
 		for(int i=0; i<list.size(); i++){
 			Object[] parms = (Object[])list.get(i);
-			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]+"\t"+parms[4]+"\t"+parms[5]);
+			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 		}
-		//System.out.println(list);
+		System.out.println(list);
 	}
 	
 }

@@ -459,4 +459,14 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 		return queryObject.list();
 	}
+	
+	public List getElectionDetailsForAnElection(Long electionId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.electionYear,model.electionId,model.electionScope.electionType.electionTypeId");
+		query.append(" from Election model where model.electionId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setLong(0,electionId);	
+		return queryObject.list();	
+	}
 }
