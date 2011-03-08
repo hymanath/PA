@@ -49,11 +49,11 @@ public class CadreProblemDetailsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.get(0).toString());
 	}*/
 	
-	public void testGetCadreProblemsInARegion()
+	/*public void testGetCadreProblemsInARegion()
 	{
 		List<ProblemHistory> list = cadreProblemDetailsDAO.getCadreProblemsInARegion(1l,3l,19l);
 		System.out.println(list.size());
-	}
+	}*/
 	
 	
 

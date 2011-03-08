@@ -2030,11 +2030,69 @@ public class ProblemManagementReportService implements
 			}		
 			return stateResult;
 		}
+
+		public String getLocationStringFromProblemHistory(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String locationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					locationStr = " and model.problemLocation.problemCompleteLocation.state.stateId = "+locationId;
+				else if(regionId == 3)
+					locationStr = " and model.problemLocation.problemCompleteLocation.district.districtId = "+locationId;
+				else if(regionId == 4)
+					locationStr = " and model.problemLocation.problemCompleteLocation.constituency.constituencyId = "+locationId;
+				else if(regionId == 5)
+					locationStr = " and model.problemLocation.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+				else if(regionId == 6)
+					locationStr = " and model.problemLocation.problemCompleteLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					locationStr = " and model.problemLocation.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+				else if(regionId == 8)
+					locationStr = " and model.problemLocation.problemCompleteLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					locationStr = " and model.problemLocation.problemCompleteLocation.booth.boothId = "+locationId;
+				
+				return locationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
+		
+		public String getLocationStringFromCadreProblemDetails(Long impactedRegionId,Long locationId)
+		{
+			try{
+				String locationStr = null;
+				long regionId = impactedRegionId.longValue();
+				
+				if(regionId == 2)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.state.stateId = "+locationId;
+				else if(regionId == 3)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.district.districtId = "+locationId;
+				else if(regionId == 4)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.constituency.constituencyId = "+locationId;
+				else if(regionId == 5)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.tehsil.tehsilId = "+locationId;
+				else if(regionId == 6)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.hamlet.hamletId = "+locationId;
+				else if(regionId == 7)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.localElectionBody.localElectionBodyId = "+locationId;
+				else if(regionId == 8)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.ward.constituencyId = "+locationId;
+				else if(regionId == 9)
+					locationStr = " and model.problemHistory.problemLocation.problemCompleteLocation.booth.boothId = "+locationId;
+				
+				return locationStr;
+			}catch(Exception e){
+				return null;
+			}
+		}
 		
 		public List<SelectOptionVO> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId)
 		{
 			try{
-				List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId, impactedRegionId, locationId);
+				List<Object> params = problemHistoryDAO.getTotalProblemsCountForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId, locationId));
 				
 				return getStatusWiseProblemsCount(params);
 				
@@ -2098,7 +2156,7 @@ public class ProblemManagementReportService implements
 				String statusStr = " and model.problemStatus.status = '"+status+"' ";
 				if(status.equalsIgnoreCase("Total"))
 					statusStr = " ";
-				List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(userId, impactedRegionId, locationId, statusStr);
+				List<ProblemHistory> list = problemHistoryDAO.getStatusWiseProblemsForAnUserInARegion(userId,getLocationStringFromProblemHistory(impactedRegionId,locationId),statusStr);
 				
 				return convetProblemHistotyToProblemBeanVO(list);
 				
@@ -2127,7 +2185,7 @@ public class ProblemManagementReportService implements
 		{
 			try{
 				List<SelectOptionVO> probCountList = new ArrayList<SelectOptionVO>(0);
-				Long personal,assidned,total;
+				Long personal,assidned,total,both=0l;
 				List<Object> cadreprob = null;
 				List<Object> cadreAssprob = null;
 				
@@ -2138,25 +2196,34 @@ public class ProblemManagementReportService implements
 				}
 				else
 				{
-					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(userId,impactedRegionId,locationId);
-					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountInARegion(userId,impactedRegionId,locationId);
+					cadreprob = cadreProblemDetailsDAO.getCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
+					cadreAssprob = assignedProblemProgressDAO.getAssignedCadreProblemsCountInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
 				}
+				
+				if(cadreprob != null && cadreAssprob != null)
+				{
+					for(Object obj:cadreAssprob)
+						if(cadreprob.contains(obj))
+							both++;
+				}
+				
 				if(cadreprob != null && cadreprob.size() > 0)
-					personal = (Long)cadreprob.get(0);
+					personal = ((long)cadreprob.size());
 				else
 					personal = 0l;
 				
 				
 				if(cadreAssprob != null && cadreAssprob.size() > 0)
-					assidned = (Long)cadreAssprob.get(0);
+					assidned = ((long)cadreAssprob.size());
 				else
 					assidned = 0l;	
 				
-				total = personal + assidned;
+				total = personal + assidned - both;
 				
 				probCountList.add(new SelectOptionVO(personal,IConstants.CADRE_PERSONAL));
 				probCountList.add(new SelectOptionVO(assidned,IConstants.CADRE_ASSIGNED));
-				probCountList.add(new SelectOptionVO(total,"Total"));
+				probCountList.add(new SelectOptionVO(both,"Both"));
+				probCountList.add(new SelectOptionVO(total,IConstants.TOTAL));
 				
 				return probCountList;
 			}catch(Exception e){
@@ -2175,7 +2242,7 @@ public class ProblemManagementReportService implements
 				if(status.equalsIgnoreCase(IConstants.CADRE_PERSONAL) || status.equalsIgnoreCase(IConstants.TOTAL))
 				{
 					if(impactedRegionId != null && locationId != null)
-						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsInARegion(userId,impactedRegionId,locationId);
+						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
 					else
 						cadreProblemsList = cadreProblemDetailsDAO.getCadreProblemsForAnUser(userId);
 				}
@@ -2183,18 +2250,16 @@ public class ProblemManagementReportService implements
 				if(status.equalsIgnoreCase(IConstants.CADRE_ASSIGNED) || status.equalsIgnoreCase(IConstants.TOTAL))
 				{
 					if(impactedRegionId != null && locationId != null)
-						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsInARegion(userId,impactedRegionId,locationId);
+						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsInARegion(userId,getLocationStringFromCadreProblemDetails(impactedRegionId,locationId));
 					else
 						cadreAssignedProblemsList = assignedProblemProgressDAO.getAssignedCadreProblemsForAnUser(userId);
 				}
 				
 				if(cadreProblemsList != null && cadreProblemsList.size() > 0)
-					for(ProblemHistory problemHistory : cadreProblemsList)
-						totalProblemsList.add(problemHistory);
+					addProblemsToMainList(totalProblemsList,cadreProblemsList);
 				
 				if(cadreAssignedProblemsList != null && cadreAssignedProblemsList.size() > 0)
-					for(ProblemHistory problemHistory : cadreAssignedProblemsList)
-						totalProblemsList.add(problemHistory);
+					addProblemsToMainList(totalProblemsList,cadreAssignedProblemsList);
 				
 				return convetProblemHistotyToProblemBeanVO(totalProblemsList);
 				
@@ -2214,6 +2279,7 @@ public class ProblemManagementReportService implements
 					statusStr = "";
 				else
 					statusStr = " and model.problemHistory.problemStatus.status = '"+status+"'"; 
+				
 				if(deptId != null && deptId.longValue() > 0)
 					deptStr = " and model.departmentOrganisation.departmentOrganisationId = "+deptId;
 				else
@@ -2296,17 +2362,17 @@ public class ProblemManagementReportService implements
 				long regionId = impactedRegionId.longValue();
 				
 				if(regionId == 2)
-					deptLocationStr = " and model.departmentLocation.state.stateId = "+locationId+ " and model.departmentLocation.district.districtId is null ";
+					deptLocationStr = " and model.departmentLocation.state.stateId = "+locationId;
 				else if(regionId == 3)
-					deptLocationStr = " and model.departmentLocation.district.districtId = "+locationId+" and model.departmentLocation.constituency.constituencyId is null ";
+					deptLocationStr = " and model.departmentLocation.district.districtId = "+locationId;
 				else if(regionId == 4)
-					deptLocationStr = " and model.departmentLocation.constituency.constituencyId = "+locationId + " and model.departmentLocation.tehsil.tehsilId is null and model.departmentLocation.localElectionBody.localElectionBodyId is null ";
+					deptLocationStr = " and model.departmentLocation.constituency.constituencyId = "+locationId;
 				else if(regionId == 5)
-					deptLocationStr = " and model.departmentLocation.tehsil.tehsilId = "+locationId + " and model.departmentLocation.hamlet.hamletId is null ";
+					deptLocationStr = " and model.departmentLocation.tehsil.tehsilId = "+locationId;
 				else if(regionId == 6)
 					deptLocationStr = " and model.departmentLocation.hamlet.hamletId = "+locationId;
 				else if(regionId == 7)
-					deptLocationStr = " and model.departmentLocation.localElectionBody.localElectionBodyId = "+locationId + " and model.departmentLocation.ward.constituencyId is null ";
+					deptLocationStr = " and model.departmentLocation.localElectionBody.localElectionBodyId = "+locationId;
 				else if(regionId == 8)
 					deptLocationStr = " and model.departmentLocation.ward.constituencyId = "+locationId;
 				else if(regionId == 9)
@@ -2492,7 +2558,7 @@ public class ProblemManagementReportService implements
 	            case 6:
 	            {
 	            	Hamlet hamlet = hamletDAO.get(impactValue);
-	            	locationStr = hamlet.getHamletName()+"(Village, )" +setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
+	            	locationStr = hamlet.getHamletName()+"(Village), " +setConstDistStateTOResult(hamlet.getTownship().getTehsil().getTehsilId());
 	            	break;
 	            }
 	            case 7:
@@ -2526,6 +2592,41 @@ public class ProblemManagementReportService implements
 			return locationStr;
 			}catch(Exception e){
 				return null;
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public Long getLocationValue(long scopeId,Long value)
+		{
+			try{
+				if(scopeId <= 4 || scopeId == 9)
+					return value;
+				else if(scopeId == 5 || scopeId == 6 || scopeId == 8)
+				{
+					return Long.parseLong((value.toString().substring(1)));
+				}
+				else if(scopeId == 7)
+				{
+					List<Long> localElectionBodies = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(value.toString().substring(1)));
+					return localElectionBodies.get(0);
+				}
+				return 0l;
+			}catch(Exception e){
+				return 0l;
+			}
+		}
+	
+		public List<ProblemHistory> addProblemsToMainList(List<ProblemHistory> mainList,List<ProblemHistory> subList)
+		{
+			try{
+				for(ProblemHistory problemHistory:subList)
+				{
+					if(!mainList.contains(problemHistory))
+					mainList.add(problemHistory);
+				}
+				return mainList;
+			}catch(Exception e){
+				return mainList;
 			}
 		}
 }
