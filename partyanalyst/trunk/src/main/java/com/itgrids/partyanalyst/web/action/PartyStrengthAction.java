@@ -43,8 +43,8 @@ public class PartyStrengthAction extends ActionSupport implements
 	private String partyRadio;
 	private String party;
 	private List<PartiesDetailsVO> requiredConstituencyDetails;
-	private ElectionInfoVO electionInfo;
-	
+	private ElectionInfoVO electionInfo;	
+	private PartiesDetailsVO includingAlliance,excludingAlliance,alliancesYears;
 	private int errorCode = 0;
 	
 	
@@ -56,6 +56,26 @@ public class PartyStrengthAction extends ActionSupport implements
 
 	public List<SelectOptionVO> getAllParties() {
 		return allParties;
+	}
+	public PartiesDetailsVO getAlliancesYears() {
+		return alliancesYears;
+	}
+
+	public void setAlliancesYears(PartiesDetailsVO alliancesYears) {
+		this.alliancesYears = alliancesYears;
+	}
+
+	public PartiesDetailsVO getIncludingAlliance() {
+		return includingAlliance;
+	}
+	public void setIncludingAlliance(PartiesDetailsVO includingAlliance) {
+		this.includingAlliance = includingAlliance;
+	}
+	public PartiesDetailsVO getExcludingAlliance() {
+		return excludingAlliance;
+	}
+	public void setExcludingAlliance(PartiesDetailsVO excludingAlliance) {
+		this.excludingAlliance = excludingAlliance;
 	}
 	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
 		return requiredConstituencyDetails;
@@ -307,5 +327,73 @@ public class PartyStrengthAction extends ActionSupport implements
 		}		
 		return SUCCESS;  
 	}
+	
+	
+	public String getIncludingAllianceDataAjaxAction(){
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {				
+			Long partyId = jObj.getLong("partyId");
+			String electionType = jObj.getString("electionType");
+			Long stateId = new Long(jObj.getString("stateId"));	
+			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
+			Long  electionId = jObj.getLong("electionId"); 
+			String partyName = jObj.getString("partyName");
+			includingAlliance = partyStrengthService.getIncludingAllianceData(electionType,stateId,partyId,totalElectionYears,electionId,partyName);			
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  
+	}
+	
+	
+	public String getExcludingAllianceDataAjaxAction(){
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			Long partyId = jObj.getLong("partyName");
+			String electionType = jObj.getString("electionType");
+			Long stateId = new Long(jObj.getString("stateId"));	
+			Long totalElectionYears = new Long(jObj.getString("elecYears"));
+			String partyName = jObj.getString("partyShortName");			
+			excludingAlliance = partyStrengthService.getExcludingAllianceData(electionType,stateId,partyId,totalElectionYears,partyName);			
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  
+	}
+	
+	public String getAllAllianceYearsForAPartyAjaxAction(){
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			Long partyId = jObj.getLong("partyId");		
+			Long stateId = jObj.getLong("stateId");
+			String partyName = jObj.getString("partyName");
+			alliancesYears = partyStrengthService.getAllElectionAllianceYearsForAParty(partyId,stateId,partyName);			
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  
+	}
+	
 	
 }
