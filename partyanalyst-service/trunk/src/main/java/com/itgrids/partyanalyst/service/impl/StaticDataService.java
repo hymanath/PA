@@ -2972,10 +2972,10 @@ public class StaticDataService implements IStaticDataService {
 				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
 				if(winner.get(constituencyId)!=0){
 					votesPercentage =  differenceVotes/winner.get(constituencyId)*100;
-					mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
 				}else{
 					votesPercentage = 0f;
-					mandalAllElectionDetails.setMarginVotesPercentage("0");
+					mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(0));
 				}					
 				mandalAllElectionDetails.setVotesDifference(Float.parseFloat(differenceVotes.toString()));	
 			}
@@ -2987,7 +2987,7 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setCandidateName(parms[2].toString());
 			}else{
 				mandalAllElectionDetails.setCandidateName(parms[2].toString());
-				mandalAllElectionDetails.setMarginVotesPercentage("0");
+				mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(0));
 			}
 			if(Long.parseLong(parms[8].toString())!=1){
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
@@ -3064,10 +3064,10 @@ public class StaticDataService implements IStaticDataService {
 					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
 					if(Float.parseFloat(parms[6].toString())!=0f){
 						votesPercentage =  differenceVotes/(Float.parseFloat(parms[6].toString()))*100;
-						mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
 					}else{
 						votesPercentage = 0f;
-						mandalAllElectionDetails.setMarginVotesPercentage("0");
+						mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(0));
 					}								
 					mandalAllElectionDetails.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
 				}else{
@@ -3079,7 +3079,7 @@ public class StaticDataService implements IStaticDataService {
 				}else{
 					if(parms[2].toString()!=null){
 						mandalAllElectionDetails.setCandidateName(parms[2].toString());
-						mandalAllElectionDetails.setMarginVotesPercentage("0");
+						mandalAllElectionDetails.setMarginVotesPercentage(new BigDecimal(0));
 					}					
 				}
 				if(flag==1){
