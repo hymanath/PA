@@ -910,21 +910,19 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId)
+	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,String locationStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
+		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemStatus.status from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemLocation.problemImpactLevel.regionScopesId = ? and " +
-				" model.problemLocation.problemImpactLevelValue = ? and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String statusStr)
+	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,String locationStr,String statusStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
+		Object[] params = {userId};
 		return getHibernateTemplate().find(" from ProblemHistory model where " +
-				" model.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemLocation.problemImpactLevel.regionScopesId = ? and " +
-				" model.problemLocation.problemImpactLevelValue = ? "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
+				" model.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" "+statusStr+" and model.isDelete is null and model.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")

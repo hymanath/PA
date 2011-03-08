@@ -103,11 +103,11 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId)
+	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,String locationStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
-		return getHibernateTemplate().find(" select count(distinct model.problemHistory.problemHistoryId) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
-				" model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? " +
+				" "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
 				" and model.cadre is not null ",params);
 	}
 	
@@ -115,17 +115,16 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<Object> getAssignedCadreProblemsCountForAnUser(Long userId)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select count(distinct model.problemHistory.problemHistoryId) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
+		return getHibernateTemplate().find(" select distinct model.problemHistory.problemHistoryId from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
 				" model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId)
+	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,String locationStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
-		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?  and " +
-				" model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' " +
-				" and model.cadre is not null ",params);
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select distinct(model.problemHistory) from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				" "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' and model.cadre is not null ",params);
 	}
 	
 	@SuppressWarnings("unchecked")

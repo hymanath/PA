@@ -31,29 +31,27 @@ public class CadreProblemDetailsDAO extends GenericDaoHibernate<CadreProblemDeta
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId)
+	public List<Object> getCadreProblemsCountInARegion(Long userId,String locationStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
-		return getHibernateTemplate().find(" select count(model.problemHistory.problemHistoryId) from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and " +
-				" model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+		Object[] params = {userId};
+		return getHibernateTemplate().find(" select model.problemHistory.problemHistoryId from CadreProblemDetails model where " +
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object> getCadreProblemsCountForAnUser(Long userId)
 	{
 		Object[] params = {userId};
-		return getHibernateTemplate().find(" select count(model.problemHistory.problemHistoryId) from CadreProblemDetails model where " +
+		return getHibernateTemplate().find(" select model.problemHistory.problemHistoryId from CadreProblemDetails model where " +
 				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProblemHistory> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId)
+	public List<ProblemHistory> getCadreProblemsInARegion(Long userId,String locationStr)
 	{
-		Object[] params = {userId,impactedRegionId,locationId};
+		Object[] params = {userId};
 		return getHibernateTemplate().find(" select model.problemHistory from CadreProblemDetails model where " +
-				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? and model.problemHistory.problemLocation.problemImpactLevel.regionScopesId = ? and " +
-				" model.problemHistory.problemLocation.problemImpactLevelValue = ? and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
+				" model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ? "+locationStr+" and model.problemHistory.isDelete is null and model.problemHistory.isApproved = 'true' ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
