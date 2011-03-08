@@ -1283,7 +1283,7 @@ function buildDepartmentWiseProblemsCountInARegionTable(result)
 {
 	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
 	
-	if(!deptWiseProblemInfoDivBodyEle || result == null)
+	if(!deptWiseProblemInfoDivBodyEle || result == null || result.length == 0)
 		return
 
 	var str = '';
@@ -1304,7 +1304,7 @@ function buildDepartmentWiseProblemsCountInARegionTable(result)
 	for(var i=0; i<result.length;i++)
 	{
 		str +='<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
-		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
+		str +='	<th style="width:200px;"><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
 		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total</th>';
 		str +='	<td><a onClick="getDeptWiseProblemsBasedOnStatusInARegion('+result[i].departmentId+',\'Total\')" class="anchorStyle" >'+result[i].departments[4].id+'</a></td>';
 		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th>';
@@ -1330,7 +1330,7 @@ function buildDepartmentWiseProblemsCountTable(result)
 {
 	var deptWiseProblemInfoDivBodyEle = document.getElementById("deptWiseProblemInfoDivBody");
 	
-	if(!deptWiseProblemInfoDivBodyEle || result == null)
+	if(!deptWiseProblemInfoDivBodyEle || result == null || result.length == 0)
 		return
 
 	var str = '';
@@ -1351,7 +1351,7 @@ function buildDepartmentWiseProblemsCountTable(result)
 	for(var i=0; i<result.length;i++)
 	{
 		str +='<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
-		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
+		str +='	<th style="width:200px;"><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >'+result[i].deptName+'</th>';
 		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total</th>';
 		str +='	<td><a onClick="getDeptWiseProblems('+result[i].departmentId+',\'Total\')" class="anchorStyle" >'+result[i].departments[4].id+'</a></td>';
 		str +='	<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >New</th>';
@@ -1377,7 +1377,7 @@ function buildDepartmentWiseProblemsCountInARegionChart(result)
 {
 	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
 	
-	if(!problemInfoDivBodyEle || result == null)
+	if(!problemInfoDivBodyEle || result == null || result.length == 0)
 		return
     
 	var total = 0,newp = 0,prog = 0,pend = 0,fix = 0;
@@ -1466,7 +1466,7 @@ function buildDepartmentWiseProblemsCountChart(result)
 {
 	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
 	
-	if(!problemInfoDivBodyEle || result == null)
+	if(!problemInfoDivBodyEle || result == null || result.length == 0)
 		return
     
 	var total = 0,newp = 0,prog = 0,pend = 0,fix = 0;
@@ -1554,9 +1554,9 @@ function buildCadreProblemDetailsChart(result)
 {
 	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
 
-	if(!problemInfoDivBodyEle || result == null)
+	if(!problemInfoDivBodyEle || result == null || result.length == 0)
 		return;
-	var tot,personal,assigned;
+	var tot,personal,assigned,both;
 
 	for(var i=0;i<result.length;i++)
 	{
@@ -1566,6 +1566,8 @@ function buildCadreProblemDetailsChart(result)
 			personal = result[i].id;
 		else if(result[i].name == 'ASSIGNED')
 			assigned = result[i].id;
+		else if(result[i].name == 'Both')
+			both = result[i].id;
 	}
 
 	var str = '';
@@ -1583,11 +1585,12 @@ function buildCadreProblemDetailsChart(result)
 	str +='	<div id="problemDetails_body" class="problemDetailsBody">';
 	str +='		<table>';
 	str +='			<tr>';
-	str +='				<td valign="top"  width="150px">';
+	str +='				<td valign="top"  width="450px">';
 	str +='					<table class="problemDetailsBody_table">';
 	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th><td><a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" > Both</th><td>'+both+'</a></td>';
 	str +='					</tr>';
 	str +='					</table>';
 	str +='				</td>';
@@ -1615,7 +1618,7 @@ function buildCadreProblemDetailsChart(result)
 	data.setValue(1, 1, assigned);
 	
 	var chart = new google.visualization.PieChart(document.getElementById('statusWiseProbGraphDiv'));
-        chart.draw(data, {width: 400, height: 250, title: 'Cadre Problems'});
+        chart.draw(data, {width: 450, height: 250, title: 'Cadre Problems'});
 }
 
 
@@ -1623,7 +1626,7 @@ function buildStatusWiseProblemDetailsChart(result)
 {
 	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
 
-	if(!problemInfoDivBodyEle || result == null)
+	if(!problemInfoDivBodyEle || result == null || result.length == 0)
 		return;
 	var tot,newp,prog,pend,fix;
 
@@ -1701,7 +1704,7 @@ function buildProblemDetailsChart(result)
 {
 	var problemInfoDivBodyEle = document.getElementById("problemInfoDivBody");
 
-	if(!problemInfoDivBodyEle || result == null)
+	if(!problemInfoDivBodyEle || result == null || result.length == 0)
 		return;
 	var tot,newp,prog,pend,fix;
 	
@@ -1729,7 +1732,7 @@ function buildProblemDetailsChart(result)
 	str +='<table cellpadding="0" cellspacing="0" width="100%">';
 	str +='<tr>';
 	str +='<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>';
-	str +='<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Problem Details </span></div></td>';
+	str +='<td><div class="widgetHeader"><span class="widgetHeaderSpan"> Total Problems - <a onClick="getProblems(\'Total\')" class="anchorStyle">'+tot+'</a></span></div></td>';
 	str +='<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>';
 	str +='</tr>';
 	str +='</table>';
@@ -1740,7 +1743,7 @@ function buildProblemDetailsChart(result)
 	str +='				<td valign="top" width="150px">';
 	str +='					<table class="problemDetailsBody_table">';
 	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
-	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Total Problems</th><td><a onClick="getProblems(\'Total\')" class="anchorStyle">'+tot+'</a></td>';
+	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Open Problems</th><td>'+(tot-fix)+'</td>';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Fixed Problems</th><td><a onClick="getProblems(\'FIXED\')" class="anchorStyle" >'+fix+'</a></td>';
 	str +='					</tr>';
 	str +='					</table>';
@@ -1802,13 +1805,13 @@ function buildProblemDetailsChart(result)
     data.addColumn('number', 'Constituencies');
 	data.addRows(2);
 
-	data.setValue(0, 0, "Total Problems");
-	data.setValue(0, 1, tot);
+	data.setValue(0, 0, "Open Problems");
+	data.setValue(0, 1, tot-fix);
 	data.setValue(1, 0, "Fixed Problems");
 	data.setValue(1, 1, fix);
 
 	var chart = new google.visualization.PieChart(document.getElementById('totalProbGraphDiv'));
-        chart.draw(data, {width: 400, height: 250, title: 'Total Problems / Fixed Problems'});
+        chart.draw(data, {width: 400, height: 250, title: 'Open Problems / Fixed Problems'});
 
 	var data = new google.visualization.DataTable();
 	data.addColumn('string');
@@ -2201,7 +2204,7 @@ function buildResultDataTable(result)
             {key:"description",label:"Description",sortable:true},
             {key:"reportedDate",label:"Reported Date",formatter:YAHOO.widget.DataTable.formatDate, sortable:true},
             {key:"problemStatus",label:"Status", sortable:true},
-			{key:"problemLocation",label:"Location"},
+			{key:"problemLocation",label:"Location",sortable:true},
      	    {key:"cadreName",label:"Cadre",sortable:true,formatter:YAHOO.widget.DataTable.cadreLink},
             {key:"department",label:"Department", sortable:true,formatter:YAHOO.widget.DataTable.department},
 			{key:"recentActivity",label:"Recent Activity", sortable:true},
@@ -2339,7 +2342,7 @@ function buildResultDataTable(result)
 	
 	</div>
 	<div id="errorDiv"></div>
-	<input type="button" class="btnClass" onclick="getProblems()" value="Search"/>
+	<input type="button" class="btnClass" onclick="clearReportBody();getProblems()" value="Search"/>
 	</div>
 <div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
 </div>
