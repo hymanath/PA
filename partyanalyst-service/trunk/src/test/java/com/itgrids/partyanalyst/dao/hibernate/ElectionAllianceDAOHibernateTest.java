@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.Group;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
@@ -73,7 +74,7 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetGroups(){
+	/*public void testGetGroups(){
 		List list = electionAllianceDAO.findAllGroupsForAnElection("Assembly", "2009");
 		if(list != null && list.size() > 0){
 			for(int i=0;i<list.size();i++){
@@ -82,8 +83,15 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Group Id   :" + (Long)params[1]);
 			}
 		}
-	}
+	}*/
 	
+	public void testGetElectionYears(){
+		List list = electionAllianceDAO.getAllAllianceElectionYearsForAParty(885l,IConstants.ELECTION_SUBTYPE_MAIN,1l);		
+		for(int i=0;i<list.size();i++){
+			Object[] params = (Object[])list.get(i);
+			System.out.println(params[0]+"-----"+params[1]);	
+		}
+	}
 
 	
 }

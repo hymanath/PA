@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class MandalAllElectionDetailsVO implements Serializable {
@@ -36,7 +37,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private String votesPercentage;
 	private Long constituencyId;
 	private String constituencyName;
-	private String marginVotesPercentage;
+	private BigDecimal marginVotesPercentage;
 	private String reservationZone;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
@@ -153,11 +154,11 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public String getTehsilName() {
 		return tehsilName;
-	}
-	public String getMarginVotesPercentage() {
+	}	
+	public BigDecimal getMarginVotesPercentage() {
 		return marginVotesPercentage;
 	}
-	public void setMarginVotesPercentage(String marginVotesPercentage) {
+	public void setMarginVotesPercentage(BigDecimal marginVotesPercentage) {
 		this.marginVotesPercentage = marginVotesPercentage;
 	}
 	public String getRank() {

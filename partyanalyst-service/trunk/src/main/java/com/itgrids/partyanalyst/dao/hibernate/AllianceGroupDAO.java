@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
@@ -63,5 +64,23 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 				" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where model2.election.electionId = ?) " +
 				"and model1.party.partyId = ?) and model.party.partyId != ?", params);
 	}
-
+	
+	
+	public List findAlliancePartiesByElectionStateAndPartyExcludeParty(List<Long> electionIds, Long partyId, Long stateId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.group, model.group.groupName, model.party.partyId, model.party.shortName");
+		query.append(" from AllianceGroup model where model.party.partyId != ? and model.group.groupId = ");
+		query.append("(select model1.group.groupId from AllianceGroup model1 where model1.party.partyId = ? and");
+		query.append(" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where model2.state.stateId = ? ");
+		query.append(" and model2.election.electionId in (:electionIds) )) ");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong(0,partyId);
+		queryObject.setLong(1,partyId);
+		queryObject.setLong(2,stateId);
+		queryObject.setParameterList("electionIds", electionIds);
+		
+		return queryObject.list();	
+	}
+	
 }

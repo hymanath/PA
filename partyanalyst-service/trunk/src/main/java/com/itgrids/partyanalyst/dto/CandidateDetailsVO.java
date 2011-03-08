@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class CandidateDetailsVO implements Serializable{
 	private Long dataAvailabilityFlag;
 	private String moreDetails;
 	private Float votesDifference;
-	private String marginVotesPercentage;
+	private BigDecimal marginVotesPercentage;
 	private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	private Long currentRowNo;
 	private String localBodyElectionsConstituencyName;
@@ -149,10 +150,10 @@ public class CandidateDetailsVO implements Serializable{
 	public String getConstituencyName() {
 		return constituencyName;
 	}
-	public String getMarginVotesPercentage() {
+	public BigDecimal getMarginVotesPercentage() {
 		return marginVotesPercentage;
 	}
-	public void setMarginVotesPercentage(String marginVotesPercentage) {
+	public void setMarginVotesPercentage(BigDecimal marginVotesPercentage) {
 		this.marginVotesPercentage = marginVotesPercentage;
 	}
 	public MandalAllElectionDetailsVO getMandalAllElectionDetailsVO() {
