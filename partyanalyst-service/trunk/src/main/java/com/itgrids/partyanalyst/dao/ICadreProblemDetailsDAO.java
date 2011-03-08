@@ -13,11 +13,11 @@ public interface ICadreProblemDetailsDAO extends GenericDao<CadreProblemDetails,
 	
 	public List getCadreDetailsByProblemHistoryId(Long problemHistoryId);
 	
-	public List<Object> getCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId);
+	public List<Object> getCadreProblemsCountInARegion(Long userId,String locationStr);
 	
 	public List<Object> getCadreProblemsCountForAnUser(Long userId);
 	
-	public List<ProblemHistory> getCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId);
+	public List<ProblemHistory> getCadreProblemsInARegion(Long userId,String locationStr);
 	
 	public List<ProblemHistory> getCadreProblemsForAnUser(Long userId);
 

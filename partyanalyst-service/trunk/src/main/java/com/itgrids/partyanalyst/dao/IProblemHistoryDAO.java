@@ -138,9 +138,9 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	
 	public List<ProblemHistory> getProblemHistoryBasedOnId(Long historyId);
 	
-	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId);
+	public List<Object> getTotalProblemsCountForAnUserInARegion(Long userId,String locationStr);
 	
-	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,Long impactedRegionId,Long locationId,String status);
+	public List<ProblemHistory> getStatusWiseProblemsForAnUserInARegion(Long userId,String locationStr,String statusStr);
 	
 	public List<Object> getTotalProblemsStatusForAnUser(Long userId);
 	

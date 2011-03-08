@@ -35,11 +35,11 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 	
 	public List<AssignedProblemProgress> getProblemsByDepartmentScope(Long userId,Long deptScopeId);
 	
-	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,Long impactedRegionId,Long locationId);
+	public List<Object> getAssignedCadreProblemsCountInARegion(Long userId,String locationStr);
 	
 	public List<Object> getAssignedCadreProblemsCountForAnUser(Long userId);
 	
-	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,Long impactedRegionId,Long locationId);
+	public List<ProblemHistory> getAssignedCadreProblemsInARegion(Long userId,String locationStr);
 	
 	public List<ProblemHistory> getAssignedCadreProblemsForAnUser(Long userId);
 	
