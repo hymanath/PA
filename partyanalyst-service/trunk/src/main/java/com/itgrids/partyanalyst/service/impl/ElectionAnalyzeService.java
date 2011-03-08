@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.service.IElectionAnalyzeService;
+import com.itgrids.partyanalyst.utils.CandidateDetailsMarginVotesComoparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionAnalyzeService implements IElectionAnalyzeService {
@@ -574,9 +576,9 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 				candidateDetailsVo.setElectionType(parms[13].toString());
 				candidateDetailsVo.setMoreDetails("view more details");
 				if(parms[11]==null)
-					candidateDetailsVo.setMarginVotesPercentage("0.0");
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal("0.0").setScale(2, BigDecimal.ROUND_HALF_UP));
 				else
-					candidateDetailsVo.setMarginVotesPercentage(parms[11].toString());
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(parms[11].toString()).setScale(2, BigDecimal.ROUND_HALF_UP));
 				
 				if(parms[10]==null)
 					candidateDetailsVo.setVotesDifference(0.0f);
@@ -584,6 +586,10 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 					candidateDetailsVo.setVotesDifference(new Float(parms[10].toString()));
 				candidateDetailsVo.setCandidateId(new Long(parms[14].toString()));
 				data.add(candidateDetailsVo);
+			}
+			
+			if(columnName.equalsIgnoreCase("marginVotesPercentage")){
+				Collections.sort(data,new CandidateDetailsMarginVotesComoparator());
 			}
 			
 			candidateDetailsVO.setCandidateDetails(data);
@@ -919,12 +925,12 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 							}
 						}
 						if(constituencyValidVotes!=0){							
-							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/constituencyValidVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/constituencyValidVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP));
 						}else{
-							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/allCandidateVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());							
+							candidateDetailsVo.setMarginVotesPercentage(new BigDecimal((differenceVotes/allCandidateVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP));							
 						}
 					}else{
-						candidateDetailsVo.setMarginVotesPercentage("0.00");						 
+						candidateDetailsVo.setMarginVotesPercentage(new BigDecimal("0.00").setScale(2, BigDecimal.ROUND_HALF_UP));						 
 					}		
 					candidateDetailsVo.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
 					
@@ -933,7 +939,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 					differenceVotes = 0f;
 					votesPercentage = 0f;
 					candidateDetailsVo.setVotesDifference(differenceVotes);
-					candidateDetailsVo.setMarginVotesPercentage(votesPercentage.toString());
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage).setScale(2, BigDecimal.ROUND_HALF_UP));
 				}
 				
 				candidatepartyID = new Long(parms[5].toString());
@@ -1030,12 +1036,12 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 						votesPercentage = 0f;
 					}	
 					candidateDetailsVo.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
-					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP));
 				}else{
 					differenceVotes = 0f;
 					votesPercentage = 0f;
 					candidateDetailsVo.setVotesDifference(differenceVotes);
-					candidateDetailsVo.setMarginVotesPercentage(votesPercentage.toString());
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage).setScale(2, BigDecimal.ROUND_HALF_UP));
 				}
 				if((electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)) || (electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE))){
 					candidateDetailsVo.setLocalBodyElectionsConstituencyName(parms[14].toString());
