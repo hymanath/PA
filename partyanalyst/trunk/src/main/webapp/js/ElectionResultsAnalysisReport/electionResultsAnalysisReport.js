@@ -533,6 +533,9 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		contentStr+='</TR>';
 		contentStr+='<TR>';
 		contentStr+='<TD style="width:50%">Constituencies (Analyzed)</TD>';
+        if(results.analyzedConsti == '0')
+			contentStr+='<TD> '+results.analyzedConsti+'</TD>';
+		else
 		contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.analyzedConsti+'</a></TD>';
 		contentStr+='</TR>';
 		contentStr+='<TR>';
@@ -680,6 +683,9 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='				</TR>';
 		contentStr+='				<TR>';
 		contentStr+='					<TD style="width:50%">Constituencies (Analyzed)</TD>';
+		if(results.analyzedConsti == '0')
+			contentStr+='<TD> '+results.analyzedConsti+'</TD>';
+		else
 		contentStr+='					<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\')">'+results.analyzedConsti+'</a></TD>';
 		contentStr+='				</TR>';
 		contentStr+='				<TR>';
