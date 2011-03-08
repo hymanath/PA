@@ -1590,7 +1590,6 @@ function buildCadreProblemDetailsChart(result)
 	str +='					<tr style="background-image:url(\'images/icons/electionResultsAnalysisReport/mid.png\');">';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >Cadre Personal </th><td><a onClick="getCadreProblemsInaRegion(\'PERSONAL\')" class="anchorStyle" >'+personal+'</a></td>';
 	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" >cadre Assigned</th><td><a onClick="getCadreProblemsInaRegion(\'ASSIGNED\')" class="anchorStyle">'+assigned+'</a></td>';
-	str +='					<th><img src="images/icons/districtPage/listIcon.png" class="problemDetailsBody_table_img" > Both</th><td>'+both+'</a></td>';
 	str +='					</tr>';
 	str +='					</table>';
 	str +='				</td>';
@@ -2218,9 +2217,16 @@ function buildResultDataTable(result)
             fields: ["problem","description","reportedDate","problemStatus","problemLocation",
 				"cadreName","department","recentActivity","comments","problemHistoryId","cadreId"]
         };
+		
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 20,		        
+				pageLinks: 20
+			    }) 
+				};	
 
 		var myDataTable = new YAHOO.widget.DataTable("stProblemDetails_body",
-                myColumnDefs, myDataSource);
+                myColumnDefs, myDataSource,myConfigs);
 
 		return {
             oDS: myDataSource,
