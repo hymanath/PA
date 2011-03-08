@@ -648,10 +648,10 @@ function buildDataTable(rparam)
 	       		    	           	{key:"partyName", label: "Party Name", sortable: true},
 	       							{key:"partyFlag", label: "Party Flag",sortable:true,formatter:YAHOO.widget.DataTable.partyFlag},
 	       		    				{key:"votesEarned", label: "Votes Earned",sortable:true},
-	       							{key:"votesPercentage", label: "Votes %",sortable:true},
+	       							{key:"votesPercentage", label: "Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 	       		    				{key:"rank", label: "Rank",sortable:true},
 	       							{key:"votesDifference", label: "Margin Votes",sortable:true},
-	       							{key:"marginVotesPercentage", label: "Margin Votes %",sortable:true},
+	       							{key:"marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 	       							{key:"details", label: "More Details",formatter:YAHOO.widget.DataTable.moreDetails},
 	       							{key:"commentsCount", label: "Comments Count",formatter:YAHOO.widget.DataTable.commentsCount},
 	       							{key:"comments", label: "Reasons",formatter:YAHOO.widget.DataTable.comments}
