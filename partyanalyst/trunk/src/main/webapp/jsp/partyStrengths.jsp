@@ -154,13 +154,15 @@
 						main_container_div_elmt.style.display = 'block';
 
 						var elmt = document.getElementById("busyImage");
-						elmt.style.display = 'none';
+						if(elmt)
+							elmt.style.display = 'none';
 
 						buildOverViewDataTable(results); 
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
 						}else{
+							
 							buildDefaultDetails(results);							
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");
@@ -174,6 +176,8 @@
 						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null || results.latestConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							hideLatestConstituenciesDiv();
 						}else{
+							var elmt3 = document.getElementById("new_const_main");
+							elmt3.style.display = 'block';
 							buildDefaultDetailsForNewConstituencies(results);
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies","without_others");
@@ -185,6 +189,8 @@
 						if(results.remainingConstituenciesInfo.partiesStrengthsInfoVO==null || results.remainingConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							hideRemainingConstituenciesDiv();
 						}else{
+							var elmt2 = document.getElementById("remaining_const_main");
+							elmt2.style.display = 'block';
 							buildDefaultDetailsForRemianingConstituencies(results);
 							if(results.partyName=="All Parties"){
 								initializeResultsTable(results,"dataTableId_remainingConstituencies","dataTableMainDiv_remainingConstituencies","without_others");
@@ -214,12 +220,12 @@
 						buildIncludingAllianceData(results);	
 					}
 			}catch (e) {   		
-			    	//alert("Invalid JSON result" + e);   
+			    	alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
@@ -326,6 +332,7 @@
 		elecElmt.innerHTML = elecYearsStr;
 		
 		var elmt = document.getElementById("overViewDiv");
+		
 		var str='';
 		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;		
 		str += '<div id="mainDataDiv">';		
@@ -543,7 +550,8 @@
 		elmt.innerHTML = str;
 	
 		var elmt2 = document.getElementById("new_const_main");
-		elmt2.innerHTML = str;
+		elmt2.style.display = 'none';
+		//elmt2.innerHTML = str;
 	}
 
 	function hideRemainingConstituenciesDiv(){
@@ -552,7 +560,8 @@
 		elmt.innerHTML = str;
 	
 		var elmt2 = document.getElementById("remaining_const_main");
-		elmt2.innerHTML = str;
+		elmt2.style.display = 'none';
+		//elmt2.innerHTML = str;
 	}
 	
 	function initializeResultsTable(results,tableId,divId,type) {
