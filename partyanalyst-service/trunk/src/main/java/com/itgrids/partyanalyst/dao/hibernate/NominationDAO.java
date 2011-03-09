@@ -2465,15 +2465,15 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}else if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES)){
 			query.append(" model.candidateResult.rank != 1 ");
 		}
-		//model.party.partyId in (:partyIds) and
-		query.append(" and  model.constituencyElection.constituency.deformDate is null");
+		query.append(" and model.party.partyId in (:partyIds)");
+		query.append(" and model.constituencyElection.constituency.deformDate is null");
 		query.append(" group by model.constituencyElection.constituency.constituencyId,model.party.partyId order by model.constituencyElection.constituency.constituencyId ");	
 		
 				
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setString(0,electionSubType);
 		queryObject.setParameterList("constituencyIds", constituencyIds);
-		//queryObject.setParameterList("partyIds", partyIds);
+		queryObject.setParameterList("partyIds", partyIds);
 		return queryObject.list();	
 	}
 	
