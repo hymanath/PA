@@ -404,7 +404,7 @@ public class CreateLocalGroupAction extends ActionSupport implements
 		}
 		if(windowTask.equalsIgnoreCase("edit"))
 		{
-			setDefaultGroupScope(new Long(localUserGroupDetailsVO.getGroupScopeId()));
+			setDefaultGroupScope(new Long(localUserGroupDetailsVO.getLocalUserGroupId()));
 		}
 		
 		session.setAttribute(ISessionConstants.STATES, statesList);
