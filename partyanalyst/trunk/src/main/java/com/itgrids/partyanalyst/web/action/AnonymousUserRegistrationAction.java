@@ -12,7 +12,9 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class AnonymousUserRegistrationAction extends ActionSupport implements
@@ -65,6 +67,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	
 //User Details Validation
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Username Should not Contain Special characters and Numbers.", shortCircuit = true)
 	public void setUserName(String userName) {
 		this.userName = userName;
 		this.regVO.setUserName(userName);
@@ -100,7 +103,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.registrationId = registrationId;
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is required",shortCircuit=true)	
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First name Should not contain Special Characters and Numbers.", shortCircuit = true)
 	public void setFirstName(String firstName) {
 		this.regVO.setFirstName(firstName);
 	}
@@ -108,7 +112,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getFirstName();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is required",shortCircuit=true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last name Should not Contain Special Characters and Numbers.", shortCircuit = true)
 	public void setLastName(String lastName) {
 		this.regVO.setLastName(lastName);
 	}
@@ -163,7 +168,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getPincode() {
 		return regVO.getPincode();
 	}
-	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([123456789]{1})([012346789]{5})$", message = "Invalid Pincode", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Pincode", minLength = "6", maxLength = "7")	
 	public void setPincode(String pincode) {
 		this.regVO.setPincode(pincode);
 	}
@@ -197,7 +203,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getPhone() {
 		return regVO.getPhone();
 	}
-
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setPhone(String phone) {
 		this.regVO.setPhone(phone);
 	}
