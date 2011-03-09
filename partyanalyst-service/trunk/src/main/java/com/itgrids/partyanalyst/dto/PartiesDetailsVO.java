@@ -19,12 +19,25 @@ public class PartiesDetailsVO implements Serializable {
 	private Long count;
 	private Long constituencyId;
 	private String constituencyName;
-	
+	private Long constituencyCount;
 	private List<SelectOptionVO>  details;
 	private Map<Long,Long>  partyStrenghCount;
 
 	private List<SelectOptionVO>  partyDetails;
-
+	private List<Long> constIds;
+	
+	public List<Long> getConstIds() {
+		return constIds;
+	}
+	public void setConstIds(List<Long> constIds) {
+		this.constIds = constIds;
+	}
+	public Long getConstituencyCount() {
+		return constituencyCount;
+	}
+	public void setConstituencyCount(Long constituencyCount) {
+		this.constituencyCount = constituencyCount;
+	}
 	public List<SelectOptionVO> getPartyDetails() {
 		return partyDetails;
 	}
