@@ -240,7 +240,7 @@
 		for(var k=0;k<details.length;k++){
 			str += '	<tr>';
 			str += '		<td align="center">'+(k+1)+'</td>';
-			str += '		<td align="center"><a title="click here to view constituencies details" onChange="getData(\''+partyName+'\',\''+(k+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
+			str += '		<td align="center"><a title="click here to view constituencies details" onClick="getData(\''+partyName+'\',\''+(k+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
 			str += '	</tr>';					
 		}
 		str += '	</table>';		
@@ -277,7 +277,7 @@
 		var str='';
 		
 		if(details.length!=0){
-			str+='<select id="AlliancesYears" style="width:130px;" onClick="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';
+			str+='<select id="AlliancesYears" style="width:130px;" onChange="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';
 			str+='<option value="0">All Elections</option>';
 			for(var i in details)
 			{
