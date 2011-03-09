@@ -2587,19 +2587,26 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	
-	public List getAllCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,String electionSubType){
+	public List getAllCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,String electionSubType,Long elecId){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
 		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
 		query.append(" from Nomination model where");	
 		query.append(" model.party.partyId=? and model.constituencyElection.election.elecSubtype =? and model.candidateResult.rank = 1 and");
+		if(elecId!=null){
+			query.append(" model.constituencyElection.election.electionId =? and ");
+		}
+		
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setLong(0,partyId);	
 		queryObject.setString(1,electionSubType);
+		if(elecId!=null){
+			queryObject.setLong(2,elecId);
+		}
 		queryObject.setParameterList("constituencyIds", constIds);
 		return queryObject.list();
 	}
@@ -2611,13 +2618,31 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
 		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
 		query.append(" from Nomination model where");	
-		query.append(" model.party.partyId=? and model.constituencyElection.election.electionScope.electionScopeId = ? and model.candidateResult.rank = 1 and");
+		query.append(" model.party.partyId=? and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setLong(0,partyId);	
 		queryObject.setLong(1,electionId);
+		queryObject.setParameterList("constituencyIds", constIds);
+		return queryObject.list();
+	}
+	
+	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,List<Long> electionIds){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
+		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
+		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
+		query.append(" from Nomination model where");	
+		query.append(" model.party.partyId=?  and model.candidateResult.rank = 1 and");
+		query.append(" model.constituencyElection.election.electionId in (:electionIds) and");
+		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+		
+		
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setLong(0,partyId);	
+		queryObject.setParameterList("electionIds", electionIds);
 		queryObject.setParameterList("constituencyIds", constIds);
 		return queryObject.list();
 	}
