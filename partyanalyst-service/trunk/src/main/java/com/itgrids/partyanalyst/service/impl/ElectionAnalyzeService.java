@@ -568,7 +568,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 				}else{
 					candidateDetailsVo.setPartyFlag("no_Image.png");
 				}			
-				candidateDetailsVo.setPartyName(parms[3].toString());
+				candidateDetailsVo.setPartyName(parms[4].toString());
 				Long constituencyID = new Long(parms[1].toString());
 				candidateDetailsVo.setConstituencyId(constituencyID);
 				candidateDetailsVo.setConstituencyName(parms[2].toString().toUpperCase());
@@ -1022,7 +1022,7 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 				}else{
 					candidateDetailsVo.setPartyFlag("no_Image.png");
 				}			
-				candidateDetailsVo.setPartyName(parms[7].toString());
+				candidateDetailsVo.setPartyName(parms[8].toString());
 				candidateDetailsVo.setConstituencyId(new Long(parms[9].toString()));
 				candidateDetailsVo.setConstituencyName(parms[10].toString());
 				candidateDetailsVo.setElectionYear(parms[11].toString());
