@@ -270,7 +270,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  				resultVo.setRequiredConstituenciesInfo(new ConstituencyElectionResults());
  			
  			if(latestConstituencies.size()!=0)
- 				resultVo.setLatestConstituenciesInfo(getAllElectionData(latestConstituencies,nominationDAO.getAllPartyResults(latestConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES),electionYearsCount,IConstants.LATEST_CONSTITUENCIES,electionType,stateId));	
+ 				resultVo.setLatestConstituenciesInfo(getAllElectionData(latestConstituencies,nominationDAO.getAllLatestPartyResults(latestConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES),electionYearsCount,IConstants.LATEST_CONSTITUENCIES,electionType,stateId));	
 			else
 				resultVo.setLatestConstituenciesInfo(new ConstituencyElectionResults());
 
