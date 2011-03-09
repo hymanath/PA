@@ -33,7 +33,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class HomePageAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
-	private List<SelectOptionVO> statesList;
+	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
 	private IStaticDataService staticDataService;
 	private List<StateElectionsVO> stateElections;
 	private HttpSession session;
@@ -46,6 +46,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
 
+	
+	public List<SelectOptionVO> getStatesListForLocalBodyElection() {
+		return statesListForLocalBodyElection;
+	}
+	public void setStatesListForLocalBodyElection(
+			List<SelectOptionVO> statesListForLocalBodyElection) {
+		this.statesListForLocalBodyElection = statesListForLocalBodyElection;
+	}
 	public String getLoginStatus() {
 		return loginStatus;
 	}
@@ -180,6 +188,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		}
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		
+		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
+		
 		return Action.SUCCESS;
 	}
 	

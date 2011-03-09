@@ -432,7 +432,7 @@ var loginStatus = '${loginStatus}';
 										<td style="color:#004078"><%=stateSelect%></td>
 									</tr>
 									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="statesList" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_l" list="statesListForLocalBodyElection" listKey="id" listValue="name" onchange="getLocalBodiesForState(this.options[this.selectedIndex].value)"/></td>									
 									</tr>
 									<tr>
 										<td style="color:#004078"><div id="localBodiesRadioDiv_label"><%=localBody%></div></td>
