@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -38,7 +39,6 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituencyCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
-import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyCommentsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -71,11 +71,20 @@ public class CommentsDataService implements ICommentsDataService {
 	private IAnanymousUserDAO ananymousUserDAO;
 	private IRegistrationDAO registrationDAO;
 	private ICommentDataDAO commentDataDAO; 	
-	
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	
+	
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
 	public IPartyDAO getPartyDAO() {
 		return partyDAO;
 	}
@@ -622,10 +631,35 @@ public class CommentsDataService implements ICommentsDataService {
 		Nomination nomination = null;
 		List<Nomination> nominations = null;
 				
-		if(electionId != null && !electionId.equals(new Long(0)) && constituencyId != null && candidateId != null)
-		nominations = nominationDAO.getNominationOfACandidateInAnElection(electionId, constituencyId, candidateId);
-		else if(electionType != null && electionYear != null && constituencyId != null && candidateId != null)
-		nominations = nominationDAO.getNominationOfACandidateInAnElection(electionType, electionYear, constituencyId, candidateId);
+		if(electionId != null && !electionId.equals(new Long(0)) && constituencyId != null && candidateId != null){
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+				nominations = nominationDAO.getNominationOfACandidateInAnElection(electionId, constituencyId, candidateId);
+			}else{
+				List parliamentConstId = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId,Long.parseLong(electionYear));
+				Long conId = 0l;
+				for(int i=0;i<parliamentConstId.size();i++){
+					Object[] parms = (Object[])parliamentConstId.get(i);
+					conId = (Long)parms[0];
+				}
+				nominations = nominationDAO.getNominationOfACandidateInAnElection(electionId, conId, candidateId);
+			}
+				
+		}
+		
+		else if(electionType != null && electionYear != null && constituencyId != null && candidateId != null){
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+				nominations = nominationDAO.getNominationOfACandidateInAnElection(electionType, electionYear, constituencyId, candidateId);	
+			}else{
+				List parliamentConstId = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(constituencyId,Long.parseLong(electionYear));
+				Long conId = 0l;
+				for(int i=0;i<parliamentConstId.size();i++){
+					Object[] parms = (Object[])parliamentConstId.get(i);
+					conId = (Long)parms[0];
+				}
+				nominations = nominationDAO.getNominationOfACandidateInAnElection(electionType, electionYear, conId, candidateId);
+			}
+			
+		}
 		
 		if(nominations != null && nominations.size() > 0)
 		nomination = nominations.get(0);
