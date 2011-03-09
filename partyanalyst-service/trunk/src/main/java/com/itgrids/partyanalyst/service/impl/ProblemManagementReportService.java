@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.service.IDataApprovalService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
+import com.itgrids.partyanalyst.utils.GenericException;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ProblemsCountByStatusComparator;
 
@@ -1806,11 +1807,15 @@ public class ProblemManagementReportService implements
 					}
 					if(parliamentConstituencies!=null && parliamentConstituencies.size()!=0){
 						List<Long> listOfAssemblyConstituencies = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(parliamentConstituencies);
+						
 						if(listOfAssemblyConstituencies!=null && listOfAssemblyConstituencies.size()!=0){
 							listOfAssemblyConstituencies.addAll(parliamentConstituencies);							
 							result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(listOfAssemblyConstituencies,locationType));
 						}else{
-							result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(assemblyConstituencies,locationType));
+							if(assemblyConstituencies!=null && assemblyConstituencies.size()!=0)
+								result = generateVoContainingAllApprovalProblems(getAllAcceptedProblemsInAConstituency(assemblyConstituencies,locationType));
+							else
+								throw new GenericException("There are no assemblies mapped to this parliament constituency");
 						}
 					}
 					
