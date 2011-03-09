@@ -302,6 +302,13 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List findLatestParliamentElectionYear(String electionType,String electionSubType){
+		Object[] params = {electionType,electionSubType};
+		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?" +
+				" and model.elecSubtype = ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List findLatestElectionAssemblyElectionIdForState(String electionType, Long stateId,String electionSubType){
 		Object[] params = {electionType, stateId,electionSubType};
 		return getHibernateTemplate().find("select max(model.electionYear),model.electionId from Election model where model.electionScope.electionType.electionType = ?" +

@@ -575,8 +575,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			List<Long> constituencyIds = new ArrayList<Long>(0);
 			constituencyIds.add(constituencyId);
-			electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, constituency.getState().getStateId(),IConstants.ELECTION_SUBTYPE_MAIN)
-					.get(0).toString()) ;
+			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+				electionYear = Long.parseLong(electionDAO.findLatestElectionAssemblyElectionYearForState(IConstants.ASSEMBLY_ELECTION_TYPE, constituency.getState().getStateId(),IConstants.ELECTION_SUBTYPE_MAIN)
+						.get(0).toString()) ;
+			}else{
+				electionYear = Long.parseLong(electionDAO.findLatestParliamentElectionYear(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN).get(0).toString()) ;
+			}
+			
 			list = constituencyElectionDAO.getLatestReservationZone(constituencyIds,electionYear);
 					
 			for(int i=0;i<list.size();i++){
