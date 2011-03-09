@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
@@ -84,7 +85,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	public String getEmail() {
 		return email;
 	}
-
+	 @EmailValidator(type = ValidatorType.FIELD, message = " enter a valid for email.")
 	public void setEmail(String email) {
 		this.email = email;
 	}
