@@ -229,7 +229,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		return mobile;
 	}
 	
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Please Enter Mobile Number in Complained Person Details.", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
@@ -237,7 +238,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	public String getPhone() {
 		return phone;
 	}
-
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([02346789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
@@ -438,11 +439,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 			{
 				if(getName() == null || getName().trim().length() == 0)
 					addFieldError("nameInput","Please Enter Name in Complained Person Details.");
-				if(getMobile() == null || getMobile().trim().length() == 0)
-					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");
-				if(getMobile() != null && getMobile().trim().length() > 0 && (getMobile().trim().length() < 10 ||
-						getMobile().trim().length() > 12))
-					addFieldError("mobileLenInput","Invalid Mobile Number.");
+			/*	if(getMobile() == null || getMobile().trim().length() == 0)
+					addFieldError("mobileInput","Please Enter Mobile Number in Complained Person Details.");*/
 				if(getAddress() == null || getAddress().trim().length() == 0)
 					addFieldError("addressInput","Please Enter Address in Complained Person Details.");
 			}

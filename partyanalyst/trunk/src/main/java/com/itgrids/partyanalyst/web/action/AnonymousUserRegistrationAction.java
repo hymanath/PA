@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.EmailValidator;
 import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
@@ -160,7 +161,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getEmail() {
 		return regVO.getEmail();
 	}
-
+	 @EmailValidator(type = ValidatorType.FIELD , message = " enter a valid email.")
 	public void setEmail(String email) {
 		this.regVO.setEmail(email);
 	}
@@ -168,7 +169,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getPincode() {
 		return regVO.getPincode();
 	}
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([123456789]{1})([012346789]{5})$", message = "Invalid Pincode", shortCircuit = true)
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([0123456789]{6})$", message = "Invalid Pincode", shortCircuit = true)
 	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Pincode", minLength = "6", maxLength = "7")	
 	public void setPincode(String pincode) {
 		this.regVO.setPincode(pincode);
