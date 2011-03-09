@@ -964,6 +964,26 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return partiesDetails;
  	}
  	
+ 	public void getAllRequiredData(List electionIds,Long partyId,List<Long> allConstituencies,List result){
+	 	try{
+	 		for(int i=0;i<electionIds.size();i++){
+				Object[] params = (Object[])electionIds.get(i);
+				String electionYear =  params[0].toString();
+				Long obtainedElectionId = (Long)params[1];
+				Long electionTypeId = (Long)params[2];
+				List<Party> allianceParties = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
+				for(Party eachParty : allianceParties){
+					if(partyId.intValue()!=eachParty.getPartyId().intValue()){
+						List allianceResult = nominationDAO.getPartyResultsForAParty(allConstituencies,eachParty.getPartyId(),IConstants.ELECTION_SUBTYPE_MAIN,obtainedElectionId); 				
+						result.addAll(allianceResult);
+					}					
+				} 				
+			} 
+	 	}catch(Exception e){
+	 		e.printStackTrace();
+	 	}
+ 	}
+ 	
  	public List<PartiesDetailsVO> getAllCandidatesDetailsForAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName,Long columnId){
  		List<PartiesDetailsVO> partiesDetails = new ArrayList<PartiesDetailsVO>(); 		
  		List electionIds = new ArrayList(0);
@@ -1019,23 +1039,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return partiesDetails;
  	}
  	
- 	public void getAllRequiredData(List electionIds,Long partyId,List<Long> allConstituencies,List result){
-	 	try{
-	 		for(int i=0;i<electionIds.size();i++){
-				Object[] params = (Object[])electionIds.get(i);
-				String electionYear =  params[0].toString();
-				Long obtainedElectionId = (Long)params[1];
-				Long electionTypeId = (Long)params[2];
-				List<Party> allianceParties = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
-				for(Party eachParty : allianceParties){
-					List allianceResult = nominationDAO.getPartyResultsForAParty(allConstituencies,eachParty.getPartyId(),IConstants.ELECTION_SUBTYPE_MAIN,obtainedElectionId); 				
-					result.addAll(allianceResult);
-				} 				
-			} 
-	 	}catch(Exception e){
-	 		e.printStackTrace();
-	 	}
- 	}
+ 	
  	
  	public void saveDataIntoVo(Map<Long,PartiesDetailsVO> partyOverview,List<SelectOptionVO> details){
  		for(Map.Entry<Long,PartiesDetailsVO> entry : partyOverview.entrySet()){
