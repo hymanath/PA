@@ -218,8 +218,11 @@ var loginStatus = '${loginStatus}';
 
 	<div id="homePageContainer" style="overflow:visible;">
 		<div id="floatingDiv_relative_main">
-			<div id="floatingDiv_absolute_main">
-				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img style="border:0px none;" src="images/icons/homePage_new/feedBack.jpg"/></a>
+			<div id="floatingDiv_absolute_main">				
+				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedBack.jpg"/></a>
+				<div id="floatingDiv_absolute_close" >
+					<img id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpg">
+				</div>
 			</div>
 		</div>
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
@@ -1024,6 +1027,32 @@ var loginStatus = '${loginStatus}';
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 								<td rowspan="3" valign="top" width="100px">
+									
+								</td>
+								<td valign="top">
+									<span class="newsHeaderLabel">Five states election heat to parties in summer.</span>
+								 </td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsContent">
+									This summer five states will be facing elections deciding the parties rule...
+									</div>
+								</td>
+								</tr>
+								<tr>                               
+								<td valign="top">
+									<div class="newsAnchorDiv">
+									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
+									</div>
+								</td>
+								</tr>
+								</table>
+							</div>
+							<div class="newsDataMain">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+								<td rowspan="3" valign="top" width="100px">
 									<img width="80" height="75" src="images/icons/homePage_new/telangana.jpg"/>
 								</td>
 								<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
@@ -1045,36 +1074,7 @@ var loginStatus = '${loginStatus}';
 								</td>
 								</tr>
 								</table>
-							</div>
-							
-							<div class="newsDataMain">
-								<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-								<td rowspan="3" valign="top" width="100px">
-									
-								</td>
-								<td valign="top">
-									<span class="newsHeaderLabel">Govt to talk to allies on fuel price hike:pranab </span>
-								 </td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsContent">
-									Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop 
-									of demands for a rollback in the fuel prices and explained why reduction in the excise
-									duty on petroleum products was difficult.
-									</div>
-								</td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsAnchorDiv">
-									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
-									</div>
-								</td>
-								</tr>
-								</table>
-							 </div>
+							</div>		
 						</div>
 						<div >
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">

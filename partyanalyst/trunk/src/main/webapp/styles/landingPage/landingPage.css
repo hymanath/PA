@@ -695,12 +695,24 @@ input.input_text
 #floatingDiv_relative_main
 {
 	float:right;
-	position:relative
+	position:relative;
+	left:-25px;
+	z-index:1;
 }
 
 #floatingDiv_absolute_main
 {
 	position:absolute;
+}
+
+#floatingDiv_absolute_close
+{
+	background-image:url("../../images/icons/homePage_new/red_bg.jpg");
+	color:#FFFFFF;
+	font-weight:bold;
+	font-size:10px;
+	height:20px;
+	border-top:1px solid #928B8B;
 }
 
 .ui-dialog
@@ -767,9 +779,18 @@ input.input_text
 	text-align:left;
 }
 
+#floatingDiv_absolute_close_Img
+{
+	position:relative;
+	left:7px;	
+	top:3px;
+	cursor:pointer;
+	opacity:0.8;
+	filter:alpha(opacity=80);
+}
 
 /*====================
-	indexPage styles
+	Index Page styles
 ======================*/
 
 
