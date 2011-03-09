@@ -89,7 +89,7 @@
 						<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
 						<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
 						<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>
-						<li><a href="javascript:{}" class="navLinksAnc">Our Blog</a></li>
+						<li><a href="http://partyanalyst.wordpress.com" target="_blank" class="navLinksAnc">Our Blog</a></li>
 						<li>|</li>
 						<li><a href="javascript:{}" onclick="buildLoginPopup()" class="navLinksAnc">
 						Login </a></li>
