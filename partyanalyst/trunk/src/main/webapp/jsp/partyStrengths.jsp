@@ -462,7 +462,7 @@
 		browser1.focus();		
 	}
 
-	function getIncludingData(partyName,columnId,partyId){
+	function getIncludingData(partyName,columnId,partyId){			
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
@@ -671,6 +671,20 @@
 		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 		
+		var jsObj=
+		{		
+				electionType :selectedElmt,		
+				task:"getStatesAjaxAction"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getStatesAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+
+	function getStatesOfAp(selectedElmt)
+	{
+		electionType = selectedElmt;	
+	
 		var jsObj=
 		{		
 				electionType :selectedElmt,		
@@ -1142,8 +1156,8 @@
 		
 <script type="text/javascript">
 	populateDefaultDetails();
-	//getStates('Assembly');
-	//getDefaultFrequencyOfYears();
+	getStatesOfAp('Assembly');
+	getDefaultFrequencyOfYears();
 	getDefaultParties();
 	//validateAndForwardToAction();
 </script>
