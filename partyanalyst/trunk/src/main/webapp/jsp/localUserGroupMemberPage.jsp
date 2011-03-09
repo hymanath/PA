@@ -215,7 +215,7 @@
 		<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
 			elmt.innerHTML = "${savedStatusMsg}";
 			window.opener.location.reload();			
-			window.close();
+			//window.close();
 		</c:if>		
 	}
 
@@ -285,7 +285,7 @@
 				<tr>
 					<td colspan="2">
 						<c:if test="${savedStatusMsg !=  '' && savedStatus == true}">
-							<DIV id="statusMessageDiv" style="color:green;font-weight:bold"></DIV>			
+							<DIV theme="simple" id="statusMessageDiv" style="color:green;font-weight:bold"></DIV>			
 						</c:if>						
 					</td>
 				</tr>
@@ -338,7 +338,7 @@
 				<tr>
 					<th> <font color="red"> * </font> Designation</th>
 					<td> <s:select id="designations" name="designations" cssStyle="width:150px;" list="#session.designations" listKey="id" listValue="name"></s:select></td>
-					<td style="background-color:#ADADAD"><input type="button" value="Add New Designation" onclick="showAddDesignation()"></input></td>
+					<td style="background-color: burlyWood;"><input type="button" value="Add New Designation" onclick="showAddDesignation()"></input></td>
 				</tr>
 
 				<tr style="background-color:#ADADAD">			
