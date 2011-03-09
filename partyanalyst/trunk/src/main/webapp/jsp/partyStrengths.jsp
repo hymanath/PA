@@ -134,6 +134,7 @@
 	var selectedPartyId=7;
 	var selectedPartyName;
 	var partyId;
+	var selectedElecId;
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -407,7 +408,7 @@
 		var electionTypeSelect = document.getElementById("electionTypeSelect").value;
 		var stateSelect = document.getElementById("stateSelect").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
-		
+		selectedElecId = electionId;
 		var jsObj=
 		{		
 				electionType : electionTypeSelect,
@@ -461,8 +462,8 @@
 		browser1.focus();		
 	}
 
-	function getIncludingData(partyName,columnId,partyId){		
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
+	function getIncludingData(partyName,columnId,partyId){
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 	
