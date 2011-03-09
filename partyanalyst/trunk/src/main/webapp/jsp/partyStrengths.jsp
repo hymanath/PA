@@ -158,7 +158,7 @@
 
 						buildOverViewDataTable(results); 
 						
-						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null){
+						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
 						}else{
 							buildDefaultDetails(results);							
@@ -171,7 +171,7 @@
 							}
 						}
 						
-						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null){
+						if(results.latestConstituenciesInfo.partiesStrengthsInfoVO==null || results.latestConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							hideLatestConstituenciesDiv();
 						}else{
 							buildDefaultDetailsForNewConstituencies(results);
@@ -537,6 +537,7 @@
 	}
 
 	function hideLatestConstituenciesDiv(){
+		
 		var elmt = document.getElementById("dataTableBuildForNewConstituencies");
 		var str='';	
 		elmt.innerHTML = str;
