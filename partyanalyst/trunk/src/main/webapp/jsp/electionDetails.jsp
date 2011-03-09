@@ -358,12 +358,18 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 
 	  //static colors for parties
       var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
-		 
+	  
+	  var locStr = '';
+	  if(electionType == 'Parliament')
+		locStr = ' State ';
+	  else if(electionType == 'Assembly')
+		locStr = ' District ';
+
 	  var ctitle='';
       if(partyN != null) 
-	     ctitle = partyN+' District Wise Election Results By Seats Won'; 
+	     ctitle = partyN+' '+locStr+' Wise Election Results By Seats Won'; 
 	  else
-         ctitle = 'All Parties District Wise Election Results By Seats Won';
+         ctitle = 'All Parties '+locStr+' Wise Election Results By Seats Won';
 
 	  if(staticColors != null && staticColors.length > 0)
 	  {
@@ -446,12 +452,17 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
         data.addRow(array);
        
 	  }
-		 
+	  var locStr = '';
+	  if(electionType == 'Parliament')
+		locStr = ' State ';
+	  else if(electionType == 'Assembly')
+		locStr = ' District ';
+
       var ctitle='';
       if(partyN != null) 
-	     ctitle = partyN+' District Wise Election Results By Votes Percentage'; 
+	     ctitle = partyN+' '+locStr+' Wise Election Results By Votes Percentage'; 
 	  else
-         ctitle = 'All Parties District Wise Election Results By Votes Percentage';
+         ctitle = 'All Parties '+locStr+' Wise Election Results By Votes Percentage';
 	  
 	   var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 	   if(staticColors != null && staticColors.length > 0)
@@ -1152,7 +1163,14 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 	var selectPartyName = partyName;
 	var districtName = districtName;	
 	var dtSource = new Array();
-	var tableCaption = "Partywise Results In All Districts"
+	var locStr = '';
+	
+	if(electionType == 'Parliament')
+	   locStr = ' States ';
+	else if(electionType == 'Assembly')
+	   locStr = ' Districts ';
+
+	var tableCaption = "Partywise Results In All "+locStr;
 	if(type == "all")
 	{
 		
@@ -1429,6 +1447,13 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 	var distName = districtName;
 	var innerObj = results.alliancePartiesList;
 	var caption;
+	var locStr = '';
+	
+	if(electionType == 'Parliament')
+	   locStr = ' States ';
+	else if(electionType == 'Assembly')
+	   locStr = ' Districts ';
+
 	parentElmt.innerHTML ='';
 		for(var i in innerObj)
 			{	
@@ -1447,7 +1472,7 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 
 				if(type == "all")
 				{	
-					caption = innerObj[i].allianceGroupName+" Results in All Districts";
+					caption = innerObj[i].allianceGroupName+" Results in All "+locStr;
 					var dtSourceArr = new Array();
 					for(var j in innerObj[i].partiesInAlliance)
 						{
