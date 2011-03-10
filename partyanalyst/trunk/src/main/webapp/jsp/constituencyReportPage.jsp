@@ -85,6 +85,8 @@
 
 <script type="text/javascript">
 var type="";
+var selectedRadioElmt;
+var selectedStateElmt;
 var candidateDetails={
 		candidateDetailsArray:[]
 	};
@@ -143,22 +145,27 @@ function callAjax(param,jsObj,url){
 	var  callback = {			
 	    success : function( o ) {
 			try {												
-					myResults = YAHOO.lang.JSON.parse(o.responseText);		
+					myResults = YAHOO.lang.JSON.parse(o.responseText);
+				
 					if(jsObj.task == "getStates")
 					{
-						showStatesInSelectOption(myResults)
+						showStatesInSelectOption(myResults);
 					}	
 					if(jsObj.task == "getDistricts")
 					{
-						showDistrictsInSelectOption(myResults)
+						showDistrictsInSelectOption(myResults);
 					}
 					if(jsObj.task == "getConstituencies")
 					{
-						showConstituenciesInSelectOption(myResults)
-					}					
+						showParlimentConstituenciesInSelectOption(myResults);
+					}
+					if(jsObj.task == "getConstituenciesForDistrict" || jsObj.task == "getAssemblyConstituencysForAState")
+					{
+						showConstituenciesInSelectOption(myResults);
+					}				
 					if(jsObj.task == "getCandidateDetails")
 					{
-						showCandidateDetails(myResults)
+						showCandidateDetails(myResults);
 					}		
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
@@ -166,76 +173,157 @@ function callAjax(param,jsObj,url){
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
 function showStatesInSelectOption(results) 
 {
-	var selectedElmt = document.getElementById("stateId");
-	for(var i in results.getAllStates)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results.getAllStates[i].id;
-		opElmt.text=results.getAllStates[i].name;
+	var selectedElmt = document.getElementById("statesPopulationDiv");
+
+	var districtId = document.getElementById("districtPopulationDiv");
+	if(districtId)
+		districtId.style.display = 'none';
+
+	var constituenciesPopulationId = document.getElementById("constituenciesPopulationDiv");
+	if(constituenciesPopulationId)
+		constituenciesPopulationId.style.display = 'none';
+
+	var candidateInfoDiv = document.getElementById("candidateInfoDiv");
+	if(candidateInfoDiv)
+		candidateInfoDiv.style.display = 'none';
 	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
+	var data = results.getAllStates;
+	var str='';
+	if(selectedRadioElmt=="assembly"){
+		str+='<select id="statesInIndiaId" style="width:130px;" onChange="getDistricts(this.options[this.selectedIndex].value,\''+selectedRadioElmt+'\')">';
+	}else{
+		str+='<select id="statesInIndiaId" style="width:130px;" onChange="getConstituency(this.options[this.selectedIndex].value,\''+selectedRadioElmt+'\')">';
 	}
-	catch(ex)
+	
+	for(var i in data)
 	{
-		selectedElmt.add(opElmt); // IE only
-	}			
+		str+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 	}
+	str+='</select>';
+	selectedElmt.innerHTML = str;
+	
 }
 
 function showDistrictsInSelectOption(results)
+{	
+	if(results.length>1){	
+
+		var districtId = document.getElementById("districtPopulationDiv");
+		if(districtId)
+			districtId.style.display = 'block';
+
+	/*	var constituenciesPopulationId = document.getElementById("constituenciesPopulationDiv");
+		if(constituenciesPopulationId)
+			constituenciesPopulationId.style.display = 'block';
+
+		var candidateInfoDiv = document.getElementById("candidateInfoDiv");
+		if(candidateInfoDiv)
+			candidateInfoDiv.style.display = 'block';
+*/
+		
+		var selectedElmt = document.getElementById("districtPopulationDiv");
+		
+		var str='';
+		str+='<select id="districtForAStateId" style="width:130px;" onChange="getConstituencysForADistrict(this.options[this.selectedIndex].value,\''+selectedRadioElmt+'\')">';
+		for(var i in results)
+		{
+			str+='<option value="'+results[i].id+'">'+results[i].name+'</option>';
+		}
+		str+='</select>';
+		selectedElmt.innerHTML = str;
+		
+		var messageDiv = document.getElementById("messageDiv");
+		if(messageDiv)
+			messageDiv.style.display = 'none';
+		
+	}else{		
+		var districtId = document.getElementById("districtPopulationDiv");
+		if(districtId)
+			districtId.style.display = 'none';
+
+		var constituenciesPopulationId = document.getElementById("constituenciesPopulationDiv");
+		if(constituenciesPopulationId)
+			constituenciesPopulationId.style.display = 'none';
+
+		var candidateInfoDiv = document.getElementById("candidateInfoDiv");
+		if(candidateInfoDiv)
+			candidateInfoDiv.style.display = 'none';
+
+		var messageDiv = document.getElementById("messageDiv");
+		if(messageDiv)
+			messageDiv.style.display = 'block';
+		
+		var messageDiv = document.getElementById("messageDiv");
+		var messageDiv1='';
+		messageDiv1+='<b style="color:red;font-weight:bold;"> There were no districts mapped to this state<b>';
+		messageDiv.innerHTML = messageDiv1;
+		
+	}
+}
+
+function showParlimentConstituenciesInSelectOption(results)
 {
-	var selectedElmt = document.getElementById("districtField");
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
+
+	var constituenciesPopulationDiv = document.getElementById("constituenciesPopulationDiv");
+	if(constituenciesPopulationDiv)
+		constituenciesPopulationDiv.style.display = 'block';
 	
-	try
+	var districtId = document.getElementById("districtPopulationDiv");
+	if(districtId)
+		districtId.style.display = 'none';
+	
+	var candidateInfoDiv = document.getElementById("candidateInfoDiv");
+	if(candidateInfoDiv)
+		candidateInfoDiv.style.display = 'none';
+	
+	var selectedElmt = document.getElementById("constituenciesPopulationDiv");
+	var data = results.latestConstituencies;
+	var str=''; 		
+	str+='<select id="latestConstituenciesIndiaId" style="width:130px;"  onChange="getDetails(this.options[this.selectedIndex].value)">';
+	for(var i in data)
 	{
-		selectedElmt.add(opElmt,null); // standards compliant
+		str+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
+	str+='</select>';
+	selectedElmt.innerHTML = str;
 }
 
 function showConstituenciesInSelectOption(results)
 {
-	var selectedElmt = document.getElementById("constituencyField");
-	for(var i in results.latestConstituencies)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results.latestConstituencies[i].id;
-		opElmt.text=results.latestConstituencies[i].name;
-	
-	try
+	var constituenciesPopulationId = document.getElementById("constituenciesPopulationDiv");
+	if(constituenciesPopulationId)
+		constituenciesPopulationId.style.display = 'block';
+
+	var selectedElmt = document.getElementById("constituenciesPopulationDiv");
+	var data = results.latestConstituencies;
+	var str=''; 		
+	str+='<select id="latestConstituenciesIndiaId" style="width:130px;"  onChange="getDetails(this.options[this.selectedIndex].value)">';
+	for(var i in data)
 	{
-		selectedElmt.add(opElmt,null); // standards compliant
+		str+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
+	str+='</select>';
+	selectedElmt.innerHTML = str;
 }
 
 function showCandidateDetails(results)
 {
-	assignToCandidateArray = new Array();
 
+	var candidateInfoDiv = document.getElementById("candidateInfoDiv");
+	if(candidateInfoDiv)
+		candidateInfoDiv.style.display = 'block';
+	
+	assignToCandidateArray = new Array();
+	
 	for(var i in results.candidateDetails)
 	{
 		var problemObj= {
@@ -257,7 +345,7 @@ function showCandidateDetails(results)
 	}
     initializeResultsTable();
 }
-function getConstituency(id)
+function getConstituency(id,eleType)
 {	
 		var jsObj=
 			{
@@ -270,8 +358,35 @@ function getConstituency(id)
 			callAjax(rparam,jsObj,url);
 }
 
+function getAssemblyConstituencysForAState(id)
+{	
+		var jsObj=
+			{
+					locationId:id,
+					task:"getAssemblyConstituencysForAState",
+					taskType:type						
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/constituencyElectionReportAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+}
+
+function getConstituencysForADistrict(id)
+{	
+		var jsObj=
+			{
+					locationId:id,
+					task:"getConstituenciesForDistrict",
+					taskType:type						
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/constituencyElectionReportAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+}
+
 function getDistricts(id)
 {	
+	selectedStateElmt = id;
 	var jsObj=
 			{
 					locationId:id,
@@ -281,12 +396,12 @@ function getDistricts(id)
 			var url = "<%=request.getContextPath()%>/getDistrictsAndConstituenciesAjaxAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 }
-function getStatesForCountry()
+function getStatesForCountry(selectedButton)
 {
+	selectedRadioElmt = selectedButton.value;
 	var jsObj=
 	{
-			task:"getStates",
-			taskType:type						
+			task:"getStates"						
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/constituencyElectionReportAjaxAction.action?"+rparam;						
@@ -306,93 +421,48 @@ function getDetails(id)
 	callAjax(rparam,jsObj,url);
 }
 
-function getParliamentConstituencies()
-{
-	
-	getStatesForCountry();
-	var dataTable;
-	dataTable = document.getElementById("constituenciesDiv");
-	dataTable.innerHTML = "";
-	var assembly;
-	assembly = document.getElementById("buildId");
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='<table><tr>';
-	hr+='<td>';
-	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getConstituency(this.value)"/>';
-	hr+='</select>';
-	hr+='</td>';	
-	hr+='<td>';
-	hr+='<select id="constituencyField" class="selectWidth" name="constituency"  onchange="getDetails(this.options[this.selectedIndex].value)"/>';
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr></table>';
-	hr+='<br/><br/>';
-	assembly.innerHTML = hr;
-}
-function getAssemblyConstituencies()
-{
-	
-	getStatesForCountry();
-	var dataTable;
-	dataTable = document.getElementById("constituenciesDiv");
-	dataTable.innerHTML = "";
-	var assembly;
-	assembly = document.getElementById("buildId");
-	var hr='';
-	hr+='<br/><br/>';
-	hr+='<table><tr>';
-	hr+='<td>';
-	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistricts(this.value)"/>';
-	hr+='</select>';
-	hr+='</td>';	
-	hr+='<td>';
-	hr+='<select class="selectWidth" id="districtField" list="result.getDistricts" theme="simple" listKey="id" listValue="name" onchange="getDetails(this.value)"/>';
-	hr+='</select>';
-	hr+='</td>';
-	hr+='</tr></table>';
-	hr+='<br/><br/>';
-	assembly.innerHTML = hr;
-}
-function getParliament()
-{
-	type = "";
-	type = "parliament";
-	var constituenciesDiv;
-	constituenciesDiv = document.getElementById("candidateInfoDiv");
-	constituenciesDiv.innerHTML = "";
-	var hr='';
-	constituenciesDiv.innerHTML = hr;
-	getParliamentConstituencies();
-} 
-function getAssembly()
-{
-	type = "";
-	type = "assembly";
-	var constituenciesDiv;
-	constituenciesDiv = document.getElementById("candidateInfoDiv");
-	constituenciesDiv.innerHTML = "";
-	var hr='';
-	constituenciesDiv.innerHTML = hr;
-	getAssemblyConstituencies();
-} 
+
 </script>
 </head>
 
 <body>
-<div class="yui-skin-sam">
-	<div class="problemHeader">Constituency Election Report</div>
-	<br/><br/>
-	<table align="left" style="margin-left:1.5cm">
+
+<div class="problemHeader" style="margin-top:60px;">Constituency Election Report</div>
+	
+ <div class="yui-skin-sam" style="margin-left:0px;text-align:center;">	
+	<table>
 		<tr>
-			<td><input  type="radio" id="assemblyElection" name="electionType" value="parliament" onClick="getParliament()"/>Parliament</td>		
-			<td><input  type="radio" id="parliamentElection" name="electionType" value="assembly" onClick="getAssembly()"/>Assembly</td>
+			<td>
+				<table align="left" style="margin-left:1.5cm">
+					<tr>
+						<td><input  type="radio" id="assemblyElection" name="electionType" value="parliament" onClick="getStatesForCountry(this)"/>Parliament</td>		
+						<td><input  type="radio" id="parliamentElection" name="electionType" value="assembly" onClick="getStatesForCountry(this)"/>Assembly</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table align="left" style="margin-left:1.5cm">
+					<tr>
+						<td><div id="statesPopulationDiv"></div></td>
+						<td><div id="districtPopulationDiv"></div></td>		
+						<td><div id="constituenciesPopulationDiv"></div></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<div id="messageDiv"></div>
+			</td>
 		</tr>
 	</table>
-	<br/>
+	
+	
 	<div id="constituenciesDiv"></div>
 	<div id="buildId" align="left" style="margin-left:1.5cm"></div>
-	<div id="candidateInfoDiv"></div>
+	<div id="candidateInfoDiv" style="margin-left:70px;margin-top:40px;"></div>
 </div>
 </body>
 </html>

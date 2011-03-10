@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -11,6 +12,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -128,6 +131,23 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 				electionType = 1l;
 				candidateResults =  staticDataService.getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(electionType,locationId);
 			}
+			else if(jObj.getString("task").equals("getConstituenciesForDistrict")){
+				locationId = new Long(jObj.getLong("locationId"));
+				ConstituenciesStatusVO convo = staticDataService.getConstituenciesForDistrict(locationId,Long.parseLong(IConstants.PRESENT_ELECTION_YEAR),IConstants.ASSEMBLY_ELECTION_TYPE);
+				List<SelectOptionVO> selVo = new ArrayList<SelectOptionVO>(0);
+				selVo.addAll(convo.getNewConstituencies());
+				selVo.addAll(convo.getExistConstituencies());
+				CandidateDetailsVO  canVo = new CandidateDetailsVO();
+				canVo.setLatestConstituencies(selVo);
+				candidateResults = canVo;
+			}
+			else if(jObj.getString("task").equals("getAssemblyConstituencysForAState")){
+				locationId = new Long(jObj.getLong("locationId"));
+				CandidateDetailsVO  canVo = new CandidateDetailsVO();
+				canVo.setLatestConstituencies(staticDataService.getLatestConstituenciesByStateId(locationId));
+				candidateResults = canVo;
+			}
+			
 			else if(jObj.getString("task").equals("getCandidateDetails")){
 				taskType = jObj.getString("taskType");
 				if(taskType.equalsIgnoreCase("assembly")){
