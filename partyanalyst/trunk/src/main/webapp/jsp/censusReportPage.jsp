@@ -969,7 +969,7 @@
 			str += '<td>'+results.constituenciesResults[j].votingPercentage+'</td>';
         	for(var k in results.constituenciesResults[j].partyResultsVO)
             	if(results.constituenciesResults[j].partyResultsVO[k].percentage != null)
-        			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].percentage+'</td>';
+        			str += '<td>'+results.constituenciesResults[j].partyResultsVO[k].votesPercent+'</td>';
         		else
         			str += '<td></td>';
         	str += '</tr>';
