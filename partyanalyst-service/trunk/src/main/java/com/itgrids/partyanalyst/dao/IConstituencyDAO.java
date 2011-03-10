@@ -128,4 +128,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public void flushAndclearSession();
 	
+	public List getLatestConstituenciesByStateId(String electionType,Long stateID);
+	
 }

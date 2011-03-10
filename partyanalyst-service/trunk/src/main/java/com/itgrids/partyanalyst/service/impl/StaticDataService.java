@@ -2225,6 +2225,23 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 
+	public List<SelectOptionVO> getLatestConstituenciesByStateId(Long stateId){
+		List<SelectOptionVO> data = new ArrayList<SelectOptionVO>();
+		try{
+			List result = constituencyDAO.getLatestConstituenciesByStateId(IConstants.ASSEMBLY_ELECTION_TYPE,stateId);
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long)parms[0]);
+				vo.setName(parms[0].toString());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
+	
 	/**
 	 * This method retrieves all the MP's present in the district for the latest election year.
 	 * @author Y.Ravi Kiran.
