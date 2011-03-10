@@ -277,7 +277,10 @@
 	function getPartyResultsByRanges(value)
 	{
 		var resultByRangesVar = partyResultsByRanges;
-		var resultByRanges = new Array()
+		var resultByRanges = new Array();
+		var partyEle = document.getElementById("partySelectElmt");
+		var partyName = partyEle.options[partyEle.selectedIndex].text;
+		var ctitle = '';
 
 		for(var i=0; i<resultByRangesVar.length; i++)
 		{
@@ -290,6 +293,7 @@
 		
 		if(value == "seats")
 		{	
+			ctitle = partyName+' Party Result Based On Seats Won Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Seats Won');
 				
@@ -301,6 +305,7 @@
 		}
 		else if(value == "percentage")
 		{
+			ctitle = partyName+' Party Result Based On Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'Percentage');
 			
@@ -312,6 +317,7 @@
 		}
 		else if(value == "cpAvg")
 		{
+			ctitle = partyName+' Party Result Based On CP-AVG Votes Percentage';
 			data.addColumn('string', 'Range');
 			data.addColumn('number', 'CP*-Avg');
 		
@@ -323,13 +329,14 @@
 		}
 
 		var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
-		chart.draw(data, {width: 450, height: 350, pointSize: 4, title: 'Constituencies Count Based On Range'});
+		chart.draw(data, {width: 450, height: 350, pointSize: 4,title:ctitle,titleTextStyle:{color:'#DC1CF2'}});
 	}	
 	
 	function getAllPartyResultsByRanges(value)
 	{
 		var resultsVar = allPartyResultsByRanges;
 		var results = new Array();
+		var ctitle = '';
 
 		for(var i=0;i<resultsVar.length; i++)
 		{
@@ -355,7 +362,8 @@
 		var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
 	
 		if(value == "seats")
-		{			
+		{	
+			ctitle = 'All Parties Results based on Seats Won Percentage';
 			for(var i=0; i<results.length; i++)
 			{			
 				data.setValue(i, 0, results[i].range);
@@ -365,7 +373,8 @@
 			}			
 		}
 		else if(value == "percentage")
-		{				
+		{	
+			ctitle = 'All Parties Results based on Votes Percentage';
 			for(var i=0; i<results.length; i++)
 			{			
 					data.setValue(i, 0, results[i].range);
@@ -375,7 +384,8 @@
 				}
 		}
 		else if(value == "cpAvg")
-		{			
+		{	
+			ctitle = 'All Parties Results based on Votes Percentage in CP* ';
 			for(var i=0; i<results.length; i++)
 			{			
 				data.setValue(i, 0, results[i].range);
@@ -386,7 +396,7 @@
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('allPartyCensusResults_body'));
-        chart.draw(data, {width: 450, height: 350,colors:staticColors,pointSize: 4, title: 'Constituencies Count Based On Range'});
+        chart.draw(data, {width: 450, height: 350,colors:staticColors,pointSize: 4, title:ctitle, titleTextStyle:{color:'#DC1CF2'}});
 	}
 	function buildAllPartyCensusResults(jsObj,results)
 	{
@@ -395,6 +405,7 @@
 		allPartyResultsByRanges = results;
 		
 		var graphHeadElmt = document.getElementById("allPartyCensusResults_head");
+		var ctitle = 'All Parties Results based on Votes Percentage';
 
 		var gStr = '';
 		gStr += '<table class="graphHeadTable">';
@@ -440,7 +451,7 @@
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('allPartyCensusResults_body'));
-        chart.draw(data, {width: 450, height: 350,pointSize: 4, title: 'Constituencies Count Based On Range',colors:staticColors,slantedText:true,slantedTextAngle:35});
+        chart.draw(data, {width: 450, height: 350,pointSize: 4, title:ctitle ,colors:staticColors,slantedText:true,slantedTextAngle:35,titleTextStyle:{color:'#DC1CF2'}});
 	}
 
 	function buildPartyResultsByRanges(jsObj,resultByRanges)
@@ -448,6 +459,8 @@
 		partyResultsByRanges = resultByRanges;
 		var elmt = document.getElementById("censusPopulationRangeData");
 		var gElmt = document.getElementById("censusPopulationRangeGraph_body");
+		var partyEle = document.getElementById("partySelectElmt");
+		var partyName = partyEle.options[partyEle.selectedIndex].text;
 
 		gElmt.innerHTML = '';
 		
@@ -559,6 +572,7 @@
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Range');
         data.addColumn('number', 'Percentage');
+		var ctitle = partyName+' Party Result Based On Votes Percentage';
 		
 		var resultByRangesVar = new Array();
 		for(var i=0; i<resultByRanges.length; i++)
@@ -576,7 +590,7 @@
 		}
 
         var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
-        chart.draw(data, {width: 450, height: 350,pointSize: 4, title: 'Constituencies Count Based On Range'});
+        chart.draw(data, {width: 450, height: 350,pointSize: 4, title:ctitle,titleTextStyle:{color:'#DC1CF2'}});
 		getAllPartiesCensusResults();		
 	}
 
