@@ -339,7 +339,7 @@ public class ElectionReportService implements IElectionReportService {
 									partyElectionResult = participatedPartysResults.get(alliancParty.getId());
 									partyPositions = getElectionResultsForAParty(partyElectionResult);
 									alliancPartyResultsForAGroup.add(partyPositions);
-									participatedPartysResults.remove(alliancParty.getId());
+									//participatedPartysResults.remove(alliancParty.getId());
 								}
 								else{
 									partyElectionResult = staticDataService.getPartyElectionResultsForAParty(electionID,alliancParty.getId());
@@ -355,7 +355,7 @@ public class ElectionReportService implements IElectionReportService {
 									distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
 									Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 									districtWiseAlliancPartysResults.add(distWisePartyResults);
-									participatedDistrictWiseResults.remove(alliancParty.getId());
+									//participatedDistrictWiseResults.remove(alliancParty.getId());
 								}
 								else{
 									partyElecDistResultList = partyElectionDistrictResultDAO.getPartyElecResultsInAllDistsForAParty(electionID,alliancParty.getId());
@@ -372,7 +372,7 @@ public class ElectionReportService implements IElectionReportService {
 									stateWisePartyResults = getStateWiseProcessedResultsForAParty(partyElecStateResultList);
 									Collections.sort(stateWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 									districtWiseAlliancPartysResults.add(stateWisePartyResults);
-									participatedStateWiseResults.remove(alliancParty.getId());
+									//participatedStateWiseResults.remove(alliancParty.getId());
 								}
 								else{
 									partyElecStateResultList	 = partyElectionStateResultDAO.getResultsInAllStatesForAParty(electionID, alliancParty.getId());
