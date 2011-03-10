@@ -44,115 +44,153 @@ function initializeHomePage()
 }
 
 function showFeedBackFormPanel()
-{
+{		
 	if(loginStatus == "false")
 	{
-		alert("Please login to post your feedback");
-		return;
+		$("#feedback_window").dialog({
+			resizable:false,
+			width: 400,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("feedback_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Feed Back</div>';
+		str += '<div id="feedback_window_body">';
+		str += '<table width="100%">';
+		str += '<tr>';
+		str += '<td width="2%"><img src="images/icons/districtPage/listIcon.png"></td>';
+		str += '<th width="98%" align="left">You must be logged in to post feedback.</th>';
+		str += '</tr>';		
+		str += '<tr>';
+		str += '<td width="2%"><img src="images/icons/districtPage/listIcon.png"></td>';
+		str += '<th width="98%" align="left">Please login to continue..</th>';
+		str += '</tr>';
+		str += '</table>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="40%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="60%" align="right">';
+		str += '		<input id="loginButton" type="button" value="Login"></input>';
+		str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("loginButton");  
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton1.on("click",function(){
+			$("#feedback_window").dialog("destroy");
+			window.location = "loginInputAction.action";
+		});
+
+		oPushButton2.on("click",function(){
+			$("#feedback_window").dialog("destroy");
+		});
 	}
-	/*$( "#feedback_window" ).dialog({
-			title:"Feed Back",
-			autoOpen: true,
-			show: "blind",
-			width: 700,
-			minHeight:550,
-			modal: false,
-			hide: "explode",
-			draggable:false
-		});*/
+	else
+	{
+		$("#feedback_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:350,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("feedback_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Feed Back</div>';
+		str += '<div id="feedback_window_body">';
+		str += '	<div id="feedBackNote_div">';
+		str += '		<table>';
+		str += '		<tr>';
+		str += '		<td><img src="images/icons/infoicon.png"></td>';
+		str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
+		str += '		</tr>';
+		str += '		</table>';
+		str += '	</div>';
+		str += '	<div id="feedBackForm_div">';
+		str += '		<table id="feedbackTable" width="100%">';
+		str += '		<tr>';
+		str += '		<th><font color="red">*</font> Select feedback type </th>';
+		str += '		<td>';
+		str += '			<input type="radio" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
+		str += '			<input type="radio" class="selectWidth" value="2" name="commentType"> Problem ';
+		str += '			<input type="radio" class="selectWidth" value="3" name="commentType"> Praise ';
+		str += '			<input type="radio" class="selectWidth" value="4" name="commentType"> Suggestion ';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th><font color="red">*</font>Feedback about</th>';
+		str += '		<td>';
+		str += '			<select id="taskId">';
+		str += '			<option value="1">Web Site</option>';
+		str += '			<option value="2">Party Analysis </option>';
+		str += '			<option value="3">Constituency page</option>';
+		str += '			<option value="4">Politician Analysis</option>';
+		str += '			<option value="5">Search Analysis</option>';
+		str += '			<option value="6">Other</option>';
+		str += '			</select>';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th><font color="red">*</font>Feedback </th>';
+		str += '		<td>';
+		str += '			<textarea align="right" id="commentId" rows="5" cols="39" name="comment"></textarea>';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		<tr>';
+		str += '		<th><font color="red">*</font> Select Response type </th>';
+		str += '		<td>';
+		str += '		      <input type="radio" checked="checked" value="Early" name="responseCategory">Early ';
+		str += '		      <input type="radio" value="Late" name="responseCategory">Late';
+		str += '		</td>';
+		str += '		</tr>';
+
+		str += '		</table>';
+		str += '	</div>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '	<table width="100%">';
+		str += '	<tr>';
+		str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
+		str += '	<td width="35%" align="right">';
+		str += '		<input id="postButton" type="button" value="Post"></input>';
+		str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
+		str += '	</td>';
+		str += '	</tr>';
+		str += '	</table>';	
+		str += '</div>';
+		elmt.innerHTML = str;
+
+		var oPushButton1 = new YAHOO.widget.Button("postButton");  
+		var oPushButton2 = new YAHOO.widget.Button("cancelButton");
+
+		oPushButton1.on("click",function(){
+			postFeedbackAjaxCall();
+		});
+
+		oPushButton2.on("click",function(){
+			$("#feedback_window").dialog("destroy");
+		});
+	}	
 	
-	$("#feedback_window").dialog({
-		resizable:false,
-		width: 600,
-		minHeight:350,
-		show:'slide',
-		modal:true
-	});
-	
-	
-	$(".ui-dialog-titlebar").hide();
-
-	var elmt = document.getElementById("feedback_window_inner");
-
-	var str = '';
-	str += '<div id="feedback_window_head">Feed Back</div>';
-	str += '<div id="feedback_window_body">';
-	str += '	<div id="feedBackNote_div">';
-	str += '		<table>';
-	str += '		<tr>';
-	str += '		<td><img src="images/icons/infoicon.png"></td>';
-	str += '		<td>Fields marked with (<font color="red">*</font>) are mandatory</td>';
-	str += '		</tr>';
-	str += '		</table>';
-	str += '	</div>';
-	str += '	<div id="feedBackForm_div">';
-	str += '		<table id="feedbackTable" width="100%">';
-	str += '		<tr>';
-	str += '		<th><font color="red">*</font> Select feedback type </th>';
-	str += '		<td>';
-	str += '			<input type="radio" checked="checked" class="selectWidth" value="1" name="commentType"> Complaint';
-	str += '			<input type="radio" class="selectWidth" value="2" name="commentType"> Problem ';
-	str += '			<input type="radio" class="selectWidth" value="3" name="commentType"> Praise ';
-	str += '			<input type="radio" class="selectWidth" value="4" name="commentType"> Suggestion ';
-	str += '		</td>';
-	str += '		</tr>';
-
-	str += '		<tr>';
-	str += '		<th><font color="red">*</font>Feedback about</th>';
-	str += '		<td>';
-	str += '			<select id="taskId">';
-	str += '			<option value="1">Web Site</option>';
-    str += '			<option value="2">Party Analysis </option>';
-    str += '			<option value="3">Constituency page</option>';
-	str += '			<option value="4">Politician Analysis</option>';
-    str += '			<option value="5">Search Analysis</option>';
-    str += '			<option value="6">Other</option>';
-	str += '			</select>';
-	str += '		</td>';
-	str += '		</tr>';
-
-	str += '		<tr>';
-	str += '		<th><font color="red">*</font>Feedback </th>';
-	str += '		<td>';
-	str += '			<textarea align="right" id="commentId" rows="5" cols="39" name="comment"></textarea>';
-	str += '		</td>';
-	str += '		</tr>';
-
-	str += '		<tr>';
-	str += '		<th><font color="red">*</font> Select Response type </th>';
-	str += '		<td>';
-	str += '		      <input type="radio" checked="checked" value="Early" name="responseCategory">Early ';
-	str += '		      <input type="radio" value="Late" name="responseCategory">Late';
-	str += '		</td>';
-	str += '		</tr>';
-
-	str += '		</table>';
-	str += '	</div>';
-	str += '</div>';
-	str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-	str += '	<table width="100%">';
-	str += '	<tr>';
-	str += '	<td width="65%" align="left"><div id="feedback_window_errorMsg"></div></td>';
-	str += '	<td width="35%" align="right">';
-	str += '		<input id="postButton" type="button" value="Post"></input>';
-	str += '		<input id="cancelButton" type="button" value="Cancel"></input>';
-	str += '	</td>';
-	str += '	</tr>';
-	str += '	</table>';	
-	str += '</div>';
-		
-	elmt.innerHTML = str;
-
-	var oPushButton1 = new YAHOO.widget.Button("postButton");  
-	var oPushButton2 = new YAHOO.widget.Button("cancelButton");
-
-	oPushButton1.on("click",function(){
-		postFeedbackAjaxCall();
-	});
-
-	oPushButton2.on("click",function(){
-		$("#feedback_window").dialog("destroy");
-	});
 
 }
 
