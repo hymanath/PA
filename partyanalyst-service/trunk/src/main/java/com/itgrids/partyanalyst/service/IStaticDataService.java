@@ -292,5 +292,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getDefaultProblemStatus(String statusValues);
 		
 		public List<Long> getStaticPartiesAsList(Long stateId);
-        
+
+		public List<SelectOptionVO> getLatestConstituenciesByStateId(Long stateId);
 }
