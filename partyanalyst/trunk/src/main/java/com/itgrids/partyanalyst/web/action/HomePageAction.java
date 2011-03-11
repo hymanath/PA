@@ -191,6 +191,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
 		
+		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
+			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
+		
 		return Action.SUCCESS;
 	}
 	
