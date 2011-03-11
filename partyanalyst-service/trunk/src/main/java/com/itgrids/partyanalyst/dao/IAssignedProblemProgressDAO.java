@@ -53,4 +53,6 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 	
 	public List<ProblemHistory> getProblemsBasedOnAssignedProblemProgressIdAndStatus(Long userId,List<Long> progressIdList,String deptStr,String statusStr);
 	
+	public List<AssignedProblemProgress> getByCadreId(Long cadreId);
+	
 }

@@ -144,7 +144,7 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(b.toString());
 	}*/
 	
-	public void testGetProblemsBasedOnAssignedProblemProgressIdAndStatus()
+	/*public void testGetProblemsBasedOnAssignedProblemProgressIdAndStatus()
 	{
 		List<Long> asPList = new ArrayList<Long>(0);
 		asPList.add(77l);
@@ -161,6 +161,12 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		
 		for(ProblemHistory problemHistory : list)
 			System.out.println(problemHistory.getProblemStatus().getStatus());
-	}
+	}*/
 	
+		
+	public void testgetByCadreId()
+	{
+		List<AssignedProblemProgress> list = assignedProblemProgressDAO.getByCadreId(109l);
+		System.out.println(list.size());
+	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.hibernate.Transaction;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
@@ -182,6 +183,12 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 		return queryObject.list();
 	}
 	
-
 		
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getByCadreId(Long cadreId)
+	{
+		Object[] params = {cadreId};
+		return getHibernateTemplate().find(" from AssignedProblemProgress model where model.cadre.cadreId = ?",params);
+	}
+			
 }
