@@ -5,7 +5,6 @@
 
 <beans>
 	
-	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="electionDAO" ref="electionDAO" />
@@ -364,6 +363,8 @@
 		<property name="cadreProblemDetailsDAO" ref="cadreProblemDetailsDAO" />
 		<property name="cadreRoleDAO" ref="cadreRoleDAO" />
 		<property name="cadreRoleRelationDAO" ref="cadreRoleRelationDAO" />
+		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO" />
+		<property name="problemActivityDAO" ref="problemActivityDAO" />
 						   	  		
 	</bean>
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
