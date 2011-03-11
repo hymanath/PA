@@ -18,13 +18,11 @@
 
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
-<!-- Combo-handled YUI CSS files: --> 
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/skin.css"> 
-<!-- Combo-handled YUI JS files: --> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/button/assets/skins/sam/button.css">
-<script src="http://yui.yahooapis.com/2.8.2r1/build/button/button-min.js"></script>
+<!-- Combo-handled YUI CSS files: --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+<!-- Combo-handled YUI JS files: --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> 
 
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -37,23 +35,16 @@
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 
 <!-- JQuery files (Start) -->
-<script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery-ui-1.8.5.custom.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
 <script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
-<script src="js/jQuery/development-bundle/ui/jquery.effects.core.min.js"></script>
-<script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
-<script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
-
-<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
-
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.widget.js"></script>
-<script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.accordion.js"></script>
 
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+
 <link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 
 <!-- JQuery files (End) -->
@@ -219,13 +210,13 @@ var loginStatus = '${loginStatus}';
 	<div id="homePageContainer" style="overflow:visible;">
 		<div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
-				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedBack.jpg"/></a>
+				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedBack.jpeg"/></a>
 				<div id="floatingDiv_absolute_close" >
-					<img id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpg">
+					<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
 				</div>
 			</div>
 		</div>
-		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
+		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpeg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
                     <td style="vertical-align:top;width:540px;">
@@ -476,7 +467,7 @@ var loginStatus = '${loginStatus}';
 													<tr>
 														<td align="left">Election Comparison</td>
 														<td style="padding:2px 0px 0px 8px">
-														<img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<img width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
@@ -531,7 +522,7 @@ var loginStatus = '${loginStatus}';
 												<table cellspacing="0" cellpadding="0">												
 													<tr>
 														<td align="left">Party Results </td>
-														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
@@ -617,7 +608,7 @@ var loginStatus = '${loginStatus}';
 											<table cellspacing="0" cellpadding="0">
 												<tr>
 													<td align="left">Quick Search </td>
-													<td style="padding:2px 0px 0px 8px"><img  width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+													<td style="padding:2px 0px 0px 8px"><img  width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 												</tr>
 											</table>
 											 
@@ -698,7 +689,7 @@ var loginStatus = '${loginStatus}';
 													</tr>
 													<tr>
 														<td align="left">Leaders</td>
-														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
@@ -743,7 +734,7 @@ var loginStatus = '${loginStatus}';
 													</tr>
 													<tr>
 														<td align="left">Nation</td>
-														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
@@ -788,7 +779,7 @@ var loginStatus = '${loginStatus}';
 													</tr>
 													<tr>
 														<td align="left">Parties</td>
-														<td style="padding:2px 0px 0px 8px"><img width="10" width="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
+														<td style="padding:2px 0px 0px 8px"><img width="10" height="10" src="images/icons/homePage_new/widgetHeaderIcon.jpeg"></td>
 													</tr>
 												</table>
 												 
@@ -1053,7 +1044,7 @@ var loginStatus = '${loginStatus}';
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 								<td rowspan="3" valign="top" width="100px">
-									<img width="80" height="75" src="images/icons/homePage_new/telangana.jpg"/>
+									<img width="80" height="75" src="images/icons/homePage_new/telangana.jpeg"/>
 								</td>
 								<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
 								</tr>

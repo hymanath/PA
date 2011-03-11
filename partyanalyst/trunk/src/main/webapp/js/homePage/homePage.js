@@ -63,11 +63,11 @@ function showFeedBackFormPanel()
 		str += '<div id="feedback_window_body">';
 		str += '<table width="100%">';
 		str += '<tr>';
-		str += '<td width="2%"><img src="images/icons/districtPage/listIcon.png"></td>';
+		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
 		str += '<th width="98%" align="left">You must be logged in to post feedback.</th>';
 		str += '</tr>';		
 		str += '<tr>';
-		str += '<td width="2%"><img src="images/icons/districtPage/listIcon.png"></td>';
+		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
 		str += '<th width="98%" align="left">Please login to continue..</th>';
 		str += '</tr>';
 		str += '</table>';
@@ -295,11 +295,11 @@ function buildHOmePageImageSlider()
 
 	var str = '';
 	str += '<ul>';
-	str += '<li><img src="images/icons/homePage_new/slideImg1.png"></li>';
-	str += '<li><img src="images/icons/homePage_new/slideImg2.png"></li>';
-	str += '<li><img src="images/icons/homePage_new/slideImg3.png"></li>';
-	str += '<li><img src="images/icons/homePage_new/slideImg4.png"></li>';
-	str += '<li><img src="images/icons/homePage_new/slideImg5.png"></li>';
+	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg1.png"></li>';
+	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg2.png"></li>';
+	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg3.png"></li>';
+	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg4.png"></li>';
+	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg5.png"></li>';
 	str += '</ul>';
 
 	elmt.innerHTML = str;
