@@ -19,6 +19,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreFamilyMemberInfoDAO;
@@ -44,12 +45,14 @@ import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
+import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
@@ -62,6 +65,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreFamilyMemberInfo;
@@ -139,7 +143,26 @@ public class CadreManagementService {
 	private ICadreProblemDetailsDAO cadreProblemDetailsDAO;
 	private ICadreRoleDAO cadreRoleDAO;
 	private ICadreRoleRelationDAO cadreRoleRelationDAO;
+	private IAssignedProblemProgressDAO assignedProblemProgressDAO;
+	private IProblemActivityDAO problemActivityDAO;
 	
+	public IProblemActivityDAO getProblemActivityDAO() {
+		return problemActivityDAO;
+	}
+
+	public void setProblemActivityDAO(IProblemActivityDAO problemActivityDAO) {
+		this.problemActivityDAO = problemActivityDAO;
+	}
+
+	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
+		return assignedProblemProgressDAO;
+	}
+
+	public void setAssignedProblemProgressDAO(
+			IAssignedProblemProgressDAO assignedProblemProgressDAO) {
+		this.assignedProblemProgressDAO = assignedProblemProgressDAO;
+	}
+
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
 	}
@@ -921,7 +944,7 @@ public class CadreManagementService {
 				
 			}
 
-	public Integer deleteCadre(Long cadreId, RegistrationVO user) {
+	public Integer deleteCadre(final Long cadreId, RegistrationVO user) {
 		
 		Cadre cadre = cadreDAO.get(cadreId);
 		if(IConstants.CADRE_MEMBER_TYPE_ACTIVE.equals(cadre.getMemberType()) && IConstants.USER_TYPE_PARTY.equals(user.getUserType()) && IConstants.BJP.equals(user.getPartyShortName()))
@@ -958,6 +981,30 @@ public class CadreManagementService {
 		}	
 		cadreProblemDetailsDAO.deleteProblemDetailsByCadre(cadreId);
 		cadreRoleRelationDAO.deleteRolesByCadreId(cadreId);
+		
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status)
+		{
+			try{
+				List<AssignedProblemProgress> listAssignd = assignedProblemProgressDAO.getByCadreId(cadreId);
+				if(listAssignd != null && listAssignd.size() > 0)
+				{
+					for(AssignedProblemProgress assignedProblemProgress : listAssignd)
+					{
+						assignedProblemProgress.setCadre(null);
+						assignedProblemProgress.setIsCadreAssigned(null);
+						
+						long activityId = assignedProblemProgress.getProblemActivity().getProblemActivityId();
+						if(activityId >= 6 && activityId <= 10)
+							assignedProblemProgress.setProblemActivity(problemActivityDAO.get(13l));
+						
+						assignedProblemProgressDAO.save(assignedProblemProgress);
+					}
+				}
+			}catch(Exception e){
+				log.error("Error occured in cadre delete - "+e);
+			}
+		}	});
 		Integer deletedRow = cadreDAO.deleteByCadreId(cadreId);
 		return deletedRow;
 	}
