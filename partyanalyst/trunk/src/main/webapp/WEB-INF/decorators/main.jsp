@@ -172,7 +172,7 @@
 </head>
 
 <body>
-	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpg');height:125px;">
+	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG.jpeg');height:125px;">
 		<table  width="100%" id="headerTable">
 			<tr>
 				<td style="vertical-align:top;width:540px;">
