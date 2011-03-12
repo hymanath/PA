@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -188,6 +189,7 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	public String getStates(){
 		stateList = regionServiceDataImp.getStatesByCountry(1L);
 		stateList.add(0, new SelectOptionVO(0L,"Select State"));
+		Collections.sort(stateList);
 		return SUCCESS;
 	}
 	public String getDistricts() throws Exception{

@@ -369,7 +369,8 @@ function hideProblemSourceRow()
 								<TD><s:textfield id="existingFromText" readonly="true" name="existingFromDate" size="20"/>
 								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
 								<TD>
-									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
+									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">
+									<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
 								</TD>
 							</TR>
 						</TABLE>									

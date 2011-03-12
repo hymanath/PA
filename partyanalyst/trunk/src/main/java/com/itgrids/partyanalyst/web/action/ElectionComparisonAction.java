@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -158,7 +159,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 				
 				partyList = staticDataService.getStaticPartiesListFromElectionScope(scopeID);
 				//partyList = staticDataService.getStaticPartiesListForAState(stateId);
-				
+				Collections.sort(partyList);
 			}
 		}
 		

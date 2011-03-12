@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -309,8 +310,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		//setStates(getStaticDataService().getStates(electionTypeId));
 		List<SelectOptionVO> statesListDetails = new ArrayList<SelectOptionVO>();
 		statesListDetails.add(new SelectOptionVO(0L,"Select"));
+		Collections.sort(statesListDetails);
 		statesListDetails.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
 		setStates(statesListDetails);
+		
 		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
@@ -390,7 +393,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 		statesList.add(new SelectOptionVO(0L,"Select"));
 		statesList.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
-		
+		Collections.sort(statesList);
 		statesYearList.put("STATES", statesList);
 		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
@@ -765,11 +768,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			String electionType = jObj.getString("elecTypeId");
 			String reportLevel = jObj.getString("reportLevel");
 			
-			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel))
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel)){
 				parties = staticDataService.getAllNationalParties();
-			else
+			Collections.sort(parties);}
+			else{
 			    parties = staticDataService.getStaticPartiesListForAState(stateID);
-			
+			Collections.sort(parties);
+		}
 		}
 		return Action.SUCCESS;
 	}

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -220,7 +221,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			jObj = new JSONObject(getTask());	
 					
 			states = partyStrengthService.getAllStatesHavinElectionData(jObj.getString("electionType"));	
-			
+			Collections.sort(states);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

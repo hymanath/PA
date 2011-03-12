@@ -151,14 +151,14 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" class="tinyDateCal"></DIV></DIV></TD>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
-	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TH valign="top">To:</TH>';
 	problems_OptionsContent += '		<TD><input type="text" id="tillDateText" value="' + todayDate + '" name="tillDateText" size="20" readonly="readonly" class="textBoxStyle"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="till_Div" class="tinyDateCal"></DIV></DIV>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
-	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal1()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
+	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal1()"><IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '	</TR>';
 	problems_OptionsContent += '	<TR>';

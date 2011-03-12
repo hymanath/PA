@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -149,7 +150,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 				List<SelectOptionVO> states= getRegionServiceDataImp().getStatesByCountryForSearch(1l); 
 				states.add(0, new SelectOptionVO(0l,"Select Location"));
 				setRegionsList(states);
-			   
+				//Collections.sort(states);
 			}	
 
 			else if(jObj.getString("task").equalsIgnoreCase("stateSelect"))
@@ -158,7 +159,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 				List<SelectOptionVO> states= getRegionServiceDataImp().getStatesByCountry(1l); 
 				states.add(0, new SelectOptionVO(0l,"Select Location"));
 				setRegionsList(states);
-			
+				Collections.sort(states);
 			}
 
 		 else if(jObj.getString("task").equalsIgnoreCase("districtsInState"))
