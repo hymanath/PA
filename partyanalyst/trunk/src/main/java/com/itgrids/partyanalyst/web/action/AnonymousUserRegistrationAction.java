@@ -69,6 +69,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 //User Details Validation
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Username Should not Contain Special characters and Numbers.", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter Username below 20 characters ", minLength = "1", maxLength = "20")	
 	public void setUserName(String userName) {
 		this.userName = userName;
 		this.regVO.setUserName(userName);
@@ -106,6 +107,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
 	@RegexFieldValidator(type = ValidatorType.FIELD,expression = "^[a-zA-Z ]+$", message = "First name Should not contain Special Characters and Numbers.", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter First Name below 20 characters ", minLength = "1", maxLength = "20")	
 	public void setFirstName(String firstName) {
 		this.regVO.setFirstName(firstName);
 	}
@@ -115,6 +117,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Last Name is Mandatory")
 	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^[a-zA-Z ]+$", message = "Last name Should not Contain Special Characters and Numbers.", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Please enter Last Name below 20 characters", minLength = "1", maxLength = "20")	
 	public void setLastName(String lastName) {
 		this.regVO.setLastName(lastName);
 	}

@@ -2,6 +2,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -123,7 +124,7 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		Long electionType = jObj.getLong("electionType");
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(electionType);		
-			
+		Collections.sort(statesList);	
 		return SUCCESS;
 	}
 	

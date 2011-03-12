@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,8 +109,10 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 			return ERROR;
 		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
 		states.add(0, new SelectOptionVO(0L,"Select State"));
+		Collections.sort(states);
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
+		Collections.sort(partyList);
 		return SUCCESS;
 	}
 

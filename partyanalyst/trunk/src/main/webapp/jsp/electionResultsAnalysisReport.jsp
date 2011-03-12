@@ -564,9 +564,9 @@ function openPartyPerformanceWindow(electionTypeId)
 		<DIV id="pageHeading" >
 			<TABLE cellspacing="0" cellpadding="0" border="0" width="90%">
 				<TR>
-					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
+					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/first.png" border="none"/></TD>
 					<TD valign="top"><DIV class="mainHeading">Election Results Analysis Report</DIV></TD>
-					<TD valign="top"><IMG src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
+					<TD valign="top"><IMG width="3" height="30" src="images/icons/electionResultsAnalysisReport/second.png" border="none"/></TD>
 				</TR>
 			</TABLE>
 		</DIV>	

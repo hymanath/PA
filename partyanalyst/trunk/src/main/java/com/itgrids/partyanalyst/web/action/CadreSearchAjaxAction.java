@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -185,6 +186,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		statesListForACountry = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("countryId")));
 		if(statesListForACountry != null && statesListForACountry.size() > 0)
 			statesListForACountry.add(0, new SelectOptionVO(0L,"Select State"));
+		Collections.sort(statesListForACountry);
 		return Action.SUCCESS;
 	}
 	

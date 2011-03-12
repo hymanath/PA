@@ -716,9 +716,9 @@
 				<div id="problem_stats_head">
 					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
+							<td width="1px"><img width="24" height="30" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
 							<td><div id="problem_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;">Problem Statistics</div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
+							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
 				</div>
@@ -800,13 +800,13 @@
 									<div id="influencePeopleDetail_head">
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
-										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
+										<td width="30px"><img width="30" height="36" src="images/icons/districtPage/header_left.gif"></td>
 										<td align="left">
 											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
 												<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
 											</div>
 										</td>
-										<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>
+										<td width="5px"><img width="8" height="30" src="images/icons/districtPage/header_right.gif"></td>
 									</tr>
 									</table>
 									</div>
@@ -869,13 +869,13 @@
 									<div id="localGroupsDetail_head">
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 									<tr>
-										<td width="30px"><img src="images/icons/districtPage/header_left.gif"></td>
+										<td width="30px"><img width="8" height="30" src="images/icons/districtPage/header_left.gif"></td>
 										<td align="left">
 											<div style="height:36px;padding:0px" class="districtPageRoundedHeaders_center">
 												<span id="localGroupsLabelSpan" class="regionsHead_center_label" style="top:10px;">Local Groups Detail Info</span>
 											</div>
 										</td>
-										<td width="5px"><img src="images/icons/districtPage/header_right.gif"></td>
+										<td width="5px"><img width="8" height="30" src="images/icons/districtPage/header_right.gif"></td>
 									</tr>
 									</table>
 									</div>
@@ -919,9 +919,9 @@
 				<div id="voters_stats_head">
 					<table cellspacing="0" cellpadding="0"  width="100%">
 						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
+							<td width="1px"><img width="24" height="29" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
 							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;">Voters Details</div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
+							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
 				</div>

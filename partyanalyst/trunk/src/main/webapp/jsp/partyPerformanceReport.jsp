@@ -989,7 +989,7 @@ function buildVotesMarginContent(jsObj,results)
 	for(var i in results)
 	{		
 		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')" style="cursor:pointer;">';
-		str+= '<td style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"/></td>';
+		str+= '<td style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"></img></td>';
 				
 		str+= '<td align="left">'+results[i].marginValueOne+' - '+results[i].marginValueTwo+' % </td>';		
 		
@@ -1108,7 +1108,6 @@ function callMarginVotes(partyId)
 	buildMarginVotes(partyId,"WON");
 	buildMarginVotes(partyId,"LOST");
 }
-
 </script>
 
 <style type="text/css">
