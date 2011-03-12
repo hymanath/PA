@@ -199,13 +199,19 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(int i=0;i<allYears.size();i++){			
 			System.out.println(allYears.get(i));
 		}
-	}*/
+	}
 	
 	public void testGetData(){
 		List elecId = electionDAO.getElectionYears(1l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
 		System.out.println(elecId);
+	}*/
+	
+	public void testGetData(){
+		List assElecId = electionDAO.findLatestElectionIdAndYearForAnElection(IConstants.ASSEMBLY_ELECTION_TYPE,24l,IConstants.ELECTION_SUBTYPE_MAIN);
+		System.out.println(new Long(assElecId.get(0).toString()));
+		
+		//List parElecId = electionDAO.findLatestElectionIdAndYearForAnElection(IConstants.PARLIAMENT_ELECTION_TYPE,1l,IConstants.ELECTION_SUBTYPE_MAIN);
+	//	System.out.println(new Long(parElecId.get(0).toString()));
 	}
-	
-	
 }
 

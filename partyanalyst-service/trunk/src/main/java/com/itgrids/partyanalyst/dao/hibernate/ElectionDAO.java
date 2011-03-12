@@ -241,6 +241,43 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List findLatestElectionIdAndYearForAnElection(String electionType,Long stateId,String elecSubType){
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.electionId from Election model ");	
+		
+		query.append(" where model.electionYear = (select max(model2.electionYear) from Election model2");				
+		query.append(" where model2.electionScope.electionType.electionType = ? and model2.elecSubtype = ?  ");		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			query.append(" and model2.electionScope.state.stateId = ?");
+		}		
+		query.append("  ) and model.electionScope.electionType.electionType = ? and model.elecSubtype = ?");		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			query.append(" and model.electionScope.state.stateId = ?");
+		}
+		
+		query.append(" order by model.electionId ");
+		
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setString(0,electionType);	
+		queryObject.setString(1,elecSubType);	
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			queryObject.setLong(2,stateId);	
+			queryObject.setString(3,electionType);	
+			queryObject.setString(4,elecSubType);
+			queryObject.setLong(5,stateId);	
+		}else{
+			queryObject.setString(2,electionType);	
+			queryObject.setString(3,elecSubType);	
+		}	
+		
+			
+		
+		return queryObject.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List findParliamentElectionIdByElectionTypeAndYear(String electionType,String year){
 		Object[] params = {electionType,year};
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ?",params);
