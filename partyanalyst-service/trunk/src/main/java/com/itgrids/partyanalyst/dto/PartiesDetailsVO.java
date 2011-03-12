@@ -22,13 +22,20 @@ public class PartiesDetailsVO implements Serializable {
 	private Long constituencyCount;
 	private Long wonTimes;
 	private Long lostTimes;
+	private Long won;
 	private List<SelectOptionVO>  details;
 	private Map<Long,Long>  partyStrenghCount;
 	private Map<Long,SelectOptionVO>  partyWeaknessCount;
 	private List<ContenetTransferVO>  partyDetails;
 	private List<Long> constIds;
 	
-	
+
+	public Long getWon() {
+		return won;
+	}
+	public void setWon(Long won) {
+		this.won = won;
+	}
 	public Map<Long, SelectOptionVO> getPartyWeaknessCount() {
 		return partyWeaknessCount;
 	}

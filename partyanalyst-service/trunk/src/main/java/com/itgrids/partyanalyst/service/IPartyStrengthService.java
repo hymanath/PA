@@ -15,7 +15,7 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public List<Long> getAllElectionYears(String electionType,Long stateId);
 	
-	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,Long partyId);
+	public ElectionInfoVO getPartiesData(String electionType,Long stateId,Long electionYearsCount,Long partyId,String alliance,Long electionId,String partyName);
 	
 	public ConstituencyElectionResults getAllElectionData(List<Long> constituencyIds,List result,Long count,String type,String electionType,Long stateId);
 	
@@ -29,13 +29,13 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public List<SelectOptionVO> getAllPartiesData(Long stateId);
 	
-	public ConstituencyElectionResults getPartyStrengthsAndWeaknessDetails(String electionType,Long stateId,Long partieId,Long totalElectionYears);
+	public ConstituencyElectionResults getPartyStrengthsAndWeaknessDetails(String electionType,Long stateId,Long partieId,Long totalElectionYears,List result);
 	
 	public List<PartiesDetailsVO> getAllConstituenciesData(String electionType,Long stateId,String partyName,Long selectedNoOfYears,Long count);
 	
-	public PartiesDetailsVO getIncludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
+	public List getIncludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
 	
-	public PartiesDetailsVO getExcludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,String partyName);
+//	public PartiesDetailsVO getExcludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,String partyName);
 	
 	public PartiesDetailsVO getAllElectionAllianceYearsForAParty(Long partyId,Long stateId,String partyName);
 	

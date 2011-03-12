@@ -17,17 +17,23 @@ public class ElectionInfoVO {
     private Long totalSeatsWon;
     private String localBodyChartName;
     private String electionType;
-        
+    private Long partyId;
+    private String partyName;
+    private Long selectedYearsCount;
+
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
     
     private ConstituencyElectionResults allPartiesDetails;
     
-    
-    private String partyName;
-    private Long selectedYearsCount;
-  
+          
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
 	public ConstituencyElectionResults getAllPartiesDetails() {
 		return allPartiesDetails;
 	}
