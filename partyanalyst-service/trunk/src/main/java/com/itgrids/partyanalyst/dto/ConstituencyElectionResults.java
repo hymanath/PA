@@ -24,10 +24,18 @@ public class ConstituencyElectionResults {
 	private List<PartiesDetailsVO> partiesDetailsVO;
 	private Long selectedYearsCount;
 	private List<String> electionYears;
+	private List<SelectOptionVO> partyDetails;
 	
 	//getters and setters
+	
 	public ConstituencyElectionResultVO getElectionResultForParty() {
 		return electionResultForParty;
+	}
+	public List<SelectOptionVO> getPartyDetails() {
+		return partyDetails;
+	}
+	public void setPartyDetails(List<SelectOptionVO> partyDetails) {
+		this.partyDetails = partyDetails;
 	}
 	public List<String> getElectionYears() {
 		return electionYears;
