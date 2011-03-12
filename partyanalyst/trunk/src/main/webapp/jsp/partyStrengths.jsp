@@ -127,7 +127,7 @@
 	}
 </style>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 	var electionType='Assembly';
 	var selectedStateElmts=1;
@@ -217,6 +217,7 @@
 					}
 					if(jsObj.task =="getIncludingAllianceDataAjaxAction")
 					{
+						//buildExcludingAllianceData(results);	
 						buildIncludingAllianceData(results);	
 					}
 			}catch (e) {   		
@@ -234,21 +235,58 @@
 
 	function buildExcludingAllianceData(results)
 	{
-		var partyName = results.partyName;
+		var partyName = results.partyName;	
+		var partyId = results.partyId;	
 		var partyDiv = document.getElementById(partyName+"DATA_DIV");
+		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
+		
 		var str='';
-
-		var details = results.details;
+	
 		str += '	<table>';				
 		str +='		<tr>';
 		str += '		<td class="headerStyle">Total No of Times Won </td>';
-		str += '		<td class="headerStyle">Constituencies Count </td>';				
+		str += '		<td class="headerStyle">Constituencies Count </td>';	
+		str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
+		str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';			
 		str += '	</tr>';
-		for(var k=0;k<details.length;k++){
-			str += '	<tr>';
-			str += '		<td align="center">'+(k+1)+'</td>';
-			str += '		<td align="center"><a title="click here to view constituencies details" onClick="getData(\''+partyName+'\',\''+(k+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
-			str += '	</tr>';					
+		
+		for(var k=0;k<partiesDetails.length;k++){	
+			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){				
+				var size = partiesDetails[k].partyDetails[j].won;	
+				var counter = partiesDetails[k].partyDetails[j].count;				
+				if(size!=0){		
+					str += '	<tr>';				
+					str += '<td align="center">'+counter+'</td>';
+	
+					str += '<td align="center">';
+					if(partiesDetails[k].partyDetails[j].won==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getIncludingData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].won+' </b>';
+					}
+					str += '</td>';	
+	
+					str += '<td align="center">';
+					if(partiesDetails[k].partyDetails[j].wonRecently==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
+					}					
+					str += '</td>';
+	
+					str += '<td align="center">';
+					if(partiesDetails[k].partyDetails[j].lostRecently==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partyId+'\',\''+counter+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
+					}					
+					str += '</td>';	
+					str += '	</tr>';				
+				}		
+			}	
 		}
 		str += '	</table>';		
 		partyDiv.innerHTML = str;
@@ -256,25 +294,70 @@
 
 	function buildIncludingAllianceData(results)
 	{
-		var partyName = results.partyName;
+		var partyName = results.partyName;	
+		var partyId = results.partyId;	
 		var partyDiv = document.getElementById(partyName+"DATA_DIV");
+		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
+		
 		var str='';
-
-		var details = results.details;
-		var partyId = results.partyId;
+	
 		str += '	<table>';				
 		str +='		<tr>';
 		str += '		<td class="headerStyle">Total No of Times Won </td>';
-		str += '		<td class="headerStyle">Constituencies Count </td>';				
+		str += '		<td class="headerStyle">Constituencies Count </td>';	
+		str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
+		str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';			
 		str += '	</tr>';
-		for(var k=0;k<details.length;k++){
-			str += '	<tr>';
-			str += '		<td align="center">'+(k+1)+'</td>';
-			str += '		<td align="center"><a title="click here to view constituencies details" onClick="getIncludingData(\''+partyName+'\',\''+(k+1)+'\',\''+partyId+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
-			str += '	</tr>';					
-		}
+		
+	
+			for(var j=0;j<partiesDetails.length;j++){				
+				var size = partiesDetails[j].won;	
+				var counter = partiesDetails[j].count;				
+				if(size!=0){		
+					str += '	<tr>';				
+					str += '<td align="center">'+counter+'</td>';
+	
+					str += '<td align="center">';
+					if(partiesDetails[j].won==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[j].won+' </b>';
+					}					
+					str += '</td>';	
+	
+					str += '<td align="center">';
+					if(partiesDetails[j].wonTimes==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[j].wonTimes+' </b>';
+					}
+					str += '</td>';
+
+					str += '<td align="center">';
+					if(partiesDetails[j].lostTimes==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
+					}else{					
+						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partyId+'\',\''+counter+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[j].lostTimes+' </b>';
+					}
+					str += '</td>';	
+					str += '	</tr>';				
+				}		
+			}	
+		
 		str += '	</table>';		
 		partyDiv.innerHTML = str;
+		
+		//for(var k=0;k<details.length;k++){
+		//	str += '	<tr>';
+	//		str += '		<td align="center">'+(k+1)+'</td>';
+	//		str += '		<td align="center"><a title="click here to view constituencies details" onClick="getIncludingData(\''+partyName+'\',\''+(k+1)+'\',\''+partyId+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
+	//		str += '	</tr>';					
+	//	}
+	//	str += '	</table>';		
+	//	partyDiv.innerHTML = str;
 	}
 	function buildAllAllianceElectionYears(results)
 	{
@@ -370,13 +453,12 @@
 			str += '		<td class="headerStyle">Constituencies Count </td>';	
 			str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
 			str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';				
-			str += '	</tr>';				
-			str += '	<tr>';	
-			
+			str += '	</tr>';	
 			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){				
 				var size = partiesDetails[k].partyDetails[j].won;	
-				var counter = partiesDetails[k].partyDetails[j].count;		
-				if(size!=0){					
+				var counter = partiesDetails[k].partyDetails[j].count;				
+				if(size!=0){		
+					str += '	<tr>';				
 					str += '<td align="center">'+counter+'</td>';
 
 					str += '<td align="center">';
@@ -385,16 +467,25 @@
 					str += '</td>';	
 
 					str += '<td align="center">';
-					str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
-					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
+					if(partiesDetails[k].partyDetails[j].wonRecently==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0</b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
+					}
+					
 					str += '</td>';
 
 					str += '<td align="center">';
-					str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\')">';
-					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
-					str += '</td>';				
-				}
-				str += '	</tr>';				
+					if(partiesDetails[k].partyDetails[j].lostRecently==0){
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0</b>';
+					}else{
+						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\')">';
+						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
+					}
+					str += '</td>';	
+					str += '	</tr>';				
+				}		
 			}			
 			str += '	</table>';			
 			str += '	</div>';
@@ -1020,7 +1111,7 @@
 			elmet.style.display = 'none';
 	}
 	
-</script>
+--></script>
 
 
 </head>
