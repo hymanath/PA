@@ -156,7 +156,7 @@
 						var elmt = document.getElementById("busyImage");
 						if(elmt)
 							elmt.style.display = 'none';
-
+				
 						buildOverViewDataTable(results); 
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
@@ -337,6 +337,7 @@
 		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;		
 		str += '<div id="mainDataDiv">';		
 		for(var k=0;k<partiesDetails.length;k++){
+			
 			str += '  <div id="overviewOfPartiesDiv">';
 			str += '	<table id="CompleteDetailsTable">';
 			str += '		<tr>';	
@@ -348,7 +349,7 @@
 			str += '			in the last <b style=" color: #69A74E;font-weight: bold;">'+results.selectedYearsCount+'</b> election years <b class="viewAndHideDetails"';
 			str += '			</td>';
 			str += '			<td>'; 
-			str += '			<b style="margin-left:27px;" id="hideOrShowId_'+partiesDetails[k].partyName+'" onclick="showData(\''+partiesDetails[k].partyName+'\')"> View Details</b></td>';
+			str += '			<b style="margin-left:27px;cursor: pointer;" id="hideOrShowId_'+partiesDetails[k].partyName+'" onclick="showData(\''+partiesDetails[k].partyName+'\')"> View Details</b></td>';
 			str += '		</tr>';	
 			str += '	</table>';	
 			str += '		</tr>';	
@@ -357,7 +358,7 @@
 			str += '   <div id="'+partiesDetails[k].partyName+'_DIV" style="display:none;">';			
 			str += '	<table>';
 			str +='		<tr style="font-weight:bold;font-size:11px;">';
-			str += '		<td><input type="radio" name="alliance" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Excluding Alliance </input></td>';
+			str += '		<td><input type="radio" id="default_checkId_'+partiesDetails[k].partyName+'" name="alliance" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Excluding Alliance </input></td>';
 			str += '		<td><input type="radio" name="alliance" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Including Alliance </input></td>';					
 			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></td>';				
 			str += '	</tr>';		
@@ -366,14 +367,32 @@
 			str += '	<table>';				
 			str +='		<tr>';
 			str += '		<td class="headerStyle">Total No of Times Won </td>';
-			str += '		<td class="headerStyle">Constituencies Count </td>';				
+			str += '		<td class="headerStyle">Constituencies Count </td>';	
+			str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
+			str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';				
 			str += '	</tr>';				
 			str += '	<tr>';	
-			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){
-				var size = partiesDetails[k].partyDetails[j].name;					
+			
+			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){				
+				var size = partiesDetails[k].partyDetails[j].won;	
+				var counter = partiesDetails[k].partyDetails[j].count;		
 				if(size!=0){					
-					str += '<td align="center">'+(j+1)+'</td>';
-					str += '<td align="center"><a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+(j+1)+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].name+' </b></td>';					
+					str += '<td align="center">'+counter+'</td>';
+
+					str += '<td align="center">';
+					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].won+' </b>';
+					str += '</td>';	
+
+					str += '<td align="center">';
+					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
+					str += '</td>';
+
+					str += '<td align="center">';
+					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
+					str += '</td>';				
 				}
 				str += '	</tr>';				
 			}			
