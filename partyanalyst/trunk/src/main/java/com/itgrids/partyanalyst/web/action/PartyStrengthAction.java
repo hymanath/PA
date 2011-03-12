@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -43,8 +42,8 @@ public class PartyStrengthAction extends ActionSupport implements
 	private String partyRadio;
 	private String party;
 	private List<PartiesDetailsVO> requiredConstituencyDetails;
-	private ElectionInfoVO electionInfo;	
-	private PartiesDetailsVO includingAlliance,excludingAlliance,alliancesYears;
+	private ElectionInfoVO electionInfo,excludingAlliance,includingAlliance;	
+	private PartiesDetailsVO alliancesYears;
 	private int errorCode = 0;
 	
 	
@@ -60,21 +59,19 @@ public class PartyStrengthAction extends ActionSupport implements
 	public PartiesDetailsVO getAlliancesYears() {
 		return alliancesYears;
 	}
-
 	public void setAlliancesYears(PartiesDetailsVO alliancesYears) {
 		this.alliancesYears = alliancesYears;
 	}
-
-	public PartiesDetailsVO getIncludingAlliance() {
+	public ElectionInfoVO getIncludingAlliance() {
 		return includingAlliance;
 	}
-	public void setIncludingAlliance(PartiesDetailsVO includingAlliance) {
+	public void setIncludingAlliance(ElectionInfoVO includingAlliance) {
 		this.includingAlliance = includingAlliance;
 	}
-	public PartiesDetailsVO getExcludingAlliance() {
+	public ElectionInfoVO getExcludingAlliance() {
 		return excludingAlliance;
 	}
-	public void setExcludingAlliance(PartiesDetailsVO excludingAlliance) {
+	public void setExcludingAlliance(ElectionInfoVO excludingAlliance) {
 		this.excludingAlliance = excludingAlliance;
 	}
 	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
@@ -196,11 +193,10 @@ public class PartyStrengthAction extends ActionSupport implements
 	public String execute(){
 		
 		partyList = staticDataService.getStaticParties();
-		//partyList.add(0,new SelectOptionVO(0l,"All Parties"));
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
 		
-		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,7l,0L);
+		electionInfo = partyStrengthService.getPartiesData(IConstants.ASSEMBLY_ELECTION_TYPE,1l,7l,0L,IConstants.FALSE,0l,"");
 		
 		states = partyStrengthService.getAllStatesHavinElectionData(IConstants.ASSEMBLY_ELECTION_TYPE);	
 		
@@ -277,8 +273,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long partyId = new Long(jObj.getString("party"));	
 			
 			jObj = new JSONObject(getTask());	
-			electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId);
-			
+			electionInfo = partyStrengthService.getPartiesData(electionType,stateId,countOfElectionYears,partyId,IConstants.FALSE,0l,"");			
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
@@ -345,8 +340,10 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
 			Long  electionId = jObj.getLong("electionId"); 
 			String partyName = jObj.getString("partyName");
-			includingAlliance = partyStrengthService.getIncludingAllianceData(electionType,stateId,partyId,totalElectionYears,electionId,partyName);			
-		}catch(Exception e){
+			
+			includingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.TRUE,electionId,partyName);
+			
+			}catch(Exception e){
 			e.printStackTrace();			
 		}		
 		return SUCCESS;  
@@ -368,7 +365,8 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long stateId = new Long(jObj.getString("stateId"));	
 			Long totalElectionYears = new Long(jObj.getString("elecYears"));
 			String partyName = jObj.getString("partyShortName");			
-			excludingAlliance = partyStrengthService.getExcludingAllianceData(electionType,stateId,partyId,totalElectionYears,partyName);			
+			
+			excludingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.FALSE,0l,partyName);
 		}catch(Exception e){
 			e.printStackTrace();			
 		}		
