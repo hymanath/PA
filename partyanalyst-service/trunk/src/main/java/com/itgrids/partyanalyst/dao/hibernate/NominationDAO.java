@@ -2525,11 +2525,17 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return queryObject.list();	
 	}
 	
-	public List getPartyResultsForAParty(List<Long> constituencyIds,Long partyId,String electionSubType,Long electionIds){
+	public List getPartyResultsForAParty(List<Long> constituencyIds,Long partyId,String electionSubType,Long electionIds,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,count(model.party.partyId),model.party.shortName,");
-		query.append(" upper(model.constituencyElection.constituency.name),model.party.partyId from Nomination model");			
-		query.append(" where model.party.partyId = ? and model.constituencyElection.election.elecSubtype = ? ");
+		query.append(" upper(model.constituencyElection.constituency.name),model.party.partyId from Nomination model where");			
+		
+		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
+			query.append(" model.party.partyId = ? ");
+		else
+			query.append(" model.party.partyId != ? ");
+		
+		query.append(" and model.constituencyElection.election.elecSubtype = ? ");
 		if(electionIds!=null){
 			query.append(" and model.constituencyElection.election.electionId = ?");
 		}
@@ -2636,13 +2642,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	
-	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,Long electionId){
+	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,Long electionId,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
 		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
 		query.append(" from Nomination model where");	
-		query.append(" model.party.partyId=? and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
+		
+		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
+			query.append(" model.party.partyId = ? ");
+		else
+			query.append(" model.party.partyId != ? ");
+		
+		query.append(" and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		

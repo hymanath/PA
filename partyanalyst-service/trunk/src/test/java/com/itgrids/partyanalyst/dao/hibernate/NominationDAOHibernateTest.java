@@ -766,7 +766,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			Object[] parms = (Object[])list.get(i);
 			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 		}
-	}*/
+	}
 	
 	public void testGetData(){
 		
@@ -783,7 +783,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
 		}
 		System.out.println(list);
-	}
+	}*/
 	
 }
 	
