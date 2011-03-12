@@ -262,7 +262,7 @@
 					if(partiesDetails[k].partyDetails[j].won==0){
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getIncludingData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].won+' </b>';
 					}
 					str += '</td>';	
@@ -321,7 +321,7 @@
 					if(partiesDetails[j].won==0){
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0 </b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getIncludingData(\''+partyName+'\',\''+counter+'\',\''+partyId+'\')">';
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[j].won+' </b>';
 					}					
 					str += '</td>';	
