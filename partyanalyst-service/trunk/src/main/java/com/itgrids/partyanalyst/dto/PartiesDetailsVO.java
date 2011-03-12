@@ -20,12 +20,33 @@ public class PartiesDetailsVO implements Serializable {
 	private Long constituencyId;
 	private String constituencyName;
 	private Long constituencyCount;
+	private Long wonTimes;
+	private Long lostTimes;
 	private List<SelectOptionVO>  details;
 	private Map<Long,Long>  partyStrenghCount;
-
-	private List<SelectOptionVO>  partyDetails;
+	private Map<Long,SelectOptionVO>  partyWeaknessCount;
+	private List<ContenetTransferVO>  partyDetails;
 	private List<Long> constIds;
 	
+	
+	public Map<Long, SelectOptionVO> getPartyWeaknessCount() {
+		return partyWeaknessCount;
+	}
+	public void setPartyWeaknessCount(Map<Long, SelectOptionVO> partyWeaknessCount) {
+		this.partyWeaknessCount = partyWeaknessCount;
+	}
+	public Long getWonTimes() {
+		return wonTimes;
+	}
+	public void setWonTimes(Long wonTimes) {
+		this.wonTimes = wonTimes;
+	}
+	public Long getLostTimes() {
+		return lostTimes;
+	}
+	public void setLostTimes(Long lostTimes) {
+		this.lostTimes = lostTimes;
+	}
 	public List<Long> getConstIds() {
 		return constIds;
 	}
@@ -38,10 +59,10 @@ public class PartiesDetailsVO implements Serializable {
 	public void setConstituencyCount(Long constituencyCount) {
 		this.constituencyCount = constituencyCount;
 	}
-	public List<SelectOptionVO> getPartyDetails() {
+	public List<ContenetTransferVO> getPartyDetails() {
 		return partyDetails;
 	}
-	public void setPartyDetails(List<SelectOptionVO> partyDetails) {
+	public void setPartyDetails(List<ContenetTransferVO> partyDetails) {
 		this.partyDetails = partyDetails;
 	}
 	public Map<Long, Long> getPartyStrenghCount() {
