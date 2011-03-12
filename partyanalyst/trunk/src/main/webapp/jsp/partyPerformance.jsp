@@ -397,18 +397,22 @@
 	}
 	function validateClientSide()
 	{
+		
 		var flag;
+		var	electionYearElValuesSelected;
 		var electionYearEl = document.getElementById("yearList");
 		var electionYearElValues = electionYearEl.options;
-		var	electionYearElValuesSelected = electionYearElValues[electionYearEl.selectedIndex].value;
+		if(electionYearElValues.length > 0 )
+		electionYearElValuesSelected = electionYearElValues[electionYearEl.selectedIndex].value;
 		var errorMsg = document.getElementById("errorsDiv");
 		errorMsg.innerHTML = '';
 		
-		if(electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
+		if(electionYearEl == null || electionYearElValues.length == 0 || electionYearElValuesSelected == 'Select')
 		{
 			errorMsg.innerHTML = 'Invalid Input Selection';
 			flag= false;
-		} else  
+		} 
+		else  
 		{
 			flag = true;
 		}
