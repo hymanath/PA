@@ -33,6 +33,7 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	private Long columnId;
 	private Long elecId;
 	private Long partyId;
+	private String type;
 	
 	private IPartyStrengthService partyStrengthService;
 	
@@ -44,6 +45,12 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	
 	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
 		return requiredConstituencyDetails;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public Long getPartyId() {
 		return partyId;
@@ -111,10 +118,13 @@ public class CandidateStrenthsAction extends ActionSupport implements
 
 	public String execute(){
 		
-		if(partyId==null)
-			requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId);	
+		if(type==null)
+			if(partyId==null)
+				requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId);	
+			else
+				requiredConstituencyDetails = partyStrengthService.getAllCandidatesDetailsForAllianceData(electionType,selectedStateElmts,partyId,elecYears,elecId,partyName,columnId);				
 		else
-			requiredConstituencyDetails = partyStrengthService.getAllCandidatesDetailsForAllianceData(electionType,selectedStateElmts,partyId,elecYears,elecId,partyName,columnId);			
+			requiredConstituencyDetails = partyStrengthService.getWeaknessConstituenceisDetails(electionType,selectedStateElmts,type,partyId,columnId,elecYears);
 		
 		return Action.SUCCESS;
 	}

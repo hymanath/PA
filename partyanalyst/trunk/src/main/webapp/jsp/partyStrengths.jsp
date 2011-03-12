@@ -385,12 +385,12 @@
 					str += '</td>';	
 
 					str += '<td align="center">';
-					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
 					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
 					str += '</td>';
 
 					str += '<td align="center">';
-					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\')">';
 					str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 					str += '</td>';				
 				}
@@ -490,6 +490,16 @@
 
 	function getIncludingData(partyName,columnId,partyId){			
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();		
+	}
+
+	function getWonData(partyId,columnId,partyName){
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyName="+partyName+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();		
+	}
+
+	function getLostData(partyId,columnId){
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 	

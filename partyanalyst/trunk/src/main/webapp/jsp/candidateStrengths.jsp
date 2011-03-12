@@ -88,8 +88,9 @@
 
 <script type="text/javascript">
 
-	function initializeResultsTable() {
-	
+var type = '${type}';
+
+	function initializeResultsTable() {	
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get("mainDataTable"));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -137,6 +138,63 @@
 		var myDataTable = new YAHOO.widget.DataTable("mainDataDiv",resultsColumnDefs,resultsDataSource,paginatorConfig);
 	}
 
+	function initializeResultsTableForAllParties()
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("mainDataTable"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [  {
+				key : "candidateName"
+			},{
+				key : "constituencyName"
+			},{
+				key : "partyName"
+			},{
+				key : "electionYear"
+			}, {
+				key : "votesEarned"
+			},{
+				key : "moreDetails"
+			}]
+		};
+	
+		var resultsColumnDefs = [  {
+			key : "candidateName",
+			label : "Candidate Name",
+			sortable : true
+		},{
+			key : "constituencyName",
+			label : "Constituency Name",
+			sortable : true
+		},{
+			key : "partyName",
+			label : "Party Name",
+			sortable : true
+		},{
+			key : "electionYear",
+			label : "Election Year",
+			sortable : true
+		},{
+			key : "votesEarned",
+			label : "Votes Earned",
+			sortable : true
+		},{
+			key : "moreDetails",
+			label : "More Details",
+			sortable : true
+		} ];
+	
+		var paginatorConfig = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10
+		    })
+		};				
+		var myDataTable = new YAHOO.widget.DataTable("mainDataDiv",resultsColumnDefs,resultsDataSource,paginatorConfig);
+
+	}
+
+	
 	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -148,10 +206,16 @@
 </head>
 <body>
 		<div id="mainDiv">
+		 <c:if test="${type==null || type=='WINNER'}">
 			<div id="headingDiv"> Complete Details of ${partyName} Party</div>
+		</c:if>
+		<c:if test="${type!=null && type!='WINNER'}">
+				<div id="headingDiv"> Complete Details of All Partys</div>
+		</c:if>
 			<div id="bodyDiv" class="yui-skin-sam" >
 				<div id="mainDataDiv">
 					<table id="mainDataTable">
+					 <c:if test="${type==null || type=='WINNER'}">
 						<c:forEach var="requiredConstituencyDetails" varStatus="stat" items="${requiredConstituencyDetails}">		
 							<tr>
 								<td>
@@ -159,7 +223,7 @@
 								</td>
 								<td>
 									${requiredConstituencyDetails.constituencyName}
-								</td>								
+								</td>						
 								<td>
 									${requiredConstituencyDetails.electionYear}
 								</td>
@@ -171,13 +235,43 @@
 								</td>
 							</tr>
 						</c:forEach>
+					   </c:if>
+					   <c:if test="${type!=null && type!='WINNER'}">
+						<c:forEach var="requiredConstituencyDetails" varStatus="stat" items="${requiredConstituencyDetails}">	
+							<tr>
+								<td>
+									${requiredConstituencyDetails.candidateName}
+								</td>
+								<td>
+									${requiredConstituencyDetails.constituencyName}
+								</td>	
+								<td>
+									<img src="<%=request.getContextPath()%>/images/party_flags/${requiredConstituencyDetails.partyName}" height="30" width="40"/>
+								</td>							
+								<td>
+									${requiredConstituencyDetails.electionYear}
+								</td>
+								<td>
+									${requiredConstituencyDetails.votesEarned}
+								</td>
+								<td>
+									<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${requiredConstituencyDetails.constituencyId}','${electionType}','${requiredConstituencyDetails.electionYear}')">view results</a>
+								</td>
+							</tr>
+						</c:forEach>
+					   </c:if>
 					</table>
 				</div>
 			</div>
 		</div>
 		
 <script type="text/javascript">
-	initializeResultsTable();
+	<c:if test="${type==null || type=='WINNER'}">
+		initializeResultsTable();
+	 </c:if>
+	<c:if test="${type!=null && type!='WINNER'}">
+		 initializeResultsTableForAllParties();
+	</c:if>
 </script>
 
 </body>
