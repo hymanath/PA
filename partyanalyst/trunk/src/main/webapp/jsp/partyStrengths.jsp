@@ -416,7 +416,17 @@
 		elecYearsStr+='<table>';
 		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
-		elecYearsStr+='			<b> Election Years Considered...</b>';
+		elecYearsStr+='			<b style="color:green;">Total Number of constituencies in the last '+results.selectedYearsCount+' election years</b> <b style="color: red;font-weight:bold;"/>'+results.requiredConstituenciesInfo.totalNumberOfConstituencies;
+		elecYearsStr+='		</td>';
+		elecYearsStr+='	<tr>';
+		elecYearsStr+='	</tr>';
+		elecYearsStr+='		<td>';
+		elecYearsStr+='			<br/><b style="color:green;">Total Number of constituencies for the latest election year</b>   <b style="color: red;font-weight:bold;"/>'+results.latestConstituenciesInfo.totalNumberOfConstituencies;
+		elecYearsStr+='		</td>';
+		elecYearsStr+='	</tr>';		
+		elecYearsStr+='	<tr>';
+		elecYearsStr+='		<td>';
+		elecYearsStr+='			<br/><b tyle="color:green;"> Election Years Considered...</b>';
 		elecYearsStr+='		</td>';
 		elecYearsStr+='	</tr>';
 		elecYearsStr+='	<tr>';
@@ -1250,11 +1260,11 @@
 		 		</tr> 
 			</table>
 			
-			<div id="main_container_div" style="display:none;margin-left:50px;" align="left">
+			<div id="main_container_div" style="display:none;margin-left:50px;margin-top:10px;" align="left">
 			 <table>
 			 	<tr>
 			 		<td>
-			 			<div id="required_const_main">	
+			 			<div id="required_const_main" style="margin-bottom:15px;">	
 							<div id="required_const_head">
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
@@ -1278,7 +1288,7 @@
 						</div>
 					</td>
 				</tr>
-				
+								
 				<tr>
 			 		<td>
 			 			<div id="new_const_main">		
