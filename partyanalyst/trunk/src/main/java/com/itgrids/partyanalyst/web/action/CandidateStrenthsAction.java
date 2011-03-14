@@ -34,6 +34,7 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	private Long elecId;
 	private Long partyId;
 	private String type;
+	private String excludeType;
 	
 	private IPartyStrengthService partyStrengthService;
 	
@@ -43,8 +44,15 @@ public class CandidateStrenthsAction extends ActionSupport implements
 	
 	//Getters and Setters
 	
+	
 	public List<PartiesDetailsVO> getRequiredConstituencyDetails() {
 		return requiredConstituencyDetails;
+	}
+	public String getExcludeType() {
+		return excludeType;
+	}
+	public void setExcludeType(String excludeType) {
+		this.excludeType = excludeType;
 	}
 	public String getType() {
 		return type;
@@ -120,7 +128,7 @@ public class CandidateStrenthsAction extends ActionSupport implements
 		
 		if(type==null)
 			if(partyId==null)
-				requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId);	
+				requiredConstituencyDetails = partyStrengthService.getAllConstituenciesData(electionType,selectedStateElmts,partyName,elecYears,columnId,excludeType);	
 			else
 				requiredConstituencyDetails = partyStrengthService.getAllCandidatesDetailsForAllianceData(electionType,selectedStateElmts,partyId,elecYears,elecId,partyName,columnId);				
 		else
