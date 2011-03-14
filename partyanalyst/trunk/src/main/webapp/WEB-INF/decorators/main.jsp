@@ -225,9 +225,19 @@
 							</li> 
 						</c:if>
 						
+						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
+							<li class="yuimenubaritem"> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
+							</li>
+						</c:if>
+						
+						<c:if test="${sessionScope.loginStatus != 'out' && sessionScope.UserType != 'PartyAnalyst'}">  
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
-						</li>
+								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
+							</li>
+						</c:if>
+						
+						
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li>
