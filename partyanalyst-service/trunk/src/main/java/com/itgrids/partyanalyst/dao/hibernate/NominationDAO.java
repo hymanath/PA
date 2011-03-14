@@ -2650,18 +2650,24 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.append(" from Nomination model where");	
 		
 		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
-			query.append(" model.party.partyId = ? ");
-		else
-			query.append(" model.party.partyId != ? ");
+			query.append(" model.party.partyId = ? and");
+		else if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+			query.append(" model.party.partyId != ? and");
 		
-		query.append(" and model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
+		query.append(" model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		
-		Query queryObject = getSession().createQuery(query.toString());	
-		queryObject.setLong(0,partyId);	
-		queryObject.setLong(1,electionId);
-		queryObject.setParameterList("constituencyIds", constIds);
+		Query queryObject = getSession().createQuery(query.toString());
+		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES)){
+			queryObject.setLong(0,partyId);	
+			queryObject.setLong(1,electionId);
+			queryObject.setParameterList("constituencyIds", constIds);
+		}else{			
+			queryObject.setLong(0,electionId);
+			queryObject.setParameterList("constituencyIds", constIds);
+		}
+		
 		return queryObject.list();
 	}
 	
@@ -2697,4 +2703,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setParameterList("constituencyIds", constIds);
 		return queryObject.list();
 	}
+	
+	
 }
