@@ -3,12 +3,15 @@ package com.itgrids.partyanalyst.dto;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.model.Party;
+
 public class ContenetTransferVO {
 
 	//Instance Variables
 	private Map<Long,PartiesDetailsVO> partyOverview;
 	private Map<Long,PartiesDetailsVO> data;
-	
+	private List result;
+	private List<Party> allianceDetails;
 	private Long won;
 	private Long count;
 	private Long wonRecently;
@@ -34,9 +37,26 @@ public class ContenetTransferVO {
 	
 	//Getters and Setters
 	
+	
 	public Map<Long, PartiesDetailsVO> getPartyOverview() {
 		return partyOverview;
 	}
+	public List getResult() {
+		return result;
+	}
+
+	public void setResult(List result) {
+		this.result = result;
+	}
+
+	public List<Party> getAllianceDetails() {
+		return allianceDetails;
+	}
+
+	public void setAllianceDetails(List<Party> allianceDetails) {
+		this.allianceDetails = allianceDetails;
+	}
+
 	public Long getWon() {
 		return won;
 	}
