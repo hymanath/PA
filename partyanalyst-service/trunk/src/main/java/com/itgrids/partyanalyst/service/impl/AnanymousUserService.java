@@ -1309,6 +1309,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public UserCommentsInfoVO getAllPostedReasonsByUserId(Long registrationId, Integer startIndex, Integer results, String order, String columnName, String reasonType)
 	{		
 		String columnInModel = getColumnNameFromModel(columnName);
@@ -1320,7 +1321,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 		{	
 			List comments = commentCategoryCandidateDAO.getPostedReasonsByFreeUserId(registrationId, startIndex, results, order, columnInModel, reasonType);
 			
-			if(comments != null || comments.size() > 0)
+			if(comments != null && comments.size() > 0)
 			{
 				commentsList = new ArrayList<CandidateCommentsVO>();
 				for (int i = 0; i < comments.size(); i++)
@@ -1342,14 +1343,19 @@ public class AnanymousUserService implements IAnanymousUserService {
 					comment.setElectionType(params[6].toString());
 					comment.setElectionYear(params[7].toString());		
 					
-					comment.setCommentCategory(commentDataCategoryDAO.get(commentData.getCommentDataCategory().getCommentDataCategoryId()).getCommentDataCategoryType());
+					//comment.setCommentCategory(commentDataCategoryDAO.get(commentData.getCommentDataCategory().getCommentDataCategoryId()).getCommentDataCategoryType());
+					comment.setCommentCategory(commentData.getCommentDataCategory().getCommentDataCategoryType());
 					
 					commentsList.add(comment);					
 				}
 			}	
 			
 			userComments.setCandidateComments(commentsList);
-			userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
+			
+			if(reasonType.equals(IConstants.TOTAL) || reasonType.equals(IConstants.OTHERUSERS))
+				userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId());
+			else
+				userComments.setTotalResultsCount(commentCategoryCandidateDAO.getTotalPostedReasonsCountByFreeUserId(registrationId));
 			
 			return userComments; 
 			
