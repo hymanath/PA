@@ -134,7 +134,7 @@
 	var selectedPartyId=7;
 	var selectedPartyName;
 	var partyId;
-	var selectedElecId;
+	var selectedElecId=0;
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -471,7 +471,7 @@
 					if(partiesDetails[k].partyDetails[j].lostRecently==0){
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0</b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 					}
 					str += '</td>';	
@@ -576,6 +576,7 @@
 	}
 
 	function getWonData(partyId,columnId,partyName){
+		alert(selectedElecId);
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 
@@ -583,7 +584,8 @@
 	//	browser1.focus();		
 	}
 
-	function getLostData(partyId,columnId){
+	function getLostData(partyId,columnId,partyName){
+		alert(selectedElecId);
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		//var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
