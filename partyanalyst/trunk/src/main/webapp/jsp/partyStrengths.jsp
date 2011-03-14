@@ -432,7 +432,7 @@
 			str += '   <div id="'+partiesDetails[k].partyName+'_DIV" style="display:none;">';			
 			str += '	<table>';
 			str +='		<tr style="font-weight:bold;font-size:11px;">';
-			str += '		<td><input type="radio" id="default_checkId_'+partiesDetails[k].partyName+'" name="alliance" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Excluding Alliance </input></td>';
+			str += '		<td><input type="radio" id="default_checkId_'+partiesDetails[k].partyName+'" checked="checked" name="alliance" onclick="getExcludingAllianceData(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Excluding Alliance </input></td>';
 			str += '		<td><input type="radio" name="alliance" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')">Including Alliance </input></td>';					
 			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></td>';				
 			str += '	</tr>';		
@@ -461,7 +461,7 @@
 					if(partiesDetails[k].partyDetails[j].wonRecently==0){
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0</b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
 					}
 					
@@ -471,7 +471,7 @@
 					if(partiesDetails[k].partyDetails[j].lostRecently==0){
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">0</b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
 						str += '<b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 					}
 					str += '</td>';	
@@ -577,15 +577,20 @@
 
 	function getWonData(partyId,columnId,partyName){		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
-		browser1.focus();		
-
-		//	var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyName="+partyName+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
-	//	browser1.focus();		
+		browser1.focus();	
 	}
 
 	function getLostData(partyId,columnId,partyName){		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
-		//var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();		
+	}
+	function getExcludingWonData(partyId,columnId,partyName){		
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&elecId="+selectedElecId+"&excludeType=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		browser1.focus();	
+	}
+
+	function getExcludingLostData(partyId,columnId,partyName){		
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&elecId="+selectedElecId+"&excludeType=SUCCESSOR","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 	
