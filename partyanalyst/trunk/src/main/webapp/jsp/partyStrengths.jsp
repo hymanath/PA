@@ -221,12 +221,12 @@
 						buildIncludingAllianceData(results);	
 					}
 			}catch (e) {   		
-			    	alert("Invalid JSON result" + e);   
+			    //	alert("Invalid JSON result" + e);   
 			}  
 	    },
 	    scope : this,
 	    failure : function( o ) {
-	     			alert( "Failed to load result" + o.status + " " + o.statusText);
+	     			//alert( "Failed to load result" + o.status + " " + o.statusText);
 	              }
 	    };
 
@@ -575,8 +575,7 @@
 		browser1.focus();		
 	}
 
-	function getWonData(partyId,columnId,partyName){
-		alert(selectedElecId);
+	function getWonData(partyId,columnId,partyName){		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 
@@ -584,8 +583,7 @@
 	//	browser1.focus();		
 	}
 
-	function getLostData(partyId,columnId,partyName){
-		alert(selectedElecId);
+	function getLostData(partyId,columnId,partyName){		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		//var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
