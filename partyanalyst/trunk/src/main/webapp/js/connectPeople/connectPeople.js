@@ -1199,7 +1199,7 @@ function showPostedReasons(jsObj,results)
 	str += '</table>'; 
 	str += '</div>';
 	str += '<div style="padding:5px;">';
-	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;"> Reasons Status Details Posted By User </div>';
+	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Reasons Status Details Posted By User </div>';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
