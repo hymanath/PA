@@ -615,9 +615,6 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	 	
  	
- 	
- 	
- 	
  	public List<PartiesDetailsVO> populateTotalCount(List<PartiesDetailsVO> partiesDetailsVO){
  		List<PartiesDetailsVO> details =new ArrayList<PartiesDetailsVO>();
  		Map<Long,PartiesDetailsVO> map = new HashMap<Long,PartiesDetailsVO>();
@@ -709,10 +706,6 @@ public class PartyStrengthService implements IPartyStrengthService {
  				partyOverview = caluculatePartiesStrength(partyOverview,result,totalElectionYears,IConstants.FALSE);
  				data = generateDataForShowingPartyWeakness(result,totalElectionYears,latestElecId);
  			}
- 				
- 			
- 			
- 			
  			contentVo.setData(data);
  			contentVo.setPartyOverview(partyOverview);
  		}catch(Exception e){
@@ -737,37 +730,30 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return latestElecId;
  	}
  	
- 	public List<PartiesDetailsVO> getWeaknessConstituenceisDetails(String electionType,Long stateId,String type,Long partyId,Long colId,Long totalElectionYears){
+ 	public List<PartiesDetailsVO> getWeaknessConstituenceisDetails(String electionType,Long stateId,String type,Long partyId,Long colId,Long totalElectionYears,Long electionId,String partyName){
  		List result = new ArrayList();	
 		Long latestElecId =0l;
 		Map<Long,Map<Long,List<Long>>> data = new HashMap<Long,Map<Long,List<Long>>>(0);
 		List<PartiesDetailsVO> partiesDetailsVO = new ArrayList<PartiesDetailsVO>(0);
-		List constiDetails = new ArrayList(0);
-		List<Long> allConstituencies = new ArrayList<Long>(0);
-		List<Long> selectedParties = new ArrayList<Long>(0);
-		Map<Long,PartiesDetailsVO> partyOverview = new HashMap<Long,PartiesDetailsVO>();
-		try{
-			allConstituencies = getAllConstituencies(electionType,stateId,totalElectionYears); 
-			
- 			if(partyId.intValue()==0){
- 				selectedParties = staticDataService.getStaticPartiesAsList(stateId); 				
- 				result = nominationDAO.getAllPartyStrengthsResults(allConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
- 			}else{ 				
- 				result = nominationDAO.getPartyResultsForAParty(allConstituencies,partyId,IConstants.ELECTION_SUBTYPE_MAIN,null,IConstants.WINNER_CANDIDATES);	
- 			}
- 			partyOverview = caluculatePartiesStrength(partyOverview,result,totalElectionYears,IConstants.FALSE);
+		List constiDetails = new ArrayList(0);		
+		List<Long> constIds = new ArrayList<Long>(0); 
+		try{			
+			latestElecId = getLatestElecId(electionType,stateId);
+			result = getIncludingAllianceData(electionType,stateId,partyId,totalElectionYears,electionId,partyName);
  			
-			
-			
- 			latestElecId = getLatestElecId(electionType,stateId);
  			data = getPartyWiseConstituencies(result,totalElectionYears);
- 			
+ 			System.out.println(data.size());
  			Map<Long,List<Long>> colData = data.get(colId);
- 			List<Long> constIds = colData.get(partyId);
- 			
+ 			System.out.println(colData.size());
+ 			for(Map.Entry<Long, List<Long>> conIds : colData.entrySet()){
+ 				constIds.addAll(colData.get(conIds.getKey()));
+ 			}
+ 			System.out.println(constIds.size());
+ 			if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
+ 				type = IConstants.ALL_PARTIES;
  			constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,partyId,latestElecId,type);
  			
- 			partiesDetailsVO = populateDataIntoVO(constiDetails,null);//iterateOverGivenData(constiDetails);
+ 			partiesDetailsVO = populateDataIntoVO(constiDetails,null);
  		}catch(Exception e){
  			e.printStackTrace();
  		}
@@ -854,7 +840,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 				}
 				}
 			}	
- 			//System.out.println(partyOverview);
+ 			
  		}catch(Exception e){
  			e.printStackTrace();
  		}
@@ -940,7 +926,6 @@ public class PartyStrengthService implements IPartyStrengthService {
  				}
  			}
  			
- 			//Collections.sort(pList,new PartiesDetailsVOIdComparator());
  		}catch(Exception e){
  			e.printStackTrace();
  		}
@@ -1028,7 +1013,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 					
 					partiesDetailsVO.add(partyVO);
 				} 	
-				System.out.println(partiesDetailsVO);
+				
 			}catch(Exception e){
 				e.printStackTrace();
 			}
