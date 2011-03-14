@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -386,13 +387,33 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 		//String s = " and model.cadreLevel.cadreLevelID = 2";
 		
-		String name = "k";
-		
 		String mobileStr=" and length(model.mobile) > 0";
 		
-		String cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
+		String name = "";
+		boolean flag = !name.isEmpty();
 		
-		String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
+		StringTokenizer st = new StringTokenizer(name);
+		String cadreNameStr = "";
+		if(flag)
+		cadreNameStr = "and ( ";
+		
+		while(st.hasMoreTokens())
+		{
+			String names = st.nextToken();
+			cadreNameStr += "model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%'";
+			cadreNameStr += " or ";
+		}
+		if(flag)
+		{
+			cadreNameStr = cadreNameStr.substring(0,cadreNameStr.length()-4);
+			cadreNameStr += ")";
+		}
+		
+		System.out.println(cadreNameStr);
+	//	cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%')";
+		
+		//String roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
+		String roleStr = "";
 		
 		List<Long> x = cadreDAO.findCadreForSMS(1l,cadreType,s,socialStr,genderStr,mobileStr,cadreNameStr,roleStr,sortOption,order,0,20);
 		
