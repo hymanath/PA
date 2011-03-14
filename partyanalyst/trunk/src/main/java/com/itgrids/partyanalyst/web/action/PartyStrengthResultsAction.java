@@ -132,7 +132,7 @@ public class PartyStrengthResultsAction extends ActionSupport implements
 			partyListWithOutAll.add(new SelectOptionVO(new Long(party),partyName));
 		}
 			
-		electionInfo = partyStrengthService.getPartiesData(electionType,new Long(state.toString()),new Long(electionYears.toString()),new Long(party.toString()));
+		//electionInfo = partyStrengthService.getPartiesData(electionType,new Long(state.toString()),new Long(electionYears.toString()),new Long(party.toString()));
 		
 		return Action.SUCCESS;
 	}

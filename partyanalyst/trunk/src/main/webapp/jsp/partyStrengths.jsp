@@ -349,15 +349,6 @@
 		
 		str += '	</table>';		
 		partyDiv.innerHTML = str;
-		
-		//for(var k=0;k<details.length;k++){
-		//	str += '	<tr>';
-	//		str += '		<td align="center">'+(k+1)+'</td>';
-	//		str += '		<td align="center"><a title="click here to view constituencies details" onClick="getIncludingData(\''+partyName+'\',\''+(k+1)+'\',\''+partyId+'\')"><b style="color:#69A74E;font-weight:bold;cursor:pointer;">'+details[k].name+' </b></td>';
-	//		str += '	</tr>';					
-	//	}
-	//	str += '	</table>';		
-	//	partyDiv.innerHTML = str;
 	}
 	function buildAllAllianceElectionYears(results)
 	{
@@ -585,12 +576,16 @@
 	}
 
 	function getWonData(partyId,columnId,partyName){
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyName="+partyName+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
+
+		//	var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyName="+partyName+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
+	//	browser1.focus();		
 	}
 
 	function getLostData(partyId,columnId){
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
+		//var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyId="+partyId+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 	
