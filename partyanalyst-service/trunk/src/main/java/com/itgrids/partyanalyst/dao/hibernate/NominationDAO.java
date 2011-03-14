@@ -2617,25 +2617,39 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	
-	public List getAllCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,String electionSubType,Long elecId){
+	public List getAllCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,String electionSubType,Long elecId,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
-		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
+		query.append(" model.candidateResult.votesEarned,model.candidate.lastname,model.party.shortName");
 		query.append(" from Nomination model where");	
-		query.append(" model.party.partyId=? and model.constituencyElection.election.elecSubtype =? and model.candidateResult.rank = 1 and");
+			
+		query.append(" model.constituencyElection.election.elecSubtype =? and model.candidateResult.rank = 1 and");
+				
 		if(elecId!=null){
 			query.append(" model.constituencyElection.election.electionId =? and ");
 		}
+		
+		
+		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
+			query.append(" model.party.partyId = ? and ");
+		else if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+			query.append(" model.party.partyId != ? and ");	
+		
 		
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		
 		Query queryObject = getSession().createQuery(query.toString());	
-		queryObject.setLong(0,partyId);	
-		queryObject.setString(1,electionSubType);
+		
+		queryObject.setString(0,electionSubType);
 		if(elecId!=null){
-			queryObject.setLong(2,elecId);
+			queryObject.setLong(1,elecId);
+			if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+				queryObject.setLong(2,partyId);	
+		}else{
+			if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+				queryObject.setLong(1,partyId);	
 		}
 		queryObject.setParameterList("constituencyIds", constIds);
 		return queryObject.list();
