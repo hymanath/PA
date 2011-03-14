@@ -215,7 +215,7 @@
 						</li>
 						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 							</li> 
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
