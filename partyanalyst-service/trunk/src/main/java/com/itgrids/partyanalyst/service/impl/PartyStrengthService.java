@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -324,26 +326,31 @@ public class PartyStrengthService implements IPartyStrengthService {
  	
  	
 
-	public List<Party> getAllRequiredData(List electionIds,Long partyId,List<Long> allConstituencies,List result){
-		List<Party> allianceParties = new ArrayList<Party>(0);
+	public List<Long> getAllRequiredData(List electionIds,Long partyId,List<Long> allConstituencies,List result){
+		
+		Set<Long> ids = new HashSet<Long>();
+		List<Long> partIds = new ArrayList<Long>(0);
 			try{
 		 		for(int i=0;i<electionIds.size();i++){
 					Object[] params = (Object[])electionIds.get(i);
 					String electionYear =  params[0].toString();
 					Long obtainedElectionId = (Long)params[1];
 					Long electionTypeId = (Long)params[2];
-					allianceParties = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
-					for(Party eachParty : allianceParties){
+					List<Party> alliance = staticDataService.getAllianceParties(electionYear,electionTypeId,partyId);
+					
+					for(Party eachParty : alliance){
 						if(partyId.intValue()!=eachParty.getPartyId().intValue()){
 							List allianceResult = nominationDAO.getPartyResultsForAParty(allConstituencies,eachParty.getPartyId(),IConstants.ELECTION_SUBTYPE_MAIN,obtainedElectionId,IConstants.WINNER_CANDIDATES); 				
-							result.addAll(allianceResult);
+							result.addAll(allianceResult);							
 						}					
+						ids.add(eachParty.getPartyId());
 					} 				
 				} 
 		 	}catch(Exception e){
 		 		e.printStackTrace();
 		 	}
-		 	return allianceParties;
+		 	partIds.addAll(ids);
+		 	return partIds;
 	 	}
 
  	public ContenetTransferVO getIncludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName){
@@ -351,7 +358,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	 		List<Long> allConstituencies = new ArrayList<Long>(0); 		
  	 		List electionIds = new ArrayList(0);
  	 		ContenetTransferVO contenetTransferVO = new ContenetTransferVO();
- 	 		List<Party> allianceParties = new ArrayList<Party>(0);
+ 	 		List<Long> allianceParties = new ArrayList<Long>(0);
  	 		try{
  	 			allConstituencies = getAllConstituencies(electionType,stateId,totalElectionYears);  		
  	 			result = nominationDAO.getPartyResultsForAParty(allConstituencies,partyId,IConstants.ELECTION_SUBTYPE_MAIN,null,IConstants.WINNER_CANDIDATES);
@@ -742,22 +749,19 @@ public class PartyStrengthService implements IPartyStrengthService {
 			result = contentVo.getResult();
  			
  			data = getPartyWiseConstituencies(result,totalElectionYears);
- 			System.out.println(data.size());
+ 			//System.out.println(data.size());
  			Map<Long,List<Long>> colData = data.get(colId);
- 			System.out.println(colData.size());
+ 		//	System.out.println(colData.size());
  			for(Map.Entry<Long, List<Long>> conIds : colData.entrySet()){
  				constIds.addAll(colData.get(conIds.getKey()));
  			}
- 			System.out.println(constIds.size());
- 			List<Party> allianceParties = contentVo.getAllianceDetails();
- 			for(Party alliancePartiesData : allianceParties){
- 				parties.add(alliancePartiesData.getPartyId());
- 			}
- 		
+ 		//	System.out.println(constIds.size());
+ 			List<Long> allianceParties = contentVo.getAllianceDetails();
+ 			 		
  			//if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
  			//	type = IConstants.ALL_PARTIES;
- 			constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,parties,latestElecId,type);
- 			System.out.println(constiDetails.size());
+ 			constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,allianceParties,latestElecId,type);
+ 			//System.out.println(constiDetails.size());
  			partiesDetailsVO = populateDataIntoVO(constiDetails,null);
  		}catch(Exception e){
  			e.printStackTrace();

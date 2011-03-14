@@ -11,7 +11,7 @@ public class ContenetTransferVO {
 	private Map<Long,PartiesDetailsVO> partyOverview;
 	private Map<Long,PartiesDetailsVO> data;
 	private List result;
-	private List<Party> allianceDetails;
+	private List<Long> allianceDetails;
 	private Long won;
 	private Long count;
 	private Long wonRecently;
@@ -48,12 +48,11 @@ public class ContenetTransferVO {
 	public void setResult(List result) {
 		this.result = result;
 	}
-
-	public List<Party> getAllianceDetails() {
+	public List<Long> getAllianceDetails() {
 		return allianceDetails;
 	}
 
-	public void setAllianceDetails(List<Party> allianceDetails) {
+	public void setAllianceDetails(List<Long> allianceDetails) {
 		this.allianceDetails = allianceDetails;
 	}
 
