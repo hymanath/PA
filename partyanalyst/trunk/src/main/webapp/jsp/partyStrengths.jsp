@@ -417,13 +417,16 @@
 		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
 		elecYearsStr+='			<b style="color:green;">Total Number of constituencies in the last '+results.selectedYearsCount+' election years</b> <b style="color: red;font-weight:bold;"/>'+results.requiredConstituenciesInfo.totalNumberOfConstituencies;
-		elecYearsStr+='		</td>';
-		elecYearsStr+='	<tr>';
+		elecYearsStr+='		</td>';	
 		elecYearsStr+='	</tr>';
+		if(results.latestConstituenciesInfo.totalNumberOfConstituencies!=null){
+		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
 		elecYearsStr+='			<br/><b style="color:green;">Total Number of constituencies for the latest election year</b>   <b style="color: red;font-weight:bold;"/>'+results.latestConstituenciesInfo.totalNumberOfConstituencies;
 		elecYearsStr+='		</td>';
-		elecYearsStr+='	</tr>';		
+		elecYearsStr+='	</tr>';	
+		}
+			
 		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
 		elecYearsStr+='			<br/><b tyle="color:green;"> Election Years Considered...</b>';
