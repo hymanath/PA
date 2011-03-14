@@ -2714,5 +2714,39 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return queryObject.list();
 	}
 	
+	public List getCountOfTotalParticipatedConstituency(List<Long> constIds,Long partyId,Long electionId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model)");		
+		query.append(" from Nomination model where");	
+		query.append(" model.party.partyId=? and");
+	//	query.append("and model.candidateResult.rank = 1 and");		
+		query.append(" model.constituencyElection.election.electionId = ? and");
+		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+				
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setLong(0,partyId);		
+		queryObject.setLong(1,electionId);		
+		queryObject.setParameterList("constituencyIds", constIds);
+		return queryObject.list();
+	}
+	
+	/*public List getCountOfWonConstituency(List<Long> constIds,List<Long> partyIds,Long electionId,String type){
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model)");		
+		query.append(" from Nomination model where");	
+		query.append(" model.candidateResult.rank = 1 and");		
+		query.append(" model.constituencyElection.election.electionId = ? and");
+		
+		query.append(" model.party.partyId in (:partyIds) and");
+				
+		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+				
+		Query queryObject = getSession().createQuery(query.toString());	
+		
+		queryObject.setLong(0,electionId);		
+		queryObject.setParameterList("partyIds",partyIds);		
+		queryObject.setParameterList("constituencyIds", constIds);
+		return queryObject.list();
+	}*/
 	
 }

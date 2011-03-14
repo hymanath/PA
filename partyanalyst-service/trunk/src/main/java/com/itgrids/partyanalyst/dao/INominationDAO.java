@@ -424,5 +424,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getAllLatestPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type);
 	
-	public List getCountOfWonConstituency(List<Long> constIds,Long partyId,Long electionId);
+	public List getCountOfWonConstituency(List<Long> constIds,Long partyIds,Long electionId);
+	//public List getCountOfWonConstituency(List<Long> constIds,List<Long> partyIds,Long electionId,String type);
+	
+	public List getCountOfTotalParticipatedConstituency(List<Long> constIds,Long partyId,Long electionId);
 }
