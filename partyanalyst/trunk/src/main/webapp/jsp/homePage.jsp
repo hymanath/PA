@@ -288,7 +288,7 @@ var loginStatus = '${loginStatus}';
 						</c:if>
 						
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 						</li>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
