@@ -100,4 +100,6 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	public List getPostedReasonsCountOtherThanLoginUserId(Long registrationId);
 	
 	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId);
+	
+	public Long getTotalPostedReasonsCountByFreeUserId();
 }

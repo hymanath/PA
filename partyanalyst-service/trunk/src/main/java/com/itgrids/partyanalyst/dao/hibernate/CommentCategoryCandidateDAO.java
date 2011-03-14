@@ -352,6 +352,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return queryObject.list();
 	}*/
 	
+	@SuppressWarnings("unchecked")
 	public List getPostedReasonsByFreeUserId(Long registrationId, Integer startIndex, Integer results, 
 			String order, String columnName, String reasonType)
 	{	
@@ -396,13 +397,25 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public Long getTotalPostedReasonsCountByFreeUserId(Long registrationId)
 	{	
 		StringBuilder query = new StringBuilder();
-		query.append(" select count(*) ");		
+		query.append(" select count(model.commentCategoryCandidateId) ");		
 		query.append(" from CommentCategoryCandidate model ");
 		query.append(" where model.freeUser.userId = ?");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameter(0, registrationId);
 				
+		return (Long)queryObject.uniqueResult();
+	}
+	
+	public Long getTotalPostedReasonsCountByFreeUserId()
+	{	
+		StringBuilder query = new StringBuilder();
+		query.append(" select count(model.commentCategoryCandidateId) ");		
+		query.append(" from CommentCategoryCandidate model ");
+		query.append(" where model.freeUser.userId is not null");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+						
 		return (Long)queryObject.uniqueResult();
 	}
 	
