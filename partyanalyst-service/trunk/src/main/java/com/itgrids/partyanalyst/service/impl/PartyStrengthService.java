@@ -705,10 +705,10 @@ public class PartyStrengthService implements IPartyStrengthService {
  			latestElecId = getLatestElecId(electionType,stateId);
  			if(allianceData.size()>0){
  				partyOverview = caluculatePartiesStrength(partyOverview,allianceData,totalElectionYears,IConstants.TRUE);
- 				data = generateDataForShowingPartyWeakness(allianceData,totalElectionYears,latestElecId);
+ 				data = generateDataForShowingPartyWeakness(allianceData,totalElectionYears,latestElecId,partieId);
  			}else{
  				partyOverview = caluculatePartiesStrength(partyOverview,result,totalElectionYears,IConstants.FALSE);
- 				data = generateDataForShowingPartyWeakness(result,totalElectionYears,latestElecId);
+ 				data = generateDataForShowingPartyWeakness(result,totalElectionYears,latestElecId,partieId);
  			}
  			contentVo.setData(data);
  			contentVo.setPartyOverview(partyOverview);
@@ -749,19 +749,18 @@ public class PartyStrengthService implements IPartyStrengthService {
 			result = contentVo.getResult();
  			
  			data = getPartyWiseConstituencies(result,totalElectionYears);
- 			//System.out.println(data.size());
+ 		
  			Map<Long,List<Long>> colData = data.get(colId);
- 		//	System.out.println(colData.size());
+ 		
  			for(Map.Entry<Long, List<Long>> conIds : colData.entrySet()){
  				constIds.addAll(colData.get(conIds.getKey()));
  			}
- 		//	System.out.println(constIds.size());
+ 		
  			List<Long> allianceParties = contentVo.getAllianceDetails();
  			 		
- 			//if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
- 			//	type = IConstants.ALL_PARTIES;
+ 		
  			constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,allianceParties,latestElecId,type);
- 			//System.out.println(constiDetails.size());
+ 			
  			partiesDetailsVO = populateDataIntoVO(constiDetails,null);
  		}catch(Exception e){
  			e.printStackTrace();
@@ -900,7 +899,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
 	
 	
-	public Map<Long,PartiesDetailsVO> generateDataForShowingPartyWeakness(List result,Long totalElectionYears,Long elecId){
+	public Map<Long,PartiesDetailsVO> generateDataForShowingPartyWeakness(List result,Long totalElectionYears,Long elecId,Long partieId){
  		Map<Long,Map<Long,List<Long>>> data = new HashMap<Long,Map<Long,List<Long>>>(0);
  		Map<Long,PartiesDetailsVO>  weaknessOverview = new HashMap<Long,PartiesDetailsVO>(0);
  		
@@ -917,18 +916,24 @@ public class PartyStrengthService implements IPartyStrengthService {
  					
  					List count = nominationDAO.getCountOfWonConstituency(consIds,partyId,elecId);
  					Long wonTimes = new Long(count.get(0).toString());
- 					Long lostTimes = new Long(consIds.size()-wonTimes.intValue());
+ 					
+ 					List lostCount = nominationDAO.getCountOfTotalParticipatedConstituency(consIds,partieId,elecId);
+ 					Long lostTimes = new Long(lostCount.get(0).toString());
+ 					Long totalLostTimes = 0l;
+ 					
+ 					if(partieId.intValue()==partyId.intValue())
+ 						totalLostTimes = new Long(lostTimes.intValue()-wonTimes.intValue());
  					
  					if(weaknessOverview.containsKey(partyId)){
  						PartiesDetailsVO partyOverviewDetails = weaknessOverview.get(partyId);
 		 					Map<Long,SelectOptionVO>  partyStrenghCount = partyOverviewDetails.getPartyWeaknessCount();					
-							partyStrenghCount.put(countKey,new SelectOptionVO(wonTimes,lostTimes.toString()));
+							partyStrenghCount.put(countKey,new SelectOptionVO(wonTimes,totalLostTimes.toString()));
 		 					partyOverviewDetails.setPartyWeaknessCount(partyStrenghCount);		 					
 		 					weaknessOverview.put(partyId,partyOverviewDetails);	
  					}else{
  						PartiesDetailsVO partyDetailsVO = new PartiesDetailsVO();
  						Map<Long,SelectOptionVO>  partyStrenghCount = new HashMap<Long,SelectOptionVO>();	 					
- 						partyStrenghCount.put(countKey,new SelectOptionVO(wonTimes,lostTimes.toString()));	 					
+ 						partyStrenghCount.put(countKey,new SelectOptionVO(wonTimes,totalLostTimes.toString()));	 					
 		 				partyDetailsVO.setPartyWeaknessCount(partyStrenghCount);	
  						weaknessOverview.put(partyId,partyDetailsVO);
  					}
