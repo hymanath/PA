@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -4263,7 +4264,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			Long cadreLocationId  = cadreInputVO.getCadreLocationId();
 			String cdType         = cadreInputVO.getCadreType();
 			String searchType     = cadreInputVO.getSearchType();
-			String name           = cadreInputVO.getCadreName();
+			String name           = cadreInputVO.getCadreName().trim();
 			String taskName 	  = cadreInputVO.getTaskName();
 			String SearchCriteria = new String();
 			String cadreType      = new String();
@@ -4383,7 +4384,19 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			
 			if(name != null && name.length() > 0)
 			{
-				cadreNameStr = " and (model.firstName like '"+name+"%' or model.middleName like '"+name+"%' or model.lastName like '"+name+"%') ";
+				cadreNameStr = "and ( ";
+				StringTokenizer st = new StringTokenizer(name);
+				
+				while(st.hasMoreTokens())
+				{
+					String names = st.nextToken();
+					cadreNameStr += " model.firstName like '"+names+"%' or model.middleName like '"+names+"%' or model.lastName like '"+names+"%' ";
+					cadreNameStr += " or ";
+				}
+				
+				cadreNameStr = cadreNameStr.substring(0,cadreNameStr.length()-4);
+				cadreNameStr += ")";
+				
 			}
 			else
 				cadreNameStr = " ";
