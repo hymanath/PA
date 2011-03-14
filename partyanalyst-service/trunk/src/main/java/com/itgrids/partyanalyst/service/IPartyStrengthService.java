@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResults;
+import com.itgrids.partyanalyst.dto.ContenetTransferVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.PartiesDetailsVO;
 import com.itgrids.partyanalyst.dto.PartiesStrenghInfoVO;
@@ -33,7 +34,7 @@ public interface IPartyStrengthService extends Serializable {
 	
 	public List<PartiesDetailsVO> getAllConstituenciesData(String electionType,Long stateId,String partyName,Long selectedNoOfYears,Long count);
 	
-	public List getIncludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
+	public ContenetTransferVO getIncludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,Long electionId,String partyName);
 	
 //	public PartiesDetailsVO getExcludingAllianceData(String electionType,Long stateId,Long partyId,Long totalElectionYears,String partyName);
 	

@@ -2642,32 +2642,28 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	
-	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,Long electionId,String type){
+	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,List<Long> partyId,Long electionId,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
 		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
-		query.append(" from Nomination model where");	
+		query.append(" from Nomination model where model.constituencyElection.election.electionId = ? ");	
 		
 		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
-			query.append(" model.party.partyId = ? and");
-		else if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
-			query.append(" model.party.partyId != ? and");
+			query.append(" and model.party.partyId in (:partyId) ");
+		else //if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+			query.append(" and model.party.partyId not in (:partyId) ");
 		
-		query.append(" model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 and");
+		query.append(" and model.candidateResult.rank = 1 and");
 		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		
 		
 		Query queryObject = getSession().createQuery(query.toString());
-		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES) || type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES)){
-			queryObject.setLong(0,partyId);	
-			queryObject.setLong(1,electionId);
-			queryObject.setParameterList("constituencyIds", constIds);
-		}else{			
-			queryObject.setLong(0,electionId);
-			queryObject.setParameterList("constituencyIds", constIds);
-		}
 		
+		queryObject.setLong(0,electionId);
+		queryObject.setParameterList("partyId",partyId);
+		queryObject.setParameterList("constituencyIds", constIds);
+				
 		return queryObject.list();
 	}
 	
