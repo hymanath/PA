@@ -93,7 +93,10 @@ public class CommentData extends BaseModel implements Serializable {
 		this.commentDesc = commentDesc;
 	}
 
-	@Temporal(TemporalType.DATE)
+	/*@Temporal(TemporalType.DATE)
+	@Column(name = "commented_on", length = 10)*/
+	
+	//By sai
 	@Column(name = "commented_on", length = 10)
 	public Date getCommentDate() {
 		return commentDate;
