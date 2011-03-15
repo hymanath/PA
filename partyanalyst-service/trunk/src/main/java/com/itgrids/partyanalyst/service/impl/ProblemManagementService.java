@@ -621,7 +621,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 					problemBeanFromDB.setExistingFrom(sdf.format(eDateOfAddNewProb));
 					
-					problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
+					if(problemSource != null && problemSource.getInformationSource() != null)
+						problemBeanFromDB.setProbSource(problemSource.getInformationSource());	
+					
 					problemBeanFromDB.setProblemImpactLevelId(problemImpactLevel.getRegionScopesId());
 					
 					problemBeanFromDB.setProblemImpactLevelValue(getProblemImpactValue(problemImpactLevel.getRegionScopesId(),problemLocation.getProblemImpactLevelValue()));
