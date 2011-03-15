@@ -69,7 +69,7 @@ IElectionAllianceDAO {
 		query.append(" from ElectionAlliance model where ");
 		query.append(" model.group.groupId in (select model2.group.groupId from AllianceGroup model2 where model2.party.partyId = ?)");	
 		query.append(" and model.election.elecSubtype = ? and model.state.stateId = ?");
-		query.append(" order by model.election.electionYear asc");	
+		query.append(" order by model.election.electionYear desc");	
 					
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setLong(0,partyId);		
