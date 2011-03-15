@@ -150,6 +150,8 @@
 	var selectedPartyName;
 	var partyId;
 	var selectedElecId=0;
+
+	 google.load("visualization", "1", {packages:["corechart"]});
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -173,7 +175,7 @@
 							elmt.style.display = 'none';
 				
 						buildOverViewDataTable(results); 
-						
+												
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
 						}else{
@@ -199,6 +201,8 @@
 							}else{
 								initializeResultsTable2(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
 							}
+
+							interactiveChartForNewConstituencyResults(results.partyOverView);
 						}
 						
 						if(results.remainingConstituenciesInfo.partiesStrengthsInfoVO==null || results.remainingConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
@@ -248,6 +252,28 @@
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	/*
+	/* Pie Chart for party results in new constituencies 
+	/* Interactive chart code by sai
+	*/
+    function interactiveChartForNewConstituencyResults(myResults)
+	{
+		console.log(myResults);
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Party');
+        data.addColumn('number', 'seats');
+        data.addRows(myResults.length);
+
+		for(var i=0; i<myResults.length; i++)
+		{
+			data.setValue(i, 0, myResults[i].name);
+	        data.setValue(i, 1, parseInt(myResults[i].id));
+		}
+
+        var chart = new google.visualization.PieChart(document.getElementById('partyOverViewChartDetailsForNewConstituencies'));
+        chart.draw(data, {width: 400, height: 350, title: 'Partys Results In New Constituencies'});
+
+	}
 	function buildExcludingAllianceData(results)
 	{
 		var partyName = results.partyName;	
@@ -1347,7 +1373,14 @@
 									<table>
 									<tr>
 											<td>
-													<div id="partyOverViewDetailsForNewConstituencies" align="left"></div>
+											<table width="100%">
+											   <tr>
+													<td width="40%"><div id="partyOverViewDetailsForNewConstituencies"></div></td>
+													<td width="60%"><div  id="partyOverViewChartDetailsForNewConstituencies"></div></td>
+											   </tr>
+											   
+											</table>
+
 											</td> 
 										</tr>
 										<tr>
