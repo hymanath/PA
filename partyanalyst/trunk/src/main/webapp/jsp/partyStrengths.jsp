@@ -140,6 +140,11 @@
 		font-weight:bold;
 		cursor:pointer;
 	}
+	
+	#required_const_body table
+	{
+		width:100%;
+	}
 </style>
 
 <script type="text/javascript"><!--
@@ -318,7 +323,7 @@
 					if(partiesDetails[k].partyDetails[j].wonRecently==0){
 						str += '<b class="cursorStyle">0 </b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
 					}					
 					str += '</td>';
@@ -327,7 +332,7 @@
 					if(partiesDetails[k].partyDetails[j].lostRecently==0){
 						str += '<b class="cursorStyle">0 </b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getLostData(\''+partyId+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 					}					
 					str += '</td>';	
@@ -812,7 +817,7 @@
 			
 			var columnObjWithOthers ={
 				key : "others",
-				label : "Others",
+				label : "Others *",
 				sortable : true,
 				resizeable:true
 			};
@@ -1081,8 +1086,8 @@
 	   for(var k=0;k<3;k++)
 	   {   
 		   overViewStr+='		<td> </td>';
-		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;""> Party </td>';
-		   overViewStr+='		<td style="font-weight:bold;color:darkgreen;"> Seats Won </td>';
+		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;font-size:12px;""> Party </td>';
+		   overViewStr+='		<td style="font-weight:bold;color:darkgreen;font-size:12px;"> Seats Won </td>';
 	   }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
@@ -1091,8 +1096,8 @@
 	   for(var m=0;m<partyOverViewDetails.length;m++)
 	   {		   
 			   overViewStr+='		<td style="font-weight:bold;"><img src="images/icons/districtPage/listIcon.png" ></td>';
-		 	   overViewStr+='		<td align="center" style="color:red;">'+partyOverViewDetails[m].name+'</td>';
-		 	   overViewStr+='		<td align="center" style="color: green;">'+partyOverViewDetails[m].id+'</td>';
+		 	   overViewStr+='		<td align="center" style="color:red;font-size:10px;">'+partyOverViewDetails[m].name+'</td>';
+		 	   overViewStr+='		<td align="center" style="color: green;font-size:10px;">'+partyOverViewDetails[m].id+'</td>';
 		   if((m+1)%3==0){			  	 	 
 		  	   overViewStr+='	</tr>';
 		  	   overViewStr+='	<tr>';		
@@ -1101,6 +1106,18 @@
 	   overViewStr+='	</tr>';
 	   overViewStr+='</table>';
 	   partyOverViewDiv.innerHTML = overViewStr;
+
+		var othersInfo = document.getElementById("othersInfoForNewConstituencies");
+		var info='';
+		if(results.hasOthers)
+		info+='<table style="font-weight:bold;">';
+		info+='		<tr>';
+		info+='			<td style="font-weight:bold;color:red;"> *</td>';
+		info+='			<td> Others Include</td>';
+		info+='			<td>'+results.statement+'</td>';
+		info+='	</tr>';
+		info+='</table>';		
+		othersInfo.innerHTML = info;
 
 		
 		var dataTable = document.getElementById("dataTableBuildForNewConstituencies");
@@ -1120,8 +1137,6 @@
 			str+='		<td>'+data[i].constituencyName+'</td>';
 			for(var j =0;j<data[i].partyResults.length;j++)
 			{
-				
-					//console.log(data[i].constituencyName+"\t\t"+ data[i].partyResults[j].partyName+"\t\t"+ data[i].partyResults[j].count);
 				str+='	<td>'+data[i].partyResults[j].count+'</td>';
 			}
 			str+='	</tr>'
@@ -1385,6 +1400,11 @@
 										<tr>
 											<td>
 												<div id="dataTableBuildForNewConstituencies" class="yui-skin-sam" align="left"></div>
+											</td>
+										</tr> 
+										<tr>
+											<td>
+												<div id="othersInfoForNewConstituencies" align="left"></div>
 											</td> 
 										</tr>
 									</table>
