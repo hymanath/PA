@@ -2483,7 +2483,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 
 	public List getCountOfAllPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type){
 			StringBuilder query = new StringBuilder();
-			query.append(" select count(model.party.partyId),model.party.shortName");
+			query.append(" select count(model.party.partyId),model.party.shortName,model.party.partyId");
 			query.append(" from Nomination model");			
 			query.append(" where model.constituencyElection.election.elecSubtype = ? and");
 			query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds) and");
@@ -2543,6 +2543,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		}
 		
 		query.append(" and model.party.partyId in (:partyIds) and model.constituencyElection.constituency.deformDate is null");
+		query.append(" and model.constituencyElection.constituency.startDate is null");//219 consts
 		query.append(" group by model.constituencyElection.constituency.constituencyId,model.party.partyId order by model.constituencyElection.constituency.constituencyId ");	
 		
 				
@@ -2567,8 +2568,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(electionIds!=null){
 			query.append(" and model.constituencyElection.election.electionId = ?");
 		}
+		query.append(" and model.constituencyElection.constituency.startDate is null");//219 consts
 		query.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) and");
 		query.append(" model.candidateResult.rank = 1 and model.constituencyElection.constituency.deformDate is null group by model.constituencyElection.constituency.constituencyId,");
+		
 		query.append(" model.party.partyId order by model.constituencyElection.constituency.constituencyId");	
 					
 		Query queryObject = getSession().createQuery(query.toString());
