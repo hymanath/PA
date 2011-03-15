@@ -1075,31 +1075,35 @@
 	{
 	   var partyOverViewDiv = document.getElementById("partyOverViewDetailsForNewConstituencies");
 	   var overViewStr='';
+	   overViewStr+='<center>';
 	   overViewStr+='<table>';
 	   var partyOverViewDetails = results.partyOverView;
 	   overViewStr+='	<tr>';
-	   for(var k=0;k<3;k++)
-	   {   
+	   /*for(var k=0;k<3;k++)
+	   {   */
 		   overViewStr+='		<td> </td>';
 		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;""> Party </td>';
 		   overViewStr+='		<td style="font-weight:bold;color:darkgreen;"> Seats Won </td>';
-	   }
+	  // }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
 	   overViewStr+='	</tr>';
-	   overViewStr+='	<tr>';
+	   //overViewStr+='	<tr>';
 	   for(var m=0;m<partyOverViewDetails.length;m++)
 	   {		   
+		       overViewStr+='	<tr>';
 			   overViewStr+='		<td style="font-weight:bold;"><img src="images/icons/districtPage/listIcon.png" ></td>';
 		 	   overViewStr+='		<td align="center" style="color:red;">'+partyOverViewDetails[m].name+'</td>';
 		 	   overViewStr+='		<td align="center" style="color: green;">'+partyOverViewDetails[m].id+'</td>';
-		   if((m+1)%3==0){			  	 	 
+			   overViewStr+='	</tr>';
+		  /* if((m+1)%3==0){			  	 	 
 		  	   overViewStr+='	</tr>';
 		  	   overViewStr+='	<tr>';		
-		   } 
+		   } */
 		}
 	   overViewStr+='	</tr>';
 	   overViewStr+='</table>';
+	   overViewStr+='</center>';
 	   partyOverViewDiv.innerHTML = overViewStr;
 
 		
@@ -1375,7 +1379,7 @@
 											<td>
 											<table width="100%">
 											   <tr>
-													<td width="40%"><div id="partyOverViewDetailsForNewConstituencies"></div></td>
+													<td width="40%"><div id="partyOverViewDetailsForNewConstituencies" style="font-family:verdana;font-size:14px;font-weight:bold;"></div></td>
 													<td width="60%"><div  id="partyOverViewChartDetailsForNewConstituencies"></div></td>
 											   </tr>
 											   
