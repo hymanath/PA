@@ -353,10 +353,10 @@
 
 
 		var selPartyName = "ajaxIncludingImageEl_"+partyName;
-			
-		var imageDiv =document.getElementById(selPartyName);
-		imageDiv.style.display ='block';
-
+		if(selPartyName){
+			var imageDiv =document.getElementById(selPartyName);
+			imageDiv.style.display ='none';
+		}	
 		
 		var str='';
 	
@@ -411,11 +411,6 @@
 	}
 	function buildAllAllianceElectionYears(results)
 	{	
-		var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
-		
-		var imageDiv =document.getElementById(selPartyName);
-		imageDiv.style.display ='none';
-
 		
 		var eleId = selectedPartyName+"_AlliancesYears";		
 		var divElement = document.getElementById(eleId);		
@@ -432,8 +427,15 @@
 					count = details[i].id;
 			}
 			str+='</select>';
-			if(count !=0)
+			if(count !=0){
 				getIncludingAllianceData(count,results.partyId,selectedPartyName);
+			}else{
+				var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
+				
+				var imageDiv =document.getElementById(selPartyName);
+				imageDiv.style.display ='none';
+			}
+				
 			
 		}else{
 			str+='<b style="color:green;font-weight:bold;">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> Has No Alliances </b>';
@@ -628,6 +630,10 @@
 	function getAllAllianceYearsForAParty(partyId,partyName)
 	{		
 
+		var selPartyName = "ajaxIncludingImageEl_"+partyName;
+		
+		var imageDiv =document.getElementById(selPartyName);
+		imageDiv.style.display ='block';
 		
 		var stateSelect = document.getElementById("stateSelect").value;
 		selectedPartyName = partyName;	
