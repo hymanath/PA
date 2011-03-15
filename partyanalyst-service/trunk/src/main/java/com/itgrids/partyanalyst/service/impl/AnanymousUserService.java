@@ -17,16 +17,20 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnanymousUserDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProfileOptsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProfileOptsDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
@@ -73,7 +77,19 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	private IProblemHistoryDAO problemHistoryDAO;
 	private ICommentDataCategoryDAO commentDataCategoryDAO;
+	private IHamletDAO hamletDAO;
+	private ITehsilDAO tehsilDAO;
+	private IBoothDAO boothDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
 	public ICommentDataCategoryDAO getCommentDataCategoryDAO() {
 		return commentDataCategoryDAO;
 	}
@@ -174,6 +190,30 @@ public class AnanymousUserService implements IAnanymousUserService {
 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 
 	public IConstituencyDAO getConstituencyDAO() {
@@ -1494,25 +1534,62 @@ public class AnanymousUserService implements IAnanymousUserService {
 					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
 					{
 						if(params[6] != null)
-							problem.setLocation(stateDAO.get(Long.parseLong(params[6].toString())).getStateName());
+							problem.setLocation(stateDAO.get(Long.parseLong(params[6].toString())).getStateName() + " State");
 						else
 							problem.setLocation(" ");
 					}
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.DISTRICT))
 					{
 						if(params[6] != null)
-							problem.setLocation(districtDAO.get(Long.parseLong(params[6].toString())).getDistrictName());
+							problem.setLocation(districtDAO.get(Long.parseLong(params[6].toString())).getDistrictName() + " District");
 						else
 							problem.setLocation(" ");
 					}						
 					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					{
 						if(params[6] != null)
-							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName());
+							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName() + " Constituency");
 						else
 							problem.setLocation(" ");
 						
 					}	
+					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.VILLAGE))
+					{
+						if(params[6] != null)
+							problem.setLocation(hamletDAO.get(Long.parseLong(params[6].toString())).getHamletName() + " Village");
+						else
+							problem.setLocation(" ");
+						
+					}else if(params[7] != null && (params[7].toString().equalsIgnoreCase(IConstants.MANDAL) || params[7].toString().equalsIgnoreCase(IConstants.TEHSIL)))
+					{
+						if(params[6] != null)
+							problem.setLocation(tehsilDAO.get(Long.parseLong(params[6].toString())).getTehsilName() + " Mandal");
+						else
+							problem.setLocation(" ");
+						
+					}else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.WARD))
+					{
+						if(params[6] != null)
+							problem.setLocation(constituencyDAO.get(Long.parseLong(params[6].toString())).getName() + " Ward");
+						else
+							problem.setLocation(" ");
+						
+					}
+					else if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.BOOTH))
+					{
+						if(params[6] != null)
+							problem.setLocation(boothDAO.get(Long.parseLong(params[6].toString())).getPartNo() + " Booth");
+						else
+							problem.setLocation(" ");
+						
+					}else if(params[7] != null && params[7].toString().equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+					{
+						if(params[6] != null)
+							problem.setLocation(localElectionBodyDAO.get(Long.parseLong(params[6].toString())).getName());
+						else
+							problem.setLocation(" ");
+						
+					}
 					else
 						problem.setLocation(" ");
 					
