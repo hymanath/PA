@@ -28,8 +28,15 @@ public class PartiesDetailsVO implements Serializable {
 	private Map<Long,SelectOptionVO>  partyWeaknessCount;
 	private List<ContenetTransferVO>  partyDetails;
 	private List<Long> constIds;
-	
+	private String partyFlag;
 
+	
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
 	public Long getWon() {
 		return won;
 	}

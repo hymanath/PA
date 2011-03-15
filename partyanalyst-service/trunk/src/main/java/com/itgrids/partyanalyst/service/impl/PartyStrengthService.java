@@ -780,10 +780,13 @@ public class PartyStrengthService implements IPartyStrengthService {
  				constIds.addAll(colData.get(conIds.getKey()));
  			}
  		
+ 			
  			List<Long> allianceParties = contentVo.getAllianceDetails();
  			 		
- 		
- 			constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,allianceParties,latestElecId,type);
+ 			if(type.equalsIgnoreCase(IConstants.ALL))
+ 				constiDetails = nominationDAO.getAllAllianceCandidateDetails(constIds,latestElecId);
+ 			else
+ 				constiDetails = nominationDAO.getAllAllianceCandidateDetailsForAConstituency(constIds,allianceParties,latestElecId,type);
  			
  			partiesDetailsVO = populateDataIntoVO(constiDetails,null);
  		}catch(Exception e){
@@ -1282,7 +1285,8 @@ public class PartyStrengthService implements IPartyStrengthService {
 				partyDetailsVo.setConstituencyId(constId);
  				partyDetailsVo.setConstituencyName(parms[1].toString());
  				partyDetailsVo.setPartyName(pName);
- 				partyDetailsVo.setElectionYear(parms[4].toString()); 				
+ 				partyDetailsVo.setElectionYear(parms[4].toString()); 	
+ 				partyDetailsVo.setPartyFlag(parms[3].toString()); 	
  				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
  				partyDetailsVo.setCandidateName(parms[6].toString()); 	 				
  				if(excludeType!=null){
