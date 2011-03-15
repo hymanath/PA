@@ -414,7 +414,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getAllCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,String electionSubType,Long elecId,String type);
 	
-	public List getAllPartyStrengthsResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type);
+	public List getAllPartyStrengthsResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type,String electionType,Long stateId);
 	
 	public List getRequiredPartyResultsForAParty(List<Long> partyIds,String electionSubType,String electionType,Long electionId);
 	
@@ -432,4 +432,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getCountOfAllPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type);
 	
 	public List getAllAllianceCandidateDetails(List<Long> constIds,Long electionId);
+	
+	public List getCountOfAllPartyResultsForParliament(Long stateId,List<Long> partyIds,String electionSubType,String type);
 }

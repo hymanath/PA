@@ -12,6 +12,7 @@ public class ContenetTransferVO {
 	private Map<Long,PartiesDetailsVO> data;
 	private List result;
 	private List<Long> allianceDetails;
+	private List<SelectOptionVO> details;
 	private Long won;
 	private Long count;
 	private Long wonRecently;
@@ -38,9 +39,18 @@ public class ContenetTransferVO {
 	//Getters and Setters
 	
 	
+	
 	public Map<Long, PartiesDetailsVO> getPartyOverview() {
 		return partyOverview;
 	}
+	public List<SelectOptionVO> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<SelectOptionVO> details) {
+		this.details = details;
+	}
+
 	public List getResult() {
 		return result;
 	}
