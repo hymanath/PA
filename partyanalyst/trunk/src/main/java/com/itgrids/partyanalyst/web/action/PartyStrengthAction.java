@@ -221,7 +221,7 @@ public class PartyStrengthAction extends ActionSupport implements
 			jObj = new JSONObject(getTask());	
 					
 			states = partyStrengthService.getAllStatesHavinElectionData(jObj.getString("electionType"));	
-			Collections.sort(states);
+			//Collections.sort(states);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

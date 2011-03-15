@@ -99,6 +99,8 @@ var type = '${type}';
 				key : "candidateName"
 			},{
 				key : "constituencyName"
+			},{
+				key : "electionYear"
 			}, {
 				key : "votesEarned"
 			},{
@@ -113,6 +115,10 @@ var type = '${type}';
 		},{
 			key : "constituencyName",
 			label : "Constituency Name",
+			sortable : true
+		},{
+			key : "electionYear",
+			label : "Election Year",
 			sortable : true
 		},{
 			key : "votesEarned",
@@ -217,6 +223,9 @@ var type = '${type}';
 								</td>
 								<td>
 									${requiredConstituencyDetails.constituencyName}
+								</td>						
+								<td>
+									${requiredConstituencyDetails.electionYear}
 								</td>
 								<td>
 									${requiredConstituencyDetails.votesEarned}
