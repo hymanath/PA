@@ -773,7 +773,7 @@
 			columnDataArray.push(allColumnObj);
 		}
 
-		if(type=="others"){
+		//if(type=="others"){
 			var resultsWithOthers = {
 				key: "others"							
 			};
@@ -786,7 +786,7 @@
 				resizeable:true
 			};
 			columnDataArray.push(columnObjWithOthers);
-		}
+		//}
 		
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 				.get(tableId));
@@ -1041,6 +1041,24 @@
 
 	function buildDefaultDetailsForNewConstituencies(results)
 	{
+	   var partyOverViewDiv = document.getElementById("partyOverViewDetailsForNewConstituencies");
+	   var overViewStr='';
+	   overViewStr+='<table>';
+	   var partyOverViewDetails = results.partyOverView;
+	   
+	   for(var m=0;m<partyOverViewDetails.length;m++)
+	   {
+		   overViewStr+='	<tr>';
+	 	   overViewStr+='		<td style="font-weight:bold;"><img src="images/icons/districtPage/listIcon.png" style="margin-left:10px;margin-right:10px;">';
+	 	   overViewStr+='		<b style="color:red;">'+partyOverViewDetails[m].name+'</b>';
+	 	   overViewStr+='		has won <b style="color: green;margin-left:4px;margin-right:4px">'+partyOverViewDetails[m].id+'</b> Seats</td>';
+	  	   overViewStr+='	</tr>';		   
+		}
+	   
+	   overViewStr+='</table>';
+	   partyOverViewDiv.innerHTML = overViewStr;
+
+		
 		var dataTable = document.getElementById("dataTableBuildForNewConstituencies");
 
 		var data = results.latestConstituenciesInfo.partiesStrengthsInfoVO;
@@ -1058,6 +1076,8 @@
 			str+='		<td>'+data[i].constituencyName+'</td>';
 			for(var j =0;j<data[i].partyResults.length;j++)
 			{
+				
+					//console.log(data[i].constituencyName+"\t\t"+ data[i].partyResults[j].partyName+"\t\t"+ data[i].partyResults[j].count);
 				str+='	<td>'+data[i].partyResults[j].count+'</td>';
 			}
 			str+='	</tr>'
@@ -1279,7 +1299,7 @@
 							</div>
 							<div id="required_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
-									<table>
+									<table>										
 										<tr>
 											<td>
 												<div id="dataTableBuild" class="yui-skin-sam" align="left"></div>
@@ -1307,6 +1327,11 @@
 							<div id="new_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
 									<table>
+									<tr>
+											<td>
+													<div id="partyOverViewDetailsForNewConstituencies" align="left"></div>
+											</td> 
+										</tr>
 										<tr>
 											<td>
 												<div id="dataTableBuildForNewConstituencies" class="yui-skin-sam" align="left"></div>
