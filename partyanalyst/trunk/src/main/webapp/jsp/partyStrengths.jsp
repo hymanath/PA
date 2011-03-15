@@ -371,8 +371,7 @@
 		partyDiv.innerHTML = str;
 	}
 	function buildAllAllianceElectionYears(results)
-	{
-
+	{	
 		var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
 		
 		var imageDiv =document.getElementById(selPartyName);
@@ -385,18 +384,24 @@
 		var str='';
 		
 		if(details.length!=0){
-			str+='<select id="AlliancesYears" style="width:130px;" onChange="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';
-			str+='<option value="0">All Elections</option>';
+			str+='<select id="AlliancesYears" style="width:130px;" onChange="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';			
+			var count=0;
 			for(var i in details)
 			{
 				str+='<option value="'+details[i].id+'">'+details[i].name+'</option>';
+				if(count ==0)
+					count = details[i].id;
 			}
 			str+='</select>';
+
+			if(count !=0)
+				getIncludingAllianceData(count,results.partyId,selectedPartyName);
+			
 		}else{
 			str+='<b style="color:red;font-weight:bold;">Has No Alliances </b>';
 			var partyNameDiv = results.partyName;
 			var partyDiv = document.getElementById(partyNameDiv+"_DIV");
-			partyDiv.innerHTML = '';
+			partyDiv.style.display = 'none';
 		}
 		divElement.innerHTML = str;
 	}
@@ -892,6 +897,7 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
+
 
 		var jsObj=
 		{		
