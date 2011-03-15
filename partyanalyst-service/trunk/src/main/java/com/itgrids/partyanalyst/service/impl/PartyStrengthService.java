@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ContenetTransferVOIdComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartiesDetailsVOComparator;
+import com.itgrids.partyanalyst.utils.SelectOptionVOByIdComparator;
 import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 /**
@@ -215,6 +216,8 @@ public class PartyStrengthService implements IPartyStrengthService {
 		ElectionInfoVO resultVo = new ElectionInfoVO();
 		ResultStatus resultStatus = new ResultStatus();		
 		List allianceData = new ArrayList(0);
+		List electionOverView = new ArrayList(0);
+		try{
 		resultVo.setSelectedYearsCount(electionYearsCount);
 		List<SelectOptionVO> staticParties = getAllPartiesData(stateId);
  		Collections.sort(staticParties,new SelectOptionVOComparator());
@@ -229,7 +232,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		if(resultVo.getPartyName()== null ||  resultVo.getPartyName()== "")
  			resultVo.setPartyName("All Parties"); 		
  		 		
-		try{
+		
 			PartiesStrenghInfoVO partiesStrenghInfoVO = segregateAllConstituencies(electionYearsCount,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
 	 
 			latestConstituencies = partiesStrenghInfoVO.getLatestConstituencies();
@@ -241,6 +244,8 @@ public class PartyStrengthService implements IPartyStrengthService {
 			
 			resultVo.setAllPartiesDetails(getPartyStrengthsAndWeaknessDetails(electionType,stateId,partyId,electionYearsCount,allianceData));
 			
+			
+			
 			if(partyId.intValue()==0){
 				selectedParties = staticDataService.getStaticPartiesAsList(stateId);					 				
 				getDataForAllParties(resultVo,requiredConstituencies,latestConstituencies,remianingConstituencies,selectedParties,electionYearsCount,electionType,stateId);				
@@ -250,7 +255,16 @@ public class PartyStrengthService implements IPartyStrengthService {
 				
 				getDataForAParty(resultVo,requiredConstituencies,latestConstituencies,remianingConstituencies,selectedParties,electionYearsCount,electionType,stateId);
 			}
-	 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
+			
+			electionOverView = nominationDAO.getCountOfAllPartyResults(latestConstituencies, selectedParties, IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
+	 		List<SelectOptionVO> partyOverview = new ArrayList<SelectOptionVO>(0);
+			for(int i=0;i<electionOverView.size();i++){
+				Object[] parms = (Object[])electionOverView.get(i);
+				partyOverview.add(new SelectOptionVO((Long)parms[0],parms[1].toString()));
+			}
+			//Collections.sort(partyOverview,new SelectOptionVOByIdComparator());
+			resultVo.setPartyOverView(partyOverview);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
 		}catch(Exception e){
 			e.printStackTrace();
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -539,6 +553,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  				Long constId = resultIterator.getKey();
  				String conName = map1.get(constId);	
 				List<PartiesDetailsVO> dataObtained = generateTempData(partyIds,map,resultIterator.getValue(),resultIterator.getKey(),conName,selectedYearsCount,type);
+				
 				if(dataObtained!=null){
 					PartiesStrengthsInfoVO infoVo = new PartiesStrengthsInfoVO();
 	 				infoVo.setConstituencyId(constId);
@@ -1038,6 +1053,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  		List<PartiesDetailsVO> result = new ArrayList<PartiesDetailsVO>(0); 
  		Map<String,String> auxMap = new HashMap<String,String>();
  		int totalCount=0;
+ 		boolean condition = false;
  		try{
 			for(Map.Entry<Long,String> resultData: map.entrySet()){
 				auxMap.put(resultData.getValue(),IConstants.FALSE);				
@@ -1047,6 +1063,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 			for(int i=0;i<partyDetails.size();i++){
 				if(auxMap.containsKey(partyDetails.get(i).getPartyName())){
 					auxMap.put(partyDetails.get(i).getPartyName(),IConstants.TRUE);
+					condition = true;
 				}
 				totalCount += partyDetails.get(i).getCount().intValue();
 			}			
@@ -1061,8 +1078,13 @@ public class PartyStrengthService implements IPartyStrengthService {
 					result.add(vo);
 				}			
 			}
-			
-			result.addAll(partyDetails); 
+			if(constId.intValue()==346){
+				for(int i=0;i<result.size();i++){
+					System.out.println(result.get(i).getPartyName()+"\t"+result.get(i).getCount()+"\t"+result.get(i).getConstituencyName());
+				}
+			}
+			if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES) || condition)
+				result.addAll(partyDetails); 
 						
 			Collections.sort(result, new PartiesDetailsVOComparator());		
 			
@@ -1070,14 +1092,28 @@ public class PartyStrengthService implements IPartyStrengthService {
 				if(selectedYearsCount.intValue()-totalCount<0){
 					return null;
 				}else{
-					//if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES)){
+					if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES)){
 						PartiesDetailsVO vo = new PartiesDetailsVO();
 						vo.setConstituencyId(constId);
 						vo.setCount(selectedYearsCount-totalCount);
 						vo.setPartyName(IConstants.OTHERS);
 						vo.setConstituencyName(constName); 		
 						result.add(vo);
-					//}		
+					}else{
+						PartiesDetailsVO vo = new PartiesDetailsVO();
+						vo.setConstituencyId(constId);
+						vo.setPartyName(IConstants.OTHERS);
+						vo.setConstituencyName(constName);
+						
+						for(int i=0;i<partyDetails.size();i++)
+							if(!map.containsValue(partyDetails.get(i).getPartyName()) && partyDetails.get(i).getCount().intValue()>0)
+								vo.setCount(partyDetails.get(i).getCount());
+						
+						if(vo.getCount()==null)
+							vo.setCount(0l);
+						
+						result.add(vo);						
+					}	
 				}						
 			//ends here...
 						

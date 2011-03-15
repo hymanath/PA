@@ -2453,6 +2453,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return queryObject.list();	
 	}
 	
+	
+	
 	public List getAllPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,count(model.party.partyId),model.party.shortName,");
@@ -2476,6 +2478,32 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setParameterList("partyIds", partyIds);
 		return queryObject.list();	
 	}
+	
+
+
+	public List getCountOfAllPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type){
+			StringBuilder query = new StringBuilder();
+			query.append(" select count(model.party.partyId),model.party.shortName");
+			query.append(" from Nomination model");			
+			query.append(" where model.constituencyElection.election.elecSubtype = ? and");
+			query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds) and");
+			
+			if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
+				query.append(" model.candidateResult.rank = 1 ");
+			}else if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES)){
+				query.append(" model.candidateResult.rank != 1 ");
+			}
+			//query.append(" and model.party.partyId in (:partyIds)");
+			query.append(" and model.constituencyElection.constituency.deformDate is null");
+			query.append(" group by model.party.partyId order by count(model.party.partyId) desc ");	
+			
+					
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setString(0,electionSubType);
+			queryObject.setParameterList("constituencyIds", constituencyIds);
+			//queryObject.setParameterList("partyIds", partyIds);
+			return queryObject.list();	
+		}
 	
 	public List getAllLatestPartyResults(List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type){
 		StringBuilder query = new StringBuilder();

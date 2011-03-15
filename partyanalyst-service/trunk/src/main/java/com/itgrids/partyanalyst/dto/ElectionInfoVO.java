@@ -20,7 +20,7 @@ public class ElectionInfoVO {
     private Long partyId;
     private String partyName;
     private Long selectedYearsCount;
-
+    private List<SelectOptionVO> partyOverView;
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
@@ -28,6 +28,12 @@ public class ElectionInfoVO {
     private ConstituencyElectionResults allPartiesDetails;
     
           
+	public List<SelectOptionVO> getPartyOverView() {
+		return partyOverView;
+	}
+	public void setPartyOverView(List<SelectOptionVO> partyOverView) {
+		this.partyOverView = partyOverView;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}
