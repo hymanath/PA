@@ -46,6 +46,10 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />	
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		
 	</bean>  
 	
