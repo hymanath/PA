@@ -150,8 +150,8 @@
 	var selectedPartyName;
 	var partyId;
 	var selectedElecId=0;
-
-	 google.load("visualization", "1", {packages:["corechart"]});
+	
+	google.load("visualization", "1", {packages:["corechart"]});
 	
 	function callAjax(jsObj,url){
 	var results;	
@@ -175,7 +175,7 @@
 							elmt.style.display = 'none';
 				
 						buildOverViewDataTable(results); 
-												
+						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
 						}else{
@@ -201,7 +201,7 @@
 							}else{
 								initializeResultsTable2(results,"dataTableId_latestConstituencies","dataTableMainDiv_latestConstituencies");
 							}
-
+							
 							interactiveChartForNewConstituencyResults(results.partyOverView);
 						}
 						
@@ -258,7 +258,7 @@
 	*/
     function interactiveChartForNewConstituencyResults(myResults)
 	{
-		console.log(myResults);
+		
 		var data = new google.visualization.DataTable();
         data.addColumn('string', 'Party');
         data.addColumn('number', 'seats');
@@ -271,9 +271,10 @@
 		}
 
         var chart = new google.visualization.PieChart(document.getElementById('partyOverViewChartDetailsForNewConstituencies'));
-        chart.draw(data, {width: 400, height: 350, title: 'Partys Results In New Constituencies'});
+        chart.draw(data, {width: 400, height: 257, title: 'Partys Results In New Constituencies'});
 
 	}
+	
 	function buildExcludingAllianceData(results)
 	{
 		var partyName = results.partyName;	
@@ -419,7 +420,6 @@
 					count = details[i].id;
 			}
 			str+='</select>';
-
 			if(count !=0)
 				getIncludingAllianceData(count,results.partyId,selectedPartyName);
 			
@@ -1075,35 +1075,31 @@
 	{
 	   var partyOverViewDiv = document.getElementById("partyOverViewDetailsForNewConstituencies");
 	   var overViewStr='';
-	   overViewStr+='<center>';
 	   overViewStr+='<table>';
 	   var partyOverViewDetails = results.partyOverView;
 	   overViewStr+='	<tr>';
-	   /*for(var k=0;k<3;k++)
-	   {   */
+	   for(var k=0;k<3;k++)
+	   {   
 		   overViewStr+='		<td> </td>';
 		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;""> Party </td>';
 		   overViewStr+='		<td style="font-weight:bold;color:darkgreen;"> Seats Won </td>';
-	  // }
+	   }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
 	   overViewStr+='	</tr>';
-	   //overViewStr+='	<tr>';
+	   overViewStr+='	<tr>';
 	   for(var m=0;m<partyOverViewDetails.length;m++)
 	   {		   
-		       overViewStr+='	<tr>';
 			   overViewStr+='		<td style="font-weight:bold;"><img src="images/icons/districtPage/listIcon.png" ></td>';
 		 	   overViewStr+='		<td align="center" style="color:red;">'+partyOverViewDetails[m].name+'</td>';
 		 	   overViewStr+='		<td align="center" style="color: green;">'+partyOverViewDetails[m].id+'</td>';
-			   overViewStr+='	</tr>';
-		  /* if((m+1)%3==0){			  	 	 
+		   if((m+1)%3==0){			  	 	 
 		  	   overViewStr+='	</tr>';
 		  	   overViewStr+='	<tr>';		
-		   } */
+		   } 
 		}
 	   overViewStr+='	</tr>';
 	   overViewStr+='</table>';
-	   overViewStr+='</center>';
 	   partyOverViewDiv.innerHTML = overViewStr;
 
 		
@@ -1377,14 +1373,13 @@
 									<table>
 									<tr>
 											<td>
-											<table width="100%">
+												<table width="100%">
 											   <tr>
-													<td width="40%"><div id="partyOverViewDetailsForNewConstituencies" style="font-family:verdana;font-size:14px;font-weight:bold;"></div></td>
-													<td width="60%"><div  id="partyOverViewChartDetailsForNewConstituencies"></div></td>
+													<td width="60%" valign="top" style="padding-top: 50px;"><div id="partyOverViewDetailsForNewConstituencies" style="font-family:verdana;font-size:14px;font-weight:bold;"></div></td>
+													<td width="40%"><div  id="partyOverViewChartDetailsForNewConstituencies"></div></td>
 											   </tr>
 											   
 											</table>
-
 											</td> 
 										</tr>
 										<tr>
