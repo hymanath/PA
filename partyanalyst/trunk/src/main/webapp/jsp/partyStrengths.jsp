@@ -147,7 +147,7 @@
 	}
 </style>
 
-<script type="text/javascript"><!--
+<script type="text/javascript">
 
 	var electionType='Assembly';
 	var selectedStateElmts=1;
@@ -429,10 +429,10 @@
 				getIncludingAllianceData(count,results.partyId,selectedPartyName);
 			
 		}else{
-			str+='<b style="color:red;font-weight:bold;">Has No Alliances </b>';
+			str+='<b style="color:green;font-weight:bold;">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> Has No Alliances </b>';
 			var partyNameDiv = results.partyName;
 			var partyDiv = document.getElementById(partyNameDiv+"_DIV");
-			partyDiv.style.display = 'none';
+			partyDiv.style.display = 'block';
 		}
 		divElement.innerHTML = str;
 	}
@@ -1083,7 +1083,13 @@
 	   overViewStr+='<table>';
 	   var partyOverViewDetails = results.partyOverView;
 	   overViewStr+='	<tr>';
-	   for(var k=0;k<3;k++)
+	   var leng = 0;
+	   if(partyOverViewDetails.length<3)
+		   leng = 1;
+		else
+		   leng = 3;
+		
+	   for(var k=0;k<leng;k++)
 	   {   
 		   overViewStr+='		<td> </td>';
 		   overViewStr+='		<td style="padding-left:1px;padding-right:10px;color:#247CD4;font-weight:bold;font-size:12px;""> Party </td>';
@@ -1245,7 +1251,7 @@
 			elmet.style.display = 'none';
 	}
 	
---></script>
+</script>
 
 
 </head>
