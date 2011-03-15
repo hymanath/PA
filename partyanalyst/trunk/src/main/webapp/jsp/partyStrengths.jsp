@@ -662,7 +662,7 @@
 	}
 
 	function getIncludingData(partyName,columnId,partyId){			
-		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId,"includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
+		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=all","includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 
