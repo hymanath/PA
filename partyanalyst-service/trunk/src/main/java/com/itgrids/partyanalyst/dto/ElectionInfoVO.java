@@ -17,6 +17,8 @@ public class ElectionInfoVO {
     private Long totalSeatsWon;
     private String localBodyChartName;
     private String electionType;
+    private String statement;
+    private boolean hasOthers;
     private Long partyId;
     private String partyName;
     private Long selectedYearsCount;
@@ -27,7 +29,18 @@ public class ElectionInfoVO {
     
     private ConstituencyElectionResults allPartiesDetails;
     
-          
+	public String getStatement() {
+		return statement;
+	}
+	public void setStatement(String statement) {
+		this.statement = statement;
+	}
+	public boolean isHasOthers() {
+		return hasOthers;
+	}
+	public void setHasOthers(boolean hasOthers) {
+		this.hasOthers = hasOthers;
+	}
 	public List<SelectOptionVO> getPartyOverView() {
 		return partyOverView;
 	}
