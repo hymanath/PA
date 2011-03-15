@@ -155,7 +155,7 @@
 	var selectedPartyName;
 	var partyId;
 	var selectedElecId=0;
-	
+	var latestElectionYear = 2009;
 	google.load("visualization", "1", {packages:["corechart"]});
 	
 	function callAjax(jsObj,url){
@@ -298,8 +298,8 @@
 		str +='		<tr>';
 		str += '		<td class="headerStyle">Total No of Times Won </td>';
 		str += '		<td class="headerStyle">Constituencies Count </td>';	
-		str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
-		str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';			
+		str += '		<td class="headerStyle"> Total Won Seats in '+latestElectionYear+' </td>';
+		str += '		<td class="headerStyle"> Total Lost Seats in '+latestElectionYear+' </td>';			
 		str += '	</tr>';
 		
 		for(var k=0;k<partiesDetails.length;k++){	
@@ -350,6 +350,13 @@
 		var partyId = results.partyId;	
 		var partyDiv = document.getElementById(partyName+"DATA_DIV");
 		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
+
+
+		var selPartyName = "ajaxIncludingImageEl_"+partyName;
+			
+		var imageDiv =document.getElementById(selPartyName);
+		imageDiv.style.display ='block';
+
 		
 		var str='';
 	
@@ -357,8 +364,8 @@
 		str +='		<tr>';
 		str += '		<td class="headerStyle">Total No of Times Won </td>';
 		str += '		<td class="headerStyle">Constituencies Count </td>';	
-		str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
-		str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';			
+		str += '		<td class="headerStyle"> Total Won Seats in '+latestElectionYear+' </td>';
+		str += '		<td class="headerStyle"> Total Lost Seats in '+latestElectionYear+' </td>';			
 		str += '	</tr>';
 		
 	
@@ -441,6 +448,8 @@
 	function buildOverViewDataTable(results)
 	{
 
+		latestElectionYear = results.allPartiesDetails.electionYears[0];
+		
 		var headerElmt = document.getElementById("headerDiv");
 		var tempStr ='';
 		tempStr+='All Parties Strengths and Weakness Details';
@@ -520,8 +529,8 @@
 			str +='		<tr>';
 			str += '		<td class="headerStyle">Total No of Times Won </td>';
 			str += '		<td class="headerStyle">Constituencies Count </td>';	
-			str += '		<td class="headerStyle"> Total Won Seats in 2009 </td>';
-			str += '		<td class="headerStyle"> Total Lost Seats in 2009 </td>';				
+			str += '		<td class="headerStyle"> Total Won Seats in '+latestElectionYear+' </td>';
+			str += '		<td class="headerStyle"> Total Lost Seats in '+latestElectionYear+' </td>';				
 			str += '	</tr>';	
 			for(var j=0;j<partiesDetails[k].partyDetails.length;j++){				
 				var size = partiesDetails[k].partyDetails[j].won;	
@@ -618,11 +627,6 @@
 
 	function getAllAllianceYearsForAParty(partyId,partyName)
 	{		
-
-		var selPartyName = "ajaxIncludingImageEl_"+partyName;
-			
-		var imageDiv =document.getElementById(selPartyName);
-		imageDiv.style.display ='block';
 
 		
 		var stateSelect = document.getElementById("stateSelect").value;
@@ -1115,16 +1119,16 @@
 
 		var othersInfo = document.getElementById("othersInfoForNewConstituencies");
 		var info='';
-		if(results.hasOthers)
-		info+='<table style="font-weight:bold;">';
-		info+='		<tr>';
-		info+='			<td style="font-weight:bold;color:red;"> *</td>';
-		info+='			<td> Others Include</td>';
-		info+='			<td>'+results.statement+'</td>';
-		info+='	</tr>';
-		info+='</table>';		
-		othersInfo.innerHTML = info;
-
+		if(results.hasOthers){
+			info+='<table style="font-weight:bold;">';
+			info+='		<tr>';
+			info+='			<td style="font-weight:bold;color:red;"> *</td>';
+			info+='			<td> Others Include</td>';
+			info+='			<td>'+results.statement+'</td>';
+			info+='	</tr>';
+			info+='</table>';		
+			othersInfo.innerHTML = info;
+		}
 		
 		var dataTable = document.getElementById("dataTableBuildForNewConstituencies");
 
@@ -1156,9 +1160,9 @@
 		var countElmt = '';
 
 		if(results.partyName == "All Parties"){
-			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies for 2009 election</a></span>';
+			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'new_const_body\')" > New Constituencies for '+latestElectionYear+' election</a></span>';
 		}else{
-			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Won by <b style="font-weight: bold; color: red;">'+ results.partyName +'</b> Party in new constituencies formed in 2009 </a></span>';
+			countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Won by <b style="font-weight: bold; color: red;">'+ results.partyName +'</b> Party in new constituencies formed in '+latestElectionYear+' </a></span>';
 		}
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : '+results.latestConstituenciesInfo.totalNumberOfConstituencies+'</b>';
 		count.innerHTML = countElmt;
