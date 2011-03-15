@@ -74,5 +74,7 @@ public interface IStateDAO extends GenericDao<State, Long>{
 	public List findStateIdByNameAndCountryId(String stateName,Long countryId);
 	
 	public List<State> findByCountryIdForSearch(Long countryId);
+	
+	public List getAllStatesByCountryIdOrderByStateId(Long countryId);
 
 }

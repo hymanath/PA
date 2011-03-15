@@ -139,4 +139,9 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		Object[] params = {stateName,countryId};
 		return getHibernateTemplate().find("select model.stateId from State model where model.stateName = ? and model.country.countryId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAllStatesByCountryIdOrderByStateId(Long countryId){
+		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId=?", countryId);
+	}
 }

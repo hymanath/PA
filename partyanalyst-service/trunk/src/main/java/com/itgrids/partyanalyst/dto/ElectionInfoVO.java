@@ -22,13 +22,23 @@ public class ElectionInfoVO {
     private Long partyId;
     private String partyName;
     private Long selectedYearsCount;
-    private List<SelectOptionVO> partyOverView;
+    private List<SelectOptionVO> partyOverView,allianceDetails;
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
     private ConstituencyElectionResults latestConstituenciesInfo;
     
     private ConstituencyElectionResults allPartiesDetails;
     
+    
+    
+    //Getters and Setters
+    
+	public List<SelectOptionVO> getAllianceDetails() {
+		return allianceDetails;
+	}
+	public void setAllianceDetails(List<SelectOptionVO> allianceDetails) {
+		this.allianceDetails = allianceDetails;
+	}
 	public String getStatement() {
 		return statement;
 	}
