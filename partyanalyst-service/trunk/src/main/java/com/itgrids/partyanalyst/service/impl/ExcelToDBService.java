@@ -143,12 +143,20 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 	}
 }
 
-private Candidate checkAndInsertCandidate(String candidateName) throws Exception{
-	Candidate candidate = candidateDAO.findCandidateByLastName(candidateName);
+private Candidate checkAndInsertCandidate(CandidateElectionResult candidateRes) throws Exception{
+	Candidate candidate = candidateDAO.findCandidateByLastName(candidateRes.getCandidateName());
 	
 	if(candidate == null){
 		candidate = new Candidate();
-		candidate.setLastname(candidateName);
+		candidate.setLastname(candidateRes.getCandidateName());
+		
+		//check for candidate education details
+		if(candidateRes.getEducation() != null && !"".equalsIgnoreCase(candidateRes.getEducation()))
+			candidate.setEducation(candidateRes.getEducation());
+		
+		if(candidateRes.getSex() != null && !"".equalsIgnoreCase(candidateRes.getSex()))
+			candidate.setGender(candidateRes.getSex());
+		
 		candidate = candidateDAO.save(candidate);
 	}
 	
@@ -228,7 +236,7 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 			if(logger.isDebugEnabled())
 			logger.debug("4.3");
 			for (CandidateElectionResult candidateElectionResult : candidateElectionResults) {
-				Candidate candidateObj=checkAndInsertCandidate(candidateElectionResult.getCandidateName());
+				Candidate candidateObj=checkAndInsertCandidate(candidateElectionResult);
 				Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
 				if(logger.isDebugEnabled())
 				logger.debug("4.6");
@@ -236,6 +244,17 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				nominationObj.setCandidate(candidateObj);
 				nominationObj.setParty(partyObj);
 				nominationObj.setConstituencyElection(constituencyElectionObj);
+				
+				//check and insert assets and liabilities
+				if(candidateElectionResult.getAssets() != null && !candidateElectionResult.getAssets().equals(0D))
+					nominationObj.setAssets(candidateElectionResult.getAssets());
+				
+				if(candidateElectionResult.getLiabilities() != null && !candidateElectionResult.getLiabilities().equals(0D))
+					nominationObj.setLiabilities(candidateElectionResult.getLiabilities());
+				
+				if(candidateElectionResult.getCriminalCharges() != null && !"".equalsIgnoreCase(candidateElectionResult.getCriminalCharges()))
+					nominationObj.setCriminalCharges(candidateElectionResult.getCriminalCharges());
+					
 				nominationObj =nominationDAO.save(nominationObj);
 
 
