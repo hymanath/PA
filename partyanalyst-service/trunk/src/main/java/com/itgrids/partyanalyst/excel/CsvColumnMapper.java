@@ -16,6 +16,11 @@ public class CsvColumnMapper {
 	String csvColumn4;
 	String csvColumn5;
 	String csvColumn6;
+	String csvColumn7;
+	String csvColumn8;
+	String csvColumn9;
+	String csvColumn10;
+	
 	boolean isCandidateDetails=false;
 	public CsvColumnMapper(){
 		csvColumn1="";
@@ -24,6 +29,10 @@ public class CsvColumnMapper {
 		csvColumn4="";
 		csvColumn5="";
 		csvColumn6="";
+		csvColumn7="";
+		csvColumn8="";
+		csvColumn9="";
+		
 		
 	}
 	public CsvColumnMapper(Sheet sheet,int rowNo,int noOfColumns){
@@ -33,13 +42,21 @@ public class CsvColumnMapper {
 			case 0:setCsvColumn1(cellData);break;
 			case 1:setCsvColumn2(cellData);break;
 			case 2:setCsvColumn3(cellData);break;
-			case 3:setCsvColumn4(cellData);
-			case 4:setCsvColumn5("");
-			case 5:setCsvColumn6("");
+			case 3:setCsvColumn4(cellData);break;
+			case 4:setCsvColumn5(cellData);break;
+			case 5:setCsvColumn6(cellData);break;
+			case 6:setCsvColumn7(cellData);break;
+			case 7:setCsvColumn8(cellData);break;
+			case 8:setCsvColumn9(cellData);break;
+			
 			default:
 				if(noOfColumns>4){
-					setCsvColumn5(cellData);
+					/*setCsvColumn5(cellData);
 					setCsvColumn6(cellData);
+					setCsvColumn7(cellData);
+					setCsvColumn8(cellData);
+					setCsvColumn9(cellData);*/
+					
 				}
 				break;
 			}
@@ -96,6 +113,25 @@ public class CsvColumnMapper {
 	public void setCsvColumn6(String csvColumn6) {
 		this.csvColumn6 = csvColumn6;
 	}
+	public String getCsvColumn7() {
+		return csvColumn7;
+	}
+	public void setCsvColumn7(String csvColumn7) {
+		this.csvColumn7 = csvColumn7;
+	}
+	public String getCsvColumn8() {
+		return csvColumn8;
+	}
+	public void setCsvColumn8(String csvColumn8) {
+		this.csvColumn8 = csvColumn8;
+	}
+	public String getCsvColumn9() {
+		return csvColumn9;
+	}
+	public void setCsvColumn9(String csvColumn9) {
+		this.csvColumn9 = csvColumn9;
+	}
+	
 	@Override
 	public boolean equals(final Object other) {
 		if (!(other instanceof CsvColumnMapper))
@@ -106,20 +142,25 @@ public class CsvColumnMapper {
 				castOther.csvColumn3).append(csvColumn4,
 						castOther.csvColumn4).append(csvColumn5,
 								castOther.csvColumn5).append(csvColumn6,
-										castOther.csvColumn6).isEquals();
+										castOther.csvColumn6).append(csvColumn7,
+												castOther.csvColumn7).append(csvColumn8,
+														castOther.csvColumn8).append(csvColumn9,
+																castOther.csvColumn9).isEquals();
 	}
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(csvColumn1).append(csvColumn2)
 		.append(csvColumn3).append(csvColumn4).append(csvColumn5)
-		.append(csvColumn6).toHashCode();
+		.append(csvColumn6).append(csvColumn7).append(csvColumn8)
+		.append(csvColumn9).toHashCode();
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append(csvColumn1)
 		.append(csvColumn2).append(csvColumn3).append(csvColumn4).append(
-				csvColumn5).append(csvColumn6).toString();
+				csvColumn5).append(csvColumn6).append(csvColumn7).append(csvColumn8)
+				.append(csvColumn9).toString();
 	}
 
 	public boolean isCandidateDetails() {
