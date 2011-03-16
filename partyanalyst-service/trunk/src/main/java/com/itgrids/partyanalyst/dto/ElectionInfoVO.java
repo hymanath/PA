@@ -25,6 +25,7 @@ public class ElectionInfoVO {
     private Long selectedYearsCount;
     private Long latestConstituenciesCount;
     private Long requiredConstituenciesCount;
+    private Long totalNumberOfConstituencies;
     private List<SelectOptionVO> partyOverView,allianceDetails;
     private ConstituencyElectionResults requiredConstituenciesInfo;
     private ConstituencyElectionResults remainingConstituenciesInfo;
@@ -38,6 +39,12 @@ public class ElectionInfoVO {
     
 	public List<SelectOptionVO> getAllianceDetails() {
 		return allianceDetails;
+	}
+	public Long getTotalNumberOfConstituencies() {
+		return totalNumberOfConstituencies;
+	}
+	public void setTotalNumberOfConstituencies(Long totalNumberOfConstituencies) {
+		this.totalNumberOfConstituencies = totalNumberOfConstituencies;
 	}
 	public Long getLatestConstituenciesCount() {
 		return latestConstituenciesCount;

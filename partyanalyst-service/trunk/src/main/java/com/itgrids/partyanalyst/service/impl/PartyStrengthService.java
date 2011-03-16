@@ -247,7 +247,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				
 				resultVo.setLatestConstituenciesCount(new Long(latestConstituencies.size()));
 				resultVo.setRequiredConstituenciesCount(new Long(requiredConstituencies.size()));
-				
+				resultVo.setTotalNumberOfConstituencies(latestConstituencies.size()+requiredConstituencies.size()+0L);
 				if(alliance.equalsIgnoreCase(IConstants.TRUE)){
 					contenetTransferVO = getIncludingAllianceData(electionType,stateId,partyId,electionYearsCount,electionId,partyName);
 					allianceData = contenetTransferVO.getResult();
