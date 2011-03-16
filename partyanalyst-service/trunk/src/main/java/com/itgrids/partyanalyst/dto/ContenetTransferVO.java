@@ -17,7 +17,7 @@ public class ContenetTransferVO {
 	private Long count;
 	private Long wonRecently;
 	private Long lostRecently;
-	
+	private Map<Long,Map<Long,List<Long>>>  allDetails;
 	
 	//constructor(s)
 	
@@ -38,11 +38,17 @@ public class ContenetTransferVO {
 	
 	//Getters and Setters
 	
-	
-	
 	public Map<Long, PartiesDetailsVO> getPartyOverview() {
 		return partyOverview;
 	}
+	public Map<Long, Map<Long, List<Long>>> getAllDetails() {
+		return allDetails;
+	}
+
+	public void setAllDetails(Map<Long, Map<Long, List<Long>>> allDetails) {
+		this.allDetails = allDetails;
+	}
+
 	public List<SelectOptionVO> getDetails() {
 		return details;
 	}

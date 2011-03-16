@@ -2747,6 +2747,31 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return queryObject.list();
 	}
 	
+	
+	public List<Long> getCountOfAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,List<Long> partyId,Long electionId,String type){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituencyElection.constituency.constituencyId");
+		query.append(" from Nomination model where model.constituencyElection.election.electionId = ? ");	
+		
+		if(type.equalsIgnoreCase(IConstants.WINNER_CANDIDATES))
+			query.append(" and model.party.partyId in (:partyId) ");
+		else //if(type.equalsIgnoreCase(IConstants.SUCCESSOR_CANDIDATES))
+			query.append(" and model.party.partyId not in (:partyId) ");
+		
+		query.append(" and model.candidateResult.rank = 1 and");
+		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+		
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		queryObject.setLong(0,electionId);
+		
+		queryObject.setParameterList("partyId",partyId);
+		queryObject.setParameterList("constituencyIds", constIds);
+				
+		return queryObject.list();
+	}
+	
 	public List getAllAllianceCandidateDetailsForAConstituency(List<Long> constIds,Long partyId,List<Long> electionIds){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
@@ -2781,23 +2806,89 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 
-	public List getAllAllianceCandidateDetails(List<Long> constIds,Long electionId){
+	public List getAllAllianceCandidateDetails(List<Long> constIds,Long electionId,String type,Long stateId,String electionType){
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituencyElection.constituency.constituencyId,upper(model.constituencyElection.constituency.name),");
 		query.append(" model.party.partyId,model.party.partyFlag,model.constituencyElection.election.electionYear,");
 		query.append(" model.candidateResult.votesEarned,model.candidate.lastname");
 		query.append(" from Nomination model where model.constituencyElection.election.electionId = ? ");	
+				
+		if(type.equalsIgnoreCase(IConstants.ALL)){
+			query.append(" and model.candidateResult.rank = 1 ");
+			query.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+		}else{
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			
+			query.append(" and model.candidateResult.rank != 1 ");
+			query.append(" and model.constituencyElection.constituency.constituencyId not in (:constituencyIds)");
+			query.append(" and model.constituencyElection.constituency.startDate is null and ");
+			query.append(" and model.constituencyElection.constituency.deformDate is null");
+		}
 		
-		query.append(" and model.candidateResult.rank = 1 and");
-		query.append(" model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
-		
+		query.append(" order by model.party.partyId");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		queryObject.setLong(0,electionId);
+		if(!type.equalsIgnoreCase(IConstants.ALL) && electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			queryObject.setLong(1,stateId);
+		
 		queryObject.setParameterList("constituencyIds", constIds);
 				
 		return queryObject.list();
 	}
 	
+	/*public List<Long> getListOfUnParticipatedConstituencies(List<Long> constIds,Long electionId,String type,Long stateId,String electionType){
+		
+			StringBuilder query = new StringBuilder();
+			query.append(" select model.constituencyElection.constituency.constituencyId");
+			query.append(" from Nomination model where model.constituencyElection.election.electionId = ? ");	
+			
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+			
+			query.append(" and model.candidateResult.rank != 1 ");
+			query.append(" and model.constituencyElection.constituency.constituencyId not in (:constituencyIds)");
+			query.append(" and model.constituencyElection.constituency.startDate is null ");
+			query.append(" and model.constituencyElection.constituency.deformDate is null");
+						
+			query.append(" order by model.party.partyId");
+			
+			Query queryObject = getSession().createQuery(query.toString());
+			
+			queryObject.setLong(0,electionId);
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				queryObject.setLong(1,stateId);
+			
+			queryObject.setParameterList("constituencyIds", constIds);
+					
+			return queryObject.list();
+	}
+	
+	public List<Long> getAllParticipatedPartyResultsForAParty(List<Long> constituencyIds,String electionType,Long partyId,String electionSubType,Long stateId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituencyElection.constituency.constituencyId from Nomination model where");			
+		query.append(" model.party.partyId = ? ");
+		query.append(" and model.constituencyElection.election.elecSubtype = ? ");
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+			query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+		
+		query.append(" and model.candidateResult.rank != 1 ");
+		query.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIds) ");
+		query.append(" and model.constituencyElection.constituency.startDate is null");//219 consts
+		query.append(" and model.constituencyElection.constituency.deformDate is null ");		
+		query.append(" order by model.constituencyElection.constituency.constituencyId");	
+					
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setLong(0,partyId);		
+		queryObject.setString(1,electionSubType);	
+		
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+		queryObject.setLong(2,stateId);
+		
+		queryObject.setParameterList("constituencyIds", constituencyIds);
+		
+		return queryObject.list();	
+	}*/
 }
