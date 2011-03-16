@@ -377,10 +377,12 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	
-	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId,List<Long> elecIds){
+	public List getConstituenciesHavingMaxSpan(String electionSubType,String electionType,Long stateId,List<Long> elecIds,String type){
 		StringBuilder query = new StringBuilder();
 		query.append(" select count(model),model.constituency.constituencyId,model.constituency.name from ConstituencyElection model");			
-		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");		
+		query.append(" where model.constituency.state.stateId = ? and model.election.electionId in (:elecIds)");	
+		if(!type.equalsIgnoreCase(IConstants.ALL))
+			query.append(" and model.constituency.startDate is null ");
 		query.append(" and model.constituency.deformDate is null group by model.constituency.constituencyId  order by count(model) desc");	
 		
 		Query queryObject = getSession().createQuery(query.toString());		
@@ -391,7 +393,18 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	
-	
+	public List<Long> getLatestConstituencies(List<Long> constIds,Long latestElecId){
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituency.constituencyId from ConstituencyElection model");	
+		query.append(" where  model.election.electionId = ? and ");
+		query.append(" model.constituency.constituencyId in (:constIds)");
+		
+		Query queryObject = getSession().createQuery(query.toString());		
+		
+		queryObject.setLong(0,latestElecId);			
+		queryObject.setParameterList("constIds", constIds);
+		return queryObject.list();	
+	}
 }
 
 
