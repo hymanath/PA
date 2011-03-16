@@ -449,6 +449,7 @@
 		if(details.length!=0){
 			str+='<select id="AlliancesYears" style="width:130px;" onChange="getIncludingAllianceData(this.options[this.selectedIndex].value,\''+results.partyId+'\',\''+selectedPartyName+'\')">';			
 			var count=0;
+			str+='<option value="0">All Elections</option>';
 			for(var i in details)
 			{
 				str+='<option value="'+details[i].id+'">'+details[i].name+'</option>';
@@ -457,7 +458,8 @@
 			}
 			str+='</select>';
 			if(count !=0){
-				getIncludingAllianceData(count,results.partyId,selectedPartyName);
+				var defaultCount = 0;
+				getIncludingAllianceData(defaultCount,results.partyId,selectedPartyName);
 			}else{
 				var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
 				
@@ -483,7 +485,13 @@
 		
 		var headerElmt = document.getElementById("headerDiv");
 		var tempStr ='';
-		tempStr+='All Parties Strengths and Weakness Details';
+		tempStr+='	<table>';
+		tempStr+='		<tr>';
+		tempStr+='			<td>All Parties Strengths and Weakness Details in <td>';
+		tempStr+='			<td> <b style="color:red;">'+results.totalNumberOfConstituencies+'</b> Constituencies<td>';
+		tempStr+='		</tr>';
+		tempStr+='	</table>';
+		tempStr+='';
 		headerElmt.innerHTML = tempStr;
 
 		var elecYears = results.allPartiesDetails.electionYears;
@@ -502,13 +510,12 @@
 		elecYearsStr+='		</td>';
 		elecYearsStr+='	</tr>';	
 		}
-			
+		elecYearsStr+='</table>';
+		elecYearsStr+='<table>';	
 		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
-		elecYearsStr+='			<br/><b tyle="color:green;"> Election Years Considered...</b>';
+		elecYearsStr+='			<br/><b tyle="color:green;"> Total Election Years Considered </b>';
 		elecYearsStr+='		</td>';
-		elecYearsStr+='	</tr>';
-		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
 		for(var n=0;n<elecYears.length;n++){			
 			if(elecYears.length!=(n+1))
