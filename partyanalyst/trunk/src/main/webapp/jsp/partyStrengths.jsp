@@ -511,10 +511,11 @@
 		elecYearsStr+='	</tr>';	
 		}
 		elecYearsStr+='</table>';
+		elecYearsStr+='<br/>';
 		elecYearsStr+='<table>';	
 		elecYearsStr+='	<tr>';
 		elecYearsStr+='		<td>';
-		elecYearsStr+='			<br/><b tyle="color:green;"> Total Election Years Considered </b>';
+		elecYearsStr+='			<b tyle="color:green;"> Total Election Years Considered </b>';
 		elecYearsStr+='		</td>';
 		elecYearsStr+='		<td>';
 		for(var n=0;n<elecYears.length;n++){			
