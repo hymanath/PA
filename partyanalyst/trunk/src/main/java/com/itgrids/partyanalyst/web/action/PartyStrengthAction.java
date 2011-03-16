@@ -342,8 +342,8 @@ public class PartyStrengthAction extends ActionSupport implements
 			Long totalElectionYears = new Long(jObj.getString("elecYears"));	
 			Long  electionId = jObj.getLong("electionId"); 
 			String partyName = jObj.getString("partyName");
-			
-			includingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.TRUE,electionId,partyName);
+			includingAlliance = partyStrengthService.getIncludingAllianceDetailsForAParty(electionType,stateId,partyId,totalElectionYears,electionId,partyName);
+			//includingAlliance = partyStrengthService.getPartiesData(electionType,stateId,totalElectionYears,partyId,IConstants.TRUE,electionId,partyName);
 			
 			}catch(Exception e){
 			e.printStackTrace();			
