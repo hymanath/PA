@@ -191,7 +191,7 @@ function buildBiElectionDistricts()
 	for(var i in districtsInfo)
 	{
 		str += '<tr>';
-		str += '<td align="center"> <img src="images/icons/districtPage/listIcon.png"/></td>';
+		str += '<td align="center"> <img height="5" width="7" src="images/icons/districtPage/listIcon.png"/></td>';
 		str += '<td colspan="2">';
 		str += '<span class="mandalNameSpan">';
 		str += '<a href ="districtPageAction.action?districtId='+districtsInfo[i].districtId+'&districtName='+districtsInfo[i].districtName+'" class="districtAnc">'+districtsInfo[i].districtName+'- '+districtsInfo[i].constituencies.length+'</a>';
