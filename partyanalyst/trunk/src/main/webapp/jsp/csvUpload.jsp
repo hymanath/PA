@@ -26,6 +26,9 @@
 				<option value="Andhra Pradesh">Andhra Pradesh</option>
 				<option value="Tamil Nadu">Tamil Nadu</option>
 				<option value="Karnataka">Karnataka</option>
+				<option value="West Bengal">West Bengal</option>
+				<option value="Assam">Assam</option>
+				<option value="Kerala">Kerala</option>
 			</select></td>
 		</tr>
 		<tr>
