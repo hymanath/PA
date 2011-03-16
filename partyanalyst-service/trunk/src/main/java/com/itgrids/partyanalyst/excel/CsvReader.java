@@ -11,9 +11,6 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.itgrids.partyanalyst.service.impl.ExcelToDBService;
 
 
 public class CsvReader implements IExcelReader{
@@ -105,6 +102,9 @@ public class CsvReader implements IExcelReader{
 	private void identifyRowAndBindObject(CsvColumnMapper csvColumnMapperObj) throws CsvException{
 		candidateElectionResult = new CandidateElectionResult();
 		Double localDouble=validateNumericColumn(csvColumnMapperObj.getCsvColumn4());
+		Double assets = validateNumericColumn(csvColumnMapperObj.getCsvColumn5());
+		Double liabilities = validateNumericColumn(csvColumnMapperObj.getCsvColumn6());
+		
 		try{
 			java.lang.reflect.Method []methods=CsvColumnMapper.class.getDeclaredMethods();
 			for (int i = 0; i < methods.length; i++) {
@@ -167,8 +167,21 @@ public class CsvReader implements IExcelReader{
 							candidateElectionResult.setCandidatePrty(str);
 						}else if(methods[i].getName().equals("getCsvColumn4")){
 							candidateElectionResult.setVotesEarned(localDouble);
-							candidateElectionResults.add(candidateElectionResult); //asif.shaik@live.in //faisal.usmani@hp.com
+							//candidateElectionResults.add(candidateElectionResult); //asif.shaik@live.in //faisal.usmani@hp.com
 							//asif.sb@techmahindra.com
+						}else if(methods[i].getName().equals("getCsvColumn5")){
+							
+							candidateElectionResult.setAssets(assets);
+						}else if(methods[i].getName().equals("getCsvColumn6")){
+							
+							candidateElectionResult.setLiabilities(liabilities);
+						}else if(methods[i].getName().equals("getCsvColumn7")){
+							candidateElectionResult.setEducation(csvColumnMapperObj.getCsvColumn7());
+						}else if(methods[i].getName().equals("getCsvColumn8")){
+							candidateElectionResult.setCriminalCharges(csvColumnMapperObj.getCsvColumn8());
+						}else if(methods[i].getName().equals("getCsvColumn9")){
+							candidateElectionResult.setSex(csvColumnMapperObj.getCsvColumn9());
+							candidateElectionResults.add(candidateElectionResult);
 						}
 					}
 				}
@@ -202,13 +215,16 @@ public class CsvReader implements IExcelReader{
 
 	public Double validateNumericColumn(String columnValue){
 		Double tempDouble= new Double(0);
-		if(StringUtils.isNotEmpty(columnValue.trim())){
-			String tempValue=StringUtils.replace(columnValue, ",", "");
-			if(StringUtils.isNumeric(tempValue)){
-				tempDouble= new Double(tempValue);
-				return tempDouble;
+		
+		if(columnValue != null){
+			if(StringUtils.isNotEmpty(columnValue.trim())){
+				String tempValue=StringUtils.replace(columnValue, ",", "");
+				if(StringUtils.isNumeric(tempValue)){
+					tempDouble= new Double(tempValue);
+					return tempDouble;
+				}
+	
 			}
-
 		}
 
 		return tempDouble;

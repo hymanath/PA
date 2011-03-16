@@ -7,6 +7,12 @@ public class CandidateElectionResult {
 	private Double votesEarned;
 	private String votesPercentage;
 	private String sex;
+	
+	private Double assets;
+	private Double liabilities;
+	private String education;
+	private String criminalCharges;
+	
 	public CandidateElectionResult(){
 		
 	}
@@ -50,5 +56,37 @@ public class CandidateElectionResult {
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	public Double getAssets() {
+		return assets;
+	}
+
+	public void setAssets(Double assets) {
+		this.assets = assets;
+	}
+
+	public Double getLiabilities() {
+		return liabilities;
+	}
+
+	public void setLiabilities(Double liabilities) {
+		this.liabilities = liabilities;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	public String getCriminalCharges() {
+		return criminalCharges;
+	}
+
+	public void setCriminalCharges(String criminalCharges) {
+		this.criminalCharges = criminalCharges;
 	}
 }
