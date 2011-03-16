@@ -346,11 +346,12 @@
 
 	function buildIncludingAllianceData(results)
 	{
+
 		var partyName = results.partyName;	
 		var partyId = results.partyId;	
 		var partyDiv = document.getElementById(partyName+"DATA_DIV");
-		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;
-
+		var partiesDetails = results.alliancePartyDetails;
+		var allianceDetails = results.allianceDetails;
 
 		var selPartyName = "ajaxIncludingImageEl_"+partyName;
 		if(selPartyName){
@@ -367,7 +368,21 @@
 		str += '		<td class="headerStyle"> Total Won Seats in '+latestElectionYear+' </td>';
 		str += '		<td class="headerStyle"> Total Lost Seats in '+latestElectionYear+' </td>';			
 		str += '	</tr>';
-		
+		if(allianceDetails!=null)
+		{
+			var name = selectedPartyName+"_AlliancesPartiesData";
+			var alliancePartiesDetails = document.getElementById(name);
+			var allianceStr = '';
+			allianceStr +='<table>';
+			allianceStr +='		<tr>';			
+			for(var j=0;j<allianceDetails.length;j++)
+			{
+				allianceStr +='		<td>'+allianceDetails[j].name+'</td>';
+			}			
+			allianceStr +='		</tr>';
+			allianceStr +='</table>';
+			alliancePartiesDetails.innerHTML = allianceStr;
+		}
 	
 			for(var j=0;j<partiesDetails.length;j++){				
 				var size = partiesDetails[j].won;	
@@ -523,7 +538,10 @@
 			str += '		<td><span id="ajaxImageEl_'+partiesDetails[k].partyName+'" style="margin-left:10px;display:none;"><img src="images/icons/search.gif"/></span></td>';
 			str += '		<td><input type="radio" name="alliance_'+partiesDetails[k].partyName+'" onclick="getAllAllianceYearsForAParty(\''+partiesDetails[k].partyId+'\',\''+partiesDetails[k].partyName+'\')" value="include"/>Including Alliance </td>';
 			str += '		<td><span id="ajaxIncludingImageEl_'+partiesDetails[k].partyName+'" style="margin-left:10px;display:none;"><img src="images/icons/search.gif"/></span></td>';					
-			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></td>';				
+			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesYears"></div></td>';				
+			str += '	</tr>';		
+			str += '	<tr>';
+			str += '		<td><div id="'+partiesDetails[k].partyName+'_AlliancesPartiesData"></div></td>';			
 			str += '	</tr>';		
 			str += '	</table>';
 			str += '	<div id="'+partiesDetails[k].partyName+'DATA_DIV">';		
