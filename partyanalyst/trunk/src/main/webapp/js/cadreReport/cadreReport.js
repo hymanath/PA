@@ -11,9 +11,9 @@ function buildCadreLevelTable(jsObj,cadreData)
 	for(var i in cadreData)
 	{
 		if(cadreUpdate)			
-			update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';
+			update = '<A href="javascript:{}" onclick="openRegistrationForm('+cadreData[i].cadreID+')"><img width="20" height="20" src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A>';
 		if(cadreDelete)
-			remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
+			remove = '<A href="javascript:{}" onclick="deleteCadre('+cadreData[i].cadreID+')"><img width="18" height="18" src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A>';
 
 		var cObj={
 				name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
