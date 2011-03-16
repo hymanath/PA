@@ -9,6 +9,7 @@ public class ElectionInfoVO {
 	private String constituencyName;
 	private String constituencyId;
 	private List<PartyResultsInfoVO> partyResults;
+	private List<PartiesDetailsVO> alliancePartyDetails;
 	private Long totalConstituencies;
 	private Long participatedConstituencies;
 	private Long totalValidVotes;
@@ -35,6 +36,12 @@ public class ElectionInfoVO {
     
 	public List<SelectOptionVO> getAllianceDetails() {
 		return allianceDetails;
+	}
+	public List<PartiesDetailsVO> getAlliancePartyDetails() {
+		return alliancePartyDetails;
+	}
+	public void setAlliancePartyDetails(List<PartiesDetailsVO> alliancePartyDetails) {
+		this.alliancePartyDetails = alliancePartyDetails;
 	}
 	public void setAllianceDetails(List<SelectOptionVO> allianceDetails) {
 		this.allianceDetails = allianceDetails;
