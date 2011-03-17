@@ -95,14 +95,21 @@
 
 <script type="text/javascript">
 	google.load("elements", "1", {packages : ["newsshow"]});
+
+	
+
+
+	
 </script>
 </head>
 <body>
+
 	<div id="connectPeoplePopup_outer" class="yui-skin-sam">
 		<div id="connectPeoplePopup" style="display:none;"><div id="allConnectedUsersDisplay_main"><img src="images/icons/barloader.gif"/></div></div>
 	</div>
 	<div id="jQueryPopup"> <div id="reasonsDataTable_outer" class="yui-skin-sam"> <div id="reasonsDataTable"></div> </div></div>
 	<div id="connectPeopleMessagePopup_main" class="yui-skin-sam"><div id="connectPeopleMessagePopup"></div></div>
+	<div id="uploadPic_window"><div id="uploadPic_window_inner"></div></div>
 	<div id="connectPeoplePage_main">
 		<table width="100%">
 			<tr>
@@ -118,7 +125,7 @@
 								<table width="100%">
 									<tr>
 										<td width="20%" valign="top">
-											<img height="100" width="90" style="border:1px solid #ADADAD;" src="images/icons/indexPage/human.jpg">
+											<img id="userProfileImg" height="100" width="90" style="border:1px solid #ADADAD;" src="images/icons/indexPage/human.jpg">
 										</td>
 										<td width="55%" valign="top" align="left">
 											<div id="profileUserName">${loginUserName}</div>
@@ -414,15 +421,16 @@
 					</div>
 				</td>
 			</tr>
-		</table>
-
-		
+		</table>	
+	
 	</div>
 
 	<script type="text/javascript"> 
 
 		loginUserId = '${loginUserId}';
-		loginUserName = '${loginUserName}';		
+		loginUserName = '${loginUserName}';	
+		loginUserProfilePic = '${loginUserProfilePic}';	
+
 		userType = '${UserType}';		
 		stateId = '${dataTransferVO.stateId}';
 		stateName = '${dataTransferVO.stateName}';

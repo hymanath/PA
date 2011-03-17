@@ -34,6 +34,7 @@ var commentsInfo = {
 
 var loginUserId = '';
 var loginUserName = '';
+var loginUserProfilePic = '';
 var userType = '';
 var stateId = '';
 var stateName = '';
@@ -668,6 +669,165 @@ function getAllRequestMessagesForUser(){
 	callAjax(jsObj,url);
 }
 
+function uploadUserPic()
+{
+	$("#uploadPic_window").dialog({
+		resizable:false,
+		width: 470,
+		minHeight:200,
+		show:'slide',
+		modal:true
+	});
+	
+	
+	$(".ui-dialog-titlebar").hide();
+
+	var elmt = document.getElementById("uploadPic_window_inner");
+	if(!elmt)
+		return;
+
+	var str = '';
+	str += '<div id="uploadPic_window_head">Upload Your Picture</div>';
+	str += '<div id="uploadPic_window_body">';
+	str += '<form name="uploadForm" action="uploadPicAction.action" enctype="multipart/form-data" method="post" id="uploadPicForm">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th valign="top">';
+	str += '	<table width="100%" class="uploadPic_string_table">';
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Select a image from your computer.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image size should be less than 2MB.</td>';
+	str += '	</tr>';
+
+	str += '	<tr>';
+	str += '	<td width="7px"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
+	str += '	<td>Image should be .jpg or.png or .gif formats only.</td>';
+	str += '	</tr>';
+
+	str += '	</table>';	
+	str += '</th>';
+	str += '<td rowspan="3">';
+	str += '	<div style="border:1px solid #ADADAD;"><img width="90" height="100" id="Imgpreview" src="images/icons/indexPage/human.jpg"></div>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<td>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()"/>';
+	str += '</td>';
+	str += '</tr>';
+	
+	str += '</table>';	
+	str += '</form>';
+	str += '</div>';
+	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<th width="60%"><div id="uploadPic_window_status"></div></th>';
+	str += '<td width="40%"><input type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<input type="button" value="Cancel" id="cancelPicButton"/>';	
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
+
+	elmt.innerHTML = str;
+
+	var oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
+	var oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
+	
+	oPushButton1.on("click",function(){
+		getUploadpic();
+	});
+
+	oPushButton2.on("click",function(){
+		$("#uploadPic_window").dialog("destroy");
+	});
+}
+
+var uploadPicStatus = false;
+var refreshTime=5;
+var uploadResult;
+
+function previewImg()
+{
+	var photoElmt = document.getElementById("photoUploadElmt");
+	var photoStatusElmt = document.getElementById("uploadPic_window_status");
+	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+	
+	var file = photoElmt.files[0];
+	
+	var fileType = file.type;
+	var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+	
+
+	if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+	{
+		var fileSize = file.fileSize/fileLimit;
+		if(fileSize > 2)
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+		}
+		else
+		{
+			photoStatusElmt.innerHTML = '';
+			var previewElmt = document.getElementById("Imgpreview");
+			previewElmt.src = file.getAsDataURL();
+			uploadPicStatus = true;
+		}
+	}
+	else
+	{
+		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+	}
+
+	
+
+}
+
+function getUploadpic()
+{
+	if(!uploadPicStatus)
+		return;
+	
+	uploadPicStatus = false;
+	var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				showUploadStatus();
+				
+			}
+		};
+
+	
+	YAHOO.util.Connect.setForm('uploadPicForm',true);
+	YAHOO.util.Connect.asyncRequest('POST', 'uploadPicAction.action', uploadHandler);
+}
+
+
+
+function showUploadStatus()
+{
+	if(refreshTime > 0)
+	{
+		var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		photoStatusElmt.innerHTML = uploadResult+" Page refreshing in "+refreshTime+" seconds.Please wait..";
+		refreshTime=refreshTime-1;
+		t=setTimeout("showUploadStatus()",1000);
+	}
+	else
+	{
+		$("#uploadPic_window").dialog("destroy");
+		window.location.reload();
+	}
+}
+
+
 function buildQuickRegionAccessContent()
 {	
 	var profElmt = document.getElementById("connectPeople_editProfile_center");
@@ -678,6 +838,7 @@ function buildQuickRegionAccessContent()
 		return;
 
 	var pStr = '<div style="margin-right:15px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a></div>';
+	pStr += '<div style="margin-right:15px;" <a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Upload picture</a></div>';
 	profElmt.innerHTML = pStr;
 
 	var str = '';
@@ -1545,7 +1706,18 @@ function buildReasonsProblemsTabContent()
 }
 
 function initializeConnectPeople()
-{
+{	
+	if(loginUserProfilePic == "")
+	{
+		var imgElmt = document.getElementById("userProfileImg");
+		imgElmt.src = "pictures/profiles/human.jpg";
+	}
+	else
+	{
+		var imgElmt = document.getElementById("userProfileImg");
+		imgElmt.src = "pictures/profiles/"+loginUserProfilePic;
+	}
+
 	initializeTabView();	
 	getAllRequestMessagesForUser();
 	buildReasonsProblemsTabContent();

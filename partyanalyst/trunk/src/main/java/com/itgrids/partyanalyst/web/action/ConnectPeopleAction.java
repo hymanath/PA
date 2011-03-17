@@ -1,14 +1,22 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,7 +36,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ConnectPeopleAction extends ActionSupport implements ServletRequestAware{
+public class ConnectPeopleAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 	
 	/**
 	 * 
@@ -63,7 +71,79 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 	private UserCommentsInfoVO userComments;
 	private String loginUserName;
 	private ProblemDetailsVO problemDetails;
+	private ServletContext context;
 	
+	private File upload;//The actual file
+    private String uploadContentType; //The content type of the file
+    private String uploadFileName;  
+    private ResultStatus uploadStatus;
+    private String photoUploadStatus;
+    private InputStream inputStream;
+    private String loginUserProfilePic;
+    
+    public String getLoginUserProfilePic() {
+		return loginUserProfilePic;
+	}
+
+
+	public void setLoginUserProfilePic(String loginUserProfilePic) {
+		this.loginUserProfilePic = loginUserProfilePic;
+	}
+
+
+	public InputStream getInputStream() {
+        return inputStream;
+    }
+
+	
+	public String getPhotoUploadStatus() {
+		return photoUploadStatus;
+	}
+
+	public void setPhotoUploadStatus(String photoUploadStatus) {
+		this.photoUploadStatus = photoUploadStatus;
+	}
+
+	public ResultStatus getUploadStatus() {
+		return uploadStatus;
+	}
+
+	public void setUploadStatus(ResultStatus uploadStatus) {
+		this.uploadStatus = uploadStatus;
+	}
+
+	public ServletContext getContext() {
+		return context;
+	}	
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
+
+	public File getUpload() {
+		return upload;
+	}
+
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public String getUploadContentType() {
+		return uploadContentType;
+	}
+
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
 	public DataTransferVO getConnectedUsers() {
 		return connectedUsers;
 	}
@@ -295,6 +375,10 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		List<Long> userId = new ArrayList<Long>(0);
 		loginUserId = user.getRegistrationID();
 		loginUserName = user.getFirstName()+" "+user.getLastName();
+		loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
+		/*if(user.getUserProfilePic() != null || user.getUserProfilePic() != "")
+			loginUserProfilePic = "pictures\\"+IConstants.PROFILE_PIC+"\\"+user.getUserProfilePic();*/
+				
 		userId.add(loginUserId);
 		
 		dataTransferVO = ananymousUserService.getDataForAUserProfile(userId,IConstants.COMPLETE_DETAILS);
@@ -693,4 +777,43 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	
+	public String uploadUserPic()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		BufferedImage image = null;
+        try {
+            
+            image = ImageIO.read(this.upload);
+            String constiName[] = uploadContentType.split("/");
+            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+            
+            String fileName = filePath+user.getRegistrationID()+"."+constiName[1];
+            //String fileName = filePath+this.uploadFileName;
+            String imageName =  user.getRegistrationID()+"."+constiName[1];
+            uploadStatus = ananymousUserService.saveUserProfileImageName(user.getRegistrationID(), imageName);
+                        
+            if(uploadStatus.getResultCode() > 0)
+            {
+            	ImageIO.write(image, constiName[1],new File(fileName));
+            	photoUploadStatus = "true";
+            	inputStream = new StringBufferInputStream("File Uploaded successfully");
+
+            }
+            else
+            {
+            	photoUploadStatus = "false";
+            	inputStream = new StringBufferInputStream("File not uploaded due to some exception");
+            }
+            	
+           request.setAttribute("uploadStatus", photoUploadStatus);
+ 
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }		
+		
+		return Action.SUCCESS;
+	}
 }
