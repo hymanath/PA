@@ -156,6 +156,8 @@
 	var partyId;
 	var selectedElecId=0;
 	var latestElectionYear = 2009;
+	var matchingCriteria;
+	
 	google.load("visualization", "1", {packages:["corechart"]});
 	
 	function callAjax(jsObj,url){
@@ -183,6 +185,7 @@
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
+							hideImg();
 						}else{
 							
 							buildDefaultDetails(results);							
@@ -271,6 +274,17 @@
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function hideImg()
+	{
+		var searchByConstituencyDataImgDiv = document.getElementById("searchByConstituencyDataIMG");
+		if(searchByConstituencyDataImgDiv)
+			searchByConstituencyDataImgDiv.style.display = 'block';
+
+		var imgDiv = document.getElementById("searchByDistrictDataIMG");
+		if(imgDiv)
+			imgDiv.style.display = 'block';		
+	}
+	
 	/*
 	/* Pie Chart for party results in new constituencies 
 	/* Interactive chart code by sai
@@ -947,6 +961,8 @@
 	
 	function getStates(selectedElmt)
 	{
+		buildSearchCriteria(selectedElmt);
+		
 		electionType = selectedElmt;		
 		var jsObj=
 		{	
@@ -1106,6 +1122,11 @@
 
 	function getConstituenciesByDistrict()
 	{
+		matchingCriteria = "DISTRICT";
+		
+		var imgDiv = document.getElementById("searchByDistrictDataIMG");
+		imgDiv.style.display = 'block';
+		
 		var enteredText = document.getElementById("searchByDistrictData").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
 		
@@ -1126,6 +1147,11 @@
 
 	function getConstituencies()
 	{
+		matchingCriteria = "CONSTITUENCY";
+		
+		var searchByConstituencyDataImgDiv = document.getElementById("searchByConstituencyDataIMG");
+		searchByConstituencyDataImgDiv.style.display = 'block';
+		
 		var enteredText = document.getElementById("searchByConstituencyData").value;
 		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
 		
@@ -1144,16 +1170,20 @@
 
 	}
 
-	function buildSearchCriteria()
+	function buildSearchCriteria(selectedElectionType)
 	{
 		var searchByDist = document.getElementById("searchByDistrict");
 		var searchByDistStr = '';
 		searchByDistStr += '	<table>';
-		searchByDistStr += 			'<tr>';
-		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By District</td>';
-		searchByDistStr += 			'	<td><input id="searchByDistrictData" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
-		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency</td>';
-		searchByDistStr += 			'	<td><input id="searchByConstituencyData" type="text" onkeyup="getConstituencies()"></input></td>';
+		searchByDistStr += 			'<tr>';		
+		if(selectedElectionType!="Parliament"){
+			searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By District';
+			searchByDistStr += 			'	<input id="searchByDistrictData" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
+			searchByDistStr += 			'	<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
+		}		
+		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency';
+		searchByDistStr += 			'	<input id="searchByConstituencyData" type="text" onkeyup="getConstituencies()"></input></td>';
+		searchByDistStr += 			'	<td><img style="display:none;" id="searchByConstituencyDataIMG" src="images/icons/search.gif"/></input></td>';
 		searchByDistStr += 			'</tr>';
 		searchByDistStr += '</table>';
 		
@@ -1162,7 +1192,15 @@
 	}
 	
 	function buildDefaultDetails(results)
-	{		
+	{	
+		if(matchingCriteria == "DISTRICT"){
+			var imgDiv = document.getElementById("searchByDistrictDataIMG");
+			imgDiv.style.display = 'none';
+		}else{
+			var searchByConstituencyDataImgDiv = document.getElementById("searchByConstituencyDataIMG");
+			searchByConstituencyDataImgDiv.style.display = 'none';
+		}		
+		
 		var dataTable = document.getElementById("dataTableBuild");
 
 		var data = results.requiredConstituenciesInfo.partiesStrengthsInfoVO;
@@ -1591,7 +1629,7 @@
 	getStatesOfAp('Assembly');
 	getDefaultFrequencyOfYears();
 	getDefaultParties();
-	buildSearchCriteria();
+	buildSearchCriteria('Assembly');
 	//validateAndForwardToAction();
 </script>
 
