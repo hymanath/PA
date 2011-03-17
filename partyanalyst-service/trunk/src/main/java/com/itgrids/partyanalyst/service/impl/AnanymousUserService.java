@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -1610,4 +1609,38 @@ public class AnanymousUserService implements IAnanymousUserService {
 		return problemDetailsVO;
 		
 	}
+	
+	public ResultStatus saveUserProfileImageName(Long userId,String imageName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		int result;
+		
+		try {			
+			result = ananymousUserDAO.saveUserProfileImageNameToDB(userId, imageName);
+			resultStatus.setResultCode(result);			
+			
+		} catch (Exception e) {
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setExceptionMsg("Exception encountered during update : "+e.getMessage());	
+			resultStatus.setResultCode(0);
+		}
+		return resultStatus;
+	}
+	
+	public String getUserProfileImageByUserId(Long userId)
+	{
+		String imageURL = "";
+		List params = ananymousUserDAO.getUserProfileImageNameByUserId(userId);
+		if(params != null && params.size() == 1)
+		{
+			if(params.get(0) != null)
+				imageURL = params.get(0).toString();
+			else
+				imageURL = "";
+		}
+		
+		return imageURL;
+	}
+	
+	
 }

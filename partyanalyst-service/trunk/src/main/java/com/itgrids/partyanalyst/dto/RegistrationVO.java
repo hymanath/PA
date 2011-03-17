@@ -51,6 +51,15 @@ public class RegistrationVO extends BaseDTO{
 	private Set<SelectOptionVO> parliaments = new HashSet<SelectOptionVO>(0);
 	private Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 	private Long parentUserId;
+	private String userProfilePic;
+
+	public String getUserProfilePic() {
+		return userProfilePic;
+	}
+
+	public void setUserProfilePic(String userProfilePic) {
+		this.userProfilePic = userProfilePic;
+	}
 
 	public Long getParentUserId() {
 		return parentUserId;
