@@ -325,7 +325,32 @@ public class PartyStrengthService implements IPartyStrengthService {
  		} 		
  	}
  	
- 	
+ 	public ElectionInfoVO getRequiredMatchingConstituencies(Long selectedNoOfYears,String electionType,Long stateId,String searchType,String searchText){
+ 		ElectionInfoVO resultVo = new ElectionInfoVO();
+ 		PartiesStrenghInfoVO partiesStrenghInfoVO = new PartiesStrenghInfoVO();
+ 		List<Long> requiredConstituencies = new ArrayList<Long>(0);
+ 		List<Long> selectedParties = new ArrayList<Long>(0);
+ 		List result = new ArrayList();
+		List allianceData = new ArrayList(0);
+ 		try{
+ 			partiesStrenghInfoVO = segregateAllConstituencies(selectedNoOfYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
+ 			requiredConstituencies = partiesStrenghInfoVO.getRequiredConstituencies();
+ 			selectedParties = staticDataService.getStaticPartiesAsList(stateId);
+ 			resultVo.setAllPartiesDetails(getPartyStrengthsAndWeaknessDetails(electionType,stateId,0l,selectedNoOfYears,allianceData,requiredConstituencies));
+ 			if(requiredConstituencies.size()!=0){
+ 				result =  nominationDAO.getAllPartyResultsBasedOnMatchingCriteria(stateId,requiredConstituencies,selectedParties,IConstants.ELECTION_SUBTYPE_MAIN,electionType,searchText,searchType);
+ 				resultVo.setRequiredConstituenciesInfo(getAllElectionData(requiredConstituencies,result,selectedNoOfYears,IConstants.REQUIRED_CONSTITUENCIES,electionType,stateId));
+ 			}	
+			else{
+				resultVo.setRequiredConstituenciesInfo(new ConstituencyElectionResults());
+			}	
+ 			resultVo.setPartyName("All Parties");
+ 			resultVo.setSelectedYearsCount(selectedNoOfYears);
+ 		}catch(Exception e){
+			e.printStackTrace();
+		} 
+ 		return resultVo;
+ 	}
  	/**
  	 * This method can can be used in order to get the details of a particular party. 
  	 * @param resultVo
