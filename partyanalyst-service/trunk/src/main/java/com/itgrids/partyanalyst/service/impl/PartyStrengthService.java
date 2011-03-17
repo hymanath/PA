@@ -1421,8 +1421,6 @@ public class PartyStrengthService implements IPartyStrengthService {
  			if(resultCount!=0){
  				List<Long> conIds = details.get(resultCount);
  	 			
- 	 			
- 	 			
  	 			if(excludeType!=null){
  						if(excludeType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
  							list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.WINNER_CANDIDATES);

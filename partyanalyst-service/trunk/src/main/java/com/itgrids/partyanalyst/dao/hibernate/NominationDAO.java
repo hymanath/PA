@@ -2491,6 +2491,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			query.append(" and model.candidateResult.rank != 1 ");
 		}
 		query.append(" and model.constituencyElection.constituency.state.stateId = ?");
+		query.append(" and model.constituencyElection.constituency.startDate is not null");
 		query.append(" and model.constituencyElection.constituency.deformDate is null");
 		
 		
