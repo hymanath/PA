@@ -1178,11 +1178,11 @@
 		searchByDistStr += 			'<tr>';		
 		if(selectedElectionType!="Parliament"){
 			searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By District';
-			searchByDistStr += 			'	<input id="searchByDistrictData" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
+			searchByDistStr += 			'	<input id="searchByDistrictData" title="Enter District Name" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
 			searchByDistStr += 			'	<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
 		}		
 		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency';
-		searchByDistStr += 			'	<input id="searchByConstituencyData" type="text" onkeyup="getConstituencies()"></input></td>';
+		searchByDistStr += 			'	<input id="searchByConstituencyData" title="Enter Constituency Name" type="text" onkeyup="getConstituencies()"></input></td>';
 		searchByDistStr += 			'	<td><img style="display:none;" id="searchByConstituencyDataIMG" src="images/icons/search.gif"/></input></td>';
 		searchByDistStr += 			'</tr>';
 		searchByDistStr += '</table>';
