@@ -240,3 +240,59 @@ table.partyResultsCriteriaTable td {
 	text-decoration:none;
 	margin:0px 3px 0px 3px;
 }
+
+/*======================
+	Photo Upload Styles
+======================*/
+
+#uploadPic_window
+{
+	background-color:#82898D;
+}
+
+#uploadPic_window_inner
+{
+	background-color:#FFFFFF;
+}
+
+#uploadPic_window_head
+{
+	background-color:#9AB0C3;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+#uploadPic_window_footer,#uploadPic_window_body
+{
+	padding:5px;
+}
+
+.uploadPic_string
+{
+	color:#69645B;
+	font-size:10px;
+}
+
+.errorStatusMsg
+{
+	color:red;
+	font-weight:bold;
+	font-size:10px;
+}
+
+.uploadPic_string_table th
+{
+	color:#69645B;
+	font-size:10px;
+	text-align:left;
+	padding:5px;
+}
+
+.uploadPic_string_table td
+{
+	color:#69645B;
+	font-size:10px;
+	text-align:left;
+	padding:5px;
+}

@@ -1653,6 +1653,13 @@
 			<result name="success">/jsp/connectPeoplePage.jsp</result>
 			<result name="NOT_LOGGED_IN">/jsp/loginForm.jsp?type=pm_login</result>			
 		</action>
+		
+		<action name="uploadPicAction" class="connectPeopleAction" method="uploadUserPic">			
+			<result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+			</result>						
+		</action>
+		
 		<action name="connectToUserAction" class="connectPeopleAction" method="connectToUser">
 			<result type="json" name="success">
 				<param name="root">userDetails</param>				
