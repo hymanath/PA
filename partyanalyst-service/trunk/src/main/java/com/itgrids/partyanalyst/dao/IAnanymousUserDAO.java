@@ -23,4 +23,8 @@ public interface IAnanymousUserDAO extends GenericDao<AnanymousUser, Long>{
 	public List getAnanymousUserLocationDetailsByIds(List<Long> userIds);
 	
 	public List getConnectedUsersCount(Long locationId,String locationType);
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName);
+	
+	public List getUserProfileImageNameByUserId(Long userId);
 }

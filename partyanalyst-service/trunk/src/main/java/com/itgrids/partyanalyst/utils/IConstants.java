@@ -421,4 +421,7 @@ public interface IConstants {
     public static final String REMAINING_CONSTITUENCIES = "REMAINING_CONSTITUENCIES";    
     public static final String LATEST_CONSTITUENCIES = "LATEST_CONSTITUENCIES";
     public static final String ALL_PARTIES = "ALL PARTIES";
+    
+    public static final String PROFILE_PIC = "profiles";
+    public static final String PROBLEM_PIC = "problems";
 }

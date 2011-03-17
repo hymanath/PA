@@ -84,7 +84,7 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(count);
 	}*/
 	
-	public void testGetAllUsersInSelectedLocations()
+	/*public void testGetAllUsersInSelectedLocations()
 	{
 		List<Long> locationId = new ArrayList<Long>();
 		locationId.add(232L);
@@ -92,5 +92,19 @@ public class AnanymousUserDAOHibernateTest extends BaseDaoTestCase {
 		List count = ananymousUserDAO.getAllUsersInSelectedLocations(locationId, IConstants.CONSTITUENCY_LEVEL, 5L, 0L, "A");
 		
 		System.out.println(count.size());
+	}*/
+	
+	/*public void testsaveUserProfileImageNameToDB()
+	{
+		int result = ananymousUserDAO.saveUserProfileImageNameToDB(21L, "kamalakar.jpg"); 
+		System.out.println(result);
+	}
+	*/
+	
+	public void testgetUserProfileImageNameByUserId()
+	{
+		List result = ananymousUserDAO.getUserProfileImageNameByUserId(new Long(21));
+		
+		System.out.println(result.size());
 	}
 }

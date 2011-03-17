@@ -123,4 +123,30 @@ public class AnanymousUserDAO extends GenericDaoHibernate<AnanymousUser, Long> i
 		return queryObject.list();
 		
 	}
+	
+	public Integer saveUserProfileImageNameToDB(Long userId, String imageName)
+	{		
+		StringBuilder query = new StringBuilder();
+		query.append("update AnanymousUser model set model.profileImg = ? where model.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, imageName);
+		queryObject.setParameter(1, userId);	
+		
+		return queryObject.executeUpdate();	
+		
+	}
+	
+	public List getUserProfileImageNameByUserId(Long userId)
+	{		
+		
+		StringBuilder query = new StringBuilder();
+		query.append("select model.profileImg from AnanymousUser model where model.userId = ?");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter(0, userId);
+		
+		return queryObject.list();	
+		
+	}
 }

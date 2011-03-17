@@ -57,8 +57,10 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private Set<UserConnectedto> userConnectedtorecepientId = new HashSet<UserConnectedto>(0); 
 	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
+	 private String profileImg;
+	
 	 
-	 public AnanymousUser()
+	public AnanymousUser()
 	 {
 		 
 	 }
@@ -305,8 +307,13 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	}
 
 	
-		
-	
+	@Column(name="profile_Img",length=100)
+	public String getProfileImg() {
+		return profileImg;
+	}
 
-	
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
+		
 }

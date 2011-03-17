@@ -198,6 +198,7 @@ public class LoginService implements ILoginService{
 			regVO.setUserType(reg.getUserType());
 			regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 			regVO.setParentUserId(reg.getParentUser() != null?reg.getParentUser().getRegistrationId():null);
+		
 			
 			if(reg.getParty() != null){
 				regVO.setParty(reg.getParty().getPartyId());
@@ -287,6 +288,7 @@ public class LoginService implements ILoginService{
 		regVO.setLastName(user.getLastName() != null ? user.getLastName() : "");
 		regVO.setUserType(IConstants.FREE_USER);
 		regVO.setUserStatus(IConstants.FREE_USER);
+		regVO.setUserProfilePic(user.getProfileImg());
 		
 		return regVO;
 	}

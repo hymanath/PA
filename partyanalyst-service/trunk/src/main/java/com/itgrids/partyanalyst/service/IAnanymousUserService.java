@@ -46,4 +46,8 @@ public interface IAnanymousUserService {
 	public ProblemDetailsVO getPostedProblemsCount(Long registrationId);
 	
 	public DataTransferVO getAllPeopleConnectedPeopleForUser(List<Long> userId);
+	
+	public ResultStatus saveUserProfileImageName(Long userId,String imageName);
+	
+	public String getUserProfileImageByUserId(Long userId);
 }	
