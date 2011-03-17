@@ -1142,14 +1142,16 @@ public class PartyStrengthService implements IPartyStrengthService {
 					zeroWonCons.setCount(0L);
 					
 					Long wonCount = 0l;
-					Long wonRecentCount = 0l;														
+					Long wonRecentCount = 0l;
+					Long lostRecentCount = 0l;	
 					for(int k=0;k<seVo.size();k++){
 						wonCount+=seVo.get(k).getWon();
 						wonRecentCount+=seVo.get(k).getWonRecently();
+						lostRecentCount+=seVo.get(k).getLostRecently();
 					}
 					zeroWonCons.setWon(requiredConstituencies.size()-wonCount);
 					zeroWonCons.setWonRecently(wonRecentCount);
-					zeroWonCons.setLostRecently(requiredConstituencies.size()-wonRecentCount);
+					zeroWonCons.setLostRecently(lostRecentCount);
 				
 					seVo.add(zeroWonCons);
 					
@@ -1414,20 +1416,45 @@ public class PartyStrengthService implements IPartyStrengthService {
  	 					partyOverview.put(partyId,partyDetailsVO);
  	 				} 							
  			}			
- 		 	 
- 			List<Long> conIds = details.get(resultCount);
- 			
- 			latestElecId = getLatestElecId(electionType,stateId);
  			List list =  new ArrayList();
- 			if(excludeType!=null){
-					if(excludeType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
-						list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.WINNER_CANDIDATES);
-					}else {
-						list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.SUCCESSOR_CANDIDATES);
+ 			latestElecId = getLatestElecId(electionType,stateId);
+ 			if(resultCount!=0){
+ 				List<Long> conIds = details.get(resultCount);
+ 	 			
+ 	 			
+ 	 			
+ 	 			if(excludeType!=null){
+ 						if(excludeType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
+ 							list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.WINNER_CANDIDATES);
+ 						}else {
+ 							list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.SUCCESSOR_CANDIDATES);
+ 						}
+ 					}else{
+ 						list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,null,IConstants.WINNER_CANDIDATES);
+ 					}	
+ 			}else{
+ 				List<Long> consIds = new ArrayList<Long>(0);
+ 				for(Map.Entry<Long,List<Long>> results : details.entrySet()){
+						consIds.addAll(results.getValue());
 					}
-				}else{
-					list = nominationDAO.getAllCandidateDetailsForAConstituency(conIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,null,IConstants.WINNER_CANDIDATES);
-				}		
+ 				if(excludeType==null){
+ 					List<Long> reqCons= new ArrayList<Long>();
+ 					if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+ 						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRequiredConstituencies();
+ 					else
+ 						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRemianingConstituencies();
+ 					reqCons.removeAll(consIds);
+ 					System.out.println(reqCons.size());
+ 					
+ 					list = nominationDAO.getAllCandidateDetailsForAConstituency(reqCons,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.OTHERS);
+ 	 				
+ 				}else if(excludeType.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
+ 					list = nominationDAO.getAllCandidateDetailsForAConstituency(consIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.WINNER_CANDIDATES);
+ 				}else{
+ 					list = nominationDAO.getAllCandidateDetailsForAConstituency(consIds,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.SUCCESSOR_CANDIDATES);
+ 				}
+ 			}
+ 				
  		 				
  			for(int i=0; i<list.size(); i++){
  				Object[] parms = (Object[])list.get(i); 				
