@@ -244,6 +244,20 @@
 						//buildExcludingAllianceData(results);	
 						buildIncludingAllianceData(results);	
 					}
+					if(jsObj.task =="getConstituenciesMatchingCriteria" || jsObj.task =="getConstituenciesByDistrictMatchingCriteria")
+					{
+						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
+							showRequiredConstituenciesErrorMessage(results);
+						}else{
+							
+							buildDefaultDetails(results);							
+							if(results.partyName=="All Parties"){
+								initializeResultsTable(results,"dataTableId","dataTableMainDiv","others");								
+							}else{
+								initializeResultsTable2(results,"dataTableId","dataTableMainDiv");								
+							}
+						}
+					}
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -1090,8 +1104,65 @@
 		showStates.innerHTML = populateStates;
 	}
 
-	function buildDefaultDetails(results)
+	function getConstituenciesByDistrict()
 	{
+		var enteredText = document.getElementById("searchByDistrictData").value;
+		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
+		
+		var jsObj=
+		{		
+				selectedNoOfYears : electionYearsSelect,
+				searchType : "DISTRICT",
+				searchText : enteredText,
+				stateId : selectedStateElmts,
+				electionType :electionType,		
+				task:"getConstituenciesByDistrictMatchingCriteria"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getConstituenciesByDistrictMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
+
+	function getConstituencies()
+	{
+		var enteredText = document.getElementById("searchByConstituencyData").value;
+		var electionYearsSelect = document.getElementById("electionYearsSelect").value;
+		
+		var jsObj=
+		{		
+				selectedNoOfYears : electionYearsSelect,
+				searchType : "CONSTITUENCY",
+				searchText : enteredText,
+				stateId : selectedStateElmts,
+				electionType :electionType,		
+				task:"getConstituenciesMatchingCriteria"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getConstituenciesMatchingCriteria.action?"+rparam;						
+		callAjax(jsObj,url);
+
+	}
+
+	function buildSearchCriteria()
+	{
+		var searchByDist = document.getElementById("searchByDistrict");
+		var searchByDistStr = '';
+		searchByDistStr += '	<table>';
+		searchByDistStr += 			'<tr>';
+		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By District</td>';
+		searchByDistStr += 			'	<td><input id="searchByDistrictData" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
+		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency</td>';
+		searchByDistStr += 			'	<td><input id="searchByConstituencyData" type="text" onkeyup="getConstituencies()"></input></td>';
+		searchByDistStr += 			'</tr>';
+		searchByDistStr += '</table>';
+		
+		searchByDistStr += '';
+		searchByDist.innerHTML = searchByDistStr;		
+	}
+	
+	function buildDefaultDetails(results)
+	{		
 		var dataTable = document.getElementById("dataTableBuild");
 
 		var data = results.requiredConstituenciesInfo.partiesStrengthsInfoVO;
@@ -1421,7 +1492,15 @@
 							</div>
 							<div id="required_const_body">
 									<div id="newConstAncSpan" class="mandalNamesDiv">		
-									<table>										
+									<table>		
+										<tr>
+											<td>
+												<div id="searchByDistrict" align="left"></div>
+											</td> 
+											<td>
+												<div id="searchByConstituency" align="left"></div>
+											</td> 
+										</tr>								
 										<tr>
 											<td>
 												<div id="dataTableBuild" class="yui-skin-sam" align="left"></div>
@@ -1512,6 +1591,7 @@
 	getStatesOfAp('Assembly');
 	getDefaultFrequencyOfYears();
 	getDefaultParties();
+	buildSearchCriteria();
 	//validateAndForwardToAction();
 </script>
 

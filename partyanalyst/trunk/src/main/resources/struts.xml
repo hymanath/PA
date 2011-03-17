@@ -2265,6 +2265,20 @@
 			<result type="json" name="success">
 				<param name="root">alliancesYears</param>							
 			</result>		
+		</action>
+		
+		
+		<action name="getConstituenciesByDistrictMatchingCriteria" class="partyStrengthAction" method="getDataMatchingCriteriaAjaxAction">
+			<result type="json" name="success">
+				<param name="root">details</param>							
+			</result>		
+		</action>
+		
+		
+		<action name="getConstituenciesMatchingCriteria" class="partyStrengthAction" method="getDataMatchingCriteriaAjaxAction">
+			<result type="json" name="success">
+				<param name="root">details</param>							
+			</result>		
 		</action>	   		       	
 	</package>
 </struts>      
