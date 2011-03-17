@@ -43,7 +43,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private String partyRadio;
 	private String party;
 	private List<PartiesDetailsVO> requiredConstituencyDetails;
-	private ElectionInfoVO electionInfo,excludingAlliance,includingAlliance;	
+	private ElectionInfoVO electionInfo,excludingAlliance,includingAlliance,details;	
 	private PartiesDetailsVO alliancesYears;
 	private int errorCode = 0;
 	
@@ -56,6 +56,12 @@ public class PartyStrengthAction extends ActionSupport implements
 
 	public List<SelectOptionVO> getAllParties() {
 		return allParties;
+	}
+	public ElectionInfoVO getDetails() {
+		return details;
+	}
+	public void setDetails(ElectionInfoVO details) {
+		this.details = details;
 	}
 	public PartiesDetailsVO getAlliancesYears() {
 		return alliancesYears;
@@ -394,6 +400,29 @@ public class PartyStrengthAction extends ActionSupport implements
 		}		
 		return SUCCESS;  
 	}
+
 	
+	public String getDataMatchingCriteriaAjaxAction(){
+		String param=null;		
+		param=request.getParameter("task");
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			Long selectedNoOfYears = jObj.getLong("selectedNoOfYears");	
+			String electionType = jObj.getString("electionType");	
+			Long stateId = jObj.getLong("stateId");
+			String searchType = jObj.getString("searchType");			
+			String searchText = jObj.getString("searchText");
+			
+			details = partyStrengthService.getRequiredMatchingConstituencies(selectedNoOfYears,electionType,stateId,searchType,searchText);			
+		}catch(Exception e){
+			e.printStackTrace();			
+		}		
+		return SUCCESS;  
+	}
 	
 }
