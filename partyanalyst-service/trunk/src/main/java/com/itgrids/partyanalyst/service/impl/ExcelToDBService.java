@@ -145,8 +145,11 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 
 private Candidate checkAndInsertCandidate(CandidateElectionResult candidateRes) throws Exception{
 	Candidate candidate = candidateDAO.findCandidateByLastName(candidateRes.getCandidateName());
+	Boolean hasData = false;
 	
+	//if candidate data not available 
 	if(candidate == null){
+		
 		candidate = new Candidate();
 		candidate.setLastname(candidateRes.getCandidateName());
 		
@@ -158,6 +161,24 @@ private Candidate checkAndInsertCandidate(CandidateElectionResult candidateRes) 
 			candidate.setGender(candidateRes.getSex());
 		
 		candidate = candidateDAO.save(candidate);
+	}
+	
+	//if candidate exists
+	else{
+		//check for candidate education details
+		if(candidateRes.getEducation() != null && !"".equalsIgnoreCase(candidateRes.getEducation())){
+			candidate.setEducation(candidateRes.getEducation());
+			hasData = true;
+		}
+		
+		if(candidateRes.getSex() != null && !"".equalsIgnoreCase(candidateRes.getSex())){
+			candidate.setGender(candidateRes.getSex());
+			hasData = true;
+		}
+		
+		if(hasData)
+			candidate = candidateDAO.save(candidate);
+		
 	}
 	
 	return candidate;
