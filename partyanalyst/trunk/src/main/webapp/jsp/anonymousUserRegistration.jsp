@@ -140,12 +140,16 @@ function callAJAX(jsObj,url){
 	}
 	
 function checkAvailability()
-{
+{ debugger;
  	var name = document.getElementById("userNameField").value;
  	
- 	if(name==""){
+		if(name==""){
 		document.getElementById("errorMessageDiv").innerHTML = "UserName field cannot be empty";
- 	 }else{ 	 	
+ 	 }
+	 else if (name = "/[\s]/"){
+		 document.getElementById("errorMessageDiv").innerHTML = "UserName Should not contain spaces";
+ 	 }
+     else{ 	 	
  		document.getElementById("errorMessageDiv").innerHTML = " ";
  		var jsObj=
 		{		
@@ -169,13 +173,56 @@ function showDetails(results)
 	}
 	result.innerHTML = str;
 }
+ /*function dobValidation()
+ {
+	 var dob = document.getElementById("dateOfBirthField");
+
+ }
+*/
+
+
+
+var uploadPicStatus = false;
+function uploadImageFile()
+{
+    var photoElmt = document.getElementById("uploadFileId");
+	var photoStatusElmt = document.getElementById("uploadPic_window_status");
+	var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+	
+	var file = photoElmt.files[0];
+	
+	var fileType = file.type;
+	var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+	
+
+	if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+	{
+		var fileSize = file.fileSize/fileLimit;
+		if(fileSize > 2)
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+		}
+		else
+		{
+			photoStatusElmt.innerHTML = '';
+			var previewElmt = document.getElementById("Imgpreview");
+			previewElmt.src = file.getAsDataURL();
+			uploadPicStatus = true;
+		}
+	}
+	else
+	{
+		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+	}
+ }
+
 </script>
 <style type="text/css">
     fieldset {
 		border:2px solid #CFD6DF;
 		margin-bottom:10px;
 		padding:10px;
-		width:379px;
+		width:450px;
 	}
 	legend {
 		background-color:#567AAF;
@@ -186,7 +233,7 @@ function showDetails(results)
 </style>
 </head>  
 <body>  
-<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple">  
+<s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data">  
    <br><br>
   <div id="headerDiv" style="margin-right: 500px;font-size:20px;text-decoration:underline;" > 
    <c:if test="${empty registrationId}">
@@ -242,25 +289,39 @@ function showDetails(results)
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></td>
 						<td><s:textfield id="nameField" name="firstName"/>  </td>
+						<td></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('lastName')}" /></td>
 						<td><s:textfield id="userNameField" name="lastName"/>  </td>
+						<td></td>
+						<td rowspan="4"><img id="Imgpreview" height="100" width="90" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></td>
 					</tr>					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="#session.gender"/>  </td>			
+						<td><s:radio id="genderField" name="gender" list="#session.gender"/>  </td>	
+						<td></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
+							<s:textfield id="dateOfBirthField" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
 						 </td>
-						<td>
+						 <td>
 							<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
 						</td>
+
 					</tr>
+					<tr>
+					<td width="100px;"><font class="requiredFont">*</font>Upload Your Photo</td>
+					<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" onchange="uploadImageFile()"/></td>					
+				    </tr>
+
+					<tr>
+					<td width="100px;"></td>
+					<td colspan="2"><div id="uploadPic_window_status"></div></td>
+				    </tr>
 				  </table>
 				</div>
 				</FIELDSET>
