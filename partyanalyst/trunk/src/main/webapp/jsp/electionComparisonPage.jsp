@@ -247,7 +247,7 @@ var yearsPopulation={
 			var electionFlag=0;				
 			if(yearsPopulation.allYearsArray.length==1)
 			{		
-				message+=selectedParty;
+				//message+=selectedParty;
 				message+=" ";
 				message+='<%=oneElectionMsg %>';
 				message+='<br/>';		
