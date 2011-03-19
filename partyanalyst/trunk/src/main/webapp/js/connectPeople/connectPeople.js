@@ -61,6 +61,12 @@ var selectedmessage = null;
 var connectStatus = [];
 var constituencies = [];
 
+var uploadPicStatus = false;
+var refreshTime=5;
+var uploadResult;
+var oPushButton1;
+var oPushButton2;
+
 function initializeTabView()
 {
 	var myTabs = new YAHOO.widget.TabView();
@@ -728,8 +734,8 @@ function uploadUserPic()
 	str += '<div id="uploadPic_window_footer" class="yui-skin-sam">';
 	str += '<table width="100%">';
 	str += '<tr>';
-	str += '<th width="60%"><div id="uploadPic_window_status"></div></th>';
-	str += '<td width="40%"><input type="button" value="Upload" id="uploadPicButton"/>';
+	str += '<th width="60%" valign="top"><div id="uploadPic_window_status"></div></th>';
+	str += '<td width="40%" valign="top"><input type="button" value="Upload" id="uploadPicButton"/>';
 	str += '<input type="button" value="Cancel" id="cancelPicButton"/>';	
 	str += '</td>';
 	str += '</tr>';
@@ -738,10 +744,13 @@ function uploadUserPic()
 
 	elmt.innerHTML = str;
 
-	var oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
-	var oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
+	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
+	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
 	
 	oPushButton1.on("click",function(){
+		var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+		
 		getUploadpic();
 	});
 
@@ -749,10 +758,6 @@ function uploadUserPic()
 		$("#uploadPic_window").dialog("destroy");
 	});
 }
-
-var uploadPicStatus = false;
-var refreshTime=5;
-var uploadResult;
 
 function previewImg()
 {
@@ -794,13 +799,14 @@ function getUploadpic()
 {
 	if(!uploadPicStatus)
 		return;
-	
+		
+	oPushButton1.set('disabled', true)	
 	uploadPicStatus = false;
+
 	var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
-				showUploadStatus();
-				
+				showUploadStatus();				
 			}
 		};
 
@@ -816,7 +822,7 @@ function showUploadStatus()
 	if(refreshTime > 0)
 	{
 		var photoStatusElmt = document.getElementById("uploadPic_window_status");
-		photoStatusElmt.innerHTML = uploadResult+" Page refreshing in "+refreshTime+" seconds.Please wait..";
+		photoStatusElmt.innerHTML = "<font color='#473E37'>"+uploadResult+" Page refreshing in "+refreshTime+" seconds.Please wait..</font>";
 		refreshTime=refreshTime-1;
 		t=setTimeout("showUploadStatus()",1000);
 	}

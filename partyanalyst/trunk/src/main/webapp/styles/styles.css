@@ -247,7 +247,7 @@ table.partyResultsCriteriaTable td {
 
 #uploadPic_window
 {
-	background-color:#82898D;
+	background-color:#877979;
 }
 
 #uploadPic_window_inner
@@ -261,6 +261,7 @@ table.partyResultsCriteriaTable td {
 	color:#FFFFFF;
 	font-weight:bold;
 	padding:5px;
+	background-image:url("../images/icons/homePage_new/accordianHeader_selected.jpeg");
 }
 
 #uploadPic_window_footer,#uploadPic_window_body
@@ -295,4 +296,15 @@ table.partyResultsCriteriaTable td {
 	font-size:10px;
 	text-align:left;
 	padding:5px;
+}
+
+#uploadPic_window_status
+{	
+	font-size:11px;
+	text-align:left;
+}
+
+#uploadPic_window_status pre
+{
+	margin:0px;
 }
