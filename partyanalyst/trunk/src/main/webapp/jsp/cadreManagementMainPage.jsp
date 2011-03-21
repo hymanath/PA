@@ -69,7 +69,14 @@
 
 <link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
 <!-- Local script and css files (End)-->
+<style>
 
+#errorMsgDiv {
+    
+	color: #E92B2B;
+    font-weight: bold;
+			}
+</style>
 	
 
 <script type="text/javascript">
@@ -2410,6 +2417,7 @@
 		var eventStr='';
 		eventStr+='<div class="hd">Enter New Event Details...</div> ';
 		eventStr+='<div class="bd">'; 
+		eventStr+='<div id="errorMsgDiv"></div>';
 		eventStr+='<div id="eventDetailsDiv"><table class="selectedDateEvent">';
 		eventStr+='<tr>';
 		eventStr+='<th>Event Name</th>';
@@ -3298,7 +3306,17 @@
 
 		var descVal = document.getElementById("descTextArea").value;
 		descVal = removeEnterStrokeForString(descVal);
-
+		 
+		 //validation code
+		 if(eventNameVal == '')
+		{
+		  document.getElementById("errorMsgDiv").innerHTML = "please enter event name";
+		}
+		else if(descVal == '')
+		{
+		  document.getElementById("errorMsgDiv").innerHTML = "Please Enter Description";
+		}
+        else {
 		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
 		locationLevelFieldval = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].text.toUpperCase();		
 		
@@ -3341,6 +3359,7 @@
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 
 		callAjax(selectedEventObj,url);
+		}
 	}
 
 	function handleCancel()
@@ -3359,8 +3378,10 @@
 		divChild.setAttribute('class','yui-skin-sam');
 		
 		var eventStr='';
+		
 		eventStr+='<div class="hd">New Date</div> ';
 		eventStr+='<div class="bd">'; 
+		eventStr+='<div id="errorMesgDIV"><font color="red"</font></div>';
 		eventStr+='<table>';
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date Title</th>';
@@ -3436,7 +3457,7 @@
 
 	function handleImpDateSubmit()
 	{	
-		
+		debugger;
 		var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
 		var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
 		var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
@@ -3445,8 +3466,20 @@
 
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
+		
+		if(ImpeventNameVal == '')
+		{ 
+			alert(ImpeventNameVal);
+			document.getElementById("errorMesgDIV").innerHTML = "please enter title";
+        }
+	 if(ImpDescVal == '')
+		{
+			alert(ImpDescVal);
+          document.getElementById("errorMesgDIV").innerHTML = "please enter description";
+		}
 
-		if(repeatFreqVal == "No Repeat")
+
+		 if(repeatFreqVal == "No Repeat")
 			ImpendDateVal = ImpstartDateVal;
 		
 		selectedDateObj.importantDateId="";
@@ -3460,6 +3493,7 @@
 		selectedDateObj.isDeleted=repeatFreqVal;
 		selectedDateObj.task="createImpDateEvent";
 	
+		// validation code
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedDateObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
