@@ -27,6 +27,27 @@ String parliamentConstiId = "";
 String taskType = "";
 String problemHistoryId = "";
 
+String electionId1 = "";
+String electionId2 = "";
+String party = "";
+String allianceCheck = "";
+
+if(request.getParameter("electionId1")!=null){
+	electionId1 = request.getParameter("electionId1");
+}
+if(request.getParameter("party")!=null){
+	party = request.getParameter("party");
+}
+
+if(request.getParameter("allianceCheck")!=null){
+	allianceCheck = request.getParameter("allianceCheck");
+}
+
+if(request.getParameter("electionId2")!=null){
+	electionId2 = request.getParameter("electionId2");
+}
+
+
 if(request.getParameter("parliamentConstiId")!=null){
 	parliamentConstiId = request.getParameter("parliamentConstiId");
 }
@@ -263,6 +284,10 @@ if(request.getParameter("problemHistoryId")!=null){
 							<input type="hidden" name="taskType" value="<%=taskType %>" />
 							<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />
 							<input type="hidden" name="problemHistoryId" value="<%=problemHistoryId%>" />
+							<input type="hidden" name="electionId1" value="<%=electionId1%>" />
+							<input type="hidden" name="electionId2" value="<%=electionId2%>" />
+							<input type="hidden" name="party" value="<%=party%>" />
+							<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />
 								
 							<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 							<c:remove var="USER_REG_SUCCESS" scope="session" />
@@ -344,7 +369,12 @@ if(request.getParameter("problemHistoryId")!=null){
 								<input type="hidden" name="districtName" value="<%=districtName %>" />
 								<input type="hidden" name="constituencyName" value="<%=constituencyName %>" />	
 								<input type="hidden" name="taskType" value="<%=taskType %>" />
-								<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />									
+								<input type="hidden" name="parliamentConstiId" value="<%=parliamentConstiId %>" />		
+								<input type="hidden" name="electionId1" value="<%=electionId1%>" />
+								<input type="hidden" name="electionId2" value="<%=electionId2%>" />
+								<input type="hidden" name="party" value="<%=party%>" />
+								<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />			
+								
 								<table  class="loginDetailTable">
 									<tr>
 										<td>
