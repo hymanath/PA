@@ -367,7 +367,12 @@ body
 		var newPercentValue = '';
 		var postConfirmElmt = document.getElementById("commentsDialogDiv_content");
 		var decimalValue = '';
+			var alphabet = "/^[a-zA-Z]+$/";
+			if(!commentVal.match(alphabet))
+		     {
+                 alert("Special characters not allowed");
 				
+			 }	
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
