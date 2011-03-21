@@ -56,6 +56,43 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String taskType;
     private Long problemHistoryId;
     
+    private String party;
+	private String electionId1;
+	private String electionId2;
+	private String allianceCheck;
+    
+	public String getParty() {
+		return party;
+	}
+
+	public void setParty(String party) {
+		this.party = party;
+	}
+
+	public String getElectionId1() {
+		return electionId1;
+	}
+
+	public void setElectionId1(String electionId1) {
+		this.electionId1 = electionId1;
+	}
+
+	public String getElectionId2() {
+		return electionId2;
+	}
+
+	public void setElectionId2(String electionId2) {
+		this.electionId2 = electionId2;
+	}
+
+	public String getAllianceCheck() {
+		return allianceCheck;
+	}
+
+	public void setAllianceCheck(String allianceCheck) {
+		this.allianceCheck = allianceCheck;
+	}
+
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
 	}
