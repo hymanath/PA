@@ -286,7 +286,7 @@ var yearsPopulation={
 				return false;
 			}else{
 				document.electionComparisionForm.action="electionComparisonReportAction.action";
-				document.electionComparisionForm.method="post"
+				document.electionComparisionForm.method="get"
 				document.electionComparisionForm.submit();
 				return true;							
 			}	
