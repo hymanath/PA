@@ -140,13 +140,13 @@ function callAJAX(jsObj,url){
 	}
 	
 function checkAvailability()
-{ debugger;
- 	var name = document.getElementById("userNameField").value;
+{ 
+	var name = document.getElementById("userNameField").value;
  	
 		if(name==""){
 		document.getElementById("errorMessageDiv").innerHTML = "UserName field cannot be empty";
  	 }
-	 else if (name = "/[\s]/"){
+	 else if (name.indexOf(" ")>0){
 		 document.getElementById("errorMessageDiv").innerHTML = "UserName Should not contain spaces";
  	 }
      else{ 	 	
@@ -173,15 +173,7 @@ function showDetails(results)
 	}
 	result.innerHTML = str;
 }
- /*function dobValidation()
- {
-	 var dob = document.getElementById("dateOfBirthField");
-
- }
-*/
-
-
-
+ 
 var uploadPicStatus = false;
 function uploadImageFile()
 {
@@ -305,7 +297,7 @@ function uploadImageFile()
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:textfield id="dateOfBirthField" name="dateOfBirth" size="25"/>
+							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
 						 </td>
 						 <td>
