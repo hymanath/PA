@@ -438,15 +438,14 @@ function sendMessageToConnectedUser(userId,type)
 function showMessageSentConfirmation(results)
 {
 	var elmt = document.getElementById("connectStatus");
-
-	if(results.resuktCode != 0)
+    if(results.resultCode == 0)
 	{
 		elmt.innerHTML = '<blink><font color="green">Message Sent Successfully..</font></blink>';
 		var t=setTimeout("closeMessagePopup()",2000);
 	}
 	else
 	{
-		elmt.innerHTML = 'Message Cannot Be sent Due To Some Technical Difficulties';
+		elmt.innerHTML = '<font color="red">Message Cannot Be sent Due To Some Technical Difficulties<font>';
 	}
 }
 
