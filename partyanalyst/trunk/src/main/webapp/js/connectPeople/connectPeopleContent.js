@@ -637,7 +637,7 @@ function sendMessageToConnectedUser(userId,type)
 	var connectMsg = connectTextAreaElmt.value;
 	
 	var jsObj ={
-				loginUserId:userId,
+				loginUserId:loginUserId,
 				message:connectMsg,				
 				recipientId:userId,
 				type:type,
