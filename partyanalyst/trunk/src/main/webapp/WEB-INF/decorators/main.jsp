@@ -233,7 +233,7 @@
 							</li>
 						</c:if>
 						
-						<c:if test="${sessionScope.loginStatus != 'out' && sessionScope.UserType != 'PartyAnalyst'}">  
+						<c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
 						<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 							</li>
