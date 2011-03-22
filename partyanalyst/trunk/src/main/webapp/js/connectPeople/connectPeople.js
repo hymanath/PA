@@ -177,7 +177,7 @@ function buildInboxMessagesForUser()
 		str += '</div>';
 		str += '<div id="msgDivBody_'+i+'" class="msgDiv_body" style="display:none;">';
 		str += '<div>'+arrData[i].msg+'</div>';
-		str += '<div style="text-align:right;" id="replyDiv_'+i+'"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].recepientId+'\',\''+arrData[i].candidateName+'\',\'Message\')">Reply</a></div>';
+		str += '<div style="text-align:right;" id="replyDiv_'+i+'"><a href="javascript:{}" onclick="showMailPopup(\''+arrData[i].id+'\',\''+arrData[i].candidateName+'\',\'Message\')">Reply</a></div>';
 		str += '</div>';
 		str += '</div>';
 	}
