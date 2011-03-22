@@ -212,7 +212,7 @@ var loginStatus = '${loginStatus}';
 	<div id="homePageContainer" style="overflow:visible;">
 		<div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
-				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedBack.jpeg"/></a>
+				<a href="javascript:{}" onclick="showFeedBackFormPanel()"><img width="25" height="100" style="border:0px none;" src="images/icons/homePage_new/feedback_new.jpg"/></a>
 				<div id="floatingDiv_absolute_close" >
 					<img width="13" height="14" id="floatingDiv_absolute_close_Img" onclick="javascript:{$('#floatingDiv_relative_main').hide();}" src="images/icons/homePage_new/feedback_close.jpeg">
 				</div>
