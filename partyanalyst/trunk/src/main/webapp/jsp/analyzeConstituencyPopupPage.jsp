@@ -354,6 +354,7 @@ body
 
 	function handleAddCommentsSubmit(id,category,constituencyId,candidate,constituency,party,rank)
 	{
+		
 		var commentVal = document.getElementById("commentText").value; 
 		var postedByVal = document.getElementById("commentPostedByText").value;
 		var partyId;
@@ -367,12 +368,20 @@ body
 		var newPercentValue = '';
 		var postConfirmElmt = document.getElementById("commentsDialogDiv_content");
 		var decimalValue = '';
-			var alphabet = "/^[a-zA-Z]+$/";
-			if(!commentVal.match(alphabet))
+			var alphabet =  /[a-zA-Z]+$/;
+			if(commentVal.match(alphabet))
 		     {
-                 alert("Special characters not allowed");
-				
-			 }	
+               if(postedByVal.match(alphabet));
+				 
+			 else{
+				   alertMessageEl.innerHTML ='Special characters not allowed in PostedBy';
+				   return false;
+				 }
+			 } 
+			else{
+				  alertMessageEl.innerHTML ='Special characters not allowed in Description';
+				  return false;
+				 }
 		if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
