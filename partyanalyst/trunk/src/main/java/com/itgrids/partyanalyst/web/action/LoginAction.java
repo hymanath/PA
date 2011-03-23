@@ -60,7 +60,17 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String electionId1;
 	private String electionId2;
 	private String allianceCheck;
+	private String selectedPartyName;
     
+	
+	public String getSelectedPartyName() {
+		return selectedPartyName;
+	}
+
+	public void setSelectedPartyName(String selectedPartyName) {
+		this.selectedPartyName = selectedPartyName;
+	}
+
 	public String getParty() {
 		return party;
 	}
@@ -360,7 +370,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
  		}else if("1".equalsIgnoreCase(userType))
  			return IConstants.PARTY_ANALYST_USER;
  		
- 		return IConstants.FREE_USER;
+ 		return IConstants.FREE_USER;        
 	}
 
 	public String getRedirectPageDetails(){
