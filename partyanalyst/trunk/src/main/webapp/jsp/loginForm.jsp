@@ -31,7 +31,11 @@ String electionId1 = "";
 String electionId2 = "";
 String party = "";
 String allianceCheck = "";
+String selectedPartyName="";
 
+if(request.getParameter("selectedPartyName")!=null){
+	selectedPartyName = request.getParameter("selectedPartyName");
+}
 if(request.getParameter("electionId1")!=null){
 	electionId1 = request.getParameter("electionId1");
 }
@@ -288,6 +292,7 @@ if(request.getParameter("problemHistoryId")!=null){
 							<input type="hidden" name="electionId2" value="<%=electionId2%>" />
 							<input type="hidden" name="party" value="<%=party%>" />
 							<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />
+							<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />
 								
 							<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 							<c:remove var="USER_REG_SUCCESS" scope="session" />
@@ -373,7 +378,9 @@ if(request.getParameter("problemHistoryId")!=null){
 								<input type="hidden" name="electionId1" value="<%=electionId1%>" />
 								<input type="hidden" name="electionId2" value="<%=electionId2%>" />
 								<input type="hidden" name="party" value="<%=party%>" />
-								<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />			
+								<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />	
+								<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />	
+								
 								
 								<table  class="loginDetailTable">
 									<tr>
