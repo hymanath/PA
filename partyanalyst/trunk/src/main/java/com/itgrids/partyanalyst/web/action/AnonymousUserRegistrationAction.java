@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -46,10 +50,42 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
     private Long loginUserId;
-    
-	private RegistrationVO regVO = new RegistrationVO();
+    private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
+   
+	//For UserImage
+    private File uploadImage;
+    private String uploadImageContentType;
+    private String uploadImageFileName;
+    private ServletContext context;
+    
+    
+	
+	public String getUploadImageContentType() {
+		return regVO.getUserProfilePic();
+	}
+	public void setUploadImageContentType(String uploadImageContentType) {
+		this.regVO.setUserProfilePic(uploadImageContentType);
+	}
+	public String getUploadImageFileName() {
+		return uploadImageFileName;
+	}
+	public void setUploadImageFileName(String uploadImageFileName) {
+		this.uploadImageFileName = uploadImageFileName;
+	}
+	public File getUploadImage() {
+		return uploadImage;
+	}
+	public void setUploadImage(File uploadImage) {
+		this.uploadImage = uploadImage;
+	}
+	public ServletContext getContext() {
+		return context;
+	}
+	public void setContext(ServletContext context) {
+		this.context = context;
+	}
 	
 	public IAnanymousUserService getAnanymousUserService() {
 		return ananymousUserService;
@@ -145,6 +181,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	
 	//User Contact Details validation
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
 	public void setMobile(String mobile) {
 		this.regVO.setMobile(mobile);
 	}
@@ -207,8 +245,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getPhone() {
 		return regVO.getPhone();
 	}
-	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Mobile Number", shortCircuit = true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Mobile number", minLength = "10", maxLength = "12")	
+	@RegexFieldValidator(type = ValidatorType.FIELD, expression = "^([789]{1})([012346789]{1})([0-9]{8})$", message = "Invalid Telephone Number", shortCircuit = true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Invalid Telephone number", minLength = "10", maxLength = "12")	
 	public void setPhone(String phone) {
 		this.regVO.setPhone(phone);
 	}
@@ -277,25 +315,42 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 	public String execute(){
 		
+		
 		Boolean savedSuccessfully;
 		
-		if(registrationId != null){
-			loginUserId = registrationId;
-			regVO.setRegistrationID(registrationId);
-			savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
-		}else
-			savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
-			
-		if(savedSuccessfully){
-			
-			HttpSession session = request.getSession();			
-			String userFullName = regVO.getFirstName().concat(" ").concat(regVO.getLastName()); 
-			regVO.setUserStatus(IConstants.FREE_USER);
-			session.setAttribute(IConstants.USER,regVO);
-			session.setAttribute("UserName", userFullName);
-			session.setAttribute("loginStatus", "out");
-			session.setAttribute("HiddenCount", 0);
-		}
+		/*BufferedImage imageFile = null;
+        try {
+            
+        	imageFile = ImageIO.read(this.uploadImage);
+            String constiName[] = uploadImageContentType.split("/");
+            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+            
+            String fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
+            String imageName =  regVO.getRegistrationID()+"."+constiName[1];    
+          	
+            ImageIO.write(imageFile, constiName[1],new File(fileName));
+        }*/
+          
+            if(registrationId != null){
+				loginUserId = registrationId;
+				regVO.setRegistrationID(registrationId);
+				//regVO.setUserProfilePic(imageName);
+				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
+			}else
+				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+				
+			if(savedSuccessfully){	
+				
+				HttpSession session = request.getSession();			
+				String userFullName = regVO.getFirstName().concat(" ").concat(regVO.getLastName()); 
+				regVO.setUserStatus(IConstants.FREE_USER);
+				session.setAttribute(IConstants.USER,regVO);
+				session.setAttribute("UserName", userFullName);
+				session.setAttribute("loginStatus", "out");
+				session.setAttribute("HiddenCount", 0);
+			}
+        
+        
 		
 		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();
