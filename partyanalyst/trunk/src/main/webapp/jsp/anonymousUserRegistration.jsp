@@ -146,7 +146,7 @@ function checkAvailability()
 		if(name==""){
 		document.getElementById("errorMessageDiv").innerHTML = "UserName field cannot be empty";
  	 }
-	 else if (name.indexOf(" ")>0){
+	 else if (name.charAt(0).indexOf(" ")==0){
 		 document.getElementById("errorMessageDiv").innerHTML = "UserName Should not contain spaces";
  	 }
      else{ 	 	
