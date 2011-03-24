@@ -306,7 +306,7 @@ function uploadImageFile()
 
 					</tr>
 					<tr>
-					<td width="100px;"><font class="requiredFont">*</font>Upload Your Photo</td>
+					<td width="100px;">Upload Your Photo</td>
 					<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" onchange="uploadImageFile()"/></td>					
 				    </tr>
 
@@ -324,7 +324,7 @@ function uploadImageFile()
 									
 					<tr>
 						<td width="100px;"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
-						<td><s:textfield id="mobileField" name="mobile"/>  </td>
+						<td><s:textfield id="mobileField" name="mobile" maxlength="12"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /></td>
