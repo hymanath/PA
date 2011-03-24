@@ -131,7 +131,7 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Description field is mandatory",shortCircuit=true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Description Should be below 500 characters ", minLength = "5", maxLength = "500")	
+	@StringLengthFieldValidator(type = ValidatorType.FIELD, message = "Description Should be below 500 characters ", maxLength = "500")	
 	public void setDescription(String description) {
 		this.problemBeanVO.setDescription(description);
 	}
