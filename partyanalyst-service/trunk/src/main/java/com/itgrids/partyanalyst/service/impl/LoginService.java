@@ -282,6 +282,11 @@ public class LoginService implements ILoginService{
 			return regVO;
 		
 		AnanymousUser user = anamymousUser.get(0);
+		if(!user.getPassword().equals(password))
+		{
+			return regVO;
+		}
+			
 		regVO.setRegistrationID(user.getUserId());
 		regVO.setUserName(user.getUsername());
 		regVO.setFirstName(user.getName() != null ? user.getName() : "");
