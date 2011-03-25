@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
@@ -23,7 +25,7 @@ import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class AnonymousUserRegistrationAction extends ActionSupport implements
-		ServletRequestAware {
+		ServletRequestAware ,ServletContextAware{
 
 	/**
 	 * 
@@ -66,7 +68,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getUserProfilePic();
 	}
 	public void setUploadImageContentType(String uploadImageContentType) {
-		this.regVO.setUserProfilePic(uploadImageContentType);
+				this.regVO.setUserProfilePic(uploadImageContentType);
+				this.uploadImageContentType=uploadImageContentType;
 	}
 	public String getUploadImageFileName() {
 		return uploadImageFileName;
@@ -83,7 +86,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public ServletContext getContext() {
 		return context;
 	}
-	public void setContext(ServletContext context) {
+	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
 	
@@ -139,6 +142,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	
 	public void setRegistrationId(Long registrationId) {
 		this.registrationId = registrationId;
+		regVO.setRegistrationID(registrationId);
 	}
 	
 	@RequiredStringValidator(type = ValidatorType.FIELD, message = "First Name is Mandatory",  shortCircuit = true)
@@ -318,27 +322,30 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 		Boolean savedSuccessfully;
 		
-		/*BufferedImage imageFile = null;
-        try {
-            
-        	imageFile = ImageIO.read(this.uploadImage);
-            String constiName[] = uploadImageContentType.split("/");
-            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-            
-            String fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
-            String imageName =  regVO.getRegistrationID()+"."+constiName[1];    
-          	
-            ImageIO.write(imageFile, constiName[1],new File(fileName));
-        }*/
-          
+		BufferedImage imageFile = null;
+       
+		 try {
+			 imageFile = ImageIO.read(this.uploadImage);
+	           
+	            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+	            String constiName[] = uploadImageContentType.split("/");
+				  String imageName =  regVO.getRegistrationID()+"."+constiName[1];    
+		        
+	           
+	          
+	      
             if(registrationId != null){
 				loginUserId = registrationId;
 				regVO.setRegistrationID(registrationId);
-				//regVO.setUserProfilePic(imageName);
+				regVO.setUserProfilePic(imageName);
 				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
 			}else
 				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
-				
+            
+            String fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
+	           imageName =  regVO.getRegistrationID()+"."+constiName[1];  
+	           ImageIO.write(imageFile, constiName[1],new File(fileName));
+	          	
 			if(savedSuccessfully){	
 				
 				HttpSession session = request.getSession();			
@@ -349,15 +356,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				session.setAttribute("loginStatus", "out");
 				session.setAttribute("HiddenCount", 0);
 			}
+      
         
-        
-		
+		 }
+		 catch(Exception e){
+			 e.printStackTrace();
+		 }
 		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();
 		else if("".equalsIgnoreCase(redirectLoc))
 			return "connect";
 		
 		return SUCCESS;
+		
 	}
 		
 	public void validate() {		       
