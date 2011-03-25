@@ -369,7 +369,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			if(password == null || password.trim().length() == 0)
 				addFieldError("password","Password Is Required.");
 			
-			if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equalsIgnoreCase(password)){
+			if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equals(password)){
 				addFieldError("reEnteredPassword","Entered Password and Reentered Password are not Same.");			
 			}
 		}
