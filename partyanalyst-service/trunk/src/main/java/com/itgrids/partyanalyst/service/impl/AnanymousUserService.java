@@ -262,6 +262,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 			public Object doInTransaction(TransactionStatus status) {	
 				AnanymousUser ananymousUser = null;
 				ProfileOpts profileOpts = null;
+				String imageName =null;
 				if(!isUpdate)
 					ananymousUser = new AnanymousUser();
 				else{
@@ -274,6 +275,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 						ananymousUser.setUsername(userDetails.getUserName());
 						ananymousUser.setPassword(userDetails.getPassword());
 					}
+					
 					
 					ananymousUser.setName(userDetails.getFirstName());
 					ananymousUser.setLastName(userDetails.getLastName());
@@ -288,8 +290,27 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
 					ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
+					
 					ananymousUser.setPincode(userDetails.getPincode());
-					ananymousUser = ananymousUserDAO.save(ananymousUser);
+					
+					
+					
+				if(isUpdate)
+					{
+						ananymousUser.setProfileImg(userDetails.getUserProfilePic());
+					}
+					
+				ananymousUser = ananymousUserDAO.save(ananymousUser);
+					
+			if(!isUpdate)
+					{
+						String constiName[] = userDetails.getUserProfilePic().split("/");
+					
+						imageName = ananymousUser.getUserId()+"."+constiName[1];
+						userDetails.setRegistrationID(ananymousUser.getUserId());
+						 
+						ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
+					}
 					
 					if(userDetails.getProfileOpts() != null)
 					for(Long optsId:userDetails.getProfileOpts()){
