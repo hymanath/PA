@@ -31,7 +31,53 @@ String electionId1 = "";
 String electionId2 = "";
 String party = "";
 String allianceCheck = "";
+
 String selectedPartyName="";
+
+String selectedPartyShortName= "";
+String selectedPartyId= "";
+String selectedElectionTypeName= "";
+String selectedLocationName= "";
+String reportLevel= "";
+String stateSelectName= "";
+String partySelectName= "";
+String constituencySelectName= "";
+String districtSelectName= "";
+
+
+if(request.getParameter("districtSelectName")!=null){
+	districtSelectName = request.getParameter("districtSelectName");
+}
+if(request.getParameter("selectedPartyShortName")!=null){
+	selectedPartyShortName = request.getParameter("selectedPartyShortName");
+}
+
+if(request.getParameter("selectedPartyId")!=null){
+	selectedPartyId = request.getParameter("selectedPartyId");
+}
+
+if(request.getParameter("selectedElectionTypeName")!=null){
+	selectedElectionTypeName = request.getParameter("selectedElectionTypeName");
+}
+
+if(request.getParameter("selectedLocationName")!=null){
+	selectedLocationName = request.getParameter("selectedLocationName");
+}
+if(request.getParameter("reportLevel")!=null){
+	reportLevel = request.getParameter("reportLevel");
+}
+
+if(request.getParameter("stateSelectName")!=null){
+	stateSelectName = request.getParameter("stateSelectName");
+}
+
+if(request.getParameter("partySelectName")!=null){
+	partySelectName = request.getParameter("partySelectName");
+}
+
+if(request.getParameter("constituencySelectName")!=null){
+	constituencySelectName = request.getParameter("constituencySelectName");
+}
 
 if(request.getParameter("selectedPartyName")!=null){
 	selectedPartyName = request.getParameter("selectedPartyName");
@@ -293,6 +339,15 @@ if(request.getParameter("problemHistoryId")!=null){
 							<input type="hidden" name="party" value="<%=party%>" />
 							<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />
 							<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />
+							<input type="hidden" name="selectedPartyShortName" value="<%=selectedPartyShortName%>"/>
+							<input type="hidden" name="selectedPartyId" value="<%=selectedPartyId%>"/>
+							<input type="hidden" name="selectedElectionTypeName" value="<%=selectedElectionTypeName%>"/>
+							<input type="hidden" name="selectedLocationName" value="<%=selectedLocationName%>"/>
+							<input type="hidden" name="reportLevel" value="<%=reportLevel%>"/>
+							<input type="hidden" name="stateSelectName" value="<%=stateSelectName%>"/>
+							<input type="hidden" name="partySelectName" value="<%=partySelectName%>"/>
+							<input type="hidden" name="constituencySelectName" value="<%=constituencySelectName%>"/>
+							<input type="hidden" name="districtSelectName" value="<%=districtSelectName%>"/>
 								
 							<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 							<c:remove var="USER_REG_SUCCESS" scope="session" />
@@ -379,8 +434,16 @@ if(request.getParameter("problemHistoryId")!=null){
 								<input type="hidden" name="electionId2" value="<%=electionId2%>" />
 								<input type="hidden" name="party" value="<%=party%>" />
 								<input type="hidden" name="allianceCheck" value="<%=allianceCheck%>" />	
-								<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />	
-								
+								<input type="hidden" name="selectedPartyName" value="<%=selectedPartyName%>" />
+								<input type="hidden" name="selectedPartyShortName" value="<%=selectedPartyShortName%>"/>
+								<input type="hidden" name="selectedPartyId" value="<%=selectedPartyId%>"/>
+								<input type="hidden" name="selectedElectionTypeName" value="<%=selectedElectionTypeName%>"/>
+								<input type="hidden" name="selectedLocationName" value="<%=selectedLocationName%>"/>
+								<input type="hidden" name="reportLevel" value="<%=reportLevel%>"/>
+								<input type="hidden" name="stateSelectName" value="<%=stateSelectName%>"/>
+								<input type="hidden" name="partySelectName" value="<%=partySelectName%>"/>
+								<input type="hidden" name="constituencySelectName" value="<%=constituencySelectName%>"/>
+								<input type="hidden" name="districtSelectName" value="<%=districtSelectName%>"/>
 								
 								<table  class="loginDetailTable">
 									<tr>
