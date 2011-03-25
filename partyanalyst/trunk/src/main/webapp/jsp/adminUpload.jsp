@@ -113,7 +113,7 @@
 							<tr>
                                 <td>
                                     <fieldset class="f2">
-                                    <legend class="l2">Problem Approval Admin</legend>
+                                    <legend class="l2">Comments Posted On Problems</legend>
                                     <h4>Approval/Reject Recently Posted problem :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
                                     </fieldset>
                                 </td>
