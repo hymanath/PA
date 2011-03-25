@@ -562,7 +562,7 @@
 				</td>
 			</tr>
 		</table>
-<s:form name="partyResultsForm" action="partyResultsAction" method="post">
+<s:form name="partyResultsForm" action="partyResultsAction" method="GET">
 <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
 <input type="hidden" id="selectedPartyId" name="selectedPartyId">
 <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
