@@ -444,3 +444,13 @@ div#constituencyRightContentOuter a:hover
 	text-align:left;
 	color:#273241;
 }
+.linkStyle
+{
+    border-bottom: 1px solid #E8E5DE;
+    color: #0C67AC;
+    font-family: verdana;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
