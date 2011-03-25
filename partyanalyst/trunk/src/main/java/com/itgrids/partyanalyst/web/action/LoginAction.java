@@ -61,8 +61,91 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String electionId2;
 	private String allianceCheck;
 	private String selectedPartyName;
-    
 	
+	 
+	private String selectedPartyShortName;
+	private String selectedPartyId;
+	private String selectedElectionTypeName;
+	private String selectedLocationName;
+	private String reportLevel;
+	private String stateSelectName;
+	private String partySelectName;
+	private String constituencySelectName;
+    private String districtSelectName;
+    
+    	
+	public String getDistrictSelectName() {
+		return districtSelectName;
+	}
+
+	public void setDistrictSelectName(String districtSelectName) {
+		this.districtSelectName = districtSelectName;
+	}
+
+	public String getSelectedPartyShortName() {
+		return selectedPartyShortName;
+	}
+
+	public void setSelectedPartyShortName(String selectedPartyShortName) {
+		this.selectedPartyShortName = selectedPartyShortName;
+	}
+
+	public String getSelectedPartyId() {
+		return selectedPartyId;
+	}
+
+	public void setSelectedPartyId(String selectedPartyId) {
+		this.selectedPartyId = selectedPartyId;
+	}
+
+	public String getSelectedElectionTypeName() {
+		return selectedElectionTypeName;
+	}
+
+	public void setSelectedElectionTypeName(String selectedElectionTypeName) {
+		this.selectedElectionTypeName = selectedElectionTypeName;
+	}
+
+	public String getSelectedLocationName() {
+		return selectedLocationName;
+	}
+
+	public void setSelectedLocationName(String selectedLocationName) {
+		this.selectedLocationName = selectedLocationName;
+	}
+
+	public String getReportLevel() {
+		return reportLevel;
+	}
+
+	public void setReportLevel(String reportLevel) {
+		this.reportLevel = reportLevel;
+	}
+
+	public String getStateSelectName() {
+		return stateSelectName;
+	}
+
+	public void setStateSelectName(String stateSelectName) {
+		this.stateSelectName = stateSelectName;
+	}
+
+	public String getPartySelectName() {
+		return partySelectName;
+	}
+
+	public void setPartySelectName(String partySelectName) {
+		this.partySelectName = partySelectName;
+	}
+
+	public String getConstituencySelectName() {
+		return constituencySelectName;
+	}
+
+	public void setConstituencySelectName(String constituencySelectName) {
+		this.constituencySelectName = constituencySelectName;
+	}
+
 	public String getSelectedPartyName() {
 		return selectedPartyName;
 	}
