@@ -1397,16 +1397,16 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</table>
 			</div>
 			<div id="districtMap_body">	
-		      <c:if test="${stateDetails.name == 'Andhra Pradesh'}">
+		      <c:if test="${stateDetails.name == 'Andhra Pradesh' || stateDetails.name == 'Tamil Nadu' || stateDetails.name == 'Kerala'}">
 				<object width="550" height="430">
-					<param name="movie" value="images/districtMaps/Andhra_Pradesh/${districtName}.swf">
+					<param name="movie" value="images/districtMaps/${stateDetails.name}/${districtName}.swf">
 					 <param name="wmode" value="transparent"> 
-					<embed wmode="transparent" src="images/districtMaps/Andhra_Pradesh/${districtName}.swf" width="550" height="430">
+					<embed wmode="transparent" src="images/districtMaps/${stateDetails.name}/${districtName}.swf" width="550" height="430">
 					</embed>
 				</object>
 			   </c:if>
 
-               <c:if test="${stateDetails.name != 'Andhra Pradesh'}">
+               <c:if test="${stateDetails.name != 'Andhra Pradesh' && stateDetails.name != 'Tamil Nadu' && stateDetails.name != 'Kerala'}">
 				<br><br>
 				<center>
 				 <table border="0" >
