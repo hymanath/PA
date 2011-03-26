@@ -5654,7 +5654,7 @@ public class StaticDataService implements IStaticDataService {
 				resultsList.add(option1);
 			}else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				Constituency constituency = constituencyDAO.get(id);
-				SelectOptionVO option = new SelectOptionVO(constituency.getConstituencyId(),IConstants.CONSTITUENCY);
+				SelectOptionVO option = new SelectOptionVO(constituency.getConstituencyId(),IConstants.CONSTITUENCY.toUpperCase());
 				resultsList.add(option);
 				SelectOptionVO option1 = new SelectOptionVO(constituency.getState().getStateId(),IConstants.STATE);
 				resultsList.add(option1);
