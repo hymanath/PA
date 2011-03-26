@@ -314,7 +314,7 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
-		<!-- <property name="transactionTemplate" ref="transactionTemplate" /> -->
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 	<bean name="Pattern3" class="com.itgrids.partyanalyst.excel.CsvReaderNew" />
