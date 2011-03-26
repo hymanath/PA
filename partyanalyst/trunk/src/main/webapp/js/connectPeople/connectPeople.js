@@ -1030,22 +1030,31 @@ function showPostedProblems(jsObj,results)
 	str += '</tr>';
 	str += '</table>';
 	str += '</div>';
-	str += '<div style="padding:5px;">';
+	str += '<div style="padding:3px;">';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Problems Approved</th>';
 	str += '<td> - </td>';
+	if(results.approvedProblemsCount ==0)
+		str+='<td>'+results.approvedProblemsCount+'<td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'approved\')">'+results.approvedProblemsCount+'</a> </td>';
 	
 	str += '<td></td>';
 	str += '<th align="left">Problems Rejected</th>';
 	str += '<td> - </td>';
+	if(results.rejectedProblemsCount ==0)
+		str+='<td>'+results.rejectedProblemsCount+'<td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'rejected\')">'+results.rejectedProblemsCount+'</a> </td>';
 	
 	str += '<td></td>';
 	str += '<th align="left">Problems Not Considered</th>';
 	str += '<td> - </td>';
+	if(results.notConsideredProblemsCount ==0)
+		str+='<td>'+results.notConsideredProblemsCount+'</td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfProblems(\'notConsidered\')">'+results.notConsideredProblemsCount+' </a></td>';
 	str += '</tr>';
 
@@ -1119,7 +1128,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var data = results.problemsInfo[i];
 		
 		str += '<div class="postedDiv_dataInfo_main">';
-		str += '<div><a class="linkStyle" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
+		str += '<div class="postedDiv_dataInfo_head">'+data.definition+'</div>';
 		str += '<div class="postedDiv_dataInfo_body">';
 		str += '<table class="postedDiv_dataInfo_table">';
 		str += '<tr>';
@@ -1371,16 +1380,25 @@ function showPostedReasons(jsObj,results)
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
 	str += '<th align="left">Reasons Approved</th>';
 	str += '<td> - </td>';
+	if(approvedReasonsCount == 0)
+	 str+='<td>'+approvedReasonsCount+'</td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'Approved\')">'+approvedReasonsCount+'</a> </td>';
 	
 	str += '<td></td>';
 	str += '<th align="left">Reasons Rejected</th>';
 	str += '<td> - </td>';
+	if(rejectedReasonsCount ==0)
+		str+='<td>'+rejectedReasonsCount+'</td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'rejected\')">'+rejectedReasonsCount+'</a> </td>';
 	
 	str += '<td></td>';
 	str += '<th align="left">Reasons Not Considered</th>';
 	str += '<td> - </td>';
+	if(notConsideredReasonsCount == 0)
+		str+='<td>'+notConsideredReasonsCount+'<td>';
+	else
 	str += '<td> <a class="reasonsCountAnc" href="javascript:{}" onclick="openDialogOfReasons(\'NotConsidered\')">'+notConsideredReasonsCount+' </a></td>';
 	str += '</tr>';
 
