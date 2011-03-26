@@ -115,7 +115,7 @@
 			<tr>
 				<td width="70%" valign="top">
 					
-					<div id="constituencyLeftContentOuter" class="rounded"> 						
+					<div id="constituencyLeftContentOuter" class="rounded" style="width:650px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -176,7 +176,7 @@
 					
 				</td>
 				<td width="30%" valign="top">
-					<div id="constituencyRightContentOuter" class="rounded"> 						
+					<div id="constituencyRightContentOuter" class="rounded" style="width:270px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
@@ -270,7 +270,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" valign="top">
-					<div id="constituencyBottomContentOuter" class="rounded"> 						
+					<div id="constituencyBottomContentOuter" class="rounded" style="width:940px;"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
