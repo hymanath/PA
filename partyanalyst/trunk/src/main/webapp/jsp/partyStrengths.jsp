@@ -226,6 +226,10 @@
 							}	
 						}																		
 					}
+					if(jsObj.task == "getDefaultElectionYearsAjaxAction")
+					{
+						buildDefaultElectionYears(results);
+					}
 					if(jsObj.task == "getAllElectionsAjaxAction")
 					{					
 						buildElectionYears(results);			
@@ -1077,7 +1081,7 @@
 		var url = "<%=request.getContextPath()%>/getAllPartiesMatchingCriteria.action?"+rparam;						
 		callAjax(jsObj,url);
 
-		validateAndForwardToAction();
+		//validateAndForwardToAction();
 	}
 
 	function getParties(selectedParty)
@@ -1096,18 +1100,20 @@
 		validateAndForwardToAction();
 	}
 	
-	function getDefaultFrequencyOfYears()
+	function getDefaultElectionYearsAjaxAction()
 	{	
 		var jsObj=
 		{		
 				stateId : 1,
 				electionType : 'Assembly',		
-				task:"getAllElectionsAjaxAction"				
+				task:"getDefaultElectionYearsAjaxAction"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/getAllElectionsAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
+
+	
 	
 	function getDefaultParties()
 	{
@@ -1137,9 +1143,19 @@
 		allPartiesData.innerHTML = populateAllPartiesData;
 	}
 	
+	function buildDefaultElectionYears(results)
+	{		 		
+		buildElectionYearsTable(results);		
+	}
 	
 	function buildElectionYears(results)
-	{		 		
+	{ 	
+		buildElectionYearsTable(results);
+		validateAndForwardToAction();
+	}
+	
+	function buildElectionYearsTable(results)
+	{
 		var showElections = document.getElementById("electionTypeTd");
 		
 		var populateElections='';
@@ -1156,9 +1172,9 @@
 		}
 		populateElections+='</select>';
 		showElections.innerHTML = populateElections;
-
-		validateAndForwardToAction();
 	}
+	
+	
 
 	
 	
@@ -1682,7 +1698,7 @@
 <script type="text/javascript">
 	populateDefaultDetails();
 	getStatesOfAp('Assembly');
-	getDefaultFrequencyOfYears();
+	getDefaultElectionYearsAjaxAction();
 	getDefaultParties();
 	buildSearchCriteria('Assembly');
 	//validateAndForwardToAction();
