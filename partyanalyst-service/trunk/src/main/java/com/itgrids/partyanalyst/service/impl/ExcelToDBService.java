@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -22,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.excel.CandidateElectionResult;
 import com.itgrids.partyanalyst.excel.ConstituencyBlock;
 import com.itgrids.partyanalyst.excel.CsvException;
@@ -63,24 +66,50 @@ public class ExcelToDBService implements IExcelToDBService {
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO; 
 	private TransactionTemplate transactionTemplate;
 	
-	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws Exception{
+	private static Logger log = Logger.getLogger(ExcelToDBService.class);
+	
+	public ResultStatus readCSVFileAndStoreIntoDB(final UploadFormVo uploadFormVo,final String fileName,final File fileToUpload) throws Exception{
  
-		try{
-			if(logger.isDebugEnabled()){
-			 logger.debug("Congrats logger has been initialized");			
-			 logger.debug("Congrats Successes fully entered in the service layer.. ");
-			 logger.debug("File path == "+fileToUpload);
-			 logger.debug("Country Name == "+uploadFormVo.getCountry());
-			 logger.debug("State =="+uploadFormVo.getElectionScope());
-			 logger.debug("District =="+uploadFormVo.getDistrict());
-			 logger.debug("Type of Election == "+uploadFormVo.getElectionType());
-			 logger.debug("Election Year == "+uploadFormVo.getElectionYear());
+		
+		if(log.isDebugEnabled())
+			log.debug("Started Saving Cadre Details ..");
+		
+		ResultStatus resultStatus = (ResultStatus)transactionTemplate.execute(new TransactionCallback(){
+
+			public Object doInTransaction(TransactionStatus txStatus) {
+					
+			ResultStatus rs = new ResultStatus();
+				try{
+					if(logger.isDebugEnabled()){
+					 logger.debug("Congrats logger has been initialized");			
+					 logger.debug("Congrats Successes fully entered in the service layer.. ");
+					 logger.debug("File path == "+fileToUpload);
+					 logger.debug("Country Name == "+uploadFormVo.getCountry());
+					 logger.debug("State =="+uploadFormVo.getElectionScope());
+					 logger.debug("District =="+uploadFormVo.getDistrict());
+					 logger.debug("Type of Election == "+uploadFormVo.getElectionType());
+					 logger.debug("Election Year == "+uploadFormVo.getElectionYear());
+					}
+					insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload));
+					
+				}catch(Exception excep){
+					
+					log.error("Error Raised In Upload Process :" + excep.getMessage());
+					
+					excep.printStackTrace();
+					//throw new Exception(excep.getMessage());
+					txStatus.setRollbackOnly();
+					rs.setExceptionEncountered(excep);
+					rs.setExceptionMsg(excep.getMessage());
+					
+				}
+				
+			 return rs;
 			}
-			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload));
-		}catch(Exception excep){
-			excep.printStackTrace();
-			throw new Exception(excep.getMessage());
-		}
+		
+		});
+		
+ return resultStatus;
 }
 
 
