@@ -266,7 +266,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 					getDataForAParty(resultVo,requiredConstituencies,latestConstituencies,remianingConstituencies,selectedParties,electionYearsCount,electionType,stateId);
 				}
 				
-				if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) && latestConstituencies!=null && latestConstituencies.size()!=0 )
 					electionOverView = nominationDAO.getCountOfAllPartyResults(latestConstituencies, selectedParties, IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
 				else
 					electionOverView = nominationDAO.getCountOfAllPartyResultsForParliament(stateId,selectedParties, IConstants.ELECTION_SUBTYPE_MAIN,IConstants.WINNER_CANDIDATES);
@@ -604,7 +604,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  			for(Map.Entry<Long,List<PartiesDetailsVO>> resultIterator : map2.entrySet()){
  				Long constId = resultIterator.getKey();
  				String conName = map1.get(constId);	
-				List<PartiesDetailsVO> dataObtained = generateTempData(partyIds,map,resultIterator.getValue(),resultIterator.getKey(),conName,selectedYearsCount,type);
+ 				List<PartiesDetailsVO> dataObtained = generateTempData(partyIds,map,resultIterator.getValue(),resultIterator.getKey(),conName,selectedYearsCount,type);
+				
 				
 				if(dataObtained!=null){
 					PartiesStrengthsInfoVO infoVo = new PartiesStrengthsInfoVO();
@@ -614,7 +615,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 	 				partiesStrengthsInfoVO.add(infoVo); 
 				}			
  			}
- 			constituencyElectionResults.setTotalNumberOfConstituencies(partiesStrengthsInfoVO.size()+0l);
+ 			constituencyElectionResults.setTotalNumberOfConstituencies(constituencyIds.size()+0l);
  			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
  			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
  		}catch(Exception e){
@@ -700,14 +701,14 @@ public class PartyStrengthService implements IPartyStrengthService {
  					PartiesDetailsVO partiesDetails = new PartiesDetailsVO();
  					if(map.containsKey(count)){
  	 					PartiesDetailsVO vo = map.get(count); 
- 	 					partiesDetails.setWon(vo.getWon()+won);
- 	 					partiesDetails.setWonTimes(wonRecently+vo.getWonTimes());
- 	 					partiesDetails.setLostTimes(lostRecently+vo.getLostTimes());
+ 	 					partiesDetails.setWon(Math.abs(vo.getWon()+won));
+ 	 					partiesDetails.setWonTimes(Math.abs(wonRecently+vo.getWonTimes()));
+ 	 					partiesDetails.setLostTimes(Math.abs(lostRecently+vo.getLostTimes()));
  	 				}else{
- 	 					partiesDetails.setWon(won);
- 	 					partiesDetails.setCount(count);
- 	 					partiesDetails.setWonTimes(wonRecently);
- 	 					partiesDetails.setLostTimes(lostRecently); 	 					
+ 	 					partiesDetails.setWon(Math.abs(won));
+ 	 					partiesDetails.setCount(Math.abs(count));
+ 	 					partiesDetails.setWonTimes(Math.abs(wonRecently));
+ 	 					partiesDetails.setLostTimes(Math.abs(lostRecently)); 	 					
  	 				}
  					map.put(count,partiesDetails);
  				}
@@ -717,9 +718,9 @@ public class PartyStrengthService implements IPartyStrengthService {
  				PartiesDetailsVO detailsVO = new PartiesDetailsVO();
  				detailsVO.setCount(mapDetails.getKey());
  				PartiesDetailsVO pvo = mapDetails.getValue();
- 				detailsVO.setWon(pvo.getWon());
- 				detailsVO.setWonTimes(pvo.getWonTimes());
- 				detailsVO.setLostTimes(pvo.getLostTimes());
+ 				detailsVO.setWon(Math.abs(pvo.getWon()));
+ 				detailsVO.setWonTimes(Math.abs(pvo.getWonTimes()));
+ 				detailsVO.setLostTimes(Math.abs(pvo.getLostTimes()));
  				details.add(detailsVO);
  			}
  		}catch(Exception e){
@@ -1194,47 +1195,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  	}
  	
  	
- 	/*public void getUnParticipatedConstituenciesData(Long stateId,String electionType,List<Long> requiredConstituencies,List<SelectOptionVO> staticParties){
- 		Long latestElecId = 4l; 		
-		List<Long> allPartyIds = new ArrayList<Long>(0);
-		
-		Map<Long,ContenetTransferVO> list = new HashMap<Long,ContenetTransferVO>(0);
- 		try{
- 						 
- 			latestElecId = getLatestElecId(electionType,stateId);
- 			
- 			for(int i=0;i<staticParties.size();i++){
- 				Long partyId = staticParties.get(i).getId();
- 				List<Long> ids = nominationDAO.getAllParticipatedPartyResultsForAParty(requiredConstituencies,electionType,partyId,IConstants.ELECTION_SUBTYPE_MAIN,stateId);
- 				
- 				ContenetTransferVO vo = new ContenetTransferVO();
- 				vo.setCount(0l);
- 				vo.setWon(requiredConstituencies.size()-ids.size()+0L);
- 				
- 				List<Long> allConsIds = nominationDAO.getListOfUnParticipatedConstituencies(requiredConstituencies,latestElecId,IConstants.ALL,stateId,electionType);
- 				
- 				Long recentWonTimes = new Long(ids.get(0).toString()); 				
- 				Long totalLostInRecentTimes = new Long(allConsIds.size()-recentWonTimes.intValue());
- 					
- 				
- 				vo.setWonRecently(recentWonTimes);
- 				vo.setLostRecently(totalLostInRecentTimes);		
- 				list.put(partyId, vo);
- 			}
- 			
- 			
-			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-				allConsIds = nominationDAO.getListOfUnParticipatedConstituencies(allConsIds,latestElecId,IConstants.ALL,stateId,electionType);
-			else
-				allConsIds = nominationDAO.getListOfUnParticipatedConstituencies(allConsIds,latestElecId,IConstants.ALL,stateId,electionType);
-			
-			
-		
- 		}catch(Exception e){
- 			e.printStackTrace();
- 		}
- 	//	return vo;
- 	}*/
+ 
  	public List<PartiesDetailsVO> generateTempData(List<Long> partyIds,Map<Long,String> map,List<PartiesDetailsVO> partyDetails,Long constId,String constName,Long selectedYearsCount,String type){
  		List<PartiesDetailsVO> result = new ArrayList<PartiesDetailsVO>(0); 
  		Map<String,String> auxMap = new HashMap<String,String>();
@@ -1270,13 +1231,13 @@ public class PartyStrengthService implements IPartyStrengthService {
 			Collections.sort(result, new PartiesDetailsVOComparator());		
 			
 			//Code for storing others count	
-				if(selectedYearsCount.intValue()-totalCount<0){
+				/*if(selectedYearsCount.intValue()-totalCount<0){
 					return null;
-				}else{
+				}else{*/
 					if(type.equalsIgnoreCase(IConstants.REQUIRED_CONSTITUENCIES)){
 						PartiesDetailsVO vo = new PartiesDetailsVO();
 						vo.setConstituencyId(constId);
-						vo.setCount(selectedYearsCount-totalCount);
+						vo.setCount(Math.abs(selectedYearsCount-totalCount));
 						vo.setPartyName(IConstants.OTHERS);
 						vo.setConstituencyName(constName); 		
 						result.add(vo);
@@ -1295,7 +1256,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 						
 						result.add(vo);						
 					}	
-				}						
+				//}						
 			//ends here...
 						
 	 	}catch(Exception e){
@@ -1467,7 +1428,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  					else
  						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRemianingConstituencies();
  					reqCons.removeAll(consIds);
- 					System.out.println(reqCons.size());
+ 					//System.out.println(reqCons.size());
  					
  					list = nominationDAO.getAllCandidateDetailsForAConstituency(reqCons,partieId,IConstants.ELECTION_SUBTYPE_MAIN,latestElecId,IConstants.OTHERS);
  	 				
@@ -1654,9 +1615,9 @@ public class PartyStrengthService implements IPartyStrengthService {
 				
 				PartiesDetailsVO vo = new PartiesDetailsVO();
 				vo.setCount(entry.getKey());
-				vo.setWon(won);
-				vo.setWonTimes(wonTimes);
-				vo.setLostTimes(lostTimes);
+				vo.setWon(Math.abs(won));
+				vo.setWonTimes(Math.abs(wonTimes));
+				vo.setLostTimes(Math.abs(lostTimes));
 				partiesDetailsVO.add(vo);
  			}
  			
@@ -1672,9 +1633,9 @@ public class PartyStrengthService implements IPartyStrengthService {
 				wonRecentCount+=partiesDetailsVO.get(k).getWonTimes();
 				lostRecentCount+=partiesDetailsVO.get(k).getLostTimes();
 			}
-			zeroWonCons.setWon(requiredConstituencies.size()-wonCount);
-			zeroWonCons.setWonTimes(wonRecentCount);
-			zeroWonCons.setLostTimes(lostRecentCount);
+			zeroWonCons.setWon(Math.abs(requiredConstituencies.size()-wonCount));
+			zeroWonCons.setWonTimes(Math.abs(wonRecentCount));
+			zeroWonCons.setLostTimes(Math.abs(lostRecentCount));
 		
 			partiesDetailsVO.add(0,zeroWonCons);
 			
