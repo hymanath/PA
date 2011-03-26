@@ -1353,9 +1353,27 @@ function showPostedReasons(jsObj,results)
 	str += '<tr>';
 	
 	if(userType != "PartyAnalyst"){
-		str += '<td align="left" width="211px"> Total Political reasons posted - <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
-		str += '<td align="left" width="90px"> By User - <a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
-		str += '<td align="left" width="90px"> By Others - <a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
+        str += '<td align="left" width="194px"> Total Political reasons posted - </td>';
+		  
+		  if(totalPostedReasonsCount ==0)
+			  str+='<td>'+totalPostedReasonsCount+'</td>';
+		 
+		  else
+		   str+='<td> <a href="javascript:{}" onclick="openDialogOfReasons(\'Total\')">'+totalPostedReasonsCount+'</a></td>';
+		
+		   str += '<td align="left" width="67px"> By User - </td>';
+		
+		if(postedReasonsByLoggedInUser ==0)
+			  str+='<td>'+postedReasonsByLoggedInUser+'</td>';
+		  else
+		str+='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'LOGGED_USER\')">'+postedReasonsByLoggedInUser+'</a></td>';
+		
+		str += '<td align="left" width="87px"> By Others - </td>';
+		
+		if(postedReasonsCountByOtherUsers ==0)
+			  str+='<td>'+postedReasonsCountByOtherUsers+'</td>';
+		  else
+		str +='<td><a href="javascript:{}" onclick="openDialogOfReasons(\'OtherUsers\')">'+postedReasonsCountByOtherUsers+'</a></td>';	
 	}else{
 		str += '<td align="left" width="211px"> Total Political reasons posted - '+totalPostedReasonsCount+'</td>';
 		str += '<td align="left" width="90px"> By User - '+postedReasonsByLoggedInUser+'</td>';
