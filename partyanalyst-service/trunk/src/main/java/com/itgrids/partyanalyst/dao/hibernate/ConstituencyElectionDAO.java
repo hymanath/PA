@@ -267,7 +267,8 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	@SuppressWarnings("unchecked")
 	public List getParticipatedStateDetailsForAnElectionType(Long electionType) {
 		return getHibernateTemplate().find("select distinct model.constituency.state.stateId,model.constituency.state.stateName "+
-				"from ConstituencyElection model where model.election.electionScope.electionType.electionTypeId = ?",electionType);
+				"from ConstituencyElection model where model.election.electionScope.electionType.electionTypeId = ? " +
+				"order by model.constituency.state.stateName",electionType);
 	}
 	@SuppressWarnings("unchecked")
 	public List findPartyvalidVotesInfoByElectionAndPartyGroupByDistrictId(Long electionId, String partyIds) {
