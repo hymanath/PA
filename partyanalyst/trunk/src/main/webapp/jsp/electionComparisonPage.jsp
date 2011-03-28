@@ -305,10 +305,10 @@ var yearsPopulation={
 			<tr>
 				<th align="left"><%=electionType%></th>
 				<td align="left">
-					<select id="electionTypeSelect" onchange = "getElectionScopes(this,this.options[this.selectedIndex].value)" class = "selectWidth">
+					<select id="electionTypeSelect"  onchange = "getElectionScopes(this,this.options[this.selectedIndex].value)" class = "selectWidth">
 						<option value="0">Select Election Type</option>
-						<option value="1">Parliament</option>
 						<option value="2">Assembly</option>
+						<option value="1">Parliament</option>
 					</select>
 					<span id="electionTypeSelect_ImgSpan" style="padding-left:10px;display:none;"><img src="images/icons/partypositions.gif"></span>
 				</td>
