@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -611,7 +612,7 @@ public class StaticDataService implements IStaticDataService {
 		District district = districtDAO.get(districtId);
 		List<ElectionScope> electionScopes = electionScopeDAO.getElectionScopes(district.getState().getStateId());
 		for(ElectionScope scope:electionScopes)
-			list.add(new SelectOptionVO(scope.getElectionScopeId(), scope.getElectionType().getElectionType()));
+			list.add(new SelectOptionVO(scope.getElectionScopeId(), scope.getElectionType().getElectionType().toUpperCase()));
 		return list;
 	}
 	
@@ -619,10 +620,24 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 		if(stateID != null){
 		List<ElectionScope> electionScopes = electionScopeDAO.getElectionScopes(stateID);
-		if(electionScopes  != null)
-		for(ElectionScope scope:electionScopes)
-			list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType()));
+		if(electionScopes  != null){
+		for(ElectionScope scope:electionScopes){
+			list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType().toUpperCase()));
+		    }
+		  }
 		}
+			TreeSet ts=new TreeSet(new Comparator(){
+			public int compare(Object o1, Object o2) {
+				
+				SelectOptionVO first=(SelectOptionVO)o1;
+				SelectOptionVO second=(SelectOptionVO)o2;
+				return first.getName().compareTo(second.getName());
+			}
+		});
+		ts.addAll(list);
+		list.removeAll(ts);
+		list.addAll(ts);
+		
 		return list;
 	}
 	
