@@ -154,9 +154,13 @@ var loginStatus = '${loginStatus}';
 	        id: "staticData",  
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-	            { text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+				{ text: "Assam", url: "statePageAction.action?stateId=3" },
 	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
+				{ text: "Kerala", url: "statePageAction.action?stateId=13" },
+				{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
+				{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
 	            { text: "West Bengal", url: "statePageAction.action?stateId=28" }
+
 	        ]     
 	    }, 
 	    { 
@@ -188,10 +192,13 @@ var loginStatus = '${loginStatus}';
 					{ 
 						id: "staticData",  
 						itemdata: [ 
-							{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-							{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-							{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
-							{ text: "West Bengal", url: "statePageAction.action?stateId=28" }
+						{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+						{ text: "Assam", url: "statePageAction.action?stateId=3" },
+						{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+						{ text: "Kerala", url: "statePageAction.action?stateId=13" },
+						{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
+						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+						{ text: "West Bengal", url: "statePageAction.action?stateId=28" }
 						]     
 					}, 
 					{ 
