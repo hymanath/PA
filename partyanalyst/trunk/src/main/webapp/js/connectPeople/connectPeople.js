@@ -1121,8 +1121,11 @@ function openDialogOfProblems(type)
 function showAllPostedProblems_paginator(jsObj,results)
 {
 	var elmt = document.getElementById("postedDiv_body_dataInfo");
-
+	
 	var str = '';
+	if(results.problemsInfo==null){
+	return;
+	}
 	for(var i=0; i<results.problemsInfo.length; i++)
 	{
 		var data = results.problemsInfo[i];
@@ -1485,7 +1488,9 @@ function showAllPostedReasons_paginator(jsObj,results)
 {
 	
 	var elmt = document.getElementById("postedDiv_body_dataInfo");
-
+	if(results.candidateComments == null){
+	return;
+	}
 	var str = '';
 	for(var i=0; i<results.candidateComments.length; i++)
 	{
