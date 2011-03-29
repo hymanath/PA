@@ -2884,6 +2884,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				
 		return queryObject.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List getNominationsInAnElection(Long electionId) {
+		
+		return getHibernateTemplate().find("select model.candidate.candidateId,model from Nomination model where model.constituencyElection.election.electionId = ?",electionId);
+	}
 	
 	/*public List<Long> getListOfUnParticipatedConstituencies(List<Long> constIds,Long electionId,String type,Long stateId,String electionType){
 		

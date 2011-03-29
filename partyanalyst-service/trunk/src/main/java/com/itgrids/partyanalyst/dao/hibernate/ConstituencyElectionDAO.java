@@ -406,6 +406,14 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		queryObject.setParameterList("constIds", constIds);
 		return queryObject.list();	
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findConstituencyElectionsByElection(
+			Long electionId) {
+		
+		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId = ?",electionId);
+	}
 }
 
 
