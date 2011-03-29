@@ -964,9 +964,6 @@ function buildResultsHTMLTable(arr,divId,elecType)
 	str += '<ul>';
 	for(var i=0;i<arr.length;i++)
 	{
-		if(i == 5)
-			break;
-
 		navigationArr.push(''+(i+1));
 		str += ' <li>';
 		str += '<div class="resultsHeading">';
