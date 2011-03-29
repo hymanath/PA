@@ -184,6 +184,7 @@
 						buildOverViewDataTable(results); 
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
+							showRequiredConstituencies(results);
 							// showRequiredConstituenciesErrorMessage(results);
 							hideImg();
 						}else{
@@ -254,6 +255,7 @@
 					if(jsObj.task =="getConstituenciesMatchingCriteria" || jsObj.task =="getConstituenciesByDistrictMatchingCriteria")
 					{
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
+							showRequiredConstituencies(results);
 							showRequiredConstituenciesErrorMessage(results);
 							
 						}else{
@@ -882,19 +884,26 @@
 		var myDataTable = new YAHOO.widget.DataTable("overViewDiv",resultsColumnDefs, resultsDataSource,paginatorConfig);  
 	}	
 	
-	function showRequiredConstituenciesErrorMessage(results){
-		var elmt = document.getElementById("dataTableBuild");
-		elmt.innerHTML = "";
-		
-		var str='';
-		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
-		elmt.innerHTML = str;
+	
+	function showRequiredConstituencies(results)
+	{
 
 		var count = document.getElementById("requiredConstituenciesCount");
 		var countElmt = '';
 		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : 0 </b>';
 		count.innerHTML = countElmt;
+	}
+
+	function showRequiredConstituenciesErrorMessage(results){
+		
+
+		var elmt = document.getElementById("dataTableBuild");
+		elmt.innerHTML = "";
+		
+		var str='';
+		str+='<b style="color:red;"> No Constituencies Were present for matching the Criteria </b>';
+		elmt.innerHTML = str;
 		hideImg();
 	}
 
@@ -1708,6 +1717,7 @@
 	getDefaultParties();
 	buildSearchCriteria('Assembly');
 	//validateAndForwardToAction();
+	
 </script>
 
 </body>
