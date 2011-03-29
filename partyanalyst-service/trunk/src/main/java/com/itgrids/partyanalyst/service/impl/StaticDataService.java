@@ -626,17 +626,10 @@ public class StaticDataService implements IStaticDataService {
 		    }
 		  }
 		}
-			TreeSet ts=new TreeSet(new Comparator(){
-			public int compare(Object o1, Object o2) {
-				
-				SelectOptionVO first=(SelectOptionVO)o1;
-				SelectOptionVO second=(SelectOptionVO)o2;
-				return first.getName().compareTo(second.getName());
-			}
-		});
-		ts.addAll(list);
-		list.removeAll(ts);
-		list.addAll(ts);
+			TreeSet<SelectOptionVO> ts=new TreeSet<SelectOptionVO>();
+			ts.addAll(list);
+			list.removeAll(ts);
+			list.addAll(ts);
 		
 		return list;
 	}
