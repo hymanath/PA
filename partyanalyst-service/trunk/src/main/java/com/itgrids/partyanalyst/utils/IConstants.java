@@ -424,4 +424,9 @@ public interface IConstants {
     
     public static final String PROFILE_PIC = "profiles";
     public static final String PROBLEM_PIC = "problems";
+    
+    public static final String ELECTION_RESULTS = "RESULTS";
+    public static final String ELECTION_NOMINATIONS = "NOMINATIONS";
+    
+    
 }
