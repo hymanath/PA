@@ -184,7 +184,7 @@
 						buildOverViewDataTable(results); 
 						
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
-							showRequiredConstituenciesErrorMessage(results);
+							// showRequiredConstituenciesErrorMessage(results);
 							hideImg();
 						}else{
 							
@@ -255,6 +255,7 @@
 					{
 						if(results.requiredConstituenciesInfo.partiesStrengthsInfoVO ==null || results.requiredConstituenciesInfo.partiesStrengthsInfoVO.length ==0){
 							showRequiredConstituenciesErrorMessage(results);
+							
 						}else{
 							
 							buildDefaultDetails(results);							
@@ -282,11 +283,11 @@
 	{
 		var searchByConstituencyDataImgDiv = document.getElementById("searchByConstituencyDataIMG");
 		if(searchByConstituencyDataImgDiv)
-			searchByConstituencyDataImgDiv.style.display = 'block';
+			searchByConstituencyDataImgDiv.style.display = 'none';
 
 		var imgDiv = document.getElementById("searchByDistrictDataIMG");
 		if(imgDiv)
-			imgDiv.style.display = 'block';		
+			imgDiv.style.display = 'none';		
 	}
 	
 	/*
@@ -539,10 +540,14 @@
 				
 			
 		}else{
-			str+='<b style="color:green;font-weight:bold;">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> Has No Alliances </b>';
+			str+='<b style="color:green;font-weight:bold;padding:5px">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> has No Alliances </b>';
 			var partyNameDiv = results.partyName;
 			var partyDiv = document.getElementById(partyNameDiv+"_DIV");
 			partyDiv.style.display = 'block';
+			var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
+				
+				var imageDiv =document.getElementById(selPartyName);
+				imageDiv.style.display ='none';
 		}
 		divElement.innerHTML = str;
 	}
@@ -878,7 +883,6 @@
 	}	
 	
 	function showRequiredConstituenciesErrorMessage(results){
-
 		var elmt = document.getElementById("dataTableBuild");
 		elmt.innerHTML = "";
 		
@@ -891,6 +895,7 @@
 		countElmt+='<span><a style="color:green;font-weight:bold;font-size:12px;" href="javascript:{}" title="click here to hide and show the table" onclick="hideOrShow(\'required_const_body\')"> Constituencies Present in the last '+ results.selectedYearsCount +' election years</a></span>';
 		countElmt+='<b style="font-weight:bold;color:red;font-size:12px;"> : 0 </b>';
 		count.innerHTML = countElmt;
+		hideImg();
 	}
 
 	function hideLatestConstituenciesDiv(){
@@ -1248,18 +1253,19 @@
 		searchByDistStr += '	<table>';
 		searchByDistStr += 			'<tr>';		
 		if(selectedElectionType!="Parliament"){
-			searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By District';
-			searchByDistStr += 			'	<input id="searchByDistrictData" title="Enter District Name" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
-			searchByDistStr += 			'	<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
+			searchByDistStr += '<td style="color:#FBAD2B;font-weight:bold;">Search By District';
+			searchByDistStr += '<input id="searchByDistrictData" title="Enter District Name" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
+			searchByDistStr += '<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
 		}		
 		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency';
 		searchByDistStr += 			'	<input id="searchByConstituencyData" title="Enter Constituency Name" type="text" onkeyup="getConstituencies()"></input></td>';
 		searchByDistStr += 			'	<td><img style="display:none;" id="searchByConstituencyDataIMG" src="images/icons/search.gif"/></input></td>';
 		searchByDistStr += 			'</tr>';
 		searchByDistStr += '</table>';
-		
+
 		searchByDistStr += '';
-		searchByDist.innerHTML = searchByDistStr;		
+		searchByDist.innerHTML = searchByDistStr;	
+		
 	}
 	
 	function buildDefaultDetails(results)
@@ -1438,7 +1444,7 @@
 	
 	function populateDefaultDetails()
 	{
-		var jsObj=
+      var jsObj=
 		{	
 				stateId : '1',
 				electionType : 'Assembly',	
