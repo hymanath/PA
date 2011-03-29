@@ -62,5 +62,7 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	public List<ConstituencyElectionResult> findByConstituency(Long constituencyId);
 	
 	public List<Object[]> findTotalVotersAndValidVotesByYearAndConstituencyIds(List<Long> constituencyIds, String year);
+	
+	public List<ConstituencyElectionResult> getConstituencyElectionResultByElection(Long electionId);
 
 }
