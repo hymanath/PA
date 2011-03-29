@@ -1988,7 +1988,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryBuffer.append("model.constituencyElection.election.electionScope.electionType.electionType, ");
 		queryBuffer.append("model.candidateResult.rank,model.candidate.candidateId from Nomination model where ");
 		//queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
-		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' and " );
+		//queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' and " );
+		queryBuffer.append("model.candidate.lastname like '"+searchText+"%' and " );
+		//queryBuffer.append(searchText);
 		//queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
 		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+") order by "+sortOption+" " +order);
 		
