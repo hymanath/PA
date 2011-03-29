@@ -136,7 +136,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		else if(constType.equalsIgnoreCase(IConstants.MP))
 		{
 			electionTypeId = 1l;
-			stateStr = " ";
+			stateStr = " and model.state.stateId ="+stateId;
 		}
 		
 		if(sortoption.equalsIgnoreCase("id"))
