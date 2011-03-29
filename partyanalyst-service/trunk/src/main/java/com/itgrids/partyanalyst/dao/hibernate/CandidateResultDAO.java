@@ -172,5 +172,20 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		
 		return queryObject.executeUpdate();
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List findCandidateResultByElectionId(Long electionId) {
+		
+		return getHibernateTemplate().find("select model.nomination.candidate.candidateId,model from CandidateResult model where model.nomination.constituencyElection.election.electionId = ?",electionId);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResultsByElectionId(
+			Long electionId) {
+		
+		return getHibernateTemplate().find("from CandidateResult model where model.nomination.constituencyElection.election.electionId = ?",electionId);
+	}
 	
 }
