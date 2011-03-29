@@ -160,7 +160,7 @@ public class CsvReader implements IExcelReader{
 					{
 						constituencyBlock.setTotalVotesPolled(localDouble);
 						break;
-					} else if(candidateElectionResults!=null && csvColumnMapperObj.isCandidateDetails){
+					} else if(candidateElectionResults!= null && csvColumnMapperObj.isCandidateDetails){
 						if(methods[i].getName().equals("getCsvColumn2")){						
 							candidateElectionResult.setCandidateName(str);
 						}else if(methods[i].getName().equals("getCsvColumn3")){
