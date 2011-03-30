@@ -122,6 +122,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 			
 			if(jObj.getString("task").equals("getElectionScopes")){
 				electionScopes = staticDataService.getElectionScopesByElectionType(jObj.getLong("electionTypeId"));
+				Collections.sort(electionScopes);
 				log.debug("getElectionScopes......"+electionScopes.size());
 			}
 		}
