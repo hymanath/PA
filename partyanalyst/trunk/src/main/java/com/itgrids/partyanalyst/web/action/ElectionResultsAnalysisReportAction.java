@@ -233,7 +233,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			String electionType = jObj.getString("electionType");
 			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
 			Long stateID = new Long(jObj.getString("stateID"));
-			if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 			{
 				try{
 					electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
@@ -272,7 +272,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			
 			partyAnalysisReportVO.setPartiesList(parties);
 			
-			if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 			{
 				try{
 					years = staticDataService.getElectionIdsAndYearsInfo(electionTypeId, stateId);
@@ -569,8 +569,8 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	}
 	
     public String getElectionYearsForAnElectionTypeAndState(){
-		
-    	if(task != null){
+
+   	if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
 				System.out.println("Result From JSON:"+jObj);
@@ -589,7 +589,6 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 				electionYears = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
 			}
 			electionYears.add(0,new SelectOptionVO(0L,"Select Year"));
-			  
 						
 		}
 		return Action.SUCCESS;
