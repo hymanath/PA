@@ -243,9 +243,8 @@ var loginStatus = '${loginStatus}';
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 									</c:if>		
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-										
-										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action" >Login</a> | 
-										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action" >Login</a> <!-- | 
+										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a> -->
 									</c:if>		
                                 </th>
                             </tr>
