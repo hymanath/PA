@@ -56,6 +56,14 @@
 			</select></td>
 		</tr>
 		<tr>
+			<td>Election Status</td>
+			<td><select name="isElectionResults">
+				<option value="0">Select option..</option>
+				<option value="RESULTS">Election Results</option>
+				<option value="NOMINATIONS">Candidate Nominations</option>
+			</select></td>
+		</tr>
+		<tr>
 			<td><s:file name="inputFile" label="InputFile" /></td>
 		</tr>
 		<tr>
