@@ -3,7 +3,10 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -68,7 +71,15 @@ public class ExcelToDBService implements IExcelToDBService {
 	
 	private static Logger log = Logger.getLogger(ExcelToDBService.class);
 	
-	public ResultStatus readCSVFileAndStoreIntoDB(final UploadFormVo uploadFormVo,final String fileName,final File fileToUpload) throws Exception{
+	//Map<ConstituencyId,ConstituencyElection/ConstituencyElectionResult>
+	private Map<Long,ConstituencyElection> constituencyElectionsMap = new HashMap<Long,ConstituencyElection>();
+	private Map<Long,ConstituencyElectionResult> constituencyElectionResultsMap = new HashMap<Long,ConstituencyElectionResult>();
+	
+	//Map<CandidateId,Nomination/CandidateResult>
+	private Map<Long,Nomination> nominationsMap = new HashMap<Long,Nomination>();
+	private Map<Long,CandidateResult> candidateResultsMap = new HashMap<Long,CandidateResult>();
+	
+	public ResultStatus readCSVFileAndStoreIntoDB(final UploadFormVo uploadFormVo,final String fileName,final File fileToUpload,final Boolean isResults) throws Exception{
  
 		
 		if(log.isDebugEnabled())
@@ -90,7 +101,7 @@ public class ExcelToDBService implements IExcelToDBService {
 					 logger.debug("Type of Election == "+uploadFormVo.getElectionType());
 					 logger.debug("Election Year == "+uploadFormVo.getElectionYear());
 					}
-					insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload));
+					insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload),isResults);
 					
 				}catch(Exception excep){
 					
@@ -114,7 +125,7 @@ public class ExcelToDBService implements IExcelToDBService {
 
 
 //private void insertIntoDatabase(String countryNam,String stateName,String distName,String typeOfElection, String electionYear,List<ConstituencyBlock> constituenciesBlocks) throws CsvException{
-private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
+private void insertIntoDatabase(UploadFormVo uploadFormVo, Boolean isResults) throws CsvException{
 	List<ConstituencyBlock>  constituencyBlocks=uploadFormVo.getConstituencyBlocks();
 	if(logger.isDebugEnabled())
 	 logger.debug("Total no of constituency blocks =="+constituencyBlocks.size());
@@ -154,9 +165,14 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 				Long countryId = countryObj.getCountryId();
 				String electionType = electionScopeObj.getElectionType().getElectionType();
 				
+				//set ConstituencyElection/ConstituencyElectionResult/Nomination/CandidateResults Map
+				setConstituencyElectionMap(electionObj.getElectionId());
+				setNominationsMap(electionObj.getElectionId());
+				setCandidateResultsMap(electionObj.getElectionId());
+				
 				for (ConstituencyBlock constituencyBlock: constituencyBlocks)
 					processBatch(parties, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, 
-							electionScopeObj, countryId, electionType);
+							electionScopeObj, countryId, electionType,isResults);
 				
 				//this.transactionTemplate.execute(pbc);
 
@@ -250,7 +266,7 @@ private Candidate checkAndInsertCandidate(CandidateElectionResult candidateRes) 
 
 public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock, 
 		State stateObj,District districtObj,Election electionObj, int constituencyNo,
-		Country countryObj,ElectionScope electionScopeObj, Long countryId, String electionType){
+		Country countryObj,ElectionScope electionScopeObj, Long countryId, String electionType, Boolean isResults){
 	
 		try {
 			long currentTime=System.currentTimeMillis();
@@ -274,11 +290,24 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				constituencyObj=checkAndInsertConstituency(constituecBlock.getConstituencyName(), countryId, stateObj, districtObj, 
 			    		electionScopeObj, electionType, null, null, constiCount);
 			
-			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
-			constituencyElectionObj.setConstituency(constituencyObj);
-			constituencyElectionObj.setElection(electionObj);
-			constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
-			constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
+			//ConstituencyElection constituencyElectionObj = new ConstituencyElection();
+			
+			Long constId = constituencyObj.getConstituencyId();
+			ConstituencyElection constituencyElectionObj = null;
+			
+			//if ConstituencyElection Already Exists
+			if(!constituencyElectionsMap.isEmpty() && constituencyElectionsMap.containsKey(constId))
+				constituencyElectionObj = constituencyElectionsMap.get(constId);
+			else{
+				
+				//If ConstituencyElection Doesn't Exist
+				constituencyElectionObj = new ConstituencyElection();
+			
+				constituencyElectionObj.setConstituency(constituencyObj);
+				constituencyElectionObj.setElection(electionObj);
+				constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
+				constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
+			}
 
 			List<CandidateElectionResult> candidateElectionResults= constituecBlock.getCandidateElectionlst();
 			Collections.sort(candidateElectionResults,new CandidateVotesComparator());
@@ -290,10 +319,21 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
 				if(logger.isDebugEnabled())
 				logger.debug("4.6");
-				Nomination nominationObj = new Nomination();
-				nominationObj.setCandidate(candidateObj);
-				nominationObj.setParty(partyObj);
-				nominationObj.setConstituencyElection(constituencyElectionObj);
+				
+				
+				//Nomination nominationObj = new Nomination();
+				Nomination nominationObj = null;
+				Long candId = candidateObj.getCandidateId();
+				
+				if(!nominationsMap.isEmpty() && nominationsMap.containsKey(candId))
+					nominationObj = nominationsMap.get(candId);
+				else{
+					
+					nominationObj = new Nomination();
+					nominationObj.setCandidate(candidateObj);
+					nominationObj.setParty(partyObj);
+					nominationObj.setConstituencyElection(constituencyElectionObj);
+				}
 				
 				//check and insert assets and liabilities
 				if(candidateElectionResult.getAssets() != null && !candidateElectionResult.getAssets().equals(0D))
@@ -305,29 +345,54 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				if(candidateElectionResult.getCriminalCharges() != null && !"".equalsIgnoreCase(candidateElectionResult.getCriminalCharges()))
 					nominationObj.setCriminalCharges(candidateElectionResult.getCriminalCharges());
 					
-				nominationObj =nominationDAO.save(nominationObj);
+				nominationObj = nominationDAO.save(nominationObj);
 
 
-				CandidateResult candidateResultObj = new CandidateResult();
-				candidateResultObj.setRank(new Long(rankByVotes++));
-				candidateResultObj.setVotesEarned(candidateElectionResult.getVotesEarned());
-				candidateResultObj.setVotesPercengate(calculateVotesPercengate(constituecBlock.getValidVotes(),candidateElectionResult.getVotesEarned()));
-				candidateResultObj.setNomination(nominationObj);
-				candidateResultDAO.save(candidateResultObj);
+				//CandidateResult candidateResultObj = new CandidateResult();
+				
+				// add/update candidate Result if data is election results
+				if(isResults){
+					CandidateResult candidateResultObj = null;
+					
+					if(!candidateResultsMap.isEmpty() && candidateResultsMap.containsKey(candId))
+						candidateResultObj = candidateResultsMap.get(candId);
+					else{
+						
+						candidateResultObj = new CandidateResult();
+						candidateResultObj.setRank(new Long(rankByVotes++));
+						candidateResultObj.setVotesEarned(candidateElectionResult.getVotesEarned());
+						candidateResultObj.setVotesPercengate(calculateVotesPercengate(constituecBlock.getValidVotes(),candidateElectionResult.getVotesEarned()));
+						candidateResultObj.setNomination(nominationObj);
+						candidateResultDAO.save(candidateResultObj);
+					}
+				}
+				
 				if(logger.isDebugEnabled())
 				logger.debug("4.7");
 			}
-			ConstituencyElectionResult constituencyElectionResultObj = new ConstituencyElectionResult();
-			constituencyElectionResultObj.setMissingVotes(constituecBlock.getMissingVotes());
-			constituencyElectionResultObj.setRejectedVotes(constituecBlock.getRejectedVotes());
-			constituencyElectionResultObj.setTenderedVotes(constituecBlock.getTenderedVotes());
-			constituencyElectionResultObj.setTotalVotes(constituecBlock.getTotalElectors());
-			constituencyElectionResultObj.setTotalVotesPolled(constituecBlock.getTotalVotesPolled());
-			constituencyElectionResultObj.setValidVotes(constituecBlock.getValidVotes());
-			constituencyElectionResultObj.setVotingPercentage(calculateVotesPercengate(constituecBlock.getTotalElectors(),constituecBlock.getTotalVotesPolled()));
-			constituencyElectionResultObj.setConstituencyElection(constituencyElectionObj);
-			constituencyElectionResultDAO.save(constituencyElectionResultObj);
 			
+			
+			//ConstituencyElectionResult constituencyElectionResultObj = new ConstituencyElectionResult();
+			// add/update constituencyElectionResult if data is election results
+			if(isResults){
+				ConstituencyElectionResult constituencyElectionResultObj = null;
+				
+				if(!constituencyElectionResultsMap.isEmpty() && constituencyElectionResultsMap.containsKey(constId))
+					constituencyElectionResultObj = constituencyElectionResultsMap.get(constId);
+				else{
+				
+					constituencyElectionResultObj = new ConstituencyElectionResult();
+					constituencyElectionResultObj.setMissingVotes(constituecBlock.getMissingVotes());
+					constituencyElectionResultObj.setRejectedVotes(constituecBlock.getRejectedVotes());
+					constituencyElectionResultObj.setTenderedVotes(constituecBlock.getTenderedVotes());
+					constituencyElectionResultObj.setTotalVotes(constituecBlock.getTotalElectors());
+					constituencyElectionResultObj.setTotalVotesPolled(constituecBlock.getTotalVotesPolled());
+					constituencyElectionResultObj.setValidVotes(constituecBlock.getValidVotes());
+					constituencyElectionResultObj.setVotingPercentage(calculateVotesPercengate(constituecBlock.getTotalElectors(),constituecBlock.getTotalVotesPolled()));
+					constituencyElectionResultObj.setConstituencyElection(constituencyElectionObj);
+					constituencyElectionResultDAO.save(constituencyElectionResultObj);
+				}
+			}
 			if(logger.isDebugEnabled())
 			logger.debug("4.5");
 			long lastTime=System.currentTimeMillis();
@@ -439,7 +504,7 @@ private Election checkAndInsertElection(ElectionScope electionScope,UploadFormVo
 	Election lelectionObj = electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(), 
 			uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
 	if(lelectionObj!=null){
-		throw new CsvException("These Election Results have already been uploaded.");
+		//throw new CsvException("These Election Results have already been uploaded.");
 	}else{
 		lelectionObj = new Election();
 		lelectionObj.setElectionScope(electionScope);
@@ -610,5 +675,82 @@ private String fetchPattern(String excelFileName){
 	return pattern;
 }
 
+
+
+ /**
+  * Method to set constituencyElection and constituencyElectionResult Objects to Map
+  * @param electionId
+  */
+ private void setConstituencyElectionMap(Long electionId) throws Exception{
+	 
+	 if(log.isDebugEnabled())
+		 log.debug("Started setting ConstituencyElection Objects to Map ..");
+	 
+	 List<ConstituencyElection> constituencyElections = constituencyElectionDAO.findConstituencyElectionsByElection(electionId);
+	 if(constituencyElections != null && constituencyElections.size() > 0){
+		 
+		    for(ConstituencyElection constituencyElec:constituencyElections){
+		    	
+		    	Long constiId = constituencyElec.getConstituency().getConstituencyId();
+		    	constituencyElectionsMap.put(constiId, constituencyElec);
+		    	
+		    	if(constituencyElec.getConstituencyElectionResult() != null)
+		    		constituencyElectionResultsMap.put(constiId, constituencyElec.getConstituencyElectionResult());
+		    }
+	 }
+ }
+ 
+ /**
+  * Method to set Nominations and CandidateResults Objects to Map
+  * @param electionId
+  */
+ @SuppressWarnings("unchecked")
+ private void setNominationsMap(Long electionId) throws Exception{
+	 
+	 if(log.isDebugEnabled())
+		 log.debug("Started setting Nomination Objects to Map ..");
+	 
+	 List nominatnsLst = nominationDAO.getNominationsInAnElection(electionId);
+	 
+	 if(nominatnsLst != null && nominatnsLst.size() > 0){
+		 
+		 Iterator lstItr = nominatnsLst.listIterator();
+		 
+		 while(lstItr.hasNext()){
+			 
+			 Object[] values = (Object[])lstItr.next();
+			 
+			 Long candidateId = (Long)values[0];
+			 Nomination nomination = (Nomination)values[1];
+			 
+			 nominationsMap.put(candidateId, nomination);
+		 }
+	 }
+ }
+ 
+ @SuppressWarnings("unchecked")
+ private void setCandidateResultsMap(Long electionId){
+	 
+	 if(log.isDebugEnabled())
+		 log.debug("Started setting CandidateResult Objects to Map ..");
+	 
+     List candidateResLst = candidateResultDAO.findCandidateResultByElectionId(electionId);
+	 
+	 if(candidateResLst != null && candidateResLst.size() > 0){
+		 
+		 Iterator lstItr = candidateResLst.listIterator();
+		 
+		 while(lstItr.hasNext()){
+			 
+			 Object[] values = (Object[])lstItr.next();
+			 
+			 Long candidateId = (Long)values[0];
+			 CandidateResult candidateResult = (CandidateResult)values[1];
+			 
+			 candidateResultsMap.put(candidateId, candidateResult);
+			 
+		 }
+	 }
+ }
 
 }

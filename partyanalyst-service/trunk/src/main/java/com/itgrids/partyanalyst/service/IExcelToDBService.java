@@ -7,5 +7,5 @@ import com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo;
 
 public interface IExcelToDBService {
 
-	public ResultStatus readCSVFileAndStoreIntoDB(UploadFormVo uploadFormValueObject,String fileName,File fileToUpload) throws Exception;
+	public ResultStatus readCSVFileAndStoreIntoDB(UploadFormVo uploadFormValueObject,String fileName,File fileToUpload,Boolean isResults) throws Exception;
 }
