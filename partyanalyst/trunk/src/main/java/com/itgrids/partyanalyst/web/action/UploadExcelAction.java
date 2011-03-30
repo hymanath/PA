@@ -16,6 +16,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo;
 import com.itgrids.partyanalyst.service.IExcelToDBService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
@@ -37,6 +38,7 @@ public class UploadExcelAction extends ActionSupport implements ServletResponseA
 	private String country;
 	private String electionYear;
 	private UploadFormVo uploadFormVo;
+	private String isElectionResults;
 	IExcelToDBService excelToDBService;
     
     public String execute() throws JRException {
@@ -52,7 +54,11 @@ public class UploadExcelAction extends ActionSupport implements ServletResponseA
 			 System.out.println("electionYear ="+uploadFormVo.getElectionYear());
 			 System.out.println("country "+uploadFormVo.getCountry());
 			 System.out.println("district ="+uploadFormVo.getDistrict());
-			 excelToDBService.readCSVFileAndStoreIntoDB(uploadFormVo,inputFileFileName,inputFile);
+			 Boolean isResults = false;
+			 if(isElectionResults.equalsIgnoreCase(IConstants.ELECTION_RESULTS))
+				 isResults = true;
+			 
+			 excelToDBService.readCSVFileAndStoreIntoDB(uploadFormVo,inputFileFileName,inputFile,isResults);
 		 }catch(Exception exception){
 			 exception.printStackTrace();
 		 }
@@ -122,6 +128,16 @@ public class UploadExcelAction extends ActionSupport implements ServletResponseA
 	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}
+
+
+	public String getIsElectionResults() {
+		return isElectionResults;
+	}
+
+
+	public void setIsElectionResults(String isElectionResults) {
+		this.isElectionResults = isElectionResults;
 	}
 
 
