@@ -573,7 +573,7 @@ public class StaticDataService implements IStaticDataService {
 		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType.getElectionType()))
 			for(ElectionScope electionScope:electionScopes)
 				list.add(new SelectOptionVO(electionScope.getElectionScopeId(), electionScope.getState().getStateName()));
-		
+		Collections.sort(list);
 		return list;
 	}
 	
@@ -626,11 +626,7 @@ public class StaticDataService implements IStaticDataService {
 		    }
 		  }
 		}
-			TreeSet<SelectOptionVO> ts=new TreeSet<SelectOptionVO>();
-			ts.addAll(list);
-			list.removeAll(ts);
-			list.addAll(ts);
-		
+		Collections.sort(list);
 		return list;
 	}
 	
