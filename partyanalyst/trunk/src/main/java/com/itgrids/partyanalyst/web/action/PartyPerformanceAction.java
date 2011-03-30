@@ -506,7 +506,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 				session.setAttribute("reportVO", reportVO);
 				session.setAttribute("lineChartName", lineChartName);
 	         }
-	         else if(reportVO.getTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null){
+	         else if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0){
 	        	 ChartProducer.createALineChart("Election Result", createDatasetForLineGraphNew(reportVO.getTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getYear()), "Years", "Seats", chartPath); 
 	        	 request.setAttribute("lineChartName", lineChartName);
 				 session.setAttribute("reportVO", reportVO);
