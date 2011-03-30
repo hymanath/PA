@@ -240,9 +240,8 @@ var yearsPopulation={
 			createOptionsForSelectElmtId("electionYearSelect2",yearsPopulation.remainingYearsArray);	
 		}
 		function validateAndForwardToAction(elmt)
-		{			
-			showBusyImgWithId(elmt.id);
-			var errorFlag=0;
+		{
+		    var errorFlag=0;
 			var message="";	
 			var electionFlag=0;				
 			if(yearsPopulation.allYearsArray.length==1)
@@ -273,13 +272,6 @@ var yearsPopulation={
 				message+='<br/>';
 				errorFlag=1;
 				electionFlag=1;
-			}
-			if(document.getElementById("electionYearSelect2").value==0){
-				if(electionFlag!=1){
-					message+='<%=electionYearMsg %>';
-					message+='<br/>';						
-				}
-				errorFlag=1;
 			}
 			if(errorFlag==1){
 				document.getElementById("errorMessage").innerHTML = message;
