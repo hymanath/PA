@@ -5443,8 +5443,9 @@ public class StaticDataService implements IStaticDataService {
 		Long scopeId = null;
 		if(stateId != null && electionType != null && countryId != null){
 			List<ElectionScope> electionScope = null;
-			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+			if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 			     electionScope = electionScopeDAO.getElectionScopeForAElectionType(electionType, countryId);
+			   }
 			else
 				 electionScope = electionScopeDAO.getElectionScopeForAElectionType(stateId, electionType, countryId);
 			
