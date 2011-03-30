@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -611,6 +612,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		if(!stateID.equals(0L))
 		partiesList = staticDataService.getStaticPartiesListForAState(stateID);
 		partiesList.add(0, new SelectOptionVO(0L,"Select Party"));
+		Collections.sort(partiesList);
 		
 	 return Action.SUCCESS;
 	}
