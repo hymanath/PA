@@ -559,7 +559,7 @@
 	{
 
 		latestElectionYear = results.allPartiesDetails.electionYears[0];
-		
+
 		var headerElmt = document.getElementById("headerDiv");
 		var tempStr ='';
 		tempStr+='	<table>';
@@ -609,17 +609,22 @@
 		var elmt = document.getElementById("overViewDiv");
 		
 		var str='';
-		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;		
+		var partiesDetails = results.allPartiesDetails.partiesDetailsVO;	
+		
 		str += '<div id="mainDataDiv">';		
 		for(var k=0;k<partiesDetails.length;k++){
 			
+			if(partiesDetails[k].partyName == null){
+			continue;
+			}
+
 			str += '  <div id="overviewOfPartiesDiv">';
 			str += '	<table id="CompleteDetailsTable">';
 			str += '		<tr>';	
 			str += '			<td>';
 			str += '			<table id="mainDetails" class="detailReportHeader"> ';
 			str += '				<tr>';
-			str += '					<td style="color:white;margin-left:4px;margin-right:4px;">';
+            str += '					<td style="color:white;margin-left:4px;margin-right:4px;">';
 			str += '							Winning Position of '+partiesDetails[k].partyName+' Party ';
 			str += '			in the last <b style=" color: #69A74E;font-weight: bold;">'+results.selectedYearsCount+'</b> election years <b class="viewAndHideDetails"';
 			str += '			</td>';
