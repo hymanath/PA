@@ -1375,6 +1375,12 @@ function callMarginVotes(partyId)
 		padding:5px;
 		text-decoration:underline;
 	}
+	#barChartMsg {
+    font-size: 12px;
+    margin-top: 47px;
+    padding: 5px;
+    width: 100%;
+}
 	
 </style>
 </head> 
@@ -1468,6 +1474,12 @@ function callMarginVotes(partyId)
 				<div id="partyResultsChart" style="width:100%">
 					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="350" HEIGHT="250">
 				</div>
+                       <c:if test="${(stateData.totalSeatsWon==0)&&(stateData.prevYearTotalSeatsWon==0)}">
+                       	<script type="text/javascript">
+						var elmt=document.getElementById("partyResultsChart");
+						elmt.innerHTML='<h4><font color="green">Reason:<span id="barChartMsg"> '+partyName+' Party has 0 results<br>in 1st, 2nd, 3rd position so Unable To Build BarChart</span></font></h4>';
+						</script>
+					 </c:if>
 			</div>		
 		</td>
 		<td style="vertical-align:top">
