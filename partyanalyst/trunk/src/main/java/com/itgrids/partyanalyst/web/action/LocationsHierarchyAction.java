@@ -148,9 +148,9 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			{
 				//to fetch states in country
 				List<SelectOptionVO> states= getRegionServiceDataImp().getStatesByCountryForSearch(1l); 
+				Collections.sort(states);
 				states.add(0, new SelectOptionVO(0l,"Select Location"));
 				setRegionsList(states);
-				//Collections.sort(states);
 			}	
 
 			else if(jObj.getString("task").equalsIgnoreCase("stateSelect"))
