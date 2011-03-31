@@ -622,7 +622,7 @@ public class StaticDataService implements IStaticDataService {
 		List<ElectionScope> electionScopes = electionScopeDAO.getElectionScopes(stateID);
 		if(electionScopes  != null){
 		for(ElectionScope scope:electionScopes){
-			list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType().toUpperCase()));
+			list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType()));
 		    }
 		  }
 		}
@@ -686,7 +686,7 @@ public class StaticDataService implements IStaticDataService {
 		List elections = null;
 		
 		ElectionType electionType = electionTypeDAO.get(elecType);
-		if(electionType.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		if(electionType.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 			elections = electionDAO.findElectionAndYearForParliamentElectionType(elecType);
 		else
 		    elections = electionDAO.findElectionAndYearForElectionTypeAndState(elecType,stateId);
@@ -3189,7 +3189,7 @@ public class StaticDataService implements IStaticDataService {
 			}else if(stateId.intValue()==12){//karnataka
 				parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
 			}else{
-				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
+				parties = partyDAO.findByShortNames(IConstants.NATIONAL_STATIC_PARTIES);
 			}
 			for(Party party : parties){				
 				list.add(party.getPartyId());
