@@ -9,7 +9,7 @@ public interface IConstituencySearchService {
 
 	public List<SelectOptionVO>  getConstituencyNamesAndIds(Long electionTypeId , Long stateId, String searchString);
 	
-	public List<ConstituencyVO> getConstituencyDetails(String name, String electionType);
+	public List<ConstituencyVO> getConstituencyDetails(String name, String electionType,Long stateId);
 	public List<ConstituencyVO> getConstituencyInformation(String searchText,String constType,Long stateId,String sortoption,String order,Integer startIndex,Integer maxResult);
 	
 	public List<SelectOptionVO> getConstituencyNames(Long stateId);

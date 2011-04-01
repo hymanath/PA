@@ -37,7 +37,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 
 	public List<Constituency> findByCountryId(Object countryId);
 	
-	public List<Constituency> findByConstituencyNamePattern(String electionType, String constituencyName);
+	public List<Constituency> findByConstituencyNamePattern(String electionType, String constituencyName,Long stateId);
 	
 	public List<Constituency> findByStateId(Long stateId);
 	
