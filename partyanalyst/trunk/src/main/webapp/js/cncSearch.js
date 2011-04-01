@@ -76,6 +76,8 @@ function getXmlHttpObj()
 }
  function getParser(stateId)
  {	
+	 ajax_list_cachedLists = new Array();
+	 
 	if(stateId == '0')
 	{
 		alert("Invalid Selection");
