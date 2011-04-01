@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -56,17 +57,50 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		return constituencyNamesAndIdsList;
 	}
 	
-	public List<ConstituencyVO> getConstituencyDetails(String name, String constType){
-		List<Constituency> constituencies = constituencyDAO.findByConstituencyNamePattern(constType, name);
+	/**
+	 * Method to get Constituency Details by constituency name , type and state
+	 * @param name
+	 * @param constType
+	 * 
+	 * @return List<ConstituencyVO>
+	 * 
+	 */
+	public List<ConstituencyVO> getConstituencyDetails(String name, String constType,Long stateId){
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered into getConstituencyDetails method to get constituency details ..");
 		List<ConstituencyVO> constituencyVOs = new ArrayList<ConstituencyVO>();
-		String districtName = "";
-		for(Constituency constituency:constituencies){
-			if(constituency.getDistrict() != null)
-				districtName = constituency.getDistrict().getDistrictName();
-			ConstituencyVO constituencyVO = new ConstituencyVO(constituency.getConstituencyId(),constituency.getName(),
-								constituency.getState().getStateName(), districtName ,
-								constituency.getElectionScope().getElectionType().getElectionType(),constituency.getDeformDate());
-			constituencyVOs.add(constituencyVO);
+		
+		try{
+			
+			List<Constituency> constituencies = constituencyDAO.findByConstituencyNamePattern(constType, name,stateId);
+			String districtName = "";
+			
+			for(Constituency constituency:constituencies){
+				
+				log.info("Setting data for " + constituency.getName() + " Constituency");
+				
+				if(constituency.getDistrict() != null)
+					districtName = constituency.getDistrict().getDistrictName();
+				ConstituencyVO constituencyVO = new ConstituencyVO(constituency.getConstituencyId(),constituency.getName(),
+									constituency.getState().getStateName(), districtName ,
+									constituency.getElectionScope().getElectionType().getElectionType(),constituency.getDeformDate());
+				constituencyVOs.add(constituencyVO);
+			}
+			log.info("Finished setting complete details ..");
+		
+		}catch(Exception ex){
+			
+			log.error("Exception Raised While Retrieving constituency details :" + ex);
+			
+			ConstituencyVO errorVO = new ConstituencyVO();
+			errorVO.setExceptionEncountered(ex);
+			errorVO.setExceptionMsg(ex.getMessage());
+			
+			constituencyVOs.add(errorVO);
+			
+		 return constituencyVOs;
+						
 		}
 		
 		return constituencyVOs;

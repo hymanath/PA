@@ -48,11 +48,12 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Constituency> findByConstituencyNamePattern(String constituencyType, String constituencyName){
+	public List<Constituency> findByConstituencyNamePattern(String constituencyType, String constituencyName,Long stateId){
 		String cName = "%"+constituencyName+"%";
-		Query queryObject = getSession().createQuery("from Constituency model where model.electionScope.electionType.electionType = ? and model.name like ?");
+		Query queryObject = getSession().createQuery("from Constituency model where model.electionScope.electionType.electionType = ? and model.name like ? and model.state.stateId = ?");
 		queryObject.setString(0, constituencyType);
 		queryObject.setString(1, cName);
+		queryObject.setLong(2, stateId);
 		queryObject.setMaxResults(IConstants.MAX_SEARCH_RESULTS_DISPLAY.intValue());
 		return queryObject.list();
 		//Object[] params = {constituencyType, cName};
