@@ -144,7 +144,7 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 			
 			if(totalSearchCount == 1)
 			{
-				constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText(), electionType);
+				constituencySearchList = constituencySearchService.getConstituencyDetails(getSearchText(), electionType,this.state);
 				id = constituencySearchList.get(0).getId();
 				return "redirectToConstituencyPage";
 			}
