@@ -288,10 +288,13 @@
 			var row3Elmt=document.getElementById("row3");	
 			row3Elmt.style.display = "none";
 			return;
-		}else{			
+		}else{		
+		
+				var stateSelectElmt = document.getElementById("stateNameSelect");				
+				var stateValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].value;
 			var jsObj= 
 			{		
-				stateId: id,
+				stateId: stateValue,
 				task:"getStaticParties"		
 			}
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
