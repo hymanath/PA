@@ -256,8 +256,8 @@ body
 	var userName = '${sessionScope.UserName}';
 	
 	var previousScore;
-
-	function incrementHidden()
+	
+    function incrementHidden()
 	{
 		hidden++;
 	}
@@ -368,21 +368,43 @@ body
 		var newPercentValue = '';
 		var postConfirmElmt = document.getElementById("commentsDialogDiv_content");
 		var decimalValue = '';
-			var alphabet =  /[a-zA-Z]+$/;
-			if(commentVal.match(alphabet))
-		     {
-               if(postedByVal.match(alphabet));
-				 
-			 else{
-				   alertMessageEl.innerHTML ='Special characters not allowed in PostedBy';
-				   return false;
-				 }
-			 } 
-			else{
-				  alertMessageEl.innerHTML ='Special characters not allowed in Description';
-				  return false;
-				 }
-		if(category == "candidate")
+
+//Trim javascript function begining and ending spaces trimed
+		function trim(postedByVal){
+				postedByVal =postedByVal .replace(/^\s+/,'');
+				postedByVal = postedByVal.replace(/\s+$/,'');
+				return postedByVal;
+		   }
+			postedByVal=postedByVal.trim(postedByVal);
+
+
+// allow only characters
+	if(commentVal.search(/[0-9]+/) > -1){
+		alertMessageEl.innerHTML = 'Numbers are not allowed in Describe your Reason field';
+	}
+	if(postedByVal.search(/[0-9]+/) > -1){
+		alertMessageE1.innerHTML = 'Numbers are not allowed in postBy field';
+	}
+	console.log(commentVal);
+	console.log(postedByVal);
+//special characters are not allowed.!
+var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+
+		for (var i = 0; i < commentVal.length; i++) {
+  			if (iChars.indexOf(commentVal.charAt(i)) != -1) {
+  			alertMessageEl.innerHTML ='Describe your Reason has special characters These are not allowed Please remove them and try again';
+  			return false;
+  			}
+		}
+		for (var i = 0; i < postedByVal.length; i++) {
+  			if (iChars.indexOf(postedByVal.charAt(i)) != -1) {
+  			alertMessageEl.innerHTML ='PostedBy has special characters These are not allowed Please remove them and try again';
+  			return false;
+  		  }
+      }
+
+
+if(category == "candidate")
 		{
 			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
 			if(commentCategoryEl)
@@ -488,7 +510,7 @@ body
 		postConfirmElmt.innerHTML = str;
 		
 	}
-	function getCandidatesResults(constElecId)
+	 function getCandidatesResults(constElecId)
 	{
 		if(constElecId == 0)
 			return;
