@@ -1,35 +1,24 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
-//import net.sf.json.JSONArray;
-//import net.sf.json.util.JSONTokener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.json.annotations.JSON;
 import org.apache.struts2.util.ServletContextAware;
-import org.json.JSONObject;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 import com.itgrids.partyanalyst.service.IPartyRebelCandidatesService;

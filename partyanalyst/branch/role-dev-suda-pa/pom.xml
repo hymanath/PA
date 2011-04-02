@@ -10,19 +10,28 @@
 	<url>http://www.partyanalyst.com</url>
 	<description>PartyAnalyst</description>
 
+	<properties>
+		<struts2.version>2.2.1.1</struts2.version>
+		<springMain.version>3.0.5.RELEASE</springMain.version>
+		<springModules.version>2.0.8</springModules.version>
+		<displaytag.version>1.2</displaytag.version>
+		<tiles.version>2.0.6</tiles.version> <!-- dependency on struts tiles plugin hence an old one-->
+	</properties>
+	
 	<build>
 		<finalName>PartyAnalyst</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.8</version>
 				<configuration>
 					<wtpversion>1.5</wtpversion>
 				</configuration>
@@ -43,47 +52,79 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<name>Maven Repository Switchboard</name>
+			<name>Maven Repository</name>
 			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>http://repo2.maven.org/maven2/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
-
 		<repository>
-			<id>googlejsonrepo</id>
-			<name>Google JSON repository</name>
+			<id>central2</id>
+			<name>Maven Repository2</name>
 			<layout>default</layout>
-			<url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk
-			</url>
+			<url>http://repo1.maven.org/maven/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-       	
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>		
 		<repository>
-            	<id>wso2-maven2-repository</id>
-            	<name>WSO2 Maven2 Repository</name>
-            	<url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
-        </repository>
-		
-		<repository> 
-			<id>jasperreports</id> 
-			<name>Jasper Reports Repository</name> 
-			<layout>default</layout> 
-			<url>http://escidoc1.escidoc.mpg.de:8888/archiva/repository/internal</url> 
-			<snapshots> 
-			<enabled>false</enabled> 
-			</snapshots> 
-		</repository> 
+			<id>repo1</id>
+			<name>Java Repository</name>
+			<url>http://download.java.net/maven/2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		<repository>
+			<id>repo2</id>
+			<name>Ibiblio Repository</name>
+			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		<repository>
+			<id>repo3</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.org/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		<repository>
+			<id>repo4</id>
+			<name>JBoss Repository2</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>central</id>
+			<id>plugin-central</id>
 			<name>Maven Plugin Repository</name>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>http://repo2.maven.org/maven2/</url>
 			<layout>default</layout>
 			<snapshots>
 				<enabled>false</enabled>
@@ -115,7 +156,7 @@
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
-			<version>2.1.6</version>
+			<version>${struts2.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>tools</artifactId>
@@ -125,22 +166,57 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-sitemesh-plugin
-			</artifactId>
-			<version>2.1.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-spring-plugin</artifactId>
-			<version>2.1.6</version>
+			<version>${struts2.version}</version>
 		</dependency>
 		<dependency>
     		<groupId>org.apache.struts</groupId>
-   			<artifactId>struts2-jasperreports-plugin</artifactId>
-    		<version>2.1.6</version>
+   			<artifactId>struts2-json-plugin</artifactId>
+    		<version>${struts2.version}</version>
 		</dependency>
 		
+		<!-- Sitemesh -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-sitemesh-plugin
+			</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 
+		<!-- Jasperreports -->
+		<dependency>
+    		<groupId>org.apache.struts</groupId>
+   			<artifactId>struts2-jasperreports-plugin</artifactId>
+    		<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>jasperreports</groupId>
+    		<artifactId>jasperreports</artifactId>
+    		<version>3.1.2</version>
+		</dependency> 		
+
+		<!-- Tiles -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-tiles-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		
 		<!--  Taglibs & JSTL -->
 		<dependency>
 			<groupId>taglibs</groupId>
@@ -156,23 +232,6 @@
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.1.2</version>
-		</dependency>
-
-		<!-- Tiles -->
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-tiles-plugin</artifactId>
-			<version>2.0.11</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
-			<version>2.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>2.0.6</version>
 		</dependency>
 
 		<!-- Servlet & Jsp -->
@@ -210,103 +269,61 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>2.5.6</version>
+			<version>${springMain.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>2.5.6.SEC01</version>
+			<version>${springMain.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-remoting</artifactId>
-			<version>2.0.8</version>
+			<version>${springModules.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-support</artifactId>
-			<version>2.0.8</version>
+			<version>${springModules.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-hibernate3</artifactId>
-			<version>2.0.8</version>
+			<version>${springModules.version}</version>
 		</dependency>
-
-		<!-- Sitemesh -->
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>sitemesh</artifactId>
-			<version>2.4.2</version>
-		</dependency>
-
-		<!-- Google JSON Support -->
-		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>jsonplugin</artifactId>
-			<version>0.33</version>
-		</dependency>
-		
-		<!-- Struts Jasperreports support -->
-		
-		<dependency>
-    		<groupId>jasperreports</groupId>
-    		<artifactId>jasperreports</artifactId>
-    		<version>3.0.0</version>
-    		<exclusions>
-    			<exclusion>
-    				<artifactId>bctsp-jdk14</artifactId>
-    				<groupId>bouncycastle</groupId>
-    			</exclusion>
-    		</exclusions>
-		</dependency> 		
 		
 		<!-- Display Tags -->
 		<dependency>
 			 <groupId>displaytag</groupId> 
   			 <artifactId>displaytag</artifactId> 
-  			 <version>1.2</version> 			
+  			 <version>${displaytag.version}</version> 			
 		</dependency>
 		
 		<dependency>
 			<groupId>displaytag</groupId> 
   			<artifactId>displaytag-export-poi</artifactId> 
-  			<version>1.2</version> 
+  			<version>${displaytag.version}</version> 
 		</dependency>
 		
 		<dependency>
 			<groupId>displaytag</groupId> 
   			<artifactId>displaytag-portlet</artifactId> 
-  			<version>1.2</version> 
+  			<version>${displaytag.version}</version> 
 		</dependency>
-		
-		<!-- JSON -->
-		
-		<dependency>
-	        <groupId>net.sf.json-lib</groupId>
-	        <artifactId>json-lib</artifactId>
-	        <version>1.0.1</version>
-	        <classifier>jdk15</classifier>
-	    </dependency>
-		<dependency>
-			<groupId>com.metaparadigm</groupId>
-			<artifactId>json-rpc</artifactId>
-			<version>1.0</version>
-		</dependency> 
 		
 		<!-- Jfreechart -->
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jfreechart</artifactId>
-			<version>1.0.12</version>
-			<scope>compile</scope>
+			<version>1.0.13</version>
 		</dependency>
 		
+		<!-- JSON -->	
 		<dependency>
-		    <groupId>com.metaparadigm</groupId>
-    		<artifactId>json-rpc</artifactId>
-    		<version>1.0</version>
-		</dependency> 
+		    <groupId>org.json</groupId>
+    		<artifactId>json</artifactId>
+    		<version>20090211</version>
+		</dependency>
 		
 		<!-- OPEN CSV -->
 		<dependency>
@@ -314,6 +331,8 @@
   			<artifactId>opencsv</artifactId>
   			<version>1.8</version>
 		</dependency>
+		
+		<!-- LOGGING -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

@@ -14,13 +14,21 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
+import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.service.IBoothPopulationService;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,11 +42,44 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private String task = null;
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
-	private IBoothPopulationService boothPopulationService;
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private MandalDataWithChartVO mandalDataWithChartVO;
 	private HttpSession session;
 	private ServletContext context;
+	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
+	private IConstituencyPageService constituencyPageService;
+	private List<InfluencingPeopleVO> influencingPeopleInMandal;
+	private List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal;
+	private CastWiseElectionVotersVO castWiseElectionVoters;
+	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	
+	public List<InfluencingPeopleVO> getInfluencingPeopleInMandal() {
+		return influencingPeopleInMandal;
+	}
+
+	public void setInfluencingPeopleInMandal(
+			List<InfluencingPeopleVO> influencingPeopleInMandal) {
+		this.influencingPeopleInMandal = influencingPeopleInMandal;
+	}
+
+	public List<LocationWiseBoothDetailsVO> getTownshipWiseBoothDataInMandal() {
+		return townshipWiseBoothDataInMandal;
+	}
+
+	public void setTownshipWiseBoothDataInMandal(
+			List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal) {
+		this.townshipWiseBoothDataInMandal = townshipWiseBoothDataInMandal;
+	}
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -88,19 +129,45 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.mandalDataWithChartVO = mandalDataWithChartVO;
 	}
 
-	public IBoothPopulationService getBoothPopulationService() {
-		return boothPopulationService;
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
 	}
 
-	public void setBoothPopulationService(
-			IBoothPopulationService boothPopulationService) {
-		this.boothPopulationService = boothPopulationService;
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
 	}
 
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
 	
+	
+	public PartyElectionVotersHeaderDataVO getPartyElectionVotersHeaderDataVO() {
+		return partyElectionVotersHeaderDataVO;
+	}
+
+	public void setPartyElectionVotersHeaderDataVO(
+			PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO) {
+		this.partyElectionVotersHeaderDataVO = partyElectionVotersHeaderDataVO;
+	}
+
+	public void setCastWiseElectionVoters(
+			CastWiseElectionVotersVO castWiseElectionVoters) {
+		this.castWiseElectionVoters = castWiseElectionVoters;
+	}
+	public CastWiseElectionVotersVO getCastWiseElectionVoters() {
+		return castWiseElectionVoters;
+	}
+
+	public GenderAgeWiseVotersVO getGenderAgeWiseVoters() {
+		return genderAgeWiseVoters;
+	}
+
+	public void setGenderAgeWiseVoters(GenderAgeWiseVotersVO genderAgeWiseVoters) {
+		this.genderAgeWiseVoters = genderAgeWiseVoters;
+	}
+
 	public String execute() throws Exception {
 		
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -122,12 +189,35 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
+		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(mandalID), IConstants.MANDAL);
+		ex = partyElectionVotersHeaderDataVO.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal voters party wise ", ex);
+		}
+
+		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVotersForMandal(new Long(mandalID));
+		ex = castWiseElectionVoters.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal voters cast wise ", ex);
+		}
+		genderAgeWiseVoters = delimitationConstituencyMandalService.findGenderAgeWiseVotersForMandal(new Long(mandalID));
 		
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
+			log.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
+			log.debug("size============================================"+genderAgeWiseVoters.getVoterAgeRangeVOList().size());
 			log.debug("end of MandalPageAction.execute()");
 		}
+		
+		ResultWithExceptionVO influencingPeopleInMandalVO = constituencyPageService.getAllMandalLevelLeaders(new Long(mandalID));
+		if(influencingPeopleInMandalVO.getExceptionEncountered() == null){
+			influencingPeopleInMandal = (List<InfluencingPeopleVO>)influencingPeopleInMandalVO.getFinalResult();
+		}
+		/*//ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID), 2l);
+		if(boothDataOfRevenueVillagesInMandal.getResultStatus().getExceptionEncountered() == null){
+			townshipWiseBoothDataInMandal = (List<LocationWiseBoothDetailsVO>)boothDataOfRevenueVillagesInMandal.getFinalResult();
+		}*/
 		return SUCCESS;
 	}
 	
@@ -149,7 +239,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         
         mandalDataWithChartVO = new MandalDataWithChartVO();
-		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
 		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);
 		mandalDataWithChartVO.setChart(chartName);
 	 	
@@ -162,16 +252,21 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	}
 
 	private CategoryDataset createDataset(List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO) {
-        final String series1 =  "Assembly";
-        final String series2 = "Parliament";
+        final String series1 =  IConstants.ASSEMBLY_ELECTION_TYPE;
+        final String series2 = IConstants.PARLIAMENT_ELECTION_TYPE;
+        final String series3 = IConstants.MPTC_ELECTION_TYPE;
+        final String series4 = IConstants.ZPTC_ELECTION_TYPE;
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(MandalAllElectionDetailsVO result: mandalAllElectionDetailsVO){
-        	if(result.getElectionType().equals("Assembly"))
-        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series1, result.getElectionYear());
-        	else
-        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series2, result.getElectionYear());
+        	if(result.getElectionType().equals(series1))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series1);
+        	else if(result.getElectionType().equals(series2))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series2);
+        	else if(result.getElectionType().equals(series3))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series3);
+        	else if(result.getElectionType().equals(series4))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series4);
         }
         return dataset;
-        
     }
 }

@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,16 +16,18 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.opensymphony.xwork2.ActionSupport;
-
+import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.CadreManagementVO;
+import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.dto.UserSubscribeImpDatesVO;
-
-import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.ActionSupport;
 
 
 public class CreateEventAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
@@ -38,15 +39,21 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private String task = null;
 	JSONObject jObj = null;	
 	private UserEventVO event;
-	private ImportantDatesVO importantDatesVO;
+	private List<ImportantDatesVO> importantDatesVOs;
 	private List<EventActionPlanVO> actionPlanList = new ArrayList<EventActionPlanVO>();
+	private List<SelectOptionVO> organizersList = new ArrayList<SelectOptionVO>();
+	private List<SelectOptionVO> actionOrgList = new ArrayList<SelectOptionVO>();
 	private IUserCalendarService userCalendarService;
+	private CadreManagementService cadreManagementService;
 	private HttpSession session;
 	private HttpServletRequest request;
 	//private String subscribe;
 	private UserSubscribeImpDatesVO userSubscribeImpDates = new UserSubscribeImpDatesVO();
-
-	private final static Logger log = Logger.getLogger(CreateEventAction.class);
+	private CadreManagementVO cadreManagementVO;
+	private List<SelectOptionVO> cadresLevel;
+	private List<CadreInfo> cadresLocation;
+	private String deleteStatus;
+	private final static Logger log = Logger.getLogger(CreateEventAction.class);	
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -58,6 +65,31 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 	}
 	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
+	public List<SelectOptionVO> getCadresLevel() {
+		return cadresLevel;
+	}
+
+	public void setCadresLevel(List<SelectOptionVO> cadresLevel) {
+		this.cadresLevel = cadresLevel;
+	}
+
+	public List<CadreInfo> getCadresLocation() {
+		return cadresLocation;
+	}
+
+	public void setCadresLocation(List<CadreInfo> cadresLocation) {
+		this.cadresLocation = cadresLocation;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -74,6 +106,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.event = event;
 	}
 	
+	public CadreManagementVO getCadreManagementVO() {
+		return cadreManagementVO;
+	}
+
+	public void setCadreManagementVO(CadreManagementVO cadreManagementVO) {
+		this.cadreManagementVO = cadreManagementVO;
+	}
+	
 	
 /*	public String getSubscribe() {
 		return subscribe;
@@ -83,12 +123,12 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.subscribe = subscribe;
 	}*/
 
-	public ImportantDatesVO getImportantDatesVO() {
-		return importantDatesVO;
+	public List<ImportantDatesVO> getImportantDatesVOs() {
+		return importantDatesVOs;
 	}
 
-	public void setImportantDatesVO(ImportantDatesVO importantDatesVO) {
-		this.importantDatesVO = importantDatesVO;
+	public void setImportantDatesVOs(List<ImportantDatesVO> importantDatesVOs) {
+		this.importantDatesVOs = importantDatesVOs;
 	}
 	public IUserCalendarService getUserCalendarService() {
 		return userCalendarService;
@@ -105,6 +145,15 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 
 	public void setUserSubscribeImpDates(UserSubscribeImpDatesVO userSubscribeImpDates) {
 		this.userSubscribeImpDates = userSubscribeImpDates;
+	}
+	
+
+	public String getDeleteStatus() {
+		return deleteStatus;
+	}
+
+	public void setDeleteStatus(String deleteStatus) {
+		this.deleteStatus = deleteStatus;
 	}
 
 	public String execute() throws Exception
@@ -126,17 +175,21 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		try {
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		log.debug("Task::"+jObj.getString("task"));
-		if(jObj.getString("task").equalsIgnoreCase("createEvent"))
+		if(jObj.getString("task").equalsIgnoreCase("createEvent") || jObj.getString("task").equalsIgnoreCase("updateCreateEvent"))
 		{
 			event = new UserEventVO();
+				
+			if(!jObj.getString("userEventsId").equalsIgnoreCase(""))			
+				event.setUserEventsId(new Long(jObj.getString("userEventsId")));
 			
 			event.setUserID(user.getRegistrationID());
-			event.setTitle(jObj.getString("eventName"));
+			if(!jObj.getString("eventName").equalsIgnoreCase(""))
+				event.setTitle(jObj.getString("eventName"));
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
 			String startTimeHrs = jObj.getString("startTimeHrs");
@@ -150,29 +203,69 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			event.setStartDate(sdf.parse(sDate.toString()));
 			event.setEndDate(sdf.parse(eDate.toString()));
 			event.setDescription(jObj.getString("desc"));
-			event.setLocationId(854L);
-			event.setLocationType("MANDAL");
+			event.setLocationId(new Long(jObj.getString("locationId")));
+			event.setLocationType(jObj.getString("locationType"));
+			event.setIsDeleted(jObj.getString("isDeleted"));
 			//String organisers = jObj.getString("organisers");
 			
-			System.out.println("Start date ============ "+startDate);
-			System.out.println("End date ============ "+endDate);
-			
-			JSONArray actionPlans = jObj.getJSONArray("actionPlans");
-			int size = actionPlans.length();
-			
-			for(int i=0;i<size;i++)
+			if(!jObj.getString("organizers").equals("null"))
 			{
-				JSONObject jsonobj = actionPlans.getJSONObject(i);				
-				String actionPlan = jsonobj.getString("actionPlan");
-				String actionOrganisers = jsonobj.getString("organisers");
-				String actionPlanDate = jsonobj.getString("targetDate");
+				System.out.println("In If Condition --------------------"+jObj.getString("organizers"));
+				JSONArray organizers = jObj.getJSONArray("organizers");
+				int orgzSize = organizers.length();
 				
-				EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
-				eventActionPlanVO.setAction("actionPlan");
-				eventActionPlanVO.setTargetDate(new Date(actionPlanDate));				
-				actionPlanList.add(eventActionPlanVO);	
-			}					
-			event.setActionPlans(actionPlanList);
+				for(int i=0;i<orgzSize;i++)
+				{
+					JSONObject orgjsonobj = organizers.getJSONObject(i);				
+					String cadreID = orgjsonobj.getString("id");
+					String cadreName = orgjsonobj.getString("name");
+					
+					SelectOptionVO orgVo = new SelectOptionVO();
+					orgVo.setId(new Long(cadreID));
+					orgVo.setName(cadreName);		
+					organizersList.add(orgVo);
+				}
+				event.setOrganizers(organizersList);
+			}
+			
+			if(!jObj.getString("actionPlans").equals("null"))
+			{
+				JSONArray actionPlans = jObj.getJSONArray("actionPlans");
+				int size = actionPlans.length();
+				
+				for(int j=0;j<size;j++)
+				{
+					JSONObject jsonobj = actionPlans.getJSONObject(j);	
+					
+					String actionPlan = jsonobj.getString("action");
+					String actionPlanDate = jsonobj.getString("targetDate");					
+					JSONArray actionOrganisers = jsonobj.getJSONArray("actionPlanOrganizers");
+					
+					System.out.println("actionOrganisers = "+actionOrganisers);
+					if(actionOrganisers.length()>0)
+					{
+						int actionOrgSize = actionOrganisers.length();
+						for(int k=0;k<actionOrgSize;k++)
+						{
+							JSONObject actionobj = actionOrganisers.getJSONObject(k);
+							String orgID = actionobj.getString("id");
+							String orgName = actionobj.getString("name");
+							
+							SelectOptionVO orgVO = new SelectOptionVO();
+							orgVO.setId(new Long(orgID));
+							orgVO.setName(orgName);	
+							actionOrgList.add(orgVO); 
+						}
+					}
+					
+					EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
+					eventActionPlanVO.setAction(actionPlan);
+					eventActionPlanVO.setTargetDate(new Date(actionPlanDate));
+					eventActionPlanVO.setActionPlanOrganizers(actionOrgList);
+					actionPlanList.add(eventActionPlanVO);	
+				}					
+				event.setActionPlans(actionPlanList);
+			}
 		
 			event = userCalendarService.saveUserPlannedEvents(event);
 			if(event.getExceptionEncountered()!=null)
@@ -181,10 +274,16 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 				log.debug("No Exception when saving UserEvent");
 			result = "success1";
 		}
-		else if(jObj.getString("task").equalsIgnoreCase("createImpDateEvent"))
+		else if(jObj.getString("task").equalsIgnoreCase("createImpDateEvent") || jObj.getString("task").equalsIgnoreCase("updateImpDateEvent"))
 		{
 			log.debug("inside if....createImpDateEvent");
-			importantDatesVO = new ImportantDatesVO();			
+			ImportantDatesVO importantDatesVO = new ImportantDatesVO();			
+			
+			if(!jObj.getString("importantDateId").equalsIgnoreCase(""))
+			{
+				System.out.println(" IN If condition------------------"+jObj.getString("importantDateId"));
+				importantDatesVO.setImportantDateId(new Long(jObj.getString("importantDateId")));
+			}
 			
 			importantDatesVO.setEventId(user.getRegistrationID());
 			importantDatesVO.setTitle(jObj.getString("eventName"));
@@ -199,12 +298,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			eDate.append(endDate).append(IConstants.SPACE).append("00").append(":").append("00").append(":00");
 			
 			importantDatesVO.setStartDate(sdf.parse(sDate.toString()));
-			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));				
+			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));
+			importantDatesVO.setIsDeleted("NO");
 		
-			importantDatesVO = userCalendarService.saveUserImpDate(importantDatesVO);
-			System.out.println("Important dates = "+importantDatesVO);
+			importantDatesVOs = userCalendarService.saveUserImpDate(importantDatesVO);
+			//System.out.println("Important dates = "+importantDatesVO);
 			
-			log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
+			//log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
 			result = "success2";
 		}
 		else
@@ -213,7 +313,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		
-		System.out.println("In Create Event Action %%%%%%%%%%%%%%");
+		System.out.println("In Create Event Action %%%%%%%%%%%%%%"+importantDatesVOs);
 		
 		return result;
 	}
@@ -232,10 +332,143 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
 		user.setSubscribePartyImpDate(subscribeStatus);
-		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user,calendar);
 		userSubscribeImpDates.setSubscribeTitle(subscribe);
 		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
 		return SUCCESS;
 	}
+	
+	public String showImpDateEvent() throws Exception
+	{
+		String result = "userEvent";
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String eventId = jObj.getString("eventId");
+		String eventType = jObj.getString("eventType");
+		if(jObj.getString("taskType").equalsIgnoreCase("impEvent"))
+		{
+			event = userCalendarService.getUserPlannedEvent(new Long(eventId));
+			result = "userEvent";
+		}
+		else if(jObj.getString("taskType").equalsIgnoreCase("impDate"))
+		{
+			Calendar cal = Calendar.getInstance();
+			cal.set(new Integer(jObj.getString("currentYear")).intValue(), new Integer(jObj.getString("currentMonth")).intValue(),new Integer(jObj.getString("currentDay")).intValue());
+			//cal.set(year, month, date);
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType, cal);
+			result = "impDate";
+		}
+			
+		return result;
+	}
+	
+	public String getNextMonthDatesEvents() throws Exception
+	{
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int month = Integer.parseInt(jObj.getString("monthVal"));
+		int year = Integer.parseInt(jObj.getString("yearval"));
+		
+		System.out.println("@@@@@@@@@@@IN getNextMonth method ="+month+" - "+year);
+		
+		Calendar calendar =Calendar.getInstance();
+		calendar.set(Calendar.DATE, 1);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.YEAR, year);
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		cadreManagementVO = userCalendarService.getUserImpDateAndEvent(user, calendar);
+		
+		return SUCCESS;
+	}
+	
+	public String getCadresForEvent() throws Exception
+	{	
+		System.out.println("IN get cadres method");
+		String result = "success1";
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Boolean isParent = true;
+		if(user.getParentUserId() != null)
+			isParent = false;
+		
+		if(jObj.getString("cadreLevel").equalsIgnoreCase("locationLevel"))
+		{
+			cadresLevel = userCalendarService.getCadresByRegionType(user.getRegistrationID(), jObj.getString("regionVal"), new Long(jObj.getString("regionSelectVal")));
+			result = "locationLevel";
+		}
+		else if(jObj.getString("cadreLevel").equalsIgnoreCase("cadreLevel"))
+		{
+			
+			cadresLocation = cadreManagementService.getCadresByCadreLevel(jObj.getString("regionVal"), user.getRegistrationID(), isParent, user.getAccessType(), new Long(user.getAccessValue()));
+			result = "cadreLevel";
+		} 
+		return result;
+	}
+	
+	public String deleteSelectedEvent() throws Exception
+	{	
+		System.out.println("IN get cadres method ----------- delete select event");
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(jObj.getString("task").equalsIgnoreCase("deleteEvent"))
+		{			
+			System.out.println("In delete Event date ***********");
+			userCalendarService.deleteUserPlannedEvents( new Long(jObj.getString("userEventsId"))); 
+			this.setDeleteStatus(jObj.getString("userEventsId"));
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("deleteImpDate"))
+		{		
+			System.out.println("In delete IMP date ***********");
+			userCalendarService.deleteUserImpDate( new Long(jObj.getString("importantDateId")));
+			this.setDeleteStatus(jObj.getString("importantDateId"));
+		} 
+		
+		return SUCCESS;
+	}
+	
 }

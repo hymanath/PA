@@ -10,22 +10,14 @@
   <META NAME="Keywords" CONTENT="">
   <META NAME="Description" CONTENT="">
 
-	<!-- YUI Dependency files (Start) -->
 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>	
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
-	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	
+	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
+	<script type="text/javascript" src="js/cncSearch.js"></script>	
+	<script type="text/javascript" src="js/ajaxSearch/ajax.js" ></script>
+	<script type="text/javascript" src="js/ajaxSearch/ajax-dynamic-list.js" ></script>
 
-	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
 
-	<!-- YUI Dependency files (End) -->
-
-	<script type="text/javascript" src="js/cncSearch.js"></script>
 	 <script type="text/javascript"> 		
 		URL="<%=request.getContextPath()%>/ajaxSearchAction.action?" 	
 	
@@ -46,45 +38,87 @@
 			}
 		} 
 	 </script>
+	
  </HEAD>
- <BODY onLoad="getAutoComplete()">
- <div style="float: right; margin-top: 18px;border:2px solid #7C7979;height:auto;">
-<s:form name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
+ <BODY>
+ <div>
+<s:form theme="simple" name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 
 
-	<table class="yui-skin-sam" style="width:310px;" border="0">
+	<table class="yui-skin-sam">
 	<tr>
-		<td width="80px" style="padding-top: 3px;color:#FBAD2B;">
-			Search Criteria
-		</td>
-		<td width="160px" align="left">		
-			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="getParser(this.value)"/>Candidate
-			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="getParser(this.value)"/>Constituency	
-		</td>
-		<td width="40px">
-			<img  id="ajaxLoaderimg" height="16" width="16" src="<%=request.getContextPath()%>/images/icons/ajaxLoader.gif" style="display:none;">
-		</td>
-	</tr>
-	<tr>
-		<td colspan="3">
-			<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>
-		</td>
+		<th align="left" colspan="2" style="padding-top: 3px;color:#163447;">
+			Select	Search Criteria
+		</th>
 	</tr>
 	<tr>	
-		<td width="80px">
-			<div id="labelDiv" style="padding-top: 2px;color:#FBAD2B;">Search Text</div>
+		<th align="left" style="color:#163447;">		
+			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="resetConstTypeOptions()" checked="checked"/>Politician
+		</th>
+		<th align="left" style="color:#163447;">	
+			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="resetConstTypeOptions()"/>Constituency	
+		</th>
+	</tr>
+	<tr id="row1">
+		<th colspan="2" align="left" style="padding-top: 3px;color:#163447;">
+			Select Constituency Type
+		</th>
+	</tr>
+	<tr id="row2">	
+		<th align="left" style="color:#163447;">		
+			<input id="mlaRadio" type="radio"  name="constType" value="MLA" onclick="resetStateSelect()" checked="checked"/>MLA
+		</th>
+		<th align="left" style="color:#163447;">	
+			<input id="mpRadio" type="radio"  name="constType" value="MP" onclick="resetStateSelect()"/>MP	
+		</th>		
+	</tr>
+	<tr id="row3">	
+		<th align="left" colspan="2" style="color:#163447;">		
+			Select State	
+		</th>
+	</tr>
+	<tr>	
+		<td colspan="2">
+			<table>
+			<tr>
+			<td>
+				<s:select list="{}" listKey="id" cssStyle="width:177px;" listValue="name" name="state" id="stateSelect" onchange="getParser(this.options[this.selectedIndex].value)"/>
+			</td>
+			<td>
+				<img  id="ajaxLoaderimg" height="16" width="16" src="<%=request.getContextPath()%>/images/icons/ajaxLoader.gif" style="display:none;">
+			</td>
+			</tr>
+			</table>
+		</td>	
+	</tr>		
+	<tr id="row4">	
+		<th colspan="2" align="left">
+			<div id="labelDiv" style="padding-top: 2px;color:#163447;">Enter Search String</div>
+		</th>
+	</tr>
+	<tr id="row5">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+			<div id="textFldDiv" style="height:30px;"></div>				
 		</td>
-		<td width="160px" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;">		
-			<div id="textFldDiv"></div>				
+	</tr>
+	<tr id="row6">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+			<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>				
 		</td>
-		<td width="40px">
-			<div id="buttonDiv" style="margin-left: 3px;"><input type="submit" name="searchButton" value="Search" /></div>		
+	</tr>
+	<tr id="row7">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+			<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" value="Search"/></div>				
 		</td>
-		
 	</tr>
 	</table>
+	
+	
 
 </s:form>
 </div>
+<script type="text/javascript">
+getStates(1,'statesInCountry','siteSearch','stateSelect','current','null');
+</script>
  </BODY>
 </HTML>

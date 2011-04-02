@@ -2,10 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYSeriesCollection;
 
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
@@ -42,12 +38,23 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private String constituencySelectName;
 	private String partySelectName;
 	private String reportLevel;
+	private String selectedLocationName;
 	private String electionType;
 	private PartyResultService partyResultService;
 	private List<PartyResultInfoVO> partyResultInfoVOs;
 	private String selectedElectionTypeName;
 	private ServletContext context;
+	private String selectedPartyShortName;
+	private Long selectedPartyId;
 	
+	public String getSelectedLocationName() {
+		return selectedLocationName;
+	}
+
+	public void setSelectedLocationName(String selectedLocationName) {
+		this.selectedLocationName = selectedLocationName;
+	}
+
 	private enum ChartType {yearVsSeats, yearVsVotesPerc };
 	
 	public List<PartyResultInfoVO> getPartyResultInfoVOs() {
@@ -58,7 +65,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		this.partyResultInfoVOs = partyResultInfoVOs;
 	}
 
-	private String selectedPartyShortName;
+	
 	public String getSelectedPartyShortName() {
 		return selectedPartyShortName;
 	}
@@ -135,8 +142,16 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 
 	public void setConstituencySelectName(String constituencySelectName) {
 		this.constituencySelectName = constituencySelectName;
-	}
+	}	
 	
+	public Long getSelectedPartyId() {
+		return selectedPartyId;
+	}
+
+	public void setSelectedPartyId(Long selectedPartyId) {
+		this.selectedPartyId = selectedPartyId;
+	}
+
 	public String execute() {
 
 		System.out.println("IN Party Results action ");
@@ -144,9 +159,11 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		
 		ElectionScopeLevelEnum level = ElectionScopeLevelEnum.CONSTITUENCY_LEVEL;
 
-		
-		Long partyId = new Long(getPartySelectName());
-		Long electionId = new Long(getElectionType());
+		if(partySelectName == null || electionType == null)
+			return "dashBoard";
+			
+		Long partyId = new Long(partySelectName);
+		Long electionId = new Long(electionType);
 		Long countryId = new Long(1);
 
 		Long stateId = null;		
@@ -179,12 +196,14 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 			chartId.append("C" + constituencyId.toString());
 		}
 		
-	
+		Boolean alliances = new Boolean(request.getParameter("alliances"));
+		System.out.println("Alliances :" + alliances);
+		//Boolean hasAlliances = true;
 		//List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(partySelectName, electionType, "1", stateSelectName, 
 		//		districtSelectName, constituencySelectName, level);
 		
-		List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(selectedPartyShortName, electionId, countryId, stateId, 
-				districtId,constituencyId ,level);
+		List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(selectedPartyShortName, selectedPartyId, electionId, countryId, stateId, 
+				districtId,constituencyId ,level,alliances);
 		//PartyResultInfoVO getPartyResultsInfo();
 	
 		setPartyResultInfoVOs(partyResultInfoVOList);

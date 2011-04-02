@@ -17,8 +17,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
-import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
-import au.com.bytecode.opencsv.bean.CsvToBean;
+//import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+//import au.com.bytecode.opencsv.bean.CsvToBean;
 
 import com.itgrids.partyanalyst.csv.Assembly;
 import com.itgrids.partyanalyst.csv.AssemblyConstCandidate;
@@ -47,7 +47,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 		return staticDataService;
 	}*/
     
-    public String execute() throws JRException {
+    public String execute() throws JRException {/*
 		
 		log.debug("excute started...");
 		String contextPath = context.getRealPath("/");
@@ -145,7 +145,7 @@ public class UploadCSVAction extends ActionSupport implements ServletResponseAwa
 		} catch (IOException e) {
 			log.error("IOException while reading data from csv " + e.getStackTrace());
 		}
-		
+		*/
 		return SUCCESS;
 	 
     }

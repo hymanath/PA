@@ -7,125 +7,138 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Voting Trends in a Mandal</title>
 
-	<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css"
-	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript"
-	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+<!-- YUI files dependencies (start) -->
+
+<!--CSS files (default YUI Sam Skin) -->
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+ 
+<!--JS files Dependencies -->
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="js/json/json-min.js"></script>
+
+<!-- YUI files dependencies (end) --> 
+
+<script type="text/javascript">
+
+function checkForFormSubmit()
+{
+	if(document.mandalVotingTrends.partyField.value != 0)
+	{
+			getMandalVotingReport();
+	}
+}
+function getList(name,value)
+{ 
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
+
+	var jsObj=
+	{
+		type:name,
+		value:value
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/mandalPageDetailAction.action?"+rparam;			
+	callAjax(jsObj,url, name);
+}
 
 
-	<script type="text/javascript" src="js/json/json-min.js"></script> 
-   	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript">
+function callAjax(jsObj,url,name){
+	var myResults;	 		
+	var callback = {			
+	   success : function( o ) {
+		try {
 
-		function checkForFormSubmit(){
-			if(document.mandalVotingTrends.partyField.value != 0){
-					getMandalVotingReport();
-			}
-		}
-		function getList(name,value)
-		{ 
-			var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
-			ajaxImgElmt.style.display = "block";
-
-			var jsObj=
-			{
-				type:name,
-				value:value
-			};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/mandalPageDetailAction.action?"+rparam;			
-			callAjax(jsObj,url, name);
-		}
+			var img1=document.getElementById('ajaxLoadDiv');
+						img1.style.display='none';
 
 
-		function callAjax(jsObj,url,name){
-			var myResults;	 		
-	 		var callback = {			
-               success : function( o ) {
-				try {
-
-					var img1=document.getElementById('ajaxLoadDiv');
-								img1.style.display='none';
-
-
-					myResults = YAHOO.lang.JSON.parse(o.responseText);
-					
-					if(jsObj.task=="mandalVoting")
-					{
-						buildMandalVoting(myResults);
-					}
-					else
-					{
-						buildSelectOption(myResults,name);
-					}							
-				}catch (e) {   
-				   	alert("Invalid JSON result" + e);   
-				}  
-               },
-               scope : this,
-               failure : function( o ) {
-                			alert( "Failed to load result" + o.status + " " + o.statusText);
-                         }
-            };
-
-	 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	 	}
-		
-		function buildMandalVoting(myResult)
-		{
-			var result = myResult.mandalAllElectionDetailsVO;
+			myResults = YAHOO.lang.JSON.parse(o.responseText);
 			
-			if(result == "")
+			if(jsObj.task=="mandalVoting")
 			{
-				alert("Result empty or not found");
-				return;
+				buildMandalVoting(myResults);
 			}
- 	 		var elmt= document.getElementById("mandalVotingResultsDiv");
- 	 		var elmtHead= document.getElementById("mandalVotingResultsDivHead");
- 	 		var elmtBody= document.getElementById("mandalVotingResultsDivBody");
-			var elmtBodyGraph= document.getElementById("mandalVotingResultsDivGraph");
-
-			var mandalElmt = document.getElementById("mandalField");
-			var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].text;
-
- 	 		if(elmtHead)
- 	 	 		elmtHead.innerHTML=result[0].partyShortName+ " Party Voting Trends in "+mandalValue+" Mandal:";
-			
-			var imgStr='';
-			imgStr+='<IMG id="chartImg" SRC="charts/'+myResult.chart+'" WIDTH="450" HEIGHT="400">';
-
-			if(elmtBodyGraph)
-				elmtBodyGraph.innerHTML=imgStr;
-
- 	 	 	var str='';
- 	 	 	str+='<table id="mandalVotingTable">';
- 	 	 	for(var i in result)
+			else
 			{
- 	 	 		str+='<tr>';
-				str+='<td>'+result[i].candidateName+'</td>';
-				str+='<td>'+result[i].electionType+'</td>';
-				str+='<td>'+result[i].electionYear+'</td>';
-				str+='<td>'+result[i].partyShortName+'</td>';
-				str+='<td align="right">'+result[i].partyVotesPercentage+'</td>';				
-				str+='<td align="right">'+result[i].totalVoters+'</td>';
-				str+='<td align="right">'+result[i].validVoters+'</td>';
-				str+='</tr>';	
-			}
-			str+='</table>';
-			
-			if(elmtBody)
-				elmtBody.innerHTML=str;
+				buildSelectOption(myResults,name);
+			}							
+		}catch (e) {   
+			alert("Invalid JSON result" + e);   
+		}  
+	   },
+	   scope : this,
+	   failure : function( o ) {
+					//alert( "Failed to load result" + o.status + " " + o.statusText);
+				 }
+	};
 
-			buildMandalDataTable();
-		}
-		
-		function buildMandalDataTable()
-		{
-			var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("mandalVotingTable"));
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function buildMandalVoting(myResult)
+{
+	var result = myResult.mandalAllElectionDetailsVO;
+	
+	if(result == "")
+	{
+		alert("Result empty or not found");
+		return;
+	}
+	var elmt= document.getElementById("mandalVotingResultsDiv");
+	var elmtHead= document.getElementById("mandalVotingResultsDivHead");
+	var elmtBody= document.getElementById("mandalVotingResultsDivBody");
+	var elmtBodyGraph= document.getElementById("mandalVotingResultsDivGraph");
+
+	var mandalElmt = document.getElementById("mandalField");
+	var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].text;
+
+	if(elmtHead)
+		elmtHead.innerHTML=result[0].partyShortName+ " Party Voting Trends in "+mandalValue+" Mandal:";
+	
+	var imgStr='';
+	imgStr+='<IMG id="chartImg" SRC="charts/'+myResult.chart+'" WIDTH="450" HEIGHT="400">';
+
+	if(elmtBodyGraph)
+		elmtBodyGraph.innerHTML=imgStr;
+
+	var str='';
+	str+='<table id="mandalVotingTable">';
+	for(var i in result)
+	{
+		str+='<tr>';
+		str+='<td>'+result[i].candidateName+'</td>';
+		str+='<td>'+result[i].electionType+'</td>';
+		str+='<td>'+result[i].electionYear+'</td>';
+		str+='<td>'+result[i].partyShortName+'</td>';
+		str+='<td align="right">'+result[i].partyVotesPercentage+'</td>';				
+		str+='<td align="right">'+result[i].totalVoters+'</td>';
+		str+='<td align="right">'+result[i].validVoters+'</td>';
+		str+='</tr>';	
+	}
+	str+='</table>';
+	
+	if(elmtBody)
+		elmtBody.innerHTML=str;
+				
+	buildMandalDataTable();
+}
+
+function buildMandalDataTable()
+{			
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+	.get("mandalVotingTable"));
+	
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+			
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "candidateName"
@@ -143,7 +156,7 @@
 			key : "validVoters",parser:"number"
 		} ]
 	};
-
+			
 	var resultsColumnDefs = [ {
 		key : "candidateName",		
 		label : "Name",
@@ -174,100 +187,107 @@
 		sortable : true
 	} ];
 
+
+
+var elmt = document.getElementById('mandalVotingResultsDivBody');
+
+if(elmt)
 	var myDataTable = new YAHOO.widget.DataTable("mandalVotingResultsDivBody",resultsColumnDefs, resultsDataSource,{});  
-		}
+else
+	alert('No div elmt found to render datatable');
+}
 
-		function buildSelectOption(results,selectedValue)
+function buildSelectOption(results,selectedValue)
+{
+	var selectedElmt;
+	selectOption='';
+	if(selectedValue=="STATE")
+	{
+		selectOption='District';
+		selectedElmt=document.getElementById("districtField");
+	}
+	else if(selectedValue=="DISTRICT")
+	{
+		selectOption='Constituency';
+		selectedElmt=document.getElementById("constituencyField");
+	}
+	else if(selectedValue=="CONSTITUENCY")
+	{
+		selectOption='Mandal';
+		selectedElmt=document.getElementById("mandalField");
+	}
+	
+	var len=selectedElmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		selectedElmt.remove(i);
+	}
+	var opElmt1=document.createElement('option');
+	opElmt1.value=0;
+	opElmt1.text='Select '+selectOption;
+	
+	try
+	{
+		selectedElmt.add(opElmt1,null); // standards compliant
+	}
+	catch(ex)
+	{
+		selectedElmt.add(opElmt1); // IE only
+	}	
+
+	for(var val in results)
+	{			
+		var opElmt=document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+		
+		try
 		{
-			var selectedElmt;
-			selectOption='';
-			if(selectedValue=="STATE")
-			{
-				selectOption='District';
-				selectedElmt=document.getElementById("districtField");
-			}
-			else if(selectedValue=="DISTRICT")
-			{
-				selectOption='Constituency';
-				selectedElmt=document.getElementById("constituencyField");
-			}
-			else if(selectedValue=="CONSTITUENCY")
-			{
-				selectOption='Mandal';
-				selectedElmt=document.getElementById("mandalField");
-			}
-			
-			var len=selectedElmt.length;			
-			for(i=len-1;i>=0;i--)
-			{
-				selectedElmt.remove(i);
-			}
-			var opElmt1=document.createElement('option');
-			opElmt1.value=0;
-			opElmt1.text='Select '+selectOption;
-			
-			try
-			{
-				selectedElmt.add(opElmt1,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt1); // IE only
-			}	
-
-			for(var val in results)
-			{			
-				var opElmt=document.createElement('option');
-				opElmt.value=results[val].id;
-				opElmt.text=results[val].name;
-				
-				try
-				{
-					selectedElmt.add(opElmt,null); // standards compliant
-				}
-				catch(ex)
-				{
-					selectedElmt.add(opElmt); // IE only
-				}			
-			}
+			selectedElmt.add(opElmt,null); // standards compliant
 		}
-
-		function getMandalVotingReport()
+		catch(ex)
 		{
-			var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
-			ajaxImgElmt.style.display = "block";
+			selectedElmt.add(opElmt); // IE only
+		}			
+	}
+}
 
-			var stateElmt = document.getElementById("stateField");
-			var districtElmt = document.getElementById("districtField");
-			var constituencyElmt = document.getElementById("constituencyField");
-			var mandalElmt = document.getElementById("mandalField");
-			var partyElmt = document.getElementById("partyField");
+function getMandalVotingReport()
+{
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
 
-			if(!stateElmt || !districtElmt || !constituencyElmt || !mandalElmt || !partyElmt)
-				return;
+	var stateElmt = document.getElementById("stateField");
+	var districtElmt = document.getElementById("districtField");
+	var constituencyElmt = document.getElementById("constituencyField");
+	var mandalElmt = document.getElementById("mandalField");
+	var partyElmt = document.getElementById("partyField");
 
-			var stateValue = stateElmt.options[stateElmt.selectedIndex].value;
-			var districtValue = districtElmt.options[districtElmt.selectedIndex].value;
-			var constituencyValue = constituencyElmt.options[constituencyElmt.selectedIndex].value;
-			var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].value;
-			var partyValue = partyElmt.options[partyElmt.selectedIndex].value;
+	if(!stateElmt || !districtElmt || !constituencyElmt || !mandalElmt || !partyElmt)
+		return;
 
-			if(stateValue == "0" || districtValue == "0" || constituencyValue == "0" || mandalValue == "0" || partyValue == "0")
-				return;
-			
-			var jsObj={
-					state:stateValue,
-					district:districtValue,
-					constituency:constituencyValue,
-					mandal:mandalValue,
-					party:partyValue,
-					"task":"mandalVoting"
-				};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/mandalVotingResultAction.action?"+rparam;			
-			callAjax(jsObj,url,"");
-		}
-	</script>
+	var stateValue = stateElmt.options[stateElmt.selectedIndex].value;
+	var districtValue = districtElmt.options[districtElmt.selectedIndex].value;
+	var constituencyValue = constituencyElmt.options[constituencyElmt.selectedIndex].value;
+	var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].value;
+	var partyValue = partyElmt.options[partyElmt.selectedIndex].value;
+
+	if(stateValue == "0" || districtValue == "0" || constituencyValue == "0" || mandalValue == "0" || partyValue == "0")
+		return;
+	
+	var jsObj={
+			state:stateValue,
+			district:districtValue,
+			constituency:constituencyValue,
+			mandal:mandalValue,
+			party:partyValue,
+			"task":"mandalVoting"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/mandalVotingResultAction.action?"+rparam;			
+	callAjax(jsObj,url,"");
+}
+</script>
 	<style type="text/css">
 		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 		{

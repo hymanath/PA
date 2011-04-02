@@ -9,13 +9,67 @@
         <pattern>/images/*</pattern>
         <pattern>/dojo/*</pattern>
         <pattern>/struts/*</pattern>
-    </excludes>
+        <pattern>/townshipElectionResultsAction.action*</pattern>
+        <pattern>/constituencyElectionResultsAction.action*</pattern>
+        <pattern>/constituencyPageCandidateDetailsAjaxAction.action*</pattern>
+        <pattern>/districtPageCandidateDetailsAjaxAction.action*</pattern>
+        <pattern>/landing.action* </pattern>
+		<pattern>/jsp/votingTrendzPopup.jsp* </pattern>
+		<pattern>/candidateDetailsForElectionDetailsReportAction.action*</pattern>
+		<pattern>/districtwiseElectionResultsAnalysysForElectionReportAction.action*</pattern>
+		<pattern>/alliancePartiesPageAction.action*</pattern>
+		<pattern>/statewiseElectionResultsComparisionToolAction.action*</pattern>
+		<pattern>/partyPerformanceReportPopup.action*</pattern>
+		<pattern>/electionComparisonReportPopUp.action*</pattern>
+		<pattern>/partyElectionResultsAction.action*</pattern>
+		<pattern>/partyElectionResultsAnalysisAction.action*</pattern>
+		<pattern>/muncipalElectionReportAction.action*</pattern>
+		<pattern>/electionResultsAnalysisReportPopupAction.action*</pattern>
+		<pattern>/influencingPeopleSaveAction.action*</pattern>	
+		<pattern>/politicalChangesAction.action*</pattern>	 	
+		<pattern>/politicalChangesRegistrationAction.action*</pattern>
+		<pattern>/influencingPeopleRegistration.action*</pattern>
+		<pattern>/addNewProblemAction.action*</pattern>
+		<pattern>/addNewProblemSubmitAction.action*</pattern>
+		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
+		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
+		<pattern>/revenueVillagePartyAllElecAction.action*</pattern>
+		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
+		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
+		<pattern>/constituencyVotingTrendzAction.action*</pattern>
+		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
+		<pattern>/getCadreInfoAction.action*</pattern>
+		<pattern>/homePage.action*</pattern>
+		<pattern>/cadreSearchAction.action*</pattern>
+		<pattern>/ecrComparedResultsAction.action*</pattern>
+		<pattern>/completeResultForAPollAction.action*</pattern>  
+		<pattern>/getAllPollsAction.action*</pattern> 
+		<pattern>/viewFeaturesAction.action*</pattern>
+		<pattern>/influencingPeopleAction*</pattern>
+		<pattern>/getInfluencingPersonInfoAction*</pattern>
+		<pattern>/influencingPeopleDataAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecInputAction*</pattern>
+		<pattern>/localGroupsPeopleDataAction*</pattern>
+		<pattern>/mandalRevenueVillagesElecViewAction*</pattern>
+		<pattern>/createLocalGroupAction*</pattern>
+		<pattern>/getInfluencingPersonDetailsAction*</pattern>		
+		<pattern>/saveLocalGroupAction*</pattern>
+		<pattern>/createLocalGroupMemberAction*</pattern>
+		<pattern>/createLocalGroupMemberPopupAction*</pattern>
+		<pattern>/saveLocalGroupMembersAction*</pattern>
+		<pattern>/cadreRegisterPopupAction*</pattern>
+		<pattern>/cadreRegisterPagePopupAction*</pattern>
+		<pattern>/analyzeConstituencyPopupAction*</pattern>
+		<pattern>/problemDetailsAndStatusAction*</pattern>							
+		<pattern>/problemAssigningAction*</pattern>
+		<pattern>/candidateStrenthsAction*</pattern>
+	</excludes>  
 
     <decorator name="main" page="main.jsp">
         <pattern>/*</pattern>
     </decorator>
 
-    <decorator name="jsp" page="main.jsp">
+	<decorator name="jsp" page="main.jsp">
         <pattern>/jsp/*</pattern>
     </decorator>
 

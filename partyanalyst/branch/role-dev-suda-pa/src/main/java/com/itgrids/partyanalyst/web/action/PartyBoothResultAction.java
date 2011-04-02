@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PartyBoothResultAction extends ActionSupport implements ServletRequestAware{
@@ -17,7 +21,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> electionTypes;
 	private List<String> electionYears;
 	private HttpServletRequest request;
-	
+	private EntitlementsHelper entitlementsHelper;
 	public List<SelectOptionVO> getPartyVOs() {
 		return partyVOs;
 	}
@@ -25,6 +29,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	public void setPartyVOs(List<SelectOptionVO> partyVOs) {
 		this.partyVOs = partyVOs;
 	}
+	
 
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
@@ -46,8 +51,21 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		this.request = request;
 	}
 		
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute()throws Exception{
-		
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return ERROR;
 		electionTypes = new ArrayList<SelectOptionVO>();		
 		SelectOptionVO electionType1 = new SelectOptionVO();
 		electionType1.setId(new Long(1));
@@ -63,6 +81,8 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		
 		electionYears = new ArrayList<String>();	
 		electionYears.add("2009");
+		electionYears.add("2008");
+		electionYears.add("2006");
 		electionYears.add("2004");
 		setElectionYears(electionYears);
 		System.out.println("before success party Booth results action");

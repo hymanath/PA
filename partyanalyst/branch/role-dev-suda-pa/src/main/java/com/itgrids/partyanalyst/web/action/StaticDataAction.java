@@ -1,17 +1,21 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class StaticDataAction  extends ActionSupport implements ServletRequestAware{
@@ -27,6 +31,7 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> partyList;
 	private List<SelectOptionVO> commonList;
+	private EntitlementsHelper entitlementsHelper;
 	
 	public void setServletRequest(HttpServletRequest arg0) {
 		request = arg0;
@@ -87,11 +92,27 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		this.commonList = commonList;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String getStatesList() throws Exception{
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
+			return ERROR;
 		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
 		states.add(0, new SelectOptionVO(0L,"Select State"));
+		Collections.sort(states);
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
+		Collections.sort(partyList);
 		return SUCCESS;
 	}
 
@@ -112,9 +133,9 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		if("STATE".equals(type)){
 			commonList = regionServiceDataImp.getDistrictsByStateIDFromBooth(new Long(value));
 		} else if("DISTRICT".equals(type)){
-			commonList = regionServiceDataImp.getConstituenciesByDistrictIDFromBooth(new Long(value));
+			commonList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(value));
 		} else if("CONSTITUENCY".equals(type)){
-			commonList = regionServiceDataImp.getMandalsByConstituencyIDFromBooth(new Long(value));
+			commonList = regionServiceDataImp.getMandalsByConstituencyID(new Long(value));
 		}
 		if(log.isDebugEnabled())
 			log.debug("commonList.size():::"+commonList.size());

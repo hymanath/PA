@@ -10,14 +10,25 @@
 <head>
 <script src="js/partyBoothResults/boothResults.js"></script>
 
-<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css"
-	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript"
-	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+<!-- YUI files dependencies (start) -->
 
+<!--CSS files (default YUI Sam Skin) -->
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+ 
+<!--JS files Dependencies -->
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
+<!-- YUI files dependencies (end) -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Booth Results</title>
@@ -56,18 +67,30 @@
 	<tr>
 		<th style="background-color:#C4DEFF;">Candidate Name</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /><br></td>
-		<th style="background-color:#C4DEFF;">Total Percentage</th>
-		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>		
+
+		<th style="background-color:#C4DEFF;">Total Votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalVotes"/></td>
+	</tr>
+
+	<tr>
+	<th style="background-color:#C4DEFF;">Total Valid Votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalValidVotes" /></td>	
+		
+		<th style="background-color:#C4DEFF;">Voting Percentage</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.votingPercentage"/></td>		
+	
 	</tr>
 	<tr>
-		<th style="background-color:#C4DEFF;">Total Valid votes</th>
-		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalValidVotes" /></td>
+		
 		<th style="background-color:#C4DEFF;">Total Votes Gained</th>
 		<td style="background-color:#F8FBFF;"><s:property value="boothResult.votesGained" /></td>
+
+		<th style="background-color:#C4DEFF;">Total Votes Gained Percentage</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>
 		
 	</tr>
 </table>
-<br /><br><br /><br><br><br>
+<br /><br><br /><br><br><br><br>
 <h4><u>Booth Wise Performance : </u></h4>
 
 <div id="boothResultsMarkup" class="yui-skin-sam">

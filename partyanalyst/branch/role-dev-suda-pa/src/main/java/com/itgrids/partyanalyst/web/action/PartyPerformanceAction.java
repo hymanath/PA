@@ -4,12 +4,11 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 
 import javax.servlet.ServletContext;
@@ -22,18 +21,26 @@ import net.sf.jasperreports.engine.JRException;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.json.annotations.JSON;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -62,8 +69,71 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 	private Map statesYearList = new HashMap();
 	private String reportTitle;
-
-
+	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
+	private String party;
+	private String state;
+	private String year;
+	private String electionType;
+	private String electionYear;
+	String electionTypeLiteral = "";
+	private AnalysisReportService analysisReportService;
+	private String partyNameHidden;
+	private String stateNameHidden;
+	private EntitlementsHelper entitlementsHelper;
+	
+	public String getStateNameHidden() {
+		return stateNameHidden;
+	}
+	public void setStateNameHidden(String stateNameHidden) {
+		this.stateNameHidden = stateNameHidden;
+	}
+	
+	public String getPartyNameHidden() {
+		return partyNameHidden;
+	}
+	public void setPartyNameHidden(String partyNameHidden) {
+		this.partyNameHidden = partyNameHidden;
+	}
+	
+	public AnalysisReportService getAnalysisReportService() {
+		return analysisReportService;
+	}
+	public void setAnalysisReportService(AnalysisReportService analysisReportService) {
+		this.analysisReportService = analysisReportService;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getParty() {
+		return party;
+	}
+	public void setParty(String party) {
+		this.party = party;
+	}
+	
+	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
+		return votesMarginAnalysisVO;
+	}
+	public void setVotesMarginAnalysisVO(
+			List<VotesMarginAnalysisVO> votesMarginAnalysisVO) {
+		this.votesMarginAnalysisVO = votesMarginAnalysisVO;
+	}
+	
 	public Map getStatesYearList() {
 		return statesYearList;
 	}
@@ -104,8 +174,6 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public void setStates(List<SelectOptionVO> states) {
 		this.states = states;
 	}
-	
-	
 	
 	public void setHasAllianceParties(boolean hasAllianceParties) {
 		this.hasAllianceParties = hasAllianceParties;
@@ -176,19 +244,52 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getTask() {
 		return task;
 	}
+	
 	public void setTask(String task) {
 		this.task = task;
 	}
+	
 	public List<PartyPositionDisplayVO> getPartyPositionDisplayVO() {
 		return partyPositionDisplayVO;
 	}
+	
 	public void setPartyPositionDisplayVO(
 			List<PartyPositionDisplayVO> partyPositionDisplayVO) {
 		this.partyPositionDisplayVO = partyPositionDisplayVO;
+	}	
+	
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	
+	public String getElectionYear() {
+		return electionYear;
+	}	
+	
+	public String getElectionTypeLiteral() {
+		return electionTypeLiteral;
+	}
+	
+	public void setElectionTypeLiteral(String electionTypeLiteral) {
+		this.electionTypeLiteral = electionTypeLiteral;
+	}
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public String execute() throws JRException {
+		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+			return ERROR;
 		
 		log.debug("partyPerformance excute started...");
 	
@@ -199,25 +300,29 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String param = null;
 		electionTypeId = new Long(2);
 		
-		if(params.containsKey("type")){
+		if(params.containsKey("type"))
 			param = request.getParameter("type");
-		}
 		
-		if(param != null) {
+		if(param != null) 
 			electionTypeId = new Long(param);
-		}
 		
-		setStates(getStaticDataService().getStates(electionTypeId));
-		setYears(getStaticDataService().getElectionYears(electionTypeId));
+		//setStates(getStaticDataService().getStates(electionTypeId));
+		List<SelectOptionVO> statesListDetails = new ArrayList<SelectOptionVO>();
+		statesListDetails.add(new SelectOptionVO(0L,"Select"));
+		Collections.sort(statesListDetails);
+		statesListDetails.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
+		setStates(statesListDetails);
+		
+		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
-		setLevels(getReportLevels());    
-	
+		setLevels(getReportLevels());
+
 		if(year == null && partyId == null){
 			year = getYears().iterator().next();
 			partyId = getParties().get(0).getId();
 		}
-		
+
 		boolean t = getStaticDataService().hasAlliances(year, electionTypeId, partyId);
 		setHasAllianceParties(t);
 		return Action.SUCCESS;
@@ -234,6 +339,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(params.containsKey("allianceWith")){
 			partyId = new Long(request.getParameter("allianceWith"));
 			year = request.getParameter("year");
+			electionYear = year;
 			electionType = new Long(request.getParameter("elecType"));
 		}
 		
@@ -246,12 +352,15 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
 	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
 	    levels.add(new SelectOptionVO(new Long(2), "District Level"));
+	    
+	    
 		return levels;
 	}
 	
 	private List<SelectOptionVO> getReportLevelsParliament() {
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
 	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
+	    levels.add(new SelectOptionVO(new Long(3), "Country Level"));
 	    return levels;
 	}
 
@@ -266,6 +375,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getElectionTypeFilterData(){
 
 		Map<String, String> params = request.getParameterMap();
@@ -279,8 +389,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			electionTypeId = new Long(param);
 		}
 		
-		statesYearList.put("STATES", staticDataService.getStates(electionTypeId));
-		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId));
+		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
+		statesList.add(new SelectOptionVO(0L,"Select"));
+		statesList.addAll(getStaticDataService().getParticipatedStatesForAnElectionType(electionTypeId));
+		Collections.sort(statesList);
+		statesYearList.put("STATES", statesList);
+		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
 		if(electionTypeId.equals(new Long(1)))
 			statesYearList.put("LEVELS", getReportLevelsParliament());
@@ -288,9 +402,16 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			statesYearList.put("LEVELS", getReportLevels());
 		
 		return Action.SUCCESS;
-	}
+	} 
 	@JSON (serialize= false )   
 	public String getReport() {
+		
+		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
+			return ERROR;
 		
 		log.debug("partyPerformanceReport action started...");
 		String district = "0";
@@ -305,17 +426,20 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if("2".equals(reportLevel)){
 			district = request.getParameter("district");
 		}
+		log.debug("Report Level :: " + reportLevel);
 		
-		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances);
+		if(state == null)
+			state="0";
+		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
 		reportVO.setElectionTypeId(new Long(electionType));
 		reportVO.setStateId(new Long(state));
 		reportVO.setPartyId(new Long(party));
 		reportVO.setHasAlliances(alliances);
+		reportVO.setReportLevel(reportLevel);
 		
 		if(district!=null)
 			reportVO.setDistrictId(new Long(district));
 		
-		String electionTypeLiteral = "";
 		String reportLevelLiteral = "";
 		String partyNameLiteral = reportVO.getParty();
 		
@@ -327,28 +451,71 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			reportLevelLiteral = "StateLevel";
 		else if(Long.valueOf(reportLevel).equals(new Long(2)))
 			reportLevelLiteral = "DistrictLevel";
-		
+		else if(Long.valueOf(reportLevel).equals(new Long(3)))
+			reportLevelLiteral = "CountryLevel";
 		if(log.isDebugEnabled()){
 			log.debug("Election Type -->" + electionTypeLiteral);
 			log.debug("Report Level -->" + reportLevelLiteral);
 		}
 		
-		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year" + year;
+		//Check for report success or failure
+		Boolean reportStatus = reportVO.getReportSuccessOrFailure();
+		if(reportStatus == false)
+			return "failure";
+		
+	/*	if("2".equals(reportLevel))
+			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + district;
+		else
+			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + state;*/
+		
+		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year " + year;
 		
 		if(log.isDebugEnabled())
 			log.debug("Report Title -->" + reportTitle);
 		
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
-		
+		try{
 		session = request.getSession();
 		String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year);
 		String chartName = "partyPositionsChart_" + chartId + session.getId()+".png";
         String chartPath = context.getRealPath("/") + "charts\\" + chartName;
        
-		ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+		//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+        if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
+        ChartProducer.createBarChart("Party Positions", "Party", "Seats", createDataset(reportVO.getPartyPositionsVO()), chartPath);
 		request.setAttribute("chartName", chartName);
 		session.setAttribute("reportVO", reportVO);
 		session.setAttribute("chartName", chartName);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		    try{
+			session = request.getSession();
+			String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year).concat("LineChart");
+			String lineChartName = "partyElectionResultsChart_" + chartId + session.getId()+".png";
+	        String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+	       
+			//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+	         if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null && reportVO.getPrevYeartotalPercentageOfVotesWon() != null){
+	        	//ChartProducer.createBarChart("Results In Elections", "Years", "Seats", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), chartPath);
+	        	ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);
+	        	request.setAttribute("lineChartName", lineChartName);
+				session.setAttribute("reportVO", reportVO);
+				session.setAttribute("lineChartName", lineChartName);
+	         }
+	         else if(reportVO.getTotalSeatsWon() != 0 || reportVO.getTotalPercentageOfVotesWon() != null){
+	        	 ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);	        	 request.setAttribute("lineChartName", lineChartName);
+				 session.setAttribute("reportVO", reportVO);
+				 session.setAttribute("lineChartName", lineChartName);
+	         }
+	        
+	       	}
+			catch(Exception ex){
+				ex.printStackTrace();
+		    }
+		
 		return Action.SUCCESS;
     }
 	
@@ -389,19 +556,53 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	 
     } 
 
-	public String getpartyPosition() throws Exception{
+	public String getpartyPosition(){
+		
+		String param=null;		
+		param=request.getParameter("task");
+		System.out.println("param:"+param);
+		Long electionTypeID = null;
+		Long stateID = null;
+		Long districtID = null;
+		Long year = null;
+		Long partyID = null;
+		boolean alliances = false;
+		int rank = 0;
+		String reportLevel = "";
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+			electionTypeID = jObj.getLong("eId");
+			stateID = jObj.getLong("stateValue");
+			districtID = jObj.getLong("districtValue");
+			year = jObj.getLong("yearValue");
+			partyID = jObj.getLong("partyValue");
+			alliances = jObj.getBoolean("hasAlliances");
+			rank = jObj.getInt("positionValue");
+			reportLevel = jObj.getString("reportLevel");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		
+		
+		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
+		
+		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(electionTypeID,stateID,districtID,year,partyID,alliances,rank,reportLevel);
+		
+		System.out.println("Length = "+partyPositionDisplayVO.size());
+		return Action.SUCCESS;
+	}
+	
+      public String getPartyPositionDetails() throws Exception{
 		
 		String param=null;		
 		param=request.getParameter("task");
 		System.out.println("param:"+param);
 		
-		try {
-			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
-		}		
+		jObj=new JSONObject(param);
+		System.out.println("jObj = "+jObj);
+				
 		String electionTypeID = jObj.getString("eId");
 		String stateID = jObj.getString("stateValue");
 		String districtID = jObj.getString("districtValue");
@@ -409,12 +610,16 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String partyID = jObj.getString("partyValue");
 		String alliances = jObj.getString("hasAlliances");
 		String rank = jObj.getString("positionValue");
+		String reportLevel = jObj.getString("reportLevel");
 		
-		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue());
+		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
 		
-		System.out.println("Length = "+partyPositionDisplayVO.size());
+		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue(),reportLevel);
+		
+		log.debug("Size = "+partyPositionDisplayVO.size());
 		return Action.SUCCESS;
 	}
+
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -431,4 +636,149 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.reportTitle = reportTitle;
 	} 
 
+	
+	private CategoryDataset createDataset(List<PartyPositionsVO> partyPositionsVO) {
+		 final String category1 =  "Seats Won";
+	     final String category2 = "2nd Pos";
+	     final String category3 = "3rd Pos";
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(PartyPositionsVO result: partyPositionsVO){
+        	final String series =  result.getPartyName();
+        	dataset.addValue(new Long(result.getTotalSeatsWon()), category1,series );
+        	dataset.addValue(new Long(result.getSecondPosWon()), category2, series);
+        	dataset.addValue(new Long(result.getThirdPosWon()), category3, series);
+        }
+        return dataset;
+        
+    }
+	
+	@SuppressWarnings("unused")
+	private CategoryDataset createDatasetForLineGraph(int seatsWonInYear,int seatsWonInPrevYear,BigDecimal totalPercentageOfVotesWon,BigDecimal prevYeartotalPercentageOfVotesWon ,String year,String prevYear){
+		  // row keys...
+        final String series1 = "Seats Won";
+        final String series2 =  "Percentage of Votes";
+		
+        // create the dataset...
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		 dataset.addValue(seatsWonInPrevYear, series1, prevYear);
+		 dataset.addValue(prevYeartotalPercentageOfVotesWon, series2, prevYear);
+		 
+		 dataset.addValue(seatsWonInYear, series1, year);
+		 dataset.addValue(totalPercentageOfVotesWon, series2, year);
+		 
+	return dataset;
+	}
+	
+	
+	private CategoryDataset createDatasetForLineGraphNew(int seatsWonInYear,BigDecimal totalPercentageOfVotesWon,String year){
+		  // row keys...
+        final String series1 = "Seats Won";
+        final String series2 =  "Percentage of Votes";
+		
+        // create the dataset...
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		 dataset.addValue(seatsWonInYear, series1, year);
+		 dataset.addValue(totalPercentageOfVotesWon, series2, year);
+		 
+	return dataset;
+	}
+	
+	public String getMarginCount() throws Exception
+	{
+		
+		String param = null;
+		param = getTask();
+		
+		jObj = new JSONObject(param);
+		if(log.isDebugEnabled())
+			log.debug(jObj);			
+	
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		String status = jObj.getString("status");
+		String reportLevel = jObj.getString("reportLevel");
+		Long locationId = new Long(jObj.getString("locationId"));
+		Long stateId = new Long(0);
+		Long districtId = new Long(0);
+		
+		String category = null;
+		if(status.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(status.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		if("1".equalsIgnoreCase(reportLevel))
+			stateId = locationId;
+		else if("2".equalsIgnoreCase(reportLevel))
+			districtId = locationId;
+		
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category,stateId,districtId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getElectionYearsForParty(){
+		
+		if(task != null){
+			String elecType = "";
+			Long partyId = null;
+			Long stateId = null;
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);		
+				elecType = jObj.getString("elecTypeId");
+				partyId = jObj.getLong("partyId");
+				stateId = jObj.getLong("stateId");
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			Long countryId = 1l;
+			String electionType = null;
+			List<SelectOptionVO> yearsList = null;
+			if(elecType.equalsIgnoreCase("Parliament"))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			else 
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			
+			Long electionScope = staticDataService.getElectionScopeForAElection(stateId, electionType, countryId);
+			if(electionScope != null)
+				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(electionScope,partyId);
+			if(yearsList != null){
+				years = new ArrayList<String>();
+				for(SelectOptionVO yearsLst:yearsList){
+					years.add(yearsLst.getName());
+				}
+			}
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStaticPartyDetailsAjax(){
+		if(task != null){
+			Long stateId = null;
+			String electionType = "";
+			String reportLevel = "";
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+				stateId = jObj.getLong("stateId");
+				electionType = jObj.getString("elecTypeId");
+				reportLevel = jObj.getString("reportLevel");
+			}catch(Exception e){
+				e.printStackTrace();
+			}			
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE) && "3".equalsIgnoreCase(reportLevel)){
+				parties = staticDataService.getAllNationalParties();
+			Collections.sort(parties);}
+			else{
+			    parties = staticDataService.getStaticPartiesListForAState(stateId);
+			Collections.sort(parties);
+		}
+		}
+		return Action.SUCCESS;
+	}
+	
 }

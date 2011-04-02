@@ -7,41 +7,107 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.UserService;
 public class UserAction extends ActionSupport implements ServletRequestAware {
 	
+	private HttpServletRequest request;	
 	
-	private HttpServletRequest request;
-	private HttpSession session;
-	private List<String> type = new ArrayList<String>();
 	private List<String> gender = new ArrayList<String>();
-	private List<SelectOptionVO> dobDay;
-	private List<SelectOptionVO> dobYear;
-	private List<SelectOptionVO> dobMonth;
 	private List<SelectOptionVO> parties;
 	private IStaticDataService staticDataService;
+	private IRegistrationService registrationService;	
+	private IRegionServiceData regionServiceDataImp;
+	private String registrationType;	
+	private List<String> userType = new ArrayList<String>();
+	private String userAccessType;
+	private String userAccessValue;
+	private String userAccessLocation;
+	private List<SelectOptionVO> regionList;
+	JSONObject jObj;
+	private String task;
+	
+	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public String getUserAccessLocation() {
+		return userAccessLocation;
+	}
+
+	public void setUserAccessLocation(String userAccessLocation) {
+		this.userAccessLocation = userAccessLocation;
+	}
+
+	public List<SelectOptionVO> getRegionList() {
+		return regionList;
+	}
+
+	public void setRegionList(List<SelectOptionVO> regionList) {
+		this.regionList = regionList;
+	}
+
+	public String getUserAccessValue() {
+		return userAccessValue;
+	}
+
+	public void setUserAccessValue(String userAccessValue) {
+		this.userAccessValue = userAccessValue;
+	}
+
+	public String getUserAccessType() {
+		return userAccessType;
+	}
+
+	public void setUserAccessType(String userAccessType) {
+		this.userAccessType = userAccessType;
+	}
+
+	public String getRegistrationType() {
+		return registrationType;
+	}
+
+	public void setRegistrationType(String registrationType) {
+		this.registrationType = registrationType;
+	}
+
+	public IRegistrationService getRegistrationService() {
+		return registrationService;
+	}
+
+	public void setRegistrationService(IRegistrationService registrationService) {
+		this.registrationService = registrationService;
+	}
 	
 	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-		session = request.getSession();
+		this.request = request;		
 	}
 	
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
-	public List<String> getType() {
-		return type;
-	}
-
-	public void setType(List<String> type) {
-		this.type = type;
-	}
-	
+		
 	public List<String> getGender() {
 		return gender;
 	}
@@ -49,33 +115,23 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		this.gender = gender;
 	}
 
-	public List<SelectOptionVO> getDobDay() {
-		return dobDay;
-	}
-	public void setDobDay(List<SelectOptionVO> dobDay) {
-		this.dobDay = dobDay;
-	}
-	public List<SelectOptionVO> getDobYear() {
-		return dobYear;
-	}
-	public void setDobYear(List<SelectOptionVO> dobYear) {
-		this.dobYear = dobYear;
-	}
-	public List<SelectOptionVO> getDobMonth() {
-		return dobMonth;
-	}
-	public void setDobMonth(List<SelectOptionVO> dobMonth) {
-		this.dobMonth = dobMonth;
-	}
-
 	public List<SelectOptionVO> getParties() {
 		return parties;
 	}
 	public void setParties(List<SelectOptionVO> parties) {
 		this.parties = parties;
-	}
+	}	
 	
+	public List<String> getUserType() {
+		return userType;
+	}
+
+	public void setUserType(List<String> userType) {
+		this.userType = userType;
+	}
+
 	public String registration(){
+		List<String> type = new ArrayList<String>();
 		if(type.size()==0){
 			type.add("COUNTRY");
 			type.add("STATE");
@@ -83,89 +139,131 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			type.add("MLA");
 			type.add("MP");			
 		}
-		
+		if(userType.size() == 0)
+		{
+			userType.add("Party");
+			userType.add("Politician");			
+		}
 		if(gender.size() == 0){
 			gender.add("Male");
 			gender.add("Female");
 		}		
 		
-		dobDay = new ArrayList<SelectOptionVO>();
-		for(int i=1;i<=31;i++)
-		{
-			SelectOptionVO dayElement = new SelectOptionVO();
-			dayElement.setId(new Long(i));
-			dayElement.setName(i+"");
-			dobDay.add(dayElement);
-		}
-		
-		
-		dobYear = new ArrayList<SelectOptionVO>();
-		for(int i=1950;i<=2010;i++)
-		{
-			SelectOptionVO yearElement = new SelectOptionVO();
-			yearElement.setId(new Long(i));
-			yearElement.setName(i+"");
-			dobYear.add(yearElement);
-		}
-		
-		dobMonth = new ArrayList<SelectOptionVO>();
-		
-		SelectOptionVO janVO = new SelectOptionVO();
-		janVO.setId(new Long(1));
-		janVO.setName("January");		
-		SelectOptionVO febVO = new SelectOptionVO();
-		febVO.setId(new Long(2));
-		febVO.setName("February");
-		SelectOptionVO marVO = new SelectOptionVO();
-		marVO.setId(new Long(3));
-		marVO.setName("March");
-		SelectOptionVO aprVO = new SelectOptionVO();
-		aprVO.setId(new Long(4));
-		aprVO.setName("April");
-		SelectOptionVO mayVO = new SelectOptionVO();
-		mayVO.setId(new Long(5));
-		mayVO.setName("May");
-		SelectOptionVO junVO = new SelectOptionVO();
-		junVO.setId(new Long(6));
-		junVO.setName("June");
-		SelectOptionVO julVO = new SelectOptionVO();
-		julVO.setId(new Long(7));
-		julVO.setName("July");
-		SelectOptionVO augVO = new SelectOptionVO();
-		augVO.setId(new Long(8));
-		augVO.setName("August");
-		SelectOptionVO sepVO = new SelectOptionVO();
-		sepVO.setId(new Long(9));
-		sepVO.setName("September");
-		SelectOptionVO octVO = new SelectOptionVO();
-		octVO.setId(new Long(10));
-		octVO.setName("October");
-		SelectOptionVO novVO = new SelectOptionVO();
-		novVO.setId(new Long(11));
-		novVO.setName("November");
-		SelectOptionVO decVO = new SelectOptionVO();
-		decVO.setId(new Long(12));
-		decVO.setName("December");
-		
-		dobMonth.add(janVO);
-		dobMonth.add(febVO);
-		dobMonth.add(marVO);
-		dobMonth.add(aprVO);
-		dobMonth.add(mayVO);
-		dobMonth.add(junVO);
-		dobMonth.add(julVO);
-		dobMonth.add(augVO);
-		dobMonth.add(sepVO);
-		dobMonth.add(octVO);
-		dobMonth.add(novVO);
-		dobMonth.add(decVO);
-		
 		parties = staticDataService.getStaticParties();
-		
+		HttpSession session = request.getSession();
 		session.setAttribute("type", type);
+		session.setAttribute("userType", userType);
 		session.setAttribute("gender", gender);
+		session.setAttribute("parties", parties);
 		
 		return Action.SUCCESS;
 	}
 	
+	public String subUserRegistration()
+	{
+		HttpSession session = request.getSession();
+		List<String> type = new ArrayList<String>();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		if(user==null){
+			return IConstants.NOT_LOGGED_IN;
+		}
+		
+		RegistrationVO regVO = registrationService.getDetailsOfUserByUserId(user.getRegistrationID());
+		
+		if(userType.size() == 0)
+		{
+			userType.add(regVO.getUserType());
+		}
+		
+		if(gender.size() == 0){
+			gender.add("Male");
+			gender.add("Female");
+		}
+		
+		SelectOptionVO partyVO = new SelectOptionVO();
+		partyVO.setId(regVO.getParty());
+		partyVO.setName(regVO.getPartyShortName());		
+		
+		parties = new ArrayList<SelectOptionVO>();
+		parties.add(partyVO);
+		
+		userAccessType = regVO.getAccessType();
+		userAccessValue = regVO.getAccessValue();
+		userAccessLocation = regionServiceDataImp.getRegionNameByRegionId(new Long(userAccessValue), userAccessType);
+		
+		if("COUNTRY".equalsIgnoreCase(regVO.getAccessType()))
+		{
+			type.add("COUNTRY");
+			type.add("STATE");
+			type.add("DISTRICT");
+			type.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+			type.add(IConstants.PARLIAMENT_ELECTION_TYPE);		
+			
+			userAccessLocation = "India";
+		}
+		else if(IConstants.STATE.equalsIgnoreCase(regVO.getAccessType()))
+		{
+			type.add("STATE");
+			type.add("DISTRICT");
+			type.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+			type.add(IConstants.PARLIAMENT_ELECTION_TYPE);
+		}
+		else if(IConstants.DISTRICT.equalsIgnoreCase(regVO.getAccessType()))
+		{
+			type.add("DISTRICT");
+			type.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+		}
+		else if(IConstants.MLA.equalsIgnoreCase(regVO.getAccessType()))
+		{			
+			type.add(IConstants.ASSEMBLY_ELECTION_TYPE);		
+		}
+		else if(IConstants.MP.equalsIgnoreCase(regVO.getAccessType()))
+		{		
+			type.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+			type.add(IConstants.PARLIAMENT_ELECTION_TYPE);
+		}
+		
+		
+		session.setAttribute("type", type);
+		session.setAttribute("userType", userType);
+		session.setAttribute("gender", gender);
+		session.setAttribute("parties", parties);
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getSubUserAccessValue()
+	{
+		String reportLevel = "";
+		Long mainUserLocationIdL = null;
+		try {
+			jObj = new JSONObject(getTask());
+			reportLevel = jObj.getString("reportLevel");
+			mainUserLocationIdL = jObj.getLong("mainUserLocationId");
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		
+		
+		if(reportLevel.equalsIgnoreCase(IConstants.STATE))
+		{
+			regionList = regionServiceDataImp.getStatesByCountry(mainUserLocationIdL);
+		}
+		else if(reportLevel.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			regionList = regionServiceDataImp.getDistrictsByStateID(mainUserLocationIdL);
+		}
+		else if(reportLevel.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+		{
+			regionList = regionServiceDataImp.getConstituenciesByDistrictID(mainUserLocationIdL);
+		}
+		else if(reportLevel.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+		{
+			regionList = regionServiceDataImp.getParliamentConstituenciesByDistrict(mainUserLocationIdL);
+		}
+		
+		return Action.SUCCESS;
+	}	
 }
