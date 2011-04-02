@@ -7,14 +7,20 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>PartyAnalyst Service</name>
 	<url>http://www.itgrids.com</url>
+	
+	<properties>
+		<hibernate.version>3.5.6-Final</hibernate.version>
+	</properties>
+
+	
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
+				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 			
@@ -34,31 +40,26 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<name>Maven Repository Switchboard</name>
+			<name>Maven Repository</name>
 			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>http://repo2.maven.org/maven2/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-
-		<repository>
-			<id>googlejsonrepo</id>
-			<name>Google JSON repository</name>
-			<layout>default</layout>
-			<url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk
-			</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 		<repository>
-			<id>sonatype</id>
-			<name>sonatype</name>
-			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases</url>
+			<id>repo4</id>
+			<name>JBoss Repository2</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 	</repositories>
 
@@ -71,27 +72,35 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-                   <groupId>easymock</groupId>
-                   <artifactId>easymock</artifactId>
-                   <version>2.0</version>
+		   <groupId>easymock</groupId>
+		   <artifactId>easymock</artifactId>
+		   <version>2.0</version>
+		   <scope>test</scope>
         </dependency>
+        
+        <dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.5-beta3</version>
+        </dependency>
+        
 
 		<!-- Hibernate / MySql -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.6.ga</version>
-			<exclusions>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+			<!--exclusions>
 				<exclusion>
 					<artifactId>jta</artifactId>
 					<groupId>javax.transaction</groupId>
 				</exclusion>
-			</exclusions>
+			</exclusions-->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.1.GA</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
@@ -101,25 +110,28 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
+			<version>5.1.15</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>2.5.6</version>
+			<version>3.0.5.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
 			<version>2.4.4</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.10</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Appfuse stuff for Hibernate -->
@@ -127,16 +139,50 @@
 			<groupId>org.appfuse</groupId>
 			<artifactId>appfuse-hibernate</artifactId>
 			<version>2.0.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-jdbc</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-orm</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.appfuse</groupId>
 			<artifactId>appfuse-jpa</artifactId>
 			<version>2.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-jdbc</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-orm</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.appfuse</groupId>
 			<artifactId>appfuse-service</artifactId>
 			<version>2.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aspects</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-context-support</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Commons stuff -->
@@ -179,8 +225,8 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<version>1.6.2</version>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
