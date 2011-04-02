@@ -13,63 +13,94 @@
 <title>Election Comparison Report</title>
 
 	<!-- YUI Dependency Files-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
 	
-	<link href="styles/yuiStyles/treeview.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
-	<script type="text/javascript" src="js/yahoo/history.js"></script> 
+	<!-- YUI Skin Sam -->
 
-	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css"
-		href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript"
-		src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
-
-
-	<!-- Combo-handled YUI CSS files: -->
-
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
-
-	<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script>
-
-
-	<!-- Sam Skin CSS --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
-	 
-	<!-- Dependencies --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	 
-	<!-- OPTIONAL: Animation (only required if using ContainerEffect) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script> 
-	 
-	<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
-	 
-	<!-- Source file --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
-	
-	<!-- CSS -->  
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/container.css">   
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 
 
 <style type="text/css">
+
+/* ------ Styles for Accordian Container -------*/
+
+	.yui-skin-sam .yui-accordion-item .yui-widget-hd 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 0;
+	}
+ 	.yui-skin-sam .yui-accordion-item-icon
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:center -25px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconalwaysvisible-on 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -55px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconclose
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -235px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconalwaysvisible, .yui-skin-sam .yui-accordion-item-iconalwaysvisible-off 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -86px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-on 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -115px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded, .yui-skin-sam .yui-accordion-item-iconexpanded-off
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -175px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-off:hover
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -205px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-on:hover
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -145px;
+	}
+
+/* ------ End ------*/
 
 .yui-widget-bd
 {
@@ -134,19 +165,13 @@ districtVotesTable td
 {
 	margin-left:55px;
 	text-align:left;
+	margin-right:20px;
 }
 #electionResultsMainBody
 {
 	padding-left:10px;
 }
-.yui-skin-sam .yui-accordion
-{
-	border:1px solid #93B2CC;
-}
-.yui-accordion-item
-{
-	width:90%;
-}
+
 #closeSpan
 {
 	float:right;
@@ -170,19 +195,30 @@ districtVotesTable td
 {
 	border: 2px solid #A0B7C3;
 	margin:30px 10px 10px 20px;
-	text-align:left;
 }
 #electionResultsPopupDivHead
 {
 	padding:10px;
 	background-color:#C0D9E5;
 	text-decoration:underline;
+	text-align:left;
 }
 #electionResultsPopupDivBody
 {
 	background-color:#ECEFF0;
 }
 
+#electionResultsPopupDivBody table
+{
+	width:100%;
+}
+
+#cadresDetailsDiv table
+{
+	width:100%;
+}
+
+/*
 .yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 {
 	background:none;
@@ -210,7 +246,7 @@ districtVotesTable td
 {
 	background-color:#F5FAFD;
 }
-
+*/
 
 </style>
 <script type="text/javascript">
@@ -224,11 +260,16 @@ var electionObject=	{
 						constsNotConsideredYearTwo:[]
 					};
 var electionType,constsVal;
-var myDataTable;
+var myDataTable,panel;
 	
 	
 	function showDetailedResultsPopup(oArgs)
-	{		
+	{			
+		var layerX = oArgs.event.clientX;
+		var layerY = oArgs.event.clientY;
+
+		var divElmt = document.getElementById("candidateDetailsPopupDiv");
+
 		var target = oArgs.target.headers;
 	
 		var parent = oArgs.target.parentNode;
@@ -243,49 +284,51 @@ var myDataTable;
 		else if(electionType == "constsNotConsideredYearTwo")
 			var data=electionObject.constsNotConsideredYearTwo[constsVal].electionResults[index];
 
-
-		var str='';		
-		str = '<table>';
-		str+='<tr>';
-		str+='<th>${electionsComparisonVO.firstYear} :</th>';
-		str+='<th>Name :</th>';
-		str+='<td>'+data.candidateName+'</td>';
-		str+='<th>Votes Earned :</th>';
-		str+='<td>'+data.votesEarned+'</td>';
-		str+='<th>Status :</th>';
-		if(data.rank == "1")
-			str+='<td>Won</td>';
-		else
-			str+='<td>Lost</td>';		
+		
+		var divChild = document.createElement('div');
+		divChild.setAttribute('class','yui-skin-sam');
+		divChild.setAttribute('id','eCompDiv');
+		var str='';
+		
+		str+='<div class="hd" style="text-align:left;">'+data.constituencyName+' Constituency Candidate Details...</div> ';
+		str+='<div class="bd">'; 
+		str+='<div id="cadresDetailsDiv">';
+		str+='<table>';
+		str+='<tr>';		
+		str+='<th width="50px" align="left">Year</th>';
+		str+='<th align="left">Candidate Name</th>';
+		str+='</tr>';
+		str+='<tr>';		
+		str+='<td>${electionsComparisonVO.firstYear}</td>';		
+		str+='<td>'+data.candidateName+'</td>';		
 		str+='</tr>';
 		if(data.secondCandidateName != '')
 		{
-			str+='<tr>';
-			str+='<th>${electionsComparisonVO.secondYear} :</th>';
-			str+='<th>Name :</th>';
-			str+='<td>'+data.secondCandidateName+'</td>';
-			str+='<th>Votes Earned :</th>';
-			str+='<td>'+data.votesEarnedBySecond+'</td>';
-			str+='<th>Status :</th>';
-			if(data.rankBySecond == "1")
-				str+='<td>Won</td>';
-			else
-				str+='<td>Lost</td>';
-			
+			str+='<tr>';			
+			str+='<td>${electionsComparisonVO.secondYear} </td>';			
+			str+='<td>'+data.secondCandidateName+'</td>';		
 			str+='</tr>';
 		}
 		str+='</table>';
+		str+='</div>';
+		str+='</div>';		
 
-		var target = oArgs.target;
-		myTooltip = new YAHOO.widget.Tooltip("myTooltip", {    
-	    context:target,    
-	    text:str   
-	    } );  
-	
+		divChild.innerHTML=str;
+		divElmt.appendChild(divChild);
+		
+		if(panel)
+			panel.destroy();
+
+		panel = new YAHOO.widget.Panel("eCompDiv", {width : "500px",x:300,y:400,visible:true, draggable:true, close:true } ); 
+		panel.render(); 
+
 	}
 
    function setContentToPanel(type,val)
    {
+		if(panel)
+			panel.hide();
+
 		var elmt = document.getElementById("electionResultsPopupDiv");
 		var elmtHead = document.getElementById("electionResultsPopupDivHead");
 		var elmtBody = document.getElementById("electionResultsPopupDivBody");
@@ -344,7 +387,9 @@ var myDataTable;
 					str+='<td>Lost</td>';			
 			}
 			else
-				str+='<td> -- </td>';			
+				str+='<td> -- </td>';		
+			
+			str+='<td> <a href="javascript:{}"> More Details</a> </td>';		
 			str+='</tr>';
 		}
 		str+='</table>';
@@ -383,43 +428,72 @@ var myDataTable;
 		} ]
 	};
 
-	var resultsColumnDefs = [ {
+	var resultsColumnDefs = [ 
+	{
 		key : "constituencyName",
 		label : "Constituency",
 		sortable : true
-	}, {
-		key : "votesEarned",
-		label : "Votes Earned",
-		sortable : true
-	}, {
-		key : "votesPercentage",
-		label : "Votes&nbsp;%",
-		sortable : true
-	}, {
-		key : "rank",
-		label : "Status",
-		sortable : true
-	}, {
-		key : "votesDiff",
-		label : "Votes % Diff",
-		sortable : true
-	}, {
-		key : "electorsDiff",
-		label : "Electors&nbsp;% Diff",
-		sortable : true
-	}, {
-		key : "votesEarnedBySecond",
-		label : "Votes Earned",
-		sortable : true
-	}, {
-		key : "votesPercentageBySecond",
-		label : "Votes&nbsp;%",
-		sortable : true
-	}, {
-		key : "rankBySecond",
-		label : "Status",
-		sortable : true
-	} ];
+	}, 
+	{
+		label:"Year - 2004",
+		className:"yui-dt-sortable ",
+		children:[ 
+					{
+						key : "votesEarned",
+						label : "Votes Earned",
+						sortable : true
+					},
+					{
+						key : "votesPercentage",
+						label : "Votes&nbsp;%",
+						sortable : true
+					},
+					{
+						key : "rank",
+						label : "Status",
+						sortable : true
+					}
+				]
+	},
+	{
+		label:"Diff %",
+		className:"yui-dt-sortable ",
+		children:[ 					
+					{
+						key : "votesDiff",
+						label : "Votes % Diff",
+						sortable : true
+					}, 
+					{
+						key : "electorsDiff",
+						label : "Electors&nbsp;% Diff",
+						sortable : true
+					}
+				]
+	},
+	{
+		label:"Year - 2009",
+		className:"yui-dt-sortable ",
+		children:[ 
+					{
+						key : "votesEarnedBySecond",
+						label : "Votes Earned",
+						sortable : true
+					},
+					{
+						key : "votesPercentageBySecond",
+						label : "Votes&nbsp;%",
+						sortable : true
+					},
+					{
+						key : "rankBySecond",
+						label : "Status",
+						sortable : true
+					}
+									
+				 ]
+	}
+	];
 
 	myDataTable = new YAHOO.widget.DataTable("electionResultsPopupDivBody",resultsColumnDefs, resultsDataSource,{}); 
 	myDataTable.subscribe("cellMouseoverEvent", showDetailedResultsPopup);   
@@ -755,6 +829,7 @@ var myDataTable;
 </script>
 </head>
 <body>
+	<div id="electionComparisonMainDiv">
        <h2>Elections Comparison Report</h2>
 	   <br/>
 	   	<c:if test="${electionComparisonResultVO != null }">
@@ -856,6 +931,9 @@ var myDataTable;
 		   </div>	
        </div>
 		<br/><br/>
+		<div id="candidateDetailsPopupDiv" class="yui-skin-sam">
+			
+		</div>
         <div id="detailedResultsPopupDiv" style="visibility:hidden;">
 			
 		</div>
@@ -866,19 +944,9 @@ var myDataTable;
 					<span id="closeSpan" onclick="closeSpan()">X</span>
 					<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>			
 					<span id="labelHead">Candidate Details..</span>						
-				</div>
-				<div style="font-weight:bold;">
-					<table width="100%">
-						<tr>
-							<td align="center"> Year -- ${electionsComparisonVO.firstYear}</td>
-							<td align="center"> Year -- ${electionsComparisonVO.secondYear}</td>
-						</tr>
-					</table>
-				</div>
+				</div>				
 			</div>
-			<div id="electionResultsPopupDivBody" class="yui-skin-sam">
-				Content
-			</div>		
+			<div id="electionResultsPopupDivBody" class="yui-skin-sam">	</div>		
 		</div>
 
 		<div id="districtWiseResultsMain">
@@ -894,5 +962,6 @@ var myDataTable;
 		
 		
 		</c:if>
+	</div>
 </body>
 </html>

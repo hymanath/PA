@@ -1,3 +1,5 @@
 
 
-  No Elections Happened In This State
+
+  <BR><BR><BR><BR>
+  <H2>No Data Available For This State ....</H2>

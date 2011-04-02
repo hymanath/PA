@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -17,7 +21,8 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> electionYearList;
 	private List<SelectOptionVO> parliamentList;
 	private HttpServletRequest request;
-
+	private EntitlementsHelper entitlementsHelper;
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;	
 	}
@@ -46,21 +51,29 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		this.request = request;
 	}
 
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute(){
 		
+		HttpSession session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CROSS_VOTING_REPORT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
+			return ERROR;
+		
 		electionYearList = new ArrayList<SelectOptionVO>();				
-		SelectOptionVO eList1 = new SelectOptionVO();
-		eList1.setId(new Long(2004));
-		eList1.setName("2004");
 		
-		SelectOptionVO eList2 = new SelectOptionVO();
-		eList2.setId(new Long(2009));
-		eList2.setName("2009");		
 		
-		electionYearList.add(eList1);
-		electionYearList.add(eList2);
-		setElectionYearList(electionYearList);
-
+		electionYearList.add(new SelectOptionVO(2009l, "2009"));
+		electionYearList.add(new SelectOptionVO(2004l, "2004"));
+		
 		return Action.SUCCESS;
 	}
 

@@ -24,7 +24,11 @@
 			<td><select name="electionScope">
 				<option value="0">Select option..</option>
 				<option value="Andhra Pradesh">Andhra Pradesh</option>
-				<option value="Tamilnadu">Tamilnadu</option>
+				<option value="Tamil Nadu">Tamil Nadu</option>
+				<option value="Karnataka">Karnataka</option>
+				<option value="West Bengal">West Bengal</option>
+				<option value="Assam">Assam</option>
+				<option value="Kerala">Kerala</option>
 			</select></td>
 		</tr>
 		<tr>
@@ -43,7 +47,22 @@
 				<option value="Parliament">Parliament</option>
 			</select></td>
 		</tr>
-
+		<tr>
+			<td>Election Subtype</td>
+			<td><select name="elecSubtype">
+				<option value="0">Select option..</option>
+				<option value="MAIN">Main Election</option>
+				<option value="BYE">Bye Election</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td>Election Status</td>
+			<td><select name="isElectionResults">
+				<option value="0">Select option..</option>
+				<option value="RESULTS">Election Results</option>
+				<option value="NOMINATIONS">Candidate Nominations</option>
+			</select></td>
+		</tr>
 		<tr>
 			<td><s:file name="inputFile" label="InputFile" /></td>
 		</tr>

@@ -19,7 +19,7 @@
 
 
 	<category name="com.itgrids">
-		<priority value="DEBUG" />
+		<priority value="WARN" />
 	</category>
 
 	<category name="org.hibernate">

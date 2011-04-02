@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 
@@ -25,6 +25,51 @@ public class AjaxSearchAction implements ServletRequestAware{
 	private ICandidateSearchService candidateSearchService;
 	private HttpServletRequest request;
 	private HttpSession session;
+	private String stateId;
+	private String searchCriteria;
+	private String constituencyType;
+	private String letters;
+	private List<SelectOptionVO> resultNames;	
+
+	public String getLetters() {
+		return letters;
+	}
+
+	public void setLetters(String letters) {
+		this.letters = letters;
+	}
+
+	public List<SelectOptionVO> getResultNames() {
+		return resultNames;
+	}
+
+	public void setResultNames(List<SelectOptionVO> resultNames) {
+		this.resultNames = resultNames;
+	}
+
+	public String getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(String stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getSearchCriteria() {
+		return searchCriteria;
+	}
+
+	public void setSearchCriteria(String searchCriteria) {
+		this.searchCriteria = searchCriteria;
+	}
+
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
 
 	public ICandidateSearchService getCandidateSearchService() {
 		return candidateSearchService;
@@ -64,7 +109,7 @@ public class AjaxSearchAction implements ServletRequestAware{
 	
 	public String execute() 
 	{
-		session = request.getSession();
+		/*session = request.getSession();
 		String param=null;
 		
 		param=getTask();
@@ -81,19 +126,59 @@ public class AjaxSearchAction implements ServletRequestAware{
 		
 		if(jObj.getString("searchCriteria").equalsIgnoreCase("Candidate"))
 		{
-			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds();
+			String electionType = null;
+			if("MLA".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			Long stateId = jObj.getLong("stateId");	
+			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds(electionType, stateId);
 			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));	
 			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);
 		}
 		else if (jObj.getString("searchCriteria").equalsIgnoreCase("Constituency"))
 		{
-				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds();
+			Long electionTypeId= 0l;
+			if("MLA".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionTypeId = 2l;
+			if("MP".equalsIgnoreCase(jObj.getString("constituencyType")))
+				electionTypeId = 1l;
+			Long stateId = jObj.getLong("stateId");	
+			
+				List<SelectOptionVO> constituencyNamesAndIds = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,stateId);
 				setNamesList(getNamesFromSelectOptionVos(constituencyNamesAndIds));					
-		}	
+		}	*/
 		
 		 return Action.SUCCESS;
 	}
 	
+	public String getNames()throws Exception
+	{
+		session = request.getSession();
+		String electionType = null;
+		if(searchCriteria.equalsIgnoreCase("Candidate"))
+		{
+			if("MLA".equalsIgnoreCase(constituencyType))
+				electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			if("MP".equalsIgnoreCase(constituencyType))
+				electionType = IConstants.PARLIAMENT_ELECTION_TYPE;
+			
+			resultNames = candidateSearchService.getCandidateNamesAndIds(electionType, new Long(stateId),letters);
+			session.setAttribute("candidateNamesAndIds", resultNames);
+		}
+		else if(searchCriteria.equalsIgnoreCase("Constituency"))
+		{
+			Long electionTypeId= 0l;
+			if("MLA".equalsIgnoreCase(constituencyType))
+				electionTypeId = 2l;
+			if("MP".equalsIgnoreCase(constituencyType))
+				electionTypeId = 1l;
+			
+			resultNames = constituencySearchService.getConstituencyNamesAndIds(electionTypeId,new Long(stateId),letters);
+		}
+		
+		return Action.SUCCESS; 
+	}
 	private List<String> getNamesFromSelectOptionVos(List<SelectOptionVO> namesAndIds){
 			List<String> names = new ArrayList<String>();
 			for(SelectOptionVO nameAndId:namesAndIds)

@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,11 +15,10 @@ import net.sf.jasperreports.engine.JRException;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.json.JSONObject;
+import org.apache.struts2.json.annotations.JSON;
 
-import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
-import com.itgrids.partyanalyst.service.IStateElectionResultsService;
+import com.itgrids.partyanalyst.service.IStatePageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -47,7 +45,7 @@ public class StateElectionResultsAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
-	private IStateElectionResultsService stateElectionResultsService;
+	private IStatePageService statePageService;
 	  
 
 	public static long getSerialVersionUID() {
@@ -86,25 +84,13 @@ public class StateElectionResultsAction extends ActionSupport implements
 		
        this.response = response;
 	}
-
-	
-	@JSON (serialize= false )
-	public IStateElectionResultsService getStateElectionResultsService() {
-		return stateElectionResultsService;
-	}
-
-	public void setStateElectionResultsService(
-			IStateElectionResultsService stateElectionResultsService) {
-		this.stateElectionResultsService = stateElectionResultsService;
-	}
-	
 	
 	public String execute(){
 		
 
 		String electionId = request.getParameter("electionId");
 					
-		stateElectionResults = stateElectionResultsService.getStateElectionResults(Long.parseLong(electionId));
+		stateElectionResults = statePageService.getStateElectionResults(Long.parseLong(electionId));
 		    
 		if(stateElectionResults != null)
 	    {
@@ -114,6 +100,15 @@ public class StateElectionResultsAction extends ActionSupport implements
 		return Action.ERROR;
 	}
 	
+	@JSON (serialize= false )
+	public IStatePageService getStatePageService() {
+		return statePageService;
+	}
+
+	public void setStatePageService(IStatePageService statePageService) {
+		this.statePageService = statePageService;
+	}
+
 	public String getJSON() throws JRException {
 		//log.debug("partyPerformanceAjax action started...");
 		return execute();

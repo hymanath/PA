@@ -13,14 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,6 +35,8 @@ public class StatePageAction extends ActionSupport implements
 
 		
 	private static final long serialVersionUID = 1L;
+	
+	private final static Logger log = Logger.getLogger(StatePageAction.class);
 	
 	private String stateId;
 	private List<StateElectionsVO> stateElections;
@@ -43,8 +49,17 @@ public class StatePageAction extends ActionSupport implements
 	private IRegionServiceData regionServiceDataImp;	
 	private List<SelectOptionVO> districtData;
 	private int districtNumber;
+	private String stateMapName;
 	
 	  
+	public String getStateMapName() {
+		return stateMapName;
+	}
+
+	public void setStateMapName(String stateMapName) {
+		this.stateMapName = stateMapName;
+	}
+
 	public String getStateId() {
 		return stateId;
 	}
@@ -123,8 +138,11 @@ public class StatePageAction extends ActionSupport implements
     	
     	statePage = statePageService.getStateDetails(Long.parseLong(stateId)); 
     	
-    	districtData = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(stateId));
+    	String statename = statePage.getStateName();
+    	stateMapName = StringUtils.replaceOnce(statename, " ", "_");
     	
+    	districtData = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(stateId));
+     	   	
     	districtNumber = districtData.size();   	
     	
     	if(statePage.getStateName().equalsIgnoreCase("NoState") || statePage == null || districtNumber == 0)
