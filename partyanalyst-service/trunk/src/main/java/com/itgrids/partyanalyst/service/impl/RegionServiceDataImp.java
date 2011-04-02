@@ -7,7 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -183,7 +185,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		for(District district : districts){
 			SelectOptionVO objVO = new SelectOptionVO();
 			objVO.setId(district.getDistrictId());
-			objVO.setName(district.getDistrictName());
+			objVO.setName(WordUtils.capitalize(district.getDistrictName().toLowerCase()));
 			formattedDistricts.add(objVO);
 		}
 		return formattedDistricts;
