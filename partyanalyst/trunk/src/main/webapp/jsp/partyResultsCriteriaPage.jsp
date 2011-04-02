@@ -88,6 +88,14 @@
 
 		function getReportLevel(value)
 		{	
+
+			var errorDataDiv = document.getElementById("errorDataDiv");
+            if(errorDataDiv)
+			{
+				var str = '';
+                errorDataDiv.innerHTML = str;
+			}
+
 			var radioElmt=document.getElementById("reportLevelRadio");
 			radioElmt.innerHTML='';
 			
@@ -557,7 +565,7 @@
 		<table class="errorDIV">
 			<tr>
 				<td colspan="2">
-					<div style="color: red;">
+					<div id="errorDataDiv" style="color: red;">
 						<s:actionerror />
 						<s:fielderror />
 						<s:actionmessage/>						
@@ -658,8 +666,6 @@
 	<span><b>Processing Request ...</b> </span>
 	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 </div>
-
-<div><h3><font color="red"><c:out value="${errormsg}"/></font></h3></div>
 
 </BODY>
 </HTML>

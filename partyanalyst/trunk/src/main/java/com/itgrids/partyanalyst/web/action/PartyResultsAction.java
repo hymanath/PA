@@ -3,12 +3,14 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.struts2.components.ActionError;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
@@ -19,6 +21,7 @@ import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 /**
@@ -154,6 +157,9 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 
 	public String execute() {
 
+		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
+		String reportError = rb.getString("noResults");
+		
 		System.out.println("IN Party Results action ");
 		setCountrySelectName("India");
 		
@@ -207,8 +213,13 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		//PartyResultInfoVO getPartyResultsInfo();
 	
 		setPartyResultInfoVOs(partyResultInfoVOList);
+		
 		if(partyResultInfoVOList.size()==0){
-			request.setAttribute("errormsg","No Results Available for Input Selection, Please Choose Another Option ..");
+			//addFieldError("errormsg",getText("noResults"));
+			
+			addActionError(reportError);
+			
+              
 			return "error";
 		}
 			
