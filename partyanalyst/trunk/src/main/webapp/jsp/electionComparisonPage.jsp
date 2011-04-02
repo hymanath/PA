@@ -73,11 +73,13 @@ var yearsPopulation={
 	}; 
 
 		function getElectionScopes(elmt,id)
-		{
-			removeErrorMessage();			
-			showBusyImgWithId(elmt.id);
-
-			if(id!=0){				
+		{	
+		   removeErrorMessage();
+		   if(id==0)
+			errorMsg(elmt);
+		
+		   if(id!=0){	
+				showBusyImgWithId(elmt.id);
 				var jsObj=
 				{
 						elmtId:elmt.id,
@@ -88,22 +90,61 @@ var yearsPopulation={
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 				var url = "<%=request.getContextPath()%>/getElectionScopesForECAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
-			}else{
-				clearOptionsListForSelectElmtId("electionScopeSelect");
-				createSelectOptionsForSelectElmtId("electionScopeSelect");	
-			}						
+			}				
 		}
 		function removeErrorMessage(){
 			if(document.getElementById("errorMessage")){
 				document.getElementById("errorMessage").innerHTML="";
 			}
 		}
+        function errorMsg(elmt){
+          	if(elmt.id=="electionTypeSelect"){
+              document.getElementById("errorMessage").innerHTML='<h3><%=electionTypeMsg%></h3>';
+                clearOptionsListForSelectElmtId("electionScopeSelect");
+				createSelectOptionsForSelectElmtId("electionScopeSelect");	
+				clearOptionsListForSelectElmtId("partyList");
+                createSelectOptionsForSelectElmtId("partyList");
+				clearOptionsListForSelectElmtId("electionYearSelect1");	
+                clearOptionsListForSelectElmtId("electionYearSelect2");
+				createSelectOptionsForSelectElmtId("electionYearSelect1");
+                createSelectOptionsForSelectElmtId("electionYearSelect2");
+			}
+			if(elmt.id == "electionScopeSelect"){
+			   document.getElementById("errorMessage").innerHTML='<h3><%=electionScopeMsg%></h3>';
+			    clearOptionsListForSelectElmtId("partyList");
+                createSelectOptionsForSelectElmtId("partyList");
+				clearOptionsListForSelectElmtId("electionYearSelect1");	
+                clearOptionsListForSelectElmtId("electionYearSelect2");
+				createSelectOptionsForSelectElmtId("electionYearSelect1");
+                createSelectOptionsForSelectElmtId("electionYearSelect2");
+			}
+			if(elmt.id == "partyList")
+			{
+                document.getElementById("errorMessage").innerHTML='<h3><%=partyNameMsg%></h3>';
+				clearOptionsListForSelectElmtId("electionYearSelect1");	
+                clearOptionsListForSelectElmtId("electionYearSelect2");
+				createSelectOptionsForSelectElmtId("electionYearSelect1");
+                createSelectOptionsForSelectElmtId("electionYearSelect2");
+			}
+             if(elmt.id == "electionYearSelect1")
+			{
+				
+              document.getElementById("errorMessage").innerHTML='<h3><%=electionYearMsg%></h3>';
+			   clearOptionsListForSelectElmtId("electionYearSelect2");
+			   createSelectOptionsForSelectElmtId("electionYearSelect2");
+			}
+		}
 
 		function getElectionYears(elmt,id,name)
-		{
-			removeErrorMessage();
-			showBusyImgWithId(elmt.id);
+		{	
 
+			removeErrorMessage();
+            if(id==0)
+				 errorMsg(elmt);
+			
+			if(id!=0){	
+			showBusyImgWithId(elmt.id);
+			
 			document.getElementById("selectedParty").value = name; 
 			selectedParty = name;
 			var jsObj=
@@ -116,6 +157,7 @@ var yearsPopulation={
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/getElectionYearsForECAction.action?"+rparam;						
+			}
 			callAjax(rparam,jsObj,url);
 		}
 
@@ -215,29 +257,40 @@ var yearsPopulation={
 
 		function getSelectedElectionScope(elmt,id)
 		{	
+			removeErrorMessage();			
+			
+             if(id==0)
+				 errorMsg(elmt);
+			 if(id!=0){	
 			showBusyImgWithId(elmt.id);
-			removeErrorMessage();
 			selectedElectionScopeId = id;
 			getPartiesInState(elmt.id);
+			}
 		}
 		function populateElectionYearsForSecondElectionYearsSelectBox(value)
-		{
-			clearOptionsListForSelectElmtId("electionYearSelect2");	
-			yearsArray = new Array();
-			for(var i in yearsPopulation.allYearsArray)
-			{				
-				if(yearsPopulation.allYearsArray[i].years!=value){
-					var yearsObj= {
-							 id:yearsPopulation.allYearsArray[i].electionId,
-							 name:yearsPopulation.allYearsArray[i].years													
-						};
-					yearsArray.push(yearsObj);
-					yearsPopulation.remainingYearsArray=yearsArray;
-				}									
-			}
-			
+		{	
+			var elmt = document.getElementById("electionYearSelect1");
+			if(value == "Select")
+			errorMsg(elmt);
+			else{
 
-			createOptionsForSelectElmtId("electionYearSelect2",yearsPopulation.remainingYearsArray);	
+				clearOptionsListForSelectElmtId("electionYearSelect2");	
+				yearsArray = new Array();
+				for(var i in yearsPopulation.allYearsArray)
+				{				
+					if(yearsPopulation.allYearsArray[i].years!=value){
+						var yearsObj= {
+								 id:yearsPopulation.allYearsArray[i].electionId,
+								 name:yearsPopulation.allYearsArray[i].years													
+							};
+						yearsArray.push(yearsObj);
+						yearsPopulation.remainingYearsArray=yearsArray;
+					}
+					
+				}
+				createOptionsForSelectElmtId("electionYearSelect2",yearsPopulation.remainingYearsArray);
+			}	
+				
 		}
 		function validateAndForwardToAction(elmt)
 		{
@@ -283,9 +336,14 @@ var yearsPopulation={
 				return true;							
 			}	
 		}
+
+		function refresh()
+		   {
+			window.location.reload(true);
+		    }
 </script>
 </head>
-<body>
+<body onload = "refresh()">
 <div style="margin-top:40px;">
 	<form name="electionComparisionForm">
 		<table class="CandidateElectionResultsTable" width="400px;" border="1">
