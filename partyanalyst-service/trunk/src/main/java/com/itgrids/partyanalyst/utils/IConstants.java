@@ -17,6 +17,10 @@ public interface IConstants {
 	public static final String STATIC_PARTIES_WITHOUT_QUOTES = "INC,PRP,TDP,TRS,CPI,CPM,AIMIM,BJP";
 	public static final String STATIC_PARTIES_TAMIL_NADU_WITHOUT_QUOTES = "MDMK,AIADMK,DMK,PMK,INC,CPI,CPM,BJP";
 	public static final String STATIC_PARTIES_KARNATAKA_WITHOUT_QUOTES = "JD(S),JD(U),KNDP,AIADMK,INC,CPI,CPM,BJP";
+	public static final String STATIC_STATE_PARTIES_35 = "'AIADMK','DMK','PMK'";
+	public static final String STATIC_STATE_PARTIES_13 = "'AIADMK','RSP'";
+	
+	
 	
 	public static final String NATIONAL_STATIC_PARTIES = "'INC','CPI','CPM','BJP','BSP'";
 	public static final String NATIONAL_PARTY_TYPE = "NP";
