@@ -304,12 +304,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 					
 			if(!isUpdate)
 					{
+				 // If the user does'nt select the profile image
+				        if(userDetails.getUserProfilePic()!=null)
+			           {
 						String constiName[] = userDetails.getUserProfilePic().split("/");
 					
 						imageName = ananymousUser.getUserId()+"."+constiName[1];
+			            }
 						userDetails.setRegistrationID(ananymousUser.getUserId());
 						 
 						ResultStatus imgStatus = saveUserProfileImageName(ananymousUser.getUserId(), imageName);
+				        
 					}
 					
 					if(userDetails.getProfileOpts() != null)
