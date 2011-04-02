@@ -137,7 +137,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 //User Personal Details Validation
 	
 	public Long getRegistrationId() {
-		return registrationId;
+		return regVO.getRegistrationID();
 	}
 	
 	public void setRegistrationId(Long registrationId) {
@@ -323,16 +323,23 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		Boolean savedSuccessfully;
 		
 		BufferedImage imageFile = null;
-       
+		
+		 String  imageName=null;
+		 String constiName[]=null; 
+		 String fileName=null;; 
 		 try {
+			 if(this.uploadImage !=null)
+			 {
 			 imageFile = ImageIO.read(this.uploadImage);
+			 }
+	             String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+	             if(uploadImageContentType!=null)
+	             {
+	              constiName = uploadImageContentType.split("/");
+			      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
+	             }
 	           
-	            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-	            String constiName[] = uploadImageContentType.split("/");
-				  String imageName =  regVO.getRegistrationID()+"."+constiName[1];    
-		        
-	           
-	          
+			 
 	      
             if(registrationId != null){
 				loginUserId = registrationId;
@@ -340,12 +347,15 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				regVO.setUserProfilePic(imageName);
 				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, true);
 			}else
-				savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
+			
+			  savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
             
-            String fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
-	           imageName =  regVO.getRegistrationID()+"."+constiName[1];  
+         //    if(regVO.getRegistrationID()!=null){
+            if(this.uploadImage !=null){
+               fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
+              imageName =  regVO.getRegistrationID()+"."+constiName[1];  
 	           ImageIO.write(imageFile, constiName[1],new File(fileName));
-	          	
+             }       	
 			if(savedSuccessfully){	
 				
 				HttpSession session = request.getSession();			
@@ -353,10 +363,11 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				regVO.setUserStatus(IConstants.FREE_USER);
 				session.setAttribute(IConstants.USER,regVO);
 				session.setAttribute("UserName", userFullName);
+				session.setAttribute("UserType", "FreeUser");
 				session.setAttribute("loginStatus", "out");
 				session.setAttribute("HiddenCount", 0);
 			}
-      
+			 
         
 		 }
 		 catch(Exception e){
