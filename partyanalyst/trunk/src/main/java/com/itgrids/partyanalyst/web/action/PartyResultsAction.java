@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 /**
  * 
  * @author Mohan
@@ -46,7 +47,6 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private ServletContext context;
 	private String selectedPartyShortName;
 	private Long selectedPartyId;
-	
 	public String getSelectedLocationName() {
 		return selectedLocationName;
 	}
@@ -207,6 +207,11 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 		//PartyResultInfoVO getPartyResultsInfo();
 	
 		setPartyResultInfoVOs(partyResultInfoVOList);
+		if(partyResultInfoVOList.size()==0){
+			request.setAttribute("errormsg","No Results Available for Input Selection, Please Choose Another Option ..");
+			return "error";
+		}
+			
 	
 		session = request.getSession();
 		String chartName = "partyResultsChart_" + chartId.toString() + session.getId() + ".png";
