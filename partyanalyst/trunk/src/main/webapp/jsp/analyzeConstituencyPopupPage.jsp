@@ -376,33 +376,22 @@ body
 				return postedByVal;
 		   }
 			postedByVal=postedByVal.trim(postedByVal);
-
-
-// allow only characters
-	if(commentVal.search(/[0-9]+/) > -1){
-		alertMessageEl.innerHTML = 'Numbers are not allowed in Describe your Reason field';
-	}
-	if(postedByVal.search(/[0-9]+/) > -1){
-		alertMessageE1.innerHTML = 'Numbers are not allowed in postBy field';
-	}
-	console.log(commentVal);
-	console.log(postedByVal);
-//special characters are not allowed.!
-var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
-
-		for (var i = 0; i < commentVal.length; i++) {
+	
+//special characters And Numbers are not allowed.!
+var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789 ";
+	
+		for (var i=0; i< commentVal.length; i++) {
   			if (iChars.indexOf(commentVal.charAt(i)) != -1) {
-  			alertMessageEl.innerHTML ='Describe your Reason has special characters These are not allowed Please remove them and try again';
+  			alertMessageEl.innerHTML ='Describe your Reason field should not contain special characters and numbers';
   			return false;
   			}
 		}
-		for (var i = 0; i < postedByVal.length; i++) {
-  			if (iChars.indexOf(postedByVal.charAt(i)) != -1) {
-  			alertMessageEl.innerHTML ='PostedBy has special characters These are not allowed Please remove them and try again';
+		for (var j=0; j<postedByVal.length; j++) {
+  			if (iChars.indexOf(postedByVal.charAt(j)) != -1) {
+  			alertMessageEl.innerHTML ='PostedBy field should not contain special characters and numbers';
   			return false;
   		  }
       }
-
 
 if(category == "candidate")
 		{
