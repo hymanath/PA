@@ -1291,22 +1291,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  		List<Party> parties = null;
  		List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();
  		try{
- 			if(stateId.intValue()==1){
- 				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
- 			}else if(stateId.intValue()==24){//tamilnadu
- 				parties = partyDAO.findByShortNames(IConstants.STATIC_TAMIL_NADU_PARTIES);
- 			}else if(stateId.intValue()==12){//karnataka
- 				parties = partyDAO.findByShortNames(IConstants.STATIC_KARNATAKA_PARTIES);
- 			}else{
- 				parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
- 			}			
-			for(Party party : parties){
-				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId(party.getPartyId());
-				selectOptionVO.setName(party.getShortName());
-				staticParties.add(selectOptionVO);
-			}
-			return staticParties;
+ 			staticParties = staticDataService.getStaticPartiesListForAState(stateId);
+ 		return staticParties;
  		}catch(Exception e){
  			e.printStackTrace();
  		}
