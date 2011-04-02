@@ -659,5 +659,7 @@
 	<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 </div>
 
+<div><h3><font color="red"><c:out value="${errormsg}"/></font></h3></div>
+
 </BODY>
 </HTML>
