@@ -270,7 +270,7 @@ function buildProblemPostingWindowForDistrict()
 }
 function buildDistrictConnectPeopleWindow()
 {	
-	var bodyElmt = document.getElementById('districtPeopleConnect_body');
+	var bodyElmt = document.getElementById('districtPeopleConnectData_body');
 	
 	if(connectedPeople.length == 0 && userLoginStatus == "false")
 	{
@@ -295,7 +295,7 @@ function buildDistrictConnectPeopleWindow()
 		return;
 	}
 	
-	buildConnectUsersContent(connectedPeople,"districtPeopleConnect_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
+	buildConnectUsersContent(connectedPeople,"districtPeopleConnectData_body","DISTRICT",districtId,districtName,userLoginStatus,userId);
 }
 
 function initializeDistrictPage()

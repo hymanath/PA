@@ -1510,7 +1510,15 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</tr>
 				</table>	
 			</div>
-			<div id="districtPeopleConnect_body"></div>
+			<div id="districtPeopleConnect_body">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+				  <tr>
+					  <td width="45%"><div id="districtPeopleConnect_img"><img src="images/usergroups/group2.jpg"/></div></td>
+				  
+					  <td width="55%"><div id="districtPeopleConnectData_body"></div></td>
+				  </tr>
+				</table>
+			</div>
 		</div>
 		
 	</div>
