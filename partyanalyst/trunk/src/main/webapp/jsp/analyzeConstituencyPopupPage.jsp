@@ -378,7 +378,7 @@ body
 			postedByVal=postedByVal.trim(postedByVal);
 	
 //special characters And Numbers are not allowed.!
-var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789 ";
+var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	
 		for (var i=0; i< commentVal.length; i++) {
   			if (iChars.indexOf(commentVal.charAt(i)) != -1) {
