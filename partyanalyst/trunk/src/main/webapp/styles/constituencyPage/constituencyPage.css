@@ -317,7 +317,14 @@ legend
 	font-size:11px;
 	padding:5px;
 	margin-bottom:5px;
-	margin-top:5px;
+	margin-top:15px;
+}
+#districtPeopleConnect_img
+{
+    color:#7C8791;
+	font-size:11px;
+	padding:2px;
+	
 }
 
 #connectedPersonsDiv
