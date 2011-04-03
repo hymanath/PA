@@ -2585,9 +2585,9 @@ public class StaticDataService implements IStaticDataService {
 					Object[] obj = (Object[]) constiList.get(i);
 					SelectOptionVO constituencyData = new SelectOptionVO();
 					constituencyData.setId((Long) obj[0]);
-					constituencyData.setName(obj[1].toString().toUpperCase());
-
-					constituenciesList.add(constituencyData);
+					constituencyData.setName(StringUtils.capitalize(obj[1].toString().toLowerCase()));
+         
+                	constituenciesList.add(constituencyData);
 				}
 			}
 
@@ -3943,6 +3943,7 @@ public class StaticDataService implements IStaticDataService {
 				selectOptionVo.setId(new Long(temp.toString()));
 				selectOptionVo.setName(parties.get(temp));
 				selectOptionVO.add(selectOptionVo);
+				Collections.sort(selectOptionVO);
 			}
 		} catch (Exception ex) {
 			resultVO.setExceptionEncountered(ex);
@@ -5031,13 +5032,14 @@ public class StaticDataService implements IStaticDataService {
 			SelectOptionVO indPartyObj;
 
 			log.debug("Making partyDAO.findByShortNames() DAO call...");
-			List<Party> bspParty = partyDAO.findByShortName(IConstants.BSP);
+			/*List<Party> bspParty = partyDAO.findByShortName(IConstants.BSP);*/
 			List<Party> indParty = partyDAO.findByShortName(IConstants.IND);
 
-			staticParties.add(new SelectOptionVO(bspParty.get(0).getPartyId(),
-					bspParty.get(0).getShortName()));
+		/*	staticParties.add(new SelectOptionVO(bspParty.get(0).getPartyId(),
+					bspParty.get(0).getShortName()));*/
 			staticParties.add(new SelectOptionVO(indParty.get(0).getPartyId(),
 					indParty.get(0).getShortName()));
+			Collections.sort(staticParties);
 			return staticParties;
 		} catch (Exception e) {
 			e.printStackTrace();
