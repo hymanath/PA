@@ -230,13 +230,17 @@
 		}
 	}
 	
-	function redirectZptcCandidateLink(){												
-		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+	function redirectZptcCandidateLink(){	
+
+													
+		 //var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 var browser1 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser1.focus();
 	}
 
 	function redirectMptcCandidateLink(){
-		 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 //var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 var browser2 = window.open("constituencyPageCandidateDetailsAjaxAction.action?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser2.focus();
 	}
 		
@@ -992,7 +996,8 @@ function buildElectionsSelectBox(myResults){
 
 function openConstVotingTrendzWindow(distId,constId,constName)
 {			
-	var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
+	//var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
+	var browser1 = window.open("constituencyVotingTrendzAction.action?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
 
 	browser1.focus();
 }
@@ -1044,7 +1049,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-					
+                    
 						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
@@ -1443,7 +1448,8 @@ function showCorporationInfo(myResults){
 	buildCorpOrMunicipTable(HeadElmt, myResults, "Corporation","showMoreCorporationResultsDiv");
 }
 function redirectMuncipalityCandidateLink(muncipalityElectionType,muncipalityElectionId,muncipalityId,latestMuncipalElectionYear,name){	
-	var browser3 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
+	//var browser3 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
+	var browser3 = window.open("muncipalElectionReportAction.action?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
 	browser3.focus();
 }
 function buildCorpOrMunicipTable(divId, myResults, elecType,showMoreDiv){
@@ -1968,13 +1974,15 @@ function showDetailedElectionResult(id)
 	var elecYear = data.year; 
 
 	
-    var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+    //var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+    var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
     browser1.focus();	
 }
 
 	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
-	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   //var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
 	   browser1.focus();
 	}
 
