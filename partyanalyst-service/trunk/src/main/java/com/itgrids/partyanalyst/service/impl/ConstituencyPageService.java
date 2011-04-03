@@ -565,7 +565,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			electionType = constituency.getElectionScope().getElectionType().getElectionType();
 			constituencyDetails.setConstituencyId(constituencyId);
 			constituencyDetails.setDistrictId(districtId);
-			constituencyDetails.setConstituencyName(constituency.getName());
+			constituencyDetails.setConstituencyName(StringUtils.capitalize(constituency.getName().toLowerCase()));
 			constituencyDetails.setDistrictName(districtName);
 			constituencyDetails.setStateName(constituency.getState().getStateName());
 			constituencyDetails.setStartDate(constituency.getStartDate());
