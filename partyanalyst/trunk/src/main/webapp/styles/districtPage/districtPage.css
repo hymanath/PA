@@ -483,8 +483,10 @@
 .errorStr
 {
 	color:#584D47;
-	font-size:12px;
+	font-size:14px;
 	padding:5px;
+	font-family:verdana;
+
 }
 
 .allConnectPeople_Head_content
