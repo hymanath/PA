@@ -37,7 +37,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 
 	public List<Election> findByElectionYear(Object electionYear);
 	
-	public List<Election> findByPropertyTypeId(Long typeID);
+	public List<Election> findByElectionType(Long typeID);
 	
 	public List<Election> findByPropertyTypeId_CountryId_StateId(Long typeID, Long countryId, Long stateId);
 
@@ -87,7 +87,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List getElectionTypeAndElectionYearByElectionId(Long electionId);
 	
-	public List findElectionYearsBySubType(Long typeID, String type);
+	public List findByElectionType(Long typeID, String type);
 
 	public List<Election> findByElectionScopeId(Long electionScopeId, String electionSubtype);
 	
