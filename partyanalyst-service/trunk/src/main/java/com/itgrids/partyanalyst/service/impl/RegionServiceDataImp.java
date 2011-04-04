@@ -195,7 +195,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
 		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
 		for(Constituency constituency:constituencies)
-			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(), WordUtils.capitalize(constituency.getName().toLowerCase())));		
+			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));		
 		return constituencyNames;
 	}
 	
@@ -233,7 +233,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		district.setName(objVO[3].toString());
 
 		constituency.setId(constituencyID);
-		constituency.setName(objVO[4].toString());
+		constituency.setName(WordUtils.capitalize(objVO[4].toString().toLowerCase()));
 		
 		result.add(state);
 		result.add(district);
@@ -309,7 +309,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		for(int i=0; i<list.size(); i++){
 			Object[] obj = (Object[]) list.get(i);
-			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
+			result.add(new SelectOptionVO(new Long(obj[0].toString()),WordUtils.capitalize(obj[1].toString().toLowerCase())));
 		}
 		return result;
 	}
@@ -1012,7 +1012,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					regionalMappingInfoVO = new RegionalMappingInfoVO();
 					Object[] obj = (Object[])boothsList.get(i);
 					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
-					regionalMappingInfoVO.setRegionName(obj[1].toString());
+					regionalMappingInfoVO.setRegionName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
 					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
 					regionalMappingInfoVO.setFlag(true);
 					finalList.add(regionalMappingInfoVO);
@@ -1047,7 +1047,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					regionalMappingInfoVO = new RegionalMappingInfoVO();
 					Object[] obj = (Object[])rawBoothData.get(i);
 					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
-					regionalMappingInfoVO.setRegionName(obj[1].toString());
+					regionalMappingInfoVO.setRegionName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
 					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
 					regionalMappingInfoVO.setFlag(true);
 					finalList.add(regionalMappingInfoVO);
@@ -1059,7 +1059,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					for(Object[] values:(List<Object[]>)rawBoothDataList){
 						regionalMappingInfoVO = new RegionalMappingInfoVO();
 						regionalMappingInfoVO.setRegionId(Long.parseLong(values[0].toString()));
-						regionalMappingInfoVO.setRegionName(values[1].toString());
+						regionalMappingInfoVO.setRegionName(WordUtils.capitalize(values[1].toString().toLowerCase()));
 						regionalMappingInfoVO.setVillagesCovered(values[2].toString());
 						regionalMappingInfoVO.setFlag(false);
 						finalList.add(regionalMappingInfoVO);
@@ -1149,7 +1149,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for (Object[] params:(List<Object[]>)list) {
 				optionVO = new SelectOptionVO();
 				optionVO.setId((Long)params[0]);
-				optionVO.setName(params[1].toString());
+				optionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
 				
 				regionList.add(optionVO);
 			}
