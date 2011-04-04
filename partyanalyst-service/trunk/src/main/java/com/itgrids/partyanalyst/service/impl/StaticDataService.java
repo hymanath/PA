@@ -558,8 +558,7 @@ public class StaticDataService implements IStaticDataService {
 					electionScopeId, IConstants.ELECTION_SUBTYPE_MAIN, partyId);
 			for (int i = 0; i < elections.size(); i++) {
 				Object[] parms = (Object[]) elections.get(i);
-				electionYearslist.add(new SelectOptionVO(Long
-						.parseLong(parms[0].toString()), parms[1].toString()));
+				electionYearslist.add(new SelectOptionVO(Long.parseLong(parms[0].toString()), parms[1].toString()));
 			}
 			return electionYearslist;
 		} catch (Exception e) {
@@ -572,9 +571,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 		List electionScopes = electionScopeDAO.getElectionScopes();
 		for (Object[] values : (List<Object[]>) electionScopes)
-			list
-					.add(new SelectOptionVO((Long) values[0], values[1]
-							.toString()));
+			list.add(new SelectOptionVO((Long) values[0], values[1].toString()));
 		return list;
 	}
 
@@ -582,11 +579,9 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 
 		District district = districtDAO.get(districtId);
-		List<ElectionScope> electionScopes = electionScopeDAO
-				.getElectionScopes(district.getState().getStateId());
+		List<ElectionScope> electionScopes = electionScopeDAO.getElectionScopes(district.getState().getStateId());
 		for (ElectionScope scope : electionScopes)
-			list.add(new SelectOptionVO(scope.getElectionScopeId(), scope
-					.getElectionType().getElectionType().toUpperCase()));
+		   list.add(new SelectOptionVO(scope.getElectionScopeId(),WordUtils.capitalize(scope.getElectionType().getElectionType().toLowerCase())));
 		return list;
 	}
 
@@ -597,9 +592,7 @@ public class StaticDataService implements IStaticDataService {
 					.getElectionScopes(stateID);
 			if (electionScopes != null) {
 				for (ElectionScope scope : electionScopes) {
-					list.add(new SelectOptionVO(scope.getElectionType()
-							.getElectionTypeId(), scope.getElectionType()
-							.getElectionType()));
+					list.add(new SelectOptionVO(scope.getElectionType().getElectionTypeId(), scope.getElectionType().getElectionType()));
 				}
 			}
 		}
@@ -608,8 +601,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	public List getAllAssemblyElectionsInDistrict(Long districtId, String type) {
-		List elections = nominationDAO.getAllAssemblyElectionsInDistrict(
-				districtId, type);
+		List elections = nominationDAO.getAllAssemblyElectionsInDistrict(districtId, type);
 		return elections;
 	}
 
@@ -618,14 +610,11 @@ public class StaticDataService implements IStaticDataService {
 		return elections;
 	}
 
-	public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(
-			Long constituencyId) {
-		List elections = boothConstituencyElectionDAO
-				.findElectionsHappendInConstituency(constituencyId);
+	public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(Long constituencyId) {
+		List elections = boothConstituencyElectionDAO.findElectionsHappendInConstituency(constituencyId);
 		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 		for (Object[] election : (List<Object[]>) elections) {
-			years.add(new SelectOptionVO((Long) election[0], election[1]
-					.toString()));
+			years.add(new SelectOptionVO((Long) election[0], election[1].toString()));
 		}
 		return years;
 	}
@@ -657,8 +646,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 
 		for (Object[] election : (List<Object[]>) elections)
-			years.add(new SelectOptionVO((Long) election[0], election[1]
-					.toString()));
+			years.add(new SelectOptionVO((Long) election[0], election[1].toString()));
 
 		return years;
 	}
@@ -670,13 +658,10 @@ public class StaticDataService implements IStaticDataService {
 		List elections = null;
 
 		ElectionType electionType = electionTypeDAO.get(elecType);
-		if (electionType.getElectionType().equalsIgnoreCase(
-				IConstants.PARLIAMENT_ELECTION_TYPE))
-			elections = electionDAO
-					.findElectionAndYearForParliamentElectionType(elecType);
+		if (electionType.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+			elections = electionDAO.findElectionAndYearForParliamentElectionType(elecType);
 		else
-			elections = electionDAO.findElectionAndYearForElectionTypeAndState(
-					elecType, stateId);
+			elections = electionDAO.findElectionAndYearForElectionTypeAndState(elecType, stateId);
 		if (elections != null) {
 			for (int i = 0; i < elections.size(); i++) {
 				Object[] params = (Object[]) elections.get(i);
@@ -718,8 +703,7 @@ public class StaticDataService implements IStaticDataService {
 		SelectOptionVO townshipVO = null;
 		List<Township> townships = townshipDAO.findByTehsilID(mandalID);
 		for (Township township : townships) {
-			townshipVO = new SelectOptionVO(township.getTownshipId(), township
-					.getTownshipName());
+			townshipVO = new SelectOptionVO(township.getTownshipId(), township.getTownshipName());
 			townshipVOs.add(townshipVO);
 		}
 		return townshipVOs;
@@ -731,8 +715,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
 		for (ElectionScope scope : electionScopes) {
 			State state = scope.getState();
-			stateList.add(new SelectOptionVO(state.getStateId(), state
-					.getStateName()));
+			stateList.add(new SelectOptionVO(state.getStateId(), state.getStateName()));
 		}
 		return stateList;
 	}
@@ -743,10 +726,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
 		ElectionType electionTypeObj = electionTypeDAO.get(electionType);
 		List resultsList;
-		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj
-				.getElectionType())
-				|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj
-						.getElectionType())) {
+		if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj.getElectionType())|| IConstants.CORPORATION_ELECTION_TYPE.equals(electionTypeObj.getElectionType())) {
 			resultsList = electionDAO.findStatesByElectionType(electionType);
 		} else {
 			resultsList = constituencyElectionDAO
@@ -782,8 +762,8 @@ public class StaticDataService implements IStaticDataService {
 		List<District> list = districtDAO.findByStateId(stateId);
 		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
 		for (District district : list) {
-			districts.add(new SelectOptionVO(district.getDistrictId(), district
-					.getDistrictName()));
+			
+			districts.add(new SelectOptionVO(district.getDistrictId(), WordUtils.capitalize(district.getDistrictName().toLowerCase())));
 		}
 		return districts;
 	}
@@ -813,8 +793,7 @@ public class StaticDataService implements IStaticDataService {
 		alliancePartiesVO.setGroupId((Long) values[0]);
 		alliancePartiesVO.setAllianceGroupName(values[1].toString());
 		for (Object[] dbValues : (List<Object[]>) allianceParites)
-			parties.add(new SelectOptionVO((Long) dbValues[2], dbValues[3]
-					.toString()));
+			parties.add(new SelectOptionVO((Long) dbValues[2], dbValues[3].toString()));
 		alliancePartiesVO.setAllianceParties(parties);
 		return alliancePartiesVO;
 	}
@@ -822,8 +801,7 @@ public class StaticDataService implements IStaticDataService {
 	public AlliancePartyResultsVO getAlliancePartiesByElectionAndPartyForState(
 			Long electionId, Long partyId, Long stateId) {
 		AlliancePartyResultsVO alliancePartiesVO = new AlliancePartyResultsVO();
-		List allianceParites = allianceGroupDAO
-				.findAlliancePartiesByElectionAndParty(electionId, partyId);
+		List allianceParites = allianceGroupDAO.findAlliancePartiesByElectionAndParty(electionId, partyId);
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 		if (allianceParites.size() == 0)
 			return null;
@@ -5138,8 +5116,7 @@ public class StaticDataService implements IStaticDataService {
 		return navigationVO;
 	}
 
-	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(
-			String electionYear, List<Long> constituencyIds, List resultsList) {
+	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds, List resultsList) {
 		List<ConstituencyElectionResultsVO> assemblyElectionResults = new ArrayList<ConstituencyElectionResultsVO>();
 		ConstituencyElectionResultsVO constituencyElectionResultsVO;
 		PartyResultsVO PartyResultsVO = new PartyResultsVO();
@@ -5151,18 +5128,13 @@ public class StaticDataService implements IStaticDataService {
 
 		try {
 			if (resultsList == null)
-				resultsList = nominationDAO
-						.findElectionResultsForAllPartiesInAssemblyConstituencies(
-								electionYear, constituencyIds,
-								IConstants.VOTES_PERCENTAGE_CONCERNED);
+				resultsList = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear, constituencyIds,IConstants.VOTES_PERCENTAGE_CONCERNED);
 
 			for (int i = 0; i < resultsList.size(); i++) {
 				Object[] obj = (Object[]) resultsList.get(i);
 				constituencyElectionResults = new ConstituencyElectionResultsVO();
-				constituencyElectionResults.setConstituencyId(new Long(obj[5]
-						.toString()));
-				constituencyElectionResults.setConstituencyName(obj[4]
-						.toString());
+				constituencyElectionResults.setConstituencyId(new Long(obj[5].toString()));
+				constituencyElectionResults.setConstituencyName(obj[4].toString());
 				constituencyElectionResults.setDistrictId((Long) obj[8]);
 				constituencyElectionResults.setDistrictName(obj[9].toString());
 				partyResults = constuencywisePartyResultsMap
@@ -5946,8 +5918,7 @@ public class StaticDataService implements IStaticDataService {
 	 * @author Ravi Kiran.Y Date:03-07-10
 	 * @return
 	 */
-	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,
-			String constituencyName) {
+	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName) {
 
 		ElectionTrendzReportVO constituencyOverView = new ElectionTrendzReportVO();
 		ResultStatus resultStatus = new ResultStatus();
@@ -5956,33 +5927,22 @@ public class StaticDataService implements IStaticDataService {
 			Long latestElectionYearVoters = 0l;
 			Map<String, Long> presentYearVoters = new HashMap<String, Long>(0);
 			presentYearVoters = populateAllByeElectionConstituencyVoterDetails();
-			List list = constituencyElectionDAO.getVotesDataForAConstituency(
-					constituencyId, Long
-							.parseLong(getLatestAssemblyElectionId()));
+			List list = constituencyElectionDAO.getVotesDataForAConstituency(constituencyId, Long.parseLong(getLatestAssemblyElectionId()));
 			for (int i = 0; i < list.size(); i++) {
 				Object[] params = (Object[]) list.get(i);
-				Double totalPolledVotes = Double.parseDouble(params[1]
-						.toString());
-				latestElectionYearTotalPolledVotes += totalPolledVotes
-						.longValue();
+				Double totalPolledVotes = Double.parseDouble(params[1].toString());
+				latestElectionYearTotalPolledVotes += totalPolledVotes.longValue();
 				Double totalVotes = Double.parseDouble(params[0].toString());
 				latestElectionYearVoters = totalVotes.longValue();
 			}
-			constituencyOverView
-					.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
-			constituencyOverView
-					.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
-			Double percentage = (latestElectionYearTotalPolledVotes * 100)
-					/ (latestElectionYearVoters + 0.0d);
-			String votesPercenatage = new BigDecimal(percentage).setScale(2,
-					BigDecimal.ROUND_HALF_UP).toString();
-			constituencyOverView
-					.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
+			constituencyOverView.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
+			constituencyOverView.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
+			Double percentage = (latestElectionYearTotalPolledVotes * 100)/(latestElectionYearVoters + 0.0d);
+			String votesPercenatage = new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			constituencyOverView.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
 
 			if (presentYearVoters.get(constituencyName.toUpperCase()) != null)
-				constituencyOverView
-						.setPresentYearTotalVoters(presentYearVoters
-								.get(constituencyName.toUpperCase()));
+			constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName.toUpperCase()));
 			else
 				constituencyOverView.setPresentYearTotalVoters(0l);
 
@@ -6034,8 +5994,7 @@ public class StaticDataService implements IStaticDataService {
 
 		List<PartyResultVO> party = new ArrayList<PartyResultVO>(0);
 
-		String[] partiesList = { "TRS", "INC", "TDP", "BJP", "PRP", "CPI",
-				"CPM" };
+		String[] partiesList = { "TRS", "INC", "TDP", "BJP", "PRP", "CPI","CPM" };
 
 		String elecYearAndType = "";
 		PartyResultVO partyResultVO = null;
@@ -6043,66 +6002,38 @@ public class StaticDataService implements IStaticDataService {
 		for (int j = 0; j < partiesList.length; j++) {
 			PartyResultVO partyVo = new PartyResultVO();
 			partyVo.setPartyName(partiesList[j]);
-			List<ElectionResultVO> electionWiseResults = new ArrayList<ElectionResultVO>(
-					0);
+			List<ElectionResultVO> electionWiseResults = new ArrayList<ElectionResultVO>(0);
 			for (int i = 0; i < partyResult.size(); i++) {
 				ElectionResultVO electionResultVO = new ElectionResultVO();
-				electionResultVO.setElectionType(partyResult.get(i)
-						.getElectionType());
-				electionResultVO.setElectionYear(partyResult.get(i)
-						.getElectionYear());
+				electionResultVO.setElectionType(partyResult.get(i).getElectionType());
+				electionResultVO.setElectionYear(partyResult.get(i).getElectionYear());
 
-				if (IConstants.ASSEMBLY_ELECTION_TYPE
-						.equalsIgnoreCase(partyResult.get(i).getElectionType())
-						|| IConstants.PARLIAMENT_ELECTION_TYPE
-								.equalsIgnoreCase(partyResult.get(i)
-										.getElectionType())
-						&& !"2008".equalsIgnoreCase(partyResult.get(i)
-								.getElectionYear())
-						&& !"2006".equalsIgnoreCase(partyResult.get(i)
-								.getElectionYear())) {
+				if (IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(partyResult.get(i).getElectionType())
+						|| IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(partyResult.get(i).getElectionType())&& !"2008".equalsIgnoreCase(partyResult.get(i).getElectionYear())
+						&& !"2006".equalsIgnoreCase(partyResult.get(i).getElectionYear())) {
 					List<CandidateElectionResultVO> candidateResults = getProcessedAlliancePartiesResults(
 							partyResult.get(i).getCandidateElectionResultsVO(),
-							partyResult.get(i).getElectionType(), partyResult
-									.get(i).getElectionYear());
+							partyResult.get(i).getElectionType(), partyResult.get(i).getElectionYear());
 					if (candidateResults != null && candidateResults.size() > 0) {
-						partyResult.get(i).setCandidateElectionResultsVO(
-								candidateResults);
+						partyResult.get(i).setCandidateElectionResultsVO(candidateResults);
 					}
 				}
 
-				if ("MPTC".equalsIgnoreCase(partyResult.get(i)
-						.getElectionType())
-						|| "ZPTC".equalsIgnoreCase(partyResult.get(i)
-								.getElectionType()))
-					elecYearAndType = partyResult.get(i).getElectionYear()
-							+ " ." + partyResult.get(i).getElectionType();
+				if ("MPTC".equalsIgnoreCase(partyResult.get(i).getElectionType())
+						|| "ZPTC".equalsIgnoreCase(partyResult.get(i).getElectionType()))
+					elecYearAndType = partyResult.get(i).getElectionYear()+ " ." + partyResult.get(i).getElectionType();
 				else
-					elecYearAndType = partyResult.get(i).getElectionYear()
-							+ " " + partyResult.get(i).getElectionType();
+					elecYearAndType = partyResult.get(i).getElectionYear()+ " " + partyResult.get(i).getElectionType();
 				electionResultVO.setElectionYearAndType(elecYearAndType);
 
 				if (partyResult.get(i) != null
 						&& partyResult.get(i).getCandidateElectionResultsVO() != null) {
-					for (int k = 0; k < partyResult.get(i)
-							.getCandidateElectionResultsVO().size(); k++) {
-						electionResultVO.setHasAlliance(partyResult.get(i)
-								.getCandidateElectionResultsVO().get(k)
-								.getHasAlliance());
-						electionResultVO.setAlliancRes(partyResult.get(i)
-								.getCandidateElectionResultsVO().get(k)
-								.getAllianceResult());
-						if (partyResult.get(i).getCandidateElectionResultsVO()
-								.get(k).getPartyName().equalsIgnoreCase(
-										partiesList[j])) {
-							electionResultVO.setPercentage(partyResult.get(i)
-									.getCandidateElectionResultsVO().get(k)
-									.getVotesPercentage().toString());
-							electionResultVO.setPercent(new BigDecimal(
-									partyResult.get(i)
-											.getCandidateElectionResultsVO()
-											.get(k).getVotesPercentage())
-									.setScale(2, BigDecimal.ROUND_HALF_UP));
+					for (int k = 0; k < partyResult.get(i).getCandidateElectionResultsVO().size(); k++) {
+						electionResultVO.setHasAlliance(partyResult.get(i).getCandidateElectionResultsVO().get(k).getHasAlliance());
+						electionResultVO.setAlliancRes(partyResult.get(i).getCandidateElectionResultsVO().get(k).getAllianceResult());
+						if (partyResult.get(i).getCandidateElectionResultsVO().get(k).getPartyName().equalsIgnoreCase(partiesList[j])) {
+							electionResultVO.setPercentage(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage().toString());
+							electionResultVO.setPercent(new BigDecimal(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
 							break;
 						} else {
 							electionResultVO.setPercentage("-1");
@@ -6207,20 +6138,16 @@ public class StaticDataService implements IStaticDataService {
 
 			// The below line makes a dao call to get the latest election year
 			// for the corresponding election type(muncipality/corporation)
-			List latestYearResult = electionDAO
-					.findLatestElectionYear(electionType);
+			List latestYearResult = electionDAO.findLatestElectionYear(electionType);
 			latestMuncipalElectionYear = latestYearResult.get(0).toString();
 
 			// The below line makes a dao call to get the parties votes for the
 			// corresponding election type(muncipality/corporation)
-			List result = nominationDAO
-					.getLocalElectionsCandidateDetailsInAConstituency(
-							electionType, tehsilIds.substring(1));
+			List result = nominationDAO.getLocalElectionsCandidateDetailsInAConstituency(electionType, tehsilIds.substring(1));
 			if (result.size() <= 0 || result == null) {
 				return null;
 			} else {
-				tehsilVo = getLocalElectionPartyDetails(result,
-						latestMuncipalElectionYear, electionType);
+				tehsilVo = getLocalElectionPartyDetails(result,	latestMuncipalElectionYear, electionType);
 				teshilPartyInfo.setMuncipalityVO(tehsilVo);
 				return teshilPartyInfo;
 			}
@@ -6254,15 +6181,13 @@ public class StaticDataService implements IStaticDataService {
 	public StringBuilder getAllLatestMandalsForAConstituency(Long constituencyId) {
 		StringBuilder tehsilIds = new StringBuilder();
 		try {
-			List mandals = delimitationConstituencyMandalDAO
-					.getLatestMandalDetailsForAConstituency(constituencyId);
+			List mandals = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId);
 			if (mandals.size() <= 0 || mandals == null) {
 				return null;
 			} else {
 				for (int i = 0; i < mandals.size(); i++) {
 					Object[] parms = (Object[]) mandals.get(i);
-					tehsilIds.append(",").append(
-							Long.parseLong(parms[0].toString()));
+					tehsilIds.append(",").append(Long.parseLong(parms[0].toString()));
 				}
 			}
 		} catch (Exception e) {
@@ -6276,8 +6201,7 @@ public class StaticDataService implements IStaticDataService {
 		int flag = 1;
 		StringBuilder tehsilIds = new StringBuilder();
 		List<PartyResultVO> party = new ArrayList<PartyResultVO>(0);
-		List<ElectionResultPartyVO> partyResult = new ArrayList<ElectionResultPartyVO>(
-				0);
+		List<ElectionResultPartyVO> partyResult = new ArrayList<ElectionResultPartyVO>(0);
 
 		// flag = 1 specifies that to get Data only for the main parties like
 		// TRS,TDP,INC,BJP,PRP i.e., ByElections Parties that are defined in
@@ -6285,22 +6209,16 @@ public class StaticDataService implements IStaticDataService {
 		// flag = 0 specifies that to get Data for all the parties participated
 		// in that constituency
 
-		tehsilIds = getMandalsForAConstituencyBasedOnElectionYear(
-				constituencyId, Long
-						.parseLong(IConstants.PRESENT_ELECTION_YEAR));
+		tehsilIds = getMandalsForAConstituencyBasedOnElectionYear(constituencyId, Long.parseLong(IConstants.PRESENT_ELECTION_YEAR));
 
 		if (all.equalsIgnoreCase("all")) {
-			partyResult = getAllMandalElectionInformationForAConstituency(
-					constituencyId, flag);
-			party = getPartyVotesShareInConstituency(constituencyId, flag,
-					partyResult);
+			partyResult = getAllMandalElectionInformationForAConstituency(constituencyId, flag);
+			party = getPartyVotesShareInConstituency(constituencyId, flag,partyResult);
 		} else {
 			for (int i = 0; i < choices.length; i++) {
 				if (choices[i].equalsIgnoreCase("AC")) {
 					ElectionResultPartyVO electionResult = new ElectionResultPartyVO();
-					partyResult
-							.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(
-									0l, tehsilIds,
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l, tehsilIds,
 									IConstants.ASSEMBLY_ELECTION_TYPE,
 									IConstants.PREVIOUS_ELECTION_YEAR, flag));
 					partyResult
@@ -6344,17 +6262,14 @@ public class StaticDataService implements IStaticDataService {
 						partyResult.add(electionResult);
 					}
 
-				} else if (choices[i]
-						.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)) {
-					partyResult
-							.add(getMptcOrZptcElectionVotesPercentageForDifferentParties(
+				} else if (choices[i].equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)) {
+					partyResult.add(getMptcOrZptcElectionVotesPercentageForDifferentParties(
 									tehsilIds,
 									IConstants.ZPTC_ELECTION_TYPE,
 									IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,
 									constituencyId, flag));
-					partyResult
-							.add(getMptcOrZptcElectionVotesPercentageForDifferentParties(
-									tehsilIds,
+					partyResult.add(getMptcOrZptcElectionVotesPercentageForDifferentParties(
+							        tehsilIds,
 									IConstants.ZPTC_ELECTION_TYPE,
 									IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,
 									constituencyId, flag));
@@ -6374,8 +6289,7 @@ public class StaticDataService implements IStaticDataService {
 									constituencyId, flag));
 				}
 			}
-			party.addAll(getPartyVotesShareInConstituency(constituencyId, flag,
-					partyResult));
+			party.addAll(getPartyVotesShareInConstituency(constituencyId, flag,partyResult));
 		}
 
 		List<ElectionResultVO> elections = new ArrayList<ElectionResultVO>();
@@ -6410,13 +6324,11 @@ public class StaticDataService implements IStaticDataService {
 		try {
 			// to interchange 2009 AC and 2009 PC
 			if (party != null && party.size() > 0 && party.get(0) != null) {
-				List<SelectOptionVO> headingInfo = party.get(0)
-						.getElectionList();
+				List<SelectOptionVO> headingInfo = party.get(0).getElectionList();
 				Boolean rflag = false;
 				int j = 0;
 				for (int i = 0; i < headingInfo.size(); i++) {
-					if (headingInfo.get(i).getName()
-							.equalsIgnoreCase("2009 AC")) {
+					if (headingInfo.get(i).getName().equalsIgnoreCase("2009 AC")) {
 						if (headingInfo.size() > (i + 1)) {
 							if (headingInfo.get(i + 1).getName()
 									.equalsIgnoreCase("2009 PC")) {
@@ -6862,12 +6774,10 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
 		if (scopeId != null) {
 			ElectionScope electionScope = electionScopeDAO.get(scopeId);
-			if (electionScope.getElectionType().getElectionType().equals(
-					IConstants.PARLIAMENT_ELECTION_TYPE))
+			if (electionScope.getElectionType().getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 				selectedParties = getAllNationalParties();
 			else
-				selectedParties = getStaticPartiesListForAState(electionScope
-						.getState().getStateId());
+				selectedParties = getStaticPartiesListForAState(electionScope.getState().getStateId());
 		}
 
 		return selectedParties;
@@ -6875,8 +6785,7 @@ public class StaticDataService implements IStaticDataService {
 
 	public SelectOptionVO getStateOfADistrict(Long districtId) {
 		District district = districtDAO.get(districtId);
-		SelectOptionVO selectoptn = new SelectOptionVO(district.getState()
-				.getStateId(), district.getState().getStateName());
+		SelectOptionVO selectoptn = new SelectOptionVO(district.getState().getStateId(), WordUtils.capitalize(district.getState().getStateName().toLowerCase()) );
 
 		return selectoptn;
 	}
@@ -6884,8 +6793,7 @@ public class StaticDataService implements IStaticDataService {
 	public List<SelectOptionVO> getAllNationalParties() {
 
 		List<SelectOptionVO> selectedParties = new ArrayList<SelectOptionVO>();
-		List<Party> parties = partyDAO
-				.findStaticParties(IConstants.NATIONAL_PARTY_TYPE);
+		List<Party> parties = partyDAO.findStaticParties(IConstants.NATIONAL_PARTY_TYPE);
 		if (parties != null && parties.size() > 0) {
 			for (Party party : parties) {
 				SelectOptionVO partyVO = new SelectOptionVO();
@@ -6911,8 +6819,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> localBodyElectionsList = new ArrayList<SelectOptionVO>();
 
 		if (stateId != null) {
-			List electionTypes = localElectionBodyDAO
-					.getLocalELectionTypesInAState(stateId);
+			List electionTypes = localElectionBodyDAO.getLocalELectionTypesInAState(stateId);
 			if (electionTypes != null && electionTypes.size() > 0) {
 				for (int i = 0; i < electionTypes.size(); i++) {
 					Object[] values = (Object[]) electionTypes.get(i);
@@ -6940,8 +6847,7 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> localBodysList = new ArrayList<SelectOptionVO>();
 
 		if (stateId != null && typeId != null) {
-			List localBodys = localElectionBodyDAO.findByElectionTypeAndState(
-					typeId, stateId);
+			List localBodys = localElectionBodyDAO.findByElectionTypeAndState(typeId, stateId);
 			if (localBodys != null && localBodys.size() > 0) {
 				for (int i = 0; i < localBodys.size(); i++) {
 					Object[] values = (Object[]) localBodys.get(i);
@@ -6966,13 +6872,10 @@ public class StaticDataService implements IStaticDataService {
 	public List<SelectOptionVO> getAllInformationSources() {
 		List<SelectOptionVO> sources = new ArrayList<SelectOptionVO>();
 		try {
-			List<InformationSource> informationSources = informationSourceDAO
-					.getAll();
+			List<InformationSource> informationSources = informationSourceDAO.getAll();
 			if (informationSources.size() > 0) {
 				for (InformationSource infoSource : informationSources)
-					sources.add(new SelectOptionVO(infoSource
-							.getInformationSourceId(), infoSource
-							.getInformationSource()));
+					sources.add(new SelectOptionVO(infoSource.getInformationSourceId(), infoSource.getInformationSource()));
 				return sources;
 			} else {
 				throw new GenericException("Data Not Available");
@@ -6986,26 +6889,18 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	public List getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(
-			Long electinTypeId, Long electionYear1, Long electionYear2,
-			Long stateId, String electionSubType) {
+			Long electinTypeId, Long electionYear1, Long electionYear2,Long stateId, String electionSubType) {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		StringBuilder electionYears = new StringBuilder();
-		electionYears.append(",").append(electionYear1).append(",").append(
-				electionYear2);
+		electionYears.append(",").append(electionYear1).append(",").append(electionYear2);
 		ElectionType electionType = electionTypeDAO.get(electinTypeId);
 		String elecType = electionType.getElectionType();
 
 		List elections = null;
 		if (elecType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
-			elections = electionDAO
-					.findParliamentElectionIdForGivenElectionYearAndElectionYears(
-							electinTypeId, electionYears.substring(1),
-							electionSubType);
+			elections = electionDAO.findParliamentElectionIdForGivenElectionYearAndElectionYears(electinTypeId, electionYears.substring(1),electionSubType);
 		else
-			elections = electionDAO
-					.findElectionIdForGivenElectionYearAndElectionYears(
-							electinTypeId, electionYears.substring(1), stateId,
-							electionSubType);
+			elections = electionDAO.findElectionIdForGivenElectionYearAndElectionYears(electinTypeId, electionYears.substring(1), stateId,electionSubType);
 		return elections;
 	}
 
@@ -7020,54 +6915,37 @@ public class StaticDataService implements IStaticDataService {
 			resultsList = new ArrayList<SelectOptionVO>();
 			if (type.equalsIgnoreCase(IConstants.STATE)) {
 				State state = stateDAO.get(id);
-				SelectOptionVO option = new SelectOptionVO(state.getStateId(),
-						IConstants.STATE);
+				SelectOptionVO option = new SelectOptionVO(state.getStateId(),IConstants.STATE);
 				resultsList.add(option);
 			} else if (type.equalsIgnoreCase(IConstants.DISTRICT)) {
 				District district = districtDAO.get(id);
-				SelectOptionVO option = new SelectOptionVO(district
-						.getDistrictId(), IConstants.DISTRICT);
+				SelectOptionVO option = new SelectOptionVO(district.getDistrictId(), IConstants.DISTRICT);
 				resultsList.add(option);
-				SelectOptionVO option1 = new SelectOptionVO(district.getState()
-						.getStateId(), IConstants.STATE);
+				SelectOptionVO option1 = new SelectOptionVO(district.getState().getStateId(), IConstants.STATE);
 				resultsList.add(option1);
 			} else if (type.equalsIgnoreCase(IConstants.CONSTITUENCY)) {
 				Constituency constituency = constituencyDAO.get(id);
-				SelectOptionVO option = new SelectOptionVO(constituency
-						.getConstituencyId(), IConstants.CONSTITUENCY
-						.toUpperCase());
+				SelectOptionVO option = new SelectOptionVO(constituency.getConstituencyId(), IConstants.CONSTITUENCY.toUpperCase());
 				resultsList.add(option);
-				SelectOptionVO option1 = new SelectOptionVO(constituency
-						.getState().getStateId(), IConstants.STATE);
+				SelectOptionVO option1 = new SelectOptionVO(constituency.getState().getStateId(), IConstants.STATE);
 				resultsList.add(option1);
-				if (!constituency.getElectionScope().getElectionType()
-						.getElectionType().equalsIgnoreCase(
-								IConstants.PARLIAMENT_ELECTION_TYPE)) {
-					SelectOptionVO option2 = new SelectOptionVO(constituency
-							.getDistrict().getDistrictId(), IConstants.DISTRICT);
+				if (!constituency.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)) {
+					SelectOptionVO option2 = new SelectOptionVO(constituency.getDistrict().getDistrictId(), IConstants.DISTRICT);
 					resultsList.add(option2);
 				}
 			} else if (type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)) {
 				LocalElectionBody localElecBody = localElectionBodyDAO.get(id);
-				SelectOptionVO option = new SelectOptionVO(localElecBody
-						.getLocalElectionBodyId(),
-						IConstants.LOCAL_ELECTION_BODY);
+				SelectOptionVO option = new SelectOptionVO(localElecBody.getLocalElectionBodyId(),IConstants.LOCAL_ELECTION_BODY);
 				resultsList.add(option);
-				SelectOptionVO option1 = new SelectOptionVO(localElecBody
-						.getDistrict().getState().getStateId(),
-						IConstants.STATE);
+				SelectOptionVO option1 = new SelectOptionVO(localElecBody.getDistrict().getState().getStateId(),IConstants.STATE);
 				resultsList.add(option1);
-				SelectOptionVO option2 = new SelectOptionVO(localElecBody
-						.getDistrict().getDistrictId(), IConstants.DISTRICT);
+				SelectOptionVO option2 = new SelectOptionVO(localElecBody.getDistrict().getDistrictId(), IConstants.DISTRICT);
 				resultsList.add(option2);
 
-				List values = assemblyLocalElectionBodyDAO
-						.findConstituencyByLocalELectionBody(id,
-								IConstants.DELIMITATION_YEAR.toString());
+				List values = assemblyLocalElectionBodyDAO.findConstituencyByLocalELectionBody(id,IConstants.DELIMITATION_YEAR.toString());
 				if (values != null) {
 					Object[] result = (Object[]) values.get(0);
-					SelectOptionVO option3 = new SelectOptionVO(
-							(Long) result[0], IConstants.CONSTITUENCY);
+					SelectOptionVO option3 = new SelectOptionVO((Long) result[0], IConstants.CONSTITUENCY);
 					resultsList.add(option3);
 				}
 			}
@@ -7076,23 +6954,19 @@ public class StaticDataService implements IStaticDataService {
 		return resultsList;
 	}
 
-	public List<SelectOptionVO> getLatestAssemblyConstituenciesInDistrict(
-			Long districtId) {
+	public List<SelectOptionVO> getLatestAssemblyConstituenciesInDistrict(Long districtId) {
 		if (log.isDebugEnabled())
-			log
-					.debug("Getting Latest Assembly Constituencies In A District ..");
+			log.debug("Getting Latest Assembly Constituencies In A District ..");
 
 		List<SelectOptionVO> latestConstituencies = null;
 
-		List constituenciesList = delimitationConstituencyDAO
-				.getLatestConstituenciesForADistrict(districtId);
+		List constituenciesList = delimitationConstituencyDAO.getLatestConstituenciesForADistrict(districtId);
 		if (constituenciesList != null && constituenciesList.size() > 0) {
 			latestConstituencies = new ArrayList<SelectOptionVO>();
 			Iterator lstItr = constituenciesList.listIterator();
 			while (lstItr.hasNext()) {
 				Object[] values = (Object[]) lstItr.next();
-				SelectOptionVO option = new SelectOptionVO((Long) values[0],
-						(String) values[1]);
+				SelectOptionVO option = new SelectOptionVO((Long) values[0],(String) values[1]);
 				latestConstituencies.add(option);
 			}
 		}
@@ -7116,10 +6990,7 @@ public class StaticDataService implements IStaticDataService {
 	public Long getRecentAssemblyMainElectionIdInAState(Long stateId) {
 
 		Long electionId = 0L;
-		List electionLst = electionDAO
-				.findLatestElectionAssemblyElectionIdForState(
-						IConstants.ASSEMBLY_ELECTION_TYPE, stateId,
-						IConstants.ELECTION_SUBTYPE_MAIN);
+		List electionLst = electionDAO.findLatestElectionAssemblyElectionIdForState(IConstants.ASSEMBLY_ELECTION_TYPE, stateId,IConstants.ELECTION_SUBTYPE_MAIN);
 		if (electionLst != null && electionLst.size() > 0) {
 
 			Object[] values = (Object[]) electionLst.get(0);
@@ -7150,8 +7021,7 @@ public class StaticDataService implements IStaticDataService {
 			String userAccessType = user.getAccessType();
 			String userAccessValue = user.getAccessValue();
 
-			stateId = getStateIdByUserAccessTypeAndValue(userAccessType,
-					userAccessValue);
+			stateId = getStateIdByUserAccessTypeAndValue(userAccessType,userAccessValue);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -7167,13 +7037,11 @@ public class StaticDataService implements IStaticDataService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Long getStateIdByUserAccessTypeAndValue(String userAccessType,
-			String userAccessValue) throws Exception {
+	public Long getStateIdByUserAccessTypeAndValue(String userAccessType,String userAccessValue) throws Exception {
 
 		Long stateId = 0L;
 
-		if (userAccessType != null && userAccessType != ""
-				&& userAccessValue != null && userAccessValue != "") {
+		if (userAccessType != null && userAccessType != ""&& userAccessValue != null && userAccessValue != "") {
 
 			if (userAccessType.equalsIgnoreCase(IConstants.STATE)) {
 
@@ -7183,16 +7051,13 @@ public class StaticDataService implements IStaticDataService {
 			} else if (userAccessType.equalsIgnoreCase(IConstants.DISTRICT)) {
 
 				// Access Type is District
-				District district = districtDAO.get(Long
-						.parseLong(userAccessValue));
+				District district = districtDAO.get(Long.parseLong(userAccessValue));
 				stateId = district.getState().getStateId();
 
-			} else if (userAccessType.equalsIgnoreCase(IConstants.MLA)
-					|| userAccessType.equalsIgnoreCase(IConstants.MP)) {
+			} else if (userAccessType.equalsIgnoreCase(IConstants.MLA)|| userAccessType.equalsIgnoreCase(IConstants.MP)) {
 
 				// Access Type is Constituency (MLA / MP)
-				Constituency constituency = constituencyDAO.get(Long
-						.parseLong(userAccessValue));
+				Constituency constituency = constituencyDAO.get(Long.parseLong(userAccessValue));
 				stateId = constituency.getState().getStateId();
 
 			}
@@ -7207,8 +7072,7 @@ public class StaticDataService implements IStaticDataService {
 			List<ProblemStatus> problemStatus = problemStatusDAO.getAll();
 			if (problemStatus.size() > 0) {
 				for (ProblemStatus staus : problemStatus) {
-					problemStatusList.add(new SelectOptionVO(staus
-							.getProblemStatusId(), staus.getStatus()));
+					problemStatusList.add(new SelectOptionVO(staus.getProblemStatusId(), staus.getStatus()));
 				}
 				return problemStatusList;
 			} else {
@@ -7229,18 +7093,15 @@ public class StaticDataService implements IStaticDataService {
 
 		List<SelectOptionVO> problemStatus = new ArrayList<SelectOptionVO>();
 
-		List defaultProblemStatusLst = problemStatusDAO
-				.getDefaultProblemStatus(statusValues);
-		if (defaultProblemStatusLst != null
-				&& defaultProblemStatusLst.size() > 0) {
+		List defaultProblemStatusLst = problemStatusDAO.getDefaultProblemStatus(statusValues);
+		if (defaultProblemStatusLst != null	&& defaultProblemStatusLst.size() > 0) {
 
 			Iterator lstItr = defaultProblemStatusLst.listIterator();
 			while (lstItr.hasNext()) {
 
 				Object[] values = (Object[]) lstItr.next();
 
-				problemStatus.add(new SelectOptionVO((Long) values[0],
-						(String) values[1]));
+				problemStatus.add(new SelectOptionVO((Long) values[0],(String) values[1]));
 			}
 		}
 

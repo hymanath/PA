@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
@@ -336,7 +337,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				SelectOptionVO selectOption = new SelectOptionVO();
 				selectOption.setId((Long)params[2]);
-				selectOption.setName((String)params[3]);
+				selectOption.setName(WordUtils.capitalize((String)params[3]));
 				constituenciesList.add(selectOption);
 			}
 			biElectionDistrictVO.setConstituenciesList(constituenciesList);
@@ -3457,7 +3458,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			for(SelectOptionVO consti:biElectionDistrictVO.getConstituenciesList()){
 				partyAndPercent = new HashMap<String, Float>();
 				constituencyVO = new ConstituencyVO();
-				constituencyVO.setName(consti.getName());
+				constituencyVO.setName(consti.getName().toUpperCase());
 				constituencyVO.setId(consti.getId());
 				constituencyOverView = staticDataService.getConstituencyOverview(consti.getId(), consti.getName());
 				constituencyVO.setTotalVoters2009(constituencyOverView.getPresentYearTotalVoters());
