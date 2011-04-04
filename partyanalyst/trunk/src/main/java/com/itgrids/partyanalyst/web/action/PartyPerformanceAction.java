@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -374,6 +375,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getDistrictsList(){
 		String param = request.getParameter("stateId");
 		districts = getStaticDataService().getDistricts(new Long(param));
+		
 		return Action.SUCCESS;
 	}
 
