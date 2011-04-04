@@ -501,6 +501,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
         	List highLevelResults = null;
         	
         	List resultsList = nominationDAO.getWardWiseResultsForAPartyInALocalBodyElection(localBodyId, electionId, partyId);
+        	Collections.sort(resultsList);
         	
         	if(party.getShortName().equalsIgnoreCase(IConstants.IND))
         		highLevelResults = nominationDAO.getConstituencyLevelPartyParticipatedLocalBodyElectionVotesInfoForIND(localBodyId, partyId, electionId);
