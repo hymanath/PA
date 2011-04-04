@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -558,7 +559,7 @@ public class ElectionService implements IElectionService{
 		{
 			SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(censusParameter.getCensusParameterId());
-			selectOption.setName(censusParameter.getParameterName());
+			selectOption.setName(WordUtils.capitalize(censusParameter.getParameterName().toLowerCase()));
 			selectOptionVOList.add(selectOption);
 		}
 			return selectOptionVOList;
