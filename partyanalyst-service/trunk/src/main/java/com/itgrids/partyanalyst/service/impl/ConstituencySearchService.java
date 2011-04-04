@@ -251,7 +251,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
 			electionTypeId = 1l;
-			stateStr = " ";
+			stateStr = " and model.state.stateId ="+stateId;
 		}
 	
 		Object obj = constituencyDAO.totalSearchCount(searchText,electionTypeId,stateStr);
