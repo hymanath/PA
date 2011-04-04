@@ -386,10 +386,10 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		
 		if(registrationId == null || registrationId == 0){
 			if(userName == null || userName.trim().length() == 0)
-				addFieldError("userName","Username Is Required");
+				addFieldError("userName","Username is required");
 		
 			if(password == null || password.trim().length() == 0)
-				addFieldError("password","Password Is Required.");
+				addFieldError("password","Password is required.");
 			
 			if(reEnteredPassword==null || reEnteredPassword=="" || !reEnteredPassword.equals(password)){
 				addFieldError("reEnteredPassword","Entered Password and Reentered Password are not Same.");			
