@@ -195,7 +195,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
 		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
 		for(Constituency constituency:constituencies)
-			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName().toUpperCase()));		
+			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(), WordUtils.capitalize(constituency.getName().toLowerCase())));		
 		return constituencyNames;
 	}
 	
