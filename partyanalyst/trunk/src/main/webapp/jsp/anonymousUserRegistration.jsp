@@ -227,7 +227,7 @@ function uploadImageFile()
 <body>  
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data">  
    <br><br>
-  <div id="headerDiv" style="margin-right: 500px;font-size:20px;text-decoration:underline;" > 
+  <div id="headerDiv" style="margin-right: 500px;font-size:20px;color:#247CD4;text-decoration:underline;" > 
    <c:if test="${empty registrationId}">
    	User Registration Form
    </c:if>
@@ -250,7 +250,7 @@ function uploadImageFile()
 		 <br>
 		 <c:if test="${empty registrationId}">
 	        <FIELDSET>
-				<LEGEND><strong>Account Details</strong></LEGEND>
+				<LEGEND style="font-size:12px;"><strong>Account Details</strong></LEGEND>
 				<div id="resultDIV"></div>
 				 <div id="loginDetailsDiv" class="accessDivMain">
 					<div id="loginDetailsDivBody" class="accessDivBody">
@@ -274,7 +274,7 @@ function uploadImageFile()
 	         </FIELDSET>
          </c:if>
 		 <FIELDSET>
-		 <LEGEND><strong>Personal Details</strong></LEGEND>
+		 <LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
 		 <div id="personalDetailsDiv" class="accessDivMain">
 			 <div id="personalDetailsDivBody" class="accessDivBody">
 				<table class="registrationTable" cellspacing="2" cellpadding="2">
@@ -316,9 +316,10 @@ function uploadImageFile()
 				    </tr>
 				  </table>
 				</div>
+				</div>
 				</FIELDSET>
 				<FIELDSET>
-				<LEGEND><strong>Contact Details</strong></LEGEND>
+				<LEGEND style="font-size:12px;"><strong>Contact Details</strong></LEGEND>
 				<div id="contactDetailsDiv" class="accessDivMain">
 					<table class="registrationTable" cellspacing="2" cellpadding="2">
 									
@@ -334,19 +335,19 @@ function uploadImageFile()
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="State" /></td>
 					 	<td>
-					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:130px;" />
+					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:145px;" />
 						</td>
 					</tr>	
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="District" /></td>
 						<td>
-							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:130px;" />
+							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:145px;" />
 						</td>
 					</tr>	
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="constituencySelectBox" id="constituencytLabel"  value="Constituency" /></td>
 						<td>
-							<s:select name="constituency" id="constituencySelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:130px;" />							
+							<s:select name="constituency" id="constituencySelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:145px;" />							
 						</td>
 					</tr>
 					<tr>
@@ -362,9 +363,13 @@ function uploadImageFile()
 						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
 						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
 					</tr>
-
+				</table>
+			 </div>
+		 </FIELDSET>
+		 <div id="contactDetailsDiv" class="accessDivMain">
+					<table class="registrationTable" cellspacing="2" cellpadding="2">
 					<tr>
-						<td colspan="2" width="100px;" style="padding-left:15px;">
+						<td width="250px;" style="padding-left:15px;">
 							<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>	
 						</td>
 					</tr>
@@ -372,11 +377,10 @@ function uploadImageFile()
 					<tr>
 						<td width="100px;"></td>
 						<td> <div style="text-align: left;"><s:submit name="Save"></s:submit></div></td>
-					</tr> 				
-				</table>
-			</div>	
+					</tr> 			
+					</table>
 		 </div>
-		 </FIELDSET>
+									
 
 </div>
          <!--  Problem Management Params -->
