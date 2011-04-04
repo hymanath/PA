@@ -18,6 +18,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -698,10 +699,9 @@ public class StaticDataService implements IStaticDataService {
 			Boolean incByeElection) {
 		List<Election> elections = null;
 		if (!incByeElection)
-			elections = electionDAO.findElectionYearsBySubType(electionType,
-					IConstants.ELECTION_SUBTYPE_MAIN);
+			elections = electionDAO.findByElectionType(electionType,IConstants.ELECTION_SUBTYPE_MAIN);
 		else
-			elections = electionDAO.findByPropertyTypeId(electionType);
+			elections = electionDAO.findByElectionType(electionType);
 		List<String> years = new ArrayList<String>();
 		for (Election election : elections) {
 			years.add(election.getElectionYear());
@@ -1946,8 +1946,7 @@ public class StaticDataService implements IStaticDataService {
 		Map<Long, List<PartyResultVO>> districtWiseResultsMap = null;
 		List<Long> partyIds = new ArrayList<Long>();
 
-		log
-				.debug("Entered Into getDistrictWisePartyElectionResultWithAllianc Method .....");
+		log.debug("Entered Into getDistrictWisePartyElectionResultWithAllianc Method .....");
 		for (Party party : alliancPartys)
 			partyIds.add(party.getPartyId());
 
@@ -2046,8 +2045,7 @@ public class StaticDataService implements IStaticDataService {
 		PartyResultVO partyResultVO = new PartyResultVO();
 		CandidateOppositionVO oppositionCandidate = new CandidateOppositionVO();
 		Set<Nomination> nominations = constiElecResults.getNominations();
-		log
-				.debug("Entered Into getCandidateResultDetailsWithAllianc Method .....");
+		log.debug("Entered Into getCandidateResultDetailsWithAllianc Method .....");
 		if (nominations != null) {
 			Boolean flag = false;
 			Nomination selectdNominatn = null;
@@ -2573,21 +2571,18 @@ public class StaticDataService implements IStaticDataService {
 					.getElectionType())
 					|| IConstants.CORPORATION_ELECTION_TYPE
 							.equals(electionTypeObj.getElectionType())) {
-				constiList = localElectionBodyDAO.findByElectionTypeAndState(
-						electionTypeId, stateID);
+				constiList = localElectionBodyDAO.findByElectionTypeAndState(electionTypeId, stateID);
 			} else {
-				constiList = constituencyDAO
-						.getConstituenciesByElectionTypeAndStateId(
-								electionTypeId, stateID);
+				constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
 			}
 			if (constiList != null && constiList.size() > 0) {
 				for (int i = 0; i < constiList.size(); i++) {
 					Object[] obj = (Object[]) constiList.get(i);
 					SelectOptionVO constituencyData = new SelectOptionVO();
 					constituencyData.setId((Long) obj[0]);
-					constituencyData.setName(StringUtils.capitalize(obj[1].toString().toLowerCase()));
+					constituencyData.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
          
-                	constituenciesList.add(constituencyData);
+					constituenciesList.add(constituencyData);
 				}
 			}
 
@@ -3532,8 +3527,7 @@ public class StaticDataService implements IStaticDataService {
 							IConstants.ZPTC_ELECTION_TYPE, winnerRank,
 							electionYear);
 
-			log
-					.info("Making nominationDAO.findAllZptcCandidatesInaDistrict DAO call");
+			log.info("Making nominationDAO.findAllZptcCandidatesInaDistrict DAO call");
 			List allCandidates = nominationDAO
 					.findAllZptcOrMptcCandidatesInaDistrict(districtId,
 							IConstants.ZPTC_ELECTION_TYPE, electionYear);
