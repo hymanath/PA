@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -49,6 +50,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private IRegionServiceData regionServiceDataImp;
 	
 	private IAnanymousUserService  ananymousUserService;
+	private IStaticDataService staticDataService;
 	
 	public Long getResult() {
 		return result;
@@ -152,6 +154,12 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 	public String execute(){
 		
 		if(prepopulate)
@@ -163,7 +171,8 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		}		
 		
 		List<SelectOptionVO> profileOpts = ananymousUserService.findAllProfileOptsAvailableInDB();
-		List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
+		//List<SelectOptionVO> states = regionServiceDataImp.getStatesByCountry(1l);
+		List<SelectOptionVO> states = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>(0);
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>(0);
 		
