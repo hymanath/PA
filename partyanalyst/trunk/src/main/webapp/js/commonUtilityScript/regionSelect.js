@@ -903,6 +903,10 @@ function getConstituenciesComboBoxForADistrict(value,elmtId)
 
 function getDistrictsComboBoxForAState(value,elmtId)
 {
+	clearOptionsListForSelectElmtId("districtSelectBox");
+	createSelectOptionsForSelectConstituencyElmtId("districtSelectBox");
+	clearOptionsListForSelectElmtId("constituencySelectBox");
+	createSelectOptionsForSelectConstituencyElmtId("constituencySelectBox");
 	var jsObj=
 		{				
 				stateId:value,
