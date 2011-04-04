@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
@@ -136,7 +137,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	public void setStatesListForACountry(List<SelectOptionVO> statesListForACountry) {
 		this.statesListForACountry = statesListForACountry;
 	}
-
+	
 	public String getTask() {
 		return task;
 	}
@@ -184,6 +185,8 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		statesListForACountry = regionServiceDataImp.getStatesByCountry(new Long(jObj.getString("countryId")));
+		//statesListForACountry = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
+		
 		if(statesListForACountry != null && statesListForACountry.size() > 0)
 			statesListForACountry.add(0, new SelectOptionVO(0L,"Select State"));
 		Collections.sort(statesListForACountry);
@@ -202,6 +205,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		districtsListForACountry = regionServiceDataImp.getDistrictsByStateID(new Long(jObj.getString("stateId")));
+		
 		if(districtsListForACountry != null && districtsListForACountry.size() > 1)
 			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
 		
@@ -224,7 +228,10 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		 * Modified by ravi 
 		 * please refer previous version to check for original code.
 		 */ 
-		if(constituenciesListForADistrict == null && constituenciesListForADistrict.size() == 0)
+		if(constituenciesListForADistrict == null || constituenciesListForADistrict.size() == 0)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		if(constituenciesListForADistrict != null && constituenciesListForADistrict.size() > 1)
 			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		
 		return Action.SUCCESS;
