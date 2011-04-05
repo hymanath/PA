@@ -40,7 +40,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String tehsilName;
 	private String chartPath; 
 	private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
 	}
@@ -134,7 +134,8 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
 			
 			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
-	        String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
+	       // String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
+			 String chartLocation = chartProducerURL + chartPath;
 	        //Set<String> partiesInChart = new LinkedHashSet<String>();
 	        if(partiesResults.size() > 0)
 	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
@@ -156,8 +157,8 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
-			String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-				
+			//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+			String chartPath = chartProducerURL+ chartName;
 			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
 				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
 			}else{
