@@ -50,6 +50,7 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private ServletContext context;
 	private String selectedPartyShortName;
 	private Long selectedPartyId;
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public String getSelectedLocationName() {
 		return selectedLocationName;
 	}
@@ -226,8 +227,8 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	
 		session = request.getSession();
 		String chartName = "partyResultsChart_" + chartId.toString() + session.getId() + ".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-       
+      //  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		  String chartPath = chartProducerURL + chartName;
         request.setAttribute("chartName", chartName);
         List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
         
