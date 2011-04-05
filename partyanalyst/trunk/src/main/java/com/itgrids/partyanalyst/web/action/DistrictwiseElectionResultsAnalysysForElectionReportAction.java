@@ -44,7 +44,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	JSONObject jObj = null;
 	private ServletContext context;
 	private HttpSession session;
-
+    private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;			
 	}
@@ -229,8 +229,8 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		try{
 			String partyDistrictResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results_Districtwise").concat("LineChart").concat(chartType);
 	 		String partyDistrictResultsChartName = "partyDistrictResults_" + partyDistrictResultsChartId + session.getId() +".png";
-	        String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
-	 		
+	        //String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
+	 		String partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
 	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,300,880, null,true);
 	        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
@@ -251,8 +251,8 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 		try{
 		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results_DistrictWise").concat("LineChart");
  		String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_" + alliancePartiesChartId + session.getId() +".png";
-        String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
- 		
+       // String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
+ 		 String alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
         ChartProducer.createLineChart("","","Seats", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800, null,true);
 	    request.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
