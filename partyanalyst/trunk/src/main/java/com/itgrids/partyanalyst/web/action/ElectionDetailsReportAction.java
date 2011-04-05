@@ -62,7 +62,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	private List<SelectOptionVO> partiesList;	
 	private IStateRegionService stateRegionService;	
 	private StateElectionsVO partyResultsInRegionVO; 
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	
 	public IPartyStrengthService getPartyStrengthService() {
@@ -474,9 +474,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 							"Election_Results").concat("LineChart");
 			String alliancePartiesChartName = "alliancPartyElectionResults_"
 					+ alliancePartiesChartId + session.getId() + ".png";
-			String alliancePartiesChartPath = context.getRealPath("/")
-					+ "charts\\" + alliancePartiesChartName;
-
+			//String alliancePartiesChartPath = context.getRealPath("/")
+				//	+ "charts\\" + alliancePartiesChartName;
+					String alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
 			ChartProducer.createLineChart("", "", "Seats",
 					createDataSetForAlliancPartyOverallResults(alliancParties
 							.getPartiesInAlliance(), "BarChart", null),
@@ -509,8 +509,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					.concat("LineChart");
 			String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_"
 					+ alliancePartiesChartId + session.getId() + ".png";
-			String alliancePartiesChartPath = context.getRealPath("/")
-					+ "charts\\" + alliancePartiesChartName;
+			//String alliancePartiesChartPath = context.getRealPath("/")
+				//	+ "charts\\" + alliancePartiesChartName;
+			String alliancePartiesChartPath = chartProducerURL+alliancePartiesChartName;
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					alliancParties.getPartiesInAlliance(), colors);
 			log
@@ -547,8 +548,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					.concat("LineChart").concat(chartType);
 			String partyDistrictResultsChartName = "partyDistrictResults_"
 					+ partyDistrictResultsChartId + session.getId() + ".png";
-			String partyDistrictResultsChartPath = context.getRealPath("/")
-					+ "charts\\" + partyDistrictResultsChartName;
+       //String partyDistrictResultsChartPath = context.getRealPath("/")
+	//		+ "charts\\" + partyDistrictResultsChartName;
+			String partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
 
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					allPartiesResults, colors);
@@ -588,8 +590,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 							"All_Parties_LineChart").concat(chartType);
 			String allPartiesChartName = "alliancPartyElectionResults_"
 					+ allPartiesChartId + session.getId() + ".png";
-			String allPartiesChartPath = context.getRealPath("/") + "charts\\"
-					+ allPartiesChartName;
+			//String allPartiesChartPath = context.getRealPath("/") + "charts\\"
+				//	+ allPartiesChartName;
+			String allPartiesChartPath = chartProducerURL+allPartiesChartName;
 
 			ChartProducer.createLineChart(title, "", "Seats",
 					createDataSetForAlliancPartyOverallResults(
