@@ -27,7 +27,7 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 	private String partyName;
 	private String mandalName; 
 	private String tehsilId;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -87,7 +87,8 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 		getRevenuevillagesWiseElectionResultsOfPartyInMandal(new Long(partyId), new Long(tehsilId));
 		
 		String chartName = "partyPerformanceInOneMandalInAllElectionsByRevenueVillages_partyId"+partyId+"_terhsilId_"+tehsilId+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		 String chartPath = chartProducerURL + chartName;
         if(constituencyRevenueVillagesVO.getElectionInfoByLocations().size() > 0)
         	ChartProducer.createLineChart("" , "Revenue Villages", "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,300,880, null,false);
         constituencyRevenueVillagesVO.setChartPath(chartName);
