@@ -92,7 +92,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private NavigationVO messageTypes;
 	private EntitlementsHelper entitlementsHelper;
 	private List yearsList;
-		
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";	
 	
 	public List getYearsList() {
 		return yearsList;
@@ -580,7 +580,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			type = jObj.getString("electionType");
 		}
 		String chartName = "allPartiesDistrictWisePerformanceIn"+type+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		String chartPath = chartProducerURL+ chartName;
         districtWisePartyResultVO.setChartPath(chartName);
         String electionType = jObj.getString("electionType");
         //Set<Color> colorsSet = null;
@@ -595,7 +596,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 		//For Detailed Chart
         String detailedChartName = "detailedChartForAllPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
-        String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
+       // String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
+        String detailedChartPath = chartProducerURL+ detailedChartName;
         districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
         String detailedChartElectionType = jObj.getString("electionType").toUpperCase();
         if(detailedChartElectionType.equalsIgnoreCase("Select Election Type"))
@@ -794,7 +796,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 		List<PartyPositionsVO> partyPositions = allPartiesPositionsInElection.getPartiesPositionsInElection();
 		String chartName = "allPartiesDistrictWisePositionsInElection_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionId")+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		String chartPath = chartProducerURL+ chartName;
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDatasetForPartyPositions(partyPositions);
         allPartiesPositionsInElection.setPasitionsChart(chartName);
         ChartProducer.createLineChart("All Parties Positions In "+jObj.getString("electionTypeYear")+" Of "+jObj.getString("districtName")
