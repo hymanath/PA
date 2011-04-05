@@ -52,7 +52,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal;
 	private CastWiseElectionVotersVO castWiseElectionVoters;
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public List<InfluencingPeopleVO> getInfluencingPeopleInMandal() {
 		return influencingPeopleInMandal;
 	}
@@ -236,8 +236,8 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		String alliance = "true";//jsonObj.getString("alliance");
 		
 		String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-        
+       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		 String chartPath = chartProducerURL+ chartName;
         mandalDataWithChartVO = new MandalDataWithChartVO();
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
 		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);
