@@ -74,7 +74,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	private ConstituencyVO greaterInfo;
 	private List<ProblemBeanVO> problemBean;		
 	private IProblemManagementReportService problemManagementReportService;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
@@ -321,8 +321,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 				
 		String chartId = localBodyName.concat("_LocalBodyElection").concat("_For_").concat(electionYear);
 		String chartName = localBodyType+ chartId + session.getId()+".png";
-		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		
+		//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		String chartPath = chartProducerURL+ chartName;
 		String title = "All Parties Performance In ".concat(localBodyName).concat(" ").concat(localBodyType).concat(" In ").concat(electionYear);
 		ChartProducer.createLineChart(title, "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,650, null,true );
 		
@@ -371,7 +371,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		for(TeshilPartyInfoVO lebParty:teshilPartyInfoVO.getMuncipalityVO()){
 			title = "All Parties Performance In "+lebParty.getMuncipalityName()+" In "+lebParty.getLatestMuncipalElectionYear();
 			pieChartName = "lebInfo_"+lebParty.getMuncipalityName()+"_"+lebParty.getLatestMuncipalElectionYear()+".png";
-			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
+			//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
+			pieChartPath = chartProducerURL+ pieChartName;
 			if(lebParty.getMuncipalityVO().size() > 0)
 				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(lebParty.getMuncipalityVO()), pieChartPath, 
 						null,true,260,270);
@@ -400,7 +401,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		if(greaterInfo.getLocalElectionsInfo() != null){
 			for(MandalVO electionInfoVO:greaterInfo.getLocalElectionsInfo()){
 				String lebChartName = "localElectionBodiesChart"+electionInfoVO.getName()+"_"+electionInfoVO.getId()+".png";
-		        String chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
+		        //String chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
+				String chartPath = chartProducerURL+ lebChartName;
 		        partiesInChart = new LinkedHashSet<String>();
 		   		if(electionInfoVO.getWardwiseResultsForParty().size() > 0)
 		   			ChartProducer.createLineChart("All Parties Performance In GHMC Elections Of "+electionInfoVO.getElectionYear(), "Wards", "Percentages", 
