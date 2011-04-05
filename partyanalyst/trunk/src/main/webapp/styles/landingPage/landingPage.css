@@ -789,6 +789,127 @@ input.input_text
 	filter:alpha(opacity=80);
 }
 
+.homePageContentWidget_head_center_div
+{
+	background-image:url(../../images/icons/homePage_new/homeWidgetImageHeader_center.jpg);
+	height: 45px;
+}
+
+.homePageContentWidget_head_center_span
+{
+	color: #4588B6;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    top: 12px;
+}
+
+.homePageContentWidget_body
+{
+	height:300px;
+	border:1px solid #dddddd;
+	padding: 10px;
+}
+
+.homePageContentWidget_body_news_main
+{
+	border-right:1px solid #dddddd;
+	height:380px;
+	padding:10px;
+}
+
+.homePageContentWidget_body_news_body
+{
+	color: #374047;
+    font-size: 11px;
+    height: 310px;
+    line-height: 16px;
+    padding: 5px;
+    text-align: justify;
+    word-spacing: 2px;
+}
+
+.homePageContentWidget_body_news_footer
+{
+	text-align:right;
+}
+.homePageContentWidget_readMore
+{
+	text-align:right;
+}
+
+#homePage_new_footer
+{
+	background-color:#306486;
+	height: 180px;
+	padding: 10px 10px 10px 40px;
+}
+
+.homePage_new_footer_links_head
+{
+	color:#FFFFFF;
+	font-weight:bold;
+}
+
+.homePage_new_footer_links
+{
+	list-style-type: none;	
+	margin:0px;
+	padding:0px;
+}
+
+.homePage_new_footer_links a
+{
+	padding:2px;
+	text-decoration:none;
+	color: #97ACB9;
+}
+
+.homePage_new_footer_links a:hover
+{
+	text-decoration:underline;
+	color: #FFFFFF;
+}
+
+.homePage_new_footer_links_head a
+{
+	text-decoration:none;
+	color: #FFFFFF;
+}
+
+.homePage_new_footer_links_head a:hover
+{
+	text-decoration:underline;
+	color: #97ACB9;
+}
+
+.homePageContentWidget_body_news_head_div
+{
+	background-image: url("../../images/icons/electionResultsAnalysisReport/mid.png");
+	height: 30px;
+}
+
+.homePageContentWidget_body_news_head_span
+{
+	color: #4B74C6;
+    font-weight: bold;
+    left: 10px;
+    position: relative;
+    top: 5px;
+}
+
+.homePageContentWidget_body_news_list
+{
+	list-style-image:url("../../images/icons/districtPage/listIcon.png");
+	margin: 0px;
+    padding: 0 0 0 15px;
+}
+
+.homePageContentWidget_body_news_list li
+{
+	padding:5px;
+}
+
 /*====================
 	Index Page styles
 ======================*/
