@@ -85,6 +85,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private List<ProblemClassificationVO> problemsGropedByDeptOrCadre;
 	private EntitlementsHelper entitlementsHelper;
 	private List<SelectOptionVO> probCountList;
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public Long getProblemlocationId() {
 		return problemlocationId;
 	}
@@ -594,8 +595,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
 			
 			String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
-	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-	       
+	       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			 String chartPath = chartProducerURL + chartName;
 			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
 					
 			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
@@ -613,7 +614,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	{
 		log.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
 		String chartName = ""+locationId+"_"+totalProblemsCount+"piechart"+".png";
-		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		String chartPath = chartProducerURL + chartName;
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		Color[] colors = new Color[problemsStatusList.size()];
 
