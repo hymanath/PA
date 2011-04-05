@@ -24,23 +24,23 @@ function initializeHomePage()
 
 	
 
-	buildElectionTrendzTabView();
+	//buildElectionTrendzTabView();
 	buildHOmePageImageSlider();
-	var stateEl = document.getElementById("stateList_res");
-	var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
+	//var stateEl = document.getElementById("stateList_res");
+	//var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 
 	var statelocalEl = document.getElementById("stateList_l");
 	var stateSelectlocalElVal = statelocalEl.options[statelocalEl.selectedIndex].value;
 
 	getDistrictsComboBoxForAState(1, 'districtList_d');
-	getRecentElectionsInState(stateSelectElVal);
+	//getRecentElectionsInState(stateSelectElVal);
 	//getProblemsInState(stateSelectElVal);
-	buildPolls();
+	//buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
-	buildleadersNews();
-	buildTopStoriesNews();
-	buildPartiesNews();
+	//buildleadersNews();
+	//buildTopStoriesNews();
+	//buildPartiesNews();
 }
 
 function showFeedBackFormPanel()
