@@ -80,7 +80,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	private Long zptcElectionId; 
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	
 	
 	public List<SelectOptionVO> getZptcElectionYears() {
@@ -422,8 +422,10 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		String chartName = "Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_"+constiId+"_piechart"+".png";
 		String allPartychartName = "All_Parties_Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
 		String localChart = null;
-		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		String allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
+		//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		//String allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
+		String chartPath = chartProducerURL + chartName;
+		String allPartychartPath = chartProducerURL+ allPartychartName;
 		Double otherPartyVotesPercent = 0D;
 		
 		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
@@ -581,7 +583,8 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		  		 
 			  chartTitle = "All Election Results for "+constituencyName;
 			  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+"constituencyId"+".png";
-			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			//  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			  chartPath = chartProducerURL + chartName;
 			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
 			  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
 			  
@@ -603,7 +606,8 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			int i=0;
 			for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 				pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
-				pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+				//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+				pieChartPath = chartProducerURL + pieChart;
 				if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 					if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 						title = "Each Mandal Voters Share* After Delimitation";
