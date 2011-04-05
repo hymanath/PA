@@ -83,7 +83,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private String partyNameHidden;
 	private String stateNameHidden;
 	private EntitlementsHelper entitlementsHelper;
-	private String chartProducerURL="";
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public String getStateNameHidden() {
 		return stateNameHidden;
 	}
