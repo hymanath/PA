@@ -675,7 +675,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		List<Long> obj = nominationDAO.totalSearchCount("kamalakara","2,4");
 		System.out.println(obj.get(0));
 	}
-		
+		*/
 	/*	public void testFindElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(){
 			long start = System.currentTimeMillis();
 			Map<Long, List<Object[]>> constituenciesInfoById = new HashMap<Long, List<Object[]>>();
