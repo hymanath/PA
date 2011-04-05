@@ -417,6 +417,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
 			return ERROR;
 		
+		String cPath = request.getContextPath();
+		
 		log.debug("partyPerformanceReport action started...");
 		String district = "0";
 		String country = request.getParameter("country");
@@ -482,8 +484,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		session = request.getSession();
 		String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year);
 		String chartName = "partyPositionsChart_" + chartId + session.getId()+".png";
-       // String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		 String chartPath = chartProducerURL + chartName;
+		String chartPath = "";
+		
+		if(cPath.contains("PartyAnalyst"))
+			chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		else
+			chartPath = chartProducerURL + chartName;
+		
 		//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
         if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
         ChartProducer.createBarChart("Party Positions", "Party", "Seats", createDataset(reportVO.getPartyPositionsVO()), chartPath);
@@ -499,8 +506,14 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			session = request.getSession();
 			String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year).concat("LineChart");
 			String lineChartName = "partyElectionResultsChart_" + chartId + session.getId()+".png";
-	       // String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
-			 String chartPath = chartProducerURL + lineChartName;
+			String chartPath = "";
+			
+			//check the request path wheather from server or local
+			if(cPath.contains("PartyAnalyst"))
+				chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+			else
+				chartPath = chartProducerURL + lineChartName;
+			
 			//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
 	         if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null && reportVO.getPrevYeartotalPercentageOfVotesWon() != null){
 	        	//ChartProducer.createBarChart("Results In Elections", "Years", "Seats", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), chartPath);
