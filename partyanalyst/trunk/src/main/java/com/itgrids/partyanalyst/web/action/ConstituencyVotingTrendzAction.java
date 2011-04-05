@@ -128,7 +128,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<PartyElectionVotersVO> partiesElecsResults;
 	private String windowType;
 	private Long recentAssemblyElecId;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
@@ -685,7 +685,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			
         	  String chartTitle = " All Parties Performance In "+constiName + " Constituency ";
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+chartNam+".png";
-			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			 // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			  String chartPath = chartProducerURL + chartName;
 			  
 			  chartColorsAndDataSetVO = createDatasetForChart(electionResList,selectdElections);
 			  ChartProducer.createLineChartWithThickness(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,500,1000,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
@@ -740,7 +741,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					List<CandidateOppositionVO> candResList = results.getCandidateOppositionList();
 					if(candResList != null && candResList.size() > 0){
 						String chartName = "ByeElection_For_"+results.getElectionType()+"_"+results.getElectionYear()+"_piechartFor_"+constiName+".png";
-						String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+						//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+						String chartPath = chartProducerURL+ chartName;
 						String chartTitle = ""+results.getElectionType()+" - "+results.getElectionYear();
 						final DefaultPieDataset dataset = new DefaultPieDataset();
 						for(CandidateOppositionVO candRes:candResList){
