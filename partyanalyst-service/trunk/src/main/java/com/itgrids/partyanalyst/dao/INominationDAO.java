@@ -368,7 +368,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Object[]> findByFirstMiddleAndLastNames(String searchText,String sortOption,String order,Integer startIndex,Integer maxResult,String ids);
 	
 	@SuppressWarnings("unchecked")
-	public List totalSearchCount(String searchText, String ids);
+	public List totalSearchCount(String searchText, String ids,Long stateId);
 	
 	public List findElectionResultsForAllCostituenciesByElectionTypeYearAndCountryId(Long electionTypeId, String year, Long countryId);
 	
