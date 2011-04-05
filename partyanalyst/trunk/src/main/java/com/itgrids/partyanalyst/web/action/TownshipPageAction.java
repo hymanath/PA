@@ -36,7 +36,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 	private Set<SelectOptionVO> partiesInTownship;
 	private IStaticDataService staticDataService;
 	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -100,7 +100,8 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 		partiesInTownship = staticDataService.getAllPartiesParticipatedInRevenueVillage(townshipId);
 		log.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
 		String chartName = "allPartiesPerformanceInAllRVElections_"+townshipId+"_"+townshipName+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        String chartPath = chartProducerURL+ chartName;
     	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath,260,600, null,false);
 		
 		return SUCCESS;
