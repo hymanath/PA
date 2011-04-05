@@ -50,7 +50,7 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 	private String task = null;
 	JSONObject jObj = null;
 	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -238,8 +238,9 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			//Analysis Chart For Main Party
 			String analysisChartMainPartyId = partyAnalysisReportVO.getStateName().concat("_").concat(partyAnalysisReportVO.getElectionType()).concat("_").concat(partyAnalysisReportVO.getElectionYear()).concat("_").concat(partyAnalysisReportVO.getPartyName()).concat("_Analysis_Bar_Chart");
 	 		String analysisMainPartyChartName = "analysisChart_" + analysisChartMainPartyId + session.getId() +".png";
-	        String analysisMainPartyChartPath = context.getRealPath("/") + "charts\\" + analysisMainPartyChartName;
-	 		
+	       // String analysisMainPartyChartPath = context.getRealPath("/") + "charts\\" + analysisMainPartyChartName;
+	        String analysisMainPartyChartPath =chartProducerURL + analysisMainPartyChartName;
+
 	        String title = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Analysis Details");
 	       	ChartProducer.create3DBarChartWithInputParams(title,"Analysis","Party","Results",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyAnalysisResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), analysisMainPartyChartPath,width,height, null,false);
 	 		request.setAttribute("analysisMainPartyChartName", analysisMainPartyChartName);
@@ -249,8 +250,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			//Election Results Chart For Main Party
 			String resultsChartMainPartyId = partyAnalysisReportVO.getStateName().concat("_").concat(partyAnalysisReportVO.getElectionType()).concat("_").concat(partyAnalysisReportVO.getElectionYear()).concat("_").concat(partyAnalysisReportVO.getPartyName()).concat("_Results_Bar_Chart");
 	 		String resultsMainPartyChartName = "resultsChart_" + resultsChartMainPartyId + session.getId() +".png";
-	        String resultsMainPartyChartPath = context.getRealPath("/") + "charts\\" + resultsMainPartyChartName;
-	 		
+	      //  String resultsMainPartyChartPath = context.getRealPath("/") + "charts\\" + resultsMainPartyChartName;
+	 		String resultsMainPartyChartPath = chartProducerURL+ resultsMainPartyChartName;	 		
 	        String title1 = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Election Results");
 	       	ChartProducer.create3DBarChartWithInputParams(title1,"Results","Party","Seats",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyElectionResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), resultsMainPartyChartPath,width,height, null,false);
 	 		request.setAttribute("resultsMainPartyChartName", resultsMainPartyChartName);
@@ -263,8 +264,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 			for(PartyAnalysisBasicVO alliancAnalysis:partyAnalysisReportVO.getAlliancPartiesBasicAnalysisVO()){
 				String analysisChartAlliancPartyId = partyAnalysisReportVO.getStateName().concat("_").concat(partyAnalysisReportVO.getElectionType()).concat("_").concat(partyAnalysisReportVO.getElectionYear()).concat("_").concat(alliancAnalysis.getPartyName()).concat("_Analysis_Bar_Chart");
 		 		String analysisAlliancPartyChartName = "analysisChartForAlliancParties_" + analysisChartAlliancPartyId + session.getId() +".png";
-		        String analysisAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + analysisAlliancPartyChartName;
-		 		
+		      // String analysisAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + analysisAlliancPartyChartName;
+		 		 String analysisAlliancPartyChartPath = chartProducerURL+ analysisAlliancPartyChartName;		 		
 		        String title2 = alliancAnalysis.getPartyName().concat(" Analysis Details");
 		      	ChartProducer.create3DBarChartWithInputParams(title2,"Analysis","Party","Results",alliancAnalysis.getPartyName(),createDatasetForPartyAnalysisResults(alliancAnalysis), analysisAlliancPartyChartPath,width,height, null,false);
 		 		request.setAttribute("analysisAlliancPartyChartName", analysisAlliancPartyChartName);
@@ -274,7 +275,8 @@ public class ElectionResultsAnalysisReportPopupAction extends ActionSupport impl
 				//Election Results Chart For Main Party
 				String resultsChartAlliancPartyId = partyAnalysisReportVO.getStateName().concat("_").concat(partyAnalysisReportVO.getElectionType()).concat("_").concat(partyAnalysisReportVO.getElectionYear()).concat("_").concat(alliancAnalysis.getPartyName()).concat("_Results_Bar_Chart");
 		 		String resultsAlliancPartyChartName = "resultsChartForAlliancParties_" + resultsChartAlliancPartyId + session.getId() +".png";
-		        String resultsAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + resultsAlliancPartyChartName;
+		       // String resultsAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + resultsAlliancPartyChartName;
+		 		 String resultsAlliancPartyChartPath = chartProducerURL + resultsAlliancPartyChartName;
 		 		
 		        String title3 = alliancAnalysis.getPartyName().concat(" Election Results");
 		       	ChartProducer.create3DBarChartWithInputParams(title3,"Results","Party","Seats",alliancAnalysis.getPartyName(),createDatasetForPartyElectionResults(alliancAnalysis), resultsAlliancPartyChartPath,width,height, null,false);
