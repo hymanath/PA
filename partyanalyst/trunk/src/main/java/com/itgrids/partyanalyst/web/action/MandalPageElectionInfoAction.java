@@ -68,7 +68,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private List<PartyResultVO> allElectionResults;
 	private NavigationVO navigationVO;
 	private EntitlementsHelper entitlementsHelper;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public List<PartyResultVO> getAllElectionResults() {
 		return allElectionResults;
 	}
@@ -299,7 +299,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		}
 		
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		String chartPath = chartProducerURL + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
         Set<String> paritesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);
