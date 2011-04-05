@@ -123,7 +123,7 @@ function callAjax(param,jsObj,url){
                                             toolsDiv.innerHTML='';
 											subRegionsDiv.innerHTML='';
 										}
-
+                                        if(electionType != 'Parliament'){
 										if(myResults.hasRegions == true){
 
 											var elmtDiv = document.getElementById("stateRegionsDiv");
@@ -135,7 +135,7 @@ function callAjax(param,jsObj,url){
 
 											elmtDiv.innerHTML = str;
 										}
-
+									  }
 									}  									
 								}
 							catch (e) {   
