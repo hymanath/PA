@@ -47,7 +47,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public ServletContext getContext() {
 		return context;
 	}
@@ -157,7 +157,8 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 					opinionPollVO = opinionPollService.getDetailsOfTheLatestOpinionPoll();
 					questionsAndChoicesPercentage = opinionPollVO.getQuestionsOptionsVO();
 					String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
-			        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+					String chartPath = chartProducerURL + chartName;
 			        questionsAndChoicesPercentage.setImagePath(chartName);
 					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 				}else{
@@ -184,7 +185,8 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 				cookie.setMaxAge(questionsAndChoicesPercentage.getDifferenceBetweenCurrentDateAndPolledDate().intValue());
 				
 				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
-		        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+				 String chartPath = chartProducerURL + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);
 				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 			}
