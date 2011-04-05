@@ -120,7 +120,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 		}
 		String electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
 		
-		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds);
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds,stateId);
 		
 		return totSearchCount.get(0);
 	}
@@ -137,7 +137,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 		if(sortOption.equalsIgnoreCase("id"))
 			option = "model.candidate.candidateId";
 		else if(sortOption.equalsIgnoreCase("candidateName"))
-			option = "model.candidate.lastname";
+			option = "model.candidate.firstname";
 		else if(sortOption.equalsIgnoreCase("party"))
 			option = "model.party.shortName";
 		else if(sortOption.equalsIgnoreCase("year"))
@@ -165,7 +165,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 		 electionIds = getLatestElectionIdForElectionType(idlist,ConstType,stateId);
 
 		List<Object[]> candidates = nominationDAO.findByFirstMiddleAndLastNames(searchText,option,order,startIndex,maxResult,electionIds);
-		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds);
+		List<Long> totSearchCount = nominationDAO.totalSearchCount(searchText,electionIds,stateId);
 		
 		Long count = new Long(startIndex);
 		
