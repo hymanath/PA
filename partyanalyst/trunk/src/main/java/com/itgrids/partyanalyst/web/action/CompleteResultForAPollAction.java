@@ -37,7 +37,7 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	private QuestionsOptionsVO questionsOptionsVO;
 	private Long questionId;
 		
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -98,8 +98,9 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	{
 		questionsOptionsVO = opinionPollService.getQuestionAndPercentageOfVotesForChoices(questionId);
 		String chartName = "opinionPoll_questionId_"+questionsOptionsVO.getQuestionId()+"_detailed.png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-        questionsOptionsVO.setImagePath(chartName);
+       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		String chartPath = chartProducerURL + chartName;
+		questionsOptionsVO.setImagePath(chartName);
 		ChartProducer.createBarChartForVotesPoll(questionsOptionsVO.getQuestion(), "", "", createDataset(questionsOptionsVO), chartPath,"completeResults");
 		return SUCCESS;
 	}	
