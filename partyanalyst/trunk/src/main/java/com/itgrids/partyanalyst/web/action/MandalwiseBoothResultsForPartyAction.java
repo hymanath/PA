@@ -64,7 +64,7 @@ ServletRequestAware, ServletContextAware{
 	org.json.JSONObject jObj;
 	private static final Logger log = Logger.getLogger(MandalwiseBoothResultsForPartyAction.class);
 	private int errorFlag=0;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public int getErrorFlag() {
 		return errorFlag;
 	}
@@ -231,7 +231,8 @@ ServletRequestAware, ServletContextAware{
 		try{
 			for(int i=0;i<votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().size();i++){
 				String chartName = votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getChartName();
-				String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+				//String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+				String chartPath = chartProducerURL + chartName;
 		 	    String title = "Mandal Wise Election Result For "+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName()+" Mandal";		 	    
 		        ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(votesMarginResultsMainVO,i);
 		        
@@ -413,7 +414,8 @@ ServletRequestAware, ServletContextAware{
 		int i=0;
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
-			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			pieChartPath = chartProducerURL+ pieChart;
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 					title = "Each Mandal Voters Share* After Delimitation";
