@@ -59,6 +59,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private IStaticDataService staticDataService;
 	
 	private Long electionType,electionYears2,electionYears1,state;//variables comes from  electionComparisonReportPopUp
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
 	
 	public Long getState() {
@@ -289,11 +290,13 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             
             String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartSeatsWon");
             String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
-            String seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+           // String seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+            String seatsLineChartPath = chartProducerURL+ seatsLineChartName;
             
             String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartTotalPercent");
             String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
-            String totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
+            //String totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
+            String totalPercentLineChartPath = chartProducerURL+ totalPercentLineChartName;
             
             if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
             	if(hasAlliances==false){
