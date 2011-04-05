@@ -225,7 +225,7 @@ var loginStatus = '${loginStatus}';
 				</div>
 			</div>
 		</div>
-		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG_betanew.jpg');height:125px;">
+		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/homePage_header_beta2.jpg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
                     <td style="vertical-align:top;width:540px;">
@@ -237,18 +237,14 @@ var loginStatus = '${loginStatus}';
                         <table width="100%" style="width:100%">                           
                             <tr>
                                 <th id="searchBox" style="color:#FFFFFF">
-                                    <c:if test="${sessionScope.loginStatus == 'out'  && sessionScope.UserType == 'FreeUser'}">        		
-										<c:out value="Welcome, ${sessionScope.UserName} | "/>
-										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> 
-									</c:if>	
-									<c:if test="${sessionScope.loginStatus == 'out'  && sessionScope.UserType == 'PartyAnalyst'}">        		
+									<c:if test="${sessionScope.loginStatus == 'out'}">        		
 										<c:out value="Welcome, ${sessionScope.UserName} | "/>
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
 									</c:if>		
 									<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action" >Login </a>  | 
-										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/anonymousUserAction.action" />" >Register</a> 
+										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/loginInputAction.action" >Login</a> <!-- | 
+										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a> -->
 									</c:if>		
                                 </th>
                             </tr>
@@ -462,12 +458,405 @@ var loginStatus = '${loginStatus}';
 				</td>
 			  </tr>
 			</table>
-        	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;">			  
+			
+			<!-- =================
+			New Layout Start				
+			====================-->
+
+			<div id="homePageContent1"> 
+				<table width="100%">
+					<tr>
+						<td width="75%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="20%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">What's in</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body" style="height:400px">
+									<table width="100%">
+										<tr>
+											<td width="33%">
+												<div class="homePageContentWidget_body_news_main">
+													<div class="homePageContentWidget_body_news_head">
+														<table cellspacing="0" cellpadding="0" border="0" width="100%">
+														<tr>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/first.png">
+														</td>
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Free Users</span>
+															</div>
+														</td>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/second.png">
+														</td>
+														</tr>
+														</table>														
+													</div>
+													<div class="homePageContentWidget_body_news_body">
+														All free users can access the website with following features :
+														<ul class="homePageContentWidget_body_news_list">
+															<li>View comments posted by registered users</li>
+															<li>View all election results</li>
+															<li>View your Political Leader’s profile</li>
+															<li>View all your constituency problems</li>
+														</ul>
+													</div>
+													<div class="homePageContentWidget_body_news_footer">
+														<img src="images/icons/homePage_new/readMoreButton.jpg">
+													</div>
+												</div>
+											</td>
+											<td width="33%">
+												<div class="homePageContentWidget_body_news_main">
+													<div class="homePageContentWidget_body_news_head">
+														<table cellspacing="0" cellpadding="0" border="0" width="100%">
+														<tr>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/first.png">
+														</td>
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Registered Users</span>
+															</div>
+														</td>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/second.png">
+														</td>
+														</tr>
+														</table>														
+													</div>
+													<div class="homePageContentWidget_body_news_body">
+														All users must REGISTER to access the website, and after logging with user name / password, they can:
+														<ul class="homePageContentWidget_body_news_list">
+															<li>Post a problem of their constituency</li>
+															<li>View all posted comments</li>
+															<li>View replies to their comments</li>
+															<li>Connect, Interact and communicate with the locality people and leaders</li>
+															<li>View additional election analysis report</li>
+														</ul>
+													</div>
+													<div class="homePageContentWidget_body_news_footer">
+														<img src="images/icons/homePage_new/readMoreButton.jpg">
+													</div>
+												</div>
+											</td>
+											<td width="33%">
+												<div class="homePageContentWidget_body_news_main" style="border:0px;">
+													<div class="homePageContentWidget_body_news_head">
+														<table cellspacing="0" cellpadding="0" border="0" width="100%">
+														<tr>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/first.png">
+														</td>
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Commercial Users</span>
+															</div>
+														</td>
+														<td width="3px">
+															<img src="images/icons/electionResultsAnalysisReport/second.png">
+														</td>
+														</tr>
+														</table>														
+													</div>
+													<div class="homePageContentWidget_body_news_body">
+														The commercial users basically are the Parties, Political Leaders, and Press & Media Houses with :
+														<ul class="homePageContentWidget_body_news_list">
+															<li>Election Analysis based on demographics, geographic</li>
+															<li>Different tools to enhance communication channels with Cadre and Influencing Groups/People</li>
+															<li>Problem Management tools to manage people problems effectively</li>
+															<li>Lot more functionalities and Excellent Customer Support</li>
+															<li>Call / Email us for a FREE DEMO and TEST LOGIN</li>
+														</ul>
+													</div>
+													<div class="homePageContentWidget_body_news_footer">
+														<img src="images/icons/homePage_new/readMoreButton.jpg">
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_footer">
+
+								</div>
+							</div>
+						</td>
+						<td width="25%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="92%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Do u Know This ?</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body" style="height:400px;">
+									
+								</div>
+								<div class="homePageContentWidget_footer">
+
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="homePageContent2">
+				<table width="100%">
+					<tr>
+						<td width="75%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="42%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+
+									<div class="homePageContentWidget_readMore">
+										<img src="images/icons/homePage_new/readMoreButton.jpg"/></img>
+									</div>
+								</div>
+								<div class="homePageContentWidget_footer">
+									
+								</div>
+							</div>
+						</td>
+						<td width="25%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="75%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Quick Search</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+									<jsp:include page="../jsp/cncSearch.jsp"/>
+								</div>
+								<div class="homePageContentWidget_footer">
+
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="homePageContent3">
+				<table width="100%">
+					<tr>
+						<td width="75%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="30%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Current Elections</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+									<table width="100%">
+										<tr>
+											<td style="padding:10px;">
+												<a href="statePageAction.action?stateId=24">
+													<img width="180" height="125" style="border:none;" src="images/icons/homePage_new/TN_elections_img.jpg"/>
+												</a>
+											</td>
+											<td style="padding:10px;">
+												<a href="statePageAction.action?stateId=13">
+													<img width="180" height="125" style="border:none;" src="images/icons/homePage_new/KL_elections_img.jpg"/>
+												</a>
+											</td>
+											<td style="padding:10px;">
+												<a href="statePageAction.action?stateId=3">
+												<img width="180" height="125" src="images/icons/homePage_new/AS_elections_img.jpg"/>
+												</a>
+											</td>
+										</tr>
+										<tr>
+											<td style="padding:10px;">
+												<a href="statePageAction.action?stateId=35">
+												<img width="180" height="125" src="images/icons/homePage_new/PD_elections_img.jpg"/>
+												</a>
+											</td>
+											<td style="padding:10px;">
+												<a href="statePageAction.action?stateId=28">
+												<img width="180" height="125" src="images/icons/homePage_new/WB_elections_img.jpg"/>
+												</a>
+											</td>
+											<td style="padding:10px;">
+												
+												<img width="180" height="125" src="images/icons/homePage_new/PA_KAA_img.jpg"/>
+												
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_footer">
+									
+								</div>
+							</div>
+						</td>
+						<td width="25%">
+							<div class="homePageContentWidget_main">
+								<div class="homePageContentWidget_head">
+									<table width="75%" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
+											</td>	
+											<td>
+												<div class="homePageContentWidget_head_center_div">
+													<span class="homePageContentWidget_head_center_span">Follow me</span>
+												</div>
+											</td>	
+											<td width="20px">
+												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="homePageContentWidget_body">
+									
+								</div>
+								<div class="homePageContentWidget_footer">
+
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="cpyRight_info" style="padding:10px 0px 10px 0px;">
+				<table width="100%">
+					<tr>
+						<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
+						<td valign="top">
+							<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
+							Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
+					</tr>
+				</table>				
+			</div>
+			<div id="homePage_new_footer">
+				<table width="100%">
+					<tr>
+						<td width="20%" valign="top">
+							<div class="homePage_new_footer_links_head">About Us</div>
+							<ul class="homePage_new_footer_links">
+								<li><a href="javascript:{}">Who we are</a></li>
+								<li><a href="javascript:{}">What we do</a></li>
+								<li><a href="javascript:{}">Core Competency</a></li>
+								<li><a href="javascript:{}">Customer Support</a></li>
+								<li><a href="javascript:{}">Contact</a></li>
+								<li><a href="javascript:{}">Sitemap</a></li>
+							</ul>
+						</td>
+						<td width="20%" valign="top">
+							<div class="homePage_new_footer_links_head">Connect</div>
+							<ul class="homePage_new_footer_links">
+								<li><a href="javascript:{}">Register</a></li>
+								<li><a href="javascript:{}">Login</a></li>
+								<li><a href="javascript:{}">Explore</a></li>
+								<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
+								<li><a href="javascript:{}">Feedback</a></li>
+								<li><a href="javascript:{}">Articles</a></li>
+								<li><a href="javascript:{}">Blogs</a></li>
+							</ul>
+						</td>
+						<td width="20%" valign="top">
+							<div class="homePage_new_footer_links_head">Policy</div>
+							<ul class="homePage_new_footer_links">
+								<li><a href="javascript:{}">Terms of use</a></li>
+								<li><a href="javascript:{}">Privacy</a></li>
+								<li><a href="javascript:{}">Disclaimer</a></li>
+							</ul>
+						</td>
+						<td width="10%" valign="top">
+							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
+							<ul class="homePage_new_footer_links">
+								<li><a href="javascript:{}">Facebook</a></li>
+								<li><a href="javascript:{}">Twitter</a></li>
+								<li><a href="javascript:{}">LinkedIN</a></li>
+							</ul>
+						</td>
+						<td width="30%" valign="top" align="right">
+							<div class="homePage_new_footer_links_head"> © Copyright 2010. All rights reserved </div>
+							<div class="homePage_new_footer_links_head">
+								<a href="http://www.itgrids.com" target="_blank">IT GRIDS (India) Pvt. Ltd.</a></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- =================
+			New Layout End				
+			====================-->
+
+        	<!--<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;">			  
               <tr>
-                <td width="30%" valign="top">
+                <td width="30%" valign="top">-->
                 		
 						<!-- Product Feature Div start -->
-						<div class="productFeatureMain">							
+						<!--<div class="productFeatureMain">							
 							 <div class="productFeatureHeader">
                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
 								  <tr>                                    
@@ -575,11 +964,11 @@ var loginStatus = '${loginStatus}';
 								  </tr>
 								</table>
 							</div>
-						</div>
+						</div>-->
 
 
 						<!-- Product Feature Div End -->
-                </td>
+                <!--</td>
                 <td width="45%" valign="top">
                 	<div id="electionTrendzWidgetMain">
                     	<div id="electionTrendzWidgetHeader">
@@ -608,8 +997,8 @@ var loginStatus = '${loginStatus}';
                         </div>
                     </div>
                 </td>
-                <td width="25%" valign="top">
-                	<div id="adDataDiv_main">
+                <td width="25%" valign="top">-->
+                	<!--<div id="adDataDiv_main">
                     	<div id="adDataMain_header">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							  <tr>                                    
@@ -637,16 +1026,16 @@ var loginStatus = '${loginStatus}';
 								<div class="adData_body">
 									<table>
 									<tr>
-									<td><jsp:include page="../jsp/cncSearch.jsp"/></td>
+									<td></td>
 									</tr>
 									</table>									
 								</div>
-								<!--<div class="adData_footer">
+								<div class="adData_footer">
 									<div onclick="javascript:{window.location = 'landing.action'}" class="votingTrendzHeadLabelDiv">
 										<span class="votingTrendzHeadLabelSpan">Search</span>
 									</div>
 								</div>								
-							--></div>
+							</div>
 						</div>
                     </div>    
 					
@@ -675,14 +1064,14 @@ var loginStatus = '${loginStatus}';
 						<div id="giftWidgetFooter">
 							
 						</div>
-					</div>
+					</div>-->
 					
-                </td>
+               <!-- </td>
               </tr>
             </table>
-        </div>
+        </div>-->
 		
-		<div style="padding:5px;">
+		<!--<div style="padding:5px;">
 			<table width="100%">
 				<tr>
 					<td width="33%">
@@ -805,9 +1194,7 @@ var loginStatus = '${loginStatus}';
 							<div class="productFeatureBody" style="overflow:hidden;width:300px;height:250px;">
 							<div id="partiesNews"></div>
 							
-								<!--<iframe frameborder="0" width="300" height="250" marginwidth="0" marginheight="0"
-										src="http://www.google.com/uds/modules/elements/newsshow/iframe.html?q=INC%2C%20TDP%2C%20TRS%2C%20PRP%2C%20CPI%2C%20CPM%2C%20DMK%2CAIADMK&ned=in&rsz=small&hl=en&format=300x250">
-								</iframe>-->
+								
 							</div>		
 							<div class="productFeatureFooter">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -826,7 +1213,7 @@ var loginStatus = '${loginStatus}';
 					</td>
 				</tr>
 			</table>
-		</div>
+		</div>-->
 
         <!--<div id="homePageLocationWidgets">
         	<table width="100%" border="0" cellspacing="5" cellpadding="0">
@@ -1004,145 +1391,7 @@ var loginStatus = '${loginStatus}';
             </table>
 
         </div>-->
-
-		<table>
-			<tr>
-				<td width="70%" valign="top">
-					<!-- News Div start -->
-					<div id="newsDivMain" class="widgetsMain">
-						<div class="widgetsHeader">
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeader_left.jpg"/></td>
-								<td width="98%">
-									<div class="widgetHeaderBackground_center">
-										<span class="headerLabelSpan" style="color:#102F30;text-decoration:underline">
-											Latest News  
-										</span>
-									</div>
-								</td>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeader_right.jpg"/></td>
-							  </tr>
-							</table>
-						</div>
-						<div class="widgetsBody" style="background-color:#DEEAE6;height:auto">
-							<div class="newsDataMain">
-								<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-								<td rowspan="3" valign="top" width="100px">
-									
-								</td>
-								<td valign="top">
-									<span class="newsHeaderLabel">Five states election heat to parties in summer.</span>
-								 </td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsContent">
-									This summer five states will be facing elections deciding the parties rule...
-									</div>
-								</td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsAnchorDiv">
-									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
-									</div>
-								</td>
-								</tr>
-								</table>
-							</div>
-							<div class="newsDataMain">
-								<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								<tr>
-								<td rowspan="3" valign="top" width="100px">
-									<img width="80" height="75" src="images/icons/homePage_new/telangana.jpeg"/>
-								</td>
-								<td valign="top"> <span class="newsHeaderLabel"> Telangana Bye Elections - 2010 </span></td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsContent">
-									Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh. What is each
-									parties strengths in these constituencies? What are the factors influence these elections
-									like non participating parties (PRP, BJP, Loksatta etc) ...? 
-									</div>
-								</td>
-								</tr>
-								<tr>                               
-								<td valign="top">
-									<div class="newsAnchorDiv">
-									<a href="biElectionAction.action" class="newsAnchor">Know More</a>
-									</div>
-								</td>
-								</tr>
-								</table>
-							</div>		
-						</div>
-						<div >
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeaderBottom_left.jpg"/></td>
-								<td width="98%">
-									<div class="widgetHeaderBackground_center">
-										<span class="headerLabelSpan">  </span>
-									</div>
-								</td>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/widgetHeaderBottom_right.jpg"/></td>
-							  </tr>
-							</table>
-						</div>
-					</div>
-					<!-- News Div End -->       
-				</td>
-				<td width="30%" valign="top">
-					<div id="pollsWidgetMain">
-						<div id="pollsWidgetHeader">
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-								<td width="1%"><img width="45" height="40" src="images/icons/homePage_new/poll_header_left.jpg"/></td>
-								<td width="98%">
-									<div class="electionTrendzHeaderBackground_center">
-										<span class="headerLabelSpan headerLabelSpan1" style="color:#C66E17;top:13px;">
-											Opinion Poll
-										</span>
-									</div>
-								</td>
-								<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/poll_header_right.jpg"/></td>
-							  </tr>
-							</table>	
-						 </div>
-						<div id="pollsWidgetBody" class="yui-skin-sam" style="height:260px;">
-						</div>
-						<div id="pollsWidgetFooter">
-							
-						</div>
-					</div>
-				</td>
-			</tr>
-		</table>		
-		
-        <div id="index_footer" class="indexLayoutContainer">
-			<div id="cpyRight_info" style="padding:10px 0px 10px 0px;">
-				<table width="100%">
-					<tr>
-						<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
-						<td valign="top">
-							<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
-							Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
-					</tr>
-				</table>
-				
-			</div>
-            <div id="index_inner_footer">
-            <table width="100%" id="copyrightLinksTable">
-                <tr>
-                    <td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
-                    <td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
-                </tr>
-            </table>
-            </div>
-        </div>
+        
 	</div>
 	
 <script type="text/javascript">
