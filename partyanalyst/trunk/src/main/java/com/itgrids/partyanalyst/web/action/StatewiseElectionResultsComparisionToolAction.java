@@ -46,7 +46,7 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 	JSONObject jObj = null;
 	private ServletContext context;
 	private HttpSession session;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}	
@@ -211,7 +211,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 			//state level chart
 			String partyResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results").concat("BarChart");
 	 		String partyResultsChartName = "partyElectionResults_" + partyResultsChartId + session.getId() +".png";
-	        String partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
+//	       String partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
+	        String partyResultsChartPath =chartProducerURL + partyResultsChartName;
 	 		
 	 		ChartProducer.create3DBarChart("Party","Seats",createDatasetForPartyResults(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults()), partyResultsChartPath);
 		    request.setAttribute("partyResultsChartName1", partyResultsChartName);
@@ -237,7 +238,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		try{
 		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results").concat("LineChart");
  		String alliancePartiesChartName = "alliancPartyElectionResults_" + alliancePartiesChartId + session.getId() +".png";
-        String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
+       // String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
+ 		String alliancePartiesChartPath =chartProducerURL + alliancePartiesChartName;
  		
         ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart"), alliancePartiesChartPath,300,600, null,true);
 	    request.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
@@ -261,8 +263,8 @@ public class StatewiseElectionResultsComparisionToolAction extends ActionSupport
 		try{
 			String allPartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Overall").concat("Election_Results").concat("All_Parties_LineChart").concat(chartType);
 	 		String allPartiesChartName = "alliancPartyElectionResults_" + allPartiesChartId + session.getId() +".png";
-	        String allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
-	 		
+	        //String allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
+	 		String allPartiesChartPath = chartProducerURL+ allPartiesChartName;
 	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart"), allPartiesChartPath,300,600, null,true);
 		    request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);
