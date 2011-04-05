@@ -60,7 +60,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private IBiElectionPageService biElectionPageService; 
 	private List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO;
     private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
-	
+	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
 		return townshipBoothDetailsVO;
 	}
@@ -202,7 +202,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		 
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
-	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+	       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			 String chartPath = chartProducerURL+ chartName;
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
 	        ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
@@ -220,8 +221,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
-			String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-				
+			//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+			String chartPath = chartProducerURL + chartName;
 			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
 				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
 			}else{
