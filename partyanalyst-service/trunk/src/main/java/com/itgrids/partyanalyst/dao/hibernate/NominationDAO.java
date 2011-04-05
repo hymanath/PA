@@ -2002,13 +2002,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	
 	@SuppressWarnings("unchecked")
-	public List totalSearchCount(String searchText, String ids){
+	public List totalSearchCount(String searchText, String ids,Long stateId){
 		
 		StringBuffer queryBuffer = new StringBuffer("select count(model.candidate.candidateId) from Nomination model where ");
-		//queryBuffer.append("model.candidate.firstname like '%"+searchText+"%' or " );
-		queryBuffer.append("model.candidate.lastname like '%"+searchText+"%' and " );
+		//queryBuffer.append("model.candidate.firstname like '"+searchText+"%' or " );
+		queryBuffer.append("model.candidate.lastname like '"+searchText+"%' and " );
 		//queryBuffer.append("model.candidate.middlename like '%"+searchText+"%' and "); 
-		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+")");
+		queryBuffer.append("model.constituencyElection.election.electionId in ("+ids+") and ");
+		queryBuffer.append("model.constituencyElection.constituency.state.stateId in ("+stateId+")");
 		
 		Query queryObject = getSession().createQuery(queryBuffer.toString());
 		
@@ -2889,6 +2890,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 		return getHibernateTemplate().find("select model.candidate.candidateId,model from Nomination model where model.constituencyElection.election.electionId = ?",electionId);
 	}
+	/*@Override
+	public List totalSearchCount(String searchText, String ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
 	
 	/*public List<Long> getListOfUnParticipatedConstituencies(List<Long> constIds,Long electionId,String type,Long stateId,String electionType){
 		
