@@ -1478,3 +1478,23 @@ text-decoration:none;
 	background-image:url('../../images/icons/homePage_new/accordianHeader_selected.jpg');
 	font-weight:bold;
 }
+
+/* Quick Request Styles */
+#quickRequestTextbox {
+   
+	float: right;
+    margin-bottom: 15px;
+	margin-left:20px;
+}
+#quickRequestTD{
+	font-weight:bold;
+}
+#quickRequest_window{
+background-color:#C7CFD2;
+}
+#quickRequestErrDiv{
+        list-style-image:url("../../images/icons/districtPage/listIcon.png");
+		 color:red;
+		 margin-left:11px;
+		 
+}

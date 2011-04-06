@@ -1147,3 +1147,95 @@ function showElectionResults(index,elecType)
 
    	var myDataTable = new YAHOO.widget.DataTable("elecResultsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
 }
+
+//to validate QuickRequest fields
+function validateQuickRequest(){
+		var errorMsg='';
+		var name=document.getElementsByName("name")[0].value;
+		var email=document.getElementsByName("email")[0].value;
+		var mobile=document.getElementsByName("mobileNO")[0].value;
+		var requirement=document.getElementsByName("requirement")[0].value;
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+        var alphaExp = /^[a-zA-Z\s]+$/;
+
+	if(name==""){
+		errorMsg += "Name is Required<br>";
+	}
+	else if(!name.match(alphaExp) || name.charAt(0)==" "){
+	
+		errorMsg += "Name may consist of a-z, A-Z, begin with a letter.<br>";
+	}
+	if(email==""){
+		errorMsg += "Email is Required<br>";
+	}
+	else if(!email.match(emailExp)){
+		errorMsg += "Invalid Email<br>";
+	}
+	if(mobile==""){
+		errorMsg += "MobileNo is Required<br>";
+	}
+	else if(isNaN(mobile)||mobile.indexOf(" ")!=-1||mobile.length>10 || mobile.length<10||(!(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")))
+	{
+		errorMsg+= "Invalid MobileNo<br>";
+	}
+	if(requirement==""){
+		errorMsg += "Requirement is Required<br>";
+	}
+    else if(!requirement.match(alphaExp)){
+		errorMsg += "Requirement should not contain Special Characters and Numbers";
+	}
+	return errorMsg;
+	}
+
+	//to create jquery dialog box for quick request
+	function submitDialogBox(){
+		
+	var errorMsg=validateQuickRequest();
+	$("#quickRequest_window").dialog({
+			resizable:false,
+			width: 400,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("quickRequest_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Quick Request</div>';
+		str += '<div id="feedback_window_body">';
+		str += '<table width="100%">';
+		str += '<tr>';
+		
+		if(errorMsg==''){
+		str += '<th width="98%" align="left">Your request sent successfully.</th>';
+		}
+		else{
+		str += '<th width="98%" align="left">';
+		str +='<div id="quickRequestErrDiv">';
+		str += errorMsg;
+		str +='</div>';
+		str+='</th>';
+		}
+		str += '</tr>';		
+		str += '</table>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '<table width="100%">';
+		str += '<tr>';
+		str += '<input id="okButton" type="button" value="Ok"></input>';
+		str += '</td>';
+		str += '</tr>';
+		str += '</table>';	
+		str += '</div>';
+
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("okButton");
+			oPushButton2.on("click",function(){
+			$("#quickRequest_window").dialog("destroy");
+		});
+
+	}
+	
