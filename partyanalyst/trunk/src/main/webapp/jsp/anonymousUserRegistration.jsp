@@ -115,6 +115,7 @@ if(request.getParameter("localBodyElectionTypeId")!=null){
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	
 <script type="text/javascript">
+
 function callAJAX(jsObj,url){
 	var results;	
 	var callback = {			
@@ -335,13 +336,13 @@ function uploadImageFile()
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="State" /></td>
 					 	<td>
-					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:145px;" />
+					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox');setCadreValue(this.options[this.selectedIndex].value,'onChange')" cssStyle="width:145px;" />
 						</td>
 					</tr>	
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="District" /></td>
 						<td>
-							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:145px;" />
+							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox'); setCadreValue(this.options[this.selectedIndex].value,'onChange')" cssStyle="width:145px;" />
 						</td>
 					</tr>	
 					<tr>

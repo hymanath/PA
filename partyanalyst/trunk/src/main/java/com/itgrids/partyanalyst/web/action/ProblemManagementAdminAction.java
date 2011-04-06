@@ -161,6 +161,7 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 	
 	public String execute () throws Exception 
 	{
+		String cPath = request.getContextPath();
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
@@ -175,8 +176,12 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 			 if(allProblemsCount!=null  && allProblemsCount.getProblemsCount()!=null ){
 				 if(allProblemsCount.getProblemsCount().size()!=0){
 					 chartNameForAllProblemsCount = "lastOneWeekProblemsGraph.png";
-			         //String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
-			         String chartPath = chartProducerURL + chartNameForAllProblemsCount;				
+					 String chartPath = "";
+						
+					if(cPath.contains("PartyAnalyst"))
+						chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;
+					else
+						chartPath = chartProducerURL + chartNameForAllProblemsCount;				
 
 			         ChartProducer.create3DBarChart("Problems for the past 7 days", "Range",createDataset(allProblemsCount.getProblemsCount()), chartPath);
 					 problemsInAWeekGraphDataAvailability = "dataAvailable";
@@ -189,8 +194,12 @@ public class ProblemManagementAdminAction extends ActionSupport implements Servl
 			 if(currentDayProblemsCount!=null && currentDayProblemsCount.getProblemsCount()!=null){
 				 if(currentDayProblemsCount.getProblemsCount().size()!=0){
 					 chartNameForAllProblemsCount = "allUnApprovedProblemsTillDayGraph.png";
-			        // String chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;				
-			        String chartPath = chartProducerURL + chartNameForAllProblemsCount;				
+					 String chartPath = "";
+						
+						if(cPath.contains("PartyAnalyst"))
+							chartPath = context.getRealPath("/")+ "charts\\" + chartNameForAllProblemsCount;
+						else
+							chartPath = chartProducerURL + chartNameForAllProblemsCount;				
 
 					 ChartProducer.create3DBarChart("All Non-Approved Problems By Location Wise ", "Range",createDataset(currentDayProblemsCount.getProblemsCount()), chartPath);
 					 problemsForCurrentDayGraphDataAvailability = "dataAvailable";

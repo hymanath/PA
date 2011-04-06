@@ -92,6 +92,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 	}
 	
 	public String execute() throws Exception{
+		String cPath = request.getContextPath();
 		townshipId = new Long(request.getParameter("TOWNSHIP_ID"));
 		townshipName = request.getParameter("TOWNSHIP_NAME");
 		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(townshipId, "Township");
@@ -100,8 +101,12 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 		partiesInTownship = staticDataService.getAllPartiesParticipatedInRevenueVillage(townshipId);
 		log.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
 		String chartName = "allPartiesPerformanceInAllRVElections_"+townshipId+"_"+townshipName+".png";
-        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-        String chartPath = chartProducerURL+ chartName;
+		String chartPath = "";
+		
+		if(cPath.contains("PartyAnalyst"))
+			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		else
+			chartPath = chartProducerURL+ chartName;
     	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath,260,600, null,false);
 		
 		return SUCCESS;
