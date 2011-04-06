@@ -362,50 +362,62 @@ function hideProblemSourceRow()
 				</tr>
 				<tr>
 					<td ><%=existingFrom%><font class="requiredFont">*</font></td>						
-					<td style="padding-left:15px;"><s:textfield id="existingFromText" name="existingFromDate" readonly="true" size="20"/> 
+					<!-- <td style="padding-left:15px;"><s:textfield id="existingFromText" name="existingFromDate" readonly="true" size="20"/> 
 						<a href="javascript:{}" onClick="setYears(1947, 2020); showCalender(this, 'existingFromDate');" > <img height="23" width="23" src="calender.png"></a> 
 
     
 	
-    <!-- Calender Script  --> 
+                    calender component change code
 
-    <table id="calenderTable">
-        <tbody id="calenderTableHead">
-          <tr>
-            <td colspan="4" align="center">
-	          <select onChange="showCalenderBody(createCalender(document.getElementById('selectYear').value,
-	           this.selectedIndex, false));" id="selectMonth">
-	              <option value="0">Jan</option>
-	              <option value="1">Feb</option>
-	              <option value="2">Mar</option>
-	              <option value="3">Apr</option>
-	              <option value="4">May</option>
-	              <option value="5">Jun</option>
-	              <option value="6">Jul</option>
-	              <option value="7">Aug</option>
-	              <option value="8">Sep</option>
-	              <option value="9">Oct</option>
-	              <option value="10">Nov</option>
-	              <option value="11">Dec</option>
-	          </select>
-            </td>
-            <td colspan="2" align="center">
-			    <select onChange="showCalenderBody(createCalender(this.value, 
-				document.getElementById('selectMonth').selectedIndex, false));" id="selectYear">
-				</select>
-			</td>
-            <td align="center">
-			    <a href="#" onClick="closeCalender();"><font color="#003333" size="+1">X</font></a>
-			</td>
-		  </tr>
-       </tbody>
-       <tbody id="calenderTableDays">
-         <tr style="">
-           <td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td>
-         </tr>
-       </tbody>
-       <tbody id="calender"></tbody>
-    </table>								
+				    <table id="calenderTable">
+				        <tbody id="calenderTableHead">
+				          <tr>
+				            <td colspan="4" align="center">
+					          <select onChange="showCalenderBody(createCalender(document.getElementById('selectYear').value,
+					           this.selectedIndex, false));" id="selectMonth">
+					              <option value="0">Jan</option>
+					              <option value="1">Feb</option>
+					              <option value="2">Mar</option>
+					              <option value="3">Apr</option>
+					              <option value="4">May</option>
+					              <option value="5">Jun</option>
+					              <option value="6">Jul</option>
+					              <option value="7">Aug</option>
+					              <option value="8">Sep</option>
+					              <option value="9">Oct</option>
+					              <option value="10">Nov</option>
+					              <option value="11">Dec</option>
+					          </select>
+				            </td>
+				            <td colspan="2" align="center">
+							    <select onChange="showCalenderBody(createCalender(this.value, 
+								document.getElementById('selectMonth').selectedIndex, false));" id="selectYear">
+								</select>
+							</td>
+				            <td align="center">
+							    <a href="#" onClick="closeCalender();"><font color="#003333" size="+1">X</font></a>
+							</td>
+						  </tr>
+				       </tbody>
+				       <tbody id="calenderTableDays">
+				         <tr style="">
+				           <td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td>
+				         </tr>
+				       </tbody>
+				       <tbody id="calender"></tbody>
+				    </table>	-->		
+    
+                    <td style="padding-left:10px;">
+						<TABLE>
+							<TR>
+								<TD><s:textfield id="existingFromText" readonly="true" name="existingFromDate" size="20"/>
+								<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>
+								<TD>
+									<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">
+									<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>										
+								</TD>
+							</TR>
+						</TABLE>		
 					</td>
 				</tr>
 				<tr id="problemSourceRowId">
