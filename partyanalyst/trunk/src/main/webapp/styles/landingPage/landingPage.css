@@ -821,7 +821,9 @@ input.input_text
 .homePageContentWidget_body_news_body
 {
 	color: #374047;
-    font-size: 11px;
+    font-family: verdana;
+    font-size: 10px;
+    font-weight: bold;
     height: 310px;
     line-height: 16px;
     padding: 5px;
