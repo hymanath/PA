@@ -135,7 +135,8 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	}
 	
 	public String getAllPollsForTheDay()
-	{
+	{	
+		String cPath = request.getContextPath();
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
@@ -157,8 +158,13 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 					opinionPollVO = opinionPollService.getDetailsOfTheLatestOpinionPoll();
 					questionsAndChoicesPercentage = opinionPollVO.getQuestionsOptionsVO();
 					String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
-			        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-					String chartPath = chartProducerURL + chartName;
+					String chartPath = "";
+					
+					if(cPath.contains("PartyAnalyst"))
+			        	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;	
+			        
+			        else
+					 chartPath = chartProducerURL + chartName;
 			        questionsAndChoicesPercentage.setImagePath(chartName);
 					ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 				}else{
@@ -171,6 +177,7 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 	
 	public String saveSelectedPoll()
 	{
+		String cPath = request.getContextPath();
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
@@ -185,8 +192,12 @@ public class VotesPollAction extends ActionSupport implements ServletRequestAwar
 				cookie.setMaxAge(questionsAndChoicesPercentage.getDifferenceBetweenCurrentDateAndPolledDate().intValue());
 				
 				String chartName = "opinionPoll_questionId_"+questionsAndChoicesPercentage.getQuestionId()+".png";
-		       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-				 String chartPath = chartProducerURL + chartName;
+				String chartPath = "";
+				
+				if(cPath.contains("PartyAnalyst"))
+					chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+				else
+				  chartPath = chartProducerURL + chartName;
 		        questionsAndChoicesPercentage.setImagePath(chartName);
 				ChartProducer.createBarChartForVotesPoll(questionsAndChoicesPercentage.getQuestion(), "", "", createDataset(questionsAndChoicesPercentage), chartPath,"votesPoll");
 			}

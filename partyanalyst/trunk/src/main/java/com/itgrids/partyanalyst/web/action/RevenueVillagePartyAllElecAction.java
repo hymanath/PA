@@ -83,12 +83,17 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 	}
 
 	public String execute() throws Exception{
+		String cPath = request.getContextPath();
 		constituencyRevenueVillagesVO = constituencyPageService.
 		getRevenuevillagesWiseElectionResultsOfPartyInMandal(new Long(partyId), new Long(tehsilId));
 		
 		String chartName = "partyPerformanceInOneMandalInAllElectionsByRevenueVillages_partyId"+partyId+"_terhsilId_"+tehsilId+".png";
-       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		 String chartPath = chartProducerURL + chartName;
+		String chartPath = "";
+		
+		if(cPath.contains("PartyAnalyst"))
+			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		else 
+			chartPath = chartProducerURL + chartName;
         if(constituencyRevenueVillagesVO.getElectionInfoByLocations().size() > 0)
         	ChartProducer.createLineChart("" , "Revenue Villages", "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,300,880, null,false);
         constituencyRevenueVillagesVO.setChartPath(chartName);

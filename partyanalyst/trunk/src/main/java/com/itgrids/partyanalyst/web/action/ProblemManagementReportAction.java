@@ -574,6 +574,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	}
 	
 	public String getProblemsCountByStatusBasedOnAccessLevel(){
+		String cPath = request.getContextPath();
 		if(log.isDebugEnabled())
 			log.debug("Entered in to getProblemsCountByStatusBasedOnAccessLevel in problem mgmt report");
 		if(task != null){
@@ -595,8 +596,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
 			
 			String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
-	       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			 String chartPath = chartProducerURL + chartName;
+			String chartPath = "";
+			
+			if(cPath.contains("PartyAnalyst"))
+				chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			else
+				chartPath = chartProducerURL + chartName;
 			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
 					
 			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
@@ -612,10 +617,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	
 	public String createProblemsPieChart(Long locationId, int totalProblemsCount, List<ProblemsCountByStatus>problemsStatusList)	
 	{
+		String cPath = request.getContextPath();
 		log.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
 		String chartName = ""+locationId+"_"+totalProblemsCount+"piechart"+".png";
-		//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		String chartPath = chartProducerURL + chartName;
+		String chartPath = "";
+		
+		if(cPath.contains("PartyAnalyst"))
+			chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		else
+			chartPath = chartProducerURL + chartName;
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		Color[] colors = new Color[problemsStatusList.size()];
 

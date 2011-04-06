@@ -169,7 +169,7 @@
 								}else if(jsObj.task == "corporationElectionsInfo")
 								{	
 									if(myResults.muncipalityVO!=null){
-										totalNoOflocalElectionsBodies++;								
+							totalNoOflocalElectionsBodies++;								
 										showCorporationInfo(myResults);
 									}else{
 										totalNoOflocalElectionsBodies--;
@@ -440,7 +440,8 @@ function showNextPreviousCandidateVotingTrendz(index,type)
 							maleVotesPercentInConstiVotes : data.maleVotesPercentInConstiVotes,
 							femaleVotesPercentInConstiVotes :data.femaleVotesPercentInConstiVotes,
 							maleOrFemaleVotesPercentInConstiVotes : data.maleOrFemaleVotesPercentInConstiVotes, 
-							task:'getNextPrevCandidateTrendz'
+							task:'
+'
 						}
 
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1438,7 +1439,7 @@ function buildElectionResults()
       imgElmt.style.display = "none";
 }*/
 
-function showCorporationInfo(myResults){
+function (myResults){
 	var HeadElmt = document.getElementById('coroporationData_main');
 	if(myResults.muncipalityVO == null){
 		var showDiv = document.getElementById('corporationDiv');
