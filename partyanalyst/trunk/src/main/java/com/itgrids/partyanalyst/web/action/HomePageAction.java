@@ -2,10 +2,13 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
@@ -30,7 +33,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 
 @SuppressWarnings("serial")
-public class HomePageAction extends ActionSupport implements ServletRequestAware{
+public class HomePageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
 	private HttpServletRequest request;
 	private List<SelectOptionVO> statesList,statesListForLocalBodyElection;
@@ -45,7 +48,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IProblemManagementReportService problemManagementReportService;
 	private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
+	private ServletContext context;
 
+	public void setServletContext(ServletContext context) {
+		
+		this.context = context;
+	}
 	
 	public List<SelectOptionVO> getStatesListForLocalBodyElection() {
 		return statesListForLocalBodyElection;
@@ -187,6 +195,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			loginStatus = "true";
 		}
 		
+		String requestURL = request.getRequestURL().toString();
+		System.out.println("................ Request URL :" + requestURL);
+		
+		String chartPath = getChartPath(requestURL);
+		
+		if(session != null && (session.getAttribute("chartPath") == null || session.getAttribute("chartPath") == ""))
+			session.setAttribute("chartPath", chartPath);
+		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
 		statesListForLocalBodyElection = staticDataService.getParticipatedStatesForAnElectionType(new Long(5)); 
@@ -246,5 +262,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		return SUCCESS;
 
 	}
+	
+	private String getChartPath(String requestURL){
+		
+		String chartPath = context.getRealPath("/") + "charts\\";
+		
+		if(requestURL.contains("www.partyanalyst.com"))
+			chartPath = "/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+		
+	 return chartPath;
+	}
+	
 
 }
