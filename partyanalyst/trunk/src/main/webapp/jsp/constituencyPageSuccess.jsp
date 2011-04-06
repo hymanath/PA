@@ -440,8 +440,7 @@ function showNextPreviousCandidateVotingTrendz(index,type)
 							maleVotesPercentInConstiVotes : data.maleVotesPercentInConstiVotes,
 							femaleVotesPercentInConstiVotes :data.femaleVotesPercentInConstiVotes,
 							maleOrFemaleVotesPercentInConstiVotes : data.maleOrFemaleVotesPercentInConstiVotes, 
-							task:'
-'
+							task:'getNextPrevCandidateTrendz'
 						}
 
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
