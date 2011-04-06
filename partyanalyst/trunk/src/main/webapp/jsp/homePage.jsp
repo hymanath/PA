@@ -814,11 +814,11 @@ var loginStatus = '${loginStatus}';
 						<td width="20%" valign="top">
 							<div class="homePage_new_footer_links_head">Connect</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="javascript:{}">Register</a></li>
-								<li><a href="javascript:{}">Login</a></li>
+								<li><a href="anonymousUserAction.action">Register</a></li>
+								<li><a href="loginInputAction.action">Login</a></li>
 								<li><a href="javascript:{}">Explore</a></li>
 								<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
-								<li><a href="javascript:{}">Feedback</a></li>
+								<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a></li>
 								<li><a href="javascript:{}">Articles</a></li>
 								<li><a href="javascript:{}">Blogs</a></li>
 							</ul>
@@ -834,7 +834,7 @@ var loginStatus = '${loginStatus}';
 						<td width="10%" valign="top">
 							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="javascript:{}">Facebook</a></li>
+								<li><a href="http://www.facebook.com/PartyAnalyst">Facebook</a></li>
 								<li><a href="javascript:{}">Twitter</a></li>
 								<li><a href="javascript:{}">LinkedIN</a></li>
 							</ul>
