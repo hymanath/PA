@@ -656,6 +656,9 @@ var loginStatus = '${loginStatus}';
 									<div class="homePageContentWidget_readMore">
 										<img src="images/icons/homePage_new/readMoreButton.jpg"/></img>
 									</div>
+									<div>
+									    <img src="images/icons/homePage_new/chart_view_1.PNG"></img>
+									</div>
 								</div>
 								<div class="homePageContentWidget_footer">
 									
