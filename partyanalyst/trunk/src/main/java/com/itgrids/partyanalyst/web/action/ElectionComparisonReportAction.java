@@ -280,6 +280,9 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
         try{
         	session = request.getSession();
+        	String cPath = request.getContextPath();
+        	String seatsLineChartPath;
+        	String totalPercentLineChartPath;
     		String chartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("BarChart");
     		String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
             String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
@@ -290,13 +293,18 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             
             String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartSeatsWon");
             String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
-           // String seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
-            String seatsLineChartPath = chartProducerURL+ seatsLineChartName;
+            
+            if(cPath.contains("PartyAnalyst"))
+                seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+            else
+            	seatsLineChartPath = chartProducerURL+ seatsLineChartName;
             
             String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartTotalPercent");
             String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
-            //String totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
-            String totalPercentLineChartPath = chartProducerURL+ totalPercentLineChartName;
+            if(cPath.contains("PartyAnalyst"))
+                totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
+            else
+                totalPercentLineChartPath = chartProducerURL+ totalPercentLineChartName;
             
             if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
             	if(hasAlliances==false){

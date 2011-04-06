@@ -96,10 +96,17 @@ public class CompleteResultForAPollAction extends ActionSupport implements
 	}
 	public String execute () throws Exception 
 	{
+		String cPath = request.getContextPath();
+		
 		questionsOptionsVO = opinionPollService.getQuestionAndPercentageOfVotesForChoices(questionId);
 		String chartName = "opinionPoll_questionId_"+questionsOptionsVO.getQuestionId()+"_detailed.png";
-       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		String chartPath = chartProducerURL + chartName;
+		String chartPath;
+		
+		if(cPath.contains("PartyAnalyst"))
+			chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		else
+		    chartPath = chartProducerURL + chartName;
+		
 		questionsOptionsVO.setImagePath(chartName);
 		ChartProducer.createBarChartForVotesPoll(questionsOptionsVO.getQuestion(), "", "", createDataset(questionsOptionsVO), chartPath,"completeResults");
 		return SUCCESS;

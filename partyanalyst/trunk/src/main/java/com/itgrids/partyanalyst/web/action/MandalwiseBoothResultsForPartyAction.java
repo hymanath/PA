@@ -228,11 +228,17 @@ ServletRequestAware, ServletContextAware{
  }
 
  	public VotesMarginResultsMainVO  getMandalWiseGraphsForTheConstituency(VotesMarginResultsMainVO votesMarginResultsMainVO){
+ 		String cPath = request.getContextPath();
+ 		String chartPath="";
 		try{
 			for(int i=0;i<votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().size();i++){
 				String chartName = votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getChartName();
-				//String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-				String chartPath = chartProducerURL + chartName;
+					
+				if(cPath.contains("PartyAnalyst"))
+					 chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+					else
+					 chartPath = chartProducerURL + chartName;
+				
 		 	    String title = "Mandal Wise Election Result For "+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName()+" Mandal";		 	    
 		        ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(votesMarginResultsMainVO,i);
 		        
@@ -406,6 +412,8 @@ ServletRequestAware, ServletContextAware{
 		constituencyDetails = new ConstituencyInfoVO();
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		String cPath = request.getContextPath();
+
 		String pieChart = "";
 		String pieChartPath = "";
 		String title = "";
@@ -414,8 +422,11 @@ ServletRequestAware, ServletContextAware{
 		int i=0;
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
-			//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
-			pieChartPath = chartProducerURL+ pieChart;
+			
+			if(cPath.contains("PartyAnalyst"))
+				pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			else
+				pieChartPath = chartProducerURL+ pieChart;
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
 					title = "Each Mandal Voters Share* After Delimitation";

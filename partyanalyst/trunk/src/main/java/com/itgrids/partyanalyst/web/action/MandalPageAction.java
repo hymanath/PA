@@ -224,7 +224,9 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	@SuppressWarnings("unchecked")
 	public String getMandalPartyResult() throws Exception{		
 		
-		String param = getTask();		
+		String cPath = request.getContextPath();
+		String param = getTask();
+		String chartPath="";
 		try {
 			jsonObj = new JSONObject(param);
 		} catch (Exception e) {			
@@ -236,8 +238,11 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		String alliance = "true";//jsonObj.getString("alliance");
 		
 		String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
-       // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		 String chartPath = chartProducerURL+ chartName;
+         if(cPath.contains("PartyAnalyst"))
+        	 chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+         else
+		  chartPath = chartProducerURL+ chartName;
+         
         mandalDataWithChartVO = new MandalDataWithChartVO();
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = partyBoothWiseResultsService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
 		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);

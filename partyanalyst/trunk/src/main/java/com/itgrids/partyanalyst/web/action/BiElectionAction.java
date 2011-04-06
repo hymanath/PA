@@ -430,10 +430,15 @@ public class BiElectionAction extends ActionSupport implements
 	{
 		String chartName = null;
 		try{
+			String cPath = request.getContextPath();
 		
  		String lineChartName = "bielections in _" +partialChartName+"_forYear_"+year+".png";
-       // String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
- 		 String chartPath = chartProducerURL+ lineChartName;
+ 		String chartPath="";
+ 		
+ 		if(cPath.contains("PartyAnalyst"))
+ 			chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+ 		else
+ 			chartPath = chartProducerURL+ lineChartName;
  		String title = year+" Assembly Election Results in Bye-Election Constituencies";
         Set<String> partiesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,600,920, ChartUtils.getLineChartColors(partiesInChart),true);
@@ -452,9 +457,17 @@ public class BiElectionAction extends ActionSupport implements
 		String enlargedLineChartName = null;
 		try{
 		
+			String cPath = request.getContextPath();
+			
 		enlargedLineChartName = "enlarged_bielections in _" +partialChartName+"_forYear_"+year+".png";
-       // String enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
-		String enlargedChartPath = chartProducerURL + enlargedLineChartName;
+		
+		String enlargedChartPath="";
+     
+		if(cPath.contains("PartyAnalyst"))
+			enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
+		else
+			enlargedChartPath = chartProducerURL + enlargedLineChartName;
+		
         String enlargedTitle = year+" Assembly Election Results in Bye-Election Constituencies";
         Set<String> partiesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChartWithThickness(enlargedTitle,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),enlargedChartPath,600,850, ChartUtils.getLineChartColors(partiesInChart),true);
@@ -514,12 +527,17 @@ public class BiElectionAction extends ActionSupport implements
 	public String  getEnlargedGraphForMandalResults(Long constituencyId,String constituencyName){
 			String domainAxisName = "Mandals";
 			String enlargedLineChartName = null;
+			String cPath = request.getContextPath();
 			
 			List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId,0);
 		    String enlargedTitle =  "All Election Results for "+constituencyName;         
 		    enlargedLineChartName = "enlarged_mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
-		    //enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
-		    enlargedChartPath = chartProducerURL+ enlargedLineChartName;
+		    
+		    if(cPath.contains("PartyAnalyst"))
+		        enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
+		    else
+		    	enlargedChartPath = chartProducerURL+ enlargedLineChartName;
+		    
 		    Set<String> partiesInChart = new LinkedHashSet<String>();
 		    ChartProducer.createLineChartWithThickness(enlargedTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), enlargedChartPath,600,920,ChartUtils.getLineChartColors(partiesInChart),true);
 		    enlargedLineChartNameForMandalResult = enlargedLineChartName;
@@ -533,11 +551,16 @@ public class BiElectionAction extends ActionSupport implements
 		  String chartTitle = "AllPartiesAllElectionYearsForAllElectiontypesConstituencyLatestMandalDetails";		  
 		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;
 		  String domainAxisName = "Mandals";
-		  		 
+		  String cPath = request.getContextPath();
+		  
 		  chartTitle = "All Election Results for "+constituencyName;
 		  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
-		 // chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  chartPath =  chartProducerURL + chartName;
+		  //For charts
+		  if(cPath.contains("PartyAnalyst"))
+			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		  else
+			  chartPath =  chartProducerURL + chartName;
+		  
 		  Set<String> partiesInChart = new LinkedHashSet<String>();
 		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), chartPath,300,820,ChartUtils.getLineChartColors(partiesInChart),true);
 			  
@@ -581,11 +604,15 @@ public class BiElectionAction extends ActionSupport implements
 		String title = "";
 		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
 		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		String cPath = request.getContextPath();
 		int i=0;
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
-			//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
-			pieChartPath = chartProducerURL + pieChart;
+			
+			 if(cPath.contains("PartyAnalyst"))
+			     pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			 else
+			     pieChartPath = chartProducerURL + pieChart;
 			
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
