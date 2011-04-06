@@ -215,6 +215,7 @@ var loginStatus = '${loginStatus}';
 	<div class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
 	<div id="feedback_window"><div id="feedback_window_inner"></div></div>
+	<div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
 
 	<div id="homePageContainer" style="overflow:visible;">
 		<div id="floatingDiv_relative_main">
@@ -767,7 +768,9 @@ var loginStatus = '${loginStatus}';
 											</td>	
 											<td>
 												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Follow me</span>
+													<span class="homePageContentWidget_head_center_span">Quick Request</span>
+													
+
 												</div>
 											</td>	
 											<td width="20px">
@@ -777,7 +780,26 @@ var loginStatus = '${loginStatus}';
 									</table>
 								</div>
 								<div class="homePageContentWidget_body">
-									
+									<table>
+										
+										<tr>
+										  <td style="font-weight:bold">Name:<input type="text" name="name" id="quickRequestTextbox"></td>
+										</tr>
+										<tr>
+										  <td style="font-weight:bold">Email:<input type="text" name="email" id="quickRequestTextbox"></td>
+										</tr>
+										<tr>
+										  <td style="font-weight:bold">Mobile:<input type="text" name="mobileNO" id="quickRequestTextbox"></td>
+										</tr>
+										<tr>
+										  <td style="font-weight:bold">Your Requirement:<br><br><textarea name="requirement" rows="3" cols="20" id="quickRequestTextbox" ></textarea></td>
+										</tr>
+										<tr>
+										  <td><div id="feedback"><input type="submit" value="submit" id="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
+										</tr>
+									</div>
+								 </table>
+
 								</div>
 								<div class="homePageContentWidget_footer">
 
