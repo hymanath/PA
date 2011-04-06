@@ -1439,7 +1439,7 @@ function buildElectionResults()
       imgElmt.style.display = "none";
 }*/
 
-function (myResults){
+function showCorporationInfo(myResults){
 	var HeadElmt = document.getElementById('coroporationData_main');
 	if(myResults.muncipalityVO == null){
 		var showDiv = document.getElementById('corporationDiv');
