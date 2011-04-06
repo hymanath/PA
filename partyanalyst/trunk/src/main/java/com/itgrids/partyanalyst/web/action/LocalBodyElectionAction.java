@@ -318,11 +318,17 @@ public class LocalBodyElectionAction extends ActionSupport implements
 			log.debug(" Inside generateChartForResultsInElection Method ..");
 		
 		session = request.getSession();
+		String cPath = request.getContextPath();
+		String chartPath;
 				
 		String chartId = localBodyName.concat("_LocalBodyElection").concat("_For_").concat(electionYear);
 		String chartName = localBodyType+ chartId + session.getId()+".png";
-		//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		String chartPath = chartProducerURL+ chartName;
+		
+		if(cPath.contains("PartyAnalyst"))
+		   chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		else
+		   chartPath = chartProducerURL+ chartName;
+		
 		String title = "All Parties Performance In ".concat(localBodyName).concat(" ").concat(localBodyType).concat(" In ").concat(electionYear);
 		ChartProducer.createLineChart(title, "", "", createDataSetForChart(partyResultsVO,localBodyName,electionYear,localBodyType), chartPath,280,650, null,true );
 		
@@ -351,6 +357,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	public String getLocalElectionBodyOverallResults(){
 		String param = null;
 		param = getTask();
+		String cPath = request.getContextPath(); 
 		
 		try {
 			jObj = new JSONObject(param);
@@ -371,8 +378,12 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		for(TeshilPartyInfoVO lebParty:teshilPartyInfoVO.getMuncipalityVO()){
 			title = "All Parties Performance In "+lebParty.getMuncipalityName()+" In "+lebParty.getLatestMuncipalElectionYear();
 			pieChartName = "lebInfo_"+lebParty.getMuncipalityName()+"_"+lebParty.getLatestMuncipalElectionYear()+".png";
-			//pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
-			pieChartPath = chartProducerURL+ pieChartName;
+			
+			if(cPath.contains("PartyAnalyst"))
+				pieChartPath = context.getRealPath("/")+ "charts\\" + pieChartName;
+			else
+				pieChartPath = chartProducerURL+ pieChartName;
+			
 			if(lebParty.getMuncipalityVO().size() > 0)
 				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(lebParty.getMuncipalityVO()), pieChartPath, 
 						null,true,260,270);
@@ -385,7 +396,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 	public String getGreaterElectionsOverallResults(){
 		String param = null;
 		param = getTask();
-		
+		String cPath = request.getContextPath(); 
+		String chartPath;
 		try {
 			jObj = new JSONObject(param);
 			if(log.isDebugEnabled())
@@ -401,8 +413,12 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		if(greaterInfo.getLocalElectionsInfo() != null){
 			for(MandalVO electionInfoVO:greaterInfo.getLocalElectionsInfo()){
 				String lebChartName = "localElectionBodiesChart"+electionInfoVO.getName()+"_"+electionInfoVO.getId()+".png";
-		        //String chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
-				String chartPath = chartProducerURL+ lebChartName;
+				
+				if(cPath.contains("PartyAnalyst"))
+					 chartPath = context.getRealPath("/")+ "charts\\" + lebChartName;
+				else
+					 chartPath = chartProducerURL+ lebChartName;
+				
 		        partiesInChart = new LinkedHashSet<String>();
 		   		if(electionInfoVO.getWardwiseResultsForParty().size() > 0)
 		   			ChartProducer.createLineChart("All Parties Performance In GHMC Elections Of "+electionInfoVO.getElectionYear(), "Wards", "Percentages", 

@@ -235,6 +235,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 
 	public String execute()throws Exception{
 		
+		String cPath = request.getContextPath();
 		mandalId = request.getParameter("MANDAL_ID");
 		String mandalID = request.getParameter("MANDAL_ID");
 		String mandalName = request.getParameter("MANDAL_NAME");
@@ -297,10 +298,12 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
 			allElectionResults.add(entry.getKey());
 		}
-		
+		String chartPath="";
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
-        //String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		String chartPath = chartProducerURL + chartName;
+		if(cPath.contains("PartyAnalyst"))
+             chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		else
+		   chartPath = chartProducerURL + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
         Set<String> paritesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);

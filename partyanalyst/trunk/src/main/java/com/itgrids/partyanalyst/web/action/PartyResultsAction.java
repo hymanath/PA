@@ -226,9 +226,15 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 			
 	
 		session = request.getSession();
+		String cPath = request.getContextPath();
+		 String chartPath="";
 		String chartName = "partyResultsChart_" + chartId.toString() + session.getId() + ".png";
-      //  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  String chartPath = chartProducerURL + chartName;
+		
+		if(cPath.contains("PartyAnalyst"))
+           chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		else
+		   chartPath = chartProducerURL + chartName;
+		
         request.setAttribute("chartName", chartName);
         List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
         

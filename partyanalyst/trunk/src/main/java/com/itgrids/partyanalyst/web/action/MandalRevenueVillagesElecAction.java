@@ -129,13 +129,17 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 
 	public String execute(){
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(new Long(tehsilId));
+		String cPath = request.getContextPath();
+		String chartLocation="";
 		if(parties != null){
 			List<PartyResultVO> partiesResults = biElectionPageService.
 			findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
 			
 			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
-	       // String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
-			 String chartLocation = chartProducerURL + chartPath;
+			if(cPath.contains("PartyAnalyst"))
+	            chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
+			else
+			   chartLocation = chartProducerURL + chartPath;
 	        //Set<String> partiesInChart = new LinkedHashSet<String>();
 	        if(partiesResults.size() > 0)
 	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
@@ -152,13 +156,17 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	}
 	
 	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
+		String cPath = request.getContextPath();
+		String chartPath="";
 		townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
 	
 		for(int i=0;i<townshipBoothDetailsVO.size();i++){
 			String chartName = townshipBoothDetailsVO.get(i).getChartName();
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
-			//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-			String chartPath = chartProducerURL+ chartName;
+			if(cPath.contains("PartyAnalyst"))
+			    chartPath = context.getRealPath("/") + "charts\\" + chartName;
+			else
+			    chartPath = chartProducerURL+ chartName;
 			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
 				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
 			}else{

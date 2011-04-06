@@ -294,9 +294,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 
 				
 				//call service to get if state has regions or not
+				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					electionCompleteDetailsVO.setHasRegions(false);
+				}
+				else{
 				Boolean hasRegions = stateRegionService.getStateRegionAvailability(stateId);
 				electionCompleteDetailsVO.setHasRegions(hasRegions);
-				
+				}
 				/*
 				 * try{ //charts for alliance parties state level
 				 * if(electionCompleteDetailsVO
@@ -466,6 +470,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	public String createLineChartForAlliancParties(
 			AlliancePartyResultsVO alliancParties) {
 		String chartName = null;
+		String cPath = request.getContextPath();
+		String alliancePartiesChartPath;
 		try {
 			String alliancePartiesChartId = electionCompleteDetailsVO
 					.getElectionType().concat(
@@ -474,9 +480,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 							"Election_Results").concat("LineChart");
 			String alliancePartiesChartName = "alliancPartyElectionResults_"
 					+ alliancePartiesChartId + session.getId() + ".png";
-			//String alliancePartiesChartPath = context.getRealPath("/")
-				//	+ "charts\\" + alliancePartiesChartName;
-					String alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
+			if(cPath.contains("PartyAnalyst"))
+			      alliancePartiesChartPath = context.getRealPath("/")+ "charts\\" + alliancePartiesChartName;
+			else
+				  alliancePartiesChartPath = chartProducerURL + alliancePartiesChartName;
+			
 			ChartProducer.createLineChart("", "", "Seats",
 					createDataSetForAlliancPartyOverallResults(alliancParties
 							.getPartiesInAlliance(), "BarChart", null),
@@ -499,8 +507,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 	public String createLineChartForAlliancPartiesForDistrictLevel(
 			AlliancePartyDistrictResultsVO alliancParties) {
 		String chartName = null;
+		String alliancePartiesChartPath;
 		List<Color> colors = new ArrayList<Color>();
 		try {
+			String cPath = request.getContextPath();
 			String alliancePartiesChartId = electionCompleteDetailsVO
 					.getElectionType().concat(
 							electionCompleteDetailsVO.getElectionYear())
@@ -509,9 +519,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					.concat("LineChart");
 			String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_"
 					+ alliancePartiesChartId + session.getId() + ".png";
-			//String alliancePartiesChartPath = context.getRealPath("/")
-				//	+ "charts\\" + alliancePartiesChartName;
-			String alliancePartiesChartPath = chartProducerURL+alliancePartiesChartName;
+			
+			if(cPath.contains("PartyAnalyst"))
+			    alliancePartiesChartPath = context.getRealPath("/")+ "charts\\" + alliancePartiesChartName;
+			else
+		        alliancePartiesChartPath = chartProducerURL+alliancePartiesChartName;
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					alliancParties.getPartiesInAlliance(), colors);
 			log
@@ -539,6 +551,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			List<DistrictWisePartyPositionsVO> allPartiesResults,
 			String chartType, String title, int height, int width) {
 		String chartName = null;
+		String cPath = request.getContextPath();
+		String partyDistrictResultsChartPath;
 		List<Color> colors = new ArrayList<Color>();
 		try {
 			String partyDistrictResultsChartId = electionCompleteDetailsVO
@@ -548,9 +562,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 					.concat("LineChart").concat(chartType);
 			String partyDistrictResultsChartName = "partyDistrictResults_"
 					+ partyDistrictResultsChartId + session.getId() + ".png";
-       //String partyDistrictResultsChartPath = context.getRealPath("/")
-	//		+ "charts\\" + partyDistrictResultsChartName;
-			String partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
+			
+			if(cPath.contains("PartyAnalyst"))
+			   partyDistrictResultsChartPath = context.getRealPath("/")+ "charts\\" + partyDistrictResultsChartName;
+			else
+			   partyDistrictResultsChartPath = chartProducerURL + partyDistrictResultsChartName;
 
 			CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(
 					allPartiesResults, colors);
@@ -581,6 +597,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			String title) {
 		log.debug("in create line graph method");
 		String chartName = null;
+		String cPath = request.getContextPath();
+		String allPartiesChartPath;
 		List<Color> colors = new ArrayList<Color>();
 		try {
 			String allPartiesChartId = electionCompleteDetailsVO
@@ -588,11 +606,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 							electionCompleteDetailsVO.getElectionYear())
 					.concat("Overall").concat("Election_Results").concat(
 							"All_Parties_LineChart").concat(chartType);
-			String allPartiesChartName = "alliancPartyElectionResults_"
-					+ allPartiesChartId + session.getId() + ".png";
-			//String allPartiesChartPath = context.getRealPath("/") + "charts\\"
-				//	+ allPartiesChartName;
-			String allPartiesChartPath = chartProducerURL+allPartiesChartName;
+			String allPartiesChartName = "alliancPartyElectionResults_"+ allPartiesChartId + session.getId() + ".png";
+			if(cPath.contains("PartyAnalyst"))
+			    allPartiesChartPath = context.getRealPath("/") + "charts\\"+ allPartiesChartName;
+			else
+			   allPartiesChartPath = chartProducerURL+allPartiesChartName;
 
 			ChartProducer.createLineChart(title, "", "Seats",
 					createDataSetForAlliancPartyOverallResults(

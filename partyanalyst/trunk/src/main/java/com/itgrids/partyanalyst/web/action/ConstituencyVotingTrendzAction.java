@@ -618,6 +618,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	
 	public String getAllPartiesVotesSharing(){
 		
+		String cPath = request.getContextPath();
 		String chartNam = "";
 		String param=null;			    
 		param = getTask();
@@ -685,8 +686,12 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			
         	  String chartTitle = " All Parties Performance In "+constiName + " Constituency ";
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+chartNam+".png";
-			 // String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  String chartPath = chartProducerURL + chartName;
+			  String chartPath ;
+			  
+			  if(cPath.contains("PartyAnalyst"))
+				  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			  else
+				  chartPath = chartProducerURL + chartName;
 			  
 			  chartColorsAndDataSetVO = createDatasetForChart(electionResList,selectdElections);
 			  ChartProducer.createLineChartWithThickness(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,500,1000,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
@@ -736,13 +741,19 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		log.debug("Inside chart building method...");
 		Set<String> partiesInChart = new LinkedHashSet<String>();
 		try{ 
+			String chartPath;
+			String cPath = request.getContextPath();
 			for(ConstituencyElectionResultsVO results:electionResultsVO){
 				if(results.getResultsFlag()){
 					List<CandidateOppositionVO> candResList = results.getCandidateOppositionList();
 					if(candResList != null && candResList.size() > 0){
 						String chartName = "ByeElection_For_"+results.getElectionType()+"_"+results.getElectionYear()+"_piechartFor_"+constiName+".png";
-						//String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-						String chartPath = chartProducerURL+ chartName;
+						
+						if(cPath.contains("PartyAnalyst"))
+							 chartPath = context.getRealPath("/") + "charts\\" + chartName;
+						else
+							 chartPath = chartProducerURL+ chartName;
+						
 						String chartTitle = ""+results.getElectionType()+" - "+results.getElectionYear();
 						final DefaultPieDataset dataset = new DefaultPieDataset();
 						for(CandidateOppositionVO candRes:candResList){

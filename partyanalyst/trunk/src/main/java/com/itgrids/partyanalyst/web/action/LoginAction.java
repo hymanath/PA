@@ -391,6 +391,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	}
 
 	public void setUrl(String url) {
+		
 		this.url = url;
 	}
 
@@ -445,13 +446,20 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	}
 	
      private String finalResultString() {
+    	System.out.print("URL"+url);
     	if(src != null && !"null".equalsIgnoreCase(src))
+    	{
+    		log.debug(src);
  			return src;
+    	}
  		else if(url != null && url.length() > 0 && url.contains(".action") && !url.contains("loginAction")){
  			url = StringUtils.split(url,".")[0].substring(1);
+ 			//System.out.println(url);
  			return "redirectUrl";
  		}else if("1".equalsIgnoreCase(userType))
  			return IConstants.PARTY_ANALYST_USER;
+ 		
+ 		
  		
  		return IConstants.FREE_USER;        
 	}
