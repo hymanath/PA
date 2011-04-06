@@ -866,7 +866,7 @@ if(category == "candidate")
 		else if(value == "parliament")
 		{
 			id = parliamentConstiId;
-			elmt.innerHTML = 'Assess ${constituencyName} Parliament Constituency Elections Results';
+			elmt.innerHTML = 'Assess ${parliamentConstiName} Parliament Constituency Elections Results';
 		}		
 		
 		var jsObj=
