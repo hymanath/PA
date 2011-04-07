@@ -29,6 +29,7 @@
 				<option value="West Bengal">West Bengal</option>
 				<option value="Assam">Assam</option>
 				<option value="Kerala">Kerala</option>
+				<option value="Puducherry">Puducherry</option>
 			</select></td>
 		</tr>
 		<tr>
