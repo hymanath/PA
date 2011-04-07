@@ -282,15 +282,29 @@ public class ElectionComparisonReportAction extends ActionSupport implements
         	
         	String sPath = (String)session.getAttribute("chartPath");
         	
+        	logger.warn("Path To Save Charts :" + sPath);
+        	
         	String seatsLineChartPath = "";
         	String totalPercentLineChartPath = "";
     		String chartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("BarChart");
     		String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
-            String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
+            //String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
+    		String chartPath = "";
+    		
+    		if(sPath != null)
+    			chartPath = sPath + barChartName;
+    		else
+    			chartPath = context.getRealPath("/") + "charts\\" + barChartName;    			
             
             String percentageChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChart");
             String lineChartName = "electionsComparisonChart_" + percentageChartId + session.getId()+".png";
-            String lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+            //String lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+            String lineChartPath = "";
+            
+            if(sPath != null)
+            	lineChartPath = sPath + lineChartName;
+            else
+            	lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
             
             String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartSeatsWon");
             String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
@@ -299,6 +313,8 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             	seatsLineChartPath = sPath + seatsLineChartName;
             else
             	seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+            
+            logger.warn("Created Seats Line Chart Path :" + seatsLineChartPath);
                        
             String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartTotalPercent");
             String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
@@ -307,6 +323,8 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             	totalPercentLineChartPath = sPath + totalPercentLineChartName;
             else
             	 totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
+            
+            logger.warn("Created Percentage Line Chart Path :" + totalPercentLineChartPath);
                       
             if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
             	if(hasAlliances==false){

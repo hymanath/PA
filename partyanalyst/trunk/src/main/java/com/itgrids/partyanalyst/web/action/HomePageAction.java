@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
 
 /**
  * A class representing to display the data related to home page
@@ -49,7 +50,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<ProblemBeanVO> problemsList;
 	private String loginStatus;
 	private ServletContext context;
-
+	
+	private static final org.apache.log4j.Logger log = Logger.getLogger(HomePageAction.class);
+	
 	public void setServletContext(ServletContext context) {
 		
 		this.context = context;
@@ -265,10 +268,16 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	
 	private String getChartPath(String requestURL){
 		
-		String chartPath = context.getRealPath("/") + "charts\\";
+		String chartPath     = context.getRealPath("/") + "charts\\";
+		String pathSeperator = System.getProperty("file.separator");
+		String osDetails     = System.getProperty("os.name");
+		
+		//chartPath = "/var/www/vsites/partyanalyst.com/httpdocs/charts/";
 		
 		if(requestURL.contains("www.partyanalyst.com"))
-			chartPath = "/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+			chartPath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + "charts" + pathSeperator;
+		
+		log.warn("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
 		
 	 return chartPath;
 	}
