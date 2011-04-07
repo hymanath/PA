@@ -26,6 +26,7 @@ function initializeHomePage()
 
 	//buildElectionTrendzTabView();
 	buildHOmePageImageSlider();
+	buildHOmePageChartsSlider();
 	//var stateEl = document.getElementById("stateList_res");
 	//var stateSelectElVal = stateEl.options[stateEl.selectedIndex].value;
 
@@ -306,6 +307,37 @@ function buildHOmePageImageSlider()
 	
 	var navArray = ['','','','',''];
 	$("#homePage_Image_Header").sudoSlider({ 
+			numeric: true,
+			fade: true,
+			speed:'5000',
+			auto:true,
+			crossFade: false,
+			updateBefore:true,
+			prevNext: false,
+			startSlide: 1,
+			updateBefore: true,			
+			numericText:navArray
+	   });
+}
+
+function buildHOmePageChartsSlider()
+{
+	var elmt = document.getElementById("homePage_Chart_Header");
+
+	var str = '';
+	str += '<ul>';
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_1.PNG"></li>';
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_4.png"></li>';
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_3.png"></li>';	
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_5.png"></li>';
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_6.png"></li>';
+	str += '<li><img width="700" height="280" src="images/icons/homePage_new/chart_view_2.png"></li>';
+	str += '</ul>';
+
+	elmt.innerHTML = str;
+	
+	var navArray = ['','','','','',''];
+	$("#homePage_Chart_Header").sudoSlider({ 
 			numeric: true,
 			fade: true,
 			speed:'5000',
