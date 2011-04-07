@@ -637,6 +637,12 @@ input.input_text
 	height:380px;
 }
 
+#homePage_Chart_Header
+{
+	width:700px;
+	height:280px;
+}
+
 /*.ui-draggable .ui-dialog-titlebar
 {
 	display:none;
@@ -666,10 +672,24 @@ input.input_text
 #homePage_Image_Header {
     width:660px;
 }
+
+#homePage_Chart_Header {
+    width:700px;
+}
 #homePage_Image_Header img{
     border:none;
 }
+#homePage_Chart_Header img{
+    border:none;
+}
+
 #homePage_Image_Header ul, #homePage_Image_Header li{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+#homePage_Chart_Header ul, #homePage_Chart_Header li{
     margin:0;
     padding:0;
     list-style:none;
@@ -679,6 +699,12 @@ input.input_text
     overflow:hidden; 
 }
 
+#homePage_Chart_Header li { 
+    width:700px;
+    overflow:hidden; 
+}
+
+
 #homePage_Image_Header_main #controls
 {
 	left:10px;
@@ -686,7 +712,21 @@ input.input_text
 	top:-40px;
 }
 
+#homePage_Chart_Header_main #controls
+{
+	left:10px;
+	position:relative;
+	top:-40px;
+}
+
+
 #homePage_Image_Header_main .controls li a
+{
+	height:10px;
+	padding:0 5px;
+}
+
+#homePage_Chart_Header_main .controls li a
 {
 	height:10px;
 	padding:0 5px;
