@@ -798,7 +798,7 @@ var loginStatus = '${loginStatus}';
 										  <td style="font-weight:bold">Your Requirement:<br><br><textarea name="requirement" rows="3" cols="20" id="quickRequestTextbox" ></textarea></td>
 										</tr>
 										<tr>
-										  <td><div id="feedback"><input type="submit" value="submit" id="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
+										  <td><div id="feedback"><input type="submit" value="POST" id="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
 										</tr>
 									</div>
 								 </table>
