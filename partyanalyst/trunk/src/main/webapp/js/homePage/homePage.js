@@ -1306,3 +1306,48 @@ function validateQuickRequest(){
 		errMsg.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
 	}
 }
+//To create news box
+
+	function newsBox(msg)
+	{
+		
+	$("#quickRequest_window").dialog({
+			resizable:false,
+			width: 600,
+			minHeight:110,
+			show:'slide',
+			modal:true
+		});	
+		$(".ui-dialog-titlebar").hide();
+
+		var elmt = document.getElementById("quickRequest_window_inner");
+
+		var str = '';
+		str += '<div id="feedback_window_head">Do u Know</div>';
+		str += '<div id="feedback_window_body">';
+		str += '<table width="100%">';
+		
+		str += '<td>';
+		str += msg;
+		str += '</td>';
+		str += '</tr>';	
+		
+		str += '</table>';
+		str += '</div>';
+		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+		str += '<table width="100%">';
+		str += '<tr>';
+		str += '<input id="okButton" type="button" value="Ok"></input>';
+		str += '</td>';
+		str += '</tr>';
+		str += '</table>';	
+		str += '</div>';
+
+		elmt.innerHTML = str;
+
+		var oPushButton2 = new YAHOO.widget.Button("okButton");
+			oPushButton2.on("click",function(){
+			$("#quickRequest_window").dialog("destroy");
+		});
+
+     }
