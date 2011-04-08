@@ -423,7 +423,7 @@ function showAllNewPostedReasons()
 	getAllProblemsBetweenDates("getAllNewPostedReasons");
 }
 
-
+window.history.forward(1);
 
 </script>
 

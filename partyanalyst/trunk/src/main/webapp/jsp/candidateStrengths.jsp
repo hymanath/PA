@@ -202,6 +202,7 @@ var type = '${type}';
 	   var browser1 = window.open("constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
 	   browser1.focus();
 	}
+window.history.forward(1);
 </script>
 
 
