@@ -13,11 +13,8 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDepartmentOrganisationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IProblemActivityDAO;
 import com.itgrids.partyanalyst.dao.IProblemAndProblemSourceDAO;
@@ -50,7 +48,6 @@ import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemImpactLevelDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
-import com.itgrids.partyanalyst.dao.IInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -59,16 +56,12 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.IUserProblemApprovalDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
-import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
 import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemCompleteDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartDataVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementChartVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
-import com.itgrids.partyanalyst.dto.ProblemStatusChangeFactorsVO;
 import com.itgrids.partyanalyst.dto.ProblemStatusDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -83,6 +76,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DepartmentOrganisation;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemActivity;
@@ -93,7 +87,6 @@ import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemImpactLevel;
 import com.itgrids.partyanalyst.model.ProblemLocation;
-import com.itgrids.partyanalyst.model.InformationSource;
 import com.itgrids.partyanalyst.model.ProblemSourceScope;
 import com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment;
 import com.itgrids.partyanalyst.model.ProblemStatus;
@@ -104,6 +97,7 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IStringUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemManagementService implements IProblemManagementService {
@@ -144,8 +138,17 @@ public class ProblemManagementService implements IProblemManagementService {
 	private IDepartmentOrganisationDAO departmentOrganisationDAO;
 	private IProblemCompleteLocationDAO problemCompleteLocationDAO;
 	private IProblemActivityDAO problemActivityDAO;
+	private IStringUtilService stringUtilService;
 	
 	
+	public IStringUtilService getStringUtilService() {
+		return stringUtilService;
+	}
+
+	public void setStringUtilService(IStringUtilService stringUtilService) {
+		this.stringUtilService = stringUtilService;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -517,8 +520,16 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory = new ProblemHistory();
 					problemCompleteLocation = new ProblemCompleteLocation();
 					
-					problem.setProblem(problemBeanVO.getProblem());
-					problem.setDescription(problemBeanVO.getDescription());
+					if(!problemBeanVO.getProblem().contains(" ")){
+						problem.setProblem(stringUtilService.fragmentARegularString(problemBeanVO.getProblem(), 100, " "));
+					}
+					
+					if(!problemBeanVO.getDescription().contains(" ")){
+						problem.setDescription(stringUtilService.fragmentARegularString(problemBeanVO.getDescription(), 100, " "));
+					}
+					
+				//	problem.setProblem(problemBeanVO.getProblem());
+				//	problem.setDescription(problemBeanVO.getDescription());
 					problem.setYear(problemBeanVO.getYear());					
 					Date iDate = sdf.parse(problemBeanVO.getReportedDate());
 					Date eDate = sdf.parse(problemBeanVO.getExistingFrom());
@@ -642,6 +653,7 @@ public class ProblemManagementService implements IProblemManagementService {
 		});
 		return this.problemBeanVO;
 	}
+	
 	
 	public Long getProblemImpactValue(Long impactLevelId,Long impactLevelValue){
 		
