@@ -138,4 +138,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List<Long> getLatestConstituencies(List<Long> constIds,Long latestElecId);
 	
 	public List<ConstituencyElection> findConstituencyElectionsByElection(Long electionId);
+	
+	public List getLatestResultsElectionYearInAConstituency(Long constituencyId);
 }

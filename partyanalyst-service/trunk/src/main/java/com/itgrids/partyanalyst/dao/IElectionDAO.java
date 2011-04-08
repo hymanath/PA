@@ -95,6 +95,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List findStatesByElectionType(Long electionTypeId);
 	
+	@SuppressWarnings("unchecked")
 	public List findLatestElectionAssemblyElectionYearForState(String electionType, Long stateId);
 	
 	@SuppressWarnings("unchecked")
@@ -146,4 +147,11 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List findLatestParliamentElectionYear(String electionType,String electionSubType);
 	
 	public List findLatestElectionIdAndYearForAnElection(String electionType,Long stateId,String elecSubType);
+	
+	//DAO method to get latest electionId happened in a state election by electiontype and stateID
+	@SuppressWarnings("unchecked")
+	public List findRecentElectionIdByElectionTypeAndState(String electionType,Long stateId);
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestElectionYearHappenedInState(Long stateId,String electionType);
 }

@@ -444,4 +444,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getAllPartyResultsBasedOnMatchingCriteria(Long stateId,List<Long> constituencyIds,List<Long> partyIds,String electionSubType,String type,String searchText,String searchType);
 	
 	public List getNominationsInAnElection(Long electionId);
+	
+	public List getCandidateNominationDetailsInAnElection(Long electionId,Long constituencyId);
+	
 }
