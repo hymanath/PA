@@ -69,7 +69,6 @@
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
 				{ text: "Elections Vs Census", url: "censusReportAction.action" },     
