@@ -132,6 +132,7 @@ function initializeResultsTable() {
 	var myDataTable = new YAHOO.widget.DataTable("pollsDivBody",resultsColumnDefs, resultsDataSource);  
 	
 }
+window.history.forward(1);
 </script>
 </head>
 <body>
