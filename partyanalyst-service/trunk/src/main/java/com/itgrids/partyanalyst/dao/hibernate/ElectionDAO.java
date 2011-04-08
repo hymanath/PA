@@ -212,14 +212,20 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findElectionAndYearForElectionTypeAndState(Long electionType,Long stateId){
-		Object[] params = {electionType,stateId};
-		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ? order by model.electionYear desc",params);
+		
+		String isPartial = "0";
+		Object[] params = {electionType,stateId,isPartial};
+		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ? and "+
+				"model.isPartial is null or model.isPartial = ? order by model.electionYear desc",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List findElectionAndYearForParliamentElectionType(Long electionType){
-		Object[] params = {electionType};
-		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state is null order by model.electionYear desc",params);
+		
+		String isPartial = "0";
+		Object[] params = {electionType,isPartial};
+		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state is null and "+
+				"model.isPartial is null or model.isPartial = ? order by model.electionYear desc",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -375,11 +381,13 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 
 	@SuppressWarnings("unchecked")
 	public List findElectionsByState(Long stateId) {
-		Object[] params = {stateId, stateId};
+		
+		String isPartial = "0";
+		Object[] params = {stateId,isPartial, stateId,isPartial};
 		return getHibernateTemplate().find("select model.electionId, model.electionScope.electionType.electionTypeId, " +
 				"model.electionScope.electionType.electionType, model.elecSubtype, model.electionYear from Election model " +
-				"where model.electionScope.state.stateId = ? or (model.electionScope.country.countryId = (select model.country.countryId " +
-				"from State model where model.stateId= ?) and model.electionScope.state is null) order by electionYear desc", params);
+				"where model.electionScope.state.stateId = ? and model.isPartial is null or model.isPartial = ? or (model.electionScope.country.countryId = (select model.country.countryId " +
+				"from State model where model.stateId= ?) and model.electionScope.state is null and model.isPartial is null or model.isPartial = ?) order by electionYear desc", params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -464,26 +472,34 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 				"where model.electionScope.electionType.electionType = ?  and model.elecSubtype = ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Long> getElectionYears(Long stateId,String electionType,String elecSubType){
+		
+		String isPartial = "0";
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionYear from Election model ");
 		sb.append(" where model.electionScope.electionType.electionType = ? and model.elecSubtype = ? ");
 		
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
-			sb.append(" and model.electionScope.state.stateId = ?");
+			sb.append(" and model.electionScope.state.stateId = ? ");
 		}
-		sb.append("  order by model.electionYear desc");
+		sb.append("and model.isPartial is null or model.isPartial = ? order by model.electionYear desc");
 
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setString(1,elecSubType);
 		
-		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryObject.setLong(2,stateId);
+			queryObject.setString(3,isPartial);
+		}
+		else
+			queryObject.setString(2,isPartial);
 		
 		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Long> getElectionIds(Long stateId,String electionType,String elecSubType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.electionId from Election model ");
@@ -492,19 +508,27 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			sb.append(" and model.electionScope.state.stateId = ?");
 		}
-		sb.append("  order by model.electionYear desc");
+		sb.append("  and model.isPartial is null or model.isPartial = ? order by model.electionYear desc");
 
 		Query queryObject = getSession().createQuery(sb.toString());
 		queryObject.setString(0,electionType);
 		queryObject.setString(1,elecSubType);
 		
-		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+		if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			queryObject.setLong(2,stateId);
+			queryObject.setString(3,"0");
+		}
+		else
+			queryObject.setString(2,"0");
+		
 		
 		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getElectionDetailsForAnElection(Long electionId){
+		
+		
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.electionYear,model.electionId,model.electionScope.electionType.electionTypeId");
 		query.append(" from Election model where model.electionId = ?");
@@ -512,5 +536,38 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Query queryObject = getSession().createQuery(query.toString());	
 		queryObject.setLong(0,electionId);	
 		return queryObject.list();	
+	}
+
+	/**
+	 * DAO method to get latest electionId happened in a state election by electiontype and stateID
+	 */
+	@SuppressWarnings("unchecked")
+	public List findRecentElectionIdByElectionTypeAndState(String electionType,
+			Long stateId) {
+		
+		StringBuilder query = new StringBuilder();
+		
+	    query.append("select max(model.electionYear) from Election model ");
+		query.append("where model.electionScope.electionType.electionType = ? ");
+		
+		if(stateId != null && !stateId.equals(0L))
+			query.append("and model.electionScope.state.stateId = ? ");
+		
+		query.append("order by model.electionYear desc");
+				
+		Query queryObject = getSession().createQuery(query.toString());	
+		queryObject.setParameter(0,electionType);
+		queryObject.setParameter(1, stateId);
+		
+	 return queryObject.list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findLatestElectionYearHappenedInState(Long stateId,String electionType) {
+		
+		String isPartial = "0";
+		Object[] params = {stateId,electionType,isPartial};
+		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
+				"model.isPartial is null or model.isPartial = ?",params);
 	}
 }

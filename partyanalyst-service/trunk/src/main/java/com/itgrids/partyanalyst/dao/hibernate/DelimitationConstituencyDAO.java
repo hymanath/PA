@@ -58,6 +58,7 @@ IDelimitationConstituencyDAO {
 				"and model.year =?",params);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getLatestDelimitationYear() {		
 		return getHibernateTemplate().find("Select max(model.year) from DelimitationConstituency model ");
 	}
