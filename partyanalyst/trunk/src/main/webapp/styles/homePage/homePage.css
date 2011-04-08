@@ -311,3 +311,14 @@ body
 	height:115px;
 	padding:5px;	
 }
+
+.news
+{
+background: #ffffdd;
+border: 1px solid #c0c0c0;
+padding: 10px;
+}
+.homepageContent_news
+{
+color:#4B74C6;
+}
