@@ -56,6 +56,8 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private ConstituencyElectionResult constituencyElectionResult;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
+	
+	private String hasResults;
 
 	// Constructors
 
@@ -73,7 +75,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 			Constituency constituency, Date electionDate,
 			Set<Nomination> nominations,
 			ConstituencyElectionResult constituencyElectionResult,
-			Set<BoothConstituencyElection> boothConstituencyElections) {
+			Set<BoothConstituencyElection> boothConstituencyElections,String hasResults) {
 		this.constiElecId = constiElecId;
 		this.election = election;
 		this.constituency = constituency;
@@ -81,6 +83,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 		this.nominations = nominations;
 		this.constituencyElectionResult = constituencyElectionResult;
 		this.boothConstituencyElections = boothConstituencyElections;
+		this.hasResults = hasResults;
 	}
 
 	// Property accessors
@@ -173,6 +176,15 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
+	}
+
+	@Column(name = "has_results")
+	public String getHasResults() {
+		return hasResults;
+	}
+
+	public void setHasResults(String hasResults) {
+		this.hasResults = hasResults;
 	}
 
 	
