@@ -65,11 +65,11 @@ function showFeedBackFormPanel()
 		str += '<table width="100%">';
 		str += '<tr>';
 		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left">You must be logged in to post feedback.</th>';
+		str += '<th width="98%" align="left"><font color="red">You must be logged in to post feedback.</font></th>';
 		str += '</tr>';		
 		str += '<tr>';
 		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left">Please login to continue..</th>';
+		str += '<th width="98%" align="left"><font color="red">Please login to continue..</font></th>';
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
