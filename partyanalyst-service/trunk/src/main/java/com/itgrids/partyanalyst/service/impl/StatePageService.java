@@ -62,6 +62,7 @@ public class StatePageService implements IStatePageService {
 	}
 
 	//method that returns election years and election type for a particular state
+	@SuppressWarnings("unchecked")
 	public List<StateElectionsVO> getStateElections(Long stateId) {
 		
     	List<Long> electionTypeArrayList = new ArrayList<Long>(0);

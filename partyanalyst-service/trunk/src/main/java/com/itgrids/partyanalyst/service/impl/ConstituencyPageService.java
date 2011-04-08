@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -49,6 +51,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
@@ -56,6 +59,7 @@ import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyNominationsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
@@ -72,6 +76,8 @@ import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -135,6 +141,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationVillageDAO delimitationVillageDAO;
 	private IDelimitationWardDAO delimitationWardDAO;
 	private IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
+	private ICandidateResultDAO candidateResultDAO;
 	private List<SelectOptionVO> skippedMandals = new ArrayList<SelectOptionVO>(0);
 	
 		
@@ -231,6 +238,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public void setHamletAndBoothVO(HamletAndBoothVO hamletAndBoothVO) {
 		this.hamletAndBoothVO = hamletAndBoothVO;
+	}
+
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
 	}
 
 	public TransactionTemplate getTransactionTemplate() {
@@ -4280,6 +4295,149 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	Double checkForNull(Double value)
 	{
 		return value == null ? 0.0 : value;
+	}
+
+	/**
+	 * Method to get complete candidate nomination details in a constituency for latest election
+	 * @param constituencyId
+	 * 
+	 * @return ConstituencyNominationsVO
+	 */
+	@SuppressWarnings("unchecked")
+	public ConstituencyNominationsVO getCandidateNominationCompleteDetailsInConstituencyForLatestElection(
+			Long constituencyId) {
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered To Get Candidate Nominations In a Constituency ..");
+		
+		ConstituencyNominationsVO constituencyNominationsVO = new ConstituencyNominationsVO();
+		ResultStatus rs = new ResultStatus();
+		rs.setExceptionMsg("Executed Successfully ..");
+		
+		try{
+			
+			
+			//Get Constituency Object
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			String       electionType = constituency.getElectionScope().getElectionType().getElectionType();
+			Long         stateId      = 0L;
+			Long         electionId   = 0L;
+			String       electionYear = "";
+			List         candidateNominations = null;
+			
+			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				stateId = constituency.getElectionScope().getState().getStateId();
+			
+			//Check and Get Recent Election Happened In state
+			List electionDetails = electionDAO.findRecentElectionIdByElectionTypeAndState(electionType, stateId);
+			if(electionDetails != null && electionDetails.size() > 0){
+				
+				Object values = (Object)electionDetails.get(0);
+				electionYear      = (String)values;
+				
+				//find Election ID
+				electionId = findElectionIdByTypeAndYearForState(electionType,electionYear,stateId);
+				
+				//call method to get candidate nominations
+				candidateNominations = getCandidateNominations(electionId,constituencyId);
+				
+				if(candidateNominations != null && candidateNominations.size() > 0)
+					setNominationDataToVO(candidateNominations,constituencyNominationsVO,electionYear,electionType);
+			}
+			
+					
+			
+		}catch(Exception ex){
+			
+			log.error("Exception Raised While Retrieving Nomination Details :" + ex);
+			rs.setExceptionEncountered(ex);
+			rs.setExceptionMsg(ex.getMessage());
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			
+			constituencyNominationsVO.setResultstatus(rs);
+		}
+		
+	 return constituencyNominationsVO;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Long findElectionIdByTypeAndYearForState(String electionType,String electionYear,Long stateId){
+		
+		Long electionId = 0L;
+		
+		List elecId = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
+		if(elecId != null && elecId.size() > 0){
+			
+			Object value = (Object)elecId.get(0);
+			
+			electionId = (Long)value;
+		}
+		
+	 return electionId;
+	}
+	
+	/**
+	 * Method that returns Candidate Nominations In A Constituency in an Election 
+	 * @return List
+	 */
+	@SuppressWarnings("unchecked")
+	private List getCandidateNominations(Long electionId,Long constituencyId) throws Exception{
+		
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered To start DAO Call ..");
+		
+		List resultsList = null;
+		
+		//DAO Call 
+		resultsList = nominationDAO.getCandidateNominationDetailsInAnElection(electionId, constituencyId);
+		
+		Long candidateResults = candidateResultDAO.getCandidateResultsCountInaConstituencyInAnElection(constituencyId, electionId);
+		if(candidateResults.equals(0L))
+			return resultsList;
+			
+	 return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void setNominationDataToVO(List resultsList , ConstituencyNominationsVO constituencyNominationsVO,String electionYear,
+			String electionType) throws Exception{
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered To Set Data to VO .. ");
+		
+		List<CandidateInfoForConstituencyVO> candidateNominations = new ArrayList<CandidateInfoForConstituencyVO>();
+		
+		Iterator lstItr = resultsList.listIterator();
+		while(lstItr.hasNext()){
+			
+			Object[] values = (Object[])lstItr.next();
+			
+			CandidateInfoForConstituencyVO detailsVO = new CandidateInfoForConstituencyVO();
+			
+			detailsVO.setCandidateId((Long)values[7]);
+			detailsVO.setCandidateName((String)values[9]);
+			detailsVO.setParty((String)values[2]);
+			detailsVO.setGender((String)values[10]);
+			detailsVO.setEducation((String)values[11]);
+			
+			Double assets = (Double)values[4];
+			Double liabilities = (Double)values[5];
+			
+			if(assets != null && !assets.equals(0D))
+				detailsVO.setAssets(new BigDecimal(assets));
+			if(liabilities != null && !liabilities.equals(0D))
+				detailsVO.setLiabilities(new BigDecimal(liabilities));
+			
+			candidateNominations.add(detailsVO);
+			
+		}
+		
+		//set candidate nominations list to main VO
+		constituencyNominationsVO.setCandidateNominations(candidateNominations);
+		constituencyNominationsVO.setElectionType(electionType);
+		constituencyNominationsVO.setElectionYear(electionYear);
+		
 	}
 	
 }
