@@ -287,6 +287,8 @@ function getMandalVotingReport()
 	var url = "<%=request.getContextPath()%>/mandalVotingResultAction.action?"+rparam;			
 	callAjax(jsObj,url,"");
 }
+
+window.history.forward(1);
 </script>
 	<style type="text/css">
 		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 

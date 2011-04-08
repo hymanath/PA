@@ -553,7 +553,7 @@
 		var firstFamilyMemberNameIdEl = document.getElementById("firstFamilyMemberNameId");
 		firstFamilyMemberNameIdEl.focus();
 	}
-	
+window.history.forward(1);	
 </script>
 <style type="text/css">
 	

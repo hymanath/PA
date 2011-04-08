@@ -214,6 +214,7 @@ YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	</c:forEach>
 
    buildFeedbackDataTable();
+window.history.forward(1);
    </script>
 
 </body>

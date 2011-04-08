@@ -1134,7 +1134,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		browser1.focus();	
 	}	
 
-	
+window.history.forward(1);	
 	
 	</script>
 </head>

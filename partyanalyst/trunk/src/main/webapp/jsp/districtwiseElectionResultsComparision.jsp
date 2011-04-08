@@ -864,6 +864,7 @@ function updateResultsStatewise(distName,results)
 		}
 		else return;	
 }
+window.history.forward(1);
 </SCRIPT>
 <BODY>
 <CENTER>

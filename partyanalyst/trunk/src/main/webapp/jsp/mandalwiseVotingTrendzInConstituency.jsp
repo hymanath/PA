@@ -3495,7 +3495,7 @@
 			dataDivElContent+='</div>';
 			dataDivElContent+='</div>';*/
 			
-}
+}window.history.forward(1);
 	--></script>
 
 </head>

@@ -1891,7 +1891,7 @@ callAjax(rparam,jsObj,url);
 	addCommentsDialog.hide();
 	
 }
-
+window.history.forward(1);
 </SCRIPT>
 </HEAD>
 <BODY>

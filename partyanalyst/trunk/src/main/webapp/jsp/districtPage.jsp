@@ -1293,6 +1293,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var url = "<%=request.getContextPath()%>/districtPageLocalPartyDetailsAjaxAction.action?"+rparam;					
 		callAjax(jsObj,url);
 	}
+	
 </script>
  
 </head>
