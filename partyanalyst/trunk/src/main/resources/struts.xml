@@ -308,7 +308,14 @@
         <action name="userFeedbackAction" class="userFeedbackAction">
           <result name="success">/jsp/userFeedback.jsp</result>
         </action>
-        
+       
+       
+        <action name="sendMailToAdminAction" class="sendMailToAdminAction">
+         <result type="json" name="success">
+            	<param name="root">result</param>
+            </result>
+       	</action>  
+         
          <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
           <result name="success">/jsp/feedbackAdminApproval.jsp</result>
         </action>
