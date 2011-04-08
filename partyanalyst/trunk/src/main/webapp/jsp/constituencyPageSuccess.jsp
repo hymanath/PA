@@ -209,6 +209,10 @@
 								{
 									showAllConnectedUsersInPanelByFilterView(jsObj,myResults);
 								}
+								if(jsObj.task == "getCandidateNominationDetails")
+								{
+									showCandidateNominationsInRecentElections(myResults);
+								}
 							}catch (e) {   
 							  // 	alert("Invalid JSON result" + e);   
 							}  
@@ -221,6 +225,19 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}	
+
+	function candidateNominationsdetails(constiId)
+	{
+        var jsObj=
+		{
+				constituencyId:constiId,
+				task:"getCandidateNominationDetails"						
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/candidateNominationDetailsAction.action?"+rparam;
+		callAjax(jsObj,url);
+	}
 
 	function checkTohideLocalElectionsBodyDiv(){					
 		if(totalNoOflocalElectionsBodies!=-3){
@@ -1049,7 +1066,15 @@ window.history.forward(1);
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-                    
+
+						<div id="constituencyPageCandidateNominationsInfo_Main" class="innerLayoutDivClass">
+						    <div id="constituencyPageCandidateNominationsInfo_Head" class="layoutHeadersClass"></div>
+							<div id="constituencyPageCandidateNominationsInfo_Body" class="layoutBodyClass yui-skin-sam">
+								<div id="constituencyPageCandidateNominationsInfo_Top"></div>
+								<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
+							</div> 
+                        </div>
+					
 						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
