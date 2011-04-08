@@ -120,7 +120,6 @@ var loginStatus = '${loginStatus}';
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
 	            { text: "Election Results Analysis Report", url:"electionResultsAnalysisAction.action"},
 	            { text: "Telangana Bye-Elections 2010", url: "biElectionAction.action" },
 				{ text: "Elections Vs Census", url: "censusReportAction.action" },
@@ -226,7 +225,7 @@ var loginStatus = '${loginStatus}';
 				</div>
 			</div>
 		</div>
-		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/homePage_header_beta2.jpg');height:125px;">
+		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG_betanew.jpg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
                     <td style="vertical-align:top;width:540px;">
@@ -255,7 +254,7 @@ var loginStatus = '${loginStatus}';
             </table>		
         </div>	
 		
-		<!-- Note Data Div (Start)-->
+		<!-- Note Data Div (Start)
 		<div id="noteDataDiv">
 			<table width="100%" cellpadding="0" cellspacing="0">
 				<tr>
@@ -272,7 +271,7 @@ var loginStatus = '${loginStatus}';
 				</tr>
 			</table>
 		</div>		
-		<!-- Note Data Div (End)-->
+		 Note Data Div (End)-->
 
         <div id="indexNavContainer"  class="indexLayoutContainer yui-skin-sam">
 			<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
