@@ -157,7 +157,8 @@
 			}
 		}
 	}
-	</script>
+window.history.forward(1);
+</script>
 </head>
 <body>
 <table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">

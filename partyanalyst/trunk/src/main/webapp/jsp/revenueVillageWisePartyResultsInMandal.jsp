@@ -109,6 +109,7 @@
 		        
 		var villageDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource);
 	}
+	window.history.forward(1);
 </script>
 </head>
 <body>
