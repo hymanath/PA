@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -267,9 +268,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<State> states = stateDAO.findByCountryId(countryID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		for(State state : states){
-			result.add(new SelectOptionVO(state.getStateId(),state.getStateName()));
+			result.add(new SelectOptionVO(state.getStateId(),WordUtils.capitalize(state.getStateName().toLowerCase())));
 		}
+		Collections.sort(result);
 		return result;
+		
 	}
 	
 	public List<SelectOptionVO> getStatesByCountryForSearch(Long countryID){
@@ -393,7 +396,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
 		
 		if(constituency.getAreaType() == null)
-			return subRegionsList;			
+		return subRegionsList;			
 		String areaType = constituency.getAreaType();
 		
 		
@@ -439,7 +442,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
-				localElectionBodiesList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+obj[0].toString()),obj[1].toString().toUpperCase()+" "+ (obj[2])));
+				localElectionBodiesList.add(new SelectOptionVO(new Long(IConstants.URBAN_TYPE+obj[0].toString()),obj[1].toString()+" "+ (obj[2])));
 			}
 		}catch(Exception e)
 		{
@@ -464,7 +467,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			List result = assemblyLocalElectionBodyDAO.findByConstituencyId(constituencyId);
 			for(int i=0; i<result.size(); i++){
 				Object[] obj = (Object[]) result.get(i);
-				localElectionBodiesList.add(new SelectOptionVO((Long)obj[4],obj[1].toString().toUpperCase()+" "+ (obj[2])));
+				localElectionBodiesList.add(new SelectOptionVO((Long)obj[4],WordUtils.capitalize(obj[1].toString().toLowerCase())+" "+ (obj[2])));
 			}
 		}catch(Exception e)
 		{
@@ -602,7 +605,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			for(int i = 0; i<resultsList.size();i++)
 			{
 				Object[] obj = (Object[])resultsList.get(i);
-				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),obj[1].toString().toUpperCase()));				
+				regionsList.add(new SelectOptionVO(new Long(IConstants.RURAL_TYPE+obj[0].toString()),obj[1].toString()));				
 			}
 		}
 		return regionsList;
@@ -616,7 +619,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		for(int i = 0; i<resultsList.size();i++)
 		{
 			Object[] obj = (Object[])resultsList.get(i);
-			regionsList.add(new SelectOptionVO((Long)obj[0],obj[1].toString().toUpperCase()));				
+			regionsList.add(new SelectOptionVO((Long)obj[0],obj[1].toString()));				
 		}
 	 return regionsList;
 	}
@@ -625,7 +628,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> localBodies = new ArrayList<SelectOptionVO>();
 		List rawData = localElectionBodyDAO.findByDistrictId(districtId);
 		for(Object[] values:(List<Object[]>)rawData)
-			localBodies.add(new SelectOptionVO(Long.parseLong(values[0].toString()), values[1].toString().toUpperCase()+" "+values[2].toString()));
+			localBodies.add(new SelectOptionVO(Long.parseLong(values[0].toString()),WordUtils.capitalize(values[1].toString().toLowerCase()) +" "+values[2].toString()));
 		return localBodies;		
 	}
 	
@@ -683,7 +686,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		for(int i = 0; i<rawData.size();i++)
 		{
 			Object[] obj = (Object[])rawData.get(i);
-			constituencies.add(new SelectOptionVO(Long.parseLong(obj[0].toString()), obj[1].toString().toUpperCase()));
+			constituencies.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),WordUtils.capitalize(obj[1].toString().toLowerCase())));
 		}	
 		return constituencies;	
 	}
@@ -797,7 +800,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 				boothInfo.setPartNo(obj[3].toString());
 				boothInfo.setLocation(obj[4].toString());
 				boothInfo.setVillagesCovered(obj[5].toString());
-				boothInfo.setMandalName(obj[1].toString());
+				boothInfo.setMandalName(obj[1].toString().toUpperCase());
 				boothsInfo.add(boothInfo);			
 			}		
 		}
@@ -1012,7 +1015,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					regionalMappingInfoVO = new RegionalMappingInfoVO();
 					Object[] obj = (Object[])boothsList.get(i);
 					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
-					regionalMappingInfoVO.setRegionName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+					regionalMappingInfoVO.setRegionName(obj[1].toString());
 					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
 					regionalMappingInfoVO.setFlag(true);
 					finalList.add(regionalMappingInfoVO);
@@ -1047,7 +1050,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					regionalMappingInfoVO = new RegionalMappingInfoVO();
 					Object[] obj = (Object[])rawBoothData.get(i);
 					regionalMappingInfoVO.setRegionId(new Long(obj[0].toString()));
-					regionalMappingInfoVO.setRegionName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+					regionalMappingInfoVO.setRegionName(obj[1].toString());
 					regionalMappingInfoVO.setVillagesCovered(obj[3].toString());
 					regionalMappingInfoVO.setFlag(true);
 					finalList.add(regionalMappingInfoVO);
@@ -1059,7 +1062,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					for(Object[] values:(List<Object[]>)rawBoothDataList){
 						regionalMappingInfoVO = new RegionalMappingInfoVO();
 						regionalMappingInfoVO.setRegionId(Long.parseLong(values[0].toString()));
-						regionalMappingInfoVO.setRegionName(WordUtils.capitalize(values[1].toString().toLowerCase()));
+						regionalMappingInfoVO.setRegionName(values[1].toString());
 						regionalMappingInfoVO.setVillagesCovered(values[2].toString());
 						regionalMappingInfoVO.setFlag(false);
 						finalList.add(regionalMappingInfoVO);
