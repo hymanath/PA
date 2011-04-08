@@ -17,7 +17,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	private IElectionDAO electionDAO; 
 	
 	//mock data for add and remove test cases
-	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null,null,null,null,null);
+	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null,null,null,null,null,null);
 	
 	
 	public void setElectionDAO(IElectionDAO electionDAO){
@@ -204,7 +204,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetData(){
 		List elecId = electionDAO.getElectionYears(1l,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
 		System.out.println(elecId);
-	}*/
+	}
 	
 	public void testGetData(){
 		List assElecId = electionDAO.findLatestElectionIdAndYearForAnElection(IConstants.ASSEMBLY_ELECTION_TYPE,24l,IConstants.ELECTION_SUBTYPE_MAIN);
@@ -212,6 +212,29 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		
 		//List parElecId = electionDAO.findLatestElectionIdAndYearForAnElection(IConstants.PARLIAMENT_ELECTION_TYPE,1l,IConstants.ELECTION_SUBTYPE_MAIN);
 	//	System.out.println(new Long(parElecId.get(0).toString()));
+	}*/
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testFindRecentElectionIdForElectionType(){
+		
+		Long stateId = 1L;
+		String electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+		
+		List resultsList = electionDAO.findRecentElectionIdByElectionTypeAndState(electionType, stateId);
+		System.out.println(" Results Size :" + resultsList.size());
+		
+		
+		if(resultsList != null && resultsList.size() > 0){
+			
+			Object[] values = (Object[])resultsList.get(0);
+			//Long electionId = (Long)values[0];
+			String electionYear = (String)values[0];
+			
+			
+		}
 	}
+	
 }
 
