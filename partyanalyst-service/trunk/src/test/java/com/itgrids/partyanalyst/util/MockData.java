@@ -71,8 +71,8 @@ public class MockData {
 	private static final List<Party> allianceParties = new ArrayList<Party>();
 	
 	static{	
-		Election election1 = new Election(new Long(3), electionScope, null, null, null, "2004", null,null,null,null,null);
-		Election election2 = new Election(new Long(4), electionScope, null, null, null, "2009", null,null,null,null,null);
+		Election election1 = new Election(new Long(3), electionScope, null, null, null, "2004", null,null,null,null,null,null);
+		Election election2 = new Election(new Long(4), electionScope, null, null, null, "2009", null,null,null,null,null,null);
 		elections.add(election1);
 		elections.add(election2); 
 		getParties();
@@ -465,27 +465,27 @@ public class MockData {
 	}*/
 	public static List<ConstituencyElection> getConstituencyElections() {
 		getElections();
-		ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)), null);
-		ConstituencyElection constiElection2 = new ConstituencyElection(new Long(2),getElection(new Long(4)),getConstituency(new Long(2)),null,getNominationsList(new Long(2)),getConstituencyElectionResult(new Long(2)), null);
-		ConstituencyElection constiElection3 = new ConstituencyElection(new Long(3),getElection(new Long(4)),getConstituency(new Long(3)),null,getNominationsList(new Long(3)),getConstituencyElectionResult(new Long(3)), null);
-		ConstituencyElection constiElection4 = new ConstituencyElection(new Long(4),getElection(new Long(4)),getConstituency(new Long(4)),null,getNominationsList(new Long(4)),getConstituencyElectionResult(new Long(4)), null);
-		ConstituencyElection constiElection5 = new ConstituencyElection(new Long(5),getElection(new Long(4)),getConstituency(new Long(5)),null,getNominationsList(new Long(5)),getConstituencyElectionResult(new Long(5)), null);
-		ConstituencyElection constiElection6 = new ConstituencyElection(new Long(6),getElection(new Long(4)),getConstituency(new Long(6)),null,getNominationsList(new Long(6)),getConstituencyElectionResult(new Long(6)), null);
-		ConstituencyElection constiElection7 = new ConstituencyElection(new Long(7),getElection(new Long(4)),getConstituency(new Long(7)),null,getNominationsList(new Long(7)),getConstituencyElectionResult(new Long(7)), null);
-		ConstituencyElection constiElection8 = new ConstituencyElection(new Long(8),getElection(new Long(4)),getConstituency(new Long(8)),null,getNominationsList(new Long(8)),getConstituencyElectionResult(new Long(8)), null);
-		ConstituencyElection constiElection9 = new ConstituencyElection(new Long(9),getElection(new Long(4)),getConstituency(new Long(9)),null,getNominationsList(new Long(9)),getConstituencyElectionResult(new Long(9)), null);
-		ConstituencyElection constiElection10 = new ConstituencyElection(new Long(10),getElection(new Long(4)),getConstituency(new Long(10)),null,getNominationsList(new Long(10)),getConstituencyElectionResult(new Long(10)), null);
-		ConstituencyElection constiElection11 = new ConstituencyElection(new Long(11),getElection(new Long(3)),getConstituency(new Long(1)),null,getNominationsList(new Long(11)),getConstituencyElectionResult(new Long(11)), null);
-		ConstituencyElection constiElection12 = new ConstituencyElection(new Long(12),getElection(new Long(3)),getConstituency(new Long(2)),null,getNominationsList(new Long(12)),getConstituencyElectionResult(new Long(12)), null);
-		ConstituencyElection constiElection13 = new ConstituencyElection(new Long(13),getElection(new Long(3)),getConstituency(new Long(3)),null,getNominationsList(new Long(13)),getConstituencyElectionResult(new Long(13)), null);
-		ConstituencyElection constiElection14 = new ConstituencyElection(new Long(14),getElection(new Long(3)),getConstituency(new Long(6)),null,getNominationsList(new Long(14)),getConstituencyElectionResult(new Long(14)), null);
-		ConstituencyElection constiElection15 = new ConstituencyElection(new Long(15),getElection(new Long(3)),getConstituency(new Long(7)),null,getNominationsList(new Long(15)),getConstituencyElectionResult(new Long(15)), null);
-		ConstituencyElection constiElection16 = new ConstituencyElection(new Long(16),getElection(new Long(3)),getConstituency(new Long(8)),null,getNominationsList(new Long(16)),getConstituencyElectionResult(new Long(16)), null);
-		ConstituencyElection constiElection17 = new ConstituencyElection(new Long(17),getElection(new Long(3)),getConstituency(new Long(9)),null,getNominationsList(new Long(17)),getConstituencyElectionResult(new Long(17)), null);
-		ConstituencyElection constiElection18 = new ConstituencyElection(new Long(18),getElection(new Long(3)),getConstituency(new Long(10)),null,getNominationsList(new Long(18)),getConstituencyElectionResult(new Long(18)), null);
-		ConstituencyElection constiElection19 = new ConstituencyElection(new Long(19),getElection(new Long(3)),getConstituency(new Long(11)),null,getNominationsList(new Long(19)),getConstituencyElectionResult(new Long(19)), null);
-		ConstituencyElection constiElection20 = new ConstituencyElection(new Long(20),getElection(new Long(3)),getConstituency(new Long(12)),null,getNominationsList(new Long(20)),getConstituencyElectionResult(new Long(20)), null);
-		ConstituencyElection constiElection21 = new ConstituencyElection(new Long(21),getElection(new Long(3)),getConstituency(new Long(13)),null,getNominationsList(new Long(21)),getConstituencyElectionResult(new Long(21)), null);
+		ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)), null,null);
+		ConstituencyElection constiElection2 = new ConstituencyElection(new Long(2),getElection(new Long(4)),getConstituency(new Long(2)),null,getNominationsList(new Long(2)),getConstituencyElectionResult(new Long(2)), null,null);
+		ConstituencyElection constiElection3 = new ConstituencyElection(new Long(3),getElection(new Long(4)),getConstituency(new Long(3)),null,getNominationsList(new Long(3)),getConstituencyElectionResult(new Long(3)), null,null);
+		ConstituencyElection constiElection4 = new ConstituencyElection(new Long(4),getElection(new Long(4)),getConstituency(new Long(4)),null,getNominationsList(new Long(4)),getConstituencyElectionResult(new Long(4)), null,null);
+		ConstituencyElection constiElection5 = new ConstituencyElection(new Long(5),getElection(new Long(4)),getConstituency(new Long(5)),null,getNominationsList(new Long(5)),getConstituencyElectionResult(new Long(5)), null,null);
+		ConstituencyElection constiElection6 = new ConstituencyElection(new Long(6),getElection(new Long(4)),getConstituency(new Long(6)),null,getNominationsList(new Long(6)),getConstituencyElectionResult(new Long(6)), null,null);
+		ConstituencyElection constiElection7 = new ConstituencyElection(new Long(7),getElection(new Long(4)),getConstituency(new Long(7)),null,getNominationsList(new Long(7)),getConstituencyElectionResult(new Long(7)), null,null);
+		ConstituencyElection constiElection8 = new ConstituencyElection(new Long(8),getElection(new Long(4)),getConstituency(new Long(8)),null,getNominationsList(new Long(8)),getConstituencyElectionResult(new Long(8)), null,null);
+		ConstituencyElection constiElection9 = new ConstituencyElection(new Long(9),getElection(new Long(4)),getConstituency(new Long(9)),null,getNominationsList(new Long(9)),getConstituencyElectionResult(new Long(9)), null,null);
+		ConstituencyElection constiElection10 = new ConstituencyElection(new Long(10),getElection(new Long(4)),getConstituency(new Long(10)),null,getNominationsList(new Long(10)),getConstituencyElectionResult(new Long(10)), null,null);
+		ConstituencyElection constiElection11 = new ConstituencyElection(new Long(11),getElection(new Long(3)),getConstituency(new Long(1)),null,getNominationsList(new Long(11)),getConstituencyElectionResult(new Long(11)), null,null);
+		ConstituencyElection constiElection12 = new ConstituencyElection(new Long(12),getElection(new Long(3)),getConstituency(new Long(2)),null,getNominationsList(new Long(12)),getConstituencyElectionResult(new Long(12)), null,null);
+		ConstituencyElection constiElection13 = new ConstituencyElection(new Long(13),getElection(new Long(3)),getConstituency(new Long(3)),null,getNominationsList(new Long(13)),getConstituencyElectionResult(new Long(13)), null,null);
+		ConstituencyElection constiElection14 = new ConstituencyElection(new Long(14),getElection(new Long(3)),getConstituency(new Long(6)),null,getNominationsList(new Long(14)),getConstituencyElectionResult(new Long(14)), null,null);
+		ConstituencyElection constiElection15 = new ConstituencyElection(new Long(15),getElection(new Long(3)),getConstituency(new Long(7)),null,getNominationsList(new Long(15)),getConstituencyElectionResult(new Long(15)), null,null);
+		ConstituencyElection constiElection16 = new ConstituencyElection(new Long(16),getElection(new Long(3)),getConstituency(new Long(8)),null,getNominationsList(new Long(16)),getConstituencyElectionResult(new Long(16)), null,null);
+		ConstituencyElection constiElection17 = new ConstituencyElection(new Long(17),getElection(new Long(3)),getConstituency(new Long(9)),null,getNominationsList(new Long(17)),getConstituencyElectionResult(new Long(17)), null,null);
+		ConstituencyElection constiElection18 = new ConstituencyElection(new Long(18),getElection(new Long(3)),getConstituency(new Long(10)),null,getNominationsList(new Long(18)),getConstituencyElectionResult(new Long(18)), null,null);
+		ConstituencyElection constiElection19 = new ConstituencyElection(new Long(19),getElection(new Long(3)),getConstituency(new Long(11)),null,getNominationsList(new Long(19)),getConstituencyElectionResult(new Long(19)), null,null);
+		ConstituencyElection constiElection20 = new ConstituencyElection(new Long(20),getElection(new Long(3)),getConstituency(new Long(12)),null,getNominationsList(new Long(20)),getConstituencyElectionResult(new Long(20)), null,null);
+		ConstituencyElection constiElection21 = new ConstituencyElection(new Long(21),getElection(new Long(3)),getConstituency(new Long(13)),null,getNominationsList(new Long(21)),getConstituencyElectionResult(new Long(21)), null,null);
 		/*ConstituencyElection(Long constiElecId, Election election,
 				Constituency constituency, Date electionDate,
 				Set<Nomination> nominations,
