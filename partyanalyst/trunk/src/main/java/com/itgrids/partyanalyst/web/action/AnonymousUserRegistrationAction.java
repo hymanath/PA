@@ -14,7 +14,9 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -62,8 +64,29 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private String uploadImageFileName;
     private ServletContext context;
     
+    private List<SelectOptionVO> districts;
+    private List<SelectOptionVO> constituencies;
+    private IRegionServiceData regionServiceDataImp;
     
-	
+ 
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+	public List<SelectOptionVO> getConstituencies() {
+		return constituencies;
+	}
+	public void setConstituencies(List<SelectOptionVO> constituencies) {
+		this.constituencies = constituencies;
+	}
 	public String getUploadImageContentType() {
 		return regVO.getUserProfilePic();
 	}
@@ -366,6 +389,10 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 				session.setAttribute("UserType", "FreeUser");
 				session.setAttribute("loginStatus", "out");
 				session.setAttribute("HiddenCount", 0);
+				
+				
+				session.removeAttribute("districts");
+				session.removeAttribute("constituencies");
 			}
 			 
         
@@ -383,7 +410,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	}
 		
 	public void validate() {		       
-		
+		HttpSession session = request.getSession();
 		if(registrationId == null || registrationId == 0){
 			if(userName == null || userName.trim().length() == 0)
 				addFieldError("userName","Username is required");
@@ -401,9 +428,27 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			addFieldError("state","Please select a State.");
 		}
 		if(district==null || district.equalsIgnoreCase("0")){
+			if(Long.parseLong(state)!=0l){
+				districts = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(state));
+				session.setAttribute("districts", districts);
+			}
 			addFieldError("district","Please select a District.");
 		}
 		if(constituency==null || constituency.equalsIgnoreCase("0")){
+			if(Long.parseLong(district)!=0l){
+				constituencies = regionServiceDataImp.getConstituenciesByDistrictID(Long.parseLong(district));
+				/*
+				 * Modified by ravi 
+				 * please refer previous version to check for original code.
+				 */ 
+				if(constituencies == null || constituencies.size() == 0)
+					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
+				
+				if(constituencies != null && constituencies.size() > 1)
+					constituencies.add(0, new SelectOptionVO(0L,"Select Constituency"));
+				
+				session.setAttribute("constituencies", constituencies);
+			}
 			addFieldError("constituency","Please select a Constituency.");
 		}
 		
