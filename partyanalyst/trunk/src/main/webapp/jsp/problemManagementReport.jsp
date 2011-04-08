@@ -2233,7 +2233,7 @@ function buildResultDataTable(result)
             oDT: myDataTable
         };
 }
-
+window.history.forward(1);
 </script>  
 <body >
 
