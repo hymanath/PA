@@ -639,7 +639,7 @@ var new2="Election Message";
 								<br/>
 								<div>
 								<span>
-								 <img height="10" width="10" src="images/icons/homePage_new/bullet_blue.png">
+								 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">
 								 </span>
 								 <span>
 								<a class="homepageContent_news" style="text-decoration:none" href="javascript:{}" onClick="newsBox(new2)">news about politicians.</a>
