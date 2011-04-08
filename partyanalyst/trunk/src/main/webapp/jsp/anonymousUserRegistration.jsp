@@ -208,7 +208,7 @@ function uploadImageFile()
 		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
 	}
  }
-
+window.history.forward(1);
 </script>
 <style type="text/css">
     fieldset {
@@ -223,6 +223,7 @@ function uploadImageFile()
 		font-size:10px;
 		padding:5px;
 	}
+	
 </style>
 </head>  
 <body>  
