@@ -59,6 +59,7 @@
 			var hiddenEle = document.getElementById("hiddenEleId");
 			hiddenEle.value = typeEle.options[typeEle.selectedIndex].text
 		}
+window.history.forward(1);
 	</script>
 </head>
 <body>

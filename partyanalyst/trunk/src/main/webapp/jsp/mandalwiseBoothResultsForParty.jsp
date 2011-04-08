@@ -337,7 +337,7 @@ function redirectRevenueVillageLink(mandalId,mandalName,partyName)
 	var browser1 = window.open("<s:url action="revenueVillagePartyAllElecAction.action"/>?partyId="+partyId+"&partyName="+partyName+"&tehsilId="+mandalId+"&mandalName="+mandalName,"browser1","scrollbars=yes,height=600,width=900,left=200,top=200");
 	browser1.focus();
 }
-
+window.history.forward(1);
 </SCRIPT>
 </HEAD>
 <BODY>

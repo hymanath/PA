@@ -639,6 +639,7 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 
     myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
 }
+window.history.forward(1);
 </script>
 <body class="bodyClass">
 <center>

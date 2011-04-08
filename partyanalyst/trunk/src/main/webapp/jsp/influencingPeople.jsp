@@ -429,7 +429,7 @@ function sessionClean(module,accessType,windowTask)
 }
 
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
-
+window.history.forward(1);
 </script>
 
 <body onLoad="executeOnload()" class="bodyStyle">
