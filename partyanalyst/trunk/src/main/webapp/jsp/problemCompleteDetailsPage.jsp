@@ -123,6 +123,7 @@ if(elmt)
 	
 	
 }
+window.history.forward(1);
 </script>
 <style>
 #problemHead
