@@ -30,11 +30,6 @@
 	<bean name="dateService" class="com.itgrids.partyanalyst.service.impl.DateService" >
 	</bean>  
 	
-	
-	<bean name="mailService" class="com.itgrids.partyanalyst.service.impl.MailService" >
-	</bean>  
-	
-	
 	<bean name="ananymousUserService" class="com.itgrids.partyanalyst.service.impl.AnanymousUserService" >
 		<property name="ananymousUserDAO" ref="ananymousUserDAO" /> 
 		<property name="stateDAO" ref="stateDAO" />
