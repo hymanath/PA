@@ -226,7 +226,7 @@ function hideProblemSourceRow()
 			userTypeSelectBoxEle.value = 0;
 	}
 }
-
+window.history.forward(1);
 </script>
 </head>
 <body onload="executeOnload()" class="bodyStyle">
