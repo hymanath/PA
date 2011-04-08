@@ -238,6 +238,7 @@ function validateAndForwardToAction(elmt)
 		selectedElmt.innerHTML = str;
 		
 	}
+window.history.forward(1);
 </script>
 <style>
 	.selectWidth{
