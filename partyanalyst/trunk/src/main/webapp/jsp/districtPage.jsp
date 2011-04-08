@@ -1810,7 +1810,8 @@ var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 						id:'${candidate.id}',
 						candidateName:'${candidate.candidateName}',
 						status:'${candidate.status}',
-						constituencyName:'${candidate.constituencyName}'
+						constituencyName:'${candidate.constituencyName}',
+						image:'${candidate.image}'
 					};
 		
 	connectedPeople.push(userObj);

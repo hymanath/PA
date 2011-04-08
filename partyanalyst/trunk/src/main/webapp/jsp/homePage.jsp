@@ -72,6 +72,11 @@ var errotMsg = '<%=errorMsg%>';
 localBodyString = '<%=localBody%>';
 var loginStatus = '${loginStatus}';
 
+//News Answers
+var new1="Politician Message";
+var new2="Election Message";
+//
+
 	<c:forEach var="state" items="${statesList}" >
 		var obj={
 					id:"${state.id}",
@@ -101,7 +106,6 @@ var loginStatus = '${loginStatus}';
 	    } 
 	 
 	}); 
-	 
 	oMenuBar.render();  
 	 
 	}); 
@@ -619,9 +623,35 @@ var loginStatus = '${loginStatus}';
 									</table>
 								</div>
 								<div class="homePageContentWidget_body" style="height:400px;">
-									
+                                 
+								 <table>
+								 <tr>
+								 <td>
+								<marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="350" width="210"  direction="up" >
+								<div>
+                                 <span>
+								 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">
+								 </span>
+								 <span>
+								<a class="homepageContent_news" style="TEXT-DECORATION: NONE" href="javascript:{}" onClick="newsBox(new1)" >Put some news here.</a>
+								</span>
 								</div>
-								<div class="homePageContentWidget_footer">
+								<br/>
+								<div>
+								<span>
+								 <img height="10" width="10" src="images/icons/homePage_new/bullet_blue.png">
+								 </span>
+								 <span>
+								<a class="homepageContent_news" style="text-decoration:none" href="javascript:{}" onClick="newsBox(new2)">news about politicians.</a>
+								</span>
+								</div>
+								</marquee>
+								</td>
+																 </tr>
+																 </table>
+															
+																</div>
+										<div class="homePageContentWidget_footer">
 
 								</div>
 							</div>
