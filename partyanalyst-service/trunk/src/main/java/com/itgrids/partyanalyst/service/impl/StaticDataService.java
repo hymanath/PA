@@ -967,13 +967,18 @@ public class StaticDataService implements IStaticDataService {
 			 * if(count > 0L) electionYear =
 			 * Long.parseLong(election.getElectionYear()); else{
 			 */
-			electionYear = Long
+			/*electionYear = Long
 					.parseLong(electionDAO
 							.findLatestElectionAssemblyElectionYearForState(
 									IConstants.ASSEMBLY_ELECTION_TYPE, stateId,
 									IConstants.ELECTION_SUBTYPE_MAIN).get(0)
-							.toString());
-
+							.toString());*/
+			
+			
+			List latestElectionYear = electionDAO.findLatestElectionYearHappenedInState(stateId,IConstants.ASSEMBLY_ELECTION_TYPE);
+			Object latestYear = (Object)latestElectionYear.get(0);
+			
+			electionYear = Long.parseLong((String)latestYear);
 			log
 					.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"
 							+ electionYear);
@@ -1022,47 +1027,56 @@ public class StaticDataService implements IStaticDataService {
 					.getNewConstituencies());
 			StringBuilder parliamentIDs = new StringBuilder();
 
-			//
-
+			
 			for (Map.Entry<Long, Long> result : constituencyIdsAndYears
 					.entrySet()) {
-				List candidates = nominationDAO
-						.findCandidateNamePartyByConstituencyAndElection(result
-								.getKey().toString(), result.getValue()
+				
+				// Modified By Sai
+				List recentResultYear = constituencyElectionDAO.getLatestResultsElectionYearInAConstituency(result.getKey());
+				
+				if(recentResultYear != null && recentResultYear.size() > 0)
+				{
+					Object value = (Object)recentResultYear.get(0);
+					String latestElecYearInConsti = (String)value;
+					//
+					
+					//List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),result.getValue().toString());
+					List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(result.getKey().toString(),latestElecYearInConsti);
+				
+					for (int i = 0; i < candidates.size(); i++) {
+						ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
+						Object[] obj = (Object[]) candidates.get(i);
+						constituencyWinnerInfoVO.setConstituencyName(obj[0]
 								.toString());
-				for (int i = 0; i < candidates.size(); i++) {
-					ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
-					Object[] obj = (Object[]) candidates.get(i);
-					constituencyWinnerInfoVO.setConstituencyName(obj[0]
-							.toString());
-					constituencyWinnerInfoVO
-							.setCandidateName(obj[1].toString());
-					constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
-					constituencyWinnerInfoVO.setConstituencyId(obj[3]
-							.toString());
-					constituencyWinnerInfoVO.setReservationZone(obj[6]
-							.toString());
-					List list = delimitationConstituencyAssemblyDetailsDAO
-							.findLatestParliamentForAssembly(Long
-									.parseLong(obj[3].toString()));
-					for (int j = 0; j < list.size(); j++) {
-						Object[] params = (Object[]) list.get(j);
-						Long id = Long.parseLong(params[0].toString());
 						constituencyWinnerInfoVO
-								.setParliamentConstituencyId(id);
-						constituencyWinnerInfoVO
-								.setParliamentConstituencyName(params[1]
-										.toString());
-						parliamentIDs.append(",").append(params[0].toString());
-						parliamentConstituencies.add(Long.parseLong(params[0]
-								.toString()));
+								.setCandidateName(obj[1].toString());
+						constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
+						constituencyWinnerInfoVO.setConstituencyId(obj[3]
+								.toString());
+						constituencyWinnerInfoVO.setReservationZone(obj[6]
+								.toString());
+						List list = delimitationConstituencyAssemblyDetailsDAO
+								.findLatestParliamentForAssembly(Long
+										.parseLong(obj[3].toString()));
+						for (int j = 0; j < list.size(); j++) {
+							Object[] params = (Object[]) list.get(j);
+							Long id = Long.parseLong(params[0].toString());
+							constituencyWinnerInfoVO
+									.setParliamentConstituencyId(id);
+							constituencyWinnerInfoVO
+									.setParliamentConstituencyName(params[1]
+											.toString());
+							parliamentIDs.append(",").append(params[0].toString());
+							parliamentConstituencies.add(Long.parseLong(params[0]
+									.toString()));
+						}
+						constituencyWinnerInfoVO.setPartyName(obj[2].toString());
+						if (obj[5] != null) {
+							constituencyWinnerInfoVO
+									.setPartyFlag(obj[5].toString());
+						}
+						constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 					}
-					constituencyWinnerInfoVO.setPartyName(obj[2].toString());
-					if (obj[5] != null) {
-						constituencyWinnerInfoVO
-								.setPartyFlag(obj[5].toString());
-					}
-					constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 				}
 			}
 			/*

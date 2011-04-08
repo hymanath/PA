@@ -296,8 +296,13 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 			ConstituencyElection constituencyElectionObj = null;
 			
 			//if ConstituencyElection Already Exists
-			if(!constituencyElectionsMap.isEmpty() && constituencyElectionsMap.containsKey(constId))
+			if(!constituencyElectionsMap.isEmpty() && constituencyElectionsMap.containsKey(constId)){
 				constituencyElectionObj = constituencyElectionsMap.get(constId);
+				
+				if(constituencyElectionObj.getHasResults().equalsIgnoreCase("0") && isResults)
+					constituencyElectionObj.setHasResults(getStringFromAsciiChar(1));
+				
+			}
 			else{
 				
 				//If ConstituencyElection Doesn't Exist
@@ -306,6 +311,8 @@ public int processBatch(List<Party> parties, ConstituencyBlock constituecBlock,
 				constituencyElectionObj.setConstituency(constituencyObj);
 				constituencyElectionObj.setElection(electionObj);
 				constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
+				
+				constituencyElectionObj.setHasResults(getStringFromAsciiChar(0));
 				constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
 			}
 
@@ -510,6 +517,9 @@ private Election checkAndInsertElection(ElectionScope electionScope,UploadFormVo
 		lelectionObj.setElectionScope(electionScope);
 		lelectionObj.setElecSubtype(uploadFormVo.getElecSubtype());
 		lelectionObj.setElectionYear(uploadFormVo.getElectionYear());
+		
+		lelectionObj.setIsPartial(getStringFromAsciiChar(1));
+		
 		lelectionObj = electionDAO.save(lelectionObj);
 	}
 	return lelectionObj;
@@ -752,5 +762,17 @@ private String fetchPattern(String excelFileName){
 		 }
 	 }
  }
+ 
+     /**
+	 * Returns String from Given Ascii Character
+	 * @param i
+	 * @return
+	 */
+	private String getStringFromAsciiChar(int i){
+		
+		String aChar = new Character((char) i).toString();
+		
+	 return aChar;
+	}
 
 }
