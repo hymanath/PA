@@ -29,6 +29,8 @@ public class CandidateVO {
 	private Long nominationId;
 	private Long electionId;
 	private String electionType;
+	private String gender;
+	private String education;
 	
 	public Long getElectionId() {
 		return electionId;
@@ -236,6 +238,22 @@ public class CandidateVO {
 
 	public void setNominationId(Long nominationId) {
 		this.nominationId = nominationId;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
 	}
 
 }
