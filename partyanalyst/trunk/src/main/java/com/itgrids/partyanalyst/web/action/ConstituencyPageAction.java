@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.CandidateVotingTrendzCharts;
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyNominationsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
@@ -136,7 +137,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 	private NavigationVO messageTypes;
 	private LocalBodyElectionResultsVO localBodyElectionResults;
 	private ConstituencyVO greaterInfo;
-	private Long parliamentConstiId;    
+	private Long parliamentConstiId;   
+	
+	private ConstituencyNominationsVO constituencyNominationsVO; 
     private String taskType;
     List<CensusVO> censusVO = new ArrayList<CensusVO>();
     private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
@@ -274,6 +277,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.zptcElectionId = zptcElectionId;
 	}
 
+	public ConstituencyNominationsVO getConstituencyNominationsVO() {
+		return constituencyNominationsVO;
+	}
+	public void setConstituencyNominationsVO(
+			ConstituencyNominationsVO constituencyNominationsVO) {
+		this.constituencyNominationsVO = constituencyNominationsVO;
+	}
 	public Long getMptcElectionId() {
 		return mptcElectionId;
 	}
@@ -1675,6 +1685,22 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  }
 	 
 	  return SUCCESS;
+  }
+  
+  public String getCandidateNominationDetails(){
+	  
+	  try{
+		  jObj = new JSONObject(getTask());
+		  System.out.println("jObj = "+jObj);
+	  }catch (ParseException e) {
+		e.printStackTrace();
+	  }
+	  
+	  Long constituencyId = jObj.getLong("constituencyId");
+	  
+	  constituencyNominationsVO = constituencyPageService.getCandidateNominationCompleteDetailsInConstituencyForLatestElection(constituencyId);
+	  
+	  return Action.SUCCESS;
   }
   
 }

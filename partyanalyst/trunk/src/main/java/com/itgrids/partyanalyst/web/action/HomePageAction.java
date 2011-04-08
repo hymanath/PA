@@ -268,7 +268,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	
 	private String getChartPath(String requestURL){
 		
-		String chartPath     = context.getRealPath("/") + "charts\\";
+		String chartPath     = "";
+				
 		String pathSeperator = System.getProperty("file.separator");
 		String osDetails     = System.getProperty("os.name");
 		
@@ -276,8 +277,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		if(requestURL.contains("www.partyanalyst.com"))
 			chartPath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + "charts" + pathSeperator;
+		else
+			chartPath = context.getRealPath("/") + "charts\\";
 		
-		log.warn("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
+		log.info("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
 		
 	 return chartPath;
 	}
