@@ -202,9 +202,13 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		System.out.println("................ Request URL :" + requestURL);
 		
 		String chartPath = getChartPath(requestURL);
+		String imagePath = getUserImagesPath(requestURL);
 		
 		if(session != null && (session.getAttribute("chartPath") == null || session.getAttribute("chartPath") == ""))
 			session.setAttribute("chartPath", chartPath);
+		
+		if(session != null && (session.getAttribute("imagePath") == null || session.getAttribute("imagePath") == ""))
+			session.setAttribute("imagePath", imagePath);
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(new Long(2));
 		
@@ -283,6 +287,23 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		log.info("Chart Path : " + chartPath + " In " + osDetails + " Environment ");
 		
 	 return chartPath;
+	}
+	
+	private String getUserImagesPath(String requestURL){
+		
+		String imagePath = "";
+		
+		String pathSeperator = System.getProperty("file.separator");
+		String osDetails     = System.getProperty("os.name");
+		
+		if(requestURL.contains("www.partyanalyst.com"))
+			imagePath = pathSeperator + "var" + pathSeperator + "www" + pathSeperator + "vsites" + pathSeperator + "partyanalyst.com" + pathSeperator + "httpdocs" + pathSeperator + "pictures" + pathSeperator + "profiles" + pathSeperator;
+		else
+			imagePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+		
+		log.info("Chart Path : " + imagePath + " In " + osDetails + " Environment ");
+		
+	 return imagePath;
 	}
 	
 
