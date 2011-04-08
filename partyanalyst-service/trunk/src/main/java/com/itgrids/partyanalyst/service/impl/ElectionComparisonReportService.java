@@ -349,25 +349,43 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		
 		if(hasAlliance){
 			String parties = getAlliancePartiesIdsWithComma(allianceGroupDAO.findAlliancePartiesByElectionAndParty(electionId, partyId));
+			String alliancePartiesLength = parties;
+			
 			if(parties.length() == 0)
 				parties = partyId.toString();
 			if(isAssembly){
 				constiCount = nominationDAO.getConstituenciesCountByDistrictForElectionStateAndParties(electionId, stateOrCountryId, parties);
-				result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
+				
+				if(alliancePartiesLength.length() == 0)
+					result = partyElectionDistrictResultDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, stateOrCountryId, electionId);
+				else
+					result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
 						stateOrCountryId, electionId);
 				if(result.size() < constiCount.size()){
 					electionComparision(partyId, electionId, true, stateOrCountryId);
-					result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
+					
+					if(alliancePartiesLength.length() == 0)
+						result = partyElectionDistrictResultDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, stateOrCountryId, electionId);
+					else
+						result = partyElectionDistrictResultWithAllianceDAO.findDistrictWiseElectionResultsForStatePartyAndElection(partyId, 
 							stateOrCountryId, electionId);
 				}
 				
 			}else{
 				constiCount = nominationDAO.getConstituenciesCountByStateForElectionCountryAndParties(electionId, stateOrCountryId, parties);
-				result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
+				
+				if(alliancePartiesLength.length() == 0)
+					result = partyElectionStateResultDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, stateOrCountryId, electionId);
+				else
+					result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
 						stateOrCountryId, electionId);
 				if(result.size() < constiCount.size()){
 					electionComparision(partyId, electionId, false, stateOrCountryId);
-					result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
+					
+					if(alliancePartiesLength.length() == 0)
+						result = partyElectionStateResultDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, stateOrCountryId, electionId);
+					else
+						result = partyElectionStateResultWithAllianceDAO.findStatewiseResultsForPartyElectionAndCountry(partyId, 
 							stateOrCountryId, electionId);
 				}
 			}
@@ -884,7 +902,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				if(partyDistrictResult == null)
 					partyDistrictResult = staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(electionId, 
 							partyId, district.getId());
-				if(partyDistrictResult != null)
+				if(partyDistrictResult != null && group != null)
 					getAllAllianceCandidatesForAPartyInAState(null, partyDistrictResult, group, getAlliancePartiesIdsWithComma(allianceParties), false);
 			}
 		}else{
@@ -898,7 +916,7 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				if(partyStateResult == null)
 					partyStateResult = staticDataService.savePartyElectionResultForAPartyForAParliamentElectionStateLevel(electionId, 
 							partyId, Long.parseLong(state[0].toString()));
-				if(partyStateResult != null)
+				if(partyStateResult != null && group != null)
 					getAllAllianceCandidatesForAPartyInAState(partyStateResult, null, group, getAlliancePartiesIdsWithComma(allianceParties), true);	
 			}
 		}
