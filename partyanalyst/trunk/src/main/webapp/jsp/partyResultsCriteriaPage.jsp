@@ -555,6 +555,7 @@
 		function setElectionType(electionType){
 			document.getElementById("selectedElectionTypeName").value=electionType;	
 		}
+		window.history.forward(1);
   </script>
    </HEAD>
 	
