@@ -62,6 +62,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private File uploadImage;
     private String uploadImageContentType;
     private String uploadImageFileName;
+    private HttpSession session;
     private ServletContext context;
     
     private List<SelectOptionVO> districts;
@@ -120,6 +121,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.ananymousUserService = ananymousUserService;
 	}
 	
+	public HttpSession getSession() {
+		return session;
+	}
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 	public RegistrationVO getRegVO() {
 		return regVO;
 	}
@@ -343,6 +350,10 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String execute(){
 		
 		
+		session = request.getSession();
+		
+		String sPath = (String)session.getAttribute("imagePath");
+		
 		Boolean savedSuccessfully;
 		
 		BufferedImage imageFile = null;
@@ -355,12 +366,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			 {
 			 imageFile = ImageIO.read(this.uploadImage);
 			 }
-	             String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
-	             if(uploadImageContentType!=null)
-	             {
-	              constiName = uploadImageContentType.split("/");
-			      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
-	             }
+	         //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+			 String filePath = "";
+			 
+			 if(sPath != null)
+				 filePath = sPath;
+			 else
+				 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";				 
+				 
+             if(uploadImageContentType!=null)
+             {
+              constiName = uploadImageContentType.split("/");
+		      imageName =  regVO.getRegistrationID()+"."+constiName[1];    
+             }
 	           
 			 
 	      
