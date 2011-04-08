@@ -19,7 +19,7 @@
 	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
 	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-<script>window.history.forward(1);</script>
+	<script>window.history.forward(1);</script>
 	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
 
 	<!-- YUI Dependency files (End) -->
@@ -101,7 +101,7 @@
 								<td>
 									<fieldset class="f2">
 									<legend class="l2">Scrutinize Comments</legend>
-									<h4>Accept/Reject recent posted comments:<a href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
+									<h4>Accept/Reject recent posted comments on Political Reasons:<a href="<s:url action="commentsControlAdminAction"/>"><b>&nbsp;Recent Comments</b></a></h4>
 									</fieldset>
 								</td>	
 								<td>
@@ -114,7 +114,7 @@
                                 <td>
                                     <fieldset class="f2">
                                     <legend class="l2">Comments Posted On Problems</legend>
-                                    <h4>Approval/Reject Recently Posted problem :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
+                                    <h4>Approval/Reject Recently Posted Comments on problems :<a href="<s:url action="problemApprovalAdminAction"/>"><b>&nbsp;Approval</b></a></h4>
                                     </fieldset>
                                 </td>
 
