@@ -255,7 +255,11 @@ function callHomePageAjax(jsObj,url)
 							if(jsObj.task == 'getComments')
 							{
 								showFeedBackStatus(myResults);
-							}		
+							}	
+							if(jsObj.task == 'submitRequirement'){
+								
+								showQuickRequestStatus(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -1239,17 +1243,37 @@ function validateQuickRequest(){
 		str += '<div id="feedback_window_body">';
 		str += '<table width="100%">';
 		str += '<tr>';
+		str +='<div id="quickRequestMsgDiv">';
 		
 		if(errorMsg==''){
-		str += '<th width="98%" align="left">Your request sent successfully.</th>';
+
+		str += "<h3 color='green'>Sending Request...</h3>";
+		str += '<img style="margin-left:50px" width="90" height="15" src="images/icons/goldAjaxLoad.gif"/>';		
+		var name=document.getElementsByName("name")[0].value;
+		var email=document.getElementsByName("email")[0].value;
+		var mobile=document.getElementsByName("mobileNO")[0].value;
+		var requirement=document.getElementsByName("requirement")[0].value;
+		
+		var jObj= {
+				name:name,
+				email:email,
+				mobile:mobile,
+				requirement:requirement,
+				task:"submitRequirement"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+		var url = "sendMailToAdminAction.action?"+rparam;
+		callHomePageAjax(jObj,url);
 		}
+		
 		else{
 		str += '<th width="98%" align="left">';
-		str +='<div id="quickRequestErrDiv">';
+		str += '<div id="quickRequestErrDiv">';
 		str += errorMsg;
-		str +='</div>';
-		str+='</th>';
+		str += '</div>';
+		str += '</th>';
 		}
+        str +='</div>';
 		str += '</tr>';		
 		str += '</table>';
 		str += '</div>';
@@ -1270,4 +1294,15 @@ function validateQuickRequest(){
 		});
 
 	}
+	function showQuickRequestStatus(result){
+		
+	 var errMsg = document.getElementById("quickRequestMsgDiv");
 	
+	if(result.exceptionEncountered == null)
+	{
+		errMsg.innerHTML='<b>'+ result.exceptionMsg+'</b>';
+	}
+	else{
+		errMsg.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
+	}
+}
