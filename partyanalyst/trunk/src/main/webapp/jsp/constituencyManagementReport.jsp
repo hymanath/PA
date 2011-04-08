@@ -687,6 +687,7 @@
 		    createGroupMemberBrowser.focus();
 		}
 		
+window.history.forward(1);
 	</script>
 
 	
