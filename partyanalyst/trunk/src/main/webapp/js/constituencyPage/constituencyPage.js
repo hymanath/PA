@@ -555,6 +555,49 @@ function buildCenterVotersCandidateInfoContent()
 	}
 }
 
+function showCandidateNominationsInRecentElections(myResults)
+{
+   var HeadElmt = document.getElementById('constituencyPageCandidateNominationsInfo_Head');
+   var BodyElmt = document.getElementById('constituencyPageCandidateNominationsInfo_Body');
+
+   if(myResults.candidateNominations != null && myResults.candidateNominations.length > 0)
+   {
+	   var headStr = '';
+	   headStr+='Candidates Nominations Info for ' + myResults.electionType + ' '+myResults.electionYear;
+	   if(HeadElmt)
+			HeadElmt.innerHTML=headStr;
+
+   
+     var myDataSource = new YAHOO.util.DataSource(myResults.candidateNominations); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},
+							{	key : "party"},
+							{	key : "gender"},
+					        {	key : "education"},
+					        {	key : "assets"},
+					        {	key : "liabilities"},
+							
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"party", label:'Party',sortable:true, resizeable:true},
+				{key:"gender", label:'Gender', sortable:true, resizeable:true}, 
+		        {key:"education", label:'Education', sortable:true, resizeable:true}, 
+		        {key:"assets", label:'Assets', sortable:true, resizeable:true}, 
+		        {key:"liabilities", label:'Liabilities', sortable:true, resizeable:true}
+				
+			];
+	
+	var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateNominationsInfo_Top",myColumnDefs, myDataSource,{caption:"Candidates Details: "});
+
+   }
+
+}
+
 function showCurrentlyElectedCandidate()
 {	
 
@@ -1672,6 +1715,7 @@ function initializeConstituencyPage()
 
 	getAllPartiesAllElectionResultsChart(constituencyPageMainObj.constituencyInfo.constituencyId);
     buildRightlayoutMap();
+	candidateNominationsdetails(constituencyPageMainObj.constituencyInfo.constituencyId);
 	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
 	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
 	
