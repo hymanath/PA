@@ -65,11 +65,11 @@ function showFeedBackFormPanel()
 		str += '<table width="100%">';
 		str += '<tr>';
 		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left"><font color="red" size="1">You must be logged in to post feedback.</font></th>';
+		str += '<th width="98%" align="left"><font color="red">You must be logged in to post feedback.</font></th>';
 		str += '</tr>';		
 		str += '<tr>';
 		str += '<td width="2%"><img width="7" height="5" src="images/icons/districtPage/listIcon.png"></td>';
-		str += '<th width="98%" align="left"><font color="red" size="1">Please login to continue..</font></th>';
+		str += '<th width="98%" align="left"><font color="red">Please login to continue..</font></th>';
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
@@ -204,7 +204,7 @@ function postFeedbackAjaxCall()
    
 	if(feedBackElmtValue == "")
 	{	
-		errorElmt.innerHTML = '<font size="2">Feedback box cannot be empty</font>';
+		errorElmt.innerHTML = "Feedback box cannot be empty";
 	    return; 
 	}
 	
@@ -1191,30 +1191,30 @@ function validateQuickRequest(){
         var alphaExp = /^[a-zA-Z\s]+$/;
 
 	if(name==""){
-		errorMsg += '<font size="1">Name is Required</font><br>';
+		errorMsg += "Name is Required<br>";
 	}
 	else if(!name.match(alphaExp) || name.charAt(0)==" "){
 	
-		errorMsg += '<font size="1">Name may consist of a-z, A-Z, begin with a letter.</font><br>';
+		errorMsg += "Name may consist of a-z, A-Z, begin with a letter.<br>";
 	}
 	if(email==""){
-		errorMsg += '<font size="1">Email is Required</font><br>';
+		errorMsg += "Email is Required<br>";
 	}
 	else if(!email.match(emailExp)){
-		errorMsg += '<font size="1">Invalid Email</font><br>';
+		errorMsg += "Invalid Email<br>";
 	}
 	if(mobile==""){
-		errorMsg += '<font size="1">Mobile is Required</font><br>';
+		errorMsg += "MobileNo is Required<br>";
 	}
 	else if(isNaN(mobile)||mobile.indexOf(" ")!=-1||mobile.length>10 || mobile.length<10||(!(mobile.charAt(0)=="9" || mobile.charAt(0)=="8" || mobile.charAt(0)=="7")))
 	{
-		errorMsg+= '<font size="1">Invalid Mobile</font><br>';
+		errorMsg+= "Invalid MobileNo<br>";
 	}
 	if(requirement==""){
-		errorMsg += '<font size="1">Your Requirement is Required</font><br>';
+		errorMsg += "Requirement is Required<br>";
 	}
     else if(!requirement.match(alphaExp)){
-		errorMsg += '<font size="1">Requirement should not contain Special Characters and Numbers</font>';
+		errorMsg += "Requirement should not contain Special Characters and Numbers";
 	}
 	return errorMsg;
 	}
