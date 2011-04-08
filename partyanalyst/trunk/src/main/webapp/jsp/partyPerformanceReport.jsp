@@ -1108,6 +1108,8 @@ function callMarginVotes(partyId)
 	buildMarginVotes(partyId,"WON");
 	buildMarginVotes(partyId,"LOST");
 }
+
+window.history.forward(1);
 </script>
 
 <style type="text/css">

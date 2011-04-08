@@ -353,6 +353,7 @@ table.CandidateElectionResultsTable td {
 		var ancElmt= document.getElementById("constFullDetails");
 		ancElmt.style.display = "none";
 	}
+	window.history.forward(1);
 </script>
 </head>
 <body>

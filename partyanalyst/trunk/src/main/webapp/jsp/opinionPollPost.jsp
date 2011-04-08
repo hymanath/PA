@@ -315,7 +315,7 @@ function showDateCalendar(eleId) {
 				return true;							
 			}	
 		}
-
+window.history.forward(1);
 </script>
 </head>
 
