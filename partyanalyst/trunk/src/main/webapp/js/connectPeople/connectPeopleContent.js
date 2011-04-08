@@ -47,7 +47,11 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 		bodyStr+='<td>';
 		bodyStr+='<table width="100%">';
 		bodyStr+='<tr>';
-		bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+		/*bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';*/
+		if(connectedPeopleData[i].image == null || connectedPeopleData[i].image == '')
+			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+		else
+			bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="pictures/profiles/'+connectedPeopleData[i].image+'"/></span></td>';
 		bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">'+connectedPeopleData[i].candidateName+'</span></td>';
 		bodyStr+='</tr>';
 		bodyStr+='<tr>';	
@@ -518,7 +522,13 @@ function buildAllConnectUserString(users)
 		str += '<div class="allConnectPeopleDataDiv_main">';
 		str += '<table width="100%">';
 		str += '<tr>';
-		str += '<td valign="top" width="15%"><img height="45" width="50" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';		
+
+		var imageStr = "pictures/profiles/"+users[i].image;
+      
+		if(users[i].image == null)
+			str += '<td valign="top" width="15%"><img height="45" width="50" src="/PartyAnalyst/images/icons/indexPage/human.jpg"></td>';
+		else
+			str += '<td valign="top" width="15%"><img height="45" width="50" src="'+imageStr+'"></td>';		
 		str += '<td valign="top" width="55%">';
 		str += '<div class="connectPeople_body_name">'+users[i].candidateName+'</div>';
 		str += '<div><span class="connectPeople_body_constituency">'+users[i].constituencyName.toLowerCase()+'</span></div>';			
