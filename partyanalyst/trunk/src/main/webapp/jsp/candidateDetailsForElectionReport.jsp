@@ -986,7 +986,7 @@ function handleAddCommentsCancel(task,status)
 	allCandidates();
 	addCommentsDialog.dialog("destroy");	
 }
-
+window.history.forward(1);
 
 --></SCRIPT>
 </HEAD>
