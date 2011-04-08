@@ -267,7 +267,7 @@ function setCadreIdToProblem()
 		window.close();
 	}
  }
-
+window.history.forward(1);
 </script>
 <style>
 .btnClass

@@ -126,7 +126,7 @@ var Localization = { <%
 				return true;							
 			}	
       }
-
+window.history.forward(1);
 </script>
 </HEAD>
 <body>
