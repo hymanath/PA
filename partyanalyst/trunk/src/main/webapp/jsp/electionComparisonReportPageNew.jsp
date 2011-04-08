@@ -1817,7 +1817,7 @@ function createCoulmnChart()
 		 
 	</c:if>
 
-	<c:if test="${allianceCheck == 'false'}">
+	<c:if test="${allianceCheck == 'false' || allianceCheck == ''}">
 		 data.setValue(0, 0, years[0]);
 		 <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
 			data.setValue(0, 1, ${partyPositions.totalSeatsWon});
@@ -1849,7 +1849,7 @@ function createCoulmnChart()
 	<tbody><tr>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
 		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
-		<c:if test="${allianceCheck == 'false'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
+		<c:if test="${allianceCheck == 'false' || allianceCheck == ''}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
 		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
 	</tr>
 </tbody></table>
