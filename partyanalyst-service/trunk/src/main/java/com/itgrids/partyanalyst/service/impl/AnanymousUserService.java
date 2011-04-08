@@ -295,8 +295,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 					
 					
 					
-				if(isUpdate)
-					{
+					if(isUpdate && userDetails.getUserProfilePic()!=null)
+					{					
 						ananymousUser.setProfileImg(userDetails.getUserProfilePic());
 					}
 					
