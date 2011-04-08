@@ -187,5 +187,15 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		
 		return getHibernateTemplate().find("from CandidateResult model where model.nomination.constituencyElection.election.electionId = ?",electionId);
 	}
+
+
+	public Long getCandidateResultsCountInaConstituencyInAnElection(
+			Long constituencyId, Long electionId) {
+		
+		Long resultsCount = ( (Long) getSession().createQuery("select count(model.candidateResultId) from CandidateResult model "+
+				"where model.nomination.constituencyElection.constituency.constituencyId = "+constituencyId+" and " +
+						"model.nomination.constituencyElection.election.electionId = "+electionId).iterate().next() );
+	 return resultsCount;
+	}
 	
 }
