@@ -174,7 +174,7 @@
 			text.innerHTML = str2;
 		}		
 	}
-	
+window.history.forward(1);	
   </script>
   
 </head>
