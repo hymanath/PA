@@ -134,6 +134,7 @@ public class ChartProducer {
             System.out.println("Exception while creating the chart" );
             exc.printStackTrace();
             System.out.println("Temp Directory:"+System.getProperty("java.io.tmpdir"));
+            log.error("Error Raised While Creating chart :" + exc);
 
 		}
 	}
@@ -226,7 +227,7 @@ public class ChartProducer {
 		catch (Exception exc)
 		{
 			exc.printStackTrace();
-		log.error("Error writing image to file");
+		log.error("Error writing image to file" + exc);
 		}
 		
 	}
@@ -477,7 +478,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-			log.error("Error writing image to file");
+			log.error("Error writing image to file" + exc);
 			exc.printStackTrace();
 		}
 	}
