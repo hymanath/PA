@@ -271,7 +271,7 @@ window.history.forward(1);
 					<TABLE class="problemDetailsTable">
 						<tr>
 							<td width="100px;"><%=problemLabel%><font class="requiredFont"> * </font></td>
-							<td style="padding-left: 15px;"><s:textfield size="53" id="nameText" name="problem" maxlength="200"/></td>						
+							<td style="padding-left: 15px;"><s:textfield size="53" id="nameText" name="problem" maxlength="100"/></td>						
 						</tr>
 						<tr>
 							<td width="100px;"><%=description%><font class="requiredFont">*</font></td>
