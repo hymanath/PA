@@ -228,6 +228,7 @@ public class ChartProducer {
 		{
 			exc.printStackTrace();
 		log.error("Error writing image to file" + exc);
+		log.error("Error writing image to file" + exc.getMessage());
 		}
 		
 	}
@@ -480,6 +481,8 @@ public class ChartProducer {
 		{
 			log.error("Error writing image to file" + exc);
 			exc.printStackTrace();
+			log.error("Error writing image to file" + exc.getMessage());
+			
 		}
 	}
 	
