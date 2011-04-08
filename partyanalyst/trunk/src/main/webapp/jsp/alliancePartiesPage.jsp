@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Alliance Parties In ${alliancePartiesInDistrict.districtName} District In Different Elections</title>
+<script>window.history.forward(1);</script>
 <style>
 	#alliancePartiesMain fieldset
 	{
