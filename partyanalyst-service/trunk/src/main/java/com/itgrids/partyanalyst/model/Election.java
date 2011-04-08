@@ -59,6 +59,8 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
+	
+	private String isPartial;
 
 	// Constructors
 
@@ -76,7 +78,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 			Date notificationDate, Date startDate, String endDate,
 			String electionYear, Set<ConstituencyElection> constituencyElections,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
 			Set<CommentCategoryParty> commentCategoryParty,
-			Set<CommentCategoryConstituency> commentCategoryConstituency) {
+			Set<CommentCategoryConstituency> commentCategoryConstituency,String isPartial) {
 		this.electionId = electionId;
 		this.electionScope = electionScope;
 		this.notificationDate = notificationDate;
@@ -88,6 +90,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
 		this.commentCategoryParty = commentCategoryParty;
 		this.commentCategoryConstituency = commentCategoryConstituency;
+		this.isPartial = isPartial;
 	}
 
 	// Property accessors
@@ -212,6 +215,15 @@ public class Election extends BaseModel implements java.io.Serializable {
 
 	public void setElecSubtype(String elecSubtype) {
 		this.elecSubtype = elecSubtype;
+	}
+
+	@Column(name = "is_partial")
+	public String getIsPartial() {
+		return isPartial;
+	}
+
+	public void setIsPartial(String isPartial) {
+		this.isPartial = isPartial;
 	}
 	
 }
