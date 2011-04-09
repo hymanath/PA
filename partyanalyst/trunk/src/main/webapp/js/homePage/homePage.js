@@ -10,6 +10,94 @@ var selectedState = '';
 var selectedStateId = '';
 var localBodyString = '';
 
+var questionsObj = [
+	{
+		question:"Who is the richest male candidate with highest amount of declared assets in the current 2011 Assam Assembly Elections?",
+		answer:[
+				{
+					label:"Candidate Name:",
+					data:"Mr. Anjan Dutta"
+				},
+				{
+					label:"Party:",
+					data:"Congress"
+				},
+				{
+					label:"Constituency:",
+					data:"Amguri"
+				},
+				{
+					label:"Declared Assets:",
+					data:"Rs. 49,79,93,069"
+				}
+			   ]
+	},
+	{
+		question:"The richest female candidate with highest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		answer:[
+				{
+					label:"Candidate Name:",
+					data:"Ms. Queen Oja"
+				},
+				{
+					label:"Party:",
+					data:"AGP"
+				},
+				{
+					label:"Constituency:",
+					data:"Gauhati East"
+				},
+				{
+					label:"Declared Assets:",
+					data:"Rs. 75,247,738"
+				}
+			   ]
+	},
+	{
+		question:"The male candidate with lowest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		answer:[
+				{
+					label:"Candidate Name:",
+					data:"Mr. Kripesh Ranjar"
+				},
+				{
+					label:"Party:",
+					data:"CPI (M)"
+				},
+				{
+					label:"Constituency:",
+					data:"Patharkandi"
+				},
+				{
+					label:"Declared Assets:",
+					data:"Rs. 401 only."
+				}
+			   ]
+	},
+	{
+		question:"The female candidate with lowest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		answer:[
+				{
+					label:"Candidate Name:",
+					data:"Ms.. Jutika Doley"
+				},
+				{
+					label:"Party:",
+					data:"SUCI (C)"
+				},
+				{
+					label:"Constituency:",
+					data:"Dhakuakhana (ST)"
+				},
+				{
+					label:"Declared Assets:",
+					data:"Rs. 7,325"
+				}
+			   ]
+	}
+	
+];
+
 function initializeHomePage()
 {
 	//buildLogoImage();	
@@ -39,11 +127,57 @@ function initializeHomePage()
 	//buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
+	buildQuestions();
 	//buildleadersNews();
 	//buildTopStoriesNews();
 	//buildPartiesNews();
 }
 
+function buildQuestions()
+{
+	var elmt = document.getElementById("homePageContentWidget_body_questions");
+
+	if(!elmt)
+		return;
+
+	var str = '';	
+	str += '	<marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="350" width="210"  direction="up" >';
+	str += ' <table width="100%">';
+
+	for(var i=0;i<questionsObj.length;i++)
+	{
+		str += '<tr>';
+		str += '	<td valign="top"><img style="margin-top:7px;margin-right:6px;" height="8" width="8" src="images/icons/districtPage/listIcon.png"></td>';
+		str += '	<td valign="top"><a class="doYouKnowAnc" href="javascript:{}" title="'+questionsObj[i].question+'" onclick="newsBox('+i+')">'+questionsObj[i].question.substring(0,50)+' ...</a></td>';
+		str += '</tr>';
+	}
+	str += ' </table>';
+
+	elmt.innerHTML = str;
+
+
+	/*str += '	<div>';
+	str += '	 <span>';
+	str += '	 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">';
+	str += '	 </span>';
+	str += '	 <span>';
+	str += '	<a class="homepageContent_news" style="TEXT-DECORATION: NONE" href="javascript:{}" onClick="newsBox(new1)" >Put some news here.</a>';
+	str += '	</span>';
+	str += '	</div>';
+	str += '	<br/>';
+	str += '	<div>';
+	str += '	<span>';
+	str += '	 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">';
+	str += '	 </span>';
+	str += '	 <span>';
+	str += '	<a class="homepageContent_news" style="text-decoration:none" href="javascript:{}" onClick="newsBox(new2)">news about politicians.</a>';
+	str += '	</span>';
+	str += '	</div>';
+	str += '	</marquee>';
+	str += '	</td>';
+	str += ' </tr>';
+	str += ' </table>';*/
+}
 function showFeedBackFormPanel()
 {		
 	if(loginStatus == "false")
@@ -1308,46 +1442,48 @@ function validateQuickRequest(){
 }
 //To create news box
 
-	function newsBox(msg)
-	{
-		
-	$("#quickRequest_window").dialog({
-			resizable:false,
-			width: 600,
-			minHeight:110,
-			show:'slide',
-			modal:true
-		});	
-		$(".ui-dialog-titlebar").hide();
+function newsBox(index)
+{		
+$("#quickRequest_window").dialog({
+		resizable:false,
+		width: 600,
+		minHeight:110,
+		show:'slide',
+		modal:true
+	});	
+	$(".ui-dialog-titlebar").hide();
 
-		var elmt = document.getElementById("quickRequest_window_inner");
-
-		var str = '';
-		str += '<div id="feedback_window_head">Do u Know</div>';
-		str += '<div id="feedback_window_body">';
-		str += '<table width="100%">';
-		
-		str += '<td>';
-		str += msg;
-		str += '</td>';
+	var elmt = document.getElementById("quickRequest_window_inner");
+	var str = '';
+	str += '<div id="feedback_window_head">Do u Know</div>';
+	str += '<div id="feedback_window_body">';
+	str += '<div class="doYouKnow_question">'+questionsObj[index].question+'</div>';
+	str += '<div class="doYouKnow_answer">';
+	str += '<table>';	
+	for(var i=0;i<questionsObj[index].answer.length;i++)
+	{		
+		str += '<tr>';
+		str += '<th>'+questionsObj[index].answer[i].label+'</th>';	
+		str += '<td>'+questionsObj[index].answer[i].data+'</td>';
 		str += '</tr>';	
 		
-		str += '</table>';
-		str += '</div>';
-		str += '<div id="feedback_window_footer" class="yui-skin-sam">';
-		str += '<table width="100%">';
-		str += '<tr>';
-		str += '<input id="okButton" type="button" value="Ok"></input>';
-		str += '</td>';
-		str += '</tr>';
-		str += '</table>';	
-		str += '</div>';
+	}	
+	str += '</table>';
+	str += '</div>';
+	str += '<div id="feedback_window_footer" class="yui-skin-sam">';
+	str += '<table width="100%">';
+	str += '<tr>';
+	str += '<input id="okButton" type="button" value="Ok"></input>';
+	str += '</td>';
+	str += '</tr>';
+	str += '</table>';	
+	str += '</div>';
 
-		elmt.innerHTML = str;
+	elmt.innerHTML = str;
 
-		var oPushButton2 = new YAHOO.widget.Button("okButton");
-			oPushButton2.on("click",function(){
-			$("#quickRequest_window").dialog("destroy");
-		});
+	var oPushButton2 = new YAHOO.widget.Button("okButton");
+		oPushButton2.on("click",function(){
+		$("#quickRequest_window").dialog("destroy");
+	});
 
-     }
+}

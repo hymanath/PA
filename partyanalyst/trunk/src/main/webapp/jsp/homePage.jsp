@@ -472,7 +472,7 @@ var new2="Election Message";
 			<div id="homePageContent1"> 
 				<table width="100%">
 					<tr>
-						<td width="75%">
+						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="20%" cellpadding="0" cellspacing="0">
@@ -518,12 +518,12 @@ var new2="Election Message";
 														<ul class="homePageContentWidget_body_news_list">
 															<li>View comments posted by registered users</li>
 															<li>View all election results</li>
-															<li>View your Political Leader’s profile</li>
+															<li>View your Political Leaderâ€™s profile</li>
 															<li>View all your constituency problems</li>
 														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
-														<img src="images/icons/homePage_new/readMoreButton.jpg">
+														
 													</div>
 												</div>
 											</td>
@@ -557,7 +557,7 @@ var new2="Election Message";
 														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
-														<img src="images/icons/homePage_new/readMoreButton.jpg">
+														
 													</div>
 												</div>
 											</td>
@@ -591,7 +591,7 @@ var new2="Election Message";
 														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
-														<img src="images/icons/homePage_new/readMoreButton.jpg">
+														
 													</div>
 												</div>
 											</td>
@@ -603,7 +603,7 @@ var new2="Election Message";
 								</div>
 							</div>
 						</td>
-						<td width="25%">
+						<td width="25%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="92%" cellpadding="0" cellspacing="0">
@@ -622,36 +622,9 @@ var new2="Election Message";
 										</tr>
 									</table>
 								</div>
-								<div class="homePageContentWidget_body" style="height:400px;">
-                                 
-								 <table>
-								 <tr>
-								 <td>
-								<marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="350" width="210"  direction="up" >
-								<div>
-                                 <span>
-								 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">
-								 </span>
-								 <span>
-								<a class="homepageContent_news" style="TEXT-DECORATION: NONE" href="javascript:{}" onClick="newsBox(new1)" >Put some news here.</a>
-								</span>
+								<div id="homePageContentWidget_body_questions" class="homePageContentWidget_body" style="height:400px;">
 								</div>
-								<br/>
-								<div>
-								<span>
-								 <img height="10" width="10" src="images/icons/constituencyPage/bullet_blue.png">
-								 </span>
-								 <span>
-								<a class="homepageContent_news" style="text-decoration:none" href="javascript:{}" onClick="newsBox(new2)">news about politicians.</a>
-								</span>
-								</div>
-								</marquee>
-								</td>
-																 </tr>
-																 </table>
-															
-																</div>
-										<div class="homePageContentWidget_footer">
+								<div class="homePageContentWidget_footer">
 
 								</div>
 							</div>
@@ -663,7 +636,7 @@ var new2="Election Message";
 			<div id="homePageContent2">
 				<table width="100%">
 					<tr>
-						<td width="75%">
+						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="42%" cellpadding="0" cellspacing="0">
@@ -685,7 +658,7 @@ var new2="Election Message";
 								<div class="homePageContentWidget_body">
 
 									<div class="homePageContentWidget_readMore">
-										<img src="images/icons/homePage_new/readMoreButton.jpg"/></img>
+										
 									</div>
 									<div id="homePage_Chart_Header_main" style="overflow:hidden;">
 										<div id="homePage_Chart_Header">
@@ -698,7 +671,7 @@ var new2="Election Message";
 								</div>
 							</div>
 						</td>
-						<td width="25%">
+						<td width="25%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="75%" cellpadding="0" cellspacing="0">
@@ -732,7 +705,7 @@ var new2="Election Message";
 			<div id="homePageContent3">
 				<table width="100%">
 					<tr>
-						<td width="75%">
+						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="30%" cellpadding="0" cellspacing="0">
@@ -794,7 +767,7 @@ var new2="Election Message";
 								</div>
 							</div>
 						</td>
-						<td width="25%">
+						<td width="25%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
 									<table width="75%" cellpadding="0" cellspacing="0">
@@ -861,9 +834,9 @@ var new2="Election Message";
 						<td width="20%" valign="top">
 							<div class="homePage_new_footer_links_head">About Us</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="javascript:{}">Who we are</a></li>
-								<li><a href="javascript:{}">What we do</a></li>
-								<li><a href="javascript:{}">Core Competency</a></li>
+								<li><a href="footerLinksAction.action#whoWeAre">Who we are</a></li>
+								<li><a href="footerLinksAction.action#whatWeDo">What we do</a></li>
+								<li><a href="footerLinksAction.action#coreCompetency">Core Competency</a></li>
 								<li><a href="javascript:{}">Customer Support</a></li>
 								<li><a href="javascript:{}">Contact</a></li>
 								<li><a href="javascript:{}">Sitemap</a></li>
@@ -874,7 +847,7 @@ var new2="Election Message";
 							<ul class="homePage_new_footer_links">
 								<li><a href="anonymousUserAction.action">Register</a></li>
 								<li><a href="loginInputAction.action">Login</a></li>
-								<li><a href="javascript:{}">Explore</a></li>
+								<li><a href="viewFeaturesAction.action">Explore</a></li>
 								<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
 								<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a></li>
 								<li><a href="javascript:{}">Articles</a></li>
@@ -884,9 +857,9 @@ var new2="Election Message";
 						<td width="20%" valign="top">
 							<div class="homePage_new_footer_links_head">Policy</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="javascript:{}">Terms of use</a></li>
-								<li><a href="javascript:{}">Privacy</a></li>
-								<li><a href="javascript:{}">Disclaimer</a></li>
+								<li><a href="footerLinksAction.action#termsOfUse">Terms of use</a></li>
+								<li><a href="footerLinksAction.action#privacyPolicy">Privacy</a></li>
+								<li><a href="footerLinksAction.action#disclaimer">Disclaimer</a></li>
 							</ul>
 						</td>
 						<td width="10%" valign="top">
@@ -898,7 +871,7 @@ var new2="Election Message";
 							</ul>
 						</td>
 						<td width="30%" valign="top" align="right">
-							<div class="homePage_new_footer_links_head"> © Copyright 2010. All rights reserved </div>
+							<div class="homePage_new_footer_links_head"> Â© Copyright 2010. All rights reserved </div>
 							<div class="homePage_new_footer_links_head">
 								<a href="http://www.itgrids.com" target="_blank">IT GRIDS (India) Pvt. Ltd.</a></div>
 						</td>
