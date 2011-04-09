@@ -560,6 +560,7 @@
 	
 	<bean id="anonymousUserRegisterAction" class="com.itgrids.partyanalyst.web.action.AnonymousUserRegistrationAction" singleton="false">
 		<property name="ananymousUserService" ref="ananymousUserService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
     </bean>
 	
 	<bean id="locationsHierarchyAction" class="com.itgrids.partyanalyst.web.action.LocationsHierarchyAction" singleton="false">
