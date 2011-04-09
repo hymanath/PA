@@ -331,7 +331,11 @@
 		var imageDiv =document.getElementById(selPartyName);
 		imageDiv.style.display ='none';
 
+		var alliance = partyName+"DATA_DIV";			
+		var allianceResults = document.getElementById(alliance);
 
+		if(allianceResults)
+			allianceResults.style.display ='block';
 		
 		var str='';
 	
@@ -364,7 +368,6 @@
 
 					if(counter == 0)
 					{
-
                         str += '<td align="center">';
 						str += '<b class="cursorStyle">0 </b>';
 						str += '</td>';
@@ -373,8 +376,6 @@
 						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].won+' </b>';
 						str += '</td>';	
-
-
 					}
 	                else
 					{
@@ -539,8 +540,6 @@
 				var imageDiv =document.getElementById(selPartyName);
 				imageDiv.style.display ='none';
 			}
-				
-			
 		}else{
 			str+='<b style="color:green;font-weight:bold;padding:5px">'+results.partyName+'</b> <b style="color:red;font-weight:bold;> has No Alliances </b>';
 			var partyNameDiv = results.partyName;
@@ -548,8 +547,14 @@
 			partyDiv.style.display = 'block';
 			var selPartyName = "ajaxIncludingImageEl_"+selectedPartyName;
 				
-				var imageDiv =document.getElementById(selPartyName);
-				imageDiv.style.display ='none';
+			var imageDiv =document.getElementById(selPartyName);
+			imageDiv.style.display ='none';
+
+			var alliance = partyNameDiv+"DATA_DIV";			
+			var allianceResults = document.getElementById(alliance);
+
+			if(allianceResults)
+				allianceResults.style.display ='none';
 		}
 		divElement.innerHTML = str;
 	}
@@ -1270,6 +1275,7 @@
 			searchByDistStr += '<td style="color:#FBAD2B;font-weight:bold;">Search By District';
 			searchByDistStr += '<input id="searchByDistrictData" title="Enter District Name" type="text" onkeyup="getConstituenciesByDistrict()"></input></td>';
 			searchByDistStr += '<td><img style="display:none;" id="searchByDistrictDataIMG" src="images/icons/search.gif"/></td>';
+		//	searchByDistStr += '<td style="color:red;font-weight: bold;"> (or) </td>';
 		}		
 		searchByDistStr += 			'	<td style="color:#FBAD2B;font-weight:bold;">Search By Constituency';
 		searchByDistStr += 			'	<input id="searchByConstituencyData" title="Enter Constituency Name" type="text" onkeyup="getConstituencies()"></input></td>';
