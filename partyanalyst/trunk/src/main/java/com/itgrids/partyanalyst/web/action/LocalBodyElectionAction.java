@@ -230,7 +230,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		localBodyElectionResults = localBodyElectionService.getLocalBodyElectionResultsByLocalBodyTypeAndYear(localBodyId, stateId);
 		if(localBodyElectionResults != null){
 			if(localBodyElectionResults.getMuncipalityVO() != null){
-				String chartName = generateChartForResultsInElection(localBodyElectionResults.getMuncipalityVO(),localBodyElectionResults.getLocalBodyRegion(),localBodyElectionResults.getLocalBodyElectionYear(),localBodyElectionResults.getLocalBodyElectionType());
+				String chartName = generateChartForResultsInElection(localBodyElectionResults.getMuncipalityVO(),localBodyElectionResults.getLocalBodyRegion(),localBodyElectionResults.getLocalBodyElectionYear(),localBodyElectionResults.getLocalBodyElectionType(),localBodyId);
 				localBodyElectionResults.setHighLevelChart(chartName);
 			}
 		}
@@ -312,7 +312,7 @@ public class LocalBodyElectionAction extends ActionSupport implements
 			
 		return Action.SUCCESS;
 	}
-	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType){
+	public String generateChartForResultsInElection(List<TeshilPartyInfoVO> partyResultsVO,String localBodyName,String electionYear,String localBodyType,Long localBodyId){
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside generateChartForResultsInElection Method ..");
@@ -322,8 +322,8 @@ public class LocalBodyElectionAction extends ActionSupport implements
 		String chartPath;
 				
 		String chartId = localBodyName.concat("_LocalBodyElection").concat("_For_").concat(electionYear);
-		String chartName = localBodyType+ chartId + session.getId()+".png";
-		
+		//String chartName = localBodyType+ chartId + session.getId()+".png";
+		String chartName = localBodyType+ localBodyId +".png";
 		if(cPath.contains("PartyAnalyst"))
 		   chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		else
