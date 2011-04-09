@@ -477,15 +477,15 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="20%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">What's in</span>
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
@@ -608,15 +608,15 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="92%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Do u Know This ?</span>
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
@@ -641,15 +641,15 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="42%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Sneak Peak @ Party Analyst</span>
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
@@ -676,15 +676,15 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="75%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Quick Search</span>
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
@@ -710,15 +710,15 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="30%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Current Elections</span>
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
@@ -772,25 +772,24 @@ var new2="Election Message";
 								<div class="homePageContentWidget_head">
 									<table width="75%" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td>
+											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">Quick Request</span>
 													
 
 												</div>
 											</td>	
-											<td width="20px">
+											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
 										</tr>
 									</table>
 								</div>
 								<div class="homePageContentWidget_body">
-									<table>
-										
+									<table>										
 										<tr>
 										  <td style="font-weight:bold">Name:<input type="text" name="name" id="quickRequestTextbox"></td>
 										</tr>
