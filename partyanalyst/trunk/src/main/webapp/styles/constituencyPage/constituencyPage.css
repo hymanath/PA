@@ -295,6 +295,15 @@ legend
 	text-align:right;
 }
 
+#postButton{
+	background-color:#3A96BD;
+    margin-top:10px;
+	text-align:right;
+	color:#FFFFFF;
+	font-weight:bold;
+	font-size:12px;
+}
+
 #constituencyPeopleConnectDiv_Head
 {
 	background-image:url(../../images/icons/constituencyPage/background_head_blue.png);
