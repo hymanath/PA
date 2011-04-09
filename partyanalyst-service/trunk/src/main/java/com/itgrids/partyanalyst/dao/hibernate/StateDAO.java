@@ -142,6 +142,6 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 	
 	@SuppressWarnings("unchecked")
 	public List getAllStatesByCountryIdOrderByStateId(Long countryId){
-		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId=?", countryId);
+		return getHibernateTemplate().find("select model.stateId,model.stateName from State model where model.country.countryId=? order by model.stateId asc", countryId);
 	}
 }
