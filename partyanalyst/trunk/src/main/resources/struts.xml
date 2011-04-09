@@ -2297,6 +2297,11 @@
 			<result type="json" name="success">
 				<param name="root">details</param>							
 			</result>		
-		</action>	   		       	
+		</action>	
+		
+		<action name="footerLinksAction" class="footerLinksAction">
+            <result name="success">/jsp/footerLinksPage.jsp</result>
+        </action>
+		 		       	   		       	
 	</package>
 </struts>      

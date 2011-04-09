@@ -635,6 +635,9 @@
      <bean id="feedbackAdminApprovalAction" class="com.itgrids.partyanalyst.web.action.FeedbackAdminApprovalAction" singleton="false">
 	<property name="opinionPollService" ref="opinionPollService" />
 	</bean>
+	
+	<bean id="footerLinksAction" class="com.itgrids.partyanalyst.web.action.FooterLinksAction" singleton="false">	
+	</bean>
 </beans>	
 	
 	
