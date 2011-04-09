@@ -392,6 +392,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			}
 			Collections.sort(localBodyElecResList,new TehsilPartyInfoVOBySeatsWonComparator());
 			localBodyElectionResultVO.setMuncipalityVO(localBodyElecResList);
+			Collections.sort(participatedParties);
 			localBodyElectionResultVO.setParticipatedParties(participatedParties);
 		}
 		
