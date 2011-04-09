@@ -531,6 +531,14 @@ public class AnanymousUserService implements IAnanymousUserService {
 					candidateVO.setStatus(IConstants.NOTCONNECTED);
 					candidateVO.setConstituencyId(new Long(parms[4].toString()));
 					candidateVO.setConstituencyName(parms[3].toString());
+					
+					if(parms[5] != null){
+						
+						AnanymousUser ananyUser = (AnanymousUser)parms[5];
+						if(ananyUser.getProfileImg() != null && !ananyUser.getProfileImg().equals(""))
+							candidateVO.setImage(ananyUser.getProfileImg());
+					}
+					
 					if(loginId!=0){
 						candidates.add(userId);
 						userIdAndRelationShipWithLogedUser.put(userId,candidateVO);
