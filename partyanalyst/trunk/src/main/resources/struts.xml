@@ -62,7 +62,9 @@
 			<result type="redirect" name="CONSTITUENCY_RESULTS_ENTITLEMENT">constituencyElectionReportAction.action</result>
 			<result type="redirect" name="BIEELECTION_ENTITLEMENT">biElectionAction.action</result>
 			<result type="redirect" name="CENSUS_REPORT_ENTITLEMENT">censusReportAction.action</result>
+			<result type="redirect" name="electionDetailsReportAction">electionDetailsReportAction.action</result>
 			
+					
 			<result type="chain" name="redirectUrl">${url}</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
@@ -310,7 +312,13 @@
         </action>
        
        
-       <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
+        <action name="sendMailToAdminAction" class="sendMailToAdminAction">
+         <result type="json" name="success">
+            	<param name="root">result</param>
+            </result>
+       	</action>  
+         
+         <action name="feedbackAdminApprovalAction" class="feedbackAdminApprovalAction">
           <result name="success">/jsp/feedbackAdminApproval.jsp</result>
         </action>
         
@@ -1030,6 +1038,7 @@
         	</result>		
         </action>
          <action name="electionDetailsReportAction" class="electionDetailsReportAction">
+            <result name="NOT_LOGGED_IN">/jsp/loginForm.jsp</result>
 			<result name="success">/jsp/electionDetails.jsp</result>		
 		</action>
 		<action name="electionDetailsReportAjaxAction" class="electionDetailsReportAction" method="ajaxCallHandler">
@@ -2276,23 +2285,18 @@
 			</result>		
 		</action>
 		
+		
 		<action name="getConstituenciesByDistrictMatchingCriteria" class="partyStrengthAction" method="getDataMatchingCriteriaAjaxAction">
 			<result type="json" name="success">
 				<param name="root">details</param>							
 			</result>		
 		</action>
 		
-		<action name="candidateNominationDetailsAction" class="constituencyPageAction" method="getCandidateNominationDetails">
-			<result type="json" name="success">
-			   <param name="root">constituencyNominationsVO</param>
-			</result>	
-		</action>
 		
 		<action name="getConstituenciesMatchingCriteria" class="partyStrengthAction" method="getDataMatchingCriteriaAjaxAction">
 			<result type="json" name="success">
 				<param name="root">details</param>							
 			</result>		
-		</action>	   	
-				 		       	
+		</action>	   		       	
 	</package>
 </struts>      
