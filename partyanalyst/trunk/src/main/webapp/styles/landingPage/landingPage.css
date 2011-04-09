@@ -639,7 +639,7 @@ input.input_text
 
 #homePage_Chart_Header
 {
-	width:700px;
+	width:685px;
 	height:280px;
 }
 
@@ -673,9 +673,6 @@ input.input_text
     width:660px;
 }
 
-#homePage_Chart_Header {
-    width:700px;
-}
 #homePage_Image_Header img{
     border:none;
 }
@@ -753,6 +750,7 @@ input.input_text
 	font-size:10px;
 	height:20px;
 	border-top:1px solid #928B8B;
+	width:25px;
 }
 
 .ui-dialog
@@ -950,6 +948,23 @@ input.input_text
 .homePageContentWidget_body_news_list li
 {
 	padding:5px;
+}
+
+.doYouKnow_answer table th,.doYouKnow_answer table td
+{
+	padding:5px;
+	text-align:left;
+}
+
+.doYouKnow_answer table th
+{
+	color:#172B49;
+}
+
+.doYouKnowAnc
+{
+	text-decoration:none;
+	color:#374047;
 }
 
 /*====================
