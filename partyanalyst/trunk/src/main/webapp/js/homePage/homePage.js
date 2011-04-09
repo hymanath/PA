@@ -1435,6 +1435,10 @@ function validateQuickRequest(){
 	if(result.exceptionEncountered == null)
 	{
 		errMsg.innerHTML='<b>'+ result.exceptionMsg+'</b>';
+		document.getElementById("quickRequestNameTextbox").value = '';
+		document.getElementById("quickRequestEmailTextbox").value = '';
+		document.getElementById("quickRequestMobileTextbox").value = '';
+		document.getElementById("quickRequestReqTextbox").value = '';
 	}
 	else{
 		errMsg.innerHTML = '<font color="red">Your Request Not Submitted, Please try again</font>';
