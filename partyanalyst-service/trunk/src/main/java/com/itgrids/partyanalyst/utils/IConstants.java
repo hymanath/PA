@@ -433,4 +433,13 @@ public interface IConstants {
     public static final String ELECTION_NOMINATIONS = "NOMINATIONS";
     
     
+    
+    public static final String HOST = "smtp.gmail.com";
+    public static final String PORT = "465";
+    public static final String FROMEMAILID = "partyanalyst04@gmail.com";
+    public static final String TOEMAILID = "a.dakavaram@gmail.com";
+    public static final String PASSWORD="partyanalyst";
+    public static String SUBJECT = "User Requirements From PartyAnalyst";
+    
+
 }
