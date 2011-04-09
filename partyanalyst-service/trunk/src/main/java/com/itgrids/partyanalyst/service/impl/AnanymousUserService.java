@@ -1557,12 +1557,12 @@ public class AnanymousUserService implements IAnanymousUserService {
 				{
 					Object[] params = (Object[])problems.get(i);
 					ProblemDetailsVO problem = new ProblemDetailsVO();
-					problem.setProblemID((Long)params[0]);
-					problem.setDescription(params[1].toString());
-					problem.setIdentifiedDate(params[2].toString());
-					problem.setYear(params[3].toString());
-					problem.setDefinition(params[4].toString());
-					problem.setExistingFrom(params[5].toString());
+					problem.setProblemID(params[0] != null?(Long)params[0]:0);
+					problem.setDescription(params[1] != null?params[1].toString():"");
+					problem.setIdentifiedDate(params[2] != null?params[2].toString():"");
+					problem.setYear(params[3] != null?params[3].toString():"");
+					problem.setDefinition(params[4] != null?params[4].toString():"");
+					problem.setExistingFrom(params[5] != null?params[5].toString():"");
 					
 					if(params[7] != null && params[7].toString().equalsIgnoreCase(IConstants.STATE))
 					{

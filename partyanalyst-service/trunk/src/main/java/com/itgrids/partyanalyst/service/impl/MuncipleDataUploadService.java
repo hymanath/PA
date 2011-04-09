@@ -581,10 +581,14 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 	private String checkCellData(Sheet sheet, String columnName, int row){
 		String cellData = "";
 		String cellContent="";
-		if(excelHeaderData.get(columnName) != null)
-			cellData = sheet.getCell(excelHeaderData.get(columnName), row).getContents();
-		if(cellData.length()>0)
-			cellContent = cellData.trim();
+		try{
+			if(excelHeaderData.get(columnName) != null)
+				cellData = sheet.getCell(excelHeaderData.get(columnName), row).getContents();
+			if(cellData.length()>0)
+				cellContent = cellData.trim();
+		}catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
 		return cellContent;
 	}
 	
