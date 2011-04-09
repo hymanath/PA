@@ -30,6 +30,8 @@
 	<bean name="dateService" class="com.itgrids.partyanalyst.service.impl.DateService" >
 	</bean>  
 	
+	<bean name="stringUtilService" class="com.itgrids.partyanalyst.service.impl.StringUtilService" >
+	</bean>
 	
 	<bean name="mailService" class="com.itgrids.partyanalyst.service.impl.MailService" >
 	</bean>  
@@ -479,7 +481,7 @@
 		<property name="departmentOrganisationDAO" ref="departmentOrganisationDAO" />
 		<property name="problemCompleteLocationDAO" ref="problemCompleteLocationDAO" />
 		<property name="problemActivityDAO" ref="problemActivityDAO" />
-		
+		<property name="stringUtilService" ref="stringUtilService" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
