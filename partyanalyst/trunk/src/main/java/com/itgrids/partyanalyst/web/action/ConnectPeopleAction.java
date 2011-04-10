@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -783,12 +784,21 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
+		String sPath = (String)session.getAttribute("imagePath");
+		
+		 String filePath = "";
+		 
+		 if(sPath != null)
+			 filePath = sPath;
+		 else
+			 filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";	
+		
 		BufferedImage image = null;
         try {
             
             image = ImageIO.read(this.upload);
             String constiName[] = uploadContentType.split("/");
-            String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
+            //String filePath = context.getRealPath("/")+"pictures\\"+IConstants.PROFILE_PIC+"\\";
             
             String fileName = filePath+user.getRegistrationID()+"."+constiName[1];
             //String fileName = filePath+this.uploadFileName;
@@ -797,9 +807,27 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
                         
             if(uploadStatus.getResultCode() > 0)
             {
-            	ImageIO.write(image, constiName[1],new File(fileName));
+            	
+            	try {
+                	
+                	    FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+    	
+    	                log.info("Image Name :" + image);
+    	                log.info("File :" + filName);
+    	                ImageIO.write(image, constiName[1],filName);
+    	                filName.close();
+    	                
+    	                photoUploadStatus = "true";
+    	            	inputStream = new StringBufferInputStream("File Uploaded successfully");
+                	
+
+    			} catch (Exception e) {
+    			
+    				log.error(e);
+    			}
+            	/*ImageIO.write(image, constiName[1],new File(fileName));
             	photoUploadStatus = "true";
-            	inputStream = new StringBufferInputStream("File Uploaded successfully");
+            	inputStream = new StringBufferInputStream("File Uploaded successfully");*/
 
             }
             else
