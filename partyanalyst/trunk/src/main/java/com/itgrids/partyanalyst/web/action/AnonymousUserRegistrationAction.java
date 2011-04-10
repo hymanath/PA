@@ -5,10 +5,12 @@ import java.io.File;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
@@ -57,6 +59,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
+	
+	private static final org.apache.log4j.Logger log = Logger.getLogger(AnonymousUserRegistrationAction.class);
    
 	//For UserImage
     private File uploadImage;
@@ -392,11 +396,30 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			  savedSuccessfully = ananymousUserService.saveAnonymousUserDetails(regVO, false);
             
          //    if(regVO.getRegistrationID()!=null){
-            if(this.uploadImage !=null){
+            
+            
+            try {
+            	
+            	if(this.uploadImage !=null){
+                    fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
+                    imageName =  regVO.getRegistrationID()+"."+constiName[1];
+	                FileImageOutputStream filName = new FileImageOutputStream(new File(fileName));
+	
+	                log.info("Image Name :" + imageFile);
+	                log.info("File :" + filName);
+	                ImageIO.write(imageFile, constiName[1],filName);
+	                filName.close();
+            	}
+
+			} catch (Exception e) {
+			
+				log.error(e);
+			}
+            /*if(this.uploadImage !=null){
                fileName = filePath+regVO.getRegistrationID()+"."+constiName[1];
-              imageName =  regVO.getRegistrationID()+"."+constiName[1];  
+               imageName =  regVO.getRegistrationID()+"."+constiName[1];  
 	           ImageIO.write(imageFile, constiName[1],new File(fileName));
-             }       	
+             }       	*/
 			if(savedSuccessfully){	
 				
 				HttpSession session = request.getSession();			
