@@ -522,10 +522,14 @@ public class ProblemManagementService implements IProblemManagementService {
 					
 					if(!problemBeanVO.getProblem().contains(" ")){
 						problem.setProblem(stringUtilService.fragmentARegularString(problemBeanVO.getProblem(), 100, " "));
+					}else{
+						problem.setProblem(problemBeanVO.getProblem());
 					}
 					
 					if(!problemBeanVO.getDescription().contains(" ")){
 						problem.setDescription(stringUtilService.fragmentARegularString(problemBeanVO.getDescription(), 100, " "));
+					}else{
+						problem.setDescription(problemBeanVO.getDescription());
 					}
 					
 				//	problem.setProblem(problemBeanVO.getProblem());
