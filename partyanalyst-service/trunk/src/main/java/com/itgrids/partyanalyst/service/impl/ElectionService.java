@@ -559,7 +559,7 @@ public class ElectionService implements IElectionService{
 		{
 			SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(censusParameter.getCensusParameterId());
-			selectOption.setName(WordUtils.capitalize(censusParameter.getParameterName().toLowerCase()));
+			selectOption.setName(censusParameter.getParameterName());
 			selectOptionVOList.add(selectOption);
 		}
 			return selectOptionVOList;
@@ -611,5 +611,34 @@ public class ElectionService implements IElectionService{
 		return censusInfo;
 	}
 	
+	  public List<SelectOptionVO> getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType)
+	  {
+		try{
+			  
+		 List list = electionDAO.getLatestElectionYearForAStateBasedOnElectionType(stateId, electionType, subType);
+		
+		 if(list != null && list.size() > 0)
+		 {
+			 List<SelectOptionVO> selectList = new ArrayList<SelectOptionVO>(0);
+			 SelectOptionVO selectOptionVO = null;
+			 Long id = 0L;
+			 for(int i=0;i<list.size();i++)
+			 {
+				 Object param = list.get(i);
+				 selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setId(++id);
+				 selectOptionVO.setName(param.toString());
+				 selectList.add(selectOptionVO);
+			 }
+			 return selectList;
+		 }
+		 else 
+			 return null;
+		}catch(Exception e){
+			return null;
+		}
+		  
+	  }
+
 	
 }
