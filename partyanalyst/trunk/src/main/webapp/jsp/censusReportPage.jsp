@@ -206,6 +206,8 @@
 	var partyResultsList = [];
 	var partyResultsByRanges;
 	var allPartyResultsByRanges;
+	var jobjP;
+	var resultsP;
 
     google.load("visualization", "1", {packages:["corechart"]});
 	
@@ -225,20 +227,28 @@
 	{
 
 		var censusElmt = document.getElementById("censusSelect");
-		
+		var yearElmt = document.getElementById("yearSelect");
+		var errorElmt = document.getElementById("censusReporterror_Div");
+		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var censusValue = censusElmt.options[censusElmt.selectedIndex].value;
-		if(censusValue == 0)
+		
+		if(censusValue == 0 || yearValue == 'Select Year')
 			return;
 		
+		if(stateId == 0)
+		{
+			errorElmt.innerHTML = "Please Select State";
+			return;
+		}
+		else
+			errorElmt.innerHTML = "";
+
 		showAjaxImage();
-		var yearElmt = document.getElementById("yearSelect");
 		var stateElmt = document.getElementById("stateList");
 		var districtElmt = document.getElementById("districtList");
-		var errorElmt = document.getElementById("censusReporterror_Div");
-
+		
 		var reportLevel = '';
 		var censusText = censusElmt.options[censusElmt.selectedIndex].text;
-		yearValue = yearElmt.options[yearElmt.selectedIndex].text;
 		var stateId = stateElmt.options[stateElmt.selectedIndex].value;
 		var districtId = districtElmt.options[districtElmt.selectedIndex].value;
 		var stRadioEle = document.getElementById("stRadioId");
@@ -591,7 +601,28 @@
 
         var chart = new google.visualization.LineChart(document.getElementById('onePartyCensusResults_body'));
         chart.draw(data, {width: 450, height: 350,pointSize: 4, title:ctitle,titleTextStyle:{color:'#DC1CF2'}});
-		getAllPartiesCensusResults();		
+		//getAllPartiesCensusResults();	
+		buildAllPartyCensusResults(jobjP,resultsP);
+	}
+
+	function getLatestElectionYears()
+	{
+		var stateLitsEle = document.getElementById("stateList");
+		var stateId = stateLitsEle.options[stateLitsEle.selectedIndex].value;
+		
+		if(stateId == 0)
+			return;
+		
+		var jsObj=
+		{
+			stateId : stateId,
+			selectElementId : "yearSelect",
+			task	: "getLatestElectionYears"
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getLatestElectionYearsAction.action?"+rparam;						
+		censusAjaxCall(jsObj,url);
 	}
 
 	function buildPopulationRange(jsObj,results)
@@ -743,6 +774,9 @@
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		
+		if(yearValue == 'Select Year')
+			return;
+
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
 		else if(diRadioEle.checked == true)
@@ -778,6 +812,9 @@
 		var stRadioEle = document.getElementById("stRadioId");
 		var diRadioEle = document.getElementById("diRadioId");
 		
+		if(yearValue == 'Select Year')
+			return;
+
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
 		else if(diRadioEle.checked == true)
@@ -854,8 +891,8 @@
 		var isAll = true;
 		var yearValue = yearElmt.options[yearElmt.selectedIndex].text; 
 		var isAll = false;
-
-		if(!elmts)
+		
+		if(!elmts || yearValue == 'Select Year')
 			return;
 
 		for(var i=0; i<elmts.length; i++)
@@ -1205,9 +1242,18 @@
 								else if(jsObj.task == "getPartiesByState")
 									buildPartiesSelectBox(jsObj.divId, myResults.parties);
 								else if(jsObj.task == "allPartyCensusResults")
+								{	
+									jobjP = jsObj;
+									resultsP = myResults;
 									buildAllPartyCensusResults(jsObj,myResults);
+								}
 								else if(jsObj.task == "censusByParty")
 									buildPartyResultsByRanges(jsObj,myResults);
+								else if(jsObj.task == "getLatestElectionYears")
+								{
+									clearOptionsListForSelectElmtId(jsObj.selectElementId);
+									fillOptionsForSelectedElmt(jsObj.selectElementId, myResults);
+								}
 						}
 						catch (e)
 							{   
@@ -1265,7 +1311,7 @@ window.history.forward(1);
 			<tr>
 				<th>State</th>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
+					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList" list="states" listKey="id" listValue="name"   onchange="getLatestElectionYears();getLocationHierarchies(this.options[this.selectedIndex].value,'districtsInState','influencingPeopleReg','districtList','currentAdd');"/>	
 				</td>
 
 				<th>District</th>
@@ -1275,10 +1321,13 @@ window.history.forward(1);
 				
 				<th>Year</th>
 				<td>
-					<select id="yearSelect">
+					
+					<s:select theme="simple" cssClass="selectWidth" id="yearSelect" label="Year" name="year" list="{}" listKey="id" listValue="name"  headerKey = "0" headerValue = "Select Year" />
+
+				<!--	<select id="yearSelect">
 						<option>2009</option>
-					<!--<option>2004</option>  -->
-					</select>
+						<option>2006</option> 
+					</select>  --->
 				</td>
 				<th>Census Type</th>
 				<td><s:select theme="simple" cssClass="selectWidth" id="censusSelect" label="Select Census Parameter" name="censusParam" list="#session.censusParamList" listKey="id" listValue="name"  headerKey = "0" headerValue = "Select" onchange="getCensusDetails()"/>
@@ -1372,7 +1421,6 @@ window.history.forward(1);
 	</div>
 	<script>
 	hideDistrictSelect();
-	getLocationHierarchies(1,'districtsInState','influencingPeopleReg','districtList','currentAdd');
 	</script>
 </body>
 </html>
