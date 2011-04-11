@@ -43,7 +43,16 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	private List<CensusWisePartyResultsVO> allPartiesResults;
 	String chartName = null;
 	private EntitlementsHelper entitlementsHelper;
+	private	List<SelectOptionVO> yearList;
 	
+	public List<SelectOptionVO> getYearList() {
+		return yearList;
+	}
+
+	public void setYearList(List<SelectOptionVO> yearList) {
+		this.yearList = yearList;
+	}
+
 	private static final Logger log = Logger.getLogger(CensusReportAction.class);
 	
 	public String getChartName() {
@@ -160,7 +169,8 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CENSUS_REPORT_ENTITLEMENT))
 			return ERROR;
 		
-		states = new ArrayList<SelectOptionVO>();		
+		states = new ArrayList<SelectOptionVO>();
+		states.add(new SelectOptionVO(0L,"Select State"));
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));
 		states.add(new SelectOptionVO(24L,"Tamil Nadu"));
 		setYears(getStaticDataService().getElectionYears(2L, false));
@@ -285,6 +295,22 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		
 		return Action.SUCCESS;
 
+	}
+	
+	public String AjaxHandler()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getLatestElectionYears")){
+			yearList = new ArrayList<SelectOptionVO>(0);
+			yearList = electionService.getLatestElectionYearForAStateBasedOnElectionType(jObj.getLong("stateId"),IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
+			//yearList.add(0,new SelectOptionVO(0l,"Select Year"));
+		}
+		return Action.SUCCESS;
 	}
 	
 }
