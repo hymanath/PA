@@ -64,7 +64,6 @@
 			<result type="redirect" name="CENSUS_REPORT_ENTITLEMENT">censusReportAction.action</result>
 			<result type="redirect" name="electionDetailsReportAction">electionDetailsReportAction.action</result>
 			
-					
 			<result type="chain" name="redirectUrl">${url}</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
@@ -2302,6 +2301,12 @@
 		<action name="footerLinksAction" class="footerLinksAction">
             <result name="success">/jsp/footerLinksPage.jsp</result>
         </action>
-		 		       	   		       	
+		
+		<action name="getLatestElectionYearsAction" class="censusReportAction" method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">yearList</param>				
+			</result>		
+		</action>
+						 		       	
 	</package>
 </struts>      
