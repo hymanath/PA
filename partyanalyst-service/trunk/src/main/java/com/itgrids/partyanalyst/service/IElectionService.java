@@ -46,4 +46,6 @@ public interface IElectionService {
 	public List<CensusWisePartyResultsVO> findAllPartiesInfoByCensusRanges(Integer selectIndex,Long stateId,Long districtId,
 			Long year,String level);
 	
+	public List<SelectOptionVO> getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType);
+	
 }
