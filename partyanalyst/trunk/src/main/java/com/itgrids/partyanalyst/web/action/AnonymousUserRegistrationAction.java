@@ -441,6 +441,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		 }
 		 catch(Exception e){
 			 e.printStackTrace();
+			 
+			 return "failure";
 		 }
 		if(redirectLoc != null && !"".equalsIgnoreCase(redirectLoc))
 			return getRedirectPageDetails();

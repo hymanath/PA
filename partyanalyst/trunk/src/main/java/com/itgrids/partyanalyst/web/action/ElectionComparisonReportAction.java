@@ -255,6 +255,8 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	public String execute()
 	{
 		
+		try{
+			
 		Boolean hasAlliances = new Boolean(allianceCheck);
 		if(logger.isDebugEnabled())
 			logger.debug("alliance-->" + allianceCheck);		
@@ -277,7 +279,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		String yearTwo = electionComparisonReportVO.getYearTwo();
 		String electionType = electionComparisonReportVO.getElectionType();
 		
-        try{
+        
         	session = request.getSession();
         	
         	String sPath = (String)session.getAttribute("chartPath");
@@ -358,6 +360,8 @@ public class ElectionComparisonReportAction extends ActionSupport implements
         }
 		catch(Exception ex){
 			ex.printStackTrace();
+			
+			return "failure";
         }
 
 		return Action.SUCCESS;

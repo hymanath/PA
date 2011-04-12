@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.json.JSONObject;
@@ -47,7 +48,7 @@ public class PartyStrengthAction extends ActionSupport implements
 	private PartiesDetailsVO alliancesYears;
 	private int errorCode = 0;
 	
-	
+	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyStrengthAction.class);
 	private String task = null;
 	JSONObject jObj = null;
 		
@@ -199,6 +200,7 @@ public class PartyStrengthAction extends ActionSupport implements
 
 	public String execute(){
 		
+		try{
 		partyList = staticDataService.getStaticParties();
 		
 		partyListWithOutAll = staticDataService.getStaticParties();
@@ -208,6 +210,12 @@ public class PartyStrengthAction extends ActionSupport implements
 		states = partyStrengthService.getAllStatesHavinElectionData(IConstants.ASSEMBLY_ELECTION_TYPE);	
 		
 		years = partyStrengthService.getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		
+		}catch(Exception ex){
+			
+			log.error("Exception Raised :",ex);
+		 return "failure";
+		}
 		
 		return Action.SUCCESS;
 	}
