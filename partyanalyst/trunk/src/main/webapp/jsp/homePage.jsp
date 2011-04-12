@@ -241,7 +241,12 @@ var new2="Election Message";
                         <table width="100%" style="width:100%">                           
                             <tr>
                                 <th id="searchBox" style="color:#FFFFFF">
-									<c:if test="${sessionScope.loginStatus == 'out'}">        		
+                                
+                                    <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
+                                        <c:out value="Welcome, ${sessionScope.UserName} | "/>
+										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> 
+									</c:if>
+									<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">        		
 										<c:out value="Welcome, ${sessionScope.UserName} | "/>
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
