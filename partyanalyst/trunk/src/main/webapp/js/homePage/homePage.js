@@ -141,9 +141,15 @@ function buildQuestions()
 		return;
 
 	var str = '';	
-	str += '	<marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="350" width="210"  direction="up" >';
-	str += ' <table width="100%">';
+	str += '<div>';
+		str += '<center><font color="#4B74C6"><b>Party Analyst Launch Event</b></font></center><br>';
+		str += ' <object height="180" width="200"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
+		str += '</font>';
+	str += '</DIV><br>';
 
+	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="150" width="210"  direction="up" >';
+	str += ' <table width="100%">';
+	
 	for(var i=0;i<questionsObj.length;i++)
 	{
 		str += '<tr>';
@@ -151,7 +157,9 @@ function buildQuestions()
 		str += '	<td valign="top"><a class="doYouKnowAnc" href="javascript:{}" title="'+questionsObj[i].question+'" onclick="newsBox('+i+')">'+questionsObj[i].question.substring(0,50)+' ...</a></td>';
 		str += '</tr>';
 	}
+
 	str += ' </table>';
+	str += ' </marquee>';
 
 	elmt.innerHTML = str;
 
