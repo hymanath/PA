@@ -308,7 +308,7 @@ window.history.forward(1);
 
 					</tr>
 					<tr>
-					<td width="100px;">Upload Your Photo</td>
+					<td width="100px;" style="padding-left:12px;">Upload Your Photo</td>
 					<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" onchange="uploadImageFile()"/></td>					
 				    </tr>
 
@@ -326,7 +326,7 @@ window.history.forward(1);
 					<table class="registrationTable" cellspacing="2" cellpadding="2">
 									
 					<tr>
-						<td width="100px;"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
+						<td width="100px;" style="padding-left:12px;"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
 						<td><s:textfield id="mobileField" name="mobile" maxlength="12"/>  </td>
 					</tr>
 					<tr>
@@ -355,16 +355,16 @@ window.history.forward(1);
 						</td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
+						<td width="100px;" style="padding-left:12px;"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
 						<td><s:textfield id="pincodeField" name="pincode"/>  </td>
 					</tr>	
 
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
+						<td width="100px;"><font class="requiredFont"> * </font><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
 						<td><s:textfield id="emailField" name="email"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td width="100px;" style="padding-left:12px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
 						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
 					</tr>
 				</table>
