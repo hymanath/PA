@@ -240,7 +240,8 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public String getEmail() {
 		return regVO.getEmail();
 	}
-	 @EmailValidator(type = ValidatorType.FIELD , message = " enter a valid email.")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Email is Mandatory")
+	@EmailValidator(type = ValidatorType.FIELD , message = " Enter a valid email.")
 	public void setEmail(String email) {
 		this.regVO.setEmail(email);
 	}
