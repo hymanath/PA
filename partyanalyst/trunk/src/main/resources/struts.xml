@@ -184,6 +184,7 @@
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
 			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
 		</action>
 		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
@@ -218,7 +219,8 @@
 			<result type="redirect" name="dashBoard">connectPeopleAction.action</result>
 			<result name="success">/jsp/partyResultsPage.jsp</result>						
 			<result name="input">/jsp/partyResultsPage.jsp</result>
-			<result name="error">/jsp/partyResultsCriteriaPage.jsp</result>				
+			<result name="error">/jsp/partyResultsCriteriaPage.jsp</result>		
+			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>		
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
@@ -1545,6 +1547,7 @@
 		 
 		 <action name="anonymousUserRegistrationAction" class="anonymousUserRegisterAction">
 		    <result name="input">/jsp/anonymousUserRegistration.jsp</result>
+		    <result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
 		     <result type="redirect" name="connect">connectPeopleAction.action</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			<result name="error">/jsp/anonymousUserRegistration.jsp</result>	
@@ -2137,6 +2140,7 @@
 			<result name="success" >/jsp/partyStrengths.jsp</result> 
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/partyStrengths.jsp</result>
+			<result name="failure">/jsp/partyAnalystErrorPage.jsp</result>
 		</action>
 		
 		<action name="candidateStrenthsAction" class="com.itgrids.partyanalyst.web.action.CandidateStrenthsAction">
