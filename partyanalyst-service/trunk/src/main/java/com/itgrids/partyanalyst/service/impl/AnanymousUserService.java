@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -274,6 +275,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					if(!isUpdate){
 						ananymousUser.setUsername(userDetails.getUserName());
 						ananymousUser.setPassword(userDetails.getPassword());
+						ananymousUser.setRegisteredDate(getCurrentDateAndTime());
 					}
 					
 					
@@ -292,6 +294,7 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
 					
 					ananymousUser.setPincode(userDetails.getPincode());
+					ananymousUser.setUpdatedDate(getCurrentDateAndTime());		
 					
 					
 					
@@ -1674,6 +1677,23 @@ public class AnanymousUserService implements IAnanymousUserService {
 		}
 		
 		return imageURL;
+	}
+	
+	/*
+	 * To convert the date that is retrived from DB to dd/MM/yyyy HH:mm:ss
+	 */
+	public Date getCurrentDateAndTime(){
+		try {
+		java.util.Date now = new java.util.Date();
+        String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        String strDateNew = sdf.format(now);        
+			now = sdf.parse(strDateNew);
+			return now;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	

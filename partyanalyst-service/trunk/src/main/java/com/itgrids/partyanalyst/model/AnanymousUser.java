@@ -58,6 +58,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 	 private Set<UserProfileOpts> userProfileOptses = new HashSet<UserProfileOpts>(0);
 	 private Set<UserApprovalDetails> userApprovalDetails = new HashSet<UserApprovalDetails>(0);
 	 private String profileImg;
+	 private Date registeredDate;
+	 private Date updatedDate;
 	
 	 
 	public AnanymousUser()
@@ -74,7 +76,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 			String username, String password, Date dateofbirth, String email,
 			String phone, String mobile, String address, String pincode,
 			State state, District district, Constituency constituency,
-			Set<ProblemAndProblemSource> problemAndProblemSource) {
+			Set<ProblemAndProblemSource> problemAndProblemSource,Date registeredDate,
+			Date updatedDate) {
 		this.name = name;
 		this.gender = gender;
 		this.username = username;
@@ -89,6 +92,8 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 		this.district = district;
 		this.constituency = constituency;
 		this.problemAndProblemSource = problemAndProblemSource;
+		this.registeredDate = registeredDate;
+		this.updatedDate = updatedDate;
 	}
 
 	@Id
@@ -314,6 +319,24 @@ public class AnanymousUser extends BaseModel implements java.io.Serializable  {
 
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
+	}
+
+	@Column(name = "registered_time", length = 10)
+	public Date getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	@Column(name = "updated_date", length = 10)
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 		
 }
