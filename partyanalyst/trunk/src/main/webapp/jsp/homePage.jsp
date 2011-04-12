@@ -219,7 +219,7 @@ var new2="Election Message";
 	<div id="knowMore_window"><div id="knowMore_window_inner"></div></div>
 	<div id="feedback_window"><div id="feedback_window_inner"></div></div>
 	<div id="quickRequest_window"><div id="quickRequest_window_inner"></div></div>
-
+	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	<div id="homePageContainer" style="overflow:visible;">
 		<div id="floatingDiv_relative_main">
 			<div id="floatingDiv_absolute_main">				
@@ -810,8 +810,7 @@ var new2="Election Message";
 
 								</div>
 								<div class="homePageContentWidget_footer">
-
-								</div>
+ 								</div>
 							</div>
 						</td>
 					</tr>
@@ -836,8 +835,8 @@ var new2="Election Message";
 								<li><a href="footerLinksAction.action#whoWeAre">Who we are</a></li>
 								<li><a href="footerLinksAction.action#whatWeDo">What we do</a></li>
 								<li><a href="footerLinksAction.action#coreCompetency">Core Competency</a></li>
-								<li><a href="javascript:{}">Customer Support</a></li>
-								<li><a href="javascript:{}">Contact</a></li>
+								<li><a href="javascript:{}" >Customer Support</a></li>
+								<li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a></li>
 								<li><a href="javascript:{}">Sitemap</a></li>
 							</ul>
 						</td>
