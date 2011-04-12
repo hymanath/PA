@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.components.ActionError;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -51,6 +52,9 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private String selectedPartyShortName;
 	private Long selectedPartyId;
 	private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+	
+	private static final org.apache.log4j.Logger log = Logger.getLogger(PartyResultsAction.class);
+	
 	public String getSelectedLocationName() {
 		return selectedLocationName;
 	}
@@ -158,6 +162,10 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 
 	public String execute() {
 
+		
+		try{
+			
+		
 		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 		String reportError = rb.getString("noResults");
 		
@@ -243,7 +251,16 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
         ChartProducer.createLineChart("Party Results - Year Vs Participated Seats & Year Vs Seats Won", dataset, "Year", "No. of Seats", chartPath);
 		//ChartProducer.createLineChart("Party Results - Year Vs Participated Seats & Year Vs Seats Won", yearVsSeatsDataset, "Year", "No. of Seats", yearVsSeatsChart);
 		//ChartProducer.createLineChart("Party Results - Year Vs Votes Percentage", yearVsVotesPercDataset, "Year", "Percentage of Votes", yearVsVotesPercChart);
-		return SUCCESS;
+        
+		}
+		catch(Exception ex){
+			
+			log.error("Exception Raised :" + ex);
+			return "failure";
+			
+		}
+		
+	 return SUCCESS;
 		
 	}
 
