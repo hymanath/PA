@@ -1121,7 +1121,7 @@ function openDialogOfProblems(type)
 function showAllPostedProblems_paginator(jsObj,results)
 {
 	var elmt = document.getElementById("postedDiv_body_dataInfo");
-	
+		
 	var str = '';
 	if(results.problemsInfo==null){
 	return;
@@ -1131,7 +1131,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 		var data = results.problemsInfo[i];
 		
 		str += '<div class="postedDiv_dataInfo_main">';
-		str += '<div class="postedDiv_dataInfo_head">'+data.definition+'</div>';
+		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
 		str += '<div class="postedDiv_dataInfo_body">';
 		str += '<table class="postedDiv_dataInfo_table">';
 		str += '<tr>';
