@@ -23,7 +23,7 @@ import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 /**
  * 
  * @author Mohan
