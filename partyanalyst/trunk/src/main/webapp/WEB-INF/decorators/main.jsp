@@ -20,7 +20,21 @@
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/partyPerformance.js" ></script>
 <script type="text/javascript" src="js/partyPerformanceReport.js" ></script>
+<script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <script type="text/javascript" src="js/googleAnalytics/googleAnalytics.js" ></script>
+
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
+
+<!-- JQuery files (End) -->
 
 <link href="styles/pa.css" rel="stylesheet" type="text/css" />
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
@@ -179,6 +193,7 @@
 </head>
 
 <body>
+    <div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
 	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG_betanew.jpg');height:125px;">
 		<table  width="100%" id="headerTable">
 			<tr>
@@ -297,7 +312,10 @@
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
 				<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
-				<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
+				<td align="right" ><a href="footerLinksAction.action#whoWeAre"><font color="#ffffff">About Us </font></a>
+				|<a  href="javascript:{}"onclick ="contactLinkInHomePage()"> <font color="#ffffff"> Contact Us</font> </a>
+				| API | <a href="footerLinksAction.action#termsOfUse"><font color="#ffffff">Terms Of Use</font></a>
+				| Privacy Policy </td>
 			</tr>
 		</table>
 		</div>
