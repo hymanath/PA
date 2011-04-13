@@ -219,7 +219,7 @@
 						{
 							ancName:"",
 							head:"",
-							data:"The Platform website – [www.partyanalyst.com] is created to provide a platform for election analysis and political management as such the website is for general information only. Any advice, suggestions that visitors take or share from this website will be doing so at their own risk."
+							data:"The Platform website &#45 [www.partyanalyst.com] is created to provide a platform for election analysis and political management as such the website is for general information only. Any advice, suggestions that visitors take or share from this website will be doing so at their own risk."
 						},
 						{
 							ancName:"",
