@@ -295,7 +295,7 @@
 														Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
 														This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
 													</div>
-													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													<div style="float:right;padding-top:4px;"><a href="partyPerformanceMain.action" class="viewReportAnc">View</a></div>
 												</div>											
 											</div>
 										</li>
@@ -307,7 +307,7 @@
 													<div style="height:120px">
 													Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.
 													</div>
-													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													<div style="float:right;padding-top:4px;"><a href="electionComparisonAction.action" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
 										</li>
@@ -319,7 +319,7 @@
 													<div style="height:120px">
 													 Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.
 													</div>
-													 <div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													 <div style="float:right;padding-top:4px;"><a href="partyResultsCriteriaAction.action" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
 										</li>
