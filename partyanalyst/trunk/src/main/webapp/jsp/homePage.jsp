@@ -874,7 +874,7 @@ var new2="Election Message";
 						<td width="10%" valign="top">
 							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="http://www.facebook.com/PartyAnalyst">Facebook</a></li>
+								<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
 								<li><a href="javascript:{}">Twitter</a></li>
 								<li><a href="javascript:{}">LinkedIN</a></li>
 							</ul>
