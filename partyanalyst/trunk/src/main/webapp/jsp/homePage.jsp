@@ -525,7 +525,7 @@ var new2="Election Message";
 														</table>														
 													</div>
 													<div class="homePageContentWidget_body_news_body">
-														All free users can access the website with following features :
+														All free users can access the website with following features:
 														<ul class="homePageContentWidget_body_news_list">
 															<li>View comments posted by registered users</li>
 															<li>View all election results</li>
@@ -624,7 +624,7 @@ var new2="Election Message";
 											</td>	
 											<td valign="top">
 												<div class="homePageContentWidget_head_center_div">
-													<span class="homePageContentWidget_head_center_span">Do u Know This ?</span>
+													<span class="homePageContentWidget_head_center_span">Do You Know This ?</span>
 												</div>
 											</td>	
 											<td width="20px" valign="top">
@@ -880,7 +880,7 @@ var new2="Election Message";
 							</ul>
 						</td>
 						<td width="30%" valign="top" align="right">
-							<div class="homePage_new_footer_links_head"> © Copyright 2010. All rights reserved </div>
+							<div class="homePage_new_footer_links_head"> &copy; Copyright 2011. All rights reserved </div>
 							<div class="homePage_new_footer_links_head">
 								<a href="http://www.itgrids.com" target="_blank">IT GRIDS (India) Pvt. Ltd.</a></div>
 						</td>
