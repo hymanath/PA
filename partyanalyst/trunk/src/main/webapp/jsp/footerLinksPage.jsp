@@ -115,7 +115,7 @@
 						{
 							ancName:"",
 							head:"",
-							data:"THE WEBSITE (“Website”) “[Platform website - www.partyanalyst.com] by definition is the URL address of the website, wherein the USERS (“YOU”) will be able to browse, use and utilize the features of the website to register, login, publish information, engage, share, disseminate information available on the website as a social networking platform. The user can also share the information available on the website on social networking website like Facebook, LinkedIN and Twitter and others .The website is owned and operated by IT Grids (India) Pvt. Ltd., [Company] and referred to here as [Company website - www.itgrids.com] as “We” or “Us” and the users as “YOU”"
+							data:"THE WEBSITE (&#34Website&#34) &#34[Platform website - www.partyanalyst.com]&#34 by definition is the URL address of the website, wherein the USERS (&#34YOU&#34) will be able to browse, use and utilize the features of the website to register, login, publish information, engage, share, disseminate information available on the website as a social networking platform. The user can also share the information available on the website on social networking website like Facebook, LinkedIN and Twitter and others .The website is owned and operated by IT Grids (India) Pvt. Ltd., [Company] and referred to here as [Company website - www.itgrids.com] as &#34We&#34 or &#34Us&#34 and the users as &#34YOU&#34" 
 						},
 						{
 							ancName:"",
@@ -125,17 +125,17 @@
 						{
 							ancName:"",
 							head:"USER AGREEMENT",
-							data:"The user (“YOU”) can use, utilize and access the [www.partyanalyst.com] (“Website”) subject to the terms and conditions of the use. These terms and conditions are changed / updated from time to time and at the discretion of the owners of the website and their company – IT Grids (India) Pvt. Ltd. (“Company”) This Agreement is for an indefinite terms and the user (“YOU”) understand that you are bound by the terms mentioned on this website till the time you access, use and utilize this website."
+							data:"The user (&#34YOU&#34) can use, utilize and access the [www.partyanalyst.com] (&#34Website&#34) subject to the terms and conditions of the use. These terms and conditions are changed / updated from time to time and at the discretion of the owners of the website and their company &#45 IT Grids (India) Pvt. Ltd. (&#34Company&#34) This Agreement is for an indefinite terms and the user (&#34YOU&#34) understand that you are bound by the terms mentioned on this website till the time you access, use and utilize this website."
 						},
 						{
 							ancName:"",
 							head:"CHANGES",
-							data:"The owners and their company – IT GRIDS (INDIA) PVT. LTD., Inc. reserves the right to add/modify/ change/update the terms of service and conditions as applicable including suspend/cancel/add or deletes a feature or service on the website make changes to the content at any given point of time without prior notice. And whenever such changes to the website are done and implemented such changes will be notified to the website users. The user (“YOU”) continued access and use of the website after such changes will be deemed that you accept such changes to the website."
+							data:"The owners and their company &#45 IT GRIDS (INDIA) PVT. LTD., Inc. reserves the right to add/modify/ change/update the terms of service and conditions as applicable including suspend/cancel/add or deletes a feature or service on the website make changes to the content at any given point of time without prior notice. And whenever such changes to the website are done and implemented such changes will be notified to the website users. The user (&#34YOU&#34) continued access and use of the website after such changes will be deemed that you accept such changes to the website."
 						},
 						{
 							ancName:"",
 							head:"CHARGES",
-							data:"The information on the platform website is classified into and for – Un-Registered users, Registered Users and Customer Users. Wherein, the un-registered and registered users can access the website for FREE with access features as available for them respectively.The access to customer users is on subscription and packaged based services. The charges for the same will depend on the access privileges, subscription package selected such as region, constituency, and state or pan Information access."
+							data:"The information on the platform website is classified into and for &#45 Un-Registered users, Registered Users and Customer Users. Wherein, the un-registered and registered users can access the website for FREE with access features as available for them respectively.The access to customer users is on subscription and packaged based services. The charges for the same will depend on the access privileges, subscription package selected such as region, constituency, and state or pan Information access."
 						},
 						{
 							ancName:"",
@@ -172,7 +172,7 @@
 						{
 							ancName:"",
 							head:"",
-							data:"This privacy policy forms the part of the terms of service and disclaimer as complete agreement between the website and users of the website for registering, using, utilizing the features of the website. [www.partyanalyst.com] for reference the terms “We”, “Us” are referred to the website and “You” for the users. IT Grids (India) Pvt. Ltd., is committed to ensuring that your privacy is protected. All the information you provide to us on the website including personal details will be used only in accordance with this policy statement. In pursuance of providing with quality service, we continuously try to improve and update our privacy policy statement with frequent updates. We request you to keep checking the privacy policy page on the website for reviewing such updated privacy statement. This Policy sets out and spells the basis on the personal data that is used by the users to register on our website and how this data is processed. Please read the following information carefully to understand the practices that we implement on the website with regard to privacy of data of the users of this website."
+							data:"This privacy policy forms the part of the terms of service and disclaimer as complete agreement between the website and users of the website for registering, using, utilizing the features of the website. [www.partyanalyst.com] for reference the terms &#34We&#34, &#34Us&#34 are referred to the website and &#34You&#34 for the users. IT Grids (India) Pvt. Ltd., is committed to ensuring that your privacy is protected. All the information you provide to us on the website including personal details will be used only in accordance with this policy statement. In pursuance of providing with quality service, we continuously try to improve and update our privacy policy statement with frequent updates. We request you to keep checking the privacy policy page on the website for reviewing such updated privacy statement. This Policy sets out and spells the basis on the personal data that is used by the users to register on our website and how this data is processed. Please read the following information carefully to understand the practices that we implement on the website with regard to privacy of data of the users of this website."
 						},
 						{
 							ancName:"",
@@ -187,7 +187,7 @@
 						{
 							ancName:"",
 							head:"",
-							data:"In case if you do not want us to send you any promotional material, you can always un subscribe to the same by sending an email to us at – info (AT) IT Grids (India) Pvt. Ltd., (DOT) com."
+							data:"In case if you do not want us to send you any promotional material, you can always un subscribe to the same by sending an email to us at &#45 info (AT) IT Grids (India) Pvt. Ltd., (DOT) com."
 						},
 						{
 							ancName:"",

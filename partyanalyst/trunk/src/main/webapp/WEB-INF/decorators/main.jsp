@@ -311,11 +311,12 @@
 		<div id="index_inner_footer">
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
-				<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
-				<td align="right" ><a href="footerLinksAction.action#whoWeAre"><font color="#ffffff">About Us </font></a>
-				|<a  href="javascript:{}"onclick ="contactLinkInHomePage()"> <font color="#ffffff"> Contact Us</font> </a>
-				| API | <a href="footerLinksAction.action#termsOfUse"><font color="#ffffff">Terms Of Use</font></a>
-				| Privacy Policy </td>
+				<td align="left"> &copy; Copyright 2011. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+				<td align="right" ><a href="footerLinksAction.action#whoWeAre" style="text-decoration:none" ><font color="#ffffff">About Us </font></a>
+				| <a  href="javascript:{}"onclick ="contactLinkInHomePage()" style="text-decoration:none"> <font color="#ffffff"> Contact Us</font> </a>
+				| <a href="footerLinksAction.action#termsOfUse" style="text-decoration:none"><font color="#ffffff">Terms Of Use</font></a>
+				| <a href="footerLinksAction.action#privacyPolicy" style="text-decoration:none"><font color="#ffffff">
+				Privacy Policy </td>
 			</tr>
 		</table>
 		</div>
