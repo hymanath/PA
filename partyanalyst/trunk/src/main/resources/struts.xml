@@ -2311,6 +2311,8 @@
 				<param name="root">yearList</param>				
 			</result>		
 		</action>
+		
+		<action name="getMediaOpenionsAction"><result>/jsp/mediaLinksAboutPartyAnalyst.jsp</result></action>
 						 		       	
 	</package>
 </struts>      

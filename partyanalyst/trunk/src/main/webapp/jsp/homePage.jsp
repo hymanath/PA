@@ -480,12 +480,12 @@ var new2="Election Message";
 						<td width="75%" valign="top">
 							<div class="homePageContentWidget_main">
 								<div class="homePageContentWidget_head">
-									<table width="20%" cellpadding="0" cellspacing="0">
+									<table cellpadding="0" cellspacing="0">
 										<tr>
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
-											<td valign="top">
+											<td width="85px" valign="top">
 												<div class="homePageContentWidget_head_center_div">
 													<span class="homePageContentWidget_head_center_span">What's in</span>
 												</div>
@@ -493,7 +493,13 @@ var new2="Election Message";
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
+											<td>
+											    <marquee scrollDelay="180"><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
+											   </marquee>
+											 
+											</td>
 										</tr>
+										
 									</table>
 								</div>
 								<div class="homePageContentWidget_body" style="height:400px">
