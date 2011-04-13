@@ -11,19 +11,21 @@ var indexPageMain = {
 													header:'Party Performance Report',
 													body:'Party Performance Report gives a detailed election results analysis for a party on its performance in an election.			This report mainly focus on complete party election results of won/lost details in different positions, which			include first,second,third upto Nth position dtails and election results in those positions.',
 													img:'<img src="images/icons/indexPage/partyanalysis/report1.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="partyPerformanceMain.action" class="viewReportAnc">View</a>'
+
 												},
 												{
 													header:'Election Comparison Report',
 													body:'Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.',
 													img:'<img src="images/icons/indexPage/partyanalysis/report2.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="electionComparisonAction.action" class="viewReportAnc">View</a>'
+
 												},
 												{
 													header:'Party Results Report',
 													body:'Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.',
 													img:'<img src="images/icons/indexPage/partyanalysis/report3.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="partyResultsCriteriaAction.action" class="viewReportAnc">View</a>'
 												},
 												{
 													header:'Party Influence Report',
@@ -37,19 +39,19 @@ var indexPageMain = {
 													header:'Mandal Voting Report',
 													body:'Mandal voting report  is a kind of report where we can go for results in different elections for a selected party in a particular mandal.It gives a complete glance of election results for a mandal in different election years participated by the party which provides better analysis for results. ',
 													img:'<img src="images/icons/indexPage/politicianAnalysis/report1.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="mandalPageSDetailAction.action" class="viewReportAnc">View</a>'
 												},
 												{
 													header:'Cross Voting Report',
 													body:'Cross voting report helps to analyze (Assembly Constituency wise, Mandal wise, Booth wise) difference of votes percentage for a parliament candidate and an assembly candidates in a Parliament Constituency for the same party. ',
 													img:'<img src="images/icons/indexPage/politicianAnalysis/report2.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="crossVotingReportInputAction.action" class="viewReportAnc">View</a>'
 												},
 												{
 													header:'Constituency Booth Results Report',
 													body:"This report helps a politician/party to analyze a candidate's Boothwise Performance in a constituency for a selected assembly or parliament election.This report helps to analyze a candidate in which booth/mandal he got less votes%, in which booth/mandal he got highest votes percentage.",
 													img:'<img src="images/icons/indexPage/politicianAnalysis/report3.png"/>',
-													viewAnc:'<a href="javascript:{}" class="viewReportAnc">View</a>'
+													viewAnc:'<a href="partyBoothResultAction.action" class="viewReportAnc">View</a>'
 												}											 
 											 ]
 					};
