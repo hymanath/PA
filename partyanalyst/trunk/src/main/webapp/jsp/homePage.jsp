@@ -8,12 +8,33 @@
 <%@ page import="java.util.ResourceBundle;" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Party Analyst - Know, Analyse, Act.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 
- <META NAME="Keywords" CONTENT="AP Elections, Assembly Elections, Parliament elections, Municipal elections, Election opinion polls, Andhra Elections, Andhra Politics, Andhra pradesh elections, Telugu Desam, Congress, PRP, TDP, CPI, CPM, TRA, BJP, Hyderabad, Chandrababu, Chiranjeevi, andhra polls, by-polls, by-elections, MLC, Rajyasabha, MPTC, ZPTC, Loksabha, Parliament, 2009 elections, Gram Panchayats, Mandals, Villages, Andhra municipalities, Municipal Corporations">
+<title>Party Analyst - An Election Analysis &amp; Political Management Platform</title>
 
-<META NAME="Description" CONTENT=" Party Analyst is a tool used by the political parties, media, and politicians. This product has different interfaces for Constituency Management, Cadre Management, Party Results, Cross Voting, Party Performance, Election Comparison, States election results, District election results, Constituency election results, MLA constituencies information, MP constituencies information, Latest news .This tool also provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
+<meta http-equiv="Content-Language" content="en">
+
+<meta name="description" content="Party Analyst is a complete Indian Election Analysis Platform that also offers, Constituency, Cadre Management to Indian Political Parties and Politicians.">
+
+<meta name="keywords" content="Indian Elections, Election Analysis, Indian Democracy, Andhra Pradesh Politics, Indian Political Parties, Indian Politicians, Indian Leaders, Congress, BJP, TDP, TRS, Indian Election Commission, Know Analyze, Act, MLA Elections, MP Elections, Cross Voting, District Election Results, MPTC Elections, ZPTC Elections, Constituency Management, Cadre Management, Party Performance, Election Comparison, Municipal Elections, Corporation Elections">
+
+<meta name="copyright" content="IT Grids (India) Pvt. Ltd.">
+
+<meta name="author" content="Ashok Dakavaram">
+
+<meta name="email" content="info@itgrids.com">
+
+<meta name="Charset" content="ISO-8859-1">
+
+<meta name="Distribution" content="Global">
+
+<meta name="Rating" content="General">
+
+<meta name="ROBOTS" content="INDEX,FOLLOW">
+
+<meta name="Revisit-after" content="1 Day">
+
+<meta name="expires" content="Never">
 
 
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
