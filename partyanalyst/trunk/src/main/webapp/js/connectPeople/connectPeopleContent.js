@@ -98,6 +98,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	}
 	else
 	{
+		loginUserId=userLoginId;
 		//bodyStr+='<span class="connectAncSpan"> <a href="connectPeopleAction.action" class="connectAnc">Redirect To User Page</a> </span>';
 		bodyStr+='<span class="connectAncSpan" style="font-weight:bold;"> <a href="javascript:{}" style="color:#514830" onclick="showAllConnectPeopleWindow(\''+locationId+'\',\''+locationName+'\',\''+userLoginId+'\',\''+locationType+'\')" class="connectAnc">View All People</a> </span>';
 	}
@@ -663,7 +664,7 @@ function showMessageConfirmation(results)
 	var elmt = document.getElementById("confirmationMsg");
 	var str = '';
 	if(results.resultCode == 0){
-		str+='<div style="color:green;">Successfully Sent</div>';
+		str+='<blink><font color="green">Message Sent Successfully..</font></blink>';
 	}else{
 		str+='<div style="color:red;">There was an error in processing your request</div>';
 	}
