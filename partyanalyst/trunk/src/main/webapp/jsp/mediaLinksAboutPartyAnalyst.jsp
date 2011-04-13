@@ -164,6 +164,61 @@
 			  </tr>
 			  <tr>
 			     <td width="30%">
+				    <div id="channelDiv">The Hindu Businessline</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.thehindubusinessline.com/todays-paper/tp-others/tp-states/article1685637.ece"
+                        target="_blank">Portal for election analysis, information launched</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">Business Standard</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.business-standard.com/india/news/it-grids-to-raise-rs5-crore-vc-fund-soon/431702/"
+                        target="_blank">IT Grids to raise Rs 5 crore VC fund soon</a>
+					</div>
+				 </td>
+			  </tr>
+			   <tr>
+			     <td width="30%">
+				    <div id="channelDiv">Life Style Blogindia</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.lifestyleblogindia.com/2011/04/election-analysis-political-management-software/"
+                        target="_blank">Election Analysis Software for Politicians, Media & Voters Launched</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">DNAIndia</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.dnaindia.com/india/report_website-offers-election-analysis_1530393"
+                        target="_blank">Website offers election analysis</a>
+					</div>
+				 </td>
+			  </tr>
+				  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">Web News Wire</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.webnewswire.com/node/697536"
+                        target="_blank">Election Analysis Software for Politicians, Media & Voters Launched </a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
 				    <div id="channelDiv">APNNEWS</div>
 				 </td>
 				 <td width="70%">
@@ -182,7 +237,62 @@
 					</div>
 				 </td>
 			  </tr>
-		   </table>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">AllVoices</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.allvoices.com/contributed-news/8740706-party-analyst-a-unique-site-on-parties-politics-and-elections-launched"
+                        target="_blank">Party Analyst, a unique site on parties, politics and elections launched</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">AFaqs</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.afaqs.com/news/company_briefs/?id=48696_Election+analysis++political+management+software+for+politicians+and+political+parties"
+                        target="_blank">Election analysis software for politicians and political parties</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">DealCurry</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.dealcurry.com/20110411-Software-Firm-IT-Grids-To-Raise-VC-Funding.htm"
+                        target="_blank">Party Analyst, a unique site on parties, politics and elections launched</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">VCCircle</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://www.vccircle.com/500/news/news-roundup-indias-sun-pharma-merck-in-generics-joint-venture"
+                        target="_blank">IT Grids To Raise Rs 5Cr PE Funding</a>
+					</div>
+				 </td>
+			  </tr>
+			  <tr>
+			     <td width="30%">
+				    <div id="channelDiv">The Wall Street Journal</div>
+				 </td>
+				 <td width="70%">
+	                <div id="detailsDiv">
+					   <a href="http://online.wsj.com/article/SB10001424052748704641604576255692445828326.html  ( WSJ Wow!!!  )"
+                        target="_blank">Website offers election analysis</a>
+					</div>
+				 </td>
+			  </tr>
+			 </table>
 		</center>
 
 </body>
