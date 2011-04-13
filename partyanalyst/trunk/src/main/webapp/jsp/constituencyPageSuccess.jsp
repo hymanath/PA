@@ -213,6 +213,10 @@
 								{
 									showCandidateNominationsInRecentElections(myResults);
 								}
+								if(jsObj.task == "sendMessageToConnectUser")
+								{						
+									showMessageConfirmation(myResults);
+								}
 							}catch (e) {   
 							  // 	alert("Invalid JSON result" + e);   
 							}  
