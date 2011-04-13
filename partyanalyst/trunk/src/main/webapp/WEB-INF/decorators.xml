@@ -63,6 +63,7 @@
 		<pattern>/problemDetailsAndStatusAction*</pattern>							
 		<pattern>/problemAssigningAction*</pattern>
 		<pattern>/candidateStrenthsAction*</pattern>
+		<pattern>/getMediaOpenionsAction*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">
