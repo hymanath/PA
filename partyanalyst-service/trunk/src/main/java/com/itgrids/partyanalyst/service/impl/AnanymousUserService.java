@@ -1492,6 +1492,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 						problemVO.setRejectedProblemsCount((Long)params[0]);
 				}	
 				
+			}
+				
 				List commentsCount = problemHistoryDAO.getAllPostedProblemCountOtherThanLoggedInUser(registrationId);
 				
 				if(commentsCount != null && commentsCount.size() == 1)
@@ -1500,9 +1502,8 @@ public class AnanymousUserService implements IAnanymousUserService {
 				}
 				problemVO.setTotalPostedProblemsCount(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount() + problemVO.getPostedProblemsCountByOtherUsers());
 				problemVO.setPostedProblemsCountByLoggedInUsers(problemVO.getNotConsideredProblemsCount() + problemVO.getRejectedProblemsCount() + problemVO.getApprovedProblemsCount());
-			}
-			
-		} catch (Exception e) {
+			} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
