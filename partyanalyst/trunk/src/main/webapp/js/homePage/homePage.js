@@ -1500,6 +1500,7 @@ $("#quickRequest_window").dialog({
 
 }
 
+
 function openMediaOpenionsWindow()
 {
    var browser1 = window.open("getMediaOpenionsAction.action?","allMediaOpenions","scrollbars=yes,height=600,width=650,left=200,top=200");
@@ -1509,7 +1510,10 @@ function openMediaOpenionsWindow()
 function contactLinkInHomePage(){
 
 			jQuery(document).ready( function(){       
-				
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ height: 220,
 								width: 630,
@@ -1533,31 +1537,28 @@ function contactLinkInHomePage(){
 				$("#contactWindowDiv").dialog("close");
 			}
 			
-		 var elmt = document.getElementById("contactWindowDiv_window_inner");
-		 elmt.innerHTML='dialog';
-			
-		  var str ='';
-				
-		//str+='<div id="contactWindowDiv" style="display:none">';
-		str+='<table width="100%" >';
-		str+='<tr>';
-		str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
-		str+='<td>';
-		str+='<table style="margin-left:17px">';
-							
-		str+='<tr>';
-		str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
-		str+='<tr><td>Hyderabad.<br></td></tr>';
-		str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
-		str+='<tr><td>Email: info@itgrids.com or a.dakavaram@itgrids.com<br></td></tr>';
-		str+='</table>';
-		str+='</td>';
-		str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
-		str+='</tr>';
-		str+='</table>';
+ var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Hyderabad.<br></td></tr>';
+str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Email: info@itgrids.com or a.dakavaram@itgrids.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
+str+='</tr>';
+str+='</table>';
 
 
-		elmt.innerHTML = str;
+elmt.innerHTML = str;
 }
 
 
