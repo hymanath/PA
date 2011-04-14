@@ -1031,6 +1031,7 @@ function showPostedProblems(jsObj,results)
 	str += '</table>';
 	str += '</div>';
 	str += '<div style="padding:3px;">';
+	str += '<div style="color:#9E7556;font-weight:bold;padding:5px;font-family:verdana;font-size:13px;"> Problem Status Details Posted By User </div>';
 	str += '<table id="reasonsCountTable">';
 	str += '<tr>';
 	str += '<td><img src="images/icons/districtPage/listIcon.png"></td>';
