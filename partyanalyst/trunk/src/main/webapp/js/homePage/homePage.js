@@ -1334,7 +1334,7 @@ function showElectionResults(index,elecType)
 function validateQuickRequest(){
 		var errorMsg='';
 		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[0].value;
+		var email=document.getElementsByName("email")[1].value;
 		var mobile=document.getElementsByName("mobileNO")[0].value;
 		var requirement=document.getElementsByName("requirement")[0].value;
 		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
@@ -1396,7 +1396,7 @@ function validateQuickRequest(){
 		str += "<h3 color='green'>Sending Request...</h3>";
 		str += '<img style="margin-left:50px" width="90" height="15" src="images/icons/goldAjaxLoad.gif"/>';		
 		var name=document.getElementsByName("name")[0].value;
-		var email=document.getElementsByName("email")[0].value;
+		var email=document.getElementsByName("email")[1].value;
 		var mobile=document.getElementsByName("mobileNO")[0].value;
 		var requirement=document.getElementsByName("requirement")[0].value;
 		
