@@ -2116,10 +2116,15 @@ function showDetailedElectionResult(id)
 	*/
 	
 	<c:forEach var="problem" items="${problemBean}">	
+
+	var probDesc = "${problem.description}";
+    probDesc = probDesc.replace("&#39;","&#92;&#39;");
+
 	var problemObj={
 						problemId:'${problem.problemId}',
 						problem:'${problem.problem}',
-						description:'${problem.description}',
+						//description:'${problem.description}',
+						description:probDesc,
 						state:'${problem.state}',
 						district:'${problem.district}',
 						constituency:'${problem.constituency}',
