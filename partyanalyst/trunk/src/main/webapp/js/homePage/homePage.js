@@ -801,12 +801,14 @@ function buildNewPoll(result){
 		
 		
 		str += '<table><tr><td>';
+		str += '<div id="viewPollResDiv">';
 		str += '<table><tr>';
 		str += '<td onclick="getCompletePollResult(\''+questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> View Result';
 		str += '</td>';
 		str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> View Previous Polls';
 		str += '</td>';	
 		str += '</tr></table>';
+		str += '</div>';
 		str += '</tr></table>';
 
 		elmt.innerHTML = str;
@@ -850,12 +852,14 @@ function showVotesObtainedForOptions(myResults){
 	str += '</td></tr>';
 	
 	str += '<tr><td>';
+	str += '<div id="viewPollResDiv">';
 	str += '<table><tr>';
 	str += '<td onclick="getCompletePollResult(\''+myResults.questionId+'\')" style="text-decoration:underline;cursor:pointer;padding-right:43px;"> view current poll result';
 	str += '</td>';
 	str += '<td onclick="getAllPollsResult()" style="text-align:right;text-decoration:underline;cursor:pointer;"> view all polls';
 	str += '</td>';	
 	str += '</tr></table>';
+	str += '</div>';
 	str += '</tr></table>';
 	
 	elmt.innerHTML = str;

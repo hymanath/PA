@@ -613,14 +613,23 @@ input.input_text
 {
 	color:#0C67AC;
 	font-weight:bold;
+	margin-top:15px;
 }
 
 #pollOptionsDiv
 {
 	color:#73787E;
 	font-weight:bold;
-	margin-bottom:5px;
-	margin-top:5px;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+#viewPollResDiv
+{
+    color:#73787E;
+	font-weight:bold;
+	margin-bottom:15px;
+	margin-top:15px;
 }
 
 #giftWidgetBody

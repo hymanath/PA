@@ -1107,7 +1107,7 @@ function openDialogOfProblems(type)
 
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:5,
+		resultsCount:3,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -1126,6 +1126,7 @@ function showAllPostedProblems_paginator(jsObj,results)
 	if(results.problemsInfo==null){
 	return;
 	}
+
 	for(var i=0; i<results.problemsInfo.length; i++)
 	{
 		var data = results.problemsInfo[i];
@@ -1133,18 +1134,25 @@ function showAllPostedProblems_paginator(jsObj,results)
 		str += '<div class="postedDiv_dataInfo_main">';
 		str += '<div class="postedDiv_dataInfo_head"><a class="postedDiv_dataInfo_head" href="problemCompleteDetailsAction.action?problemHistoryId='+data.problemHistoryId+'">'+data.definition+'</a></div>';
 		str += '<div class="postedDiv_dataInfo_body">';
-		str += '<table class="postedDiv_dataInfo_table">';
+		str += '<table class="postedDiv_dataInfo_table" width="100%">';
 		str += '<tr>';
-		str += '<th>Description : </th>';
-		str += '<td colspan="5">'+data.description+'</td>';
+		str += '<th style="width:20%;">Description </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.description+'</td>';
 		str += '</tr>';
 		str += '<tr>';
-		str += '<th>Location : </th>';
-		str += '<td>'+data.location+'</td>';
-		str += '<th>Existing From: </th>';
-		str += '<td>'+data.existingFrom+'</td>';
-		str += '<th>Identified Date : </th>';
-		str += '<td>'+data.identifiedDate+'</td>';
+		str += '<th style="width:20%;">Location </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.location+'</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th style="width:20%;">Existing From </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.existingFrom+'</td>';
+		str += '</tr>';
+		str += '<th style="width:20%;">Identified Date </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.identifiedDate+'</td>';
 		str += '</tr>';		
 		str += '</table>';
 		str += '</div>';
@@ -1471,7 +1479,7 @@ function openDialogOfReasons(type)
 
 	custom_paginator.paginator({
 		startIndex:0,
-		resultsCount:5,
+		resultsCount:3,
 		jsObj:jsObj,
 		ajaxCallURL:url,
 		paginatorElmt:"custom_paginator_class",
@@ -1480,7 +1488,7 @@ function openDialogOfReasons(type)
 		}
 	});
 	custom_paginator.initialize();
-
+	
 	//buildCommentsDatatable(type);
 }
 
@@ -1492,6 +1500,7 @@ function showAllPostedReasons_paginator(jsObj,results)
 	return;
 	}
 	var str = '';
+
 	for(var i=0; i<results.candidateComments.length; i++)
 	{
 		var data = results.candidateComments[i];
@@ -1503,18 +1512,26 @@ function showAllPostedReasons_paginator(jsObj,results)
 		str += '<div class="postedDiv_dataInfo_main">';
 		str += '<div class="postedDiv_dataInfo_head">Political Reason for '+data.candidate+' '+status+' in '+data.constituencyName+' '+data.electionType+' constituency</div>';
 		str += '<div class="postedDiv_dataInfo_body">';
-		str += '<table class="postedDiv_dataInfo_table">';
+		str += '<table class="postedDiv_dataInfo_table" width="100%">';
 		str += '<tr>';
-		str += '<th>Political Reason : </th>';
-		str += '<td>'+data.commentCategory+'</td>';
-		str += '<th>Posted By : </th>';
-		str += '<td>'+data.commentedBy+'</td>';
-		str += '<th>Posted On : </th>';
-		str += '<td>'+data.commentedOn+'</td>';
+		str += '<th style="width:20%;">Political Reason </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.commentCategory+'</td>';
 		str += '</tr>';
 		str += '<tr>';
-		str += '<th>Description : </th>';
-		str += '<td colspan="5">'+data.commentDesc+'</td>';
+		str += '<th style="width:20%;">Description </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.commentDesc+'</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th style="width:20%;">Posted On </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.commentedOn+'</td>';
+		str += '</tr>';
+		str += '<tr>';
+		str += '<th style="width:20%;">Posted By </th>';
+		str += '<td style="width:2%;">:</td>';
+		str += '<td style="width:78%;">'+data.commentedBy+'</td>';
 		str += '</tr>';
 		str += '</table>';
 		str += '</div>';
