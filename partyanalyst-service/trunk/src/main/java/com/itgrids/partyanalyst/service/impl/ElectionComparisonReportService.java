@@ -749,10 +749,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 					Double validVotesYearTwo = selectedNominationYearTwo.getConstituencyElection()
 						.getConstituencyElectionResult().getValidVotes();
 					
-					Double votesPercentYearOne = new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale(
-							2,BigDecimal.ROUND_HALF_UP).doubleValue();
-					Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale(
-							2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					Double votesPercentYearOne = validVotesYearOne > 0 ?new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale(
+							2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0;
+					Double votesPercentYearTwo = validVotesYearTwo > 0 ?new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale(
+							2,BigDecimal.ROUND_HALF_UP).doubleValue():0.0;
 					Double votesPercentDiff = new BigDecimal(votesPercentYearOne - votesPercentYearTwo).setScale(
 							2,BigDecimal.ROUND_HALF_UP).doubleValue();
 
