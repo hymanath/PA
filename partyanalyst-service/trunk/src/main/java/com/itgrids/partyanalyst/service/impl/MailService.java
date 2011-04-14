@@ -47,7 +47,7 @@ public class MailService implements IMailService{
 	        try {
 	 
 	            //Obtain the default mail session
-	            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+	            Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(IConstants.FROMEMAILID,IConstants.PASSWORD);
 					}
