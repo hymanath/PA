@@ -11,7 +11,7 @@
   <META NAME="Description" CONTENT="">
 
 
-	
+
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>
 	<script type="text/javascript" src="js/cncSearch.js"></script>	
 	<script type="text/javascript" src="js/ajaxSearch/ajax.js" ></script>
@@ -75,7 +75,7 @@ window.history.forward(1);
 	</tr>
 	<tr id="row3">	
 		<th align="left" colspan="2" style="color:#163447;">		
-			Select State	
+			<font color="red"> * </font>Select State	
 		</th>
 	</tr>
 	<tr>	
@@ -94,7 +94,7 @@ window.history.forward(1);
 	</tr>		
 	<tr id="row4">	
 		<th colspan="2" align="left">
-			<div id="labelDiv" style="padding-top: 2px;color:#163447;">Enter Search String</div>
+			<div id="labelDiv" style="padding-top: 2px;color:#163447;"><font color="red"> * </font>Enter Search String</div>
 		</th>
 	</tr>
 	<tr id="row5">	
