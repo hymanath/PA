@@ -61,6 +61,12 @@
 <script src="js/jQuery/development-bundle/ui/jquery.effects.blind.min.js"></script>
 <script src="js/jQuery/development-bundle/ui/jquery.effects.explode.min.js"></script>
 
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+
+
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <script type="text/javascript" src="js/jQuery/development-bundle/ui/jquery.ui.core.js"></script>
@@ -70,19 +76,30 @@
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
 <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+
+<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>
 
 <!-- JQuery files (End) -->
 
+<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <link href="styles/styles.css" rel="stylesheet" type="text/css" />
-<link href="styles/landingPage/landingPage.css" rel="stylesheet" type="text/css" />
+
 <link href="styles/viewFeatures/viewFeatures.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
+<script type="text/javascript" src="js/homePage/homePage.js" ></script>
+<script type="text/javascript">
 
+  var loginStatus = '${loginStatus}';
+</script>
 </head>
 <body>
    <div id="jQueryPopup"><div id="jQueryPopup_content"></div></div>
    <div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
+   <div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>
+   <div id="supportWindowDiv"><div id="supportWindowDiv_window_inner"></div></div>
+   <div id="feedback_window"><div id="feedback_window_inner"></div></div>
    <div id="viewFeatures_main">
 		<div id="navMenu_main" class="pageContentDivs">
 			<div id="navMenu_links">
@@ -90,11 +107,11 @@
 					<li><a href="homePage.action" class="navLinksAnc">Home</a></li>
 					<li><a href="javascript:{}" onclick="showDetailsPopup('Pricing')" class="navLinksAnc">Pricing</a></li>						
 					<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
-					<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
-					<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>
+					<li><a href="javascript:{}" class="navLinksAnc" id="supportLink" onclick="supportLinkInHomePage()">Support</a></li>
+					<li><a href="footerLinksAction.action#whoWeAre" class="navLinksAnc">Who We Are</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Our Blog</a></li>
 					<li>|</li>
-					<li><a href="javascript:{}" onclick="buildLoginPopup()" class="navLinksAnc">
+					<li><a href="loginInputAction.action" class="navLinksAnc">
 					Login </a></li>
 				</ul>
 			</div>
@@ -384,7 +401,6 @@
 								<li><a href="javascript:{}">Party Performance Report</a></li>
 								<li><a href="javascript:{}">Election Comparison Report</a></li>
 								<li><a href="javascript:{}">Party Results Report</a></li>
-								<li><a href="javascript:{}">Party Influence Report</a></li>
 								<li><a href="javascript:{}">Election Results Analysis Report</a></li>
 								<li><a href="javascript:{}">Problem Management Report</a></li>
 								<li><a href="javascript:{}">User Groups</a></li>
@@ -401,7 +417,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div id="viewFeatures_QuickLinks_main">
+					<!--<div id="viewFeatures_QuickLinks_main">
 						<table width="100%">
 							<tr>
 								<td valign="top" width="15%">
@@ -410,7 +426,7 @@
 										<div class="viewFeatures_QuickLinks_body">
 											<ul class="quickLinks_list">
 												<li><a href="javascript:{}">About</a></li>
-												<li><a href="javascript:{}">Contact Us</a></li>
+												<li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact Us</a></li>
 												<li><a href="javascript:{}">Our Blog</a></li>
 											</ul>
 										</div>
@@ -473,10 +489,63 @@
 								
 							</tr>
 						</table>
-					</div>
-				</td>
+					</div>-->
+
+					
+				
+		
+		<div id="homePage_new_footer">
+					<table width="100%">
+						<tr>
+							<td width="20%" valign="top">
+								<div class="homePage_new_footer_links_head">About Us</div>
+								<ul class="homePage_new_footer_links">
+									<li><a href="footerLinksAction.action#whoWeAre">Who we are</a></li>
+									<li><a href="footerLinksAction.action#whatWeDo">What we do</a></li>
+									<li><a href="footerLinksAction.action#coreCompetency">Core Competency</a></li>
+									<li><a href="javascript:{}" id="supportLink" onclick="supportLinkInHomePage()">Customer Support</a></li>
+									<li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a></li>
+									<li><a href="javascript:{}">Sitemap</a></li>
+								</ul>
+							</td>
+							<td width="20%" valign="top">
+								<div class="homePage_new_footer_links_head">Connect</div>
+								<ul class="homePage_new_footer_links">
+									<li><a href="anonymousUserAction.action">Register</a></li>
+									<li><a href="loginInputAction.action">Login</a></li>
+									<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
+									<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a></li>
+									<li><a href="javascript:{}">Articles</a></li>
+									<li><a href="javascript:{}">Blogs</a></li>
+								</ul>
+							</td>
+							<td width="20%" valign="top">
+								<div class="homePage_new_footer_links_head">Policy</div>
+								<ul class="homePage_new_footer_links">
+									<li><a href="footerLinksAction.action#termsOfUse">Terms of use</a></li>
+									<li><a href="footerLinksAction.action#privacyPolicy">Privacy</a></li>
+									<li><a href="footerLinksAction.action#disclaimer">Disclaimer</a></li>
+								</ul>
+							</td>
+							<td width="10%" valign="top">
+								<div class="homePage_new_footer_links_head">We are SOCIAL</div>
+								<ul class="homePage_new_footer_links">
+									<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
+									<li><a href="javascript:{}">Twitter</a></li>
+									<li><a href="javascript:{}">LinkedIN</a></li>
+								</ul>
+							</td>
+							<td width="30%" valign="top" align="right">
+								<div class="homePage_new_footer_links_head"> &copy; Copyright 2011. All rights reserved </div>
+								<div class="homePage_new_footer_links_head">
+									<a href="http://www.itgrids.com" target="_blank">IT GRIDS (India) Pvt. Ltd.</a></div>
+							</td>
+						</tr>
+					</table>
+			      </div>
+				  </td>
 			</tr>
-		</table>   
+		</table>
    </div>
 </body>
 </html>
