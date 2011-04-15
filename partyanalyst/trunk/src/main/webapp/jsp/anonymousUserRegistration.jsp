@@ -211,27 +211,77 @@ function uploadImageFile()
 window.history.forward(1);
 </script>
 <style type="text/css">
-    fieldset {
-		border:2px solid #CFD6DF;
-		margin-bottom:10px;
-		padding:10px;
-		width:450px;
+   
+   .dotline {
+		border-top: 1px solid #D6D6D6;
+		height: 1px;
+		margin-bottom: 10px;
+		margin-top: 0.5em;
+		width: 70%;
+   }
+	.headerDiv
+	{
+		border-bottom: 2px solid #B8C4D0;
+		display: inline-block;
+		margin-left: 20px;
+		overflow: hidden;
+		padding-top: 12px;
+		width: 66.6%;
+		
 	}
-	legend {
-		background-color:#567AAF;
-		color:#FFFFFF;
-		font-size:10px;
-		padding:5px;
+
+	.headerDiv p 
+	{
+       color: #662986;
+	   font-size: 160%;
+	   padding-bottom: 10px;
+	   text-align:center;
 	}
+
+	.row
+	{
+	   margin-bottom: 0.9em;
+       position: relative;
+	}
+
+	.row label {
+		display: inline-block;
+		text-align: right;
+		width: 13.8em;
+    }
+
+	.label {
+		color: #505050;
+		font-size: 100%;
+		padding-right: 4px;
+    }
+
+	#personalFieldsCollection {
+		margin-top: 0.5em;
+    }
+
+   .fieldsCollection {
+		margin: 2.3em 1.5em;
+		position: relative;
+    }
+   fieldset, img {
+		border: 0 none;
+   }
+
+   .fieldsCollection legend {
+		color: #662986;
+		font-size: 108%;
+		font-weight: bold;
+   }
 	
 </style>
 </head>  
 <body>  
 <s:form action="anonymousUserRegistrationAction.action" method="POST" theme="simple" enctype="multipart/form-data">  
    <br><br>
-  <div id="headerDiv" style="margin-right: 500px;font-size:20px;color:#247CD4;text-decoration:underline;" > 
+  <div id="headerDiv" class="headerDiv"> 
    <c:if test="${empty registrationId}">
-   	User Registration Form
+   	<p>Get a free registration to connect to people and info that you care about</p>
    </c:if>
    <c:if test="${! empty registrationId}">
    	User Profile
@@ -251,139 +301,157 @@ window.history.forward(1);
 		</table>
 		 <br>
 		 <c:if test="${empty registrationId}">
-	        <FIELDSET>
-				<LEGEND style="font-size:12px;"><strong>Account Details</strong></LEGEND>
+	        <FIELDSET id="personalFieldsCollection" class="fieldsCollection">
+
+			    <div class="dotline"></div>
+				<LEGEND> Select an ID and password</LEGEND>
 				<div id="resultDIV"></div>
 				 <div id="loginDetailsDiv" class="accessDivMain">
 					<div id="loginDetailsDivBody" class="accessDivBody">
-						<table class="registrationTable">					
-							<tr>
-								<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
-								<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
-								<td style="padding-left: 15px;"><input type="button" name="checkUserNameAvailability" value="Check Availability" onclick="checkAvailability()"/></td>
-							</tr>
-							<tr>
-								<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
-								<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
-							</tr>
-							<tr>
-								<td width="101px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('reEnterPassword')}" /></td>
-								<td style="padding-left: 15px;"><s:password id="passwordField" name="reEnteredPassword"/>  </td>
-							</tr>
-						</table>
+						
+							    <div id="fulNameFieldDiv" class="row">
+								<s:label for="userNameField" id="userNameLabel" class="label" value="%{getText('userName')}" /><font class="requiredFont"> * </font> 								
+								<s:textfield id="userNameField" name="userName"/>  
+								<input type="button" name="checkUserNameAvailability" value="Check Availability" onclick="checkAvailability()"/>
+								</div>
+							    <div id="passwordFieldDiv" class="row">
+								<s:label for="passwordField" id="passwordLabel"  class="label" value="%{getText('password')}" /><font class="requiredFont"> * </font>								   
+								<s:password id="passwordField" name="password"/>
+							    </div>
+								<div id="cpasswordFieldDiv" class="row">
+								<s:label for="passwordField" id="passwordLabel"  class="label" value="%{getText('reEnterPassword')}" /><font class="requiredFont"> * </font> 
+								<s:password id="passwordField" name="reEnteredPassword"/>  
+							    </div>
 					</div>
 				 </div>
 	         </FIELDSET>
          </c:if>
-		 <FIELDSET>
-		 <LEGEND style="font-size:12px;"><strong>Personal Details</strong></LEGEND>
-		 <div id="personalDetailsDiv" class="accessDivMain">
+		  <FIELDSET id="personalFieldsCollection" class="fieldsCollection">
+
+          <div class="dotline"></div>
+		  <LEGEND>Provide Personal Information</LEGEND>
+		     <div id="personalDetailsDiv" class="accessDivMain">
 			 <div id="personalDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable" cellspacing="2" cellpadding="2">
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></td>
-						<td><s:textfield id="nameField" name="firstName"/>  </td>
-						<td></td>
-					</tr>
-					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('lastName')}" /></td>
-						<td><s:textfield id="userNameField" name="lastName"/>  </td>
-						<td></td>
-						<td rowspan="4"><img id="Imgpreview" height="100" width="90" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></td>
-					</tr>					
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="#session.gender"/>  </td>	
-						<td></td>
-					</tr>
-					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
-						<td> 
-							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
-							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
-						 </td>
-						 <td>
-							<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
-						</td>
+				
+				        
+						<div id="firstNameFieldDiv" class="row">
+				        <s:label for="firstNameField" id="fnameLabel"  class="label" value="%{getText('firstName')}" />
+						<font class="requiredFont"> * </font>
+						<s:textfield id="nameField" name="firstName"/> 
+						</div>
 
-					</tr>
-					<tr>
-					<td width="100px;" style="padding-left:12px;">Upload Your Photo</td>
-					<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" onchange="uploadImageFile()"/></td>					
-				    </tr>
+						<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;margin-left:400px;"></DIV>
+						</DIV>
 
-					<tr>
-					<td width="100px;"></td>
-					<td colspan="2"><div id="uploadPic_window_status"></div></td>
-				    </tr>
-				  </table>
-				</div>
+					
+					    <div id="userNameFieldDiv" class="row">
+					    <s:label for="userNameField" id="userNameLabel" class="label" value="%{getText('lastName')}" />
+						<font class="requiredFont"> * </font> 
+						<s:textfield id="userNameField" name="lastName"/> 
+						</div>
+
+								
+					    <div id="genderFieldDiv" style="margin-left:117px;">
+						<s:label for="genderField" id="genderLabel" value="%{getText('gender')}" />
+						<font class="requiredFont"> * </font> 
+						<s:radio id="genderField" name="gender" list="#session.gender"/>
+						</div>
+						
+					    <div id="doBirthFieldDiv" class="row">
+						<!--<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV>-->
+						<s:label for="dateOfBirthField" id="dateOfBirthLabel" class="label"  value="%{getText('dateOfBirth')}" />
+						<font class="requiredFont"> * </font>
+						<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
+						<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
+						</div>
+												
+														
+						<div id="uploadImageFieldDiv" class="row">
+					    <s:label for="uploadImageLabel" id="uploadImageLabel" class="label"  value="Upload Photo" />
+						<font class="requiredFont"> &nbsp;&nbsp; </font>
+						<s:file  id="uploadFileId" name="uploadImage" label="Upload" onchange="uploadImageFile()"/>
+						</div>
+						<div id="uploadPic_window_status"></div>
+						
+						<!--<div style="margin-left:400px;"><img id="Imgpreview" height="100" width="90" src="/PartyAnalyst/images/icons/indexPage/human.jpg"/></div>-->
+				
+					</div>
 				</div>
 				</FIELDSET>
-				<FIELDSET>
-				<LEGEND style="font-size:12px;"><strong>Contact Details</strong></LEGEND>
-				<div id="contactDetailsDiv" class="accessDivMain">
-					<table class="registrationTable" cellspacing="2" cellpadding="2">
-									
-					<tr>
-						<td width="100px;" style="padding-left:12px;"><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
-						<td><s:textfield id="mobileField" name="mobile" maxlength="12"/>  </td>
-					</tr>
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /></td>
-						<td><s:textfield id="addressField" name="address"/>  </td>
-					</tr>
-					
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="stateSelectBox" id="stateLabel"  value="State" /></td>
-					 	<td>
-					 		<!--<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox');setCadreValue(this.options[this.selectedIndex].value,'onChange')" cssStyle="width:145px;" />-->
-					 		<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:145px;" />
-						</td>
-					</tr>	
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="districtSelectBox" id="districtLabel"  value="District" /></td>
-						<td>
-							<!-- <s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox'); setCadreValue(this.options[this.selectedIndex].value,'onChange')" cssStyle="width:145px;" />-->
-							<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:145px;" />
-						</td>
-					</tr>	
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="constituencySelectBox" id="constituencytLabel"  value="Constituency" /></td>
-						<td>
-							<s:select name="constituency" id="constituencySelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:145px;" />							
-						</td>
-					</tr>
-					<tr>
-						<td width="100px;" style="padding-left:12px;"><s:label for="pinCodeField" id="pinCodeLabel"  value="%{getText('pincode')}" /></td>
-						<td><s:textfield id="pincodeField" name="pincode"/>  </td>
-					</tr>	
 
-					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
-						<td><s:textfield id="emailField" name="email"/>  </td>
-					</tr>
-					<tr>
-						<td width="100px;" style="padding-left:12px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
-						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
-					</tr>
-				</table>
+
+				<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
+				<div class="dotline"></div>
+				<LEGEND>Provide Contact Details</LEGEND>
+				<div id="contactDetailsDiv" class="accessDivMain">
+
+				        <div id="mobileFieldDiv" class="row">
+					    <s:label for="mobileField" id="mobileLabel"  class="label" value="%{getText('mobile')}" />
+						<font class="requiredFont"> &nbsp;&nbsp; </font>
+						<s:textfield id="mobileField" name="mobile" maxlength="12"/>  
+                        </div>
+                        
+						<div id="addressFieldDiv" class="row">
+					    <s:label for="addressField" id="addressLabel"  class="label" value="%{getText('address')}" />
+						<font class="requiredFont"> * </font> 
+						<s:textfield id="addressField" name="address"/> 
+						</div>
+
+                        
+						<div id="stateFieldDiv" class="row">
+						<s:label for="stateSelectBox" id="stateLabel"  class="label" value="State" />
+						<font class="requiredFont"> * </font> 
+						<s:select name="state" id="stateSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAState(this.options[this.selectedIndex].value,'districtSelectBox')" cssStyle="width:145px;" />
+						</div>
+						
+						<div id="districtFieldDiv" class="row">
+						<s:label for="districtSelectBox" id="districtLabel" class="label" value="District" />
+						<font class="requiredFont"> * </font> 
+						<s:select name="district" id="districtSelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select District" list="#session.districts" listKey="id" listValue="name" onchange="getConstituenciesComboBoxForADistrict(this.options[this.selectedIndex].value,'constituencySelectBox')" cssStyle="width:145px;" />
+						</div>
+						
+						<div id="constituencyFieldDiv" class="row">
+						<s:label for="constituencySelectBox" id="constituencytLabel" class="label" value="Constituency" />
+						<font class="requiredFont"> * </font> 
+						<s:select name="constituency" id="constituencySelectBox" cssClass="regionsSelectBox" headerKey="0" headerValue="Select Constituency" list="#session.constituencies" listKey="id" listValue="name" cssStyle="width:145px;" />	
+						</div>
+						
+						<div id="pinCodeFieldDiv" class="row">
+						<s:label for="pinCodeField" id="pinCodeLabel"  class="label" value="%{getText('pincode')}" />
+						<font class="requiredFont"> &nbsp;&nbsp; </font>
+						<s:textfield id="pincodeField" name="pincode"/>  
+						</div>
+
+                        <div id="emailFieldDiv" class="row">
+						<s:label for="emailField" id="emailLabel"  class="label" value="%{getText('email')}" />
+						<font class="requiredFont"> * </font>
+						<s:textfield id="emailField" name="email"/>  
+						</div>
+					    
+						<div id="telephoneNoFieldDiv" class="row">
+					    <s:label for="telephoneNoField" id="telephoneNoLabel"  class="label" value="%{getText('telephoneNo')}" />
+						<font class="requiredFont"> &nbsp;&nbsp; </font>
+						<s:textfield id="telephoneNoField" name="phone"/> 
+						</div>
+					
 			 </div>
 		 </FIELDSET>
-		 <div id="contactDetailsDiv" class="accessDivMain">
-					<table class="registrationTable" cellspacing="2" cellpadding="2">
-					<tr>
-						<td width="250px;" style="padding-left:15px;">
-							<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>	
-						</td>
-					</tr>
 
-					<tr>
-						<td width="100px;"></td>
-						<td> <div style="text-align: left;"><s:submit name="Save"></s:submit></div></td>
-					</tr> 			
-					</table>
+		<FIELDSET id="personalFieldsCollection" class="fieldsCollection">
+		<div class="dotline"></div>
+		<LEGEND>Do You Want To</LEGEND>
+		 <div id="contactDetailsDiv" class="accessDivMain">
+					
+					<s:checkboxlist list="#session.profileOpts" labelposition="top" theme="vertical-checkbox" listKey="id" listValue="name" name="profileOpts"/>
+					<div style="margin-left:170px;">
+					<s:submit name="Save" value="Create My Account"></s:submit>
+					</div>
+					
 		 </div>
+		  <div><font class="requiredFont"> * </font> Fields are mandatory</div>
+		 </FIELDSET>
+
+		
 									
 
 </div>
