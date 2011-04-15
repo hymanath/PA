@@ -108,6 +108,10 @@
 				</table>
 			</center>
 		</div>
+		
+		<jsp:include page="../jsp/partyAnalystLaunchVideos.jsp"/>
+		
+		
 		<center style="margin-top:30px;">
 		
 		   <table>
