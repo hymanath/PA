@@ -823,16 +823,16 @@ var new2="Election Message";
 								<div class="homePageContentWidget_body">
 									<table>										
 										<tr>
-										  <td style="font-weight:bold">Name:<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox"></td>
+										  <td style="font-weight:bold"><font color="red"> * </font>Name:<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox"></td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold">Email:<input type="text" class="quickRequestTextbox" name="email" id="quickRequestEmailTextbox"></td>
+										  <td style="font-weight:bold"><font color="red"> * </font>Email:<input type="text" class="quickRequestTextbox" name="email" id="quickRequestEmailTextbox"></td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold">Mobile:<input type="text" class="quickRequestTextbox" name="mobileNO" id="quickRequestMobileTextbox"></td>
+										  <td style="font-weight:bold"><font color="red"> * </font>Mobile:<input type="text" class="quickRequestTextbox" name="mobileNO" id="quickRequestMobileTextbox"></td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold">Your Requirement:<br><br><textarea class="quickRequestTextbox" name="requirement" rows="3" cols="20" id="quickRequestReqTextbox" ></textarea></td>
+										  <td style="font-weight:bold"><font color="red"> * </font>Your Requirement:<br><br><textarea class="quickRequestTextbox" name="requirement" rows="3" cols="20" id="quickRequestReqTextbox" ></textarea></td>
 										</tr>
 										<tr>
 										  <td><div id="feedback"><input type="submit" value="POST" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
