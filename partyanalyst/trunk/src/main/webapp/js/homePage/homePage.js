@@ -188,7 +188,8 @@ function buildQuestions()
 }
 function showFeedBackFormPanel()
 {		
-	if(loginStatus == "false")
+	
+	if(loginStatus == "false" || loginStatus == '')
 	{
 		$("#feedback_window").dialog({
 			resizable:false,
@@ -1542,6 +1543,61 @@ function contactLinkInHomePage(){
 			}
 			
  var elmt = document.getElementById("contactWindowDiv_window_inner");
+
+  var str ='';
+
+str+='<table width="100%">';
+str+='<tr>';
+str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
+str+='<td>';
+str+='<table style="margin-left:17px">';
+str+='<tr>';
+str+='<td><B>IT Grids (India) Pvt. Ltd.</B><br></td></tr>';
+str+='<tr><td>Hyderabad.<br></td></tr>';
+str+='<tr><td>Mobile: +91 96766 96760<br></td></tr>';
+str+='<tr><td>Email: info@itgrids.com or a.dakavaram@itgrids.com<br></td></tr>';
+str+='</table>';
+str+='</td>';
+str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
+str+='</tr>';
+str+='</table>';
+
+
+elmt.innerHTML = str;
+}
+
+
+function supportLinkInHomePage(){
+
+			jQuery(document).ready( function(){       
+				//	jQuery("#contactLink").click( showDialog );
+
+						//$myWindow = jQuery('#contactWindowDiv');
+
+						//instantiate the dialog
+						$("#supportWindowDiv").dialog({ height: 220,
+								width: 630,
+								modal: true,
+								position: 'center',
+								title:'Support @ IT Grids',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+						
+
+			});	
+			//function to show dialog   
+			var showDialog = function() {
+				$("#supportWindowDiv").show(); 
+				//open the dialog
+				$("#supportWindowDiv").dialog("open");
+				}
+
+			//function to close dialog, probably called by a button in the dialog
+			var closeDialog = function() {
+				$("#supportWindowDiv").dialog("close");
+			}
+			
+ var elmt = document.getElementById("supportWindowDiv_window_inner");
 
   var str ='';
 
