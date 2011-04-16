@@ -514,7 +514,7 @@ var new2="Election Message";
 											<td width="20px" valign="top">
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_right.jpg"/>
 											</td>
-											<td>
+											<td width="100%">
 											    <marquee scrollDelay="180"><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
 											   </marquee>
 											 
