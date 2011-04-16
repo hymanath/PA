@@ -2313,6 +2313,12 @@
 		</action>
 		
 		<action name="getMediaOpenionsAction"><result>/jsp/mediaLinksAboutPartyAnalyst.jsp</result></action>
+		
+		<action name="candidateNominationDetailsAction" class="constituencyPageAction" method="getCandidateNominationDetails">
+			<result type="json" name="success">
+				<param name="root">constituencyNominationsVO</param>				
+			</result>		
+		</action>
 						 		       	
 	</package>
 </struts>      

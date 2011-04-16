@@ -256,6 +256,7 @@
 		<property name="delimitationWardDAO" ref="delimitationWardDAO" />
 		<property name="delimitationConstituencyTownDAO" ref="delimitationConstituencyTownDAO" />	
 		<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO" />	
+		<property name="candidateResultDAO" ref="candidateResultDAO" />	
 		
 	</bean>	
 	
