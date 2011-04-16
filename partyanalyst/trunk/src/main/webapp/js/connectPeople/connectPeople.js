@@ -843,7 +843,7 @@ function buildQuickRegionAccessContent()
 		return;
 
 	var pStr = '<div style="margin-right:15px;margin-top:9px;"><a style="color:#73787E;font-weight:bold;text-decoration:none;" href="anonymousUserAction.action?userId='+loginUserId+'">Edit Profile</a></div>';
-	pStr += '<div style="margin-right:15px;margin-top:9px;" <a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Upload picture</a></div>';
+	pStr += '<div style="margin-right:15px;margin-top:9px;" <a style="color:#73787E;font-weight:bold;text-decoration:none;" href="javascript:{}" onclick="uploadUserPic()">Edit picture</a></div>';
 	profElmt.innerHTML = pStr;
 
 	var str = '';
