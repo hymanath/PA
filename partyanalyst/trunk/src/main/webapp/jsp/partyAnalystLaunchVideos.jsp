@@ -11,7 +11,7 @@
 <BODY>
 
 
- <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="150" height="150">
+ <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="150" height="100%" width="100%">
 <table cellspacing="30px" ><tr><td>
 	<table  >
 	<tr><td>
