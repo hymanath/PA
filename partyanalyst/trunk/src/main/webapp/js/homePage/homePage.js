@@ -12,11 +12,11 @@ var localBodyString = '';
 
 var questionsObj = [
 	{
-		question:"Who is the richest male candidate with highest amount of declared assets in the current 2011 Assam Assembly Elections?",
+		question:"Who got the highest votes in 2009 AP Assembly elections?",
 		answer:[
 				{
 					label:"Candidate Name:",
-					data:"Mr. Anjan Dutta"
+					data:"Mr. Dr. Y.S.Rajasekhar Reddy"
 				},
 				{
 					label:"Party:",
@@ -24,78 +24,102 @@ var questionsObj = [
 				},
 				{
 					label:"Constituency:",
-					data:"Amguri"
+					data:"Pulivendula"
 				},
 				{
-					label:"Declared Assets:",
-					data:"Rs. 49,79,93,069"
+					label:"Earned Votes:",
+					data:"103556"
 				}
 			   ]
 	},
 	{
-		question:"The richest female candidate with highest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		question:"Who got the least votes in 2009 AP Assembly Elections from congress?",
 		answer:[
 				{
 					label:"Candidate Name:",
-					data:"Ms. Queen Oja"
+					data:"Mr.B.Buchi Das"
 				},
 				{
 					label:"Party:",
-					data:"AGP"
+					data:"Congress"
 				},
 				{
 					label:"Constituency:",
-					data:"Gauhati East"
+					data:"Charminar"
 				},
 				{
-					label:"Declared Assets:",
-					data:"Rs. 75,247,738"
+					label:"Earned Votes:",
+					data:"5697"
 				}
 			   ]
 	},
 	{
-		question:"The male candidate with lowest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		question:"Who got the highest votes in 2009 AP Assembly Elections from TDP?",
 		answer:[
 				{
 					label:"Candidate Name:",
-					data:"Mr. Kripesh Ranjar"
+					data:"Mr. Gonuguntla Venkata Seeta Rama Anjaneyulu"
 				},
 				{
 					label:"Party:",
-					data:"CPI (M)"
+					data:"TDP"
 				},
 				{
 					label:"Constituency:",
-					data:"Patharkandi"
+					data:"Vinukonda"
 				},
 				{
-					label:"Declared Assets:",
-					data:"Rs. 401 only."
+					label:"Earned Votes:",
+					data:"89961"
 				}
 			   ]
 	},
 	{
-		question:"The female candidate with lowest amount of declared assets contesting in the current 2011 Assam Assembly Elections?",
+		question:"Who got the least votes in 2009 AP Assembly Elections from TDP?",
 		answer:[
 				{
 					label:"Candidate Name:",
-					data:"Ms.. Jutika Doley"
+					data:"Mr.Bommidi Narayanarao"
 				},
 				{
 					label:"Party:",
-					data:"SUCI (C)"
+					data:"TDP"
 				},
 				{
 					label:"Constituency:",
-					data:"Dhakuakhana (ST)"
+					data:"Narasapur"
+				},
+				{
+					label:"Earned Votes:",
+					data:"10841"
+				}
+			   ]
+	},
+	{
+		question:"Who is the richest male candidate with highest amount of declared assets in Lok sabha Elections?",
+		answer:[
+				{
+					label:"Candidate Name:",
+					data:"Mr.Y.S.Jagan Mohan Reddy"
+				},
+				{
+					label:"Party:",
+					data:"YSR Congress"
+				},
+				{
+					label:"State:",
+					data:"Andhra Pradesh"
+				},
+				{
+					label:"Constituency:",
+					data:"Kadapa"
 				},
 				{
 					label:"Declared Assets:",
-					data:"Rs. 7,325"
+					data:"Rs:365,68,55,224"
 				}
 			   ]
 	}
-	
 ];
 
 function initializeHomePage()
