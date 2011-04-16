@@ -135,26 +135,8 @@
 					</div>
 				 </td>
 			  </tr>
-			  <tr>
-			     <td width="30%">
-				    <div id="channelDiv">You Tube</div>
-				 </td>
-				 <td width="70%">
-	                <div id="detailsDiv">
-					   <a href="http://www.youtube.com/watch?v=201tk2RcCWQ" target="_blank">New website partyanalyst.com launched by JayPrakash.N </a>
-					</div>
-				 </td>
-			  </tr>
-			  <tr>
-			     <td width="30%">
-				    <div id="channelDiv">Hybiz.TV</div>
-				 </td>
-				 <td width="70%">
-	                <div id="detailsDiv">
-					   <a href="http://www.hybiz.tv/video.php?vid=160017" target="_blank">Party Analyst is a first of its kind in political analysis platform</a>
-					</div>
-				 </td>
-			  </tr>
+			  
+			 
 			   <tr>
 			     <td width="30%">
 				    <div id="channelDiv">www.sify.com</div>
@@ -221,16 +203,7 @@
 					</div>
 				 </td>
 			  </tr>
-			  <tr>
-			     <td width="30%">
-				    <div id="channelDiv">APNNEWS</div>
-				 </td>
-				 <td width="70%">
-	                <div id="detailsDiv">
-					   <a href="http://apnnews.com/2011/04/10/party-analyst-product-overview/" target="_blank">PARTY ANALYST Product Overview</a>
-					</div>
-				 </td>
-			  </tr>
+			 
 			  <tr>
 			     <td width="30%">
 				    <div id="channelDiv">siliconindia News</div>
