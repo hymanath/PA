@@ -127,6 +127,14 @@ public class DataApprovalAction extends ActionSupport implements ServletRequestA
 			approvalInfoVO.setIsApproved(jObj.getString("isAccepted"));
 			rs = dataApprovalService.saveProblemsApprovalData(approvalInfoVO);
 		}
+		if(jObj.getString("task").equalsIgnoreCase("checkApprovalStatus"))
+		{			
+			
+			approvalInfoVO.setProblemHistoryId(jObj.getLong("id"));
+			approvalInfoVO.setUserId(user.getRegistrationID());
+			
+			rs = ((IDataApprovalService) dataApprovalService).checkApprovalStatus(approvalInfoVO);
+		}
 		return Action.SUCCESS;
 	}
 	
