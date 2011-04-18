@@ -14,4 +14,5 @@ public interface IDataApprovalService {
 	public List<ApprovalInfoVO> userApprovalDetailsbetweenDates(String fromDate,String toDate);
 	public List<ApprovalInfoVO> scrutinizePostedApprovals(List<Long> approvalDetailsIds,String approvedStatus); 
 	public ProblemBeanVO getCountOfPosts(Long problemHistoryId);
+	public ResultStatus checkApprovalStatus(ApprovalInfoVO approvalInfoVO);
 }
