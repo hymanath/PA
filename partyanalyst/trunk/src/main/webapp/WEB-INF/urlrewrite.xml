@@ -34,10 +34,35 @@
     </outbound-rule>
 	
 	<rule>
-		<from>/states/andhrapradesh</from>
-		<to type="redirect">/statePageAction.action?stateId=1</to>
+		<from>/state/andhra_pradesh</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=1</to>
 	</rule>
-    <!--
+	<rule>
+		<from>/state/tamil_nadu</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=24</to>
+	</rule>
+	<rule>
+		<from>/state/assam</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=3</to>
+	</rule>
+	<rule>
+		<from>/state/karnataka</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=12</to>
+	</rule>
+	<rule>
+		<from>/state/kerala</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=13</to>
+	</rule>
+	<rule>
+		<from>/state/puducherry</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=35</to>
+	</rule>
+	<rule>
+		<from>/state/west_bengal</from>
+		<to type="redirect">%{context-path}/statePageAction.action?stateId=28</to>
+	</rule>
+
+	<!--
 
     INSTALLATION
 

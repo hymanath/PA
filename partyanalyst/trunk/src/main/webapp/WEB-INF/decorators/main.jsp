@@ -115,13 +115,13 @@
 	    { 
 	        id: "staticData",  
 	        itemdata: [ 
-	           { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-				{ text: "Assam", url: "statePageAction.action?stateId=3" },
-	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
-				{ text: "Kerala", url: "statePageAction.action?stateId=13" },
-				{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
-				{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-	            { text: "West Bengal", url: "statePageAction.action?stateId=28" }
+	                    { text: "Andhra Pradesh", url: "state/andhra_pradesh" },
+						{ text: "Assam", url: "state/assam" },
+						{ text: "Karnataka", url: "state/karnataka" },
+						{ text: "Kerala", url: "state/kerala" },
+						{ text: "Puducherry", url: "state/puducherry" },
+						{ text: "Tamil Nadu", url: "state/tamil_nadu" },
+						{ text: "West Bengal", url: "state/west_bengal" }
 	        ]     
 	    }, 
 	    { 
@@ -153,13 +153,13 @@
 					{ 
 						id: "staticData",  
 						itemdata: [ 
-								{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-								{ text: "Assam", url: "statePageAction.action?stateId=3" },
-								{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
-								{ text: "Kerala", url: "statePageAction.action?stateId=13" },
-								{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
-								{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
-								{ text: "West Bengal", url: "statePageAction.action?stateId=28" }
+								{ text: "Andhra Pradesh", url: "state/andhra_pradesh" },
+								{ text: "Assam", url: "state/assam" },
+								{ text: "Karnataka", url: "state/karnataka" },
+								{ text: "Kerala", url: "state/kerala" },
+								{ text: "Puducherry", url: "state/puducherry" },
+								{ text: "Tamil Nadu", url: "state/tamil_nadu" },
+								{ text: "West Bengal", url: "state/west_bengal" }
 						]     
 					}, 
 					{ 
