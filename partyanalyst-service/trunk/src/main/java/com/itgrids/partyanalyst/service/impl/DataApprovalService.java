@@ -108,6 +108,47 @@ public class DataApprovalService implements IDataApprovalService {
 			IProblemManagementService problemManagementService) {
 		this.problemManagementService = problemManagementService;
 	}
+	public ResultStatus checkApprovalStatus(ApprovalInfoVO approvalInfoVO){
+		if(log.isDebugEnabled()){
+			log.debug("Entered Into saveProblemsApprovalData Method in DataApprovalService");
+		}
+		
+		final ResultStatus rs = new ResultStatus();
+		
+				ApprovalDetails approvalDetails = new ApprovalDetails();
+				UserApprovalDetails userApprovalDetails = new UserApprovalDetails();
+				UserProblemApproval userProblemApproval = new UserProblemApproval(); 
+				try{
+					
+					List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
+					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
+					if(problemHistory.getProblemLocation().getProblemAndProblemSource().getExternalUser().getUserId().equals(approvalInfoVO.getUserId()) && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
+					{
+						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
+						rs.setResultState(1l);
+						return rs;
+					}
+					else if(userPrevPosts != null && userPrevPosts.size() == 0 )
+					{	
+						rs.setExceptionMsg("You should have Accepted or Rejected a probelm to participate in the discussion!");
+						rs.setResultState(0l);
+						return rs;
+					}
+					
+					rs.setResultState(1l);				
+				}catch(Exception e){
+					if(log.isDebugEnabled()){
+						log.debug("Exception Raised while saving problemApporval data in DataApprovalService", e);
+					}
+					rs.setExceptionEncountered(e);
+					rs.setExceptionClass(e.getClass().toString());
+					rs.setResultCode(ResultCodeMapper.FAILURE);
+					rs.setExceptionMsg("An Error ocured.Please Try Again!");
+					e.printStackTrace();
+				}		
+		
+		return rs;
+	}
 
 	/**
 	 * This method is used to save the acceptance/rejections of a problem by a user.
@@ -127,7 +168,7 @@ public class DataApprovalService implements IDataApprovalService {
 					
 					List userPrevPosts = userProblemApprovalDAO.findProblemApprovalsByUser(approvalInfoVO.getUserId(), approvalInfoVO.getProblemHistoryId());
 					ProblemHistory problemHistory = problemHistoryDAO.get(approvalInfoVO.getProblemHistoryId());
-					if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
+					/*if(userPrevPosts != null && userPrevPosts.size()>0 && !"FollowUp".equals(approvalInfoVO.getIsApproved()))
 					{	
 						rs.setExceptionMsg("You have already posted your comment!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);
@@ -142,8 +183,7 @@ public class DataApprovalService implements IDataApprovalService {
 						rs.setExceptionMsg("This problem was reported by you.You can not Accept/Reject problems reported by you!");
 						rs.setResultCode(ResultCodeMapper.FAILURE);						
 					}
-					else {
-										
+					else {*/
 						java.util.Date today = new java.util.Date();
 						String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 						SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -164,7 +204,7 @@ public class DataApprovalService implements IDataApprovalService {
 						rs.setResultCode(ResultCodeMapper.SUCCESS);						
 					}
 					
-				}catch(Exception e){
+				catch(Exception e){
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
 						log.debug("Exception Raised while saving problemApporval data in DataApprovalService", e);
@@ -231,7 +271,7 @@ public class DataApprovalService implements IDataApprovalService {
 					Object[] parms = (Object[])result.get(i);
 					approvalInfoVO.setReason(parms[3].toString());
 					approvalInfoVO.setIsApproved(parms[4].toString());
-					approvalInfoVO.setUserName(parms[1].toString()+parms[2].toString());
+					approvalInfoVO.setUserName(parms[1].toString()+" "+parms[2].toString());
 					String approvedDate = sdf.format((Date)parms[5]);
 					approvalInfoVO.setLastUpdate(approvedDate);
 					approvals.add(approvalInfoVO);				
