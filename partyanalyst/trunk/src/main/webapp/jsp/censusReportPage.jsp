@@ -223,6 +223,19 @@
 		ajaxImageDivEle.innerHTML = '';
 	}
 
+	function showPartySelectAjaxImage()
+	{
+		var ajaxImageDivEle = document.getElementById("partySelectAjaxImgId");
+		ajaxImageDivEle.style.display = 'block';
+	}
+	
+	function hidePartySelectAjaxImage()
+	{
+		var ajaxImageDivEle = document.getElementById("partySelectAjaxImgId");
+		if(ajaxImageDivEle)
+		ajaxImageDivEle.style.display = 'none';
+	}
+
 	function getCensusDetails()
 	{
 
@@ -747,6 +760,7 @@
 		for(var i=0; i<partiesList.length; i++)
 			str += '<option value="'+partiesList[i].id+'">'+partiesList[i].name+'</option>';
 		str += '</select></td>';
+		str += '<td><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display:none;" src="images/icons/goldAjaxLoad.gif"></img></td>';
 		str += '</tr>';
 		str += '</table>';
 		str += '<div>';
@@ -814,6 +828,8 @@
 		
 		if(yearValue == 'Select Year')
 			return;
+
+		showPartySelectAjaxImage();
 
 		if(stRadioEle.checked == true)
 			reportLevel = stRadioEle.value;
@@ -1248,7 +1264,10 @@
 									buildAllPartyCensusResults(jsObj,myResults);
 								}
 								else if(jsObj.task == "censusByParty")
+								{
 									buildPartyResultsByRanges(jsObj,myResults);
+									hidePartySelectAjaxImage();
+								}
 								else if(jsObj.task == "getLatestElectionYears")
 								{
 									clearOptionsListForSelectElmtId(jsObj.selectElementId);
