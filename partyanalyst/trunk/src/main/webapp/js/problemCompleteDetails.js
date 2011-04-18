@@ -45,6 +45,7 @@ function showProblemDetails(result)
 	var divEl = document.getElementById("problemDetails");
 	var str = '';
 	
+	str+='<div align="left">'
 	str+='<table width="100%" border="0" cellspacing="0" cellpadding="0">';
 	str+='<tr>';
 	str+='<td width="1%"><img width="25" height="40" src="images/icons/homePage_new/blue_header_top_left.jpg"/></td>';
@@ -57,9 +58,9 @@ function showProblemDetails(result)
 	str+='</tr>';
 	str+='</table>';
 	str+='<div class="divInfo">';
-	str+='<h3>Problem</h3>';
+	str+='<h3><b>Problem</b></h3>';
 	str+='<div id="description">'+result.problem+'</div><hr>';
-	str+='<h3>Description</h3>';
+	str+='<h3><b>Description</b></h3>';
 	str+='<div id="description"><p>'+result.description+'</p></div><hr>';
 	str+='<p>';
 	if(result.impactLevel == 'STATE')
@@ -99,8 +100,16 @@ function showProblemDetails(result)
 	str+='<p><img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported Date: <span class="bluetext">'+result.postedDate+'</span><BR>';
 	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Problem Existing From: <span class="bluetext">'+result.existingFrom+'</span><BR>';
 	str+='<img height="5" width="7" src="images/icons/districtPage/listIcon.png" style="margin-right:5px;margin-bottom:3px;">Reported By: <span class="bluetext">'+result.name+'</span></p>';
-	str+='</div>';
+	str+='</div></div>';
 	divEl.innerHTML = str;
+	var jsObj = {
+				task: 'checkApprovalStatus',
+				id: id	
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "saveProblemApproveDetailsAction.action?"+rparam;
+		
+	approvalCallAjax(jsObj,url);		
 }
 function showProblemAllComments(results)
 {
