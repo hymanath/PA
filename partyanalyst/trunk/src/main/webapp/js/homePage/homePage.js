@@ -1496,7 +1496,7 @@ $("#quickRequest_window").dialog({
 
 	var elmt = document.getElementById("quickRequest_window_inner");
 	var str = '';
-	str += '<div id="feedback_window_head">Do u Know</div>';
+	str += '<div id="feedback_window_head">Do You Know</div>';
 	str += '<div id="feedback_window_body">';
 	str += '<div class="doYouKnow_question">'+questionsObj[index].question+'</div>';
 	str += '<div class="doYouKnow_answer">';
