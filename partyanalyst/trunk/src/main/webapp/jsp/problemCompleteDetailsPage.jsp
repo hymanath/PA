@@ -72,7 +72,7 @@ function approvalCallAjax(jsObj,url)
 		               success : function( o ) {
 						try {
 							myResults = YAHOO.lang.JSON.parse(o.responseText);							
-							showConfirmation(myResults);
+							showConfirmation(myResults,jsObj);
 						}catch (e) {   
 						  // 	alert("Invalid JSON result" + e);   
 						}  
@@ -86,7 +86,23 @@ function approvalCallAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 function showConfirmation(results, obj)
-{
+{	
+	var postProblemElmt = document.getElementById('postProblemDiv');
+	var approvalElmt = document.getElementById('approveProblem');
+	if(obj.task == 'checkApprovalStatus'){
+		if(results.resultState == '0'){
+			
+			postProblemElmt.style.display='none';
+		}
+		else if((results.resultState == '1')){
+			
+			approvalElmt.style.display = 'none';
+			var problemDetailsCellElmt = document.getElementById('problemDetailsCellId');
+			problemDetailsCellElmt.width = '100%';
+		
+		}
+	}
+	else{
 	var rasonTextEl = document.getElementById("rasonText");
 	var rasonTextEl1 = document.getElementById("rasonText1");
 	var str = '';
@@ -121,7 +137,15 @@ if(elmt)
 	
 	getProblemAllComments(id);
 	
-	
+	}
+	if(obj.isAccepted == 'Accept' || obj.isAccepted == 'Reject'){
+		var approvalElmt = document.getElementById('approveProblem');
+		approvalElmt.style.display = 'none';
+		var problemDetailsCellElmt = document.getElementById('problemDetailsCellId');
+		problemDetailsCellElmt.width = '100%';
+		var postProblemElmt = document.getElementById('postProblemDiv');
+		postProblemElmt.style.display='block';
+	}
 }
 window.history.forward(1);
 </script>
@@ -156,6 +180,7 @@ p{
 }
 .bluetext {
 	color:#3B5998;
+	font-weight: bold;
 }
 h3 {
 	font-size:15px;
@@ -201,7 +226,7 @@ h3 {
 <div id="problemDetailsPageMainDiv" style="margin:20px;">
 <table width="100%" border="0">
 	<tr>
-		<td width="70%">
+		<td id="problemDetailsCellId" width="70%">
 			<div id="problemDetails"></div>			
 		</td>
 		
@@ -257,6 +282,7 @@ h3 {
 		</c:if>		
 	</tr>	
 </table>
+<div id="postProblemDiv">
 <div id="showAllPostsDiv" style="margin-top:10px;margin-bottom:10px;"></div>
 <c:if test="${sessionScope.UserType != 'PartyAnalyst'}">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -296,6 +322,7 @@ h3 {
 	</c:if>
 </div>
 </c:if>
+</div>
 </div>
 
 <script type="text/javascript">
