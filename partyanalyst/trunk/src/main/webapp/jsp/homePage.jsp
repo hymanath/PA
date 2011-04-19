@@ -507,7 +507,7 @@ var new2="Election Message";
 												<img width="20" height="45" src="images/icons/homePage_new/homeWidgetImageHeader_left.jpg"/>
 											</td>	
 											<td width="85px" valign="top">
-												<div class="homePageContentWidget_head_center_div">
+												<div class="homePageContentWidget_head_center_div" style="width:86px;">
 													<span class="homePageContentWidget_head_center_span">What's in</span>
 												</div>
 											</td>	
