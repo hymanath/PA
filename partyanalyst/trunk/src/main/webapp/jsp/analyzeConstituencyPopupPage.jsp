@@ -877,6 +877,7 @@ if(category == "candidate")
 		{
 				
 				constituencyId:id,
+				onlyAssets:'false',
 				task:"getElectionYearsForConstituency"						
 		};
 

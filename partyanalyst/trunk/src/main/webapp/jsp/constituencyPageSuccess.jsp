@@ -217,6 +217,23 @@
 								{						
 									showMessageConfirmation(myResults);
 								}
+
+								else if(jsObj.task == "getConstituencyElectionYears")
+								{
+                                   if(myResults != null && myResults.length > 0)
+								   {
+                                      buildElectionYearsWithAssets(myResults);
+								   }
+								}
+
+								else if(jsObj.task == "getCandidateAssetsAndLiabilitiesInfo")
+								{
+                                   if(myResults != null)
+								   {  
+									   buildAssetsAndLiabilities(myResults);
+
+								   }
+								}
 							}catch (e) {   
 							  // 	alert("Invalid JSON result" + e);   
 							}  
@@ -230,6 +247,47 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}	
 
+	
+    function buildElectionYearsWithAssets(myResults)
+	{
+
+		var divElmt = document.getElementById("electionYearsWithAssets_Div");
+		var selectedVal = '';
+
+        var electionYearSelect = '';
+
+        electionYearSelect += '<table>';
+		electionYearSelect += '<th>Select Election Year to view Assets & Liabilities :</th>';
+		electionYearSelect += '<th style="text-align:left;">';
+		electionYearSelect += '<select id="electionYearSelectForAssets" class = "selectWidth" onchange = "getcandidateAssetsAndLiabilities(this.options[this.selectedIndex].value)">';
+		for(var i in myResults)
+		{			
+			electionYearSelect += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+			if(i == 0)
+				selectedVal = myResults[i].id;
+		}
+		electionYearSelect += '</select>';
+		electionYearSelect += '</th>';
+
+		electionYearSelect += '</table>';
+	    divElmt.innerHTML = electionYearSelect; 
+
+		getcandidateAssetsAndLiabilities(selectedVal);
+
+	}
+
+	function getcandidateAssetsAndLiabilities(constiELecId)
+	{
+		var jsObj=
+		{
+				constiElecId:constiELecId,
+				task:"getCandidateAssetsAndLiabilitiesInfo"						
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/candidateAssetsAndLiabilitiesAction.action?"+rparam;
+		callAjax(jsObj,url);
+	}
 	function candidateNominationsdetails(constiId)
 	{
         var jsObj=
@@ -242,6 +300,19 @@
 		var url = "<%=request.getContextPath()%>/candidateNominationDetailsAction.action?"+rparam;
 		callAjax(jsObj,url);
 	}
+
+	function getAssetsElectionYearsInfo(constiId)
+	{
+        var jsObj=
+		{
+				constituencyId:constiId,
+				task:"getConstituencyElectionYears"						
+		};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/constituencyElectionYearsWithAssets.action?"+rparam;
+		callAjax(jsObj,url);
+	}
+
 
 	function checkTohideLocalElectionsBodyDiv(){					
 		if(totalNoOflocalElectionsBodies!=-3){
@@ -1070,20 +1141,51 @@ window.history.forward(1);
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
+                         
+						<!--<div id="electionYears_Main">
+						    <div id="electionYearsWithAssets_Div"></div>
+						</div>-->
 
+						<!--<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
+						<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
+
+						<div id="electionYears_Main">
+						    <div id="electionYearsWithAssets_Div"></div>
+						</div>
+						<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam">
+								<div id="electionYearsWithAssets_Panel_Div"></div>
+								<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
+						</div>
+						</div> 
+						
+						
 						<div id="constituencyPageCandidateNominationsInfo_Main" class="innerLayoutDivClass">
 						    <div id="constituencyPageCandidateNominationsInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateNominationsInfo_Body" class="layoutBodyClass yui-skin-sam">
 								<div id="constituencyPageCandidateNominationsInfo_Top"></div>
 								<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
 							</div> 
-                        </div>
+                        </div>-->
 					
 						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
 								<div id="constituencyPageCandidateInfo_Top"></div>
-								<div id="constituencyPageCandidateInfo_Bottom"></div>
+                               	<div id="constituencyPageCandidateInfo_Bottom"></div>
+
+								 <!-- -->
+								<div id="electionYearsPanel_Main_Div" class="innerLayoutDivClass">
+								<div id="constituencyPageCandidateAssets_Head" class="layoutHeadersClass"></div>
+
+								<div id="electionYears_Main">
+									<div id="electionYearsWithAssets_Div"></div>
+								</div>
+								<div id="constituencyPageCandidateAssetsInfo_Body" class="layoutBodyClass      yui-skin-sam">
+										<div id="electionYearsWithAssets_Panel_Div"></div>
+										<div id="constituencyPageCandidateNominationsInfo_Bottom"></div>
+								</div>
+								</div>
+								<!-- -->
 							</div>
 						</div>		
 					</div>
