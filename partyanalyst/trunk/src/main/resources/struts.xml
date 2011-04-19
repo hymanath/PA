@@ -2319,6 +2319,18 @@
 				<param name="root">constituencyNominationsVO</param>				
 			</result>		
 		</action>
+		
+		<action name="constituencyElectionYearsWithAssets" class="constituencyPageAction" method="getConstituencyElectionYearsWithAssets">
+			<result type="json" name="success">
+				<param name="root">constituencyElectionsVO</param>				
+			</result>		
+		</action>
+		
+		<action name="candidateAssetsAndLiabilitiesAction" class="constituencyPageAction" method="getConstituencyAssetsAndLiabilities">
+			<result type="json" name="success">
+				<param name="root">constituencyAssetsVO</param>				
+			</result>		
+		</action>
 						 		       	
 	</package>
 </struts>      
