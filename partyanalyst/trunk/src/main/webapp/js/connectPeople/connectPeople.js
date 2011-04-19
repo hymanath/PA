@@ -94,9 +94,11 @@ function initializeTabView()
 	if(commentsInfo.unreadMsgCount > 0)
 		tabLable = tabLable+' ('+commentsInfo.unreadMsgCount+')';
 	
+	var str = '';
+	str +='<div id="inboxMessages_main" style="text-align:left;"></div>';
 	myTabs.addTab( new YAHOO.widget.Tab({
 		label: tabLable,
-		content: '<div id="inboxMessages_main" style="text-align:left;"></div>'
+		content: str
 	}));
 
 	myTabs.addTab( new YAHOO.widget.Tab({
@@ -138,10 +140,9 @@ function buildInboxMessagesForUser()
 	}
 	else if(arrData.length == 0)
 	{
-		str += '<div id="messagesCountMessage">';
+        str += '<div id="messagesCountMessage">';
 		str += '<table><tr>';
 		str += '<td width="35px"><img height="25" width="25" src="images/icons/candidatePage/contact.png"></td>';
-		str += '<td>There are 0 messages.</td>';
 		str += '</tr></table>';
 		str += '</div>';		
 		str += '<div id="messagesContent" class="messageStyles">';
@@ -149,6 +150,7 @@ function buildInboxMessagesForUser()
 		str += '</div>';	
 		elmt.innerHTML = str;
 		return;
+	 
 	}
 	
 	str += '<div id="messagesCountMessage">';
@@ -183,8 +185,8 @@ function buildInboxMessagesForUser()
 	}
 	
 	str += '</div>';
-
 	elmt.innerHTML = str;
+	
 }
 
 function buildReplyPanel(id, index){
@@ -515,10 +517,12 @@ function callAjax(jsObj,url){
 					else if(jsObj.task == "getAllPostedReasonsStatusUser")
 					{
 						showPostedReasons(jsObj,results);
+								hidepostedDivImg();
 					}
 					else if(jsObj.task == "getAllPostedProblemsByUser")
 					{
 						showPostedProblems(jsObj,results);
+						hidepostedDivImg();
 					}
 					else if(jsObj.task == "getAllConnectedUsers")
 					{	
@@ -1711,6 +1715,8 @@ function buildCommentsDatatable(type)
 
 function getAllPostedReasonsForUser()
 {	
+
+		showpostedDivImg();
 	var jsObj=
 	{
 			task:"getAllPostedReasonsStatusUser"						
@@ -1723,6 +1729,7 @@ function getAllPostedReasonsForUser()
 
 function getAllPostedProblemsForUser()
 {
+	showpostedDivImg();
 	var jsObj=
 	{
 			task:"getAllPostedProblemsByUser"						
@@ -1739,6 +1746,7 @@ function buildReasonsProblemsTabContent()
 
 	var str = '';
 	str += '<div id="postedDiv_head">';	
+	str += '<img id="postedDivImg" style="margin-left:360px;" src="images/icons/search.gif"></img>';
 	str += '<input id="radio1" type="radio" name="radiofield1" value="Political Reasons" checked="checked">';
 	str += '<input id="radio2" type="radio" name="radiofield1" value="Problems">';	
 	str += '</div>';
@@ -1797,3 +1805,16 @@ function initializeConnectPeople()
 	
 	$( "#connectedPeopleAccordian" ).accordion();
 }
+
+function showpostedDivImg()
+	{
+		var ajaxImageDivEle = document.getElementById("postedDivImg");
+		ajaxImageDivEle.style.display = 'block';
+	}
+	
+	function hidepostedDivImg()
+	{
+		var ajaxImageDivEle = document.getElementById("postedDivImg");
+		if(ajaxImageDivEle)
+		ajaxImageDivEle.style.display = 'none';
+	}
