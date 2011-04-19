@@ -192,7 +192,7 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 				
 		}*/
 		
-		electionYears = commentsDataService.getElectionYearsForConstituency(Long.parseLong(constituencyId));
+		electionYears = commentsDataService.getElectionYearsForConstituency(Long.parseLong(constituencyId), false);
 		return Action.SUCCESS;
 	}
 	
@@ -222,7 +222,8 @@ public class AnalyzeConstituencyPopupAction extends ActionSupport implements Ser
 		} 
 		
 		Long constituencyId = Long.parseLong(jObj.getString("constituencyId"));
-		electionYears = commentsDataService.getElectionYearsForConstituency(constituencyId);
+		Boolean onlyAssets = jObj.getBoolean("onlyAssets");
+		electionYears = commentsDataService.getElectionYearsForConstituency(constituencyId, onlyAssets);
 		
 		return Action.SUCCESS;
 	}

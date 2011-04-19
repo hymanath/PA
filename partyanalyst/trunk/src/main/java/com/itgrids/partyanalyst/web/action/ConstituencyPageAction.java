@@ -64,6 +64,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
+import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
@@ -143,6 +144,11 @@ public class ConstituencyPageAction extends ActionSupport implements
     private String taskType;
     List<CensusVO> censusVO = new ArrayList<CensusVO>();
     private String chartProducerURL="/var/www/vsites/partyanalyst.com/httpdocs/charts/";
+    
+    private ICommentsDataService commentsDataService;
+    private List<SelectOptionVO> constituencyElectionsVO;
+    private ConstituencyNominationsVO constituencyAssetsVO;
+    
 	public Long getParliamentConstiId() {
 		return parliamentConstiId;
 	}
@@ -642,6 +648,26 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.corporateElections = corporateElections;
 	}
 
+	public ICommentsDataService getCommentsDataService() {
+		return commentsDataService;
+	}
+	public void setCommentsDataService(ICommentsDataService commentsDataService) {
+		this.commentsDataService = commentsDataService;
+	}
+	public List<SelectOptionVO> getConstituencyElectionsVO() {
+		return constituencyElectionsVO;
+	}
+	public void setConstituencyElectionsVO(
+			List<SelectOptionVO> constituencyElectionsVO) {
+		this.constituencyElectionsVO = constituencyElectionsVO;
+	}
+	public ConstituencyNominationsVO getConstituencyAssetsVO() {
+		return constituencyAssetsVO;
+	}
+	public void setConstituencyAssetsVO(
+			ConstituencyNominationsVO constituencyAssetsVO) {
+		this.constituencyAssetsVO = constituencyAssetsVO;
+	}
 	public String execute() throws Exception{
        
 		String url = request.getRequestURL().toString();
@@ -1702,5 +1728,40 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  
 	  return Action.SUCCESS;
   }
+  
+  
+  public String getConstituencyElectionYearsWithAssets(){
+	  
+	  try{
+		  jObj = new JSONObject(getTask());
+		  System.out.println("jObj = "+jObj);
+	  }catch (ParseException e) {
+		e.printStackTrace();
+	  }
+	  
+	  Long constituencyId = jObj.getLong("constituencyId");
+	  
+	  constituencyElectionsVO = commentsDataService.getElectionYearsForConstituency(constituencyId, true);
+	 	  
+	  return Action.SUCCESS;
+  }
+  
+  public String getConstituencyAssetsAndLiabilities()
+  {
+	  
+	  try{
+		  jObj = new JSONObject(getTask());
+		  System.out.println("jObj = "+jObj);
+	  }catch (ParseException e) {
+		e.printStackTrace();
+	  }
+	  
+	  Long constiElecId = jObj.getLong("constiElecId");
+	  
+	  constituencyAssetsVO = constituencyPageService.getCandidateNominations(constiElecId);
+	  
+	  return Action.SUCCESS;
+  }
+  
   
 }
