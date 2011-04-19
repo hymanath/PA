@@ -328,9 +328,13 @@ body
 		if(category == "candidate")
 		{
 			candidateId = id;
+
+			if(electionType == 'Parliament')
+				constituencyId = '${parliamentConstiId}';
+			else
 			constituencyId = constituencyId;		
 		}
-
+		
 		var jsObj={
 				
 				candidateId: candidateId,
