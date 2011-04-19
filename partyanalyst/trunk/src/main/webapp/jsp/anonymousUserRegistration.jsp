@@ -208,7 +208,9 @@ function uploadImageFile()
 		photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
 	}
  }
-window.history.forward(1);
+
+ window.history.forward(1);
+	
 </script>
 <style type="text/css">
    
@@ -467,7 +469,7 @@ window.history.forward(1);
 		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />
 </s:form>  
 <script language="javascript">
-
+document.getElementsByName("gender")[1].checked = true;
 </script>
 </body>  
 </html>
