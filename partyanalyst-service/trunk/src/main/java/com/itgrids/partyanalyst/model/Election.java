@@ -54,6 +54,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private String endDate;
 	private String electionYear;
 	private String elecSubtype;
+	private String hasAssets;
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
@@ -224,6 +225,15 @@ public class Election extends BaseModel implements java.io.Serializable {
 
 	public void setIsPartial(String isPartial) {
 		this.isPartial = isPartial;
+	}
+
+	@Column(name = "has_assets")
+	public String getHasAssets() {
+		return hasAssets;
+	}
+
+	public void setHasAssets(String hasAssets) {
+		this.hasAssets = hasAssets;
 	}
 	
 }

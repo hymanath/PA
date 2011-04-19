@@ -189,12 +189,10 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 	}
 
 
-	public Long getCandidateResultsCountInaConstituencyInAnElection(
-			Long constituencyId, Long electionId) {
+	public Long getCandidateResultsCountInaConstituencyInAnElection(Long constiElecId) {
 		
 		Long resultsCount = ( (Long) getSession().createQuery("select count(model.candidateResultId) from CandidateResult model "+
-				"where model.nomination.constituencyElection.constituency.constituencyId = "+constituencyId+" and " +
-						"model.nomination.constituencyElection.election.electionId = "+electionId).iterate().next() );
+				"where model.nomination.constituencyElection.constiElecId = "+constiElecId).iterate().next() );
 	 return resultsCount;
 	}
 	

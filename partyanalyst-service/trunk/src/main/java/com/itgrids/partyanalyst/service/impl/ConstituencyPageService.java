@@ -4310,45 +4310,23 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(log.isDebugEnabled())
 			log.debug("Entered To Get Candidate Nominations In a Constituency ..");
 		
-		ConstituencyNominationsVO constituencyNominationsVO = new ConstituencyNominationsVO();
 		ResultStatus rs = new ResultStatus();
 		rs.setExceptionMsg("Executed Successfully ..");
-		
+		ConstituencyNominationsVO constituencyNominationsVO = null;
 		try{
 			
-			
-			//Get Constituency Object
-			Constituency constituency = constituencyDAO.get(constituencyId);
-			String       electionType = constituency.getElectionScope().getElectionType().getElectionType();
-			Long         stateId      = 0L;
-			Long         electionId   = 0L;
-			String       electionYear = "";
-			List         candidateNominations = null;
-			
-			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
-				stateId = constituency.getElectionScope().getState().getStateId();
-			
-			//Check and Get Recent Election Happened In state
-			List electionDetails = electionDAO.findRecentElectionIdByElectionTypeAndState(electionType, stateId);
+			//Check and Get Recent Election Happened In Constituency
+			List electionDetails = constituencyElectionDAO.findAllElectionsByConstituencyId(constituencyId);
 			if(electionDetails != null && electionDetails.size() > 0){
+				Object[] values = (Object[])electionDetails.get(0);
 				
-				Object values = (Object)electionDetails.get(0);
-				electionYear      = (String)values;
+			//call method to get candidate nominations
+			constituencyNominationsVO = getCandidateNominations((Long)values[0]);
 				
-				//find Election ID
-				electionId = findElectionIdByTypeAndYearForState(electionType,electionYear,stateId);
-				
-				//call method to get candidate nominations
-				candidateNominations = getCandidateNominations(electionId,constituencyId);
-				
-				if(candidateNominations != null && candidateNominations.size() > 0)
-					setNominationDataToVO(candidateNominations,constituencyNominationsVO,electionYear,electionType);
 			}
 			
-					
-			
 		}catch(Exception ex){
-			
+			ex.printStackTrace();
 			log.error("Exception Raised While Retrieving Nomination Details :" + ex);
 			rs.setExceptionEncountered(ex);
 			rs.setExceptionMsg(ex.getMessage());
@@ -4360,48 +4338,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 return constituencyNominationsVO;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Long findElectionIdByTypeAndYearForState(String electionType,String electionYear,Long stateId){
-		
-		Long electionId = 0L;
-		
-		List elecId = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
-		if(elecId != null && elecId.size() > 0){
-			
-			Object value = (Object)elecId.get(0);
-			
-			electionId = (Long)value;
-		}
-		
-	 return electionId;
-	}
-	
 	/**
 	 * Method that returns Candidate Nominations In A Constituency in an Election 
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
-	private List getCandidateNominations(Long electionId,Long constituencyId) throws Exception{
+	public ConstituencyNominationsVO getCandidateNominations(Long constiElecId){
 		
+		ConstituencyNominationsVO constituencyNominationsVO = new ConstituencyNominationsVO();
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered To start DAO Call ..");
 		
-		List resultsList = null;
-		
-		//DAO Call 
-		resultsList = nominationDAO.getCandidateNominationDetailsInAnElection(electionId, constituencyId);
-		
-		Long candidateResults = candidateResultDAO.getCandidateResultsCountInaConstituencyInAnElection(constituencyId, electionId);
-		if(candidateResults.equals(0L))
-			return resultsList;
-			
-	 return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void setNominationDataToVO(List resultsList , ConstituencyNominationsVO constituencyNominationsVO,String electionYear,
-			String electionType) throws Exception{
+		List resultsList = nominationDAO.getCandidateNominationDetailsInAnElection(constiElecId);
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered To Set Data to VO .. ");
@@ -4435,9 +4384,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		//set candidate nominations list to main VO
 		constituencyNominationsVO.setCandidateNominations(candidateNominations);
-		constituencyNominationsVO.setElectionType(electionType);
-		constituencyNominationsVO.setElectionYear(electionYear);
-		
+		constituencyNominationsVO.setConstituencyName((((Object[])resultsList.get(0))[12]).toString());
+		constituencyNominationsVO.setElectionType((((Object[])resultsList.get(0))[13]).toString());
+		constituencyNominationsVO.setElectionYear((((Object[])resultsList.get(0))[14]).toString());
+			
+		return constituencyNominationsVO;
 	}
 	
 }

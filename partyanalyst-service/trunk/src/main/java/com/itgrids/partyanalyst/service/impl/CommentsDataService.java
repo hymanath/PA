@@ -1019,13 +1019,18 @@ public class CommentsDataService implements ICommentsDataService {
 		return allNominationsComments;
 	}
 
-	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId)
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId, Boolean onlyAssets)
 	{
 		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
+		List years = null;
 		
-		List years = constituencyElectionDAO.findAllElectionsByConstituencyId(constituencyId);
+		if(onlyAssets)
+			years = constituencyElectionDAO.findAllAssetsAndLiabilitiesElectionsByConstituencyId(constituencyId);
+		else
+			years = constituencyElectionDAO.findAllElectionsByConstituencyId(constituencyId);
 		
-		if(years != null || years.size() > 0)
+		if(years != null && years.size() > 0)
 		{
 			for(int i=0; i<years.size(); i++)
 			{
