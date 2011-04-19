@@ -28,6 +28,7 @@ public class ConstituencyNominationsVO implements Serializable {
 	
 	private String electionYear;
 	private String electionType;
+	private String constituencyName;
 
 	public ResultStatus getResultstatus() {
 		return resultstatus;
@@ -60,6 +61,14 @@ public class ConstituencyNominationsVO implements Serializable {
 
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
+	}
+
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 
 }

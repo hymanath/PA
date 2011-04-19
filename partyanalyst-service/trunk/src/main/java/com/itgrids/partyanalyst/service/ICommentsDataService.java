@@ -52,7 +52,7 @@ public interface ICommentsDataService {
 	public List<CandidateCommentsVO> getAnalyzedResonsWithRatingsForConstituencyInAnElection(Boolean isNomination, 
 			Long constiElecOrNominationId);
 	
-	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId);
+	public List<SelectOptionVO> getElectionYearsForConstituency(Long constituencyId, Boolean onlyAssets);
 	
 	public List<CandidateVO> getCandidateResultsForConstiElectionId(Long constElectionId);
 	

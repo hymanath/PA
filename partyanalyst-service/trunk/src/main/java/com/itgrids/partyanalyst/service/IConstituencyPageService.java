@@ -122,4 +122,7 @@ public interface IConstituencyPageService {
 	
 	public ConstituencyNominationsVO getCandidateNominationCompleteDetailsInConstituencyForLatestElection(Long constituencyId);
 	
+	public ConstituencyNominationsVO getCandidateNominations(Long constiElecId);
+	
+		
 }

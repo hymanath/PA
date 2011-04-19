@@ -69,5 +69,5 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
 	public List<CandidateResult> findCandidateResultsByElectionId(Long electionId);
 	
-	public Long getCandidateResultsCountInaConstituencyInAnElection(Long constituencyId,Long electionId);
+	public Long getCandidateResultsCountInaConstituencyInAnElection(Long constiElecId);
 }

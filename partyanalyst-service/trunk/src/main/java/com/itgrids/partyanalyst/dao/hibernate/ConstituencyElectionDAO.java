@@ -60,6 +60,13 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List findAllAssetsAndLiabilitiesElectionsByConstituencyId(Long constituencyId){
+		return getHibernateTemplate().find("select model.constiElecId, model.election.electionYear from " +
+				"ConstituencyElection model where  model.constituency.constituencyId=? and " +
+				"model.election.hasAssets = 'true' order by model.election.electionYear DESC", constituencyId);	
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findByConstituencyElectionAndDistrict(String electionYear, String constituencyName, Long electionScopeId, Long districtId){
 		Object[] params = {electionYear,constituencyName, electionScopeId, districtId};
 		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionYear =? and model.constituency.name=? and model.election.electionScope.electionScopeId = ? and model.constituency.district.districtId = ?", params);	

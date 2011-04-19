@@ -3015,23 +3015,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	 * DAO Method returns Candidate Nomination Details In An Election In A Constituency
 	 */
 	@SuppressWarnings("unchecked")
-	public List getCandidateNominationDetailsInAnElection(Long electionId,
-			Long constituencyId) {
+	public List getCandidateNominationDetailsInAnElection(Long constiElecId) {
 		
 		StringBuilder query = new StringBuilder();
 		
 		query.append("select model.nominationId,model.party.partyId,model.party.shortName,model.party.partyFlag,");
 		query.append("model.assets,model.liabilities,model.criminalCharges,model.candidate.candidateId,");
 		query.append("model.candidate.firstname,model.candidate.lastname,model.candidate.gender,");
-		query.append("model.candidate.education from Nomination model where model.constituencyElection.constituency.constituencyId = ? ");
-		query.append("and model.constituencyElection.election.electionId = ? order by model.candidate.lastname asc");
+		query.append("model.candidate.education, upper(model.constituencyElection.constituency.name)," +
+				"model.constituencyElection.constituency.electionScope.electionType.electionType, " +
+				"model.constituencyElection.election.electionYear from Nomination model " +
+				"where model.constituencyElection.constiElecId = ? ");
+		query.append("order by model.candidate.lastname asc");
 		
 		
 		Query queryObject = getSession().createQuery(query.toString());	
-		queryObject.setParameter(0,constituencyId);
-		queryObject.setParameter(1, electionId);
-				
+		queryObject.setParameter(0,constiElecId);
 		
-	 return queryObject.list();
+		return queryObject.list();
 	}
 }

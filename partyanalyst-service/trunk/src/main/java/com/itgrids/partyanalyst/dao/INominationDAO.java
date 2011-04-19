@@ -445,6 +445,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getNominationsInAnElection(Long electionId);
 	
-	public List getCandidateNominationDetailsInAnElection(Long electionId,Long constituencyId);
+	public List getCandidateNominationDetailsInAnElection(Long constiElecId);
 	
 }
