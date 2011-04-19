@@ -413,7 +413,8 @@ public class AddNewProblemSubmitAction extends ActionSupport implements ServletR
 		//problemBeanVO.setProblemStatusId(getStatus());
 		
 		problemBeanVO.setYear(IConstants.PRESENT_YEAR);
-					
+		problemBeanVO.setDescription(problemBeanVO.getDescription().replace("\r\n"," "));	
+		
 		 problemBeanFromDB = problemManagementService.saveNewProblemData(problemBeanVO);
 		 if(problemBeanFromDB.getExceptionEncountered() == null)
 		 {
