@@ -85,29 +85,8 @@
 </style>
 <script type="text/javascript">
 	
-	var content = [
-		{
-			contentAncName:"",
-			contentHead:"About Us",
-			contentBody:[
-						{
-							ancName:"whoWeAre",
-							head:"Who we are",
-							data:"Party Analyst is a product owned and operated by IT GRIDS (India) Pvt. Ltd., operating out of Hyderabad,Andhra Pradesh. It is been run by a core group of highly qualified young entrepreneurs with experience working in India and abroad in wide and multiple industry verticals such as IT, Realty with professional qualification in Engineering, Business Management."
-						},
-						{
-							ancName:"whatWeDo",
-							head:"What we do",
-							data:"The core group envisions bringing about a change in the election domain by implementing a state of	art web platform that would go a long way in providing quality, reliable and deft information to all stake holders of Election Analysis including the political parties, political leaders, press/media and the voter of India."
-						},
-						{
-							ancName:"coreCompetency",
-							head:"Core Competency",
-							data:"Our core competency lies in design, develop and provide and support a web platform using high end technology in the political domain. The team is led by a highly experienced Project Manager, with enormous experience in web technologies and backed by highly skilled software Engineers, designers, testers and maintenance engineers to ensure we provide continuous enhancements, updates and support to our customers."
-						}
-
-					]
-		},
+	var content = 
+		[
 		{
 			contentAncName:"termsOfUse",
 			contentHead:"TERMS OF USE",
@@ -164,89 +143,9 @@
 						}
 
 					]
-		},
-		{
-			contentAncName:"privacyPolicy",
-			contentHead:"PRIVACY POLICY",
-			contentBody:[
-						{
-							ancName:"",
-							head:"",
-							data:"This privacy policy forms the part of the terms of service and disclaimer as complete agreement between the website and users of the website for registering, using, utilizing the features of the website. [www.partyanalyst.com] for reference the terms &#34We&#34, &#34Us&#34 are referred to the website and &#34You&#34 for the users. IT Grids (India) Pvt. Ltd., is committed to ensuring that your privacy is protected. All the information you provide to us on the website including personal details will be used only in accordance with this policy statement. In pursuance of providing with quality service, we continuously try to improve and update our privacy policy statement with frequent updates. We request you to keep checking the privacy policy page on the website for reviewing such updated privacy statement. This Policy sets out and spells the basis on the personal data that is used by the users to register on our website and how this data is processed. Please read the following information carefully to understand the practices that we implement on the website with regard to privacy of data of the users of this website."
-						},
-						{
-							ancName:"",
-							head:"At the time of registration on the website, the following information is collected from you:",
-							data:"The name, date of birth, gender, location,Contact detail, educational information, work status,Social network profiles along with the photograph."
-						},
-						{
-							ancName:"",
-							head:"How this information is used:",
-							data:"We may use this information for improving the website to suit your requirements.We may use this information to contact you to send promotional information on new Products and services offered on the website.We may use this information email marketing for market research purchase.And we may use this information to intimate you on new terms and policed updated to the website."
-						},
-						{
-							ancName:"",
-							head:"",
-							data:"In case if you do not want us to send you any promotional material, you can always un subscribe to the same by sending an email to us at &#45 info (AT) IT Grids (India) Pvt. Ltd., (DOT) com."
-						},
-						{
-							ancName:"",
-							head:"What we will NEVER do:",
-							data:"We will never rent, sell or use your contact details including name, email id or any other personal information to anybody anywhere in the world."
-						},
-						{
-							ancName:"",
-							head:"Security",
-							data:"We are committed to ensure that your personal information is safeguarded against any unauthorized access or disclosure. And as a part of this privacy policy, we are using the services of the best of the servers that are dedicated and exclusive for the website.Though a large amount of time, resources and infrastructure is put in place for the safety and security of the personal data of the users, unfortunately the information online is completely not safe. As such, no GUARANTEE can be given to any registered user that the personal data is entirely safe. The users will be entering their personal data on the website at their own risk."
-						},
-						{
-							ancName:"",
-							head:"User Interactions",
-							data:"As a registered member of this website you may interacting and communicating with a host of other members registered on this website from different parts of the world. All communications with other members on the website including but not limited to exchanging of text messages, email id, personal phone number, that you will may do or will be doing at your cost and risk. This website or its owners DO NOT take any responsibility for any loss or harm that may cause to you physically, mentally or monetarily during your interactions with other members of the website."
-						},
-						{
-							ancName:"",
-							head:"Policy Updates",
-							data:"From time to time we keep updating this privacy policy to serve you better. Though you will be kept informed about changes to the policies, please keep visiting this page regularly for updates.You may always contact us at info (AT) IT Grids (DOT) com for any information or clarification that you may need. We would be more than happy to answer them."
-						}
-
-					]
-		},
-		{
-			contentAncName:"disclaimer",
-			contentHead:"DISCLAIMER",
-			contentBody:[
-						{
-							ancName:"",
-							head:"",
-							data:"The Platform website &#45 [www.partyanalyst.com] is created to provide a platform for election analysis and political management as such the website is for general information only. Any advice, suggestions that visitors take or share from this website will be doing so at their own risk."
-						},
-						{
-							ancName:"",
-							head:"",
-							data:"Besides from the above the website displays advertisements from third party companies that display their company products and services. The users of this website who click on the links, purchase or use these products will be doing so at their own risk. The website or its owners shall not be liable, at any time for any direct or indirect, punitive, incidental, specific consequential damages including but not limited to damages for loss of business opportunities or loss of profits arising out of the services that the registered members take from this website."
-						},
-						{
-							ancName:"",
-							head:"",
-							data:"The website does not make any representations, warranties, guarantees whatsoever for the accuracy, adequacy, reliability, completeness, suitability or applicability of the information posted by the users of the website either in form of text, images or audio messages."
-						},
-						{
-							ancName:"",
-							head:"",
-							data:"You, the user of the website agrees to indemnify and hold us, the website owners, employees and business partners harmless from any claim, demand or damage, including legal fees demanded by the third party out of the use or the conduct of the users on this website."
-						},
-						{
-							ancName:"",
-							head:"",
-							data:"We reserve the right to disclose the information of any user to law enforcement agencies should such request is made from the appropriate authorities of the law enforcement agencies for any of their investigations purposes."
-						}
-					]
 		}
-		
-	
-	
-	];
+					];
+
 
 	function buildfooterLinksContent()
 	{

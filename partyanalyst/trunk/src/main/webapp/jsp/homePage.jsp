@@ -864,9 +864,9 @@ var new2="Election Message";
 						<td width="20%" valign="top">
 							<div class="homePage_new_footer_links_head">About Us</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="footerLinksAction.action#whoWeAre">Who we are</a></li>
-								<li><a href="footerLinksAction.action#whatWeDo">What we do</a></li>
-								<li><a href="footerLinksAction.action#coreCompetency">Core Competency</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre">Who we are</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=aboutUs#whatWeDo">What we do</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=aboutUs#coreCompetency">Core Competency</a></li>
 								<li><a href="javascript:{}" >Customer Support</a></li>
 								<li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a></li>
 								<li><a href="javascript:{}">Sitemap</a></li>
@@ -887,9 +887,9 @@ var new2="Election Message";
 						<td width="20%" valign="top">
 							<div class="homePage_new_footer_links_head">Policy</div>
 							<ul class="homePage_new_footer_links">
-								<li><a href="footerLinksAction.action#termsOfUse">Terms of use</a></li>
-								<li><a href="footerLinksAction.action#privacyPolicy">Privacy</a></li>
-								<li><a href="footerLinksAction.action#disclaimer">Disclaimer</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=termsOfUse#termsOfUse">Terms of use</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy</a></li>
+								<li><a href="footerLinksAction.action?linkFrom=disclaimer#disclaimer">Disclaimer</a></li>
 							</ul>
 						</td>
 						<td width="10%" valign="top">
