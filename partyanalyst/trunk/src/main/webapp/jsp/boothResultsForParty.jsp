@@ -12,6 +12,36 @@
 	font-weight:bold;
 	padding-top:5px;
 }
+#partyboothresultsheading{
+	background-image:url(images/icons/constituencyManagement/header_body_blue.png);
+	height:30px;
+	width:255px;
+	 color: #ffffff;
+    font-family: times New Roman;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 32px;
+}
+#tableDiv{
+	margin-left: 75px;
+	 margin-top: 18px;
+}
+th.thstyle{
+	 color: #724400;
+	 font-size:13px
+}
+ select.selectstyle{
+ width:150px;
+ }
+ #btnStyle{
+	background: url("images/icons/homePage_new/btn_homePage.png") no-repeat scroll 0 0 transparent;
+	border:none;
+    color: #FFFFFF;
+    font-size: 15px;
+	font-weight: bold;
+    height: 31px;
+    width: 101px;
+ }
 </style>
 
 <!-- Dependencies -->
@@ -130,56 +160,70 @@ window.history.forward(1);
 </script>
 </HEAD>
 <body>
-<s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
-<s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
-<h4>Party Booth Results</h4>
 
-<table>
-<tr><th align="left">
-	<div id="errorMessage"></div>
-</th><td></td></tr>
-</table><br>
-
-<s:form name="BoothPerformanceReport" cssClass="inputTable" >
-	
-	<s:select label="Election Type" name="electionType" 
-		list="electionTypes" listKey="id" listValue="name" headerKey="0"
-		headerValue="Select" id="electionType1" onchange="removeErrorMessage()" />
-
-	<s:select label="Election Year" name="electionYear"
-		list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"
-onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),clearConstituencys(),removeErrorMessage()"/>
-		
-	<tr id="constituencyRow">
-	<th>Constituency</th>
-
-<td><s:select label="Constituency" name="constituencyName" 
-list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="getConstituenciesList(this.form,'%{getPartyURL}'),showImage2(),clearpartyNames(),removeErrorMessage()"/></td>
-
-		<td style="border:none;">
-		<img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-		</td>
-
-	</tr>
-
-	<tr id="partyRow">
-		<th>Party</th>
-		<td><s:select label="Party" name="partyName" id="partyName1" onchange="removeErrorMessage()"
-			list="%{#{'0':'Select'}}" theme="simple"/>			
-		</td>
-		<td style="border:none;">
-			<img id="ajaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-		</td>
-
-	</tr>
-
-	<tr><th></th>
-	<td style="border:none;">
-	<div>
-	<input type="button" id="subbutton" value="Get Booth Results" onclick="validateAndForwardToAction()" />
+	<s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
+	<s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
+	<div  id= "partyboothresultsheading">
+	<table border="0" cellpadding="0" cellspacing="0">          
+		<tr><td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
+			<td><div>Party Booth Results</div></td>
+	       <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
+	   </tr>
+		</table>
 	</div>
-	</td>
-	</tr>
+	<table>
+	  <tr>
+	   <th align="left">
+		<div id="errorMessage"></div>
+	   </th><td></td>
+	  </tr>
+	</table>
+	 <s:form name="BoothPerformanceReport">
+	 <div id="tableDiv">
+	   <table cellpadding="10px" cellspacing="0px" width="100px">
+		 <tr id="ElectionTyperow">
+			<th class="thstyle">Election Type</th>
+		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="removeErrorMessage()" theme="simple"/>
+			  </td>
+		   </tr>
+           <tr id="ElectionYearrow">
+			 <th class="thstyle">Election Year</th>
+			  <td><s:select cssClass="selectstyle" label="Election Year"  name="electionYear"
+					list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),clearConstituencys(),removeErrorMessage()" theme="simple"/>
+				</td>
+			</tr>
+			<tr id="constituencyRow">
+			  <th class="thstyle">Constituency</th>
+				<td width="150px"><s:select cssClass="selectstyle" label="Constituency" name="constituencyName" 
+				list="%{#{'0':'Select'}}" theme="simple" id="ConstituencyName1"  onchange="getConstituenciesList(this.form,'%{getPartyURL}'),showImage2(),clearpartyNames(),removeErrorMessage()"/>
+				</td>
+
+				<td style="border:none;">
+				<img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+				</td>
+   			</tr>
+
+			<tr id="partyRow">
+				<th class="thstyle">Party</th>
+				 <td><s:select cssClass="selectstyle" label="Party" name="partyName" id="partyName1" 		                         onchange="removeErrorMessage()"
+					  list="%{#{'0':'Select'}}" theme="simple"/>			
+				 </td>
+				 <td style="border:none;">
+					<img id="ajaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+				</td>
+			</tr>
+		</table>
+		</div>
+	<div>
+		<table>
+			<tr><th></th>
+				<td style="padding: 20px;">
+					<input id="btnStyle" type="button" id="subbutton" value="View Report" onclick="validateAndForwardToAction()" />
+				</td>
+			</tr>
+		</table>
+	</div>
+
 </s:form>
 </body>
 </HTML>
