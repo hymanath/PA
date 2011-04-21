@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -88,7 +89,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Constituency> constituencies = boothConstituencyElectionDAO.findConstituencyByElectionYearAndElectionScope(electionYear, 
 				electionScopeId);
 		for(Constituency constituency:constituencies){
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName().toUpperCase());
+			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), WordUtils.capitalize(constituency.getName().toLowerCase()));
 			constituencyVOs.add(constituencyVO);
 		}
 		return constituencyVOs;
@@ -105,7 +106,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 					parliamentId, electionYear.toString());
 			if(boothConstituencyElections == null || boothConstituencyElections.get(0).toString().equalsIgnoreCase("0"))
 				continue;
-			constituencyVOs.add(new SelectOptionVO(constituencyId, constituency.getName().toUpperCase()));
+			constituencyVOs.add(new SelectOptionVO(constituencyId, WordUtils.capitalize(constituency.getName().toLowerCase())));
 		}
 		return constituencyVOs;
 	}
