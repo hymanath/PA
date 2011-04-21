@@ -180,7 +180,7 @@ window.history.forward(1);
 	</table>
 	 <s:form name="BoothPerformanceReport">
 	 <div id="tableDiv">
-	   <table cellpadding="10px" cellspacing="0px" width="100px">
+	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 3px ridge #3385AD;background-color: #F2F0EE;">
 		 <tr id="ElectionTyperow">
 			<th class="thstyle">Election Type</th>
 		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="removeErrorMessage()" theme="simple"/>
@@ -223,7 +223,7 @@ window.history.forward(1);
 			</tr>
 		</table>
 	</div>
-
+</table>
 </s:form>
 </body>
 </HTML>
