@@ -760,7 +760,7 @@
 		for(var i=0; i<partiesList.length; i++)
 			str += '<option value="'+partiesList[i].id+'">'+partiesList[i].name+'</option>';
 		str += '</select></td>';
-		str += '<td><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display:none;" src="images/icons/goldAjaxLoad.gif"></img></td>';
+		str += '<td><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display:none;" src="images/icons/search.gif"></img></td>';
 		str += '</tr>';
 		str += '</table>';
 		str += '<div>';
