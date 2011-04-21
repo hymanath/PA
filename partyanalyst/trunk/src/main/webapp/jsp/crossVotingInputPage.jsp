@@ -53,8 +53,9 @@
 
 #crossVotingInputDiv
 {
-	text-align:left;
-	margin-left:100px;
+	float: left;
+    margin-left: 36px;
+    padding: 16px;
 }
 #labelspan
 {
@@ -171,7 +172,36 @@
 	text-align:center;
 	white-space:nowrap;
  }
-
+#headDivStyle{
+	color: #ffffff;
+    font-size: 20px;
+    font-weight: normal;
+    padding:20px;
+}
+#headingImgStyle{
+	background-image:url(images/icons/cadreReport/bg_center.png);
+	background-repeat:no-repeat;
+	background-size:190px auto;
+	height: 25px;
+    width: 190px;
+}
+h4.headStyle
+{
+	font-size:14px;
+}
+td.tdStyle{
+    font-family: times New Roman;
+    font-size: 16px;
+    font-weight: bold;
+}
+ select.selectstyle{
+ width:150px;
+ }
+ #checkBoxStyle{
+	 font-family: times New Roman;
+    font-size: 14px;
+    font-weight: bold;
+ }
 </style>
 <script type="text/javascript">
 	
@@ -659,51 +689,58 @@ window.history.forward(1);
 </script>
 </head>
 <body>
-		<h3><u>Cross Voting Report</u></h3>
-		<div id="crossVotingInputDiv">
+ 	<div id= "headDivStyle">
+	<table border="0" cellpadding="0" cellspacing="0">          
+		<tr><td><img src="images/icons/cadreReport/bg_left.png"/></td>
+			<td><div id="headingImgStyle"><span>&nbsp;Cross Voting Report</span></div></td>
+	       <td><img src="images/icons/cadreReport/bg_right.png"/></td>
+	   </tr>
+		</table>
+	</div>
+		<div id="crossVotingInputDiv"  style="border: 3px solid #194155;">
 			<table class="crossVotingInputTable" border='0'>
 				<tr>
-					<td colspan="2"><h4><span id="labelspan">Select All Mandatory Fields :</span></h4></td>
+					<td colspan="2"><h4 class="headStyle"><b><span id="labelspan">Select All Mandatory Fields :</span></b></h4></td>
 				</tr>
 				<tr>
-					<td align="left"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label><font color="red">*</font></td>
+					<td align="left" class="tdStyle"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label><font color="red">*</font></td>
 					<td align="left">
-						<s:select theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
+						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
 					</td>
 					<td><img id="ajaxImg1" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				
-					<td align="left" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label><font color="red">*</font></td>
+					<td align="left" class="tdStyle" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label><font color="red">*</font></td>
 					<td align="left"> 
-						<select id="parliamentField" onchange="getAssembly()">
+						<select class="selectstyle" id="parliamentField" onchange="getAssembly()">
 							<option value="-1">Select</option>
 						</select>
 					</td>
 					<td><img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				</tr>			
 				<tr>
-					<td align="left">Assembly Constituency<font color="red">*</font></td>
+					<td align="left" class="tdStyle">Assembly Constituency<font color="red">*</font></td>
 					<td align="left">
-						<select id="AssemblySelect" onchange="getParty()">
+						<select class="selectstyle" id="AssemblySelect" onchange="getParty()">
 							<option value="-1">Select</option>
 						</select>
 
-						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/>Include Aliance Parties
+						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" onclick="forGetCrossVoting()"/><span id="checkBoxStyle">Include Aliance Parties</span>
 					</td>
 					<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 					
-					<td align="left" style="padding-left:10px;">Party<font color="red">*</font></td>
+					<td align="left" class="tdStyle" style="padding-left:10px;">Party<font color="red">*</font></td>
 					<td align="left">
 							<select id="PartySelect" onchange="forGetCrossVoting()">
-								<option value="-1">Select </option>			
+								<option value="-1" style="width:124px;">Select </option>			
 							</select>						
 					</td>
 					
 				</tr>
 				<tr>
 					<td colspan="4">
-							<br>
-							Note: <b><font color="red">*</font></b> indicates mandatory field
-					</td>
+							<br><b>
+							Note: <b><font color="red">*</font></b>Indicates mandatory field
+					</b></td>
 				</tr>
 				<tr>
 					<td colspan="4" align="center">
