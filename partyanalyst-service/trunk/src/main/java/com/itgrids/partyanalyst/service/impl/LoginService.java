@@ -367,7 +367,7 @@ public class LoginService implements ILoginService{
 				List acs = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(regionId);
 				
 				if(acs.size() > 0){
-					acId = (Long)((Object[])acs.get(0))[0];	
+					acId = (Long)((Object[])acs.get(0))[4];	
 					ac = constituencyDAO.get(acId);
 					acSelect = new SelectOptionVO(ac.getConstituencyId(), ac.getName());
 				
