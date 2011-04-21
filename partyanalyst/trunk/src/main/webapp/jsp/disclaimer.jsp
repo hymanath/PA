@@ -86,6 +86,7 @@
 <script type="text/javascript">
 	
 	var content = 
+		[
 		{
 			contentAncName:"disclaimer",
 			contentHead:"DISCLAIMER",
@@ -122,8 +123,10 @@
 	
 	];
 
+
 	function buildfooterLinksContent()
 	{
+		alert("kamal");
 		var elmt = document.getElementById("footerLinksdata_body");
 		if(!elmt)
 			return;
