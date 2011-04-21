@@ -315,6 +315,11 @@ width:100%;
    font-weight:bold;
    text-decoration:none;
 }
+#mandalDivHeadstyle {
+    color: #669900;
+    font-size: 15px;
+    font-weight: bold;
+}
 </style>
 
 
@@ -1142,8 +1147,8 @@ window.history.forward(1);
 
 <table width="100%" border="0">
 <tr><td><%@ include file="navigator.jsp" %></td></tr>
-<tr><td align="center"><br>
-<h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
+<tr><td align="center" id="mandalDivHeadstyle"><br>
+<u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u>
 </td></tr></table>
 <div id="boothResultsDiv">
 
