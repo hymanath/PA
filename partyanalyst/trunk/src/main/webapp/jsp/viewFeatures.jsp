@@ -108,7 +108,7 @@
 					<li><a href="javascript:{}" onclick="showDetailsPopup('Pricing')" class="navLinksAnc">Pricing</a></li>						
 					<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc" id="supportLink" onclick="supportLinkInHomePage()">Support</a></li>
-					<li><a href="footerLinksAction.action#whoWeAre" class="navLinksAnc">Who We Are</a></li>
+					<li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre" class="navLinksAnc">Who We Are</a></li>
 					<li><a href="javascript:{}" class="navLinksAnc">Our Blog</a></li>
 					<li>|</li>
 					<li><a href="loginInputAction.action" class="navLinksAnc">
@@ -500,9 +500,9 @@
 							<td width="20%" valign="top">
 								<div class="homePage_new_footer_links_head">About Us</div>
 								<ul class="homePage_new_footer_links">
-									<li><a href="footerLinksAction.action#whoWeAre">Who we are</a></li>
-									<li><a href="footerLinksAction.action#whatWeDo">What we do</a></li>
-									<li><a href="footerLinksAction.action#coreCompetency">Core Competency</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre">Who we are</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=aboutUs#whatWeDo">What we do</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=aboutUs#coreCompetency">Core Competency</a></li>
 									<li><a href="javascript:{}" id="supportLink" onclick="supportLinkInHomePage()">Customer Support</a></li>
 									<li><a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()">Contact</a></li>
 									<li><a href="javascript:{}">Sitemap</a></li>
@@ -522,17 +522,17 @@
 							<td width="20%" valign="top">
 								<div class="homePage_new_footer_links_head">Policy</div>
 								<ul class="homePage_new_footer_links">
-									<li><a href="footerLinksAction.action#termsOfUse">Terms of use</a></li>
-									<li><a href="footerLinksAction.action#privacyPolicy">Privacy</a></li>
-									<li><a href="footerLinksAction.action#disclaimer">Disclaimer</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=termsOfUse">Terms of use</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=privacy">Privacy</a></li>
+									<li><a href="footerLinksAction.action?linkFrom=disclaimer">Disclaimer</a></li>
 								</ul>
 							</td>
 							<td width="10%" valign="top">
 								<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 								<ul class="homePage_new_footer_links">
 									<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
-									<li><a href="javascript:{}">Twitter</a></li>
-									<li><a href="javascript:{}">LinkedIN</a></li>
+									<li><a href="http://twitter.com/#!/party_analyst">Twitter</a></li>
+									<li><a href="http://www.linkedin.com/company/it-grids-ltd">LinkedIN</a></li>
 								</ul>
 							</td>
 							<td width="30%" valign="top" align="right">
