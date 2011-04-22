@@ -550,7 +550,7 @@ var new2="Election Message";
 														<ul class="homePageContentWidget_body_news_list">
 															<li>View comments posted by registered users</li>
 															<li>View all election results</li>
-															<li>View your Political Leader’s profile</li>
+															<li>View your Political Leader&#39;s profile</li>
 															<li>View all your constituency problems</li>
 														</ul>
 													</div>
@@ -896,8 +896,8 @@ var new2="Election Message";
 							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 							<ul class="homePage_new_footer_links">
 								<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
-								<li><a href="javascript:{}">Twitter</a></li>
-								<li><a href="javascript:{}">LinkedIN</a></li>
+								<li><a href="http://twitter.com/#!/party_analyst">Twitter</a></li>
+								<li><a href="http://www.linkedin.com/company/it-grids-ltd">LinkedIN</a></li>
 							</ul>
 						</td>
 						<td width="30%" valign="top" align="right">
