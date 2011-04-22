@@ -159,7 +159,7 @@ var new2="Election Message";
 	        ] 
 	    },  
 		{ 
-	        id: "constituenceyManagement",
+	        id: "constituencyManagement",
 	        itemdata: [
 		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
 		    { text: "User Groups", url: "userGroupAction.action" },
@@ -171,7 +171,7 @@ var new2="Election Message";
 	        itemdata: [ 
 		    { text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
 		    { text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
-	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
+	            { text: "Constituency Booth Results Report", url: "partyBoothResultAction.action" }						
 	        ]  
 	    },	 
 	    { 
@@ -323,7 +323,7 @@ var new2="Election Message";
 								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 							</li> 
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
+								<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCY MANAGEMENT</a> 
 							</li> 
 						</c:if>
 						
