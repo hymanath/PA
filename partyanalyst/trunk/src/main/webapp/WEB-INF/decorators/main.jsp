@@ -115,13 +115,13 @@
 	    { 
 	        id: "staticData",  
 	        itemdata: [ 
-	                    { text: "Andhra Pradesh", url: "state/andhra_pradesh" },
-						{ text: "Assam", url: "state/assam" },
-						{ text: "Karnataka", url: "state/karnataka" },
-						{ text: "Kerala", url: "state/kerala" },
-						{ text: "Puducherry", url: "state/puducherry" },
-						{ text: "Tamil Nadu", url: "state/tamil_nadu" },
-						{ text: "West Bengal", url: "state/west_bengal" }
+	                    { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+						{ text: "Assam", url: "statePageAction.action?stateId=3" },
+						{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+						{ text: "Kerala", url: "statePageAction.action?stateId=13" },
+						{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
+						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+						{ text: "West Bengal", url: "statePageAction.action?stateId=28" }
 	        ]     
 	    }, 
 	    { 
@@ -153,13 +153,13 @@
 					{ 
 						id: "staticData",  
 						itemdata: [ 
-								{ text: "Andhra Pradesh", url: "state/andhra_pradesh" },
-								{ text: "Assam", url: "state/assam" },
-								{ text: "Karnataka", url: "state/karnataka" },
-								{ text: "Kerala", url: "state/kerala" },
-								{ text: "Puducherry", url: "state/puducherry" },
-								{ text: "Tamil Nadu", url: "state/tamil_nadu" },
-								{ text: "West Bengal", url: "state/west_bengal" }
+								{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+								{ text: "Assam", url: "statePageAction.action?stateId=3" },
+								{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+								{ text: "Kerala", url: "statePageAction.action?stateId=13" },
+								{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
+								{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
+								{ text: "West Bengal", url: "statePageAction.action?stateId=28" }
 						]     
 					}, 
 					{ 
@@ -312,11 +312,10 @@
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
 				<td align="left"> &copy; Copyright 2011. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
-				<td align="right" ><a href="footerLinksAction.action#whoWeAre" style="text-decoration:none" ><font color="#ffffff">About Us </font></a>
+				<td align="right" ><a href="footerLinksAction.action?linkFrom=aboutUs" style="text-decoration:none" ><font color="#ffffff">About Us </font></a>
 				| <a  href="javascript:{}"onclick ="contactLinkInHomePage()" style="text-decoration:none"> <font color="#ffffff"> Contact Us</font> </a>
-				| <a href="footerLinksAction.action#termsOfUse" style="text-decoration:none"><font color="#ffffff">Terms Of Use</font></a>
-				| <a href="footerLinksAction.action#privacyPolicy" style="text-decoration:none"><font color="#ffffff">
-				Privacy Policy </td>
+				| <a href="footerLinksAction.action?linkFrom=termsOfUse" style="text-decoration:none"><font color="#ffffff">Terms Of Use</font></a>
+				| <a href="footerLinksAction.action?linkFrom=privacy" style="text-decoration:none"><font color="#ffffff">Privacy Policy</font></a></td>
 			</tr>
 		</table>
 		</div>
