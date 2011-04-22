@@ -109,7 +109,7 @@
 						{
 							ancName:"",
 							head:"",
-							data:"In case if you do not want us to send you any promotional material, you can always un subscribe to the same by sending an email to us at &#45 info (AT) IT Grids (India) Pvt. Ltd., (DOT) com."
+							data:"In case if you do not want us to send you any promotional material, you can always un subscribe to the same by sending an email to us at &#45;<a href=mailto:info@itgrids.com> info&#64;itgrids&#46;com</a>."
 						},
 						{
 							ancName:"",
@@ -129,7 +129,7 @@
 						{
 							ancName:"",
 							head:"Policy Updates",
-							data:"From time to time we keep updating this privacy policy to serve you better. Though you will be kept informed about changes to the policies, please keep visiting this page regularly for updates.You may always contact us at info (AT) IT Grids (DOT) com for any information or clarification that you may need. We would be more than happy to answer them."
+							data:"From time to time we keep updating this privacy policy to serve you better. Though you will be kept informed about changes to the policies, please keep visiting this page regularly for updates.You may always contact us at <a href=mailto:info@itgrids.com>&#45; info&#64;itgrids&#46;com</a>. for any information or clarification that you may need. We would be more than happy to answer them."
 						}
 
 					]
