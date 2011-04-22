@@ -126,7 +126,6 @@
 
 	function buildfooterLinksContent()
 	{
-		alert("kamal");
 		var elmt = document.getElementById("footerLinksdata_body");
 		if(!elmt)
 			return;
