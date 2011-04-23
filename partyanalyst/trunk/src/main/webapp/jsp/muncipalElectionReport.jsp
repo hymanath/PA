@@ -223,8 +223,8 @@ function showPartys(results)
 		}
 	var showParties = document.getElementById("showParties");
 	var populateParties='';
-	populateParties+='<select id="tehsilParties" style="width:80px;" onchange="partyWiseCandidateDetails(this.options[this.selectedIndex].value)">';
-	populateParties+='<option value="select">select</option>';
+	populateParties+='<select id="tehsilParties" style="width:100px;" onchange="partyWiseCandidateDetails(this.options[this.selectedIndex].value)">';
+	populateParties+='<option value="0">Select Party</option>';
 	for(var i in results.partyInfo)
 	{
 		populateParties+='<option value="'+results.partyInfo[i].id+'">'+results.partyInfo[i].name+'</option>';
