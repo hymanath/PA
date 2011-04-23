@@ -191,7 +191,7 @@ function showPartys(results)
 		}
 	var showParties = document.getElementById("showParties");
 	var populateParties='';
-	populateParties+='<select id="tehsilParties" style="width:80px;" onchange="partyWise(this.options[this.selectedIndex].value)">';
+	populateParties+='<select id="tehsilParties" style="width:100px;" onchange="partyWise(this.options[this.selectedIndex].value)">';
 	for(var i in results.partyInfo)
 	{
 		populateParties+='<option value="'+results.partyInfo[i].id+'">'+results.partyInfo[i].name+'</option>';
