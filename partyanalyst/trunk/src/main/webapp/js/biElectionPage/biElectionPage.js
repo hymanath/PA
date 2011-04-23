@@ -105,6 +105,7 @@ function buildMandalsVotingTrendz()
 	str += '</th>';
 	str += '<td>';
 	str += '<div id="constSelectElmt"><select id="selectConst" class="selectWidth" onchange="selectConstOnchange()">';
+	str += '<option value="0">Select Constituency</option>';
 	for(var j in districtsInfo[0].constituencies)
 	{
 		str += '<option value="'+districtsInfo[0].constituencies[j].constId+'"> '+districtsInfo[0].constituencies[j].constName+' </option>';
