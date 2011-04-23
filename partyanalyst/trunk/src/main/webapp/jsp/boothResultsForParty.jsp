@@ -38,9 +38,10 @@ th.thstyle{
 	border:none;
     color: #FFFFFF;
     font-size: 15px;
-	font-weight: bold;
+    font-weight: bold;
     height: 31px;
-    width: 101px;
+    margin-left: 394px;
+    width: 103px;
  }
 </style>
 
@@ -214,7 +215,6 @@ var Localization = { <%
 			</tr>
 		</table>
 		</div>
-	<div>
 		<table>
 			<tr><th></th>
 				<td style="padding: 20px;">
@@ -222,8 +222,7 @@ var Localization = { <%
 				</td>
 			</tr>
 		</table>
-	</div>
-</table>
+	</table>
 </s:form>
 </body>
 </HTML>
