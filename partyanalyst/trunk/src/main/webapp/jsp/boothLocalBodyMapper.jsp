@@ -607,7 +607,7 @@ function getLocalBodiesInConstituency(id, selectElement, year)
 		callAjax(jsObj, url);
 		
 }
-window.history.forward(1);
+
 </script>
 <style>
 	.selectWidth{

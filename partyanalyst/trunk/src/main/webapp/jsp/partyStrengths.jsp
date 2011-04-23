@@ -1513,7 +1513,7 @@
 		else
 			elmet.style.display = 'none';
 	}
-window.history.forward(1);	
+	
 </script>
 
 

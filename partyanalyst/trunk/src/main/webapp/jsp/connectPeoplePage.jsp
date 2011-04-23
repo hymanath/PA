@@ -97,7 +97,7 @@
 	google.load("elements", "1", {packages : ["newsshow"]});
 
 	
-window.history.forward(1);
+
 
 	
 </script>

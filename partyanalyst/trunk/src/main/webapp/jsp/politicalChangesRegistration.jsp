@@ -347,7 +347,7 @@ function populateLocations(val,source)
 		incrementHidden();
 		window.opener.document.location.reload(true);
 	}
-window.history.forward(1);
+
 	</script>
 </head>
 

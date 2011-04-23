@@ -124,7 +124,7 @@
 <script type="text/javascript">
 var influencingPersonId = '${influencingPersonId}';
 
-window.history.forward(1);
+
 </script>
 </head>
 

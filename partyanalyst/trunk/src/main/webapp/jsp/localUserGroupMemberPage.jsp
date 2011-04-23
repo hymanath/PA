@@ -218,7 +218,7 @@
 			//window.close();
 		</c:if>		
 	}
-window.history.forward(1);
+
 </script>
 
 <style type="text/css">

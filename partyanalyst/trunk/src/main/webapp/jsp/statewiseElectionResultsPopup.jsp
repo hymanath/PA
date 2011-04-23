@@ -508,7 +508,7 @@ function showPartyResultsWithoutAlliance(chartId)
  
 	buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
 }
-window.history.forward(1);
+
 </SCRIPT>
 </HEAD>
 <BODY>

@@ -420,7 +420,7 @@ function getDetails(id)
 	var url = "<%=request.getContextPath()%>/constituencyElectionReportAjaxAction.action?"+rparam;						
 	callAjax(rparam,jsObj,url);
 }
-window.history.forward(1);
+
 
 </script>
 </head>

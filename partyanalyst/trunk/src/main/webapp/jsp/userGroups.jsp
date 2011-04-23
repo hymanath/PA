@@ -1482,7 +1482,7 @@ var userGrpsObj={
 			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
 		}
 	}	
-window.history.forward(1);
+
 </script>
 </head>
 <body class="yui-skin-sam">

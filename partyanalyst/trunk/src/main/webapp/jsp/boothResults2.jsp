@@ -9,7 +9,7 @@
 <html>
 <head>
 <script src="js/partyBoothResults/boothResults.js"></script>
-<script>window.history.forward(1);</script>
+
 <!-- YUI files dependencies (start) -->
 
 <!--CSS files (default YUI Sam Skin) -->

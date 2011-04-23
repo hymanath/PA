@@ -1109,7 +1109,7 @@ function callMarginVotes(partyId)
 	buildMarginVotes(partyId,"LOST");
 }
 
-window.history.forward(1);
+
 </script>
 
 <style type="text/css">

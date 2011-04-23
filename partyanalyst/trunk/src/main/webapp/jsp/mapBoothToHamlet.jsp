@@ -305,7 +305,7 @@
 	  function deletedRecordInfo(resultVO){
 		  alert("After Delete ::"+resultVO);
 	  }
-window.history.forward(1);
+
 	  
 </script>
 <style type="text/css">

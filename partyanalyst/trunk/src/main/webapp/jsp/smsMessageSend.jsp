@@ -440,7 +440,7 @@
 			villageSelectElmt.disabled=false;	
 		}		
 	}
-window.history.forward(1);
+
 </script>
 
 <style type="text/css">
