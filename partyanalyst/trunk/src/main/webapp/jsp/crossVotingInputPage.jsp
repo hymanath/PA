@@ -179,7 +179,7 @@
     padding:20px;
 }
 #headingImgStyle{
-	background-image:url(images/icons/cadreReport/bg_center.png);
+	 background-color: #0B3861;
 	background-repeat:no-repeat;
 	background-size:190px auto;
 	height: 25px;
