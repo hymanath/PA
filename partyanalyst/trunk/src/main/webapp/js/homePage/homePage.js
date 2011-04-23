@@ -166,8 +166,8 @@ function buildQuestions()
 
 	var str = '';	
 	str += '<div>';
-		str += '<center><font color="#4B74C6"><b>Party Analyst Launch Event</b></font></center><br>';
-		str += ' <object height="180" width="200"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
+		str += '<font color="#4B74C6"><b>Media Coverage On Party Analyst &nbsp;&nbsp;Launch</b></font><br>';
+		str += ' <object height="180" width="250"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
 		str += '</font>';
 	str += '</DIV><br>';
 
