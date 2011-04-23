@@ -835,9 +835,11 @@ var new2="Election Message";
 										  <td style="font-weight:bold"><font color="red"> * </font>Your Requirement:<br><br><textarea class="quickRequestTextbox" name="requirement" rows="3" cols="20" id="quickRequestReqTextbox" ></textarea></td>
 										</tr>
 										<tr>
-										  <td><div id="feedback"><input type="submit" value="POST" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
+										  <td><div id="feedback"><input type="submit" value="Send Request" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
 										</tr>
 									</div>
+									<tr>
+										<td colspan="2"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
 								 </table>
 
 								</div>
@@ -896,8 +898,8 @@ var new2="Election Message";
 							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
 							<ul class="homePage_new_footer_links">
 								<li><a href="http://www.facebook.com/PartyAnalyst" target="_blank">Facebook</a></li>
-								<li><a href="http://twitter.com/#!/party_analyst">Twitter</a></li>
-								<li><a href="http://www.linkedin.com/company/it-grids-ltd">LinkedIN</a></li>
+								<li><a href="http://twitter.com/#!/party_analyst" target="_blank">Twitter</a></li>
+								<li><a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank">LinkedIN</a></li>
 							</ul>
 						</td>
 						<td width="30%" valign="top" align="right">
