@@ -108,11 +108,12 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
-		states.add(0, new SelectOptionVO(0L,"Select State"));
 		Collections.sort(states);
+		states.add(0, new SelectOptionVO(0L,"Select State"));
+		
 		partyList = staticDataService.getStaticParties();
-		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
 		Collections.sort(partyList);
+		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
 		return SUCCESS;
 	}
 
