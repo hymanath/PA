@@ -154,6 +154,6 @@ var allBoothsResultsArr = new Array();
 		var myDataTable = new YAHOO.widget.DataTable("dataTableDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
 	}
 	buildBoothResultsDt();
-window.history.forward(1);
+
 </SCRIPT>
 </HTML>

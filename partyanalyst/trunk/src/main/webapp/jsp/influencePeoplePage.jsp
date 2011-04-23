@@ -557,7 +557,7 @@
 
 				buildYUIDTTable("allPeopleDataTable","influencePeopleMainDataDiv");
 			}
-window.history.forward(1);
+
 	</script>
 </head>
 <body>

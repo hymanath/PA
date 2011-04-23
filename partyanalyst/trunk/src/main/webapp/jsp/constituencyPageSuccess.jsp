@@ -1093,7 +1093,7 @@ function openConstVotingTrendzWindow(distId,constId,constName)
 
 	browser1.focus();
 }
-window.history.forward(1);
+
 </script>
 </head>
 <body onLoad="getString()">

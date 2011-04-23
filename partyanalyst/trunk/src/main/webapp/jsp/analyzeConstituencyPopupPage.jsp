@@ -1018,7 +1018,7 @@ if(category == "candidate")
 			valnode.innerHTML = offsetFromStart;
 		 });
 	}
-window.history.forward(1);
+
 </script>
 </head>
 <body class="yui-skin-sam">

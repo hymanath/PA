@@ -145,7 +145,7 @@ function submitRebels() {
 	document.getElementById("rebels").value = rebels;
 	
 }
-window.history.forward(1);
+
 	</script>
 		<script type="text/javascript" src="js/cncSearch.js"></script>
 	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 

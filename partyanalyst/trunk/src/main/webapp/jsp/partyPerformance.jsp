@@ -418,7 +418,7 @@
 		}
 		return flag;
 	}
-window.history.forward(1);
+	window.history.forward(1);
 	</script>
 	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
 

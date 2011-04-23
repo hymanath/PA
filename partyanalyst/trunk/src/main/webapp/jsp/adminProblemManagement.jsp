@@ -293,7 +293,7 @@
 				document.getElementById("betweenDatesDiv").style.display = 'block'
 			}			
 		}
-		window.history.forward(1);
+		
 	</script>	
 
 </head>

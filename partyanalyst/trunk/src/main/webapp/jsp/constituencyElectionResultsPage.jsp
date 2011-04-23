@@ -360,7 +360,7 @@ function displayConstituencyElectionResults()
 		var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource);
 	
 }
-window.history.forward(1);
+
 </script>
 </head>
 

@@ -19,7 +19,7 @@
 	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>	  
 	<script type="text/javascript" src="js/yahoo/autocomplete-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script>window.history.forward(1);</script>
+	
 	<link href="styles/yuiStyles/autocomplete.css" rel="stylesheet" type="text/css" />
 
 	<!-- YUI Dependency files (End) -->

@@ -209,7 +209,7 @@
 		var myDataTable = new YAHOO.widget.DataTable("dTTableDiv4",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 	}
-window.history.forward(1);
+
 	</script>
 </head>
 <body>

@@ -1138,8 +1138,6 @@ function getMoreResults(elecYear,elecType,constiId)
 		var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
 		browser1.focus();	
 	}	
-
-window.history.forward(1);	
 	
 	</script>
 </head>

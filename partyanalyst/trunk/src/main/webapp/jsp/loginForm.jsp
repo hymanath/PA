@@ -195,7 +195,7 @@ if(request.getParameter("problemHistoryId")!=null){
 		var textBoxEl = document.getElementById("userName");
 		textBoxEl.focus();
 	}
-window.history.forward(1);		
+		
 	</script> 
 
 	<style type="text/css">

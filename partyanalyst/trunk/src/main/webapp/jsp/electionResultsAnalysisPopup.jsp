@@ -210,7 +210,7 @@
 		
 		browser2.focus();
 	}
-window.history.forward(1);		
+		
 </SCRIPT>
 </HEAD>
 <BODY>

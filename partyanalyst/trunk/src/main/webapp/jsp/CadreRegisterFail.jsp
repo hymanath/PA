@@ -15,7 +15,7 @@ ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
 String exceptionMsg = rb.getString("exceptionMsg");
 
 %>
-window.history.forward(1);
+
 </script>
 </head>
 <body>

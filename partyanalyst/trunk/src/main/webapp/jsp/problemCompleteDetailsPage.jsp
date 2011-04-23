@@ -147,7 +147,7 @@ if(elmt)
 		postProblemElmt.style.display='block';
 	}
 }
-window.history.forward(1);
+
 </script>
 <style>
 #problemHead

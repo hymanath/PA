@@ -617,7 +617,7 @@ function callAjax(param,jsObj,url){
 	{
 		getMainPartyMarginCountAnalysis('${clickIndex}','${resultStatus}');
 	}	
-window.history.forward(1);
+
 	</SCRIPT>
 </BODY>
 </HTML>

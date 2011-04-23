@@ -751,7 +751,7 @@ legend
 			function getRevenueVillageElectionResults(selectedYear,electionId){
 				var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 				brow1.focus();
-			}window.history.forward(1);	
+			}	
 </script>
 </head>
 <body style="width:130%">

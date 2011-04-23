@@ -573,7 +573,7 @@ function getCommentsClassifications(rank)
 		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
 	}
 	
-window.history.forward(1);	
+	
 </SCRIPT>
 </BODY>
 </HTML>

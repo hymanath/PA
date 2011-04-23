@@ -550,7 +550,7 @@ function openPartyPerformanceWindow(electionTypeId)
 	browser1 = window.open(urlStr,"partyPerformanceReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	browser1.focus();
 }
-window.history.forward(1);
+
 </SCRIPT>
 
 </HEAD>

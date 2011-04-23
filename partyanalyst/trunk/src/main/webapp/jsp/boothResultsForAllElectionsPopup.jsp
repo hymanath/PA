@@ -96,7 +96,7 @@ legend
 		 
 		var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource);
 	}
-	window.history.forward(1);
+	
 </SCRIPT>
 </HEAD>
 <BODY>
