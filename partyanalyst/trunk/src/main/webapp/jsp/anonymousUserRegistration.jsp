@@ -263,7 +263,7 @@ function uploadImageFile()
     }
 
    .fieldsCollection {
-		margin: 2.3em 1.5em;
+		margin: -1.3em 1.5em;
 		position: relative;
     }
    fieldset, img {
