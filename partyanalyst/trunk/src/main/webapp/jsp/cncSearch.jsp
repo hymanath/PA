@@ -99,11 +99,12 @@
 	</tr>
 	<tr id="row5">	
 		<td colspan="2" style="color:black;position:relative;z-index:1;">		
-			<div id="textFldDiv" style="height:30px;"></div>				
+			<div id="textFldDiv" style="height:20px;"></div>
+			(Ex:Politician name Or Constituency name)
 		</td>
-	</tr>
-	<tr id="row6">	
-		<td colspan="2" style="color:black;position:relative;z-index:1;">		
+		</tr>
+		<tr id="row6">	
+		<td colspan="2" style="color:black;position:relative;z-index:1;font-size:10px;">
 			<div id="errorDiv" style="font-size: 10px; color: red;text-align:center;"></div>				
 		</td>
 	</tr>
@@ -112,6 +113,8 @@
 			<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" value="Search"/></div>				
 		</td>
 	</tr>
+	<tr>
+	<td colspan="2" style="padding-top:21px"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
 	</table>
 	
 	
