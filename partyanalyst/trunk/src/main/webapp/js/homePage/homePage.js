@@ -167,7 +167,7 @@ function buildQuestions()
 	var str = '';	
 	
 
-	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="150" width="210"  direction="up" >';
+	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="180" width="210"  direction="up" >';
 	str += ' <table width="100%">';
 	
 	for(var i=0;i<questionsObj.length;i++)
@@ -180,7 +180,7 @@ function buildQuestions()
 
 	str += ' </table>';
 	str += ' </marquee>';
-	str += '<div>';
+	str += '<div style="margin-top:7px;">';
 	str += '<font color="#4B74C6"><b>PartyAnalyst Launch Event Coverage</b></font><br>';
 	str += ' <object height="180" width="250"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
 	str += '</font>';
