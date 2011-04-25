@@ -3809,7 +3809,7 @@ public class StaticDataService implements IStaticDataService {
 					districtId, electionType, electionYear);
 			SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(0l);
-			selectOption.setName("Select");
+			selectOption.setName("Select Party");
 			SelectOptionVo.add(selectOption);
 			for (int i = 0; i < result.size(); i++) {
 				SelectOptionVO selectOptionVO = new SelectOptionVO();
