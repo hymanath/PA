@@ -1553,12 +1553,18 @@ text-decoration:none;
 	font-weight:bold;
 }
 
+#quickRequestTable td
+{
+	padding:5px 2px 5px 2px;
+}
+
 /* Quick Request Styles */
 .quickRequestTextbox {
-   
-	float: right;
+	
+	width:135px;
+	/*float: right;
     margin-bottom: 13px;
-	margin-left:10px;
+	margin-left:10px;*/
 }
 #quickRequestTD{
 	font-weight:bold;

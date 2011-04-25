@@ -821,28 +821,48 @@ var new2="Election Message";
 									</table>
 								</div>
 								<div class="homePageContentWidget_body">
-									<table>
-									<tr>
-	<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
-	<tr>
+									<table id="quickRequestTable">
 										<tr>
-										  <td style="font-weight:bold"><font color="red"> * </font>Name:<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox"></td>
+											<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold"><font color="red"> * </font>Email:<input type="text" class="quickRequestTextbox" name="email" id="quickRequestEmailTextbox"></td>
+										  <td style="font-weight:bold">
+											<font color="red"> * </font>Name:
+										  </td>
+										  <td>
+											<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox">
+										  </td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold"><font color="red"> * </font>Mobile:<input type="text" class="quickRequestTextbox" name="mobileNO" id="quickRequestMobileTextbox"></td>
+										  <td style="font-weight:bold">
+											<font color="red"> * </font>Email:
+										  </td>
+										  <td>
+											<input type="text" class="quickRequestTextbox" name="email" id="quickRequestEmailTextbox">
+										  </td>
 										</tr>
 										<tr>
-										  <td style="font-weight:bold"><font color="red"> * </font>Your Requirement:<br><br><textarea class="quickRequestTextbox" name="requirement" rows="3" cols="20" id="quickRequestReqTextbox" ></textarea></td>
+										  <td style="font-weight:bold">
+											<font color="red"> * </font>Mobile:
+										  </td>
+										  <td>
+											<input type="text" class="quickRequestTextbox" name="mobileNO" id="quickRequestMobileTextbox">
+										  </td>
 										</tr>
 										<tr>
-										  <td><div id="feedback"><input type="submit" value="Send Request" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
+										  <td style="font-weight:bold" colspan="2">
+											<font color="red"> * </font> Requirement:
+										  </td>
 										</tr>
-									</div>
-									 </table>
-
+										<tr>
+										  <td colspan="2">
+											<textarea name="requirement" rows="3" cols="21" id="quickRequestReqTextbox" ></textarea>
+										   </td>
+										</tr>
+										<tr>
+										  <td colspan="2" align="right"><div id="feedback"><input type="submit" value="Send Request" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
+										</tr>									
+								 </table>
 								</div>
 								<div class="homePageContentWidget_footer">
  								</div>
