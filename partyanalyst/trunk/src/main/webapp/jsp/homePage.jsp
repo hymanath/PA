@@ -821,7 +821,10 @@ var new2="Election Message";
 									</table>
 								</div>
 								<div class="homePageContentWidget_body">
-									<table>										
+									<table>
+									<tr>
+	<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
+	<tr>
 										<tr>
 										  <td style="font-weight:bold"><font color="red"> * </font>Name:<input class="quickRequestTextbox" type="text" name="name" id="quickRequestNameTextbox"></td>
 										</tr>
@@ -838,9 +841,7 @@ var new2="Election Message";
 										  <td><div id="feedback"><input type="submit" value="Send Request" class="quickRequestTextbox" style="margin-top=25px;" onclick="submitDialogBox()"></div></td>
 										</tr>
 									</div>
-									<tr>
-										<td colspan="2"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
-								 </table>
+									 </table>
 
 								</div>
 								<div class="homePageContentWidget_footer">
@@ -855,7 +856,7 @@ var new2="Election Message";
 					<tr>
 						<td valign="top" style="width:50px"><img width="60" height="40" src="images/icons/indexPage/importantNote.png"></img> </td>
 						<td valign="top">
-							<div id="copyRightTextDiv"> The information displayed in this website are based on the data provided by the Election Commmission Of India.
+							<div id="copyRightTextDiv"> The information displayed in this website are based on the data collected from the Election Commmission Of India.
 							Further suggestions and corrections please contact us at <font color="#b76823"><b>info@itgrids.com</b></font></div> </td>
 					</tr>
 				</table>				
