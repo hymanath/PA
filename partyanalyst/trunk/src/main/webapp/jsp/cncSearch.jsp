@@ -48,6 +48,8 @@
 
 	<table class="yui-skin-sam">
 	<tr>
+	<td colspan="2" align="right"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
+	<tr>
 		<th align="left" colspan="2" style="padding-top: 3px;color:#163447;">
 			Select	Search Criteria
 		</th>
@@ -94,7 +96,7 @@
 	</tr>		
 	<tr id="row4">	
 		<th colspan="2" align="left">
-			<div id="labelDiv" style="padding-top: 2px;color:#163447;"><font color="red"> * </font>Enter Search String</div>
+			<div id="labelDiv" style="padding-top: 2px;color:#163447;"><font color="red"> * </font>Enter Search Name</div>
 		</th>
 	</tr>
 	<tr id="row5">	
@@ -113,8 +115,7 @@
 			<div id="buttonDiv" style="text-align:right;"><input type="submit" name="searchButton" value="Search"/></div>				
 		</td>
 	</tr>
-	<tr>
-	<td colspan="2" style="padding-top:21px"><font color="red">*</font><span>Fields are Mandatory</span></td></tr>
+	
 	</table>
 	
 	
