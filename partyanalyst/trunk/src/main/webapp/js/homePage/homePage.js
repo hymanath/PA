@@ -165,11 +165,7 @@ function buildQuestions()
 		return;
 
 	var str = '';	
-	str += '<div>';
-		str += '<font color="#4B74C6"><b>Media Coverage On Party Analyst &nbsp;&nbsp;Launch</b></font><br>';
-		str += ' <object height="180" width="250"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
-		str += '</font>';
-	str += '</DIV><br>';
+	
 
 	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="150" width="210"  direction="up" >';
 	str += ' <table width="100%">';
@@ -184,7 +180,11 @@ function buildQuestions()
 
 	str += ' </table>';
 	str += ' </marquee>';
-
+	str += '<div>';
+	str += '<font color="#4B74C6"><b>PartyAnalyst Launch Event Coverage</b></font><br>';
+	str += ' <object height="180" width="250"><param value="http://www.youtube.com/v/201tk2RcCWQ?version=3" name="movie"><param value="true" name="allowFullScreen"><param value="always" name="allowscriptaccess"><embed height="200" width="220" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="http://www.youtube.com/v/201tk2RcCWQ?version=3"></object>';
+	str += '</font>';
+str += '</DIV><br>';
 	elmt.innerHTML = str;
 
 
