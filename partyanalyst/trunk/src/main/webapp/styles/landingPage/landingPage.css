@@ -972,8 +972,18 @@ input.input_text
 
 .doYouKnowAnc
 {
+	color: #374047;
+    font-family: verdana;
+    font-size: 10px;
+    font-weight: bold;
+    height: 310px;
+    line-height: 16px;
+    padding: 5px;
+    text-align: justify;
+    word-spacing: 2px;
 	text-decoration:none;
-	color:#374047;
+	
+	
 }
 
 /*====================
