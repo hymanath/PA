@@ -718,7 +718,7 @@
 					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
 							<td width="1px"><img width="24" height="30" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="problem_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;">Problem Statistics</div></td>
+							<td><div id="problem_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;height:14px;">Problem Statistics</div></td>
 							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
@@ -807,7 +807,7 @@
 												<span class="regionsHead_center_label" style="top:10px;">Influence People Detail Info</span>
 											</div>
 										</td>
-										<td width="5px"><img width="8" height="30" src="images/icons/districtPage/header_right.gif"></td>
+										<td width="5px"><img width="8" height="36" src="images/icons/districtPage/header_right.gif"></td>
 									</tr>
 									</table>
 									</div>
@@ -921,7 +921,7 @@
 					<table cellspacing="0" cellpadding="0"  width="100%">
 						<tr>
 							<td width="1px"><img width="24" height="29" src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;">Voters Details</div></td>
+							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;height:13px;">Voters Details</div></td>
 							<td><img width="8" height="30" src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 						</tr>
 					</table>	
