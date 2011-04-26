@@ -72,6 +72,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String partySelectName;
 	private String constituencySelectName;
     private String districtSelectName;
+    private String candidateId;
     
     	
 	public String getDistrictSelectName() {
@@ -403,6 +404,14 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		this.problemHistoryId = problemHistoryId;
 	}
 	
+	public String getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(String candidateId) {
+		this.candidateId = candidateId;
+	}
+
 	public String execute(){
 
 		session = request.getSession();
