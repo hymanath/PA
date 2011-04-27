@@ -371,7 +371,7 @@ function populateLocations(val,source)
 		</table>
 </div>		
 <c:if  test="${resultStatus == '0'}">
-	<div id="successMsg">Political Change Registered Successfully!</div>
+	<div id="successMsg" style="color:green;">Political Change Registered Successfully!</div>
 </c:if>	
 <c:if  test="${resultStatus == '1'}">
 	<div id="successMsg" style="color:red;">Error Raised while saving data please check log for details</div>
@@ -401,23 +401,23 @@ function populateLocations(val,source)
 						<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div>
 					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('identifiedFromText_Div','identifiedFromText','1/2011')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
 					</td>
 				</tr>	
 				<tr>		
 					<td style="width:140px;"><%=reportedDate%></td>
 					<td>
 						<s:textfield READONLY="READONLY" name ="reportedDate" id="reportedFromText" style="margin-top:0px;" size="25"/>
-						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div>
+						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal "></div></div>
 					</td>					
 					<td valign="top">
-						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
+						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
 					</td>
 				</tr>
 			</table>
 			<table border="0">	
 				<tr>
-					<td style="width:140px;">Impacted Party</td>
+					<td style="width:140px;">Impacted Party<font class="requiredFont"> * </font></td>
 					<td><s:select id="selectedPartyBox" name="party" cssClass="selectBoxWidth" list="#session.mainPartiesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Party"/></td>					
 				</tr>					
 				<tr>
@@ -438,27 +438,27 @@ function populateLocations(val,source)
 		 <div id="locationPopulationDiv"  align="left">
 		 <table>
 				<tr id="row1" style="display:none;">
-					<td style="width:140px;"><%=STATE%></td>
+					<td style="width:140px;"><%=STATE%><font class="requiredFont"> * </font></td>
 					<td><s:select id="stateId" name="state" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select State" cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getDistricts\')" /></td>
 				</tr>
 				<tr id="row2" style="display:none;">
-					<td style="width:140px;"><%=DISTRICT%></td>
+					<td style="width:140px;"><%=DISTRICT%><font class="requiredFont"> * </font></td>
 					<td><s:select id="districtField" name="district" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select District"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getConstituencies\')" /></td>
 				</tr>
 				<tr id="row3" style="display:none;">
-					<td style="width:140px;"><%=CONSTITUENCY%></td>
+					<td style="width:140px;"><%=CONSTITUENCY%><font class="requiredFont"> * </font></td>
 					<td><s:select id="constituencyField" name="constituency" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getMandals\')" /></td>
 				</tr>				
 				<tr id="row4" style="display:none;">
-					<td style="width:140px;"><%=MANDAL%></td>
+					<td style="width:140px;"><%=MANDAL%><font class="requiredFont"> * </font></td>
 					<td><s:select id="mandalField" name="mandal" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Mandal"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getTowhships\')" /></td>
 				</tr>
 				<tr id="row5" style="display:none;">
-					<td style="width:140px;"><%=VILLAGE%></td>
+					<td style="width:140px;"><%=VILLAGE%><font class="requiredFont"> * </font></td>
 					<td><s:select id="villageField" name="village" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Village"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getVillages\')" /></td>
 				</tr>
 				<tr id="row6" style="display:none;">
-					<td style="width:140px;"><%=HAMLET%></td>
+					<td style="width:140px;"><%=HAMLET%><font class="requiredFont"> * </font></td>
 					<td><s:select id="hamletField" name="hamlet" list="{}" listKey="id" listValue="name" headerKey="0" headerValue="Select Hamlet"  cssClass="selectBoxWidth" onchange="getSelectOptionVOListForPoliticalChanges(this.options[this.selectedIndex].value,\'getHamletIdAndRange\')"/></td>
 				</tr>
 		</table>
