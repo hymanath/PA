@@ -52,6 +52,15 @@ public class RegistrationVO extends BaseDTO{
 	private Set<SelectOptionVO> assemblies = new HashSet<SelectOptionVO>(0);
 	private Long parentUserId;
 	private String userProfilePic;
+	private String isAdmin;
+
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 
 	public String getUserProfilePic() {
 		return userProfilePic;

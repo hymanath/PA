@@ -218,6 +218,11 @@ public class LoginService implements ILoginService{
 			
 			getUserAccessInfo(userId, countries, states, districts, assemblies, parliaments);
 			
+			if(entitlements.contains(IConstants.ADMIN_PAGE))
+				regVO.setIsAdmin(IConstants.TRUE);	
+			else
+				regVO.setIsAdmin(IConstants.FALSE);	
+			
 			regVO.setEntitlements(entitlements);
 			regVO.setCountries(countries);
 			regVO.setStates(states);
