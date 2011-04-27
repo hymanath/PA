@@ -10,7 +10,7 @@ var selectedState = '';
 var selectedStateId = '';
 var localBodyString = '';
 
-var questionsObj = [
+var questionsObj; /*= [
 	{
 		question:"Who got the highest votes in 2009 AP Assembly elections?",
 		answer:[
@@ -120,7 +120,7 @@ var questionsObj = [
 				}
 			   ]
 	}
-];
+];*/
 
 function initializeHomePage()
 {
@@ -151,14 +151,30 @@ function initializeHomePage()
 	//buildPolls();
 	hideUnhideSelectBox('a_radio', 'constituency');
 	getLocalBodiesForState(stateSelectlocalElVal);
-	buildQuestions();
+	getHomePageQuestions();
 	//buildleadersNews();
 	//buildTopStoriesNews();
 	//buildPartiesNews();
 }
 
-function buildQuestions()
-{
+
+function getHomePageQuestions(){
+
+	var jObj=
+         {
+			task : "getQuestions"
+		 };
+	 var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+     var url = "homePageQuestionsAjaxAction.action?"+rparam;
+	 callHomePageAjax(jObj,url);
+
+}
+function buildQuestions(questionsObj)
+{	
+	
+	if(questionsObj == null){
+	}
+	else{
 	var elmt = document.getElementById("homePageContentWidget_body_questions");
 
 	if(!elmt)
@@ -167,7 +183,7 @@ function buildQuestions()
 	var str = '';	
 	
 
-	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="180" width="210"  direction="up" >';
+	str += ' <marquee class="news" onmouseout="this.start()" onmouseover="this.stop()" scrolldelay="200" height="150" width="210"  direction="up" >';
 	str += ' <table width="100%">';
 	
 	for(var i=0;i<questionsObj.length;i++)
@@ -186,6 +202,8 @@ function buildQuestions()
 	str += '</font>';
 str += '</DIV><br>';
 	elmt.innerHTML = str;
+
+	this.questionsObj = questionsObj;
 
 
 	/*str += '	<div>';
@@ -209,6 +227,8 @@ str += '</DIV><br>';
 	str += '	</td>';
 	str += ' </tr>';
 	str += ' </table>';*/
+	}
+	
 }
 function showFeedBackFormPanel()
 {		
@@ -427,6 +447,11 @@ function callHomePageAjax(jsObj,url)
 								
 								showQuickRequestStatus(myResults);
 							}
+							if(jsObj.task == 'getQuestions'){
+								
+								buildQuestions(myResults);
+							}
+
 						}
 						catch(e)
 						{   
@@ -1484,7 +1509,9 @@ function validateQuickRequest(){
 //To create news box
 
 function newsBox(index)
-{		
+{	
+	
+	
 $("#quickRequest_window").dialog({
 		resizable:false,
 		width: 600,
@@ -1501,11 +1528,11 @@ $("#quickRequest_window").dialog({
 	str += '<div class="doYouKnow_question">'+questionsObj[index].question+'</div>';
 	str += '<div class="doYouKnow_answer">';
 	str += '<table>';	
-	for(var i=0;i<questionsObj[index].answer.length;i++)
+	for(var i=0;i<questionsObj[index].answerOptionsVOs.length;i++)
 	{		
 		str += '<tr>';
-		str += '<th>'+questionsObj[index].answer[i].label+'</th>';	
-		str += '<td>'+questionsObj[index].answer[i].data+'</td>';
+		str += '<th>'+questionsObj[index].answerOptionsVOs[i].answerKey+'</th>';	
+		str += '<td>'+questionsObj[index].answerOptionsVOs[i].answerValue+'</td>';
 		str += '</tr>';	
 		
 	}	
