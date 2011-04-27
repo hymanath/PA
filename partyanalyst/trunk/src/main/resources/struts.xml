@@ -1523,7 +1523,18 @@
 			<result name="success">/jsp/opinionPollPost.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=opinionPollPostAction</result>
-         </action>		
+         </action>	
+         
+         <action name="homePageQuestionsAction" class="homePageQuestionsAction">
+			<result name="success">/jsp/addHomePageQuestions.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=homePageQuestionsAction</result>
+         </action>	
+         
+         <action name="homePageQuestionsPostAction" class="homePageQuestionsPostAction">
+			<result name="success">/jsp/addHomePageQuestions.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>	
          
 		 <!-- Problem Posting Control From Different Pages -->
          <action name="problemPostControlAction" class="problemPostControlAction">
@@ -2334,6 +2345,6 @@
 				<param name="root">constituencyAssetsVO</param>				
 			</result>		
 		</action>
-					 		       	
+				 		       	
 	</package>
 </struts>      
