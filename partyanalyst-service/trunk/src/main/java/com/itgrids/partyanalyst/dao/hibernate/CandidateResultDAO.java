@@ -134,7 +134,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List<CandidateResult> findCandidateResults(Long candidateId){
-		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.candidate.candidateId = ?");
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.candidate.candidateId = ? order by model.nomination.constituencyElection.election.electionYear desc");
 		  queryObject.setParameter(0, candidateId);
 		return queryObject.list();
 	}
