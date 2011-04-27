@@ -817,5 +817,11 @@
 		 <property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		 <property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
+	<bean name="homePageQuestionsService" class="com.itgrids.partyanalyst.service.impl.HomePageQuestionsService">
+	<property name="registrationDAO" ref="registrationDAO" />
+	<property name="homePageQuestionDAO" ref="homePageQuestionDAO"/>
+	<property name="homePageQuestionAnswersDAO" ref="homePageQuestionAnswersDAO"></property>
+	</bean>
 </beans>		
 		
