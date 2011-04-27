@@ -278,7 +278,7 @@ function buildDistrictConnectPeopleWindow()
 		errorStr += '<div class="errorStr"> No people have been connected.</div>';
 		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
 		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';
+		errorStr += '<div class="errorStr">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';
 		errorStr += '<div class="errorStr">Already Have an account? <a href="connectPeopleAction.action?redirectLoc=DISTRICT&districtId='+districtId+'&districtName='+districtName+'">Login</a></div>';
 		
 		bodyElmt.innerHTML = errorStr;
@@ -290,7 +290,7 @@ function buildDistrictConnectPeopleWindow()
 		errorStr += '<div class="errorStr"> No people have been connected.</div>';
 		errorStr += '<div class="errorStr">Register to connect to your area.</div>';
 		errorStr += '<div class="errorStr">Connect functionality provides the user to connect to his/her area and share information, group certain people, sending messages etc..,</div>';
-		errorStr += '<div class="errorStr">To connect to your district people <a href="anonymousUserAction.action">Register</a></div>';		
+		errorStr += '<div class="errorStr">To connect to your district people <a href="freeUserRegistration.action">Register</a></div>';		
 		bodyElmt.innerHTML = errorStr;
 		return;
 	}
