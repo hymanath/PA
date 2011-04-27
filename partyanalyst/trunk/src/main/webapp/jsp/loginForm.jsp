@@ -421,7 +421,7 @@ if(request.getParameter("problemHistoryId")!=null){
 							</tr>
 						</table>-->
 						<div>
-							<s:form name="regForm" action="anonymousUserAction" method="POST" theme="simple" >
+							<s:form name="regForm" action="freeUserRegistration" method="POST" theme="simple" >
 								<input type="hidden" name="redirectLoc" value="<%=redirectLoc %>" />
 								<input type="hidden" name="task" value="<%=task %>" />
 								<input type="hidden" name="name" value="<%=name %>" />
@@ -462,7 +462,7 @@ if(request.getParameter("problemHistoryId")!=null){
 										</td>
 									</tr>	
 								</table>
-								<!--<h3><a href="anonymousUserAction.action">Register</a></h3>-->
+								<!--<h3><a href="freeUserRegistration.action">Register</a></h3>-->
 							</s:form>
 						</div>
 					</div>
