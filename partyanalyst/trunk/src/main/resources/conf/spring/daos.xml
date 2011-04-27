@@ -577,4 +577,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="homePageQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="homePageQuestionAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionAnswersDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
