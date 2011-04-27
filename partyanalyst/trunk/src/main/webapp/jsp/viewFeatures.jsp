@@ -511,7 +511,7 @@
 							<td width="20%" valign="top">
 								<div class="homePage_new_footer_links_head">Connect</div>
 								<ul class="homePage_new_footer_links">
-									<li><a href="anonymousUserAction.action">Register</a></li>
+									<li><a href="freeUserRegistration.action">Register</a></li>
 									<li><a href="loginInputAction.action">Login</a></li>
 									<li><a href="javascript:{}">Ask for DEMO/TEST Login</a></li>
 									<li><a href="javascript:{}" onClick="showFeedBackFormPanel()">Feedback</a></li>
