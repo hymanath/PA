@@ -639,6 +639,13 @@
 	
 	<bean id="footerLinksAction" class="com.itgrids.partyanalyst.web.action.FooterLinksAction" singleton="false">	
 	</bean>
+	
+	<bean id="homePageQuestionsAction" class="com.itgrids.partyanalyst.web.action.HomePageQuestionsAction" singleton="false">	
+	</bean>
+	
+	<bean id="homePageQuestionsPostAction" class="com.itgrids.partyanalyst.web.action.HomePageQuestionsPostAction" singleton="false">	
+	<property name="homePageQuestionsService" ref="homePageQuestionsService" />
+	</bean>
 </beans>	
 	
 	
