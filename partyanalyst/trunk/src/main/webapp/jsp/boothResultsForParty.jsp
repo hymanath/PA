@@ -13,9 +13,9 @@
 	padding-top:5px;
 }
 #partyboothresultsheading{
-	background-image:url(images/icons/constituencyManagement/header_body_blue.png);
+	background-color:#0B3861;
 	height:30px;
-	width:255px;
+	width:224px;
 	 color: #ffffff;
     font-family: times New Roman;
     font-size: 24px;
@@ -34,7 +34,7 @@ th.thstyle{
  width:150px;
  }
  #btnStyle{
-	background: url("images/icons/homePage_new/btn_homePage.png") no-repeat scroll 0 0 transparent;
+	background-color:#0B3861;
 	border:none;
     color: #FFFFFF;
     font-size: 15px;
@@ -165,10 +165,10 @@ var Localization = { <%
 	<s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
 	<s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
 	<div  id= "partyboothresultsheading">
-	<table border="0" cellpadding="0" cellspacing="0">          
-		<tr><td><img src="images/icons/constituencyManagement/left_blue_main.png"/></td>
+	<table border="0" cellpadding="3" cellspacing="0">          
+		<tr>
 			<td><div>Party Booth Results</div></td>
-	       <td><img src="images/icons/constituencyManagement/right_blue_main.png"/></td>
+	       
 	   </tr>
 		</table>
 	</div>
@@ -181,7 +181,7 @@ var Localization = { <%
 	</table>
 	 <s:form name="BoothPerformanceReport">
 	 <div id="tableDiv">
-	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 3px ridge #3385AD;background-color: #F2F0EE;">
+	   <table cellpadding="10px" cellspacing="0px" width="100px"  style="border: 2px solid #0B3861;background-color: #F2F0EE;">
 		 <tr id="ElectionTyperow">
 			<th class="thstyle">Election Type</th>
 		      <td> <s:select cssClass="selectstyle" label="Election Type"  name="electionType" list="electionTypes" listKey="id" listValue="name" headerKey="0" headerValue="Select" id="electionType1" onchange="removeErrorMessage()" theme="simple"/>
@@ -217,7 +217,7 @@ var Localization = { <%
 		</div>
 		<table>
 			<tr><th></th>
-				<td style="padding: 20px;">
+				<td style="padding-top: 18px; padding-left: 36px;">
 					<input id="btnStyle" type="button" id="subbutton" value="View Report" onclick="validateAndForwardToAction()" />
 				</td>
 			</tr>
