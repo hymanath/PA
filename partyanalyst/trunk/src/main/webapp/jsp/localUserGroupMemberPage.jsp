@@ -272,7 +272,7 @@
 		<div id="localGroupMember_body">
 			<center><table class="localGroupMemberTable">			
 				<tr>
-					<td colspan="3"><font style="font-size:10px;text-decoration:underline;"> Fields marked with * are complusory</font></td>
+					<td colspan="3"><font style="font-size:10px;text-decoration:underline;" color="red"> Fields marked with * are complusory</font></td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -326,7 +326,9 @@
 
 				<tr>
 					<th> <font color="red"> * </font> Select Category</th>
-					<td colspan="2"> <s:select id="groupCategory" name="groupCategory" onchange="getGroupNamesByCategory(this)" cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name"></s:select></td>
+					<td colspan="2"> <s:select id="groupCategory" name="groupCategory" onchange="getGroupNamesByCategory(this)" cssStyle="width:150px;" list="#session.groupCategories" listKey="id" listValue="name">
+					</s:select>
+					</td>
 				</tr>
 
 
@@ -345,7 +347,7 @@
 					<td colspan="3" style="padding:0px;"><div id="designationDiv" style="display:none;padding:10px;"></div></td>
 				</tr>	
 				<tr>
-					<td colspan="3"><s:submit cssStyle="width:130px;" value="Save Group Member" name="Save"></s:submit></td>
+					<td colspan="3"><s:submit cssStyle="width:140px;" value="Save Group Member" name="Save"></s:submit></td>
 				</tr>
 			</table>
 			</center>
