@@ -93,7 +93,7 @@ function buildConnectUsersContent(connectedPeopleData,divId,locationType,locatio
 	if(userLoginStatus == "false")
 	{
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="connectAnc">Login</a> </span>';
-		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="anonymousUserAction.action" class="connectAnc">Register</a> </span>';
+		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="freeUserRegistration.action" class="connectAnc">Register</a> </span>';
 		bodyStr+='<span class="connectAncSpan" style="padding-right:10px;font-weight:bold;"> <a href="connectPeopleAction.action?redirectLoc=CONNECT_REDIRECT&'+locationIdLabel+'='+locationId+'&'+locationNameLabel+'='+locationName+'" class="connectAnc">View All</a> </span>';
 	}
 	else
