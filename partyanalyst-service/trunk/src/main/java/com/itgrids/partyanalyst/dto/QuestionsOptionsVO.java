@@ -6,6 +6,8 @@ public class QuestionsOptionsVO {
 	private Long questionId;
 	private String question;
 	private List<OptionVO> options;
+	private String answerKey;
+	private String answerValue;
 	
 	private String imagePath;
 	private String hasAlreadyPolled;
@@ -97,6 +99,26 @@ public class QuestionsOptionsVO {
 	public void setDifferenceBetweenCurrentDateAndPolledDate(
 			Long differenceBetweenCurrentDateAndPolledDate) {
 		this.differenceBetweenCurrentDateAndPolledDate = differenceBetweenCurrentDateAndPolledDate;
+	}
+
+
+	public String getAnswerKey() {
+		return answerKey;
+	}
+
+
+	public void setAnswerKey(String answerKey) {
+		this.answerKey = answerKey;
+	}
+
+
+	public String getAnswerValue() {
+		return answerValue;
+	}
+
+
+	public void setAnswerValue(String answerValue) {
+		this.answerValue = answerValue;
 	}
 
 }
