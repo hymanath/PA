@@ -56,6 +56,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private Long constituencyId = null;
     private Long localBodyElectionTypeId = null;
     private Long loginUserId;
+    private List<String> accept;
     private RegistrationVO regVO = new RegistrationVO();
 	
 	private IAnanymousUserService ananymousUserService;
@@ -229,7 +230,6 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		return regVO.getMobile();
 	}
 	
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Address is required",shortCircuit=true)
 	public void setAddress(String address) {
 		this.regVO.setAddress(address);
 	}
@@ -352,6 +352,14 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 	public void setProfileOpts(List<Long> profileOpts) {
 		regVO.setProfileOpts(profileOpts);
 	}
+	
+	public List<String> getAccept() {
+		return accept;
+	}
+	public void setAccept(List<String> accept) {
+		this.accept = accept;
+	}
+	
 	public String execute(){
 		
 		
@@ -501,6 +509,12 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		if(result != 121L){
 			addFieldError("userName","UserName does not exist.");
 		}
+		
+		if(accept.get(0).equalsIgnoreCase("false"))
+		{
+			addFieldError("userName","You must accept Terms of use and Policy of website to Register.");
+		}
+		
 	}
 	
 	 public String getRedirectPageDetails(){			

@@ -1661,7 +1661,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
   	  			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]", constiInfoVO.getLocationName());	
   	  			pariesInfo.get(i).setVotesPercent(new BigDecimal(pariesInfo.get(i).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
   			}catch (Exception e) {
-  				e.printStackTrace();
+  				//e.printStackTrace();
 			}
   		}        		
       }
