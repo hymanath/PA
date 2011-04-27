@@ -199,11 +199,21 @@
 				<value>com.itgrids.partyanalyst.model.FeedBack</value>
 				<value>com.itgrids.partyanalyst.model.FeedBackTask</value>
 				<value>com.itgrids.partyanalyst.model.FeedBackComment</value>
+				<value>com.itgrids.partyanalyst.model.HomePageQuestion</value>
+				<value>com.itgrids.partyanalyst.model.HomePageQuestionAnswers</value>
 		 </list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="homePageQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="homePageQuestionAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.HomePageQuestionAnswersDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="cadreRoleRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRoleRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
