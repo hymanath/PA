@@ -287,13 +287,10 @@ public class AnanymousUserService implements IAnanymousUserService {
 					ananymousUser.setDateofbirth(date);
 					ananymousUser.setEmail(userDetails.getEmail());
 					ananymousUser.setMobile(userDetails.getMobile());
-					ananymousUser.setPhone(userDetails.getPhone());
 					ananymousUser.setAddress(userDetails.getAddress());
 					ananymousUser.setState(stateDAO.get(new Long(userDetails.getState())));
 					ananymousUser.setDistrict(districtDAO.get(new Long(userDetails.getDistrict())));
 					ananymousUser.setConstituency(constituencyDAO.get(new Long(userDetails.getConstituency())));
-					
-					ananymousUser.setPincode(userDetails.getPincode());
 					ananymousUser.setUpdatedDate(getCurrentDateAndTime());		
 					
 					
