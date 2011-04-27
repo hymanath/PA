@@ -1540,7 +1540,7 @@
 			 <result name="localBodyElectionPageRedirect" type="chain">localBodyElectionAction</result>
 		 </action>
          
-         <action name="anonymousUserAction" class="anonymousUserAction">
+         <action name="freeUserRegistration" class="anonymousUserAction">
 			<result name="success">/jsp/anonymousUserRegistration.jsp</result>
 			<result name="input">/jsp/anonymousUserRegistration.jsp</result>
 		 </action>
@@ -2334,6 +2334,6 @@
 				<param name="root">constituencyAssetsVO</param>				
 			</result>		
 		</action>
-						 		       	
+					 		       	
 	</package>
 </struts>      
