@@ -133,6 +133,16 @@
                                 </td>
                                  
                            </tr>
+                                   
+                           
+                           <tr>
+								<td>
+                                    <fieldset class="f2">
+                                    <legend class="l2">Add A Question</legend>
+                                    <h4>AddNewQuestion<a href='<s:url action="homePageQuestionsAction"/>'><b>&nbsp;&nbsp;Add Question</b></a></h4>
+                                    </fieldset>
+                                </td>
+							</tr>
                         </table>
 				</fieldset>
 			</td>
@@ -187,14 +197,7 @@
 								</td>
 							</tr>
 							
-							<tr>
-								<td>
-                                    <fieldset class="f2">
-                                    <legend class="l2">Add A Question</legend>
-                                    <h4>AddNewQuestion<a href='<s:url action="homePageQuestionsAction"/>'><b>&nbsp;&nbsp;Add Question</b></a></h4>
-                                    </fieldset>
-                                </td>
-							</tr>
+							
 						</table>
 				</fieldset>
 			</td>
