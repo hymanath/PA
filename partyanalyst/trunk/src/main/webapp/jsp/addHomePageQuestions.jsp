@@ -242,9 +242,17 @@ function addAnotherAnswer(divName){
 				errorFlag=1;
 				
 			}			
+			fromDate= document.getElementById("identifiedFromText").value ;
+			toDate =  document.getElementById("reportedFromText").value;
 			
+
+			fromDateSplit = fromDate.split("/");
+			toDateSplit = toDate.split("/");
+
+			var date1= new Date(fromDateSplit[1]+"/"+fromDateSplit[0]+"/"+fromDateSplit[2]);
+			var date2= new Date(toDateSplit[1]+"/"+toDateSplit[0]+"/"+toDateSplit[2]);
 			
-    		 if(document.getElementById("identifiedFromText").value > document.getElementById("reportedFromText").value){
+    		 if(date1 > date2){
 
 				message+='<%=validEDate %>';
 				message+='<br/>';
