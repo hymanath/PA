@@ -1517,7 +1517,9 @@ $("#quickRequest_window").dialog({
 		width: 600,
 		minHeight:110,
 		show:'slide',
-		modal:true
+		modal:true,
+		position:[250,100]
+		
 	});	
 	$(".ui-dialog-titlebar").hide();
 
