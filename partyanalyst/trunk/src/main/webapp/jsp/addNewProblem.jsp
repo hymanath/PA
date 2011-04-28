@@ -451,7 +451,7 @@ function hideProblemSourceRow()
 					</tr>
 					<tr>
 						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
-						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="53"/>  </td>
+						<td style="padding-left:15px;"><s:textfield id="emailField" name="email" size="53"  maxlength = "50"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /><font class="requiredFont">*</font></td>
