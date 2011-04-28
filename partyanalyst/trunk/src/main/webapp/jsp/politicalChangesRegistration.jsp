@@ -348,10 +348,20 @@ function populateLocations(val,source)
 		window.opener.document.location.reload(true);
 	}
 
+function addDate(){
+date = new Date();
+var month = date.getMonth()+1;
+var day = date.getDate();
+var year = date.getFullYear();
+
+if (document.getElementById('datetext').value == ''){
+document.getElementById('datetext').value = day + '/' + month + '/' + year;
+}
+}
 	</script>
 </head>
 
-<body  onunload="doUnload()" style="background-color:#f2f2f2;">	
+<body  onunload="doUnload()" onload="addDate();" style="background-color:#f2f2f2;">	
 <c:if test="${type == 'new'}">
 <DIV id="headingDiv" class="headingStyle" align="center">New Political Change</div>
 </c:if>
@@ -407,12 +417,12 @@ function populateLocations(val,source)
 				<tr>		
 					<td style="width:140px;"><%=reportedDate%></td>
 					<td>
-						<s:textfield READONLY="READONLY" name ="reportedDate" id="reportedFromText" style="margin-top:0px;" size="25"/>
+						<s:textfield READONLY="READONLY" name ="reportedDate" id="datetext" style="margin-top:0px;" size="25"/>
 						<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal "></div></div>
 					</td>					
-					<td valign="top">
+					<!--<td valign="top">
 						<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('reportedFromText_Div','reportedFromText')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>
-					</td>
+					</td>-->
 				</tr>
 			</table>
 			<table border="0">	
