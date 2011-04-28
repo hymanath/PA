@@ -519,10 +519,8 @@ var new2="Election Message";
 											<td width="100%">
 											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
 												<font class="scrollDataStyle">
-												<u>New Feature </u>: Now you can view your Leaders Assets,Liabilities,Education and other details in your Constituency Page.
-												</font>
+												<u>New Feature </u>: <font> Now you can view your Leaders Education details,Assets,Liabilities and other details in your Constituency page.</font>
 											   </marquee>
-											 
 											</td>
 										</tr>
 										
@@ -535,18 +533,20 @@ var new2="Election Message";
 												<div class="homePageContentWidget_body_news_main">
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
-														<tr>
+														<!--<tr>
 														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>
+														</td>-->
 														<td align="left">
-															<div class="homePageContentWidget_body_news_head_div">
+															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/freeuser.jpg"/>
+								
+															<!-- <div class="homePageContentWidget_body_news_head_div">
 																<span class="homePageContentWidget_body_news_head_span">Free Users</span>
-															</div>
+															</div> -->
 														</td>
-														<td width="3px">
+														<!--<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>
+														</td>-->
 														</tr>
 														</table>														
 													</div>
@@ -559,7 +559,9 @@ var new2="Election Message";
 															<li>View all your constituency problems</li>
 															<li>The features access to free users are restricted</li>
 															<li>Please register to access the advanced features and benefit from it</li>
-															<li>Registration is FREE</li>
+								<div>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
+							   </div>
 														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
@@ -572,17 +574,18 @@ var new2="Election Message";
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
 														<tr>
-														<td width="3px">
+														<!--<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>
+														</td>-->
 														<td align="left">
-															<div class="homePageContentWidget_body_news_head_div">
+															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/registeruser.jpg"/>
+															<!--<div class="homePageContentWidget_body_news_head_div">
 																<span class="homePageContentWidget_body_news_head_span">Registered Users</span>
-															</div>
+															</div>-->
 														</td>
-														<td width="3px">
+														<!--<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>
+														</td>-->
 														</tr>
 														</table>														
 													</div>
@@ -594,9 +597,12 @@ var new2="Election Message";
 															<li>View replies to their comments</li>
 															<li>Connect, Interact and communicate with the locality people and leaders</li>
 															<li>View additional election analysis report</li>
-															<li>It's FREE, Register NOW!</li>
 														</ul>
+							   <div>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
+							   </div>
 													</div>
+							
 													<div class="homePageContentWidget_body_news_footer">
 														
 													</div>
@@ -607,29 +613,38 @@ var new2="Election Message";
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
 														<tr>
-														<td width="3px">
+														<!--<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>
+														</td>-->
 														<td align="left">
-															<div class="homePageContentWidget_body_news_head_div">
+															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/commercialuser.jpg"/>
+															<!--<div class="homePageContentWidget_body_news_head_div">
 																<span class="homePageContentWidget_body_news_head_span">Commercial Users</span>
-															</div>
+															</div>-->
 														</td>
-														<td width="3px">
+														<!--<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>
+														</td>-->
 														</tr>
 														</table>														
 													</div>
 													<div class="homePageContentWidget_body_news_body">
-														The commercial users basically are the Parties, Political Leaders, and Press & Media Houses with :
+														The commercial users basically are the Parties, Political Leaders, and Press & Media Houses with:
 														<ul class="homePageContentWidget_body_news_list">
 															<li>Election Analysis based on demographics, geographic</li>
 															<li>Different tools to enhance communication channels with Cadre and Influencing Groups/People</li>
 															<li>Problem Management tools to manage people problems effectively</li>
-															<li>Lot more functionalities and Excellent Customer Support</li>
-															<li>Call / Email us for a FREE DEMO and TEST LOGIN</li>
-														</ul>
+														</ul>	
+														<div style="text-align: right;">
+															<a href="viewFeaturesAction.action"><img height="21" width="94" src="images/icons/homePage_new/viewfeatures.jpg"></img></a>
+														</div>
+															<!--<li>Lot more functionalities and Excellent Customer Support</li>-->
+														For a FREE DEMO and TEST LOGIN -->
+															<div style="text-align: right;">
+															<a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()"><img height="21" width="94" src="images/icons/homePage_new/contactus.jpg"></img></a>
+														</div>
+														
+														
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
 														
