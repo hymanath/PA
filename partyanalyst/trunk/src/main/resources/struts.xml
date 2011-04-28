@@ -1524,6 +1524,15 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=opinionPollPostAction</result>
          </action>	
+
+
+		 <action name="homePageQuestionsAjaxAction" class="homePageQuestionsPostAction" method="ajaxCallHandler">
+
+		 <result type="json" name="success">
+				<param name="root">homePageQuestionVOs</param>				
+			</result>	
+
+		 </action>
          
          <action name="homePageQuestionsAction" class="homePageQuestionsAction">
 			<result name="success">/jsp/addHomePageQuestions.jsp</result>
@@ -2345,6 +2354,8 @@
 				<param name="root">constituencyAssetsVO</param>				
 			</result>		
 		</action>
+		
+		
 				 		       	
 	</package>
 </struts>      
