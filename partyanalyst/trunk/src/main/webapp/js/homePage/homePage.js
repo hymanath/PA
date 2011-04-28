@@ -1573,10 +1573,11 @@ function contactLinkInHomePage(){
 						//$myWindow = jQuery('#contactWindowDiv');
 
 						//instantiate the dialog
-						$("#contactWindowDiv").dialog({ height: 220,
+						$("#contactWindowDiv").dialog({ stack: false,
+							    height: 220,
 								width: 630,
 								modal: true,
-								position: 'center',
+								position: [250,200],
 								title:'Contact Us www.partyanalyst.com',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
