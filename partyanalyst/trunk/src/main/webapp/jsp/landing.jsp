@@ -139,7 +139,7 @@
 								<p>
 									It is to serve as a platform between the public and their leaders that we bought out our first-of-a-kind service.
 									We offer you a range of services to help you get a real understanding of your constituency and the issues it is facing.
-									Now you have all the information you have at your fingertips to help understand, to omprove party success and serve your people better.
+									Now you have all the information you have at your fingertips to help understand, to improve party success and serve your people better.
 								</p>
 							</div>
 							<div id="knowAnalyzeActDiv_footer" style="margin-top: 25px;">
@@ -255,7 +255,7 @@
 								<div id="popularResourcesDiv_list">
 									<ul id="popularResources_list">
 										<li>
-											<div style="margin-bottom:5px;">Konw how political analysis plays a huge role in performance</div>
+											<div style="margin-bottom:5px;">Know how political analysis plays a huge role in performance</div>
 											<div style="color:#73787E;font-weight:normal;">Telling you how statistics will give you the power to fine tune, implement, rollback and improve actions of organization.</div>
 										</li>
 										<li><div>Group motivation practices</div></li>
