@@ -185,7 +185,7 @@ text-align:left;
 #problemContentData_status_main
 {
 	margin:20px 0 10px;
-	padding-top:130px;
+	padding-top:200px;
 }
 
 .changeAnc
