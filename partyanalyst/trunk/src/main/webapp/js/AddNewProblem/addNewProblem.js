@@ -764,6 +764,6 @@ function refreshParentWindow()
 {
 	incrementHidden();
 	
-	window.close();
+	window.opener.document.location.reload(true);
 
 }
