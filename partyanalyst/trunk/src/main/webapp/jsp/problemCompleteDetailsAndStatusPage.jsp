@@ -388,6 +388,7 @@ function getProblemDepartments(selected,task)
 
 function callAjax(jsObj,url)
 {
+	
 	var callback = {			
 				   success : function( o ) {
 						try
@@ -444,6 +445,7 @@ function callAjax(jsObj,url)
 
 							}else if(jsObj.task == "changeProblemStatus")
 							{
+								
                                 if(myResults.resultState == null)
 								{
                                    var statusDivElmt = document.getElementById("statusErrorDiv");
@@ -458,9 +460,11 @@ function callAjax(jsObj,url)
 								else
 								{
                                   pHistoryId = myResults.resultState;
-								  
-								  getProblemPresentStatus(pHistoryId);
-								  getProblemActivities(pHistoryId);
+									
+								       window.location="problemDetailsAndStatusAction.action?pHistoryId="+myResults.resultState; 
+
+								 /* getProblemPresentStatus(pHistoryId);
+								  getProblemActivities(pHistoryId);*/
 								}
 							}
 						}
@@ -481,7 +485,7 @@ function callAjax(jsObj,url)
 
 function buildProblemRecentActivities(jsObj,results)
 {
-	var elmt = document.getElementById("problemContentData_activities_dataDiv");
+	
 
 	var bodyElmt = document.getElementById("problemContentData_activities_body");
 	if(results == null || results.length == 0)
@@ -491,6 +495,8 @@ function buildProblemRecentActivities(jsObj,results)
 	}
 
 	var str = '';
+	str += '<fieldset><legend>Activities</legend>';
+	str += '<div id="problemContentData_activities_dataDiv">';
 	for(var i=0; i<results.length; i++)
 	{
 		str += '<div class="activitiesContentDiv_main">';
@@ -567,7 +573,10 @@ function buildProblemRecentActivities(jsObj,results)
 		str += '	</div>';
 	}
 
-	elmt.innerHTML = str;
+
+	str += '</div></fieldset>';
+
+	bodyElmt.innerHTML = str;
 }
 
 function clearDepartmentDiv()
@@ -1202,11 +1211,11 @@ var villagesListForProb = [];
 		<div id="problemContentData_activities_head">			
 		</div>
 		<div id="problemContentData_activities_body">
-			<fieldset>
+			<!--<fieldset>
 				<legend>Activities</legend>
 				<div id="problemContentData_activities_dataDiv">
 				</div>
-			</fieldset>
+			</fieldset> -->
 		</div>
 	</div>
 	<!-- Problem Activities End -->
