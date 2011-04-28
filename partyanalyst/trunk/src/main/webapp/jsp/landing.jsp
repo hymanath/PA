@@ -56,6 +56,18 @@
 
 	<!-- YUI Skin Sam -->
 
+<!-- JQuery files (Start) -->
+<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/jQuery/floating-1.5.js"></script>
+<script type="text/javascript" src="js/homePage/jquery.sudoSlider.min.js"></script>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+<!--<link  rel="stylesheet" type="text/css" href="styles/homePage/jquerySlider.css"/>-->
+
+<!-- JQuery files (End) -->
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
@@ -69,6 +81,7 @@
 
 	<!-- YUI Dependency files (End) -->
 
+<script type="text/javascript" src="js/homePage/homePage.js"> </script>
 
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/landingPage/landingPage.css" rel="stylesheet" type="text/css" />
@@ -78,6 +91,10 @@
 </head>
 
 <body>
+	 <div id="supportWindowDiv"><div id="supportWindowDiv_window_inner"></div></div>
+	<div id="contactWindowDiv"><div id="contactWindowDiv_window_inner"></div></div>   
+ <div id="jQueryPopup"><div id="jQueryPopup_content"></div></div>
+	
 	<div id="loginPopupDivMain" class="yui-skin-sam"><div id="loginPopupDiv"></div></div>
 	<div id="mainContainer">
 			<div id="navMenu_main" class="pageContentDivs">
@@ -85,13 +102,13 @@
 					<ul id="topLinksNav">
 						<li><a href="homePage.action" class="navLinksAnc">Home</a></li>
 						<li><a href="viewFeaturesAction.action" class="navLinksAnc">Features</a></li>
-						<li><a href="javascript:{}" class="navLinksAnc">Pricing</a></li>						
+						<li><a href="javascript:{}" onclick="showDetailsPopup('Pricing')"class="navLinksAnc">Pricing</a></li>						
 						<li><a href="javascript:{}" class="navLinksAnc">Resources</a></li>
-						<li><a href="javascript:{}" class="navLinksAnc">Support</a></li>
-						<li><a href="javascript:{}" class="navLinksAnc">Who We Are</a></li>
+						<li><a id="supportLink" href="javascript:{}" onclick="supportLinkInHomePage()"class="navLinksAnc">Support</a></li>
+						<li><a href="footerLinksAction.action?linkFrom=aboutUs#whoWeAre" class="navLinksAnc">Who We Are</a></li>
 						<li><a href="http://partyanalyst.wordpress.com" target="_blank" class="navLinksAnc">Our Blog</a></li>
 						<li>|</li>
-						<li><a href="javascript:{}" onclick="buildLoginPopup()" class="navLinksAnc">
+						<li><a href="loginInputAction.action"  class="navLinksAnc">
 						Login </a></li>
 					</ul>
 				</div>
@@ -102,7 +119,7 @@
 			<div id="analyzeButtonBar_main" class="pageContentDivs">
 				<table width="100%" id="analyzeButtonTable">
 					<tr>
-						<td width="250px"><a href="javascript:{}" onclick="buildLoginPopup()"><img style="border:none;margin-top:2px" src="images/icons/homePage/analyze.png"/></a></td>
+						<td width="250px"><a href="loginInputAction.action"><img style="border:none;margin-top:2px" src="images/icons/homePage/analyze.png"/></a></td>
 						
 						<td width="250px"><a href="viewFeaturesAction.action"><img style="border:none;margin-top:2px" src="images/icons/homePage/features.png"/></a></td>
 						<td><div></div></td>
@@ -254,9 +271,12 @@
 			<div id="homePagefooter" class="pageContentDivs">
 				<table width="100%" id="copyrightLinksTable">
 					<tr>
-						<td align="left"> Â© Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
-						<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
-					</tr>
+				<td align="left"> &copy; Copyright 2011. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+				<td align="right" ><a href="footerLinksAction.action?linkFrom=aboutUs" style="text-decoration:none;font-weight:bold" ><font color="#ffffff">About Us </font></a>
+				| <a id="contactLink"  href="javascript:{}"onclick ="contactLinkInHomePage()" style="text-decoration:none;font-weight:bold""> <font color="#ffffff"> Contact Us</font> </a>
+				| <a href="footerLinksAction.action?linkFrom=termsOfUse" style="text-decoration:none;font-weight:bold""><font color="#ffffff">Terms Of Use</font></a>
+				| <a href="footerLinksAction.action?linkFrom=privacy" style="text-decoration:none;font-weight:bold""><font color="#ffffff">Privacy Policy</font></a></td>
+			</tr>
 				</table>
 			</div>
 	</div>			
