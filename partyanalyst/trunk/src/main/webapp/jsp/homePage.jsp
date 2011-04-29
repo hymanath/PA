@@ -560,7 +560,7 @@ var new2="Election Message";
 															<li>The features access to free users are restricted</li>
 															<li>Please register to access the advanced features and benefit from it</li>
 								<div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
+								<center><a href="freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
 							   </div>
 														</ul>
 													</div>
@@ -599,7 +599,7 @@ var new2="Election Message";
 															<li>View additional election analysis report</li>
 														</ul>
 							   <div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
+								<center><a href="freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
 							   </div>
 													</div>
 							
