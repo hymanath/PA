@@ -319,7 +319,7 @@ var new2="Election Message";
 						</li>
 						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 							</li> 
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
@@ -330,7 +330,7 @@ var new2="Election Message";
 						</c:if>
 						
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
 						</li>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
