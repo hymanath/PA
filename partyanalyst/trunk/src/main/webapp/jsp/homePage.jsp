@@ -519,7 +519,7 @@ var new2="Election Message";
 											<td width="100%">
 											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
 												<font class="scrollDataStyle">
-												<u>New Feature </u>: <font> Now you can view your Leaders Education details,Assets,Liabilities and other details in your Constituency page.</font>
+												<u>New Feature </u>: <font> Now you can view your Leaders Education details, Assets, Liabilities and more details in your Constituency page.</font>
 											   </marquee>
 											</td>
 										</tr>
