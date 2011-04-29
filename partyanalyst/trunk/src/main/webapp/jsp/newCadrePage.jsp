@@ -39,18 +39,25 @@
 		var hamletFieldEl = document.getElementById("hamletField_s");
 		var boothFieldEl = document.getElementById("boothField_s");
 
+		var selectedState = 0;
+		var selectedDistrict = 0;
+		var selectedConstituency = 0;
+		var selectedMandal = 0;
+		var selectedHamlet = 0;
+		var selectedBooth = 0;
+
 		if(stateFieldEl.options.length > 0)
-			var selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value;
+			selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value;
 		if(districtFieldEl.options.length > 0)
-			var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;
+			selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value;
 		if(constituencyFieldEl.options.length > 0)
-			 var selectedConstituency = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
+			selectedConstituency = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value;
 		if(mandalFieldEl.options.length > 0)
-			var selectedMandal = mandalFieldEl.options[mandalFieldEl.selectedIndex].value;
+			selectedMandal = mandalFieldEl.options[mandalFieldEl.selectedIndex].value;
 		if(hamletFieldEl.options.length > 0)
-			var selectedHamlet = hamletFieldEl.options[hamletFieldEl.selectedIndex].value;
+			selectedHamlet = hamletFieldEl.options[hamletFieldEl.selectedIndex].value;
 		if(boothFieldEl.options.length > 0)
-			var selectedBooth = boothFieldEl.options[boothFieldEl.selectedIndex].value;
+			selectedBooth = boothFieldEl.options[boothFieldEl.selectedIndex].value;
 		
 		
 		var scopeLevelElVal = scopeLevelEl.options[scopeLevelEl.selectedIndex].value;
@@ -405,9 +412,20 @@
 		var hiddenEl = document.getElementById("cadreLevelValue");
 		var stateFieldEl = document.getElementById("stateField_s");
 		var districtFieldEl = document.getElementById("districtField_s");
+
+
+		var selectedState=0;
+		var selectedDistrict=0;
+		var selectedConstituency=0;
+
+		if(stateFieldEl.options.length > 0)
+			selectedState = stateFieldEl.options[stateFieldEl.selectedIndex].value; 
 		if(districtFieldEl.options.length > 0)
-			var selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
+			selectedDistrict = districtFieldEl.options[districtFieldEl.selectedIndex].value; 
 		var constituencyFieldEl = document.getElementById("constituencyField_s");
+        if(constituencyFieldEl.options.length > 0)
+			selectedConstituency = constituencyFieldEl.options[constituencyFieldEl.selectedIndex].value; 
+
 		var mandalFieldEl = document.getElementById("mandalField_s");
 		var hamletFieldEl = document.getElementById("hamletField_s");
 		var mandalField_sVal;	
@@ -432,18 +450,24 @@
 				districtFieldEl.selectedIndex = '0';
 				constituencyFieldEl.selectedIndex = '0';
 				mandalFieldEl.selectedIndex = '0';
-				hamletFieldEl.selectedIndex = '0';					
+				hamletFieldEl.selectedIndex = '0';	
+				
+				getLocationHierarchies(selectedState,'districtsInState','cadreReg','districtField_s','cadreLevel', 'null');
+                
 			} else if(accessType == 'DISTRICT' || accessType == 'MP')
 			{
 				constituencyFieldEl.selectedIndex = '0';
 				mandalFieldEl.selectedIndex = '0';
 				hamletFieldEl.selectedIndex = '0';
-				getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel')
+				getSubRegionsInDistrict(selectedDistrict,'cadreReg','constituencyField_s','cadreLevel');
 			} else if(accessType == 'MLA')
 			{
 				mandalFieldEl.selectedIndex = '0';
 				hamletFieldEl.selectedIndex = '0';
+
+				getSubRegionsInConstituency(selectedConstituency,'cadreReg','mandalField_s','cadreLevel');
 			}
+			    
 			setCadreValue(accessValue,'onChange')						
 		} else if(source == "onLoad")
 			{
@@ -480,7 +504,8 @@
 			if(row1El.style.display == 'none')
 				row1El.style.display = '';			 
 			if(row2El.style.display == 'none')
-				row2El.style.display = '';					
+				row2El.style.display = '';	
+				
 		} else if(value == 4)
 		{
 			if(row1El.style.display == 'none')
@@ -488,7 +513,8 @@
 			if(row2El.style.display == 'none')
 				row2El.style.display = '';
 			if(row3El.style.display == 'none')
-				row3El.style.display = '';			
+				row3El.style.display = '';	
+			
 		} else if(value == 5)
 		{
 			if(row1El.style.display == 'none')
@@ -498,7 +524,8 @@
 			if(row3El.style.display == 'none')
 				row3El.style.display = '';
 			if(row4El.style.display == 'none')
-				row4El.style.display = '';				
+				row4El.style.display = '';	
+			
 		} else if(value == 6)
 		{
 			if(row1El.style.display == 'none')
