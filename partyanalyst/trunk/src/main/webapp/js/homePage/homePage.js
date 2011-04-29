@@ -1577,7 +1577,7 @@ function contactLinkInHomePage(){
 							    height: 220,
 								width: 630,
 								modal: true,
-								position: [250,200],
+								position: [100,200],
 								title:'Contact Us www.partyanalyst.com',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
