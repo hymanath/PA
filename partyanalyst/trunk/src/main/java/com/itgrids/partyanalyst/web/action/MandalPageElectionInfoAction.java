@@ -306,7 +306,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		   chartPath = chartProducerURL + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
         Set<String> paritesInChart = new LinkedHashSet<String>();
-		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);
+		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+"", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,400,700, ChartUtils.getLineChartColors(paritesInChart) ,true);
 				
 		navigationVO = staticDataService.findHirarchiForNavigation(new Long(mandalId), IConstants.TEHSIL_LEVEL);
 		
