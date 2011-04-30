@@ -8,18 +8,30 @@ function getConstituenciesList(form, url) {
 }
 
 function getConstituencies(form, url) {
-
+    
 	var callback = {
 
 		success : function(o) {
 			try {
 				var results = YAHOO.lang.JSON.parse(o.responseText);				
-				if(url=="/PartyAnalyst/partyBoothResult1AjaxAction.action")
+				/*if(url=="partyBoothResult1AjaxAction.action")
 				{
 					buildConstituencySelect(form, results);
 					document.getElementById("constituencyRow").style.display = "";
 				}
-				else if(url=="/PartyAnalyst/partyBoothResultPartyAjaxAction.action")
+				else if(url=="partyBoothResultPartyAjaxAction.action")
+				{
+					buildPartySelect(form, results);
+					document.getElementById("partyRow").style.display = "";
+				}*/
+
+				if(url.match("partyBoothResult1AjaxAction.action"))
+				{
+					stopImageC();
+					buildConstituencySelect(form, results);
+					document.getElementById("constituencyRow").style.display = "";
+				}
+				else if(url.match("partyBoothResultPartyAjaxAction.action"))
 				{
 					buildPartySelect(form, results);
 					document.getElementById("partyRow").style.display = "";
