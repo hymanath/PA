@@ -710,7 +710,7 @@ function getMoreResults(elecYear,elecType,constiId)
 		var rvStr = '';		
 		rvStr += '<a name="votersDiv"></a>';
 		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
-		rvStr += 'Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
+		rvStr += 'Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} in  '+yearVal+' '+typeVal+' Election ';
 		rvStr += '</div>';
 		
 
@@ -853,7 +853,7 @@ function getMoreResults(elecYear,elecType,constiId)
 				electionInfo += '<fieldset>';
 				electionInfo += '<legend>'+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+' '+allACPCElecInfo[i].year+'</legend>';
 				electionInfo += '<div id = "data_div_'+i+'_'+j+'" class="">';
-				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} Mandal For '+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+'</div>';
+				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} For '+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+'</div>';
 				electionInfo += '<div id = "data_body_div_'+i+'_'+j+'" class="commonVotersBodyDiv">';
 				electionInfo += '<table class="commonVotersTableClass"><tr>';				
 
