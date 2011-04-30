@@ -81,9 +81,22 @@ var Localization = { <%
 		setTimeout('stopImage2()',500);
 	}
 
+	function showImageC()
+	{
+		var img = document.getElementById("cAjaxImg");
+		img.style.display = 'block';
+		//setTimeout('stopImageC()',1000);
+	}
+
 	function stopImage2()
 	{
 		var img = document.getElementById("ajaxImg2");
+		img.style.display='none';
+	}
+
+	function stopImageC()
+	{
+		var img = document.getElementById("cAjaxImg");
 		img.style.display='none';
 	}
 
@@ -190,7 +203,11 @@ var Localization = { <%
            <tr id="ElectionYearrow">
 			 <th class="thstyle">Election Year</th>
 			  <td><s:select cssClass="selectstyle" label="Election Year"  name="electionYear"
-					list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),clearConstituencys(),removeErrorMessage()" theme="simple"/>
+					list="electionYears" headerKey="0" headerValue="Select" id="electionYear1"		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}'),showImageC(),clearConstituencys(),removeErrorMessage()" theme="simple"/>
+				</td>
+
+				<td style="border:none;">
+				<img id="cAjaxImg" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
 				</td>
 			</tr>
 			<tr id="constituencyRow">
