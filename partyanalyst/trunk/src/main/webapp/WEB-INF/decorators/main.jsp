@@ -117,7 +117,7 @@
 	        itemdata: [ 
 	                    { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 						{ text: "Assam", url: "statePageAction.action?stateId=3" },
-						{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+						/*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
 						{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 						{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
@@ -155,7 +155,7 @@
 						itemdata: [ 
 								{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 								{ text: "Assam", url: "statePageAction.action?stateId=3" },
-								{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
+								/*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
 								{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 								{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 								{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
