@@ -53,6 +53,7 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
+<script type="text/javascript" src="js/statePage/statePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 
 <!-- JQuery files (Start) -->
@@ -85,6 +86,8 @@ var Localization = { <%
 		String assembly = rb.getString("assembly");
 		String parliament = rb.getString("parliament");
 		String localBody = rb.getString("localBodies");
+		String electionTypeInHome = rb.getString("electionTypeInHome");
+		String electionYearInHome = rb.getString("electionYearInHome");
 		
 		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
 		String errorMsg = resb.getString("constTypeAlert");
@@ -179,7 +182,7 @@ var new2="Election Message";
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 				{ text: "Assam", url: "statePageAction.action?stateId=3" },
-	            /*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
+	            { text: "Karnataka", url: "statePageAction.action?stateId=12" },
 				{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 				{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 				{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
@@ -218,7 +221,7 @@ var new2="Election Message";
 						itemdata: [ 
 						{ text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 						{ text: "Assam", url: "statePageAction.action?stateId=3" },
-						/*{ text: "Karnataka", url: "statePageAction.action?stateId=12" },*/
+						{ text: "Karnataka", url: "statePageAction.action?stateId=12" },
 						{ text: "Kerala", url: "statePageAction.action?stateId=13" },
 						{ text: "Puducherry", url: "statePageAction.action?stateId=35" },
 						{ text: "Tamil Nadu", url: "statePageAction.action?stateId=24" },
@@ -319,7 +322,7 @@ var new2="Election Message";
 						</li>
 						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'PartyAnalyst'}">  
 							<li class="yuimenubaritem"> 
-								<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
+								<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 							</li> 
 							<li class="yuimenubaritem"> 
 								<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
@@ -330,7 +333,7 @@ var new2="Election Message";
 						</c:if>
 						
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">ELECTION ANALYSIS</a> 
 						</li>
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
@@ -365,8 +368,8 @@ var new2="Election Message";
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td width="70%" valign="top">
-					<div id="homePage_Image_Header_main" style="height:390px;overflow:hidden;">
-						<div id="homePage_Image_Header">
+					<div id="homePage_Image_Header_main" style="height:417px;overflow:hidden;">
+						<div id="homePage_Image_Header" height="430px">
 							<div style="padding:325px 30px 10px 0;text-align:right;">
 								<img style="cursor:pointer" onclick="openKnowMoreWindow()" width="140" height="30" src="images/icons/homePage_new/learn_more.jpeg">
 							</div>
@@ -457,6 +460,7 @@ var new2="Election Message";
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
 							</div>
 						</div>
+									
 						<h3><a href="#">View Your Locality</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
@@ -488,10 +492,36 @@ var new2="Election Message";
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
+<h3><a href="#">View Election Results</a></h3>
+						<div style="padding:0px;">
+							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
+								<table>
+									
+									<tr>
+										<td style="height:40px;color:#004078"><%=stateSelect%></td>
+									</tr>
+									<tr>
+										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>									
+									</tr>		
+									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
+									</tr>
+									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYears((this.options[this.selectedIndex].text))" ></select></td></tr>
+									<tr>
+									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
+									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
+								</table>
+							</div>
+							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
+								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
+							</div>
+						</div>
+
 					</div>
 				</td>
 			  </tr>
 			</table>
+
+
 			
 			<!-- =================
 			New Layout Start				
@@ -560,7 +590,7 @@ var new2="Election Message";
 															<li>The features access to free users are restricted</li>
 															<li>Please register to access the advanced features and benefit from it</li>
 								<div>
-								<center><a href="freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
 							   </div>
 														</ul>
 													</div>
@@ -599,7 +629,7 @@ var new2="Election Message";
 															<li>View additional election analysis report</li>
 														</ul>
 							   <div>
-								<center><a href="freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
+								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
 							   </div>
 													</div>
 							
@@ -969,8 +999,11 @@ var new2="Election Message";
 	</div>
 	
 <script type="text/javascript">
+
 	initializeHomePage();
-</script>
+	getElectionTypeValue(1);
+	//getElectionYears("Assembly");
+	</script>
 	
 </body>
 </html>
