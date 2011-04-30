@@ -452,6 +452,13 @@ function callHomePageAjax(jsObj,url)
 								buildQuestions(myResults);
 							}
 
+							if(jsObj.task == 'getElectionTypes'){
+								
+								buildElectionTypes(myResults);
+								getElectionYears("Assembly");
+							}
+							
+
 						}
 						catch(e)
 						{   
@@ -492,11 +499,11 @@ function buildHOmePageImageSlider()
 
 	var str = '';
 	str += '<ul>';
-	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg1.png"></li>';
-	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg2.png"></li>';
-	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg3.png"></li>';
-	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg4.png"></li>';
-	str += '<li><img width="660" height="390" src="images/icons/homePage_new/slideImg5.png"></li>';
+	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg1.png"></li>';
+	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg2.png"></li>';
+	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg3.png"></li>';
+	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg4.png"></li>';
+	str += '<li><img width="660" height="417px" src="images/icons/homePage_new/slideImg5.png"></li>';
 	str += '</ul>';
 
 	elmt.innerHTML = str;
@@ -1577,7 +1584,7 @@ function contactLinkInHomePage(){
 							    height: 220,
 								width: 630,
 								modal: true,
-								position: [100,200],
+								position: [250,200],
 								title:'Contact Us www.partyanalyst.com',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
@@ -1674,5 +1681,101 @@ str+='</table>';
 
 elmt.innerHTML = str;
 }
+
+
+function getElectionTypeValue(stateId) {
+
+var jObj = {
+
+				stateId : stateId,
+				task : 'getElectionTypes'
+			};
+
+var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
+var url = "statePageActionForElectionResults.action?"+rparam;
+callHomePageAjax(jObj,url);
+
+
+}
+
+var statePageObject;
+function buildElectionTypes(statePageObj)
+{	
+
+	var arrayElectionType = new Array();
+	for(var i=0;i<statePageObj.length;i++){
+		arrayElectionType[i] = statePageObj[i].electionType;
+	
+	}
+	electionTypeObj=getUniqueElements(arrayElectionType);
+	var electionTypeElmt = document.getElementById("electionLists");
+	electionTypeElmt.options.length=0;
+	for(var i=0;i<electionTypeObj.length;i++){
+		electionTypeElmt.options[i]=new Option( electionTypeObj[i],i);
+
+	}
+	statePageObject = statePageObj;
+}
+
+
+
+
+  function getUniqueElements(arrayObj) {
+    var a = [];
+    var l = arrayObj.length;
+    for(var i=0; i<l; i++) {
+      for(var j=i+1; j<l; j++) {
+        if (arrayObj[i] === arrayObj[j])
+          j = ++i;
+      }
+      a.push(arrayObj[i]);
+    }
+	
+    return a;
+  }
+
+  function getElectionYears(electionType){
+	
+	
+	var electionYearElmt = document.getElementById("electionYears");
+		electionYearElmt.options.length=0;
+		var j=0;
+		for(var i=0;i<statePageObject.length;i++)
+		{
+				if(statePageObject[i].electionType == electionType){
+				electionYearElmt.options[j]=new Option(statePageObject[i].year,i);
+				j++;
+				}
+		}
+
+}
+
+function viewElectionResults(){
+
+var electionTypeRes = document.getElementById("electionLists");
+var electionType_ER = electionTypeRes.options[electionTypeRes.selectedIndex].text;
+
+var stateIdRes = document.getElementById("stateLists");
+var stateId_ER = stateIdRes.options[stateIdRes.selectedIndex].value;
+var stateName_ER = stateIdRes.options[stateIdRes.selectedIndex].text;
+
+var electionYearRes = document.getElementById("electionYears");
+var electionYear_ER = parseInt(electionYearRes.options[electionYearRes.selectedIndex].text);
+
+for(var i=0; i<statePageObject.length; i++ ){
+	if(statePageObject[i].year == electionYear_ER && statePageObject[i].electionType == electionType_ER){
+		electionId_ER = statePageObject[i].electionId;
+		electionTypeId_ER = statePageObject[i].electionTypeId;
+		
+	}
+}
+
+
+document.location = "electionDetailsReportAction.action?electionId="+electionId_ER+"&stateID="+stateId_ER+"&stateName="+stateName_ER+"&electionType="+electionType_ER+"&electionTypeId="+electionTypeId_ER+"&year="+electionYear_ER;
+
+
+}
+
+
 
 
