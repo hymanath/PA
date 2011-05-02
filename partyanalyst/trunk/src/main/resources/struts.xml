@@ -1544,8 +1544,8 @@
 			<result name="success">/jsp/addHomePageQuestions.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>	
-         
-		 <!-- Problem Posting Control From Different Pages -->
+	
+	 <!-- Problem Posting Control From Different Pages -->
          <action name="problemPostControlAction" class="problemPostControlAction">
 			
 			<result name="success">/jsp/homePage.jsp</result>
@@ -2355,7 +2355,12 @@
 			</result>		
 		</action>
 		
-		
+		<action name="statePageActionForElectionResults" class="com.itgrids.partyanalyst.web.action.StatePageAction" method="ajaxCallHandler">
+		 	<result name="error">/jsp/statePageError.jsp</result>
+			<result type="json" name="success">
+				<param name="root">stateElections</param>				
+			</result>	
+		</action>
 				 		       	
 	</package>
 </struts>      
