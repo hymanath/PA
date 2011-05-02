@@ -1866,7 +1866,7 @@
 		
 		function openwin(mandalId,name, electionType,electionYear,electionId){					
 			//var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,resizable=1,toolbar=no,scrollbars=yes");
-			var brow1 = window.open("townshipElectionResultsAction?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,resizable=1,toolbar=no,scrollbars=yes");
+			var brow1 = window.open("townshipElectionResultsAction.action?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,resizable=1,toolbar=no,scrollbars=yes");
 			brow1.focus();
 		}
 
