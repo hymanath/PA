@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.jfree.util.Log;
+import org.json.JSONObject;
 
+import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
@@ -50,7 +53,8 @@ public class StatePageAction extends ActionSupport implements
 	private List<SelectOptionVO> districtData;
 	private int districtNumber;
 	private String stateMapName;
-	
+	private JSONObject jsObj;
+	private String task;
 	  
 	public String getStateMapName() {
 		return stateMapName;
@@ -134,8 +138,26 @@ public class StatePageAction extends ActionSupport implements
 		this.districtNumber = districtNumber;
 	}
 
+	public JSONObject getJsObj() {
+		return jsObj;
+	}
+
+	public void setJsObj(JSONObject jsObj) {
+		this.jsObj = jsObj;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
 	public String execute() throws Exception{    	
-    	
+    
+		
+		
     	statePage = statePageService.getStateDetails(Long.parseLong(stateId)); 
     	
     	String statename = statePage.getStateName();
@@ -156,6 +178,26 @@ public class StatePageAction extends ActionSupport implements
     	 return ERROR;
    	return SUCCESS;
     }
+	
+	public String ajaxCallHandler() {
+		
+		try {
+			jsObj = new JSONObject(getTask());
+			
+			if(jsObj.getString("task").equals("getElectionTypes")){
+			Long stateId = (Long.parseLong(jsObj.getString("stateId")));
+			stateElections = statePageService.getStateElections(stateId);
+			if(stateElections == null){
+				return ERROR;
+			}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+					
+		}
+		return SUCCESS;
+	}
 
 	
 }
