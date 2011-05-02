@@ -312,7 +312,8 @@
 	background:#335291 none repeat scroll 0 0;
 	color:#FFFFFF;
 	padding:5px;
-	width:184px;
+	/*width:184px;*/
+	width:278px;
 	margin-top:5px;
 	margin-bottom:5px;	
 }
