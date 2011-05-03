@@ -1328,5 +1328,154 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return sb.toString().substring(1);
 	}
 	
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO)
+	{
+		try
+		{
+			if(performanceVO != null)
+			{
+				Map<String,List<BoothResultVO>> resultMap = new LinkedHashMap<String,List<BoothResultVO>>();
+				
+				resultMap.put("Below-5", new ArrayList<BoothResultVO>(0));
+				resultMap.put("5-10", new ArrayList<BoothResultVO>(0));
+				resultMap.put("10-20", new ArrayList<BoothResultVO>(0));
+				resultMap.put("20-30", new ArrayList<BoothResultVO>(0));
+				resultMap.put("30-40", new ArrayList<BoothResultVO>(0));
+				resultMap.put("40-50", new ArrayList<BoothResultVO>(0));
+				resultMap.put("50-60", new ArrayList<BoothResultVO>(0));
+				resultMap.put("60-70", new ArrayList<BoothResultVO>(0));
+				resultMap.put("70-80", new ArrayList<BoothResultVO>(0));
+				resultMap.put("80-90", new ArrayList<BoothResultVO>(0));
+				resultMap.put("Above-90", new ArrayList<BoothResultVO>(0));
+				
+				for(BoothResultVO boothResultVO :performanceVO.getBoothResults())
+				{
+					Double percentage = Double.parseDouble(boothResultVO.getPollingPercentage());
+					
+					if(percentage >= 0 && percentage < 5)
+					{
+						List<BoothResultVO> boothList = resultMap.get("Below-5");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("Below-5", boothList);
+					}
+					else if(percentage >= 5 && percentage < 10)
+					{
+						List<BoothResultVO> boothList = resultMap.get("5-10");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("5-10", boothList);
+					}
+					else if(percentage >= 10 && percentage < 20)
+					{
+						List<BoothResultVO> boothList = resultMap.get("10-20");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("10-20", boothList);
+					}
+					else if(percentage >= 20 && percentage < 30)
+					{
+						List<BoothResultVO> boothList = resultMap.get("20-30");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("20-30", boothList);
+					}
+					else if(percentage >= 30 && percentage < 40)
+					{
+						List<BoothResultVO> boothList = resultMap.get("30-40");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("30-40", boothList);
+					}
+					else if(percentage >= 40 && percentage < 50)
+					{
+						List<BoothResultVO> boothList = resultMap.get("40-50");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("40-50", boothList);
+					}
+					else if(percentage >= 50 && percentage < 60)
+					{
+						List<BoothResultVO> boothList = resultMap.get("50-60");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("50-60", boothList);
+					}
+					else if(percentage >= 60 && percentage < 70)
+					{
+						List<BoothResultVO> boothList = resultMap.get("60-70");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("60-70", boothList);
+					}
+					else if(percentage >= 70 && percentage < 80)
+					{
+						List<BoothResultVO> boothList = resultMap.get("70-80");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("70-80", boothList);
+					}
+					else if(percentage >= 80 && percentage < 90)
+					{
+						List<BoothResultVO> boothList = resultMap.get("80-90");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("80-90", boothList);
+					}
+					else if(percentage >= 90)
+					{
+						List<BoothResultVO> boothList = resultMap.get("Above-90");
+						if(boothList == null)
+							boothList = new ArrayList<BoothResultVO>();
+						boothList.add(boothResultVO);
+						resultMap.put("Above-90", boothList);
+					}
+					
+				}
+				
+				List<BoothResultVO> perWiseboothResults = new ArrayList<BoothResultVO>(0);
+				BoothResultVO resultVO = null;
+				
+				for(Map.Entry<String,List<BoothResultVO>> entry : resultMap.entrySet())
+				{
+					resultVO = new BoothResultVO();
+					resultVO.setLocation(entry.getKey());
+					resultVO.setVotesEarned(entry.getValue().size());
+					
+					List<BoothResultVO> list = entry.getValue();
+					double total = 0.0d;
+					double earned = 0.0d;
+					for(BoothResultVO brVO : list)
+					{
+						total += brVO.getTotalVoters();
+						earned += brVO.getVotesEarned();
+					}
+					
+					if(list.size() > 0)
+					resultVO.setPercentage((new BigDecimal((earned*100)/total).setScale(2,BigDecimal.ROUND_HALF_UP)).toString());
+					else
+					resultVO.setPercentage("--");
+					
+					perWiseboothResults.add(resultVO);
+				}
+				performanceVO.setPerWiseboothResults(perWiseboothResults);
+			}
+		}
+		catch(Exception e){
+			log.error("Exception occured at "+e);
+		}
+		return performanceVO;
+	}
+	
 	
 }
