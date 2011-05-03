@@ -25,4 +25,6 @@ public interface IPartyBoothWiseResultsService {
 	public ConstituencyVO getBoothwiseResultsOfTwoElectionsForAConstituency(Long constituencyId);
 	
 	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag);
+	
+	public PartyBoothPerformanceVO getVotingPercentageWiseBoothResult(PartyBoothPerformanceVO performanceVO);
 }
