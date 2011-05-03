@@ -17,6 +17,7 @@ public class BoothResultVO extends ResultStatus{
 	private String oppParty;
 	private int oppPartyVotesEarned;
 	private String oppPartyPercentage;
+	private String pollingPercentage;
 	
 	public BoothResultVO(){
 		
@@ -24,7 +25,7 @@ public class BoothResultVO extends ResultStatus{
 	
 	public BoothResultVO(String partNo, String location,
 			String villagesCovered, int votesEarned, int totalVoters,
-			String percentage,String mandal, Boolean showLink) {
+			String percentage,String mandal, Boolean showLink,String pollingPercentage) {
 		this.partNo = partNo;
 		this.location = location;
 		this.villagesCovered = villagesCovered;
@@ -33,6 +34,7 @@ public class BoothResultVO extends ResultStatus{
 		this.percentage = percentage;
 		this.mandal = mandal;
 		this.showLink = showLink;
+		this.pollingPercentage = pollingPercentage;
 	}
 	
 	
@@ -127,6 +129,14 @@ public class BoothResultVO extends ResultStatus{
 
 	public void setShowLink(Boolean showLink) {
 		this.showLink = showLink;
+	}
+
+	public String getPollingPercentage() {
+		return pollingPercentage;
+	}
+
+	public void setPollingPercentage(String pollingPercentage) {
+		this.pollingPercentage = pollingPercentage;
 	}
 
 	
