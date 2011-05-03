@@ -737,7 +737,7 @@ public class LocalBodyElectionService implements ILocalBodyElectionService {
 			
 			for(Object[] values:(List<Object[]>)lebs){
 				if(election.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase(values[2].toString()))
-					lebIds.append(",").append(values[0]);
+					lebIds.append(",").append(values[4]);
 			}
 			
 			if(lebIds.length() > 0){
