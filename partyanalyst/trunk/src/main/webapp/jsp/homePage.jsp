@@ -53,7 +53,6 @@
 <script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
-<script type="text/javascript" src="js/statePage/statePage.js"> </script>
 <script type="text/javascript" src="js/cncSearch.js"> </script>
 
 <!-- JQuery files (Start) -->
@@ -86,8 +85,6 @@ var Localization = { <%
 		String assembly = rb.getString("assembly");
 		String parliament = rb.getString("parliament");
 		String localBody = rb.getString("localBodies");
-		String electionTypeInHome = rb.getString("electionTypeInHome");
-		String electionYearInHome = rb.getString("electionYearInHome");
 		
 		ResourceBundle resb = ResourceBundle.getBundle("global_ErrorMessages");
 		String errorMsg = resb.getString("constTypeAlert");
@@ -254,17 +251,24 @@ var new2="Election Message";
 			</div>
 		</div>
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG_betanew.jpg');height:125px;">
+		
             <table  width="100%" id="headerTable">
                 <tr>
-                    <td style="vertical-align:top;width:540px;">
+                    <td style="vertical-align:top;width:190px;">
                         <div id="pa_Logo" style="padding-left: 10px; padding-top: 10px;">
                         	
                         </div>
                     </td>
+					<td style="padding-left:10px;"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;background: url('images/icons/homePage_new/fshare.jpeg') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage_new/fshare.jpg"></a>
+					</td>
+					
+					<td style="padding-left:10px;padding-top:5px;">
+						<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/home.php#!/profile.php?id=181916608510458" send="false" layout="button_count" width="0" show_faces="false" font="" title=""></fb:like>
+					</td>
                     <td style="vertical-align:top;">
-                        <table width="100%" style="width:100%">                           
+                        <table width="100%" style="padding-left: 30px; width:100%">                           
                             <tr>
-                                <th id="searchBox" style="color:#FFFFFF">
+                                <th id="searchBox" style="color:#FFFFFF" >
                                 
                                     <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.UserType == 'FreeUser'}">
                                         <c:out value="Welcome, ${sessionScope.UserName} | "/>
@@ -284,13 +288,21 @@ var new2="Election Message";
 										<a class="loginStatusAnc" style="color:#FFFFFF" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a> -->
 									</c:if>		
                                 </th>
+								
                             </tr>
                         </table>
                     </td>
-                </tr>
-            </table>		
-        </div>	
+
+
+				</tr>
 		
+								
+
+</tr>
+           	</table>
+		        </div>	
+		<div>
+      
 		<!-- Note Data Div (Start)
 		<div id="noteDataDiv">
 			<table width="100%" cellpadding="0" cellspacing="0">
@@ -356,9 +368,19 @@ var new2="Election Message";
 								</c:if>	
 							</li> 
 						</c:if>
+
+
+					
+						
 					</ul> 
+
+
+
+						
 				</div> 
+
 			</div> 
+
 		</div>
 		
        <!-- <div id="homePage_header">
@@ -368,8 +390,8 @@ var new2="Election Message";
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td width="70%" valign="top">
-					<div id="homePage_Image_Header_main" style="height:417px;overflow:hidden;">
-						<div id="homePage_Image_Header" height="430px">
+					<div id="homePage_Image_Header_main" style="height:390px;overflow:hidden;">
+						<div id="homePage_Image_Header">
 							<div style="padding:325px 30px 10px 0;text-align:right;">
 								<img style="cursor:pointer" onclick="openKnowMoreWindow()" width="140" height="30" src="images/icons/homePage_new/learn_more.jpeg">
 							</div>
@@ -460,7 +482,6 @@ var new2="Election Message";
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToConstituencyPage()"></img>
 							</div>
 						</div>
-									
 						<h3><a href="#">View Your Locality</a></h3>
 						<div style="padding:0px;">
 							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
@@ -492,36 +513,10 @@ var new2="Election Message";
 								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="navigateToLocalBodyPage()"></img>
 							</div>
 						</div>
-<h3><a href="#">View Election Results</a></h3>
-						<div style="padding:0px;">
-							<div class="widgetsBody" style="background-color:#FFFFFF;color:#49443E;">
-								<table>
-									
-									<tr>
-										<td style="height:40px;color:#004078"><%=stateSelect%></td>
-									</tr>
-									<tr>
-										<td><s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateLists" list="statesList" listKey="id" listValue="name" onchange="getElectionTypeValue((this.options[this.selectedIndex].value))"/></td>									
-									</tr>		
-									<tr><td style="height:40px;color:#004078"><%=electionTypeInHome%></td>
-									</tr>
-									<tr><td><select id="electionLists" class="selectBoxWidth" onchange="getElectionYears((this.options[this.selectedIndex].text))" ></select></td></tr>
-									<tr>
-									<td style="height:40px;color:#004078"><%=electionYearInHome%></td></tr>
-									<tr><td><select id="electionYears" class="selectBoxWidth"></select></td></tr>
-								</table>
-							</div>
-							<div class="widgetsFooter" style="background-color:#FFFFFF;height:37px;">
-								<img width="70" height="25" src="images/icons/homePage_new/b3.jpg" onclick="viewElectionResults()"></img>
-							</div>
-						</div>
-
 					</div>
 				</td>
 			  </tr>
 			</table>
-
-
 			
 			<!-- =================
 			New Layout Start				
@@ -549,8 +544,10 @@ var new2="Election Message";
 											<td width="100%">
 											    <marquee scrollDelay="180"><font class="scrollDataStyle"><u>News</u> :<font><a href="javascript:{}" class="scrollDataStyle" onclick="openMediaOpenionsWindow()">Party Analyst Officially Launched - READ the AMAZING reviews from National & International Media.</a>
 												<font class="scrollDataStyle">
-												<u>New Feature </u>: <font> Now you can view your Leaders Education details, Assets, Liabilities and more details in your Constituency page.</font>
+												<u>New Feature </u>: Now you can view your Leaders Assets,Liabilities,Education and other details in your Constituency Page.
+												</font>
 											   </marquee>
+											 
 											</td>
 										</tr>
 										
@@ -563,20 +560,18 @@ var new2="Election Message";
 												<div class="homePageContentWidget_body_news_main">
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
-														<!--<tr>
+														<tr>
 														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>-->
-														<td align="left">
-															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/freeuser.jpg"/>
-								
-															<!-- <div class="homePageContentWidget_body_news_head_div">
-																<span class="homePageContentWidget_body_news_head_span">Free Users</span>
-															</div> -->
 														</td>
-														<!--<td width="3px">
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Free Users</span>
+															</div>
+														</td>
+														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>-->
+														</td>
 														</tr>
 														</table>														
 													</div>
@@ -589,9 +584,7 @@ var new2="Election Message";
 															<li>View all your constituency problems</li>
 															<li>The features access to free users are restricted</li>
 															<li>Please register to access the advanced features and benefit from it</li>
-								<div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none;" src="images/icons/homePage_new/banner_register_now2.png"></img> </center></a>
-							   </div>
+															<li>Registration is FREE</li>
 														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
@@ -604,18 +597,17 @@ var new2="Election Message";
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
 														<tr>
-														<!--<td width="3px">
+														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>-->
-														<td align="left">
-															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/registeruser.jpg"/>
-															<!--<div class="homePageContentWidget_body_news_head_div">
-																<span class="homePageContentWidget_body_news_head_span">Registered Users</span>
-															</div>-->
 														</td>
-														<!--<td width="3px">
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Registered Users</span>
+															</div>
+														</td>
+														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>-->
+														</td>
 														</tr>
 														</table>														
 													</div>
@@ -627,12 +619,9 @@ var new2="Election Message";
 															<li>View replies to their comments</li>
 															<li>Connect, Interact and communicate with the locality people and leaders</li>
 															<li>View additional election analysis report</li>
+															<li>It's FREE, Register NOW!</li>
 														</ul>
-							   <div>
-								<center><a href="/PartyAnalyst/freeUserRegistration.action"><img width="153" height="38" style="border: 0px none; margin-top:10px;" src="images/icons/homePage_new/banner_register_now2.png"></img> </a><center>
-							   </div>
 													</div>
-							
 													<div class="homePageContentWidget_body_news_footer">
 														
 													</div>
@@ -643,38 +632,29 @@ var new2="Election Message";
 													<div class="homePageContentWidget_body_news_head">
 														<table cellspacing="0" cellpadding="0" border="0" width="100%">
 														<tr>
-														<!--<td width="3px">
+														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/first.png">
-														</td>-->
-														<td align="left">
-															<img width="200" height="70" style="border:none;" src="images/icons/homePage_new/commercialuser.jpg"/>
-															<!--<div class="homePageContentWidget_body_news_head_div">
-																<span class="homePageContentWidget_body_news_head_span">Commercial Users</span>
-															</div>-->
 														</td>
-														<!--<td width="3px">
+														<td align="left">
+															<div class="homePageContentWidget_body_news_head_div">
+																<span class="homePageContentWidget_body_news_head_span">Commercial Users</span>
+															</div>
+														</td>
+														<td width="3px">
 															<img src="images/icons/electionResultsAnalysisReport/second.png">
-														</td>-->
+														</td>
 														</tr>
 														</table>														
 													</div>
 													<div class="homePageContentWidget_body_news_body">
-														The commercial users basically are the Parties, Political Leaders, and Press & Media Houses with:
+														The commercial users basically are the Parties, Political Leaders, and Press & Media Houses with :
 														<ul class="homePageContentWidget_body_news_list">
 															<li>Election Analysis based on demographics, geographic</li>
 															<li>Different tools to enhance communication channels with Cadre and Influencing Groups/People</li>
 															<li>Problem Management tools to manage people problems effectively</li>
-														</ul>	
-														<div style="text-align: right;">
-															<a href="viewFeaturesAction.action"><img height="21" width="94" src="images/icons/homePage_new/viewfeatures.jpg"></img></a>
-														</div>
-															<!--<li>Lot more functionalities and Excellent Customer Support</li>-->
-														For a FREE DEMO and TEST LOGIN -->
-															<div style="text-align: right;">
-															<a href="javascript:{}" id="contactLink" onclick="contactLinkInHomePage()"><img height="21" width="94" src="images/icons/homePage_new/contactus.jpg"></img></a>
-														</div>
-														
-														
+															<li>Lot more functionalities and Excellent Customer Support</li>
+															<li>Call / Email us for a FREE DEMO and TEST LOGIN</li>
+														</ul>
 													</div>
 													<div class="homePageContentWidget_body_news_footer">
 														
@@ -970,6 +950,8 @@ var new2="Election Message";
 								<li><a href="footerLinksAction.action?linkFrom=privacy#privacyPolicy">Privacy</a></li>
 								<li><a href="footerLinksAction.action?linkFrom=disclaimer#disclaimer">Disclaimer</a></li>
 							</ul>
+
+						
 						</td>
 						<td width="13%" valign="top">
 							<div class="homePage_new_footer_links_head">We are SOCIAL</div>
@@ -978,6 +960,8 @@ var new2="Election Message";
 								<li><a href="http://twitter.com/#!/party_analyst" target="_blank">Twitter</a></li>
 								<li><a href="http://www.linkedin.com/company/it-grids-ltd" target="_blank">LinkedIN</a></li>
 							</ul>
+
+
 						</td>
 
 						<td width="15%" valign="top">
@@ -985,7 +969,7 @@ var new2="Election Message";
 							<ul class="homePage_new_footer_links">
 								<li><a href="javascript:{}" onclick="openMediaOpenionsWindow()">Party Analyst Launch</a></li>
 							</ul>
-						</td>
+ 						</td>
 
 						<td width="25%" valign="top" align="right">
 							<div class="homePage_new_footer_links_head"> &copy; Copyright 2011. All rights reserved </div>
@@ -999,11 +983,8 @@ var new2="Election Message";
 	</div>
 	
 <script type="text/javascript">
-
 	initializeHomePage();
-	getElectionTypeValue(1);
-	//getElectionYears("Assembly");
-	</script>
+</script>
 	
 </body>
 </html>
