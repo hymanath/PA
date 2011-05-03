@@ -67,13 +67,14 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		electionTypes = new ArrayList<SelectOptionVO>();		
-		SelectOptionVO electionType1 = new SelectOptionVO();
-		electionType1.setId(new Long(1));
-		electionType1.setName("Parliament");
-		
+				
 		SelectOptionVO electionType2 = new SelectOptionVO();
 		electionType2.setId(new Long(2));
 		electionType2.setName("Assembly");
+		
+		SelectOptionVO electionType1 = new SelectOptionVO();
+		electionType1.setId(new Long(1));
+		electionType1.setName("Parliament");
 		
 		electionTypes.add(electionType1);
 		electionTypes.add(electionType2);
@@ -81,8 +82,8 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		
 		electionYears = new ArrayList<String>();	
 		electionYears.add("2009");
-		electionYears.add("2008");
-		electionYears.add("2006");
+		/*electionYears.add("2008");
+		electionYears.add("2006");*/
 		electionYears.add("2004");
 		setElectionYears(electionYears);
 		System.out.println("before success party Booth results action");
