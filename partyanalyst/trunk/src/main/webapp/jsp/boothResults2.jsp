@@ -67,6 +67,20 @@
 	padding:4px 8px;
 }
 
+#boothResultsTableId th{
+	background-color:#C4DEFF;
+	text-align:center;
+	font-weight:bold;
+	color:#1031B6;
+}
+
+#boothResultsTableId td{
+	background-color:#F8FBFF;
+	color:#180206;
+	font-weight:bold;
+	width:140px;
+}
+
 #titleDiv
 {
 	color: #23318B;
@@ -76,6 +90,7 @@
     text-decoration: underline;
 
 }
+
 </style>
 </head>
 <body>
@@ -109,7 +124,24 @@
 		
 	</tr>
 </table>
-<br /><br><br /><br><br><br><br>
+<br/><br><br/><br><br><br>
+
+<div class="boothResultHeadingDiv">Polling Percentage vs Party Votes Percentage: </div><br>
+<div class="yui-skin-sam">
+<display:table id="boothResultsTableId"
+	 name="${boothResult.perWiseboothResults}"
+	defaultorder="ascending" defaultsort="4"
+	style="width:auto;margin-left:30px;border:1px;">
+
+<display:column style="text-align:center;" title="Polling % Range"
+		property="location" />
+<display:column style="text-align:center;" title="Total No of Booths"
+		property="votesEarned"/>
+<display:column style="text-align:center;" title="Party Votes %"
+		property="percentage" />
+</display:table>
+</div>
+
 <div class="boothResultHeadingDiv">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
