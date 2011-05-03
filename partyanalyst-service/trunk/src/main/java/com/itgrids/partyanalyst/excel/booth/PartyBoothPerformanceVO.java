@@ -16,10 +16,7 @@ public class PartyBoothPerformanceVO {
 	private long totalVotes;
 	private String votingPercentage;
 	private List<BoothResultVO> boothResults = new ArrayList<BoothResultVO>();
-	
-	public PartyBoothPerformanceVO(){
-		
-	}
+	private List<BoothResultVO> perWiseboothResults = new ArrayList<BoothResultVO>();
 	
 	public PartyBoothPerformanceVO(String partyName, String candidateName,
 			String electionYear, String electionType, int totalValidVotes, int votesGained,
@@ -32,6 +29,18 @@ public class PartyBoothPerformanceVO {
 		this.percentage = percentage;
 		this.votesGained = votesGained;
 		this.boothResults = boothResults;
+	}
+	
+	public List<BoothResultVO> getPerWiseboothResults() {
+		return perWiseboothResults;
+	}
+
+	public void setPerWiseboothResults(List<BoothResultVO> perWiseboothResults) {
+		this.perWiseboothResults = perWiseboothResults;
+	}
+
+	public PartyBoothPerformanceVO(){
+		
 	}
 	
 	public String getConstituencyName() {
