@@ -97,6 +97,8 @@ function initializeResultsTable() {
 			key : "votesEarned",parser:"number"
 		}, {
 			key : "totalVoters",parser:"number"
+		}, {
+			key : "pollingPercentage",parser:"number"
 		} , {
 			key : "percentage",parser:"number"
 		} ]
@@ -125,7 +127,11 @@ function initializeResultsTable() {
 		sortable : true
 	}, {
 		key : "totalVoters",
-		label : "Total Voters",
+		label : "Polled Votes",
+		sortable : true
+	}, {
+		key : "pollingPercentage",
+		label : "Polling %",
 		sortable : true
 	}, {
 		key : "percentage",

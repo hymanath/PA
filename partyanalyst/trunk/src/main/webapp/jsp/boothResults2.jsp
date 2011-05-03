@@ -34,9 +34,18 @@
 <title>Booth Results</title>
 <style type="text/css">
 #boothResultsDiv {
-	text-align: left;
+    text-align: left;
 	margin-left: 50px;
 	font-size: 12px;
+	
+}
+
+.boothResultHeadingDiv
+{
+   margin-top: 20px;
+   color:#23318B;
+   text-decoration: underline;
+   font-weight: bold;
 }
 .yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 {
@@ -57,12 +66,22 @@
 .yui-skin-sam .yui-dt-liner {
 	padding:4px 8px;
 }
+
+#titleDiv
+{
+	color: #23318B;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-decoration: underline;
+
+}
 </style>
 </head>
 <body>
-<h3><u><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></u></h3>
+<div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></div>
 <div id="boothResultsDiv">
-<h4><u>Candidate Details : </u></h4>
+<div class="boothResultHeadingDiv">Candidate Details : </div>
 <table class="searchresultsTable" style="width: auto; float: left;">
 	<tr>
 		<th style="background-color:#C4DEFF;">Candidate Name</th>
@@ -91,8 +110,7 @@
 	</tr>
 </table>
 <br /><br><br /><br><br><br><br>
-<h4><u>Booth Wise Performance : </u></h4>
-
+<div class="boothResultHeadingDiv">Booth Wise Performance : </div>
 <div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
 	 name="${boothResult.boothResults}"
@@ -108,8 +126,10 @@
 		property="mandal" />
 	<display:column style="text-align: center;" title="Votes Earned"
 		property="votesEarned" />
-	<display:column style="text-align: center;" title="Total Voters"
+	<display:column style="text-align: center;" title="Polled Votes"
 		property="totalVoters" />
+	<display:column style="text-align: center;" title="Polling Percentage"
+		property="pollingPercentage" />
 	<display:column style="text-align: center;" title="Percentage"
 		property="percentage" />
 </display:table>
