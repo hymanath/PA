@@ -295,7 +295,7 @@ public class CadreRegisterAction extends ActionSupport implements
 		return this.cadreInfo.getSocialStatus().toString();
 	}
 
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Social Category is Manatory")
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Caste Category is Mandatory")
 	public void setSocialStatus(String socialStatus) {
 		this.cadreInfo.setSocialStatus(new Long(socialStatus));
 	}
