@@ -256,11 +256,18 @@ var new2="Election Message";
 		<div id="indexheader" class="indexLayoutContainer" style="overflow:visible;background-image:url('images/icons/homePage_new/headerBG_betanew.jpg');height:125px;">
             <table  width="100%" id="headerTable">
                 <tr>
-                    <td style="vertical-align:top;width:540px;">
+                    <td style="vertical-align:top;width:190px;">
                         <div id="pa_Logo" style="padding-left: 10px; padding-top: 10px;">
                         	
                         </div>
                     </td>
+                    
+					<td style="padding-left:10px;"><a title="Facebook" href="http://www.facebook.com/share.php?u=http%3A%2F%2Fpartyanalyst.com%2Fhomepage.action&amp;t=to%20know%20%20Analyse%20Act%20for%20Politics" target="_blank" rel="nofollow"><img class="sociable-hovers" style="padding-right:px;background: url('images/icons/homePage_new/fshare.jpeg') no-repeat scroll -343px -1px transparent;"align="right" alt="Facebook" title="share this on Facebook" src="images/icons/homePage_new/fshare.jpg"></a>
+					</td>
+					
+					<td style="padding-left:10px;padding-top:5px;">
+						<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://www.facebook.com/home.php#!/profile.php?id=158042927544491" send="false" layout="button_count" width="0" show_faces="false" font="" title=""></fb:like>
+					</td>
                     <td style="vertical-align:top;">
                         <table width="100%" style="width:100%">                           
                             <tr>
