@@ -454,6 +454,8 @@
         </action>
         
         <action name="partyBoothResult2Action" class="partyBoothResult2Action">
+       		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+            <result name="input">/jsp/loginForm.jsp?src=partyBoothResultAction</result>
             <result name="success">/jsp/boothResults2.jsp</result>
         </action>
         
