@@ -1040,7 +1040,7 @@
 			<td width="135"><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 			<td align="left"><s:textfield id="incomeField" name="income" size="25" maxlength="8"/></td>
 			<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
-			<td style="padding-left: 10px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
+			<td style="padding-left: 2px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
 		</tr>
 		</table>
 	</fieldset>		
@@ -1118,7 +1118,8 @@
 			</td>
 		</tr>
 		<tr id="row6" style="display:none;">
-			<td width="200">Booth No</td>
+			<td width="200">Booth No<font class="requiredFont"> * </font></td>
+
 			<td>
 				<s:select id="boothField_s" cssClass="regionSelect" name="cadreLevelBooth" list="#session.boothsList_c" listKey="id" listValue="name" onchange="setCadreValue(this.options[this.selectedIndex].value,'onChange')"></s:select>
 			</td>
