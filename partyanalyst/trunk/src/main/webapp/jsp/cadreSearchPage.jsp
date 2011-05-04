@@ -644,10 +644,16 @@ function buildCadreSearchResultDataTable(rparam)
 	elLiner.innerHTML="<input type='checkbox' onClick='getCadreId(this)' name='cadreResult_check' value='"+id+"_"+mobile+"_"+firstName+"'>";
 				
   };
+
+  YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData) 
+  {
+	elLiner.innerHTML ="<img height='85px' width='85px' src='images/cadre_images/"+oData+"'/>";
+  };
   
   var CadreSearchResultColumnDefs = [ 
 		    	            {key:"select", label: "Select", formatter:YAHOO.widget.DataTable.select},
 							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.viewDetails} ,
+							{key:"image", label: "Image",formatter:YAHOO.widget.DataTable.image}, 
 		    	            {key:"mobile", label: "Mobile", sortable: true}, 
 		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
 							{key:"email", label: "Address"},
@@ -665,7 +671,7 @@ function buildCadreSearchResultDataTable(rparam)
             resultsList:"cadreInfo", 
 		fields: [
 				{key:"firstName"},
-				"lastName","mobile", "strCadreLevel","memberType",
+				"lastName","image","mobile", "strCadreLevel","memberType",
 				"educationStr","professionStr","casteCategoryStr","cadreId","email","pincode"
 				],
 		metaFields: {

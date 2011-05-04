@@ -10,7 +10,7 @@
 <body>
 
 <div id="constituencyCenterContentOuter" style="height: 600px;background-color:#E4EDF0;padding:100px;">
-	<div id="constituencyCenterContentOuter" class="rounded" style="margin-top:0px;height:175px;width:750px;">					
+	<div id="constituencyCenterContentOuter" class="rounded" style="margin-top:0px;height:185px;width:750px;">					
 		<div class="corner topLeft"></div>
 		<div class="corner topRight"></div>
 		<div class="corner bottomLeft"></div>

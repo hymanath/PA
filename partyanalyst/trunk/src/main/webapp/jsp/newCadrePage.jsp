@@ -580,7 +580,41 @@
 		var firstFamilyMemberNameIdEl = document.getElementById("firstFamilyMemberNameId");
 		firstFamilyMemberNameIdEl.focus();
 	}
-	
+
+	var uploadPicStatus = false;
+	function uploadImageFile()
+	{
+		var photoElmt = document.getElementById("uploadFileId");
+		//var photoStatusElmt = document.getElementById("uploadPic_window_status");
+		var fileLimit = 1048576; //1024*1024 = 1048576 bytes (2MB photo limit)
+
+		var file = photoElmt.files[0];
+
+		var fileType = file.type;
+		var fileImgType = fileType.substring(fileType.indexOf('/')+1,fileType.length);
+
+
+		if(fileImgType == "jpeg" || fileImgType == "png" || fileImgType == "gif")
+		{
+			var fileSize = file.fileSize/fileLimit;
+			if(fileSize > 2)
+			{
+				photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image size should be < 2MB.</span>';
+			}
+			else
+			{
+				photoStatusElmt.innerHTML = '';
+				var previewElmt = document.getElementById("Imgpreview");
+				previewElmt.src = file.getAsDataURL();
+				uploadPicStatus = true;
+			}
+		}
+		else
+		{
+			photoStatusElmt.innerHTML = '<span class="errorStatusMsg">The Image is not of the type specified.</span>';
+		}
+	}
+
 </script>
 <style type="text/css">
 	
@@ -692,7 +726,7 @@
 </style>
 </head>
 <body class="bodyStyle" onunload="loadOnUnload()">
-<s:form action="cadreRegisterAction" method="POST" theme="simple">
+<s:form action="cadreRegisterAction" method="post" enctype="multipart/form-data" theme="simple">
 	<CENTER>
 		<TABLE cellpadding="0" cellspacing="0" style="margin-top:10px;">
 			<TR>
@@ -783,7 +817,7 @@
 						</tr>
 					</table>
 				</td>			
-			</tr>	
+			</tr>
 		<tr>
 			<td width="162"><s:label for="noOfFamilyMembersId" id="noOfFamilyMembersLabelId" value="No of Family Members"/></td>
 			<td align="left"><s:textfield id="noOfFamilyMembersId" name="noOfFamilyMembers" size="1" maxlength="2"/></td>
@@ -791,6 +825,12 @@
 			<td><s:label for="noOfVotersId" id="noOfVotersLableId"  value="No of Voters In Family" /></td>
 			<td align="left"><s:textfield id="noOfVotersId" name="noOfVoters" size="1" maxlength="2"/></td>
 		</tr>
+
+		<tr>
+			<td><s:label for="uploadFileId" id="uploadImageLabel" value="Upload Photo" /></td>
+			<td><s:file  id="uploadFileId" name="uploadImage" label="Upload" /></td>
+		</tr>
+
 		<tr>
 			<th width="165px"><u><s:label for="currAddField" id="currAddLabel"  value="Family Members Details" /></u></th>
 			<td align="left"><div id="editDiv" onclick="showFamilyDetailsTable()"><b><u>Edit</u></b></div></td>
